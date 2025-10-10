@@ -15,37 +15,37 @@ type ConsumerGroup struct {
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
 }
 
-func (o *ConsumerGroup) GetCreatedAt() *int64 {
-	if o == nil {
+func (c *ConsumerGroup) GetCreatedAt() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return c.CreatedAt
 }
 
-func (o *ConsumerGroup) GetID() *string {
-	if o == nil {
+func (c *ConsumerGroup) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *ConsumerGroup) GetName() string {
-	if o == nil {
+func (c *ConsumerGroup) GetName() string {
+	if c == nil {
 		return ""
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *ConsumerGroup) GetTags() []string {
-	if o == nil {
+func (c *ConsumerGroup) GetTags() []string {
+	if c == nil {
 		return nil
 	}
-	return o.Tags
+	return c.Tags
 }
 
-func (o *ConsumerGroup) GetUpdatedAt() *int64 {
-	if o == nil {
+func (c *ConsumerGroup) GetUpdatedAt() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return c.UpdatedAt
 }

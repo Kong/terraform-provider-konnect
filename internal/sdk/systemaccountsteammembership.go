@@ -59,7 +59,7 @@ func (s *SystemAccountsTeamMembership) PostTeamsTeamIDSystemAccounts(ctx context
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "post-teams-teamId-system-accounts",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "AddSystemAccountToTeam", "json", `request:"mediaType=application/json"`)
@@ -240,7 +240,7 @@ func (s *SystemAccountsTeamMembership) DeleteTeamsTeamIDSystemAccountsAccountID(
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-teams-teamId-system-accounts-accountId",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

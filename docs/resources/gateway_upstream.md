@@ -163,7 +163,7 @@ Optional:
 
 Optional:
 
-- `http_statuses` (List of Number)
+- `http_statuses` (List of Number) Default: [200,302]
 - `interval` (Number) Default: 0
 - `successes` (Number) Default: 0
 
@@ -174,7 +174,7 @@ Optional:
 Optional:
 
 - `http_failures` (Number) Default: 0
-- `http_statuses` (List of Number)
+- `http_statuses` (List of Number) Default: [429,404,500,501,502,503,504,505]
 - `interval` (Number) Default: 0
 - `tcp_failures` (Number) Default: 0
 - `timeouts` (Number) Default: 0
@@ -195,7 +195,7 @@ Optional:
 
 Optional:
 
-- `http_statuses` (List of Number)
+- `http_statuses` (List of Number) Default: [200,201,202,203,204,205,206,207,208,226,300,301,302,303,304,305,306,307,308]
 - `successes` (Number) Default: 0
 
 
@@ -205,13 +205,27 @@ Optional:
 Optional:
 
 - `http_failures` (Number) Default: 0
-- `http_statuses` (List of Number)
+- `http_statuses` (List of Number) Default: [429,500,503]
 - `tcp_failures` (Number) Default: 0
 - `timeouts` (Number) Default: 0
 
 ## Import
 
 Import is supported using the following syntax:
+
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_gateway_upstream.my_konnect_gateway_upstream
+  id = jsonencode({
+    control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id = "426d620c-7058-4ae6-aacc-f85a3204a2c5"
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import konnect_gateway_upstream.my_konnect_gateway_upstream '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "426d620c-7058-4ae6-aacc-f85a3204a2c5"}'

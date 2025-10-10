@@ -13,18 +13,18 @@ type CreateOasvalidationPluginRequest struct {
 	OasValidationPlugin shared.OasValidationPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateOasvalidationPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateOasvalidationPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateOasvalidationPluginRequest) GetOasValidationPlugin() shared.OasValidationPlugin {
-	if o == nil {
+func (c *CreateOasvalidationPluginRequest) GetOasValidationPlugin() shared.OasValidationPlugin {
+	if c == nil {
 		return shared.OasValidationPlugin{}
 	}
-	return o.OasValidationPlugin
+	return c.OasValidationPlugin
 }
 
 type CreateOasvalidationPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateOasvalidationPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateOasvalidationPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateOasvalidationPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateOasvalidationPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateOasvalidationPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateOasvalidationPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateOasvalidationPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateOasvalidationPluginResponse) GetOasValidationPlugin() *shared.OasValidationPlugin {
-	if o == nil {
+func (c *CreateOasvalidationPluginResponse) GetOasValidationPlugin() *shared.OasValidationPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.OasValidationPlugin
+	return c.OasValidationPlugin
 }
 
-func (o *CreateOasvalidationPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateOasvalidationPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

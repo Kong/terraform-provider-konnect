@@ -22,36 +22,36 @@ func (d DataPlaneClientCertificate) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DataPlaneClientCertificate) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *DataPlaneClientCertificate) GetID() *string {
-	if o == nil {
+func (d *DataPlaneClientCertificate) GetID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ID
+	return d.ID
 }
 
-func (o *DataPlaneClientCertificate) GetCreatedAt() *int64 {
-	if o == nil {
+func (d *DataPlaneClientCertificate) GetCreatedAt() *int64 {
+	if d == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return d.CreatedAt
 }
 
-func (o *DataPlaneClientCertificate) GetUpdatedAt() *int64 {
-	if o == nil {
+func (d *DataPlaneClientCertificate) GetUpdatedAt() *int64 {
+	if d == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return d.UpdatedAt
 }
 
-func (o *DataPlaneClientCertificate) GetCert() *string {
-	if o == nil {
+func (d *DataPlaneClientCertificate) GetCert() *string {
+	if d == nil {
 		return nil
 	}
-	return o.Cert
+	return d.Cert
 }

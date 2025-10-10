@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type AWSResourceEndpointAttachmentType string
@@ -39,23 +40,34 @@ type AwsResourceEndpointAttachmentConfig struct {
 	ResourceConfig []AwsResourceEndpointConfig `json:"resource_config,omitempty"`
 }
 
-func (o *AwsResourceEndpointAttachmentConfig) GetKind() AWSResourceEndpointAttachmentType {
-	if o == nil {
+func (a AwsResourceEndpointAttachmentConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AwsResourceEndpointAttachmentConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"kind", "ram_share_arn"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AwsResourceEndpointAttachmentConfig) GetKind() AWSResourceEndpointAttachmentType {
+	if a == nil {
 		return AWSResourceEndpointAttachmentType("")
 	}
-	return o.Kind
+	return a.Kind
 }
 
-func (o *AwsResourceEndpointAttachmentConfig) GetRAMShareArn() string {
-	if o == nil {
+func (a *AwsResourceEndpointAttachmentConfig) GetRAMShareArn() string {
+	if a == nil {
 		return ""
 	}
-	return o.RAMShareArn
+	return a.RAMShareArn
 }
 
-func (o *AwsResourceEndpointAttachmentConfig) GetResourceConfig() []AwsResourceEndpointConfig {
-	if o == nil {
+func (a *AwsResourceEndpointAttachmentConfig) GetResourceConfig() []AwsResourceEndpointConfig {
+	if a == nil {
 		return nil
 	}
-	return o.ResourceConfig
+	return a.ResourceConfig
 }

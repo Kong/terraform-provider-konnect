@@ -12,22 +12,22 @@ type AiPromptCompressorPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AiPromptCompressorPluginAfter) GetAccess() []string {
-	if o == nil {
+func (a *AiPromptCompressorPluginAfter) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AiPromptCompressorPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AiPromptCompressorPluginBefore) GetAccess() []string {
-	if o == nil {
+func (a *AiPromptCompressorPluginBefore) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AiPromptCompressorPluginOrdering struct {
@@ -35,18 +35,18 @@ type AiPromptCompressorPluginOrdering struct {
 	Before *AiPromptCompressorPluginBefore `json:"before,omitempty"`
 }
 
-func (o *AiPromptCompressorPluginOrdering) GetAfter() *AiPromptCompressorPluginAfter {
-	if o == nil {
+func (a *AiPromptCompressorPluginOrdering) GetAfter() *AiPromptCompressorPluginAfter {
+	if a == nil {
 		return nil
 	}
-	return o.After
+	return a.After
 }
 
-func (o *AiPromptCompressorPluginOrdering) GetBefore() *AiPromptCompressorPluginBefore {
-	if o == nil {
+func (a *AiPromptCompressorPluginOrdering) GetBefore() *AiPromptCompressorPluginBefore {
+	if a == nil {
 		return nil
 	}
-	return o.Before
+	return a.Before
 }
 
 type AiPromptCompressorPluginPartials struct {
@@ -57,25 +57,25 @@ type AiPromptCompressorPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *AiPromptCompressorPluginPartials) GetID() *string {
-	if o == nil {
+func (a *AiPromptCompressorPluginPartials) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AiPromptCompressorPluginPartials) GetName() *string {
-	if o == nil {
+func (a *AiPromptCompressorPluginPartials) GetName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AiPromptCompressorPluginPartials) GetPath() *string {
-	if o == nil {
+func (a *AiPromptCompressorPluginPartials) GetPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Path
+	return a.Path
 }
 
 type CompressionRanges struct {
@@ -84,25 +84,25 @@ type CompressionRanges struct {
 	Value     float64 `json:"value"`
 }
 
-func (o *CompressionRanges) GetMaxTokens() int64 {
-	if o == nil {
+func (c *CompressionRanges) GetMaxTokens() int64 {
+	if c == nil {
 		return 0
 	}
-	return o.MaxTokens
+	return c.MaxTokens
 }
 
-func (o *CompressionRanges) GetMinTokens() int64 {
-	if o == nil {
+func (c *CompressionRanges) GetMinTokens() int64 {
+	if c == nil {
 		return 0
 	}
-	return o.MinTokens
+	return c.MinTokens
 }
 
-func (o *CompressionRanges) GetValue() float64 {
-	if o == nil {
+func (c *CompressionRanges) GetValue() float64 {
+	if c == nil {
 		return 0.0
 	}
-	return o.Value
+	return c.Value
 }
 
 // CompressorType - What compression type to use to compress with
@@ -184,66 +184,66 @@ func (a AiPromptCompressorPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiPromptCompressorPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"compression_ranges"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiPromptCompressorPluginConfig) GetCompressionRanges() []CompressionRanges {
-	if o == nil {
+func (a *AiPromptCompressorPluginConfig) GetCompressionRanges() []CompressionRanges {
+	if a == nil {
 		return []CompressionRanges{}
 	}
-	return o.CompressionRanges
+	return a.CompressionRanges
 }
 
-func (o *AiPromptCompressorPluginConfig) GetCompressorType() *CompressorType {
-	if o == nil {
+func (a *AiPromptCompressorPluginConfig) GetCompressorType() *CompressorType {
+	if a == nil {
 		return nil
 	}
-	return o.CompressorType
+	return a.CompressorType
 }
 
-func (o *AiPromptCompressorPluginConfig) GetCompressorURL() *string {
-	if o == nil {
+func (a *AiPromptCompressorPluginConfig) GetCompressorURL() *string {
+	if a == nil {
 		return nil
 	}
-	return o.CompressorURL
+	return a.CompressorURL
 }
 
-func (o *AiPromptCompressorPluginConfig) GetKeepaliveTimeout() *float64 {
-	if o == nil {
+func (a *AiPromptCompressorPluginConfig) GetKeepaliveTimeout() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.KeepaliveTimeout
+	return a.KeepaliveTimeout
 }
 
-func (o *AiPromptCompressorPluginConfig) GetLogTextData() *bool {
-	if o == nil {
+func (a *AiPromptCompressorPluginConfig) GetLogTextData() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.LogTextData
+	return a.LogTextData
 }
 
-func (o *AiPromptCompressorPluginConfig) GetMessageType() []MessageType {
-	if o == nil {
+func (a *AiPromptCompressorPluginConfig) GetMessageType() []MessageType {
+	if a == nil {
 		return nil
 	}
-	return o.MessageType
+	return a.MessageType
 }
 
-func (o *AiPromptCompressorPluginConfig) GetStopOnError() *bool {
-	if o == nil {
+func (a *AiPromptCompressorPluginConfig) GetStopOnError() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.StopOnError
+	return a.StopOnError
 }
 
-func (o *AiPromptCompressorPluginConfig) GetTimeout() *float64 {
-	if o == nil {
+func (a *AiPromptCompressorPluginConfig) GetTimeout() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.Timeout
+	return a.Timeout
 }
 
 // AiPromptCompressorPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -251,11 +251,11 @@ type AiPromptCompressorPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiPromptCompressorPluginConsumer) GetID() *string {
-	if o == nil {
+func (a *AiPromptCompressorPluginConsumer) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiPromptCompressorPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -263,11 +263,11 @@ type AiPromptCompressorPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiPromptCompressorPluginConsumerGroup) GetID() *string {
-	if o == nil {
+func (a *AiPromptCompressorPluginConsumerGroup) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 type AiPromptCompressorPluginProtocols string
@@ -307,11 +307,11 @@ type AiPromptCompressorPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiPromptCompressorPluginRoute) GetID() *string {
-	if o == nil {
+func (a *AiPromptCompressorPluginRoute) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiPromptCompressorPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -319,11 +319,11 @@ type AiPromptCompressorPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiPromptCompressorPluginService) GetID() *string {
-	if o == nil {
+func (a *AiPromptCompressorPluginService) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiPromptCompressorPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -362,110 +362,110 @@ func (a AiPromptCompressorPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiPromptCompressorPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiPromptCompressorPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (a *AiPromptCompressorPlugin) GetCreatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AiPromptCompressorPlugin) GetEnabled() *bool {
-	if o == nil {
+func (a *AiPromptCompressorPlugin) GetEnabled() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Enabled
+	return a.Enabled
 }
 
-func (o *AiPromptCompressorPlugin) GetID() *string {
-	if o == nil {
+func (a *AiPromptCompressorPlugin) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AiPromptCompressorPlugin) GetInstanceName() *string {
-	if o == nil {
+func (a *AiPromptCompressorPlugin) GetInstanceName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.InstanceName
+	return a.InstanceName
 }
 
-func (o *AiPromptCompressorPlugin) GetName() string {
+func (a *AiPromptCompressorPlugin) GetName() string {
 	return "ai-prompt-compressor"
 }
 
-func (o *AiPromptCompressorPlugin) GetOrdering() *AiPromptCompressorPluginOrdering {
-	if o == nil {
+func (a *AiPromptCompressorPlugin) GetOrdering() *AiPromptCompressorPluginOrdering {
+	if a == nil {
 		return nil
 	}
-	return o.Ordering
+	return a.Ordering
 }
 
-func (o *AiPromptCompressorPlugin) GetPartials() []AiPromptCompressorPluginPartials {
-	if o == nil {
+func (a *AiPromptCompressorPlugin) GetPartials() []AiPromptCompressorPluginPartials {
+	if a == nil {
 		return nil
 	}
-	return o.Partials
+	return a.Partials
 }
 
-func (o *AiPromptCompressorPlugin) GetTags() []string {
-	if o == nil {
+func (a *AiPromptCompressorPlugin) GetTags() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Tags
+	return a.Tags
 }
 
-func (o *AiPromptCompressorPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (a *AiPromptCompressorPlugin) GetUpdatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }
 
-func (o *AiPromptCompressorPlugin) GetConfig() AiPromptCompressorPluginConfig {
-	if o == nil {
+func (a *AiPromptCompressorPlugin) GetConfig() AiPromptCompressorPluginConfig {
+	if a == nil {
 		return AiPromptCompressorPluginConfig{}
 	}
-	return o.Config
+	return a.Config
 }
 
-func (o *AiPromptCompressorPlugin) GetConsumer() *AiPromptCompressorPluginConsumer {
-	if o == nil {
+func (a *AiPromptCompressorPlugin) GetConsumer() *AiPromptCompressorPluginConsumer {
+	if a == nil {
 		return nil
 	}
-	return o.Consumer
+	return a.Consumer
 }
 
-func (o *AiPromptCompressorPlugin) GetConsumerGroup() *AiPromptCompressorPluginConsumerGroup {
-	if o == nil {
+func (a *AiPromptCompressorPlugin) GetConsumerGroup() *AiPromptCompressorPluginConsumerGroup {
+	if a == nil {
 		return nil
 	}
-	return o.ConsumerGroup
+	return a.ConsumerGroup
 }
 
-func (o *AiPromptCompressorPlugin) GetProtocols() []AiPromptCompressorPluginProtocols {
-	if o == nil {
+func (a *AiPromptCompressorPlugin) GetProtocols() []AiPromptCompressorPluginProtocols {
+	if a == nil {
 		return nil
 	}
-	return o.Protocols
+	return a.Protocols
 }
 
-func (o *AiPromptCompressorPlugin) GetRoute() *AiPromptCompressorPluginRoute {
-	if o == nil {
+func (a *AiPromptCompressorPlugin) GetRoute() *AiPromptCompressorPluginRoute {
+	if a == nil {
 		return nil
 	}
-	return o.Route
+	return a.Route
 }
 
-func (o *AiPromptCompressorPlugin) GetService() *AiPromptCompressorPluginService {
-	if o == nil {
+func (a *AiPromptCompressorPlugin) GetService() *AiPromptCompressorPluginService {
+	if a == nil {
 		return nil
 	}
-	return o.Service
+	return a.Service
 }

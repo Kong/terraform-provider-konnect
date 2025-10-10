@@ -12,6 +12,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/errors"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
+	"github.com/spyzhov/ajson"
 	"net/http"
 	"net/url"
 )
@@ -62,7 +63,7 @@ func (s *ControlPlanes) ListControlPlanes(ctx context.Context, request operation
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "list-control-planes",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -134,6 +135,71 @@ func (s *ControlPlanes) ListControlPlanes(ctx context.Context, request operation
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
+	}
+	res.Next = func() (*operations.ListControlPlanesResponse, error) {
+		rawBody, err := utils.ConsumeRawBody(httpRes)
+		if err != nil {
+			return nil, err
+		}
+
+		b, err := ajson.Unmarshal(rawBody)
+		if err != nil {
+			return nil, err
+		}
+		var p int64 = 1
+		if request.PageNumber != nil {
+			p = *request.PageNumber
+		}
+		nP := int64(p + 1)
+		nPs, err := ajson.Eval(b, "$.meta.page.total")
+		if err != nil {
+			return nil, err
+		}
+		if !nPs.IsNumeric() {
+			return nil, nil
+		}
+
+		nPsVal, err := nPs.GetNumeric()
+		if err != nil {
+			return nil, err
+		}
+		// GetNumeric returns as float64
+		if int(nPsVal) <= int(p) {
+			return nil, nil
+		}
+		r, err := ajson.Eval(b, "$.data")
+		if err != nil {
+			return nil, err
+		}
+		if !r.IsArray() {
+			return nil, nil
+		}
+		arr, err := r.GetArray()
+		if err != nil {
+			return nil, err
+		}
+		if len(arr) == 0 {
+			return nil, nil
+		}
+
+		l := 0
+		if request.PageSize != nil {
+			l = int(*request.PageSize)
+		}
+		if len(arr) < l {
+			return nil, nil
+		}
+
+		return s.ListControlPlanes(
+			ctx,
+			operations.ListControlPlanesRequest{
+				PageSize:     request.PageSize,
+				PageNumber:   &nP,
+				Filter:       request.Filter,
+				FilterLabels: request.FilterLabels,
+				Sort:         request.Sort,
+			},
+		)
 	}
 
 	switch {
@@ -307,7 +373,7 @@ func (s *ControlPlanes) CreateControlPlane(ctx context.Context, request shared.C
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-control-plane",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
@@ -576,7 +642,7 @@ func (s *ControlPlanes) GetControlPlane(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-control-plane",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -838,7 +904,7 @@ func (s *ControlPlanes) UpdateControlPlane(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-control-plane",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateControlPlaneRequest", "json", `request:"mediaType=application/json"`)
@@ -1106,7 +1172,7 @@ func (s *ControlPlanes) DeleteControlPlane(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-control-plane",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

@@ -20,6 +20,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -413,7 +414,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 									Optional:    true,
 									Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 									ElementType: types.StringType,
-									Description: `An array of callout names the current callout depends on. This dependency list determines the callout execution order via a topological sorting algorithm.`,
+									Description: `An array of callout names the current callout depends on. This dependency list determines the callout execution order via a topological sorting algorithm. Default: []`,
 								},
 								"name": schema.StringAttribute{
 									Computed:    true,
@@ -976,10 +977,16 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 				Description: `A list of partials to be used by the plugin.`,
 			},
 			"protocols": schema.SetAttribute{
-				Computed:    true,
-				Optional:    true,
+				Computed: true,
+				Optional: true,
+				Default: setdefault.StaticValue(types.SetValueMust(types.StringType, []attr.Value{
+					types.StringValue("grpc"),
+					types.StringValue("grpcs"),
+					types.StringValue("http"),
+					types.StringValue("https"),
+				})),
 				ElementType: types.StringType,
-				Description: `A set of strings representing HTTP protocols.`,
+				Description: `A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,

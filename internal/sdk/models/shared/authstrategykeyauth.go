@@ -45,36 +45,36 @@ func (a AuthStrategyKeyAuth) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AuthStrategyKeyAuth) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "credential_type", "key_names"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AuthStrategyKeyAuth) GetID() string {
-	if o == nil {
+func (a *AuthStrategyKeyAuth) GetID() string {
+	if a == nil {
 		return ""
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AuthStrategyKeyAuth) GetName() *string {
-	if o == nil {
+func (a *AuthStrategyKeyAuth) GetName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AuthStrategyKeyAuth) GetCredentialType() CredentialType {
-	if o == nil {
+func (a *AuthStrategyKeyAuth) GetCredentialType() CredentialType {
+	if a == nil {
 		return CredentialType("")
 	}
-	return o.CredentialType
+	return a.CredentialType
 }
 
-func (o *AuthStrategyKeyAuth) GetKeyNames() []string {
-	if o == nil {
+func (a *AuthStrategyKeyAuth) GetKeyNames() []string {
+	if a == nil {
 		return []string{}
 	}
-	return o.KeyNames
+	return a.KeyNames
 }

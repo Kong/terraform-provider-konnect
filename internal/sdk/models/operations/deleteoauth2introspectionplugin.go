@@ -14,18 +14,18 @@ type DeleteOauth2introspectionPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteOauth2introspectionPluginRequest) GetPluginID() string {
-	if o == nil {
+func (d *DeleteOauth2introspectionPluginRequest) GetPluginID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PluginID
+	return d.PluginID
 }
 
-func (o *DeleteOauth2introspectionPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteOauth2introspectionPluginRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteOauth2introspectionPluginResponse struct {
@@ -39,30 +39,30 @@ type DeleteOauth2introspectionPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteOauth2introspectionPluginResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteOauth2introspectionPluginResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteOauth2introspectionPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteOauth2introspectionPluginResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteOauth2introspectionPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteOauth2introspectionPluginResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteOauth2introspectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteOauth2introspectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

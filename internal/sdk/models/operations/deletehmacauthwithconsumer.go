@@ -15,25 +15,25 @@ type DeleteHmacAuthWithConsumerRequest struct {
 	HMACAuthID string `pathParam:"style=simple,explode=false,name=HMACAuthId"`
 }
 
-func (o *DeleteHmacAuthWithConsumerRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteHmacAuthWithConsumerRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
-func (o *DeleteHmacAuthWithConsumerRequest) GetConsumerID() string {
-	if o == nil {
+func (d *DeleteHmacAuthWithConsumerRequest) GetConsumerID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ConsumerID
+	return d.ConsumerID
 }
 
-func (o *DeleteHmacAuthWithConsumerRequest) GetHMACAuthID() string {
-	if o == nil {
+func (d *DeleteHmacAuthWithConsumerRequest) GetHMACAuthID() string {
+	if d == nil {
 		return ""
 	}
-	return o.HMACAuthID
+	return d.HMACAuthID
 }
 
 type DeleteHmacAuthWithConsumerResponse struct {
@@ -45,23 +45,23 @@ type DeleteHmacAuthWithConsumerResponse struct {
 	RawResponse *http.Response
 }
 
-func (o *DeleteHmacAuthWithConsumerResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteHmacAuthWithConsumerResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteHmacAuthWithConsumerResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteHmacAuthWithConsumerResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteHmacAuthWithConsumerResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteHmacAuthWithConsumerResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }

@@ -14,18 +14,18 @@ type DeleteProxycacheadvancedPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteProxycacheadvancedPluginRequest) GetPluginID() string {
-	if o == nil {
+func (d *DeleteProxycacheadvancedPluginRequest) GetPluginID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PluginID
+	return d.PluginID
 }
 
-func (o *DeleteProxycacheadvancedPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteProxycacheadvancedPluginRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteProxycacheadvancedPluginResponse struct {
@@ -39,30 +39,30 @@ type DeleteProxycacheadvancedPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteProxycacheadvancedPluginResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteProxycacheadvancedPluginResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteProxycacheadvancedPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteProxycacheadvancedPluginResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteProxycacheadvancedPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteProxycacheadvancedPluginResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteProxycacheadvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteProxycacheadvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

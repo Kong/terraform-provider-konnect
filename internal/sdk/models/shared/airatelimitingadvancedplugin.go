@@ -12,22 +12,22 @@ type AiRateLimitingAdvancedPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AiRateLimitingAdvancedPluginAfter) GetAccess() []string {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginAfter) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AiRateLimitingAdvancedPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AiRateLimitingAdvancedPluginBefore) GetAccess() []string {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginBefore) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AiRateLimitingAdvancedPluginOrdering struct {
@@ -35,18 +35,18 @@ type AiRateLimitingAdvancedPluginOrdering struct {
 	Before *AiRateLimitingAdvancedPluginBefore `json:"before,omitempty"`
 }
 
-func (o *AiRateLimitingAdvancedPluginOrdering) GetAfter() *AiRateLimitingAdvancedPluginAfter {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginOrdering) GetAfter() *AiRateLimitingAdvancedPluginAfter {
+	if a == nil {
 		return nil
 	}
-	return o.After
+	return a.After
 }
 
-func (o *AiRateLimitingAdvancedPluginOrdering) GetBefore() *AiRateLimitingAdvancedPluginBefore {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginOrdering) GetBefore() *AiRateLimitingAdvancedPluginBefore {
+	if a == nil {
 		return nil
 	}
-	return o.Before
+	return a.Before
 }
 
 type AiRateLimitingAdvancedPluginPartials struct {
@@ -57,25 +57,25 @@ type AiRateLimitingAdvancedPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *AiRateLimitingAdvancedPluginPartials) GetID() *string {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginPartials) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AiRateLimitingAdvancedPluginPartials) GetName() *string {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginPartials) GetName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AiRateLimitingAdvancedPluginPartials) GetPath() *string {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginPartials) GetPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Path
+	return a.Path
 }
 
 // Identifier - The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`. Note if `identifier` is `consumer-group`, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate.
@@ -216,25 +216,25 @@ type LlmProviders struct {
 	WindowSize []float64 `json:"window_size"`
 }
 
-func (o *LlmProviders) GetLimit() []float64 {
-	if o == nil {
+func (l *LlmProviders) GetLimit() []float64 {
+	if l == nil {
 		return []float64{}
 	}
-	return o.Limit
+	return l.Limit
 }
 
-func (o *LlmProviders) GetName() AiRateLimitingAdvancedPluginName {
-	if o == nil {
+func (l *LlmProviders) GetName() AiRateLimitingAdvancedPluginName {
+	if l == nil {
 		return AiRateLimitingAdvancedPluginName("")
 	}
-	return o.Name
+	return l.Name
 }
 
-func (o *LlmProviders) GetWindowSize() []float64 {
-	if o == nil {
+func (l *LlmProviders) GetWindowSize() []float64 {
+	if l == nil {
 		return []float64{}
 	}
-	return o.WindowSize
+	return l.WindowSize
 }
 
 type ClusterNodes struct {
@@ -249,24 +249,24 @@ func (c ClusterNodes) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ClusterNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ClusterNodes) GetIP() *string {
-	if o == nil {
+func (c *ClusterNodes) GetIP() *string {
+	if c == nil {
 		return nil
 	}
-	return o.IP
+	return c.IP
 }
 
-func (o *ClusterNodes) GetPort() *int64 {
-	if o == nil {
+func (c *ClusterNodes) GetPort() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.Port
+	return c.Port
 }
 
 type SentinelNodes struct {
@@ -281,24 +281,24 @@ func (s SentinelNodes) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SentinelNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *SentinelNodes) GetHost() *string {
-	if o == nil {
+func (s *SentinelNodes) GetHost() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Host
+	return s.Host
 }
 
-func (o *SentinelNodes) GetPort() *int64 {
-	if o == nil {
+func (s *SentinelNodes) GetPort() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.Port
+	return s.Port
 }
 
 // SentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
@@ -381,157 +381,157 @@ func (r Redis) MarshalJSON() ([]byte, error) {
 }
 
 func (r *Redis) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Redis) GetClusterMaxRedirections() *int64 {
-	if o == nil {
+func (r *Redis) GetClusterMaxRedirections() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.ClusterMaxRedirections
+	return r.ClusterMaxRedirections
 }
 
-func (o *Redis) GetClusterNodes() []ClusterNodes {
-	if o == nil {
+func (r *Redis) GetClusterNodes() []ClusterNodes {
+	if r == nil {
 		return nil
 	}
-	return o.ClusterNodes
+	return r.ClusterNodes
 }
 
-func (o *Redis) GetConnectTimeout() *int64 {
-	if o == nil {
+func (r *Redis) GetConnectTimeout() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.ConnectTimeout
+	return r.ConnectTimeout
 }
 
-func (o *Redis) GetConnectionIsProxied() *bool {
-	if o == nil {
+func (r *Redis) GetConnectionIsProxied() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.ConnectionIsProxied
+	return r.ConnectionIsProxied
 }
 
-func (o *Redis) GetDatabase() *int64 {
-	if o == nil {
+func (r *Redis) GetDatabase() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.Database
+	return r.Database
 }
 
-func (o *Redis) GetHost() *string {
-	if o == nil {
+func (r *Redis) GetHost() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Host
+	return r.Host
 }
 
-func (o *Redis) GetKeepaliveBacklog() *int64 {
-	if o == nil {
+func (r *Redis) GetKeepaliveBacklog() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.KeepaliveBacklog
+	return r.KeepaliveBacklog
 }
 
-func (o *Redis) GetKeepalivePoolSize() *int64 {
-	if o == nil {
+func (r *Redis) GetKeepalivePoolSize() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.KeepalivePoolSize
+	return r.KeepalivePoolSize
 }
 
-func (o *Redis) GetPassword() *string {
-	if o == nil {
+func (r *Redis) GetPassword() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Password
+	return r.Password
 }
 
-func (o *Redis) GetPort() *int64 {
-	if o == nil {
+func (r *Redis) GetPort() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.Port
+	return r.Port
 }
 
-func (o *Redis) GetReadTimeout() *int64 {
-	if o == nil {
+func (r *Redis) GetReadTimeout() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.ReadTimeout
+	return r.ReadTimeout
 }
 
-func (o *Redis) GetSendTimeout() *int64 {
-	if o == nil {
+func (r *Redis) GetSendTimeout() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.SendTimeout
+	return r.SendTimeout
 }
 
-func (o *Redis) GetSentinelMaster() *string {
-	if o == nil {
+func (r *Redis) GetSentinelMaster() *string {
+	if r == nil {
 		return nil
 	}
-	return o.SentinelMaster
+	return r.SentinelMaster
 }
 
-func (o *Redis) GetSentinelNodes() []SentinelNodes {
-	if o == nil {
+func (r *Redis) GetSentinelNodes() []SentinelNodes {
+	if r == nil {
 		return nil
 	}
-	return o.SentinelNodes
+	return r.SentinelNodes
 }
 
-func (o *Redis) GetSentinelPassword() *string {
-	if o == nil {
+func (r *Redis) GetSentinelPassword() *string {
+	if r == nil {
 		return nil
 	}
-	return o.SentinelPassword
+	return r.SentinelPassword
 }
 
-func (o *Redis) GetSentinelRole() *SentinelRole {
-	if o == nil {
+func (r *Redis) GetSentinelRole() *SentinelRole {
+	if r == nil {
 		return nil
 	}
-	return o.SentinelRole
+	return r.SentinelRole
 }
 
-func (o *Redis) GetSentinelUsername() *string {
-	if o == nil {
+func (r *Redis) GetSentinelUsername() *string {
+	if r == nil {
 		return nil
 	}
-	return o.SentinelUsername
+	return r.SentinelUsername
 }
 
-func (o *Redis) GetServerName() *string {
-	if o == nil {
+func (r *Redis) GetServerName() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ServerName
+	return r.ServerName
 }
 
-func (o *Redis) GetSsl() *bool {
-	if o == nil {
+func (r *Redis) GetSsl() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.Ssl
+	return r.Ssl
 }
 
-func (o *Redis) GetSslVerify() *bool {
-	if o == nil {
+func (r *Redis) GetSslVerify() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.SslVerify
+	return r.SslVerify
 }
 
-func (o *Redis) GetUsername() *string {
-	if o == nil {
+func (r *Redis) GetUsername() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Username
+	return r.Username
 }
 
 // Strategy - The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local` and `cluster`.
@@ -669,143 +669,143 @@ func (a AiRateLimitingAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiRateLimitingAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"llm_providers"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiRateLimitingAdvancedPluginConfig) GetDictionaryName() *string {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginConfig) GetDictionaryName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.DictionaryName
+	return a.DictionaryName
 }
 
-func (o *AiRateLimitingAdvancedPluginConfig) GetDisablePenalty() *bool {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginConfig) GetDisablePenalty() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.DisablePenalty
+	return a.DisablePenalty
 }
 
-func (o *AiRateLimitingAdvancedPluginConfig) GetErrorCode() *float64 {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginConfig) GetErrorCode() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.ErrorCode
+	return a.ErrorCode
 }
 
-func (o *AiRateLimitingAdvancedPluginConfig) GetErrorHideProviders() *bool {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginConfig) GetErrorHideProviders() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.ErrorHideProviders
+	return a.ErrorHideProviders
 }
 
-func (o *AiRateLimitingAdvancedPluginConfig) GetErrorMessage() *string {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginConfig) GetErrorMessage() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ErrorMessage
+	return a.ErrorMessage
 }
 
-func (o *AiRateLimitingAdvancedPluginConfig) GetHeaderName() *string {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginConfig) GetHeaderName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.HeaderName
+	return a.HeaderName
 }
 
-func (o *AiRateLimitingAdvancedPluginConfig) GetHideClientHeaders() *bool {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginConfig) GetHideClientHeaders() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.HideClientHeaders
+	return a.HideClientHeaders
 }
 
-func (o *AiRateLimitingAdvancedPluginConfig) GetIdentifier() *Identifier {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginConfig) GetIdentifier() *Identifier {
+	if a == nil {
 		return nil
 	}
-	return o.Identifier
+	return a.Identifier
 }
 
-func (o *AiRateLimitingAdvancedPluginConfig) GetLlmFormat() *AiRateLimitingAdvancedPluginLlmFormat {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginConfig) GetLlmFormat() *AiRateLimitingAdvancedPluginLlmFormat {
+	if a == nil {
 		return nil
 	}
-	return o.LlmFormat
+	return a.LlmFormat
 }
 
-func (o *AiRateLimitingAdvancedPluginConfig) GetLlmProviders() []LlmProviders {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginConfig) GetLlmProviders() []LlmProviders {
+	if a == nil {
 		return []LlmProviders{}
 	}
-	return o.LlmProviders
+	return a.LlmProviders
 }
 
-func (o *AiRateLimitingAdvancedPluginConfig) GetNamespace() *string {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginConfig) GetNamespace() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Namespace
+	return a.Namespace
 }
 
-func (o *AiRateLimitingAdvancedPluginConfig) GetPath() *string {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginConfig) GetPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Path
+	return a.Path
 }
 
-func (o *AiRateLimitingAdvancedPluginConfig) GetRedis() *Redis {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginConfig) GetRedis() *Redis {
+	if a == nil {
 		return nil
 	}
-	return o.Redis
+	return a.Redis
 }
 
-func (o *AiRateLimitingAdvancedPluginConfig) GetRequestPromptCountFunction() *string {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginConfig) GetRequestPromptCountFunction() *string {
+	if a == nil {
 		return nil
 	}
-	return o.RequestPromptCountFunction
+	return a.RequestPromptCountFunction
 }
 
-func (o *AiRateLimitingAdvancedPluginConfig) GetRetryAfterJitterMax() *float64 {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginConfig) GetRetryAfterJitterMax() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.RetryAfterJitterMax
+	return a.RetryAfterJitterMax
 }
 
-func (o *AiRateLimitingAdvancedPluginConfig) GetStrategy() *Strategy {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginConfig) GetStrategy() *Strategy {
+	if a == nil {
 		return nil
 	}
-	return o.Strategy
+	return a.Strategy
 }
 
-func (o *AiRateLimitingAdvancedPluginConfig) GetSyncRate() *float64 {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginConfig) GetSyncRate() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.SyncRate
+	return a.SyncRate
 }
 
-func (o *AiRateLimitingAdvancedPluginConfig) GetTokensCountStrategy() *TokensCountStrategy {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginConfig) GetTokensCountStrategy() *TokensCountStrategy {
+	if a == nil {
 		return nil
 	}
-	return o.TokensCountStrategy
+	return a.TokensCountStrategy
 }
 
-func (o *AiRateLimitingAdvancedPluginConfig) GetWindowType() *WindowType {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginConfig) GetWindowType() *WindowType {
+	if a == nil {
 		return nil
 	}
-	return o.WindowType
+	return a.WindowType
 }
 
 // AiRateLimitingAdvancedPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -813,11 +813,11 @@ type AiRateLimitingAdvancedPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiRateLimitingAdvancedPluginConsumer) GetID() *string {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginConsumer) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiRateLimitingAdvancedPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -825,11 +825,11 @@ type AiRateLimitingAdvancedPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiRateLimitingAdvancedPluginConsumerGroup) GetID() *string {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginConsumerGroup) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 type AiRateLimitingAdvancedPluginProtocols string
@@ -869,11 +869,11 @@ type AiRateLimitingAdvancedPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiRateLimitingAdvancedPluginRoute) GetID() *string {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginRoute) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiRateLimitingAdvancedPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -881,11 +881,11 @@ type AiRateLimitingAdvancedPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiRateLimitingAdvancedPluginService) GetID() *string {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPluginService) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiRateLimitingAdvancedPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -924,110 +924,110 @@ func (a AiRateLimitingAdvancedPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiRateLimitingAdvancedPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiRateLimitingAdvancedPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPlugin) GetCreatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AiRateLimitingAdvancedPlugin) GetEnabled() *bool {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPlugin) GetEnabled() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Enabled
+	return a.Enabled
 }
 
-func (o *AiRateLimitingAdvancedPlugin) GetID() *string {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPlugin) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AiRateLimitingAdvancedPlugin) GetInstanceName() *string {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPlugin) GetInstanceName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.InstanceName
+	return a.InstanceName
 }
 
-func (o *AiRateLimitingAdvancedPlugin) GetName() string {
+func (a *AiRateLimitingAdvancedPlugin) GetName() string {
 	return "ai-rate-limiting-advanced"
 }
 
-func (o *AiRateLimitingAdvancedPlugin) GetOrdering() *AiRateLimitingAdvancedPluginOrdering {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPlugin) GetOrdering() *AiRateLimitingAdvancedPluginOrdering {
+	if a == nil {
 		return nil
 	}
-	return o.Ordering
+	return a.Ordering
 }
 
-func (o *AiRateLimitingAdvancedPlugin) GetPartials() []AiRateLimitingAdvancedPluginPartials {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPlugin) GetPartials() []AiRateLimitingAdvancedPluginPartials {
+	if a == nil {
 		return nil
 	}
-	return o.Partials
+	return a.Partials
 }
 
-func (o *AiRateLimitingAdvancedPlugin) GetTags() []string {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPlugin) GetTags() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Tags
+	return a.Tags
 }
 
-func (o *AiRateLimitingAdvancedPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPlugin) GetUpdatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }
 
-func (o *AiRateLimitingAdvancedPlugin) GetConfig() AiRateLimitingAdvancedPluginConfig {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPlugin) GetConfig() AiRateLimitingAdvancedPluginConfig {
+	if a == nil {
 		return AiRateLimitingAdvancedPluginConfig{}
 	}
-	return o.Config
+	return a.Config
 }
 
-func (o *AiRateLimitingAdvancedPlugin) GetConsumer() *AiRateLimitingAdvancedPluginConsumer {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPlugin) GetConsumer() *AiRateLimitingAdvancedPluginConsumer {
+	if a == nil {
 		return nil
 	}
-	return o.Consumer
+	return a.Consumer
 }
 
-func (o *AiRateLimitingAdvancedPlugin) GetConsumerGroup() *AiRateLimitingAdvancedPluginConsumerGroup {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPlugin) GetConsumerGroup() *AiRateLimitingAdvancedPluginConsumerGroup {
+	if a == nil {
 		return nil
 	}
-	return o.ConsumerGroup
+	return a.ConsumerGroup
 }
 
-func (o *AiRateLimitingAdvancedPlugin) GetProtocols() []AiRateLimitingAdvancedPluginProtocols {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPlugin) GetProtocols() []AiRateLimitingAdvancedPluginProtocols {
+	if a == nil {
 		return nil
 	}
-	return o.Protocols
+	return a.Protocols
 }
 
-func (o *AiRateLimitingAdvancedPlugin) GetRoute() *AiRateLimitingAdvancedPluginRoute {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPlugin) GetRoute() *AiRateLimitingAdvancedPluginRoute {
+	if a == nil {
 		return nil
 	}
-	return o.Route
+	return a.Route
 }
 
-func (o *AiRateLimitingAdvancedPlugin) GetService() *AiRateLimitingAdvancedPluginService {
-	if o == nil {
+func (a *AiRateLimitingAdvancedPlugin) GetService() *AiRateLimitingAdvancedPluginService {
+	if a == nil {
 		return nil
 	}
-	return o.Service
+	return a.Service
 }

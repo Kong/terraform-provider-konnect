@@ -72,7 +72,7 @@ func (s *CentrallyManagedKeys) CreateConsumerKey(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-consumer-key",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CreateAPIKeyPayload", "json", `request:"mediaType=application/json"`)
@@ -257,7 +257,7 @@ func (s *CentrallyManagedKeys) GetConsumerKey(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-consumer-key",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -416,7 +416,7 @@ func (s *CentrallyManagedKeys) DeleteConsumerKey(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-consumer-key",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

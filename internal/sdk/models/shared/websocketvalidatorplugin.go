@@ -12,22 +12,22 @@ type WebsocketValidatorPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *WebsocketValidatorPluginAfter) GetAccess() []string {
-	if o == nil {
+func (w *WebsocketValidatorPluginAfter) GetAccess() []string {
+	if w == nil {
 		return nil
 	}
-	return o.Access
+	return w.Access
 }
 
 type WebsocketValidatorPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *WebsocketValidatorPluginBefore) GetAccess() []string {
-	if o == nil {
+func (w *WebsocketValidatorPluginBefore) GetAccess() []string {
+	if w == nil {
 		return nil
 	}
-	return o.Access
+	return w.Access
 }
 
 type WebsocketValidatorPluginOrdering struct {
@@ -35,18 +35,18 @@ type WebsocketValidatorPluginOrdering struct {
 	Before *WebsocketValidatorPluginBefore `json:"before,omitempty"`
 }
 
-func (o *WebsocketValidatorPluginOrdering) GetAfter() *WebsocketValidatorPluginAfter {
-	if o == nil {
+func (w *WebsocketValidatorPluginOrdering) GetAfter() *WebsocketValidatorPluginAfter {
+	if w == nil {
 		return nil
 	}
-	return o.After
+	return w.After
 }
 
-func (o *WebsocketValidatorPluginOrdering) GetBefore() *WebsocketValidatorPluginBefore {
-	if o == nil {
+func (w *WebsocketValidatorPluginOrdering) GetBefore() *WebsocketValidatorPluginBefore {
+	if w == nil {
 		return nil
 	}
-	return o.Before
+	return w.Before
 }
 
 type WebsocketValidatorPluginPartials struct {
@@ -57,25 +57,25 @@ type WebsocketValidatorPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *WebsocketValidatorPluginPartials) GetID() *string {
-	if o == nil {
+func (w *WebsocketValidatorPluginPartials) GetID() *string {
+	if w == nil {
 		return nil
 	}
-	return o.ID
+	return w.ID
 }
 
-func (o *WebsocketValidatorPluginPartials) GetName() *string {
-	if o == nil {
+func (w *WebsocketValidatorPluginPartials) GetName() *string {
+	if w == nil {
 		return nil
 	}
-	return o.Name
+	return w.Name
 }
 
-func (o *WebsocketValidatorPluginPartials) GetPath() *string {
-	if o == nil {
+func (w *WebsocketValidatorPluginPartials) GetPath() *string {
+	if w == nil {
 		return nil
 	}
-	return o.Path
+	return w.Path
 }
 
 // WebsocketValidatorPluginType - The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
@@ -109,18 +109,18 @@ type Binary struct {
 	Type WebsocketValidatorPluginType `json:"type"`
 }
 
-func (o *Binary) GetSchema() string {
-	if o == nil {
+func (b *Binary) GetSchema() string {
+	if b == nil {
 		return ""
 	}
-	return o.Schema
+	return b.Schema
 }
 
-func (o *Binary) GetType() WebsocketValidatorPluginType {
-	if o == nil {
+func (b *Binary) GetType() WebsocketValidatorPluginType {
+	if b == nil {
 		return WebsocketValidatorPluginType("")
 	}
-	return o.Type
+	return b.Type
 }
 
 // WebsocketValidatorPluginConfigType - The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
@@ -154,18 +154,18 @@ type WebsocketValidatorPluginConfigText struct {
 	Type WebsocketValidatorPluginConfigType `json:"type"`
 }
 
-func (o *WebsocketValidatorPluginConfigText) GetSchema() string {
-	if o == nil {
+func (w *WebsocketValidatorPluginConfigText) GetSchema() string {
+	if w == nil {
 		return ""
 	}
-	return o.Schema
+	return w.Schema
 }
 
-func (o *WebsocketValidatorPluginConfigText) GetType() WebsocketValidatorPluginConfigType {
-	if o == nil {
+func (w *WebsocketValidatorPluginConfigText) GetType() WebsocketValidatorPluginConfigType {
+	if w == nil {
 		return WebsocketValidatorPluginConfigType("")
 	}
-	return o.Type
+	return w.Type
 }
 
 type WebsocketValidatorPluginClient struct {
@@ -173,18 +173,18 @@ type WebsocketValidatorPluginClient struct {
 	Text   *WebsocketValidatorPluginConfigText `json:"text"`
 }
 
-func (o *WebsocketValidatorPluginClient) GetBinary() *Binary {
-	if o == nil {
+func (w *WebsocketValidatorPluginClient) GetBinary() *Binary {
+	if w == nil {
 		return nil
 	}
-	return o.Binary
+	return w.Binary
 }
 
-func (o *WebsocketValidatorPluginClient) GetText() *WebsocketValidatorPluginConfigText {
-	if o == nil {
+func (w *WebsocketValidatorPluginClient) GetText() *WebsocketValidatorPluginConfigText {
+	if w == nil {
 		return nil
 	}
-	return o.Text
+	return w.Text
 }
 
 // WebsocketValidatorPluginConfigUpstreamType - The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
@@ -218,18 +218,18 @@ type WebsocketValidatorPluginBinary struct {
 	Type WebsocketValidatorPluginConfigUpstreamType `json:"type"`
 }
 
-func (o *WebsocketValidatorPluginBinary) GetSchema() string {
-	if o == nil {
+func (w *WebsocketValidatorPluginBinary) GetSchema() string {
+	if w == nil {
 		return ""
 	}
-	return o.Schema
+	return w.Schema
 }
 
-func (o *WebsocketValidatorPluginBinary) GetType() WebsocketValidatorPluginConfigUpstreamType {
-	if o == nil {
+func (w *WebsocketValidatorPluginBinary) GetType() WebsocketValidatorPluginConfigUpstreamType {
+	if w == nil {
 		return WebsocketValidatorPluginConfigUpstreamType("")
 	}
-	return o.Type
+	return w.Type
 }
 
 // WebsocketValidatorPluginConfigUpstreamTextType - The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
@@ -263,18 +263,18 @@ type WebsocketValidatorPluginText struct {
 	Type WebsocketValidatorPluginConfigUpstreamTextType `json:"type"`
 }
 
-func (o *WebsocketValidatorPluginText) GetSchema() string {
-	if o == nil {
+func (w *WebsocketValidatorPluginText) GetSchema() string {
+	if w == nil {
 		return ""
 	}
-	return o.Schema
+	return w.Schema
 }
 
-func (o *WebsocketValidatorPluginText) GetType() WebsocketValidatorPluginConfigUpstreamTextType {
-	if o == nil {
+func (w *WebsocketValidatorPluginText) GetType() WebsocketValidatorPluginConfigUpstreamTextType {
+	if w == nil {
 		return WebsocketValidatorPluginConfigUpstreamTextType("")
 	}
-	return o.Type
+	return w.Type
 }
 
 type WebsocketValidatorPluginUpstream struct {
@@ -282,18 +282,18 @@ type WebsocketValidatorPluginUpstream struct {
 	Text   *WebsocketValidatorPluginText   `json:"text"`
 }
 
-func (o *WebsocketValidatorPluginUpstream) GetBinary() *WebsocketValidatorPluginBinary {
-	if o == nil {
+func (w *WebsocketValidatorPluginUpstream) GetBinary() *WebsocketValidatorPluginBinary {
+	if w == nil {
 		return nil
 	}
-	return o.Binary
+	return w.Binary
 }
 
-func (o *WebsocketValidatorPluginUpstream) GetText() *WebsocketValidatorPluginText {
-	if o == nil {
+func (w *WebsocketValidatorPluginUpstream) GetText() *WebsocketValidatorPluginText {
+	if w == nil {
 		return nil
 	}
-	return o.Text
+	return w.Text
 }
 
 type WebsocketValidatorPluginConfig struct {
@@ -301,18 +301,18 @@ type WebsocketValidatorPluginConfig struct {
 	Upstream *WebsocketValidatorPluginUpstream `json:"upstream"`
 }
 
-func (o *WebsocketValidatorPluginConfig) GetClient() *WebsocketValidatorPluginClient {
-	if o == nil {
+func (w *WebsocketValidatorPluginConfig) GetClient() *WebsocketValidatorPluginClient {
+	if w == nil {
 		return nil
 	}
-	return o.Client
+	return w.Client
 }
 
-func (o *WebsocketValidatorPluginConfig) GetUpstream() *WebsocketValidatorPluginUpstream {
-	if o == nil {
+func (w *WebsocketValidatorPluginConfig) GetUpstream() *WebsocketValidatorPluginUpstream {
+	if w == nil {
 		return nil
 	}
-	return o.Upstream
+	return w.Upstream
 }
 
 // WebsocketValidatorPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -320,11 +320,11 @@ type WebsocketValidatorPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *WebsocketValidatorPluginConsumer) GetID() *string {
-	if o == nil {
+func (w *WebsocketValidatorPluginConsumer) GetID() *string {
+	if w == nil {
 		return nil
 	}
-	return o.ID
+	return w.ID
 }
 
 type WebsocketValidatorPluginProtocols string
@@ -358,11 +358,11 @@ type WebsocketValidatorPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *WebsocketValidatorPluginRoute) GetID() *string {
-	if o == nil {
+func (w *WebsocketValidatorPluginRoute) GetID() *string {
+	if w == nil {
 		return nil
 	}
-	return o.ID
+	return w.ID
 }
 
 // WebsocketValidatorPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -370,11 +370,11 @@ type WebsocketValidatorPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *WebsocketValidatorPluginService) GetID() *string {
-	if o == nil {
+func (w *WebsocketValidatorPluginService) GetID() *string {
+	if w == nil {
 		return nil
 	}
-	return o.ID
+	return w.ID
 }
 
 // WebsocketValidatorPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -411,103 +411,103 @@ func (w WebsocketValidatorPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (w *WebsocketValidatorPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &w, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &w, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *WebsocketValidatorPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (w *WebsocketValidatorPlugin) GetCreatedAt() *int64 {
+	if w == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return w.CreatedAt
 }
 
-func (o *WebsocketValidatorPlugin) GetEnabled() *bool {
-	if o == nil {
+func (w *WebsocketValidatorPlugin) GetEnabled() *bool {
+	if w == nil {
 		return nil
 	}
-	return o.Enabled
+	return w.Enabled
 }
 
-func (o *WebsocketValidatorPlugin) GetID() *string {
-	if o == nil {
+func (w *WebsocketValidatorPlugin) GetID() *string {
+	if w == nil {
 		return nil
 	}
-	return o.ID
+	return w.ID
 }
 
-func (o *WebsocketValidatorPlugin) GetInstanceName() *string {
-	if o == nil {
+func (w *WebsocketValidatorPlugin) GetInstanceName() *string {
+	if w == nil {
 		return nil
 	}
-	return o.InstanceName
+	return w.InstanceName
 }
 
-func (o *WebsocketValidatorPlugin) GetName() string {
+func (w *WebsocketValidatorPlugin) GetName() string {
 	return "websocket-validator"
 }
 
-func (o *WebsocketValidatorPlugin) GetOrdering() *WebsocketValidatorPluginOrdering {
-	if o == nil {
+func (w *WebsocketValidatorPlugin) GetOrdering() *WebsocketValidatorPluginOrdering {
+	if w == nil {
 		return nil
 	}
-	return o.Ordering
+	return w.Ordering
 }
 
-func (o *WebsocketValidatorPlugin) GetPartials() []WebsocketValidatorPluginPartials {
-	if o == nil {
+func (w *WebsocketValidatorPlugin) GetPartials() []WebsocketValidatorPluginPartials {
+	if w == nil {
 		return nil
 	}
-	return o.Partials
+	return w.Partials
 }
 
-func (o *WebsocketValidatorPlugin) GetTags() []string {
-	if o == nil {
+func (w *WebsocketValidatorPlugin) GetTags() []string {
+	if w == nil {
 		return nil
 	}
-	return o.Tags
+	return w.Tags
 }
 
-func (o *WebsocketValidatorPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (w *WebsocketValidatorPlugin) GetUpdatedAt() *int64 {
+	if w == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return w.UpdatedAt
 }
 
-func (o *WebsocketValidatorPlugin) GetConfig() *WebsocketValidatorPluginConfig {
-	if o == nil {
+func (w *WebsocketValidatorPlugin) GetConfig() *WebsocketValidatorPluginConfig {
+	if w == nil {
 		return nil
 	}
-	return o.Config
+	return w.Config
 }
 
-func (o *WebsocketValidatorPlugin) GetConsumer() *WebsocketValidatorPluginConsumer {
-	if o == nil {
+func (w *WebsocketValidatorPlugin) GetConsumer() *WebsocketValidatorPluginConsumer {
+	if w == nil {
 		return nil
 	}
-	return o.Consumer
+	return w.Consumer
 }
 
-func (o *WebsocketValidatorPlugin) GetProtocols() []WebsocketValidatorPluginProtocols {
-	if o == nil {
+func (w *WebsocketValidatorPlugin) GetProtocols() []WebsocketValidatorPluginProtocols {
+	if w == nil {
 		return nil
 	}
-	return o.Protocols
+	return w.Protocols
 }
 
-func (o *WebsocketValidatorPlugin) GetRoute() *WebsocketValidatorPluginRoute {
-	if o == nil {
+func (w *WebsocketValidatorPlugin) GetRoute() *WebsocketValidatorPluginRoute {
+	if w == nil {
 		return nil
 	}
-	return o.Route
+	return w.Route
 }
 
-func (o *WebsocketValidatorPlugin) GetService() *WebsocketValidatorPluginService {
-	if o == nil {
+func (w *WebsocketValidatorPlugin) GetService() *WebsocketValidatorPluginService {
+	if w == nil {
 		return nil
 	}
-	return o.Service
+	return w.Service
 }

@@ -13,18 +13,18 @@ type CreateAcmePluginRequest struct {
 	AcmePlugin     shared.AcmePlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateAcmePluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateAcmePluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateAcmePluginRequest) GetAcmePlugin() shared.AcmePlugin {
-	if o == nil {
+func (c *CreateAcmePluginRequest) GetAcmePlugin() shared.AcmePlugin {
+	if c == nil {
 		return shared.AcmePlugin{}
 	}
-	return o.AcmePlugin
+	return c.AcmePlugin
 }
 
 type CreateAcmePluginResponse struct {
@@ -40,37 +40,37 @@ type CreateAcmePluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateAcmePluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateAcmePluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateAcmePluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateAcmePluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateAcmePluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateAcmePluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateAcmePluginResponse) GetAcmePlugin() *shared.AcmePlugin {
-	if o == nil {
+func (c *CreateAcmePluginResponse) GetAcmePlugin() *shared.AcmePlugin {
+	if c == nil {
 		return nil
 	}
-	return o.AcmePlugin
+	return c.AcmePlugin
 }
 
-func (o *CreateAcmePluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateAcmePluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

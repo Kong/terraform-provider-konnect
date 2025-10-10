@@ -62,7 +62,7 @@ func (s *Consumers) CreateConsumer(ctx context.Context, request operations.Creat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-consumer",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Consumer", "json", `request:"mediaType=application/json"`)
@@ -220,7 +220,7 @@ func (s *Consumers) DeleteConsumer(ctx context.Context, request operations.Delet
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-consumer",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -351,7 +351,7 @@ func (s *Consumers) GetConsumer(ctx context.Context, request operations.GetConsu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-consumer",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -503,7 +503,7 @@ func (s *Consumers) UpsertConsumer(ctx context.Context, request operations.Upser
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "upsert-consumer",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Consumer", "json", `request:"mediaType=application/json"`)

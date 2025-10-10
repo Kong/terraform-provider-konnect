@@ -101,11 +101,11 @@ type JWTConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *JWTConsumer) GetID() *string {
-	if o == nil {
+func (j *JWTConsumer) GetID() *string {
+	if j == nil {
 		return nil
 	}
-	return o.ID
+	return j.ID
 }
 
 type Jwt struct {
@@ -127,64 +127,64 @@ func (j Jwt) MarshalJSON() ([]byte, error) {
 }
 
 func (j *Jwt) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &j, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Jwt) GetAlgorithm() *JWTAlgorithm {
-	if o == nil {
+func (j *Jwt) GetAlgorithm() *JWTAlgorithm {
+	if j == nil {
 		return nil
 	}
-	return o.Algorithm
+	return j.Algorithm
 }
 
-func (o *Jwt) GetConsumer() *JWTConsumer {
-	if o == nil {
+func (j *Jwt) GetConsumer() *JWTConsumer {
+	if j == nil {
 		return nil
 	}
-	return o.Consumer
+	return j.Consumer
 }
 
-func (o *Jwt) GetCreatedAt() *int64 {
-	if o == nil {
+func (j *Jwt) GetCreatedAt() *int64 {
+	if j == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return j.CreatedAt
 }
 
-func (o *Jwt) GetID() *string {
-	if o == nil {
+func (j *Jwt) GetID() *string {
+	if j == nil {
 		return nil
 	}
-	return o.ID
+	return j.ID
 }
 
-func (o *Jwt) GetKey() *string {
-	if o == nil {
+func (j *Jwt) GetKey() *string {
+	if j == nil {
 		return nil
 	}
-	return o.Key
+	return j.Key
 }
 
-func (o *Jwt) GetRsaPublicKey() *string {
-	if o == nil {
+func (j *Jwt) GetRsaPublicKey() *string {
+	if j == nil {
 		return nil
 	}
-	return o.RsaPublicKey
+	return j.RsaPublicKey
 }
 
-func (o *Jwt) GetSecret() *string {
-	if o == nil {
+func (j *Jwt) GetSecret() *string {
+	if j == nil {
 		return nil
 	}
-	return o.Secret
+	return j.Secret
 }
 
-func (o *Jwt) GetTags() []string {
-	if o == nil {
+func (j *Jwt) GetTags() []string {
+	if j == nil {
 		return nil
 	}
-	return o.Tags
+	return j.Tags
 }

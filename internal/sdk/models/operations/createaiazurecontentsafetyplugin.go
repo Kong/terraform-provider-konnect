@@ -13,18 +13,18 @@ type CreateAiazurecontentsafetyPluginRequest struct {
 	AiAzureContentSafetyPlugin shared.AiAzureContentSafetyPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateAiazurecontentsafetyPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateAiazurecontentsafetyPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateAiazurecontentsafetyPluginRequest) GetAiAzureContentSafetyPlugin() shared.AiAzureContentSafetyPlugin {
-	if o == nil {
+func (c *CreateAiazurecontentsafetyPluginRequest) GetAiAzureContentSafetyPlugin() shared.AiAzureContentSafetyPlugin {
+	if c == nil {
 		return shared.AiAzureContentSafetyPlugin{}
 	}
-	return o.AiAzureContentSafetyPlugin
+	return c.AiAzureContentSafetyPlugin
 }
 
 type CreateAiazurecontentsafetyPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateAiazurecontentsafetyPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateAiazurecontentsafetyPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateAiazurecontentsafetyPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateAiazurecontentsafetyPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateAiazurecontentsafetyPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateAiazurecontentsafetyPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateAiazurecontentsafetyPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateAiazurecontentsafetyPluginResponse) GetAiAzureContentSafetyPlugin() *shared.AiAzureContentSafetyPlugin {
-	if o == nil {
+func (c *CreateAiazurecontentsafetyPluginResponse) GetAiAzureContentSafetyPlugin() *shared.AiAzureContentSafetyPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.AiAzureContentSafetyPlugin
+	return c.AiAzureContentSafetyPlugin
 }
 
-func (o *CreateAiazurecontentsafetyPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateAiazurecontentsafetyPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

@@ -12,22 +12,22 @@ type TLSHandshakeModifierPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *TLSHandshakeModifierPluginAfter) GetAccess() []string {
-	if o == nil {
+func (t *TLSHandshakeModifierPluginAfter) GetAccess() []string {
+	if t == nil {
 		return nil
 	}
-	return o.Access
+	return t.Access
 }
 
 type TLSHandshakeModifierPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *TLSHandshakeModifierPluginBefore) GetAccess() []string {
-	if o == nil {
+func (t *TLSHandshakeModifierPluginBefore) GetAccess() []string {
+	if t == nil {
 		return nil
 	}
-	return o.Access
+	return t.Access
 }
 
 type TLSHandshakeModifierPluginOrdering struct {
@@ -35,18 +35,18 @@ type TLSHandshakeModifierPluginOrdering struct {
 	Before *TLSHandshakeModifierPluginBefore `json:"before,omitempty"`
 }
 
-func (o *TLSHandshakeModifierPluginOrdering) GetAfter() *TLSHandshakeModifierPluginAfter {
-	if o == nil {
+func (t *TLSHandshakeModifierPluginOrdering) GetAfter() *TLSHandshakeModifierPluginAfter {
+	if t == nil {
 		return nil
 	}
-	return o.After
+	return t.After
 }
 
-func (o *TLSHandshakeModifierPluginOrdering) GetBefore() *TLSHandshakeModifierPluginBefore {
-	if o == nil {
+func (t *TLSHandshakeModifierPluginOrdering) GetBefore() *TLSHandshakeModifierPluginBefore {
+	if t == nil {
 		return nil
 	}
-	return o.Before
+	return t.Before
 }
 
 type TLSHandshakeModifierPluginPartials struct {
@@ -57,25 +57,25 @@ type TLSHandshakeModifierPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *TLSHandshakeModifierPluginPartials) GetID() *string {
-	if o == nil {
+func (t *TLSHandshakeModifierPluginPartials) GetID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ID
+	return t.ID
 }
 
-func (o *TLSHandshakeModifierPluginPartials) GetName() *string {
-	if o == nil {
+func (t *TLSHandshakeModifierPluginPartials) GetName() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Name
+	return t.Name
 }
 
-func (o *TLSHandshakeModifierPluginPartials) GetPath() *string {
-	if o == nil {
+func (t *TLSHandshakeModifierPluginPartials) GetPath() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Path
+	return t.Path
 }
 
 // TLSClientCertificate - TLS Client Certificate
@@ -112,17 +112,17 @@ func (t TLSHandshakeModifierPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TLSHandshakeModifierPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *TLSHandshakeModifierPluginConfig) GetTLSClientCertificate() *TLSClientCertificate {
-	if o == nil {
+func (t *TLSHandshakeModifierPluginConfig) GetTLSClientCertificate() *TLSClientCertificate {
+	if t == nil {
 		return nil
 	}
-	return o.TLSClientCertificate
+	return t.TLSClientCertificate
 }
 
 type TLSHandshakeModifierPluginProtocols string
@@ -159,11 +159,11 @@ type TLSHandshakeModifierPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *TLSHandshakeModifierPluginRoute) GetID() *string {
-	if o == nil {
+func (t *TLSHandshakeModifierPluginRoute) GetID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ID
+	return t.ID
 }
 
 // TLSHandshakeModifierPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -171,11 +171,11 @@ type TLSHandshakeModifierPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *TLSHandshakeModifierPluginService) GetID() *string {
-	if o == nil {
+func (t *TLSHandshakeModifierPluginService) GetID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ID
+	return t.ID
 }
 
 // TLSHandshakeModifierPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -210,96 +210,96 @@ func (t TLSHandshakeModifierPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TLSHandshakeModifierPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *TLSHandshakeModifierPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (t *TLSHandshakeModifierPlugin) GetCreatedAt() *int64 {
+	if t == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return t.CreatedAt
 }
 
-func (o *TLSHandshakeModifierPlugin) GetEnabled() *bool {
-	if o == nil {
+func (t *TLSHandshakeModifierPlugin) GetEnabled() *bool {
+	if t == nil {
 		return nil
 	}
-	return o.Enabled
+	return t.Enabled
 }
 
-func (o *TLSHandshakeModifierPlugin) GetID() *string {
-	if o == nil {
+func (t *TLSHandshakeModifierPlugin) GetID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ID
+	return t.ID
 }
 
-func (o *TLSHandshakeModifierPlugin) GetInstanceName() *string {
-	if o == nil {
+func (t *TLSHandshakeModifierPlugin) GetInstanceName() *string {
+	if t == nil {
 		return nil
 	}
-	return o.InstanceName
+	return t.InstanceName
 }
 
-func (o *TLSHandshakeModifierPlugin) GetName() string {
+func (t *TLSHandshakeModifierPlugin) GetName() string {
 	return "tls-handshake-modifier"
 }
 
-func (o *TLSHandshakeModifierPlugin) GetOrdering() *TLSHandshakeModifierPluginOrdering {
-	if o == nil {
+func (t *TLSHandshakeModifierPlugin) GetOrdering() *TLSHandshakeModifierPluginOrdering {
+	if t == nil {
 		return nil
 	}
-	return o.Ordering
+	return t.Ordering
 }
 
-func (o *TLSHandshakeModifierPlugin) GetPartials() []TLSHandshakeModifierPluginPartials {
-	if o == nil {
+func (t *TLSHandshakeModifierPlugin) GetPartials() []TLSHandshakeModifierPluginPartials {
+	if t == nil {
 		return nil
 	}
-	return o.Partials
+	return t.Partials
 }
 
-func (o *TLSHandshakeModifierPlugin) GetTags() []string {
-	if o == nil {
+func (t *TLSHandshakeModifierPlugin) GetTags() []string {
+	if t == nil {
 		return nil
 	}
-	return o.Tags
+	return t.Tags
 }
 
-func (o *TLSHandshakeModifierPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (t *TLSHandshakeModifierPlugin) GetUpdatedAt() *int64 {
+	if t == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return t.UpdatedAt
 }
 
-func (o *TLSHandshakeModifierPlugin) GetConfig() *TLSHandshakeModifierPluginConfig {
-	if o == nil {
+func (t *TLSHandshakeModifierPlugin) GetConfig() *TLSHandshakeModifierPluginConfig {
+	if t == nil {
 		return nil
 	}
-	return o.Config
+	return t.Config
 }
 
-func (o *TLSHandshakeModifierPlugin) GetProtocols() []TLSHandshakeModifierPluginProtocols {
-	if o == nil {
+func (t *TLSHandshakeModifierPlugin) GetProtocols() []TLSHandshakeModifierPluginProtocols {
+	if t == nil {
 		return nil
 	}
-	return o.Protocols
+	return t.Protocols
 }
 
-func (o *TLSHandshakeModifierPlugin) GetRoute() *TLSHandshakeModifierPluginRoute {
-	if o == nil {
+func (t *TLSHandshakeModifierPlugin) GetRoute() *TLSHandshakeModifierPluginRoute {
+	if t == nil {
 		return nil
 	}
-	return o.Route
+	return t.Route
 }
 
-func (o *TLSHandshakeModifierPlugin) GetService() *TLSHandshakeModifierPluginService {
-	if o == nil {
+func (t *TLSHandshakeModifierPlugin) GetService() *TLSHandshakeModifierPluginService {
+	if t == nil {
 		return nil
 	}
-	return o.Service
+	return t.Service
 }

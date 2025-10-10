@@ -23,43 +23,43 @@ func (s ServerlessCloudGateway) MarshalJSON() ([]byte, error) {
 }
 
 func (s *ServerlessCloudGateway) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"control_plane", "gateway_endpoint", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ServerlessCloudGateway) GetControlPlane() ServerlessControlPlane {
-	if o == nil {
+func (s *ServerlessCloudGateway) GetControlPlane() ServerlessControlPlane {
+	if s == nil {
 		return ServerlessControlPlane{}
 	}
-	return o.ControlPlane
+	return s.ControlPlane
 }
 
-func (o *ServerlessCloudGateway) GetGatewayEndpoint() string {
-	if o == nil {
+func (s *ServerlessCloudGateway) GetGatewayEndpoint() string {
+	if s == nil {
 		return ""
 	}
-	return o.GatewayEndpoint
+	return s.GatewayEndpoint
 }
 
-func (o *ServerlessCloudGateway) GetCreatedAt() time.Time {
-	if o == nil {
+func (s *ServerlessCloudGateway) GetCreatedAt() time.Time {
+	if s == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return s.CreatedAt
 }
 
-func (o *ServerlessCloudGateway) GetUpdatedAt() time.Time {
-	if o == nil {
+func (s *ServerlessCloudGateway) GetUpdatedAt() time.Time {
+	if s == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return s.UpdatedAt
 }
 
-func (o *ServerlessCloudGateway) GetLabels() map[string]string {
-	if o == nil {
+func (s *ServerlessCloudGateway) GetLabels() map[string]string {
+	if s == nil {
 		return nil
 	}
-	return o.Labels
+	return s.Labels
 }

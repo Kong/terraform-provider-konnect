@@ -12,11 +12,11 @@ type DeletePortalCustomDomainRequest struct {
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 }
 
-func (o *DeletePortalCustomDomainRequest) GetPortalID() string {
-	if o == nil {
+func (d *DeletePortalCustomDomainRequest) GetPortalID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PortalID
+	return d.PortalID
 }
 
 type DeletePortalCustomDomainResponse struct {
@@ -30,30 +30,30 @@ type DeletePortalCustomDomainResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *DeletePortalCustomDomainResponse) GetContentType() string {
-	if o == nil {
+func (d *DeletePortalCustomDomainResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeletePortalCustomDomainResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeletePortalCustomDomainResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeletePortalCustomDomainResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeletePortalCustomDomainResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeletePortalCustomDomainResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (d *DeletePortalCustomDomainResponse) GetNotFoundError() *shared.NotFoundError {
+	if d == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return d.NotFoundError
 }

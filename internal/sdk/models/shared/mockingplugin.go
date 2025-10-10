@@ -12,22 +12,22 @@ type MockingPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *MockingPluginAfter) GetAccess() []string {
-	if o == nil {
+func (m *MockingPluginAfter) GetAccess() []string {
+	if m == nil {
 		return nil
 	}
-	return o.Access
+	return m.Access
 }
 
 type MockingPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *MockingPluginBefore) GetAccess() []string {
-	if o == nil {
+func (m *MockingPluginBefore) GetAccess() []string {
+	if m == nil {
 		return nil
 	}
-	return o.Access
+	return m.Access
 }
 
 type MockingPluginOrdering struct {
@@ -35,18 +35,18 @@ type MockingPluginOrdering struct {
 	Before *MockingPluginBefore `json:"before,omitempty"`
 }
 
-func (o *MockingPluginOrdering) GetAfter() *MockingPluginAfter {
-	if o == nil {
+func (m *MockingPluginOrdering) GetAfter() *MockingPluginAfter {
+	if m == nil {
 		return nil
 	}
-	return o.After
+	return m.After
 }
 
-func (o *MockingPluginOrdering) GetBefore() *MockingPluginBefore {
-	if o == nil {
+func (m *MockingPluginOrdering) GetBefore() *MockingPluginBefore {
+	if m == nil {
 		return nil
 	}
-	return o.Before
+	return m.Before
 }
 
 type MockingPluginPartials struct {
@@ -57,25 +57,25 @@ type MockingPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *MockingPluginPartials) GetID() *string {
-	if o == nil {
+func (m *MockingPluginPartials) GetID() *string {
+	if m == nil {
 		return nil
 	}
-	return o.ID
+	return m.ID
 }
 
-func (o *MockingPluginPartials) GetName() *string {
-	if o == nil {
+func (m *MockingPluginPartials) GetName() *string {
+	if m == nil {
 		return nil
 	}
-	return o.Name
+	return m.Name
 }
 
-func (o *MockingPluginPartials) GetPath() *string {
-	if o == nil {
+func (m *MockingPluginPartials) GetPath() *string {
+	if m == nil {
 		return nil
 	}
-	return o.Path
+	return m.Path
 }
 
 type MockingPluginConfig struct {
@@ -106,80 +106,80 @@ func (m MockingPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MockingPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *MockingPluginConfig) GetAPISpecification() *string {
-	if o == nil {
+func (m *MockingPluginConfig) GetAPISpecification() *string {
+	if m == nil {
 		return nil
 	}
-	return o.APISpecification
+	return m.APISpecification
 }
 
-func (o *MockingPluginConfig) GetAPISpecificationFilename() *string {
-	if o == nil {
+func (m *MockingPluginConfig) GetAPISpecificationFilename() *string {
+	if m == nil {
 		return nil
 	}
-	return o.APISpecificationFilename
+	return m.APISpecificationFilename
 }
 
-func (o *MockingPluginConfig) GetCustomBasePath() *string {
-	if o == nil {
+func (m *MockingPluginConfig) GetCustomBasePath() *string {
+	if m == nil {
 		return nil
 	}
-	return o.CustomBasePath
+	return m.CustomBasePath
 }
 
-func (o *MockingPluginConfig) GetIncludeBasePath() *bool {
-	if o == nil {
+func (m *MockingPluginConfig) GetIncludeBasePath() *bool {
+	if m == nil {
 		return nil
 	}
-	return o.IncludeBasePath
+	return m.IncludeBasePath
 }
 
-func (o *MockingPluginConfig) GetIncludedStatusCodes() []int64 {
-	if o == nil {
+func (m *MockingPluginConfig) GetIncludedStatusCodes() []int64 {
+	if m == nil {
 		return nil
 	}
-	return o.IncludedStatusCodes
+	return m.IncludedStatusCodes
 }
 
-func (o *MockingPluginConfig) GetMaxDelayTime() *float64 {
-	if o == nil {
+func (m *MockingPluginConfig) GetMaxDelayTime() *float64 {
+	if m == nil {
 		return nil
 	}
-	return o.MaxDelayTime
+	return m.MaxDelayTime
 }
 
-func (o *MockingPluginConfig) GetMinDelayTime() *float64 {
-	if o == nil {
+func (m *MockingPluginConfig) GetMinDelayTime() *float64 {
+	if m == nil {
 		return nil
 	}
-	return o.MinDelayTime
+	return m.MinDelayTime
 }
 
-func (o *MockingPluginConfig) GetRandomDelay() *bool {
-	if o == nil {
+func (m *MockingPluginConfig) GetRandomDelay() *bool {
+	if m == nil {
 		return nil
 	}
-	return o.RandomDelay
+	return m.RandomDelay
 }
 
-func (o *MockingPluginConfig) GetRandomExamples() *bool {
-	if o == nil {
+func (m *MockingPluginConfig) GetRandomExamples() *bool {
+	if m == nil {
 		return nil
 	}
-	return o.RandomExamples
+	return m.RandomExamples
 }
 
-func (o *MockingPluginConfig) GetRandomStatusCode() *bool {
-	if o == nil {
+func (m *MockingPluginConfig) GetRandomStatusCode() *bool {
+	if m == nil {
 		return nil
 	}
-	return o.RandomStatusCode
+	return m.RandomStatusCode
 }
 
 // MockingPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -187,11 +187,11 @@ type MockingPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *MockingPluginConsumer) GetID() *string {
-	if o == nil {
+func (m *MockingPluginConsumer) GetID() *string {
+	if m == nil {
 		return nil
 	}
-	return o.ID
+	return m.ID
 }
 
 type MockingPluginProtocols string
@@ -231,11 +231,11 @@ type MockingPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *MockingPluginRoute) GetID() *string {
-	if o == nil {
+func (m *MockingPluginRoute) GetID() *string {
+	if m == nil {
 		return nil
 	}
-	return o.ID
+	return m.ID
 }
 
 // MockingPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -243,11 +243,11 @@ type MockingPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *MockingPluginService) GetID() *string {
-	if o == nil {
+func (m *MockingPluginService) GetID() *string {
+	if m == nil {
 		return nil
 	}
-	return o.ID
+	return m.ID
 }
 
 // MockingPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -284,103 +284,103 @@ func (m MockingPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MockingPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *MockingPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (m *MockingPlugin) GetCreatedAt() *int64 {
+	if m == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return m.CreatedAt
 }
 
-func (o *MockingPlugin) GetEnabled() *bool {
-	if o == nil {
+func (m *MockingPlugin) GetEnabled() *bool {
+	if m == nil {
 		return nil
 	}
-	return o.Enabled
+	return m.Enabled
 }
 
-func (o *MockingPlugin) GetID() *string {
-	if o == nil {
+func (m *MockingPlugin) GetID() *string {
+	if m == nil {
 		return nil
 	}
-	return o.ID
+	return m.ID
 }
 
-func (o *MockingPlugin) GetInstanceName() *string {
-	if o == nil {
+func (m *MockingPlugin) GetInstanceName() *string {
+	if m == nil {
 		return nil
 	}
-	return o.InstanceName
+	return m.InstanceName
 }
 
-func (o *MockingPlugin) GetName() string {
+func (m *MockingPlugin) GetName() string {
 	return "mocking"
 }
 
-func (o *MockingPlugin) GetOrdering() *MockingPluginOrdering {
-	if o == nil {
+func (m *MockingPlugin) GetOrdering() *MockingPluginOrdering {
+	if m == nil {
 		return nil
 	}
-	return o.Ordering
+	return m.Ordering
 }
 
-func (o *MockingPlugin) GetPartials() []MockingPluginPartials {
-	if o == nil {
+func (m *MockingPlugin) GetPartials() []MockingPluginPartials {
+	if m == nil {
 		return nil
 	}
-	return o.Partials
+	return m.Partials
 }
 
-func (o *MockingPlugin) GetTags() []string {
-	if o == nil {
+func (m *MockingPlugin) GetTags() []string {
+	if m == nil {
 		return nil
 	}
-	return o.Tags
+	return m.Tags
 }
 
-func (o *MockingPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (m *MockingPlugin) GetUpdatedAt() *int64 {
+	if m == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return m.UpdatedAt
 }
 
-func (o *MockingPlugin) GetConfig() *MockingPluginConfig {
-	if o == nil {
+func (m *MockingPlugin) GetConfig() *MockingPluginConfig {
+	if m == nil {
 		return nil
 	}
-	return o.Config
+	return m.Config
 }
 
-func (o *MockingPlugin) GetConsumer() *MockingPluginConsumer {
-	if o == nil {
+func (m *MockingPlugin) GetConsumer() *MockingPluginConsumer {
+	if m == nil {
 		return nil
 	}
-	return o.Consumer
+	return m.Consumer
 }
 
-func (o *MockingPlugin) GetProtocols() []MockingPluginProtocols {
-	if o == nil {
+func (m *MockingPlugin) GetProtocols() []MockingPluginProtocols {
+	if m == nil {
 		return nil
 	}
-	return o.Protocols
+	return m.Protocols
 }
 
-func (o *MockingPlugin) GetRoute() *MockingPluginRoute {
-	if o == nil {
+func (m *MockingPlugin) GetRoute() *MockingPluginRoute {
+	if m == nil {
 		return nil
 	}
-	return o.Route
+	return m.Route
 }
 
-func (o *MockingPlugin) GetService() *MockingPluginService {
-	if o == nil {
+func (m *MockingPlugin) GetService() *MockingPluginService {
+	if m == nil {
 		return nil
 	}
-	return o.Service
+	return m.Service
 }

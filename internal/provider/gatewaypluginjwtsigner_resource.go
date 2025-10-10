@@ -19,6 +19,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -221,10 +222,14 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 				})),
 				Attributes: map[string]schema.Attribute{
 					"access_token_consumer_by": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Computed: true,
+						Optional: true,
+						Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+							types.StringValue("custom_id"),
+							types.StringValue("username"),
+						})),
 						ElementType: types.StringType,
-						Description: `When the plugin tries to apply an access token to a Kong consumer mapping, it tries to find a matching Kong consumer from properties defined using this configuration parameter. The parameter can take an array of alues. Valid values are ` + "`" + `id` + "`" + `, ` + "`" + `username` + "`" + `, and ` + "`" + `custom_id` + "`" + `.`,
+						Description: `When the plugin tries to apply an access token to a Kong consumer mapping, it tries to find a matching Kong consumer from properties defined using this configuration parameter. The parameter can take an array of alues. Valid values are ` + "`" + `id` + "`" + `, ` + "`" + `username` + "`" + `, and ` + "`" + `custom_id` + "`" + `. Default: ["custom_id","username"]`,
 					},
 					"access_token_consumer_claim": schema.ListAttribute{
 						Optional:    true,
@@ -240,10 +245,14 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 						Description: `This parameter allows you to pass URL encoded request body arguments. For example: ` + "`" + `resource=` + "`" + ` or ` + "`" + `a=1&b=&c` + "`" + `.`,
 					},
 					"access_token_introspection_consumer_by": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Computed: true,
+						Optional: true,
+						Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+							types.StringValue("custom_id"),
+							types.StringValue("username"),
+						})),
 						ElementType: types.StringType,
-						Description: `When the plugin tries to do access token introspection results to Kong consumer mapping, it tries to find a matching Kong consumer from properties defined using this configuration parameter. The parameter can take an array of values.`,
+						Description: `When the plugin tries to do access token introspection results to Kong consumer mapping, it tries to find a matching Kong consumer from properties defined using this configuration parameter. The parameter can take an array of values. Default: ["custom_id","username"]`,
 					},
 					"access_token_introspection_consumer_claim": schema.ListAttribute{
 						Optional:    true,
@@ -274,8 +283,9 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 					"access_token_introspection_scopes_claim": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
+						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("scope")})),
 						ElementType: types.StringType,
-						Description: `Specify the claim/property in access token introspection results (` + "`" + `JSON` + "`" + `) to be verified against values of ` + "`" + `config.access_token_introspection_scopes_required` + "`" + `. This supports nested claims. For example, with Keycloak you could use ` + "`" + `[ "realm_access", "roles" ]` + "`" + `, hich can be given as ` + "`" + `realm_access,roles` + "`" + ` (form post). If the claim is not found in access token introspection results, and you have specified ` + "`" + `config.access_token_introspection_scopes_required` + "`" + `, the plugin responds with ` + "`" + `403 Forbidden` + "`" + `.`,
+						Description: `Specify the claim/property in access token introspection results (` + "`" + `JSON` + "`" + `) to be verified against values of ` + "`" + `config.access_token_introspection_scopes_required` + "`" + `. This supports nested claims. For example, with Keycloak you could use ` + "`" + `[ "realm_access", "roles" ]` + "`" + `, hich can be given as ` + "`" + `realm_access,roles` + "`" + ` (form post). If the claim is not found in access token introspection results, and you have specified ` + "`" + `config.access_token_introspection_scopes_required` + "`" + `, the plugin responds with ` + "`" + `403 Forbidden` + "`" + `. Default: ["scope"]`,
 					},
 					"access_token_introspection_scopes_required": schema.ListAttribute{
 						Optional:    true,
@@ -359,8 +369,9 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 					"access_token_scopes_claim": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
+						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("scope")})),
 						ElementType: types.StringType,
-						Description: `Specify the claim in an access token to verify against values of ` + "`" + `config.access_token_scopes_required` + "`" + `.`,
+						Description: `Specify the claim in an access token to verify against values of ` + "`" + `config.access_token_scopes_required` + "`" + `. Default: ["scope"]`,
 					},
 					"access_token_scopes_required": schema.ListAttribute{
 						Optional:    true,
@@ -438,10 +449,14 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 						Description: `Whether to cache channel token introspection results. Default: true`,
 					},
 					"channel_token_consumer_by": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Computed: true,
+						Optional: true,
+						Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+							types.StringValue("custom_id"),
+							types.StringValue("username"),
+						})),
 						ElementType: types.StringType,
-						Description: `When the plugin tries to do channel token to Kong consumer mapping, it tries to find a matching Kong consumer from properties defined using this configuration parameter. The parameter can take an array of valid values: ` + "`" + `id` + "`" + `, ` + "`" + `username` + "`" + `, and ` + "`" + `custom_id` + "`" + `.`,
+						Description: `When the plugin tries to do channel token to Kong consumer mapping, it tries to find a matching Kong consumer from properties defined using this configuration parameter. The parameter can take an array of valid values: ` + "`" + `id` + "`" + `, ` + "`" + `username` + "`" + `, and ` + "`" + `custom_id` + "`" + `. Default: ["custom_id","username"]`,
 					},
 					"channel_token_consumer_claim": schema.ListAttribute{
 						Optional:    true,
@@ -457,10 +472,14 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 						Description: `If you need to pass additional body arguments to introspection endpoint when the plugin introspects the opaque channel token, you can use this config parameter to specify them. You should URL encode the value. For example: ` + "`" + `resource=` + "`" + ` or ` + "`" + `a=1&b=&c` + "`" + `.`,
 					},
 					"channel_token_introspection_consumer_by": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Computed: true,
+						Optional: true,
+						Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+							types.StringValue("custom_id"),
+							types.StringValue("username"),
+						})),
 						ElementType: types.StringType,
-						Description: `When the plugin tries to do channel token introspection results to Kong consumer mapping, it tries to find a matching Kong consumer from properties defined using this configuration parameter. The parameter can take an array of values. Valid values are ` + "`" + `id` + "`" + `, ` + "`" + `username` + "`" + ` and ` + "`" + `custom_id` + "`" + `.`,
+						Description: `When the plugin tries to do channel token introspection results to Kong consumer mapping, it tries to find a matching Kong consumer from properties defined using this configuration parameter. The parameter can take an array of values. Valid values are ` + "`" + `id` + "`" + `, ` + "`" + `username` + "`" + ` and ` + "`" + `custom_id` + "`" + `. Default: ["custom_id","username"]`,
 					},
 					"channel_token_introspection_consumer_claim": schema.ListAttribute{
 						Optional:    true,
@@ -489,8 +508,9 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 					"channel_token_introspection_scopes_claim": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
+						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("scope")})),
 						ElementType: types.StringType,
-						Description: `Use this parameter to specify the claim/property in channel token introspection results (` + "`" + `JSON` + "`" + `) to be verified against values of ` + "`" + `config.channel_token_introspection_scopes_required` + "`" + `. This supports nested claims.`,
+						Description: `Use this parameter to specify the claim/property in channel token introspection results (` + "`" + `JSON` + "`" + `) to be verified against values of ` + "`" + `config.channel_token_introspection_scopes_required` + "`" + `. This supports nested claims. Default: ["scope"]`,
 					},
 					"channel_token_introspection_scopes_required": schema.ListAttribute{
 						Optional:    true,
@@ -572,8 +592,9 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 					"channel_token_scopes_claim": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
+						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("scope")})),
 						ElementType: types.StringType,
-						Description: `Specify the claim in a channel token to verify against values of ` + "`" + `config.channel_token_scopes_required` + "`" + `. This supports nested claims.`,
+						Description: `Specify the claim in a channel token to verify against values of ` + "`" + `config.channel_token_scopes_required` + "`" + `. This supports nested claims. Default: ["scope"]`,
 					},
 					"channel_token_scopes_required": schema.ListAttribute{
 						Optional:    true,
@@ -653,14 +674,14 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 						Optional:    true,
 						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 						ElementType: types.StringType,
-						Description: `remove claims. It should be an array, and each element is a claim key string.`,
+						Description: `remove claims. It should be an array, and each element is a claim key string. Default: []`,
 					},
 					"remove_channel_token_claims": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 						ElementType: types.StringType,
-						Description: `remove claims. It should be an array, and each element is a claim key string.`,
+						Description: `remove claims. It should be an array, and each element is a claim key string. Default: []`,
 					},
 					"set_access_token_claims": schema.MapAttribute{
 						Optional:    true,
@@ -863,10 +884,16 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 				Description: `A list of partials to be used by the plugin.`,
 			},
 			"protocols": schema.SetAttribute{
-				Computed:    true,
-				Optional:    true,
+				Computed: true,
+				Optional: true,
+				Default: setdefault.StaticValue(types.SetValueMust(types.StringType, []attr.Value{
+					types.StringValue("grpc"),
+					types.StringValue("grpcs"),
+					types.StringValue("http"),
+					types.StringValue("https"),
+				})),
 				ElementType: types.StringType,
-				Description: `A set of strings representing HTTP protocols.`,
+				Description: `A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,

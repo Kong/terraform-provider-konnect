@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type AWSVpcPeeringGateway struct {
 	// Human-readable name of the transit gateway.
 	Name string `json:"name"`
@@ -16,30 +20,41 @@ type AWSVpcPeeringGateway struct {
 	TransitGatewayAttachmentConfig AwsVpcPeeringGatewayAttachmentConfig `json:"transit_gateway_attachment_config"`
 }
 
-func (o *AWSVpcPeeringGateway) GetName() string {
-	if o == nil {
+func (a AWSVpcPeeringGateway) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AWSVpcPeeringGateway) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "cidr_blocks", "transit_gateway_attachment_config"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AWSVpcPeeringGateway) GetName() string {
+	if a == nil {
 		return ""
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AWSVpcPeeringGateway) GetDNSConfig() []TransitGatewayDNSConfig {
-	if o == nil {
+func (a *AWSVpcPeeringGateway) GetDNSConfig() []TransitGatewayDNSConfig {
+	if a == nil {
 		return nil
 	}
-	return o.DNSConfig
+	return a.DNSConfig
 }
 
-func (o *AWSVpcPeeringGateway) GetCidrBlocks() []string {
-	if o == nil {
+func (a *AWSVpcPeeringGateway) GetCidrBlocks() []string {
+	if a == nil {
 		return []string{}
 	}
-	return o.CidrBlocks
+	return a.CidrBlocks
 }
 
-func (o *AWSVpcPeeringGateway) GetTransitGatewayAttachmentConfig() AwsVpcPeeringGatewayAttachmentConfig {
-	if o == nil {
+func (a *AWSVpcPeeringGateway) GetTransitGatewayAttachmentConfig() AwsVpcPeeringGatewayAttachmentConfig {
+	if a == nil {
 		return AwsVpcPeeringGatewayAttachmentConfig{}
 	}
-	return o.TransitGatewayAttachmentConfig
+	return a.TransitGatewayAttachmentConfig
 }

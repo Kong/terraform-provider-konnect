@@ -34,57 +34,57 @@ func (t Team) MarshalJSON() ([]byte, error) {
 }
 
 func (t *Team) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Team) GetID() *string {
-	if o == nil {
+func (t *Team) GetID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ID
+	return t.ID
 }
 
-func (o *Team) GetName() *string {
-	if o == nil {
+func (t *Team) GetName() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Name
+	return t.Name
 }
 
-func (o *Team) GetDescription() *string {
-	if o == nil {
+func (t *Team) GetDescription() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Description
+	return t.Description
 }
 
-func (o *Team) GetSystemTeam() *bool {
-	if o == nil {
+func (t *Team) GetSystemTeam() *bool {
+	if t == nil {
 		return nil
 	}
-	return o.SystemTeam
+	return t.SystemTeam
 }
 
-func (o *Team) GetLabels() map[string]*string {
-	if o == nil {
+func (t *Team) GetLabels() map[string]*string {
+	if t == nil {
 		return nil
 	}
-	return o.Labels
+	return t.Labels
 }
 
-func (o *Team) GetCreatedAt() *time.Time {
-	if o == nil {
+func (t *Team) GetCreatedAt() *time.Time {
+	if t == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return t.CreatedAt
 }
 
-func (o *Team) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (t *Team) GetUpdatedAt() *time.Time {
+	if t == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return t.UpdatedAt
 }

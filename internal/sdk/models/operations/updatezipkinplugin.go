@@ -15,25 +15,25 @@ type UpdateZipkinPluginRequest struct {
 	ZipkinPlugin   shared.ZipkinPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateZipkinPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateZipkinPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateZipkinPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateZipkinPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateZipkinPluginRequest) GetZipkinPlugin() shared.ZipkinPlugin {
-	if o == nil {
+func (u *UpdateZipkinPluginRequest) GetZipkinPlugin() shared.ZipkinPlugin {
+	if u == nil {
 		return shared.ZipkinPlugin{}
 	}
-	return o.ZipkinPlugin
+	return u.ZipkinPlugin
 }
 
 type UpdateZipkinPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateZipkinPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateZipkinPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateZipkinPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateZipkinPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateZipkinPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateZipkinPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateZipkinPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateZipkinPluginResponse) GetZipkinPlugin() *shared.ZipkinPlugin {
-	if o == nil {
+func (u *UpdateZipkinPluginResponse) GetZipkinPlugin() *shared.ZipkinPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.ZipkinPlugin
+	return u.ZipkinPlugin
 }
 
-func (o *UpdateZipkinPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateZipkinPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

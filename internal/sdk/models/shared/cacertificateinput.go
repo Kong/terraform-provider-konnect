@@ -16,37 +16,37 @@ type CACertificateInput struct {
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
 }
 
-func (o *CACertificateInput) GetCert() string {
-	if o == nil {
+func (c *CACertificateInput) GetCert() string {
+	if c == nil {
 		return ""
 	}
-	return o.Cert
+	return c.Cert
 }
 
-func (o *CACertificateInput) GetCreatedAt() *int64 {
-	if o == nil {
+func (c *CACertificateInput) GetCreatedAt() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return c.CreatedAt
 }
 
-func (o *CACertificateInput) GetID() *string {
-	if o == nil {
+func (c *CACertificateInput) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *CACertificateInput) GetTags() []string {
-	if o == nil {
+func (c *CACertificateInput) GetTags() []string {
+	if c == nil {
 		return nil
 	}
-	return o.Tags
+	return c.Tags
 }
 
-func (o *CACertificateInput) GetUpdatedAt() *int64 {
-	if o == nil {
+func (c *CACertificateInput) GetUpdatedAt() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return c.UpdatedAt
 }

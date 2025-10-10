@@ -14,18 +14,18 @@ type DeleteAPISpecRequest struct {
 	SpecID string `pathParam:"style=simple,explode=false,name=specId"`
 }
 
-func (o *DeleteAPISpecRequest) GetAPIID() string {
-	if o == nil {
+func (d *DeleteAPISpecRequest) GetAPIID() string {
+	if d == nil {
 		return ""
 	}
-	return o.APIID
+	return d.APIID
 }
 
-func (o *DeleteAPISpecRequest) GetSpecID() string {
-	if o == nil {
+func (d *DeleteAPISpecRequest) GetSpecID() string {
+	if d == nil {
 		return ""
 	}
-	return o.SpecID
+	return d.SpecID
 }
 
 type DeleteAPISpecResponse struct {
@@ -43,44 +43,44 @@ type DeleteAPISpecResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *DeleteAPISpecResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteAPISpecResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteAPISpecResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteAPISpecResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteAPISpecResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteAPISpecResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteAPISpecResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (d *DeleteAPISpecResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return d.UnauthorizedError
 }
 
-func (o *DeleteAPISpecResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (d *DeleteAPISpecResponse) GetForbiddenError() *shared.ForbiddenError {
+	if d == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return d.ForbiddenError
 }
 
-func (o *DeleteAPISpecResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (d *DeleteAPISpecResponse) GetNotFoundError() *shared.NotFoundError {
+	if d == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return d.NotFoundError
 }

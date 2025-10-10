@@ -14,18 +14,18 @@ type CreateConsumerGroupRequest struct {
 	ConsumerGroup shared.ConsumerGroup `request:"mediaType=application/json"`
 }
 
-func (o *CreateConsumerGroupRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateConsumerGroupRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateConsumerGroupRequest) GetConsumerGroup() shared.ConsumerGroup {
-	if o == nil {
+func (c *CreateConsumerGroupRequest) GetConsumerGroup() shared.ConsumerGroup {
+	if c == nil {
 		return shared.ConsumerGroup{}
 	}
-	return o.ConsumerGroup
+	return c.ConsumerGroup
 }
 
 type CreateConsumerGroupResponse struct {
@@ -41,37 +41,37 @@ type CreateConsumerGroupResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateConsumerGroupResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateConsumerGroupResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateConsumerGroupResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateConsumerGroupResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateConsumerGroupResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateConsumerGroupResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateConsumerGroupResponse) GetConsumerGroup() *shared.ConsumerGroup {
-	if o == nil {
+func (c *CreateConsumerGroupResponse) GetConsumerGroup() *shared.ConsumerGroup {
+	if c == nil {
 		return nil
 	}
-	return o.ConsumerGroup
+	return c.ConsumerGroup
 }
 
-func (o *CreateConsumerGroupResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateConsumerGroupResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

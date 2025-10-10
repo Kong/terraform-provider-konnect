@@ -11,37 +11,37 @@ type ForbiddenError struct {
 	Detail   any `json:"detail"`
 }
 
-func (o *ForbiddenError) GetStatus() any {
-	if o == nil {
+func (f *ForbiddenError) GetStatus() any {
+	if f == nil {
 		return nil
 	}
-	return o.Status
+	return f.Status
 }
 
-func (o *ForbiddenError) GetTitle() any {
-	if o == nil {
+func (f *ForbiddenError) GetTitle() any {
+	if f == nil {
 		return nil
 	}
-	return o.Title
+	return f.Title
 }
 
-func (o *ForbiddenError) GetType() any {
-	if o == nil {
+func (f *ForbiddenError) GetType() any {
+	if f == nil {
 		return nil
 	}
-	return o.Type
+	return f.Type
 }
 
-func (o *ForbiddenError) GetInstance() any {
-	if o == nil {
+func (f *ForbiddenError) GetInstance() any {
+	if f == nil {
 		return nil
 	}
-	return o.Instance
+	return f.Instance
 }
 
-func (o *ForbiddenError) GetDetail() any {
-	if o == nil {
+func (f *ForbiddenError) GetDetail() any {
+	if f == nil {
 		return nil
 	}
-	return o.Detail
+	return f.Detail
 }

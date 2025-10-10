@@ -13,18 +13,18 @@ type UpdateControlPlaneRequest struct {
 	UpdateControlPlaneRequest shared.UpdateControlPlaneRequest `request:"mediaType=application/json"`
 }
 
-func (o *UpdateControlPlaneRequest) GetID() string {
-	if o == nil {
+func (u *UpdateControlPlaneRequest) GetID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ID
+	return u.ID
 }
 
-func (o *UpdateControlPlaneRequest) GetUpdateControlPlaneRequest() shared.UpdateControlPlaneRequest {
-	if o == nil {
+func (u *UpdateControlPlaneRequest) GetUpdateControlPlaneRequest() shared.UpdateControlPlaneRequest {
+	if u == nil {
 		return shared.UpdateControlPlaneRequest{}
 	}
-	return o.UpdateControlPlaneRequest
+	return u.UpdateControlPlaneRequest
 }
 
 type UpdateControlPlaneResponse struct {
@@ -50,72 +50,72 @@ type UpdateControlPlaneResponse struct {
 	ServiceUnavailable *shared.ServiceUnavailable
 }
 
-func (o *UpdateControlPlaneResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateControlPlaneResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateControlPlaneResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateControlPlaneResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateControlPlaneResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateControlPlaneResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateControlPlaneResponse) GetControlPlane() *shared.ControlPlane {
-	if o == nil {
+func (u *UpdateControlPlaneResponse) GetControlPlane() *shared.ControlPlane {
+	if u == nil {
 		return nil
 	}
-	return o.ControlPlane
+	return u.ControlPlane
 }
 
-func (o *UpdateControlPlaneResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (u *UpdateControlPlaneResponse) GetBadRequestError() *shared.BadRequestError {
+	if u == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return u.BadRequestError
 }
 
-func (o *UpdateControlPlaneResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (u *UpdateControlPlaneResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return u.UnauthorizedError
 }
 
-func (o *UpdateControlPlaneResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (u *UpdateControlPlaneResponse) GetForbiddenError() *shared.ForbiddenError {
+	if u == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return u.ForbiddenError
 }
 
-func (o *UpdateControlPlaneResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (u *UpdateControlPlaneResponse) GetNotFoundError() *shared.NotFoundError {
+	if u == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return u.NotFoundError
 }
 
-func (o *UpdateControlPlaneResponse) GetInternalServerError() *shared.InternalServerError {
-	if o == nil {
+func (u *UpdateControlPlaneResponse) GetInternalServerError() *shared.InternalServerError {
+	if u == nil {
 		return nil
 	}
-	return o.InternalServerError
+	return u.InternalServerError
 }
 
-func (o *UpdateControlPlaneResponse) GetServiceUnavailable() *shared.ServiceUnavailable {
-	if o == nil {
+func (u *UpdateControlPlaneResponse) GetServiceUnavailable() *shared.ServiceUnavailable {
+	if u == nil {
 		return nil
 	}
-	return o.ServiceUnavailable
+	return u.ServiceUnavailable
 }

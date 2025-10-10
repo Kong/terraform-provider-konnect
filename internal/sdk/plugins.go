@@ -64,7 +64,7 @@ func (s *Plugins) CreatePlugin(ctx context.Context, request operations.CreatePlu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Plugin", "json", `request:"mediaType=application/json"`)
@@ -222,7 +222,7 @@ func (s *Plugins) DeletePlugin(ctx context.Context, request operations.DeletePlu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -353,7 +353,7 @@ func (s *Plugins) GetPlugin(ctx context.Context, request operations.GetPluginReq
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -505,7 +505,7 @@ func (s *Plugins) UpsertPlugin(ctx context.Context, request operations.UpsertPlu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "upsert-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Plugin", "json", `request:"mediaType=application/json"`)
@@ -663,7 +663,7 @@ func (s *Plugins) DeleteACLPlugin(ctx context.Context, request operations.Delete
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-acl-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -794,7 +794,7 @@ func (s *Plugins) GetACLPlugin(ctx context.Context, request operations.GetACLPlu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-acl-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -946,7 +946,7 @@ func (s *Plugins) UpdateACLPlugin(ctx context.Context, request operations.Update
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-acl-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ACLPlugin", "json", `request:"mediaType=application/json"`)
@@ -1104,7 +1104,7 @@ func (s *Plugins) DeleteAcmePlugin(ctx context.Context, request operations.Delet
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-acme-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -1235,7 +1235,7 @@ func (s *Plugins) GetAcmePlugin(ctx context.Context, request operations.GetAcmeP
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-acme-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -1387,7 +1387,7 @@ func (s *Plugins) UpdateAcmePlugin(ctx context.Context, request operations.Updat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-acme-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AcmePlugin", "json", `request:"mediaType=application/json"`)
@@ -1545,7 +1545,7 @@ func (s *Plugins) DeleteAiawsguardrailsPlugin(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-aiawsguardrails-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -1676,7 +1676,7 @@ func (s *Plugins) GetAiawsguardrailsPlugin(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-aiawsguardrails-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -1828,7 +1828,7 @@ func (s *Plugins) UpdateAiawsguardrailsPlugin(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-aiawsguardrails-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiAwsGuardrailsPlugin", "json", `request:"mediaType=application/json"`)
@@ -1986,7 +1986,7 @@ func (s *Plugins) DeleteAiazurecontentsafetyPlugin(ctx context.Context, request 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-aiazurecontentsafety-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -2117,7 +2117,7 @@ func (s *Plugins) GetAiazurecontentsafetyPlugin(ctx context.Context, request ope
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-aiazurecontentsafety-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -2269,7 +2269,7 @@ func (s *Plugins) UpdateAiazurecontentsafetyPlugin(ctx context.Context, request 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-aiazurecontentsafety-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiAzureContentSafetyPlugin", "json", `request:"mediaType=application/json"`)
@@ -2427,7 +2427,7 @@ func (s *Plugins) DeleteAipromptcompressorPlugin(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-aipromptcompressor-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -2558,7 +2558,7 @@ func (s *Plugins) GetAipromptcompressorPlugin(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-aipromptcompressor-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -2710,7 +2710,7 @@ func (s *Plugins) UpdateAipromptcompressorPlugin(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-aipromptcompressor-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiPromptCompressorPlugin", "json", `request:"mediaType=application/json"`)
@@ -2868,7 +2868,7 @@ func (s *Plugins) DeleteAipromptdecoratorPlugin(ctx context.Context, request ope
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-aipromptdecorator-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -2999,7 +2999,7 @@ func (s *Plugins) GetAipromptdecoratorPlugin(ctx context.Context, request operat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-aipromptdecorator-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -3151,7 +3151,7 @@ func (s *Plugins) UpdateAipromptdecoratorPlugin(ctx context.Context, request ope
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-aipromptdecorator-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiPromptDecoratorPlugin", "json", `request:"mediaType=application/json"`)
@@ -3309,7 +3309,7 @@ func (s *Plugins) DeleteAipromptguardPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-aipromptguard-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -3440,7 +3440,7 @@ func (s *Plugins) GetAipromptguardPlugin(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-aipromptguard-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -3592,7 +3592,7 @@ func (s *Plugins) UpdateAipromptguardPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-aipromptguard-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiPromptGuardPlugin", "json", `request:"mediaType=application/json"`)
@@ -3750,7 +3750,7 @@ func (s *Plugins) DeleteAiprompttemplatePlugin(ctx context.Context, request oper
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-aiprompttemplate-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -3881,7 +3881,7 @@ func (s *Plugins) GetAiprompttemplatePlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-aiprompttemplate-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -4033,7 +4033,7 @@ func (s *Plugins) UpdateAiprompttemplatePlugin(ctx context.Context, request oper
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-aiprompttemplate-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiPromptTemplatePlugin", "json", `request:"mediaType=application/json"`)
@@ -4191,7 +4191,7 @@ func (s *Plugins) DeleteAiproxyPlugin(ctx context.Context, request operations.De
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-aiproxy-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -4322,7 +4322,7 @@ func (s *Plugins) GetAiproxyPlugin(ctx context.Context, request operations.GetAi
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-aiproxy-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -4474,7 +4474,7 @@ func (s *Plugins) UpdateAiproxyPlugin(ctx context.Context, request operations.Up
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-aiproxy-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiProxyPlugin", "json", `request:"mediaType=application/json"`)
@@ -4632,7 +4632,7 @@ func (s *Plugins) DeleteAiproxyadvancedPlugin(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-aiproxyadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -4763,7 +4763,7 @@ func (s *Plugins) GetAiproxyadvancedPlugin(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-aiproxyadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -4915,7 +4915,7 @@ func (s *Plugins) UpdateAiproxyadvancedPlugin(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-aiproxyadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiProxyAdvancedPlugin", "json", `request:"mediaType=application/json"`)
@@ -5073,7 +5073,7 @@ func (s *Plugins) DeleteAiraginjectorPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-airaginjector-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -5204,7 +5204,7 @@ func (s *Plugins) GetAiraginjectorPlugin(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-airaginjector-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -5356,7 +5356,7 @@ func (s *Plugins) UpdateAiraginjectorPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-airaginjector-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiRagInjectorPlugin", "json", `request:"mediaType=application/json"`)
@@ -5514,7 +5514,7 @@ func (s *Plugins) DeleteAiratelimitingadvancedPlugin(ctx context.Context, reques
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-airatelimitingadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -5645,7 +5645,7 @@ func (s *Plugins) GetAiratelimitingadvancedPlugin(ctx context.Context, request o
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-airatelimitingadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -5797,7 +5797,7 @@ func (s *Plugins) UpdateAiratelimitingadvancedPlugin(ctx context.Context, reques
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-airatelimitingadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiRateLimitingAdvancedPlugin", "json", `request:"mediaType=application/json"`)
@@ -5955,7 +5955,7 @@ func (s *Plugins) DeleteAirequesttransformerPlugin(ctx context.Context, request 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-airequesttransformer-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -6086,7 +6086,7 @@ func (s *Plugins) GetAirequesttransformerPlugin(ctx context.Context, request ope
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-airequesttransformer-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -6238,7 +6238,7 @@ func (s *Plugins) UpdateAirequesttransformerPlugin(ctx context.Context, request 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-airequesttransformer-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiRequestTransformerPlugin", "json", `request:"mediaType=application/json"`)
@@ -6396,7 +6396,7 @@ func (s *Plugins) DeleteAiresponsetransformerPlugin(ctx context.Context, request
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-airesponsetransformer-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -6527,7 +6527,7 @@ func (s *Plugins) GetAiresponsetransformerPlugin(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-airesponsetransformer-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -6679,7 +6679,7 @@ func (s *Plugins) UpdateAiresponsetransformerPlugin(ctx context.Context, request
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-airesponsetransformer-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiResponseTransformerPlugin", "json", `request:"mediaType=application/json"`)
@@ -6837,7 +6837,7 @@ func (s *Plugins) DeleteAisanitizerPlugin(ctx context.Context, request operation
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-aisanitizer-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -6968,7 +6968,7 @@ func (s *Plugins) GetAisanitizerPlugin(ctx context.Context, request operations.G
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-aisanitizer-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -7120,7 +7120,7 @@ func (s *Plugins) UpdateAisanitizerPlugin(ctx context.Context, request operation
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-aisanitizer-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiSanitizerPlugin", "json", `request:"mediaType=application/json"`)
@@ -7278,7 +7278,7 @@ func (s *Plugins) DeleteAisemanticcachePlugin(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-aisemanticcache-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -7409,7 +7409,7 @@ func (s *Plugins) GetAisemanticcachePlugin(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-aisemanticcache-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -7561,7 +7561,7 @@ func (s *Plugins) UpdateAisemanticcachePlugin(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-aisemanticcache-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiSemanticCachePlugin", "json", `request:"mediaType=application/json"`)
@@ -7719,7 +7719,7 @@ func (s *Plugins) DeleteAisemanticpromptguardPlugin(ctx context.Context, request
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-aisemanticpromptguard-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -7850,7 +7850,7 @@ func (s *Plugins) GetAisemanticpromptguardPlugin(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-aisemanticpromptguard-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -8002,7 +8002,7 @@ func (s *Plugins) UpdateAisemanticpromptguardPlugin(ctx context.Context, request
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-aisemanticpromptguard-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiSemanticPromptGuardPlugin", "json", `request:"mediaType=application/json"`)
@@ -8160,7 +8160,7 @@ func (s *Plugins) DeleteAwslambdaPlugin(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-awslambda-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -8291,7 +8291,7 @@ func (s *Plugins) GetAwslambdaPlugin(ctx context.Context, request operations.Get
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-awslambda-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -8443,7 +8443,7 @@ func (s *Plugins) UpdateAwslambdaPlugin(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-awslambda-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AwsLambdaPlugin", "json", `request:"mediaType=application/json"`)
@@ -8601,7 +8601,7 @@ func (s *Plugins) DeleteAzurefunctionsPlugin(ctx context.Context, request operat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-azurefunctions-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -8732,7 +8732,7 @@ func (s *Plugins) GetAzurefunctionsPlugin(ctx context.Context, request operation
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-azurefunctions-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -8884,7 +8884,7 @@ func (s *Plugins) UpdateAzurefunctionsPlugin(ctx context.Context, request operat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-azurefunctions-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AzureFunctionsPlugin", "json", `request:"mediaType=application/json"`)
@@ -9042,7 +9042,7 @@ func (s *Plugins) DeleteBasicauthPlugin(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-basicauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -9173,7 +9173,7 @@ func (s *Plugins) GetBasicauthPlugin(ctx context.Context, request operations.Get
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-basicauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -9325,7 +9325,7 @@ func (s *Plugins) UpdateBasicauthPlugin(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-basicauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "BasicAuthPlugin", "json", `request:"mediaType=application/json"`)
@@ -9483,7 +9483,7 @@ func (s *Plugins) DeleteBotdetectionPlugin(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-botdetection-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -9614,7 +9614,7 @@ func (s *Plugins) GetBotdetectionPlugin(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-botdetection-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -9766,7 +9766,7 @@ func (s *Plugins) UpdateBotdetectionPlugin(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-botdetection-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "BotDetectionPlugin", "json", `request:"mediaType=application/json"`)
@@ -9924,7 +9924,7 @@ func (s *Plugins) DeleteCanaryPlugin(ctx context.Context, request operations.Del
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-canary-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -10055,7 +10055,7 @@ func (s *Plugins) GetCanaryPlugin(ctx context.Context, request operations.GetCan
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-canary-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -10207,7 +10207,7 @@ func (s *Plugins) UpdateCanaryPlugin(ctx context.Context, request operations.Upd
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-canary-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CanaryPlugin", "json", `request:"mediaType=application/json"`)
@@ -10365,7 +10365,7 @@ func (s *Plugins) DeleteConfluentPlugin(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-confluent-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -10496,7 +10496,7 @@ func (s *Plugins) GetConfluentPlugin(ctx context.Context, request operations.Get
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-confluent-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -10648,7 +10648,7 @@ func (s *Plugins) UpdateConfluentPlugin(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-confluent-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ConfluentPlugin", "json", `request:"mediaType=application/json"`)
@@ -10806,7 +10806,7 @@ func (s *Plugins) DeleteConfluentconsumePlugin(ctx context.Context, request oper
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-confluentconsume-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -10937,7 +10937,7 @@ func (s *Plugins) GetConfluentconsumePlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-confluentconsume-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -11089,7 +11089,7 @@ func (s *Plugins) UpdateConfluentconsumePlugin(ctx context.Context, request oper
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-confluentconsume-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ConfluentConsumePlugin", "json", `request:"mediaType=application/json"`)
@@ -11247,7 +11247,7 @@ func (s *Plugins) DeleteCorrelationidPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-correlationid-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -11378,7 +11378,7 @@ func (s *Plugins) GetCorrelationidPlugin(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-correlationid-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -11530,7 +11530,7 @@ func (s *Plugins) UpdateCorrelationidPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-correlationid-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CorrelationIDPlugin", "json", `request:"mediaType=application/json"`)
@@ -11688,7 +11688,7 @@ func (s *Plugins) DeleteCorsPlugin(ctx context.Context, request operations.Delet
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-cors-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -11819,7 +11819,7 @@ func (s *Plugins) GetCorsPlugin(ctx context.Context, request operations.GetCorsP
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-cors-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -11971,7 +11971,7 @@ func (s *Plugins) UpdateCorsPlugin(ctx context.Context, request operations.Updat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-cors-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CorsPlugin", "json", `request:"mediaType=application/json"`)
@@ -12129,7 +12129,7 @@ func (s *Plugins) DeleteDatadogPlugin(ctx context.Context, request operations.De
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-datadog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -12260,7 +12260,7 @@ func (s *Plugins) GetDatadogPlugin(ctx context.Context, request operations.GetDa
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-datadog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -12412,7 +12412,7 @@ func (s *Plugins) UpdateDatadogPlugin(ctx context.Context, request operations.Up
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-datadog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "DatadogPlugin", "json", `request:"mediaType=application/json"`)
@@ -12570,7 +12570,7 @@ func (s *Plugins) DeleteDatadogtracingPlugin(ctx context.Context, request operat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-datadogtracing-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -12701,7 +12701,7 @@ func (s *Plugins) GetDatadogtracingPlugin(ctx context.Context, request operation
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-datadogtracing-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -12853,7 +12853,7 @@ func (s *Plugins) UpdateDatadogtracingPlugin(ctx context.Context, request operat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-datadogtracing-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "DatadogTracingPlugin", "json", `request:"mediaType=application/json"`)
@@ -13011,7 +13011,7 @@ func (s *Plugins) DeleteDatakitPlugin(ctx context.Context, request operations.De
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-datakit-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -13142,7 +13142,7 @@ func (s *Plugins) GetDatakitPlugin(ctx context.Context, request operations.GetDa
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-datakit-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -13294,7 +13294,7 @@ func (s *Plugins) UpdateDatakitPlugin(ctx context.Context, request operations.Up
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-datakit-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "DatakitPlugin", "json", `request:"mediaType=application/json"`)
@@ -13452,7 +13452,7 @@ func (s *Plugins) DeleteDegraphqlPlugin(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-degraphql-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -13583,7 +13583,7 @@ func (s *Plugins) GetDegraphqlPlugin(ctx context.Context, request operations.Get
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-degraphql-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -13735,7 +13735,7 @@ func (s *Plugins) UpdateDegraphqlPlugin(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-degraphql-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "DegraphqlPlugin", "json", `request:"mediaType=application/json"`)
@@ -13893,7 +13893,7 @@ func (s *Plugins) DeleteExittransformerPlugin(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-exittransformer-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -14024,7 +14024,7 @@ func (s *Plugins) GetExittransformerPlugin(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-exittransformer-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -14176,7 +14176,7 @@ func (s *Plugins) UpdateExittransformerPlugin(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-exittransformer-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ExitTransformerPlugin", "json", `request:"mediaType=application/json"`)
@@ -14334,7 +14334,7 @@ func (s *Plugins) DeleteFilelogPlugin(ctx context.Context, request operations.De
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-filelog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -14465,7 +14465,7 @@ func (s *Plugins) GetFilelogPlugin(ctx context.Context, request operations.GetFi
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-filelog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -14617,7 +14617,7 @@ func (s *Plugins) UpdateFilelogPlugin(ctx context.Context, request operations.Up
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-filelog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "FileLogPlugin", "json", `request:"mediaType=application/json"`)
@@ -14775,7 +14775,7 @@ func (s *Plugins) DeleteForwardproxyPlugin(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-forwardproxy-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -14906,7 +14906,7 @@ func (s *Plugins) GetForwardproxyPlugin(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-forwardproxy-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -15058,7 +15058,7 @@ func (s *Plugins) UpdateForwardproxyPlugin(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-forwardproxy-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ForwardProxyPlugin", "json", `request:"mediaType=application/json"`)
@@ -15216,7 +15216,7 @@ func (s *Plugins) DeleteGraphqlproxycacheadvancedPlugin(ctx context.Context, req
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-graphqlproxycacheadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -15347,7 +15347,7 @@ func (s *Plugins) GetGraphqlproxycacheadvancedPlugin(ctx context.Context, reques
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-graphqlproxycacheadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -15499,7 +15499,7 @@ func (s *Plugins) UpdateGraphqlproxycacheadvancedPlugin(ctx context.Context, req
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-graphqlproxycacheadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "GraphqlProxyCacheAdvancedPlugin", "json", `request:"mediaType=application/json"`)
@@ -15657,7 +15657,7 @@ func (s *Plugins) DeleteGraphqlratelimitingadvancedPlugin(ctx context.Context, r
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-graphqlratelimitingadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -15788,7 +15788,7 @@ func (s *Plugins) GetGraphqlratelimitingadvancedPlugin(ctx context.Context, requ
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-graphqlratelimitingadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -15940,7 +15940,7 @@ func (s *Plugins) UpdateGraphqlratelimitingadvancedPlugin(ctx context.Context, r
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-graphqlratelimitingadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "GraphqlRateLimitingAdvancedPlugin", "json", `request:"mediaType=application/json"`)
@@ -16098,7 +16098,7 @@ func (s *Plugins) DeleteGrpcgatewayPlugin(ctx context.Context, request operation
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-grpcgateway-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -16229,7 +16229,7 @@ func (s *Plugins) GetGrpcgatewayPlugin(ctx context.Context, request operations.G
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-grpcgateway-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -16381,7 +16381,7 @@ func (s *Plugins) UpdateGrpcgatewayPlugin(ctx context.Context, request operation
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-grpcgateway-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "GrpcGatewayPlugin", "json", `request:"mediaType=application/json"`)
@@ -16539,7 +16539,7 @@ func (s *Plugins) DeleteGrpcwebPlugin(ctx context.Context, request operations.De
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-grpcweb-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -16670,7 +16670,7 @@ func (s *Plugins) GetGrpcwebPlugin(ctx context.Context, request operations.GetGr
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-grpcweb-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -16822,7 +16822,7 @@ func (s *Plugins) UpdateGrpcwebPlugin(ctx context.Context, request operations.Up
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-grpcweb-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "GrpcWebPlugin", "json", `request:"mediaType=application/json"`)
@@ -16980,7 +16980,7 @@ func (s *Plugins) DeleteHeadercertauthPlugin(ctx context.Context, request operat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-headercertauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -17111,7 +17111,7 @@ func (s *Plugins) GetHeadercertauthPlugin(ctx context.Context, request operation
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-headercertauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -17263,7 +17263,7 @@ func (s *Plugins) UpdateHeadercertauthPlugin(ctx context.Context, request operat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-headercertauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "HeaderCertAuthPlugin", "json", `request:"mediaType=application/json"`)
@@ -17421,7 +17421,7 @@ func (s *Plugins) DeleteHmacauthPlugin(ctx context.Context, request operations.D
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-hmacauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -17552,7 +17552,7 @@ func (s *Plugins) GetHmacauthPlugin(ctx context.Context, request operations.GetH
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-hmacauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -17704,7 +17704,7 @@ func (s *Plugins) UpdateHmacauthPlugin(ctx context.Context, request operations.U
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-hmacauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "HmacAuthPlugin", "json", `request:"mediaType=application/json"`)
@@ -17862,7 +17862,7 @@ func (s *Plugins) DeleteHttplogPlugin(ctx context.Context, request operations.De
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-httplog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -17993,7 +17993,7 @@ func (s *Plugins) GetHttplogPlugin(ctx context.Context, request operations.GetHt
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-httplog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -18145,7 +18145,7 @@ func (s *Plugins) UpdateHttplogPlugin(ctx context.Context, request operations.Up
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-httplog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "HTTPLogPlugin", "json", `request:"mediaType=application/json"`)
@@ -18303,7 +18303,7 @@ func (s *Plugins) DeleteInjectionprotectionPlugin(ctx context.Context, request o
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-injectionprotection-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -18434,7 +18434,7 @@ func (s *Plugins) GetInjectionprotectionPlugin(ctx context.Context, request oper
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-injectionprotection-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -18586,7 +18586,7 @@ func (s *Plugins) UpdateInjectionprotectionPlugin(ctx context.Context, request o
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-injectionprotection-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "InjectionProtectionPlugin", "json", `request:"mediaType=application/json"`)
@@ -18744,7 +18744,7 @@ func (s *Plugins) DeleteIprestrictionPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-iprestriction-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -18875,7 +18875,7 @@ func (s *Plugins) GetIprestrictionPlugin(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-iprestriction-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -19027,7 +19027,7 @@ func (s *Plugins) UpdateIprestrictionPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-iprestriction-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "IPRestrictionPlugin", "json", `request:"mediaType=application/json"`)
@@ -19185,7 +19185,7 @@ func (s *Plugins) DeleteJqPlugin(ctx context.Context, request operations.DeleteJ
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-jq-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -19316,7 +19316,7 @@ func (s *Plugins) GetJqPlugin(ctx context.Context, request operations.GetJqPlugi
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-jq-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -19468,7 +19468,7 @@ func (s *Plugins) UpdateJqPlugin(ctx context.Context, request operations.UpdateJ
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-jq-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "JqPlugin", "json", `request:"mediaType=application/json"`)
@@ -19626,7 +19626,7 @@ func (s *Plugins) DeleteJsonthreatprotectionPlugin(ctx context.Context, request 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-jsonthreatprotection-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -19757,7 +19757,7 @@ func (s *Plugins) GetJsonthreatprotectionPlugin(ctx context.Context, request ope
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-jsonthreatprotection-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -19909,7 +19909,7 @@ func (s *Plugins) UpdateJsonthreatprotectionPlugin(ctx context.Context, request 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-jsonthreatprotection-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "JSONThreatProtectionPlugin", "json", `request:"mediaType=application/json"`)
@@ -20067,7 +20067,7 @@ func (s *Plugins) DeleteJwedecryptPlugin(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-jwedecrypt-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -20198,7 +20198,7 @@ func (s *Plugins) GetJwedecryptPlugin(ctx context.Context, request operations.Ge
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-jwedecrypt-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -20350,7 +20350,7 @@ func (s *Plugins) UpdateJwedecryptPlugin(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-jwedecrypt-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "JweDecryptPlugin", "json", `request:"mediaType=application/json"`)
@@ -20508,7 +20508,7 @@ func (s *Plugins) DeleteJwtPlugin(ctx context.Context, request operations.Delete
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-jwt-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -20639,7 +20639,7 @@ func (s *Plugins) GetJwtPlugin(ctx context.Context, request operations.GetJwtPlu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-jwt-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -20791,7 +20791,7 @@ func (s *Plugins) UpdateJwtPlugin(ctx context.Context, request operations.Update
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-jwt-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "JwtPlugin", "json", `request:"mediaType=application/json"`)
@@ -20949,7 +20949,7 @@ func (s *Plugins) DeleteJwtsignerPlugin(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-jwtsigner-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -21080,7 +21080,7 @@ func (s *Plugins) GetJwtsignerPlugin(ctx context.Context, request operations.Get
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-jwtsigner-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -21232,7 +21232,7 @@ func (s *Plugins) UpdateJwtsignerPlugin(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-jwtsigner-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "JwtSignerPlugin", "json", `request:"mediaType=application/json"`)
@@ -21390,7 +21390,7 @@ func (s *Plugins) DeleteKafkaconsumePlugin(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-kafkaconsume-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -21521,7 +21521,7 @@ func (s *Plugins) GetKafkaconsumePlugin(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-kafkaconsume-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -21673,7 +21673,7 @@ func (s *Plugins) UpdateKafkaconsumePlugin(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-kafkaconsume-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "KafkaConsumePlugin", "json", `request:"mediaType=application/json"`)
@@ -21831,7 +21831,7 @@ func (s *Plugins) DeleteKafkalogPlugin(ctx context.Context, request operations.D
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-kafkalog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -21962,7 +21962,7 @@ func (s *Plugins) GetKafkalogPlugin(ctx context.Context, request operations.GetK
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-kafkalog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -22114,7 +22114,7 @@ func (s *Plugins) UpdateKafkalogPlugin(ctx context.Context, request operations.U
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-kafkalog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "KafkaLogPlugin", "json", `request:"mediaType=application/json"`)
@@ -22272,7 +22272,7 @@ func (s *Plugins) DeleteKafkaupstreamPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-kafkaupstream-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -22403,7 +22403,7 @@ func (s *Plugins) GetKafkaupstreamPlugin(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-kafkaupstream-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -22555,7 +22555,7 @@ func (s *Plugins) UpdateKafkaupstreamPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-kafkaupstream-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "KafkaUpstreamPlugin", "json", `request:"mediaType=application/json"`)
@@ -22713,7 +22713,7 @@ func (s *Plugins) DeleteKeyauthPlugin(ctx context.Context, request operations.De
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-keyauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -22844,7 +22844,7 @@ func (s *Plugins) GetKeyauthPlugin(ctx context.Context, request operations.GetKe
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-keyauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -22996,7 +22996,7 @@ func (s *Plugins) UpdateKeyauthPlugin(ctx context.Context, request operations.Up
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-keyauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "KeyAuthPlugin", "json", `request:"mediaType=application/json"`)
@@ -23154,7 +23154,7 @@ func (s *Plugins) DeleteKeyauthencPlugin(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-keyauthenc-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -23285,7 +23285,7 @@ func (s *Plugins) GetKeyauthencPlugin(ctx context.Context, request operations.Ge
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-keyauthenc-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -23437,7 +23437,7 @@ func (s *Plugins) UpdateKeyauthencPlugin(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-keyauthenc-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "KeyAuthEncPlugin", "json", `request:"mediaType=application/json"`)
@@ -23595,7 +23595,7 @@ func (s *Plugins) DeleteLdapauthPlugin(ctx context.Context, request operations.D
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-ldapauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -23726,7 +23726,7 @@ func (s *Plugins) GetLdapauthPlugin(ctx context.Context, request operations.GetL
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-ldapauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -23878,7 +23878,7 @@ func (s *Plugins) UpdateLdapauthPlugin(ctx context.Context, request operations.U
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-ldapauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "LdapAuthPlugin", "json", `request:"mediaType=application/json"`)
@@ -24036,7 +24036,7 @@ func (s *Plugins) DeleteLdapauthadvancedPlugin(ctx context.Context, request oper
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-ldapauthadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -24167,7 +24167,7 @@ func (s *Plugins) GetLdapauthadvancedPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-ldapauthadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -24319,7 +24319,7 @@ func (s *Plugins) UpdateLdapauthadvancedPlugin(ctx context.Context, request oper
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-ldapauthadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "LdapAuthAdvancedPlugin", "json", `request:"mediaType=application/json"`)
@@ -24477,7 +24477,7 @@ func (s *Plugins) DeleteLogglyPlugin(ctx context.Context, request operations.Del
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-loggly-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -24608,7 +24608,7 @@ func (s *Plugins) GetLogglyPlugin(ctx context.Context, request operations.GetLog
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-loggly-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -24760,7 +24760,7 @@ func (s *Plugins) UpdateLogglyPlugin(ctx context.Context, request operations.Upd
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-loggly-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "LogglyPlugin", "json", `request:"mediaType=application/json"`)
@@ -24918,7 +24918,7 @@ func (s *Plugins) DeleteMockingPlugin(ctx context.Context, request operations.De
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-mocking-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -25049,7 +25049,7 @@ func (s *Plugins) GetMockingPlugin(ctx context.Context, request operations.GetMo
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-mocking-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -25201,7 +25201,7 @@ func (s *Plugins) UpdateMockingPlugin(ctx context.Context, request operations.Up
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-mocking-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MockingPlugin", "json", `request:"mediaType=application/json"`)
@@ -25359,7 +25359,7 @@ func (s *Plugins) DeleteMtlsauthPlugin(ctx context.Context, request operations.D
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-mtlsauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -25490,7 +25490,7 @@ func (s *Plugins) GetMtlsauthPlugin(ctx context.Context, request operations.GetM
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-mtlsauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -25642,7 +25642,7 @@ func (s *Plugins) UpdateMtlsauthPlugin(ctx context.Context, request operations.U
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-mtlsauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MtlsAuthPlugin", "json", `request:"mediaType=application/json"`)
@@ -25800,7 +25800,7 @@ func (s *Plugins) DeleteOasvalidationPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-oasvalidation-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -25931,7 +25931,7 @@ func (s *Plugins) GetOasvalidationPlugin(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-oasvalidation-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -26083,7 +26083,7 @@ func (s *Plugins) UpdateOasvalidationPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-oasvalidation-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "OasValidationPlugin", "json", `request:"mediaType=application/json"`)
@@ -26241,7 +26241,7 @@ func (s *Plugins) DeleteOauth2introspectionPlugin(ctx context.Context, request o
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-oauth2introspection-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -26372,7 +26372,7 @@ func (s *Plugins) GetOauth2introspectionPlugin(ctx context.Context, request oper
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-oauth2introspection-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -26524,7 +26524,7 @@ func (s *Plugins) UpdateOauth2introspectionPlugin(ctx context.Context, request o
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-oauth2introspection-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Oauth2IntrospectionPlugin", "json", `request:"mediaType=application/json"`)
@@ -26682,7 +26682,7 @@ func (s *Plugins) DeleteOpaPlugin(ctx context.Context, request operations.Delete
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-opa-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -26813,7 +26813,7 @@ func (s *Plugins) GetOpaPlugin(ctx context.Context, request operations.GetOpaPlu
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-opa-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -26965,7 +26965,7 @@ func (s *Plugins) UpdateOpaPlugin(ctx context.Context, request operations.Update
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-opa-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "OpaPlugin", "json", `request:"mediaType=application/json"`)
@@ -27123,7 +27123,7 @@ func (s *Plugins) DeleteOpenidconnectPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-openidconnect-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -27254,7 +27254,7 @@ func (s *Plugins) GetOpenidconnectPlugin(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-openidconnect-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -27406,7 +27406,7 @@ func (s *Plugins) UpdateOpenidconnectPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-openidconnect-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "OpenidConnectPlugin", "json", `request:"mediaType=application/json"`)
@@ -27564,7 +27564,7 @@ func (s *Plugins) DeleteOpentelemetryPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-opentelemetry-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -27695,7 +27695,7 @@ func (s *Plugins) GetOpentelemetryPlugin(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-opentelemetry-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -27847,7 +27847,7 @@ func (s *Plugins) UpdateOpentelemetryPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-opentelemetry-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "OpentelemetryPlugin", "json", `request:"mediaType=application/json"`)
@@ -28005,7 +28005,7 @@ func (s *Plugins) DeletePostfunctionPlugin(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-postfunction-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -28136,7 +28136,7 @@ func (s *Plugins) GetPostfunctionPlugin(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-postfunction-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -28288,7 +28288,7 @@ func (s *Plugins) UpdatePostfunctionPlugin(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-postfunction-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "PostFunctionPlugin", "json", `request:"mediaType=application/json"`)
@@ -28446,7 +28446,7 @@ func (s *Plugins) DeletePrefunctionPlugin(ctx context.Context, request operation
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-prefunction-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -28577,7 +28577,7 @@ func (s *Plugins) GetPrefunctionPlugin(ctx context.Context, request operations.G
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-prefunction-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -28729,7 +28729,7 @@ func (s *Plugins) UpdatePrefunctionPlugin(ctx context.Context, request operation
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-prefunction-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "PreFunctionPlugin", "json", `request:"mediaType=application/json"`)
@@ -28887,7 +28887,7 @@ func (s *Plugins) DeletePrometheusPlugin(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-prometheus-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -29018,7 +29018,7 @@ func (s *Plugins) GetPrometheusPlugin(ctx context.Context, request operations.Ge
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-prometheus-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -29170,7 +29170,7 @@ func (s *Plugins) UpdatePrometheusPlugin(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-prometheus-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "PrometheusPlugin", "json", `request:"mediaType=application/json"`)
@@ -29328,7 +29328,7 @@ func (s *Plugins) DeleteProxycachePlugin(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-proxycache-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -29459,7 +29459,7 @@ func (s *Plugins) GetProxycachePlugin(ctx context.Context, request operations.Ge
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-proxycache-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -29611,7 +29611,7 @@ func (s *Plugins) UpdateProxycachePlugin(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-proxycache-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ProxyCachePlugin", "json", `request:"mediaType=application/json"`)
@@ -29769,7 +29769,7 @@ func (s *Plugins) DeleteProxycacheadvancedPlugin(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-proxycacheadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -29900,7 +29900,7 @@ func (s *Plugins) GetProxycacheadvancedPlugin(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-proxycacheadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -30052,7 +30052,7 @@ func (s *Plugins) UpdateProxycacheadvancedPlugin(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-proxycacheadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ProxyCacheAdvancedPlugin", "json", `request:"mediaType=application/json"`)
@@ -30210,7 +30210,7 @@ func (s *Plugins) DeleteRatelimitingPlugin(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-ratelimiting-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -30341,7 +30341,7 @@ func (s *Plugins) GetRatelimitingPlugin(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-ratelimiting-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -30493,7 +30493,7 @@ func (s *Plugins) UpdateRatelimitingPlugin(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-ratelimiting-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RateLimitingPlugin", "json", `request:"mediaType=application/json"`)
@@ -30651,7 +30651,7 @@ func (s *Plugins) DeleteRatelimitingadvancedPlugin(ctx context.Context, request 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-ratelimitingadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -30782,7 +30782,7 @@ func (s *Plugins) GetRatelimitingadvancedPlugin(ctx context.Context, request ope
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-ratelimitingadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -30934,7 +30934,7 @@ func (s *Plugins) UpdateRatelimitingadvancedPlugin(ctx context.Context, request 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-ratelimitingadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RateLimitingAdvancedPlugin", "json", `request:"mediaType=application/json"`)
@@ -31092,7 +31092,7 @@ func (s *Plugins) DeleteRedirectPlugin(ctx context.Context, request operations.D
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-redirect-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -31223,7 +31223,7 @@ func (s *Plugins) GetRedirectPlugin(ctx context.Context, request operations.GetR
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-redirect-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -31375,7 +31375,7 @@ func (s *Plugins) UpdateRedirectPlugin(ctx context.Context, request operations.U
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-redirect-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RedirectPlugin", "json", `request:"mediaType=application/json"`)
@@ -31533,7 +31533,7 @@ func (s *Plugins) DeleteRequestcalloutPlugin(ctx context.Context, request operat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-requestcallout-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -31664,7 +31664,7 @@ func (s *Plugins) GetRequestcalloutPlugin(ctx context.Context, request operation
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-requestcallout-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -31816,7 +31816,7 @@ func (s *Plugins) UpdateRequestcalloutPlugin(ctx context.Context, request operat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-requestcallout-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RequestCalloutPlugin", "json", `request:"mediaType=application/json"`)
@@ -31974,7 +31974,7 @@ func (s *Plugins) DeleteRequestsizelimitingPlugin(ctx context.Context, request o
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-requestsizelimiting-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -32105,7 +32105,7 @@ func (s *Plugins) GetRequestsizelimitingPlugin(ctx context.Context, request oper
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-requestsizelimiting-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -32257,7 +32257,7 @@ func (s *Plugins) UpdateRequestsizelimitingPlugin(ctx context.Context, request o
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-requestsizelimiting-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RequestSizeLimitingPlugin", "json", `request:"mediaType=application/json"`)
@@ -32415,7 +32415,7 @@ func (s *Plugins) DeleteRequestterminationPlugin(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-requesttermination-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -32546,7 +32546,7 @@ func (s *Plugins) GetRequestterminationPlugin(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-requesttermination-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -32698,7 +32698,7 @@ func (s *Plugins) UpdateRequestterminationPlugin(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-requesttermination-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RequestTerminationPlugin", "json", `request:"mediaType=application/json"`)
@@ -32856,7 +32856,7 @@ func (s *Plugins) DeleteRequesttransformerPlugin(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-requesttransformer-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -32987,7 +32987,7 @@ func (s *Plugins) GetRequesttransformerPlugin(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-requesttransformer-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -33139,7 +33139,7 @@ func (s *Plugins) UpdateRequesttransformerPlugin(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-requesttransformer-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RequestTransformerPlugin", "json", `request:"mediaType=application/json"`)
@@ -33297,7 +33297,7 @@ func (s *Plugins) DeleteRequesttransformeradvancedPlugin(ctx context.Context, re
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-requesttransformeradvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -33428,7 +33428,7 @@ func (s *Plugins) GetRequesttransformeradvancedPlugin(ctx context.Context, reque
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-requesttransformeradvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -33580,7 +33580,7 @@ func (s *Plugins) UpdateRequesttransformeradvancedPlugin(ctx context.Context, re
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-requesttransformeradvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RequestTransformerAdvancedPlugin", "json", `request:"mediaType=application/json"`)
@@ -33738,7 +33738,7 @@ func (s *Plugins) DeleteRequestvalidatorPlugin(ctx context.Context, request oper
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-requestvalidator-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -33869,7 +33869,7 @@ func (s *Plugins) GetRequestvalidatorPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-requestvalidator-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -34021,7 +34021,7 @@ func (s *Plugins) UpdateRequestvalidatorPlugin(ctx context.Context, request oper
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-requestvalidator-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RequestValidatorPlugin", "json", `request:"mediaType=application/json"`)
@@ -34179,7 +34179,7 @@ func (s *Plugins) DeleteResponseratelimitingPlugin(ctx context.Context, request 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-responseratelimiting-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -34310,7 +34310,7 @@ func (s *Plugins) GetResponseratelimitingPlugin(ctx context.Context, request ope
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-responseratelimiting-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -34462,7 +34462,7 @@ func (s *Plugins) UpdateResponseratelimitingPlugin(ctx context.Context, request 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-responseratelimiting-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ResponseRatelimitingPlugin", "json", `request:"mediaType=application/json"`)
@@ -34620,7 +34620,7 @@ func (s *Plugins) DeleteResponsetransformerPlugin(ctx context.Context, request o
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-responsetransformer-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -34751,7 +34751,7 @@ func (s *Plugins) GetResponsetransformerPlugin(ctx context.Context, request oper
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-responsetransformer-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -34903,7 +34903,7 @@ func (s *Plugins) UpdateResponsetransformerPlugin(ctx context.Context, request o
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-responsetransformer-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ResponseTransformerPlugin", "json", `request:"mediaType=application/json"`)
@@ -35061,7 +35061,7 @@ func (s *Plugins) DeleteResponsetransformeradvancedPlugin(ctx context.Context, r
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-responsetransformeradvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -35192,7 +35192,7 @@ func (s *Plugins) GetResponsetransformeradvancedPlugin(ctx context.Context, requ
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-responsetransformeradvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -35344,7 +35344,7 @@ func (s *Plugins) UpdateResponsetransformeradvancedPlugin(ctx context.Context, r
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-responsetransformeradvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ResponseTransformerAdvancedPlugin", "json", `request:"mediaType=application/json"`)
@@ -35502,7 +35502,7 @@ func (s *Plugins) DeleteRoutebyheaderPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-routebyheader-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -35633,7 +35633,7 @@ func (s *Plugins) GetRoutebyheaderPlugin(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-routebyheader-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -35785,7 +35785,7 @@ func (s *Plugins) UpdateRoutebyheaderPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-routebyheader-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RouteByHeaderPlugin", "json", `request:"mediaType=application/json"`)
@@ -35943,7 +35943,7 @@ func (s *Plugins) DeleteRoutetransformeradvancedPlugin(ctx context.Context, requ
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-routetransformeradvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -36074,7 +36074,7 @@ func (s *Plugins) GetRoutetransformeradvancedPlugin(ctx context.Context, request
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-routetransformeradvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -36226,7 +36226,7 @@ func (s *Plugins) UpdateRoutetransformeradvancedPlugin(ctx context.Context, requ
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-routetransformeradvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RouteTransformerAdvancedPlugin", "json", `request:"mediaType=application/json"`)
@@ -36384,7 +36384,7 @@ func (s *Plugins) DeleteSamlPlugin(ctx context.Context, request operations.Delet
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-saml-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -36515,7 +36515,7 @@ func (s *Plugins) GetSamlPlugin(ctx context.Context, request operations.GetSamlP
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-saml-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -36667,7 +36667,7 @@ func (s *Plugins) UpdateSamlPlugin(ctx context.Context, request operations.Updat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-saml-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "SamlPlugin", "json", `request:"mediaType=application/json"`)
@@ -36825,7 +36825,7 @@ func (s *Plugins) DeleteServiceprotectionPlugin(ctx context.Context, request ope
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-serviceprotection-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -36956,7 +36956,7 @@ func (s *Plugins) GetServiceprotectionPlugin(ctx context.Context, request operat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-serviceprotection-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -37108,7 +37108,7 @@ func (s *Plugins) UpdateServiceprotectionPlugin(ctx context.Context, request ope
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-serviceprotection-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ServiceProtectionPlugin", "json", `request:"mediaType=application/json"`)
@@ -37266,7 +37266,7 @@ func (s *Plugins) DeleteSessionPlugin(ctx context.Context, request operations.De
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-session-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -37397,7 +37397,7 @@ func (s *Plugins) GetSessionPlugin(ctx context.Context, request operations.GetSe
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-session-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -37549,7 +37549,7 @@ func (s *Plugins) UpdateSessionPlugin(ctx context.Context, request operations.Up
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-session-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "SessionPlugin", "json", `request:"mediaType=application/json"`)
@@ -37707,7 +37707,7 @@ func (s *Plugins) DeleteSolaceupstreamPlugin(ctx context.Context, request operat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-solaceupstream-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -37838,7 +37838,7 @@ func (s *Plugins) GetSolaceupstreamPlugin(ctx context.Context, request operation
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-solaceupstream-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -37990,7 +37990,7 @@ func (s *Plugins) UpdateSolaceupstreamPlugin(ctx context.Context, request operat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-solaceupstream-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "SolaceUpstreamPlugin", "json", `request:"mediaType=application/json"`)
@@ -38148,7 +38148,7 @@ func (s *Plugins) DeleteStandardwebhooksPlugin(ctx context.Context, request oper
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-standardwebhooks-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -38279,7 +38279,7 @@ func (s *Plugins) GetStandardwebhooksPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-standardwebhooks-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -38431,7 +38431,7 @@ func (s *Plugins) UpdateStandardwebhooksPlugin(ctx context.Context, request oper
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-standardwebhooks-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "StandardWebhooksPlugin", "json", `request:"mediaType=application/json"`)
@@ -38589,7 +38589,7 @@ func (s *Plugins) DeleteStatsdPlugin(ctx context.Context, request operations.Del
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-statsd-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -38720,7 +38720,7 @@ func (s *Plugins) GetStatsdPlugin(ctx context.Context, request operations.GetSta
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-statsd-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -38872,7 +38872,7 @@ func (s *Plugins) UpdateStatsdPlugin(ctx context.Context, request operations.Upd
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-statsd-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "StatsdPlugin", "json", `request:"mediaType=application/json"`)
@@ -39030,7 +39030,7 @@ func (s *Plugins) DeleteStatsdadvancedPlugin(ctx context.Context, request operat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-statsdadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -39161,7 +39161,7 @@ func (s *Plugins) GetStatsdadvancedPlugin(ctx context.Context, request operation
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-statsdadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -39313,7 +39313,7 @@ func (s *Plugins) UpdateStatsdadvancedPlugin(ctx context.Context, request operat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-statsdadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "StatsdAdvancedPlugin", "json", `request:"mediaType=application/json"`)
@@ -39471,7 +39471,7 @@ func (s *Plugins) DeleteSyslogPlugin(ctx context.Context, request operations.Del
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-syslog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -39602,7 +39602,7 @@ func (s *Plugins) GetSyslogPlugin(ctx context.Context, request operations.GetSys
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-syslog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -39754,7 +39754,7 @@ func (s *Plugins) UpdateSyslogPlugin(ctx context.Context, request operations.Upd
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-syslog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "SyslogPlugin", "json", `request:"mediaType=application/json"`)
@@ -39912,7 +39912,7 @@ func (s *Plugins) DeleteTcplogPlugin(ctx context.Context, request operations.Del
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-tcplog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -40043,7 +40043,7 @@ func (s *Plugins) GetTcplogPlugin(ctx context.Context, request operations.GetTcp
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-tcplog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -40195,7 +40195,7 @@ func (s *Plugins) UpdateTcplogPlugin(ctx context.Context, request operations.Upd
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-tcplog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "TCPLogPlugin", "json", `request:"mediaType=application/json"`)
@@ -40353,7 +40353,7 @@ func (s *Plugins) DeleteTlshandshakemodifierPlugin(ctx context.Context, request 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-tlshandshakemodifier-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -40484,7 +40484,7 @@ func (s *Plugins) GetTlshandshakemodifierPlugin(ctx context.Context, request ope
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-tlshandshakemodifier-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -40636,7 +40636,7 @@ func (s *Plugins) UpdateTlshandshakemodifierPlugin(ctx context.Context, request 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-tlshandshakemodifier-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "TLSHandshakeModifierPlugin", "json", `request:"mediaType=application/json"`)
@@ -40794,7 +40794,7 @@ func (s *Plugins) DeleteTlsmetadataheadersPlugin(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-tlsmetadataheaders-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -40925,7 +40925,7 @@ func (s *Plugins) GetTlsmetadataheadersPlugin(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-tlsmetadataheaders-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -41077,7 +41077,7 @@ func (s *Plugins) UpdateTlsmetadataheadersPlugin(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-tlsmetadataheaders-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "TLSMetadataHeadersPlugin", "json", `request:"mediaType=application/json"`)
@@ -41235,7 +41235,7 @@ func (s *Plugins) DeleteUdplogPlugin(ctx context.Context, request operations.Del
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-udplog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -41366,7 +41366,7 @@ func (s *Plugins) GetUdplogPlugin(ctx context.Context, request operations.GetUdp
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-udplog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -41518,7 +41518,7 @@ func (s *Plugins) UpdateUdplogPlugin(ctx context.Context, request operations.Upd
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-udplog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UDPLogPlugin", "json", `request:"mediaType=application/json"`)
@@ -41676,7 +41676,7 @@ func (s *Plugins) DeleteUpstreamoauthPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-upstreamoauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -41807,7 +41807,7 @@ func (s *Plugins) GetUpstreamoauthPlugin(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-upstreamoauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -41959,7 +41959,7 @@ func (s *Plugins) UpdateUpstreamoauthPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-upstreamoauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpstreamOauthPlugin", "json", `request:"mediaType=application/json"`)
@@ -42117,7 +42117,7 @@ func (s *Plugins) DeleteUpstreamtimeoutPlugin(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-upstreamtimeout-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -42248,7 +42248,7 @@ func (s *Plugins) GetUpstreamtimeoutPlugin(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-upstreamtimeout-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -42400,7 +42400,7 @@ func (s *Plugins) UpdateUpstreamtimeoutPlugin(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-upstreamtimeout-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpstreamTimeoutPlugin", "json", `request:"mediaType=application/json"`)
@@ -42558,7 +42558,7 @@ func (s *Plugins) DeleteVaultauthPlugin(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-vaultauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -42689,7 +42689,7 @@ func (s *Plugins) GetVaultauthPlugin(ctx context.Context, request operations.Get
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-vaultauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -42841,7 +42841,7 @@ func (s *Plugins) UpdateVaultauthPlugin(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-vaultauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "VaultAuthPlugin", "json", `request:"mediaType=application/json"`)
@@ -42999,7 +42999,7 @@ func (s *Plugins) DeleteWebsocketsizelimitPlugin(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-websocketsizelimit-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -43130,7 +43130,7 @@ func (s *Plugins) GetWebsocketsizelimitPlugin(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-websocketsizelimit-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -43282,7 +43282,7 @@ func (s *Plugins) UpdateWebsocketsizelimitPlugin(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-websocketsizelimit-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "WebsocketSizeLimitPlugin", "json", `request:"mediaType=application/json"`)
@@ -43440,7 +43440,7 @@ func (s *Plugins) DeleteWebsocketvalidatorPlugin(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-websocketvalidator-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -43571,7 +43571,7 @@ func (s *Plugins) GetWebsocketvalidatorPlugin(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-websocketvalidator-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -43723,7 +43723,7 @@ func (s *Plugins) UpdateWebsocketvalidatorPlugin(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-websocketvalidator-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "WebsocketValidatorPlugin", "json", `request:"mediaType=application/json"`)
@@ -43881,7 +43881,7 @@ func (s *Plugins) DeleteXmlthreatprotectionPlugin(ctx context.Context, request o
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-xmlthreatprotection-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -44012,7 +44012,7 @@ func (s *Plugins) GetXmlthreatprotectionPlugin(ctx context.Context, request oper
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-xmlthreatprotection-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -44164,7 +44164,7 @@ func (s *Plugins) UpdateXmlthreatprotectionPlugin(ctx context.Context, request o
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-xmlthreatprotection-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "XMLThreatProtectionPlugin", "json", `request:"mediaType=application/json"`)
@@ -44322,7 +44322,7 @@ func (s *Plugins) DeleteZipkinPlugin(ctx context.Context, request operations.Del
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-zipkin-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -44453,7 +44453,7 @@ func (s *Plugins) GetZipkinPlugin(ctx context.Context, request operations.GetZip
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-zipkin-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -44605,7 +44605,7 @@ func (s *Plugins) UpdateZipkinPlugin(ctx context.Context, request operations.Upd
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-zipkin-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ZipkinPlugin", "json", `request:"mediaType=application/json"`)
@@ -44763,7 +44763,7 @@ func (s *Plugins) CreateACLPlugin(ctx context.Context, request operations.Create
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-acl-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ACLPlugin", "json", `request:"mediaType=application/json"`)
@@ -44921,7 +44921,7 @@ func (s *Plugins) CreateAcmePlugin(ctx context.Context, request operations.Creat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-acme-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AcmePlugin", "json", `request:"mediaType=application/json"`)
@@ -45079,7 +45079,7 @@ func (s *Plugins) CreateAiawsguardrailsPlugin(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-aiawsguardrails-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiAwsGuardrailsPlugin", "json", `request:"mediaType=application/json"`)
@@ -45237,7 +45237,7 @@ func (s *Plugins) CreateAiazurecontentsafetyPlugin(ctx context.Context, request 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-aiazurecontentsafety-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiAzureContentSafetyPlugin", "json", `request:"mediaType=application/json"`)
@@ -45395,7 +45395,7 @@ func (s *Plugins) CreateAipromptcompressorPlugin(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-aipromptcompressor-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiPromptCompressorPlugin", "json", `request:"mediaType=application/json"`)
@@ -45553,7 +45553,7 @@ func (s *Plugins) CreateAipromptdecoratorPlugin(ctx context.Context, request ope
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-aipromptdecorator-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiPromptDecoratorPlugin", "json", `request:"mediaType=application/json"`)
@@ -45711,7 +45711,7 @@ func (s *Plugins) CreateAipromptguardPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-aipromptguard-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiPromptGuardPlugin", "json", `request:"mediaType=application/json"`)
@@ -45869,7 +45869,7 @@ func (s *Plugins) CreateAiprompttemplatePlugin(ctx context.Context, request oper
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-aiprompttemplate-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiPromptTemplatePlugin", "json", `request:"mediaType=application/json"`)
@@ -46027,7 +46027,7 @@ func (s *Plugins) CreateAiproxyPlugin(ctx context.Context, request operations.Cr
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-aiproxy-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiProxyPlugin", "json", `request:"mediaType=application/json"`)
@@ -46185,7 +46185,7 @@ func (s *Plugins) CreateAiproxyadvancedPlugin(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-aiproxyadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiProxyAdvancedPlugin", "json", `request:"mediaType=application/json"`)
@@ -46343,7 +46343,7 @@ func (s *Plugins) CreateAiraginjectorPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-airaginjector-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiRagInjectorPlugin", "json", `request:"mediaType=application/json"`)
@@ -46501,7 +46501,7 @@ func (s *Plugins) CreateAiratelimitingadvancedPlugin(ctx context.Context, reques
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-airatelimitingadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiRateLimitingAdvancedPlugin", "json", `request:"mediaType=application/json"`)
@@ -46659,7 +46659,7 @@ func (s *Plugins) CreateAirequesttransformerPlugin(ctx context.Context, request 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-airequesttransformer-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiRequestTransformerPlugin", "json", `request:"mediaType=application/json"`)
@@ -46817,7 +46817,7 @@ func (s *Plugins) CreateAiresponsetransformerPlugin(ctx context.Context, request
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-airesponsetransformer-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiResponseTransformerPlugin", "json", `request:"mediaType=application/json"`)
@@ -46975,7 +46975,7 @@ func (s *Plugins) CreateAisanitizerPlugin(ctx context.Context, request operation
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-aisanitizer-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiSanitizerPlugin", "json", `request:"mediaType=application/json"`)
@@ -47133,7 +47133,7 @@ func (s *Plugins) CreateAisemanticcachePlugin(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-aisemanticcache-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiSemanticCachePlugin", "json", `request:"mediaType=application/json"`)
@@ -47291,7 +47291,7 @@ func (s *Plugins) CreateAisemanticpromptguardPlugin(ctx context.Context, request
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-aisemanticpromptguard-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiSemanticPromptGuardPlugin", "json", `request:"mediaType=application/json"`)
@@ -47449,7 +47449,7 @@ func (s *Plugins) CreateAwslambdaPlugin(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-awslambda-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AwsLambdaPlugin", "json", `request:"mediaType=application/json"`)
@@ -47607,7 +47607,7 @@ func (s *Plugins) CreateAzurefunctionsPlugin(ctx context.Context, request operat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-azurefunctions-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AzureFunctionsPlugin", "json", `request:"mediaType=application/json"`)
@@ -47765,7 +47765,7 @@ func (s *Plugins) CreateBasicauthPlugin(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-basicauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "BasicAuthPlugin", "json", `request:"mediaType=application/json"`)
@@ -47923,7 +47923,7 @@ func (s *Plugins) CreateBotdetectionPlugin(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-botdetection-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "BotDetectionPlugin", "json", `request:"mediaType=application/json"`)
@@ -48081,7 +48081,7 @@ func (s *Plugins) CreateCanaryPlugin(ctx context.Context, request operations.Cre
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-canary-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CanaryPlugin", "json", `request:"mediaType=application/json"`)
@@ -48239,7 +48239,7 @@ func (s *Plugins) CreateConfluentPlugin(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-confluent-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ConfluentPlugin", "json", `request:"mediaType=application/json"`)
@@ -48397,7 +48397,7 @@ func (s *Plugins) CreateConfluentconsumePlugin(ctx context.Context, request oper
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-confluentconsume-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ConfluentConsumePlugin", "json", `request:"mediaType=application/json"`)
@@ -48555,7 +48555,7 @@ func (s *Plugins) CreateCorrelationidPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-correlationid-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CorrelationIDPlugin", "json", `request:"mediaType=application/json"`)
@@ -48713,7 +48713,7 @@ func (s *Plugins) CreateCorsPlugin(ctx context.Context, request operations.Creat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-cors-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CorsPlugin", "json", `request:"mediaType=application/json"`)
@@ -48871,7 +48871,7 @@ func (s *Plugins) CreateDatadogPlugin(ctx context.Context, request operations.Cr
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-datadog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "DatadogPlugin", "json", `request:"mediaType=application/json"`)
@@ -49029,7 +49029,7 @@ func (s *Plugins) CreateDatadogtracingPlugin(ctx context.Context, request operat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-datadogtracing-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "DatadogTracingPlugin", "json", `request:"mediaType=application/json"`)
@@ -49187,7 +49187,7 @@ func (s *Plugins) CreateDatakitPlugin(ctx context.Context, request operations.Cr
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-datakit-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "DatakitPlugin", "json", `request:"mediaType=application/json"`)
@@ -49345,7 +49345,7 @@ func (s *Plugins) CreateDegraphqlPlugin(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-degraphql-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "DegraphqlPlugin", "json", `request:"mediaType=application/json"`)
@@ -49503,7 +49503,7 @@ func (s *Plugins) CreateExittransformerPlugin(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-exittransformer-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ExitTransformerPlugin", "json", `request:"mediaType=application/json"`)
@@ -49661,7 +49661,7 @@ func (s *Plugins) CreateFilelogPlugin(ctx context.Context, request operations.Cr
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-filelog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "FileLogPlugin", "json", `request:"mediaType=application/json"`)
@@ -49819,7 +49819,7 @@ func (s *Plugins) CreateForwardproxyPlugin(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-forwardproxy-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ForwardProxyPlugin", "json", `request:"mediaType=application/json"`)
@@ -49977,7 +49977,7 @@ func (s *Plugins) CreateGraphqlproxycacheadvancedPlugin(ctx context.Context, req
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-graphqlproxycacheadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "GraphqlProxyCacheAdvancedPlugin", "json", `request:"mediaType=application/json"`)
@@ -50135,7 +50135,7 @@ func (s *Plugins) CreateGraphqlratelimitingadvancedPlugin(ctx context.Context, r
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-graphqlratelimitingadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "GraphqlRateLimitingAdvancedPlugin", "json", `request:"mediaType=application/json"`)
@@ -50293,7 +50293,7 @@ func (s *Plugins) CreateGrpcgatewayPlugin(ctx context.Context, request operation
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-grpcgateway-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "GrpcGatewayPlugin", "json", `request:"mediaType=application/json"`)
@@ -50451,7 +50451,7 @@ func (s *Plugins) CreateGrpcwebPlugin(ctx context.Context, request operations.Cr
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-grpcweb-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "GrpcWebPlugin", "json", `request:"mediaType=application/json"`)
@@ -50609,7 +50609,7 @@ func (s *Plugins) CreateHeadercertauthPlugin(ctx context.Context, request operat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-headercertauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "HeaderCertAuthPlugin", "json", `request:"mediaType=application/json"`)
@@ -50767,7 +50767,7 @@ func (s *Plugins) CreateHmacauthPlugin(ctx context.Context, request operations.C
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-hmacauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "HmacAuthPlugin", "json", `request:"mediaType=application/json"`)
@@ -50925,7 +50925,7 @@ func (s *Plugins) CreateHttplogPlugin(ctx context.Context, request operations.Cr
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-httplog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "HTTPLogPlugin", "json", `request:"mediaType=application/json"`)
@@ -51083,7 +51083,7 @@ func (s *Plugins) CreateInjectionprotectionPlugin(ctx context.Context, request o
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-injectionprotection-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "InjectionProtectionPlugin", "json", `request:"mediaType=application/json"`)
@@ -51241,7 +51241,7 @@ func (s *Plugins) CreateIprestrictionPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-iprestriction-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "IPRestrictionPlugin", "json", `request:"mediaType=application/json"`)
@@ -51399,7 +51399,7 @@ func (s *Plugins) CreateJqPlugin(ctx context.Context, request operations.CreateJ
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-jq-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "JqPlugin", "json", `request:"mediaType=application/json"`)
@@ -51557,7 +51557,7 @@ func (s *Plugins) CreateJsonthreatprotectionPlugin(ctx context.Context, request 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-jsonthreatprotection-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "JSONThreatProtectionPlugin", "json", `request:"mediaType=application/json"`)
@@ -51715,7 +51715,7 @@ func (s *Plugins) CreateJwedecryptPlugin(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-jwedecrypt-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "JweDecryptPlugin", "json", `request:"mediaType=application/json"`)
@@ -51873,7 +51873,7 @@ func (s *Plugins) CreateJwtPlugin(ctx context.Context, request operations.Create
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-jwt-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "JwtPlugin", "json", `request:"mediaType=application/json"`)
@@ -52031,7 +52031,7 @@ func (s *Plugins) CreateJwtsignerPlugin(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-jwtsigner-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "JwtSignerPlugin", "json", `request:"mediaType=application/json"`)
@@ -52189,7 +52189,7 @@ func (s *Plugins) CreateKafkaconsumePlugin(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-kafkaconsume-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "KafkaConsumePlugin", "json", `request:"mediaType=application/json"`)
@@ -52347,7 +52347,7 @@ func (s *Plugins) CreateKafkalogPlugin(ctx context.Context, request operations.C
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-kafkalog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "KafkaLogPlugin", "json", `request:"mediaType=application/json"`)
@@ -52505,7 +52505,7 @@ func (s *Plugins) CreateKafkaupstreamPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-kafkaupstream-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "KafkaUpstreamPlugin", "json", `request:"mediaType=application/json"`)
@@ -52663,7 +52663,7 @@ func (s *Plugins) CreateKeyauthPlugin(ctx context.Context, request operations.Cr
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-keyauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "KeyAuthPlugin", "json", `request:"mediaType=application/json"`)
@@ -52821,7 +52821,7 @@ func (s *Plugins) CreateKeyauthencPlugin(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-keyauthenc-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "KeyAuthEncPlugin", "json", `request:"mediaType=application/json"`)
@@ -52979,7 +52979,7 @@ func (s *Plugins) CreateLdapauthPlugin(ctx context.Context, request operations.C
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-ldapauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "LdapAuthPlugin", "json", `request:"mediaType=application/json"`)
@@ -53137,7 +53137,7 @@ func (s *Plugins) CreateLdapauthadvancedPlugin(ctx context.Context, request oper
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-ldapauthadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "LdapAuthAdvancedPlugin", "json", `request:"mediaType=application/json"`)
@@ -53295,7 +53295,7 @@ func (s *Plugins) CreateLogglyPlugin(ctx context.Context, request operations.Cre
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-loggly-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "LogglyPlugin", "json", `request:"mediaType=application/json"`)
@@ -53453,7 +53453,7 @@ func (s *Plugins) CreateMockingPlugin(ctx context.Context, request operations.Cr
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-mocking-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MockingPlugin", "json", `request:"mediaType=application/json"`)
@@ -53611,7 +53611,7 @@ func (s *Plugins) CreateMtlsauthPlugin(ctx context.Context, request operations.C
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-mtlsauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "MtlsAuthPlugin", "json", `request:"mediaType=application/json"`)
@@ -53769,7 +53769,7 @@ func (s *Plugins) CreateOasvalidationPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-oasvalidation-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "OasValidationPlugin", "json", `request:"mediaType=application/json"`)
@@ -53927,7 +53927,7 @@ func (s *Plugins) CreateOauth2introspectionPlugin(ctx context.Context, request o
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-oauth2introspection-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Oauth2IntrospectionPlugin", "json", `request:"mediaType=application/json"`)
@@ -54085,7 +54085,7 @@ func (s *Plugins) CreateOpaPlugin(ctx context.Context, request operations.Create
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-opa-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "OpaPlugin", "json", `request:"mediaType=application/json"`)
@@ -54243,7 +54243,7 @@ func (s *Plugins) CreateOpenidconnectPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-openidconnect-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "OpenidConnectPlugin", "json", `request:"mediaType=application/json"`)
@@ -54401,7 +54401,7 @@ func (s *Plugins) CreateOpentelemetryPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-opentelemetry-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "OpentelemetryPlugin", "json", `request:"mediaType=application/json"`)
@@ -54559,7 +54559,7 @@ func (s *Plugins) CreatePostfunctionPlugin(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-postfunction-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "PostFunctionPlugin", "json", `request:"mediaType=application/json"`)
@@ -54717,7 +54717,7 @@ func (s *Plugins) CreatePrefunctionPlugin(ctx context.Context, request operation
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-prefunction-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "PreFunctionPlugin", "json", `request:"mediaType=application/json"`)
@@ -54875,7 +54875,7 @@ func (s *Plugins) CreatePrometheusPlugin(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-prometheus-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "PrometheusPlugin", "json", `request:"mediaType=application/json"`)
@@ -55033,7 +55033,7 @@ func (s *Plugins) CreateProxycachePlugin(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-proxycache-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ProxyCachePlugin", "json", `request:"mediaType=application/json"`)
@@ -55191,7 +55191,7 @@ func (s *Plugins) CreateProxycacheadvancedPlugin(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-proxycacheadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ProxyCacheAdvancedPlugin", "json", `request:"mediaType=application/json"`)
@@ -55349,7 +55349,7 @@ func (s *Plugins) CreateRatelimitingPlugin(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-ratelimiting-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RateLimitingPlugin", "json", `request:"mediaType=application/json"`)
@@ -55507,7 +55507,7 @@ func (s *Plugins) CreateRatelimitingadvancedPlugin(ctx context.Context, request 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-ratelimitingadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RateLimitingAdvancedPlugin", "json", `request:"mediaType=application/json"`)
@@ -55665,7 +55665,7 @@ func (s *Plugins) CreateRedirectPlugin(ctx context.Context, request operations.C
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-redirect-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RedirectPlugin", "json", `request:"mediaType=application/json"`)
@@ -55823,7 +55823,7 @@ func (s *Plugins) CreateRequestcalloutPlugin(ctx context.Context, request operat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-requestcallout-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RequestCalloutPlugin", "json", `request:"mediaType=application/json"`)
@@ -55981,7 +55981,7 @@ func (s *Plugins) CreateRequestsizelimitingPlugin(ctx context.Context, request o
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-requestsizelimiting-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RequestSizeLimitingPlugin", "json", `request:"mediaType=application/json"`)
@@ -56139,7 +56139,7 @@ func (s *Plugins) CreateRequestterminationPlugin(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-requesttermination-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RequestTerminationPlugin", "json", `request:"mediaType=application/json"`)
@@ -56297,7 +56297,7 @@ func (s *Plugins) CreateRequesttransformerPlugin(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-requesttransformer-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RequestTransformerPlugin", "json", `request:"mediaType=application/json"`)
@@ -56455,7 +56455,7 @@ func (s *Plugins) CreateRequesttransformeradvancedPlugin(ctx context.Context, re
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-requesttransformeradvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RequestTransformerAdvancedPlugin", "json", `request:"mediaType=application/json"`)
@@ -56613,7 +56613,7 @@ func (s *Plugins) CreateRequestvalidatorPlugin(ctx context.Context, request oper
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-requestvalidator-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RequestValidatorPlugin", "json", `request:"mediaType=application/json"`)
@@ -56771,7 +56771,7 @@ func (s *Plugins) CreateResponseratelimitingPlugin(ctx context.Context, request 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-responseratelimiting-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ResponseRatelimitingPlugin", "json", `request:"mediaType=application/json"`)
@@ -56929,7 +56929,7 @@ func (s *Plugins) CreateResponsetransformerPlugin(ctx context.Context, request o
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-responsetransformer-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ResponseTransformerPlugin", "json", `request:"mediaType=application/json"`)
@@ -57087,7 +57087,7 @@ func (s *Plugins) CreateResponsetransformeradvancedPlugin(ctx context.Context, r
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-responsetransformeradvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ResponseTransformerAdvancedPlugin", "json", `request:"mediaType=application/json"`)
@@ -57245,7 +57245,7 @@ func (s *Plugins) CreateRoutebyheaderPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-routebyheader-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RouteByHeaderPlugin", "json", `request:"mediaType=application/json"`)
@@ -57403,7 +57403,7 @@ func (s *Plugins) CreateRoutetransformeradvancedPlugin(ctx context.Context, requ
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-routetransformeradvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RouteTransformerAdvancedPlugin", "json", `request:"mediaType=application/json"`)
@@ -57561,7 +57561,7 @@ func (s *Plugins) CreateSamlPlugin(ctx context.Context, request operations.Creat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-saml-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "SamlPlugin", "json", `request:"mediaType=application/json"`)
@@ -57719,7 +57719,7 @@ func (s *Plugins) CreateServiceprotectionPlugin(ctx context.Context, request ope
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-serviceprotection-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ServiceProtectionPlugin", "json", `request:"mediaType=application/json"`)
@@ -57877,7 +57877,7 @@ func (s *Plugins) CreateSessionPlugin(ctx context.Context, request operations.Cr
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-session-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "SessionPlugin", "json", `request:"mediaType=application/json"`)
@@ -58035,7 +58035,7 @@ func (s *Plugins) CreateSolaceupstreamPlugin(ctx context.Context, request operat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-solaceupstream-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "SolaceUpstreamPlugin", "json", `request:"mediaType=application/json"`)
@@ -58193,7 +58193,7 @@ func (s *Plugins) CreateStandardwebhooksPlugin(ctx context.Context, request oper
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-standardwebhooks-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "StandardWebhooksPlugin", "json", `request:"mediaType=application/json"`)
@@ -58351,7 +58351,7 @@ func (s *Plugins) CreateStatsdPlugin(ctx context.Context, request operations.Cre
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-statsd-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "StatsdPlugin", "json", `request:"mediaType=application/json"`)
@@ -58509,7 +58509,7 @@ func (s *Plugins) CreateStatsdadvancedPlugin(ctx context.Context, request operat
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-statsdadvanced-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "StatsdAdvancedPlugin", "json", `request:"mediaType=application/json"`)
@@ -58667,7 +58667,7 @@ func (s *Plugins) CreateSyslogPlugin(ctx context.Context, request operations.Cre
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-syslog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "SyslogPlugin", "json", `request:"mediaType=application/json"`)
@@ -58825,7 +58825,7 @@ func (s *Plugins) CreateTcplogPlugin(ctx context.Context, request operations.Cre
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-tcplog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "TCPLogPlugin", "json", `request:"mediaType=application/json"`)
@@ -58983,7 +58983,7 @@ func (s *Plugins) CreateTlshandshakemodifierPlugin(ctx context.Context, request 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-tlshandshakemodifier-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "TLSHandshakeModifierPlugin", "json", `request:"mediaType=application/json"`)
@@ -59141,7 +59141,7 @@ func (s *Plugins) CreateTlsmetadataheadersPlugin(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-tlsmetadataheaders-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "TLSMetadataHeadersPlugin", "json", `request:"mediaType=application/json"`)
@@ -59299,7 +59299,7 @@ func (s *Plugins) CreateUdplogPlugin(ctx context.Context, request operations.Cre
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-udplog-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UDPLogPlugin", "json", `request:"mediaType=application/json"`)
@@ -59457,7 +59457,7 @@ func (s *Plugins) CreateUpstreamoauthPlugin(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-upstreamoauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpstreamOauthPlugin", "json", `request:"mediaType=application/json"`)
@@ -59615,7 +59615,7 @@ func (s *Plugins) CreateUpstreamtimeoutPlugin(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-upstreamtimeout-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpstreamTimeoutPlugin", "json", `request:"mediaType=application/json"`)
@@ -59773,7 +59773,7 @@ func (s *Plugins) CreateVaultauthPlugin(ctx context.Context, request operations.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-vaultauth-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "VaultAuthPlugin", "json", `request:"mediaType=application/json"`)
@@ -59931,7 +59931,7 @@ func (s *Plugins) CreateWebsocketsizelimitPlugin(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-websocketsizelimit-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "WebsocketSizeLimitPlugin", "json", `request:"mediaType=application/json"`)
@@ -60089,7 +60089,7 @@ func (s *Plugins) CreateWebsocketvalidatorPlugin(ctx context.Context, request op
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-websocketvalidator-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "WebsocketValidatorPlugin", "json", `request:"mediaType=application/json"`)
@@ -60247,7 +60247,7 @@ func (s *Plugins) CreateXmlthreatprotectionPlugin(ctx context.Context, request o
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-xmlthreatprotection-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "XMLThreatProtectionPlugin", "json", `request:"mediaType=application/json"`)
@@ -60405,7 +60405,7 @@ func (s *Plugins) CreateZipkinPlugin(ctx context.Context, request operations.Cre
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-zipkin-plugin",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ZipkinPlugin", "json", `request:"mediaType=application/json"`)
@@ -60563,7 +60563,7 @@ func (s *Plugins) FetchPluginSchema(ctx context.Context, request operations.Fetc
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "fetch-plugin-schema",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

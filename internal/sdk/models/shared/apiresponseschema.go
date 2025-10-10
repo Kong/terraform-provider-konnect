@@ -16,25 +16,25 @@ type Portals struct {
 	DisplayName string `json:"display_name"`
 }
 
-func (o *Portals) GetID() string {
-	if o == nil {
+func (p *Portals) GetID() string {
+	if p == nil {
 		return ""
 	}
-	return o.ID
+	return p.ID
 }
 
-func (o *Portals) GetName() string {
-	if o == nil {
+func (p *Portals) GetName() string {
+	if p == nil {
 		return ""
 	}
-	return o.Name
+	return p.Name
 }
 
-func (o *Portals) GetDisplayName() string {
-	if o == nil {
+func (p *Portals) GetDisplayName() string {
+	if p == nil {
 		return ""
 	}
-	return o.DisplayName
+	return p.DisplayName
 }
 
 // APIResponseSchema - API
@@ -78,92 +78,92 @@ func (a APIResponseSchema) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APIResponseSchema) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "name", "api_spec_ids", "portals", "labels", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *APIResponseSchema) GetID() string {
-	if o == nil {
+func (a *APIResponseSchema) GetID() string {
+	if a == nil {
 		return ""
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *APIResponseSchema) GetName() string {
-	if o == nil {
+func (a *APIResponseSchema) GetName() string {
+	if a == nil {
 		return ""
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *APIResponseSchema) GetDescription() *string {
-	if o == nil {
+func (a *APIResponseSchema) GetDescription() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Description
+	return a.Description
 }
 
-func (o *APIResponseSchema) GetVersion() *string {
-	if o == nil {
+func (a *APIResponseSchema) GetVersion() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Version
+	return a.Version
 }
 
-func (o *APIResponseSchema) GetCurrentVersionSummary() *APIVersionSummary {
-	if o == nil {
+func (a *APIResponseSchema) GetCurrentVersionSummary() *APIVersionSummary {
+	if a == nil {
 		return nil
 	}
-	return o.CurrentVersionSummary
+	return a.CurrentVersionSummary
 }
 
-func (o *APIResponseSchema) GetSlug() *string {
-	if o == nil {
+func (a *APIResponseSchema) GetSlug() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Slug
+	return a.Slug
 }
 
-func (o *APIResponseSchema) GetAPISpecIds() []string {
-	if o == nil {
+func (a *APIResponseSchema) GetAPISpecIds() []string {
+	if a == nil {
 		return []string{}
 	}
-	return o.APISpecIds
+	return a.APISpecIds
 }
 
-func (o *APIResponseSchema) GetPortals() []Portals {
-	if o == nil {
+func (a *APIResponseSchema) GetPortals() []Portals {
+	if a == nil {
 		return []Portals{}
 	}
-	return o.Portals
+	return a.Portals
 }
 
-func (o *APIResponseSchema) GetLabels() map[string]*string {
-	if o == nil {
+func (a *APIResponseSchema) GetLabels() map[string]*string {
+	if a == nil {
 		return map[string]*string{}
 	}
-	return o.Labels
+	return a.Labels
 }
 
-func (o *APIResponseSchema) GetAttributes() any {
-	if o == nil {
+func (a *APIResponseSchema) GetAttributes() any {
+	if a == nil {
 		return nil
 	}
-	return o.Attributes
+	return a.Attributes
 }
 
-func (o *APIResponseSchema) GetCreatedAt() time.Time {
-	if o == nil {
+func (a *APIResponseSchema) GetCreatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *APIResponseSchema) GetUpdatedAt() time.Time {
-	if o == nil {
+func (a *APIResponseSchema) GetUpdatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }

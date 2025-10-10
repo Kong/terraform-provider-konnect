@@ -65,7 +65,7 @@ func (s *IntegrationInstanceAuthConfig) GetIntegrationInstanceAuthConfig(ctx con
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-integration-instance-auth-config",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -264,7 +264,7 @@ func (s *IntegrationInstanceAuthConfig) UpsertIntegrationInstanceAuthConfig(ctx 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "upsert-integration-instance-auth-config",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpsertIntegrationInstanceAuthConfig", "json", `request:"mediaType=application/json"`)
@@ -490,7 +490,7 @@ func (s *IntegrationInstanceAuthConfig) DeleteIntegrationInstanceAuthConfig(ctx 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-integration-instance-auth-config",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

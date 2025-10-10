@@ -12,22 +12,22 @@ type TCPLogPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *TCPLogPluginAfter) GetAccess() []string {
-	if o == nil {
+func (t *TCPLogPluginAfter) GetAccess() []string {
+	if t == nil {
 		return nil
 	}
-	return o.Access
+	return t.Access
 }
 
 type TCPLogPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *TCPLogPluginBefore) GetAccess() []string {
-	if o == nil {
+func (t *TCPLogPluginBefore) GetAccess() []string {
+	if t == nil {
 		return nil
 	}
-	return o.Access
+	return t.Access
 }
 
 type TCPLogPluginOrdering struct {
@@ -35,18 +35,18 @@ type TCPLogPluginOrdering struct {
 	Before *TCPLogPluginBefore `json:"before,omitempty"`
 }
 
-func (o *TCPLogPluginOrdering) GetAfter() *TCPLogPluginAfter {
-	if o == nil {
+func (t *TCPLogPluginOrdering) GetAfter() *TCPLogPluginAfter {
+	if t == nil {
 		return nil
 	}
-	return o.After
+	return t.After
 }
 
-func (o *TCPLogPluginOrdering) GetBefore() *TCPLogPluginBefore {
-	if o == nil {
+func (t *TCPLogPluginOrdering) GetBefore() *TCPLogPluginBefore {
+	if t == nil {
 		return nil
 	}
-	return o.Before
+	return t.Before
 }
 
 type TCPLogPluginPartials struct {
@@ -57,25 +57,25 @@ type TCPLogPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *TCPLogPluginPartials) GetID() *string {
-	if o == nil {
+func (t *TCPLogPluginPartials) GetID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ID
+	return t.ID
 }
 
-func (o *TCPLogPluginPartials) GetName() *string {
-	if o == nil {
+func (t *TCPLogPluginPartials) GetName() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Name
+	return t.Name
 }
 
-func (o *TCPLogPluginPartials) GetPath() *string {
-	if o == nil {
+func (t *TCPLogPluginPartials) GetPath() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Path
+	return t.Path
 }
 
 type TCPLogPluginConfig struct {
@@ -100,59 +100,59 @@ func (t TCPLogPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TCPLogPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"host", "port"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *TCPLogPluginConfig) GetCustomFieldsByLua() map[string]any {
-	if o == nil {
+func (t *TCPLogPluginConfig) GetCustomFieldsByLua() map[string]any {
+	if t == nil {
 		return nil
 	}
-	return o.CustomFieldsByLua
+	return t.CustomFieldsByLua
 }
 
-func (o *TCPLogPluginConfig) GetHost() string {
-	if o == nil {
+func (t *TCPLogPluginConfig) GetHost() string {
+	if t == nil {
 		return ""
 	}
-	return o.Host
+	return t.Host
 }
 
-func (o *TCPLogPluginConfig) GetKeepalive() *float64 {
-	if o == nil {
+func (t *TCPLogPluginConfig) GetKeepalive() *float64 {
+	if t == nil {
 		return nil
 	}
-	return o.Keepalive
+	return t.Keepalive
 }
 
-func (o *TCPLogPluginConfig) GetPort() int64 {
-	if o == nil {
+func (t *TCPLogPluginConfig) GetPort() int64 {
+	if t == nil {
 		return 0
 	}
-	return o.Port
+	return t.Port
 }
 
-func (o *TCPLogPluginConfig) GetTimeout() *float64 {
-	if o == nil {
+func (t *TCPLogPluginConfig) GetTimeout() *float64 {
+	if t == nil {
 		return nil
 	}
-	return o.Timeout
+	return t.Timeout
 }
 
-func (o *TCPLogPluginConfig) GetTLS() *bool {
-	if o == nil {
+func (t *TCPLogPluginConfig) GetTLS() *bool {
+	if t == nil {
 		return nil
 	}
-	return o.TLS
+	return t.TLS
 }
 
-func (o *TCPLogPluginConfig) GetTLSSni() *string {
-	if o == nil {
+func (t *TCPLogPluginConfig) GetTLSSni() *string {
+	if t == nil {
 		return nil
 	}
-	return o.TLSSni
+	return t.TLSSni
 }
 
 // TCPLogPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -160,11 +160,11 @@ type TCPLogPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *TCPLogPluginConsumer) GetID() *string {
-	if o == nil {
+func (t *TCPLogPluginConsumer) GetID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ID
+	return t.ID
 }
 
 // TCPLogPluginProtocols - A string representing a protocol, such as HTTP or HTTPS.
@@ -223,11 +223,11 @@ type TCPLogPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *TCPLogPluginRoute) GetID() *string {
-	if o == nil {
+func (t *TCPLogPluginRoute) GetID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ID
+	return t.ID
 }
 
 // TCPLogPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -235,11 +235,11 @@ type TCPLogPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *TCPLogPluginService) GetID() *string {
-	if o == nil {
+func (t *TCPLogPluginService) GetID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ID
+	return t.ID
 }
 
 // TCPLogPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -276,103 +276,103 @@ func (t TCPLogPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TCPLogPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *TCPLogPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (t *TCPLogPlugin) GetCreatedAt() *int64 {
+	if t == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return t.CreatedAt
 }
 
-func (o *TCPLogPlugin) GetEnabled() *bool {
-	if o == nil {
+func (t *TCPLogPlugin) GetEnabled() *bool {
+	if t == nil {
 		return nil
 	}
-	return o.Enabled
+	return t.Enabled
 }
 
-func (o *TCPLogPlugin) GetID() *string {
-	if o == nil {
+func (t *TCPLogPlugin) GetID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ID
+	return t.ID
 }
 
-func (o *TCPLogPlugin) GetInstanceName() *string {
-	if o == nil {
+func (t *TCPLogPlugin) GetInstanceName() *string {
+	if t == nil {
 		return nil
 	}
-	return o.InstanceName
+	return t.InstanceName
 }
 
-func (o *TCPLogPlugin) GetName() string {
+func (t *TCPLogPlugin) GetName() string {
 	return "tcp-log"
 }
 
-func (o *TCPLogPlugin) GetOrdering() *TCPLogPluginOrdering {
-	if o == nil {
+func (t *TCPLogPlugin) GetOrdering() *TCPLogPluginOrdering {
+	if t == nil {
 		return nil
 	}
-	return o.Ordering
+	return t.Ordering
 }
 
-func (o *TCPLogPlugin) GetPartials() []TCPLogPluginPartials {
-	if o == nil {
+func (t *TCPLogPlugin) GetPartials() []TCPLogPluginPartials {
+	if t == nil {
 		return nil
 	}
-	return o.Partials
+	return t.Partials
 }
 
-func (o *TCPLogPlugin) GetTags() []string {
-	if o == nil {
+func (t *TCPLogPlugin) GetTags() []string {
+	if t == nil {
 		return nil
 	}
-	return o.Tags
+	return t.Tags
 }
 
-func (o *TCPLogPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (t *TCPLogPlugin) GetUpdatedAt() *int64 {
+	if t == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return t.UpdatedAt
 }
 
-func (o *TCPLogPlugin) GetConfig() TCPLogPluginConfig {
-	if o == nil {
+func (t *TCPLogPlugin) GetConfig() TCPLogPluginConfig {
+	if t == nil {
 		return TCPLogPluginConfig{}
 	}
-	return o.Config
+	return t.Config
 }
 
-func (o *TCPLogPlugin) GetConsumer() *TCPLogPluginConsumer {
-	if o == nil {
+func (t *TCPLogPlugin) GetConsumer() *TCPLogPluginConsumer {
+	if t == nil {
 		return nil
 	}
-	return o.Consumer
+	return t.Consumer
 }
 
-func (o *TCPLogPlugin) GetProtocols() []TCPLogPluginProtocols {
-	if o == nil {
+func (t *TCPLogPlugin) GetProtocols() []TCPLogPluginProtocols {
+	if t == nil {
 		return nil
 	}
-	return o.Protocols
+	return t.Protocols
 }
 
-func (o *TCPLogPlugin) GetRoute() *TCPLogPluginRoute {
-	if o == nil {
+func (t *TCPLogPlugin) GetRoute() *TCPLogPluginRoute {
+	if t == nil {
 		return nil
 	}
-	return o.Route
+	return t.Route
 }
 
-func (o *TCPLogPlugin) GetService() *TCPLogPluginService {
-	if o == nil {
+func (t *TCPLogPlugin) GetService() *TCPLogPluginService {
+	if t == nil {
 		return nil
 	}
-	return o.Service
+	return t.Service
 }

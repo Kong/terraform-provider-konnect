@@ -13,18 +13,18 @@ type CreateServiceprotectionPluginRequest struct {
 	ServiceProtectionPlugin shared.ServiceProtectionPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateServiceprotectionPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateServiceprotectionPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateServiceprotectionPluginRequest) GetServiceProtectionPlugin() shared.ServiceProtectionPlugin {
-	if o == nil {
+func (c *CreateServiceprotectionPluginRequest) GetServiceProtectionPlugin() shared.ServiceProtectionPlugin {
+	if c == nil {
 		return shared.ServiceProtectionPlugin{}
 	}
-	return o.ServiceProtectionPlugin
+	return c.ServiceProtectionPlugin
 }
 
 type CreateServiceprotectionPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateServiceprotectionPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateServiceprotectionPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateServiceprotectionPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateServiceprotectionPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateServiceprotectionPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateServiceprotectionPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateServiceprotectionPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateServiceprotectionPluginResponse) GetServiceProtectionPlugin() *shared.ServiceProtectionPlugin {
-	if o == nil {
+func (c *CreateServiceprotectionPluginResponse) GetServiceProtectionPlugin() *shared.ServiceProtectionPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.ServiceProtectionPlugin
+	return c.ServiceProtectionPlugin
 }
 
-func (o *CreateServiceprotectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateServiceprotectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

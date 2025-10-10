@@ -25,31 +25,31 @@ func (g GatewayService) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GatewayService) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"control_plane_id"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *GatewayService) GetID() *string {
-	if o == nil {
+func (g *GatewayService) GetID() *string {
+	if g == nil {
 		return nil
 	}
-	return o.ID
+	return g.ID
 }
 
-func (o *GatewayService) GetRuntimeGroupID() *string {
-	if o == nil {
+func (g *GatewayService) GetRuntimeGroupID() *string {
+	if g == nil {
 		return nil
 	}
-	return o.RuntimeGroupID
+	return g.RuntimeGroupID
 }
 
-func (o *GatewayService) GetControlPlaneID() string {
-	if o == nil {
+func (g *GatewayService) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 // APIProductVersionPublishStatus1 - This field is published if the API product version is published to at least one portal. This field is deprecated: Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/v2/#/operations/create-portal-product-version) instead.
@@ -116,78 +116,78 @@ func (a APIProductVersion) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APIProductVersion) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "name", "publish_status", "deprecated", "labels", "portals", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *APIProductVersion) GetID() string {
-	if o == nil {
+func (a *APIProductVersion) GetID() string {
+	if a == nil {
 		return ""
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *APIProductVersion) GetName() string {
-	if o == nil {
+func (a *APIProductVersion) GetName() string {
+	if a == nil {
 		return ""
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *APIProductVersion) GetGatewayService() *GatewayService {
-	if o == nil {
+func (a *APIProductVersion) GetGatewayService() *GatewayService {
+	if a == nil {
 		return nil
 	}
-	return o.GatewayService
+	return a.GatewayService
 }
 
-func (o *APIProductVersion) GetPublishStatus() APIProductVersionPublishStatus1 {
-	if o == nil {
+func (a *APIProductVersion) GetPublishStatus() APIProductVersionPublishStatus1 {
+	if a == nil {
 		return APIProductVersionPublishStatus1("")
 	}
-	return o.PublishStatus
+	return a.PublishStatus
 }
 
-func (o *APIProductVersion) GetDeprecated() bool {
-	if o == nil {
+func (a *APIProductVersion) GetDeprecated() bool {
+	if a == nil {
 		return false
 	}
-	return o.Deprecated
+	return a.Deprecated
 }
 
-func (o *APIProductVersion) GetLabels() map[string]*string {
-	if o == nil {
+func (a *APIProductVersion) GetLabels() map[string]*string {
+	if a == nil {
 		return map[string]*string{}
 	}
-	return o.Labels
+	return a.Labels
 }
 
-func (o *APIProductVersion) GetAuthStrategySyncErrors() []AuthStrategySyncError {
-	if o == nil {
+func (a *APIProductVersion) GetAuthStrategySyncErrors() []AuthStrategySyncError {
+	if a == nil {
 		return nil
 	}
-	return o.AuthStrategySyncErrors
+	return a.AuthStrategySyncErrors
 }
 
-func (o *APIProductVersion) GetPortals() []APIProductVersionPortal {
-	if o == nil {
+func (a *APIProductVersion) GetPortals() []APIProductVersionPortal {
+	if a == nil {
 		return []APIProductVersionPortal{}
 	}
-	return o.Portals
+	return a.Portals
 }
 
-func (o *APIProductVersion) GetCreatedAt() time.Time {
-	if o == nil {
+func (a *APIProductVersion) GetCreatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *APIProductVersion) GetUpdatedAt() time.Time {
-	if o == nil {
+func (a *APIProductVersion) GetUpdatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }

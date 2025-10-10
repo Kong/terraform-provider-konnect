@@ -12,22 +12,22 @@ type KafkaLogPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *KafkaLogPluginAfter) GetAccess() []string {
-	if o == nil {
+func (k *KafkaLogPluginAfter) GetAccess() []string {
+	if k == nil {
 		return nil
 	}
-	return o.Access
+	return k.Access
 }
 
 type KafkaLogPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *KafkaLogPluginBefore) GetAccess() []string {
-	if o == nil {
+func (k *KafkaLogPluginBefore) GetAccess() []string {
+	if k == nil {
 		return nil
 	}
-	return o.Access
+	return k.Access
 }
 
 type KafkaLogPluginOrdering struct {
@@ -35,18 +35,18 @@ type KafkaLogPluginOrdering struct {
 	Before *KafkaLogPluginBefore `json:"before,omitempty"`
 }
 
-func (o *KafkaLogPluginOrdering) GetAfter() *KafkaLogPluginAfter {
-	if o == nil {
+func (k *KafkaLogPluginOrdering) GetAfter() *KafkaLogPluginAfter {
+	if k == nil {
 		return nil
 	}
-	return o.After
+	return k.After
 }
 
-func (o *KafkaLogPluginOrdering) GetBefore() *KafkaLogPluginBefore {
-	if o == nil {
+func (k *KafkaLogPluginOrdering) GetBefore() *KafkaLogPluginBefore {
+	if k == nil {
 		return nil
 	}
-	return o.Before
+	return k.Before
 }
 
 type KafkaLogPluginPartials struct {
@@ -57,25 +57,25 @@ type KafkaLogPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *KafkaLogPluginPartials) GetID() *string {
-	if o == nil {
+func (k *KafkaLogPluginPartials) GetID() *string {
+	if k == nil {
 		return nil
 	}
-	return o.ID
+	return k.ID
 }
 
-func (o *KafkaLogPluginPartials) GetName() *string {
-	if o == nil {
+func (k *KafkaLogPluginPartials) GetName() *string {
+	if k == nil {
 		return nil
 	}
-	return o.Name
+	return k.Name
 }
 
-func (o *KafkaLogPluginPartials) GetPath() *string {
-	if o == nil {
+func (k *KafkaLogPluginPartials) GetPath() *string {
+	if k == nil {
 		return nil
 	}
-	return o.Path
+	return k.Path
 }
 
 // KafkaLogPluginMechanism - The SASL authentication mechanism.  Supported options: `PLAIN`, `SCRAM-SHA-256` or `SCRAM-SHA-512`.
@@ -150,45 +150,45 @@ func (k KafkaLogPluginAuthentication) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaLogPluginAuthentication) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KafkaLogPluginAuthentication) GetMechanism() *KafkaLogPluginMechanism {
-	if o == nil {
+func (k *KafkaLogPluginAuthentication) GetMechanism() *KafkaLogPluginMechanism {
+	if k == nil {
 		return nil
 	}
-	return o.Mechanism
+	return k.Mechanism
 }
 
-func (o *KafkaLogPluginAuthentication) GetPassword() *string {
-	if o == nil {
+func (k *KafkaLogPluginAuthentication) GetPassword() *string {
+	if k == nil {
 		return nil
 	}
-	return o.Password
+	return k.Password
 }
 
-func (o *KafkaLogPluginAuthentication) GetStrategy() *KafkaLogPluginStrategy {
-	if o == nil {
+func (k *KafkaLogPluginAuthentication) GetStrategy() *KafkaLogPluginStrategy {
+	if k == nil {
 		return nil
 	}
-	return o.Strategy
+	return k.Strategy
 }
 
-func (o *KafkaLogPluginAuthentication) GetTokenauth() *bool {
-	if o == nil {
+func (k *KafkaLogPluginAuthentication) GetTokenauth() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.Tokenauth
+	return k.Tokenauth
 }
 
-func (o *KafkaLogPluginAuthentication) GetUser() *string {
-	if o == nil {
+func (k *KafkaLogPluginAuthentication) GetUser() *string {
+	if k == nil {
 		return nil
 	}
-	return o.User
+	return k.User
 }
 
 type KafkaLogPluginBootstrapServers struct {
@@ -198,18 +198,18 @@ type KafkaLogPluginBootstrapServers struct {
 	Port int64 `json:"port"`
 }
 
-func (o *KafkaLogPluginBootstrapServers) GetHost() string {
-	if o == nil {
+func (k *KafkaLogPluginBootstrapServers) GetHost() string {
+	if k == nil {
 		return ""
 	}
-	return o.Host
+	return k.Host
 }
 
-func (o *KafkaLogPluginBootstrapServers) GetPort() int64 {
-	if o == nil {
+func (k *KafkaLogPluginBootstrapServers) GetPort() int64 {
+	if k == nil {
 		return 0
 	}
-	return o.Port
+	return k.Port
 }
 
 // KafkaLogPluginProducerRequestAcks - The number of acknowledgments the producer requires the leader to have received before considering a request complete. Allowed values: 0 for no acknowledgments; 1 for only the leader; and -1 for the full ISR (In-Sync Replica set).
@@ -247,18 +247,18 @@ type KafkaLogPluginBasic struct {
 	Username string `json:"username"`
 }
 
-func (o *KafkaLogPluginBasic) GetPassword() string {
-	if o == nil {
+func (k *KafkaLogPluginBasic) GetPassword() string {
+	if k == nil {
 		return ""
 	}
-	return o.Password
+	return k.Password
 }
 
-func (o *KafkaLogPluginBasic) GetUsername() string {
-	if o == nil {
+func (k *KafkaLogPluginBasic) GetUsername() string {
+	if k == nil {
 		return ""
 	}
-	return o.Username
+	return k.Username
 }
 
 // KafkaLogPluginMode - Authentication mode to use with the schema registry.
@@ -299,24 +299,24 @@ func (k KafkaLogPluginConfigAuthentication) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaLogPluginConfigAuthentication) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KafkaLogPluginConfigAuthentication) GetBasic() *KafkaLogPluginBasic {
-	if o == nil {
+func (k *KafkaLogPluginConfigAuthentication) GetBasic() *KafkaLogPluginBasic {
+	if k == nil {
 		return nil
 	}
-	return o.Basic
+	return k.Basic
 }
 
-func (o *KafkaLogPluginConfigAuthentication) GetMode() *KafkaLogPluginMode {
-	if o == nil {
+func (k *KafkaLogPluginConfigAuthentication) GetMode() *KafkaLogPluginMode {
+	if k == nil {
 		return nil
 	}
-	return o.Mode
+	return k.Mode
 }
 
 type KafkaLogPluginKeySchema struct {
@@ -331,24 +331,24 @@ func (k KafkaLogPluginKeySchema) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaLogPluginKeySchema) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KafkaLogPluginKeySchema) GetSchemaVersion() *string {
-	if o == nil {
+func (k *KafkaLogPluginKeySchema) GetSchemaVersion() *string {
+	if k == nil {
 		return nil
 	}
-	return o.SchemaVersion
+	return k.SchemaVersion
 }
 
-func (o *KafkaLogPluginKeySchema) GetSubjectName() *string {
-	if o == nil {
+func (k *KafkaLogPluginKeySchema) GetSubjectName() *string {
+	if k == nil {
 		return nil
 	}
-	return o.SubjectName
+	return k.SubjectName
 }
 
 type KafkaLogPluginValueSchema struct {
@@ -363,24 +363,24 @@ func (k KafkaLogPluginValueSchema) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaLogPluginValueSchema) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KafkaLogPluginValueSchema) GetSchemaVersion() *string {
-	if o == nil {
+func (k *KafkaLogPluginValueSchema) GetSchemaVersion() *string {
+	if k == nil {
 		return nil
 	}
-	return o.SchemaVersion
+	return k.SchemaVersion
 }
 
-func (o *KafkaLogPluginValueSchema) GetSubjectName() *string {
-	if o == nil {
+func (k *KafkaLogPluginValueSchema) GetSubjectName() *string {
+	if k == nil {
 		return nil
 	}
-	return o.SubjectName
+	return k.SubjectName
 }
 
 type KafkaLogPluginConfluent struct {
@@ -400,52 +400,52 @@ func (k KafkaLogPluginConfluent) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaLogPluginConfluent) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"authentication"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KafkaLogPluginConfluent) GetAuthentication() KafkaLogPluginConfigAuthentication {
-	if o == nil {
+func (k *KafkaLogPluginConfluent) GetAuthentication() KafkaLogPluginConfigAuthentication {
+	if k == nil {
 		return KafkaLogPluginConfigAuthentication{}
 	}
-	return o.Authentication
+	return k.Authentication
 }
 
-func (o *KafkaLogPluginConfluent) GetKeySchema() *KafkaLogPluginKeySchema {
-	if o == nil {
+func (k *KafkaLogPluginConfluent) GetKeySchema() *KafkaLogPluginKeySchema {
+	if k == nil {
 		return nil
 	}
-	return o.KeySchema
+	return k.KeySchema
 }
 
-func (o *KafkaLogPluginConfluent) GetSslVerify() *bool {
-	if o == nil {
+func (k *KafkaLogPluginConfluent) GetSslVerify() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.SslVerify
+	return k.SslVerify
 }
 
-func (o *KafkaLogPluginConfluent) GetTTL() *float64 {
-	if o == nil {
+func (k *KafkaLogPluginConfluent) GetTTL() *float64 {
+	if k == nil {
 		return nil
 	}
-	return o.TTL
+	return k.TTL
 }
 
-func (o *KafkaLogPluginConfluent) GetURL() *string {
-	if o == nil {
+func (k *KafkaLogPluginConfluent) GetURL() *string {
+	if k == nil {
 		return nil
 	}
-	return o.URL
+	return k.URL
 }
 
-func (o *KafkaLogPluginConfluent) GetValueSchema() *KafkaLogPluginValueSchema {
-	if o == nil {
+func (k *KafkaLogPluginConfluent) GetValueSchema() *KafkaLogPluginValueSchema {
+	if k == nil {
 		return nil
 	}
-	return o.ValueSchema
+	return k.ValueSchema
 }
 
 // KafkaLogPluginSchemaRegistry - The plugin-global schema registry configuration. This can be overwritten by the topic configuration.
@@ -453,11 +453,11 @@ type KafkaLogPluginSchemaRegistry struct {
 	Confluent *KafkaLogPluginConfluent `json:"confluent"`
 }
 
-func (o *KafkaLogPluginSchemaRegistry) GetConfluent() *KafkaLogPluginConfluent {
-	if o == nil {
+func (k *KafkaLogPluginSchemaRegistry) GetConfluent() *KafkaLogPluginConfluent {
+	if k == nil {
 		return nil
 	}
-	return o.Confluent
+	return k.Confluent
 }
 
 type KafkaLogPluginSecurity struct {
@@ -472,24 +472,24 @@ func (k KafkaLogPluginSecurity) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaLogPluginSecurity) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KafkaLogPluginSecurity) GetCertificateID() *string {
-	if o == nil {
+func (k *KafkaLogPluginSecurity) GetCertificateID() *string {
+	if k == nil {
 		return nil
 	}
-	return o.CertificateID
+	return k.CertificateID
 }
 
-func (o *KafkaLogPluginSecurity) GetSsl() *bool {
-	if o == nil {
+func (k *KafkaLogPluginSecurity) GetSsl() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.Ssl
+	return k.Ssl
 }
 
 type KafkaLogPluginConfig struct {
@@ -536,150 +536,150 @@ func (k KafkaLogPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaLogPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"topic"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KafkaLogPluginConfig) GetAuthentication() *KafkaLogPluginAuthentication {
-	if o == nil {
+func (k *KafkaLogPluginConfig) GetAuthentication() *KafkaLogPluginAuthentication {
+	if k == nil {
 		return nil
 	}
-	return o.Authentication
+	return k.Authentication
 }
 
-func (o *KafkaLogPluginConfig) GetBootstrapServers() []KafkaLogPluginBootstrapServers {
-	if o == nil {
+func (k *KafkaLogPluginConfig) GetBootstrapServers() []KafkaLogPluginBootstrapServers {
+	if k == nil {
 		return nil
 	}
-	return o.BootstrapServers
+	return k.BootstrapServers
 }
 
-func (o *KafkaLogPluginConfig) GetClusterName() *string {
-	if o == nil {
+func (k *KafkaLogPluginConfig) GetClusterName() *string {
+	if k == nil {
 		return nil
 	}
-	return o.ClusterName
+	return k.ClusterName
 }
 
-func (o *KafkaLogPluginConfig) GetCustomFieldsByLua() map[string]any {
-	if o == nil {
+func (k *KafkaLogPluginConfig) GetCustomFieldsByLua() map[string]any {
+	if k == nil {
 		return nil
 	}
-	return o.CustomFieldsByLua
+	return k.CustomFieldsByLua
 }
 
-func (o *KafkaLogPluginConfig) GetKeepalive() *int64 {
-	if o == nil {
+func (k *KafkaLogPluginConfig) GetKeepalive() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.Keepalive
+	return k.Keepalive
 }
 
-func (o *KafkaLogPluginConfig) GetKeepaliveEnabled() *bool {
-	if o == nil {
+func (k *KafkaLogPluginConfig) GetKeepaliveEnabled() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.KeepaliveEnabled
+	return k.KeepaliveEnabled
 }
 
-func (o *KafkaLogPluginConfig) GetKeyQueryArg() *string {
-	if o == nil {
+func (k *KafkaLogPluginConfig) GetKeyQueryArg() *string {
+	if k == nil {
 		return nil
 	}
-	return o.KeyQueryArg
+	return k.KeyQueryArg
 }
 
-func (o *KafkaLogPluginConfig) GetProducerAsync() *bool {
-	if o == nil {
+func (k *KafkaLogPluginConfig) GetProducerAsync() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.ProducerAsync
+	return k.ProducerAsync
 }
 
-func (o *KafkaLogPluginConfig) GetProducerAsyncBufferingLimitsMessagesInMemory() *int64 {
-	if o == nil {
+func (k *KafkaLogPluginConfig) GetProducerAsyncBufferingLimitsMessagesInMemory() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.ProducerAsyncBufferingLimitsMessagesInMemory
+	return k.ProducerAsyncBufferingLimitsMessagesInMemory
 }
 
-func (o *KafkaLogPluginConfig) GetProducerAsyncFlushTimeout() *int64 {
-	if o == nil {
+func (k *KafkaLogPluginConfig) GetProducerAsyncFlushTimeout() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.ProducerAsyncFlushTimeout
+	return k.ProducerAsyncFlushTimeout
 }
 
-func (o *KafkaLogPluginConfig) GetProducerRequestAcks() *KafkaLogPluginProducerRequestAcks {
-	if o == nil {
+func (k *KafkaLogPluginConfig) GetProducerRequestAcks() *KafkaLogPluginProducerRequestAcks {
+	if k == nil {
 		return nil
 	}
-	return o.ProducerRequestAcks
+	return k.ProducerRequestAcks
 }
 
-func (o *KafkaLogPluginConfig) GetProducerRequestLimitsBytesPerRequest() *int64 {
-	if o == nil {
+func (k *KafkaLogPluginConfig) GetProducerRequestLimitsBytesPerRequest() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.ProducerRequestLimitsBytesPerRequest
+	return k.ProducerRequestLimitsBytesPerRequest
 }
 
-func (o *KafkaLogPluginConfig) GetProducerRequestLimitsMessagesPerRequest() *int64 {
-	if o == nil {
+func (k *KafkaLogPluginConfig) GetProducerRequestLimitsMessagesPerRequest() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.ProducerRequestLimitsMessagesPerRequest
+	return k.ProducerRequestLimitsMessagesPerRequest
 }
 
-func (o *KafkaLogPluginConfig) GetProducerRequestRetriesBackoffTimeout() *int64 {
-	if o == nil {
+func (k *KafkaLogPluginConfig) GetProducerRequestRetriesBackoffTimeout() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.ProducerRequestRetriesBackoffTimeout
+	return k.ProducerRequestRetriesBackoffTimeout
 }
 
-func (o *KafkaLogPluginConfig) GetProducerRequestRetriesMaxAttempts() *int64 {
-	if o == nil {
+func (k *KafkaLogPluginConfig) GetProducerRequestRetriesMaxAttempts() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.ProducerRequestRetriesMaxAttempts
+	return k.ProducerRequestRetriesMaxAttempts
 }
 
-func (o *KafkaLogPluginConfig) GetProducerRequestTimeout() *int64 {
-	if o == nil {
+func (k *KafkaLogPluginConfig) GetProducerRequestTimeout() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.ProducerRequestTimeout
+	return k.ProducerRequestTimeout
 }
 
-func (o *KafkaLogPluginConfig) GetSchemaRegistry() *KafkaLogPluginSchemaRegistry {
-	if o == nil {
+func (k *KafkaLogPluginConfig) GetSchemaRegistry() *KafkaLogPluginSchemaRegistry {
+	if k == nil {
 		return nil
 	}
-	return o.SchemaRegistry
+	return k.SchemaRegistry
 }
 
-func (o *KafkaLogPluginConfig) GetSecurity() *KafkaLogPluginSecurity {
-	if o == nil {
+func (k *KafkaLogPluginConfig) GetSecurity() *KafkaLogPluginSecurity {
+	if k == nil {
 		return nil
 	}
-	return o.Security
+	return k.Security
 }
 
-func (o *KafkaLogPluginConfig) GetTimeout() *int64 {
-	if o == nil {
+func (k *KafkaLogPluginConfig) GetTimeout() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.Timeout
+	return k.Timeout
 }
 
-func (o *KafkaLogPluginConfig) GetTopic() string {
-	if o == nil {
+func (k *KafkaLogPluginConfig) GetTopic() string {
+	if k == nil {
 		return ""
 	}
-	return o.Topic
+	return k.Topic
 }
 
 // KafkaLogPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -687,11 +687,11 @@ type KafkaLogPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *KafkaLogPluginConsumer) GetID() *string {
-	if o == nil {
+func (k *KafkaLogPluginConsumer) GetID() *string {
+	if k == nil {
 		return nil
 	}
-	return o.ID
+	return k.ID
 }
 
 type KafkaLogPluginProtocols string
@@ -737,11 +737,11 @@ type KafkaLogPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *KafkaLogPluginRoute) GetID() *string {
-	if o == nil {
+func (k *KafkaLogPluginRoute) GetID() *string {
+	if k == nil {
 		return nil
 	}
-	return o.ID
+	return k.ID
 }
 
 // KafkaLogPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -749,11 +749,11 @@ type KafkaLogPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *KafkaLogPluginService) GetID() *string {
-	if o == nil {
+func (k *KafkaLogPluginService) GetID() *string {
+	if k == nil {
 		return nil
 	}
-	return o.ID
+	return k.ID
 }
 
 // KafkaLogPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -790,103 +790,103 @@ func (k KafkaLogPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaLogPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KafkaLogPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (k *KafkaLogPlugin) GetCreatedAt() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return k.CreatedAt
 }
 
-func (o *KafkaLogPlugin) GetEnabled() *bool {
-	if o == nil {
+func (k *KafkaLogPlugin) GetEnabled() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.Enabled
+	return k.Enabled
 }
 
-func (o *KafkaLogPlugin) GetID() *string {
-	if o == nil {
+func (k *KafkaLogPlugin) GetID() *string {
+	if k == nil {
 		return nil
 	}
-	return o.ID
+	return k.ID
 }
 
-func (o *KafkaLogPlugin) GetInstanceName() *string {
-	if o == nil {
+func (k *KafkaLogPlugin) GetInstanceName() *string {
+	if k == nil {
 		return nil
 	}
-	return o.InstanceName
+	return k.InstanceName
 }
 
-func (o *KafkaLogPlugin) GetName() string {
+func (k *KafkaLogPlugin) GetName() string {
 	return "kafka-log"
 }
 
-func (o *KafkaLogPlugin) GetOrdering() *KafkaLogPluginOrdering {
-	if o == nil {
+func (k *KafkaLogPlugin) GetOrdering() *KafkaLogPluginOrdering {
+	if k == nil {
 		return nil
 	}
-	return o.Ordering
+	return k.Ordering
 }
 
-func (o *KafkaLogPlugin) GetPartials() []KafkaLogPluginPartials {
-	if o == nil {
+func (k *KafkaLogPlugin) GetPartials() []KafkaLogPluginPartials {
+	if k == nil {
 		return nil
 	}
-	return o.Partials
+	return k.Partials
 }
 
-func (o *KafkaLogPlugin) GetTags() []string {
-	if o == nil {
+func (k *KafkaLogPlugin) GetTags() []string {
+	if k == nil {
 		return nil
 	}
-	return o.Tags
+	return k.Tags
 }
 
-func (o *KafkaLogPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (k *KafkaLogPlugin) GetUpdatedAt() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return k.UpdatedAt
 }
 
-func (o *KafkaLogPlugin) GetConfig() KafkaLogPluginConfig {
-	if o == nil {
+func (k *KafkaLogPlugin) GetConfig() KafkaLogPluginConfig {
+	if k == nil {
 		return KafkaLogPluginConfig{}
 	}
-	return o.Config
+	return k.Config
 }
 
-func (o *KafkaLogPlugin) GetConsumer() *KafkaLogPluginConsumer {
-	if o == nil {
+func (k *KafkaLogPlugin) GetConsumer() *KafkaLogPluginConsumer {
+	if k == nil {
 		return nil
 	}
-	return o.Consumer
+	return k.Consumer
 }
 
-func (o *KafkaLogPlugin) GetProtocols() []KafkaLogPluginProtocols {
-	if o == nil {
+func (k *KafkaLogPlugin) GetProtocols() []KafkaLogPluginProtocols {
+	if k == nil {
 		return nil
 	}
-	return o.Protocols
+	return k.Protocols
 }
 
-func (o *KafkaLogPlugin) GetRoute() *KafkaLogPluginRoute {
-	if o == nil {
+func (k *KafkaLogPlugin) GetRoute() *KafkaLogPluginRoute {
+	if k == nil {
 		return nil
 	}
-	return o.Route
+	return k.Route
 }
 
-func (o *KafkaLogPlugin) GetService() *KafkaLogPluginService {
-	if o == nil {
+func (k *KafkaLogPlugin) GetService() *KafkaLogPluginService {
+	if k == nil {
 		return nil
 	}
-	return o.Service
+	return k.Service
 }

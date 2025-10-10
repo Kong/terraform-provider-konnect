@@ -14,18 +14,18 @@ type GetRequestterminationPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetRequestterminationPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetRequestterminationPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetRequestterminationPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetRequestterminationPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetRequestterminationPluginResponse struct {
@@ -41,37 +41,37 @@ type GetRequestterminationPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetRequestterminationPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetRequestterminationPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetRequestterminationPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetRequestterminationPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetRequestterminationPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetRequestterminationPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetRequestterminationPluginResponse) GetRequestTerminationPlugin() *shared.RequestTerminationPlugin {
-	if o == nil {
+func (g *GetRequestterminationPluginResponse) GetRequestTerminationPlugin() *shared.RequestTerminationPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.RequestTerminationPlugin
+	return g.RequestTerminationPlugin
 }
 
-func (o *GetRequestterminationPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetRequestterminationPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

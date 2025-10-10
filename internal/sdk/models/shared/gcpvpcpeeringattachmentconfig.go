@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type GCPVPCPeeringAttachmentType string
@@ -38,23 +39,34 @@ type GCPVPCPeeringAttachmentConfig struct {
 	PeerVpcName string `json:"peer_vpc_name"`
 }
 
-func (o *GCPVPCPeeringAttachmentConfig) GetKind() GCPVPCPeeringAttachmentType {
-	if o == nil {
+func (g GCPVPCPeeringAttachmentConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GCPVPCPeeringAttachmentConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"kind", "peer_project_id", "peer_vpc_name"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (g *GCPVPCPeeringAttachmentConfig) GetKind() GCPVPCPeeringAttachmentType {
+	if g == nil {
 		return GCPVPCPeeringAttachmentType("")
 	}
-	return o.Kind
+	return g.Kind
 }
 
-func (o *GCPVPCPeeringAttachmentConfig) GetPeerProjectID() string {
-	if o == nil {
+func (g *GCPVPCPeeringAttachmentConfig) GetPeerProjectID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PeerProjectID
+	return g.PeerProjectID
 }
 
-func (o *GCPVPCPeeringAttachmentConfig) GetPeerVpcName() string {
-	if o == nil {
+func (g *GCPVPCPeeringAttachmentConfig) GetPeerVpcName() string {
+	if g == nil {
 		return ""
 	}
-	return o.PeerVpcName
+	return g.PeerVpcName
 }

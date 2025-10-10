@@ -37,50 +37,50 @@ func (c ConsumerRealmUpdateRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConsumerRealmUpdateRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ConsumerRealmUpdateRequest) GetName() *string {
-	if o == nil {
+func (c *ConsumerRealmUpdateRequest) GetName() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *ConsumerRealmUpdateRequest) GetAllowedControlPlanes() []string {
-	if o == nil {
+func (c *ConsumerRealmUpdateRequest) GetAllowedControlPlanes() []string {
+	if c == nil {
 		return nil
 	}
-	return o.AllowedControlPlanes
+	return c.AllowedControlPlanes
 }
 
-func (o *ConsumerRealmUpdateRequest) GetAllowAllControlPlanes() *bool {
-	if o == nil {
+func (c *ConsumerRealmUpdateRequest) GetAllowAllControlPlanes() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.AllowAllControlPlanes
+	return c.AllowAllControlPlanes
 }
 
-func (o *ConsumerRealmUpdateRequest) GetConsumerGroups() []string {
-	if o == nil {
+func (c *ConsumerRealmUpdateRequest) GetConsumerGroups() []string {
+	if c == nil {
 		return nil
 	}
-	return o.ConsumerGroups
+	return c.ConsumerGroups
 }
 
-func (o *ConsumerRealmUpdateRequest) GetTTL() *int64 {
-	if o == nil {
+func (c *ConsumerRealmUpdateRequest) GetTTL() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.TTL
+	return c.TTL
 }
 
-func (o *ConsumerRealmUpdateRequest) GetNegativeTTL() *int64 {
-	if o == nil {
+func (c *ConsumerRealmUpdateRequest) GetNegativeTTL() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.NegativeTTL
+	return c.NegativeTTL
 }

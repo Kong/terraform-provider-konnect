@@ -12,22 +12,22 @@ type AwsLambdaPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AwsLambdaPluginAfter) GetAccess() []string {
-	if o == nil {
+func (a *AwsLambdaPluginAfter) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AwsLambdaPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AwsLambdaPluginBefore) GetAccess() []string {
-	if o == nil {
+func (a *AwsLambdaPluginBefore) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AwsLambdaPluginOrdering struct {
@@ -35,18 +35,18 @@ type AwsLambdaPluginOrdering struct {
 	Before *AwsLambdaPluginBefore `json:"before,omitempty"`
 }
 
-func (o *AwsLambdaPluginOrdering) GetAfter() *AwsLambdaPluginAfter {
-	if o == nil {
+func (a *AwsLambdaPluginOrdering) GetAfter() *AwsLambdaPluginAfter {
+	if a == nil {
 		return nil
 	}
-	return o.After
+	return a.After
 }
 
-func (o *AwsLambdaPluginOrdering) GetBefore() *AwsLambdaPluginBefore {
-	if o == nil {
+func (a *AwsLambdaPluginOrdering) GetBefore() *AwsLambdaPluginBefore {
+	if a == nil {
 		return nil
 	}
-	return o.Before
+	return a.Before
 }
 
 type AwsLambdaPluginPartials struct {
@@ -57,25 +57,25 @@ type AwsLambdaPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *AwsLambdaPluginPartials) GetID() *string {
-	if o == nil {
+func (a *AwsLambdaPluginPartials) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AwsLambdaPluginPartials) GetName() *string {
-	if o == nil {
+func (a *AwsLambdaPluginPartials) GetName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AwsLambdaPluginPartials) GetPath() *string {
-	if o == nil {
+func (a *AwsLambdaPluginPartials) GetPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Path
+	return a.Path
 }
 
 // AwsImdsProtocolVersion - Identifier to select the IMDS protocol version to use: `v1` or `v2`.
@@ -250,199 +250,199 @@ func (a AwsLambdaPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AwsLambdaPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AwsLambdaPluginConfig) GetAwsAssumeRoleArn() *string {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetAwsAssumeRoleArn() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsAssumeRoleArn
+	return a.AwsAssumeRoleArn
 }
 
-func (o *AwsLambdaPluginConfig) GetAwsImdsProtocolVersion() *AwsImdsProtocolVersion {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetAwsImdsProtocolVersion() *AwsImdsProtocolVersion {
+	if a == nil {
 		return nil
 	}
-	return o.AwsImdsProtocolVersion
+	return a.AwsImdsProtocolVersion
 }
 
-func (o *AwsLambdaPluginConfig) GetAwsKey() *string {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetAwsKey() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsKey
+	return a.AwsKey
 }
 
-func (o *AwsLambdaPluginConfig) GetAwsRegion() *string {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetAwsRegion() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsRegion
+	return a.AwsRegion
 }
 
-func (o *AwsLambdaPluginConfig) GetAwsRoleSessionName() *string {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetAwsRoleSessionName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsRoleSessionName
+	return a.AwsRoleSessionName
 }
 
-func (o *AwsLambdaPluginConfig) GetAwsSecret() *string {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetAwsSecret() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsSecret
+	return a.AwsSecret
 }
 
-func (o *AwsLambdaPluginConfig) GetAwsStsEndpointURL() *string {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetAwsStsEndpointURL() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsStsEndpointURL
+	return a.AwsStsEndpointURL
 }
 
-func (o *AwsLambdaPluginConfig) GetAwsgatewayCompatible() *bool {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetAwsgatewayCompatible() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.AwsgatewayCompatible
+	return a.AwsgatewayCompatible
 }
 
-func (o *AwsLambdaPluginConfig) GetBase64EncodeBody() *bool {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetBase64EncodeBody() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Base64EncodeBody
+	return a.Base64EncodeBody
 }
 
-func (o *AwsLambdaPluginConfig) GetDisableHTTPS() *bool {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetDisableHTTPS() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.DisableHTTPS
+	return a.DisableHTTPS
 }
 
-func (o *AwsLambdaPluginConfig) GetEmptyArraysMode() *EmptyArraysMode {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetEmptyArraysMode() *EmptyArraysMode {
+	if a == nil {
 		return nil
 	}
-	return o.EmptyArraysMode
+	return a.EmptyArraysMode
 }
 
-func (o *AwsLambdaPluginConfig) GetForwardRequestBody() *bool {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetForwardRequestBody() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.ForwardRequestBody
+	return a.ForwardRequestBody
 }
 
-func (o *AwsLambdaPluginConfig) GetForwardRequestHeaders() *bool {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetForwardRequestHeaders() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.ForwardRequestHeaders
+	return a.ForwardRequestHeaders
 }
 
-func (o *AwsLambdaPluginConfig) GetForwardRequestMethod() *bool {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetForwardRequestMethod() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.ForwardRequestMethod
+	return a.ForwardRequestMethod
 }
 
-func (o *AwsLambdaPluginConfig) GetForwardRequestURI() *bool {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetForwardRequestURI() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.ForwardRequestURI
+	return a.ForwardRequestURI
 }
 
-func (o *AwsLambdaPluginConfig) GetFunctionName() *string {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetFunctionName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.FunctionName
+	return a.FunctionName
 }
 
-func (o *AwsLambdaPluginConfig) GetHost() *string {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetHost() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Host
+	return a.Host
 }
 
-func (o *AwsLambdaPluginConfig) GetInvocationType() *InvocationType {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetInvocationType() *InvocationType {
+	if a == nil {
 		return nil
 	}
-	return o.InvocationType
+	return a.InvocationType
 }
 
-func (o *AwsLambdaPluginConfig) GetIsProxyIntegration() *bool {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetIsProxyIntegration() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.IsProxyIntegration
+	return a.IsProxyIntegration
 }
 
-func (o *AwsLambdaPluginConfig) GetKeepalive() *float64 {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetKeepalive() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.Keepalive
+	return a.Keepalive
 }
 
-func (o *AwsLambdaPluginConfig) GetLogType() *LogType {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetLogType() *LogType {
+	if a == nil {
 		return nil
 	}
-	return o.LogType
+	return a.LogType
 }
 
-func (o *AwsLambdaPluginConfig) GetPort() *int64 {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetPort() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.Port
+	return a.Port
 }
 
-func (o *AwsLambdaPluginConfig) GetProxyURL() *string {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetProxyURL() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ProxyURL
+	return a.ProxyURL
 }
 
-func (o *AwsLambdaPluginConfig) GetQualifier() *string {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetQualifier() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Qualifier
+	return a.Qualifier
 }
 
-func (o *AwsLambdaPluginConfig) GetSkipLargeBodies() *bool {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetSkipLargeBodies() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.SkipLargeBodies
+	return a.SkipLargeBodies
 }
 
-func (o *AwsLambdaPluginConfig) GetTimeout() *float64 {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetTimeout() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.Timeout
+	return a.Timeout
 }
 
-func (o *AwsLambdaPluginConfig) GetUnhandledStatus() *int64 {
-	if o == nil {
+func (a *AwsLambdaPluginConfig) GetUnhandledStatus() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.UnhandledStatus
+	return a.UnhandledStatus
 }
 
 // AwsLambdaPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -450,11 +450,11 @@ type AwsLambdaPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AwsLambdaPluginConsumer) GetID() *string {
-	if o == nil {
+func (a *AwsLambdaPluginConsumer) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 type AwsLambdaPluginProtocols string
@@ -494,11 +494,11 @@ type AwsLambdaPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AwsLambdaPluginRoute) GetID() *string {
-	if o == nil {
+func (a *AwsLambdaPluginRoute) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AwsLambdaPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -506,11 +506,11 @@ type AwsLambdaPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AwsLambdaPluginService) GetID() *string {
-	if o == nil {
+func (a *AwsLambdaPluginService) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AwsLambdaPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -547,103 +547,103 @@ func (a AwsLambdaPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AwsLambdaPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AwsLambdaPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (a *AwsLambdaPlugin) GetCreatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AwsLambdaPlugin) GetEnabled() *bool {
-	if o == nil {
+func (a *AwsLambdaPlugin) GetEnabled() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Enabled
+	return a.Enabled
 }
 
-func (o *AwsLambdaPlugin) GetID() *string {
-	if o == nil {
+func (a *AwsLambdaPlugin) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AwsLambdaPlugin) GetInstanceName() *string {
-	if o == nil {
+func (a *AwsLambdaPlugin) GetInstanceName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.InstanceName
+	return a.InstanceName
 }
 
-func (o *AwsLambdaPlugin) GetName() string {
+func (a *AwsLambdaPlugin) GetName() string {
 	return "aws-lambda"
 }
 
-func (o *AwsLambdaPlugin) GetOrdering() *AwsLambdaPluginOrdering {
-	if o == nil {
+func (a *AwsLambdaPlugin) GetOrdering() *AwsLambdaPluginOrdering {
+	if a == nil {
 		return nil
 	}
-	return o.Ordering
+	return a.Ordering
 }
 
-func (o *AwsLambdaPlugin) GetPartials() []AwsLambdaPluginPartials {
-	if o == nil {
+func (a *AwsLambdaPlugin) GetPartials() []AwsLambdaPluginPartials {
+	if a == nil {
 		return nil
 	}
-	return o.Partials
+	return a.Partials
 }
 
-func (o *AwsLambdaPlugin) GetTags() []string {
-	if o == nil {
+func (a *AwsLambdaPlugin) GetTags() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Tags
+	return a.Tags
 }
 
-func (o *AwsLambdaPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (a *AwsLambdaPlugin) GetUpdatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }
 
-func (o *AwsLambdaPlugin) GetConfig() *AwsLambdaPluginConfig {
-	if o == nil {
+func (a *AwsLambdaPlugin) GetConfig() *AwsLambdaPluginConfig {
+	if a == nil {
 		return nil
 	}
-	return o.Config
+	return a.Config
 }
 
-func (o *AwsLambdaPlugin) GetConsumer() *AwsLambdaPluginConsumer {
-	if o == nil {
+func (a *AwsLambdaPlugin) GetConsumer() *AwsLambdaPluginConsumer {
+	if a == nil {
 		return nil
 	}
-	return o.Consumer
+	return a.Consumer
 }
 
-func (o *AwsLambdaPlugin) GetProtocols() []AwsLambdaPluginProtocols {
-	if o == nil {
+func (a *AwsLambdaPlugin) GetProtocols() []AwsLambdaPluginProtocols {
+	if a == nil {
 		return nil
 	}
-	return o.Protocols
+	return a.Protocols
 }
 
-func (o *AwsLambdaPlugin) GetRoute() *AwsLambdaPluginRoute {
-	if o == nil {
+func (a *AwsLambdaPlugin) GetRoute() *AwsLambdaPluginRoute {
+	if a == nil {
 		return nil
 	}
-	return o.Route
+	return a.Route
 }
 
-func (o *AwsLambdaPlugin) GetService() *AwsLambdaPluginService {
-	if o == nil {
+func (a *AwsLambdaPlugin) GetService() *AwsLambdaPluginService {
+	if a == nil {
 		return nil
 	}
-	return o.Service
+	return a.Service
 }

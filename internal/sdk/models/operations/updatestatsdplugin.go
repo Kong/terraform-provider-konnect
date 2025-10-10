@@ -15,25 +15,25 @@ type UpdateStatsdPluginRequest struct {
 	StatsdPlugin   shared.StatsdPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateStatsdPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateStatsdPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateStatsdPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateStatsdPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateStatsdPluginRequest) GetStatsdPlugin() shared.StatsdPlugin {
-	if o == nil {
+func (u *UpdateStatsdPluginRequest) GetStatsdPlugin() shared.StatsdPlugin {
+	if u == nil {
 		return shared.StatsdPlugin{}
 	}
-	return o.StatsdPlugin
+	return u.StatsdPlugin
 }
 
 type UpdateStatsdPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateStatsdPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateStatsdPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateStatsdPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateStatsdPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateStatsdPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateStatsdPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateStatsdPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateStatsdPluginResponse) GetStatsdPlugin() *shared.StatsdPlugin {
-	if o == nil {
+func (u *UpdateStatsdPluginResponse) GetStatsdPlugin() *shared.StatsdPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.StatsdPlugin
+	return u.StatsdPlugin
 }
 
-func (o *UpdateStatsdPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateStatsdPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

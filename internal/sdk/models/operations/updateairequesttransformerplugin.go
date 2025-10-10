@@ -15,25 +15,25 @@ type UpdateAirequesttransformerPluginRequest struct {
 	AiRequestTransformerPlugin shared.AiRequestTransformerPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateAirequesttransformerPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateAirequesttransformerPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateAirequesttransformerPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateAirequesttransformerPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateAirequesttransformerPluginRequest) GetAiRequestTransformerPlugin() shared.AiRequestTransformerPlugin {
-	if o == nil {
+func (u *UpdateAirequesttransformerPluginRequest) GetAiRequestTransformerPlugin() shared.AiRequestTransformerPlugin {
+	if u == nil {
 		return shared.AiRequestTransformerPlugin{}
 	}
-	return o.AiRequestTransformerPlugin
+	return u.AiRequestTransformerPlugin
 }
 
 type UpdateAirequesttransformerPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateAirequesttransformerPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateAirequesttransformerPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateAirequesttransformerPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateAirequesttransformerPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateAirequesttransformerPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateAirequesttransformerPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateAirequesttransformerPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateAirequesttransformerPluginResponse) GetAiRequestTransformerPlugin() *shared.AiRequestTransformerPlugin {
-	if o == nil {
+func (u *UpdateAirequesttransformerPluginResponse) GetAiRequestTransformerPlugin() *shared.AiRequestTransformerPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.AiRequestTransformerPlugin
+	return u.AiRequestTransformerPlugin
 }
 
-func (o *UpdateAirequesttransformerPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateAirequesttransformerPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

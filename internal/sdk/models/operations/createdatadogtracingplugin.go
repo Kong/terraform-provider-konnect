@@ -13,18 +13,18 @@ type CreateDatadogtracingPluginRequest struct {
 	DatadogTracingPlugin shared.DatadogTracingPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateDatadogtracingPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateDatadogtracingPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateDatadogtracingPluginRequest) GetDatadogTracingPlugin() shared.DatadogTracingPlugin {
-	if o == nil {
+func (c *CreateDatadogtracingPluginRequest) GetDatadogTracingPlugin() shared.DatadogTracingPlugin {
+	if c == nil {
 		return shared.DatadogTracingPlugin{}
 	}
-	return o.DatadogTracingPlugin
+	return c.DatadogTracingPlugin
 }
 
 type CreateDatadogtracingPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateDatadogtracingPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateDatadogtracingPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateDatadogtracingPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateDatadogtracingPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateDatadogtracingPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateDatadogtracingPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateDatadogtracingPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateDatadogtracingPluginResponse) GetDatadogTracingPlugin() *shared.DatadogTracingPlugin {
-	if o == nil {
+func (c *CreateDatadogtracingPluginResponse) GetDatadogTracingPlugin() *shared.DatadogTracingPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.DatadogTracingPlugin
+	return c.DatadogTracingPlugin
 }
 
-func (o *CreateDatadogtracingPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateDatadogtracingPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

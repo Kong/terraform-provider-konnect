@@ -44,71 +44,71 @@ func (c ConsumerRealm) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConsumerRealm) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "name", "consumer_groups", "allowed_control_planes", "allow_all_control_planes", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ConsumerRealm) GetID() string {
-	if o == nil {
+func (c *ConsumerRealm) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *ConsumerRealm) GetName() string {
-	if o == nil {
+func (c *ConsumerRealm) GetName() string {
+	if c == nil {
 		return ""
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *ConsumerRealm) GetTTL() *int64 {
-	if o == nil {
+func (c *ConsumerRealm) GetTTL() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.TTL
+	return c.TTL
 }
 
-func (o *ConsumerRealm) GetNegativeTTL() *int64 {
-	if o == nil {
+func (c *ConsumerRealm) GetNegativeTTL() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.NegativeTTL
+	return c.NegativeTTL
 }
 
-func (o *ConsumerRealm) GetConsumerGroups() []string {
-	if o == nil {
+func (c *ConsumerRealm) GetConsumerGroups() []string {
+	if c == nil {
 		return []string{}
 	}
-	return o.ConsumerGroups
+	return c.ConsumerGroups
 }
 
-func (o *ConsumerRealm) GetAllowedControlPlanes() []string {
-	if o == nil {
+func (c *ConsumerRealm) GetAllowedControlPlanes() []string {
+	if c == nil {
 		return []string{}
 	}
-	return o.AllowedControlPlanes
+	return c.AllowedControlPlanes
 }
 
-func (o *ConsumerRealm) GetAllowAllControlPlanes() bool {
-	if o == nil {
+func (c *ConsumerRealm) GetAllowAllControlPlanes() bool {
+	if c == nil {
 		return false
 	}
-	return o.AllowAllControlPlanes
+	return c.AllowAllControlPlanes
 }
 
-func (o *ConsumerRealm) GetCreatedAt() time.Time {
-	if o == nil {
+func (c *ConsumerRealm) GetCreatedAt() time.Time {
+	if c == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return c.CreatedAt
 }
 
-func (o *ConsumerRealm) GetUpdatedAt() time.Time {
-	if o == nil {
+func (c *ConsumerRealm) GetUpdatedAt() time.Time {
+	if c == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return c.UpdatedAt
 }

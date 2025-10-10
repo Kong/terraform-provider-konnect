@@ -13,18 +13,18 @@ type CreateAPIImplementationRequest struct {
 	APIImplementation shared.APIImplementation `request:"mediaType=application/json"`
 }
 
-func (o *CreateAPIImplementationRequest) GetAPIID() string {
-	if o == nil {
+func (c *CreateAPIImplementationRequest) GetAPIID() string {
+	if c == nil {
 		return ""
 	}
-	return o.APIID
+	return c.APIID
 }
 
-func (o *CreateAPIImplementationRequest) GetAPIImplementation() shared.APIImplementation {
-	if o == nil {
+func (c *CreateAPIImplementationRequest) GetAPIImplementation() shared.APIImplementation {
+	if c == nil {
 		return shared.APIImplementation{}
 	}
-	return o.APIImplementation
+	return c.APIImplementation
 }
 
 type CreateAPIImplementationResponse struct {
@@ -48,65 +48,65 @@ type CreateAPIImplementationResponse struct {
 	ConflictError *shared.ConflictError
 }
 
-func (o *CreateAPIImplementationResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateAPIImplementationResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateAPIImplementationResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateAPIImplementationResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateAPIImplementationResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateAPIImplementationResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateAPIImplementationResponse) GetAPIImplementationResponse() *shared.APIImplementationResponse {
-	if o == nil {
+func (c *CreateAPIImplementationResponse) GetAPIImplementationResponse() *shared.APIImplementationResponse {
+	if c == nil {
 		return nil
 	}
-	return o.APIImplementationResponse
+	return c.APIImplementationResponse
 }
 
-func (o *CreateAPIImplementationResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreateAPIImplementationResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreateAPIImplementationResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (c *CreateAPIImplementationResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return c.UnauthorizedError
 }
 
-func (o *CreateAPIImplementationResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (c *CreateAPIImplementationResponse) GetForbiddenError() *shared.ForbiddenError {
+	if c == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return c.ForbiddenError
 }
 
-func (o *CreateAPIImplementationResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (c *CreateAPIImplementationResponse) GetNotFoundError() *shared.NotFoundError {
+	if c == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return c.NotFoundError
 }
 
-func (o *CreateAPIImplementationResponse) GetConflictError() *shared.ConflictError {
-	if o == nil {
+func (c *CreateAPIImplementationResponse) GetConflictError() *shared.ConflictError {
+	if c == nil {
 		return nil
 	}
-	return o.ConflictError
+	return c.ConflictError
 }

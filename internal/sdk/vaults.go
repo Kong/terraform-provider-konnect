@@ -67,7 +67,7 @@ func (s *Vaults) CreateVault(ctx context.Context, request operations.CreateVault
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-vault",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Vault", "json", `request:"mediaType=application/json"`)
@@ -225,7 +225,7 @@ func (s *Vaults) DeleteVault(ctx context.Context, request operations.DeleteVault
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-vault",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -356,7 +356,7 @@ func (s *Vaults) GetVault(ctx context.Context, request operations.GetVaultReques
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-vault",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -508,7 +508,7 @@ func (s *Vaults) UpsertVault(ctx context.Context, request operations.UpsertVault
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "upsert-vault",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Vault", "json", `request:"mediaType=application/json"`)

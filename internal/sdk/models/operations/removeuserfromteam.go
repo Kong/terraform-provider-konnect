@@ -18,18 +18,18 @@ type RemoveUserFromTeamRequest struct {
 	TeamID string `pathParam:"style=simple,explode=false,name=teamId"`
 }
 
-func (o *RemoveUserFromTeamRequest) GetUserID() string {
-	if o == nil {
+func (r *RemoveUserFromTeamRequest) GetUserID() string {
+	if r == nil {
 		return ""
 	}
-	return o.UserID
+	return r.UserID
 }
 
-func (o *RemoveUserFromTeamRequest) GetTeamID() string {
-	if o == nil {
+func (r *RemoveUserFromTeamRequest) GetTeamID() string {
+	if r == nil {
 		return ""
 	}
-	return o.TeamID
+	return r.TeamID
 }
 
 type RemoveUserFromTeamResponse struct {
@@ -45,37 +45,37 @@ type RemoveUserFromTeamResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *RemoveUserFromTeamResponse) GetContentType() string {
-	if o == nil {
+func (r *RemoveUserFromTeamResponse) GetContentType() string {
+	if r == nil {
 		return ""
 	}
-	return o.ContentType
+	return r.ContentType
 }
 
-func (o *RemoveUserFromTeamResponse) GetStatusCode() int {
-	if o == nil {
+func (r *RemoveUserFromTeamResponse) GetStatusCode() int {
+	if r == nil {
 		return 0
 	}
-	return o.StatusCode
+	return r.StatusCode
 }
 
-func (o *RemoveUserFromTeamResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (r *RemoveUserFromTeamResponse) GetRawResponse() *http.Response {
+	if r == nil {
 		return nil
 	}
-	return o.RawResponse
+	return r.RawResponse
 }
 
-func (o *RemoveUserFromTeamResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (r *RemoveUserFromTeamResponse) GetBadRequestError() *shared.BadRequestError {
+	if r == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return r.BadRequestError
 }
 
-func (o *RemoveUserFromTeamResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (r *RemoveUserFromTeamResponse) GetNotFoundError() *shared.NotFoundError {
+	if r == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return r.NotFoundError
 }

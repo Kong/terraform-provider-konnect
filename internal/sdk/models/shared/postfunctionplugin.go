@@ -12,22 +12,22 @@ type PostFunctionPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *PostFunctionPluginAfter) GetAccess() []string {
-	if o == nil {
+func (p *PostFunctionPluginAfter) GetAccess() []string {
+	if p == nil {
 		return nil
 	}
-	return o.Access
+	return p.Access
 }
 
 type PostFunctionPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *PostFunctionPluginBefore) GetAccess() []string {
-	if o == nil {
+func (p *PostFunctionPluginBefore) GetAccess() []string {
+	if p == nil {
 		return nil
 	}
-	return o.Access
+	return p.Access
 }
 
 type PostFunctionPluginOrdering struct {
@@ -35,18 +35,18 @@ type PostFunctionPluginOrdering struct {
 	Before *PostFunctionPluginBefore `json:"before,omitempty"`
 }
 
-func (o *PostFunctionPluginOrdering) GetAfter() *PostFunctionPluginAfter {
-	if o == nil {
+func (p *PostFunctionPluginOrdering) GetAfter() *PostFunctionPluginAfter {
+	if p == nil {
 		return nil
 	}
-	return o.After
+	return p.After
 }
 
-func (o *PostFunctionPluginOrdering) GetBefore() *PostFunctionPluginBefore {
-	if o == nil {
+func (p *PostFunctionPluginOrdering) GetBefore() *PostFunctionPluginBefore {
+	if p == nil {
 		return nil
 	}
-	return o.Before
+	return p.Before
 }
 
 type PostFunctionPluginPartials struct {
@@ -57,25 +57,25 @@ type PostFunctionPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *PostFunctionPluginPartials) GetID() *string {
-	if o == nil {
+func (p *PostFunctionPluginPartials) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
-func (o *PostFunctionPluginPartials) GetName() *string {
-	if o == nil {
+func (p *PostFunctionPluginPartials) GetName() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Name
+	return p.Name
 }
 
-func (o *PostFunctionPluginPartials) GetPath() *string {
-	if o == nil {
+func (p *PostFunctionPluginPartials) GetPath() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Path
+	return p.Path
 }
 
 type PostFunctionPluginConfig struct {
@@ -91,74 +91,74 @@ type PostFunctionPluginConfig struct {
 	WsUpstreamFrame []string `json:"ws_upstream_frame,omitempty"`
 }
 
-func (o *PostFunctionPluginConfig) GetAccess() []string {
-	if o == nil {
+func (p *PostFunctionPluginConfig) GetAccess() []string {
+	if p == nil {
 		return nil
 	}
-	return o.Access
+	return p.Access
 }
 
-func (o *PostFunctionPluginConfig) GetBodyFilter() []string {
-	if o == nil {
+func (p *PostFunctionPluginConfig) GetBodyFilter() []string {
+	if p == nil {
 		return nil
 	}
-	return o.BodyFilter
+	return p.BodyFilter
 }
 
-func (o *PostFunctionPluginConfig) GetCertificate() []string {
-	if o == nil {
+func (p *PostFunctionPluginConfig) GetCertificate() []string {
+	if p == nil {
 		return nil
 	}
-	return o.Certificate
+	return p.Certificate
 }
 
-func (o *PostFunctionPluginConfig) GetHeaderFilter() []string {
-	if o == nil {
+func (p *PostFunctionPluginConfig) GetHeaderFilter() []string {
+	if p == nil {
 		return nil
 	}
-	return o.HeaderFilter
+	return p.HeaderFilter
 }
 
-func (o *PostFunctionPluginConfig) GetLog() []string {
-	if o == nil {
+func (p *PostFunctionPluginConfig) GetLog() []string {
+	if p == nil {
 		return nil
 	}
-	return o.Log
+	return p.Log
 }
 
-func (o *PostFunctionPluginConfig) GetRewrite() []string {
-	if o == nil {
+func (p *PostFunctionPluginConfig) GetRewrite() []string {
+	if p == nil {
 		return nil
 	}
-	return o.Rewrite
+	return p.Rewrite
 }
 
-func (o *PostFunctionPluginConfig) GetWsClientFrame() []string {
-	if o == nil {
+func (p *PostFunctionPluginConfig) GetWsClientFrame() []string {
+	if p == nil {
 		return nil
 	}
-	return o.WsClientFrame
+	return p.WsClientFrame
 }
 
-func (o *PostFunctionPluginConfig) GetWsClose() []string {
-	if o == nil {
+func (p *PostFunctionPluginConfig) GetWsClose() []string {
+	if p == nil {
 		return nil
 	}
-	return o.WsClose
+	return p.WsClose
 }
 
-func (o *PostFunctionPluginConfig) GetWsHandshake() []string {
-	if o == nil {
+func (p *PostFunctionPluginConfig) GetWsHandshake() []string {
+	if p == nil {
 		return nil
 	}
-	return o.WsHandshake
+	return p.WsHandshake
 }
 
-func (o *PostFunctionPluginConfig) GetWsUpstreamFrame() []string {
-	if o == nil {
+func (p *PostFunctionPluginConfig) GetWsUpstreamFrame() []string {
+	if p == nil {
 		return nil
 	}
-	return o.WsUpstreamFrame
+	return p.WsUpstreamFrame
 }
 
 // PostFunctionPluginProtocols - A string representing a protocol, such as HTTP or HTTPS.
@@ -217,11 +217,11 @@ type PostFunctionPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *PostFunctionPluginRoute) GetID() *string {
-	if o == nil {
+func (p *PostFunctionPluginRoute) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
 // PostFunctionPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -229,11 +229,11 @@ type PostFunctionPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *PostFunctionPluginService) GetID() *string {
-	if o == nil {
+func (p *PostFunctionPluginService) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
 // PostFunctionPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -268,96 +268,96 @@ func (p PostFunctionPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PostFunctionPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *PostFunctionPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (p *PostFunctionPlugin) GetCreatedAt() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return p.CreatedAt
 }
 
-func (o *PostFunctionPlugin) GetEnabled() *bool {
-	if o == nil {
+func (p *PostFunctionPlugin) GetEnabled() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.Enabled
+	return p.Enabled
 }
 
-func (o *PostFunctionPlugin) GetID() *string {
-	if o == nil {
+func (p *PostFunctionPlugin) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
-func (o *PostFunctionPlugin) GetInstanceName() *string {
-	if o == nil {
+func (p *PostFunctionPlugin) GetInstanceName() *string {
+	if p == nil {
 		return nil
 	}
-	return o.InstanceName
+	return p.InstanceName
 }
 
-func (o *PostFunctionPlugin) GetName() string {
+func (p *PostFunctionPlugin) GetName() string {
 	return "post-function"
 }
 
-func (o *PostFunctionPlugin) GetOrdering() *PostFunctionPluginOrdering {
-	if o == nil {
+func (p *PostFunctionPlugin) GetOrdering() *PostFunctionPluginOrdering {
+	if p == nil {
 		return nil
 	}
-	return o.Ordering
+	return p.Ordering
 }
 
-func (o *PostFunctionPlugin) GetPartials() []PostFunctionPluginPartials {
-	if o == nil {
+func (p *PostFunctionPlugin) GetPartials() []PostFunctionPluginPartials {
+	if p == nil {
 		return nil
 	}
-	return o.Partials
+	return p.Partials
 }
 
-func (o *PostFunctionPlugin) GetTags() []string {
-	if o == nil {
+func (p *PostFunctionPlugin) GetTags() []string {
+	if p == nil {
 		return nil
 	}
-	return o.Tags
+	return p.Tags
 }
 
-func (o *PostFunctionPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (p *PostFunctionPlugin) GetUpdatedAt() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return p.UpdatedAt
 }
 
-func (o *PostFunctionPlugin) GetConfig() *PostFunctionPluginConfig {
-	if o == nil {
+func (p *PostFunctionPlugin) GetConfig() *PostFunctionPluginConfig {
+	if p == nil {
 		return nil
 	}
-	return o.Config
+	return p.Config
 }
 
-func (o *PostFunctionPlugin) GetProtocols() []PostFunctionPluginProtocols {
-	if o == nil {
+func (p *PostFunctionPlugin) GetProtocols() []PostFunctionPluginProtocols {
+	if p == nil {
 		return nil
 	}
-	return o.Protocols
+	return p.Protocols
 }
 
-func (o *PostFunctionPlugin) GetRoute() *PostFunctionPluginRoute {
-	if o == nil {
+func (p *PostFunctionPlugin) GetRoute() *PostFunctionPluginRoute {
+	if p == nil {
 		return nil
 	}
-	return o.Route
+	return p.Route
 }
 
-func (o *PostFunctionPlugin) GetService() *PostFunctionPluginService {
-	if o == nil {
+func (p *PostFunctionPlugin) GetService() *PostFunctionPluginService {
+	if p == nil {
 		return nil
 	}
-	return o.Service
+	return p.Service
 }

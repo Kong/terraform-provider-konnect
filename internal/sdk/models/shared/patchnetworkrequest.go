@@ -8,9 +8,9 @@ type PatchNetworkRequest struct {
 	Name *string `json:"name,omitempty"`
 }
 
-func (o *PatchNetworkRequest) GetName() *string {
-	if o == nil {
+func (p *PatchNetworkRequest) GetName() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Name
+	return p.Name
 }

@@ -14,18 +14,18 @@ type GetKeyauthencPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetKeyauthencPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetKeyauthencPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetKeyauthencPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetKeyauthencPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetKeyauthencPluginResponse struct {
@@ -41,37 +41,37 @@ type GetKeyauthencPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetKeyauthencPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetKeyauthencPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetKeyauthencPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetKeyauthencPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetKeyauthencPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetKeyauthencPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetKeyauthencPluginResponse) GetKeyAuthEncPlugin() *shared.KeyAuthEncPlugin {
-	if o == nil {
+func (g *GetKeyauthencPluginResponse) GetKeyAuthEncPlugin() *shared.KeyAuthEncPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.KeyAuthEncPlugin
+	return g.KeyAuthEncPlugin
 }
 
-func (o *GetKeyauthencPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetKeyauthencPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

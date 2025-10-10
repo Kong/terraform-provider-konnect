@@ -12,22 +12,22 @@ type RateLimitingAdvancedPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *RateLimitingAdvancedPluginAfter) GetAccess() []string {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginAfter) GetAccess() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Access
+	return r.Access
 }
 
 type RateLimitingAdvancedPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *RateLimitingAdvancedPluginBefore) GetAccess() []string {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginBefore) GetAccess() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Access
+	return r.Access
 }
 
 type RateLimitingAdvancedPluginOrdering struct {
@@ -35,18 +35,18 @@ type RateLimitingAdvancedPluginOrdering struct {
 	Before *RateLimitingAdvancedPluginBefore `json:"before,omitempty"`
 }
 
-func (o *RateLimitingAdvancedPluginOrdering) GetAfter() *RateLimitingAdvancedPluginAfter {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginOrdering) GetAfter() *RateLimitingAdvancedPluginAfter {
+	if r == nil {
 		return nil
 	}
-	return o.After
+	return r.After
 }
 
-func (o *RateLimitingAdvancedPluginOrdering) GetBefore() *RateLimitingAdvancedPluginBefore {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginOrdering) GetBefore() *RateLimitingAdvancedPluginBefore {
+	if r == nil {
 		return nil
 	}
-	return o.Before
+	return r.Before
 }
 
 type RateLimitingAdvancedPluginPartials struct {
@@ -57,25 +57,25 @@ type RateLimitingAdvancedPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *RateLimitingAdvancedPluginPartials) GetID() *string {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginPartials) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
-func (o *RateLimitingAdvancedPluginPartials) GetName() *string {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginPartials) GetName() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Name
+	return r.Name
 }
 
-func (o *RateLimitingAdvancedPluginPartials) GetPath() *string {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginPartials) GetPath() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Path
+	return r.Path
 }
 
 type CompoundIdentifier string
@@ -173,24 +173,24 @@ func (r RateLimitingAdvancedPluginClusterNodes) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RateLimitingAdvancedPluginClusterNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *RateLimitingAdvancedPluginClusterNodes) GetIP() *string {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginClusterNodes) GetIP() *string {
+	if r == nil {
 		return nil
 	}
-	return o.IP
+	return r.IP
 }
 
-func (o *RateLimitingAdvancedPluginClusterNodes) GetPort() *int64 {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginClusterNodes) GetPort() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.Port
+	return r.Port
 }
 
 // RedisProxyType - If the `connection_is_proxied` is enabled, this field indicates the proxy type and version you are using. For example, you can enable this optioin when you want authentication between Kong and Envoy proxy.
@@ -229,24 +229,24 @@ func (r RateLimitingAdvancedPluginSentinelNodes) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RateLimitingAdvancedPluginSentinelNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *RateLimitingAdvancedPluginSentinelNodes) GetHost() *string {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginSentinelNodes) GetHost() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Host
+	return r.Host
 }
 
-func (o *RateLimitingAdvancedPluginSentinelNodes) GetPort() *int64 {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginSentinelNodes) GetPort() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.Port
+	return r.Port
 }
 
 // RateLimitingAdvancedPluginSentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
@@ -331,164 +331,164 @@ func (r RateLimitingAdvancedPluginRedis) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RateLimitingAdvancedPluginRedis) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *RateLimitingAdvancedPluginRedis) GetClusterMaxRedirections() *int64 {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginRedis) GetClusterMaxRedirections() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.ClusterMaxRedirections
+	return r.ClusterMaxRedirections
 }
 
-func (o *RateLimitingAdvancedPluginRedis) GetClusterNodes() []RateLimitingAdvancedPluginClusterNodes {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginRedis) GetClusterNodes() []RateLimitingAdvancedPluginClusterNodes {
+	if r == nil {
 		return nil
 	}
-	return o.ClusterNodes
+	return r.ClusterNodes
 }
 
-func (o *RateLimitingAdvancedPluginRedis) GetConnectTimeout() *int64 {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginRedis) GetConnectTimeout() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.ConnectTimeout
+	return r.ConnectTimeout
 }
 
-func (o *RateLimitingAdvancedPluginRedis) GetConnectionIsProxied() *bool {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginRedis) GetConnectionIsProxied() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.ConnectionIsProxied
+	return r.ConnectionIsProxied
 }
 
-func (o *RateLimitingAdvancedPluginRedis) GetDatabase() *int64 {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginRedis) GetDatabase() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.Database
+	return r.Database
 }
 
-func (o *RateLimitingAdvancedPluginRedis) GetHost() *string {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginRedis) GetHost() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Host
+	return r.Host
 }
 
-func (o *RateLimitingAdvancedPluginRedis) GetKeepaliveBacklog() *int64 {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginRedis) GetKeepaliveBacklog() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.KeepaliveBacklog
+	return r.KeepaliveBacklog
 }
 
-func (o *RateLimitingAdvancedPluginRedis) GetKeepalivePoolSize() *int64 {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginRedis) GetKeepalivePoolSize() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.KeepalivePoolSize
+	return r.KeepalivePoolSize
 }
 
-func (o *RateLimitingAdvancedPluginRedis) GetPassword() *string {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginRedis) GetPassword() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Password
+	return r.Password
 }
 
-func (o *RateLimitingAdvancedPluginRedis) GetPort() *int64 {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginRedis) GetPort() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.Port
+	return r.Port
 }
 
-func (o *RateLimitingAdvancedPluginRedis) GetReadTimeout() *int64 {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginRedis) GetReadTimeout() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.ReadTimeout
+	return r.ReadTimeout
 }
 
-func (o *RateLimitingAdvancedPluginRedis) GetRedisProxyType() *RedisProxyType {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginRedis) GetRedisProxyType() *RedisProxyType {
+	if r == nil {
 		return nil
 	}
-	return o.RedisProxyType
+	return r.RedisProxyType
 }
 
-func (o *RateLimitingAdvancedPluginRedis) GetSendTimeout() *int64 {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginRedis) GetSendTimeout() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.SendTimeout
+	return r.SendTimeout
 }
 
-func (o *RateLimitingAdvancedPluginRedis) GetSentinelMaster() *string {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginRedis) GetSentinelMaster() *string {
+	if r == nil {
 		return nil
 	}
-	return o.SentinelMaster
+	return r.SentinelMaster
 }
 
-func (o *RateLimitingAdvancedPluginRedis) GetSentinelNodes() []RateLimitingAdvancedPluginSentinelNodes {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginRedis) GetSentinelNodes() []RateLimitingAdvancedPluginSentinelNodes {
+	if r == nil {
 		return nil
 	}
-	return o.SentinelNodes
+	return r.SentinelNodes
 }
 
-func (o *RateLimitingAdvancedPluginRedis) GetSentinelPassword() *string {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginRedis) GetSentinelPassword() *string {
+	if r == nil {
 		return nil
 	}
-	return o.SentinelPassword
+	return r.SentinelPassword
 }
 
-func (o *RateLimitingAdvancedPluginRedis) GetSentinelRole() *RateLimitingAdvancedPluginSentinelRole {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginRedis) GetSentinelRole() *RateLimitingAdvancedPluginSentinelRole {
+	if r == nil {
 		return nil
 	}
-	return o.SentinelRole
+	return r.SentinelRole
 }
 
-func (o *RateLimitingAdvancedPluginRedis) GetSentinelUsername() *string {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginRedis) GetSentinelUsername() *string {
+	if r == nil {
 		return nil
 	}
-	return o.SentinelUsername
+	return r.SentinelUsername
 }
 
-func (o *RateLimitingAdvancedPluginRedis) GetServerName() *string {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginRedis) GetServerName() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ServerName
+	return r.ServerName
 }
 
-func (o *RateLimitingAdvancedPluginRedis) GetSsl() *bool {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginRedis) GetSsl() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.Ssl
+	return r.Ssl
 }
 
-func (o *RateLimitingAdvancedPluginRedis) GetSslVerify() *bool {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginRedis) GetSslVerify() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.SslVerify
+	return r.SslVerify
 }
 
-func (o *RateLimitingAdvancedPluginRedis) GetUsername() *string {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginRedis) GetUsername() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Username
+	return r.Username
 }
 
 // RateLimitingAdvancedPluginStrategy - The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local` and `cluster`.
@@ -595,150 +595,150 @@ func (r RateLimitingAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RateLimitingAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"limit", "window_size"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetCompoundIdentifier() []CompoundIdentifier {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginConfig) GetCompoundIdentifier() []CompoundIdentifier {
+	if r == nil {
 		return nil
 	}
-	return o.CompoundIdentifier
+	return r.CompoundIdentifier
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetConsumerGroups() []string {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginConfig) GetConsumerGroups() []string {
+	if r == nil {
 		return nil
 	}
-	return o.ConsumerGroups
+	return r.ConsumerGroups
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetDictionaryName() *string {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginConfig) GetDictionaryName() *string {
+	if r == nil {
 		return nil
 	}
-	return o.DictionaryName
+	return r.DictionaryName
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetDisablePenalty() *bool {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginConfig) GetDisablePenalty() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.DisablePenalty
+	return r.DisablePenalty
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetEnforceConsumerGroups() *bool {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginConfig) GetEnforceConsumerGroups() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.EnforceConsumerGroups
+	return r.EnforceConsumerGroups
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetErrorCode() *float64 {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginConfig) GetErrorCode() *float64 {
+	if r == nil {
 		return nil
 	}
-	return o.ErrorCode
+	return r.ErrorCode
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetErrorMessage() *string {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginConfig) GetErrorMessage() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ErrorMessage
+	return r.ErrorMessage
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetHeaderName() *string {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginConfig) GetHeaderName() *string {
+	if r == nil {
 		return nil
 	}
-	return o.HeaderName
+	return r.HeaderName
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetHideClientHeaders() *bool {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginConfig) GetHideClientHeaders() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.HideClientHeaders
+	return r.HideClientHeaders
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetIdentifier() *RateLimitingAdvancedPluginIdentifier {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginConfig) GetIdentifier() *RateLimitingAdvancedPluginIdentifier {
+	if r == nil {
 		return nil
 	}
-	return o.Identifier
+	return r.Identifier
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetLimit() []float64 {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginConfig) GetLimit() []float64 {
+	if r == nil {
 		return []float64{}
 	}
-	return o.Limit
+	return r.Limit
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetLockDictionaryName() *string {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginConfig) GetLockDictionaryName() *string {
+	if r == nil {
 		return nil
 	}
-	return o.LockDictionaryName
+	return r.LockDictionaryName
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetNamespace() *string {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginConfig) GetNamespace() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Namespace
+	return r.Namespace
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetPath() *string {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginConfig) GetPath() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Path
+	return r.Path
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetRedis() *RateLimitingAdvancedPluginRedis {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginConfig) GetRedis() *RateLimitingAdvancedPluginRedis {
+	if r == nil {
 		return nil
 	}
-	return o.Redis
+	return r.Redis
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetRetryAfterJitterMax() *float64 {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginConfig) GetRetryAfterJitterMax() *float64 {
+	if r == nil {
 		return nil
 	}
-	return o.RetryAfterJitterMax
+	return r.RetryAfterJitterMax
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetStrategy() *RateLimitingAdvancedPluginStrategy {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginConfig) GetStrategy() *RateLimitingAdvancedPluginStrategy {
+	if r == nil {
 		return nil
 	}
-	return o.Strategy
+	return r.Strategy
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetSyncRate() *float64 {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginConfig) GetSyncRate() *float64 {
+	if r == nil {
 		return nil
 	}
-	return o.SyncRate
+	return r.SyncRate
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetWindowSize() []float64 {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginConfig) GetWindowSize() []float64 {
+	if r == nil {
 		return []float64{}
 	}
-	return o.WindowSize
+	return r.WindowSize
 }
 
-func (o *RateLimitingAdvancedPluginConfig) GetWindowType() *RateLimitingAdvancedPluginWindowType {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginConfig) GetWindowType() *RateLimitingAdvancedPluginWindowType {
+	if r == nil {
 		return nil
 	}
-	return o.WindowType
+	return r.WindowType
 }
 
 // RateLimitingAdvancedPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -746,11 +746,11 @@ type RateLimitingAdvancedPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *RateLimitingAdvancedPluginConsumer) GetID() *string {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginConsumer) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
 // RateLimitingAdvancedPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -758,11 +758,11 @@ type RateLimitingAdvancedPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *RateLimitingAdvancedPluginConsumerGroup) GetID() *string {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginConsumerGroup) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
 type RateLimitingAdvancedPluginProtocols string
@@ -802,11 +802,11 @@ type RateLimitingAdvancedPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *RateLimitingAdvancedPluginRoute) GetID() *string {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginRoute) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
 // RateLimitingAdvancedPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -814,11 +814,11 @@ type RateLimitingAdvancedPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *RateLimitingAdvancedPluginService) GetID() *string {
-	if o == nil {
+func (r *RateLimitingAdvancedPluginService) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
 // RateLimitingAdvancedPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -857,110 +857,110 @@ func (r RateLimitingAdvancedPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RateLimitingAdvancedPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *RateLimitingAdvancedPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (r *RateLimitingAdvancedPlugin) GetCreatedAt() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return r.CreatedAt
 }
 
-func (o *RateLimitingAdvancedPlugin) GetEnabled() *bool {
-	if o == nil {
+func (r *RateLimitingAdvancedPlugin) GetEnabled() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.Enabled
+	return r.Enabled
 }
 
-func (o *RateLimitingAdvancedPlugin) GetID() *string {
-	if o == nil {
+func (r *RateLimitingAdvancedPlugin) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
-func (o *RateLimitingAdvancedPlugin) GetInstanceName() *string {
-	if o == nil {
+func (r *RateLimitingAdvancedPlugin) GetInstanceName() *string {
+	if r == nil {
 		return nil
 	}
-	return o.InstanceName
+	return r.InstanceName
 }
 
-func (o *RateLimitingAdvancedPlugin) GetName() string {
+func (r *RateLimitingAdvancedPlugin) GetName() string {
 	return "rate-limiting-advanced"
 }
 
-func (o *RateLimitingAdvancedPlugin) GetOrdering() *RateLimitingAdvancedPluginOrdering {
-	if o == nil {
+func (r *RateLimitingAdvancedPlugin) GetOrdering() *RateLimitingAdvancedPluginOrdering {
+	if r == nil {
 		return nil
 	}
-	return o.Ordering
+	return r.Ordering
 }
 
-func (o *RateLimitingAdvancedPlugin) GetPartials() []RateLimitingAdvancedPluginPartials {
-	if o == nil {
+func (r *RateLimitingAdvancedPlugin) GetPartials() []RateLimitingAdvancedPluginPartials {
+	if r == nil {
 		return nil
 	}
-	return o.Partials
+	return r.Partials
 }
 
-func (o *RateLimitingAdvancedPlugin) GetTags() []string {
-	if o == nil {
+func (r *RateLimitingAdvancedPlugin) GetTags() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Tags
+	return r.Tags
 }
 
-func (o *RateLimitingAdvancedPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (r *RateLimitingAdvancedPlugin) GetUpdatedAt() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return r.UpdatedAt
 }
 
-func (o *RateLimitingAdvancedPlugin) GetConfig() RateLimitingAdvancedPluginConfig {
-	if o == nil {
+func (r *RateLimitingAdvancedPlugin) GetConfig() RateLimitingAdvancedPluginConfig {
+	if r == nil {
 		return RateLimitingAdvancedPluginConfig{}
 	}
-	return o.Config
+	return r.Config
 }
 
-func (o *RateLimitingAdvancedPlugin) GetConsumer() *RateLimitingAdvancedPluginConsumer {
-	if o == nil {
+func (r *RateLimitingAdvancedPlugin) GetConsumer() *RateLimitingAdvancedPluginConsumer {
+	if r == nil {
 		return nil
 	}
-	return o.Consumer
+	return r.Consumer
 }
 
-func (o *RateLimitingAdvancedPlugin) GetConsumerGroup() *RateLimitingAdvancedPluginConsumerGroup {
-	if o == nil {
+func (r *RateLimitingAdvancedPlugin) GetConsumerGroup() *RateLimitingAdvancedPluginConsumerGroup {
+	if r == nil {
 		return nil
 	}
-	return o.ConsumerGroup
+	return r.ConsumerGroup
 }
 
-func (o *RateLimitingAdvancedPlugin) GetProtocols() []RateLimitingAdvancedPluginProtocols {
-	if o == nil {
+func (r *RateLimitingAdvancedPlugin) GetProtocols() []RateLimitingAdvancedPluginProtocols {
+	if r == nil {
 		return nil
 	}
-	return o.Protocols
+	return r.Protocols
 }
 
-func (o *RateLimitingAdvancedPlugin) GetRoute() *RateLimitingAdvancedPluginRoute {
-	if o == nil {
+func (r *RateLimitingAdvancedPlugin) GetRoute() *RateLimitingAdvancedPluginRoute {
+	if r == nil {
 		return nil
 	}
-	return o.Route
+	return r.Route
 }
 
-func (o *RateLimitingAdvancedPlugin) GetService() *RateLimitingAdvancedPluginService {
-	if o == nil {
+func (r *RateLimitingAdvancedPlugin) GetService() *RateLimitingAdvancedPluginService {
+	if r == nil {
 		return nil
 	}
-	return o.Service
+	return r.Service
 }

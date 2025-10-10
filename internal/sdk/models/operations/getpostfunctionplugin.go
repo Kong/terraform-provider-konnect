@@ -14,18 +14,18 @@ type GetPostfunctionPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetPostfunctionPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetPostfunctionPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetPostfunctionPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetPostfunctionPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetPostfunctionPluginResponse struct {
@@ -41,37 +41,37 @@ type GetPostfunctionPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetPostfunctionPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetPostfunctionPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetPostfunctionPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetPostfunctionPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetPostfunctionPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetPostfunctionPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetPostfunctionPluginResponse) GetPostFunctionPlugin() *shared.PostFunctionPlugin {
-	if o == nil {
+func (g *GetPostfunctionPluginResponse) GetPostFunctionPlugin() *shared.PostFunctionPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.PostFunctionPlugin
+	return g.PostFunctionPlugin
 }
 
-func (o *GetPostfunctionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetPostfunctionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

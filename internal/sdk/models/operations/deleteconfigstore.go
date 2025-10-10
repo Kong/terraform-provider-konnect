@@ -22,27 +22,27 @@ func (d DeleteConfigStoreRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeleteConfigStoreRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "configStoreId", "force"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *DeleteConfigStoreRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteConfigStoreRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
-func (o *DeleteConfigStoreRequest) GetConfigStoreID() string {
-	if o == nil {
+func (d *DeleteConfigStoreRequest) GetConfigStoreID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ConfigStoreID
+	return d.ConfigStoreID
 }
 
-func (o *DeleteConfigStoreRequest) GetForce() string {
+func (d *DeleteConfigStoreRequest) GetForce() string {
 	return "true"
 }
 
@@ -61,44 +61,44 @@ type DeleteConfigStoreResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *DeleteConfigStoreResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteConfigStoreResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteConfigStoreResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteConfigStoreResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteConfigStoreResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteConfigStoreResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteConfigStoreResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (d *DeleteConfigStoreResponse) GetBadRequestError() *shared.BadRequestError {
+	if d == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return d.BadRequestError
 }
 
-func (o *DeleteConfigStoreResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (d *DeleteConfigStoreResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return d.UnauthorizedError
 }
 
-func (o *DeleteConfigStoreResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (d *DeleteConfigStoreResponse) GetForbiddenError() *shared.ForbiddenError {
+	if d == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return d.ForbiddenError
 }

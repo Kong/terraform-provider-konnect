@@ -27,43 +27,43 @@ func (u UpdateAuditLogDestination) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateAuditLogDestination) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *UpdateAuditLogDestination) GetName() *string {
-	if o == nil {
+func (u *UpdateAuditLogDestination) GetName() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Name
+	return u.Name
 }
 
-func (o *UpdateAuditLogDestination) GetEndpoint() *string {
-	if o == nil {
+func (u *UpdateAuditLogDestination) GetEndpoint() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Endpoint
+	return u.Endpoint
 }
 
-func (o *UpdateAuditLogDestination) GetAuthorization() *string {
-	if o == nil {
+func (u *UpdateAuditLogDestination) GetAuthorization() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Authorization
+	return u.Authorization
 }
 
-func (o *UpdateAuditLogDestination) GetLogFormat() *LogFormat {
-	if o == nil {
+func (u *UpdateAuditLogDestination) GetLogFormat() *LogFormat {
+	if u == nil {
 		return nil
 	}
-	return o.LogFormat
+	return u.LogFormat
 }
 
-func (o *UpdateAuditLogDestination) GetSkipSslVerification() *bool {
-	if o == nil {
+func (u *UpdateAuditLogDestination) GetSkipSslVerification() *bool {
+	if u == nil {
 		return nil
 	}
-	return o.SkipSslVerification
+	return u.SkipSslVerification
 }

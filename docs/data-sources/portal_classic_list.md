@@ -15,7 +15,7 @@ PortalClassicList DataSource
 ```terraform
 data "konnect_portal_classic_list" "my_portalclassiclist" {
   page_number = 1
-  page_size   = 10
+  page_size   = 100
   sort        = "...my_sort..."
 }
 ```

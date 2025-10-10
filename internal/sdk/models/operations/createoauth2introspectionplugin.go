@@ -13,18 +13,18 @@ type CreateOauth2introspectionPluginRequest struct {
 	Oauth2IntrospectionPlugin shared.Oauth2IntrospectionPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateOauth2introspectionPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateOauth2introspectionPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateOauth2introspectionPluginRequest) GetOauth2IntrospectionPlugin() shared.Oauth2IntrospectionPlugin {
-	if o == nil {
+func (c *CreateOauth2introspectionPluginRequest) GetOauth2IntrospectionPlugin() shared.Oauth2IntrospectionPlugin {
+	if c == nil {
 		return shared.Oauth2IntrospectionPlugin{}
 	}
-	return o.Oauth2IntrospectionPlugin
+	return c.Oauth2IntrospectionPlugin
 }
 
 type CreateOauth2introspectionPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateOauth2introspectionPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateOauth2introspectionPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateOauth2introspectionPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateOauth2introspectionPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateOauth2introspectionPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateOauth2introspectionPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateOauth2introspectionPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateOauth2introspectionPluginResponse) GetOauth2IntrospectionPlugin() *shared.Oauth2IntrospectionPlugin {
-	if o == nil {
+func (c *CreateOauth2introspectionPluginResponse) GetOauth2IntrospectionPlugin() *shared.Oauth2IntrospectionPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.Oauth2IntrospectionPlugin
+	return c.Oauth2IntrospectionPlugin
 }
 
-func (o *CreateOauth2introspectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateOauth2introspectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

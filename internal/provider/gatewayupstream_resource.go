@@ -17,6 +17,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
@@ -230,9 +231,14 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"http_statuses": schema.ListAttribute{
-										Computed:    true,
-										Optional:    true,
+										Computed: true,
+										Optional: true,
+										Default: listdefault.StaticValue(types.ListValueMust(types.Int64Type, []attr.Value{
+											types.Int64Value(200),
+											types.Int64Value(302),
+										})),
 										ElementType: types.Int64Type,
+										Description: `Default: [200,302]`,
 									},
 									"interval": schema.Float64Attribute{
 										Computed:    true,
@@ -240,7 +246,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 										Default:     float64default.StaticFloat64(0),
 										Description: `Default: 0`,
 										Validators: []validator.Float64{
-											float64validator.AtMost(65535),
+											float64validator.Between(0, 65535),
 										},
 									},
 									"successes": schema.Int64Attribute{
@@ -277,7 +283,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 								Default:     float64default.StaticFloat64(1),
 								Description: `Default: 1`,
 								Validators: []validator.Float64{
-									float64validator.AtMost(65535),
+									float64validator.Between(0, 65535),
 								},
 							},
 							"type": schema.StringAttribute{
@@ -309,9 +315,20 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 										},
 									},
 									"http_statuses": schema.ListAttribute{
-										Computed:    true,
-										Optional:    true,
+										Computed: true,
+										Optional: true,
+										Default: listdefault.StaticValue(types.ListValueMust(types.Int64Type, []attr.Value{
+											types.Int64Value(429),
+											types.Int64Value(404),
+											types.Int64Value(500),
+											types.Int64Value(501),
+											types.Int64Value(502),
+											types.Int64Value(503),
+											types.Int64Value(504),
+											types.Int64Value(505),
+										})),
 										ElementType: types.Int64Type,
+										Description: `Default: [429,404,500,501,502,503,504,505]`,
 									},
 									"interval": schema.Float64Attribute{
 										Computed:    true,
@@ -319,7 +336,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 										Default:     float64default.StaticFloat64(0),
 										Description: `Default: 0`,
 										Validators: []validator.Float64{
-											float64validator.AtMost(65535),
+											float64validator.Between(0, 65535),
 										},
 									},
 									"tcp_failures": schema.Int64Attribute{
@@ -353,9 +370,31 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"http_statuses": schema.ListAttribute{
-										Computed:    true,
-										Optional:    true,
+										Computed: true,
+										Optional: true,
+										Default: listdefault.StaticValue(types.ListValueMust(types.Int64Type, []attr.Value{
+											types.Int64Value(200),
+											types.Int64Value(201),
+											types.Int64Value(202),
+											types.Int64Value(203),
+											types.Int64Value(204),
+											types.Int64Value(205),
+											types.Int64Value(206),
+											types.Int64Value(207),
+											types.Int64Value(208),
+											types.Int64Value(226),
+											types.Int64Value(300),
+											types.Int64Value(301),
+											types.Int64Value(302),
+											types.Int64Value(303),
+											types.Int64Value(304),
+											types.Int64Value(305),
+											types.Int64Value(306),
+											types.Int64Value(307),
+											types.Int64Value(308),
+										})),
 										ElementType: types.Int64Type,
+										Description: `Default: [200,201,202,203,204,205,206,207,208,226,300,301,302,303,304,305,306,307,308]`,
 									},
 									"successes": schema.Int64Attribute{
 										Computed:    true,
@@ -397,9 +436,15 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 										},
 									},
 									"http_statuses": schema.ListAttribute{
-										Computed:    true,
-										Optional:    true,
+										Computed: true,
+										Optional: true,
+										Default: listdefault.StaticValue(types.ListValueMust(types.Int64Type, []attr.Value{
+											types.Int64Value(429),
+											types.Int64Value(500),
+											types.Int64Value(503),
+										})),
 										ElementType: types.Int64Type,
+										Description: `Default: [429,500,503]`,
 									},
 									"tcp_failures": schema.Int64Attribute{
 										Computed:    true,
@@ -429,7 +474,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 						Default:     float64default.StaticFloat64(0),
 						Description: `Default: 0`,
 						Validators: []validator.Float64{
-							float64validator.AtMost(100),
+							float64validator.Between(0, 100),
 						},
 					},
 				},

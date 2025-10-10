@@ -29,57 +29,57 @@ func (p PortalAuthenticationSettingsResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PortalAuthenticationSettingsResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"basic_auth_enabled", "oidc_auth_enabled", "oidc_team_mapping_enabled", "konnect_mapping_enabled"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *PortalAuthenticationSettingsResponse) GetBasicAuthEnabled() bool {
-	if o == nil {
+func (p *PortalAuthenticationSettingsResponse) GetBasicAuthEnabled() bool {
+	if p == nil {
 		return false
 	}
-	return o.BasicAuthEnabled
+	return p.BasicAuthEnabled
 }
 
-func (o *PortalAuthenticationSettingsResponse) GetOidcAuthEnabled() bool {
-	if o == nil {
+func (p *PortalAuthenticationSettingsResponse) GetOidcAuthEnabled() bool {
+	if p == nil {
 		return false
 	}
-	return o.OidcAuthEnabled
+	return p.OidcAuthEnabled
 }
 
-func (o *PortalAuthenticationSettingsResponse) GetSamlAuthEnabled() *bool {
-	if o == nil {
+func (p *PortalAuthenticationSettingsResponse) GetSamlAuthEnabled() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.SamlAuthEnabled
+	return p.SamlAuthEnabled
 }
 
-func (o *PortalAuthenticationSettingsResponse) GetOidcTeamMappingEnabled() bool {
-	if o == nil {
+func (p *PortalAuthenticationSettingsResponse) GetOidcTeamMappingEnabled() bool {
+	if p == nil {
 		return false
 	}
-	return o.OidcTeamMappingEnabled
+	return p.OidcTeamMappingEnabled
 }
 
-func (o *PortalAuthenticationSettingsResponse) GetIdpMappingEnabled() *bool {
-	if o == nil {
+func (p *PortalAuthenticationSettingsResponse) GetIdpMappingEnabled() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.IdpMappingEnabled
+	return p.IdpMappingEnabled
 }
 
-func (o *PortalAuthenticationSettingsResponse) GetKonnectMappingEnabled() bool {
-	if o == nil {
+func (p *PortalAuthenticationSettingsResponse) GetKonnectMappingEnabled() bool {
+	if p == nil {
 		return false
 	}
-	return o.KonnectMappingEnabled
+	return p.KonnectMappingEnabled
 }
 
-func (o *PortalAuthenticationSettingsResponse) GetOidcConfig() *PortalOIDCConfig {
-	if o == nil {
+func (p *PortalAuthenticationSettingsResponse) GetOidcConfig() *PortalOIDCConfig {
+	if p == nil {
 		return nil
 	}
-	return o.OidcConfig
+	return p.OidcConfig
 }

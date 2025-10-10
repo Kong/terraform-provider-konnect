@@ -60,7 +60,7 @@ func (s *ControlPlaneGroups) PostControlPlanesIDGroupMembershipsAdd(ctx context.
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "post-control-planes-id-group-memberships-add",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "GroupMembership", "json", `request:"mediaType=application/json"`)
@@ -303,7 +303,7 @@ func (s *ControlPlaneGroups) PostControlPlanesIDGroupMembershipsRemove(ctx conte
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "post-control-planes-id-group-memberships-remove",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "GroupMembership", "json", `request:"mediaType=application/json"`)

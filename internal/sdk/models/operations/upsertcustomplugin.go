@@ -16,25 +16,25 @@ type UpsertCustomPluginRequest struct {
 	CustomPlugin shared.CustomPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpsertCustomPluginRequest) GetCustomPluginID() string {
-	if o == nil {
+func (u *UpsertCustomPluginRequest) GetCustomPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.CustomPluginID
+	return u.CustomPluginID
 }
 
-func (o *UpsertCustomPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpsertCustomPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpsertCustomPluginRequest) GetCustomPlugin() shared.CustomPlugin {
-	if o == nil {
+func (u *UpsertCustomPluginRequest) GetCustomPlugin() shared.CustomPlugin {
+	if u == nil {
 		return shared.CustomPlugin{}
 	}
-	return o.CustomPlugin
+	return u.CustomPlugin
 }
 
 type UpsertCustomPluginResponse struct {
@@ -50,37 +50,37 @@ type UpsertCustomPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpsertCustomPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpsertCustomPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpsertCustomPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpsertCustomPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpsertCustomPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpsertCustomPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpsertCustomPluginResponse) GetCustomPlugin() *shared.CustomPlugin {
-	if o == nil {
+func (u *UpsertCustomPluginResponse) GetCustomPlugin() *shared.CustomPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.CustomPlugin
+	return u.CustomPlugin
 }
 
-func (o *UpsertCustomPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpsertCustomPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

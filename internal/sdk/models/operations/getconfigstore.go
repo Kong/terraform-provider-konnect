@@ -14,18 +14,18 @@ type GetConfigStoreRequest struct {
 	ConfigStoreID string `pathParam:"style=simple,explode=false,name=configStoreId"`
 }
 
-func (o *GetConfigStoreRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetConfigStoreRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
-func (o *GetConfigStoreRequest) GetConfigStoreID() string {
-	if o == nil {
+func (g *GetConfigStoreRequest) GetConfigStoreID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ConfigStoreID
+	return g.ConfigStoreID
 }
 
 type GetConfigStoreResponse struct {
@@ -43,44 +43,44 @@ type GetConfigStoreResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *GetConfigStoreResponse) GetContentType() string {
-	if o == nil {
+func (g *GetConfigStoreResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetConfigStoreResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetConfigStoreResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetConfigStoreResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetConfigStoreResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetConfigStoreResponse) GetConfigStore() *shared.ConfigStore {
-	if o == nil {
+func (g *GetConfigStoreResponse) GetConfigStore() *shared.ConfigStore {
+	if g == nil {
 		return nil
 	}
-	return o.ConfigStore
+	return g.ConfigStore
 }
 
-func (o *GetConfigStoreResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (g *GetConfigStoreResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return g.UnauthorizedError
 }
 
-func (o *GetConfigStoreResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (g *GetConfigStoreResponse) GetForbiddenError() *shared.ForbiddenError {
+	if g == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return g.ForbiddenError
 }

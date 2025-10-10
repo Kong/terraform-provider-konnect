@@ -14,18 +14,18 @@ type GetUpstreamtimeoutPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetUpstreamtimeoutPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetUpstreamtimeoutPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetUpstreamtimeoutPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetUpstreamtimeoutPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetUpstreamtimeoutPluginResponse struct {
@@ -41,37 +41,37 @@ type GetUpstreamtimeoutPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetUpstreamtimeoutPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetUpstreamtimeoutPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetUpstreamtimeoutPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetUpstreamtimeoutPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetUpstreamtimeoutPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetUpstreamtimeoutPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetUpstreamtimeoutPluginResponse) GetUpstreamTimeoutPlugin() *shared.UpstreamTimeoutPlugin {
-	if o == nil {
+func (g *GetUpstreamtimeoutPluginResponse) GetUpstreamTimeoutPlugin() *shared.UpstreamTimeoutPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.UpstreamTimeoutPlugin
+	return g.UpstreamTimeoutPlugin
 }
 
-func (o *GetUpstreamtimeoutPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetUpstreamtimeoutPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

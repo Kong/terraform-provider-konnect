@@ -14,18 +14,18 @@ type GetHttplogPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetHttplogPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetHttplogPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetHttplogPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetHttplogPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetHttplogPluginResponse struct {
@@ -41,37 +41,37 @@ type GetHttplogPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetHttplogPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetHttplogPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetHttplogPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetHttplogPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetHttplogPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetHttplogPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetHttplogPluginResponse) GetHTTPLogPlugin() *shared.HTTPLogPlugin {
-	if o == nil {
+func (g *GetHttplogPluginResponse) GetHTTPLogPlugin() *shared.HTTPLogPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.HTTPLogPlugin
+	return g.HTTPLogPlugin
 }
 
-func (o *GetHttplogPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetHttplogPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

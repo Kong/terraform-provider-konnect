@@ -13,8 +13,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -95,8 +97,9 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 					"allowed_content_types": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
+						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("application/json")})),
 						ElementType: types.StringType,
-						Description: `List of allowed content types. The value can be configured with the ` + "`" + `charset` + "`" + ` parameter. For example, ` + "`" + `application/json; charset=UTF-8` + "`" + `.`,
+						Description: `List of allowed content types. The value can be configured with the ` + "`" + `charset` + "`" + ` parameter. For example, ` + "`" + `application/json; charset=UTF-8` + "`" + `. Default: ["application/json"]`,
 					},
 					"body_schema": schema.StringAttribute{
 						Optional:    true,
@@ -313,10 +316,16 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 				Description: `A list of partials to be used by the plugin.`,
 			},
 			"protocols": schema.SetAttribute{
-				Computed:    true,
-				Optional:    true,
+				Computed: true,
+				Optional: true,
+				Default: setdefault.StaticValue(types.SetValueMust(types.StringType, []attr.Value{
+					types.StringValue("grpc"),
+					types.StringValue("grpcs"),
+					types.StringValue("http"),
+					types.StringValue("https"),
+				})),
 				ElementType: types.StringType,
-				Description: `A set of strings representing HTTP protocols.`,
+				Description: `A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,

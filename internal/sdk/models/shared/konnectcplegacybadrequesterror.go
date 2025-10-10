@@ -7,9 +7,9 @@ type KonnectCPLegacyBadRequestError struct {
 	Message any `json:"message,omitempty"`
 }
 
-func (o *KonnectCPLegacyBadRequestError) GetMessage() any {
-	if o == nil {
+func (k *KonnectCPLegacyBadRequestError) GetMessage() any {
+	if k == nil {
 		return nil
 	}
-	return o.Message
+	return k.Message
 }

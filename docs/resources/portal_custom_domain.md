@@ -59,6 +59,17 @@ Read-Only:
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_portal_custom_domain.my_konnect_portal_custom_domain
+  id = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
 terraform import konnect_portal_custom_domain.my_konnect_portal_custom_domain "f32d905a-ed33-46a3-a093-d8f536af9a8a"
 ```

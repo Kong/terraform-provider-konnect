@@ -20,6 +20,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -113,7 +114,7 @@ func (r *GatewayPluginXMLThreatProtectionResource) Schema(ctx context.Context, r
 						Optional:    true,
 						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 						ElementType: types.StringType,
-						Description: `A list of Content-Type values with payloads that are allowed, but aren't validated.`,
+						Description: `A list of Content-Type values with payloads that are allowed, but aren't validated. Default: []`,
 					},
 					"attribute": schema.Int64Attribute{
 						Computed:    true,
@@ -148,8 +149,9 @@ func (r *GatewayPluginXMLThreatProtectionResource) Schema(ctx context.Context, r
 					"checked_content_types": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
+						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("application/xml")})),
 						ElementType: types.StringType,
-						Description: `A list of Content-Type values with payloads that must be validated.`,
+						Description: `A list of Content-Type values with payloads that must be validated. Default: ["application/xml"]`,
 					},
 					"comment": schema.Int64Attribute{
 						Computed:    true,
@@ -366,10 +368,16 @@ func (r *GatewayPluginXMLThreatProtectionResource) Schema(ctx context.Context, r
 				Description: `A list of partials to be used by the plugin.`,
 			},
 			"protocols": schema.SetAttribute{
-				Computed:    true,
-				Optional:    true,
+				Computed: true,
+				Optional: true,
+				Default: setdefault.StaticValue(types.SetValueMust(types.StringType, []attr.Value{
+					types.StringValue("grpc"),
+					types.StringValue("grpcs"),
+					types.StringValue("http"),
+					types.StringValue("https"),
+				})),
 				ElementType: types.StringType,
-				Description: `A set of strings representing HTTP protocols.`,
+				Description: `A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,

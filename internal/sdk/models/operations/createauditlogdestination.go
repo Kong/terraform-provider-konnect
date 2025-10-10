@@ -24,51 +24,51 @@ type CreateAuditLogDestinationResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *CreateAuditLogDestinationResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateAuditLogDestinationResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateAuditLogDestinationResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateAuditLogDestinationResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateAuditLogDestinationResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateAuditLogDestinationResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateAuditLogDestinationResponse) GetAuditLogDestination() *shared.AuditLogDestination {
-	if o == nil {
+func (c *CreateAuditLogDestinationResponse) GetAuditLogDestination() *shared.AuditLogDestination {
+	if c == nil {
 		return nil
 	}
-	return o.AuditLogDestination
+	return c.AuditLogDestination
 }
 
-func (o *CreateAuditLogDestinationResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreateAuditLogDestinationResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreateAuditLogDestinationResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (c *CreateAuditLogDestinationResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return c.UnauthorizedError
 }
 
-func (o *CreateAuditLogDestinationResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (c *CreateAuditLogDestinationResponse) GetForbiddenError() *shared.ForbiddenError {
+	if c == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return c.ForbiddenError
 }

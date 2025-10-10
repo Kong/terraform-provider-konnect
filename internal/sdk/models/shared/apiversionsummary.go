@@ -13,11 +13,11 @@ type Spec struct {
 	Type *APISpecType `json:"type,omitempty"`
 }
 
-func (o *Spec) GetType() *APISpecType {
-	if o == nil {
+func (s *Spec) GetType() *APISpecType {
+	if s == nil {
 		return nil
 	}
-	return o.Type
+	return s.Type
 }
 
 type APIVersionSummary struct {
@@ -37,43 +37,43 @@ func (a APIVersionSummary) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APIVersionSummary) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *APIVersionSummary) GetID() *string {
-	if o == nil {
+func (a *APIVersionSummary) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *APIVersionSummary) GetVersion() *string {
-	if o == nil {
+func (a *APIVersionSummary) GetVersion() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Version
+	return a.Version
 }
 
-func (o *APIVersionSummary) GetSpec() *Spec {
-	if o == nil {
+func (a *APIVersionSummary) GetSpec() *Spec {
+	if a == nil {
 		return nil
 	}
-	return o.Spec
+	return a.Spec
 }
 
-func (o *APIVersionSummary) GetCreatedAt() *time.Time {
-	if o == nil {
+func (a *APIVersionSummary) GetCreatedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *APIVersionSummary) GetUpdatedAt() *time.Time {
-	if o == nil {
+func (a *APIVersionSummary) GetUpdatedAt() *time.Time {
+	if a == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }

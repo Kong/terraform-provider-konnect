@@ -64,7 +64,7 @@ func (s *CentrallyManagedConsumers) CreateConsumerInRealm(ctx context.Context, r
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-consumer-in-realm",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ConsumerCreateRequest", "json", `request:"mediaType=application/json"`)
@@ -249,7 +249,7 @@ func (s *CentrallyManagedConsumers) GetConsumerFromRealm(ctx context.Context, re
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-consumer-from-realm",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -406,7 +406,7 @@ func (s *CentrallyManagedConsumers) UpdateConsumerInRealm(ctx context.Context, r
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-consumer-in-realm",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateConsumerPayload", "json", `request:"mediaType=application/json"`)
@@ -593,7 +593,7 @@ func (s *CentrallyManagedConsumers) DeleteConsumerInRealm(ctx context.Context, r
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-consumer-in-realm",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

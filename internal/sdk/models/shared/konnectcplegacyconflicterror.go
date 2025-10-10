@@ -7,9 +7,9 @@ type KonnectCPLegacyConflictError struct {
 	Message any `json:"message,omitempty"`
 }
 
-func (o *KonnectCPLegacyConflictError) GetMessage() any {
-	if o == nil {
+func (k *KonnectCPLegacyConflictError) GetMessage() any {
+	if k == nil {
 		return nil
 	}
-	return o.Message
+	return k.Message
 }

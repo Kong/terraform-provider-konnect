@@ -78,7 +78,7 @@ Read-Only:
 - `claim_mappings` (Attributes) Mappings from a portal developer atribute to an Identity Provider claim. (see [below for nested schema](#nestedatt--oidc_config--claim_mappings))
 - `client_id` (String)
 - `issuer` (String)
-- `scopes` (List of String)
+- `scopes` (List of String) Default: ["email","openid","profile"]
 
 <a id="nestedatt--oidc_config--claim_mappings"></a>
 ### Nested Schema for `oidc_config.claim_mappings`
@@ -92,6 +92,17 @@ Read-Only:
 ## Import
 
 Import is supported using the following syntax:
+
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_portal_auth.my_konnect_portal_auth
+  id = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import konnect_portal_auth.my_konnect_portal_auth "f32d905a-ed33-46a3-a093-d8f536af9a8a"

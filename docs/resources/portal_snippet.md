@@ -52,6 +52,20 @@ must be one of ["public", "private"]
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_portal_snippet.my_konnect_portal_snippet
+  id = jsonencode({
+    id = "ebbac5b0-ac89-45c3-9d2e-c4542c657e79"
+    portal_id = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
 terraform import konnect_portal_snippet.my_konnect_portal_snippet '{"id": "ebbac5b0-ac89-45c3-9d2e-c4542c657e79", "portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a"}'
 ```

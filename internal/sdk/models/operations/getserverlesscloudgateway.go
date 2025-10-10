@@ -16,11 +16,11 @@ type GetServerlessCloudGatewayRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetServerlessCloudGatewayRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetServerlessCloudGatewayRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetServerlessCloudGatewayResponse struct {
@@ -40,51 +40,51 @@ type GetServerlessCloudGatewayResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *GetServerlessCloudGatewayResponse) GetContentType() string {
-	if o == nil {
+func (g *GetServerlessCloudGatewayResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetServerlessCloudGatewayResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetServerlessCloudGatewayResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetServerlessCloudGatewayResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetServerlessCloudGatewayResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetServerlessCloudGatewayResponse) GetServerlessCloudGateway() *shared.ServerlessCloudGateway {
-	if o == nil {
+func (g *GetServerlessCloudGatewayResponse) GetServerlessCloudGateway() *shared.ServerlessCloudGateway {
+	if g == nil {
 		return nil
 	}
-	return o.ServerlessCloudGateway
+	return g.ServerlessCloudGateway
 }
 
-func (o *GetServerlessCloudGatewayResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (g *GetServerlessCloudGatewayResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return g.UnauthorizedError
 }
 
-func (o *GetServerlessCloudGatewayResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (g *GetServerlessCloudGatewayResponse) GetForbiddenError() *shared.ForbiddenError {
+	if g == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return g.ForbiddenError
 }
 
-func (o *GetServerlessCloudGatewayResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetServerlessCloudGatewayResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }

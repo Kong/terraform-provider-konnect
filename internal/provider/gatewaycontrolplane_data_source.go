@@ -36,12 +36,7 @@ type GatewayControlPlaneDataSourceModel struct {
 	ID           types.String                          `tfsdk:"id"`
 	Labels       map[string]types.String               `tfsdk:"labels"`
 	Name         types.String                          `tfsdk:"name"`
-	Number       types.Float64                         `tfsdk:"number"`
-	PageNumber   types.Int64                           `queryParam:"style=form,explode=true,name=page[number]" tfsdk:"page_number"`
-	PageSize     types.Int64                           `queryParam:"style=form,explode=true,name=page[size]" tfsdk:"page_size"`
-	Size         types.Float64                         `tfsdk:"size"`
 	Sort         types.String                          `queryParam:"style=form,explode=true,name=sort" tfsdk:"sort"`
-	Total        types.Float64                         `tfsdk:"total"`
 }
 
 // Metadata returns the data source type name.
@@ -173,27 +168,10 @@ func (r *GatewayControlPlaneDataSource) Schema(ctx context.Context, req datasour
 				Computed:    true,
 				Description: `The name of the control plane.`,
 			},
-			"number": schema.Float64Attribute{
-				Computed: true,
-			},
-			"page_number": schema.Int64Attribute{
-				Optional:    true,
-				Description: `Determines which page of the entities to retrieve.`,
-			},
-			"page_size": schema.Int64Attribute{
-				Optional:    true,
-				Description: `The maximum number of items to include per page. The last page of a collection may include fewer items.`,
-			},
-			"size": schema.Float64Attribute{
-				Computed: true,
-			},
 			"sort": schema.StringAttribute{
 				Optional: true,
 				MarkdownDescription: `Sorts a collection of control-planes. Supported sort attributes are:` + "\n" +
 					`  - created_at`,
-			},
-			"total": schema.Float64Attribute{
-				Computed: true,
 			},
 		},
 	}
@@ -267,6 +245,26 @@ func (r *GatewayControlPlaneDataSource) Read(ctx context.Context, req datasource
 
 	if resp.Diagnostics.HasError() {
 		return
+	}
+	for {
+		var err error
+
+		res, err = res.Next()
+
+		if err != nil {
+			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
+			return
+		}
+
+		if res == nil {
+			break
+		}
+
+		resp.Diagnostics.Append(data.RefreshFromSharedControlPlane(ctx, &res.ListControlPlanesResponse.Data[0])...)
+
+		if resp.Diagnostics.HasError() {
+			return
+		}
 	}
 
 	// Save updated data into Terraform state

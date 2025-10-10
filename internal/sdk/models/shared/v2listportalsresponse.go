@@ -9,16 +9,16 @@ type V2ListPortalsResponse struct {
 	Data []V2Portal    `json:"data"`
 }
 
-func (o *V2ListPortalsResponse) GetMeta() PaginatedMeta {
-	if o == nil {
+func (v *V2ListPortalsResponse) GetMeta() PaginatedMeta {
+	if v == nil {
 		return PaginatedMeta{}
 	}
-	return o.Meta
+	return v.Meta
 }
 
-func (o *V2ListPortalsResponse) GetData() []V2Portal {
-	if o == nil {
+func (v *V2ListPortalsResponse) GetData() []V2Portal {
+	if v == nil {
 		return []V2Portal{}
 	}
-	return o.Data
+	return v.Data
 }

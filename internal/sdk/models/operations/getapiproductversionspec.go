@@ -16,25 +16,25 @@ type GetAPIProductVersionSpecRequest struct {
 	SpecificationID string `pathParam:"style=simple,explode=false,name=specificationId"`
 }
 
-func (o *GetAPIProductVersionSpecRequest) GetAPIProductID() string {
-	if o == nil {
+func (g *GetAPIProductVersionSpecRequest) GetAPIProductID() string {
+	if g == nil {
 		return ""
 	}
-	return o.APIProductID
+	return g.APIProductID
 }
 
-func (o *GetAPIProductVersionSpecRequest) GetAPIProductVersionID() string {
-	if o == nil {
+func (g *GetAPIProductVersionSpecRequest) GetAPIProductVersionID() string {
+	if g == nil {
 		return ""
 	}
-	return o.APIProductVersionID
+	return g.APIProductVersionID
 }
 
-func (o *GetAPIProductVersionSpecRequest) GetSpecificationID() string {
-	if o == nil {
+func (g *GetAPIProductVersionSpecRequest) GetSpecificationID() string {
+	if g == nil {
 		return ""
 	}
-	return o.SpecificationID
+	return g.SpecificationID
 }
 
 type GetAPIProductVersionSpecResponse struct {
@@ -54,51 +54,51 @@ type GetAPIProductVersionSpecResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *GetAPIProductVersionSpecResponse) GetContentType() string {
-	if o == nil {
+func (g *GetAPIProductVersionSpecResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetAPIProductVersionSpecResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetAPIProductVersionSpecResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetAPIProductVersionSpecResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetAPIProductVersionSpecResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetAPIProductVersionSpecResponse) GetAPIProductVersionSpec() *shared.APIProductVersionSpec {
-	if o == nil {
+func (g *GetAPIProductVersionSpecResponse) GetAPIProductVersionSpec() *shared.APIProductVersionSpec {
+	if g == nil {
 		return nil
 	}
-	return o.APIProductVersionSpec
+	return g.APIProductVersionSpec
 }
 
-func (o *GetAPIProductVersionSpecResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (g *GetAPIProductVersionSpecResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return g.UnauthorizedError
 }
 
-func (o *GetAPIProductVersionSpecResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (g *GetAPIProductVersionSpecResponse) GetForbiddenError() *shared.ForbiddenError {
+	if g == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return g.ForbiddenError
 }
 
-func (o *GetAPIProductVersionSpecResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetAPIProductVersionSpecResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }

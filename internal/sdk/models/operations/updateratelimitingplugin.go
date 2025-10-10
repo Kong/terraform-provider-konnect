@@ -15,25 +15,25 @@ type UpdateRatelimitingPluginRequest struct {
 	RateLimitingPlugin shared.RateLimitingPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateRatelimitingPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateRatelimitingPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateRatelimitingPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateRatelimitingPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateRatelimitingPluginRequest) GetRateLimitingPlugin() shared.RateLimitingPlugin {
-	if o == nil {
+func (u *UpdateRatelimitingPluginRequest) GetRateLimitingPlugin() shared.RateLimitingPlugin {
+	if u == nil {
 		return shared.RateLimitingPlugin{}
 	}
-	return o.RateLimitingPlugin
+	return u.RateLimitingPlugin
 }
 
 type UpdateRatelimitingPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateRatelimitingPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateRatelimitingPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateRatelimitingPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateRatelimitingPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateRatelimitingPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateRatelimitingPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateRatelimitingPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateRatelimitingPluginResponse) GetRateLimitingPlugin() *shared.RateLimitingPlugin {
-	if o == nil {
+func (u *UpdateRatelimitingPluginResponse) GetRateLimitingPlugin() *shared.RateLimitingPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.RateLimitingPlugin
+	return u.RateLimitingPlugin
 }
 
-func (o *UpdateRatelimitingPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateRatelimitingPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

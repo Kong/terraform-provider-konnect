@@ -14,18 +14,18 @@ type GetOpentelemetryPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetOpentelemetryPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetOpentelemetryPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetOpentelemetryPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetOpentelemetryPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetOpentelemetryPluginResponse struct {
@@ -41,37 +41,37 @@ type GetOpentelemetryPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetOpentelemetryPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetOpentelemetryPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetOpentelemetryPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetOpentelemetryPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetOpentelemetryPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetOpentelemetryPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetOpentelemetryPluginResponse) GetOpentelemetryPlugin() *shared.OpentelemetryPlugin {
-	if o == nil {
+func (g *GetOpentelemetryPluginResponse) GetOpentelemetryPlugin() *shared.OpentelemetryPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.OpentelemetryPlugin
+	return g.OpentelemetryPlugin
 }
 
-func (o *GetOpentelemetryPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetOpentelemetryPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

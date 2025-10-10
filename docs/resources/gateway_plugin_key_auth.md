@@ -89,7 +89,7 @@ resource "konnect_gateway_plugin_key_auth" "my_gatewaypluginkeyauth" {
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
-- `protocols` (Set of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
+- `protocols` (Set of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls. Default: ["grpc","grpcs","http","https","ws","wss"]
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
@@ -106,7 +106,7 @@ Optional:
 - `key_in_body` (Boolean) If enabled, the plugin reads the request body. Supported MIME types: `application/www-form-urlencoded`, `application/json`, and `multipart/form-data`. Default: false
 - `key_in_header` (Boolean) If enabled (default), the plugin reads the request header and tries to find the key in it. Default: true
 - `key_in_query` (Boolean) If enabled (default), the plugin reads the query parameter in the request and tries to find the key in it. Default: true
-- `key_names` (List of String) Describes an array of parameter names where the plugin will look for a key. The key names may only contain [a-z], [A-Z], [0-9], [_] underscore, and [-] hyphen.
+- `key_names` (List of String) Describes an array of parameter names where the plugin will look for a key. The key names may only contain [a-z], [A-Z], [0-9], [_] underscore, and [-] hyphen. Default: ["apikey"]
 - `realm` (String) When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
 - `run_on_preflight` (Boolean) A boolean value that indicates whether the plugin should run (and try to authenticate) on `OPTIONS` preflight requests. If set to `false`, then `OPTIONS` requests are always allowed. Default: true
 
@@ -174,6 +174,20 @@ Optional:
 ## Import
 
 Import is supported using the following syntax:
+
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_gateway_plugin_key_auth.my_konnect_gateway_plugin_key_auth
+  id = jsonencode({
+    control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import konnect_gateway_plugin_key_auth.my_konnect_gateway_plugin_key_auth '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}'

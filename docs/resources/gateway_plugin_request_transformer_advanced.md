@@ -152,7 +152,7 @@ resource "konnect_gateway_plugin_request_transformer_advanced" "my_gatewayplugin
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
-- `protocols` (Set of String) A set of strings representing HTTP protocols.
+- `protocols` (Set of String) A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
@@ -177,10 +177,10 @@ Optional:
 
 Optional:
 
-- `body` (List of String)
-- `headers` (List of String)
-- `json_types` (List of String)
-- `querystring` (List of String)
+- `body` (List of String) Default: []
+- `headers` (List of String) Default: []
+- `json_types` (List of String) Default: []
+- `querystring` (List of String) Default: []
 
 
 <a id="nestedatt--config--allow"></a>
@@ -196,10 +196,10 @@ Optional:
 
 Optional:
 
-- `body` (List of String)
-- `headers` (List of String)
-- `json_types` (List of String)
-- `querystring` (List of String)
+- `body` (List of String) Default: []
+- `headers` (List of String) Default: []
+- `json_types` (List of String) Default: []
+- `querystring` (List of String) Default: []
 
 
 <a id="nestedatt--config--remove"></a>
@@ -207,9 +207,9 @@ Optional:
 
 Optional:
 
-- `body` (List of String)
-- `headers` (List of String)
-- `querystring` (List of String)
+- `body` (List of String) Default: []
+- `headers` (List of String) Default: []
+- `querystring` (List of String) Default: []
 
 
 <a id="nestedatt--config--rename"></a>
@@ -217,9 +217,9 @@ Optional:
 
 Optional:
 
-- `body` (List of String)
-- `headers` (List of String)
-- `querystring` (List of String)
+- `body` (List of String) Default: []
+- `headers` (List of String) Default: []
+- `querystring` (List of String) Default: []
 
 
 <a id="nestedatt--config--replace"></a>
@@ -227,10 +227,10 @@ Optional:
 
 Optional:
 
-- `body` (List of String)
-- `headers` (List of String)
-- `json_types` (List of String)
-- `querystring` (List of String)
+- `body` (List of String) Default: []
+- `headers` (List of String) Default: []
+- `json_types` (List of String) Default: []
+- `querystring` (List of String) Default: []
 - `uri` (String)
 
 
@@ -304,6 +304,20 @@ Optional:
 ## Import
 
 Import is supported using the following syntax:
+
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_gateway_plugin_request_transformer_advanced.my_konnect_gateway_plugin_request_transformer_advanced
+  id = jsonencode({
+    control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import konnect_gateway_plugin_request_transformer_advanced.my_konnect_gateway_plugin_request_transformer_advanced '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}'

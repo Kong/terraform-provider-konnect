@@ -14,18 +14,18 @@ type GetAPIProductDocumentRequest struct {
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (o *GetAPIProductDocumentRequest) GetAPIProductID() string {
-	if o == nil {
+func (g *GetAPIProductDocumentRequest) GetAPIProductID() string {
+	if g == nil {
 		return ""
 	}
-	return o.APIProductID
+	return g.APIProductID
 }
 
-func (o *GetAPIProductDocumentRequest) GetID() string {
-	if o == nil {
+func (g *GetAPIProductDocumentRequest) GetID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ID
+	return g.ID
 }
 
 type GetAPIProductDocumentResponse struct {
@@ -45,51 +45,51 @@ type GetAPIProductDocumentResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *GetAPIProductDocumentResponse) GetContentType() string {
-	if o == nil {
+func (g *GetAPIProductDocumentResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetAPIProductDocumentResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetAPIProductDocumentResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetAPIProductDocumentResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetAPIProductDocumentResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetAPIProductDocumentResponse) GetAPIProductDocument() *shared.APIProductDocument {
-	if o == nil {
+func (g *GetAPIProductDocumentResponse) GetAPIProductDocument() *shared.APIProductDocument {
+	if g == nil {
 		return nil
 	}
-	return o.APIProductDocument
+	return g.APIProductDocument
 }
 
-func (o *GetAPIProductDocumentResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (g *GetAPIProductDocumentResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return g.UnauthorizedError
 }
 
-func (o *GetAPIProductDocumentResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (g *GetAPIProductDocumentResponse) GetForbiddenError() *shared.ForbiddenError {
+	if g == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return g.ForbiddenError
 }
 
-func (o *GetAPIProductDocumentResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetAPIProductDocumentResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }

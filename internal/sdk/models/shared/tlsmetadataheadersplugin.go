@@ -12,22 +12,22 @@ type TLSMetadataHeadersPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *TLSMetadataHeadersPluginAfter) GetAccess() []string {
-	if o == nil {
+func (t *TLSMetadataHeadersPluginAfter) GetAccess() []string {
+	if t == nil {
 		return nil
 	}
-	return o.Access
+	return t.Access
 }
 
 type TLSMetadataHeadersPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *TLSMetadataHeadersPluginBefore) GetAccess() []string {
-	if o == nil {
+func (t *TLSMetadataHeadersPluginBefore) GetAccess() []string {
+	if t == nil {
 		return nil
 	}
-	return o.Access
+	return t.Access
 }
 
 type TLSMetadataHeadersPluginOrdering struct {
@@ -35,18 +35,18 @@ type TLSMetadataHeadersPluginOrdering struct {
 	Before *TLSMetadataHeadersPluginBefore `json:"before,omitempty"`
 }
 
-func (o *TLSMetadataHeadersPluginOrdering) GetAfter() *TLSMetadataHeadersPluginAfter {
-	if o == nil {
+func (t *TLSMetadataHeadersPluginOrdering) GetAfter() *TLSMetadataHeadersPluginAfter {
+	if t == nil {
 		return nil
 	}
-	return o.After
+	return t.After
 }
 
-func (o *TLSMetadataHeadersPluginOrdering) GetBefore() *TLSMetadataHeadersPluginBefore {
-	if o == nil {
+func (t *TLSMetadataHeadersPluginOrdering) GetBefore() *TLSMetadataHeadersPluginBefore {
+	if t == nil {
 		return nil
 	}
-	return o.Before
+	return t.Before
 }
 
 type TLSMetadataHeadersPluginPartials struct {
@@ -57,25 +57,25 @@ type TLSMetadataHeadersPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *TLSMetadataHeadersPluginPartials) GetID() *string {
-	if o == nil {
+func (t *TLSMetadataHeadersPluginPartials) GetID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ID
+	return t.ID
 }
 
-func (o *TLSMetadataHeadersPluginPartials) GetName() *string {
-	if o == nil {
+func (t *TLSMetadataHeadersPluginPartials) GetName() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Name
+	return t.Name
 }
 
-func (o *TLSMetadataHeadersPluginPartials) GetPath() *string {
-	if o == nil {
+func (t *TLSMetadataHeadersPluginPartials) GetPath() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Path
+	return t.Path
 }
 
 type TLSMetadataHeadersPluginConfig struct {
@@ -98,52 +98,52 @@ func (t TLSMetadataHeadersPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TLSMetadataHeadersPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *TLSMetadataHeadersPluginConfig) GetClientCertFingerprintHeaderName() *string {
-	if o == nil {
+func (t *TLSMetadataHeadersPluginConfig) GetClientCertFingerprintHeaderName() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ClientCertFingerprintHeaderName
+	return t.ClientCertFingerprintHeaderName
 }
 
-func (o *TLSMetadataHeadersPluginConfig) GetClientCertHeaderName() *string {
-	if o == nil {
+func (t *TLSMetadataHeadersPluginConfig) GetClientCertHeaderName() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ClientCertHeaderName
+	return t.ClientCertHeaderName
 }
 
-func (o *TLSMetadataHeadersPluginConfig) GetClientCertIssuerDnHeaderName() *string {
-	if o == nil {
+func (t *TLSMetadataHeadersPluginConfig) GetClientCertIssuerDnHeaderName() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ClientCertIssuerDnHeaderName
+	return t.ClientCertIssuerDnHeaderName
 }
 
-func (o *TLSMetadataHeadersPluginConfig) GetClientCertSubjectDnHeaderName() *string {
-	if o == nil {
+func (t *TLSMetadataHeadersPluginConfig) GetClientCertSubjectDnHeaderName() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ClientCertSubjectDnHeaderName
+	return t.ClientCertSubjectDnHeaderName
 }
 
-func (o *TLSMetadataHeadersPluginConfig) GetClientSerialHeaderName() *string {
-	if o == nil {
+func (t *TLSMetadataHeadersPluginConfig) GetClientSerialHeaderName() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ClientSerialHeaderName
+	return t.ClientSerialHeaderName
 }
 
-func (o *TLSMetadataHeadersPluginConfig) GetInjectClientCertDetails() *bool {
-	if o == nil {
+func (t *TLSMetadataHeadersPluginConfig) GetInjectClientCertDetails() *bool {
+	if t == nil {
 		return nil
 	}
-	return o.InjectClientCertDetails
+	return t.InjectClientCertDetails
 }
 
 type TLSMetadataHeadersPluginProtocols string
@@ -180,11 +180,11 @@ type TLSMetadataHeadersPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *TLSMetadataHeadersPluginRoute) GetID() *string {
-	if o == nil {
+func (t *TLSMetadataHeadersPluginRoute) GetID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ID
+	return t.ID
 }
 
 // TLSMetadataHeadersPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -192,11 +192,11 @@ type TLSMetadataHeadersPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *TLSMetadataHeadersPluginService) GetID() *string {
-	if o == nil {
+func (t *TLSMetadataHeadersPluginService) GetID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ID
+	return t.ID
 }
 
 // TLSMetadataHeadersPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -231,96 +231,96 @@ func (t TLSMetadataHeadersPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TLSMetadataHeadersPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *TLSMetadataHeadersPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (t *TLSMetadataHeadersPlugin) GetCreatedAt() *int64 {
+	if t == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return t.CreatedAt
 }
 
-func (o *TLSMetadataHeadersPlugin) GetEnabled() *bool {
-	if o == nil {
+func (t *TLSMetadataHeadersPlugin) GetEnabled() *bool {
+	if t == nil {
 		return nil
 	}
-	return o.Enabled
+	return t.Enabled
 }
 
-func (o *TLSMetadataHeadersPlugin) GetID() *string {
-	if o == nil {
+func (t *TLSMetadataHeadersPlugin) GetID() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ID
+	return t.ID
 }
 
-func (o *TLSMetadataHeadersPlugin) GetInstanceName() *string {
-	if o == nil {
+func (t *TLSMetadataHeadersPlugin) GetInstanceName() *string {
+	if t == nil {
 		return nil
 	}
-	return o.InstanceName
+	return t.InstanceName
 }
 
-func (o *TLSMetadataHeadersPlugin) GetName() string {
+func (t *TLSMetadataHeadersPlugin) GetName() string {
 	return "tls-metadata-headers"
 }
 
-func (o *TLSMetadataHeadersPlugin) GetOrdering() *TLSMetadataHeadersPluginOrdering {
-	if o == nil {
+func (t *TLSMetadataHeadersPlugin) GetOrdering() *TLSMetadataHeadersPluginOrdering {
+	if t == nil {
 		return nil
 	}
-	return o.Ordering
+	return t.Ordering
 }
 
-func (o *TLSMetadataHeadersPlugin) GetPartials() []TLSMetadataHeadersPluginPartials {
-	if o == nil {
+func (t *TLSMetadataHeadersPlugin) GetPartials() []TLSMetadataHeadersPluginPartials {
+	if t == nil {
 		return nil
 	}
-	return o.Partials
+	return t.Partials
 }
 
-func (o *TLSMetadataHeadersPlugin) GetTags() []string {
-	if o == nil {
+func (t *TLSMetadataHeadersPlugin) GetTags() []string {
+	if t == nil {
 		return nil
 	}
-	return o.Tags
+	return t.Tags
 }
 
-func (o *TLSMetadataHeadersPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (t *TLSMetadataHeadersPlugin) GetUpdatedAt() *int64 {
+	if t == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return t.UpdatedAt
 }
 
-func (o *TLSMetadataHeadersPlugin) GetConfig() *TLSMetadataHeadersPluginConfig {
-	if o == nil {
+func (t *TLSMetadataHeadersPlugin) GetConfig() *TLSMetadataHeadersPluginConfig {
+	if t == nil {
 		return nil
 	}
-	return o.Config
+	return t.Config
 }
 
-func (o *TLSMetadataHeadersPlugin) GetProtocols() []TLSMetadataHeadersPluginProtocols {
-	if o == nil {
+func (t *TLSMetadataHeadersPlugin) GetProtocols() []TLSMetadataHeadersPluginProtocols {
+	if t == nil {
 		return nil
 	}
-	return o.Protocols
+	return t.Protocols
 }
 
-func (o *TLSMetadataHeadersPlugin) GetRoute() *TLSMetadataHeadersPluginRoute {
-	if o == nil {
+func (t *TLSMetadataHeadersPlugin) GetRoute() *TLSMetadataHeadersPluginRoute {
+	if t == nil {
 		return nil
 	}
-	return o.Route
+	return t.Route
 }
 
-func (o *TLSMetadataHeadersPlugin) GetService() *TLSMetadataHeadersPluginService {
-	if o == nil {
+func (t *TLSMetadataHeadersPlugin) GetService() *TLSMetadataHeadersPluginService {
+	if t == nil {
 		return nil
 	}
-	return o.Service
+	return t.Service
 }

@@ -12,23 +12,23 @@ type V2AppearanceImages struct {
 	CatalogCover *V2AppearanceImage `json:"catalog_cover,omitempty"`
 }
 
-func (o *V2AppearanceImages) GetLogo() *V2AppearanceImage {
-	if o == nil {
+func (v *V2AppearanceImages) GetLogo() *V2AppearanceImage {
+	if v == nil {
 		return nil
 	}
-	return o.Logo
+	return v.Logo
 }
 
-func (o *V2AppearanceImages) GetFavicon() *V2AppearanceImage {
-	if o == nil {
+func (v *V2AppearanceImages) GetFavicon() *V2AppearanceImage {
+	if v == nil {
 		return nil
 	}
-	return o.Favicon
+	return v.Favicon
 }
 
-func (o *V2AppearanceImages) GetCatalogCover() *V2AppearanceImage {
-	if o == nil {
+func (v *V2AppearanceImages) GetCatalogCover() *V2AppearanceImage {
+	if v == nil {
 		return nil
 	}
-	return o.CatalogCover
+	return v.CatalogCover
 }

@@ -14,18 +14,18 @@ type GetJqPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetJqPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetJqPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetJqPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetJqPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetJqPluginResponse struct {
@@ -41,37 +41,37 @@ type GetJqPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetJqPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetJqPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetJqPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetJqPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetJqPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetJqPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetJqPluginResponse) GetJqPlugin() *shared.JqPlugin {
-	if o == nil {
+func (g *GetJqPluginResponse) GetJqPlugin() *shared.JqPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.JqPlugin
+	return g.JqPlugin
 }
 
-func (o *GetJqPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetJqPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

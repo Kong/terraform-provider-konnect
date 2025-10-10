@@ -16,25 +16,25 @@ type UpsertConsumerGroupRequest struct {
 	ConsumerGroup shared.ConsumerGroup `request:"mediaType=application/json"`
 }
 
-func (o *UpsertConsumerGroupRequest) GetConsumerGroupID() string {
-	if o == nil {
+func (u *UpsertConsumerGroupRequest) GetConsumerGroupID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ConsumerGroupID
+	return u.ConsumerGroupID
 }
 
-func (o *UpsertConsumerGroupRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpsertConsumerGroupRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpsertConsumerGroupRequest) GetConsumerGroup() shared.ConsumerGroup {
-	if o == nil {
+func (u *UpsertConsumerGroupRequest) GetConsumerGroup() shared.ConsumerGroup {
+	if u == nil {
 		return shared.ConsumerGroup{}
 	}
-	return o.ConsumerGroup
+	return u.ConsumerGroup
 }
 
 type UpsertConsumerGroupResponse struct {
@@ -50,37 +50,37 @@ type UpsertConsumerGroupResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpsertConsumerGroupResponse) GetContentType() string {
-	if o == nil {
+func (u *UpsertConsumerGroupResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpsertConsumerGroupResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpsertConsumerGroupResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpsertConsumerGroupResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpsertConsumerGroupResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpsertConsumerGroupResponse) GetConsumerGroup() *shared.ConsumerGroup {
-	if o == nil {
+func (u *UpsertConsumerGroupResponse) GetConsumerGroup() *shared.ConsumerGroup {
+	if u == nil {
 		return nil
 	}
-	return o.ConsumerGroup
+	return u.ConsumerGroup
 }
 
-func (o *UpsertConsumerGroupResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpsertConsumerGroupResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

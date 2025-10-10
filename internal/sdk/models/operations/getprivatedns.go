@@ -18,18 +18,18 @@ type GetPrivateDNSRequest struct {
 	PrivateDNSID string `pathParam:"style=simple,explode=false,name=privateDnsId"`
 }
 
-func (o *GetPrivateDNSRequest) GetNetworkID() string {
-	if o == nil {
+func (g *GetPrivateDNSRequest) GetNetworkID() string {
+	if g == nil {
 		return ""
 	}
-	return o.NetworkID
+	return g.NetworkID
 }
 
-func (o *GetPrivateDNSRequest) GetPrivateDNSID() string {
-	if o == nil {
+func (g *GetPrivateDNSRequest) GetPrivateDNSID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PrivateDNSID
+	return g.PrivateDNSID
 }
 
 type GetPrivateDNSResponse struct {
@@ -49,51 +49,51 @@ type GetPrivateDNSResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *GetPrivateDNSResponse) GetContentType() string {
-	if o == nil {
+func (g *GetPrivateDNSResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetPrivateDNSResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetPrivateDNSResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetPrivateDNSResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetPrivateDNSResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetPrivateDNSResponse) GetPrivateDNSResponse() *shared.PrivateDNSResponse {
-	if o == nil {
+func (g *GetPrivateDNSResponse) GetPrivateDNSResponse() *shared.PrivateDNSResponse {
+	if g == nil {
 		return nil
 	}
-	return o.PrivateDNSResponse
+	return g.PrivateDNSResponse
 }
 
-func (o *GetPrivateDNSResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (g *GetPrivateDNSResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return g.UnauthorizedError
 }
 
-func (o *GetPrivateDNSResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (g *GetPrivateDNSResponse) GetForbiddenError() *shared.ForbiddenError {
+	if g == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return g.ForbiddenError
 }
 
-func (o *GetPrivateDNSResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetPrivateDNSResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }

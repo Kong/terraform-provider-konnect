@@ -16,11 +16,11 @@ type GetCustomDomainRequest struct {
 	CustomDomainID string `pathParam:"style=simple,explode=false,name=customDomainId"`
 }
 
-func (o *GetCustomDomainRequest) GetCustomDomainID() string {
-	if o == nil {
+func (g *GetCustomDomainRequest) GetCustomDomainID() string {
+	if g == nil {
 		return ""
 	}
-	return o.CustomDomainID
+	return g.CustomDomainID
 }
 
 type GetCustomDomainResponse struct {
@@ -40,51 +40,51 @@ type GetCustomDomainResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *GetCustomDomainResponse) GetContentType() string {
-	if o == nil {
+func (g *GetCustomDomainResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetCustomDomainResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetCustomDomainResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetCustomDomainResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetCustomDomainResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetCustomDomainResponse) GetCustomDomain() *shared.CustomDomain {
-	if o == nil {
+func (g *GetCustomDomainResponse) GetCustomDomain() *shared.CustomDomain {
+	if g == nil {
 		return nil
 	}
-	return o.CustomDomain
+	return g.CustomDomain
 }
 
-func (o *GetCustomDomainResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (g *GetCustomDomainResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return g.UnauthorizedError
 }
 
-func (o *GetCustomDomainResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (g *GetCustomDomainResponse) GetForbiddenError() *shared.ForbiddenError {
+	if g == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return g.ForbiddenError
 }
 
-func (o *GetCustomDomainResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetCustomDomainResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }

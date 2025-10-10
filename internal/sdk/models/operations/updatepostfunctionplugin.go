@@ -15,25 +15,25 @@ type UpdatePostfunctionPluginRequest struct {
 	PostFunctionPlugin shared.PostFunctionPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdatePostfunctionPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdatePostfunctionPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdatePostfunctionPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdatePostfunctionPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdatePostfunctionPluginRequest) GetPostFunctionPlugin() shared.PostFunctionPlugin {
-	if o == nil {
+func (u *UpdatePostfunctionPluginRequest) GetPostFunctionPlugin() shared.PostFunctionPlugin {
+	if u == nil {
 		return shared.PostFunctionPlugin{}
 	}
-	return o.PostFunctionPlugin
+	return u.PostFunctionPlugin
 }
 
 type UpdatePostfunctionPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdatePostfunctionPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdatePostfunctionPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdatePostfunctionPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdatePostfunctionPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdatePostfunctionPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdatePostfunctionPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdatePostfunctionPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdatePostfunctionPluginResponse) GetPostFunctionPlugin() *shared.PostFunctionPlugin {
-	if o == nil {
+func (u *UpdatePostfunctionPluginResponse) GetPostFunctionPlugin() *shared.PostFunctionPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.PostFunctionPlugin
+	return u.PostFunctionPlugin
 }
 
-func (o *UpdatePostfunctionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdatePostfunctionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

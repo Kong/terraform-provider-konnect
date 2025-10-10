@@ -12,22 +12,22 @@ type AiProxyPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AiProxyPluginAfter) GetAccess() []string {
-	if o == nil {
+func (a *AiProxyPluginAfter) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AiProxyPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AiProxyPluginBefore) GetAccess() []string {
-	if o == nil {
+func (a *AiProxyPluginBefore) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AiProxyPluginOrdering struct {
@@ -35,18 +35,18 @@ type AiProxyPluginOrdering struct {
 	Before *AiProxyPluginBefore `json:"before,omitempty"`
 }
 
-func (o *AiProxyPluginOrdering) GetAfter() *AiProxyPluginAfter {
-	if o == nil {
+func (a *AiProxyPluginOrdering) GetAfter() *AiProxyPluginAfter {
+	if a == nil {
 		return nil
 	}
-	return o.After
+	return a.After
 }
 
-func (o *AiProxyPluginOrdering) GetBefore() *AiProxyPluginBefore {
-	if o == nil {
+func (a *AiProxyPluginOrdering) GetBefore() *AiProxyPluginBefore {
+	if a == nil {
 		return nil
 	}
-	return o.Before
+	return a.Before
 }
 
 type AiProxyPluginPartials struct {
@@ -57,25 +57,25 @@ type AiProxyPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *AiProxyPluginPartials) GetID() *string {
-	if o == nil {
+func (a *AiProxyPluginPartials) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AiProxyPluginPartials) GetName() *string {
-	if o == nil {
+func (a *AiProxyPluginPartials) GetName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AiProxyPluginPartials) GetPath() *string {
-	if o == nil {
+func (a *AiProxyPluginPartials) GetPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Path
+	return a.Path
 }
 
 // ParamLocation - Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
@@ -141,108 +141,108 @@ func (a Auth) MarshalJSON() ([]byte, error) {
 }
 
 func (a *Auth) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Auth) GetAllowOverride() *bool {
-	if o == nil {
+func (a *Auth) GetAllowOverride() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.AllowOverride
+	return a.AllowOverride
 }
 
-func (o *Auth) GetAwsAccessKeyID() *string {
-	if o == nil {
+func (a *Auth) GetAwsAccessKeyID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsAccessKeyID
+	return a.AwsAccessKeyID
 }
 
-func (o *Auth) GetAwsSecretAccessKey() *string {
-	if o == nil {
+func (a *Auth) GetAwsSecretAccessKey() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsSecretAccessKey
+	return a.AwsSecretAccessKey
 }
 
-func (o *Auth) GetAzureClientID() *string {
-	if o == nil {
+func (a *Auth) GetAzureClientID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AzureClientID
+	return a.AzureClientID
 }
 
-func (o *Auth) GetAzureClientSecret() *string {
-	if o == nil {
+func (a *Auth) GetAzureClientSecret() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AzureClientSecret
+	return a.AzureClientSecret
 }
 
-func (o *Auth) GetAzureTenantID() *string {
-	if o == nil {
+func (a *Auth) GetAzureTenantID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AzureTenantID
+	return a.AzureTenantID
 }
 
-func (o *Auth) GetAzureUseManagedIdentity() *bool {
-	if o == nil {
+func (a *Auth) GetAzureUseManagedIdentity() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.AzureUseManagedIdentity
+	return a.AzureUseManagedIdentity
 }
 
-func (o *Auth) GetGcpServiceAccountJSON() *string {
-	if o == nil {
+func (a *Auth) GetGcpServiceAccountJSON() *string {
+	if a == nil {
 		return nil
 	}
-	return o.GcpServiceAccountJSON
+	return a.GcpServiceAccountJSON
 }
 
-func (o *Auth) GetGcpUseServiceAccount() *bool {
-	if o == nil {
+func (a *Auth) GetGcpUseServiceAccount() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.GcpUseServiceAccount
+	return a.GcpUseServiceAccount
 }
 
-func (o *Auth) GetHeaderName() *string {
-	if o == nil {
+func (a *Auth) GetHeaderName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.HeaderName
+	return a.HeaderName
 }
 
-func (o *Auth) GetHeaderValue() *string {
-	if o == nil {
+func (a *Auth) GetHeaderValue() *string {
+	if a == nil {
 		return nil
 	}
-	return o.HeaderValue
+	return a.HeaderValue
 }
 
-func (o *Auth) GetParamLocation() *ParamLocation {
-	if o == nil {
+func (a *Auth) GetParamLocation() *ParamLocation {
+	if a == nil {
 		return nil
 	}
-	return o.ParamLocation
+	return a.ParamLocation
 }
 
-func (o *Auth) GetParamName() *string {
-	if o == nil {
+func (a *Auth) GetParamName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ParamName
+	return a.ParamName
 }
 
-func (o *Auth) GetParamValue() *string {
-	if o == nil {
+func (a *Auth) GetParamValue() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ParamValue
+	return a.ParamValue
 }
 
 // AiProxyPluginGenaiCategory - Generative AI category of the request
@@ -329,24 +329,24 @@ func (l Logging) MarshalJSON() ([]byte, error) {
 }
 
 func (l *Logging) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Logging) GetLogPayloads() *bool {
-	if o == nil {
+func (l *Logging) GetLogPayloads() *bool {
+	if l == nil {
 		return nil
 	}
-	return o.LogPayloads
+	return l.LogPayloads
 }
 
-func (o *Logging) GetLogStatistics() *bool {
-	if o == nil {
+func (l *Logging) GetLogStatistics() *bool {
+	if l == nil {
 		return nil
 	}
-	return o.LogStatistics
+	return l.LogStatistics
 }
 
 type Bedrock struct {
@@ -369,52 +369,52 @@ func (b Bedrock) MarshalJSON() ([]byte, error) {
 }
 
 func (b *Bedrock) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Bedrock) GetAwsAssumeRoleArn() *string {
-	if o == nil {
+func (b *Bedrock) GetAwsAssumeRoleArn() *string {
+	if b == nil {
 		return nil
 	}
-	return o.AwsAssumeRoleArn
+	return b.AwsAssumeRoleArn
 }
 
-func (o *Bedrock) GetAwsRegion() *string {
-	if o == nil {
+func (b *Bedrock) GetAwsRegion() *string {
+	if b == nil {
 		return nil
 	}
-	return o.AwsRegion
+	return b.AwsRegion
 }
 
-func (o *Bedrock) GetAwsRoleSessionName() *string {
-	if o == nil {
+func (b *Bedrock) GetAwsRoleSessionName() *string {
+	if b == nil {
 		return nil
 	}
-	return o.AwsRoleSessionName
+	return b.AwsRoleSessionName
 }
 
-func (o *Bedrock) GetAwsStsEndpointURL() *string {
-	if o == nil {
+func (b *Bedrock) GetAwsStsEndpointURL() *string {
+	if b == nil {
 		return nil
 	}
-	return o.AwsStsEndpointURL
+	return b.AwsStsEndpointURL
 }
 
-func (o *Bedrock) GetEmbeddingsNormalize() *bool {
-	if o == nil {
+func (b *Bedrock) GetEmbeddingsNormalize() *bool {
+	if b == nil {
 		return nil
 	}
-	return o.EmbeddingsNormalize
+	return b.EmbeddingsNormalize
 }
 
-func (o *Bedrock) GetPerformanceConfigLatency() *string {
-	if o == nil {
+func (b *Bedrock) GetPerformanceConfigLatency() *string {
+	if b == nil {
 		return nil
 	}
-	return o.PerformanceConfigLatency
+	return b.PerformanceConfigLatency
 }
 
 // EmbeddingInputType - The purpose of the input text to calculate embedding vectors.
@@ -465,24 +465,24 @@ func (c Cohere) MarshalJSON() ([]byte, error) {
 }
 
 func (c *Cohere) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Cohere) GetEmbeddingInputType() *EmbeddingInputType {
-	if o == nil {
+func (c *Cohere) GetEmbeddingInputType() *EmbeddingInputType {
+	if c == nil {
 		return nil
 	}
-	return o.EmbeddingInputType
+	return c.EmbeddingInputType
 }
 
-func (o *Cohere) GetWaitForModel() *bool {
-	if o == nil {
+func (c *Cohere) GetWaitForModel() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.WaitForModel
+	return c.WaitForModel
 }
 
 type Gemini struct {
@@ -499,31 +499,31 @@ func (g Gemini) MarshalJSON() ([]byte, error) {
 }
 
 func (g *Gemini) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Gemini) GetAPIEndpoint() *string {
-	if o == nil {
+func (g *Gemini) GetAPIEndpoint() *string {
+	if g == nil {
 		return nil
 	}
-	return o.APIEndpoint
+	return g.APIEndpoint
 }
 
-func (o *Gemini) GetLocationID() *string {
-	if o == nil {
+func (g *Gemini) GetLocationID() *string {
+	if g == nil {
 		return nil
 	}
-	return o.LocationID
+	return g.LocationID
 }
 
-func (o *Gemini) GetProjectID() *string {
-	if o == nil {
+func (g *Gemini) GetProjectID() *string {
+	if g == nil {
 		return nil
 	}
-	return o.ProjectID
+	return g.ProjectID
 }
 
 type Huggingface struct {
@@ -538,24 +538,24 @@ func (h Huggingface) MarshalJSON() ([]byte, error) {
 }
 
 func (h *Huggingface) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &h, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Huggingface) GetUseCache() *bool {
-	if o == nil {
+func (h *Huggingface) GetUseCache() *bool {
+	if h == nil {
 		return nil
 	}
-	return o.UseCache
+	return h.UseCache
 }
 
-func (o *Huggingface) GetWaitForModel() *bool {
-	if o == nil {
+func (h *Huggingface) GetWaitForModel() *bool {
+	if h == nil {
 		return nil
 	}
-	return o.WaitForModel
+	return h.WaitForModel
 }
 
 // Llama2Format - If using llama2 provider, select the upstream message format.
@@ -658,7 +658,7 @@ func (o OptionsObj) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OptionsObj) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -859,31 +859,31 @@ func (m Model) MarshalJSON() ([]byte, error) {
 }
 
 func (m *Model) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"provider"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Model) GetName() *string {
-	if o == nil {
+func (m *Model) GetName() *string {
+	if m == nil {
 		return nil
 	}
-	return o.Name
+	return m.Name
 }
 
-func (o *Model) GetOptions() *OptionsObj {
-	if o == nil {
+func (m *Model) GetOptions() *OptionsObj {
+	if m == nil {
 		return nil
 	}
-	return o.Options
+	return m.Options
 }
 
-func (o *Model) GetProvider() Provider {
-	if o == nil {
+func (m *Model) GetProvider() Provider {
+	if m == nil {
 		return Provider("")
 	}
-	return o.Provider
+	return m.Provider
 }
 
 // ResponseStreaming - Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events.
@@ -1002,73 +1002,73 @@ func (a AiProxyPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"model", "route_type"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiProxyPluginConfig) GetAuth() *Auth {
-	if o == nil {
+func (a *AiProxyPluginConfig) GetAuth() *Auth {
+	if a == nil {
 		return nil
 	}
-	return o.Auth
+	return a.Auth
 }
 
-func (o *AiProxyPluginConfig) GetGenaiCategory() *AiProxyPluginGenaiCategory {
-	if o == nil {
+func (a *AiProxyPluginConfig) GetGenaiCategory() *AiProxyPluginGenaiCategory {
+	if a == nil {
 		return nil
 	}
-	return o.GenaiCategory
+	return a.GenaiCategory
 }
 
-func (o *AiProxyPluginConfig) GetLlmFormat() *AiProxyPluginLlmFormat {
-	if o == nil {
+func (a *AiProxyPluginConfig) GetLlmFormat() *AiProxyPluginLlmFormat {
+	if a == nil {
 		return nil
 	}
-	return o.LlmFormat
+	return a.LlmFormat
 }
 
-func (o *AiProxyPluginConfig) GetLogging() *Logging {
-	if o == nil {
+func (a *AiProxyPluginConfig) GetLogging() *Logging {
+	if a == nil {
 		return nil
 	}
-	return o.Logging
+	return a.Logging
 }
 
-func (o *AiProxyPluginConfig) GetMaxRequestBodySize() *int64 {
-	if o == nil {
+func (a *AiProxyPluginConfig) GetMaxRequestBodySize() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.MaxRequestBodySize
+	return a.MaxRequestBodySize
 }
 
-func (o *AiProxyPluginConfig) GetModel() Model {
-	if o == nil {
+func (a *AiProxyPluginConfig) GetModel() Model {
+	if a == nil {
 		return Model{}
 	}
-	return o.Model
+	return a.Model
 }
 
-func (o *AiProxyPluginConfig) GetModelNameHeader() *bool {
-	if o == nil {
+func (a *AiProxyPluginConfig) GetModelNameHeader() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.ModelNameHeader
+	return a.ModelNameHeader
 }
 
-func (o *AiProxyPluginConfig) GetResponseStreaming() *ResponseStreaming {
-	if o == nil {
+func (a *AiProxyPluginConfig) GetResponseStreaming() *ResponseStreaming {
+	if a == nil {
 		return nil
 	}
-	return o.ResponseStreaming
+	return a.ResponseStreaming
 }
 
-func (o *AiProxyPluginConfig) GetRouteType() RouteType {
-	if o == nil {
+func (a *AiProxyPluginConfig) GetRouteType() RouteType {
+	if a == nil {
 		return RouteType("")
 	}
-	return o.RouteType
+	return a.RouteType
 }
 
 // AiProxyPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -1076,11 +1076,11 @@ type AiProxyPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiProxyPluginConsumer) GetID() *string {
-	if o == nil {
+func (a *AiProxyPluginConsumer) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiProxyPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -1088,11 +1088,11 @@ type AiProxyPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiProxyPluginConsumerGroup) GetID() *string {
-	if o == nil {
+func (a *AiProxyPluginConsumerGroup) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 type AiProxyPluginProtocols string
@@ -1138,11 +1138,11 @@ type AiProxyPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiProxyPluginRoute) GetID() *string {
-	if o == nil {
+func (a *AiProxyPluginRoute) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiProxyPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -1150,11 +1150,11 @@ type AiProxyPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiProxyPluginService) GetID() *string {
-	if o == nil {
+func (a *AiProxyPluginService) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiProxyPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -1193,110 +1193,110 @@ func (a AiProxyPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiProxyPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (a *AiProxyPlugin) GetCreatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AiProxyPlugin) GetEnabled() *bool {
-	if o == nil {
+func (a *AiProxyPlugin) GetEnabled() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Enabled
+	return a.Enabled
 }
 
-func (o *AiProxyPlugin) GetID() *string {
-	if o == nil {
+func (a *AiProxyPlugin) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AiProxyPlugin) GetInstanceName() *string {
-	if o == nil {
+func (a *AiProxyPlugin) GetInstanceName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.InstanceName
+	return a.InstanceName
 }
 
-func (o *AiProxyPlugin) GetName() string {
+func (a *AiProxyPlugin) GetName() string {
 	return "ai-proxy"
 }
 
-func (o *AiProxyPlugin) GetOrdering() *AiProxyPluginOrdering {
-	if o == nil {
+func (a *AiProxyPlugin) GetOrdering() *AiProxyPluginOrdering {
+	if a == nil {
 		return nil
 	}
-	return o.Ordering
+	return a.Ordering
 }
 
-func (o *AiProxyPlugin) GetPartials() []AiProxyPluginPartials {
-	if o == nil {
+func (a *AiProxyPlugin) GetPartials() []AiProxyPluginPartials {
+	if a == nil {
 		return nil
 	}
-	return o.Partials
+	return a.Partials
 }
 
-func (o *AiProxyPlugin) GetTags() []string {
-	if o == nil {
+func (a *AiProxyPlugin) GetTags() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Tags
+	return a.Tags
 }
 
-func (o *AiProxyPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (a *AiProxyPlugin) GetUpdatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }
 
-func (o *AiProxyPlugin) GetConfig() AiProxyPluginConfig {
-	if o == nil {
+func (a *AiProxyPlugin) GetConfig() AiProxyPluginConfig {
+	if a == nil {
 		return AiProxyPluginConfig{}
 	}
-	return o.Config
+	return a.Config
 }
 
-func (o *AiProxyPlugin) GetConsumer() *AiProxyPluginConsumer {
-	if o == nil {
+func (a *AiProxyPlugin) GetConsumer() *AiProxyPluginConsumer {
+	if a == nil {
 		return nil
 	}
-	return o.Consumer
+	return a.Consumer
 }
 
-func (o *AiProxyPlugin) GetConsumerGroup() *AiProxyPluginConsumerGroup {
-	if o == nil {
+func (a *AiProxyPlugin) GetConsumerGroup() *AiProxyPluginConsumerGroup {
+	if a == nil {
 		return nil
 	}
-	return o.ConsumerGroup
+	return a.ConsumerGroup
 }
 
-func (o *AiProxyPlugin) GetProtocols() []AiProxyPluginProtocols {
-	if o == nil {
+func (a *AiProxyPlugin) GetProtocols() []AiProxyPluginProtocols {
+	if a == nil {
 		return nil
 	}
-	return o.Protocols
+	return a.Protocols
 }
 
-func (o *AiProxyPlugin) GetRoute() *AiProxyPluginRoute {
-	if o == nil {
+func (a *AiProxyPlugin) GetRoute() *AiProxyPluginRoute {
+	if a == nil {
 		return nil
 	}
-	return o.Route
+	return a.Route
 }
 
-func (o *AiProxyPlugin) GetService() *AiProxyPluginService {
-	if o == nil {
+func (a *AiProxyPlugin) GetService() *AiProxyPluginService {
+	if a == nil {
 		return nil
 	}
-	return o.Service
+	return a.Service
 }

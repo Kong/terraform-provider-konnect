@@ -60,7 +60,7 @@ func (s *Roles) TeamsAssignRole(ctx context.Context, request operations.TeamsAss
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "teams-assign-role",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "AssignRole", "json", `request:"mediaType=application/json"`)
@@ -306,7 +306,7 @@ func (s *Roles) TeamsRemoveRole(ctx context.Context, request operations.TeamsRem
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "teams-remove-role",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

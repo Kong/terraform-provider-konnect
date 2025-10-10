@@ -15,25 +15,25 @@ type UpdateAipromptcompressorPluginRequest struct {
 	AiPromptCompressorPlugin shared.AiPromptCompressorPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateAipromptcompressorPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateAipromptcompressorPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateAipromptcompressorPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateAipromptcompressorPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateAipromptcompressorPluginRequest) GetAiPromptCompressorPlugin() shared.AiPromptCompressorPlugin {
-	if o == nil {
+func (u *UpdateAipromptcompressorPluginRequest) GetAiPromptCompressorPlugin() shared.AiPromptCompressorPlugin {
+	if u == nil {
 		return shared.AiPromptCompressorPlugin{}
 	}
-	return o.AiPromptCompressorPlugin
+	return u.AiPromptCompressorPlugin
 }
 
 type UpdateAipromptcompressorPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateAipromptcompressorPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateAipromptcompressorPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateAipromptcompressorPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateAipromptcompressorPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateAipromptcompressorPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateAipromptcompressorPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateAipromptcompressorPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateAipromptcompressorPluginResponse) GetAiPromptCompressorPlugin() *shared.AiPromptCompressorPlugin {
-	if o == nil {
+func (u *UpdateAipromptcompressorPluginResponse) GetAiPromptCompressorPlugin() *shared.AiPromptCompressorPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.AiPromptCompressorPlugin
+	return u.AiPromptCompressorPlugin
 }
 
-func (o *UpdateAipromptcompressorPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateAipromptcompressorPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

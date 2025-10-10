@@ -13,30 +13,30 @@ type CreateServerlessCloudGatewayRequest struct {
 	Labels map[string]string `json:"labels,omitempty"`
 }
 
-func (o *CreateServerlessCloudGatewayRequest) GetControlPlane() ServerlessControlPlane {
-	if o == nil {
+func (c *CreateServerlessCloudGatewayRequest) GetControlPlane() ServerlessControlPlane {
+	if c == nil {
 		return ServerlessControlPlane{}
 	}
-	return o.ControlPlane
+	return c.ControlPlane
 }
 
-func (o *CreateServerlessCloudGatewayRequest) GetClusterCert() string {
-	if o == nil {
+func (c *CreateServerlessCloudGatewayRequest) GetClusterCert() string {
+	if c == nil {
 		return ""
 	}
-	return o.ClusterCert
+	return c.ClusterCert
 }
 
-func (o *CreateServerlessCloudGatewayRequest) GetClusterCertKey() string {
-	if o == nil {
+func (c *CreateServerlessCloudGatewayRequest) GetClusterCertKey() string {
+	if c == nil {
 		return ""
 	}
-	return o.ClusterCertKey
+	return c.ClusterCertKey
 }
 
-func (o *CreateServerlessCloudGatewayRequest) GetLabels() map[string]string {
-	if o == nil {
+func (c *CreateServerlessCloudGatewayRequest) GetLabels() map[string]string {
+	if c == nil {
 		return nil
 	}
-	return o.Labels
+	return c.Labels
 }

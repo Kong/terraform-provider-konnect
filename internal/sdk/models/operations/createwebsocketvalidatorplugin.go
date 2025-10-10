@@ -13,18 +13,18 @@ type CreateWebsocketvalidatorPluginRequest struct {
 	WebsocketValidatorPlugin shared.WebsocketValidatorPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateWebsocketvalidatorPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateWebsocketvalidatorPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateWebsocketvalidatorPluginRequest) GetWebsocketValidatorPlugin() shared.WebsocketValidatorPlugin {
-	if o == nil {
+func (c *CreateWebsocketvalidatorPluginRequest) GetWebsocketValidatorPlugin() shared.WebsocketValidatorPlugin {
+	if c == nil {
 		return shared.WebsocketValidatorPlugin{}
 	}
-	return o.WebsocketValidatorPlugin
+	return c.WebsocketValidatorPlugin
 }
 
 type CreateWebsocketvalidatorPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateWebsocketvalidatorPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateWebsocketvalidatorPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateWebsocketvalidatorPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateWebsocketvalidatorPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateWebsocketvalidatorPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateWebsocketvalidatorPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateWebsocketvalidatorPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateWebsocketvalidatorPluginResponse) GetWebsocketValidatorPlugin() *shared.WebsocketValidatorPlugin {
-	if o == nil {
+func (c *CreateWebsocketvalidatorPluginResponse) GetWebsocketValidatorPlugin() *shared.WebsocketValidatorPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.WebsocketValidatorPlugin
+	return c.WebsocketValidatorPlugin
 }
 
-func (o *CreateWebsocketvalidatorPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateWebsocketvalidatorPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

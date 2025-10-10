@@ -21,24 +21,24 @@ func (a AwsPrivateDNSResolverResponsePrivateDNSStateMetadata) MarshalJSON() ([]b
 }
 
 func (a *AwsPrivateDNSResolverResponsePrivateDNSStateMetadata) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AwsPrivateDNSResolverResponsePrivateDNSStateMetadata) GetReportedStatus() *string {
-	if o == nil {
+func (a *AwsPrivateDNSResolverResponsePrivateDNSStateMetadata) GetReportedStatus() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ReportedStatus
+	return a.ReportedStatus
 }
 
-func (o *AwsPrivateDNSResolverResponsePrivateDNSStateMetadata) GetReason() *string {
-	if o == nil {
+func (a *AwsPrivateDNSResolverResponsePrivateDNSStateMetadata) GetReason() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Reason
+	return a.Reason
 }
 
 type AwsPrivateDNSResolverResponse struct {
@@ -74,64 +74,64 @@ func (a AwsPrivateDNSResolverResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AwsPrivateDNSResolverResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, true); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "state", "state_metadata", "entity_version", "created_at", "updated_at", "name", "private_dns_attachment_config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AwsPrivateDNSResolverResponse) GetID() string {
-	if o == nil {
+func (a *AwsPrivateDNSResolverResponse) GetID() string {
+	if a == nil {
 		return ""
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AwsPrivateDNSResolverResponse) GetState() PrivateDNSState {
-	if o == nil {
+func (a *AwsPrivateDNSResolverResponse) GetState() PrivateDNSState {
+	if a == nil {
 		return PrivateDNSState("")
 	}
-	return o.State
+	return a.State
 }
 
-func (o *AwsPrivateDNSResolverResponse) GetStateMetadata() AwsPrivateDNSResolverResponsePrivateDNSStateMetadata {
-	if o == nil {
+func (a *AwsPrivateDNSResolverResponse) GetStateMetadata() AwsPrivateDNSResolverResponsePrivateDNSStateMetadata {
+	if a == nil {
 		return AwsPrivateDNSResolverResponsePrivateDNSStateMetadata{}
 	}
-	return o.StateMetadata
+	return a.StateMetadata
 }
 
-func (o *AwsPrivateDNSResolverResponse) GetEntityVersion() int64 {
-	if o == nil {
+func (a *AwsPrivateDNSResolverResponse) GetEntityVersion() int64 {
+	if a == nil {
 		return 0
 	}
-	return o.EntityVersion
+	return a.EntityVersion
 }
 
-func (o *AwsPrivateDNSResolverResponse) GetCreatedAt() time.Time {
-	if o == nil {
+func (a *AwsPrivateDNSResolverResponse) GetCreatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AwsPrivateDNSResolverResponse) GetUpdatedAt() time.Time {
-	if o == nil {
+func (a *AwsPrivateDNSResolverResponse) GetUpdatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }
 
-func (o *AwsPrivateDNSResolverResponse) GetName() string {
-	if o == nil {
+func (a *AwsPrivateDNSResolverResponse) GetName() string {
+	if a == nil {
 		return ""
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AwsPrivateDNSResolverResponse) GetPrivateDNSAttachmentConfig() AwsPrivateDNSResolverAttachmentConfig {
-	if o == nil {
+func (a *AwsPrivateDNSResolverResponse) GetPrivateDNSAttachmentConfig() AwsPrivateDNSResolverAttachmentConfig {
+	if a == nil {
 		return AwsPrivateDNSResolverAttachmentConfig{}
 	}
-	return o.PrivateDNSAttachmentConfig
+	return a.PrivateDNSAttachmentConfig
 }

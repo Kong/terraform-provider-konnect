@@ -15,25 +15,25 @@ type UpdateUpstreamoauthPluginRequest struct {
 	UpstreamOauthPlugin shared.UpstreamOauthPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateUpstreamoauthPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateUpstreamoauthPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateUpstreamoauthPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateUpstreamoauthPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateUpstreamoauthPluginRequest) GetUpstreamOauthPlugin() shared.UpstreamOauthPlugin {
-	if o == nil {
+func (u *UpdateUpstreamoauthPluginRequest) GetUpstreamOauthPlugin() shared.UpstreamOauthPlugin {
+	if u == nil {
 		return shared.UpstreamOauthPlugin{}
 	}
-	return o.UpstreamOauthPlugin
+	return u.UpstreamOauthPlugin
 }
 
 type UpdateUpstreamoauthPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateUpstreamoauthPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateUpstreamoauthPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateUpstreamoauthPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateUpstreamoauthPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateUpstreamoauthPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateUpstreamoauthPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateUpstreamoauthPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateUpstreamoauthPluginResponse) GetUpstreamOauthPlugin() *shared.UpstreamOauthPlugin {
-	if o == nil {
+func (u *UpdateUpstreamoauthPluginResponse) GetUpstreamOauthPlugin() *shared.UpstreamOauthPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.UpstreamOauthPlugin
+	return u.UpstreamOauthPlugin
 }
 
-func (o *UpdateUpstreamoauthPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateUpstreamoauthPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

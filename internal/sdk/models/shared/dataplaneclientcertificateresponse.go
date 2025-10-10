@@ -7,9 +7,9 @@ type DataPlaneClientCertificateResponse struct {
 	Item *DataPlaneClientCertificate `json:"item,omitempty"`
 }
 
-func (o *DataPlaneClientCertificateResponse) GetItem() *DataPlaneClientCertificate {
-	if o == nil {
+func (d *DataPlaneClientCertificateResponse) GetItem() *DataPlaneClientCertificate {
+	if d == nil {
 		return nil
 	}
-	return o.Item
+	return d.Item
 }

@@ -83,7 +83,7 @@ func (s *Routes) CreateRoute(ctx context.Context, request operations.CreateRoute
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-route",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RouteJSON", "json", `request:"mediaType=application/json"`)
@@ -241,7 +241,7 @@ func (s *Routes) DeleteRoute(ctx context.Context, request operations.DeleteRoute
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-route",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -372,7 +372,7 @@ func (s *Routes) GetRoute(ctx context.Context, request operations.GetRouteReques
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-route",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -524,7 +524,7 @@ func (s *Routes) UpsertRoute(ctx context.Context, request operations.UpsertRoute
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "upsert-route",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RouteJSON", "json", `request:"mediaType=application/json"`)
@@ -682,7 +682,7 @@ func (s *Routes) DeleteRouteRouteExpression(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-route-RouteExpression",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -813,7 +813,7 @@ func (s *Routes) GetRouteRouteExpression(ctx context.Context, request operations
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-route-RouteExpression",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -965,7 +965,7 @@ func (s *Routes) UpsertRouteRouteExpression(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "upsert-route-RouteExpression",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RouteExpression", "json", `request:"mediaType=application/json"`)
@@ -1123,7 +1123,7 @@ func (s *Routes) CreateRouteRouteExpression(ctx context.Context, request operati
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-route-RouteExpression",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "RouteExpression", "json", `request:"mediaType=application/json"`)

@@ -21,6 +21,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -120,8 +121,9 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 							"purge_token_on_upstream_status_codes": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.Int64Type, []attr.Value{types.Int64Value(401)})),
 								ElementType: types.Int64Type,
-								Description: `An array of status codes which will force an access token to be purged when returned by the upstream. An empty array will disable this functionality.`,
+								Description: `An array of status codes which will force an access token to be purged when returned by the upstream. An empty array will disable this functionality. Default: [401]`,
 							},
 							"upstream_access_token_header_name": schema.StringAttribute{
 								Computed:    true,
@@ -441,7 +443,7 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
-								Description: `List of audiences passed to the IdP when obtaining a new token.`,
+								Description: `List of audiences passed to the IdP when obtaining a new token. Default: []`,
 							},
 							"client_id": schema.StringAttribute{
 								Optional:    true,
@@ -472,7 +474,7 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
-								Description: `List of scopes to request from the IdP when obtaining a new token.`,
+								Description: `List of scopes to request from the IdP when obtaining a new token. Default: []`,
 							},
 							"token_endpoint": schema.StringAttribute{
 								Required:    true,
@@ -635,10 +637,16 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 				Description: `A list of partials to be used by the plugin.`,
 			},
 			"protocols": schema.SetAttribute{
-				Computed:    true,
-				Optional:    true,
+				Computed: true,
+				Optional: true,
+				Default: setdefault.StaticValue(types.SetValueMust(types.StringType, []attr.Value{
+					types.StringValue("grpc"),
+					types.StringValue("grpcs"),
+					types.StringValue("http"),
+					types.StringValue("https"),
+				})),
 				ElementType: types.StringType,
-				Description: `A set of strings representing HTTP protocols.`,
+				Description: `A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,
