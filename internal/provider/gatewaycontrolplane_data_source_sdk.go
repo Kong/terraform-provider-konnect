@@ -18,9 +18,7 @@ func (r *GatewayControlPlaneDataSourceModel) RefreshFromSharedControlPlane(ctx c
 	r.Config.CloudGateway = types.BoolValue(resp.Config.CloudGateway)
 	r.Config.ClusterType = types.StringValue(string(resp.Config.ClusterType))
 	r.Config.ControlPlaneEndpoint = types.StringValue(resp.Config.ControlPlaneEndpoint)
-	if r.Config.ProxyUrls == nil {
-		r.Config.ProxyUrls = []tfTypes.ProxyURL{}
-	}
+	r.Config.ProxyUrls = []tfTypes.ProxyURL{}
 
 	for _, proxyUrlsItem := range resp.Config.ProxyUrls {
 		var proxyUrls tfTypes.ProxyURL
@@ -45,7 +43,7 @@ func (r *GatewayControlPlaneDataSourceModel) RefreshFromSharedControlPlane(ctx c
 	return diags
 }
 
-func (r *GatewayControlPlaneDataSourceModel) ToOperationsListControlPlanesRequest(ctx context.Context) (*operations.ListControlPlanesRequest, diag.Diagnostics) {
+func (r *GatewayControlPlaneDataSourceModel) ToOperationsListControlPlanesSingleResourceRequest(ctx context.Context) (*operations.ListControlPlanesSingleResourceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var filter *shared.ControlPlaneFilterParameters
@@ -139,7 +137,7 @@ func (r *GatewayControlPlaneDataSourceModel) ToOperationsListControlPlanesReques
 	} else {
 		sort = nil
 	}
-	out := operations.ListControlPlanesRequest{
+	out := operations.ListControlPlanesSingleResourceRequest{
 		Filter:       filter,
 		FilterLabels: filterLabels,
 		Sort:         sort,
