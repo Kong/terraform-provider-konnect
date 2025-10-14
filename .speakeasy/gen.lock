@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 1400ca1605383c8ceb795f70ab896b39
+  docChecksum: 639f3ebe28a76e636445f6f519e11b93
   docVersion: 2.0.0
   speakeasyVersion: 1.636.2
   generationVersion: 2.723.8
@@ -1822,6 +1822,7 @@ generatedFiles:
   - internal/sdk/models/operations/getxmlthreatprotectionplugin.go
   - internal/sdk/models/operations/getzipkinplugin.go
   - internal/sdk/models/operations/listcontrolplanes.go
+  - internal/sdk/models/operations/listcontrolplanessingleresource.go
   - internal/sdk/models/operations/listipaddresses.go
   - internal/sdk/models/operations/listmeshcontrolplanes.go
   - internal/sdk/models/operations/listportals.go
@@ -14409,5 +14410,47 @@ examples:
       responses:
         "200":
           application/json: {"updateDate": "2025-08-26-16-03-33", "regions": {"key": {}}, "ingressIPs": {"key": []}, "egressIPs": {"key": ["<value 1>", "<value 2>"]}}
+  list-control-planes-singleton:
+    speakeasy-default-list-control-planes-singleton:
+      parameters:
+        query:
+          page[size]: 100
+          page[number]: 1
+          labels: "key:value,existCheck"
+          sort: "created_at desc"
+      responses:
+        "200":
+          application/json: {"meta": {"page": {"number": 1, "size": 10, "total": 100}}, "data": [{"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "Test Control Plane", "description": "A test control plane for exploration.", "labels": {"env": "test"}, "config": {"control_plane_endpoint": "https://acfe5f253f.cp.konghq.com", "telemetry_endpoint": "https://acfe5f253f.tp0.konghq.com", "cluster_type": "CLUSTER_TYPE_CONTROL_PLANE", "auth_type": "pinned_client_certs", "cloud_gateway": false, "proxy_urls": [{"host": "example.com", "port": 443, "protocol": "https"}]}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}]}
+        "400":
+          application/problem+json: {"status": 997484, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "500":
+          application/problem+json: {"status": 699801, "title": "<value>", "instance": "<value>", "detail": "<value>"}
+        "503":
+          application/problem+json: {"status": 503, "title": "Service Unavailable", "instance": "konnect:trace:2287285207635123011", "detail": "Could not retrieve permissions to check resource accessibility."}
+  list-control-planes-single-resource:
+    speakeasy-default-list-control-planes-single-resource:
+      parameters:
+        query:
+          page[size]: 100
+          page[number]: 1
+          labels: "key:value,existCheck"
+          sort: "created_at desc"
+      responses:
+        "200":
+          application/json: {"meta": {"page": {"number": 1, "size": 10, "total": 100}}, "data": []}
+        "400":
+          application/problem+json: {"status": 727274, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "500":
+          application/problem+json: {"status": 149186, "title": "<value>", "instance": "<value>", "detail": "<value>"}
+        "503":
+          application/problem+json: {"status": 503, "title": "Service Unavailable", "instance": "konnect:trace:2287285207635123011", "detail": "Could not retrieve permissions to check resource accessibility."}
 examplesVersion: 1.0.2
 generatedTests: {}

@@ -2154,7 +2154,6 @@ paths:
       x-speakeasy-entity-operation:
         terraform-resource: null
         terraform-datasource:
-          - GatewayControlPlane#read
           - GatewayControlPlaneList#read
       operationId: list-control-planes
       summary: List Control Planes
@@ -15675,6 +15674,34 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Team Membership
+  /v2/control-planes#single-resource:
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: null
+        terraform-datasource:
+          - GatewayControlPlane#read
+      operationId: list-control-planes-single-resource
+      summary: List Control Planes Datasource
+      description: Returns an array of control plane objects containing information about the Konnect Control Planes.
+      parameters:
+        - $ref: '#/components/parameters/ControlPlaneFilter'
+        - $ref: '#/components/parameters/FilterByLabels'
+        - $ref: '#/components/parameters/ControlPlaneSort'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListControlPlanesResponse'
+        '400':
+          $ref: '#/components/responses/ControlPlanesBadRequest'
+        '401':
+          $ref: '#/components/responses/ControlPlaneUnauthenticated'
+        '403':
+          $ref: '#/components/responses/ControlPlanePermissionDenied'
+        '500':
+          $ref: '#/components/responses/Internal'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      tags:
+        - Control Planes
   /v2/audit-log-webhook#delete:
     patch:
       x-speakeasy-entity-operation:

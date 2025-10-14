@@ -215,13 +215,13 @@ func (r *GatewayControlPlaneDataSource) Read(ctx context.Context, req datasource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsListControlPlanesRequest(ctx)
+	request, requestDiags := data.ToOperationsListControlPlanesSingleResourceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.ControlPlanes.ListControlPlanes(ctx, *request)
+	res, err := r.client.ControlPlanes.ListControlPlanesSingleResource(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -245,26 +245,6 @@ func (r *GatewayControlPlaneDataSource) Read(ctx context.Context, req datasource
 
 	if resp.Diagnostics.HasError() {
 		return
-	}
-	for {
-		var err error
-
-		res, err = res.Next()
-
-		if err != nil {
-			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
-			return
-		}
-
-		if res == nil {
-			break
-		}
-
-		resp.Diagnostics.Append(data.RefreshFromSharedControlPlane(ctx, &res.ListControlPlanesResponse.Data[0])...)
-
-		if resp.Diagnostics.HasError() {
-			return
-		}
 	}
 
 	// Save updated data into Terraform state
