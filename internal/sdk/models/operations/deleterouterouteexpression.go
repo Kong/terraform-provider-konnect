@@ -14,18 +14,18 @@ type DeleteRouteRouteExpressionRequest struct {
 	RouteID string `pathParam:"style=simple,explode=false,name=RouteId"`
 }
 
-func (o *DeleteRouteRouteExpressionRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteRouteRouteExpressionRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
-func (o *DeleteRouteRouteExpressionRequest) GetRouteID() string {
-	if o == nil {
+func (d *DeleteRouteRouteExpressionRequest) GetRouteID() string {
+	if d == nil {
 		return ""
 	}
-	return o.RouteID
+	return d.RouteID
 }
 
 type DeleteRouteRouteExpressionResponse struct {
@@ -39,30 +39,30 @@ type DeleteRouteRouteExpressionResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteRouteRouteExpressionResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteRouteRouteExpressionResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteRouteRouteExpressionResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteRouteRouteExpressionResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteRouteRouteExpressionResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteRouteRouteExpressionResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteRouteRouteExpressionResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteRouteRouteExpressionResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

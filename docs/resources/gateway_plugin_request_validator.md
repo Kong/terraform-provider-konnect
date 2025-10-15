@@ -93,7 +93,7 @@ resource "konnect_gateway_plugin_request_validator" "my_gatewaypluginrequestvali
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
-- `protocols` (Set of String) A set of strings representing HTTP protocols.
+- `protocols` (Set of String) A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
@@ -104,7 +104,7 @@ resource "konnect_gateway_plugin_request_validator" "my_gatewaypluginrequestvali
 
 Optional:
 
-- `allowed_content_types` (List of String) List of allowed content types. The value can be configured with the `charset` parameter. For example, `application/json; charset=UTF-8`.
+- `allowed_content_types` (List of String) List of allowed content types. The value can be configured with the `charset` parameter. For example, `application/json; charset=UTF-8`. Default: ["application/json"]
 - `body_schema` (String) The request body schema specification. One of `body_schema` or `parameter_schema` must be specified.
 - `content_type_parameter_validation` (Boolean) Determines whether to enable parameters validation of request content-type. Default: true
 - `parameter_schema` (Attributes List) Array of parameter validator specification. One of `body_schema` or `parameter_schema` must be specified. (see [below for nested schema](#nestedatt--config--parameter_schema))
@@ -186,6 +186,20 @@ Optional:
 ## Import
 
 Import is supported using the following syntax:
+
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_gateway_plugin_request_validator.my_konnect_gateway_plugin_request_validator
+  id = jsonencode({
+    control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import konnect_gateway_plugin_request_validator.my_konnect_gateway_plugin_request_validator '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}'

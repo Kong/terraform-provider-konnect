@@ -18,18 +18,18 @@ type UpdateTeamRequest struct {
 	UpdateTeam *shared.UpdateTeam `request:"mediaType=application/json"`
 }
 
-func (o *UpdateTeamRequest) GetTeamID() string {
-	if o == nil {
+func (u *UpdateTeamRequest) GetTeamID() string {
+	if u == nil {
 		return ""
 	}
-	return o.TeamID
+	return u.TeamID
 }
 
-func (o *UpdateTeamRequest) GetUpdateTeam() *shared.UpdateTeam {
-	if o == nil {
+func (u *UpdateTeamRequest) GetUpdateTeam() *shared.UpdateTeam {
+	if u == nil {
 		return nil
 	}
-	return o.UpdateTeam
+	return u.UpdateTeam
 }
 
 type UpdateTeamResponse struct {
@@ -47,44 +47,44 @@ type UpdateTeamResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *UpdateTeamResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateTeamResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateTeamResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateTeamResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateTeamResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateTeamResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateTeamResponse) GetTeam() *shared.Team {
-	if o == nil {
+func (u *UpdateTeamResponse) GetTeam() *shared.Team {
+	if u == nil {
 		return nil
 	}
-	return o.Team
+	return u.Team
 }
 
-func (o *UpdateTeamResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (u *UpdateTeamResponse) GetBadRequestError() *shared.BadRequestError {
+	if u == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return u.BadRequestError
 }
 
-func (o *UpdateTeamResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (u *UpdateTeamResponse) GetNotFoundError() *shared.NotFoundError {
+	if u == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return u.NotFoundError
 }

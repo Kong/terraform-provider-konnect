@@ -15,25 +15,25 @@ type UpdateCanaryPluginRequest struct {
 	CanaryPlugin   shared.CanaryPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateCanaryPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateCanaryPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateCanaryPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateCanaryPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateCanaryPluginRequest) GetCanaryPlugin() shared.CanaryPlugin {
-	if o == nil {
+func (u *UpdateCanaryPluginRequest) GetCanaryPlugin() shared.CanaryPlugin {
+	if u == nil {
 		return shared.CanaryPlugin{}
 	}
-	return o.CanaryPlugin
+	return u.CanaryPlugin
 }
 
 type UpdateCanaryPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateCanaryPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateCanaryPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateCanaryPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateCanaryPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateCanaryPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateCanaryPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateCanaryPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateCanaryPluginResponse) GetCanaryPlugin() *shared.CanaryPlugin {
-	if o == nil {
+func (u *UpdateCanaryPluginResponse) GetCanaryPlugin() *shared.CanaryPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.CanaryPlugin
+	return u.CanaryPlugin
 }
 
-func (o *UpdateCanaryPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateCanaryPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

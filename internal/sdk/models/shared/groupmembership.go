@@ -6,11 +6,11 @@ type Members struct {
 	ID string `json:"id"`
 }
 
-func (o *Members) GetID() string {
-	if o == nil {
+func (m *Members) GetID() string {
+	if m == nil {
 		return ""
 	}
-	return o.ID
+	return m.ID
 }
 
 // GroupMembership - Request body for adding a list of child control planes to a control plane group membership.
@@ -18,9 +18,9 @@ type GroupMembership struct {
 	Members []Members `json:"members"`
 }
 
-func (o *GroupMembership) GetMembers() []Members {
-	if o == nil {
+func (g *GroupMembership) GetMembers() []Members {
+	if g == nil {
 		return []Members{}
 	}
-	return o.Members
+	return g.Members
 }

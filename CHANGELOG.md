@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.3.0
+> Released on 2025/10/14
+
+### Features
+* Added `konnect_gateway_control_plane_list` data source
+
 ## 3.2.1
 > Released on 2025/10/09
 

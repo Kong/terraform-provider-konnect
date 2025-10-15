@@ -16,3 +16,15 @@ data "konnect_gateway_control_plane" "my_cp" {
 output "control_plane" {
   value = data.konnect_gateway_control_plane.my_cp.name
 }
+
+data "konnect_gateway_control_plane_list" "my_gatewaycontrolplanelist" {
+  filter = {
+    name = {
+      eq = "Lookup Control Plane"
+    }
+  }
+}
+
+output "control_plane_list" {
+  value = data.konnect_gateway_control_plane_list.my_gatewaycontrolplanelist
+}

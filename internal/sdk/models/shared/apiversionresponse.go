@@ -43,11 +43,11 @@ type APIVersionResponseValidationMessages struct {
 	Message string `json:"message"`
 }
 
-func (o *APIVersionResponseValidationMessages) GetMessage() string {
-	if o == nil {
+func (a *APIVersionResponseValidationMessages) GetMessage() string {
+	if a == nil {
 		return ""
 	}
-	return o.Message
+	return a.Message
 }
 
 type APIVersionResponseSpec struct {
@@ -66,31 +66,31 @@ func (a APIVersionResponseSpec) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APIVersionResponseSpec) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *APIVersionResponseSpec) GetContent() *string {
-	if o == nil {
+func (a *APIVersionResponseSpec) GetContent() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Content
+	return a.Content
 }
 
-func (o *APIVersionResponseSpec) GetType() *APIVersionResponseAPISpecType {
-	if o == nil {
+func (a *APIVersionResponseSpec) GetType() *APIVersionResponseAPISpecType {
+	if a == nil {
 		return nil
 	}
-	return o.Type
+	return a.Type
 }
 
-func (o *APIVersionResponseSpec) GetValidationMessages() []APIVersionResponseValidationMessages {
-	if o == nil {
+func (a *APIVersionResponseSpec) GetValidationMessages() []APIVersionResponseValidationMessages {
+	if a == nil {
 		return nil
 	}
-	return o.ValidationMessages
+	return a.ValidationMessages
 }
 
 // APIVersionResponse - API version (OpenAPI or AsyncAPI)
@@ -111,43 +111,43 @@ func (a APIVersionResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APIVersionResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "version", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *APIVersionResponse) GetID() string {
-	if o == nil {
+func (a *APIVersionResponse) GetID() string {
+	if a == nil {
 		return ""
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *APIVersionResponse) GetVersion() string {
-	if o == nil {
+func (a *APIVersionResponse) GetVersion() string {
+	if a == nil {
 		return ""
 	}
-	return o.Version
+	return a.Version
 }
 
-func (o *APIVersionResponse) GetSpec() *APIVersionResponseSpec {
-	if o == nil {
+func (a *APIVersionResponse) GetSpec() *APIVersionResponseSpec {
+	if a == nil {
 		return nil
 	}
-	return o.Spec
+	return a.Spec
 }
 
-func (o *APIVersionResponse) GetCreatedAt() time.Time {
-	if o == nil {
+func (a *APIVersionResponse) GetCreatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *APIVersionResponse) GetUpdatedAt() time.Time {
-	if o == nil {
+func (a *APIVersionResponse) GetUpdatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }

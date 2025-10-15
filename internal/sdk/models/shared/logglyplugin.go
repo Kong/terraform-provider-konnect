@@ -12,22 +12,22 @@ type LogglyPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *LogglyPluginAfter) GetAccess() []string {
-	if o == nil {
+func (l *LogglyPluginAfter) GetAccess() []string {
+	if l == nil {
 		return nil
 	}
-	return o.Access
+	return l.Access
 }
 
 type LogglyPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *LogglyPluginBefore) GetAccess() []string {
-	if o == nil {
+func (l *LogglyPluginBefore) GetAccess() []string {
+	if l == nil {
 		return nil
 	}
-	return o.Access
+	return l.Access
 }
 
 type LogglyPluginOrdering struct {
@@ -35,18 +35,18 @@ type LogglyPluginOrdering struct {
 	Before *LogglyPluginBefore `json:"before,omitempty"`
 }
 
-func (o *LogglyPluginOrdering) GetAfter() *LogglyPluginAfter {
-	if o == nil {
+func (l *LogglyPluginOrdering) GetAfter() *LogglyPluginAfter {
+	if l == nil {
 		return nil
 	}
-	return o.After
+	return l.After
 }
 
-func (o *LogglyPluginOrdering) GetBefore() *LogglyPluginBefore {
-	if o == nil {
+func (l *LogglyPluginOrdering) GetBefore() *LogglyPluginBefore {
+	if l == nil {
 		return nil
 	}
-	return o.Before
+	return l.Before
 }
 
 type LogglyPluginPartials struct {
@@ -57,25 +57,25 @@ type LogglyPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *LogglyPluginPartials) GetID() *string {
-	if o == nil {
+func (l *LogglyPluginPartials) GetID() *string {
+	if l == nil {
 		return nil
 	}
-	return o.ID
+	return l.ID
 }
 
-func (o *LogglyPluginPartials) GetName() *string {
-	if o == nil {
+func (l *LogglyPluginPartials) GetName() *string {
+	if l == nil {
 		return nil
 	}
-	return o.Name
+	return l.Name
 }
 
-func (o *LogglyPluginPartials) GetPath() *string {
-	if o == nil {
+func (l *LogglyPluginPartials) GetPath() *string {
+	if l == nil {
 		return nil
 	}
-	return o.Path
+	return l.Path
 }
 
 type ClientErrorsSeverity string
@@ -275,80 +275,80 @@ func (l LogglyPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (l *LogglyPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"key"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *LogglyPluginConfig) GetClientErrorsSeverity() *ClientErrorsSeverity {
-	if o == nil {
+func (l *LogglyPluginConfig) GetClientErrorsSeverity() *ClientErrorsSeverity {
+	if l == nil {
 		return nil
 	}
-	return o.ClientErrorsSeverity
+	return l.ClientErrorsSeverity
 }
 
-func (o *LogglyPluginConfig) GetCustomFieldsByLua() map[string]any {
-	if o == nil {
+func (l *LogglyPluginConfig) GetCustomFieldsByLua() map[string]any {
+	if l == nil {
 		return nil
 	}
-	return o.CustomFieldsByLua
+	return l.CustomFieldsByLua
 }
 
-func (o *LogglyPluginConfig) GetHost() *string {
-	if o == nil {
+func (l *LogglyPluginConfig) GetHost() *string {
+	if l == nil {
 		return nil
 	}
-	return o.Host
+	return l.Host
 }
 
-func (o *LogglyPluginConfig) GetKey() string {
-	if o == nil {
+func (l *LogglyPluginConfig) GetKey() string {
+	if l == nil {
 		return ""
 	}
-	return o.Key
+	return l.Key
 }
 
-func (o *LogglyPluginConfig) GetLogLevel() *LogLevel {
-	if o == nil {
+func (l *LogglyPluginConfig) GetLogLevel() *LogLevel {
+	if l == nil {
 		return nil
 	}
-	return o.LogLevel
+	return l.LogLevel
 }
 
-func (o *LogglyPluginConfig) GetPort() *int64 {
-	if o == nil {
+func (l *LogglyPluginConfig) GetPort() *int64 {
+	if l == nil {
 		return nil
 	}
-	return o.Port
+	return l.Port
 }
 
-func (o *LogglyPluginConfig) GetServerErrorsSeverity() *ServerErrorsSeverity {
-	if o == nil {
+func (l *LogglyPluginConfig) GetServerErrorsSeverity() *ServerErrorsSeverity {
+	if l == nil {
 		return nil
 	}
-	return o.ServerErrorsSeverity
+	return l.ServerErrorsSeverity
 }
 
-func (o *LogglyPluginConfig) GetSuccessfulSeverity() *SuccessfulSeverity {
-	if o == nil {
+func (l *LogglyPluginConfig) GetSuccessfulSeverity() *SuccessfulSeverity {
+	if l == nil {
 		return nil
 	}
-	return o.SuccessfulSeverity
+	return l.SuccessfulSeverity
 }
 
-func (o *LogglyPluginConfig) GetTags() []string {
-	if o == nil {
+func (l *LogglyPluginConfig) GetTags() []string {
+	if l == nil {
 		return nil
 	}
-	return o.Tags
+	return l.Tags
 }
 
-func (o *LogglyPluginConfig) GetTimeout() *float64 {
-	if o == nil {
+func (l *LogglyPluginConfig) GetTimeout() *float64 {
+	if l == nil {
 		return nil
 	}
-	return o.Timeout
+	return l.Timeout
 }
 
 // LogglyPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -356,11 +356,11 @@ type LogglyPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *LogglyPluginConsumer) GetID() *string {
-	if o == nil {
+func (l *LogglyPluginConsumer) GetID() *string {
+	if l == nil {
 		return nil
 	}
-	return o.ID
+	return l.ID
 }
 
 // LogglyPluginProtocols - A string representing a protocol, such as HTTP or HTTPS.
@@ -419,11 +419,11 @@ type LogglyPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *LogglyPluginRoute) GetID() *string {
-	if o == nil {
+func (l *LogglyPluginRoute) GetID() *string {
+	if l == nil {
 		return nil
 	}
-	return o.ID
+	return l.ID
 }
 
 // LogglyPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -431,11 +431,11 @@ type LogglyPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *LogglyPluginService) GetID() *string {
-	if o == nil {
+func (l *LogglyPluginService) GetID() *string {
+	if l == nil {
 		return nil
 	}
-	return o.ID
+	return l.ID
 }
 
 // LogglyPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -472,103 +472,103 @@ func (l LogglyPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (l *LogglyPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *LogglyPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (l *LogglyPlugin) GetCreatedAt() *int64 {
+	if l == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return l.CreatedAt
 }
 
-func (o *LogglyPlugin) GetEnabled() *bool {
-	if o == nil {
+func (l *LogglyPlugin) GetEnabled() *bool {
+	if l == nil {
 		return nil
 	}
-	return o.Enabled
+	return l.Enabled
 }
 
-func (o *LogglyPlugin) GetID() *string {
-	if o == nil {
+func (l *LogglyPlugin) GetID() *string {
+	if l == nil {
 		return nil
 	}
-	return o.ID
+	return l.ID
 }
 
-func (o *LogglyPlugin) GetInstanceName() *string {
-	if o == nil {
+func (l *LogglyPlugin) GetInstanceName() *string {
+	if l == nil {
 		return nil
 	}
-	return o.InstanceName
+	return l.InstanceName
 }
 
-func (o *LogglyPlugin) GetName() string {
+func (l *LogglyPlugin) GetName() string {
 	return "loggly"
 }
 
-func (o *LogglyPlugin) GetOrdering() *LogglyPluginOrdering {
-	if o == nil {
+func (l *LogglyPlugin) GetOrdering() *LogglyPluginOrdering {
+	if l == nil {
 		return nil
 	}
-	return o.Ordering
+	return l.Ordering
 }
 
-func (o *LogglyPlugin) GetPartials() []LogglyPluginPartials {
-	if o == nil {
+func (l *LogglyPlugin) GetPartials() []LogglyPluginPartials {
+	if l == nil {
 		return nil
 	}
-	return o.Partials
+	return l.Partials
 }
 
-func (o *LogglyPlugin) GetTags() []string {
-	if o == nil {
+func (l *LogglyPlugin) GetTags() []string {
+	if l == nil {
 		return nil
 	}
-	return o.Tags
+	return l.Tags
 }
 
-func (o *LogglyPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (l *LogglyPlugin) GetUpdatedAt() *int64 {
+	if l == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return l.UpdatedAt
 }
 
-func (o *LogglyPlugin) GetConfig() LogglyPluginConfig {
-	if o == nil {
+func (l *LogglyPlugin) GetConfig() LogglyPluginConfig {
+	if l == nil {
 		return LogglyPluginConfig{}
 	}
-	return o.Config
+	return l.Config
 }
 
-func (o *LogglyPlugin) GetConsumer() *LogglyPluginConsumer {
-	if o == nil {
+func (l *LogglyPlugin) GetConsumer() *LogglyPluginConsumer {
+	if l == nil {
 		return nil
 	}
-	return o.Consumer
+	return l.Consumer
 }
 
-func (o *LogglyPlugin) GetProtocols() []LogglyPluginProtocols {
-	if o == nil {
+func (l *LogglyPlugin) GetProtocols() []LogglyPluginProtocols {
+	if l == nil {
 		return nil
 	}
-	return o.Protocols
+	return l.Protocols
 }
 
-func (o *LogglyPlugin) GetRoute() *LogglyPluginRoute {
-	if o == nil {
+func (l *LogglyPlugin) GetRoute() *LogglyPluginRoute {
+	if l == nil {
 		return nil
 	}
-	return o.Route
+	return l.Route
 }
 
-func (o *LogglyPlugin) GetService() *LogglyPluginService {
-	if o == nil {
+func (l *LogglyPlugin) GetService() *LogglyPluginService {
+	if l == nil {
 		return nil
 	}
-	return o.Service
+	return l.Service
 }

@@ -14,18 +14,18 @@ type DeleteZipkinPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteZipkinPluginRequest) GetPluginID() string {
-	if o == nil {
+func (d *DeleteZipkinPluginRequest) GetPluginID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PluginID
+	return d.PluginID
 }
 
-func (o *DeleteZipkinPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteZipkinPluginRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteZipkinPluginResponse struct {
@@ -39,30 +39,30 @@ type DeleteZipkinPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteZipkinPluginResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteZipkinPluginResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteZipkinPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteZipkinPluginResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteZipkinPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteZipkinPluginResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteZipkinPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteZipkinPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

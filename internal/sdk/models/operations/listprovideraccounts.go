@@ -18,18 +18,18 @@ type ListProviderAccountsRequest struct {
 	PageNumber *int64 `queryParam:"style=form,explode=true,name=page[number]"`
 }
 
-func (o *ListProviderAccountsRequest) GetPageSize() *int64 {
-	if o == nil {
+func (l *ListProviderAccountsRequest) GetPageSize() *int64 {
+	if l == nil {
 		return nil
 	}
-	return o.PageSize
+	return l.PageSize
 }
 
-func (o *ListProviderAccountsRequest) GetPageNumber() *int64 {
-	if o == nil {
+func (l *ListProviderAccountsRequest) GetPageNumber() *int64 {
+	if l == nil {
 		return nil
 	}
-	return o.PageNumber
+	return l.PageNumber
 }
 
 type ListProviderAccountsResponse struct {
@@ -49,51 +49,51 @@ type ListProviderAccountsResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *ListProviderAccountsResponse) GetContentType() string {
-	if o == nil {
+func (l *ListProviderAccountsResponse) GetContentType() string {
+	if l == nil {
 		return ""
 	}
-	return o.ContentType
+	return l.ContentType
 }
 
-func (o *ListProviderAccountsResponse) GetStatusCode() int {
-	if o == nil {
+func (l *ListProviderAccountsResponse) GetStatusCode() int {
+	if l == nil {
 		return 0
 	}
-	return o.StatusCode
+	return l.StatusCode
 }
 
-func (o *ListProviderAccountsResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (l *ListProviderAccountsResponse) GetRawResponse() *http.Response {
+	if l == nil {
 		return nil
 	}
-	return o.RawResponse
+	return l.RawResponse
 }
 
-func (o *ListProviderAccountsResponse) GetListProviderAccountsResponse() *shared.ListProviderAccountsResponse {
-	if o == nil {
+func (l *ListProviderAccountsResponse) GetListProviderAccountsResponse() *shared.ListProviderAccountsResponse {
+	if l == nil {
 		return nil
 	}
-	return o.ListProviderAccountsResponse
+	return l.ListProviderAccountsResponse
 }
 
-func (o *ListProviderAccountsResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (l *ListProviderAccountsResponse) GetBadRequestError() *shared.BadRequestError {
+	if l == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return l.BadRequestError
 }
 
-func (o *ListProviderAccountsResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (l *ListProviderAccountsResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if l == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return l.UnauthorizedError
 }
 
-func (o *ListProviderAccountsResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (l *ListProviderAccountsResponse) GetForbiddenError() *shared.ForbiddenError {
+	if l == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return l.ForbiddenError
 }

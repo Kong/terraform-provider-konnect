@@ -13,18 +13,18 @@ type UpsertIntegrationInstanceAuthConfigRequest struct {
 	UpsertIntegrationInstanceAuthConfig shared.UpsertIntegrationInstanceAuthConfig `request:"mediaType=application/json"`
 }
 
-func (o *UpsertIntegrationInstanceAuthConfigRequest) GetIntegrationInstanceID() string {
-	if o == nil {
+func (u *UpsertIntegrationInstanceAuthConfigRequest) GetIntegrationInstanceID() string {
+	if u == nil {
 		return ""
 	}
-	return o.IntegrationInstanceID
+	return u.IntegrationInstanceID
 }
 
-func (o *UpsertIntegrationInstanceAuthConfigRequest) GetUpsertIntegrationInstanceAuthConfig() shared.UpsertIntegrationInstanceAuthConfig {
-	if o == nil {
+func (u *UpsertIntegrationInstanceAuthConfigRequest) GetUpsertIntegrationInstanceAuthConfig() shared.UpsertIntegrationInstanceAuthConfig {
+	if u == nil {
 		return shared.UpsertIntegrationInstanceAuthConfig{}
 	}
-	return o.UpsertIntegrationInstanceAuthConfig
+	return u.UpsertIntegrationInstanceAuthConfig
 }
 
 type UpsertIntegrationInstanceAuthConfigResponse struct {
@@ -46,58 +46,58 @@ type UpsertIntegrationInstanceAuthConfigResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *UpsertIntegrationInstanceAuthConfigResponse) GetContentType() string {
-	if o == nil {
+func (u *UpsertIntegrationInstanceAuthConfigResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpsertIntegrationInstanceAuthConfigResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpsertIntegrationInstanceAuthConfigResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpsertIntegrationInstanceAuthConfigResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpsertIntegrationInstanceAuthConfigResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpsertIntegrationInstanceAuthConfigResponse) GetIntegrationInstanceAuthConfig() *shared.IntegrationInstanceAuthConfig {
-	if o == nil {
+func (u *UpsertIntegrationInstanceAuthConfigResponse) GetIntegrationInstanceAuthConfig() *shared.IntegrationInstanceAuthConfig {
+	if u == nil {
 		return nil
 	}
-	return o.IntegrationInstanceAuthConfig
+	return u.IntegrationInstanceAuthConfig
 }
 
-func (o *UpsertIntegrationInstanceAuthConfigResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (u *UpsertIntegrationInstanceAuthConfigResponse) GetBadRequestError() *shared.BadRequestError {
+	if u == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return u.BadRequestError
 }
 
-func (o *UpsertIntegrationInstanceAuthConfigResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (u *UpsertIntegrationInstanceAuthConfigResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return u.UnauthorizedError
 }
 
-func (o *UpsertIntegrationInstanceAuthConfigResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (u *UpsertIntegrationInstanceAuthConfigResponse) GetForbiddenError() *shared.ForbiddenError {
+	if u == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return u.ForbiddenError
 }
 
-func (o *UpsertIntegrationInstanceAuthConfigResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (u *UpsertIntegrationInstanceAuthConfigResponse) GetNotFoundError() *shared.NotFoundError {
+	if u == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return u.NotFoundError
 }

@@ -45,22 +45,31 @@ func (p *KonnectProvider) Schema(ctx context.Context, req provider.SchemaRequest
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"konnect_access_token": schema.StringAttribute{
-				Optional:  true,
-				Sensitive: true,
+				MarkdownDescription: `The Konnect access token is meant to be used by the Konnect dashboard and the decK CLI to authenticate with..`,
+				Optional:            true,
+				Sensitive:           true,
 			},
 			"personal_access_token": schema.StringAttribute{
-				Optional:  true,
-				Sensitive: true,
+				MarkdownDescription: `The personal access token is meant to be used as an alternative to basic-auth when accessing Konnect via APIs. You can generate a Personal Access Token (PAT) from the personal access token page in the Konnect dashboard.. Configurable via environment variable ` + "`" + `KONNECT_TOKEN` + "`" + `.`,
+				Optional:            true,
+				Sensitive:           true,
 			},
 			"server_url": schema.StringAttribute{
 				Description: `Server URL (defaults to https://global.api.konghq.com)`,
 				Optional:    true,
 			},
 			"service_access_token": schema.StringAttribute{
+				MarkdownDescription: `The Service access token is meant to be used between internal services.` + "\n" +
+					`.`,
 				Optional:  true,
 				Sensitive: true,
 			},
 			"system_account_access_token": schema.StringAttribute{
+				MarkdownDescription: `The system account access token is meant for automations and integrations that are not directly associated with a human identity.` + "\n" +
+					`You can generate a system account Access Token by creating a system account and then obtaining a system account access token for that account.` + "\n" +
+					`The access token must be passed in the header of a request, for example:` + "\n" +
+					`` + "`" + `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer spat_i2Ej...'` + "`" + `` + "\n" +
+					`. Configurable via environment variable ` + "`" + `KONNECT_SPAT` + "`" + `.`,
 				Optional:  true,
 				Sensitive: true,
 			},
@@ -319,6 +328,7 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 	return []func() datasource.DataSource{
 		NewCloudGatewayProviderAccountListDataSource,
 		NewGatewayControlPlaneDataSource,
+		NewGatewayControlPlaneListDataSource,
 		NewMeshControlPlanesDataSource,
 		NewPlatformIPAddressesDataSource,
 		NewPortalDataSource,

@@ -48,6 +48,20 @@ resource "konnect_gateway_ca_certificate" "my_gatewaycacertificate" {
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_gateway_ca_certificate.my_konnect_gateway_ca_certificate
+  id = jsonencode({
+    control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id = "3c31f18a-f27a-4f9b-8cd4-bf841554612f"
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
 terraform import konnect_gateway_ca_certificate.my_konnect_gateway_ca_certificate '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3c31f18a-f27a-4f9b-8cd4-bf841554612f"}'
 ```

@@ -8,18 +8,18 @@ type ID struct {
 	Oeq *string `queryParam:"name=oeq"`
 }
 
-func (o *ID) GetEq() *string {
-	if o == nil {
+func (i *ID) GetEq() *string {
+	if i == nil {
 		return nil
 	}
-	return o.Eq
+	return i.Eq
 }
 
-func (o *ID) GetOeq() *string {
-	if o == nil {
+func (i *ID) GetOeq() *string {
+	if i == nil {
 		return nil
 	}
-	return o.Oeq
+	return i.Oeq
 }
 
 // Name - Filters on the given string field value by exact match inequality.
@@ -29,25 +29,25 @@ type Name struct {
 	Neq      *string `queryParam:"name=neq"`
 }
 
-func (o *Name) GetEq() *string {
-	if o == nil {
+func (n *Name) GetEq() *string {
+	if n == nil {
 		return nil
 	}
-	return o.Eq
+	return n.Eq
 }
 
-func (o *Name) GetContains() *string {
-	if o == nil {
+func (n *Name) GetContains() *string {
+	if n == nil {
 		return nil
 	}
-	return o.Contains
+	return n.Contains
 }
 
-func (o *Name) GetNeq() *string {
-	if o == nil {
+func (n *Name) GetNeq() *string {
+	if n == nil {
 		return nil
 	}
-	return o.Neq
+	return n.Neq
 }
 
 // ClusterType - Filters on the given string field value by exact match inequality.
@@ -56,18 +56,18 @@ type ClusterType struct {
 	Neq *string `queryParam:"name=neq"`
 }
 
-func (o *ClusterType) GetEq() *string {
-	if o == nil {
+func (c *ClusterType) GetEq() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Eq
+	return c.Eq
 }
 
-func (o *ClusterType) GetNeq() *string {
-	if o == nil {
+func (c *ClusterType) GetNeq() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Neq
+	return c.Neq
 }
 
 type ControlPlaneFilterParameters struct {
@@ -81,30 +81,30 @@ type ControlPlaneFilterParameters struct {
 	CloudGateway *bool `queryParam:"name=cloud_gateway"`
 }
 
-func (o *ControlPlaneFilterParameters) GetID() *ID {
-	if o == nil {
+func (c *ControlPlaneFilterParameters) GetID() *ID {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *ControlPlaneFilterParameters) GetName() *Name {
-	if o == nil {
+func (c *ControlPlaneFilterParameters) GetName() *Name {
+	if c == nil {
 		return nil
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *ControlPlaneFilterParameters) GetClusterType() *ClusterType {
-	if o == nil {
+func (c *ControlPlaneFilterParameters) GetClusterType() *ClusterType {
+	if c == nil {
 		return nil
 	}
-	return o.ClusterType
+	return c.ClusterType
 }
 
-func (o *ControlPlaneFilterParameters) GetCloudGateway() *bool {
-	if o == nil {
+func (c *ControlPlaneFilterParameters) GetCloudGateway() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.CloudGateway
+	return c.CloudGateway
 }

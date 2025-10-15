@@ -54,134 +54,134 @@ func (v V2Portal) MarshalJSON() ([]byte, error) {
 }
 
 func (v *V2Portal) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"id", "created_at", "updated_at", "name", "display_name", "default_domain", "is_public", "rbac_enabled", "auto_approve_applications", "auto_approve_developers", "application_count", "developer_count", "published_product_count"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *V2Portal) GetID() string {
-	if o == nil {
+func (v *V2Portal) GetID() string {
+	if v == nil {
 		return ""
 	}
-	return o.ID
+	return v.ID
 }
 
-func (o *V2Portal) GetCreatedAt() time.Time {
-	if o == nil {
+func (v *V2Portal) GetCreatedAt() time.Time {
+	if v == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return v.CreatedAt
 }
 
-func (o *V2Portal) GetUpdatedAt() time.Time {
-	if o == nil {
+func (v *V2Portal) GetUpdatedAt() time.Time {
+	if v == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return v.UpdatedAt
 }
 
-func (o *V2Portal) GetName() string {
-	if o == nil {
+func (v *V2Portal) GetName() string {
+	if v == nil {
 		return ""
 	}
-	return o.Name
+	return v.Name
 }
 
-func (o *V2Portal) GetDisplayName() string {
-	if o == nil {
+func (v *V2Portal) GetDisplayName() string {
+	if v == nil {
 		return ""
 	}
-	return o.DisplayName
+	return v.DisplayName
 }
 
-func (o *V2Portal) GetDescription() *string {
-	if o == nil {
+func (v *V2Portal) GetDescription() *string {
+	if v == nil {
 		return nil
 	}
-	return o.Description
+	return v.Description
 }
 
-func (o *V2Portal) GetDefaultDomain() string {
-	if o == nil {
+func (v *V2Portal) GetDefaultDomain() string {
+	if v == nil {
 		return ""
 	}
-	return o.DefaultDomain
+	return v.DefaultDomain
 }
 
-func (o *V2Portal) GetIsPublic() bool {
-	if o == nil {
+func (v *V2Portal) GetIsPublic() bool {
+	if v == nil {
 		return false
 	}
-	return o.IsPublic
+	return v.IsPublic
 }
 
-func (o *V2Portal) GetRbacEnabled() bool {
-	if o == nil {
+func (v *V2Portal) GetRbacEnabled() bool {
+	if v == nil {
 		return false
 	}
-	return o.RbacEnabled
+	return v.RbacEnabled
 }
 
-func (o *V2Portal) GetAutoApproveApplications() bool {
-	if o == nil {
+func (v *V2Portal) GetAutoApproveApplications() bool {
+	if v == nil {
 		return false
 	}
-	return o.AutoApproveApplications
+	return v.AutoApproveApplications
 }
 
-func (o *V2Portal) GetAutoApproveDevelopers() bool {
-	if o == nil {
+func (v *V2Portal) GetAutoApproveDevelopers() bool {
+	if v == nil {
 		return false
 	}
-	return o.AutoApproveDevelopers
+	return v.AutoApproveDevelopers
 }
 
-func (o *V2Portal) GetCustomDomain() *string {
-	if o == nil {
+func (v *V2Portal) GetCustomDomain() *string {
+	if v == nil {
 		return nil
 	}
-	return o.CustomDomain
+	return v.CustomDomain
 }
 
-func (o *V2Portal) GetCustomClientDomain() *string {
-	if o == nil {
+func (v *V2Portal) GetCustomClientDomain() *string {
+	if v == nil {
 		return nil
 	}
-	return o.CustomClientDomain
+	return v.CustomClientDomain
 }
 
-func (o *V2Portal) GetDefaultApplicationAuthStrategyID() *string {
-	if o == nil {
+func (v *V2Portal) GetDefaultApplicationAuthStrategyID() *string {
+	if v == nil {
 		return nil
 	}
-	return o.DefaultApplicationAuthStrategyID
+	return v.DefaultApplicationAuthStrategyID
 }
 
-func (o *V2Portal) GetLabels() map[string]*string {
-	if o == nil {
+func (v *V2Portal) GetLabels() map[string]*string {
+	if v == nil {
 		return nil
 	}
-	return o.Labels
+	return v.Labels
 }
 
-func (o *V2Portal) GetApplicationCount() float64 {
-	if o == nil {
+func (v *V2Portal) GetApplicationCount() float64 {
+	if v == nil {
 		return 0.0
 	}
-	return o.ApplicationCount
+	return v.ApplicationCount
 }
 
-func (o *V2Portal) GetDeveloperCount() float64 {
-	if o == nil {
+func (v *V2Portal) GetDeveloperCount() float64 {
+	if v == nil {
 		return 0.0
 	}
-	return o.DeveloperCount
+	return v.DeveloperCount
 }
 
-func (o *V2Portal) GetPublishedProductCount() float64 {
-	if o == nil {
+func (v *V2Portal) GetPublishedProductCount() float64 {
+	if v == nil {
 		return 0.0
 	}
-	return o.PublishedProductCount
+	return v.PublishedProductCount
 }

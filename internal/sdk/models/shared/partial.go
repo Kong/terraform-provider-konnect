@@ -21,24 +21,24 @@ func (p PartialRedisEeClusterNodes) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PartialRedisEeClusterNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *PartialRedisEeClusterNodes) GetIP() *string {
-	if o == nil {
+func (p *PartialRedisEeClusterNodes) GetIP() *string {
+	if p == nil {
 		return nil
 	}
-	return o.IP
+	return p.IP
 }
 
-func (o *PartialRedisEeClusterNodes) GetPort() *int64 {
-	if o == nil {
+func (p *PartialRedisEeClusterNodes) GetPort() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.Port
+	return p.Port
 }
 
 type PartialRedisEeSentinelNodes struct {
@@ -53,24 +53,24 @@ func (p PartialRedisEeSentinelNodes) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PartialRedisEeSentinelNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *PartialRedisEeSentinelNodes) GetHost() *string {
-	if o == nil {
+func (p *PartialRedisEeSentinelNodes) GetHost() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Host
+	return p.Host
 }
 
-func (o *PartialRedisEeSentinelNodes) GetPort() *int64 {
-	if o == nil {
+func (p *PartialRedisEeSentinelNodes) GetPort() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.Port
+	return p.Port
 }
 
 // PartialRedisEeSentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
@@ -153,157 +153,157 @@ func (p PartialRedisEeConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PartialRedisEeConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *PartialRedisEeConfig) GetClusterMaxRedirections() *int64 {
-	if o == nil {
+func (p *PartialRedisEeConfig) GetClusterMaxRedirections() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.ClusterMaxRedirections
+	return p.ClusterMaxRedirections
 }
 
-func (o *PartialRedisEeConfig) GetClusterNodes() []PartialRedisEeClusterNodes {
-	if o == nil {
+func (p *PartialRedisEeConfig) GetClusterNodes() []PartialRedisEeClusterNodes {
+	if p == nil {
 		return nil
 	}
-	return o.ClusterNodes
+	return p.ClusterNodes
 }
 
-func (o *PartialRedisEeConfig) GetConnectTimeout() *int64 {
-	if o == nil {
+func (p *PartialRedisEeConfig) GetConnectTimeout() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.ConnectTimeout
+	return p.ConnectTimeout
 }
 
-func (o *PartialRedisEeConfig) GetConnectionIsProxied() *bool {
-	if o == nil {
+func (p *PartialRedisEeConfig) GetConnectionIsProxied() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.ConnectionIsProxied
+	return p.ConnectionIsProxied
 }
 
-func (o *PartialRedisEeConfig) GetDatabase() *int64 {
-	if o == nil {
+func (p *PartialRedisEeConfig) GetDatabase() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.Database
+	return p.Database
 }
 
-func (o *PartialRedisEeConfig) GetHost() *string {
-	if o == nil {
+func (p *PartialRedisEeConfig) GetHost() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Host
+	return p.Host
 }
 
-func (o *PartialRedisEeConfig) GetKeepaliveBacklog() *int64 {
-	if o == nil {
+func (p *PartialRedisEeConfig) GetKeepaliveBacklog() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.KeepaliveBacklog
+	return p.KeepaliveBacklog
 }
 
-func (o *PartialRedisEeConfig) GetKeepalivePoolSize() *int64 {
-	if o == nil {
+func (p *PartialRedisEeConfig) GetKeepalivePoolSize() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.KeepalivePoolSize
+	return p.KeepalivePoolSize
 }
 
-func (o *PartialRedisEeConfig) GetPassword() *string {
-	if o == nil {
+func (p *PartialRedisEeConfig) GetPassword() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Password
+	return p.Password
 }
 
-func (o *PartialRedisEeConfig) GetPort() *int64 {
-	if o == nil {
+func (p *PartialRedisEeConfig) GetPort() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.Port
+	return p.Port
 }
 
-func (o *PartialRedisEeConfig) GetReadTimeout() *int64 {
-	if o == nil {
+func (p *PartialRedisEeConfig) GetReadTimeout() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.ReadTimeout
+	return p.ReadTimeout
 }
 
-func (o *PartialRedisEeConfig) GetSendTimeout() *int64 {
-	if o == nil {
+func (p *PartialRedisEeConfig) GetSendTimeout() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.SendTimeout
+	return p.SendTimeout
 }
 
-func (o *PartialRedisEeConfig) GetSentinelMaster() *string {
-	if o == nil {
+func (p *PartialRedisEeConfig) GetSentinelMaster() *string {
+	if p == nil {
 		return nil
 	}
-	return o.SentinelMaster
+	return p.SentinelMaster
 }
 
-func (o *PartialRedisEeConfig) GetSentinelNodes() []PartialRedisEeSentinelNodes {
-	if o == nil {
+func (p *PartialRedisEeConfig) GetSentinelNodes() []PartialRedisEeSentinelNodes {
+	if p == nil {
 		return nil
 	}
-	return o.SentinelNodes
+	return p.SentinelNodes
 }
 
-func (o *PartialRedisEeConfig) GetSentinelPassword() *string {
-	if o == nil {
+func (p *PartialRedisEeConfig) GetSentinelPassword() *string {
+	if p == nil {
 		return nil
 	}
-	return o.SentinelPassword
+	return p.SentinelPassword
 }
 
-func (o *PartialRedisEeConfig) GetSentinelRole() *PartialRedisEeSentinelRole {
-	if o == nil {
+func (p *PartialRedisEeConfig) GetSentinelRole() *PartialRedisEeSentinelRole {
+	if p == nil {
 		return nil
 	}
-	return o.SentinelRole
+	return p.SentinelRole
 }
 
-func (o *PartialRedisEeConfig) GetSentinelUsername() *string {
-	if o == nil {
+func (p *PartialRedisEeConfig) GetSentinelUsername() *string {
+	if p == nil {
 		return nil
 	}
-	return o.SentinelUsername
+	return p.SentinelUsername
 }
 
-func (o *PartialRedisEeConfig) GetServerName() *string {
-	if o == nil {
+func (p *PartialRedisEeConfig) GetServerName() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ServerName
+	return p.ServerName
 }
 
-func (o *PartialRedisEeConfig) GetSsl() *bool {
-	if o == nil {
+func (p *PartialRedisEeConfig) GetSsl() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.Ssl
+	return p.Ssl
 }
 
-func (o *PartialRedisEeConfig) GetSslVerify() *bool {
-	if o == nil {
+func (p *PartialRedisEeConfig) GetSslVerify() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.SslVerify
+	return p.SslVerify
 }
 
-func (o *PartialRedisEeConfig) GetUsername() *string {
-	if o == nil {
+func (p *PartialRedisEeConfig) GetUsername() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Username
+	return p.Username
 }
 
 type PartialRedisEe struct {
@@ -326,56 +326,56 @@ func (p PartialRedisEe) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PartialRedisEe) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"config", "type"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *PartialRedisEe) GetConfig() PartialRedisEeConfig {
-	if o == nil {
+func (p *PartialRedisEe) GetConfig() PartialRedisEeConfig {
+	if p == nil {
 		return PartialRedisEeConfig{}
 	}
-	return o.Config
+	return p.Config
 }
 
-func (o *PartialRedisEe) GetCreatedAt() *int64 {
-	if o == nil {
+func (p *PartialRedisEe) GetCreatedAt() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return p.CreatedAt
 }
 
-func (o *PartialRedisEe) GetID() *string {
-	if o == nil {
+func (p *PartialRedisEe) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
-func (o *PartialRedisEe) GetName() *string {
-	if o == nil {
+func (p *PartialRedisEe) GetName() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Name
+	return p.Name
 }
 
-func (o *PartialRedisEe) GetTags() []string {
-	if o == nil {
+func (p *PartialRedisEe) GetTags() []string {
+	if p == nil {
 		return nil
 	}
-	return o.Tags
+	return p.Tags
 }
 
-func (o *PartialRedisEe) GetType() string {
+func (p *PartialRedisEe) GetType() string {
 	return "redis-ee"
 }
 
-func (o *PartialRedisEe) GetUpdatedAt() *int64 {
-	if o == nil {
+func (p *PartialRedisEe) GetUpdatedAt() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return p.UpdatedAt
 }
 
 type PartialRedisCeConfig struct {
@@ -404,73 +404,73 @@ func (p PartialRedisCeConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PartialRedisCeConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *PartialRedisCeConfig) GetDatabase() *int64 {
-	if o == nil {
+func (p *PartialRedisCeConfig) GetDatabase() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.Database
+	return p.Database
 }
 
-func (o *PartialRedisCeConfig) GetHost() *string {
-	if o == nil {
+func (p *PartialRedisCeConfig) GetHost() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Host
+	return p.Host
 }
 
-func (o *PartialRedisCeConfig) GetPassword() *string {
-	if o == nil {
+func (p *PartialRedisCeConfig) GetPassword() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Password
+	return p.Password
 }
 
-func (o *PartialRedisCeConfig) GetPort() *int64 {
-	if o == nil {
+func (p *PartialRedisCeConfig) GetPort() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.Port
+	return p.Port
 }
 
-func (o *PartialRedisCeConfig) GetServerName() *string {
-	if o == nil {
+func (p *PartialRedisCeConfig) GetServerName() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ServerName
+	return p.ServerName
 }
 
-func (o *PartialRedisCeConfig) GetSsl() *bool {
-	if o == nil {
+func (p *PartialRedisCeConfig) GetSsl() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.Ssl
+	return p.Ssl
 }
 
-func (o *PartialRedisCeConfig) GetSslVerify() *bool {
-	if o == nil {
+func (p *PartialRedisCeConfig) GetSslVerify() *bool {
+	if p == nil {
 		return nil
 	}
-	return o.SslVerify
+	return p.SslVerify
 }
 
-func (o *PartialRedisCeConfig) GetTimeout() *int64 {
-	if o == nil {
+func (p *PartialRedisCeConfig) GetTimeout() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.Timeout
+	return p.Timeout
 }
 
-func (o *PartialRedisCeConfig) GetUsername() *string {
-	if o == nil {
+func (p *PartialRedisCeConfig) GetUsername() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Username
+	return p.Username
 }
 
 type PartialRedisCe struct {
@@ -493,56 +493,56 @@ func (p PartialRedisCe) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PartialRedisCe) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"config", "type"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *PartialRedisCe) GetConfig() PartialRedisCeConfig {
-	if o == nil {
+func (p *PartialRedisCe) GetConfig() PartialRedisCeConfig {
+	if p == nil {
 		return PartialRedisCeConfig{}
 	}
-	return o.Config
+	return p.Config
 }
 
-func (o *PartialRedisCe) GetCreatedAt() *int64 {
-	if o == nil {
+func (p *PartialRedisCe) GetCreatedAt() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return p.CreatedAt
 }
 
-func (o *PartialRedisCe) GetID() *string {
-	if o == nil {
+func (p *PartialRedisCe) GetID() *string {
+	if p == nil {
 		return nil
 	}
-	return o.ID
+	return p.ID
 }
 
-func (o *PartialRedisCe) GetName() *string {
-	if o == nil {
+func (p *PartialRedisCe) GetName() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Name
+	return p.Name
 }
 
-func (o *PartialRedisCe) GetTags() []string {
-	if o == nil {
+func (p *PartialRedisCe) GetTags() []string {
+	if p == nil {
 		return nil
 	}
-	return o.Tags
+	return p.Tags
 }
 
-func (o *PartialRedisCe) GetType() string {
+func (p *PartialRedisCe) GetType() string {
 	return "redis-ce"
 }
 
-func (o *PartialRedisCe) GetUpdatedAt() *int64 {
-	if o == nil {
+func (p *PartialRedisCe) GetUpdatedAt() *int64 {
+	if p == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return p.UpdatedAt
 }
 
 type PartialType string
@@ -553,8 +553,8 @@ const (
 )
 
 type Partial struct {
-	PartialRedisCe *PartialRedisCe `queryParam:"inline"`
-	PartialRedisEe *PartialRedisEe `queryParam:"inline"`
+	PartialRedisCe *PartialRedisCe `queryParam:"inline,name=Partial"`
+	PartialRedisEe *PartialRedisEe `queryParam:"inline,name=Partial"`
 
 	Type PartialType
 }
@@ -591,7 +591,7 @@ func (u *Partial) UnmarshalJSON(data []byte) error {
 	switch dis.Type {
 	case "redis-ce":
 		partialRedisCe := new(PartialRedisCe)
-		if err := utils.UnmarshalJSON(data, &partialRedisCe, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &partialRedisCe, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == redis-ce) type PartialRedisCe within Partial: %w", string(data), err)
 		}
 
@@ -600,7 +600,7 @@ func (u *Partial) UnmarshalJSON(data []byte) error {
 		return nil
 	case "redis-ee":
 		partialRedisEe := new(PartialRedisEe)
-		if err := utils.UnmarshalJSON(data, &partialRedisEe, "", true, false); err != nil {
+		if err := utils.UnmarshalJSON(data, &partialRedisEe, "", true, nil); err != nil {
 			return fmt.Errorf("could not unmarshal `%s` into expected (Type == redis-ee) type PartialRedisEe within Partial: %w", string(data), err)
 		}
 

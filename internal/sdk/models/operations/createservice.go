@@ -14,18 +14,18 @@ type CreateServiceRequest struct {
 	Service shared.Service `request:"mediaType=application/json"`
 }
 
-func (o *CreateServiceRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateServiceRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateServiceRequest) GetService() shared.Service {
-	if o == nil {
+func (c *CreateServiceRequest) GetService() shared.Service {
+	if c == nil {
 		return shared.Service{}
 	}
-	return o.Service
+	return c.Service
 }
 
 type CreateServiceResponse struct {
@@ -41,37 +41,37 @@ type CreateServiceResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateServiceResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateServiceResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateServiceResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateServiceResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateServiceResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateServiceResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateServiceResponse) GetService() *shared.Service {
-	if o == nil {
+func (c *CreateServiceResponse) GetService() *shared.Service {
+	if c == nil {
 		return nil
 	}
-	return o.Service
+	return c.Service
 }
 
-func (o *CreateServiceResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateServiceResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

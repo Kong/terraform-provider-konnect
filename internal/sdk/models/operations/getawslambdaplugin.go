@@ -14,18 +14,18 @@ type GetAwslambdaPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetAwslambdaPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetAwslambdaPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetAwslambdaPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetAwslambdaPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetAwslambdaPluginResponse struct {
@@ -41,37 +41,37 @@ type GetAwslambdaPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetAwslambdaPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetAwslambdaPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetAwslambdaPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetAwslambdaPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetAwslambdaPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetAwslambdaPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetAwslambdaPluginResponse) GetAwsLambdaPlugin() *shared.AwsLambdaPlugin {
-	if o == nil {
+func (g *GetAwslambdaPluginResponse) GetAwsLambdaPlugin() *shared.AwsLambdaPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.AwsLambdaPlugin
+	return g.AwsLambdaPlugin
 }
 
-func (o *GetAwslambdaPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetAwslambdaPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

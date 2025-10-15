@@ -14,26 +14,26 @@ type CreatePartialRequest struct {
 	Partial shared.Partial `request:"mediaType=application/json"`
 }
 
-func (o *CreatePartialRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreatePartialRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreatePartialRequest) GetPartial() shared.Partial {
-	if o == nil {
+func (c *CreatePartialRequest) GetPartial() shared.Partial {
+	if c == nil {
 		return shared.Partial{}
 	}
-	return o.Partial
+	return c.Partial
 }
 
-func (o *CreatePartialRequest) GetPartialRedisCe() *shared.PartialRedisCe {
-	return o.GetPartial().PartialRedisCe
+func (c *CreatePartialRequest) GetPartialRedisCe() *shared.PartialRedisCe {
+	return c.GetPartial().PartialRedisCe
 }
 
-func (o *CreatePartialRequest) GetPartialRedisEe() *shared.PartialRedisEe {
-	return o.GetPartial().PartialRedisEe
+func (c *CreatePartialRequest) GetPartialRedisEe() *shared.PartialRedisEe {
+	return c.GetPartial().PartialRedisEe
 }
 
 type CreatePartialResponse struct {
@@ -49,51 +49,51 @@ type CreatePartialResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreatePartialResponse) GetContentType() string {
-	if o == nil {
+func (c *CreatePartialResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreatePartialResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreatePartialResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreatePartialResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreatePartialResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreatePartialResponse) GetPartial() *shared.Partial {
-	if o == nil {
+func (c *CreatePartialResponse) GetPartial() *shared.Partial {
+	if c == nil {
 		return nil
 	}
-	return o.Partial
+	return c.Partial
 }
 
-func (o *CreatePartialResponse) GetPartialRedisCe() *shared.PartialRedisCe {
-	if v := o.GetPartial(); v != nil {
+func (c *CreatePartialResponse) GetPartialRedisCe() *shared.PartialRedisCe {
+	if v := c.GetPartial(); v != nil {
 		return v.PartialRedisCe
 	}
 	return nil
 }
 
-func (o *CreatePartialResponse) GetPartialRedisEe() *shared.PartialRedisEe {
-	if v := o.GetPartial(); v != nil {
+func (c *CreatePartialResponse) GetPartialRedisEe() *shared.PartialRedisEe {
+	if v := c.GetPartial(); v != nil {
 		return v.PartialRedisEe
 	}
 	return nil
 }
 
-func (o *CreatePartialResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreatePartialResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

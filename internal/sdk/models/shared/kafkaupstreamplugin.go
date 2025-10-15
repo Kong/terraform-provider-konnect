@@ -12,22 +12,22 @@ type KafkaUpstreamPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *KafkaUpstreamPluginAfter) GetAccess() []string {
-	if o == nil {
+func (k *KafkaUpstreamPluginAfter) GetAccess() []string {
+	if k == nil {
 		return nil
 	}
-	return o.Access
+	return k.Access
 }
 
 type KafkaUpstreamPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *KafkaUpstreamPluginBefore) GetAccess() []string {
-	if o == nil {
+func (k *KafkaUpstreamPluginBefore) GetAccess() []string {
+	if k == nil {
 		return nil
 	}
-	return o.Access
+	return k.Access
 }
 
 type KafkaUpstreamPluginOrdering struct {
@@ -35,18 +35,18 @@ type KafkaUpstreamPluginOrdering struct {
 	Before *KafkaUpstreamPluginBefore `json:"before,omitempty"`
 }
 
-func (o *KafkaUpstreamPluginOrdering) GetAfter() *KafkaUpstreamPluginAfter {
-	if o == nil {
+func (k *KafkaUpstreamPluginOrdering) GetAfter() *KafkaUpstreamPluginAfter {
+	if k == nil {
 		return nil
 	}
-	return o.After
+	return k.After
 }
 
-func (o *KafkaUpstreamPluginOrdering) GetBefore() *KafkaUpstreamPluginBefore {
-	if o == nil {
+func (k *KafkaUpstreamPluginOrdering) GetBefore() *KafkaUpstreamPluginBefore {
+	if k == nil {
 		return nil
 	}
-	return o.Before
+	return k.Before
 }
 
 type KafkaUpstreamPluginPartials struct {
@@ -57,25 +57,25 @@ type KafkaUpstreamPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *KafkaUpstreamPluginPartials) GetID() *string {
-	if o == nil {
+func (k *KafkaUpstreamPluginPartials) GetID() *string {
+	if k == nil {
 		return nil
 	}
-	return o.ID
+	return k.ID
 }
 
-func (o *KafkaUpstreamPluginPartials) GetName() *string {
-	if o == nil {
+func (k *KafkaUpstreamPluginPartials) GetName() *string {
+	if k == nil {
 		return nil
 	}
-	return o.Name
+	return k.Name
 }
 
-func (o *KafkaUpstreamPluginPartials) GetPath() *string {
-	if o == nil {
+func (k *KafkaUpstreamPluginPartials) GetPath() *string {
+	if k == nil {
 		return nil
 	}
-	return o.Path
+	return k.Path
 }
 
 // KafkaUpstreamPluginMechanism - The SASL authentication mechanism.  Supported options: `PLAIN`, `SCRAM-SHA-256`, or `SCRAM-SHA-512`.
@@ -150,45 +150,45 @@ func (k KafkaUpstreamPluginAuthentication) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaUpstreamPluginAuthentication) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KafkaUpstreamPluginAuthentication) GetMechanism() *KafkaUpstreamPluginMechanism {
-	if o == nil {
+func (k *KafkaUpstreamPluginAuthentication) GetMechanism() *KafkaUpstreamPluginMechanism {
+	if k == nil {
 		return nil
 	}
-	return o.Mechanism
+	return k.Mechanism
 }
 
-func (o *KafkaUpstreamPluginAuthentication) GetPassword() *string {
-	if o == nil {
+func (k *KafkaUpstreamPluginAuthentication) GetPassword() *string {
+	if k == nil {
 		return nil
 	}
-	return o.Password
+	return k.Password
 }
 
-func (o *KafkaUpstreamPluginAuthentication) GetStrategy() *KafkaUpstreamPluginStrategy {
-	if o == nil {
+func (k *KafkaUpstreamPluginAuthentication) GetStrategy() *KafkaUpstreamPluginStrategy {
+	if k == nil {
 		return nil
 	}
-	return o.Strategy
+	return k.Strategy
 }
 
-func (o *KafkaUpstreamPluginAuthentication) GetTokenauth() *bool {
-	if o == nil {
+func (k *KafkaUpstreamPluginAuthentication) GetTokenauth() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.Tokenauth
+	return k.Tokenauth
 }
 
-func (o *KafkaUpstreamPluginAuthentication) GetUser() *string {
-	if o == nil {
+func (k *KafkaUpstreamPluginAuthentication) GetUser() *string {
+	if k == nil {
 		return nil
 	}
-	return o.User
+	return k.User
 }
 
 type KafkaUpstreamPluginBootstrapServers struct {
@@ -198,18 +198,18 @@ type KafkaUpstreamPluginBootstrapServers struct {
 	Port int64 `json:"port"`
 }
 
-func (o *KafkaUpstreamPluginBootstrapServers) GetHost() string {
-	if o == nil {
+func (k *KafkaUpstreamPluginBootstrapServers) GetHost() string {
+	if k == nil {
 		return ""
 	}
-	return o.Host
+	return k.Host
 }
 
-func (o *KafkaUpstreamPluginBootstrapServers) GetPort() int64 {
-	if o == nil {
+func (k *KafkaUpstreamPluginBootstrapServers) GetPort() int64 {
+	if k == nil {
 		return 0
 	}
-	return o.Port
+	return k.Port
 }
 
 // KafkaUpstreamPluginProducerRequestAcks - The number of acknowledgments the producer requires the leader to have received before considering a request complete. Allowed values: 0 for no acknowledgments; 1 for only the leader; and -1 for the full ISR (In-Sync Replica set).
@@ -247,18 +247,18 @@ type KafkaUpstreamPluginBasic struct {
 	Username string `json:"username"`
 }
 
-func (o *KafkaUpstreamPluginBasic) GetPassword() string {
-	if o == nil {
+func (k *KafkaUpstreamPluginBasic) GetPassword() string {
+	if k == nil {
 		return ""
 	}
-	return o.Password
+	return k.Password
 }
 
-func (o *KafkaUpstreamPluginBasic) GetUsername() string {
-	if o == nil {
+func (k *KafkaUpstreamPluginBasic) GetUsername() string {
+	if k == nil {
 		return ""
 	}
-	return o.Username
+	return k.Username
 }
 
 // KafkaUpstreamPluginMode - Authentication mode to use with the schema registry.
@@ -299,24 +299,24 @@ func (k KafkaUpstreamPluginConfigAuthentication) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaUpstreamPluginConfigAuthentication) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KafkaUpstreamPluginConfigAuthentication) GetBasic() *KafkaUpstreamPluginBasic {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfigAuthentication) GetBasic() *KafkaUpstreamPluginBasic {
+	if k == nil {
 		return nil
 	}
-	return o.Basic
+	return k.Basic
 }
 
-func (o *KafkaUpstreamPluginConfigAuthentication) GetMode() *KafkaUpstreamPluginMode {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfigAuthentication) GetMode() *KafkaUpstreamPluginMode {
+	if k == nil {
 		return nil
 	}
-	return o.Mode
+	return k.Mode
 }
 
 type KafkaUpstreamPluginKeySchema struct {
@@ -331,24 +331,24 @@ func (k KafkaUpstreamPluginKeySchema) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaUpstreamPluginKeySchema) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KafkaUpstreamPluginKeySchema) GetSchemaVersion() *string {
-	if o == nil {
+func (k *KafkaUpstreamPluginKeySchema) GetSchemaVersion() *string {
+	if k == nil {
 		return nil
 	}
-	return o.SchemaVersion
+	return k.SchemaVersion
 }
 
-func (o *KafkaUpstreamPluginKeySchema) GetSubjectName() *string {
-	if o == nil {
+func (k *KafkaUpstreamPluginKeySchema) GetSubjectName() *string {
+	if k == nil {
 		return nil
 	}
-	return o.SubjectName
+	return k.SubjectName
 }
 
 type KafkaUpstreamPluginValueSchema struct {
@@ -363,24 +363,24 @@ func (k KafkaUpstreamPluginValueSchema) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaUpstreamPluginValueSchema) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KafkaUpstreamPluginValueSchema) GetSchemaVersion() *string {
-	if o == nil {
+func (k *KafkaUpstreamPluginValueSchema) GetSchemaVersion() *string {
+	if k == nil {
 		return nil
 	}
-	return o.SchemaVersion
+	return k.SchemaVersion
 }
 
-func (o *KafkaUpstreamPluginValueSchema) GetSubjectName() *string {
-	if o == nil {
+func (k *KafkaUpstreamPluginValueSchema) GetSubjectName() *string {
+	if k == nil {
 		return nil
 	}
-	return o.SubjectName
+	return k.SubjectName
 }
 
 type KafkaUpstreamPluginConfluent struct {
@@ -400,52 +400,52 @@ func (k KafkaUpstreamPluginConfluent) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaUpstreamPluginConfluent) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"authentication"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KafkaUpstreamPluginConfluent) GetAuthentication() KafkaUpstreamPluginConfigAuthentication {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfluent) GetAuthentication() KafkaUpstreamPluginConfigAuthentication {
+	if k == nil {
 		return KafkaUpstreamPluginConfigAuthentication{}
 	}
-	return o.Authentication
+	return k.Authentication
 }
 
-func (o *KafkaUpstreamPluginConfluent) GetKeySchema() *KafkaUpstreamPluginKeySchema {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfluent) GetKeySchema() *KafkaUpstreamPluginKeySchema {
+	if k == nil {
 		return nil
 	}
-	return o.KeySchema
+	return k.KeySchema
 }
 
-func (o *KafkaUpstreamPluginConfluent) GetSslVerify() *bool {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfluent) GetSslVerify() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.SslVerify
+	return k.SslVerify
 }
 
-func (o *KafkaUpstreamPluginConfluent) GetTTL() *float64 {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfluent) GetTTL() *float64 {
+	if k == nil {
 		return nil
 	}
-	return o.TTL
+	return k.TTL
 }
 
-func (o *KafkaUpstreamPluginConfluent) GetURL() *string {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfluent) GetURL() *string {
+	if k == nil {
 		return nil
 	}
-	return o.URL
+	return k.URL
 }
 
-func (o *KafkaUpstreamPluginConfluent) GetValueSchema() *KafkaUpstreamPluginValueSchema {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfluent) GetValueSchema() *KafkaUpstreamPluginValueSchema {
+	if k == nil {
 		return nil
 	}
-	return o.ValueSchema
+	return k.ValueSchema
 }
 
 // KafkaUpstreamPluginSchemaRegistry - The plugin-global schema registry configuration. This can be overwritten by the topic configuration.
@@ -453,11 +453,11 @@ type KafkaUpstreamPluginSchemaRegistry struct {
 	Confluent *KafkaUpstreamPluginConfluent `json:"confluent"`
 }
 
-func (o *KafkaUpstreamPluginSchemaRegistry) GetConfluent() *KafkaUpstreamPluginConfluent {
-	if o == nil {
+func (k *KafkaUpstreamPluginSchemaRegistry) GetConfluent() *KafkaUpstreamPluginConfluent {
+	if k == nil {
 		return nil
 	}
-	return o.Confluent
+	return k.Confluent
 }
 
 type KafkaUpstreamPluginSecurity struct {
@@ -472,24 +472,24 @@ func (k KafkaUpstreamPluginSecurity) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaUpstreamPluginSecurity) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KafkaUpstreamPluginSecurity) GetCertificateID() *string {
-	if o == nil {
+func (k *KafkaUpstreamPluginSecurity) GetCertificateID() *string {
+	if k == nil {
 		return nil
 	}
-	return o.CertificateID
+	return k.CertificateID
 }
 
-func (o *KafkaUpstreamPluginSecurity) GetSsl() *bool {
-	if o == nil {
+func (k *KafkaUpstreamPluginSecurity) GetSsl() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.Ssl
+	return k.Ssl
 }
 
 type KafkaUpstreamPluginConfig struct {
@@ -549,192 +549,192 @@ func (k KafkaUpstreamPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaUpstreamPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"topic"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KafkaUpstreamPluginConfig) GetAllowedTopics() []string {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetAllowedTopics() []string {
+	if k == nil {
 		return nil
 	}
-	return o.AllowedTopics
+	return k.AllowedTopics
 }
 
-func (o *KafkaUpstreamPluginConfig) GetAuthentication() *KafkaUpstreamPluginAuthentication {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetAuthentication() *KafkaUpstreamPluginAuthentication {
+	if k == nil {
 		return nil
 	}
-	return o.Authentication
+	return k.Authentication
 }
 
-func (o *KafkaUpstreamPluginConfig) GetBootstrapServers() []KafkaUpstreamPluginBootstrapServers {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetBootstrapServers() []KafkaUpstreamPluginBootstrapServers {
+	if k == nil {
 		return nil
 	}
-	return o.BootstrapServers
+	return k.BootstrapServers
 }
 
-func (o *KafkaUpstreamPluginConfig) GetClusterName() *string {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetClusterName() *string {
+	if k == nil {
 		return nil
 	}
-	return o.ClusterName
+	return k.ClusterName
 }
 
-func (o *KafkaUpstreamPluginConfig) GetForwardBody() *bool {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetForwardBody() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.ForwardBody
+	return k.ForwardBody
 }
 
-func (o *KafkaUpstreamPluginConfig) GetForwardHeaders() *bool {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetForwardHeaders() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.ForwardHeaders
+	return k.ForwardHeaders
 }
 
-func (o *KafkaUpstreamPluginConfig) GetForwardMethod() *bool {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetForwardMethod() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.ForwardMethod
+	return k.ForwardMethod
 }
 
-func (o *KafkaUpstreamPluginConfig) GetForwardURI() *bool {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetForwardURI() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.ForwardURI
+	return k.ForwardURI
 }
 
-func (o *KafkaUpstreamPluginConfig) GetKeepalive() *int64 {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetKeepalive() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.Keepalive
+	return k.Keepalive
 }
 
-func (o *KafkaUpstreamPluginConfig) GetKeepaliveEnabled() *bool {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetKeepaliveEnabled() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.KeepaliveEnabled
+	return k.KeepaliveEnabled
 }
 
-func (o *KafkaUpstreamPluginConfig) GetKeyQueryArg() *string {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetKeyQueryArg() *string {
+	if k == nil {
 		return nil
 	}
-	return o.KeyQueryArg
+	return k.KeyQueryArg
 }
 
-func (o *KafkaUpstreamPluginConfig) GetMessageByLuaFunctions() []string {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetMessageByLuaFunctions() []string {
+	if k == nil {
 		return nil
 	}
-	return o.MessageByLuaFunctions
+	return k.MessageByLuaFunctions
 }
 
-func (o *KafkaUpstreamPluginConfig) GetProducerAsync() *bool {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetProducerAsync() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.ProducerAsync
+	return k.ProducerAsync
 }
 
-func (o *KafkaUpstreamPluginConfig) GetProducerAsyncBufferingLimitsMessagesInMemory() *int64 {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetProducerAsyncBufferingLimitsMessagesInMemory() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.ProducerAsyncBufferingLimitsMessagesInMemory
+	return k.ProducerAsyncBufferingLimitsMessagesInMemory
 }
 
-func (o *KafkaUpstreamPluginConfig) GetProducerAsyncFlushTimeout() *int64 {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetProducerAsyncFlushTimeout() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.ProducerAsyncFlushTimeout
+	return k.ProducerAsyncFlushTimeout
 }
 
-func (o *KafkaUpstreamPluginConfig) GetProducerRequestAcks() *KafkaUpstreamPluginProducerRequestAcks {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetProducerRequestAcks() *KafkaUpstreamPluginProducerRequestAcks {
+	if k == nil {
 		return nil
 	}
-	return o.ProducerRequestAcks
+	return k.ProducerRequestAcks
 }
 
-func (o *KafkaUpstreamPluginConfig) GetProducerRequestLimitsBytesPerRequest() *int64 {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetProducerRequestLimitsBytesPerRequest() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.ProducerRequestLimitsBytesPerRequest
+	return k.ProducerRequestLimitsBytesPerRequest
 }
 
-func (o *KafkaUpstreamPluginConfig) GetProducerRequestLimitsMessagesPerRequest() *int64 {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetProducerRequestLimitsMessagesPerRequest() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.ProducerRequestLimitsMessagesPerRequest
+	return k.ProducerRequestLimitsMessagesPerRequest
 }
 
-func (o *KafkaUpstreamPluginConfig) GetProducerRequestRetriesBackoffTimeout() *int64 {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetProducerRequestRetriesBackoffTimeout() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.ProducerRequestRetriesBackoffTimeout
+	return k.ProducerRequestRetriesBackoffTimeout
 }
 
-func (o *KafkaUpstreamPluginConfig) GetProducerRequestRetriesMaxAttempts() *int64 {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetProducerRequestRetriesMaxAttempts() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.ProducerRequestRetriesMaxAttempts
+	return k.ProducerRequestRetriesMaxAttempts
 }
 
-func (o *KafkaUpstreamPluginConfig) GetProducerRequestTimeout() *int64 {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetProducerRequestTimeout() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.ProducerRequestTimeout
+	return k.ProducerRequestTimeout
 }
 
-func (o *KafkaUpstreamPluginConfig) GetSchemaRegistry() *KafkaUpstreamPluginSchemaRegistry {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetSchemaRegistry() *KafkaUpstreamPluginSchemaRegistry {
+	if k == nil {
 		return nil
 	}
-	return o.SchemaRegistry
+	return k.SchemaRegistry
 }
 
-func (o *KafkaUpstreamPluginConfig) GetSecurity() *KafkaUpstreamPluginSecurity {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetSecurity() *KafkaUpstreamPluginSecurity {
+	if k == nil {
 		return nil
 	}
-	return o.Security
+	return k.Security
 }
 
-func (o *KafkaUpstreamPluginConfig) GetTimeout() *int64 {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetTimeout() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.Timeout
+	return k.Timeout
 }
 
-func (o *KafkaUpstreamPluginConfig) GetTopic() string {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetTopic() string {
+	if k == nil {
 		return ""
 	}
-	return o.Topic
+	return k.Topic
 }
 
-func (o *KafkaUpstreamPluginConfig) GetTopicsQueryArg() *string {
-	if o == nil {
+func (k *KafkaUpstreamPluginConfig) GetTopicsQueryArg() *string {
+	if k == nil {
 		return nil
 	}
-	return o.TopicsQueryArg
+	return k.TopicsQueryArg
 }
 
 // KafkaUpstreamPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -742,11 +742,11 @@ type KafkaUpstreamPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *KafkaUpstreamPluginConsumer) GetID() *string {
-	if o == nil {
+func (k *KafkaUpstreamPluginConsumer) GetID() *string {
+	if k == nil {
 		return nil
 	}
-	return o.ID
+	return k.ID
 }
 
 type KafkaUpstreamPluginProtocols string
@@ -786,11 +786,11 @@ type KafkaUpstreamPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *KafkaUpstreamPluginRoute) GetID() *string {
-	if o == nil {
+func (k *KafkaUpstreamPluginRoute) GetID() *string {
+	if k == nil {
 		return nil
 	}
-	return o.ID
+	return k.ID
 }
 
 // KafkaUpstreamPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -798,11 +798,11 @@ type KafkaUpstreamPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *KafkaUpstreamPluginService) GetID() *string {
-	if o == nil {
+func (k *KafkaUpstreamPluginService) GetID() *string {
+	if k == nil {
 		return nil
 	}
-	return o.ID
+	return k.ID
 }
 
 // KafkaUpstreamPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -839,103 +839,103 @@ func (k KafkaUpstreamPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaUpstreamPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *KafkaUpstreamPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (k *KafkaUpstreamPlugin) GetCreatedAt() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return k.CreatedAt
 }
 
-func (o *KafkaUpstreamPlugin) GetEnabled() *bool {
-	if o == nil {
+func (k *KafkaUpstreamPlugin) GetEnabled() *bool {
+	if k == nil {
 		return nil
 	}
-	return o.Enabled
+	return k.Enabled
 }
 
-func (o *KafkaUpstreamPlugin) GetID() *string {
-	if o == nil {
+func (k *KafkaUpstreamPlugin) GetID() *string {
+	if k == nil {
 		return nil
 	}
-	return o.ID
+	return k.ID
 }
 
-func (o *KafkaUpstreamPlugin) GetInstanceName() *string {
-	if o == nil {
+func (k *KafkaUpstreamPlugin) GetInstanceName() *string {
+	if k == nil {
 		return nil
 	}
-	return o.InstanceName
+	return k.InstanceName
 }
 
-func (o *KafkaUpstreamPlugin) GetName() string {
+func (k *KafkaUpstreamPlugin) GetName() string {
 	return "kafka-upstream"
 }
 
-func (o *KafkaUpstreamPlugin) GetOrdering() *KafkaUpstreamPluginOrdering {
-	if o == nil {
+func (k *KafkaUpstreamPlugin) GetOrdering() *KafkaUpstreamPluginOrdering {
+	if k == nil {
 		return nil
 	}
-	return o.Ordering
+	return k.Ordering
 }
 
-func (o *KafkaUpstreamPlugin) GetPartials() []KafkaUpstreamPluginPartials {
-	if o == nil {
+func (k *KafkaUpstreamPlugin) GetPartials() []KafkaUpstreamPluginPartials {
+	if k == nil {
 		return nil
 	}
-	return o.Partials
+	return k.Partials
 }
 
-func (o *KafkaUpstreamPlugin) GetTags() []string {
-	if o == nil {
+func (k *KafkaUpstreamPlugin) GetTags() []string {
+	if k == nil {
 		return nil
 	}
-	return o.Tags
+	return k.Tags
 }
 
-func (o *KafkaUpstreamPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (k *KafkaUpstreamPlugin) GetUpdatedAt() *int64 {
+	if k == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return k.UpdatedAt
 }
 
-func (o *KafkaUpstreamPlugin) GetConfig() KafkaUpstreamPluginConfig {
-	if o == nil {
+func (k *KafkaUpstreamPlugin) GetConfig() KafkaUpstreamPluginConfig {
+	if k == nil {
 		return KafkaUpstreamPluginConfig{}
 	}
-	return o.Config
+	return k.Config
 }
 
-func (o *KafkaUpstreamPlugin) GetConsumer() *KafkaUpstreamPluginConsumer {
-	if o == nil {
+func (k *KafkaUpstreamPlugin) GetConsumer() *KafkaUpstreamPluginConsumer {
+	if k == nil {
 		return nil
 	}
-	return o.Consumer
+	return k.Consumer
 }
 
-func (o *KafkaUpstreamPlugin) GetProtocols() []KafkaUpstreamPluginProtocols {
-	if o == nil {
+func (k *KafkaUpstreamPlugin) GetProtocols() []KafkaUpstreamPluginProtocols {
+	if k == nil {
 		return nil
 	}
-	return o.Protocols
+	return k.Protocols
 }
 
-func (o *KafkaUpstreamPlugin) GetRoute() *KafkaUpstreamPluginRoute {
-	if o == nil {
+func (k *KafkaUpstreamPlugin) GetRoute() *KafkaUpstreamPluginRoute {
+	if k == nil {
 		return nil
 	}
-	return o.Route
+	return k.Route
 }
 
-func (o *KafkaUpstreamPlugin) GetService() *KafkaUpstreamPluginService {
-	if o == nil {
+func (k *KafkaUpstreamPlugin) GetService() *KafkaUpstreamPluginService {
+	if k == nil {
 		return nil
 	}
-	return o.Service
+	return k.Service
 }

@@ -60,7 +60,7 @@ func (s *ACLs) CreateACLWithConsumer(ctx context.Context, request operations.Cre
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-acl-with-consumer",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ACLWithoutParents", "json", `request:"mediaType=application/json"`)
@@ -197,7 +197,7 @@ func (s *ACLs) DeleteACLWithConsumer(ctx context.Context, request operations.Del
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-acl-with-consumer",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -307,7 +307,7 @@ func (s *ACLs) GetACLWithConsumer(ctx context.Context, request operations.GetACL
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-acl-with-consumer",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

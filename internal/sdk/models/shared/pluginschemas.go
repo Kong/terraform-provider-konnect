@@ -22,38 +22,38 @@ func (i Item) MarshalJSON() ([]byte, error) {
 }
 
 func (i *Item) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Item) GetLuaSchema() *string {
-	if o == nil {
+func (i *Item) GetLuaSchema() *string {
+	if i == nil {
 		return nil
 	}
-	return o.LuaSchema
+	return i.LuaSchema
 }
 
-func (o *Item) GetName() *string {
-	if o == nil {
+func (i *Item) GetName() *string {
+	if i == nil {
 		return nil
 	}
-	return o.Name
+	return i.Name
 }
 
-func (o *Item) GetCreatedAt() *int64 {
-	if o == nil {
+func (i *Item) GetCreatedAt() *int64 {
+	if i == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return i.CreatedAt
 }
 
-func (o *Item) GetUpdatedAt() *int64 {
-	if o == nil {
+func (i *Item) GetUpdatedAt() *int64 {
+	if i == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return i.UpdatedAt
 }
 
 // PluginSchemas - A response for a single custom plugin schema.
@@ -61,9 +61,9 @@ type PluginSchemas struct {
 	Item *Item `json:"item"`
 }
 
-func (o *PluginSchemas) GetItem() *Item {
-	if o == nil {
+func (p *PluginSchemas) GetItem() *Item {
+	if p == nil {
 		return nil
 	}
-	return o.Item
+	return p.Item
 }

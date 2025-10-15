@@ -14,18 +14,18 @@ type CreateRouteRequest struct {
 	RouteJSON shared.RouteJSON `request:"mediaType=application/json"`
 }
 
-func (o *CreateRouteRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateRouteRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateRouteRequest) GetRouteJSON() shared.RouteJSON {
-	if o == nil {
+func (c *CreateRouteRequest) GetRouteJSON() shared.RouteJSON {
+	if c == nil {
 		return shared.RouteJSON{}
 	}
-	return o.RouteJSON
+	return c.RouteJSON
 }
 
 type CreateRouteResponse struct {
@@ -41,37 +41,37 @@ type CreateRouteResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateRouteResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateRouteResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateRouteResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateRouteResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateRouteResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateRouteResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateRouteResponse) GetRouteJSON() *shared.RouteJSON {
-	if o == nil {
+func (c *CreateRouteResponse) GetRouteJSON() *shared.RouteJSON {
+	if c == nil {
 		return nil
 	}
-	return o.RouteJSON
+	return c.RouteJSON
 }
 
-func (o *CreateRouteResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateRouteResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

@@ -13,18 +13,18 @@ type CreateGrpcgatewayPluginRequest struct {
 	GrpcGatewayPlugin shared.GrpcGatewayPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateGrpcgatewayPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateGrpcgatewayPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateGrpcgatewayPluginRequest) GetGrpcGatewayPlugin() shared.GrpcGatewayPlugin {
-	if o == nil {
+func (c *CreateGrpcgatewayPluginRequest) GetGrpcGatewayPlugin() shared.GrpcGatewayPlugin {
+	if c == nil {
 		return shared.GrpcGatewayPlugin{}
 	}
-	return o.GrpcGatewayPlugin
+	return c.GrpcGatewayPlugin
 }
 
 type CreateGrpcgatewayPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateGrpcgatewayPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateGrpcgatewayPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateGrpcgatewayPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateGrpcgatewayPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateGrpcgatewayPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateGrpcgatewayPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateGrpcgatewayPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateGrpcgatewayPluginResponse) GetGrpcGatewayPlugin() *shared.GrpcGatewayPlugin {
-	if o == nil {
+func (c *CreateGrpcgatewayPluginResponse) GetGrpcGatewayPlugin() *shared.GrpcGatewayPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.GrpcGatewayPlugin
+	return c.GrpcGatewayPlugin
 }
 
-func (o *CreateGrpcgatewayPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateGrpcgatewayPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

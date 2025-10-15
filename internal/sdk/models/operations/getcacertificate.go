@@ -14,18 +14,18 @@ type GetCaCertificateRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetCaCertificateRequest) GetCACertificateID() string {
-	if o == nil {
+func (g *GetCaCertificateRequest) GetCACertificateID() string {
+	if g == nil {
 		return ""
 	}
-	return o.CACertificateID
+	return g.CACertificateID
 }
 
-func (o *GetCaCertificateRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetCaCertificateRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetCaCertificateResponse struct {
@@ -41,37 +41,37 @@ type GetCaCertificateResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetCaCertificateResponse) GetContentType() string {
-	if o == nil {
+func (g *GetCaCertificateResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetCaCertificateResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetCaCertificateResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetCaCertificateResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetCaCertificateResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetCaCertificateResponse) GetCACertificate() *shared.CACertificate {
-	if o == nil {
+func (g *GetCaCertificateResponse) GetCACertificate() *shared.CACertificate {
+	if g == nil {
 		return nil
 	}
-	return o.CACertificate
+	return g.CACertificate
 }
 
-func (o *GetCaCertificateResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetCaCertificateResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

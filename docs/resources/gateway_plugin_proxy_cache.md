@@ -108,7 +108,7 @@ resource "konnect_gateway_plugin_proxy_cache" "my_gatewaypluginproxycache" {
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
-- `protocols` (Set of String) A set of strings representing protocols.
+- `protocols` (Set of String) A set of strings representing protocols. Default: ["grpc","grpcs","http","https"]
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
@@ -125,11 +125,11 @@ Optional:
 
 - `cache_control` (Boolean) When enabled, respect the Cache-Control behaviors defined in RFC7234. Default: false
 - `cache_ttl` (Number) TTL, in seconds, of cache entities. Default: 300
-- `content_type` (List of String) Upstream response content types considered cacheable. The plugin performs an **exact match** against each specified value.
+- `content_type` (List of String) Upstream response content types considered cacheable. The plugin performs an **exact match** against each specified value. Default: ["application/json","text/plain"]
 - `ignore_uri_case` (Boolean) Default: false
 - `memory` (Attributes) (see [below for nested schema](#nestedatt--config--memory))
-- `request_method` (List of String) Downstream request methods considered cacheable.
-- `response_code` (List of Number) Upstream response status code considered cacheable.
+- `request_method` (List of String) Downstream request methods considered cacheable. Default: ["GET","HEAD"]
+- `response_code` (List of Number) Upstream response status code considered cacheable. Default: [200,301,404]
 - `response_headers` (Attributes) Caching related diagnostic headers that should be included in cached responses (see [below for nested schema](#nestedatt--config--response_headers))
 - `storage_ttl` (Number) Number of seconds to keep resources in the storage backend. This value is independent of `cache_ttl` or resource TTLs defined by Cache-Control behaviors.
 - `vary_headers` (List of String) Relevant headers considered for the cache key. If undefined, none of the headers are taken into consideration.
@@ -223,6 +223,20 @@ Optional:
 ## Import
 
 Import is supported using the following syntax:
+
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_gateway_plugin_proxy_cache.my_konnect_gateway_plugin_proxy_cache
+  id = jsonencode({
+    control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import konnect_gateway_plugin_proxy_cache.my_konnect_gateway_plugin_proxy_cache '{"control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}'

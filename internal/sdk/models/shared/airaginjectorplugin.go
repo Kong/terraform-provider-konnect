@@ -12,22 +12,22 @@ type AiRagInjectorPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AiRagInjectorPluginAfter) GetAccess() []string {
-	if o == nil {
+func (a *AiRagInjectorPluginAfter) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AiRagInjectorPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AiRagInjectorPluginBefore) GetAccess() []string {
-	if o == nil {
+func (a *AiRagInjectorPluginBefore) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AiRagInjectorPluginOrdering struct {
@@ -35,18 +35,18 @@ type AiRagInjectorPluginOrdering struct {
 	Before *AiRagInjectorPluginBefore `json:"before,omitempty"`
 }
 
-func (o *AiRagInjectorPluginOrdering) GetAfter() *AiRagInjectorPluginAfter {
-	if o == nil {
+func (a *AiRagInjectorPluginOrdering) GetAfter() *AiRagInjectorPluginAfter {
+	if a == nil {
 		return nil
 	}
-	return o.After
+	return a.After
 }
 
-func (o *AiRagInjectorPluginOrdering) GetBefore() *AiRagInjectorPluginBefore {
-	if o == nil {
+func (a *AiRagInjectorPluginOrdering) GetBefore() *AiRagInjectorPluginBefore {
+	if a == nil {
 		return nil
 	}
-	return o.Before
+	return a.Before
 }
 
 type AiRagInjectorPluginPartials struct {
@@ -57,25 +57,25 @@ type AiRagInjectorPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *AiRagInjectorPluginPartials) GetID() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginPartials) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AiRagInjectorPluginPartials) GetName() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginPartials) GetName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AiRagInjectorPluginPartials) GetPath() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginPartials) GetPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Path
+	return a.Path
 }
 
 // AiRagInjectorPluginParamLocation - Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
@@ -141,108 +141,108 @@ func (a AiRagInjectorPluginAuth) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiRagInjectorPluginAuth) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiRagInjectorPluginAuth) GetAllowOverride() *bool {
-	if o == nil {
+func (a *AiRagInjectorPluginAuth) GetAllowOverride() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.AllowOverride
+	return a.AllowOverride
 }
 
-func (o *AiRagInjectorPluginAuth) GetAwsAccessKeyID() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginAuth) GetAwsAccessKeyID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsAccessKeyID
+	return a.AwsAccessKeyID
 }
 
-func (o *AiRagInjectorPluginAuth) GetAwsSecretAccessKey() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginAuth) GetAwsSecretAccessKey() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsSecretAccessKey
+	return a.AwsSecretAccessKey
 }
 
-func (o *AiRagInjectorPluginAuth) GetAzureClientID() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginAuth) GetAzureClientID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AzureClientID
+	return a.AzureClientID
 }
 
-func (o *AiRagInjectorPluginAuth) GetAzureClientSecret() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginAuth) GetAzureClientSecret() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AzureClientSecret
+	return a.AzureClientSecret
 }
 
-func (o *AiRagInjectorPluginAuth) GetAzureTenantID() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginAuth) GetAzureTenantID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AzureTenantID
+	return a.AzureTenantID
 }
 
-func (o *AiRagInjectorPluginAuth) GetAzureUseManagedIdentity() *bool {
-	if o == nil {
+func (a *AiRagInjectorPluginAuth) GetAzureUseManagedIdentity() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.AzureUseManagedIdentity
+	return a.AzureUseManagedIdentity
 }
 
-func (o *AiRagInjectorPluginAuth) GetGcpServiceAccountJSON() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginAuth) GetGcpServiceAccountJSON() *string {
+	if a == nil {
 		return nil
 	}
-	return o.GcpServiceAccountJSON
+	return a.GcpServiceAccountJSON
 }
 
-func (o *AiRagInjectorPluginAuth) GetGcpUseServiceAccount() *bool {
-	if o == nil {
+func (a *AiRagInjectorPluginAuth) GetGcpUseServiceAccount() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.GcpUseServiceAccount
+	return a.GcpUseServiceAccount
 }
 
-func (o *AiRagInjectorPluginAuth) GetHeaderName() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginAuth) GetHeaderName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.HeaderName
+	return a.HeaderName
 }
 
-func (o *AiRagInjectorPluginAuth) GetHeaderValue() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginAuth) GetHeaderValue() *string {
+	if a == nil {
 		return nil
 	}
-	return o.HeaderValue
+	return a.HeaderValue
 }
 
-func (o *AiRagInjectorPluginAuth) GetParamLocation() *AiRagInjectorPluginParamLocation {
-	if o == nil {
+func (a *AiRagInjectorPluginAuth) GetParamLocation() *AiRagInjectorPluginParamLocation {
+	if a == nil {
 		return nil
 	}
-	return o.ParamLocation
+	return a.ParamLocation
 }
 
-func (o *AiRagInjectorPluginAuth) GetParamName() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginAuth) GetParamName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ParamName
+	return a.ParamName
 }
 
-func (o *AiRagInjectorPluginAuth) GetParamValue() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginAuth) GetParamValue() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ParamValue
+	return a.ParamValue
 }
 
 type AiRagInjectorPluginAzure struct {
@@ -259,31 +259,31 @@ func (a AiRagInjectorPluginAzure) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiRagInjectorPluginAzure) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiRagInjectorPluginAzure) GetAPIVersion() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginAzure) GetAPIVersion() *string {
+	if a == nil {
 		return nil
 	}
-	return o.APIVersion
+	return a.APIVersion
 }
 
-func (o *AiRagInjectorPluginAzure) GetDeploymentID() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginAzure) GetDeploymentID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.DeploymentID
+	return a.DeploymentID
 }
 
-func (o *AiRagInjectorPluginAzure) GetInstance() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginAzure) GetInstance() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Instance
+	return a.Instance
 }
 
 type AiRagInjectorPluginBedrock struct {
@@ -306,52 +306,52 @@ func (a AiRagInjectorPluginBedrock) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiRagInjectorPluginBedrock) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiRagInjectorPluginBedrock) GetAwsAssumeRoleArn() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginBedrock) GetAwsAssumeRoleArn() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsAssumeRoleArn
+	return a.AwsAssumeRoleArn
 }
 
-func (o *AiRagInjectorPluginBedrock) GetAwsRegion() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginBedrock) GetAwsRegion() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsRegion
+	return a.AwsRegion
 }
 
-func (o *AiRagInjectorPluginBedrock) GetAwsRoleSessionName() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginBedrock) GetAwsRoleSessionName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsRoleSessionName
+	return a.AwsRoleSessionName
 }
 
-func (o *AiRagInjectorPluginBedrock) GetAwsStsEndpointURL() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginBedrock) GetAwsStsEndpointURL() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AwsStsEndpointURL
+	return a.AwsStsEndpointURL
 }
 
-func (o *AiRagInjectorPluginBedrock) GetEmbeddingsNormalize() *bool {
-	if o == nil {
+func (a *AiRagInjectorPluginBedrock) GetEmbeddingsNormalize() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.EmbeddingsNormalize
+	return a.EmbeddingsNormalize
 }
 
-func (o *AiRagInjectorPluginBedrock) GetPerformanceConfigLatency() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginBedrock) GetPerformanceConfigLatency() *string {
+	if a == nil {
 		return nil
 	}
-	return o.PerformanceConfigLatency
+	return a.PerformanceConfigLatency
 }
 
 type AiRagInjectorPluginGemini struct {
@@ -368,31 +368,31 @@ func (a AiRagInjectorPluginGemini) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiRagInjectorPluginGemini) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiRagInjectorPluginGemini) GetAPIEndpoint() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginGemini) GetAPIEndpoint() *string {
+	if a == nil {
 		return nil
 	}
-	return o.APIEndpoint
+	return a.APIEndpoint
 }
 
-func (o *AiRagInjectorPluginGemini) GetLocationID() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginGemini) GetLocationID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.LocationID
+	return a.LocationID
 }
 
-func (o *AiRagInjectorPluginGemini) GetProjectID() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginGemini) GetProjectID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ProjectID
+	return a.ProjectID
 }
 
 type AiRagInjectorPluginHuggingface struct {
@@ -407,24 +407,24 @@ func (a AiRagInjectorPluginHuggingface) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiRagInjectorPluginHuggingface) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiRagInjectorPluginHuggingface) GetUseCache() *bool {
-	if o == nil {
+func (a *AiRagInjectorPluginHuggingface) GetUseCache() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.UseCache
+	return a.UseCache
 }
 
-func (o *AiRagInjectorPluginHuggingface) GetWaitForModel() *bool {
-	if o == nil {
+func (a *AiRagInjectorPluginHuggingface) GetWaitForModel() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.WaitForModel
+	return a.WaitForModel
 }
 
 // AiRagInjectorPluginOptions - Key/value settings for the model
@@ -442,45 +442,45 @@ func (a AiRagInjectorPluginOptions) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiRagInjectorPluginOptions) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"azure"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiRagInjectorPluginOptions) GetAzure() AiRagInjectorPluginAzure {
-	if o == nil {
+func (a *AiRagInjectorPluginOptions) GetAzure() AiRagInjectorPluginAzure {
+	if a == nil {
 		return AiRagInjectorPluginAzure{}
 	}
-	return o.Azure
+	return a.Azure
 }
 
-func (o *AiRagInjectorPluginOptions) GetBedrock() *AiRagInjectorPluginBedrock {
-	if o == nil {
+func (a *AiRagInjectorPluginOptions) GetBedrock() *AiRagInjectorPluginBedrock {
+	if a == nil {
 		return nil
 	}
-	return o.Bedrock
+	return a.Bedrock
 }
 
-func (o *AiRagInjectorPluginOptions) GetGemini() *AiRagInjectorPluginGemini {
-	if o == nil {
+func (a *AiRagInjectorPluginOptions) GetGemini() *AiRagInjectorPluginGemini {
+	if a == nil {
 		return nil
 	}
-	return o.Gemini
+	return a.Gemini
 }
 
-func (o *AiRagInjectorPluginOptions) GetHuggingface() *AiRagInjectorPluginHuggingface {
-	if o == nil {
+func (a *AiRagInjectorPluginOptions) GetHuggingface() *AiRagInjectorPluginHuggingface {
+	if a == nil {
 		return nil
 	}
-	return o.Huggingface
+	return a.Huggingface
 }
 
-func (o *AiRagInjectorPluginOptions) GetUpstreamURL() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginOptions) GetUpstreamURL() *string {
+	if a == nil {
 		return nil
 	}
-	return o.UpstreamURL
+	return a.UpstreamURL
 }
 
 // AiRagInjectorPluginProvider - AI provider format to use for embeddings API
@@ -531,25 +531,25 @@ type AiRagInjectorPluginModel struct {
 	Provider AiRagInjectorPluginProvider `json:"provider"`
 }
 
-func (o *AiRagInjectorPluginModel) GetName() string {
-	if o == nil {
+func (a *AiRagInjectorPluginModel) GetName() string {
+	if a == nil {
 		return ""
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AiRagInjectorPluginModel) GetOptions() *AiRagInjectorPluginOptions {
-	if o == nil {
+func (a *AiRagInjectorPluginModel) GetOptions() *AiRagInjectorPluginOptions {
+	if a == nil {
 		return nil
 	}
-	return o.Options
+	return a.Options
 }
 
-func (o *AiRagInjectorPluginModel) GetProvider() AiRagInjectorPluginProvider {
-	if o == nil {
+func (a *AiRagInjectorPluginModel) GetProvider() AiRagInjectorPluginProvider {
+	if a == nil {
 		return AiRagInjectorPluginProvider("")
 	}
-	return o.Provider
+	return a.Provider
 }
 
 type AiRagInjectorPluginEmbeddings struct {
@@ -557,18 +557,18 @@ type AiRagInjectorPluginEmbeddings struct {
 	Model AiRagInjectorPluginModel `json:"model"`
 }
 
-func (o *AiRagInjectorPluginEmbeddings) GetAuth() *AiRagInjectorPluginAuth {
-	if o == nil {
+func (a *AiRagInjectorPluginEmbeddings) GetAuth() *AiRagInjectorPluginAuth {
+	if a == nil {
 		return nil
 	}
-	return o.Auth
+	return a.Auth
 }
 
-func (o *AiRagInjectorPluginEmbeddings) GetModel() AiRagInjectorPluginModel {
-	if o == nil {
+func (a *AiRagInjectorPluginEmbeddings) GetModel() AiRagInjectorPluginModel {
+	if a == nil {
 		return AiRagInjectorPluginModel{}
 	}
-	return o.Model
+	return a.Model
 }
 
 type InjectAsRole string
@@ -689,94 +689,94 @@ func (a AiRagInjectorPluginPgvector) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiRagInjectorPluginPgvector) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiRagInjectorPluginPgvector) GetDatabase() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginPgvector) GetDatabase() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Database
+	return a.Database
 }
 
-func (o *AiRagInjectorPluginPgvector) GetHost() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginPgvector) GetHost() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Host
+	return a.Host
 }
 
-func (o *AiRagInjectorPluginPgvector) GetPassword() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginPgvector) GetPassword() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Password
+	return a.Password
 }
 
-func (o *AiRagInjectorPluginPgvector) GetPort() *int64 {
-	if o == nil {
+func (a *AiRagInjectorPluginPgvector) GetPort() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.Port
+	return a.Port
 }
 
-func (o *AiRagInjectorPluginPgvector) GetSsl() *bool {
-	if o == nil {
+func (a *AiRagInjectorPluginPgvector) GetSsl() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Ssl
+	return a.Ssl
 }
 
-func (o *AiRagInjectorPluginPgvector) GetSslCert() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginPgvector) GetSslCert() *string {
+	if a == nil {
 		return nil
 	}
-	return o.SslCert
+	return a.SslCert
 }
 
-func (o *AiRagInjectorPluginPgvector) GetSslCertKey() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginPgvector) GetSslCertKey() *string {
+	if a == nil {
 		return nil
 	}
-	return o.SslCertKey
+	return a.SslCertKey
 }
 
-func (o *AiRagInjectorPluginPgvector) GetSslRequired() *bool {
-	if o == nil {
+func (a *AiRagInjectorPluginPgvector) GetSslRequired() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.SslRequired
+	return a.SslRequired
 }
 
-func (o *AiRagInjectorPluginPgvector) GetSslVerify() *bool {
-	if o == nil {
+func (a *AiRagInjectorPluginPgvector) GetSslVerify() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.SslVerify
+	return a.SslVerify
 }
 
-func (o *AiRagInjectorPluginPgvector) GetSslVersion() *AiRagInjectorPluginSslVersion {
-	if o == nil {
+func (a *AiRagInjectorPluginPgvector) GetSslVersion() *AiRagInjectorPluginSslVersion {
+	if a == nil {
 		return nil
 	}
-	return o.SslVersion
+	return a.SslVersion
 }
 
-func (o *AiRagInjectorPluginPgvector) GetTimeout() *float64 {
-	if o == nil {
+func (a *AiRagInjectorPluginPgvector) GetTimeout() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.Timeout
+	return a.Timeout
 }
 
-func (o *AiRagInjectorPluginPgvector) GetUser() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginPgvector) GetUser() *string {
+	if a == nil {
 		return nil
 	}
-	return o.User
+	return a.User
 }
 
 type AiRagInjectorPluginClusterNodes struct {
@@ -791,24 +791,24 @@ func (a AiRagInjectorPluginClusterNodes) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiRagInjectorPluginClusterNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiRagInjectorPluginClusterNodes) GetIP() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginClusterNodes) GetIP() *string {
+	if a == nil {
 		return nil
 	}
-	return o.IP
+	return a.IP
 }
 
-func (o *AiRagInjectorPluginClusterNodes) GetPort() *int64 {
-	if o == nil {
+func (a *AiRagInjectorPluginClusterNodes) GetPort() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.Port
+	return a.Port
 }
 
 type AiRagInjectorPluginSentinelNodes struct {
@@ -823,24 +823,24 @@ func (a AiRagInjectorPluginSentinelNodes) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiRagInjectorPluginSentinelNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiRagInjectorPluginSentinelNodes) GetHost() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginSentinelNodes) GetHost() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Host
+	return a.Host
 }
 
-func (o *AiRagInjectorPluginSentinelNodes) GetPort() *int64 {
-	if o == nil {
+func (a *AiRagInjectorPluginSentinelNodes) GetPort() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.Port
+	return a.Port
 }
 
 // AiRagInjectorPluginSentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
@@ -923,157 +923,157 @@ func (a AiRagInjectorPluginRedis) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiRagInjectorPluginRedis) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiRagInjectorPluginRedis) GetClusterMaxRedirections() *int64 {
-	if o == nil {
+func (a *AiRagInjectorPluginRedis) GetClusterMaxRedirections() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.ClusterMaxRedirections
+	return a.ClusterMaxRedirections
 }
 
-func (o *AiRagInjectorPluginRedis) GetClusterNodes() []AiRagInjectorPluginClusterNodes {
-	if o == nil {
+func (a *AiRagInjectorPluginRedis) GetClusterNodes() []AiRagInjectorPluginClusterNodes {
+	if a == nil {
 		return nil
 	}
-	return o.ClusterNodes
+	return a.ClusterNodes
 }
 
-func (o *AiRagInjectorPluginRedis) GetConnectTimeout() *int64 {
-	if o == nil {
+func (a *AiRagInjectorPluginRedis) GetConnectTimeout() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.ConnectTimeout
+	return a.ConnectTimeout
 }
 
-func (o *AiRagInjectorPluginRedis) GetConnectionIsProxied() *bool {
-	if o == nil {
+func (a *AiRagInjectorPluginRedis) GetConnectionIsProxied() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.ConnectionIsProxied
+	return a.ConnectionIsProxied
 }
 
-func (o *AiRagInjectorPluginRedis) GetDatabase() *int64 {
-	if o == nil {
+func (a *AiRagInjectorPluginRedis) GetDatabase() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.Database
+	return a.Database
 }
 
-func (o *AiRagInjectorPluginRedis) GetHost() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginRedis) GetHost() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Host
+	return a.Host
 }
 
-func (o *AiRagInjectorPluginRedis) GetKeepaliveBacklog() *int64 {
-	if o == nil {
+func (a *AiRagInjectorPluginRedis) GetKeepaliveBacklog() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.KeepaliveBacklog
+	return a.KeepaliveBacklog
 }
 
-func (o *AiRagInjectorPluginRedis) GetKeepalivePoolSize() *int64 {
-	if o == nil {
+func (a *AiRagInjectorPluginRedis) GetKeepalivePoolSize() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.KeepalivePoolSize
+	return a.KeepalivePoolSize
 }
 
-func (o *AiRagInjectorPluginRedis) GetPassword() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginRedis) GetPassword() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Password
+	return a.Password
 }
 
-func (o *AiRagInjectorPluginRedis) GetPort() *int64 {
-	if o == nil {
+func (a *AiRagInjectorPluginRedis) GetPort() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.Port
+	return a.Port
 }
 
-func (o *AiRagInjectorPluginRedis) GetReadTimeout() *int64 {
-	if o == nil {
+func (a *AiRagInjectorPluginRedis) GetReadTimeout() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.ReadTimeout
+	return a.ReadTimeout
 }
 
-func (o *AiRagInjectorPluginRedis) GetSendTimeout() *int64 {
-	if o == nil {
+func (a *AiRagInjectorPluginRedis) GetSendTimeout() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.SendTimeout
+	return a.SendTimeout
 }
 
-func (o *AiRagInjectorPluginRedis) GetSentinelMaster() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginRedis) GetSentinelMaster() *string {
+	if a == nil {
 		return nil
 	}
-	return o.SentinelMaster
+	return a.SentinelMaster
 }
 
-func (o *AiRagInjectorPluginRedis) GetSentinelNodes() []AiRagInjectorPluginSentinelNodes {
-	if o == nil {
+func (a *AiRagInjectorPluginRedis) GetSentinelNodes() []AiRagInjectorPluginSentinelNodes {
+	if a == nil {
 		return nil
 	}
-	return o.SentinelNodes
+	return a.SentinelNodes
 }
 
-func (o *AiRagInjectorPluginRedis) GetSentinelPassword() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginRedis) GetSentinelPassword() *string {
+	if a == nil {
 		return nil
 	}
-	return o.SentinelPassword
+	return a.SentinelPassword
 }
 
-func (o *AiRagInjectorPluginRedis) GetSentinelRole() *AiRagInjectorPluginSentinelRole {
-	if o == nil {
+func (a *AiRagInjectorPluginRedis) GetSentinelRole() *AiRagInjectorPluginSentinelRole {
+	if a == nil {
 		return nil
 	}
-	return o.SentinelRole
+	return a.SentinelRole
 }
 
-func (o *AiRagInjectorPluginRedis) GetSentinelUsername() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginRedis) GetSentinelUsername() *string {
+	if a == nil {
 		return nil
 	}
-	return o.SentinelUsername
+	return a.SentinelUsername
 }
 
-func (o *AiRagInjectorPluginRedis) GetServerName() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginRedis) GetServerName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ServerName
+	return a.ServerName
 }
 
-func (o *AiRagInjectorPluginRedis) GetSsl() *bool {
-	if o == nil {
+func (a *AiRagInjectorPluginRedis) GetSsl() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Ssl
+	return a.Ssl
 }
 
-func (o *AiRagInjectorPluginRedis) GetSslVerify() *bool {
-	if o == nil {
+func (a *AiRagInjectorPluginRedis) GetSslVerify() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.SslVerify
+	return a.SslVerify
 }
 
-func (o *AiRagInjectorPluginRedis) GetUsername() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginRedis) GetUsername() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Username
+	return a.Username
 }
 
 // AiRagInjectorPluginStrategy - which vector database driver to use
@@ -1114,39 +1114,39 @@ type AiRagInjectorPluginVectordb struct {
 	Strategy AiRagInjectorPluginStrategy `json:"strategy"`
 }
 
-func (o *AiRagInjectorPluginVectordb) GetDimensions() int64 {
-	if o == nil {
+func (a *AiRagInjectorPluginVectordb) GetDimensions() int64 {
+	if a == nil {
 		return 0
 	}
-	return o.Dimensions
+	return a.Dimensions
 }
 
-func (o *AiRagInjectorPluginVectordb) GetDistanceMetric() AiRagInjectorPluginDistanceMetric {
-	if o == nil {
+func (a *AiRagInjectorPluginVectordb) GetDistanceMetric() AiRagInjectorPluginDistanceMetric {
+	if a == nil {
 		return AiRagInjectorPluginDistanceMetric("")
 	}
-	return o.DistanceMetric
+	return a.DistanceMetric
 }
 
-func (o *AiRagInjectorPluginVectordb) GetPgvector() *AiRagInjectorPluginPgvector {
-	if o == nil {
+func (a *AiRagInjectorPluginVectordb) GetPgvector() *AiRagInjectorPluginPgvector {
+	if a == nil {
 		return nil
 	}
-	return o.Pgvector
+	return a.Pgvector
 }
 
-func (o *AiRagInjectorPluginVectordb) GetRedis() *AiRagInjectorPluginRedis {
-	if o == nil {
+func (a *AiRagInjectorPluginVectordb) GetRedis() *AiRagInjectorPluginRedis {
+	if a == nil {
 		return nil
 	}
-	return o.Redis
+	return a.Redis
 }
 
-func (o *AiRagInjectorPluginVectordb) GetStrategy() AiRagInjectorPluginStrategy {
-	if o == nil {
+func (a *AiRagInjectorPluginVectordb) GetStrategy() AiRagInjectorPluginStrategy {
+	if a == nil {
 		return AiRagInjectorPluginStrategy("")
 	}
-	return o.Strategy
+	return a.Strategy
 }
 
 type AiRagInjectorPluginConfig struct {
@@ -1167,59 +1167,59 @@ func (a AiRagInjectorPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiRagInjectorPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"embeddings", "vectordb"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiRagInjectorPluginConfig) GetEmbeddings() AiRagInjectorPluginEmbeddings {
-	if o == nil {
+func (a *AiRagInjectorPluginConfig) GetEmbeddings() AiRagInjectorPluginEmbeddings {
+	if a == nil {
 		return AiRagInjectorPluginEmbeddings{}
 	}
-	return o.Embeddings
+	return a.Embeddings
 }
 
-func (o *AiRagInjectorPluginConfig) GetFetchChunksCount() *float64 {
-	if o == nil {
+func (a *AiRagInjectorPluginConfig) GetFetchChunksCount() *float64 {
+	if a == nil {
 		return nil
 	}
-	return o.FetchChunksCount
+	return a.FetchChunksCount
 }
 
-func (o *AiRagInjectorPluginConfig) GetInjectAsRole() *InjectAsRole {
-	if o == nil {
+func (a *AiRagInjectorPluginConfig) GetInjectAsRole() *InjectAsRole {
+	if a == nil {
 		return nil
 	}
-	return o.InjectAsRole
+	return a.InjectAsRole
 }
 
-func (o *AiRagInjectorPluginConfig) GetInjectTemplate() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginConfig) GetInjectTemplate() *string {
+	if a == nil {
 		return nil
 	}
-	return o.InjectTemplate
+	return a.InjectTemplate
 }
 
-func (o *AiRagInjectorPluginConfig) GetStopOnFailure() *bool {
-	if o == nil {
+func (a *AiRagInjectorPluginConfig) GetStopOnFailure() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.StopOnFailure
+	return a.StopOnFailure
 }
 
-func (o *AiRagInjectorPluginConfig) GetVectordb() AiRagInjectorPluginVectordb {
-	if o == nil {
+func (a *AiRagInjectorPluginConfig) GetVectordb() AiRagInjectorPluginVectordb {
+	if a == nil {
 		return AiRagInjectorPluginVectordb{}
 	}
-	return o.Vectordb
+	return a.Vectordb
 }
 
-func (o *AiRagInjectorPluginConfig) GetVectordbNamespace() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginConfig) GetVectordbNamespace() *string {
+	if a == nil {
 		return nil
 	}
-	return o.VectordbNamespace
+	return a.VectordbNamespace
 }
 
 // AiRagInjectorPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -1227,11 +1227,11 @@ type AiRagInjectorPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiRagInjectorPluginConsumer) GetID() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginConsumer) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiRagInjectorPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -1239,11 +1239,11 @@ type AiRagInjectorPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiRagInjectorPluginConsumerGroup) GetID() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginConsumerGroup) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 type AiRagInjectorPluginProtocols string
@@ -1283,11 +1283,11 @@ type AiRagInjectorPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiRagInjectorPluginRoute) GetID() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginRoute) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiRagInjectorPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -1295,11 +1295,11 @@ type AiRagInjectorPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiRagInjectorPluginService) GetID() *string {
-	if o == nil {
+func (a *AiRagInjectorPluginService) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiRagInjectorPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -1338,110 +1338,110 @@ func (a AiRagInjectorPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiRagInjectorPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiRagInjectorPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (a *AiRagInjectorPlugin) GetCreatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AiRagInjectorPlugin) GetEnabled() *bool {
-	if o == nil {
+func (a *AiRagInjectorPlugin) GetEnabled() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Enabled
+	return a.Enabled
 }
 
-func (o *AiRagInjectorPlugin) GetID() *string {
-	if o == nil {
+func (a *AiRagInjectorPlugin) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AiRagInjectorPlugin) GetInstanceName() *string {
-	if o == nil {
+func (a *AiRagInjectorPlugin) GetInstanceName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.InstanceName
+	return a.InstanceName
 }
 
-func (o *AiRagInjectorPlugin) GetName() string {
+func (a *AiRagInjectorPlugin) GetName() string {
 	return "ai-rag-injector"
 }
 
-func (o *AiRagInjectorPlugin) GetOrdering() *AiRagInjectorPluginOrdering {
-	if o == nil {
+func (a *AiRagInjectorPlugin) GetOrdering() *AiRagInjectorPluginOrdering {
+	if a == nil {
 		return nil
 	}
-	return o.Ordering
+	return a.Ordering
 }
 
-func (o *AiRagInjectorPlugin) GetPartials() []AiRagInjectorPluginPartials {
-	if o == nil {
+func (a *AiRagInjectorPlugin) GetPartials() []AiRagInjectorPluginPartials {
+	if a == nil {
 		return nil
 	}
-	return o.Partials
+	return a.Partials
 }
 
-func (o *AiRagInjectorPlugin) GetTags() []string {
-	if o == nil {
+func (a *AiRagInjectorPlugin) GetTags() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Tags
+	return a.Tags
 }
 
-func (o *AiRagInjectorPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (a *AiRagInjectorPlugin) GetUpdatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }
 
-func (o *AiRagInjectorPlugin) GetConfig() AiRagInjectorPluginConfig {
-	if o == nil {
+func (a *AiRagInjectorPlugin) GetConfig() AiRagInjectorPluginConfig {
+	if a == nil {
 		return AiRagInjectorPluginConfig{}
 	}
-	return o.Config
+	return a.Config
 }
 
-func (o *AiRagInjectorPlugin) GetConsumer() *AiRagInjectorPluginConsumer {
-	if o == nil {
+func (a *AiRagInjectorPlugin) GetConsumer() *AiRagInjectorPluginConsumer {
+	if a == nil {
 		return nil
 	}
-	return o.Consumer
+	return a.Consumer
 }
 
-func (o *AiRagInjectorPlugin) GetConsumerGroup() *AiRagInjectorPluginConsumerGroup {
-	if o == nil {
+func (a *AiRagInjectorPlugin) GetConsumerGroup() *AiRagInjectorPluginConsumerGroup {
+	if a == nil {
 		return nil
 	}
-	return o.ConsumerGroup
+	return a.ConsumerGroup
 }
 
-func (o *AiRagInjectorPlugin) GetProtocols() []AiRagInjectorPluginProtocols {
-	if o == nil {
+func (a *AiRagInjectorPlugin) GetProtocols() []AiRagInjectorPluginProtocols {
+	if a == nil {
 		return nil
 	}
-	return o.Protocols
+	return a.Protocols
 }
 
-func (o *AiRagInjectorPlugin) GetRoute() *AiRagInjectorPluginRoute {
-	if o == nil {
+func (a *AiRagInjectorPlugin) GetRoute() *AiRagInjectorPluginRoute {
+	if a == nil {
 		return nil
 	}
-	return o.Route
+	return a.Route
 }
 
-func (o *AiRagInjectorPlugin) GetService() *AiRagInjectorPluginService {
-	if o == nil {
+func (a *AiRagInjectorPlugin) GetService() *AiRagInjectorPluginService {
+	if a == nil {
 		return nil
 	}
-	return o.Service
+	return a.Service
 }

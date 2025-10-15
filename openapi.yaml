@@ -2154,7 +2154,7 @@ paths:
       x-speakeasy-entity-operation:
         terraform-resource: null
         terraform-datasource:
-          - GatewayControlPlane#read
+          - GatewayControlPlaneList#read
       operationId: list-control-planes
       summary: List Control Planes
       description: Returns an array of control plane objects containing information about the Konnect Control Planes.
@@ -2179,6 +2179,18 @@ paths:
           $ref: '#/components/responses/ServiceUnavailable'
       tags:
         - Control Planes
+      x-speakeasy-pagination:
+        type: offsetLimit
+        inputs:
+          - name: 'page[number]'
+            in: parameters
+            type: page
+          - name: 'page[size]'
+            in: parameters
+            type: limit
+        outputs:
+          results: $.data
+          numPages: $.meta.page.total
     post:
       x-speakeasy-entity-operation:
         terraform-resource: GatewayControlPlane#create
@@ -15662,6 +15674,34 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Team Membership
+  /v2/control-planes#single-resource:
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: null
+        terraform-datasource:
+          - GatewayControlPlane#read
+      operationId: list-control-planes-single-resource
+      summary: List Control Planes Datasource
+      description: Returns an array of control plane objects containing information about the Konnect Control Planes.
+      parameters:
+        - $ref: '#/components/parameters/ControlPlaneFilter'
+        - $ref: '#/components/parameters/FilterByLabels'
+        - $ref: '#/components/parameters/ControlPlaneSort'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListControlPlanesResponse'
+        '400':
+          $ref: '#/components/responses/ControlPlanesBadRequest'
+        '401':
+          $ref: '#/components/responses/ControlPlaneUnauthenticated'
+        '403':
+          $ref: '#/components/responses/ControlPlanePermissionDenied'
+        '500':
+          $ref: '#/components/responses/Internal'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      tags:
+        - Control Planes
   /v2/audit-log-webhook#delete:
     patch:
       x-speakeasy-entity-operation:
@@ -15960,7 +16000,7 @@ components:
       allowEmptyValue: true
       schema:
         type: integer
-        example: 10
+        example: 100
     PartialId:
       description: ID of the Partial to lookup
       example: ''
@@ -49700,6 +49740,7 @@ components:
               meta:
                 $ref: '#/components/schemas/PaginatedMeta'
               data:
+                x-speakeasy-entity: GatewayControlPlaneList
                 type: array
                 items:
                   $ref: '#/components/schemas/ControlPlane'

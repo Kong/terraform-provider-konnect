@@ -62,7 +62,7 @@ func (s *AuditLogs) CreateAuditLogDestination(ctx context.Context, request *shar
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-audit-log-destination",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
@@ -268,7 +268,7 @@ func (s *AuditLogs) GetAuditLogDestination(ctx context.Context, request operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-audit-log-destination",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -467,7 +467,7 @@ func (s *AuditLogs) UpdateAuditLogDestination(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-audit-log-destination",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "UpdateAuditLogDestination", "json", `request:"mediaType=application/json"`)
@@ -693,7 +693,7 @@ func (s *AuditLogs) DeleteAuditLogDestination(ctx context.Context, request opera
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-audit-log-destination",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -888,7 +888,7 @@ func (s *AuditLogs) UpdateAuditLogWebhook(ctx context.Context, request *shared.U
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-audit-log-webhook",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
@@ -1094,7 +1094,7 @@ func (s *AuditLogs) GetAuditLogWebhook(ctx context.Context, opts ...operations.O
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-audit-log-webhook",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -1272,7 +1272,7 @@ func (s *AuditLogs) DeleteAuditLogWebhook(ctx context.Context, request *operatio
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-audit-log-webhook",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)

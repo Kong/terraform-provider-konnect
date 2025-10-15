@@ -5,7 +5,10 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-testing/config"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/plancheck"
+	"github.com/hashicorp/terraform-plugin-testing/statecheck"
+	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 )
 
 func TestGatewayControlPlane(t *testing.T) {
@@ -77,15 +80,28 @@ func TestGatewayControlPlane(t *testing.T) {
 	})
 
 	t.Run("data source", func(t *testing.T) {
+
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
+				{
+					Config:             providerConfigUs,
+					ConfigDirectory:    config.TestNameDirectory(),
+					ExpectNonEmptyPlan: true, // outputs become known
+				},
 				{
 					Config:          providerConfigUs,
 					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckOutput("control_plane", "Lookup Control Plane"),
 					),
+					ConfigStateChecks: []statecheck.StateCheck{
+						statecheck.ExpectKnownOutputValueAtPath(
+							"control_plane_list",
+							tfjsonpath.New("data").AtSliceIndex(0).AtMapKey("name"),
+							knownvalue.StringExact("Lookup Control Plane"),
+						),
+					},
 				},
 			},
 		})

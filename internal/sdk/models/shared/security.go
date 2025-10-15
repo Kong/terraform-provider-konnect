@@ -9,30 +9,30 @@ type Security struct {
 	ServiceAccessToken       *string `security:"scheme,type=http,subtype=bearer,name=Authorization"`
 }
 
-func (o *Security) GetPersonalAccessToken() *string {
-	if o == nil {
+func (s *Security) GetPersonalAccessToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.PersonalAccessToken
+	return s.PersonalAccessToken
 }
 
-func (o *Security) GetSystemAccountAccessToken() *string {
-	if o == nil {
+func (s *Security) GetSystemAccountAccessToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.SystemAccountAccessToken
+	return s.SystemAccountAccessToken
 }
 
-func (o *Security) GetKonnectAccessToken() *string {
-	if o == nil {
+func (s *Security) GetKonnectAccessToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.KonnectAccessToken
+	return s.KonnectAccessToken
 }
 
-func (o *Security) GetServiceAccessToken() *string {
-	if o == nil {
+func (s *Security) GetServiceAccessToken() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ServiceAccessToken
+	return s.ServiceAccessToken
 }

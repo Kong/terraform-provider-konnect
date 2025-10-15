@@ -12,22 +12,22 @@ type DatadogPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *DatadogPluginAfter) GetAccess() []string {
-	if o == nil {
+func (d *DatadogPluginAfter) GetAccess() []string {
+	if d == nil {
 		return nil
 	}
-	return o.Access
+	return d.Access
 }
 
 type DatadogPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *DatadogPluginBefore) GetAccess() []string {
-	if o == nil {
+func (d *DatadogPluginBefore) GetAccess() []string {
+	if d == nil {
 		return nil
 	}
-	return o.Access
+	return d.Access
 }
 
 type DatadogPluginOrdering struct {
@@ -35,18 +35,18 @@ type DatadogPluginOrdering struct {
 	Before *DatadogPluginBefore `json:"before,omitempty"`
 }
 
-func (o *DatadogPluginOrdering) GetAfter() *DatadogPluginAfter {
-	if o == nil {
+func (d *DatadogPluginOrdering) GetAfter() *DatadogPluginAfter {
+	if d == nil {
 		return nil
 	}
-	return o.After
+	return d.After
 }
 
-func (o *DatadogPluginOrdering) GetBefore() *DatadogPluginBefore {
-	if o == nil {
+func (d *DatadogPluginOrdering) GetBefore() *DatadogPluginBefore {
+	if d == nil {
 		return nil
 	}
-	return o.Before
+	return d.Before
 }
 
 type DatadogPluginPartials struct {
@@ -57,25 +57,25 @@ type DatadogPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *DatadogPluginPartials) GetID() *string {
-	if o == nil {
+func (d *DatadogPluginPartials) GetID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ID
+	return d.ID
 }
 
-func (o *DatadogPluginPartials) GetName() *string {
-	if o == nil {
+func (d *DatadogPluginPartials) GetName() *string {
+	if d == nil {
 		return nil
 	}
-	return o.Name
+	return d.Name
 }
 
-func (o *DatadogPluginPartials) GetPath() *string {
-	if o == nil {
+func (d *DatadogPluginPartials) GetPath() *string {
+	if d == nil {
 		return nil
 	}
-	return o.Path
+	return d.Path
 }
 
 // ConsumerIdentifier - Authenticated user detail
@@ -202,39 +202,39 @@ type Metrics struct {
 	Tags []string `json:"tags,omitempty"`
 }
 
-func (o *Metrics) GetConsumerIdentifier() *ConsumerIdentifier {
-	if o == nil {
+func (m *Metrics) GetConsumerIdentifier() *ConsumerIdentifier {
+	if m == nil {
 		return nil
 	}
-	return o.ConsumerIdentifier
+	return m.ConsumerIdentifier
 }
 
-func (o *Metrics) GetName() DatadogPluginName {
-	if o == nil {
+func (m *Metrics) GetName() DatadogPluginName {
+	if m == nil {
 		return DatadogPluginName("")
 	}
-	return o.Name
+	return m.Name
 }
 
-func (o *Metrics) GetSampleRate() *float64 {
-	if o == nil {
+func (m *Metrics) GetSampleRate() *float64 {
+	if m == nil {
 		return nil
 	}
-	return o.SampleRate
+	return m.SampleRate
 }
 
-func (o *Metrics) GetStatType() StatType {
-	if o == nil {
+func (m *Metrics) GetStatType() StatType {
+	if m == nil {
 		return StatType("")
 	}
-	return o.StatType
+	return m.StatType
 }
 
-func (o *Metrics) GetTags() []string {
-	if o == nil {
+func (m *Metrics) GetTags() []string {
+	if m == nil {
 		return nil
 	}
-	return o.Tags
+	return m.Tags
 }
 
 // ConcurrencyLimit - The number of of queue delivery timers. -1 indicates unlimited.
@@ -288,66 +288,66 @@ func (q Queue) MarshalJSON() ([]byte, error) {
 }
 
 func (q *Queue) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &q, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &q, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Queue) GetConcurrencyLimit() *ConcurrencyLimit {
-	if o == nil {
+func (q *Queue) GetConcurrencyLimit() *ConcurrencyLimit {
+	if q == nil {
 		return nil
 	}
-	return o.ConcurrencyLimit
+	return q.ConcurrencyLimit
 }
 
-func (o *Queue) GetInitialRetryDelay() *float64 {
-	if o == nil {
+func (q *Queue) GetInitialRetryDelay() *float64 {
+	if q == nil {
 		return nil
 	}
-	return o.InitialRetryDelay
+	return q.InitialRetryDelay
 }
 
-func (o *Queue) GetMaxBatchSize() *int64 {
-	if o == nil {
+func (q *Queue) GetMaxBatchSize() *int64 {
+	if q == nil {
 		return nil
 	}
-	return o.MaxBatchSize
+	return q.MaxBatchSize
 }
 
-func (o *Queue) GetMaxBytes() *int64 {
-	if o == nil {
+func (q *Queue) GetMaxBytes() *int64 {
+	if q == nil {
 		return nil
 	}
-	return o.MaxBytes
+	return q.MaxBytes
 }
 
-func (o *Queue) GetMaxCoalescingDelay() *float64 {
-	if o == nil {
+func (q *Queue) GetMaxCoalescingDelay() *float64 {
+	if q == nil {
 		return nil
 	}
-	return o.MaxCoalescingDelay
+	return q.MaxCoalescingDelay
 }
 
-func (o *Queue) GetMaxEntries() *int64 {
-	if o == nil {
+func (q *Queue) GetMaxEntries() *int64 {
+	if q == nil {
 		return nil
 	}
-	return o.MaxEntries
+	return q.MaxEntries
 }
 
-func (o *Queue) GetMaxRetryDelay() *float64 {
-	if o == nil {
+func (q *Queue) GetMaxRetryDelay() *float64 {
+	if q == nil {
 		return nil
 	}
-	return o.MaxRetryDelay
+	return q.MaxRetryDelay
 }
 
-func (o *Queue) GetMaxRetryTime() *float64 {
-	if o == nil {
+func (q *Queue) GetMaxRetryTime() *float64 {
+	if q == nil {
 		return nil
 	}
-	return o.MaxRetryTime
+	return q.MaxRetryTime
 }
 
 type DatadogPluginConfig struct {
@@ -379,87 +379,87 @@ func (d DatadogPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DatadogPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *DatadogPluginConfig) GetConsumerTag() *string {
-	if o == nil {
+func (d *DatadogPluginConfig) GetConsumerTag() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ConsumerTag
+	return d.ConsumerTag
 }
 
-func (o *DatadogPluginConfig) GetFlushTimeout() *float64 {
-	if o == nil {
+func (d *DatadogPluginConfig) GetFlushTimeout() *float64 {
+	if d == nil {
 		return nil
 	}
-	return o.FlushTimeout
+	return d.FlushTimeout
 }
 
-func (o *DatadogPluginConfig) GetHost() *string {
-	if o == nil {
+func (d *DatadogPluginConfig) GetHost() *string {
+	if d == nil {
 		return nil
 	}
-	return o.Host
+	return d.Host
 }
 
-func (o *DatadogPluginConfig) GetMetrics() []Metrics {
-	if o == nil {
+func (d *DatadogPluginConfig) GetMetrics() []Metrics {
+	if d == nil {
 		return nil
 	}
-	return o.Metrics
+	return d.Metrics
 }
 
-func (o *DatadogPluginConfig) GetPort() *int64 {
-	if o == nil {
+func (d *DatadogPluginConfig) GetPort() *int64 {
+	if d == nil {
 		return nil
 	}
-	return o.Port
+	return d.Port
 }
 
-func (o *DatadogPluginConfig) GetPrefix() *string {
-	if o == nil {
+func (d *DatadogPluginConfig) GetPrefix() *string {
+	if d == nil {
 		return nil
 	}
-	return o.Prefix
+	return d.Prefix
 }
 
-func (o *DatadogPluginConfig) GetQueue() *Queue {
-	if o == nil {
+func (d *DatadogPluginConfig) GetQueue() *Queue {
+	if d == nil {
 		return nil
 	}
-	return o.Queue
+	return d.Queue
 }
 
-func (o *DatadogPluginConfig) GetQueueSize() *int64 {
-	if o == nil {
+func (d *DatadogPluginConfig) GetQueueSize() *int64 {
+	if d == nil {
 		return nil
 	}
-	return o.QueueSize
+	return d.QueueSize
 }
 
-func (o *DatadogPluginConfig) GetRetryCount() *int64 {
-	if o == nil {
+func (d *DatadogPluginConfig) GetRetryCount() *int64 {
+	if d == nil {
 		return nil
 	}
-	return o.RetryCount
+	return d.RetryCount
 }
 
-func (o *DatadogPluginConfig) GetServiceNameTag() *string {
-	if o == nil {
+func (d *DatadogPluginConfig) GetServiceNameTag() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ServiceNameTag
+	return d.ServiceNameTag
 }
 
-func (o *DatadogPluginConfig) GetStatusTag() *string {
-	if o == nil {
+func (d *DatadogPluginConfig) GetStatusTag() *string {
+	if d == nil {
 		return nil
 	}
-	return o.StatusTag
+	return d.StatusTag
 }
 
 // DatadogPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -467,11 +467,11 @@ type DatadogPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *DatadogPluginConsumer) GetID() *string {
-	if o == nil {
+func (d *DatadogPluginConsumer) GetID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ID
+	return d.ID
 }
 
 // DatadogPluginProtocols - A string representing a protocol, such as HTTP or HTTPS.
@@ -530,11 +530,11 @@ type DatadogPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *DatadogPluginRoute) GetID() *string {
-	if o == nil {
+func (d *DatadogPluginRoute) GetID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ID
+	return d.ID
 }
 
 // DatadogPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -542,11 +542,11 @@ type DatadogPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *DatadogPluginService) GetID() *string {
-	if o == nil {
+func (d *DatadogPluginService) GetID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ID
+	return d.ID
 }
 
 // DatadogPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -583,103 +583,103 @@ func (d DatadogPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DatadogPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *DatadogPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (d *DatadogPlugin) GetCreatedAt() *int64 {
+	if d == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return d.CreatedAt
 }
 
-func (o *DatadogPlugin) GetEnabled() *bool {
-	if o == nil {
+func (d *DatadogPlugin) GetEnabled() *bool {
+	if d == nil {
 		return nil
 	}
-	return o.Enabled
+	return d.Enabled
 }
 
-func (o *DatadogPlugin) GetID() *string {
-	if o == nil {
+func (d *DatadogPlugin) GetID() *string {
+	if d == nil {
 		return nil
 	}
-	return o.ID
+	return d.ID
 }
 
-func (o *DatadogPlugin) GetInstanceName() *string {
-	if o == nil {
+func (d *DatadogPlugin) GetInstanceName() *string {
+	if d == nil {
 		return nil
 	}
-	return o.InstanceName
+	return d.InstanceName
 }
 
-func (o *DatadogPlugin) GetName() string {
+func (d *DatadogPlugin) GetName() string {
 	return "datadog"
 }
 
-func (o *DatadogPlugin) GetOrdering() *DatadogPluginOrdering {
-	if o == nil {
+func (d *DatadogPlugin) GetOrdering() *DatadogPluginOrdering {
+	if d == nil {
 		return nil
 	}
-	return o.Ordering
+	return d.Ordering
 }
 
-func (o *DatadogPlugin) GetPartials() []DatadogPluginPartials {
-	if o == nil {
+func (d *DatadogPlugin) GetPartials() []DatadogPluginPartials {
+	if d == nil {
 		return nil
 	}
-	return o.Partials
+	return d.Partials
 }
 
-func (o *DatadogPlugin) GetTags() []string {
-	if o == nil {
+func (d *DatadogPlugin) GetTags() []string {
+	if d == nil {
 		return nil
 	}
-	return o.Tags
+	return d.Tags
 }
 
-func (o *DatadogPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (d *DatadogPlugin) GetUpdatedAt() *int64 {
+	if d == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return d.UpdatedAt
 }
 
-func (o *DatadogPlugin) GetConfig() *DatadogPluginConfig {
-	if o == nil {
+func (d *DatadogPlugin) GetConfig() *DatadogPluginConfig {
+	if d == nil {
 		return nil
 	}
-	return o.Config
+	return d.Config
 }
 
-func (o *DatadogPlugin) GetConsumer() *DatadogPluginConsumer {
-	if o == nil {
+func (d *DatadogPlugin) GetConsumer() *DatadogPluginConsumer {
+	if d == nil {
 		return nil
 	}
-	return o.Consumer
+	return d.Consumer
 }
 
-func (o *DatadogPlugin) GetProtocols() []DatadogPluginProtocols {
-	if o == nil {
+func (d *DatadogPlugin) GetProtocols() []DatadogPluginProtocols {
+	if d == nil {
 		return nil
 	}
-	return o.Protocols
+	return d.Protocols
 }
 
-func (o *DatadogPlugin) GetRoute() *DatadogPluginRoute {
-	if o == nil {
+func (d *DatadogPlugin) GetRoute() *DatadogPluginRoute {
+	if d == nil {
 		return nil
 	}
-	return o.Route
+	return d.Route
 }
 
-func (o *DatadogPlugin) GetService() *DatadogPluginService {
-	if o == nil {
+func (d *DatadogPlugin) GetService() *DatadogPluginService {
+	if d == nil {
 		return nil
 	}
-	return o.Service
+	return d.Service
 }

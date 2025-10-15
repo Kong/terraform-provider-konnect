@@ -15,8 +15,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -90,10 +92,14 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Schema(ctx context.Context, re
 						Description: `TTL in seconds of cache entities. Default: 300`,
 					},
 					"content_type": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Computed: true,
+						Optional: true,
+						Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+							types.StringValue("application/json"),
+							types.StringValue("text/plain"),
+						})),
 						ElementType: types.StringType,
-						Description: `Upstream response content types considered cacheable. The plugin performs an **exact match** against each specified value; for example, if the upstream is expected to respond with a ` + "`" + `application/json; charset=utf-8` + "`" + ` content-type, the plugin configuration must contain said value or a ` + "`" + `Bypass` + "`" + ` cache status is returned.`,
+						Description: `Upstream response content types considered cacheable. The plugin performs an **exact match** against each specified value; for example, if the upstream is expected to respond with a ` + "`" + `application/json; charset=utf-8` + "`" + ` content-type, the plugin configuration must contain said value or a ` + "`" + `Bypass` + "`" + ` cache status is returned. Default: ["application/json","text/plain"]`,
 					},
 					"ignore_uri_case": schema.BoolAttribute{
 						Computed:    true,
@@ -336,16 +342,25 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Schema(ctx context.Context, re
 						},
 					},
 					"request_method": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Computed: true,
+						Optional: true,
+						Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+							types.StringValue("GET"),
+							types.StringValue("HEAD"),
+						})),
 						ElementType: types.StringType,
-						Description: `Downstream request methods considered cacheable. Available options: ` + "`" + `HEAD` + "`" + `, ` + "`" + `GET` + "`" + `, ` + "`" + `POST` + "`" + `, ` + "`" + `PATCH` + "`" + `, ` + "`" + `PUT` + "`" + `.`,
+						Description: `Downstream request methods considered cacheable. Available options: ` + "`" + `HEAD` + "`" + `, ` + "`" + `GET` + "`" + `, ` + "`" + `POST` + "`" + `, ` + "`" + `PATCH` + "`" + `, ` + "`" + `PUT` + "`" + `. Default: ["GET","HEAD"]`,
 					},
 					"response_code": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Computed: true,
+						Optional: true,
+						Default: listdefault.StaticValue(types.ListValueMust(types.Int64Type, []attr.Value{
+							types.Int64Value(200),
+							types.Int64Value(301),
+							types.Int64Value(404),
+						})),
 						ElementType: types.Int64Type,
-						Description: `Upstream response status code considered cacheable. The integers must be a value between 100 and 900.`,
+						Description: `Upstream response status code considered cacheable. The integers must be a value between 100 and 900. Default: [200,301,404]`,
 					},
 					"response_headers": schema.SingleNestedAttribute{
 						Computed: true,
@@ -534,10 +549,16 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Schema(ctx context.Context, re
 				Description: `A list of partials to be used by the plugin.`,
 			},
 			"protocols": schema.SetAttribute{
-				Computed:    true,
-				Optional:    true,
+				Computed: true,
+				Optional: true,
+				Default: setdefault.StaticValue(types.SetValueMust(types.StringType, []attr.Value{
+					types.StringValue("grpc"),
+					types.StringValue("grpcs"),
+					types.StringValue("http"),
+					types.StringValue("https"),
+				})),
 				ElementType: types.StringType,
-				Description: `A set of strings representing HTTP protocols.`,
+				Description: `A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,

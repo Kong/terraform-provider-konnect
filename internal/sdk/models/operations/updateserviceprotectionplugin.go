@@ -15,25 +15,25 @@ type UpdateServiceprotectionPluginRequest struct {
 	ServiceProtectionPlugin shared.ServiceProtectionPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateServiceprotectionPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateServiceprotectionPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateServiceprotectionPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateServiceprotectionPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateServiceprotectionPluginRequest) GetServiceProtectionPlugin() shared.ServiceProtectionPlugin {
-	if o == nil {
+func (u *UpdateServiceprotectionPluginRequest) GetServiceProtectionPlugin() shared.ServiceProtectionPlugin {
+	if u == nil {
 		return shared.ServiceProtectionPlugin{}
 	}
-	return o.ServiceProtectionPlugin
+	return u.ServiceProtectionPlugin
 }
 
 type UpdateServiceprotectionPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateServiceprotectionPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateServiceprotectionPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateServiceprotectionPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateServiceprotectionPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateServiceprotectionPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateServiceprotectionPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateServiceprotectionPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateServiceprotectionPluginResponse) GetServiceProtectionPlugin() *shared.ServiceProtectionPlugin {
-	if o == nil {
+func (u *UpdateServiceprotectionPluginResponse) GetServiceProtectionPlugin() *shared.ServiceProtectionPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.ServiceProtectionPlugin
+	return u.ServiceProtectionPlugin
 }
 
-func (o *UpdateServiceprotectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateServiceprotectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

@@ -18,17 +18,17 @@ func (g GetCmekRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetCmekRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"cmekId"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *GetCmekRequest) GetID() shared.CmekID {
-	if o == nil {
+func (g *GetCmekRequest) GetID() shared.CmekID {
+	if g == nil {
 		return shared.CmekID("")
 	}
-	return o.ID
+	return g.ID
 }
 
 type GetCmekResponse struct {
@@ -48,51 +48,51 @@ type GetCmekResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *GetCmekResponse) GetContentType() string {
-	if o == nil {
+func (g *GetCmekResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetCmekResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetCmekResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetCmekResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetCmekResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetCmekResponse) GetCmek() *shared.Cmek {
-	if o == nil {
+func (g *GetCmekResponse) GetCmek() *shared.Cmek {
+	if g == nil {
 		return nil
 	}
-	return o.Cmek
+	return g.Cmek
 }
 
-func (o *GetCmekResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (g *GetCmekResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return g.UnauthorizedError
 }
 
-func (o *GetCmekResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (g *GetCmekResponse) GetForbiddenError() *shared.ForbiddenError {
+	if g == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return g.ForbiddenError
 }
 
-func (o *GetCmekResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (g *GetCmekResponse) GetNotFoundError() *shared.NotFoundError {
+	if g == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return g.NotFoundError
 }

@@ -21,29 +21,29 @@ func (c CreateSystemAccount) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateSystemAccount) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "description"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CreateSystemAccount) GetName() string {
-	if o == nil {
+func (c *CreateSystemAccount) GetName() string {
+	if c == nil {
 		return ""
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *CreateSystemAccount) GetDescription() string {
-	if o == nil {
+func (c *CreateSystemAccount) GetDescription() string {
+	if c == nil {
 		return ""
 	}
-	return o.Description
+	return c.Description
 }
 
-func (o *CreateSystemAccount) GetKonnectManaged() *bool {
-	if o == nil {
+func (c *CreateSystemAccount) GetKonnectManaged() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.KonnectManaged
+	return c.KonnectManaged
 }

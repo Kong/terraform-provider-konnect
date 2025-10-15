@@ -37,57 +37,57 @@ func (c CreatePortalPageRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreatePortalPageRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"slug", "content"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CreatePortalPageRequest) GetSlug() string {
-	if o == nil {
+func (c *CreatePortalPageRequest) GetSlug() string {
+	if c == nil {
 		return ""
 	}
-	return o.Slug
+	return c.Slug
 }
 
-func (o *CreatePortalPageRequest) GetTitle() *string {
-	if o == nil {
+func (c *CreatePortalPageRequest) GetTitle() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Title
+	return c.Title
 }
 
-func (o *CreatePortalPageRequest) GetContent() string {
-	if o == nil {
+func (c *CreatePortalPageRequest) GetContent() string {
+	if c == nil {
 		return ""
 	}
-	return o.Content
+	return c.Content
 }
 
-func (o *CreatePortalPageRequest) GetVisibility() *PageVisibilityStatus {
-	if o == nil {
+func (c *CreatePortalPageRequest) GetVisibility() *PageVisibilityStatus {
+	if c == nil {
 		return nil
 	}
-	return o.Visibility
+	return c.Visibility
 }
 
-func (o *CreatePortalPageRequest) GetStatus() *PublishedStatus {
-	if o == nil {
+func (c *CreatePortalPageRequest) GetStatus() *PublishedStatus {
+	if c == nil {
 		return nil
 	}
-	return o.Status
+	return c.Status
 }
 
-func (o *CreatePortalPageRequest) GetDescription() *string {
-	if o == nil {
+func (c *CreatePortalPageRequest) GetDescription() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Description
+	return c.Description
 }
 
-func (o *CreatePortalPageRequest) GetParentPageID() *string {
-	if o == nil {
+func (c *CreatePortalPageRequest) GetParentPageID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ParentPageID
+	return c.ParentPageID
 }

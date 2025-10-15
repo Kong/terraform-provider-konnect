@@ -50,43 +50,43 @@ func (a AuthStrategyClientCredentials) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AuthStrategyClientCredentials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "credential_type", "auth_methods"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AuthStrategyClientCredentials) GetID() string {
-	if o == nil {
+func (a *AuthStrategyClientCredentials) GetID() string {
+	if a == nil {
 		return ""
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AuthStrategyClientCredentials) GetName() *string {
-	if o == nil {
+func (a *AuthStrategyClientCredentials) GetName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AuthStrategyClientCredentials) GetCredentialType() AuthStrategyClientCredentialsCredentialType {
-	if o == nil {
+func (a *AuthStrategyClientCredentials) GetCredentialType() AuthStrategyClientCredentialsCredentialType {
+	if a == nil {
 		return AuthStrategyClientCredentialsCredentialType("")
 	}
-	return o.CredentialType
+	return a.CredentialType
 }
 
-func (o *AuthStrategyClientCredentials) GetAuthMethods() []string {
-	if o == nil {
+func (a *AuthStrategyClientCredentials) GetAuthMethods() []string {
+	if a == nil {
 		return []string{}
 	}
-	return o.AuthMethods
+	return a.AuthMethods
 }
 
-func (o *AuthStrategyClientCredentials) GetAvailableScopes() []string {
-	if o == nil {
+func (a *AuthStrategyClientCredentials) GetAvailableScopes() []string {
+	if a == nil {
 		return nil
 	}
-	return o.AvailableScopes
+	return a.AvailableScopes
 }

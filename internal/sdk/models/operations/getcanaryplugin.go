@@ -14,18 +14,18 @@ type GetCanaryPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetCanaryPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetCanaryPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetCanaryPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetCanaryPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetCanaryPluginResponse struct {
@@ -41,37 +41,37 @@ type GetCanaryPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetCanaryPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetCanaryPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetCanaryPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetCanaryPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetCanaryPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetCanaryPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetCanaryPluginResponse) GetCanaryPlugin() *shared.CanaryPlugin {
-	if o == nil {
+func (g *GetCanaryPluginResponse) GetCanaryPlugin() *shared.CanaryPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.CanaryPlugin
+	return g.CanaryPlugin
 }
 
-func (o *GetCanaryPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetCanaryPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

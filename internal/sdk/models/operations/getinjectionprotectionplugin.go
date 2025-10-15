@@ -14,18 +14,18 @@ type GetInjectionprotectionPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetInjectionprotectionPluginRequest) GetPluginID() string {
-	if o == nil {
+func (g *GetInjectionprotectionPluginRequest) GetPluginID() string {
+	if g == nil {
 		return ""
 	}
-	return o.PluginID
+	return g.PluginID
 }
 
-func (o *GetInjectionprotectionPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (g *GetInjectionprotectionPluginRequest) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }
 
 type GetInjectionprotectionPluginResponse struct {
@@ -41,37 +41,37 @@ type GetInjectionprotectionPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetInjectionprotectionPluginResponse) GetContentType() string {
-	if o == nil {
+func (g *GetInjectionprotectionPluginResponse) GetContentType() string {
+	if g == nil {
 		return ""
 	}
-	return o.ContentType
+	return g.ContentType
 }
 
-func (o *GetInjectionprotectionPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (g *GetInjectionprotectionPluginResponse) GetStatusCode() int {
+	if g == nil {
 		return 0
 	}
-	return o.StatusCode
+	return g.StatusCode
 }
 
-func (o *GetInjectionprotectionPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (g *GetInjectionprotectionPluginResponse) GetRawResponse() *http.Response {
+	if g == nil {
 		return nil
 	}
-	return o.RawResponse
+	return g.RawResponse
 }
 
-func (o *GetInjectionprotectionPluginResponse) GetInjectionProtectionPlugin() *shared.InjectionProtectionPlugin {
-	if o == nil {
+func (g *GetInjectionprotectionPluginResponse) GetInjectionProtectionPlugin() *shared.InjectionProtectionPlugin {
+	if g == nil {
 		return nil
 	}
-	return o.InjectionProtectionPlugin
+	return g.InjectionProtectionPlugin
 }
 
-func (o *GetInjectionprotectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (g *GetInjectionprotectionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if g == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return g.GatewayUnauthorizedError
 }

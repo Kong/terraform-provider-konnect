@@ -16,11 +16,11 @@ type DeleteServerlessCloudGatewayRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteServerlessCloudGatewayRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteServerlessCloudGatewayRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteServerlessCloudGatewayResponse struct {
@@ -38,44 +38,44 @@ type DeleteServerlessCloudGatewayResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *DeleteServerlessCloudGatewayResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteServerlessCloudGatewayResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteServerlessCloudGatewayResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteServerlessCloudGatewayResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteServerlessCloudGatewayResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteServerlessCloudGatewayResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteServerlessCloudGatewayResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (d *DeleteServerlessCloudGatewayResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return d.UnauthorizedError
 }
 
-func (o *DeleteServerlessCloudGatewayResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (d *DeleteServerlessCloudGatewayResponse) GetForbiddenError() *shared.ForbiddenError {
+	if d == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return d.ForbiddenError
 }
 
-func (o *DeleteServerlessCloudGatewayResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (d *DeleteServerlessCloudGatewayResponse) GetNotFoundError() *shared.NotFoundError {
+	if d == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return d.NotFoundError
 }

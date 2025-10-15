@@ -352,185 +352,185 @@ func (c ClientJwk) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ClientJwk) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ClientJwk) GetAlg() *string {
-	if o == nil {
+func (c *ClientJwk) GetAlg() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Alg
+	return c.Alg
 }
 
-func (o *ClientJwk) GetCrv() *string {
-	if o == nil {
+func (c *ClientJwk) GetCrv() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Crv
+	return c.Crv
 }
 
-func (o *ClientJwk) GetD() *string {
-	if o == nil {
+func (c *ClientJwk) GetD() *string {
+	if c == nil {
 		return nil
 	}
-	return o.D
+	return c.D
 }
 
-func (o *ClientJwk) GetDp() *string {
-	if o == nil {
+func (c *ClientJwk) GetDp() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Dp
+	return c.Dp
 }
 
-func (o *ClientJwk) GetDq() *string {
-	if o == nil {
+func (c *ClientJwk) GetDq() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Dq
+	return c.Dq
 }
 
-func (o *ClientJwk) GetE() *string {
-	if o == nil {
+func (c *ClientJwk) GetE() *string {
+	if c == nil {
 		return nil
 	}
-	return o.E
+	return c.E
 }
 
-func (o *ClientJwk) GetIssuer() *string {
-	if o == nil {
+func (c *ClientJwk) GetIssuer() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Issuer
+	return c.Issuer
 }
 
-func (o *ClientJwk) GetK() *string {
-	if o == nil {
+func (c *ClientJwk) GetK() *string {
+	if c == nil {
 		return nil
 	}
-	return o.K
+	return c.K
 }
 
-func (o *ClientJwk) GetKeyOps() []string {
-	if o == nil {
+func (c *ClientJwk) GetKeyOps() []string {
+	if c == nil {
 		return nil
 	}
-	return o.KeyOps
+	return c.KeyOps
 }
 
-func (o *ClientJwk) GetKid() *string {
-	if o == nil {
+func (c *ClientJwk) GetKid() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Kid
+	return c.Kid
 }
 
-func (o *ClientJwk) GetKty() *string {
-	if o == nil {
+func (c *ClientJwk) GetKty() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Kty
+	return c.Kty
 }
 
-func (o *ClientJwk) GetN() *string {
-	if o == nil {
+func (c *ClientJwk) GetN() *string {
+	if c == nil {
 		return nil
 	}
-	return o.N
+	return c.N
 }
 
-func (o *ClientJwk) GetOth() *string {
-	if o == nil {
+func (c *ClientJwk) GetOth() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Oth
+	return c.Oth
 }
 
-func (o *ClientJwk) GetP() *string {
-	if o == nil {
+func (c *ClientJwk) GetP() *string {
+	if c == nil {
 		return nil
 	}
-	return o.P
+	return c.P
 }
 
-func (o *ClientJwk) GetQ() *string {
-	if o == nil {
+func (c *ClientJwk) GetQ() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Q
+	return c.Q
 }
 
-func (o *ClientJwk) GetQi() *string {
-	if o == nil {
+func (c *ClientJwk) GetQi() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Qi
+	return c.Qi
 }
 
-func (o *ClientJwk) GetR() *string {
-	if o == nil {
+func (c *ClientJwk) GetR() *string {
+	if c == nil {
 		return nil
 	}
-	return o.R
+	return c.R
 }
 
-func (o *ClientJwk) GetT() *string {
-	if o == nil {
+func (c *ClientJwk) GetT() *string {
+	if c == nil {
 		return nil
 	}
-	return o.T
+	return c.T
 }
 
-func (o *ClientJwk) GetUse() *string {
-	if o == nil {
+func (c *ClientJwk) GetUse() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Use
+	return c.Use
 }
 
-func (o *ClientJwk) GetX() *string {
-	if o == nil {
+func (c *ClientJwk) GetX() *string {
+	if c == nil {
 		return nil
 	}
-	return o.X
+	return c.X
 }
 
-func (o *ClientJwk) GetX5c() []string {
-	if o == nil {
+func (c *ClientJwk) GetX5c() []string {
+	if c == nil {
 		return nil
 	}
-	return o.X5c
+	return c.X5c
 }
 
-func (o *ClientJwk) GetX5t() *string {
-	if o == nil {
+func (c *ClientJwk) GetX5t() *string {
+	if c == nil {
 		return nil
 	}
-	return o.X5t
+	return c.X5t
 }
 
-func (o *ClientJwk) GetX5tNumberS256() *string {
-	if o == nil {
+func (c *ClientJwk) GetX5tNumberS256() *string {
+	if c == nil {
 		return nil
 	}
-	return o.X5tNumberS256
+	return c.X5tNumberS256
 }
 
-func (o *ClientJwk) GetX5u() *string {
-	if o == nil {
+func (c *ClientJwk) GetX5u() *string {
+	if c == nil {
 		return nil
 	}
-	return o.X5u
+	return c.X5u
 }
 
-func (o *ClientJwk) GetY() *string {
-	if o == nil {
+func (c *ClientJwk) GetY() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Y
+	return c.Y
 }
 
 type OpenidConnectPluginClusterNodes struct {
@@ -545,7 +545,7 @@ func (o OpenidConnectPluginClusterNodes) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OpenidConnectPluginClusterNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -577,7 +577,7 @@ func (o OpenidConnectPluginSentinelNodes) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OpenidConnectPluginSentinelNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -677,157 +677,157 @@ func (c ClusterCacheRedis) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ClusterCacheRedis) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ClusterCacheRedis) GetClusterMaxRedirections() *int64 {
-	if o == nil {
+func (c *ClusterCacheRedis) GetClusterMaxRedirections() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.ClusterMaxRedirections
+	return c.ClusterMaxRedirections
 }
 
-func (o *ClusterCacheRedis) GetClusterNodes() []OpenidConnectPluginClusterNodes {
-	if o == nil {
+func (c *ClusterCacheRedis) GetClusterNodes() []OpenidConnectPluginClusterNodes {
+	if c == nil {
 		return nil
 	}
-	return o.ClusterNodes
+	return c.ClusterNodes
 }
 
-func (o *ClusterCacheRedis) GetConnectTimeout() *int64 {
-	if o == nil {
+func (c *ClusterCacheRedis) GetConnectTimeout() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.ConnectTimeout
+	return c.ConnectTimeout
 }
 
-func (o *ClusterCacheRedis) GetConnectionIsProxied() *bool {
-	if o == nil {
+func (c *ClusterCacheRedis) GetConnectionIsProxied() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.ConnectionIsProxied
+	return c.ConnectionIsProxied
 }
 
-func (o *ClusterCacheRedis) GetDatabase() *int64 {
-	if o == nil {
+func (c *ClusterCacheRedis) GetDatabase() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.Database
+	return c.Database
 }
 
-func (o *ClusterCacheRedis) GetHost() *string {
-	if o == nil {
+func (c *ClusterCacheRedis) GetHost() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Host
+	return c.Host
 }
 
-func (o *ClusterCacheRedis) GetKeepaliveBacklog() *int64 {
-	if o == nil {
+func (c *ClusterCacheRedis) GetKeepaliveBacklog() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.KeepaliveBacklog
+	return c.KeepaliveBacklog
 }
 
-func (o *ClusterCacheRedis) GetKeepalivePoolSize() *int64 {
-	if o == nil {
+func (c *ClusterCacheRedis) GetKeepalivePoolSize() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.KeepalivePoolSize
+	return c.KeepalivePoolSize
 }
 
-func (o *ClusterCacheRedis) GetPassword() *string {
-	if o == nil {
+func (c *ClusterCacheRedis) GetPassword() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Password
+	return c.Password
 }
 
-func (o *ClusterCacheRedis) GetPort() *int64 {
-	if o == nil {
+func (c *ClusterCacheRedis) GetPort() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.Port
+	return c.Port
 }
 
-func (o *ClusterCacheRedis) GetReadTimeout() *int64 {
-	if o == nil {
+func (c *ClusterCacheRedis) GetReadTimeout() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.ReadTimeout
+	return c.ReadTimeout
 }
 
-func (o *ClusterCacheRedis) GetSendTimeout() *int64 {
-	if o == nil {
+func (c *ClusterCacheRedis) GetSendTimeout() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.SendTimeout
+	return c.SendTimeout
 }
 
-func (o *ClusterCacheRedis) GetSentinelMaster() *string {
-	if o == nil {
+func (c *ClusterCacheRedis) GetSentinelMaster() *string {
+	if c == nil {
 		return nil
 	}
-	return o.SentinelMaster
+	return c.SentinelMaster
 }
 
-func (o *ClusterCacheRedis) GetSentinelNodes() []OpenidConnectPluginSentinelNodes {
-	if o == nil {
+func (c *ClusterCacheRedis) GetSentinelNodes() []OpenidConnectPluginSentinelNodes {
+	if c == nil {
 		return nil
 	}
-	return o.SentinelNodes
+	return c.SentinelNodes
 }
 
-func (o *ClusterCacheRedis) GetSentinelPassword() *string {
-	if o == nil {
+func (c *ClusterCacheRedis) GetSentinelPassword() *string {
+	if c == nil {
 		return nil
 	}
-	return o.SentinelPassword
+	return c.SentinelPassword
 }
 
-func (o *ClusterCacheRedis) GetSentinelRole() *OpenidConnectPluginSentinelRole {
-	if o == nil {
+func (c *ClusterCacheRedis) GetSentinelRole() *OpenidConnectPluginSentinelRole {
+	if c == nil {
 		return nil
 	}
-	return o.SentinelRole
+	return c.SentinelRole
 }
 
-func (o *ClusterCacheRedis) GetSentinelUsername() *string {
-	if o == nil {
+func (c *ClusterCacheRedis) GetSentinelUsername() *string {
+	if c == nil {
 		return nil
 	}
-	return o.SentinelUsername
+	return c.SentinelUsername
 }
 
-func (o *ClusterCacheRedis) GetServerName() *string {
-	if o == nil {
+func (c *ClusterCacheRedis) GetServerName() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ServerName
+	return c.ServerName
 }
 
-func (o *ClusterCacheRedis) GetSsl() *bool {
-	if o == nil {
+func (c *ClusterCacheRedis) GetSsl() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.Ssl
+	return c.Ssl
 }
 
-func (o *ClusterCacheRedis) GetSslVerify() *bool {
-	if o == nil {
+func (c *ClusterCacheRedis) GetSslVerify() *bool {
+	if c == nil {
 		return nil
 	}
-	return o.SslVerify
+	return c.SslVerify
 }
 
-func (o *ClusterCacheRedis) GetUsername() *string {
-	if o == nil {
+func (c *ClusterCacheRedis) GetUsername() *string {
+	if c == nil {
 		return nil
 	}
-	return o.Username
+	return c.Username
 }
 
 // ClusterCacheStrategy - The strategy to use for the cluster cache. If set, the plugin will share cache with nodes configured with the same strategy backend. Currentlly only introspection cache is shared.
@@ -1386,7 +1386,7 @@ func (o OpenidConnectPluginConfigClusterNodes) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OpenidConnectPluginConfigClusterNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1418,7 +1418,7 @@ func (o OpenidConnectPluginConfigSentinelNodes) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OpenidConnectPluginConfigSentinelNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1522,7 +1522,7 @@ func (o OpenidConnectPluginRedis) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OpenidConnectPluginRedis) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -2501,7 +2501,7 @@ func (o OpenidConnectPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OpenidConnectPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"issuer"}); err != nil {
 		return err
 	}
 	return nil
@@ -4142,7 +4142,7 @@ func (o OpenidConnectPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OpenidConnectPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil

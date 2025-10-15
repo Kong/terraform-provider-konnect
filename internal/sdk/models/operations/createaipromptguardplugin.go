@@ -13,18 +13,18 @@ type CreateAipromptguardPluginRequest struct {
 	AiPromptGuardPlugin shared.AiPromptGuardPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateAipromptguardPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateAipromptguardPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateAipromptguardPluginRequest) GetAiPromptGuardPlugin() shared.AiPromptGuardPlugin {
-	if o == nil {
+func (c *CreateAipromptguardPluginRequest) GetAiPromptGuardPlugin() shared.AiPromptGuardPlugin {
+	if c == nil {
 		return shared.AiPromptGuardPlugin{}
 	}
-	return o.AiPromptGuardPlugin
+	return c.AiPromptGuardPlugin
 }
 
 type CreateAipromptguardPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateAipromptguardPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateAipromptguardPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateAipromptguardPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateAipromptguardPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateAipromptguardPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateAipromptguardPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateAipromptguardPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateAipromptguardPluginResponse) GetAiPromptGuardPlugin() *shared.AiPromptGuardPlugin {
-	if o == nil {
+func (c *CreateAipromptguardPluginResponse) GetAiPromptGuardPlugin() *shared.AiPromptGuardPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.AiPromptGuardPlugin
+	return c.AiPromptGuardPlugin
 }
 
-func (o *CreateAipromptguardPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateAipromptguardPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

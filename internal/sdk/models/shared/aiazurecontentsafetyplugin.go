@@ -12,22 +12,22 @@ type AiAzureContentSafetyPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AiAzureContentSafetyPluginAfter) GetAccess() []string {
-	if o == nil {
+func (a *AiAzureContentSafetyPluginAfter) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AiAzureContentSafetyPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *AiAzureContentSafetyPluginBefore) GetAccess() []string {
-	if o == nil {
+func (a *AiAzureContentSafetyPluginBefore) GetAccess() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Access
+	return a.Access
 }
 
 type AiAzureContentSafetyPluginOrdering struct {
@@ -35,18 +35,18 @@ type AiAzureContentSafetyPluginOrdering struct {
 	Before *AiAzureContentSafetyPluginBefore `json:"before,omitempty"`
 }
 
-func (o *AiAzureContentSafetyPluginOrdering) GetAfter() *AiAzureContentSafetyPluginAfter {
-	if o == nil {
+func (a *AiAzureContentSafetyPluginOrdering) GetAfter() *AiAzureContentSafetyPluginAfter {
+	if a == nil {
 		return nil
 	}
-	return o.After
+	return a.After
 }
 
-func (o *AiAzureContentSafetyPluginOrdering) GetBefore() *AiAzureContentSafetyPluginBefore {
-	if o == nil {
+func (a *AiAzureContentSafetyPluginOrdering) GetBefore() *AiAzureContentSafetyPluginBefore {
+	if a == nil {
 		return nil
 	}
-	return o.Before
+	return a.Before
 }
 
 type AiAzureContentSafetyPluginPartials struct {
@@ -57,25 +57,25 @@ type AiAzureContentSafetyPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *AiAzureContentSafetyPluginPartials) GetID() *string {
-	if o == nil {
+func (a *AiAzureContentSafetyPluginPartials) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AiAzureContentSafetyPluginPartials) GetName() *string {
-	if o == nil {
+func (a *AiAzureContentSafetyPluginPartials) GetName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AiAzureContentSafetyPluginPartials) GetPath() *string {
-	if o == nil {
+func (a *AiAzureContentSafetyPluginPartials) GetPath() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Path
+	return a.Path
 }
 
 type Categories struct {
@@ -83,18 +83,18 @@ type Categories struct {
 	RejectionLevel int64  `json:"rejection_level"`
 }
 
-func (o *Categories) GetName() string {
-	if o == nil {
+func (c *Categories) GetName() string {
+	if c == nil {
 		return ""
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *Categories) GetRejectionLevel() int64 {
-	if o == nil {
+func (c *Categories) GetRejectionLevel() int64 {
+	if c == nil {
 		return 0
 	}
-	return o.RejectionLevel
+	return c.RejectionLevel
 }
 
 // OutputType - See https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/content-filter#content-filtering-categories
@@ -185,101 +185,101 @@ func (a AiAzureContentSafetyPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiAzureContentSafetyPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"content_safety_url"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiAzureContentSafetyPluginConfig) GetAzureAPIVersion() *string {
-	if o == nil {
+func (a *AiAzureContentSafetyPluginConfig) GetAzureAPIVersion() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AzureAPIVersion
+	return a.AzureAPIVersion
 }
 
-func (o *AiAzureContentSafetyPluginConfig) GetAzureClientID() *string {
-	if o == nil {
+func (a *AiAzureContentSafetyPluginConfig) GetAzureClientID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AzureClientID
+	return a.AzureClientID
 }
 
-func (o *AiAzureContentSafetyPluginConfig) GetAzureClientSecret() *string {
-	if o == nil {
+func (a *AiAzureContentSafetyPluginConfig) GetAzureClientSecret() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AzureClientSecret
+	return a.AzureClientSecret
 }
 
-func (o *AiAzureContentSafetyPluginConfig) GetAzureTenantID() *string {
-	if o == nil {
+func (a *AiAzureContentSafetyPluginConfig) GetAzureTenantID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.AzureTenantID
+	return a.AzureTenantID
 }
 
-func (o *AiAzureContentSafetyPluginConfig) GetAzureUseManagedIdentity() *bool {
-	if o == nil {
+func (a *AiAzureContentSafetyPluginConfig) GetAzureUseManagedIdentity() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.AzureUseManagedIdentity
+	return a.AzureUseManagedIdentity
 }
 
-func (o *AiAzureContentSafetyPluginConfig) GetBlocklistNames() []string {
-	if o == nil {
+func (a *AiAzureContentSafetyPluginConfig) GetBlocklistNames() []string {
+	if a == nil {
 		return nil
 	}
-	return o.BlocklistNames
+	return a.BlocklistNames
 }
 
-func (o *AiAzureContentSafetyPluginConfig) GetCategories() []Categories {
-	if o == nil {
+func (a *AiAzureContentSafetyPluginConfig) GetCategories() []Categories {
+	if a == nil {
 		return nil
 	}
-	return o.Categories
+	return a.Categories
 }
 
-func (o *AiAzureContentSafetyPluginConfig) GetContentSafetyKey() *string {
-	if o == nil {
+func (a *AiAzureContentSafetyPluginConfig) GetContentSafetyKey() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ContentSafetyKey
+	return a.ContentSafetyKey
 }
 
-func (o *AiAzureContentSafetyPluginConfig) GetContentSafetyURL() string {
-	if o == nil {
+func (a *AiAzureContentSafetyPluginConfig) GetContentSafetyURL() string {
+	if a == nil {
 		return ""
 	}
-	return o.ContentSafetyURL
+	return a.ContentSafetyURL
 }
 
-func (o *AiAzureContentSafetyPluginConfig) GetHaltOnBlocklistHit() *bool {
-	if o == nil {
+func (a *AiAzureContentSafetyPluginConfig) GetHaltOnBlocklistHit() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.HaltOnBlocklistHit
+	return a.HaltOnBlocklistHit
 }
 
-func (o *AiAzureContentSafetyPluginConfig) GetOutputType() *OutputType {
-	if o == nil {
+func (a *AiAzureContentSafetyPluginConfig) GetOutputType() *OutputType {
+	if a == nil {
 		return nil
 	}
-	return o.OutputType
+	return a.OutputType
 }
 
-func (o *AiAzureContentSafetyPluginConfig) GetRevealFailureReason() *bool {
-	if o == nil {
+func (a *AiAzureContentSafetyPluginConfig) GetRevealFailureReason() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.RevealFailureReason
+	return a.RevealFailureReason
 }
 
-func (o *AiAzureContentSafetyPluginConfig) GetTextSource() *AiAzureContentSafetyPluginTextSource {
-	if o == nil {
+func (a *AiAzureContentSafetyPluginConfig) GetTextSource() *AiAzureContentSafetyPluginTextSource {
+	if a == nil {
 		return nil
 	}
-	return o.TextSource
+	return a.TextSource
 }
 
 type AiAzureContentSafetyPluginProtocols string
@@ -319,11 +319,11 @@ type AiAzureContentSafetyPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiAzureContentSafetyPluginRoute) GetID() *string {
-	if o == nil {
+func (a *AiAzureContentSafetyPluginRoute) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiAzureContentSafetyPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -331,11 +331,11 @@ type AiAzureContentSafetyPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *AiAzureContentSafetyPluginService) GetID() *string {
-	if o == nil {
+func (a *AiAzureContentSafetyPluginService) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
 // AiAzureContentSafetyPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -370,96 +370,96 @@ func (a AiAzureContentSafetyPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiAzureContentSafetyPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AiAzureContentSafetyPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (a *AiAzureContentSafetyPlugin) GetCreatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AiAzureContentSafetyPlugin) GetEnabled() *bool {
-	if o == nil {
+func (a *AiAzureContentSafetyPlugin) GetEnabled() *bool {
+	if a == nil {
 		return nil
 	}
-	return o.Enabled
+	return a.Enabled
 }
 
-func (o *AiAzureContentSafetyPlugin) GetID() *string {
-	if o == nil {
+func (a *AiAzureContentSafetyPlugin) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AiAzureContentSafetyPlugin) GetInstanceName() *string {
-	if o == nil {
+func (a *AiAzureContentSafetyPlugin) GetInstanceName() *string {
+	if a == nil {
 		return nil
 	}
-	return o.InstanceName
+	return a.InstanceName
 }
 
-func (o *AiAzureContentSafetyPlugin) GetName() string {
+func (a *AiAzureContentSafetyPlugin) GetName() string {
 	return "ai-azure-content-safety"
 }
 
-func (o *AiAzureContentSafetyPlugin) GetOrdering() *AiAzureContentSafetyPluginOrdering {
-	if o == nil {
+func (a *AiAzureContentSafetyPlugin) GetOrdering() *AiAzureContentSafetyPluginOrdering {
+	if a == nil {
 		return nil
 	}
-	return o.Ordering
+	return a.Ordering
 }
 
-func (o *AiAzureContentSafetyPlugin) GetPartials() []AiAzureContentSafetyPluginPartials {
-	if o == nil {
+func (a *AiAzureContentSafetyPlugin) GetPartials() []AiAzureContentSafetyPluginPartials {
+	if a == nil {
 		return nil
 	}
-	return o.Partials
+	return a.Partials
 }
 
-func (o *AiAzureContentSafetyPlugin) GetTags() []string {
-	if o == nil {
+func (a *AiAzureContentSafetyPlugin) GetTags() []string {
+	if a == nil {
 		return nil
 	}
-	return o.Tags
+	return a.Tags
 }
 
-func (o *AiAzureContentSafetyPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (a *AiAzureContentSafetyPlugin) GetUpdatedAt() *int64 {
+	if a == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }
 
-func (o *AiAzureContentSafetyPlugin) GetConfig() AiAzureContentSafetyPluginConfig {
-	if o == nil {
+func (a *AiAzureContentSafetyPlugin) GetConfig() AiAzureContentSafetyPluginConfig {
+	if a == nil {
 		return AiAzureContentSafetyPluginConfig{}
 	}
-	return o.Config
+	return a.Config
 }
 
-func (o *AiAzureContentSafetyPlugin) GetProtocols() []AiAzureContentSafetyPluginProtocols {
-	if o == nil {
+func (a *AiAzureContentSafetyPlugin) GetProtocols() []AiAzureContentSafetyPluginProtocols {
+	if a == nil {
 		return nil
 	}
-	return o.Protocols
+	return a.Protocols
 }
 
-func (o *AiAzureContentSafetyPlugin) GetRoute() *AiAzureContentSafetyPluginRoute {
-	if o == nil {
+func (a *AiAzureContentSafetyPlugin) GetRoute() *AiAzureContentSafetyPluginRoute {
+	if a == nil {
 		return nil
 	}
-	return o.Route
+	return a.Route
 }
 
-func (o *AiAzureContentSafetyPlugin) GetService() *AiAzureContentSafetyPluginService {
-	if o == nil {
+func (a *AiAzureContentSafetyPlugin) GetService() *AiAzureContentSafetyPluginService {
+	if a == nil {
 		return nil
 	}
-	return o.Service
+	return a.Service
 }

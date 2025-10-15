@@ -15,25 +15,25 @@ type CreateConsumerKeyRequest struct {
 	CreateAPIKeyPayload shared.CreateAPIKeyPayload `request:"mediaType=application/json"`
 }
 
-func (o *CreateConsumerKeyRequest) GetRealmID() string {
-	if o == nil {
+func (c *CreateConsumerKeyRequest) GetRealmID() string {
+	if c == nil {
 		return ""
 	}
-	return o.RealmID
+	return c.RealmID
 }
 
-func (o *CreateConsumerKeyRequest) GetConsumerID() string {
-	if o == nil {
+func (c *CreateConsumerKeyRequest) GetConsumerID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ConsumerID
+	return c.ConsumerID
 }
 
-func (o *CreateConsumerKeyRequest) GetCreateAPIKeyPayload() shared.CreateAPIKeyPayload {
-	if o == nil {
+func (c *CreateConsumerKeyRequest) GetCreateAPIKeyPayload() shared.CreateAPIKeyPayload {
+	if c == nil {
 		return shared.CreateAPIKeyPayload{}
 	}
-	return o.CreateAPIKeyPayload
+	return c.CreateAPIKeyPayload
 }
 
 type CreateConsumerKeyResponse struct {
@@ -51,44 +51,44 @@ type CreateConsumerKeyResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *CreateConsumerKeyResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateConsumerKeyResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateConsumerKeyResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateConsumerKeyResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateConsumerKeyResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateConsumerKeyResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateConsumerKeyResponse) GetCreateAPIKeyResult() *shared.CreateAPIKeyResult {
-	if o == nil {
+func (c *CreateConsumerKeyResponse) GetCreateAPIKeyResult() *shared.CreateAPIKeyResult {
+	if c == nil {
 		return nil
 	}
-	return o.CreateAPIKeyResult
+	return c.CreateAPIKeyResult
 }
 
-func (o *CreateConsumerKeyResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (c *CreateConsumerKeyResponse) GetBadRequestError() *shared.BadRequestError {
+	if c == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return c.BadRequestError
 }
 
-func (o *CreateConsumerKeyResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (c *CreateConsumerKeyResponse) GetNotFoundError() *shared.NotFoundError {
+	if c == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return c.NotFoundError
 }

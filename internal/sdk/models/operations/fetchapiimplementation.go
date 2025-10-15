@@ -14,18 +14,18 @@ type FetchAPIImplementationRequest struct {
 	ImplementationID string `pathParam:"style=simple,explode=false,name=implementationId"`
 }
 
-func (o *FetchAPIImplementationRequest) GetAPIID() string {
-	if o == nil {
+func (f *FetchAPIImplementationRequest) GetAPIID() string {
+	if f == nil {
 		return ""
 	}
-	return o.APIID
+	return f.APIID
 }
 
-func (o *FetchAPIImplementationRequest) GetImplementationID() string {
-	if o == nil {
+func (f *FetchAPIImplementationRequest) GetImplementationID() string {
+	if f == nil {
 		return ""
 	}
-	return o.ImplementationID
+	return f.ImplementationID
 }
 
 type FetchAPIImplementationResponse struct {
@@ -45,51 +45,51 @@ type FetchAPIImplementationResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *FetchAPIImplementationResponse) GetContentType() string {
-	if o == nil {
+func (f *FetchAPIImplementationResponse) GetContentType() string {
+	if f == nil {
 		return ""
 	}
-	return o.ContentType
+	return f.ContentType
 }
 
-func (o *FetchAPIImplementationResponse) GetStatusCode() int {
-	if o == nil {
+func (f *FetchAPIImplementationResponse) GetStatusCode() int {
+	if f == nil {
 		return 0
 	}
-	return o.StatusCode
+	return f.StatusCode
 }
 
-func (o *FetchAPIImplementationResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (f *FetchAPIImplementationResponse) GetRawResponse() *http.Response {
+	if f == nil {
 		return nil
 	}
-	return o.RawResponse
+	return f.RawResponse
 }
 
-func (o *FetchAPIImplementationResponse) GetAPIImplementationResponse() *shared.APIImplementationResponse {
-	if o == nil {
+func (f *FetchAPIImplementationResponse) GetAPIImplementationResponse() *shared.APIImplementationResponse {
+	if f == nil {
 		return nil
 	}
-	return o.APIImplementationResponse
+	return f.APIImplementationResponse
 }
 
-func (o *FetchAPIImplementationResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (f *FetchAPIImplementationResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if f == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return f.UnauthorizedError
 }
 
-func (o *FetchAPIImplementationResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (f *FetchAPIImplementationResponse) GetForbiddenError() *shared.ForbiddenError {
+	if f == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return f.ForbiddenError
 }
 
-func (o *FetchAPIImplementationResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (f *FetchAPIImplementationResponse) GetNotFoundError() *shared.NotFoundError {
+	if f == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return f.NotFoundError
 }

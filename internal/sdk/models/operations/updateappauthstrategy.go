@@ -13,18 +13,18 @@ type UpdateAppAuthStrategyRequest struct {
 	UpdateAppAuthStrategyRequest shared.UpdateAppAuthStrategyRequest `request:"mediaType=application/json"`
 }
 
-func (o *UpdateAppAuthStrategyRequest) GetAuthStrategyID() string {
-	if o == nil {
+func (u *UpdateAppAuthStrategyRequest) GetAuthStrategyID() string {
+	if u == nil {
 		return ""
 	}
-	return o.AuthStrategyID
+	return u.AuthStrategyID
 }
 
-func (o *UpdateAppAuthStrategyRequest) GetUpdateAppAuthStrategyRequest() shared.UpdateAppAuthStrategyRequest {
-	if o == nil {
+func (u *UpdateAppAuthStrategyRequest) GetUpdateAppAuthStrategyRequest() shared.UpdateAppAuthStrategyRequest {
+	if u == nil {
 		return shared.UpdateAppAuthStrategyRequest{}
 	}
-	return o.UpdateAppAuthStrategyRequest
+	return u.UpdateAppAuthStrategyRequest
 }
 
 type UpdateAppAuthStrategyResponse struct {
@@ -46,72 +46,72 @@ type UpdateAppAuthStrategyResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *UpdateAppAuthStrategyResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateAppAuthStrategyResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateAppAuthStrategyResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateAppAuthStrategyResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateAppAuthStrategyResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateAppAuthStrategyResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateAppAuthStrategyResponse) GetCreateAppAuthStrategyResponse() *shared.CreateAppAuthStrategyResponse {
-	if o == nil {
+func (u *UpdateAppAuthStrategyResponse) GetCreateAppAuthStrategyResponse() *shared.CreateAppAuthStrategyResponse {
+	if u == nil {
 		return nil
 	}
-	return o.CreateAppAuthStrategyResponse
+	return u.CreateAppAuthStrategyResponse
 }
 
-func (o *UpdateAppAuthStrategyResponse) GetCreateAppAuthStrategyResponseKeyAuth() *shared.AppAuthStrategyKeyAuthResponse {
-	if v := o.GetCreateAppAuthStrategyResponse(); v != nil {
+func (u *UpdateAppAuthStrategyResponse) GetCreateAppAuthStrategyResponseKeyAuth() *shared.AppAuthStrategyKeyAuthResponse {
+	if v := u.GetCreateAppAuthStrategyResponse(); v != nil {
 		return v.AppAuthStrategyKeyAuthResponse
 	}
 	return nil
 }
 
-func (o *UpdateAppAuthStrategyResponse) GetCreateAppAuthStrategyResponseOpenidConnect() *shared.AppAuthStrategyOpenIDConnectResponse {
-	if v := o.GetCreateAppAuthStrategyResponse(); v != nil {
+func (u *UpdateAppAuthStrategyResponse) GetCreateAppAuthStrategyResponseOpenidConnect() *shared.AppAuthStrategyOpenIDConnectResponse {
+	if v := u.GetCreateAppAuthStrategyResponse(); v != nil {
 		return v.AppAuthStrategyOpenIDConnectResponse
 	}
 	return nil
 }
 
-func (o *UpdateAppAuthStrategyResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (u *UpdateAppAuthStrategyResponse) GetBadRequestError() *shared.BadRequestError {
+	if u == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return u.BadRequestError
 }
 
-func (o *UpdateAppAuthStrategyResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (u *UpdateAppAuthStrategyResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return u.UnauthorizedError
 }
 
-func (o *UpdateAppAuthStrategyResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (u *UpdateAppAuthStrategyResponse) GetForbiddenError() *shared.ForbiddenError {
+	if u == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return u.ForbiddenError
 }
 
-func (o *UpdateAppAuthStrategyResponse) GetNotFoundError() *shared.NotFoundError {
-	if o == nil {
+func (u *UpdateAppAuthStrategyResponse) GetNotFoundError() *shared.NotFoundError {
+	if u == nil {
 		return nil
 	}
-	return o.NotFoundError
+	return u.NotFoundError
 }

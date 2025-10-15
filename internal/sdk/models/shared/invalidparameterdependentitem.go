@@ -46,43 +46,43 @@ func (i InvalidParameterDependentItem) MarshalJSON() ([]byte, error) {
 }
 
 func (i *InvalidParameterDependentItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, true); err != nil {
+	if err := utils.UnmarshalJSON(data, &i, "", false, []string{"field", "reason"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *InvalidParameterDependentItem) GetField() string {
-	if o == nil {
+func (i *InvalidParameterDependentItem) GetField() string {
+	if i == nil {
 		return ""
 	}
-	return o.Field
+	return i.Field
 }
 
-func (o *InvalidParameterDependentItem) GetRule() *InvalidParameterDependentItemRule {
-	if o == nil {
+func (i *InvalidParameterDependentItem) GetRule() *InvalidParameterDependentItemRule {
+	if i == nil {
 		return nil
 	}
-	return o.Rule
+	return i.Rule
 }
 
-func (o *InvalidParameterDependentItem) GetReason() string {
-	if o == nil {
+func (i *InvalidParameterDependentItem) GetReason() string {
+	if i == nil {
 		return ""
 	}
-	return o.Reason
+	return i.Reason
 }
 
-func (o *InvalidParameterDependentItem) GetDependents() []any {
-	if o == nil {
+func (i *InvalidParameterDependentItem) GetDependents() []any {
+	if i == nil {
 		return nil
 	}
-	return o.Dependents
+	return i.Dependents
 }
 
-func (o *InvalidParameterDependentItem) GetSource() *string {
-	if o == nil {
+func (i *InvalidParameterDependentItem) GetSource() *string {
+	if i == nil {
 		return nil
 	}
-	return o.Source
+	return i.Source
 }

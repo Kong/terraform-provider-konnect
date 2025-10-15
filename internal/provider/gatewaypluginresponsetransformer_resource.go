@@ -16,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -151,12 +152,14 @@ func (r *GatewayPluginResponseTransformerResource) Schema(ctx context.Context, r
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
+								Description: `Default: []`,
 							},
 							"json": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
+								Description: `Default: []`,
 							},
 							"json_types": schema.ListAttribute{
 								Computed:    true,
@@ -164,7 +167,8 @@ func (r *GatewayPluginResponseTransformerResource) Schema(ctx context.Context, r
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
 								MarkdownDescription: `List of JSON type names. Specify the types of the JSON values returned when appending` + "\n" +
-									`JSON properties. Each string element can be one of: boolean, number, or string.`,
+									`JSON properties. Each string element can be one of: boolean, number, or string.` + "\n" +
+									`Default: []`,
 							},
 						},
 					},
@@ -188,12 +192,14 @@ func (r *GatewayPluginResponseTransformerResource) Schema(ctx context.Context, r
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
+								Description: `Default: []`,
 							},
 							"json": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
+								Description: `Default: []`,
 							},
 							"json_types": schema.ListAttribute{
 								Computed:    true,
@@ -201,7 +207,8 @@ func (r *GatewayPluginResponseTransformerResource) Schema(ctx context.Context, r
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
 								MarkdownDescription: `List of JSON type names. Specify the types of the JSON values returned when appending` + "\n" +
-									`JSON properties. Each string element can be one of: boolean, number, or string.`,
+									`JSON properties. Each string element can be one of: boolean, number, or string.` + "\n" +
+									`Default: []`,
 							},
 						},
 					},
@@ -222,12 +229,14 @@ func (r *GatewayPluginResponseTransformerResource) Schema(ctx context.Context, r
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
+								Description: `Default: []`,
 							},
 							"json": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
+								Description: `Default: []`,
 							},
 						},
 					},
@@ -248,12 +257,14 @@ func (r *GatewayPluginResponseTransformerResource) Schema(ctx context.Context, r
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
+								Description: `Default: []`,
 							},
 							"json": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
+								Description: `Default: []`,
 							},
 						},
 					},
@@ -277,12 +288,14 @@ func (r *GatewayPluginResponseTransformerResource) Schema(ctx context.Context, r
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
+								Description: `Default: []`,
 							},
 							"json": schema.ListAttribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
+								Description: `Default: []`,
 							},
 							"json_types": schema.ListAttribute{
 								Computed:    true,
@@ -290,7 +303,8 @@ func (r *GatewayPluginResponseTransformerResource) Schema(ctx context.Context, r
 								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 								ElementType: types.StringType,
 								MarkdownDescription: `List of JSON type names. Specify the types of the JSON values returned when appending` + "\n" +
-									`JSON properties. Each string element can be one of: boolean, number, or string.`,
+									`JSON properties. Each string element can be one of: boolean, number, or string.` + "\n" +
+									`Default: []`,
 							},
 						},
 					},
@@ -427,10 +441,16 @@ func (r *GatewayPluginResponseTransformerResource) Schema(ctx context.Context, r
 				Description: `A list of partials to be used by the plugin.`,
 			},
 			"protocols": schema.SetAttribute{
-				Computed:    true,
-				Optional:    true,
+				Computed: true,
+				Optional: true,
+				Default: setdefault.StaticValue(types.SetValueMust(types.StringType, []attr.Value{
+					types.StringValue("grpc"),
+					types.StringValue("grpcs"),
+					types.StringValue("http"),
+					types.StringValue("https"),
+				})),
 				ElementType: types.StringType,
-				Description: `A set of strings representing HTTP protocols.`,
+				Description: `A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,

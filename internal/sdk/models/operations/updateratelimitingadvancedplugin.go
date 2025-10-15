@@ -15,25 +15,25 @@ type UpdateRatelimitingadvancedPluginRequest struct {
 	RateLimitingAdvancedPlugin shared.RateLimitingAdvancedPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdateRatelimitingadvancedPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdateRatelimitingadvancedPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdateRatelimitingadvancedPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdateRatelimitingadvancedPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdateRatelimitingadvancedPluginRequest) GetRateLimitingAdvancedPlugin() shared.RateLimitingAdvancedPlugin {
-	if o == nil {
+func (u *UpdateRatelimitingadvancedPluginRequest) GetRateLimitingAdvancedPlugin() shared.RateLimitingAdvancedPlugin {
+	if u == nil {
 		return shared.RateLimitingAdvancedPlugin{}
 	}
-	return o.RateLimitingAdvancedPlugin
+	return u.RateLimitingAdvancedPlugin
 }
 
 type UpdateRatelimitingadvancedPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdateRatelimitingadvancedPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdateRatelimitingadvancedPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdateRatelimitingadvancedPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdateRatelimitingadvancedPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdateRatelimitingadvancedPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdateRatelimitingadvancedPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdateRatelimitingadvancedPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdateRatelimitingadvancedPluginResponse) GetRateLimitingAdvancedPlugin() *shared.RateLimitingAdvancedPlugin {
-	if o == nil {
+func (u *UpdateRatelimitingadvancedPluginResponse) GetRateLimitingAdvancedPlugin() *shared.RateLimitingAdvancedPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.RateLimitingAdvancedPlugin
+	return u.RateLimitingAdvancedPlugin
 }
 
-func (o *UpdateRatelimitingadvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdateRatelimitingadvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

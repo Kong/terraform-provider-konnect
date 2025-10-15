@@ -7,9 +7,9 @@ type KonnectCPLegacyUnauthorizedError struct {
 	Message any `json:"message,omitempty"`
 }
 
-func (o *KonnectCPLegacyUnauthorizedError) GetMessage() any {
-	if o == nil {
+func (k *KonnectCPLegacyUnauthorizedError) GetMessage() any {
+	if k == nil {
 		return nil
 	}
-	return o.Message
+	return k.Message
 }

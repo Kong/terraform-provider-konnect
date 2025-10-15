@@ -16,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -81,14 +82,14 @@ func (r *GatewayPluginBotDetectionResource) Schema(ctx context.Context, req reso
 						Optional:    true,
 						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 						ElementType: types.StringType,
-						Description: `An array of regular expressions that should be allowed. The regular expressions will be checked against the ` + "`" + `User-Agent` + "`" + ` header.`,
+						Description: `An array of regular expressions that should be allowed. The regular expressions will be checked against the ` + "`" + `User-Agent` + "`" + ` header. Default: []`,
 					},
 					"deny": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 						ElementType: types.StringType,
-						Description: `An array of regular expressions that should be denied. The regular expressions will be checked against the ` + "`" + `User-Agent` + "`" + ` header.`,
+						Description: `An array of regular expressions that should be denied. The regular expressions will be checked against the ` + "`" + `User-Agent` + "`" + ` header. Default: []`,
 					},
 				},
 			},
@@ -195,10 +196,16 @@ func (r *GatewayPluginBotDetectionResource) Schema(ctx context.Context, req reso
 				Description: `A list of partials to be used by the plugin.`,
 			},
 			"protocols": schema.SetAttribute{
-				Computed:    true,
-				Optional:    true,
+				Computed: true,
+				Optional: true,
+				Default: setdefault.StaticValue(types.SetValueMust(types.StringType, []attr.Value{
+					types.StringValue("grpc"),
+					types.StringValue("grpcs"),
+					types.StringValue("http"),
+					types.StringValue("https"),
+				})),
 				ElementType: types.StringType,
-				Description: `A set of strings representing HTTP protocols.`,
+				Description: `A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,

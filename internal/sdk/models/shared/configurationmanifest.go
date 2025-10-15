@@ -37,78 +37,78 @@ func (c ConfigurationManifest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfigurationManifest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "version", "dataplane_group_config", "dataplane_groups", "entity_version", "created_at", "updated_at", "control_plane_id", "control_plane_geo"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ConfigurationManifest) GetID() string {
-	if o == nil {
+func (c *ConfigurationManifest) GetID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *ConfigurationManifest) GetVersion() string {
-	if o == nil {
+func (c *ConfigurationManifest) GetVersion() string {
+	if c == nil {
 		return ""
 	}
-	return o.Version
+	return c.Version
 }
 
-func (o *ConfigurationManifest) GetAPIAccess() *APIAccess {
-	if o == nil {
+func (c *ConfigurationManifest) GetAPIAccess() *APIAccess {
+	if c == nil {
 		return nil
 	}
-	return o.APIAccess
+	return c.APIAccess
 }
 
-func (o *ConfigurationManifest) GetDataplaneGroupConfig() []ConfigurationDataPlaneGroupConfig {
-	if o == nil {
+func (c *ConfigurationManifest) GetDataplaneGroupConfig() []ConfigurationDataPlaneGroupConfig {
+	if c == nil {
 		return []ConfigurationDataPlaneGroupConfig{}
 	}
-	return o.DataplaneGroupConfig
+	return c.DataplaneGroupConfig
 }
 
-func (o *ConfigurationManifest) GetDataplaneGroups() []ConfigurationDataPlaneGroup {
-	if o == nil {
+func (c *ConfigurationManifest) GetDataplaneGroups() []ConfigurationDataPlaneGroup {
+	if c == nil {
 		return []ConfigurationDataPlaneGroup{}
 	}
-	return o.DataplaneGroups
+	return c.DataplaneGroups
 }
 
-func (o *ConfigurationManifest) GetEntityVersion() float64 {
-	if o == nil {
+func (c *ConfigurationManifest) GetEntityVersion() float64 {
+	if c == nil {
 		return 0.0
 	}
-	return o.EntityVersion
+	return c.EntityVersion
 }
 
-func (o *ConfigurationManifest) GetCreatedAt() time.Time {
-	if o == nil {
+func (c *ConfigurationManifest) GetCreatedAt() time.Time {
+	if c == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return c.CreatedAt
 }
 
-func (o *ConfigurationManifest) GetUpdatedAt() time.Time {
-	if o == nil {
+func (c *ConfigurationManifest) GetUpdatedAt() time.Time {
+	if c == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return c.UpdatedAt
 }
 
-func (o *ConfigurationManifest) GetControlPlaneID() string {
-	if o == nil {
+func (c *ConfigurationManifest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *ConfigurationManifest) GetControlPlaneGeo() ControlPlaneGeo {
-	if o == nil {
+func (c *ConfigurationManifest) GetControlPlaneGeo() ControlPlaneGeo {
+	if c == nil {
 		return ControlPlaneGeo("")
 	}
-	return o.ControlPlaneGeo
+	return c.ControlPlaneGeo
 }

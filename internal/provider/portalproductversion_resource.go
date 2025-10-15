@@ -152,6 +152,7 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 				ElementType: types.StringType,
 				Description: `A list of authentication strategy IDs`,
 				Validators: []validator.List{
+					listvalidator.SizeAtLeast(0),
 					listvalidator.SizeAtMost(1),
 				},
 			},

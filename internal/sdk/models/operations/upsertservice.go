@@ -16,25 +16,25 @@ type UpsertServiceRequest struct {
 	Service shared.Service `request:"mediaType=application/json"`
 }
 
-func (o *UpsertServiceRequest) GetServiceID() string {
-	if o == nil {
+func (u *UpsertServiceRequest) GetServiceID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ServiceID
+	return u.ServiceID
 }
 
-func (o *UpsertServiceRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpsertServiceRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpsertServiceRequest) GetService() shared.Service {
-	if o == nil {
+func (u *UpsertServiceRequest) GetService() shared.Service {
+	if u == nil {
 		return shared.Service{}
 	}
-	return o.Service
+	return u.Service
 }
 
 type UpsertServiceResponse struct {
@@ -50,37 +50,37 @@ type UpsertServiceResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpsertServiceResponse) GetContentType() string {
-	if o == nil {
+func (u *UpsertServiceResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpsertServiceResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpsertServiceResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpsertServiceResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpsertServiceResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpsertServiceResponse) GetService() *shared.Service {
-	if o == nil {
+func (u *UpsertServiceResponse) GetService() *shared.Service {
+	if u == nil {
 		return nil
 	}
-	return o.Service
+	return u.Service
 }
 
-func (o *UpsertServiceResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpsertServiceResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

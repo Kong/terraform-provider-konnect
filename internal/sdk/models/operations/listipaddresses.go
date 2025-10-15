@@ -22,30 +22,30 @@ type ListIPAddressesResponse struct {
 	IPAddressesResponse *shared.IPAddressesResponse
 }
 
-func (o *ListIPAddressesResponse) GetContentType() string {
-	if o == nil {
+func (l *ListIPAddressesResponse) GetContentType() string {
+	if l == nil {
 		return ""
 	}
-	return o.ContentType
+	return l.ContentType
 }
 
-func (o *ListIPAddressesResponse) GetStatusCode() int {
-	if o == nil {
+func (l *ListIPAddressesResponse) GetStatusCode() int {
+	if l == nil {
 		return 0
 	}
-	return o.StatusCode
+	return l.StatusCode
 }
 
-func (o *ListIPAddressesResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (l *ListIPAddressesResponse) GetRawResponse() *http.Response {
+	if l == nil {
 		return nil
 	}
-	return o.RawResponse
+	return l.RawResponse
 }
 
-func (o *ListIPAddressesResponse) GetIPAddressesResponse() *shared.IPAddressesResponse {
-	if o == nil {
+func (l *ListIPAddressesResponse) GetIPAddressesResponse() *shared.IPAddressesResponse {
+	if l == nil {
 		return nil
 	}
-	return o.IPAddressesResponse
+	return l.IPAddressesResponse
 }

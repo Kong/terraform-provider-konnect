@@ -43,21 +43,9 @@ func (r *GatewayControlPlaneDataSourceModel) RefreshFromSharedControlPlane(ctx c
 	return diags
 }
 
-func (r *GatewayControlPlaneDataSourceModel) ToOperationsListControlPlanesRequest(ctx context.Context) (*operations.ListControlPlanesRequest, diag.Diagnostics) {
+func (r *GatewayControlPlaneDataSourceModel) ToOperationsListControlPlanesSingleResourceRequest(ctx context.Context) (*operations.ListControlPlanesSingleResourceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	pageSize := new(int64)
-	if !r.PageSize.IsUnknown() && !r.PageSize.IsNull() {
-		*pageSize = r.PageSize.ValueInt64()
-	} else {
-		pageSize = nil
-	}
-	pageNumber := new(int64)
-	if !r.PageNumber.IsUnknown() && !r.PageNumber.IsNull() {
-		*pageNumber = r.PageNumber.ValueInt64()
-	} else {
-		pageNumber = nil
-	}
 	var filter *shared.ControlPlaneFilterParameters
 	if r.Filter != nil {
 		var id *shared.ID
@@ -149,9 +137,7 @@ func (r *GatewayControlPlaneDataSourceModel) ToOperationsListControlPlanesReques
 	} else {
 		sort = nil
 	}
-	out := operations.ListControlPlanesRequest{
-		PageSize:     pageSize,
-		PageNumber:   pageNumber,
+	out := operations.ListControlPlanesSingleResourceRequest{
 		Filter:       filter,
 		FilterLabels: filterLabels,
 		Sort:         sort,

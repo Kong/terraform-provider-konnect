@@ -21,24 +21,24 @@ func (t TransitGatewayStateMetadata) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransitGatewayStateMetadata) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *TransitGatewayStateMetadata) GetReportedStatus() *string {
-	if o == nil {
+func (t *TransitGatewayStateMetadata) GetReportedStatus() *string {
+	if t == nil {
 		return nil
 	}
-	return o.ReportedStatus
+	return t.ReportedStatus
 }
 
-func (o *TransitGatewayStateMetadata) GetReason() *string {
-	if o == nil {
+func (t *TransitGatewayStateMetadata) GetReason() *string {
+	if t == nil {
 		return nil
 	}
-	return o.Reason
+	return t.Reason
 }
 
 type AwsTransitGatewayResponse struct {
@@ -82,78 +82,78 @@ func (a AwsTransitGatewayResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AwsTransitGatewayResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, true); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "dns_config", "cidr_blocks", "transit_gateway_attachment_config", "id", "state", "entity_version", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AwsTransitGatewayResponse) GetName() string {
-	if o == nil {
+func (a *AwsTransitGatewayResponse) GetName() string {
+	if a == nil {
 		return ""
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AwsTransitGatewayResponse) GetDNSConfig() []TransitGatewayDNSConfig {
-	if o == nil {
+func (a *AwsTransitGatewayResponse) GetDNSConfig() []TransitGatewayDNSConfig {
+	if a == nil {
 		return []TransitGatewayDNSConfig{}
 	}
-	return o.DNSConfig
+	return a.DNSConfig
 }
 
-func (o *AwsTransitGatewayResponse) GetCidrBlocks() []string {
-	if o == nil {
+func (a *AwsTransitGatewayResponse) GetCidrBlocks() []string {
+	if a == nil {
 		return []string{}
 	}
-	return o.CidrBlocks
+	return a.CidrBlocks
 }
 
-func (o *AwsTransitGatewayResponse) GetTransitGatewayAttachmentConfig() AwsTransitGatewayAttachmentConfig {
-	if o == nil {
+func (a *AwsTransitGatewayResponse) GetTransitGatewayAttachmentConfig() AwsTransitGatewayAttachmentConfig {
+	if a == nil {
 		return AwsTransitGatewayAttachmentConfig{}
 	}
-	return o.TransitGatewayAttachmentConfig
+	return a.TransitGatewayAttachmentConfig
 }
 
-func (o *AwsTransitGatewayResponse) GetID() string {
-	if o == nil {
+func (a *AwsTransitGatewayResponse) GetID() string {
+	if a == nil {
 		return ""
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AwsTransitGatewayResponse) GetState() TransitGatewayState {
-	if o == nil {
+func (a *AwsTransitGatewayResponse) GetState() TransitGatewayState {
+	if a == nil {
 		return TransitGatewayState("")
 	}
-	return o.State
+	return a.State
 }
 
-func (o *AwsTransitGatewayResponse) GetStateMetadata() *TransitGatewayStateMetadata {
-	if o == nil {
+func (a *AwsTransitGatewayResponse) GetStateMetadata() *TransitGatewayStateMetadata {
+	if a == nil {
 		return nil
 	}
-	return o.StateMetadata
+	return a.StateMetadata
 }
 
-func (o *AwsTransitGatewayResponse) GetEntityVersion() int64 {
-	if o == nil {
+func (a *AwsTransitGatewayResponse) GetEntityVersion() int64 {
+	if a == nil {
 		return 0
 	}
-	return o.EntityVersion
+	return a.EntityVersion
 }
 
-func (o *AwsTransitGatewayResponse) GetCreatedAt() time.Time {
-	if o == nil {
+func (a *AwsTransitGatewayResponse) GetCreatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AwsTransitGatewayResponse) GetUpdatedAt() time.Time {
-	if o == nil {
+func (a *AwsTransitGatewayResponse) GetUpdatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }

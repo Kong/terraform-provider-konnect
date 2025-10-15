@@ -14,18 +14,18 @@ type DeleteServiceRequest struct {
 	ServiceID string `pathParam:"style=simple,explode=false,name=ServiceId"`
 }
 
-func (o *DeleteServiceRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteServiceRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
-func (o *DeleteServiceRequest) GetServiceID() string {
-	if o == nil {
+func (d *DeleteServiceRequest) GetServiceID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ServiceID
+	return d.ServiceID
 }
 
 type DeleteServiceResponse struct {
@@ -39,30 +39,30 @@ type DeleteServiceResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteServiceResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteServiceResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteServiceResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteServiceResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteServiceResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteServiceResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteServiceResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteServiceResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

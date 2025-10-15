@@ -23,43 +23,43 @@ func (a AppAuthStrategyConfigOpenIDConnect) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AppAuthStrategyConfigOpenIDConnect) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"issuer", "credential_claim", "scopes", "auth_methods"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AppAuthStrategyConfigOpenIDConnect) GetIssuer() string {
-	if o == nil {
+func (a *AppAuthStrategyConfigOpenIDConnect) GetIssuer() string {
+	if a == nil {
 		return ""
 	}
-	return o.Issuer
+	return a.Issuer
 }
 
-func (o *AppAuthStrategyConfigOpenIDConnect) GetCredentialClaim() []string {
-	if o == nil {
+func (a *AppAuthStrategyConfigOpenIDConnect) GetCredentialClaim() []string {
+	if a == nil {
 		return []string{}
 	}
-	return o.CredentialClaim
+	return a.CredentialClaim
 }
 
-func (o *AppAuthStrategyConfigOpenIDConnect) GetScopes() []string {
-	if o == nil {
+func (a *AppAuthStrategyConfigOpenIDConnect) GetScopes() []string {
+	if a == nil {
 		return []string{}
 	}
-	return o.Scopes
+	return a.Scopes
 }
 
-func (o *AppAuthStrategyConfigOpenIDConnect) GetAuthMethods() []string {
-	if o == nil {
+func (a *AppAuthStrategyConfigOpenIDConnect) GetAuthMethods() []string {
+	if a == nil {
 		return []string{}
 	}
-	return o.AuthMethods
+	return a.AuthMethods
 }
 
-func (o *AppAuthStrategyConfigOpenIDConnect) GetAdditionalProperties() any {
-	if o == nil {
+func (a *AppAuthStrategyConfigOpenIDConnect) GetAdditionalProperties() any {
+	if a == nil {
 		return nil
 	}
-	return o.AdditionalProperties
+	return a.AdditionalProperties
 }

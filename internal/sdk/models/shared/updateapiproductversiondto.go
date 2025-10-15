@@ -72,50 +72,50 @@ func (u UpdateAPIProductVersionDTO) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateAPIProductVersionDTO) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *UpdateAPIProductVersionDTO) GetName() *string {
-	if o == nil {
+func (u *UpdateAPIProductVersionDTO) GetName() *string {
+	if u == nil {
 		return nil
 	}
-	return o.Name
+	return u.Name
 }
 
-func (o *UpdateAPIProductVersionDTO) GetPublishStatus() *UpdateAPIProductVersionDTOPublishStatus {
-	if o == nil {
+func (u *UpdateAPIProductVersionDTO) GetPublishStatus() *UpdateAPIProductVersionDTOPublishStatus {
+	if u == nil {
 		return nil
 	}
-	return o.PublishStatus
+	return u.PublishStatus
 }
 
-func (o *UpdateAPIProductVersionDTO) GetDeprecated() *bool {
-	if o == nil {
+func (u *UpdateAPIProductVersionDTO) GetDeprecated() *bool {
+	if u == nil {
 		return nil
 	}
-	return o.Deprecated
+	return u.Deprecated
 }
 
-func (o *UpdateAPIProductVersionDTO) GetNotify() *bool {
-	if o == nil {
+func (u *UpdateAPIProductVersionDTO) GetNotify() *bool {
+	if u == nil {
 		return nil
 	}
-	return o.Notify
+	return u.Notify
 }
 
-func (o *UpdateAPIProductVersionDTO) GetGatewayService() *GatewayServicePayload {
-	if o == nil {
+func (u *UpdateAPIProductVersionDTO) GetGatewayService() *GatewayServicePayload {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayService
+	return u.GatewayService
 }
 
-func (o *UpdateAPIProductVersionDTO) GetLabels() map[string]*string {
-	if o == nil {
+func (u *UpdateAPIProductVersionDTO) GetLabels() map[string]*string {
+	if u == nil {
 		return nil
 	}
-	return o.Labels
+	return u.Labels
 }

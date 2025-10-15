@@ -12,22 +12,22 @@ type ServiceProtectionPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *ServiceProtectionPluginAfter) GetAccess() []string {
-	if o == nil {
+func (s *ServiceProtectionPluginAfter) GetAccess() []string {
+	if s == nil {
 		return nil
 	}
-	return o.Access
+	return s.Access
 }
 
 type ServiceProtectionPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *ServiceProtectionPluginBefore) GetAccess() []string {
-	if o == nil {
+func (s *ServiceProtectionPluginBefore) GetAccess() []string {
+	if s == nil {
 		return nil
 	}
-	return o.Access
+	return s.Access
 }
 
 type ServiceProtectionPluginOrdering struct {
@@ -35,18 +35,18 @@ type ServiceProtectionPluginOrdering struct {
 	Before *ServiceProtectionPluginBefore `json:"before,omitempty"`
 }
 
-func (o *ServiceProtectionPluginOrdering) GetAfter() *ServiceProtectionPluginAfter {
-	if o == nil {
+func (s *ServiceProtectionPluginOrdering) GetAfter() *ServiceProtectionPluginAfter {
+	if s == nil {
 		return nil
 	}
-	return o.After
+	return s.After
 }
 
-func (o *ServiceProtectionPluginOrdering) GetBefore() *ServiceProtectionPluginBefore {
-	if o == nil {
+func (s *ServiceProtectionPluginOrdering) GetBefore() *ServiceProtectionPluginBefore {
+	if s == nil {
 		return nil
 	}
-	return o.Before
+	return s.Before
 }
 
 type ServiceProtectionPluginPartials struct {
@@ -57,25 +57,25 @@ type ServiceProtectionPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *ServiceProtectionPluginPartials) GetID() *string {
-	if o == nil {
+func (s *ServiceProtectionPluginPartials) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ID
+	return s.ID
 }
 
-func (o *ServiceProtectionPluginPartials) GetName() *string {
-	if o == nil {
+func (s *ServiceProtectionPluginPartials) GetName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Name
+	return s.Name
 }
 
-func (o *ServiceProtectionPluginPartials) GetPath() *string {
-	if o == nil {
+func (s *ServiceProtectionPluginPartials) GetPath() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Path
+	return s.Path
 }
 
 type ServiceProtectionPluginClusterNodes struct {
@@ -90,24 +90,24 @@ func (s ServiceProtectionPluginClusterNodes) MarshalJSON() ([]byte, error) {
 }
 
 func (s *ServiceProtectionPluginClusterNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ServiceProtectionPluginClusterNodes) GetIP() *string {
-	if o == nil {
+func (s *ServiceProtectionPluginClusterNodes) GetIP() *string {
+	if s == nil {
 		return nil
 	}
-	return o.IP
+	return s.IP
 }
 
-func (o *ServiceProtectionPluginClusterNodes) GetPort() *int64 {
-	if o == nil {
+func (s *ServiceProtectionPluginClusterNodes) GetPort() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.Port
+	return s.Port
 }
 
 type ServiceProtectionPluginSentinelNodes struct {
@@ -122,24 +122,24 @@ func (s ServiceProtectionPluginSentinelNodes) MarshalJSON() ([]byte, error) {
 }
 
 func (s *ServiceProtectionPluginSentinelNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ServiceProtectionPluginSentinelNodes) GetHost() *string {
-	if o == nil {
+func (s *ServiceProtectionPluginSentinelNodes) GetHost() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Host
+	return s.Host
 }
 
-func (o *ServiceProtectionPluginSentinelNodes) GetPort() *int64 {
-	if o == nil {
+func (s *ServiceProtectionPluginSentinelNodes) GetPort() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.Port
+	return s.Port
 }
 
 // ServiceProtectionPluginSentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
@@ -222,157 +222,157 @@ func (s ServiceProtectionPluginRedis) MarshalJSON() ([]byte, error) {
 }
 
 func (s *ServiceProtectionPluginRedis) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ServiceProtectionPluginRedis) GetClusterMaxRedirections() *int64 {
-	if o == nil {
+func (s *ServiceProtectionPluginRedis) GetClusterMaxRedirections() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.ClusterMaxRedirections
+	return s.ClusterMaxRedirections
 }
 
-func (o *ServiceProtectionPluginRedis) GetClusterNodes() []ServiceProtectionPluginClusterNodes {
-	if o == nil {
+func (s *ServiceProtectionPluginRedis) GetClusterNodes() []ServiceProtectionPluginClusterNodes {
+	if s == nil {
 		return nil
 	}
-	return o.ClusterNodes
+	return s.ClusterNodes
 }
 
-func (o *ServiceProtectionPluginRedis) GetConnectTimeout() *int64 {
-	if o == nil {
+func (s *ServiceProtectionPluginRedis) GetConnectTimeout() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.ConnectTimeout
+	return s.ConnectTimeout
 }
 
-func (o *ServiceProtectionPluginRedis) GetConnectionIsProxied() *bool {
-	if o == nil {
+func (s *ServiceProtectionPluginRedis) GetConnectionIsProxied() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.ConnectionIsProxied
+	return s.ConnectionIsProxied
 }
 
-func (o *ServiceProtectionPluginRedis) GetDatabase() *int64 {
-	if o == nil {
+func (s *ServiceProtectionPluginRedis) GetDatabase() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.Database
+	return s.Database
 }
 
-func (o *ServiceProtectionPluginRedis) GetHost() *string {
-	if o == nil {
+func (s *ServiceProtectionPluginRedis) GetHost() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Host
+	return s.Host
 }
 
-func (o *ServiceProtectionPluginRedis) GetKeepaliveBacklog() *int64 {
-	if o == nil {
+func (s *ServiceProtectionPluginRedis) GetKeepaliveBacklog() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.KeepaliveBacklog
+	return s.KeepaliveBacklog
 }
 
-func (o *ServiceProtectionPluginRedis) GetKeepalivePoolSize() *int64 {
-	if o == nil {
+func (s *ServiceProtectionPluginRedis) GetKeepalivePoolSize() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.KeepalivePoolSize
+	return s.KeepalivePoolSize
 }
 
-func (o *ServiceProtectionPluginRedis) GetPassword() *string {
-	if o == nil {
+func (s *ServiceProtectionPluginRedis) GetPassword() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Password
+	return s.Password
 }
 
-func (o *ServiceProtectionPluginRedis) GetPort() *int64 {
-	if o == nil {
+func (s *ServiceProtectionPluginRedis) GetPort() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.Port
+	return s.Port
 }
 
-func (o *ServiceProtectionPluginRedis) GetReadTimeout() *int64 {
-	if o == nil {
+func (s *ServiceProtectionPluginRedis) GetReadTimeout() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.ReadTimeout
+	return s.ReadTimeout
 }
 
-func (o *ServiceProtectionPluginRedis) GetSendTimeout() *int64 {
-	if o == nil {
+func (s *ServiceProtectionPluginRedis) GetSendTimeout() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.SendTimeout
+	return s.SendTimeout
 }
 
-func (o *ServiceProtectionPluginRedis) GetSentinelMaster() *string {
-	if o == nil {
+func (s *ServiceProtectionPluginRedis) GetSentinelMaster() *string {
+	if s == nil {
 		return nil
 	}
-	return o.SentinelMaster
+	return s.SentinelMaster
 }
 
-func (o *ServiceProtectionPluginRedis) GetSentinelNodes() []ServiceProtectionPluginSentinelNodes {
-	if o == nil {
+func (s *ServiceProtectionPluginRedis) GetSentinelNodes() []ServiceProtectionPluginSentinelNodes {
+	if s == nil {
 		return nil
 	}
-	return o.SentinelNodes
+	return s.SentinelNodes
 }
 
-func (o *ServiceProtectionPluginRedis) GetSentinelPassword() *string {
-	if o == nil {
+func (s *ServiceProtectionPluginRedis) GetSentinelPassword() *string {
+	if s == nil {
 		return nil
 	}
-	return o.SentinelPassword
+	return s.SentinelPassword
 }
 
-func (o *ServiceProtectionPluginRedis) GetSentinelRole() *ServiceProtectionPluginSentinelRole {
-	if o == nil {
+func (s *ServiceProtectionPluginRedis) GetSentinelRole() *ServiceProtectionPluginSentinelRole {
+	if s == nil {
 		return nil
 	}
-	return o.SentinelRole
+	return s.SentinelRole
 }
 
-func (o *ServiceProtectionPluginRedis) GetSentinelUsername() *string {
-	if o == nil {
+func (s *ServiceProtectionPluginRedis) GetSentinelUsername() *string {
+	if s == nil {
 		return nil
 	}
-	return o.SentinelUsername
+	return s.SentinelUsername
 }
 
-func (o *ServiceProtectionPluginRedis) GetServerName() *string {
-	if o == nil {
+func (s *ServiceProtectionPluginRedis) GetServerName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ServerName
+	return s.ServerName
 }
 
-func (o *ServiceProtectionPluginRedis) GetSsl() *bool {
-	if o == nil {
+func (s *ServiceProtectionPluginRedis) GetSsl() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.Ssl
+	return s.Ssl
 }
 
-func (o *ServiceProtectionPluginRedis) GetSslVerify() *bool {
-	if o == nil {
+func (s *ServiceProtectionPluginRedis) GetSslVerify() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.SslVerify
+	return s.SslVerify
 }
 
-func (o *ServiceProtectionPluginRedis) GetUsername() *string {
-	if o == nil {
+func (s *ServiceProtectionPluginRedis) GetUsername() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Username
+	return s.Username
 }
 
 // ServiceProtectionPluginStrategy - The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local` and `cluster`.
@@ -467,108 +467,108 @@ func (s ServiceProtectionPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (s *ServiceProtectionPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"limit", "window_size"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ServiceProtectionPluginConfig) GetDictionaryName() *string {
-	if o == nil {
+func (s *ServiceProtectionPluginConfig) GetDictionaryName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.DictionaryName
+	return s.DictionaryName
 }
 
-func (o *ServiceProtectionPluginConfig) GetDisablePenalty() *bool {
-	if o == nil {
+func (s *ServiceProtectionPluginConfig) GetDisablePenalty() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.DisablePenalty
+	return s.DisablePenalty
 }
 
-func (o *ServiceProtectionPluginConfig) GetErrorCode() *float64 {
-	if o == nil {
+func (s *ServiceProtectionPluginConfig) GetErrorCode() *float64 {
+	if s == nil {
 		return nil
 	}
-	return o.ErrorCode
+	return s.ErrorCode
 }
 
-func (o *ServiceProtectionPluginConfig) GetErrorMessage() *string {
-	if o == nil {
+func (s *ServiceProtectionPluginConfig) GetErrorMessage() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ErrorMessage
+	return s.ErrorMessage
 }
 
-func (o *ServiceProtectionPluginConfig) GetHideClientHeaders() *bool {
-	if o == nil {
+func (s *ServiceProtectionPluginConfig) GetHideClientHeaders() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.HideClientHeaders
+	return s.HideClientHeaders
 }
 
-func (o *ServiceProtectionPluginConfig) GetLimit() []float64 {
-	if o == nil {
+func (s *ServiceProtectionPluginConfig) GetLimit() []float64 {
+	if s == nil {
 		return []float64{}
 	}
-	return o.Limit
+	return s.Limit
 }
 
-func (o *ServiceProtectionPluginConfig) GetLockDictionaryName() *string {
-	if o == nil {
+func (s *ServiceProtectionPluginConfig) GetLockDictionaryName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.LockDictionaryName
+	return s.LockDictionaryName
 }
 
-func (o *ServiceProtectionPluginConfig) GetNamespace() *string {
-	if o == nil {
+func (s *ServiceProtectionPluginConfig) GetNamespace() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Namespace
+	return s.Namespace
 }
 
-func (o *ServiceProtectionPluginConfig) GetRedis() *ServiceProtectionPluginRedis {
-	if o == nil {
+func (s *ServiceProtectionPluginConfig) GetRedis() *ServiceProtectionPluginRedis {
+	if s == nil {
 		return nil
 	}
-	return o.Redis
+	return s.Redis
 }
 
-func (o *ServiceProtectionPluginConfig) GetRetryAfterJitterMax() *float64 {
-	if o == nil {
+func (s *ServiceProtectionPluginConfig) GetRetryAfterJitterMax() *float64 {
+	if s == nil {
 		return nil
 	}
-	return o.RetryAfterJitterMax
+	return s.RetryAfterJitterMax
 }
 
-func (o *ServiceProtectionPluginConfig) GetStrategy() *ServiceProtectionPluginStrategy {
-	if o == nil {
+func (s *ServiceProtectionPluginConfig) GetStrategy() *ServiceProtectionPluginStrategy {
+	if s == nil {
 		return nil
 	}
-	return o.Strategy
+	return s.Strategy
 }
 
-func (o *ServiceProtectionPluginConfig) GetSyncRate() *float64 {
-	if o == nil {
+func (s *ServiceProtectionPluginConfig) GetSyncRate() *float64 {
+	if s == nil {
 		return nil
 	}
-	return o.SyncRate
+	return s.SyncRate
 }
 
-func (o *ServiceProtectionPluginConfig) GetWindowSize() []float64 {
-	if o == nil {
+func (s *ServiceProtectionPluginConfig) GetWindowSize() []float64 {
+	if s == nil {
 		return []float64{}
 	}
-	return o.WindowSize
+	return s.WindowSize
 }
 
-func (o *ServiceProtectionPluginConfig) GetWindowType() *ServiceProtectionPluginWindowType {
-	if o == nil {
+func (s *ServiceProtectionPluginConfig) GetWindowType() *ServiceProtectionPluginWindowType {
+	if s == nil {
 		return nil
 	}
-	return o.WindowType
+	return s.WindowType
 }
 
 type ServiceProtectionPluginProtocols string
@@ -608,11 +608,11 @@ type ServiceProtectionPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *ServiceProtectionPluginService) GetID() *string {
-	if o == nil {
+func (s *ServiceProtectionPluginService) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ID
+	return s.ID
 }
 
 // ServiceProtectionPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -645,89 +645,89 @@ func (s ServiceProtectionPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (s *ServiceProtectionPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ServiceProtectionPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (s *ServiceProtectionPlugin) GetCreatedAt() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return s.CreatedAt
 }
 
-func (o *ServiceProtectionPlugin) GetEnabled() *bool {
-	if o == nil {
+func (s *ServiceProtectionPlugin) GetEnabled() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.Enabled
+	return s.Enabled
 }
 
-func (o *ServiceProtectionPlugin) GetID() *string {
-	if o == nil {
+func (s *ServiceProtectionPlugin) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ID
+	return s.ID
 }
 
-func (o *ServiceProtectionPlugin) GetInstanceName() *string {
-	if o == nil {
+func (s *ServiceProtectionPlugin) GetInstanceName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.InstanceName
+	return s.InstanceName
 }
 
-func (o *ServiceProtectionPlugin) GetName() string {
+func (s *ServiceProtectionPlugin) GetName() string {
 	return "service-protection"
 }
 
-func (o *ServiceProtectionPlugin) GetOrdering() *ServiceProtectionPluginOrdering {
-	if o == nil {
+func (s *ServiceProtectionPlugin) GetOrdering() *ServiceProtectionPluginOrdering {
+	if s == nil {
 		return nil
 	}
-	return o.Ordering
+	return s.Ordering
 }
 
-func (o *ServiceProtectionPlugin) GetPartials() []ServiceProtectionPluginPartials {
-	if o == nil {
+func (s *ServiceProtectionPlugin) GetPartials() []ServiceProtectionPluginPartials {
+	if s == nil {
 		return nil
 	}
-	return o.Partials
+	return s.Partials
 }
 
-func (o *ServiceProtectionPlugin) GetTags() []string {
-	if o == nil {
+func (s *ServiceProtectionPlugin) GetTags() []string {
+	if s == nil {
 		return nil
 	}
-	return o.Tags
+	return s.Tags
 }
 
-func (o *ServiceProtectionPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (s *ServiceProtectionPlugin) GetUpdatedAt() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return s.UpdatedAt
 }
 
-func (o *ServiceProtectionPlugin) GetConfig() ServiceProtectionPluginConfig {
-	if o == nil {
+func (s *ServiceProtectionPlugin) GetConfig() ServiceProtectionPluginConfig {
+	if s == nil {
 		return ServiceProtectionPluginConfig{}
 	}
-	return o.Config
+	return s.Config
 }
 
-func (o *ServiceProtectionPlugin) GetProtocols() []ServiceProtectionPluginProtocols {
-	if o == nil {
+func (s *ServiceProtectionPlugin) GetProtocols() []ServiceProtectionPluginProtocols {
+	if s == nil {
 		return nil
 	}
-	return o.Protocols
+	return s.Protocols
 }
 
-func (o *ServiceProtectionPlugin) GetService() *ServiceProtectionPluginService {
-	if o == nil {
+func (s *ServiceProtectionPlugin) GetService() *ServiceProtectionPluginService {
+	if s == nil {
 		return nil
 	}
-	return o.Service
+	return s.Service
 }

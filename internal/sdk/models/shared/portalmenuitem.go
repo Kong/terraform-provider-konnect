@@ -45,30 +45,30 @@ type PortalMenuItem struct {
 	External bool `json:"external"`
 }
 
-func (o *PortalMenuItem) GetPath() string {
-	if o == nil {
+func (p *PortalMenuItem) GetPath() string {
+	if p == nil {
 		return ""
 	}
-	return o.Path
+	return p.Path
 }
 
-func (o *PortalMenuItem) GetTitle() string {
-	if o == nil {
+func (p *PortalMenuItem) GetTitle() string {
+	if p == nil {
 		return ""
 	}
-	return o.Title
+	return p.Title
 }
 
-func (o *PortalMenuItem) GetVisibility() Visibility {
-	if o == nil {
+func (p *PortalMenuItem) GetVisibility() Visibility {
+	if p == nil {
 		return Visibility("")
 	}
-	return o.Visibility
+	return p.Visibility
 }
 
-func (o *PortalMenuItem) GetExternal() bool {
-	if o == nil {
+func (p *PortalMenuItem) GetExternal() bool {
+	if p == nil {
 		return false
 	}
-	return o.External
+	return p.External
 }

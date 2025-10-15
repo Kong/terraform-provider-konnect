@@ -19,11 +19,11 @@ const (
 )
 
 type InvalidParameters struct {
-	InvalidParameterStandard      *InvalidParameterStandard      `queryParam:"inline"`
-	InvalidParameterMinimumLength *InvalidParameterMinimumLength `queryParam:"inline"`
-	InvalidParameterMaximumLength *InvalidParameterMaximumLength `queryParam:"inline"`
-	InvalidParameterChoiceItem    *InvalidParameterChoiceItem    `queryParam:"inline"`
-	InvalidParameterDependentItem *InvalidParameterDependentItem `queryParam:"inline"`
+	InvalidParameterStandard      *InvalidParameterStandard      `queryParam:"inline,name=InvalidParameters"`
+	InvalidParameterMinimumLength *InvalidParameterMinimumLength `queryParam:"inline,name=InvalidParameters"`
+	InvalidParameterMaximumLength *InvalidParameterMaximumLength `queryParam:"inline,name=InvalidParameters"`
+	InvalidParameterChoiceItem    *InvalidParameterChoiceItem    `queryParam:"inline,name=InvalidParameters"`
+	InvalidParameterDependentItem *InvalidParameterDependentItem `queryParam:"inline,name=InvalidParameters"`
 
 	Type InvalidParametersType
 }
@@ -75,38 +75,38 @@ func CreateInvalidParametersInvalidParameterDependentItem(invalidParameterDepend
 
 func (u *InvalidParameters) UnmarshalJSON(data []byte) error {
 
-	var invalidParameterStandard InvalidParameterStandard = InvalidParameterStandard{}
-	if err := utils.UnmarshalJSON(data, &invalidParameterStandard, "", true, true); err == nil {
-		u.InvalidParameterStandard = &invalidParameterStandard
-		u.Type = InvalidParametersTypeInvalidParameterStandard
-		return nil
-	}
-
 	var invalidParameterMinimumLength InvalidParameterMinimumLength = InvalidParameterMinimumLength{}
-	if err := utils.UnmarshalJSON(data, &invalidParameterMinimumLength, "", true, true); err == nil {
+	if err := utils.UnmarshalJSON(data, &invalidParameterMinimumLength, "", true, nil); err == nil {
 		u.InvalidParameterMinimumLength = &invalidParameterMinimumLength
 		u.Type = InvalidParametersTypeInvalidParameterMinimumLength
 		return nil
 	}
 
 	var invalidParameterMaximumLength InvalidParameterMaximumLength = InvalidParameterMaximumLength{}
-	if err := utils.UnmarshalJSON(data, &invalidParameterMaximumLength, "", true, true); err == nil {
+	if err := utils.UnmarshalJSON(data, &invalidParameterMaximumLength, "", true, nil); err == nil {
 		u.InvalidParameterMaximumLength = &invalidParameterMaximumLength
 		u.Type = InvalidParametersTypeInvalidParameterMaximumLength
 		return nil
 	}
 
 	var invalidParameterChoiceItem InvalidParameterChoiceItem = InvalidParameterChoiceItem{}
-	if err := utils.UnmarshalJSON(data, &invalidParameterChoiceItem, "", true, true); err == nil {
+	if err := utils.UnmarshalJSON(data, &invalidParameterChoiceItem, "", true, nil); err == nil {
 		u.InvalidParameterChoiceItem = &invalidParameterChoiceItem
 		u.Type = InvalidParametersTypeInvalidParameterChoiceItem
 		return nil
 	}
 
 	var invalidParameterDependentItem InvalidParameterDependentItem = InvalidParameterDependentItem{}
-	if err := utils.UnmarshalJSON(data, &invalidParameterDependentItem, "", true, true); err == nil {
+	if err := utils.UnmarshalJSON(data, &invalidParameterDependentItem, "", true, nil); err == nil {
 		u.InvalidParameterDependentItem = &invalidParameterDependentItem
 		u.Type = InvalidParametersTypeInvalidParameterDependentItem
+		return nil
+	}
+
+	var invalidParameterStandard InvalidParameterStandard = InvalidParameterStandard{}
+	if err := utils.UnmarshalJSON(data, &invalidParameterStandard, "", true, nil); err == nil {
+		u.InvalidParameterStandard = &invalidParameterStandard
+		u.Type = InvalidParametersTypeInvalidParameterStandard
 		return nil
 	}
 

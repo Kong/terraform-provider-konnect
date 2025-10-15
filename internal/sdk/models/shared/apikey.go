@@ -20,36 +20,36 @@ func (a APIKey) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APIKey) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "created_at", "tags", "type"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *APIKey) GetID() string {
-	if o == nil {
+func (a *APIKey) GetID() string {
+	if a == nil {
 		return ""
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *APIKey) GetCreatedAt() time.Time {
-	if o == nil {
+func (a *APIKey) GetCreatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *APIKey) GetTags() []string {
-	if o == nil {
+func (a *APIKey) GetTags() []string {
+	if a == nil {
 		return []string{}
 	}
-	return o.Tags
+	return a.Tags
 }
 
-func (o *APIKey) GetType() KeyTypeEnum {
-	if o == nil {
+func (a *APIKey) GetType() KeyTypeEnum {
+	if a == nil {
 		return KeyTypeEnum("")
 	}
-	return o.Type
+	return a.Type
 }

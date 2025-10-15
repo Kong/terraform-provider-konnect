@@ -71,6 +71,17 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 
 Import is supported using the following syntax:
 
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_portal.my_konnect_portal
+  id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
 terraform import konnect_portal.my_konnect_portal "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
 ```

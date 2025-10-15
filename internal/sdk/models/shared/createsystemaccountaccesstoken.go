@@ -18,22 +18,22 @@ func (c CreateSystemAccountAccessToken) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateSystemAccountAccessToken) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "expires_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CreateSystemAccountAccessToken) GetName() string {
-	if o == nil {
+func (c *CreateSystemAccountAccessToken) GetName() string {
+	if c == nil {
 		return ""
 	}
-	return o.Name
+	return c.Name
 }
 
-func (o *CreateSystemAccountAccessToken) GetExpiresAt() time.Time {
-	if o == nil {
+func (c *CreateSystemAccountAccessToken) GetExpiresAt() time.Time {
+	if c == nil {
 		return time.Time{}
 	}
-	return o.ExpiresAt
+	return c.ExpiresAt
 }

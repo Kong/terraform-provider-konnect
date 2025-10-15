@@ -27,50 +27,50 @@ func (c CACertificate) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CACertificate) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"cert"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CACertificate) GetCert() string {
-	if o == nil {
+func (c *CACertificate) GetCert() string {
+	if c == nil {
 		return ""
 	}
-	return o.Cert
+	return c.Cert
 }
 
-func (o *CACertificate) GetCertDigest() *string {
-	if o == nil {
+func (c *CACertificate) GetCertDigest() *string {
+	if c == nil {
 		return nil
 	}
-	return o.CertDigest
+	return c.CertDigest
 }
 
-func (o *CACertificate) GetCreatedAt() *int64 {
-	if o == nil {
+func (c *CACertificate) GetCreatedAt() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return c.CreatedAt
 }
 
-func (o *CACertificate) GetID() *string {
-	if o == nil {
+func (c *CACertificate) GetID() *string {
+	if c == nil {
 		return nil
 	}
-	return o.ID
+	return c.ID
 }
 
-func (o *CACertificate) GetTags() []string {
-	if o == nil {
+func (c *CACertificate) GetTags() []string {
+	if c == nil {
 		return nil
 	}
-	return o.Tags
+	return c.Tags
 }
 
-func (o *CACertificate) GetUpdatedAt() *int64 {
-	if o == nil {
+func (c *CACertificate) GetUpdatedAt() *int64 {
+	if c == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return c.UpdatedAt
 }

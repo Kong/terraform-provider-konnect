@@ -9,16 +9,16 @@ type GatewayServicePayload struct {
 	ControlPlaneID string `json:"control_plane_id"`
 }
 
-func (o *GatewayServicePayload) GetID() string {
-	if o == nil {
+func (g *GatewayServicePayload) GetID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ID
+	return g.ID
 }
 
-func (o *GatewayServicePayload) GetControlPlaneID() string {
-	if o == nil {
+func (g *GatewayServicePayload) GetControlPlaneID() string {
+	if g == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return g.ControlPlaneID
 }

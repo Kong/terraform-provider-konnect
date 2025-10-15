@@ -13,18 +13,18 @@ type CreateRequestvalidatorPluginRequest struct {
 	RequestValidatorPlugin shared.RequestValidatorPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateRequestvalidatorPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateRequestvalidatorPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateRequestvalidatorPluginRequest) GetRequestValidatorPlugin() shared.RequestValidatorPlugin {
-	if o == nil {
+func (c *CreateRequestvalidatorPluginRequest) GetRequestValidatorPlugin() shared.RequestValidatorPlugin {
+	if c == nil {
 		return shared.RequestValidatorPlugin{}
 	}
-	return o.RequestValidatorPlugin
+	return c.RequestValidatorPlugin
 }
 
 type CreateRequestvalidatorPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateRequestvalidatorPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateRequestvalidatorPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateRequestvalidatorPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateRequestvalidatorPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateRequestvalidatorPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateRequestvalidatorPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateRequestvalidatorPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateRequestvalidatorPluginResponse) GetRequestValidatorPlugin() *shared.RequestValidatorPlugin {
-	if o == nil {
+func (c *CreateRequestvalidatorPluginResponse) GetRequestValidatorPlugin() *shared.RequestValidatorPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.RequestValidatorPlugin
+	return c.RequestValidatorPlugin
 }
 
-func (o *CreateRequestvalidatorPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateRequestvalidatorPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

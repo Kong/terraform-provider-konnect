@@ -13,18 +13,18 @@ type CreateForwardproxyPluginRequest struct {
 	ForwardProxyPlugin shared.ForwardProxyPlugin `request:"mediaType=application/json"`
 }
 
-func (o *CreateForwardproxyPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateForwardproxyPluginRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateForwardproxyPluginRequest) GetForwardProxyPlugin() shared.ForwardProxyPlugin {
-	if o == nil {
+func (c *CreateForwardproxyPluginRequest) GetForwardProxyPlugin() shared.ForwardProxyPlugin {
+	if c == nil {
 		return shared.ForwardProxyPlugin{}
 	}
-	return o.ForwardProxyPlugin
+	return c.ForwardProxyPlugin
 }
 
 type CreateForwardproxyPluginResponse struct {
@@ -40,37 +40,37 @@ type CreateForwardproxyPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateForwardproxyPluginResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateForwardproxyPluginResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateForwardproxyPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateForwardproxyPluginResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateForwardproxyPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateForwardproxyPluginResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateForwardproxyPluginResponse) GetForwardProxyPlugin() *shared.ForwardProxyPlugin {
-	if o == nil {
+func (c *CreateForwardproxyPluginResponse) GetForwardProxyPlugin() *shared.ForwardProxyPlugin {
+	if c == nil {
 		return nil
 	}
-	return o.ForwardProxyPlugin
+	return c.ForwardProxyPlugin
 }
 
-func (o *CreateForwardproxyPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateForwardproxyPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

@@ -16,13 +16,14 @@ generation:
   auth:
     oAuth2ClientCredentialsEnabled: false
     oAuth2PasswordEnabled: false
+    hoistGlobalSecurity: true
   tests:
     generateTests: true
     generateNewTests: false
     skipResponseBodyAssertions: false
   baseServerURL: ""
 terraform:
-  version: 3.2.1
+  version: 3.3.0
   additionalDataSources: []
   additionalDependencies: {}
   additionalEphemeralResources: []

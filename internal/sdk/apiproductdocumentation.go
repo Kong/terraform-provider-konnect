@@ -61,7 +61,7 @@ func (s *APIProductDocumentation) CreateAPIProductDocument(ctx context.Context, 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "create-api-product-document",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CreateAPIProductDocumentDTO", "json", `request:"mediaType=application/json"`)
@@ -330,7 +330,7 @@ func (s *APIProductDocumentation) GetAPIProductDocument(ctx context.Context, req
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "get-api-product-document",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 
@@ -529,7 +529,7 @@ func (s *APIProductDocumentation) UpdateAPIProductDocument(ctx context.Context, 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "update-api-product-document",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateAPIProductDocumentDTO", "json", `request:"mediaType=application/json"`)
@@ -797,7 +797,7 @@ func (s *APIProductDocumentation) DeleteAPIProductDocument(ctx context.Context, 
 		BaseURL:          baseURL,
 		Context:          ctx,
 		OperationID:      "delete-api-product-document",
-		OAuth2Scopes:     []string{},
+		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
 

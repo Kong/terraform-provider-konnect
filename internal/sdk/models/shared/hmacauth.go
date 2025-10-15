@@ -6,11 +6,11 @@ type HMACAuthConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *HMACAuthConsumer) GetID() *string {
-	if o == nil {
+func (h *HMACAuthConsumer) GetID() *string {
+	if h == nil {
 		return nil
 	}
-	return o.ID
+	return h.ID
 }
 
 type HMACAuth struct {
@@ -25,44 +25,44 @@ type HMACAuth struct {
 	Username string   `json:"username"`
 }
 
-func (o *HMACAuth) GetConsumer() *HMACAuthConsumer {
-	if o == nil {
+func (h *HMACAuth) GetConsumer() *HMACAuthConsumer {
+	if h == nil {
 		return nil
 	}
-	return o.Consumer
+	return h.Consumer
 }
 
-func (o *HMACAuth) GetCreatedAt() *int64 {
-	if o == nil {
+func (h *HMACAuth) GetCreatedAt() *int64 {
+	if h == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return h.CreatedAt
 }
 
-func (o *HMACAuth) GetID() *string {
-	if o == nil {
+func (h *HMACAuth) GetID() *string {
+	if h == nil {
 		return nil
 	}
-	return o.ID
+	return h.ID
 }
 
-func (o *HMACAuth) GetSecret() *string {
-	if o == nil {
+func (h *HMACAuth) GetSecret() *string {
+	if h == nil {
 		return nil
 	}
-	return o.Secret
+	return h.Secret
 }
 
-func (o *HMACAuth) GetTags() []string {
-	if o == nil {
+func (h *HMACAuth) GetTags() []string {
+	if h == nil {
 		return nil
 	}
-	return o.Tags
+	return h.Tags
 }
 
-func (o *HMACAuth) GetUsername() string {
-	if o == nil {
+func (h *HMACAuth) GetUsername() string {
+	if h == nil {
 		return ""
 	}
-	return o.Username
+	return h.Username
 }

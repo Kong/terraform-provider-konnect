@@ -24,43 +24,43 @@ func (c CreateConfigurationRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateConfigurationRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"control_plane_id", "control_plane_geo", "version", "dataplane_groups"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *CreateConfigurationRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateConfigurationRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateConfigurationRequest) GetControlPlaneGeo() ControlPlaneGeo {
-	if o == nil {
+func (c *CreateConfigurationRequest) GetControlPlaneGeo() ControlPlaneGeo {
+	if c == nil {
 		return ControlPlaneGeo("")
 	}
-	return o.ControlPlaneGeo
+	return c.ControlPlaneGeo
 }
 
-func (o *CreateConfigurationRequest) GetVersion() string {
-	if o == nil {
+func (c *CreateConfigurationRequest) GetVersion() string {
+	if c == nil {
 		return ""
 	}
-	return o.Version
+	return c.Version
 }
 
-func (o *CreateConfigurationRequest) GetDataplaneGroups() []CreateConfigurationDataPlaneGroup {
-	if o == nil {
+func (c *CreateConfigurationRequest) GetDataplaneGroups() []CreateConfigurationDataPlaneGroup {
+	if c == nil {
 		return []CreateConfigurationDataPlaneGroup{}
 	}
-	return o.DataplaneGroups
+	return c.DataplaneGroups
 }
 
-func (o *CreateConfigurationRequest) GetAPIAccess() *APIAccess {
-	if o == nil {
+func (c *CreateConfigurationRequest) GetAPIAccess() *APIAccess {
+	if c == nil {
 		return nil
 	}
-	return o.APIAccess
+	return c.APIAccess
 }

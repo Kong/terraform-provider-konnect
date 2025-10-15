@@ -20,24 +20,24 @@ func (p PutCmekRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PutCmekRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"cmekId", "ReplaceCMEK"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *PutCmekRequest) GetID() shared.CmekID {
-	if o == nil {
+func (p *PutCmekRequest) GetID() shared.CmekID {
+	if p == nil {
 		return shared.CmekID("")
 	}
-	return o.ID
+	return p.ID
 }
 
-func (o *PutCmekRequest) GetReplaceCMEK() shared.ReplaceCMEK {
-	if o == nil {
+func (p *PutCmekRequest) GetReplaceCMEK() shared.ReplaceCMEK {
+	if p == nil {
 		return shared.ReplaceCMEK{}
 	}
-	return o.ReplaceCMEK
+	return p.ReplaceCMEK
 }
 
 type PutCmekResponse struct {
@@ -57,51 +57,51 @@ type PutCmekResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
-func (o *PutCmekResponse) GetContentType() string {
-	if o == nil {
+func (p *PutCmekResponse) GetContentType() string {
+	if p == nil {
 		return ""
 	}
-	return o.ContentType
+	return p.ContentType
 }
 
-func (o *PutCmekResponse) GetStatusCode() int {
-	if o == nil {
+func (p *PutCmekResponse) GetStatusCode() int {
+	if p == nil {
 		return 0
 	}
-	return o.StatusCode
+	return p.StatusCode
 }
 
-func (o *PutCmekResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (p *PutCmekResponse) GetRawResponse() *http.Response {
+	if p == nil {
 		return nil
 	}
-	return o.RawResponse
+	return p.RawResponse
 }
 
-func (o *PutCmekResponse) GetCmek() *shared.Cmek {
-	if o == nil {
+func (p *PutCmekResponse) GetCmek() *shared.Cmek {
+	if p == nil {
 		return nil
 	}
-	return o.Cmek
+	return p.Cmek
 }
 
-func (o *PutCmekResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
+func (p *PutCmekResponse) GetBadRequestError() *shared.BadRequestError {
+	if p == nil {
 		return nil
 	}
-	return o.BadRequestError
+	return p.BadRequestError
 }
 
-func (o *PutCmekResponse) GetUnauthorizedError() *shared.UnauthorizedError {
-	if o == nil {
+func (p *PutCmekResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+	if p == nil {
 		return nil
 	}
-	return o.UnauthorizedError
+	return p.UnauthorizedError
 }
 
-func (o *PutCmekResponse) GetForbiddenError() *shared.ForbiddenError {
-	if o == nil {
+func (p *PutCmekResponse) GetForbiddenError() *shared.ForbiddenError {
+	if p == nil {
 		return nil
 	}
-	return o.ForbiddenError
+	return p.ForbiddenError
 }

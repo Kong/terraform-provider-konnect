@@ -14,18 +14,18 @@ type DeleteGraphqlproxycacheadvancedPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *DeleteGraphqlproxycacheadvancedPluginRequest) GetPluginID() string {
-	if o == nil {
+func (d *DeleteGraphqlproxycacheadvancedPluginRequest) GetPluginID() string {
+	if d == nil {
 		return ""
 	}
-	return o.PluginID
+	return d.PluginID
 }
 
-func (o *DeleteGraphqlproxycacheadvancedPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (d *DeleteGraphqlproxycacheadvancedPluginRequest) GetControlPlaneID() string {
+	if d == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return d.ControlPlaneID
 }
 
 type DeleteGraphqlproxycacheadvancedPluginResponse struct {
@@ -39,30 +39,30 @@ type DeleteGraphqlproxycacheadvancedPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *DeleteGraphqlproxycacheadvancedPluginResponse) GetContentType() string {
-	if o == nil {
+func (d *DeleteGraphqlproxycacheadvancedPluginResponse) GetContentType() string {
+	if d == nil {
 		return ""
 	}
-	return o.ContentType
+	return d.ContentType
 }
 
-func (o *DeleteGraphqlproxycacheadvancedPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (d *DeleteGraphqlproxycacheadvancedPluginResponse) GetStatusCode() int {
+	if d == nil {
 		return 0
 	}
-	return o.StatusCode
+	return d.StatusCode
 }
 
-func (o *DeleteGraphqlproxycacheadvancedPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (d *DeleteGraphqlproxycacheadvancedPluginResponse) GetRawResponse() *http.Response {
+	if d == nil {
 		return nil
 	}
-	return o.RawResponse
+	return d.RawResponse
 }
 
-func (o *DeleteGraphqlproxycacheadvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (d *DeleteGraphqlproxycacheadvancedPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if d == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return d.GatewayUnauthorizedError
 }

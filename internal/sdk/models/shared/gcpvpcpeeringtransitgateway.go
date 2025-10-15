@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type GcpVpcPeeringTransitGateway struct {
 	// Human-readable name of the transit gateway.
 	Name string `json:"name"`
@@ -12,23 +16,34 @@ type GcpVpcPeeringTransitGateway struct {
 	TransitGatewayAttachmentConfig GCPVPCPeeringAttachmentConfig `json:"transit_gateway_attachment_config"`
 }
 
-func (o *GcpVpcPeeringTransitGateway) GetName() string {
-	if o == nil {
+func (g GcpVpcPeeringTransitGateway) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GcpVpcPeeringTransitGateway) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"name", "transit_gateway_attachment_config"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (g *GcpVpcPeeringTransitGateway) GetName() string {
+	if g == nil {
 		return ""
 	}
-	return o.Name
+	return g.Name
 }
 
-func (o *GcpVpcPeeringTransitGateway) GetDNSConfig() []TransitGatewayDNSConfig {
-	if o == nil {
+func (g *GcpVpcPeeringTransitGateway) GetDNSConfig() []TransitGatewayDNSConfig {
+	if g == nil {
 		return nil
 	}
-	return o.DNSConfig
+	return g.DNSConfig
 }
 
-func (o *GcpVpcPeeringTransitGateway) GetTransitGatewayAttachmentConfig() GCPVPCPeeringAttachmentConfig {
-	if o == nil {
+func (g *GcpVpcPeeringTransitGateway) GetTransitGatewayAttachmentConfig() GCPVPCPeeringAttachmentConfig {
+	if g == nil {
 		return GCPVPCPeeringAttachmentConfig{}
 	}
-	return o.TransitGatewayAttachmentConfig
+	return g.TransitGatewayAttachmentConfig
 }

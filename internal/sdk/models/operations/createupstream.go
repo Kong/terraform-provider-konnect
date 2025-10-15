@@ -14,18 +14,18 @@ type CreateUpstreamRequest struct {
 	Upstream shared.Upstream `request:"mediaType=application/json"`
 }
 
-func (o *CreateUpstreamRequest) GetControlPlaneID() string {
-	if o == nil {
+func (c *CreateUpstreamRequest) GetControlPlaneID() string {
+	if c == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return c.ControlPlaneID
 }
 
-func (o *CreateUpstreamRequest) GetUpstream() shared.Upstream {
-	if o == nil {
+func (c *CreateUpstreamRequest) GetUpstream() shared.Upstream {
+	if c == nil {
 		return shared.Upstream{}
 	}
-	return o.Upstream
+	return c.Upstream
 }
 
 type CreateUpstreamResponse struct {
@@ -41,37 +41,37 @@ type CreateUpstreamResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateUpstreamResponse) GetContentType() string {
-	if o == nil {
+func (c *CreateUpstreamResponse) GetContentType() string {
+	if c == nil {
 		return ""
 	}
-	return o.ContentType
+	return c.ContentType
 }
 
-func (o *CreateUpstreamResponse) GetStatusCode() int {
-	if o == nil {
+func (c *CreateUpstreamResponse) GetStatusCode() int {
+	if c == nil {
 		return 0
 	}
-	return o.StatusCode
+	return c.StatusCode
 }
 
-func (o *CreateUpstreamResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (c *CreateUpstreamResponse) GetRawResponse() *http.Response {
+	if c == nil {
 		return nil
 	}
-	return o.RawResponse
+	return c.RawResponse
 }
 
-func (o *CreateUpstreamResponse) GetUpstream() *shared.Upstream {
-	if o == nil {
+func (c *CreateUpstreamResponse) GetUpstream() *shared.Upstream {
+	if c == nil {
 		return nil
 	}
-	return o.Upstream
+	return c.Upstream
 }
 
-func (o *CreateUpstreamResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (c *CreateUpstreamResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if c == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return c.GatewayUnauthorizedError
 }

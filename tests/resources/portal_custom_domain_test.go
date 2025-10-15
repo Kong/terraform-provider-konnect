@@ -17,7 +17,7 @@ func TestPortalCustomDomain(t *testing.T) {
 					Config:          providerConfigUs,
 					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr("konnect_portal_custom_domain.my_portal_custom_domain", "hostname", "my.custom.domain"),
+						resource.TestCheckResourceAttr("konnect_portal_custom_domain.my_portal_custom_domain", "hostname", "my.tftestingorgcustom.domain"),
 					),
 				},
 				{

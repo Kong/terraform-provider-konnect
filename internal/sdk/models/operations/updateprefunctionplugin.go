@@ -15,25 +15,25 @@ type UpdatePrefunctionPluginRequest struct {
 	PreFunctionPlugin shared.PreFunctionPlugin `request:"mediaType=application/json"`
 }
 
-func (o *UpdatePrefunctionPluginRequest) GetPluginID() string {
-	if o == nil {
+func (u *UpdatePrefunctionPluginRequest) GetPluginID() string {
+	if u == nil {
 		return ""
 	}
-	return o.PluginID
+	return u.PluginID
 }
 
-func (o *UpdatePrefunctionPluginRequest) GetControlPlaneID() string {
-	if o == nil {
+func (u *UpdatePrefunctionPluginRequest) GetControlPlaneID() string {
+	if u == nil {
 		return ""
 	}
-	return o.ControlPlaneID
+	return u.ControlPlaneID
 }
 
-func (o *UpdatePrefunctionPluginRequest) GetPreFunctionPlugin() shared.PreFunctionPlugin {
-	if o == nil {
+func (u *UpdatePrefunctionPluginRequest) GetPreFunctionPlugin() shared.PreFunctionPlugin {
+	if u == nil {
 		return shared.PreFunctionPlugin{}
 	}
-	return o.PreFunctionPlugin
+	return u.PreFunctionPlugin
 }
 
 type UpdatePrefunctionPluginResponse struct {
@@ -49,37 +49,37 @@ type UpdatePrefunctionPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *UpdatePrefunctionPluginResponse) GetContentType() string {
-	if o == nil {
+func (u *UpdatePrefunctionPluginResponse) GetContentType() string {
+	if u == nil {
 		return ""
 	}
-	return o.ContentType
+	return u.ContentType
 }
 
-func (o *UpdatePrefunctionPluginResponse) GetStatusCode() int {
-	if o == nil {
+func (u *UpdatePrefunctionPluginResponse) GetStatusCode() int {
+	if u == nil {
 		return 0
 	}
-	return o.StatusCode
+	return u.StatusCode
 }
 
-func (o *UpdatePrefunctionPluginResponse) GetRawResponse() *http.Response {
-	if o == nil {
+func (u *UpdatePrefunctionPluginResponse) GetRawResponse() *http.Response {
+	if u == nil {
 		return nil
 	}
-	return o.RawResponse
+	return u.RawResponse
 }
 
-func (o *UpdatePrefunctionPluginResponse) GetPreFunctionPlugin() *shared.PreFunctionPlugin {
-	if o == nil {
+func (u *UpdatePrefunctionPluginResponse) GetPreFunctionPlugin() *shared.PreFunctionPlugin {
+	if u == nil {
 		return nil
 	}
-	return o.PreFunctionPlugin
+	return u.PreFunctionPlugin
 }
 
-func (o *UpdatePrefunctionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
-	if o == nil {
+func (u *UpdatePrefunctionPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+	if u == nil {
 		return nil
 	}
-	return o.GatewayUnauthorizedError
+	return u.GatewayUnauthorizedError
 }

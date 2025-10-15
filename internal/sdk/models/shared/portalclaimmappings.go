@@ -18,29 +18,29 @@ func (p PortalClaimMappings) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PortalClaimMappings) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *PortalClaimMappings) GetName() *string {
-	if o == nil {
+func (p *PortalClaimMappings) GetName() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Name
+	return p.Name
 }
 
-func (o *PortalClaimMappings) GetEmail() *string {
-	if o == nil {
+func (p *PortalClaimMappings) GetEmail() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Email
+	return p.Email
 }
 
-func (o *PortalClaimMappings) GetGroups() *string {
-	if o == nil {
+func (p *PortalClaimMappings) GetGroups() *string {
+	if p == nil {
 		return nil
 	}
-	return o.Groups
+	return p.Groups
 }

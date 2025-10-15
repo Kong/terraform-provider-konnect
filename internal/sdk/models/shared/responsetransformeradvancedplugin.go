@@ -12,22 +12,22 @@ type ResponseTransformerAdvancedPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *ResponseTransformerAdvancedPluginAfter) GetAccess() []string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginAfter) GetAccess() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Access
+	return r.Access
 }
 
 type ResponseTransformerAdvancedPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *ResponseTransformerAdvancedPluginBefore) GetAccess() []string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginBefore) GetAccess() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Access
+	return r.Access
 }
 
 type ResponseTransformerAdvancedPluginOrdering struct {
@@ -35,18 +35,18 @@ type ResponseTransformerAdvancedPluginOrdering struct {
 	Before *ResponseTransformerAdvancedPluginBefore `json:"before,omitempty"`
 }
 
-func (o *ResponseTransformerAdvancedPluginOrdering) GetAfter() *ResponseTransformerAdvancedPluginAfter {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginOrdering) GetAfter() *ResponseTransformerAdvancedPluginAfter {
+	if r == nil {
 		return nil
 	}
-	return o.After
+	return r.After
 }
 
-func (o *ResponseTransformerAdvancedPluginOrdering) GetBefore() *ResponseTransformerAdvancedPluginBefore {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginOrdering) GetBefore() *ResponseTransformerAdvancedPluginBefore {
+	if r == nil {
 		return nil
 	}
-	return o.Before
+	return r.Before
 }
 
 type ResponseTransformerAdvancedPluginPartials struct {
@@ -57,25 +57,25 @@ type ResponseTransformerAdvancedPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *ResponseTransformerAdvancedPluginPartials) GetID() *string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginPartials) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
-func (o *ResponseTransformerAdvancedPluginPartials) GetName() *string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginPartials) GetName() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Name
+	return r.Name
 }
 
-func (o *ResponseTransformerAdvancedPluginPartials) GetPath() *string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginPartials) GetPath() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Path
+	return r.Path
 }
 
 type ResponseTransformerAdvancedPluginJSONTypes string
@@ -114,43 +114,43 @@ type ResponseTransformerAdvancedPluginAdd struct {
 	JSONTypes []ResponseTransformerAdvancedPluginJSONTypes `json:"json_types,omitempty"`
 }
 
-func (o *ResponseTransformerAdvancedPluginAdd) GetHeaders() []string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginAdd) GetHeaders() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Headers
+	return r.Headers
 }
 
-func (o *ResponseTransformerAdvancedPluginAdd) GetIfStatus() []string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginAdd) GetIfStatus() []string {
+	if r == nil {
 		return nil
 	}
-	return o.IfStatus
+	return r.IfStatus
 }
 
-func (o *ResponseTransformerAdvancedPluginAdd) GetJSON() []string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginAdd) GetJSON() []string {
+	if r == nil {
 		return nil
 	}
-	return o.JSON
+	return r.JSON
 }
 
-func (o *ResponseTransformerAdvancedPluginAdd) GetJSONTypes() []ResponseTransformerAdvancedPluginJSONTypes {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginAdd) GetJSONTypes() []ResponseTransformerAdvancedPluginJSONTypes {
+	if r == nil {
 		return nil
 	}
-	return o.JSONTypes
+	return r.JSONTypes
 }
 
 type ResponseTransformerAdvancedPluginAllow struct {
 	JSON []string `json:"json"`
 }
 
-func (o *ResponseTransformerAdvancedPluginAllow) GetJSON() []string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginAllow) GetJSON() []string {
+	if r == nil {
 		return nil
 	}
-	return o.JSON
+	return r.JSON
 }
 
 type ResponseTransformerAdvancedPluginConfigJSONTypes string
@@ -189,32 +189,32 @@ type ResponseTransformerAdvancedPluginAppend struct {
 	JSONTypes []ResponseTransformerAdvancedPluginConfigJSONTypes `json:"json_types,omitempty"`
 }
 
-func (o *ResponseTransformerAdvancedPluginAppend) GetHeaders() []string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginAppend) GetHeaders() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Headers
+	return r.Headers
 }
 
-func (o *ResponseTransformerAdvancedPluginAppend) GetIfStatus() []string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginAppend) GetIfStatus() []string {
+	if r == nil {
 		return nil
 	}
-	return o.IfStatus
+	return r.IfStatus
 }
 
-func (o *ResponseTransformerAdvancedPluginAppend) GetJSON() []string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginAppend) GetJSON() []string {
+	if r == nil {
 		return nil
 	}
-	return o.JSON
+	return r.JSON
 }
 
-func (o *ResponseTransformerAdvancedPluginAppend) GetJSONTypes() []ResponseTransformerAdvancedPluginConfigJSONTypes {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginAppend) GetJSONTypes() []ResponseTransformerAdvancedPluginConfigJSONTypes {
+	if r == nil {
 		return nil
 	}
-	return o.JSONTypes
+	return r.JSONTypes
 }
 
 type ResponseTransformerAdvancedPluginRemove struct {
@@ -223,25 +223,25 @@ type ResponseTransformerAdvancedPluginRemove struct {
 	JSON     []string `json:"json,omitempty"`
 }
 
-func (o *ResponseTransformerAdvancedPluginRemove) GetHeaders() []string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginRemove) GetHeaders() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Headers
+	return r.Headers
 }
 
-func (o *ResponseTransformerAdvancedPluginRemove) GetIfStatus() []string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginRemove) GetIfStatus() []string {
+	if r == nil {
 		return nil
 	}
-	return o.IfStatus
+	return r.IfStatus
 }
 
-func (o *ResponseTransformerAdvancedPluginRemove) GetJSON() []string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginRemove) GetJSON() []string {
+	if r == nil {
 		return nil
 	}
-	return o.JSON
+	return r.JSON
 }
 
 type ResponseTransformerAdvancedPluginRename struct {
@@ -249,18 +249,18 @@ type ResponseTransformerAdvancedPluginRename struct {
 	IfStatus []string `json:"if_status,omitempty"`
 }
 
-func (o *ResponseTransformerAdvancedPluginRename) GetHeaders() []string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginRename) GetHeaders() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Headers
+	return r.Headers
 }
 
-func (o *ResponseTransformerAdvancedPluginRename) GetIfStatus() []string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginRename) GetIfStatus() []string {
+	if r == nil {
 		return nil
 	}
-	return o.IfStatus
+	return r.IfStatus
 }
 
 type ResponseTransformerAdvancedPluginConfigReplaceJSONTypes string
@@ -306,45 +306,45 @@ func (r ResponseTransformerAdvancedPluginReplace) MarshalJSON() ([]byte, error) 
 }
 
 func (r *ResponseTransformerAdvancedPluginReplace) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ResponseTransformerAdvancedPluginReplace) GetBody() *string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginReplace) GetBody() *string {
+	if r == nil {
 		return nil
 	}
-	return o.Body
+	return r.Body
 }
 
-func (o *ResponseTransformerAdvancedPluginReplace) GetHeaders() []string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginReplace) GetHeaders() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Headers
+	return r.Headers
 }
 
-func (o *ResponseTransformerAdvancedPluginReplace) GetIfStatus() []string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginReplace) GetIfStatus() []string {
+	if r == nil {
 		return nil
 	}
-	return o.IfStatus
+	return r.IfStatus
 }
 
-func (o *ResponseTransformerAdvancedPluginReplace) GetJSON() []string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginReplace) GetJSON() []string {
+	if r == nil {
 		return nil
 	}
-	return o.JSON
+	return r.JSON
 }
 
-func (o *ResponseTransformerAdvancedPluginReplace) GetJSONTypes() []ResponseTransformerAdvancedPluginConfigReplaceJSONTypes {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginReplace) GetJSONTypes() []ResponseTransformerAdvancedPluginConfigReplaceJSONTypes {
+	if r == nil {
 		return nil
 	}
-	return o.JSONTypes
+	return r.JSONTypes
 }
 
 type Transform struct {
@@ -353,25 +353,25 @@ type Transform struct {
 	JSON      []string `json:"json,omitempty"`
 }
 
-func (o *Transform) GetFunctions() []string {
-	if o == nil {
+func (t *Transform) GetFunctions() []string {
+	if t == nil {
 		return nil
 	}
-	return o.Functions
+	return t.Functions
 }
 
-func (o *Transform) GetIfStatus() []string {
-	if o == nil {
+func (t *Transform) GetIfStatus() []string {
+	if t == nil {
 		return nil
 	}
-	return o.IfStatus
+	return t.IfStatus
 }
 
-func (o *Transform) GetJSON() []string {
-	if o == nil {
+func (t *Transform) GetJSON() []string {
+	if t == nil {
 		return nil
 	}
-	return o.JSON
+	return t.JSON
 }
 
 type ResponseTransformerAdvancedPluginConfig struct {
@@ -391,66 +391,66 @@ func (r ResponseTransformerAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (r *ResponseTransformerAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ResponseTransformerAdvancedPluginConfig) GetAdd() *ResponseTransformerAdvancedPluginAdd {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginConfig) GetAdd() *ResponseTransformerAdvancedPluginAdd {
+	if r == nil {
 		return nil
 	}
-	return o.Add
+	return r.Add
 }
 
-func (o *ResponseTransformerAdvancedPluginConfig) GetAllow() *ResponseTransformerAdvancedPluginAllow {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginConfig) GetAllow() *ResponseTransformerAdvancedPluginAllow {
+	if r == nil {
 		return nil
 	}
-	return o.Allow
+	return r.Allow
 }
 
-func (o *ResponseTransformerAdvancedPluginConfig) GetAppend() *ResponseTransformerAdvancedPluginAppend {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginConfig) GetAppend() *ResponseTransformerAdvancedPluginAppend {
+	if r == nil {
 		return nil
 	}
-	return o.Append
+	return r.Append
 }
 
-func (o *ResponseTransformerAdvancedPluginConfig) GetDotsInKeys() *bool {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginConfig) GetDotsInKeys() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.DotsInKeys
+	return r.DotsInKeys
 }
 
-func (o *ResponseTransformerAdvancedPluginConfig) GetRemove() *ResponseTransformerAdvancedPluginRemove {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginConfig) GetRemove() *ResponseTransformerAdvancedPluginRemove {
+	if r == nil {
 		return nil
 	}
-	return o.Remove
+	return r.Remove
 }
 
-func (o *ResponseTransformerAdvancedPluginConfig) GetRename() *ResponseTransformerAdvancedPluginRename {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginConfig) GetRename() *ResponseTransformerAdvancedPluginRename {
+	if r == nil {
 		return nil
 	}
-	return o.Rename
+	return r.Rename
 }
 
-func (o *ResponseTransformerAdvancedPluginConfig) GetReplace() *ResponseTransformerAdvancedPluginReplace {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginConfig) GetReplace() *ResponseTransformerAdvancedPluginReplace {
+	if r == nil {
 		return nil
 	}
-	return o.Replace
+	return r.Replace
 }
 
-func (o *ResponseTransformerAdvancedPluginConfig) GetTransform() *Transform {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginConfig) GetTransform() *Transform {
+	if r == nil {
 		return nil
 	}
-	return o.Transform
+	return r.Transform
 }
 
 // ResponseTransformerAdvancedPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -458,11 +458,11 @@ type ResponseTransformerAdvancedPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *ResponseTransformerAdvancedPluginConsumer) GetID() *string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginConsumer) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
 // ResponseTransformerAdvancedPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -470,11 +470,11 @@ type ResponseTransformerAdvancedPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *ResponseTransformerAdvancedPluginConsumerGroup) GetID() *string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginConsumerGroup) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
 type ResponseTransformerAdvancedPluginProtocols string
@@ -514,11 +514,11 @@ type ResponseTransformerAdvancedPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *ResponseTransformerAdvancedPluginRoute) GetID() *string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginRoute) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
 // ResponseTransformerAdvancedPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -526,11 +526,11 @@ type ResponseTransformerAdvancedPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *ResponseTransformerAdvancedPluginService) GetID() *string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPluginService) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
 // ResponseTransformerAdvancedPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -569,110 +569,110 @@ func (r ResponseTransformerAdvancedPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (r *ResponseTransformerAdvancedPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *ResponseTransformerAdvancedPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPlugin) GetCreatedAt() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return r.CreatedAt
 }
 
-func (o *ResponseTransformerAdvancedPlugin) GetEnabled() *bool {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPlugin) GetEnabled() *bool {
+	if r == nil {
 		return nil
 	}
-	return o.Enabled
+	return r.Enabled
 }
 
-func (o *ResponseTransformerAdvancedPlugin) GetID() *string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPlugin) GetID() *string {
+	if r == nil {
 		return nil
 	}
-	return o.ID
+	return r.ID
 }
 
-func (o *ResponseTransformerAdvancedPlugin) GetInstanceName() *string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPlugin) GetInstanceName() *string {
+	if r == nil {
 		return nil
 	}
-	return o.InstanceName
+	return r.InstanceName
 }
 
-func (o *ResponseTransformerAdvancedPlugin) GetName() string {
+func (r *ResponseTransformerAdvancedPlugin) GetName() string {
 	return "response-transformer-advanced"
 }
 
-func (o *ResponseTransformerAdvancedPlugin) GetOrdering() *ResponseTransformerAdvancedPluginOrdering {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPlugin) GetOrdering() *ResponseTransformerAdvancedPluginOrdering {
+	if r == nil {
 		return nil
 	}
-	return o.Ordering
+	return r.Ordering
 }
 
-func (o *ResponseTransformerAdvancedPlugin) GetPartials() []ResponseTransformerAdvancedPluginPartials {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPlugin) GetPartials() []ResponseTransformerAdvancedPluginPartials {
+	if r == nil {
 		return nil
 	}
-	return o.Partials
+	return r.Partials
 }
 
-func (o *ResponseTransformerAdvancedPlugin) GetTags() []string {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPlugin) GetTags() []string {
+	if r == nil {
 		return nil
 	}
-	return o.Tags
+	return r.Tags
 }
 
-func (o *ResponseTransformerAdvancedPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPlugin) GetUpdatedAt() *int64 {
+	if r == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return r.UpdatedAt
 }
 
-func (o *ResponseTransformerAdvancedPlugin) GetConfig() *ResponseTransformerAdvancedPluginConfig {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPlugin) GetConfig() *ResponseTransformerAdvancedPluginConfig {
+	if r == nil {
 		return nil
 	}
-	return o.Config
+	return r.Config
 }
 
-func (o *ResponseTransformerAdvancedPlugin) GetConsumer() *ResponseTransformerAdvancedPluginConsumer {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPlugin) GetConsumer() *ResponseTransformerAdvancedPluginConsumer {
+	if r == nil {
 		return nil
 	}
-	return o.Consumer
+	return r.Consumer
 }
 
-func (o *ResponseTransformerAdvancedPlugin) GetConsumerGroup() *ResponseTransformerAdvancedPluginConsumerGroup {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPlugin) GetConsumerGroup() *ResponseTransformerAdvancedPluginConsumerGroup {
+	if r == nil {
 		return nil
 	}
-	return o.ConsumerGroup
+	return r.ConsumerGroup
 }
 
-func (o *ResponseTransformerAdvancedPlugin) GetProtocols() []ResponseTransformerAdvancedPluginProtocols {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPlugin) GetProtocols() []ResponseTransformerAdvancedPluginProtocols {
+	if r == nil {
 		return nil
 	}
-	return o.Protocols
+	return r.Protocols
 }
 
-func (o *ResponseTransformerAdvancedPlugin) GetRoute() *ResponseTransformerAdvancedPluginRoute {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPlugin) GetRoute() *ResponseTransformerAdvancedPluginRoute {
+	if r == nil {
 		return nil
 	}
-	return o.Route
+	return r.Route
 }
 
-func (o *ResponseTransformerAdvancedPlugin) GetService() *ResponseTransformerAdvancedPluginService {
-	if o == nil {
+func (r *ResponseTransformerAdvancedPlugin) GetService() *ResponseTransformerAdvancedPluginService {
+	if r == nil {
 		return nil
 	}
-	return o.Service
+	return r.Service
 }

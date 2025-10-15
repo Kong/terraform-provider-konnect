@@ -31,8 +31,6 @@ data "konnect_gateway_control_plane" "my_gatewaycontrolplane" {
     }
   }
   filter_labels = "key:value,existCheck"
-  page_number   = 1
-  page_size     = 10
   sort          = "created_at desc"
 }
 ```
@@ -44,8 +42,6 @@ data "konnect_gateway_control_plane" "my_gatewaycontrolplane" {
 
 - `filter` (Attributes) Filters a collection of control-planes. (see [below for nested schema](#nestedatt--filter))
 - `filter_labels` (String) Filter control planes in the response by associated labels.
-- `page_number` (Number) Determines which page of the entities to retrieve.
-- `page_size` (Number) The maximum number of items to include per page. The last page of a collection may include fewer items.
 - `sort` (String) Sorts a collection of control-planes. Supported sort attributes are:
   - created_at
 
@@ -58,9 +54,6 @@ data "konnect_gateway_control_plane" "my_gatewaycontrolplane" {
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `name` (String) The name of the control plane.
-- `number` (Number)
-- `size` (Number)
-- `total` (Number)
 
 <a id="nestedatt--filter"></a>
 ### Nested Schema for `filter`

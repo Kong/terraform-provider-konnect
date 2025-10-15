@@ -36,12 +36,7 @@ type GatewayControlPlaneDataSourceModel struct {
 	ID           types.String                          `tfsdk:"id"`
 	Labels       map[string]types.String               `tfsdk:"labels"`
 	Name         types.String                          `tfsdk:"name"`
-	Number       types.Float64                         `tfsdk:"number"`
-	PageNumber   types.Int64                           `queryParam:"style=form,explode=true,name=page[number]" tfsdk:"page_number"`
-	PageSize     types.Int64                           `queryParam:"style=form,explode=true,name=page[size]" tfsdk:"page_size"`
-	Size         types.Float64                         `tfsdk:"size"`
 	Sort         types.String                          `queryParam:"style=form,explode=true,name=sort" tfsdk:"sort"`
-	Total        types.Float64                         `tfsdk:"total"`
 }
 
 // Metadata returns the data source type name.
@@ -173,27 +168,10 @@ func (r *GatewayControlPlaneDataSource) Schema(ctx context.Context, req datasour
 				Computed:    true,
 				Description: `The name of the control plane.`,
 			},
-			"number": schema.Float64Attribute{
-				Computed: true,
-			},
-			"page_number": schema.Int64Attribute{
-				Optional:    true,
-				Description: `Determines which page of the entities to retrieve.`,
-			},
-			"page_size": schema.Int64Attribute{
-				Optional:    true,
-				Description: `The maximum number of items to include per page. The last page of a collection may include fewer items.`,
-			},
-			"size": schema.Float64Attribute{
-				Computed: true,
-			},
 			"sort": schema.StringAttribute{
 				Optional: true,
 				MarkdownDescription: `Sorts a collection of control-planes. Supported sort attributes are:` + "\n" +
 					`  - created_at`,
-			},
-			"total": schema.Float64Attribute{
-				Computed: true,
 			},
 		},
 	}
@@ -237,13 +215,13 @@ func (r *GatewayControlPlaneDataSource) Read(ctx context.Context, req datasource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsListControlPlanesRequest(ctx)
+	request, requestDiags := data.ToOperationsListControlPlanesSingleResourceRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.ControlPlanes.ListControlPlanes(ctx, *request)
+	res, err := r.client.ControlPlanes.ListControlPlanesSingleResource(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

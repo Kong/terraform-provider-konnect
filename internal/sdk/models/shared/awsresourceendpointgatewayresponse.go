@@ -21,24 +21,24 @@ func (a AwsResourceEndpointGatewayResponseTransitGatewayStateMetadata) MarshalJS
 }
 
 func (a *AwsResourceEndpointGatewayResponseTransitGatewayStateMetadata) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AwsResourceEndpointGatewayResponseTransitGatewayStateMetadata) GetReportedStatus() *string {
-	if o == nil {
+func (a *AwsResourceEndpointGatewayResponseTransitGatewayStateMetadata) GetReportedStatus() *string {
+	if a == nil {
 		return nil
 	}
-	return o.ReportedStatus
+	return a.ReportedStatus
 }
 
-func (o *AwsResourceEndpointGatewayResponseTransitGatewayStateMetadata) GetReason() *string {
-	if o == nil {
+func (a *AwsResourceEndpointGatewayResponseTransitGatewayStateMetadata) GetReason() *string {
+	if a == nil {
 		return nil
 	}
-	return o.Reason
+	return a.Reason
 }
 
 type AwsResourceEndpointGatewayResponse struct {
@@ -78,71 +78,71 @@ func (a AwsResourceEndpointGatewayResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AwsResourceEndpointGatewayResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, true); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "dns_config", "transit_gateway_attachment_config", "id", "state", "entity_version", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *AwsResourceEndpointGatewayResponse) GetName() string {
-	if o == nil {
+func (a *AwsResourceEndpointGatewayResponse) GetName() string {
+	if a == nil {
 		return ""
 	}
-	return o.Name
+	return a.Name
 }
 
-func (o *AwsResourceEndpointGatewayResponse) GetDNSConfig() []TransitGatewayDNSConfig {
-	if o == nil {
+func (a *AwsResourceEndpointGatewayResponse) GetDNSConfig() []TransitGatewayDNSConfig {
+	if a == nil {
 		return []TransitGatewayDNSConfig{}
 	}
-	return o.DNSConfig
+	return a.DNSConfig
 }
 
-func (o *AwsResourceEndpointGatewayResponse) GetTransitGatewayAttachmentConfig() AwsResourceEndpointAttachmentConfigResponse {
-	if o == nil {
+func (a *AwsResourceEndpointGatewayResponse) GetTransitGatewayAttachmentConfig() AwsResourceEndpointAttachmentConfigResponse {
+	if a == nil {
 		return AwsResourceEndpointAttachmentConfigResponse{}
 	}
-	return o.TransitGatewayAttachmentConfig
+	return a.TransitGatewayAttachmentConfig
 }
 
-func (o *AwsResourceEndpointGatewayResponse) GetID() string {
-	if o == nil {
+func (a *AwsResourceEndpointGatewayResponse) GetID() string {
+	if a == nil {
 		return ""
 	}
-	return o.ID
+	return a.ID
 }
 
-func (o *AwsResourceEndpointGatewayResponse) GetState() TransitGatewayState {
-	if o == nil {
+func (a *AwsResourceEndpointGatewayResponse) GetState() TransitGatewayState {
+	if a == nil {
 		return TransitGatewayState("")
 	}
-	return o.State
+	return a.State
 }
 
-func (o *AwsResourceEndpointGatewayResponse) GetStateMetadata() *AwsResourceEndpointGatewayResponseTransitGatewayStateMetadata {
-	if o == nil {
+func (a *AwsResourceEndpointGatewayResponse) GetStateMetadata() *AwsResourceEndpointGatewayResponseTransitGatewayStateMetadata {
+	if a == nil {
 		return nil
 	}
-	return o.StateMetadata
+	return a.StateMetadata
 }
 
-func (o *AwsResourceEndpointGatewayResponse) GetEntityVersion() int64 {
-	if o == nil {
+func (a *AwsResourceEndpointGatewayResponse) GetEntityVersion() int64 {
+	if a == nil {
 		return 0
 	}
-	return o.EntityVersion
+	return a.EntityVersion
 }
 
-func (o *AwsResourceEndpointGatewayResponse) GetCreatedAt() time.Time {
-	if o == nil {
+func (a *AwsResourceEndpointGatewayResponse) GetCreatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return a.CreatedAt
 }
 
-func (o *AwsResourceEndpointGatewayResponse) GetUpdatedAt() time.Time {
-	if o == nil {
+func (a *AwsResourceEndpointGatewayResponse) GetUpdatedAt() time.Time {
+	if a == nil {
 		return time.Time{}
 	}
-	return o.UpdatedAt
+	return a.UpdatedAt
 }

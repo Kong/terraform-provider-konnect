@@ -12,22 +12,22 @@ type SamlPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *SamlPluginAfter) GetAccess() []string {
-	if o == nil {
+func (s *SamlPluginAfter) GetAccess() []string {
+	if s == nil {
 		return nil
 	}
-	return o.Access
+	return s.Access
 }
 
 type SamlPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (o *SamlPluginBefore) GetAccess() []string {
-	if o == nil {
+func (s *SamlPluginBefore) GetAccess() []string {
+	if s == nil {
 		return nil
 	}
-	return o.Access
+	return s.Access
 }
 
 type SamlPluginOrdering struct {
@@ -35,18 +35,18 @@ type SamlPluginOrdering struct {
 	Before *SamlPluginBefore `json:"before,omitempty"`
 }
 
-func (o *SamlPluginOrdering) GetAfter() *SamlPluginAfter {
-	if o == nil {
+func (s *SamlPluginOrdering) GetAfter() *SamlPluginAfter {
+	if s == nil {
 		return nil
 	}
-	return o.After
+	return s.After
 }
 
-func (o *SamlPluginOrdering) GetBefore() *SamlPluginBefore {
-	if o == nil {
+func (s *SamlPluginOrdering) GetBefore() *SamlPluginBefore {
+	if s == nil {
 		return nil
 	}
-	return o.Before
+	return s.Before
 }
 
 type SamlPluginPartials struct {
@@ -57,25 +57,25 @@ type SamlPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (o *SamlPluginPartials) GetID() *string {
-	if o == nil {
+func (s *SamlPluginPartials) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ID
+	return s.ID
 }
 
-func (o *SamlPluginPartials) GetName() *string {
-	if o == nil {
+func (s *SamlPluginPartials) GetName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Name
+	return s.Name
 }
 
-func (o *SamlPluginPartials) GetPath() *string {
-	if o == nil {
+func (s *SamlPluginPartials) GetPath() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Path
+	return s.Path
 }
 
 // NameidFormat - The requested `NameId` format. Options available are: - `Unspecified` - `EmailAddress` - `Persistent` - `Transient`
@@ -123,24 +123,24 @@ func (s SamlPluginClusterNodes) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SamlPluginClusterNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *SamlPluginClusterNodes) GetIP() *string {
-	if o == nil {
+func (s *SamlPluginClusterNodes) GetIP() *string {
+	if s == nil {
 		return nil
 	}
-	return o.IP
+	return s.IP
 }
 
-func (o *SamlPluginClusterNodes) GetPort() *int64 {
-	if o == nil {
+func (s *SamlPluginClusterNodes) GetPort() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.Port
+	return s.Port
 }
 
 type SamlPluginSentinelNodes struct {
@@ -155,24 +155,24 @@ func (s SamlPluginSentinelNodes) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SamlPluginSentinelNodes) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *SamlPluginSentinelNodes) GetHost() *string {
-	if o == nil {
+func (s *SamlPluginSentinelNodes) GetHost() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Host
+	return s.Host
 }
 
-func (o *SamlPluginSentinelNodes) GetPort() *int64 {
-	if o == nil {
+func (s *SamlPluginSentinelNodes) GetPort() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.Port
+	return s.Port
 }
 
 // SamlPluginSentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
@@ -259,171 +259,171 @@ func (s SamlPluginRedis) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SamlPluginRedis) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *SamlPluginRedis) GetClusterMaxRedirections() *int64 {
-	if o == nil {
+func (s *SamlPluginRedis) GetClusterMaxRedirections() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.ClusterMaxRedirections
+	return s.ClusterMaxRedirections
 }
 
-func (o *SamlPluginRedis) GetClusterNodes() []SamlPluginClusterNodes {
-	if o == nil {
+func (s *SamlPluginRedis) GetClusterNodes() []SamlPluginClusterNodes {
+	if s == nil {
 		return nil
 	}
-	return o.ClusterNodes
+	return s.ClusterNodes
 }
 
-func (o *SamlPluginRedis) GetConnectTimeout() *int64 {
-	if o == nil {
+func (s *SamlPluginRedis) GetConnectTimeout() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.ConnectTimeout
+	return s.ConnectTimeout
 }
 
-func (o *SamlPluginRedis) GetConnectionIsProxied() *bool {
-	if o == nil {
+func (s *SamlPluginRedis) GetConnectionIsProxied() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.ConnectionIsProxied
+	return s.ConnectionIsProxied
 }
 
-func (o *SamlPluginRedis) GetDatabase() *int64 {
-	if o == nil {
+func (s *SamlPluginRedis) GetDatabase() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.Database
+	return s.Database
 }
 
-func (o *SamlPluginRedis) GetHost() *string {
-	if o == nil {
+func (s *SamlPluginRedis) GetHost() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Host
+	return s.Host
 }
 
-func (o *SamlPluginRedis) GetKeepaliveBacklog() *int64 {
-	if o == nil {
+func (s *SamlPluginRedis) GetKeepaliveBacklog() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.KeepaliveBacklog
+	return s.KeepaliveBacklog
 }
 
-func (o *SamlPluginRedis) GetKeepalivePoolSize() *int64 {
-	if o == nil {
+func (s *SamlPluginRedis) GetKeepalivePoolSize() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.KeepalivePoolSize
+	return s.KeepalivePoolSize
 }
 
-func (o *SamlPluginRedis) GetPassword() *string {
-	if o == nil {
+func (s *SamlPluginRedis) GetPassword() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Password
+	return s.Password
 }
 
-func (o *SamlPluginRedis) GetPort() *int64 {
-	if o == nil {
+func (s *SamlPluginRedis) GetPort() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.Port
+	return s.Port
 }
 
-func (o *SamlPluginRedis) GetPrefix() *string {
-	if o == nil {
+func (s *SamlPluginRedis) GetPrefix() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Prefix
+	return s.Prefix
 }
 
-func (o *SamlPluginRedis) GetReadTimeout() *int64 {
-	if o == nil {
+func (s *SamlPluginRedis) GetReadTimeout() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.ReadTimeout
+	return s.ReadTimeout
 }
 
-func (o *SamlPluginRedis) GetSendTimeout() *int64 {
-	if o == nil {
+func (s *SamlPluginRedis) GetSendTimeout() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.SendTimeout
+	return s.SendTimeout
 }
 
-func (o *SamlPluginRedis) GetSentinelMaster() *string {
-	if o == nil {
+func (s *SamlPluginRedis) GetSentinelMaster() *string {
+	if s == nil {
 		return nil
 	}
-	return o.SentinelMaster
+	return s.SentinelMaster
 }
 
-func (o *SamlPluginRedis) GetSentinelNodes() []SamlPluginSentinelNodes {
-	if o == nil {
+func (s *SamlPluginRedis) GetSentinelNodes() []SamlPluginSentinelNodes {
+	if s == nil {
 		return nil
 	}
-	return o.SentinelNodes
+	return s.SentinelNodes
 }
 
-func (o *SamlPluginRedis) GetSentinelPassword() *string {
-	if o == nil {
+func (s *SamlPluginRedis) GetSentinelPassword() *string {
+	if s == nil {
 		return nil
 	}
-	return o.SentinelPassword
+	return s.SentinelPassword
 }
 
-func (o *SamlPluginRedis) GetSentinelRole() *SamlPluginSentinelRole {
-	if o == nil {
+func (s *SamlPluginRedis) GetSentinelRole() *SamlPluginSentinelRole {
+	if s == nil {
 		return nil
 	}
-	return o.SentinelRole
+	return s.SentinelRole
 }
 
-func (o *SamlPluginRedis) GetSentinelUsername() *string {
-	if o == nil {
+func (s *SamlPluginRedis) GetSentinelUsername() *string {
+	if s == nil {
 		return nil
 	}
-	return o.SentinelUsername
+	return s.SentinelUsername
 }
 
-func (o *SamlPluginRedis) GetServerName() *string {
-	if o == nil {
+func (s *SamlPluginRedis) GetServerName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ServerName
+	return s.ServerName
 }
 
-func (o *SamlPluginRedis) GetSocket() *string {
-	if o == nil {
+func (s *SamlPluginRedis) GetSocket() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Socket
+	return s.Socket
 }
 
-func (o *SamlPluginRedis) GetSsl() *bool {
-	if o == nil {
+func (s *SamlPluginRedis) GetSsl() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.Ssl
+	return s.Ssl
 }
 
-func (o *SamlPluginRedis) GetSslVerify() *bool {
-	if o == nil {
+func (s *SamlPluginRedis) GetSslVerify() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.SslVerify
+	return s.SslVerify
 }
 
-func (o *SamlPluginRedis) GetUsername() *string {
-	if o == nil {
+func (s *SamlPluginRedis) GetUsername() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Username
+	return s.Username
 }
 
 // RequestDigestAlgorithm - The digest algorithm for Authn requests: - `SHA256` - `SHA1`
@@ -775,297 +775,297 @@ func (s SamlPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SamlPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"assertion_consumer_path", "idp_sso_url", "issuer", "session_secret"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *SamlPluginConfig) GetAnonymous() *string {
-	if o == nil {
+func (s *SamlPluginConfig) GetAnonymous() *string {
+	if s == nil {
 		return nil
 	}
-	return o.Anonymous
+	return s.Anonymous
 }
 
-func (o *SamlPluginConfig) GetAssertionConsumerPath() string {
-	if o == nil {
+func (s *SamlPluginConfig) GetAssertionConsumerPath() string {
+	if s == nil {
 		return ""
 	}
-	return o.AssertionConsumerPath
+	return s.AssertionConsumerPath
 }
 
-func (o *SamlPluginConfig) GetIdpCertificate() *string {
-	if o == nil {
+func (s *SamlPluginConfig) GetIdpCertificate() *string {
+	if s == nil {
 		return nil
 	}
-	return o.IdpCertificate
+	return s.IdpCertificate
 }
 
-func (o *SamlPluginConfig) GetIdpSsoURL() string {
-	if o == nil {
+func (s *SamlPluginConfig) GetIdpSsoURL() string {
+	if s == nil {
 		return ""
 	}
-	return o.IdpSsoURL
+	return s.IdpSsoURL
 }
 
-func (o *SamlPluginConfig) GetIssuer() string {
-	if o == nil {
+func (s *SamlPluginConfig) GetIssuer() string {
+	if s == nil {
 		return ""
 	}
-	return o.Issuer
+	return s.Issuer
 }
 
-func (o *SamlPluginConfig) GetNameidFormat() *NameidFormat {
-	if o == nil {
+func (s *SamlPluginConfig) GetNameidFormat() *NameidFormat {
+	if s == nil {
 		return nil
 	}
-	return o.NameidFormat
+	return s.NameidFormat
 }
 
-func (o *SamlPluginConfig) GetRedis() *SamlPluginRedis {
-	if o == nil {
+func (s *SamlPluginConfig) GetRedis() *SamlPluginRedis {
+	if s == nil {
 		return nil
 	}
-	return o.Redis
+	return s.Redis
 }
 
-func (o *SamlPluginConfig) GetRequestDigestAlgorithm() *RequestDigestAlgorithm {
-	if o == nil {
+func (s *SamlPluginConfig) GetRequestDigestAlgorithm() *RequestDigestAlgorithm {
+	if s == nil {
 		return nil
 	}
-	return o.RequestDigestAlgorithm
+	return s.RequestDigestAlgorithm
 }
 
-func (o *SamlPluginConfig) GetRequestSignatureAlgorithm() *RequestSignatureAlgorithm {
-	if o == nil {
+func (s *SamlPluginConfig) GetRequestSignatureAlgorithm() *RequestSignatureAlgorithm {
+	if s == nil {
 		return nil
 	}
-	return o.RequestSignatureAlgorithm
+	return s.RequestSignatureAlgorithm
 }
 
-func (o *SamlPluginConfig) GetRequestSigningCertificate() *string {
-	if o == nil {
+func (s *SamlPluginConfig) GetRequestSigningCertificate() *string {
+	if s == nil {
 		return nil
 	}
-	return o.RequestSigningCertificate
+	return s.RequestSigningCertificate
 }
 
-func (o *SamlPluginConfig) GetRequestSigningKey() *string {
-	if o == nil {
+func (s *SamlPluginConfig) GetRequestSigningKey() *string {
+	if s == nil {
 		return nil
 	}
-	return o.RequestSigningKey
+	return s.RequestSigningKey
 }
 
-func (o *SamlPluginConfig) GetResponseDigestAlgorithm() *ResponseDigestAlgorithm {
-	if o == nil {
+func (s *SamlPluginConfig) GetResponseDigestAlgorithm() *ResponseDigestAlgorithm {
+	if s == nil {
 		return nil
 	}
-	return o.ResponseDigestAlgorithm
+	return s.ResponseDigestAlgorithm
 }
 
-func (o *SamlPluginConfig) GetResponseEncryptionKey() *string {
-	if o == nil {
+func (s *SamlPluginConfig) GetResponseEncryptionKey() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ResponseEncryptionKey
+	return s.ResponseEncryptionKey
 }
 
-func (o *SamlPluginConfig) GetResponseSignatureAlgorithm() *ResponseSignatureAlgorithm {
-	if o == nil {
+func (s *SamlPluginConfig) GetResponseSignatureAlgorithm() *ResponseSignatureAlgorithm {
+	if s == nil {
 		return nil
 	}
-	return o.ResponseSignatureAlgorithm
+	return s.ResponseSignatureAlgorithm
 }
 
-func (o *SamlPluginConfig) GetSessionAbsoluteTimeout() *float64 {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionAbsoluteTimeout() *float64 {
+	if s == nil {
 		return nil
 	}
-	return o.SessionAbsoluteTimeout
+	return s.SessionAbsoluteTimeout
 }
 
-func (o *SamlPluginConfig) GetSessionAudience() *string {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionAudience() *string {
+	if s == nil {
 		return nil
 	}
-	return o.SessionAudience
+	return s.SessionAudience
 }
 
-func (o *SamlPluginConfig) GetSessionCookieDomain() *string {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionCookieDomain() *string {
+	if s == nil {
 		return nil
 	}
-	return o.SessionCookieDomain
+	return s.SessionCookieDomain
 }
 
-func (o *SamlPluginConfig) GetSessionCookieHTTPOnly() *bool {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionCookieHTTPOnly() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.SessionCookieHTTPOnly
+	return s.SessionCookieHTTPOnly
 }
 
-func (o *SamlPluginConfig) GetSessionCookieName() *string {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionCookieName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.SessionCookieName
+	return s.SessionCookieName
 }
 
-func (o *SamlPluginConfig) GetSessionCookiePath() *string {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionCookiePath() *string {
+	if s == nil {
 		return nil
 	}
-	return o.SessionCookiePath
+	return s.SessionCookiePath
 }
 
-func (o *SamlPluginConfig) GetSessionCookieSameSite() *SamlPluginSessionCookieSameSite {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionCookieSameSite() *SamlPluginSessionCookieSameSite {
+	if s == nil {
 		return nil
 	}
-	return o.SessionCookieSameSite
+	return s.SessionCookieSameSite
 }
 
-func (o *SamlPluginConfig) GetSessionCookieSecure() *bool {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionCookieSecure() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.SessionCookieSecure
+	return s.SessionCookieSecure
 }
 
-func (o *SamlPluginConfig) GetSessionEnforceSameSubject() *bool {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionEnforceSameSubject() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.SessionEnforceSameSubject
+	return s.SessionEnforceSameSubject
 }
 
-func (o *SamlPluginConfig) GetSessionHashStorageKey() *bool {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionHashStorageKey() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.SessionHashStorageKey
+	return s.SessionHashStorageKey
 }
 
-func (o *SamlPluginConfig) GetSessionHashSubject() *bool {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionHashSubject() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.SessionHashSubject
+	return s.SessionHashSubject
 }
 
-func (o *SamlPluginConfig) GetSessionIdlingTimeout() *float64 {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionIdlingTimeout() *float64 {
+	if s == nil {
 		return nil
 	}
-	return o.SessionIdlingTimeout
+	return s.SessionIdlingTimeout
 }
 
-func (o *SamlPluginConfig) GetSessionMemcachedHost() *string {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionMemcachedHost() *string {
+	if s == nil {
 		return nil
 	}
-	return o.SessionMemcachedHost
+	return s.SessionMemcachedHost
 }
 
-func (o *SamlPluginConfig) GetSessionMemcachedPort() *int64 {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionMemcachedPort() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.SessionMemcachedPort
+	return s.SessionMemcachedPort
 }
 
-func (o *SamlPluginConfig) GetSessionMemcachedPrefix() *string {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionMemcachedPrefix() *string {
+	if s == nil {
 		return nil
 	}
-	return o.SessionMemcachedPrefix
+	return s.SessionMemcachedPrefix
 }
 
-func (o *SamlPluginConfig) GetSessionMemcachedSocket() *string {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionMemcachedSocket() *string {
+	if s == nil {
 		return nil
 	}
-	return o.SessionMemcachedSocket
+	return s.SessionMemcachedSocket
 }
 
-func (o *SamlPluginConfig) GetSessionRemember() *bool {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionRemember() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.SessionRemember
+	return s.SessionRemember
 }
 
-func (o *SamlPluginConfig) GetSessionRememberAbsoluteTimeout() *float64 {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionRememberAbsoluteTimeout() *float64 {
+	if s == nil {
 		return nil
 	}
-	return o.SessionRememberAbsoluteTimeout
+	return s.SessionRememberAbsoluteTimeout
 }
 
-func (o *SamlPluginConfig) GetSessionRememberCookieName() *string {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionRememberCookieName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.SessionRememberCookieName
+	return s.SessionRememberCookieName
 }
 
-func (o *SamlPluginConfig) GetSessionRememberRollingTimeout() *float64 {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionRememberRollingTimeout() *float64 {
+	if s == nil {
 		return nil
 	}
-	return o.SessionRememberRollingTimeout
+	return s.SessionRememberRollingTimeout
 }
 
-func (o *SamlPluginConfig) GetSessionRequestHeaders() []SamlPluginSessionRequestHeaders {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionRequestHeaders() []SamlPluginSessionRequestHeaders {
+	if s == nil {
 		return nil
 	}
-	return o.SessionRequestHeaders
+	return s.SessionRequestHeaders
 }
 
-func (o *SamlPluginConfig) GetSessionResponseHeaders() []SamlPluginSessionResponseHeaders {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionResponseHeaders() []SamlPluginSessionResponseHeaders {
+	if s == nil {
 		return nil
 	}
-	return o.SessionResponseHeaders
+	return s.SessionResponseHeaders
 }
 
-func (o *SamlPluginConfig) GetSessionRollingTimeout() *float64 {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionRollingTimeout() *float64 {
+	if s == nil {
 		return nil
 	}
-	return o.SessionRollingTimeout
+	return s.SessionRollingTimeout
 }
 
-func (o *SamlPluginConfig) GetSessionSecret() string {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionSecret() string {
+	if s == nil {
 		return ""
 	}
-	return o.SessionSecret
+	return s.SessionSecret
 }
 
-func (o *SamlPluginConfig) GetSessionStorage() *SamlPluginSessionStorage {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionStorage() *SamlPluginSessionStorage {
+	if s == nil {
 		return nil
 	}
-	return o.SessionStorage
+	return s.SessionStorage
 }
 
-func (o *SamlPluginConfig) GetSessionStoreMetadata() *bool {
-	if o == nil {
+func (s *SamlPluginConfig) GetSessionStoreMetadata() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.SessionStoreMetadata
+	return s.SessionStoreMetadata
 }
 
-func (o *SamlPluginConfig) GetValidateAssertionSignature() *bool {
-	if o == nil {
+func (s *SamlPluginConfig) GetValidateAssertionSignature() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.ValidateAssertionSignature
+	return s.ValidateAssertionSignature
 }
 
 type SamlPluginProtocols string
@@ -1105,11 +1105,11 @@ type SamlPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *SamlPluginRoute) GetID() *string {
-	if o == nil {
+func (s *SamlPluginRoute) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ID
+	return s.ID
 }
 
 // SamlPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -1117,11 +1117,11 @@ type SamlPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *SamlPluginService) GetID() *string {
-	if o == nil {
+func (s *SamlPluginService) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ID
+	return s.ID
 }
 
 // SamlPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
@@ -1156,96 +1156,96 @@ func (s SamlPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SamlPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *SamlPlugin) GetCreatedAt() *int64 {
-	if o == nil {
+func (s *SamlPlugin) GetCreatedAt() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.CreatedAt
+	return s.CreatedAt
 }
 
-func (o *SamlPlugin) GetEnabled() *bool {
-	if o == nil {
+func (s *SamlPlugin) GetEnabled() *bool {
+	if s == nil {
 		return nil
 	}
-	return o.Enabled
+	return s.Enabled
 }
 
-func (o *SamlPlugin) GetID() *string {
-	if o == nil {
+func (s *SamlPlugin) GetID() *string {
+	if s == nil {
 		return nil
 	}
-	return o.ID
+	return s.ID
 }
 
-func (o *SamlPlugin) GetInstanceName() *string {
-	if o == nil {
+func (s *SamlPlugin) GetInstanceName() *string {
+	if s == nil {
 		return nil
 	}
-	return o.InstanceName
+	return s.InstanceName
 }
 
-func (o *SamlPlugin) GetName() string {
+func (s *SamlPlugin) GetName() string {
 	return "saml"
 }
 
-func (o *SamlPlugin) GetOrdering() *SamlPluginOrdering {
-	if o == nil {
+func (s *SamlPlugin) GetOrdering() *SamlPluginOrdering {
+	if s == nil {
 		return nil
 	}
-	return o.Ordering
+	return s.Ordering
 }
 
-func (o *SamlPlugin) GetPartials() []SamlPluginPartials {
-	if o == nil {
+func (s *SamlPlugin) GetPartials() []SamlPluginPartials {
+	if s == nil {
 		return nil
 	}
-	return o.Partials
+	return s.Partials
 }
 
-func (o *SamlPlugin) GetTags() []string {
-	if o == nil {
+func (s *SamlPlugin) GetTags() []string {
+	if s == nil {
 		return nil
 	}
-	return o.Tags
+	return s.Tags
 }
 
-func (o *SamlPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
+func (s *SamlPlugin) GetUpdatedAt() *int64 {
+	if s == nil {
 		return nil
 	}
-	return o.UpdatedAt
+	return s.UpdatedAt
 }
 
-func (o *SamlPlugin) GetConfig() SamlPluginConfig {
-	if o == nil {
+func (s *SamlPlugin) GetConfig() SamlPluginConfig {
+	if s == nil {
 		return SamlPluginConfig{}
 	}
-	return o.Config
+	return s.Config
 }
 
-func (o *SamlPlugin) GetProtocols() []SamlPluginProtocols {
-	if o == nil {
+func (s *SamlPlugin) GetProtocols() []SamlPluginProtocols {
+	if s == nil {
 		return nil
 	}
-	return o.Protocols
+	return s.Protocols
 }
 
-func (o *SamlPlugin) GetRoute() *SamlPluginRoute {
-	if o == nil {
+func (s *SamlPlugin) GetRoute() *SamlPluginRoute {
+	if s == nil {
 		return nil
 	}
-	return o.Route
+	return s.Route
 }
 
-func (o *SamlPlugin) GetService() *SamlPluginService {
-	if o == nil {
+func (s *SamlPlugin) GetService() *SamlPluginService {
+	if s == nil {
 		return nil
 	}
-	return o.Service
+	return s.Service
 }

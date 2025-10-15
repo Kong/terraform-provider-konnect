@@ -8,16 +8,16 @@ type GatewayUnauthorizedError struct {
 	Status  int64  `json:"status"`
 }
 
-func (o *GatewayUnauthorizedError) GetMessage() string {
-	if o == nil {
+func (g *GatewayUnauthorizedError) GetMessage() string {
+	if g == nil {
 		return ""
 	}
-	return o.Message
+	return g.Message
 }
 
-func (o *GatewayUnauthorizedError) GetStatus() int64 {
-	if o == nil {
+func (g *GatewayUnauthorizedError) GetStatus() int64 {
+	if g == nil {
 		return 0
 	}
-	return o.Status
+	return g.Status
 }

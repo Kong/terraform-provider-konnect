@@ -32,54 +32,54 @@ func (m MultiKeyAuthCredential) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MultiKeyAuthCredential) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, true); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"id", "integration_instance", "missing_permissions", "tainted", "created_at", "type"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *MultiKeyAuthCredential) GetID() string {
-	if o == nil {
+func (m *MultiKeyAuthCredential) GetID() string {
+	if m == nil {
 		return ""
 	}
-	return o.ID
+	return m.ID
 }
 
-func (o *MultiKeyAuthCredential) GetIntegrationInstance() IntegrationInstanceRef {
-	if o == nil {
+func (m *MultiKeyAuthCredential) GetIntegrationInstance() IntegrationInstanceRef {
+	if m == nil {
 		return IntegrationInstanceRef{}
 	}
-	return o.IntegrationInstance
+	return m.IntegrationInstance
 }
 
-func (o *MultiKeyAuthCredential) GetMissingPermissions() []MissingPermission {
-	if o == nil {
+func (m *MultiKeyAuthCredential) GetMissingPermissions() []MissingPermission {
+	if m == nil {
 		return []MissingPermission{}
 	}
-	return o.MissingPermissions
+	return m.MissingPermissions
 }
 
-func (o *MultiKeyAuthCredential) GetTainted() bool {
-	if o == nil {
+func (m *MultiKeyAuthCredential) GetTainted() bool {
+	if m == nil {
 		return false
 	}
-	return o.Tainted
+	return m.Tainted
 }
 
-func (o *MultiKeyAuthCredential) GetExpiresAt() *time.Time {
-	if o == nil {
+func (m *MultiKeyAuthCredential) GetExpiresAt() *time.Time {
+	if m == nil {
 		return nil
 	}
-	return o.ExpiresAt
+	return m.ExpiresAt
 }
 
-func (o *MultiKeyAuthCredential) GetCreatedAt() time.Time {
-	if o == nil {
+func (m *MultiKeyAuthCredential) GetCreatedAt() time.Time {
+	if m == nil {
 		return time.Time{}
 	}
-	return o.CreatedAt
+	return m.CreatedAt
 }
 
-func (o *MultiKeyAuthCredential) GetType() string {
+func (m *MultiKeyAuthCredential) GetType() string {
 	return "multi_key_auth"
 }
