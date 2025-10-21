@@ -1937,7 +1937,7 @@ paths:
       summary: Get Private DNS
       description: Retrieves a Private DNS by ID for a given network.
       parameters:
-        - $ref: '#/components/parameters/NetworkId'
+        - $ref: '#/components/parameters/NetworkIdForChildren'
         - $ref: '#/components/parameters/PrivateDnsId'
       responses:
         '200':
@@ -1961,7 +1961,7 @@ paths:
       summary: Delete Private DNS
       description: Deletes a Private DNS by ID for a given network.
       parameters:
-        - $ref: '#/components/parameters/NetworkId'
+        - $ref: '#/components/parameters/NetworkIdForChildren'
         - $ref: '#/components/parameters/PrivateDnsId'
       responses:
         '204':
@@ -2042,7 +2042,7 @@ paths:
       summary: Get Transit Gateway
       description: Retrieves a transit gateway by ID for a given network.
       parameters:
-        - $ref: '#/components/parameters/NetworkId'
+        - $ref: '#/components/parameters/NetworkIdForChildren'
         - $ref: '#/components/parameters/TransitGatewayId'
       responses:
         '200':
@@ -2066,7 +2066,7 @@ paths:
       summary: Delete Transit Gateway
       description: Deletes a transit gateway by ID for a given network.
       parameters:
-        - $ref: '#/components/parameters/NetworkId'
+        - $ref: '#/components/parameters/NetworkIdForChildren'
         - $ref: '#/components/parameters/TransitGatewayId'
       responses:
         '204':
@@ -16714,6 +16714,13 @@ components:
       schema:
         $ref: '#/components/schemas/NetworkId'
       x-speakeasy-match: id
+    NetworkIdForChildren:
+      name: networkId
+      in: path
+      description: The network to operate on.
+      required: true
+      schema:
+        $ref: '#/components/schemas/NetworkId'
     PageId:
       schema:
         type: string
