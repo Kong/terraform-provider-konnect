@@ -16,6 +16,7 @@ func (r *GatewayTargetResourceModel) RefreshFromSharedTarget(ctx context.Context
 
 	if resp != nil {
 		r.CreatedAt = types.Float64PointerValue(resp.CreatedAt)
+		r.Failover = types.BoolPointerValue(resp.Failover)
 		r.ID = types.StringPointerValue(resp.ID)
 		if resp.Tags != nil {
 			r.Tags = make([]types.String, 0, len(resp.Tags))
@@ -113,6 +114,12 @@ func (r *GatewayTargetResourceModel) ToSharedTargetWithoutParents(ctx context.Co
 	} else {
 		createdAt = nil
 	}
+	failover := new(bool)
+	if !r.Failover.IsUnknown() && !r.Failover.IsNull() {
+		*failover = r.Failover.ValueBool()
+	} else {
+		failover = nil
+	}
 	id := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
 		*id = r.ID.ValueString()
@@ -155,6 +162,7 @@ func (r *GatewayTargetResourceModel) ToSharedTargetWithoutParents(ctx context.Co
 	}
 	out := shared.TargetWithoutParents{
 		CreatedAt: createdAt,
+		Failover:  failover,
 		ID:        id,
 		Tags:      tags,
 		Target:    target,

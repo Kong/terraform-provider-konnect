@@ -18,15 +18,61 @@ resource "konnect_gateway_plugin_datakit" "my_gatewayplugindatakit" {
     debug = false
     nodes = [
       {
-        property = {
-          content_type = "application/json"
-          input        = "...my_input..."
-          name         = "...my_name..."
-          output       = "...my_output..."
-          property     = "...my_property..."
+        jq = {
+          input = "...my_input..."
+          inputs = {
+            key = jsonencode("value")
+          }
+          jq     = "...my_jq..."
+          name   = "...my_name..."
+          output = "...my_output..."
         }
       }
     ]
+    resources = {
+      cache = {
+        memory = {
+          dictionary_name = "...my_dictionary_name..."
+        }
+        redis = {
+          cluster_max_redirections = 10
+          cluster_nodes = [
+            {
+              ip   = "...my_ip..."
+              port = 23392
+            }
+          ]
+          connect_timeout       = 2043965363
+          connection_is_proxied = true
+          database              = 6
+          host                  = "...my_host..."
+          keepalive_backlog     = 1403771087
+          keepalive_pool_size   = 371071403
+          password              = "...my_password..."
+          port                  = 3296
+          read_timeout          = 1474836361
+          send_timeout          = 1614607440
+          sentinel_master       = "...my_sentinel_master..."
+          sentinel_nodes = [
+            {
+              host = "...my_host..."
+              port = 15355
+            }
+          ]
+          sentinel_password = "...my_sentinel_password..."
+          sentinel_role     = "master"
+          sentinel_username = "...my_sentinel_username..."
+          server_name       = "...my_server_name..."
+          ssl               = false
+          ssl_verify        = false
+          username          = "...my_username..."
+        }
+        strategy = "memory"
+      }
+      vault = {
+        key = jsonencode("value")
+      }
+    }
   }
   consumer = {
     id = "...my_id..."
@@ -108,17 +154,77 @@ Required:
 Optional:
 
 - `debug` (Boolean) Default: false
+- `resources` (Attributes) (see [below for nested schema](#nestedatt--config--resources))
 
 <a id="nestedatt--config--nodes"></a>
 ### Nested Schema for `config.nodes`
 
 Optional:
 
+- `branch` (Attributes) Execute different nodes based on some input condition (see [below for nested schema](#nestedatt--config--nodes--branch))
+- `cache` (Attributes) Fetch cached data (see [below for nested schema](#nestedatt--config--nodes--cache))
 - `call` (Attributes) Make an external HTTP request (see [below for nested schema](#nestedatt--config--nodes--call))
 - `exit` (Attributes) Terminate the request and send a response to the client (see [below for nested schema](#nestedatt--config--nodes--exit))
 - `jq` (Attributes) Process data using `jq` syntax (see [below for nested schema](#nestedatt--config--nodes--jq))
 - `property` (Attributes) Get or set a property (see [below for nested schema](#nestedatt--config--nodes--property))
 - `static` (Attributes) Produce reusable outputs from statically-configured values (see [below for nested schema](#nestedatt--config--nodes--static))
+
+<a id="nestedatt--config--nodes--branch"></a>
+### Nested Schema for `config.nodes.branch`
+
+Optional:
+
+- `else` (List of String) nodes to execute if the input condition is `false`
+- `input` (String) branch node input
+- `name` (String) A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+- `output` (String) branch node output
+- `outputs` (Attributes) branch node outputs (see [below for nested schema](#nestedatt--config--nodes--branch--outputs))
+- `then` (List of String) nodes to execute if the input condition is `true`
+
+<a id="nestedatt--config--nodes--branch--outputs"></a>
+### Nested Schema for `config.nodes.branch.outputs`
+
+Optional:
+
+- `else` (String) node output
+- `then` (String) node output
+
+
+
+<a id="nestedatt--config--nodes--cache"></a>
+### Nested Schema for `config.nodes.cache`
+
+Optional:
+
+- `bypass_on_error` (Boolean)
+- `input` (String) cache node input
+- `inputs` (Attributes) cache node inputs (see [below for nested schema](#nestedatt--config--nodes--cache--inputs))
+- `name` (String) A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+- `output` (String) cache node output
+- `outputs` (Attributes) cache node outputs (see [below for nested schema](#nestedatt--config--nodes--cache--outputs))
+- `ttl` (Number)
+
+<a id="nestedatt--config--nodes--cache--inputs"></a>
+### Nested Schema for `config.nodes.cache.inputs`
+
+Optional:
+
+- `data` (String) The data to be cached.
+- `key` (String) The cache key.
+- `ttl` (String) The TTL in seconds.
+
+
+<a id="nestedatt--config--nodes--cache--outputs"></a>
+### Nested Schema for `config.nodes.cache.outputs`
+
+Optional:
+
+- `data` (String) The data that was cached.
+- `hit` (String) Signals a cache hit.
+- `miss` (String) Signals a cache miss.
+- `stored` (String) Signals whether data was stored in cache.
+
+
 
 <a id="nestedatt--config--nodes--call"></a>
 ### Nested Schema for `config.nodes.call`
@@ -210,6 +316,79 @@ Optional:
 - `output` (String) The entire `.values` map
 - `outputs` (Map of String) Individual items from `.values`, referenced by key
 - `values` (String) An object with string keys and freeform values. Not Null
+
+
+
+<a id="nestedatt--config--resources"></a>
+### Nested Schema for `config.resources`
+
+Optional:
+
+- `cache` (Attributes) (see [below for nested schema](#nestedatt--config--resources--cache))
+- `vault` (Map of String)
+
+<a id="nestedatt--config--resources--cache"></a>
+### Nested Schema for `config.resources.cache`
+
+Optional:
+
+- `memory` (Attributes) (see [below for nested schema](#nestedatt--config--resources--cache--memory))
+- `redis` (Attributes) (see [below for nested schema](#nestedatt--config--resources--cache--redis))
+- `strategy` (String) The backing data store in which to hold cache entities. Accepted values are: `memory` and `redis`. must be one of ["memory", "redis"]
+
+<a id="nestedatt--config--resources--cache--memory"></a>
+### Nested Schema for `config.resources.cache.memory`
+
+Optional:
+
+- `dictionary_name` (String) The name of the shared dictionary in which to hold cache entities when the memory strategy is selected. Note that this dictionary currently must be defined manually in the Kong Nginx template. Default: "kong_db_cache"
+
+
+<a id="nestedatt--config--resources--cache--redis"></a>
+### Nested Schema for `config.resources.cache.redis`
+
+Optional:
+
+- `cluster_max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
+- `cluster_nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--resources--cache--redis--cluster_nodes))
+- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address. Default: false
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
+- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `keepalive_backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
+- `keepalive_pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
+- `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+- `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--resources--cache--redis--sentinel_nodes))
+- `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
+- `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+- `server_name` (String) A string representing an SNI (server name indication) value for TLS.
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: false
+- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+
+<a id="nestedatt--config--resources--cache--redis--cluster_nodes"></a>
+### Nested Schema for `config.resources.cache.redis.cluster_nodes`
+
+Optional:
+
+- `ip` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+<a id="nestedatt--config--resources--cache--redis--sentinel_nodes"></a>
+### Nested Schema for `config.resources.cache.redis.sentinel_nodes`
+
+Optional:
+
+- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
 
 
 

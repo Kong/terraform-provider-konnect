@@ -7,9 +7,9 @@ import (
 )
 
 type UpstreamOauthPluginCache struct {
-	DefaultTTL    types.Float64               `tfsdk:"default_ttl"`
-	EagerlyExpire types.Int64                 `tfsdk:"eagerly_expire"`
-	Memory        *Memory                     `tfsdk:"memory"`
-	Redis         *AiProxyAdvancedPluginRedis `tfsdk:"redis"`
-	Strategy      types.String                `tfsdk:"strategy"`
+	DefaultTTL    types.Float64        `tfsdk:"default_ttl"`
+	EagerlyExpire types.Int64          `tfsdk:"eagerly_expire"`
+	Memory        *DatakitPluginMemory `tfsdk:"memory"`
+	Redis         *AcePluginRedis      `tfsdk:"redis"`
+	Strategy      types.String         `tfsdk:"strategy"`
 }

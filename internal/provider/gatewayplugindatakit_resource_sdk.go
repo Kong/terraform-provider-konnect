@@ -23,13 +23,63 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 		for _, nodesItem := range resp.Config.Nodes {
 			var nodes tfTypes.Nodes
 
+			if nodesItem.Branch != nil {
+				nodes.Branch = &tfTypes.Branch{}
+				if nodesItem.Branch.Else != nil {
+					nodes.Branch.Else = make([]types.String, 0, len(nodesItem.Branch.Else))
+					for _, v := range nodesItem.Branch.Else {
+						nodes.Branch.Else = append(nodes.Branch.Else, types.StringValue(v))
+					}
+				}
+				nodes.Branch.Input = types.StringPointerValue(nodesItem.Branch.Input)
+				nodes.Branch.Name = types.StringPointerValue(nodesItem.Branch.Name)
+				nodes.Branch.Output = types.StringPointerValue(nodesItem.Branch.Output)
+				if nodesItem.Branch.Outputs == nil {
+					nodes.Branch.Outputs = nil
+				} else {
+					nodes.Branch.Outputs = &tfTypes.Outputs{}
+					nodes.Branch.Outputs.Else = types.StringPointerValue(nodesItem.Branch.Outputs.Else)
+					nodes.Branch.Outputs.Then = types.StringPointerValue(nodesItem.Branch.Outputs.Then)
+				}
+				if nodesItem.Branch.Then != nil {
+					nodes.Branch.Then = make([]types.String, 0, len(nodesItem.Branch.Then))
+					for _, v := range nodesItem.Branch.Then {
+						nodes.Branch.Then = append(nodes.Branch.Then, types.StringValue(v))
+					}
+				}
+			}
+			if nodesItem.NodesCache != nil {
+				nodes.Cache = &tfTypes.NodesCache{}
+				nodes.Cache.BypassOnError = types.BoolPointerValue(nodesItem.NodesCache.BypassOnError)
+				nodes.Cache.Input = types.StringPointerValue(nodesItem.NodesCache.Input)
+				if nodesItem.NodesCache.Inputs == nil {
+					nodes.Cache.Inputs = nil
+				} else {
+					nodes.Cache.Inputs = &tfTypes.Inputs{}
+					nodes.Cache.Inputs.Data = types.StringPointerValue(nodesItem.NodesCache.Inputs.Data)
+					nodes.Cache.Inputs.Key = types.StringPointerValue(nodesItem.NodesCache.Inputs.Key)
+					nodes.Cache.Inputs.TTL = types.StringPointerValue(nodesItem.NodesCache.Inputs.TTL)
+				}
+				nodes.Cache.Name = types.StringPointerValue(nodesItem.NodesCache.Name)
+				nodes.Cache.Output = types.StringPointerValue(nodesItem.NodesCache.Output)
+				if nodesItem.NodesCache.Outputs == nil {
+					nodes.Cache.Outputs = nil
+				} else {
+					nodes.Cache.Outputs = &tfTypes.NodesOutputs{}
+					nodes.Cache.Outputs.Data = types.StringPointerValue(nodesItem.NodesCache.Outputs.Data)
+					nodes.Cache.Outputs.Hit = types.StringPointerValue(nodesItem.NodesCache.Outputs.Hit)
+					nodes.Cache.Outputs.Miss = types.StringPointerValue(nodesItem.NodesCache.Outputs.Miss)
+					nodes.Cache.Outputs.Stored = types.StringPointerValue(nodesItem.NodesCache.Outputs.Stored)
+				}
+				nodes.Cache.TTL = types.Int64PointerValue(nodesItem.NodesCache.TTL)
+			}
 			if nodesItem.Call != nil {
 				nodes.Call = &tfTypes.Call{}
 				nodes.Call.Input = types.StringPointerValue(nodesItem.Call.Input)
 				if nodesItem.Call.Inputs == nil {
 					nodes.Call.Inputs = nil
 				} else {
-					nodes.Call.Inputs = &tfTypes.Inputs{}
+					nodes.Call.Inputs = &tfTypes.NodesInputs{}
 					nodes.Call.Inputs.Body = types.StringPointerValue(nodesItem.Call.Inputs.Body)
 					nodes.Call.Inputs.Headers = types.StringPointerValue(nodesItem.Call.Inputs.Headers)
 					nodes.Call.Inputs.Query = types.StringPointerValue(nodesItem.Call.Inputs.Query)
@@ -40,7 +90,7 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 				if nodesItem.Call.Outputs == nil {
 					nodes.Call.Outputs = nil
 				} else {
-					nodes.Call.Outputs = &tfTypes.Outputs{}
+					nodes.Call.Outputs = &tfTypes.DatakitPluginNodesOutputs{}
 					nodes.Call.Outputs.Body = types.StringPointerValue(nodesItem.Call.Outputs.Body)
 					nodes.Call.Outputs.Headers = types.StringPointerValue(nodesItem.Call.Outputs.Headers)
 					nodes.Call.Outputs.Status = types.StringPointerValue(nodesItem.Call.Outputs.Status)
@@ -55,7 +105,7 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 				if nodesItem.Exit.Inputs == nil {
 					nodes.Exit.Inputs = nil
 				} else {
-					nodes.Exit.Inputs = &tfTypes.NodesInputs{}
+					nodes.Exit.Inputs = &tfTypes.DatakitPluginNodesInputs{}
 					nodes.Exit.Inputs.Body = types.StringPointerValue(nodesItem.Exit.Inputs.Body)
 					nodes.Exit.Inputs.Headers = types.StringPointerValue(nodesItem.Exit.Inputs.Headers)
 				}
@@ -105,6 +155,86 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 
 			r.Config.Nodes = append(r.Config.Nodes, nodes)
 		}
+		if resp.Config.Resources == nil {
+			r.Config.Resources = nil
+		} else {
+			r.Config.Resources = &tfTypes.Resources{}
+			if resp.Config.Resources.Cache == nil {
+				r.Config.Resources.Cache = nil
+			} else {
+				r.Config.Resources.Cache = &tfTypes.DatakitPluginCache{}
+				if resp.Config.Resources.Cache.Memory == nil {
+					r.Config.Resources.Cache.Memory = nil
+				} else {
+					r.Config.Resources.Cache.Memory = &tfTypes.DatakitPluginMemory{}
+					r.Config.Resources.Cache.Memory.DictionaryName = types.StringPointerValue(resp.Config.Resources.Cache.Memory.DictionaryName)
+				}
+				if resp.Config.Resources.Cache.Redis == nil {
+					r.Config.Resources.Cache.Redis = nil
+				} else {
+					r.Config.Resources.Cache.Redis = &tfTypes.AcePluginRedis{}
+					r.Config.Resources.Cache.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Resources.Cache.Redis.ClusterMaxRedirections)
+					if resp.Config.Resources.Cache.Redis.ClusterNodes != nil {
+						r.Config.Resources.Cache.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+
+						for _, clusterNodesItem := range resp.Config.Resources.Cache.Redis.ClusterNodes {
+							var clusterNodes tfTypes.PartialRedisEeClusterNodes
+
+							clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
+							clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
+
+							r.Config.Resources.Cache.Redis.ClusterNodes = append(r.Config.Resources.Cache.Redis.ClusterNodes, clusterNodes)
+						}
+					}
+					r.Config.Resources.Cache.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Resources.Cache.Redis.ConnectTimeout)
+					r.Config.Resources.Cache.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Resources.Cache.Redis.ConnectionIsProxied)
+					r.Config.Resources.Cache.Redis.Database = types.Int64PointerValue(resp.Config.Resources.Cache.Redis.Database)
+					r.Config.Resources.Cache.Redis.Host = types.StringPointerValue(resp.Config.Resources.Cache.Redis.Host)
+					r.Config.Resources.Cache.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Resources.Cache.Redis.KeepaliveBacklog)
+					r.Config.Resources.Cache.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Resources.Cache.Redis.KeepalivePoolSize)
+					r.Config.Resources.Cache.Redis.Password = types.StringPointerValue(resp.Config.Resources.Cache.Redis.Password)
+					r.Config.Resources.Cache.Redis.Port = types.Int64PointerValue(resp.Config.Resources.Cache.Redis.Port)
+					r.Config.Resources.Cache.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Resources.Cache.Redis.ReadTimeout)
+					r.Config.Resources.Cache.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Resources.Cache.Redis.SendTimeout)
+					r.Config.Resources.Cache.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Resources.Cache.Redis.SentinelMaster)
+					if resp.Config.Resources.Cache.Redis.SentinelNodes != nil {
+						r.Config.Resources.Cache.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+
+						for _, sentinelNodesItem := range resp.Config.Resources.Cache.Redis.SentinelNodes {
+							var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+
+							sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
+							sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+
+							r.Config.Resources.Cache.Redis.SentinelNodes = append(r.Config.Resources.Cache.Redis.SentinelNodes, sentinelNodes)
+						}
+					}
+					r.Config.Resources.Cache.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Resources.Cache.Redis.SentinelPassword)
+					if resp.Config.Resources.Cache.Redis.SentinelRole != nil {
+						r.Config.Resources.Cache.Redis.SentinelRole = types.StringValue(string(*resp.Config.Resources.Cache.Redis.SentinelRole))
+					} else {
+						r.Config.Resources.Cache.Redis.SentinelRole = types.StringNull()
+					}
+					r.Config.Resources.Cache.Redis.SentinelUsername = types.StringPointerValue(resp.Config.Resources.Cache.Redis.SentinelUsername)
+					r.Config.Resources.Cache.Redis.ServerName = types.StringPointerValue(resp.Config.Resources.Cache.Redis.ServerName)
+					r.Config.Resources.Cache.Redis.Ssl = types.BoolPointerValue(resp.Config.Resources.Cache.Redis.Ssl)
+					r.Config.Resources.Cache.Redis.SslVerify = types.BoolPointerValue(resp.Config.Resources.Cache.Redis.SslVerify)
+					r.Config.Resources.Cache.Redis.Username = types.StringPointerValue(resp.Config.Resources.Cache.Redis.Username)
+				}
+				if resp.Config.Resources.Cache.Strategy != nil {
+					r.Config.Resources.Cache.Strategy = types.StringValue(string(*resp.Config.Resources.Cache.Strategy))
+				} else {
+					r.Config.Resources.Cache.Strategy = types.StringNull()
+				}
+			}
+			if resp.Config.Resources.Vault != nil {
+				r.Config.Resources.Vault = make(map[string]jsontypes.Normalized, len(resp.Config.Resources.Vault))
+				for key2, value2 := range resp.Config.Resources.Vault {
+					result2, _ := json.Marshal(value2)
+					r.Config.Resources.Vault[key2] = jsontypes.NewNormalizedValue(string(result2))
+				}
+			}
+		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -124,11 +254,11 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			r.Ordering = &tfTypes.AcePluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After = &tfTypes.AcePluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -137,7 +267,7 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.AcePluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
@@ -369,14 +499,181 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 	}
 	nodes := make([]shared.Nodes, 0, len(r.Config.Nodes))
 	for _, nodesItem := range r.Config.Nodes {
-		if nodesItem.Call != nil {
+		if nodesItem.Branch != nil {
+			var elseVar []string
+			if nodesItem.Branch.Else != nil {
+				elseVar = make([]string, 0, len(nodesItem.Branch.Else))
+				for _, elseItem := range nodesItem.Branch.Else {
+					elseVar = append(elseVar, elseItem.ValueString())
+				}
+			}
 			input := new(string)
-			if !nodesItem.Call.Input.IsUnknown() && !nodesItem.Call.Input.IsNull() {
-				*input = nodesItem.Call.Input.ValueString()
+			if !nodesItem.Branch.Input.IsUnknown() && !nodesItem.Branch.Input.IsNull() {
+				*input = nodesItem.Branch.Input.ValueString()
 			} else {
 				input = nil
 			}
+			name1 := new(string)
+			if !nodesItem.Branch.Name.IsUnknown() && !nodesItem.Branch.Name.IsNull() {
+				*name1 = nodesItem.Branch.Name.ValueString()
+			} else {
+				name1 = nil
+			}
+			output := new(string)
+			if !nodesItem.Branch.Output.IsUnknown() && !nodesItem.Branch.Output.IsNull() {
+				*output = nodesItem.Branch.Output.ValueString()
+			} else {
+				output = nil
+			}
+			var outputs *shared.Outputs
+			if nodesItem.Branch.Outputs != nil {
+				elseVar1 := new(string)
+				if !nodesItem.Branch.Outputs.Else.IsUnknown() && !nodesItem.Branch.Outputs.Else.IsNull() {
+					*elseVar1 = nodesItem.Branch.Outputs.Else.ValueString()
+				} else {
+					elseVar1 = nil
+				}
+				then := new(string)
+				if !nodesItem.Branch.Outputs.Then.IsUnknown() && !nodesItem.Branch.Outputs.Then.IsNull() {
+					*then = nodesItem.Branch.Outputs.Then.ValueString()
+				} else {
+					then = nil
+				}
+				outputs = &shared.Outputs{
+					Else: elseVar1,
+					Then: then,
+				}
+			}
+			var then1 []string
+			if nodesItem.Branch.Then != nil {
+				then1 = make([]string, 0, len(nodesItem.Branch.Then))
+				for _, thenItem := range nodesItem.Branch.Then {
+					then1 = append(then1, thenItem.ValueString())
+				}
+			}
+			branch := shared.Branch{
+				Else:    elseVar,
+				Input:   input,
+				Name:    name1,
+				Output:  output,
+				Outputs: outputs,
+				Then:    then1,
+			}
+			nodes = append(nodes, shared.Nodes{
+				Branch: &branch,
+			})
+		}
+		if nodesItem.Cache != nil {
+			bypassOnError := new(bool)
+			if !nodesItem.Cache.BypassOnError.IsUnknown() && !nodesItem.Cache.BypassOnError.IsNull() {
+				*bypassOnError = nodesItem.Cache.BypassOnError.ValueBool()
+			} else {
+				bypassOnError = nil
+			}
+			input1 := new(string)
+			if !nodesItem.Cache.Input.IsUnknown() && !nodesItem.Cache.Input.IsNull() {
+				*input1 = nodesItem.Cache.Input.ValueString()
+			} else {
+				input1 = nil
+			}
 			var inputs *shared.Inputs
+			if nodesItem.Cache.Inputs != nil {
+				data := new(string)
+				if !nodesItem.Cache.Inputs.Data.IsUnknown() && !nodesItem.Cache.Inputs.Data.IsNull() {
+					*data = nodesItem.Cache.Inputs.Data.ValueString()
+				} else {
+					data = nil
+				}
+				key := new(string)
+				if !nodesItem.Cache.Inputs.Key.IsUnknown() && !nodesItem.Cache.Inputs.Key.IsNull() {
+					*key = nodesItem.Cache.Inputs.Key.ValueString()
+				} else {
+					key = nil
+				}
+				ttl := new(string)
+				if !nodesItem.Cache.Inputs.TTL.IsUnknown() && !nodesItem.Cache.Inputs.TTL.IsNull() {
+					*ttl = nodesItem.Cache.Inputs.TTL.ValueString()
+				} else {
+					ttl = nil
+				}
+				inputs = &shared.Inputs{
+					Data: data,
+					Key:  key,
+					TTL:  ttl,
+				}
+			}
+			name2 := new(string)
+			if !nodesItem.Cache.Name.IsUnknown() && !nodesItem.Cache.Name.IsNull() {
+				*name2 = nodesItem.Cache.Name.ValueString()
+			} else {
+				name2 = nil
+			}
+			output1 := new(string)
+			if !nodesItem.Cache.Output.IsUnknown() && !nodesItem.Cache.Output.IsNull() {
+				*output1 = nodesItem.Cache.Output.ValueString()
+			} else {
+				output1 = nil
+			}
+			var outputs1 *shared.NodesOutputs
+			if nodesItem.Cache.Outputs != nil {
+				data1 := new(string)
+				if !nodesItem.Cache.Outputs.Data.IsUnknown() && !nodesItem.Cache.Outputs.Data.IsNull() {
+					*data1 = nodesItem.Cache.Outputs.Data.ValueString()
+				} else {
+					data1 = nil
+				}
+				hit := new(string)
+				if !nodesItem.Cache.Outputs.Hit.IsUnknown() && !nodesItem.Cache.Outputs.Hit.IsNull() {
+					*hit = nodesItem.Cache.Outputs.Hit.ValueString()
+				} else {
+					hit = nil
+				}
+				miss := new(string)
+				if !nodesItem.Cache.Outputs.Miss.IsUnknown() && !nodesItem.Cache.Outputs.Miss.IsNull() {
+					*miss = nodesItem.Cache.Outputs.Miss.ValueString()
+				} else {
+					miss = nil
+				}
+				stored := new(string)
+				if !nodesItem.Cache.Outputs.Stored.IsUnknown() && !nodesItem.Cache.Outputs.Stored.IsNull() {
+					*stored = nodesItem.Cache.Outputs.Stored.ValueString()
+				} else {
+					stored = nil
+				}
+				outputs1 = &shared.NodesOutputs{
+					Data:   data1,
+					Hit:    hit,
+					Miss:   miss,
+					Stored: stored,
+				}
+			}
+			ttl1 := new(int64)
+			if !nodesItem.Cache.TTL.IsUnknown() && !nodesItem.Cache.TTL.IsNull() {
+				*ttl1 = nodesItem.Cache.TTL.ValueInt64()
+			} else {
+				ttl1 = nil
+			}
+			nodesCache := shared.NodesCache{
+				BypassOnError: bypassOnError,
+				Input:         input1,
+				Inputs:        inputs,
+				Name:          name2,
+				Output:        output1,
+				Outputs:       outputs1,
+				TTL:           ttl1,
+			}
+			nodes = append(nodes, shared.Nodes{
+				NodesCache: &nodesCache,
+			})
+		}
+		if nodesItem.Call != nil {
+			input2 := new(string)
+			if !nodesItem.Call.Input.IsUnknown() && !nodesItem.Call.Input.IsNull() {
+				*input2 = nodesItem.Call.Input.ValueString()
+			} else {
+				input2 = nil
+			}
+			var inputs1 *shared.NodesInputs
 			if nodesItem.Call.Inputs != nil {
 				body := new(string)
 				if !nodesItem.Call.Inputs.Body.IsUnknown() && !nodesItem.Call.Inputs.Body.IsNull() {
@@ -396,7 +693,7 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 				} else {
 					query = nil
 				}
-				inputs = &shared.Inputs{
+				inputs1 = &shared.NodesInputs{
 					Body:    body,
 					Headers: headers,
 					Query:   query,
@@ -408,19 +705,19 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 			} else {
 				method = nil
 			}
-			name1 := new(string)
+			name3 := new(string)
 			if !nodesItem.Call.Name.IsUnknown() && !nodesItem.Call.Name.IsNull() {
-				*name1 = nodesItem.Call.Name.ValueString()
+				*name3 = nodesItem.Call.Name.ValueString()
 			} else {
-				name1 = nil
+				name3 = nil
 			}
-			output := new(string)
+			output2 := new(string)
 			if !nodesItem.Call.Output.IsUnknown() && !nodesItem.Call.Output.IsNull() {
-				*output = nodesItem.Call.Output.ValueString()
+				*output2 = nodesItem.Call.Output.ValueString()
 			} else {
-				output = nil
+				output2 = nil
 			}
-			var outputs *shared.Outputs
+			var outputs2 *shared.DatakitPluginNodesOutputs
 			if nodesItem.Call.Outputs != nil {
 				body1 := new(string)
 				if !nodesItem.Call.Outputs.Body.IsUnknown() && !nodesItem.Call.Outputs.Body.IsNull() {
@@ -440,7 +737,7 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 				} else {
 					status = nil
 				}
-				outputs = &shared.Outputs{
+				outputs2 = &shared.DatakitPluginNodesOutputs{
 					Body:    body1,
 					Headers: headers1,
 					Status:  status,
@@ -462,12 +759,12 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 			url = nodesItem.Call.URL.ValueString()
 
 			call := shared.Call{
-				Input:         input,
-				Inputs:        inputs,
+				Input:         input2,
+				Inputs:        inputs1,
 				Method:        method,
-				Name:          name1,
-				Output:        output,
-				Outputs:       outputs,
+				Name:          name3,
+				Output:        output2,
+				Outputs:       outputs2,
 				SslServerName: sslServerName,
 				Timeout:       timeout,
 				URL:           url,
@@ -477,13 +774,13 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 			})
 		}
 		if nodesItem.Exit != nil {
-			input1 := new(string)
+			input3 := new(string)
 			if !nodesItem.Exit.Input.IsUnknown() && !nodesItem.Exit.Input.IsNull() {
-				*input1 = nodesItem.Exit.Input.ValueString()
+				*input3 = nodesItem.Exit.Input.ValueString()
 			} else {
-				input1 = nil
+				input3 = nil
 			}
-			var inputs1 *shared.NodesInputs
+			var inputs2 *shared.DatakitPluginNodesInputs
 			if nodesItem.Exit.Inputs != nil {
 				body2 := new(string)
 				if !nodesItem.Exit.Inputs.Body.IsUnknown() && !nodesItem.Exit.Inputs.Body.IsNull() {
@@ -497,16 +794,16 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 				} else {
 					headers2 = nil
 				}
-				inputs1 = &shared.NodesInputs{
+				inputs2 = &shared.DatakitPluginNodesInputs{
 					Body:    body2,
 					Headers: headers2,
 				}
 			}
-			name2 := new(string)
+			name4 := new(string)
 			if !nodesItem.Exit.Name.IsUnknown() && !nodesItem.Exit.Name.IsNull() {
-				*name2 = nodesItem.Exit.Name.ValueString()
+				*name4 = nodesItem.Exit.Name.ValueString()
 			} else {
-				name2 = nil
+				name4 = nil
 			}
 			status1 := new(int64)
 			if !nodesItem.Exit.Status.IsUnknown() && !nodesItem.Exit.Status.IsNull() {
@@ -521,9 +818,9 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 				warnHeadersSent = nil
 			}
 			exit := shared.Exit{
-				Input:           input1,
-				Inputs:          inputs1,
-				Name:            name2,
+				Input:           input3,
+				Inputs:          inputs2,
+				Name:            name4,
 				Status:          status1,
 				WarnHeadersSent: warnHeadersSent,
 			}
@@ -532,39 +829,39 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 			})
 		}
 		if nodesItem.Jq != nil {
-			input2 := new(string)
+			input4 := new(string)
 			if !nodesItem.Jq.Input.IsUnknown() && !nodesItem.Jq.Input.IsNull() {
-				*input2 = nodesItem.Jq.Input.ValueString()
+				*input4 = nodesItem.Jq.Input.ValueString()
 			} else {
-				input2 = nil
+				input4 = nil
 			}
-			inputs2 := make(map[string]interface{})
+			inputs3 := make(map[string]interface{})
 			for inputsKey, inputsValue := range nodesItem.Jq.Inputs {
 				var inputsInst interface{}
 				_ = json.Unmarshal([]byte(inputsValue.ValueString()), &inputsInst)
-				inputs2[inputsKey] = inputsInst
+				inputs3[inputsKey] = inputsInst
 			}
 			var jq1 string
 			jq1 = nodesItem.Jq.Jq.ValueString()
 
-			name3 := new(string)
+			name5 := new(string)
 			if !nodesItem.Jq.Name.IsUnknown() && !nodesItem.Jq.Name.IsNull() {
-				*name3 = nodesItem.Jq.Name.ValueString()
+				*name5 = nodesItem.Jq.Name.ValueString()
 			} else {
-				name3 = nil
+				name5 = nil
 			}
-			output1 := new(string)
+			output3 := new(string)
 			if !nodesItem.Jq.Output.IsUnknown() && !nodesItem.Jq.Output.IsNull() {
-				*output1 = nodesItem.Jq.Output.ValueString()
+				*output3 = nodesItem.Jq.Output.ValueString()
 			} else {
-				output1 = nil
+				output3 = nil
 			}
 			jq := shared.Jq{
-				Input:  input2,
-				Inputs: inputs2,
+				Input:  input4,
+				Inputs: inputs3,
 				Jq:     jq1,
-				Name:   name3,
-				Output: output1,
+				Name:   name5,
+				Output: output3,
 			}
 			nodes = append(nodes, shared.Nodes{
 				Jq: &jq,
@@ -577,32 +874,32 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 			} else {
 				contentType = nil
 			}
-			input3 := new(string)
+			input5 := new(string)
 			if !nodesItem.Property.Input.IsUnknown() && !nodesItem.Property.Input.IsNull() {
-				*input3 = nodesItem.Property.Input.ValueString()
+				*input5 = nodesItem.Property.Input.ValueString()
 			} else {
-				input3 = nil
+				input5 = nil
 			}
-			name4 := new(string)
+			name6 := new(string)
 			if !nodesItem.Property.Name.IsUnknown() && !nodesItem.Property.Name.IsNull() {
-				*name4 = nodesItem.Property.Name.ValueString()
+				*name6 = nodesItem.Property.Name.ValueString()
 			} else {
-				name4 = nil
+				name6 = nil
 			}
-			output2 := new(string)
+			output4 := new(string)
 			if !nodesItem.Property.Output.IsUnknown() && !nodesItem.Property.Output.IsNull() {
-				*output2 = nodesItem.Property.Output.ValueString()
+				*output4 = nodesItem.Property.Output.ValueString()
 			} else {
-				output2 = nil
+				output4 = nil
 			}
 			var property1 string
 			property1 = nodesItem.Property.Property.ValueString()
 
 			property := shared.Property{
 				ContentType: contentType,
-				Input:       input3,
-				Name:        name4,
-				Output:      output2,
+				Input:       input5,
+				Name:        name6,
+				Output:      output4,
 				Property:    property1,
 			}
 			nodes = append(nodes, shared.Nodes{
@@ -610,31 +907,31 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 			})
 		}
 		if nodesItem.Static != nil {
-			name5 := new(string)
+			name7 := new(string)
 			if !nodesItem.Static.Name.IsUnknown() && !nodesItem.Static.Name.IsNull() {
-				*name5 = nodesItem.Static.Name.ValueString()
+				*name7 = nodesItem.Static.Name.ValueString()
 			} else {
-				name5 = nil
+				name7 = nil
 			}
-			output3 := new(string)
+			output5 := new(string)
 			if !nodesItem.Static.Output.IsUnknown() && !nodesItem.Static.Output.IsNull() {
-				*output3 = nodesItem.Static.Output.ValueString()
+				*output5 = nodesItem.Static.Output.ValueString()
 			} else {
-				output3 = nil
+				output5 = nil
 			}
-			outputs1 := make(map[string]interface{})
+			outputs3 := make(map[string]interface{})
 			for outputsKey, outputsValue := range nodesItem.Static.Outputs {
 				var outputsInst interface{}
 				_ = json.Unmarshal([]byte(outputsValue.ValueString()), &outputsInst)
-				outputs1[outputsKey] = outputsInst
+				outputs3[outputsKey] = outputsInst
 			}
 			var values string
 			values = nodesItem.Static.Values.ValueString()
 
 			static := shared.Static{
-				Name:    name5,
-				Output:  output3,
-				Outputs: outputs1,
+				Name:    name7,
+				Output:  output5,
+				Outputs: outputs3,
 				Values:  values,
 			}
 			nodes = append(nodes, shared.Nodes{
@@ -642,9 +939,233 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 			})
 		}
 	}
+	var resources *shared.Resources
+	if r.Config.Resources != nil {
+		var cache *shared.DatakitPluginCache
+		if r.Config.Resources.Cache != nil {
+			var memory *shared.DatakitPluginMemory
+			if r.Config.Resources.Cache.Memory != nil {
+				dictionaryName := new(string)
+				if !r.Config.Resources.Cache.Memory.DictionaryName.IsUnknown() && !r.Config.Resources.Cache.Memory.DictionaryName.IsNull() {
+					*dictionaryName = r.Config.Resources.Cache.Memory.DictionaryName.ValueString()
+				} else {
+					dictionaryName = nil
+				}
+				memory = &shared.DatakitPluginMemory{
+					DictionaryName: dictionaryName,
+				}
+			}
+			var redis *shared.DatakitPluginRedis
+			if r.Config.Resources.Cache.Redis != nil {
+				clusterMaxRedirections := new(int64)
+				if !r.Config.Resources.Cache.Redis.ClusterMaxRedirections.IsUnknown() && !r.Config.Resources.Cache.Redis.ClusterMaxRedirections.IsNull() {
+					*clusterMaxRedirections = r.Config.Resources.Cache.Redis.ClusterMaxRedirections.ValueInt64()
+				} else {
+					clusterMaxRedirections = nil
+				}
+				var clusterNodes []shared.DatakitPluginClusterNodes
+				if r.Config.Resources.Cache.Redis.ClusterNodes != nil {
+					clusterNodes = make([]shared.DatakitPluginClusterNodes, 0, len(r.Config.Resources.Cache.Redis.ClusterNodes))
+					for _, clusterNodesItem := range r.Config.Resources.Cache.Redis.ClusterNodes {
+						ip := new(string)
+						if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
+							*ip = clusterNodesItem.IP.ValueString()
+						} else {
+							ip = nil
+						}
+						port := new(int64)
+						if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
+							*port = clusterNodesItem.Port.ValueInt64()
+						} else {
+							port = nil
+						}
+						clusterNodes = append(clusterNodes, shared.DatakitPluginClusterNodes{
+							IP:   ip,
+							Port: port,
+						})
+					}
+				}
+				connectTimeout := new(int64)
+				if !r.Config.Resources.Cache.Redis.ConnectTimeout.IsUnknown() && !r.Config.Resources.Cache.Redis.ConnectTimeout.IsNull() {
+					*connectTimeout = r.Config.Resources.Cache.Redis.ConnectTimeout.ValueInt64()
+				} else {
+					connectTimeout = nil
+				}
+				connectionIsProxied := new(bool)
+				if !r.Config.Resources.Cache.Redis.ConnectionIsProxied.IsUnknown() && !r.Config.Resources.Cache.Redis.ConnectionIsProxied.IsNull() {
+					*connectionIsProxied = r.Config.Resources.Cache.Redis.ConnectionIsProxied.ValueBool()
+				} else {
+					connectionIsProxied = nil
+				}
+				database := new(int64)
+				if !r.Config.Resources.Cache.Redis.Database.IsUnknown() && !r.Config.Resources.Cache.Redis.Database.IsNull() {
+					*database = r.Config.Resources.Cache.Redis.Database.ValueInt64()
+				} else {
+					database = nil
+				}
+				host := new(string)
+				if !r.Config.Resources.Cache.Redis.Host.IsUnknown() && !r.Config.Resources.Cache.Redis.Host.IsNull() {
+					*host = r.Config.Resources.Cache.Redis.Host.ValueString()
+				} else {
+					host = nil
+				}
+				keepaliveBacklog := new(int64)
+				if !r.Config.Resources.Cache.Redis.KeepaliveBacklog.IsUnknown() && !r.Config.Resources.Cache.Redis.KeepaliveBacklog.IsNull() {
+					*keepaliveBacklog = r.Config.Resources.Cache.Redis.KeepaliveBacklog.ValueInt64()
+				} else {
+					keepaliveBacklog = nil
+				}
+				keepalivePoolSize := new(int64)
+				if !r.Config.Resources.Cache.Redis.KeepalivePoolSize.IsUnknown() && !r.Config.Resources.Cache.Redis.KeepalivePoolSize.IsNull() {
+					*keepalivePoolSize = r.Config.Resources.Cache.Redis.KeepalivePoolSize.ValueInt64()
+				} else {
+					keepalivePoolSize = nil
+				}
+				password := new(string)
+				if !r.Config.Resources.Cache.Redis.Password.IsUnknown() && !r.Config.Resources.Cache.Redis.Password.IsNull() {
+					*password = r.Config.Resources.Cache.Redis.Password.ValueString()
+				} else {
+					password = nil
+				}
+				port1 := new(int64)
+				if !r.Config.Resources.Cache.Redis.Port.IsUnknown() && !r.Config.Resources.Cache.Redis.Port.IsNull() {
+					*port1 = r.Config.Resources.Cache.Redis.Port.ValueInt64()
+				} else {
+					port1 = nil
+				}
+				readTimeout := new(int64)
+				if !r.Config.Resources.Cache.Redis.ReadTimeout.IsUnknown() && !r.Config.Resources.Cache.Redis.ReadTimeout.IsNull() {
+					*readTimeout = r.Config.Resources.Cache.Redis.ReadTimeout.ValueInt64()
+				} else {
+					readTimeout = nil
+				}
+				sendTimeout := new(int64)
+				if !r.Config.Resources.Cache.Redis.SendTimeout.IsUnknown() && !r.Config.Resources.Cache.Redis.SendTimeout.IsNull() {
+					*sendTimeout = r.Config.Resources.Cache.Redis.SendTimeout.ValueInt64()
+				} else {
+					sendTimeout = nil
+				}
+				sentinelMaster := new(string)
+				if !r.Config.Resources.Cache.Redis.SentinelMaster.IsUnknown() && !r.Config.Resources.Cache.Redis.SentinelMaster.IsNull() {
+					*sentinelMaster = r.Config.Resources.Cache.Redis.SentinelMaster.ValueString()
+				} else {
+					sentinelMaster = nil
+				}
+				var sentinelNodes []shared.DatakitPluginSentinelNodes
+				if r.Config.Resources.Cache.Redis.SentinelNodes != nil {
+					sentinelNodes = make([]shared.DatakitPluginSentinelNodes, 0, len(r.Config.Resources.Cache.Redis.SentinelNodes))
+					for _, sentinelNodesItem := range r.Config.Resources.Cache.Redis.SentinelNodes {
+						host1 := new(string)
+						if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
+							*host1 = sentinelNodesItem.Host.ValueString()
+						} else {
+							host1 = nil
+						}
+						port2 := new(int64)
+						if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
+							*port2 = sentinelNodesItem.Port.ValueInt64()
+						} else {
+							port2 = nil
+						}
+						sentinelNodes = append(sentinelNodes, shared.DatakitPluginSentinelNodes{
+							Host: host1,
+							Port: port2,
+						})
+					}
+				}
+				sentinelPassword := new(string)
+				if !r.Config.Resources.Cache.Redis.SentinelPassword.IsUnknown() && !r.Config.Resources.Cache.Redis.SentinelPassword.IsNull() {
+					*sentinelPassword = r.Config.Resources.Cache.Redis.SentinelPassword.ValueString()
+				} else {
+					sentinelPassword = nil
+				}
+				sentinelRole := new(shared.DatakitPluginSentinelRole)
+				if !r.Config.Resources.Cache.Redis.SentinelRole.IsUnknown() && !r.Config.Resources.Cache.Redis.SentinelRole.IsNull() {
+					*sentinelRole = shared.DatakitPluginSentinelRole(r.Config.Resources.Cache.Redis.SentinelRole.ValueString())
+				} else {
+					sentinelRole = nil
+				}
+				sentinelUsername := new(string)
+				if !r.Config.Resources.Cache.Redis.SentinelUsername.IsUnknown() && !r.Config.Resources.Cache.Redis.SentinelUsername.IsNull() {
+					*sentinelUsername = r.Config.Resources.Cache.Redis.SentinelUsername.ValueString()
+				} else {
+					sentinelUsername = nil
+				}
+				serverName := new(string)
+				if !r.Config.Resources.Cache.Redis.ServerName.IsUnknown() && !r.Config.Resources.Cache.Redis.ServerName.IsNull() {
+					*serverName = r.Config.Resources.Cache.Redis.ServerName.ValueString()
+				} else {
+					serverName = nil
+				}
+				ssl := new(bool)
+				if !r.Config.Resources.Cache.Redis.Ssl.IsUnknown() && !r.Config.Resources.Cache.Redis.Ssl.IsNull() {
+					*ssl = r.Config.Resources.Cache.Redis.Ssl.ValueBool()
+				} else {
+					ssl = nil
+				}
+				sslVerify := new(bool)
+				if !r.Config.Resources.Cache.Redis.SslVerify.IsUnknown() && !r.Config.Resources.Cache.Redis.SslVerify.IsNull() {
+					*sslVerify = r.Config.Resources.Cache.Redis.SslVerify.ValueBool()
+				} else {
+					sslVerify = nil
+				}
+				username := new(string)
+				if !r.Config.Resources.Cache.Redis.Username.IsUnknown() && !r.Config.Resources.Cache.Redis.Username.IsNull() {
+					*username = r.Config.Resources.Cache.Redis.Username.ValueString()
+				} else {
+					username = nil
+				}
+				redis = &shared.DatakitPluginRedis{
+					ClusterMaxRedirections: clusterMaxRedirections,
+					ClusterNodes:           clusterNodes,
+					ConnectTimeout:         connectTimeout,
+					ConnectionIsProxied:    connectionIsProxied,
+					Database:               database,
+					Host:                   host,
+					KeepaliveBacklog:       keepaliveBacklog,
+					KeepalivePoolSize:      keepalivePoolSize,
+					Password:               password,
+					Port:                   port1,
+					ReadTimeout:            readTimeout,
+					SendTimeout:            sendTimeout,
+					SentinelMaster:         sentinelMaster,
+					SentinelNodes:          sentinelNodes,
+					SentinelPassword:       sentinelPassword,
+					SentinelRole:           sentinelRole,
+					SentinelUsername:       sentinelUsername,
+					ServerName:             serverName,
+					Ssl:                    ssl,
+					SslVerify:              sslVerify,
+					Username:               username,
+				}
+			}
+			strategy := new(shared.DatakitPluginStrategy)
+			if !r.Config.Resources.Cache.Strategy.IsUnknown() && !r.Config.Resources.Cache.Strategy.IsNull() {
+				*strategy = shared.DatakitPluginStrategy(r.Config.Resources.Cache.Strategy.ValueString())
+			} else {
+				strategy = nil
+			}
+			cache = &shared.DatakitPluginCache{
+				Memory:   memory,
+				Redis:    redis,
+				Strategy: strategy,
+			}
+		}
+		vault := make(map[string]interface{})
+		for vaultKey, vaultValue := range r.Config.Resources.Vault {
+			var vaultInst interface{}
+			_ = json.Unmarshal([]byte(vaultValue.ValueString()), &vaultInst)
+			vault[vaultKey] = vaultInst
+		}
+		resources = &shared.Resources{
+			Cache: cache,
+			Vault: vault,
+		}
+	}
 	config := shared.DatakitPluginConfig{
-		Debug: debug,
-		Nodes: nodes,
+		Debug:     debug,
+		Nodes:     nodes,
+		Resources: resources,
 	}
 	var consumer *shared.DatakitPluginConsumer
 	if r.Consumer != nil {

@@ -29,8 +29,13 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
         port = 27325
       }
     ]
-    cluster_name         = "...my_cluster_name..."
-    commit_strategy      = "off"
+    cluster_name    = "...my_cluster_name..."
+    commit_strategy = "off"
+    dlq_topic       = "...my_dlq_topic..."
+    enable_dlq      = false
+    message_by_lua_functions = [
+      "..."
+    ]
     message_deserializer = "noop"
     mode                 = "websocket"
     schema_registry = {
@@ -40,7 +45,40 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
             password = "...my_password..."
             username = "...my_username..."
           }
-          mode = "none"
+          mode = "oauth2"
+          oauth2 = {
+            audience = [
+              "..."
+            ]
+            client_id     = "...my_client_id..."
+            client_secret = "...my_client_secret..."
+            grant_type    = "client_credentials"
+            password      = "...my_password..."
+            scopes = [
+              "..."
+            ]
+            token_endpoint = "...my_token_endpoint..."
+            token_headers = {
+              key = jsonencode("value")
+            }
+            token_post_args = {
+              key = jsonencode("value")
+            }
+            username = "...my_username..."
+          }
+          oauth2_client = {
+            auth_method               = "client_secret_basic"
+            client_secret_jwt_alg     = "HS256"
+            http_proxy                = "...my_http_proxy..."
+            http_proxy_authorization  = "...my_http_proxy_authorization..."
+            http_version              = 6.33
+            https_proxy               = "...my_https_proxy..."
+            https_proxy_authorization = "...my_https_proxy_authorization..."
+            keep_alive                = false
+            no_proxy                  = "...my_no_proxy..."
+            ssl_verify                = true
+            timeout                   = 2132166923
+          }
         }
         ssl_verify = false
         ttl        = 1981.8
@@ -61,7 +99,40 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
                 password = "...my_password..."
                 username = "...my_username..."
               }
-              mode = "basic"
+              mode = "none"
+              oauth2 = {
+                audience = [
+                  "..."
+                ]
+                client_id     = "...my_client_id..."
+                client_secret = "...my_client_secret..."
+                grant_type    = "password"
+                password      = "...my_password..."
+                scopes = [
+                  "..."
+                ]
+                token_endpoint = "...my_token_endpoint..."
+                token_headers = {
+                  key = jsonencode("value")
+                }
+                token_post_args = {
+                  key = jsonencode("value")
+                }
+                username = "...my_username..."
+              }
+              oauth2_client = {
+                auth_method               = "client_secret_basic"
+                client_secret_jwt_alg     = "HS256"
+                http_proxy                = "...my_http_proxy..."
+                http_proxy_authorization  = "...my_http_proxy_authorization..."
+                http_version              = 3.98
+                https_proxy               = "...my_https_proxy..."
+                https_proxy_authorization = "...my_https_proxy_authorization..."
+                keep_alive                = true
+                no_proxy                  = "...my_no_proxy..."
+                ssl_verify                = false
+                timeout                   = 217890936
+              }
             }
             ssl_verify = true
             ttl        = 2977.64
@@ -104,9 +175,6 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
   route = {
     id = "...my_id..."
   }
-  service = {
-    id = "...my_id..."
-  }
   tags = [
     "..."
   ]
@@ -133,7 +201,6 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
 - `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
 - `protocols` (Set of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls. Default: ["grpc","grpcs","http","https","ws","wss"]
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
-- `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
 
@@ -151,6 +218,9 @@ Optional:
 - `auto_offset_reset` (String) The offset to start from when there is no initial offset in the consumer group. Default: "latest"; must be one of ["earliest", "latest"]
 - `cluster_name` (String) An identifier for the Kafka cluster.
 - `commit_strategy` (String) The strategy to use for committing offsets. Default: "auto"; must be one of ["auto", "off"]
+- `dlq_topic` (String) The topic to use for the Dead Letter Queue.
+- `enable_dlq` (Boolean) Enables Dead Letter Queue. When enabled, if the message doesn't conform to the schema (from Schema Registry) or there's an error in the `message_by_lua_functions`, it will be forwarded to `dlq_topic` that can be processed later.
+- `message_by_lua_functions` (List of String) The Lua functions that manipulates the message being sent to the client.
 - `message_deserializer` (String) The deserializer to use for the consumed messages. Default: "noop"; must be one of ["json", "noop"]
 - `mode` (String) The mode of operation for the plugin. Default: "http-get"; must be one of ["http-get", "server-sent-events", "websocket"]
 - `schema_registry` (Attributes) The plugin-global schema registry configuration. (see [below for nested schema](#nestedatt--config--schema_registry))
@@ -196,7 +266,9 @@ Optional:
 Optional:
 
 - `basic` (Attributes) (see [below for nested schema](#nestedatt--config--topics--schema_registry--confluent--authentication--basic))
-- `mode` (String) Authentication mode to use with the schema registry. Default: "none"; must be one of ["basic", "none"]
+- `mode` (String) Authentication mode to use with the schema registry. Default: "none"; must be one of ["basic", "none", "oauth2"]
+- `oauth2` (Attributes) (see [below for nested schema](#nestedatt--config--topics--schema_registry--confluent--authentication--oauth2))
+- `oauth2_client` (Attributes) (see [below for nested schema](#nestedatt--config--topics--schema_registry--confluent--authentication--oauth2_client))
 
 <a id="nestedatt--config--topics--schema_registry--confluent--authentication--basic"></a>
 ### Nested Schema for `config.topics.schema_registry.confluent.authentication.basic`
@@ -205,6 +277,41 @@ Optional:
 
 - `password` (String) Not Null
 - `username` (String) Not Null
+
+
+<a id="nestedatt--config--topics--schema_registry--confluent--authentication--oauth2"></a>
+### Nested Schema for `config.topics.schema_registry.confluent.authentication.oauth2`
+
+Optional:
+
+- `audience` (List of String) List of audiences passed to the IdP when obtaining a new token. Default: []
+- `client_id` (String) The client ID for the application registration in the IdP.
+- `client_secret` (String) The client secret for the application registration in the IdP.
+- `grant_type` (String) The OAuth grant type to be used. Default: "client_credentials"; must be one of ["client_credentials", "password"]
+- `password` (String) The password to use if `config.oauth.grant_type` is set to `password`.
+- `scopes` (List of String) List of scopes to request from the IdP when obtaining a new token. Default: ["openid"]
+- `token_endpoint` (String) The token endpoint URI. Not Null
+- `token_headers` (Map of String) Extra headers to be passed in the token endpoint request.
+- `token_post_args` (Map of String) Extra post arguments to be passed in the token endpoint request.
+- `username` (String) The username to use if `config.oauth.grant_type` is set to `password`.
+
+
+<a id="nestedatt--config--topics--schema_registry--confluent--authentication--oauth2_client"></a>
+### Nested Schema for `config.topics.schema_registry.confluent.authentication.oauth2_client`
+
+Optional:
+
+- `auth_method` (String) The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body. Default: "client_secret_post"; must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none"]
+- `client_secret_jwt_alg` (String) The algorithm to use with JWT when using `client_secret_jwt` authentication. Default: "HS512"; must be one of ["HS256", "HS512"]
+- `http_proxy` (String) The proxy to use when making HTTP requests to the IdP.
+- `http_proxy_authorization` (String) The `Proxy-Authorization` header value to be used with `http_proxy`.
+- `http_version` (Number) The HTTP version used for requests made by this plugin. Supported values: `1.1` for HTTP 1.1 and `1.0` for HTTP 1.0. Default: 1.1
+- `https_proxy` (String) The proxy to use when making HTTPS requests to the IdP.
+- `https_proxy_authorization` (String) The `Proxy-Authorization` header value to be used with `https_proxy`.
+- `keep_alive` (Boolean) Whether to use keepalive connections to the IdP. Default: true
+- `no_proxy` (String) A comma-separated list of hosts that should not be proxied.
+- `ssl_verify` (Boolean) Whether to verify the certificate presented by the IdP when using HTTPS. Default: false
+- `timeout` (Number) Network I/O timeout for requests to the IdP in milliseconds. Default: 10000
 
 
 
@@ -246,7 +353,9 @@ Optional:
 Optional:
 
 - `basic` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication--basic))
-- `mode` (String) Authentication mode to use with the schema registry. Default: "none"; must be one of ["basic", "none"]
+- `mode` (String) Authentication mode to use with the schema registry. Default: "none"; must be one of ["basic", "none", "oauth2"]
+- `oauth2` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication--oauth2))
+- `oauth2_client` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication--oauth2_client))
 
 <a id="nestedatt--config--schema_registry--confluent--authentication--basic"></a>
 ### Nested Schema for `config.schema_registry.confluent.authentication.basic`
@@ -255,6 +364,44 @@ Required:
 
 - `password` (String)
 - `username` (String)
+
+
+<a id="nestedatt--config--schema_registry--confluent--authentication--oauth2"></a>
+### Nested Schema for `config.schema_registry.confluent.authentication.oauth2`
+
+Required:
+
+- `token_endpoint` (String) The token endpoint URI.
+
+Optional:
+
+- `audience` (List of String) List of audiences passed to the IdP when obtaining a new token. Default: []
+- `client_id` (String) The client ID for the application registration in the IdP.
+- `client_secret` (String) The client secret for the application registration in the IdP.
+- `grant_type` (String) The OAuth grant type to be used. Default: "client_credentials"; must be one of ["client_credentials", "password"]
+- `password` (String) The password to use if `config.oauth.grant_type` is set to `password`.
+- `scopes` (List of String) List of scopes to request from the IdP when obtaining a new token. Default: ["openid"]
+- `token_headers` (Map of String) Extra headers to be passed in the token endpoint request.
+- `token_post_args` (Map of String) Extra post arguments to be passed in the token endpoint request.
+- `username` (String) The username to use if `config.oauth.grant_type` is set to `password`.
+
+
+<a id="nestedatt--config--schema_registry--confluent--authentication--oauth2_client"></a>
+### Nested Schema for `config.schema_registry.confluent.authentication.oauth2_client`
+
+Optional:
+
+- `auth_method` (String) The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body. Default: "client_secret_post"; must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none"]
+- `client_secret_jwt_alg` (String) The algorithm to use with JWT when using `client_secret_jwt` authentication. Default: "HS512"; must be one of ["HS256", "HS512"]
+- `http_proxy` (String) The proxy to use when making HTTP requests to the IdP.
+- `http_proxy_authorization` (String) The `Proxy-Authorization` header value to be used with `http_proxy`.
+- `http_version` (Number) The HTTP version used for requests made by this plugin. Supported values: `1.1` for HTTP 1.1 and `1.0` for HTTP 1.0. Default: 1.1
+- `https_proxy` (String) The proxy to use when making HTTPS requests to the IdP.
+- `https_proxy_authorization` (String) The `Proxy-Authorization` header value to be used with `https_proxy`.
+- `keep_alive` (Boolean) Whether to use keepalive connections to the IdP. Default: true
+- `no_proxy` (String) A comma-separated list of hosts that should not be proxied.
+- `ssl_verify` (Boolean) Whether to verify the certificate presented by the IdP when using HTTPS. Default: false
+- `timeout` (Number) Network I/O timeout for requests to the IdP in milliseconds. Default: 10000
 
 
 
@@ -315,14 +462,6 @@ Optional:
 
 <a id="nestedatt--route"></a>
 ### Nested Schema for `route`
-
-Optional:
-
-- `id` (String)
-
-
-<a id="nestedatt--service"></a>
-### Nested Schema for `service`
 
 Optional:
 

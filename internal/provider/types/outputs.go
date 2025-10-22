@@ -7,7 +7,6 @@ import (
 )
 
 type Outputs struct {
-	Body    types.String `tfsdk:"body"`
-	Headers types.String `tfsdk:"headers"`
-	Status  types.String `tfsdk:"status"`
+	Else types.String `tfsdk:"else"`
+	Then types.String `tfsdk:"then"`
 }

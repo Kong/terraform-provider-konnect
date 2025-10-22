@@ -57,7 +57,7 @@ type GatewayPluginDatakitResourceModel struct {
 	Enabled        types.Bool                  `tfsdk:"enabled"`
 	ID             types.String                `tfsdk:"id"`
 	InstanceName   types.String                `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering  `tfsdk:"ordering"`
+	Ordering       *tfTypes.AcePluginOrdering  `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials          `tfsdk:"partials"`
 	Protocols      []types.String              `tfsdk:"protocols"`
 	Route          *tfTypes.Set                `tfsdk:"route"`
@@ -90,6 +90,197 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 								speakeasy_objectvalidators.NotNull(),
 							},
 							Attributes: map[string]schema.Attribute{
+								"branch": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"else": schema.ListAttribute{
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `nodes to execute if the input condition is ` + "`" + `false` + "`" + ``,
+										},
+										"input": schema.StringAttribute{
+											Optional:    true,
+											Description: `branch node input`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"name": schema.StringAttribute{
+											Optional:    true,
+											Description: `A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid ` + "`" + `snake_case` + "`" + ` or ` + "`" + `kebab-case` + "`" + `.`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"output": schema.StringAttribute{
+											Optional:    true,
+											Description: `branch node output`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"outputs": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+												"else": types.StringType,
+												"then": types.StringType,
+											})),
+											Attributes: map[string]schema.Attribute{
+												"else": schema.StringAttribute{
+													Optional:    true,
+													Description: `node output`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+												"then": schema.StringAttribute{
+													Optional:    true,
+													Description: `node output`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+											},
+											Description: `branch node outputs`,
+										},
+										"then": schema.ListAttribute{
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `nodes to execute if the input condition is ` + "`" + `true` + "`" + ``,
+										},
+									},
+									Description: `Execute different nodes based on some input condition`,
+									Validators: []validator.Object{
+										objectvalidator.ConflictsWith(path.Expressions{
+											path.MatchRelative().AtParent().AtName("cache"),
+											path.MatchRelative().AtParent().AtName("call"),
+											path.MatchRelative().AtParent().AtName("exit"),
+											path.MatchRelative().AtParent().AtName("jq"),
+											path.MatchRelative().AtParent().AtName("property"),
+											path.MatchRelative().AtParent().AtName("static"),
+										}...),
+									},
+								},
+								"cache": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"bypass_on_error": schema.BoolAttribute{
+											Optional: true,
+										},
+										"input": schema.StringAttribute{
+											Optional:    true,
+											Description: `cache node input`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"inputs": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+												"data": types.StringType,
+												"key":  types.StringType,
+												"ttl":  types.StringType,
+											})),
+											Attributes: map[string]schema.Attribute{
+												"data": schema.StringAttribute{
+													Optional:    true,
+													Description: `The data to be cached.`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+												"key": schema.StringAttribute{
+													Optional:    true,
+													Description: `The cache key.`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+												"ttl": schema.StringAttribute{
+													Optional:    true,
+													Description: `The TTL in seconds.`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+											},
+											Description: `cache node inputs`,
+										},
+										"name": schema.StringAttribute{
+											Optional:    true,
+											Description: `A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid ` + "`" + `snake_case` + "`" + ` or ` + "`" + `kebab-case` + "`" + `.`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"output": schema.StringAttribute{
+											Optional:    true,
+											Description: `cache node output`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"outputs": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+												"data":   types.StringType,
+												"hit":    types.StringType,
+												"miss":   types.StringType,
+												"stored": types.StringType,
+											})),
+											Attributes: map[string]schema.Attribute{
+												"data": schema.StringAttribute{
+													Optional:    true,
+													Description: `The data that was cached.`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+												"hit": schema.StringAttribute{
+													Optional:    true,
+													Description: `Signals a cache hit.`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+												"miss": schema.StringAttribute{
+													Optional:    true,
+													Description: `Signals a cache miss.`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+												"stored": schema.StringAttribute{
+													Optional:    true,
+													Description: `Signals whether data was stored in cache.`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+											},
+											Description: `cache node outputs`,
+										},
+										"ttl": schema.Int64Attribute{
+											Optional: true,
+										},
+									},
+									Description: `Fetch cached data`,
+									Validators: []validator.Object{
+										objectvalidator.ConflictsWith(path.Expressions{
+											path.MatchRelative().AtParent().AtName("branch"),
+											path.MatchRelative().AtParent().AtName("call"),
+											path.MatchRelative().AtParent().AtName("exit"),
+											path.MatchRelative().AtParent().AtName("jq"),
+											path.MatchRelative().AtParent().AtName("property"),
+											path.MatchRelative().AtParent().AtName("static"),
+										}...),
+									},
+								},
 								"call": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
@@ -213,6 +404,8 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 									Description: `Make an external HTTP request`,
 									Validators: []validator.Object{
 										objectvalidator.ConflictsWith(path.Expressions{
+											path.MatchRelative().AtParent().AtName("branch"),
+											path.MatchRelative().AtParent().AtName("cache"),
 											path.MatchRelative().AtParent().AtName("exit"),
 											path.MatchRelative().AtParent().AtName("jq"),
 											path.MatchRelative().AtParent().AtName("property"),
@@ -279,6 +472,8 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 									Description: `Terminate the request and send a response to the client`,
 									Validators: []validator.Object{
 										objectvalidator.ConflictsWith(path.Expressions{
+											path.MatchRelative().AtParent().AtName("branch"),
+											path.MatchRelative().AtParent().AtName("cache"),
 											path.MatchRelative().AtParent().AtName("call"),
 											path.MatchRelative().AtParent().AtName("jq"),
 											path.MatchRelative().AtParent().AtName("property"),
@@ -332,6 +527,8 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 									Description: `Process data using ` + "`" + `jq` + "`" + ` syntax`,
 									Validators: []validator.Object{
 										objectvalidator.ConflictsWith(path.Expressions{
+											path.MatchRelative().AtParent().AtName("branch"),
+											path.MatchRelative().AtParent().AtName("cache"),
 											path.MatchRelative().AtParent().AtName("call"),
 											path.MatchRelative().AtParent().AtName("exit"),
 											path.MatchRelative().AtParent().AtName("property"),
@@ -389,6 +586,8 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 									Description: `Get or set a property`,
 									Validators: []validator.Object{
 										objectvalidator.ConflictsWith(path.Expressions{
+											path.MatchRelative().AtParent().AtName("branch"),
+											path.MatchRelative().AtParent().AtName("cache"),
 											path.MatchRelative().AtParent().AtName("call"),
 											path.MatchRelative().AtParent().AtName("exit"),
 											path.MatchRelative().AtParent().AtName("jq"),
@@ -434,12 +633,379 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 									Description: `Produce reusable outputs from statically-configured values`,
 									Validators: []validator.Object{
 										objectvalidator.ConflictsWith(path.Expressions{
+											path.MatchRelative().AtParent().AtName("branch"),
+											path.MatchRelative().AtParent().AtName("cache"),
 											path.MatchRelative().AtParent().AtName("call"),
 											path.MatchRelative().AtParent().AtName("exit"),
 											path.MatchRelative().AtParent().AtName("jq"),
 											path.MatchRelative().AtParent().AtName("property"),
 										}...),
 									},
+								},
+							},
+						},
+					},
+					"resources": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"cache": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`memory`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`dictionary_name`: types.StringType,
+										},
+									},
+									`redis`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`cluster_max_redirections`: types.Int64Type,
+											`cluster_nodes`: types.ListType{
+												ElemType: types.ObjectType{
+													AttrTypes: map[string]attr.Type{
+														`ip`:   types.StringType,
+														`port`: types.Int64Type,
+													},
+												},
+											},
+											`connect_timeout`:       types.Int64Type,
+											`connection_is_proxied`: types.BoolType,
+											`database`:              types.Int64Type,
+											`host`:                  types.StringType,
+											`keepalive_backlog`:     types.Int64Type,
+											`keepalive_pool_size`:   types.Int64Type,
+											`password`:              types.StringType,
+											`port`:                  types.Int64Type,
+											`read_timeout`:          types.Int64Type,
+											`send_timeout`:          types.Int64Type,
+											`sentinel_master`:       types.StringType,
+											`sentinel_nodes`: types.ListType{
+												ElemType: types.ObjectType{
+													AttrTypes: map[string]attr.Type{
+														`host`: types.StringType,
+														`port`: types.Int64Type,
+													},
+												},
+											},
+											`sentinel_password`: types.StringType,
+											`sentinel_role`:     types.StringType,
+											`sentinel_username`: types.StringType,
+											`server_name`:       types.StringType,
+											`ssl`:               types.BoolType,
+											`ssl_verify`:        types.BoolType,
+											`username`:          types.StringType,
+										},
+									},
+									`strategy`: types.StringType,
+								},
+							},
+							"vault": types.MapType{
+								ElemType: jsontypes.NormalizedType{},
+							},
+						})),
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"memory": types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`dictionary_name`: types.StringType,
+										},
+									},
+									"redis": types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`cluster_max_redirections`: types.Int64Type,
+											`cluster_nodes`: types.ListType{
+												ElemType: types.ObjectType{
+													AttrTypes: map[string]attr.Type{
+														`ip`:   types.StringType,
+														`port`: types.Int64Type,
+													},
+												},
+											},
+											`connect_timeout`:       types.Int64Type,
+											`connection_is_proxied`: types.BoolType,
+											`database`:              types.Int64Type,
+											`host`:                  types.StringType,
+											`keepalive_backlog`:     types.Int64Type,
+											`keepalive_pool_size`:   types.Int64Type,
+											`password`:              types.StringType,
+											`port`:                  types.Int64Type,
+											`read_timeout`:          types.Int64Type,
+											`send_timeout`:          types.Int64Type,
+											`sentinel_master`:       types.StringType,
+											`sentinel_nodes`: types.ListType{
+												ElemType: types.ObjectType{
+													AttrTypes: map[string]attr.Type{
+														`host`: types.StringType,
+														`port`: types.Int64Type,
+													},
+												},
+											},
+											`sentinel_password`: types.StringType,
+											`sentinel_role`:     types.StringType,
+											`sentinel_username`: types.StringType,
+											`server_name`:       types.StringType,
+											`ssl`:               types.BoolType,
+											`ssl_verify`:        types.BoolType,
+											`username`:          types.StringType,
+										},
+									},
+									"strategy": types.StringType,
+								})),
+								Attributes: map[string]schema.Attribute{
+									"memory": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+											"dictionary_name": types.StringType,
+										})),
+										Attributes: map[string]schema.Attribute{
+											"dictionary_name": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     stringdefault.StaticString(`kong_db_cache`),
+												Description: `The name of the shared dictionary in which to hold cache entities when the memory strategy is selected. Note that this dictionary currently must be defined manually in the Kong Nginx template. Default: "kong_db_cache"`,
+											},
+										},
+									},
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+											"cluster_max_redirections": types.Int64Type,
+											"cluster_nodes": types.ListType{
+												ElemType: types.ObjectType{
+													AttrTypes: map[string]attr.Type{
+														`ip`:   types.StringType,
+														`port`: types.Int64Type,
+													},
+												},
+											},
+											"connect_timeout":       types.Int64Type,
+											"connection_is_proxied": types.BoolType,
+											"database":              types.Int64Type,
+											"host":                  types.StringType,
+											"keepalive_backlog":     types.Int64Type,
+											"keepalive_pool_size":   types.Int64Type,
+											"password":              types.StringType,
+											"port":                  types.Int64Type,
+											"read_timeout":          types.Int64Type,
+											"send_timeout":          types.Int64Type,
+											"sentinel_master":       types.StringType,
+											"sentinel_nodes": types.ListType{
+												ElemType: types.ObjectType{
+													AttrTypes: map[string]attr.Type{
+														`host`: types.StringType,
+														`port`: types.Int64Type,
+													},
+												},
+											},
+											"sentinel_password": types.StringType,
+											"sentinel_role":     types.StringType,
+											"sentinel_username": types.StringType,
+											"server_name":       types.StringType,
+											"ssl":               types.BoolType,
+											"ssl_verify":        types.BoolType,
+											"username":          types.StringType,
+										})),
+										Attributes: map[string]schema.Attribute{
+											"cluster_max_redirections": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(5),
+												Description: `Maximum retry attempts for redirection. Default: 5`,
+											},
+											"cluster_nodes": schema.ListNestedAttribute{
+												Optional: true,
+												NestedObject: schema.NestedAttributeObject{
+													Validators: []validator.Object{
+														speakeasy_objectvalidators.NotNull(),
+													},
+													Attributes: map[string]schema.Attribute{
+														"ip": schema.StringAttribute{
+															Computed:    true,
+															Optional:    true,
+															Default:     stringdefault.StaticString(`127.0.0.1`),
+															Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+														},
+														"port": schema.Int64Attribute{
+															Computed:    true,
+															Optional:    true,
+															Default:     int64default.StaticInt64(6379),
+															Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+															Validators: []validator.Int64{
+																int64validator.AtMost(65535),
+															},
+														},
+													},
+												},
+												Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.AtMost(2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+											},
+											"host": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     stringdefault.StaticString(`127.0.0.1`),
+												Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+											},
+											"keepalive_backlog": schema.Int64Attribute{
+												Optional:    true,
+												Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `keepalive_pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `keepalive_pool_size` + "`" + `.`,
+												Validators: []validator.Int64{
+													int64validator.AtMost(2147483646),
+												},
+											},
+											"keepalive_pool_size": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(256),
+												Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `keepalive_pool_size` + "`" + ` nor ` + "`" + `keepalive_backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `keepalive_pool_size` + "`" + ` isn't specified but ` + "`" + `keepalive_backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+												Validators: []validator.Int64{
+													int64validator.Between(1, 2147483646),
+												},
+											},
+											"password": schema.StringAttribute{
+												Optional:    true,
+												Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
+											},
+											"port": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(6379),
+												Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+												Validators: []validator.Int64{
+													int64validator.AtMost(65535),
+												},
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.AtMost(2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.AtMost(2147483646),
+												},
+											},
+											"sentinel_master": schema.StringAttribute{
+												Optional:    true,
+												Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+											},
+											"sentinel_nodes": schema.ListNestedAttribute{
+												Optional: true,
+												NestedObject: schema.NestedAttributeObject{
+													Validators: []validator.Object{
+														speakeasy_objectvalidators.NotNull(),
+													},
+													Attributes: map[string]schema.Attribute{
+														"host": schema.StringAttribute{
+															Computed:    true,
+															Optional:    true,
+															Default:     stringdefault.StaticString(`127.0.0.1`),
+															Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+														},
+														"port": schema.Int64Attribute{
+															Computed:    true,
+															Optional:    true,
+															Default:     int64default.StaticInt64(6379),
+															Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+															Validators: []validator.Int64{
+																int64validator.AtMost(65535),
+															},
+														},
+													},
+												},
+												Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+											},
+											"sentinel_password": schema.StringAttribute{
+												Optional:    true,
+												Description: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.`,
+											},
+											"sentinel_role": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]`,
+												Validators: []validator.String{
+													stringvalidator.OneOf(
+														"any",
+														"master",
+														"slave",
+													),
+												},
+											},
+											"sentinel_username": schema.StringAttribute{
+												Optional:    true,
+												Description: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional:    true,
+												Description: `A string representing an SNI (server name indication) value for TLS.`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If set to true, uses SSL to connect to Redis. Default: false`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: false`,
+											},
+											"username": schema.StringAttribute{
+												Optional:    true,
+												Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
+											},
+										},
+									},
+									"strategy": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `The backing data store in which to hold cache entities. Accepted values are: ` + "`" + `memory` + "`" + ` and ` + "`" + `redis` + "`" + `. must be one of ["memory", "redis"]`,
+										Validators: []validator.String{
+											stringvalidator.OneOf(
+												"memory",
+												"redis",
+											),
+										},
+									},
+								},
+							},
+							"vault": schema.MapAttribute{
+								Optional:    true,
+								ElementType: jsontypes.NormalizedType{},
+								Validators: []validator.Map{
+									mapvalidator.ValueStringsAre(validators.IsValidJSON()),
 								},
 							},
 						},

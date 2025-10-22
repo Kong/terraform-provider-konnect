@@ -265,8 +265,9 @@ func (k *KafkaLogPluginBasic) GetUsername() string {
 type KafkaLogPluginMode string
 
 const (
-	KafkaLogPluginModeBasic KafkaLogPluginMode = "basic"
-	KafkaLogPluginModeNone  KafkaLogPluginMode = "none"
+	KafkaLogPluginModeBasic  KafkaLogPluginMode = "basic"
+	KafkaLogPluginModeNone   KafkaLogPluginMode = "none"
+	KafkaLogPluginModeOauth2 KafkaLogPluginMode = "oauth2"
 )
 
 func (e KafkaLogPluginMode) ToPointer() *KafkaLogPluginMode {
@@ -281,6 +282,8 @@ func (e *KafkaLogPluginMode) UnmarshalJSON(data []byte) error {
 	case "basic":
 		fallthrough
 	case "none":
+		fallthrough
+	case "oauth2":
 		*e = KafkaLogPluginMode(v)
 		return nil
 	default:
@@ -288,10 +291,316 @@ func (e *KafkaLogPluginMode) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// KafkaLogPluginGrantType - The OAuth grant type to be used.
+type KafkaLogPluginGrantType string
+
+const (
+	KafkaLogPluginGrantTypeClientCredentials KafkaLogPluginGrantType = "client_credentials"
+	KafkaLogPluginGrantTypePassword          KafkaLogPluginGrantType = "password"
+)
+
+func (e KafkaLogPluginGrantType) ToPointer() *KafkaLogPluginGrantType {
+	return &e
+}
+func (e *KafkaLogPluginGrantType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "client_credentials":
+		fallthrough
+	case "password":
+		*e = KafkaLogPluginGrantType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for KafkaLogPluginGrantType: %v", v)
+	}
+}
+
+type KafkaLogPluginOauth2 struct {
+	// List of audiences passed to the IdP when obtaining a new token.
+	Audience []string `json:"audience,omitempty"`
+	// The client ID for the application registration in the IdP.
+	ClientID *string `default:"null" json:"client_id"`
+	// The client secret for the application registration in the IdP.
+	ClientSecret *string `default:"null" json:"client_secret"`
+	// The OAuth grant type to be used.
+	GrantType *KafkaLogPluginGrantType `default:"client_credentials" json:"grant_type"`
+	// The password to use if `config.oauth.grant_type` is set to `password`.
+	Password *string `default:"null" json:"password"`
+	// List of scopes to request from the IdP when obtaining a new token.
+	Scopes []string `json:"scopes,omitempty"`
+	// The token endpoint URI.
+	TokenEndpoint string `json:"token_endpoint"`
+	// Extra headers to be passed in the token endpoint request.
+	TokenHeaders map[string]any `json:"token_headers,omitempty"`
+	// Extra post arguments to be passed in the token endpoint request.
+	TokenPostArgs map[string]any `json:"token_post_args,omitempty"`
+	// The username to use if `config.oauth.grant_type` is set to `password`.
+	Username *string `default:"null" json:"username"`
+}
+
+func (k KafkaLogPluginOauth2) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaLogPluginOauth2) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"token_endpoint"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (k *KafkaLogPluginOauth2) GetAudience() []string {
+	if k == nil {
+		return nil
+	}
+	return k.Audience
+}
+
+func (k *KafkaLogPluginOauth2) GetClientID() *string {
+	if k == nil {
+		return nil
+	}
+	return k.ClientID
+}
+
+func (k *KafkaLogPluginOauth2) GetClientSecret() *string {
+	if k == nil {
+		return nil
+	}
+	return k.ClientSecret
+}
+
+func (k *KafkaLogPluginOauth2) GetGrantType() *KafkaLogPluginGrantType {
+	if k == nil {
+		return nil
+	}
+	return k.GrantType
+}
+
+func (k *KafkaLogPluginOauth2) GetPassword() *string {
+	if k == nil {
+		return nil
+	}
+	return k.Password
+}
+
+func (k *KafkaLogPluginOauth2) GetScopes() []string {
+	if k == nil {
+		return nil
+	}
+	return k.Scopes
+}
+
+func (k *KafkaLogPluginOauth2) GetTokenEndpoint() string {
+	if k == nil {
+		return ""
+	}
+	return k.TokenEndpoint
+}
+
+func (k *KafkaLogPluginOauth2) GetTokenHeaders() map[string]any {
+	if k == nil {
+		return nil
+	}
+	return k.TokenHeaders
+}
+
+func (k *KafkaLogPluginOauth2) GetTokenPostArgs() map[string]any {
+	if k == nil {
+		return nil
+	}
+	return k.TokenPostArgs
+}
+
+func (k *KafkaLogPluginOauth2) GetUsername() *string {
+	if k == nil {
+		return nil
+	}
+	return k.Username
+}
+
+// KafkaLogPluginAuthMethod - The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body.
+type KafkaLogPluginAuthMethod string
+
+const (
+	KafkaLogPluginAuthMethodClientSecretBasic KafkaLogPluginAuthMethod = "client_secret_basic"
+	KafkaLogPluginAuthMethodClientSecretJwt   KafkaLogPluginAuthMethod = "client_secret_jwt"
+	KafkaLogPluginAuthMethodClientSecretPost  KafkaLogPluginAuthMethod = "client_secret_post"
+	KafkaLogPluginAuthMethodNone              KafkaLogPluginAuthMethod = "none"
+)
+
+func (e KafkaLogPluginAuthMethod) ToPointer() *KafkaLogPluginAuthMethod {
+	return &e
+}
+func (e *KafkaLogPluginAuthMethod) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "client_secret_basic":
+		fallthrough
+	case "client_secret_jwt":
+		fallthrough
+	case "client_secret_post":
+		fallthrough
+	case "none":
+		*e = KafkaLogPluginAuthMethod(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for KafkaLogPluginAuthMethod: %v", v)
+	}
+}
+
+// KafkaLogPluginClientSecretJwtAlg - The algorithm to use with JWT when using `client_secret_jwt` authentication.
+type KafkaLogPluginClientSecretJwtAlg string
+
+const (
+	KafkaLogPluginClientSecretJwtAlgHs256 KafkaLogPluginClientSecretJwtAlg = "HS256"
+	KafkaLogPluginClientSecretJwtAlgHs512 KafkaLogPluginClientSecretJwtAlg = "HS512"
+)
+
+func (e KafkaLogPluginClientSecretJwtAlg) ToPointer() *KafkaLogPluginClientSecretJwtAlg {
+	return &e
+}
+func (e *KafkaLogPluginClientSecretJwtAlg) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "HS256":
+		fallthrough
+	case "HS512":
+		*e = KafkaLogPluginClientSecretJwtAlg(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for KafkaLogPluginClientSecretJwtAlg: %v", v)
+	}
+}
+
+type KafkaLogPluginOauth2Client struct {
+	// The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body.
+	AuthMethod *KafkaLogPluginAuthMethod `default:"client_secret_post" json:"auth_method"`
+	// The algorithm to use with JWT when using `client_secret_jwt` authentication.
+	ClientSecretJwtAlg *KafkaLogPluginClientSecretJwtAlg `default:"HS512" json:"client_secret_jwt_alg"`
+	// The proxy to use when making HTTP requests to the IdP.
+	HTTPProxy *string `default:"null" json:"http_proxy"`
+	// The `Proxy-Authorization` header value to be used with `http_proxy`.
+	HTTPProxyAuthorization *string `default:"null" json:"http_proxy_authorization"`
+	// The HTTP version used for requests made by this plugin. Supported values: `1.1` for HTTP 1.1 and `1.0` for HTTP 1.0.
+	HTTPVersion *float64 `default:"1.1" json:"http_version"`
+	// The proxy to use when making HTTPS requests to the IdP.
+	HTTPSProxy *string `default:"null" json:"https_proxy"`
+	// The `Proxy-Authorization` header value to be used with `https_proxy`.
+	HTTPSProxyAuthorization *string `default:"null" json:"https_proxy_authorization"`
+	// Whether to use keepalive connections to the IdP.
+	KeepAlive *bool `default:"true" json:"keep_alive"`
+	// A comma-separated list of hosts that should not be proxied.
+	NoProxy *string `default:"null" json:"no_proxy"`
+	// Whether to verify the certificate presented by the IdP when using HTTPS.
+	SslVerify *bool `default:"false" json:"ssl_verify"`
+	// Network I/O timeout for requests to the IdP in milliseconds.
+	Timeout *int64 `default:"10000" json:"timeout"`
+}
+
+func (k KafkaLogPluginOauth2Client) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaLogPluginOauth2Client) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (k *KafkaLogPluginOauth2Client) GetAuthMethod() *KafkaLogPluginAuthMethod {
+	if k == nil {
+		return nil
+	}
+	return k.AuthMethod
+}
+
+func (k *KafkaLogPluginOauth2Client) GetClientSecretJwtAlg() *KafkaLogPluginClientSecretJwtAlg {
+	if k == nil {
+		return nil
+	}
+	return k.ClientSecretJwtAlg
+}
+
+func (k *KafkaLogPluginOauth2Client) GetHTTPProxy() *string {
+	if k == nil {
+		return nil
+	}
+	return k.HTTPProxy
+}
+
+func (k *KafkaLogPluginOauth2Client) GetHTTPProxyAuthorization() *string {
+	if k == nil {
+		return nil
+	}
+	return k.HTTPProxyAuthorization
+}
+
+func (k *KafkaLogPluginOauth2Client) GetHTTPVersion() *float64 {
+	if k == nil {
+		return nil
+	}
+	return k.HTTPVersion
+}
+
+func (k *KafkaLogPluginOauth2Client) GetHTTPSProxy() *string {
+	if k == nil {
+		return nil
+	}
+	return k.HTTPSProxy
+}
+
+func (k *KafkaLogPluginOauth2Client) GetHTTPSProxyAuthorization() *string {
+	if k == nil {
+		return nil
+	}
+	return k.HTTPSProxyAuthorization
+}
+
+func (k *KafkaLogPluginOauth2Client) GetKeepAlive() *bool {
+	if k == nil {
+		return nil
+	}
+	return k.KeepAlive
+}
+
+func (k *KafkaLogPluginOauth2Client) GetNoProxy() *string {
+	if k == nil {
+		return nil
+	}
+	return k.NoProxy
+}
+
+func (k *KafkaLogPluginOauth2Client) GetSslVerify() *bool {
+	if k == nil {
+		return nil
+	}
+	return k.SslVerify
+}
+
+func (k *KafkaLogPluginOauth2Client) GetTimeout() *int64 {
+	if k == nil {
+		return nil
+	}
+	return k.Timeout
+}
+
 type KafkaLogPluginConfigAuthentication struct {
 	Basic *KafkaLogPluginBasic `json:"basic"`
 	// Authentication mode to use with the schema registry.
-	Mode *KafkaLogPluginMode `default:"none" json:"mode"`
+	Mode         *KafkaLogPluginMode         `default:"none" json:"mode"`
+	Oauth2       *KafkaLogPluginOauth2       `json:"oauth2"`
+	Oauth2Client *KafkaLogPluginOauth2Client `json:"oauth2_client"`
 }
 
 func (k KafkaLogPluginConfigAuthentication) MarshalJSON() ([]byte, error) {
@@ -317,6 +626,20 @@ func (k *KafkaLogPluginConfigAuthentication) GetMode() *KafkaLogPluginMode {
 		return nil
 	}
 	return k.Mode
+}
+
+func (k *KafkaLogPluginConfigAuthentication) GetOauth2() *KafkaLogPluginOauth2 {
+	if k == nil {
+		return nil
+	}
+	return k.Oauth2
+}
+
+func (k *KafkaLogPluginConfigAuthentication) GetOauth2Client() *KafkaLogPluginOauth2Client {
+	if k == nil {
+		return nil
+	}
+	return k.Oauth2Client
 }
 
 type KafkaLogPluginKeySchema struct {

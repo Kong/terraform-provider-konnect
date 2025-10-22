@@ -138,17 +138,23 @@ func (e *TextSource) UnmarshalJSON(data []byte) error {
 type AiAwsGuardrailsPluginConfig struct {
 	// The AWS access key ID to use for authentication
 	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
+	// The target AWS IAM role ARN used to access the guardrails service
+	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
 	// The AWS region to use for the Bedrock API
 	AwsRegion string `json:"aws_region"`
+	// The identifier of the assumed role session
+	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
 	// The AWS secret access key to use for authentication
 	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
+	// Override the STS endpoint URL when assuming a different role
+	AwsStsEndpointURL *string `default:"null" json:"aws_sts_endpoint_url"`
 	// The guardrail mode to use for the request
 	GuardingMode *GuardingMode `default:"INPUT" json:"guarding_mode"`
 	// The guardrail identifier used in the request to apply the guardrail
 	GuardrailsID string `json:"guardrails_id"`
 	// The guardrail version used in the request to apply the guardrail
 	GuardrailsVersion string `json:"guardrails_version"`
-	// The amount of token receiving from upstream to be buffered before sending to the guardrails service. This only applies to the response content guard.
+	// The amount of bytes receiving from upstream to be buffered before sending to the guardrails service. This only applies to the response content guard.
 	ResponseBufferSize *float64 `default:"100" json:"response_buffer_size"`
 	// Stop processing if an error occurs
 	StopOnError *bool `default:"true" json:"stop_on_error"`
@@ -176,6 +182,13 @@ func (a *AiAwsGuardrailsPluginConfig) GetAwsAccessKeyID() *string {
 	return a.AwsAccessKeyID
 }
 
+func (a *AiAwsGuardrailsPluginConfig) GetAwsAssumeRoleArn() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsAssumeRoleArn
+}
+
 func (a *AiAwsGuardrailsPluginConfig) GetAwsRegion() string {
 	if a == nil {
 		return ""
@@ -183,11 +196,25 @@ func (a *AiAwsGuardrailsPluginConfig) GetAwsRegion() string {
 	return a.AwsRegion
 }
 
+func (a *AiAwsGuardrailsPluginConfig) GetAwsRoleSessionName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsRoleSessionName
+}
+
 func (a *AiAwsGuardrailsPluginConfig) GetAwsSecretAccessKey() *string {
 	if a == nil {
 		return nil
 	}
 	return a.AwsSecretAccessKey
+}
+
+func (a *AiAwsGuardrailsPluginConfig) GetAwsStsEndpointURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsStsEndpointURL
 }
 
 func (a *AiAwsGuardrailsPluginConfig) GetGuardingMode() *GuardingMode {

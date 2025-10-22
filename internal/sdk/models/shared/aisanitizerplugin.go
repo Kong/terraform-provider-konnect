@@ -223,9 +223,41 @@ func (e *RedactType) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// SanitizationMode - The sanitization mode to use for the request
+type SanitizationMode string
+
+const (
+	SanitizationModeBoth   SanitizationMode = "BOTH"
+	SanitizationModeInput  SanitizationMode = "INPUT"
+	SanitizationModeOutput SanitizationMode = "OUTPUT"
+)
+
+func (e SanitizationMode) ToPointer() *SanitizationMode {
+	return &e
+}
+func (e *SanitizationMode) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "BOTH":
+		fallthrough
+	case "INPUT":
+		fallthrough
+	case "OUTPUT":
+		*e = SanitizationMode(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for SanitizationMode: %v", v)
+	}
+}
+
 type AiSanitizerPluginConfig struct {
 	// List of types to be anonymized
 	Anonymize []Anonymize `json:"anonymize,omitempty"`
+	// Whether to block requests containing PII data
+	BlockIfDetected *bool `default:"false" json:"block_if_detected"`
 	// List of custom patterns to be used for anonymization
 	CustomPatterns []CustomPatterns `json:"custom_patterns"`
 	// The host of the sanitizer
@@ -234,13 +266,15 @@ type AiSanitizerPluginConfig struct {
 	KeepaliveTimeout *float64 `default:"60000" json:"keepalive_timeout"`
 	// The port of the sanitizer
 	Port *float64 `default:"8080" json:"port"`
-	// Whether to recover redacted data
+	// Whether to recover redacted data. This doesn't apply to the redacted output.
 	RecoverRedacted *bool `default:"true" json:"recover_redacted"`
 	// What value to be used to redacted to
 	RedactType *RedactType `default:"placeholder" json:"redact_type"`
+	// The sanitization mode to use for the request
+	SanitizationMode *SanitizationMode `default:"INPUT" json:"sanitization_mode"`
 	// The protocol can be http and https
 	Scheme *string `default:"http" json:"scheme"`
-	// Stop processing if an error occurs
+	// Stop processing if an error occurs.
 	StopOnError *bool `default:"true" json:"stop_on_error"`
 	// Connection timeout with the sanitizer
 	Timeout *float64 `default:"10000" json:"timeout"`
@@ -262,6 +296,13 @@ func (a *AiSanitizerPluginConfig) GetAnonymize() []Anonymize {
 		return nil
 	}
 	return a.Anonymize
+}
+
+func (a *AiSanitizerPluginConfig) GetBlockIfDetected() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.BlockIfDetected
 }
 
 func (a *AiSanitizerPluginConfig) GetCustomPatterns() []CustomPatterns {
@@ -304,6 +345,13 @@ func (a *AiSanitizerPluginConfig) GetRedactType() *RedactType {
 		return nil
 	}
 	return a.RedactType
+}
+
+func (a *AiSanitizerPluginConfig) GetSanitizationMode() *SanitizationMode {
+	if a == nil {
+		return nil
+	}
+	return a.SanitizationMode
 }
 
 func (a *AiSanitizerPluginConfig) GetScheme() *string {

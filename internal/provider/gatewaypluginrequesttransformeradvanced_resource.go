@@ -50,7 +50,7 @@ type GatewayPluginRequestTransformerAdvancedResourceModel struct {
 	Enabled        types.Bool                                      `tfsdk:"enabled"`
 	ID             types.String                                    `tfsdk:"id"`
 	InstanceName   types.String                                    `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering                      `tfsdk:"ordering"`
+	Ordering       *tfTypes.AcePluginOrdering                      `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials                              `tfsdk:"partials"`
 	Protocols      []types.String                                  `tfsdk:"protocols"`
 	Route          *tfTypes.Set                                    `tfsdk:"route"`
@@ -239,7 +239,7 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 						Computed:    true,
 						Optional:    true,
 						Default:     booldefault.StaticBool(true),
-						Description: `Specify whether dots (for example, ` + "`" + `customers.info.phone` + "`" + `) should be treated as part of a property name or used to descend into nested JSON objects.  See [Arrays and nested objects](#arrays-and-nested-objects). Default: true`,
+						Description: `Specify whether dots (for example, ` + "`" + `customers.info.phone` + "`" + `) should be treated as part of a property name or used to descend into nested JSON objects. Default: true`,
 					},
 					"http_method": schema.StringAttribute{
 						Optional:    true,

@@ -18,7 +18,7 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 		if resp.Config.Auth == nil {
 			r.Config.Auth = nil
 		} else {
-			r.Config.Auth = &tfTypes.Auth{}
+			r.Config.Auth = &tfTypes.AiLlmAsJudgePluginAuth{}
 			r.Config.Auth.AllowOverride = types.BoolPointerValue(resp.Config.Auth.AllowOverride)
 			r.Config.Auth.AwsAccessKeyID = types.StringPointerValue(resp.Config.Auth.AwsAccessKeyID)
 			r.Config.Auth.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Auth.AwsSecretAccessKey)
@@ -51,7 +51,7 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 		if resp.Config.Logging == nil {
 			r.Config.Logging = nil
 		} else {
-			r.Config.Logging = &tfTypes.Logging{}
+			r.Config.Logging = &tfTypes.AiLlmAsJudgePluginLogging{}
 			r.Config.Logging.LogPayloads = types.BoolPointerValue(resp.Config.Logging.LogPayloads)
 			r.Config.Logging.LogStatistics = types.BoolPointerValue(resp.Config.Logging.LogStatistics)
 		}
@@ -60,7 +60,7 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 		if resp.Config.Model.Options == nil {
 			r.Config.Model.Options = nil
 		} else {
-			r.Config.Model.Options = &tfTypes.OptionsObj{}
+			r.Config.Model.Options = &tfTypes.AiLlmAsJudgePluginOptions{}
 			r.Config.Model.Options.AnthropicVersion = types.StringPointerValue(resp.Config.Model.Options.AnthropicVersion)
 			r.Config.Model.Options.AzureAPIVersion = types.StringPointerValue(resp.Config.Model.Options.AzureAPIVersion)
 			r.Config.Model.Options.AzureDeploymentID = types.StringPointerValue(resp.Config.Model.Options.AzureDeploymentID)
@@ -68,7 +68,7 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 			if resp.Config.Model.Options.Bedrock == nil {
 				r.Config.Model.Options.Bedrock = nil
 			} else {
-				r.Config.Model.Options.Bedrock = &tfTypes.Bedrock{}
+				r.Config.Model.Options.Bedrock = &tfTypes.AiLlmAsJudgePluginBedrock{}
 				r.Config.Model.Options.Bedrock.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsAssumeRoleArn)
 				r.Config.Model.Options.Bedrock.AwsRegion = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsRegion)
 				r.Config.Model.Options.Bedrock.AwsRoleSessionName = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsRoleSessionName)
@@ -79,7 +79,7 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 			if resp.Config.Model.Options.Cohere == nil {
 				r.Config.Model.Options.Cohere = nil
 			} else {
-				r.Config.Model.Options.Cohere = &tfTypes.Cohere{}
+				r.Config.Model.Options.Cohere = &tfTypes.AiLlmAsJudgePluginCohere{}
 				if resp.Config.Model.Options.Cohere.EmbeddingInputType != nil {
 					r.Config.Model.Options.Cohere.EmbeddingInputType = types.StringValue(string(*resp.Config.Model.Options.Cohere.EmbeddingInputType))
 				} else {
@@ -91,15 +91,16 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 			if resp.Config.Model.Options.Gemini == nil {
 				r.Config.Model.Options.Gemini = nil
 			} else {
-				r.Config.Model.Options.Gemini = &tfTypes.Gemini{}
+				r.Config.Model.Options.Gemini = &tfTypes.AiLlmAsJudgePluginGemini{}
 				r.Config.Model.Options.Gemini.APIEndpoint = types.StringPointerValue(resp.Config.Model.Options.Gemini.APIEndpoint)
+				r.Config.Model.Options.Gemini.EndpointID = types.StringPointerValue(resp.Config.Model.Options.Gemini.EndpointID)
 				r.Config.Model.Options.Gemini.LocationID = types.StringPointerValue(resp.Config.Model.Options.Gemini.LocationID)
 				r.Config.Model.Options.Gemini.ProjectID = types.StringPointerValue(resp.Config.Model.Options.Gemini.ProjectID)
 			}
 			if resp.Config.Model.Options.Huggingface == nil {
 				r.Config.Model.Options.Huggingface = nil
 			} else {
-				r.Config.Model.Options.Huggingface = &tfTypes.Huggingface{}
+				r.Config.Model.Options.Huggingface = &tfTypes.AiLlmAsJudgePluginHuggingface{}
 				r.Config.Model.Options.Huggingface.UseCache = types.BoolPointerValue(resp.Config.Model.Options.Huggingface.UseCache)
 				r.Config.Model.Options.Huggingface.WaitForModel = types.BoolPointerValue(resp.Config.Model.Options.Huggingface.WaitForModel)
 			}
@@ -149,11 +150,11 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			r.Ordering = &tfTypes.AcePluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After = &tfTypes.AcePluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -162,7 +163,7 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.AcePluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
@@ -501,7 +502,7 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 	} else {
 		llmFormat = nil
 	}
-	var logging *shared.Logging
+	var logging *shared.AiProxyPluginLogging
 	if r.Config.Logging != nil {
 		logPayloads := new(bool)
 		if !r.Config.Logging.LogPayloads.IsUnknown() && !r.Config.Logging.LogPayloads.IsNull() {
@@ -515,7 +516,7 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 		} else {
 			logStatistics = nil
 		}
-		logging = &shared.Logging{
+		logging = &shared.AiProxyPluginLogging{
 			LogPayloads:   logPayloads,
 			LogStatistics: logStatistics,
 		}
@@ -638,6 +639,12 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 			} else {
 				apiEndpoint = nil
 			}
+			endpointID := new(string)
+			if !r.Config.Model.Options.Gemini.EndpointID.IsUnknown() && !r.Config.Model.Options.Gemini.EndpointID.IsNull() {
+				*endpointID = r.Config.Model.Options.Gemini.EndpointID.ValueString()
+			} else {
+				endpointID = nil
+			}
 			locationID := new(string)
 			if !r.Config.Model.Options.Gemini.LocationID.IsUnknown() && !r.Config.Model.Options.Gemini.LocationID.IsNull() {
 				*locationID = r.Config.Model.Options.Gemini.LocationID.ValueString()
@@ -652,6 +659,7 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 			}
 			gemini = &shared.Gemini{
 				APIEndpoint: apiEndpoint,
+				EndpointID:  endpointID,
 				LocationID:  locationID,
 				ProjectID:   projectID,
 			}

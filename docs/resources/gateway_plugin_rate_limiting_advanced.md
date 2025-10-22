@@ -72,6 +72,12 @@ resource "konnect_gateway_plugin_rate_limiting_advanced" "my_gatewaypluginrateli
     retry_after_jitter_max = 9.23
     strategy               = "cluster"
     sync_rate              = 4.11
+    throttling = {
+      enabled     = false
+      interval    = 248813.69
+      queue_limit = 503655.16
+      retry_times = 989778.57
+    }
     window_size = [
       4.61
     ]
@@ -174,6 +180,7 @@ Optional:
 - `retry_after_jitter_max` (Number) The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header. Default: 0
 - `strategy` (String) The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local` and `cluster`. Default: "local"; must be one of ["cluster", "local", "redis"]
 - `sync_rate` (Number) How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 will sync the counters in the specified number of seconds. The minimum allowed interval is 0.02 seconds (20ms).
+- `throttling` (Attributes) (see [below for nested schema](#nestedatt--config--throttling))
 - `window_type` (String) Sets the time window type to either `sliding` (default) or `fixed`. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters. Default: "sliding"; must be one of ["fixed", "sliding"]
 
 <a id="nestedatt--config--redis"></a>
@@ -221,6 +228,17 @@ Optional:
 - `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
 - `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
 
+
+
+<a id="nestedatt--config--throttling"></a>
+### Nested Schema for `config.throttling`
+
+Optional:
+
+- `enabled` (Boolean) Determines if the throttling feature is enabled or not. Default: false
+- `interval` (Number) The period between two successive retries for an individual request (in seconds). Default: 5
+- `queue_limit` (Number) The maximum number of requests allowed for throttling. Default: 5
+- `retry_times` (Number) The maximum number of retries for an individual request. Default: 3
 
 
 

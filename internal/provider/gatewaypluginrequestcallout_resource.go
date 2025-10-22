@@ -57,7 +57,7 @@ type GatewayPluginRequestCalloutResourceModel struct {
 	Enabled        types.Bool                         `tfsdk:"enabled"`
 	ID             types.String                       `tfsdk:"id"`
 	InstanceName   types.String                       `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering         `tfsdk:"ordering"`
+	Ordering       *tfTypes.AcePluginOrdering         `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials                 `tfsdk:"partials"`
 	Protocols      []types.String                     `tfsdk:"protocols"`
 	Route          *tfTypes.Set                       `tfsdk:"route"`
@@ -678,7 +678,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 										"url": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `The URL that will be requested. Not Null`,
+											Description: `The URL that will be requested. Values can contain Lua expressions in the form ` + "`" + `$(some_lua_expression)` + "`" + `. The syntax is based on ` + "`" + `request-transformer-advanced` + "`" + ` templates. Not Null`,
 											Validators: []validator.String{
 												speakeasy_stringvalidators.NotNull(),
 											},

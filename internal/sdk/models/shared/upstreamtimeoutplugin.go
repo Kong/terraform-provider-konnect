@@ -79,11 +79,11 @@ func (u *UpstreamTimeoutPluginPartials) GetPath() *string {
 }
 
 type UpstreamTimeoutPluginConfig struct {
-	// An integer representing a timeout in milliseconds. Must be between 1 and 2^31-2.
+	// The timeout in milliseconds for establishing a connection to the upstream server. Must be an integer between 1 and 2^31-2.
 	ConnectTimeout *int64 `default:"null" json:"connect_timeout"`
-	// An integer representing a timeout in milliseconds. Must be between 1 and 2^31-2.
+	// The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server. Must be an integer between 1 and 2^31-2.
 	ReadTimeout *int64 `default:"null" json:"read_timeout"`
-	// An integer representing a timeout in milliseconds. Must be between 1 and 2^31-2.
+	// The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server. Must be an integer between 1 and 2^31-2.
 	SendTimeout *int64 `default:"null" json:"send_timeout"`
 }
 
