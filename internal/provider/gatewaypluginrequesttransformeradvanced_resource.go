@@ -24,7 +24,6 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
-	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -245,9 +244,6 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 					"http_method": schema.StringAttribute{
 						Optional:    true,
 						Description: `A string representing an HTTP method, such as GET, POST, PUT, or DELETE. The string must contain only uppercase letters.`,
-						Validators: []validator.String{
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Z]+$`), "must match pattern "+regexp.MustCompile(`^[A-Z]+$`).String()),
-						},
 					},
 					"remove": schema.SingleNestedAttribute{
 						Computed: true,

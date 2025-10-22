@@ -320,7 +320,7 @@ func (s *Consumers) DeleteConsumer(ctx context.Context, request operations.Delet
 
 }
 
-// GetConsumer - Fetch a Consumer
+// GetConsumer - Get a Consumer
 // Get a Consumer using ID or username.
 func (s *Consumers) GetConsumer(ctx context.Context, request operations.GetConsumerRequest, opts ...operations.Option) (*operations.GetConsumerResponse, error) {
 	o := operations.Options{}

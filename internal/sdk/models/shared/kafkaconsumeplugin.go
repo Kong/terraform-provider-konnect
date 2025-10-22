@@ -401,7 +401,7 @@ func (k *KafkaConsumePluginAuthentication) GetMode() *KafkaConsumePluginConfigMo
 }
 
 type KafkaConsumePluginConfluent struct {
-	Authentication KafkaConsumePluginAuthentication `json:"authentication"`
+	Authentication *KafkaConsumePluginAuthentication `json:"authentication"`
 	// Set to false to disable SSL certificate verification when connecting to the schema registry.
 	SslVerify *bool `default:"true" json:"ssl_verify"`
 	// The TTL in seconds for the schema registry cache.
@@ -415,15 +415,15 @@ func (k KafkaConsumePluginConfluent) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaConsumePluginConfluent) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"authentication"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (k *KafkaConsumePluginConfluent) GetAuthentication() KafkaConsumePluginAuthentication {
+func (k *KafkaConsumePluginConfluent) GetAuthentication() *KafkaConsumePluginAuthentication {
 	if k == nil {
-		return KafkaConsumePluginAuthentication{}
+		return nil
 	}
 	return k.Authentication
 }
@@ -571,7 +571,7 @@ func (k *KafkaConsumePluginConfigAuthentication) GetMode() *KafkaConsumePluginCo
 }
 
 type KafkaConsumePluginConfigConfluent struct {
-	Authentication KafkaConsumePluginConfigAuthentication `json:"authentication"`
+	Authentication *KafkaConsumePluginConfigAuthentication `json:"authentication"`
 	// Set to false to disable SSL certificate verification when connecting to the schema registry.
 	SslVerify *bool `default:"true" json:"ssl_verify"`
 	// The TTL in seconds for the schema registry cache.
@@ -585,15 +585,15 @@ func (k KafkaConsumePluginConfigConfluent) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaConsumePluginConfigConfluent) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"authentication"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (k *KafkaConsumePluginConfigConfluent) GetAuthentication() KafkaConsumePluginConfigAuthentication {
+func (k *KafkaConsumePluginConfigConfluent) GetAuthentication() *KafkaConsumePluginConfigAuthentication {
 	if k == nil {
-		return KafkaConsumePluginConfigAuthentication{}
+		return nil
 	}
 	return k.Authentication
 }
@@ -634,7 +634,7 @@ func (k *KafkaConsumePluginConfigSchemaRegistry) GetConfluent() *KafkaConsumePlu
 type KafkaConsumePluginTopics struct {
 	Name string `json:"name"`
 	// The plugin-global schema registry configuration.
-	SchemaRegistry KafkaConsumePluginConfigSchemaRegistry `json:"schema_registry"`
+	SchemaRegistry *KafkaConsumePluginConfigSchemaRegistry `json:"schema_registry"`
 }
 
 func (k *KafkaConsumePluginTopics) GetName() string {
@@ -644,9 +644,9 @@ func (k *KafkaConsumePluginTopics) GetName() string {
 	return k.Name
 }
 
-func (k *KafkaConsumePluginTopics) GetSchemaRegistry() KafkaConsumePluginConfigSchemaRegistry {
+func (k *KafkaConsumePluginTopics) GetSchemaRegistry() *KafkaConsumePluginConfigSchemaRegistry {
 	if k == nil {
-		return KafkaConsumePluginConfigSchemaRegistry{}
+		return nil
 	}
 	return k.SchemaRegistry
 }

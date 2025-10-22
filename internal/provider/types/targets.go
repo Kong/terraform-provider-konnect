@@ -9,7 +9,7 @@ import (
 type Targets struct {
 	Auth        *Auth        `tfsdk:"auth"`
 	Description types.String `tfsdk:"description"`
-	Logging     Logging      `tfsdk:"logging"`
+	Logging     *Logging     `tfsdk:"logging"`
 	Model       Model        `tfsdk:"model"`
 	RouteType   types.String `tfsdk:"route_type"`
 	Weight      types.Int64  `tfsdk:"weight"`

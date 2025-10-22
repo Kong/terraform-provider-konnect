@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -49,10 +47,9 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx
 		}
 		r.Config.ClusterName = types.StringPointerValue(resp.Config.ClusterName)
 		if resp.Config.CustomFieldsByLua != nil {
-			r.Config.CustomFieldsByLua = make(map[string]jsontypes.Normalized, len(resp.Config.CustomFieldsByLua))
+			r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
 			for key, value := range resp.Config.CustomFieldsByLua {
-				result, _ := json.Marshal(value)
-				r.Config.CustomFieldsByLua[key] = jsontypes.NewNormalizedValue(string(result))
+				r.Config.CustomFieldsByLua[key] = types.StringValue(value)
 			}
 		}
 		r.Config.Keepalive = types.Int64PointerValue(resp.Config.Keepalive)
@@ -79,17 +76,22 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx
 				r.Config.SchemaRegistry.Confluent = nil
 			} else {
 				r.Config.SchemaRegistry.Confluent = &tfTypes.Confluent{}
-				if resp.Config.SchemaRegistry.Confluent.Authentication.Basic == nil {
-					r.Config.SchemaRegistry.Confluent.Authentication.Basic = nil
+				if resp.Config.SchemaRegistry.Confluent.Authentication == nil {
+					r.Config.SchemaRegistry.Confluent.Authentication = nil
 				} else {
-					r.Config.SchemaRegistry.Confluent.Authentication.Basic = &tfTypes.Basic{}
-					r.Config.SchemaRegistry.Confluent.Authentication.Basic.Password = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Password)
-					r.Config.SchemaRegistry.Confluent.Authentication.Basic.Username = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Username)
-				}
-				if resp.Config.SchemaRegistry.Confluent.Authentication.Mode != nil {
-					r.Config.SchemaRegistry.Confluent.Authentication.Mode = types.StringValue(string(*resp.Config.SchemaRegistry.Confluent.Authentication.Mode))
-				} else {
-					r.Config.SchemaRegistry.Confluent.Authentication.Mode = types.StringNull()
+					r.Config.SchemaRegistry.Confluent.Authentication = &tfTypes.ConfluentPluginAuthentication{}
+					if resp.Config.SchemaRegistry.Confluent.Authentication.Basic == nil {
+						r.Config.SchemaRegistry.Confluent.Authentication.Basic = nil
+					} else {
+						r.Config.SchemaRegistry.Confluent.Authentication.Basic = &tfTypes.Basic{}
+						r.Config.SchemaRegistry.Confluent.Authentication.Basic.Password = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Password)
+						r.Config.SchemaRegistry.Confluent.Authentication.Basic.Username = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Username)
+					}
+					if resp.Config.SchemaRegistry.Confluent.Authentication.Mode != nil {
+						r.Config.SchemaRegistry.Confluent.Authentication.Mode = types.StringValue(string(*resp.Config.SchemaRegistry.Confluent.Authentication.Mode))
+					} else {
+						r.Config.SchemaRegistry.Confluent.Authentication.Mode = types.StringNull()
+					}
 				}
 				if resp.Config.SchemaRegistry.Confluent.KeySchema == nil {
 					r.Config.SchemaRegistry.Confluent.KeySchema = nil
@@ -431,10 +433,11 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin(ctx context.
 	} else {
 		clusterName = nil
 	}
-	customFieldsByLua := make(map[string]interface{})
+	customFieldsByLua := make(map[string]string)
 	for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
-		var customFieldsByLuaInst interface{}
-		_ = json.Unmarshal([]byte(customFieldsByLuaValue.ValueString()), &customFieldsByLuaInst)
+		var customFieldsByLuaInst string
+		customFieldsByLuaInst = customFieldsByLuaValue.ValueString()
+
 		customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
 	}
 	keepalive := new(int64)
@@ -513,28 +516,31 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin(ctx context.
 	if r.Config.SchemaRegistry != nil {
 		var confluent *shared.KafkaLogPluginConfluent
 		if r.Config.SchemaRegistry.Confluent != nil {
-			var basic *shared.KafkaLogPluginBasic
-			if r.Config.SchemaRegistry.Confluent.Authentication.Basic != nil {
-				var password1 string
-				password1 = r.Config.SchemaRegistry.Confluent.Authentication.Basic.Password.ValueString()
+			var authentication1 *shared.KafkaLogPluginConfigAuthentication
+			if r.Config.SchemaRegistry.Confluent.Authentication != nil {
+				var basic *shared.KafkaLogPluginBasic
+				if r.Config.SchemaRegistry.Confluent.Authentication.Basic != nil {
+					var password1 string
+					password1 = r.Config.SchemaRegistry.Confluent.Authentication.Basic.Password.ValueString()
 
-				var username string
-				username = r.Config.SchemaRegistry.Confluent.Authentication.Basic.Username.ValueString()
+					var username string
+					username = r.Config.SchemaRegistry.Confluent.Authentication.Basic.Username.ValueString()
 
-				basic = &shared.KafkaLogPluginBasic{
-					Password: password1,
-					Username: username,
+					basic = &shared.KafkaLogPluginBasic{
+						Password: password1,
+						Username: username,
+					}
 				}
-			}
-			mode := new(shared.KafkaLogPluginMode)
-			if !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsNull() {
-				*mode = shared.KafkaLogPluginMode(r.Config.SchemaRegistry.Confluent.Authentication.Mode.ValueString())
-			} else {
-				mode = nil
-			}
-			authentication1 := shared.KafkaLogPluginConfigAuthentication{
-				Basic: basic,
-				Mode:  mode,
+				mode := new(shared.KafkaLogPluginMode)
+				if !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsNull() {
+					*mode = shared.KafkaLogPluginMode(r.Config.SchemaRegistry.Confluent.Authentication.Mode.ValueString())
+				} else {
+					mode = nil
+				}
+				authentication1 = &shared.KafkaLogPluginConfigAuthentication{
+					Basic: basic,
+					Mode:  mode,
+				}
 			}
 			var keySchema *shared.KafkaLogPluginKeySchema
 			if r.Config.SchemaRegistry.Confluent.KeySchema != nil {

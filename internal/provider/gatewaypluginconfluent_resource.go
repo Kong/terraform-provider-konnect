@@ -269,6 +269,15 @@ func (r *GatewayPluginConfluentResource) Schema(ctx context.Context, req resourc
 									"authentication": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
+										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+											"basic": types.ObjectType{
+												AttrTypes: map[string]attr.Type{
+													`password`: types.StringType,
+													`username`: types.StringType,
+												},
+											},
+											"mode": types.StringType,
+										})),
 										Attributes: map[string]schema.Attribute{
 											"basic": schema.SingleNestedAttribute{
 												Computed: true,
@@ -308,10 +317,6 @@ func (r *GatewayPluginConfluentResource) Schema(ctx context.Context, req resourc
 													),
 												},
 											},
-										},
-										Description: `Not Null`,
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
 										},
 									},
 									"key_schema": schema.SingleNestedAttribute{

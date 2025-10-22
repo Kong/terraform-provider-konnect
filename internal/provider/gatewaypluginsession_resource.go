@@ -239,10 +239,8 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 						Description: `The session cookie rolling timeout, in seconds. Specifies how long the session can be used until it needs to be renewed. Default: 3600`,
 					},
 					"secret": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString(`M5N0CyFrAZwpB7F72PpY3J4S5n3KL77fs6xMuY8b7SMc`),
-						Description: `The secret that is used in keyed HMAC generation. Default: "M5N0CyFrAZwpB7F72PpY3J4S5n3KL77fs6xMuY8b7SMc"`,
+						Description: `The secret that is used in keyed HMAC generation.`,
 					},
 					"stale_ttl": schema.Float64Attribute{
 						Computed:    true,

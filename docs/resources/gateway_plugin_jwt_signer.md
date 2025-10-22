@@ -41,21 +41,25 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     access_token_introspection_scopes_required = [
       "..."
     ]
-    access_token_introspection_timeout       = 4.24
-    access_token_issuer                      = "...my_access_token_issuer..."
-    access_token_jwks_uri                    = "...my_access_token_jwks_uri..."
-    access_token_jwks_uri_client_certificate = "...my_access_token_jwks_uri_client_certificate..."
-    access_token_jwks_uri_client_password    = "...my_access_token_jwks_uri_client_password..."
-    access_token_jwks_uri_client_username    = "...my_access_token_jwks_uri_client_username..."
-    access_token_jwks_uri_rotate_period      = 0.18
-    access_token_keyset                      = "...my_access_token_keyset..."
-    access_token_keyset_client_certificate   = "...my_access_token_keyset_client_certificate..."
-    access_token_keyset_client_password      = "...my_access_token_keyset_client_password..."
-    access_token_keyset_client_username      = "...my_access_token_keyset_client_username..."
-    access_token_keyset_rotate_period        = 4.53
-    access_token_leeway                      = 0.51
-    access_token_optional                    = false
-    access_token_request_header              = "...my_access_token_request_header..."
+    access_token_introspection_timeout = 4.24
+    access_token_issuer                = "...my_access_token_issuer..."
+    access_token_jwks_uri              = "...my_access_token_jwks_uri..."
+    access_token_jwks_uri_client_certificate = {
+      id = "...my_id..."
+    }
+    access_token_jwks_uri_client_password = "...my_access_token_jwks_uri_client_password..."
+    access_token_jwks_uri_client_username = "...my_access_token_jwks_uri_client_username..."
+    access_token_jwks_uri_rotate_period   = 0.18
+    access_token_keyset                   = "...my_access_token_keyset..."
+    access_token_keyset_client_certificate = {
+      id = "...my_id..."
+    }
+    access_token_keyset_client_password = "...my_access_token_keyset_client_password..."
+    access_token_keyset_client_username = "...my_access_token_keyset_client_username..."
+    access_token_keyset_rotate_period   = 4.53
+    access_token_leeway                 = 0.51
+    access_token_optional               = false
+    access_token_request_header         = "...my_access_token_request_header..."
     access_token_scopes_claim = [
       "..."
     ]
@@ -102,21 +106,25 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     channel_token_introspection_scopes_required = [
       "..."
     ]
-    channel_token_introspection_timeout       = 6.9
-    channel_token_issuer                      = "...my_channel_token_issuer..."
-    channel_token_jwks_uri                    = "...my_channel_token_jwks_uri..."
-    channel_token_jwks_uri_client_certificate = "...my_channel_token_jwks_uri_client_certificate..."
-    channel_token_jwks_uri_client_password    = "...my_channel_token_jwks_uri_client_password..."
-    channel_token_jwks_uri_client_username    = "...my_channel_token_jwks_uri_client_username..."
-    channel_token_jwks_uri_rotate_period      = 9.27
-    channel_token_keyset                      = "...my_channel_token_keyset..."
-    channel_token_keyset_client_certificate   = "...my_channel_token_keyset_client_certificate..."
-    channel_token_keyset_client_password      = "...my_channel_token_keyset_client_password..."
-    channel_token_keyset_client_username      = "...my_channel_token_keyset_client_username..."
-    channel_token_keyset_rotate_period        = 0.98
-    channel_token_leeway                      = 4.86
-    channel_token_optional                    = false
-    channel_token_request_header              = "...my_channel_token_request_header..."
+    channel_token_introspection_timeout = 6.9
+    channel_token_issuer                = "...my_channel_token_issuer..."
+    channel_token_jwks_uri              = "...my_channel_token_jwks_uri..."
+    channel_token_jwks_uri_client_certificate = {
+      id = "...my_id..."
+    }
+    channel_token_jwks_uri_client_password = "...my_channel_token_jwks_uri_client_password..."
+    channel_token_jwks_uri_client_username = "...my_channel_token_jwks_uri_client_username..."
+    channel_token_jwks_uri_rotate_period   = 9.27
+    channel_token_keyset                   = "...my_channel_token_keyset..."
+    channel_token_keyset_client_certificate = {
+      id = "...my_id..."
+    }
+    channel_token_keyset_client_password = "...my_channel_token_keyset_client_password..."
+    channel_token_keyset_client_username = "...my_channel_token_keyset_client_username..."
+    channel_token_keyset_rotate_period   = 0.98
+    channel_token_leeway                 = 4.86
+    channel_token_optional               = false
+    channel_token_request_header         = "...my_channel_token_request_header..."
     channel_token_scopes_claim = [
       "..."
     ]
@@ -243,12 +251,12 @@ Optional:
 - `access_token_introspection_timeout` (Number) Timeout in milliseconds for an introspection request. The plugin tries to introspect twice if the first request fails for some reason. If both requests timeout, then the plugin runs two times the `config.access_token_introspection_timeout` on access token introspection.
 - `access_token_issuer` (String) The `iss` claim of a signed or re-signed access token is set to this value. Original `iss` claim of the incoming token (possibly introspected) is stored in `original_iss` claim of the newly signed access token. Default: "kong"
 - `access_token_jwks_uri` (String) Specify the URI where the plugin can fetch the public keys (JWKS) to verify the signature of the access token.
-- `access_token_jwks_uri_client_certificate` (String) The client certificate that will be used to authenticate Kong if `access_token_jwks_uri` is an https uri that requires mTLS Auth.
+- `access_token_jwks_uri_client_certificate` (Attributes) The client certificate that will be used to authenticate Kong if `access_token_jwks_uri` is an https uri that requires mTLS Auth. (see [below for nested schema](#nestedatt--config--access_token_jwks_uri_client_certificate))
 - `access_token_jwks_uri_client_password` (String) The client password that will be used to authenticate Kong if `access_token_jwks_uri` is a uri that requires Basic Auth. Should be configured together with `access_token_jwks_uri_client_username`
 - `access_token_jwks_uri_client_username` (String) The client username that will be used to authenticate Kong if `access_token_jwks_uri` is a uri that requires Basic Auth. Should be configured together with `access_token_jwks_uri_client_password`
 - `access_token_jwks_uri_rotate_period` (Number) Specify the period (in seconds) to auto-rotate the jwks for `access_token_jwks_uri`. The default value 0 means no auto-rotation. Default: 0
 - `access_token_keyset` (String) The name of the keyset containing signing keys. Default: "kong"
-- `access_token_keyset_client_certificate` (String) The client certificate that will be used to authenticate Kong if `access_token_keyset` is an https uri that requires mTLS Auth.
+- `access_token_keyset_client_certificate` (Attributes) The client certificate that will be used to authenticate Kong if `access_token_keyset` is an https uri that requires mTLS Auth. (see [below for nested schema](#nestedatt--config--access_token_keyset_client_certificate))
 - `access_token_keyset_client_password` (String) The client password that will be used to authenticate Kong if `access_token_keyset` is a uri that requires Basic Auth. Should be configured together with `access_token_keyset_client_username`
 - `access_token_keyset_client_username` (String) The client username that will be used to authenticate Kong if `access_token_keyset` is a uri that requires Basic Auth. Should be configured together with `access_token_keyset_client_password`
 - `access_token_keyset_rotate_period` (Number) Specify the period (in seconds) to auto-rotate the jwks for `access_token_keyset`. The default value 0 means no auto-rotation. Default: 0
@@ -280,12 +288,12 @@ Optional:
 - `channel_token_introspection_timeout` (Number) Timeout in milliseconds for an introspection request. The plugin tries to introspect twice if the first request fails for some reason. If both requests timeout, then the plugin runs two times the `config.access_token_introspection_timeout` on channel token introspection.
 - `channel_token_issuer` (String) The `iss` claim of the re-signed channel token is set to this value, which is `kong` by default. The original `iss` claim of the incoming token (possibly introspected) is stored in the `original_iss` claim of the newly signed channel token. Default: "kong"
 - `channel_token_jwks_uri` (String) If you want to use `config.verify_channel_token_signature`, you must specify the URI where the plugin can fetch the public keys (JWKS) to verify the signature of the channel token. If you don't specify a URI and you pass a JWT token to the plugin, then the plugin responds with `401 Unauthorized`.
-- `channel_token_jwks_uri_client_certificate` (String) The client certificate that will be used to authenticate Kong if `access_token_jwks_uri` is an https uri that requires mTLS Auth.
+- `channel_token_jwks_uri_client_certificate` (Attributes) The client certificate that will be used to authenticate Kong if `access_token_jwks_uri` is an https uri that requires mTLS Auth. (see [below for nested schema](#nestedatt--config--channel_token_jwks_uri_client_certificate))
 - `channel_token_jwks_uri_client_password` (String) The client password that will be used to authenticate Kong if `channel_token_jwks_uri` is a uri that requires Basic Auth. Should be configured together with `channel_token_jwks_uri_client_username`
 - `channel_token_jwks_uri_client_username` (String) The client username that will be used to authenticate Kong if `channel_token_jwks_uri` is a uri that requires Basic Auth. Should be configured together with `channel_token_jwks_uri_client_password`
 - `channel_token_jwks_uri_rotate_period` (Number) Specify the period (in seconds) to auto-rotate the jwks for `channel_token_jwks_uri`. The default value 0 means no auto-rotation. Default: 0
 - `channel_token_keyset` (String) The name of the keyset containing signing keys. Default: "kong"
-- `channel_token_keyset_client_certificate` (String) The client certificate that will be used to authenticate Kong if `channel_token_keyset` is an https uri that requires mTLS Auth.
+- `channel_token_keyset_client_certificate` (Attributes) The client certificate that will be used to authenticate Kong if `channel_token_keyset` is an https uri that requires mTLS Auth. (see [below for nested schema](#nestedatt--config--channel_token_keyset_client_certificate))
 - `channel_token_keyset_client_password` (String) The client password that will be used to authenticate Kong if `channel_token_keyset` is a uri that requires Basic Auth. Should be configured together with `channel_token_keyset_client_username`
 - `channel_token_keyset_client_username` (String) The client username that will be used to authenticate Kong if `channel_token_keyset` is a uri that requires Basic Auth. Should be configured together with `channel_token_keyset_client_password`
 - `channel_token_keyset_rotate_period` (Number) Specify the period (in seconds) to auto-rotate the jwks for `channel_token_keyset`. The default value 0 means no auto-rotation. Default: 0
@@ -321,6 +329,38 @@ Optional:
 - `verify_channel_token_introspection_scopes` (Boolean) Quickly turn on/off the channel token introspection scopes verification specified with `config.channel_token_introspection_scopes_required`. Default: true
 - `verify_channel_token_scopes` (Boolean) Quickly turn on/off the channel token required scopes verification specified with `config.channel_token_scopes_required`. Default: true
 - `verify_channel_token_signature` (Boolean) Quickly turn on/off the channel token signature verification. Default: true
+
+<a id="nestedatt--config--access_token_jwks_uri_client_certificate"></a>
+### Nested Schema for `config.access_token_jwks_uri_client_certificate`
+
+Optional:
+
+- `id` (String)
+
+
+<a id="nestedatt--config--access_token_keyset_client_certificate"></a>
+### Nested Schema for `config.access_token_keyset_client_certificate`
+
+Optional:
+
+- `id` (String)
+
+
+<a id="nestedatt--config--channel_token_jwks_uri_client_certificate"></a>
+### Nested Schema for `config.channel_token_jwks_uri_client_certificate`
+
+Optional:
+
+- `id` (String)
+
+
+<a id="nestedatt--config--channel_token_keyset_client_certificate"></a>
+### Nested Schema for `config.channel_token_keyset_client_certificate`
+
+Optional:
+
+- `id` (String)
+
 
 
 <a id="nestedatt--ordering"></a>

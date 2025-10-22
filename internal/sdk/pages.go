@@ -257,7 +257,7 @@ func (s *Pages) CreatePortalPage(ctx context.Context, request operations.CreateP
 
 }
 
-// GetPortalPage - Fetch Page
+// GetPortalPage - Get a Page
 // Returns the configuration of a single custom page for this portal. Custom pages can be used to display static content, documentation, or other information to developers.
 func (s *Pages) GetPortalPage(ctx context.Context, request operations.GetPortalPageRequest, opts ...operations.Option) (*operations.GetPortalPageResponse, error) {
 	o := operations.Options{}

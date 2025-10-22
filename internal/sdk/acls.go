@@ -276,7 +276,7 @@ func (s *ACLs) DeleteACLWithConsumer(ctx context.Context, request operations.Del
 
 }
 
-// GetACLWithConsumer - Fetch an ACL associated with a Consumer
+// GetACLWithConsumer - Get an ACL associated with a Consumer
 // Get an ACL associated with a Consumer using ID.
 func (s *ACLs) GetACLWithConsumer(ctx context.Context, request operations.GetACLWithConsumerRequest, opts ...operations.Option) (*operations.GetACLWithConsumerResponse, error) {
 	o := operations.Options{}

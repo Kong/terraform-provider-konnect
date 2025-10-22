@@ -299,7 +299,7 @@ func (s *APIProductVersionSpecification) CreateAPIProductVersionSpec(ctx context
 
 }
 
-// GetAPIProductVersionSpec - Fetch API Product Version Specification
+// GetAPIProductVersionSpec - Get an API Product Version Specification
 // Returns a specification for the version of an API product.
 func (s *APIProductVersionSpecification) GetAPIProductVersionSpec(ctx context.Context, request operations.GetAPIProductVersionSpecRequest, opts ...operations.Option) (*operations.GetAPIProductVersionSpecResponse, error) {
 	o := operations.Options{}

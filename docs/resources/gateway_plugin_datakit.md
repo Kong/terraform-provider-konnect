@@ -18,8 +18,13 @@ resource "konnect_gateway_plugin_datakit" "my_gatewayplugindatakit" {
     debug = false
     nodes = [
       {
-        name = "...my_name..."
-        type = "call"
+        property = {
+          content_type = "application/json"
+          input        = "...my_input..."
+          name         = "...my_name..."
+          output       = "...my_output..."
+          property     = "...my_property..."
+        }
       }
     ]
   }
@@ -109,8 +114,103 @@ Optional:
 
 Optional:
 
-- `name` (String) A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`. Not Null
-- `type` (String) Not Null; must be one of ["call", "exit", "jq", "property", "static"]
+- `call` (Attributes) Make an external HTTP request (see [below for nested schema](#nestedatt--config--nodes--call))
+- `exit` (Attributes) Terminate the request and send a response to the client (see [below for nested schema](#nestedatt--config--nodes--exit))
+- `jq` (Attributes) Process data using `jq` syntax (see [below for nested schema](#nestedatt--config--nodes--jq))
+- `property` (Attributes) Get or set a property (see [below for nested schema](#nestedatt--config--nodes--property))
+- `static` (Attributes) Produce reusable outputs from statically-configured values (see [below for nested schema](#nestedatt--config--nodes--static))
+
+<a id="nestedatt--config--nodes--call"></a>
+### Nested Schema for `config.nodes.call`
+
+Optional:
+
+- `input` (String) call node input
+- `inputs` (Attributes) call node inputs (see [below for nested schema](#nestedatt--config--nodes--call--inputs))
+- `method` (String) A string representing an HTTP method, such as GET, POST, PUT, or DELETE. The string must contain only uppercase letters. Default: "GET"
+- `name` (String) A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+- `output` (String) call node output
+- `outputs` (Attributes) call node outputs (see [below for nested schema](#nestedatt--config--nodes--call--outputs))
+- `ssl_server_name` (String) A string representing an SNI (server name indication) value for TLS.
+- `timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+- `url` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search. Not Null
+
+<a id="nestedatt--config--nodes--call--inputs"></a>
+### Nested Schema for `config.nodes.call.inputs`
+
+Optional:
+
+- `body` (String) HTTP request body
+- `headers` (String) HTTP request headers
+- `query` (String) HTTP request query
+
+
+<a id="nestedatt--config--nodes--call--outputs"></a>
+### Nested Schema for `config.nodes.call.outputs`
+
+Optional:
+
+- `body` (String) HTTP response body
+- `headers` (String) HTTP response headers
+- `status` (String) HTTP response status code
+
+
+
+<a id="nestedatt--config--nodes--exit"></a>
+### Nested Schema for `config.nodes.exit`
+
+Optional:
+
+- `input` (String) exit node input
+- `inputs` (Attributes) exit node inputs (see [below for nested schema](#nestedatt--config--nodes--exit--inputs))
+- `name` (String) A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+- `status` (Number) HTTP status code. Default: 200
+- `warn_headers_sent` (Boolean)
+
+<a id="nestedatt--config--nodes--exit--inputs"></a>
+### Nested Schema for `config.nodes.exit.inputs`
+
+Optional:
+
+- `body` (String) HTTP response body
+- `headers` (String) HTTP response headers
+
+
+
+<a id="nestedatt--config--nodes--jq"></a>
+### Nested Schema for `config.nodes.jq`
+
+Optional:
+
+- `input` (String) filter input(s)
+- `inputs` (Map of String) filter input(s)
+- `jq` (String) The jq filter text. Refer to https://jqlang.org/manual/ for full documentation. Not Null
+- `name` (String) A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+- `output` (String) filter output(s)
+
+
+<a id="nestedatt--config--nodes--property"></a>
+### Nested Schema for `config.nodes.property`
+
+Optional:
+
+- `content_type` (String) The expected mime type of the property value. When set to `application/json`, SET operations will JSON-encode input data before writing it, and GET operations will JSON-decode output data after reading it. Otherwise, this setting has no effect. must be one of ["application/json", "application/octet-stream", "text/plain"]
+- `input` (String) Property input source. When connected, this node operates in SET mode and writes input data to the property. Otherwise, the node operates in GET mode and reads the property.
+- `name` (String) A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+- `output` (String) Property output. This can be connected regardless of whether the node is operating in GET mode or SET mode.
+- `property` (String) The property name to get/set. Not Null
+
+
+<a id="nestedatt--config--nodes--static"></a>
+### Nested Schema for `config.nodes.static`
+
+Optional:
+
+- `name` (String) A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+- `output` (String) The entire `.values` map
+- `outputs` (Map of String) Individual items from `.values`, referenced by key
+- `values` (String) An object with string keys and freeform values. Not Null
+
 
 
 

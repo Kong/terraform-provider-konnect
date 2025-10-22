@@ -30,7 +30,7 @@ resource "konnect_gateway_plugin_kafka_log" "my_gatewaypluginkafkalog" {
     ]
     cluster_name = "...my_cluster_name..."
     custom_fields_by_lua = {
-      key = jsonencode("value")
+      key = "value"
     }
     keepalive                                          = 2
     keepalive_enabled                                  = true
@@ -199,12 +199,9 @@ Optional:
 <a id="nestedatt--config--schema_registry--confluent"></a>
 ### Nested Schema for `config.schema_registry.confluent`
 
-Required:
-
-- `authentication` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication))
-
 Optional:
 
+- `authentication` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication))
 - `key_schema` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--key_schema))
 - `ssl_verify` (Boolean) Set to false to disable SSL certificate verification when connecting to the schema registry. Default: true
 - `ttl` (Number) The TTL in seconds for the schema registry cache.

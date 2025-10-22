@@ -327,7 +327,17 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 								})),
 								Attributes: map[string]schema.Attribute{
 									"authentication": schema.SingleNestedAttribute{
-										Required: true,
+										Computed: true,
+										Optional: true,
+										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+											"basic": types.ObjectType{
+												AttrTypes: map[string]attr.Type{
+													`password`: types.StringType,
+													`username`: types.StringType,
+												},
+											},
+											"mode": types.StringType,
+										})),
 										Attributes: map[string]schema.Attribute{
 											"basic": schema.SingleNestedAttribute{
 												Computed: true,

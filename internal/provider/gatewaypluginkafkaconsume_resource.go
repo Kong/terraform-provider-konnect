@@ -244,7 +244,17 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 								})),
 								Attributes: map[string]schema.Attribute{
 									"authentication": schema.SingleNestedAttribute{
-										Required: true,
+										Computed: true,
+										Optional: true,
+										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+											"basic": types.ObjectType{
+												AttrTypes: map[string]attr.Type{
+													`password`: types.StringType,
+													`username`: types.StringType,
+												},
+											},
+											"mode": types.StringType,
+										})),
 										Attributes: map[string]schema.Attribute{
 											"basic": schema.SingleNestedAttribute{
 												Computed: true,
@@ -334,6 +344,26 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 								"schema_registry": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
+									Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+										"confluent": types.ObjectType{
+											AttrTypes: map[string]attr.Type{
+												`authentication`: types.ObjectType{
+													AttrTypes: map[string]attr.Type{
+														`basic`: types.ObjectType{
+															AttrTypes: map[string]attr.Type{
+																`password`: types.StringType,
+																`username`: types.StringType,
+															},
+														},
+														`mode`: types.StringType,
+													},
+												},
+												`ssl_verify`: types.BoolType,
+												`ttl`:        types.Float64Type,
+												`url`:        types.StringType,
+											},
+										},
+									})),
 									Attributes: map[string]schema.Attribute{
 										"confluent": schema.SingleNestedAttribute{
 											Computed: true,
@@ -358,6 +388,15 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 												"authentication": schema.SingleNestedAttribute{
 													Computed: true,
 													Optional: true,
+													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+														"basic": types.ObjectType{
+															AttrTypes: map[string]attr.Type{
+																`password`: types.StringType,
+																`username`: types.StringType,
+															},
+														},
+														"mode": types.StringType,
+													})),
 													Attributes: map[string]schema.Attribute{
 														"basic": schema.SingleNestedAttribute{
 															Computed: true,
@@ -398,10 +437,6 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 															},
 														},
 													},
-													Description: `Not Null`,
-													Validators: []validator.Object{
-														speakeasy_objectvalidators.NotNull(),
-													},
 												},
 												"ssl_verify": schema.BoolAttribute{
 													Computed:    true,
@@ -423,10 +458,7 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 											},
 										},
 									},
-									Description: `The plugin-global schema registry configuration. Not Null`,
-									Validators: []validator.Object{
-										speakeasy_objectvalidators.NotNull(),
-									},
+									Description: `The plugin-global schema registry configuration.`,
 								},
 							},
 						},

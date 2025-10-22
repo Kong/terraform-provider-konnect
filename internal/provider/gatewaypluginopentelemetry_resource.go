@@ -117,11 +117,8 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 					},
 					"headers": schema.MapAttribute{
 						Optional:    true,
-						ElementType: jsontypes.NormalizedType{},
+						ElementType: types.StringType,
 						Description: `The custom headers to be added in the HTTP request sent to the OTLP server. This setting is useful for adding the authentication headers (token) for the APM backend.`,
-						Validators: []validator.Map{
-							mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-						},
 					},
 					"http_response_header_for_traceid": schema.StringAttribute{
 						Optional: true,

@@ -62,17 +62,22 @@ func (r *GatewayPluginConfluentConsumeResourceModel) RefreshFromSharedConfluentC
 				r.Config.SchemaRegistry.Confluent = nil
 			} else {
 				r.Config.SchemaRegistry.Confluent = &tfTypes.ConfluentConsumePluginConfluent{}
-				if resp.Config.SchemaRegistry.Confluent.Authentication.Basic == nil {
-					r.Config.SchemaRegistry.Confluent.Authentication.Basic = nil
+				if resp.Config.SchemaRegistry.Confluent.Authentication == nil {
+					r.Config.SchemaRegistry.Confluent.Authentication = nil
 				} else {
-					r.Config.SchemaRegistry.Confluent.Authentication.Basic = &tfTypes.Basic{}
-					r.Config.SchemaRegistry.Confluent.Authentication.Basic.Password = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Password)
-					r.Config.SchemaRegistry.Confluent.Authentication.Basic.Username = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Username)
-				}
-				if resp.Config.SchemaRegistry.Confluent.Authentication.Mode != nil {
-					r.Config.SchemaRegistry.Confluent.Authentication.Mode = types.StringValue(string(*resp.Config.SchemaRegistry.Confluent.Authentication.Mode))
-				} else {
-					r.Config.SchemaRegistry.Confluent.Authentication.Mode = types.StringNull()
+					r.Config.SchemaRegistry.Confluent.Authentication = &tfTypes.ConfluentPluginAuthentication{}
+					if resp.Config.SchemaRegistry.Confluent.Authentication.Basic == nil {
+						r.Config.SchemaRegistry.Confluent.Authentication.Basic = nil
+					} else {
+						r.Config.SchemaRegistry.Confluent.Authentication.Basic = &tfTypes.Basic{}
+						r.Config.SchemaRegistry.Confluent.Authentication.Basic.Password = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Password)
+						r.Config.SchemaRegistry.Confluent.Authentication.Basic.Username = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Username)
+					}
+					if resp.Config.SchemaRegistry.Confluent.Authentication.Mode != nil {
+						r.Config.SchemaRegistry.Confluent.Authentication.Mode = types.StringValue(string(*resp.Config.SchemaRegistry.Confluent.Authentication.Mode))
+					} else {
+						r.Config.SchemaRegistry.Confluent.Authentication.Mode = types.StringNull()
+					}
 				}
 				r.Config.SchemaRegistry.Confluent.SslVerify = types.BoolPointerValue(resp.Config.SchemaRegistry.Confluent.SslVerify)
 				r.Config.SchemaRegistry.Confluent.TTL = types.Float64PointerValue(resp.Config.SchemaRegistry.Confluent.TTL)
@@ -86,25 +91,35 @@ func (r *GatewayPluginConfluentConsumeResourceModel) RefreshFromSharedConfluentC
 			var topics tfTypes.Topics
 
 			topics.Name = types.StringValue(topicsItem.Name)
-			if topicsItem.SchemaRegistry.Confluent == nil {
-				topics.SchemaRegistry.Confluent = nil
+			if topicsItem.SchemaRegistry == nil {
+				topics.SchemaRegistry = nil
 			} else {
-				topics.SchemaRegistry.Confluent = &tfTypes.ConfluentConsumePluginConfluent{}
-				if topicsItem.SchemaRegistry.Confluent.Authentication.Basic == nil {
-					topics.SchemaRegistry.Confluent.Authentication.Basic = nil
+				topics.SchemaRegistry = &tfTypes.ConfluentConsumePluginSchemaRegistry{}
+				if topicsItem.SchemaRegistry.Confluent == nil {
+					topics.SchemaRegistry.Confluent = nil
 				} else {
-					topics.SchemaRegistry.Confluent.Authentication.Basic = &tfTypes.Basic{}
-					topics.SchemaRegistry.Confluent.Authentication.Basic.Password = types.StringValue(topicsItem.SchemaRegistry.Confluent.Authentication.Basic.Password)
-					topics.SchemaRegistry.Confluent.Authentication.Basic.Username = types.StringValue(topicsItem.SchemaRegistry.Confluent.Authentication.Basic.Username)
+					topics.SchemaRegistry.Confluent = &tfTypes.ConfluentConsumePluginConfluent{}
+					if topicsItem.SchemaRegistry.Confluent.Authentication == nil {
+						topics.SchemaRegistry.Confluent.Authentication = nil
+					} else {
+						topics.SchemaRegistry.Confluent.Authentication = &tfTypes.ConfluentPluginAuthentication{}
+						if topicsItem.SchemaRegistry.Confluent.Authentication.Basic == nil {
+							topics.SchemaRegistry.Confluent.Authentication.Basic = nil
+						} else {
+							topics.SchemaRegistry.Confluent.Authentication.Basic = &tfTypes.Basic{}
+							topics.SchemaRegistry.Confluent.Authentication.Basic.Password = types.StringValue(topicsItem.SchemaRegistry.Confluent.Authentication.Basic.Password)
+							topics.SchemaRegistry.Confluent.Authentication.Basic.Username = types.StringValue(topicsItem.SchemaRegistry.Confluent.Authentication.Basic.Username)
+						}
+						if topicsItem.SchemaRegistry.Confluent.Authentication.Mode != nil {
+							topics.SchemaRegistry.Confluent.Authentication.Mode = types.StringValue(string(*topicsItem.SchemaRegistry.Confluent.Authentication.Mode))
+						} else {
+							topics.SchemaRegistry.Confluent.Authentication.Mode = types.StringNull()
+						}
+					}
+					topics.SchemaRegistry.Confluent.SslVerify = types.BoolPointerValue(topicsItem.SchemaRegistry.Confluent.SslVerify)
+					topics.SchemaRegistry.Confluent.TTL = types.Float64PointerValue(topicsItem.SchemaRegistry.Confluent.TTL)
+					topics.SchemaRegistry.Confluent.URL = types.StringPointerValue(topicsItem.SchemaRegistry.Confluent.URL)
 				}
-				if topicsItem.SchemaRegistry.Confluent.Authentication.Mode != nil {
-					topics.SchemaRegistry.Confluent.Authentication.Mode = types.StringValue(string(*topicsItem.SchemaRegistry.Confluent.Authentication.Mode))
-				} else {
-					topics.SchemaRegistry.Confluent.Authentication.Mode = types.StringNull()
-				}
-				topics.SchemaRegistry.Confluent.SslVerify = types.BoolPointerValue(topicsItem.SchemaRegistry.Confluent.SslVerify)
-				topics.SchemaRegistry.Confluent.TTL = types.Float64PointerValue(topicsItem.SchemaRegistry.Confluent.TTL)
-				topics.SchemaRegistry.Confluent.URL = types.StringPointerValue(topicsItem.SchemaRegistry.Confluent.URL)
 			}
 
 			r.Config.Topics = append(r.Config.Topics, topics)
@@ -439,28 +454,31 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 	if r.Config.SchemaRegistry != nil {
 		var confluent *shared.ConfluentConsumePluginConfluent
 		if r.Config.SchemaRegistry.Confluent != nil {
-			var basic *shared.ConfluentConsumePluginBasic
-			if r.Config.SchemaRegistry.Confluent.Authentication.Basic != nil {
-				var password string
-				password = r.Config.SchemaRegistry.Confluent.Authentication.Basic.Password.ValueString()
+			var authentication *shared.ConfluentConsumePluginAuthentication
+			if r.Config.SchemaRegistry.Confluent.Authentication != nil {
+				var basic *shared.ConfluentConsumePluginBasic
+				if r.Config.SchemaRegistry.Confluent.Authentication.Basic != nil {
+					var password string
+					password = r.Config.SchemaRegistry.Confluent.Authentication.Basic.Password.ValueString()
 
-				var username string
-				username = r.Config.SchemaRegistry.Confluent.Authentication.Basic.Username.ValueString()
+					var username string
+					username = r.Config.SchemaRegistry.Confluent.Authentication.Basic.Username.ValueString()
 
-				basic = &shared.ConfluentConsumePluginBasic{
-					Password: password,
-					Username: username,
+					basic = &shared.ConfluentConsumePluginBasic{
+						Password: password,
+						Username: username,
+					}
 				}
-			}
-			mode1 := new(shared.ConfluentConsumePluginMode)
-			if !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsNull() {
-				*mode1 = shared.ConfluentConsumePluginMode(r.Config.SchemaRegistry.Confluent.Authentication.Mode.ValueString())
-			} else {
-				mode1 = nil
-			}
-			authentication := shared.ConfluentConsumePluginAuthentication{
-				Basic: basic,
-				Mode:  mode1,
+				mode1 := new(shared.ConfluentConsumePluginMode)
+				if !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsNull() {
+					*mode1 = shared.ConfluentConsumePluginMode(r.Config.SchemaRegistry.Confluent.Authentication.Mode.ValueString())
+				} else {
+					mode1 = nil
+				}
+				authentication = &shared.ConfluentConsumePluginAuthentication{
+					Basic: basic,
+					Mode:  mode1,
+				}
 			}
 			sslVerify := new(bool)
 			if !r.Config.SchemaRegistry.Confluent.SslVerify.IsUnknown() && !r.Config.SchemaRegistry.Confluent.SslVerify.IsNull() {
@@ -502,58 +520,64 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 		var name1 string
 		name1 = topicsItem.Name.ValueString()
 
-		var confluent1 *shared.ConfluentConsumePluginConfigConfluent
-		if topicsItem.SchemaRegistry.Confluent != nil {
-			var basic1 *shared.ConfluentConsumePluginConfigBasic
-			if topicsItem.SchemaRegistry.Confluent.Authentication.Basic != nil {
-				var password1 string
-				password1 = topicsItem.SchemaRegistry.Confluent.Authentication.Basic.Password.ValueString()
+		var schemaRegistry1 *shared.ConfluentConsumePluginConfigSchemaRegistry
+		if topicsItem.SchemaRegistry != nil {
+			var confluent1 *shared.ConfluentConsumePluginConfigConfluent
+			if topicsItem.SchemaRegistry.Confluent != nil {
+				var authentication1 *shared.ConfluentConsumePluginConfigAuthentication
+				if topicsItem.SchemaRegistry.Confluent.Authentication != nil {
+					var basic1 *shared.ConfluentConsumePluginConfigBasic
+					if topicsItem.SchemaRegistry.Confluent.Authentication.Basic != nil {
+						var password1 string
+						password1 = topicsItem.SchemaRegistry.Confluent.Authentication.Basic.Password.ValueString()
 
-				var username1 string
-				username1 = topicsItem.SchemaRegistry.Confluent.Authentication.Basic.Username.ValueString()
+						var username1 string
+						username1 = topicsItem.SchemaRegistry.Confluent.Authentication.Basic.Username.ValueString()
 
-				basic1 = &shared.ConfluentConsumePluginConfigBasic{
-					Password: password1,
-					Username: username1,
+						basic1 = &shared.ConfluentConsumePluginConfigBasic{
+							Password: password1,
+							Username: username1,
+						}
+					}
+					mode2 := new(shared.ConfluentConsumePluginConfigMode)
+					if !topicsItem.SchemaRegistry.Confluent.Authentication.Mode.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.Authentication.Mode.IsNull() {
+						*mode2 = shared.ConfluentConsumePluginConfigMode(topicsItem.SchemaRegistry.Confluent.Authentication.Mode.ValueString())
+					} else {
+						mode2 = nil
+					}
+					authentication1 = &shared.ConfluentConsumePluginConfigAuthentication{
+						Basic: basic1,
+						Mode:  mode2,
+					}
+				}
+				sslVerify1 := new(bool)
+				if !topicsItem.SchemaRegistry.Confluent.SslVerify.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.SslVerify.IsNull() {
+					*sslVerify1 = topicsItem.SchemaRegistry.Confluent.SslVerify.ValueBool()
+				} else {
+					sslVerify1 = nil
+				}
+				ttl1 := new(float64)
+				if !topicsItem.SchemaRegistry.Confluent.TTL.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.TTL.IsNull() {
+					*ttl1 = topicsItem.SchemaRegistry.Confluent.TTL.ValueFloat64()
+				} else {
+					ttl1 = nil
+				}
+				url1 := new(string)
+				if !topicsItem.SchemaRegistry.Confluent.URL.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.URL.IsNull() {
+					*url1 = topicsItem.SchemaRegistry.Confluent.URL.ValueString()
+				} else {
+					url1 = nil
+				}
+				confluent1 = &shared.ConfluentConsumePluginConfigConfluent{
+					Authentication: authentication1,
+					SslVerify:      sslVerify1,
+					TTL:            ttl1,
+					URL:            url1,
 				}
 			}
-			mode2 := new(shared.ConfluentConsumePluginConfigMode)
-			if !topicsItem.SchemaRegistry.Confluent.Authentication.Mode.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.Authentication.Mode.IsNull() {
-				*mode2 = shared.ConfluentConsumePluginConfigMode(topicsItem.SchemaRegistry.Confluent.Authentication.Mode.ValueString())
-			} else {
-				mode2 = nil
+			schemaRegistry1 = &shared.ConfluentConsumePluginConfigSchemaRegistry{
+				Confluent: confluent1,
 			}
-			authentication1 := shared.ConfluentConsumePluginConfigAuthentication{
-				Basic: basic1,
-				Mode:  mode2,
-			}
-			sslVerify1 := new(bool)
-			if !topicsItem.SchemaRegistry.Confluent.SslVerify.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.SslVerify.IsNull() {
-				*sslVerify1 = topicsItem.SchemaRegistry.Confluent.SslVerify.ValueBool()
-			} else {
-				sslVerify1 = nil
-			}
-			ttl1 := new(float64)
-			if !topicsItem.SchemaRegistry.Confluent.TTL.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.TTL.IsNull() {
-				*ttl1 = topicsItem.SchemaRegistry.Confluent.TTL.ValueFloat64()
-			} else {
-				ttl1 = nil
-			}
-			url1 := new(string)
-			if !topicsItem.SchemaRegistry.Confluent.URL.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.URL.IsNull() {
-				*url1 = topicsItem.SchemaRegistry.Confluent.URL.ValueString()
-			} else {
-				url1 = nil
-			}
-			confluent1 = &shared.ConfluentConsumePluginConfigConfluent{
-				Authentication: authentication1,
-				SslVerify:      sslVerify1,
-				TTL:            ttl1,
-				URL:            url1,
-			}
-		}
-		schemaRegistry1 := shared.ConfluentConsumePluginConfigSchemaRegistry{
-			Confluent: confluent1,
 		}
 		topics = append(topics, shared.Topics{
 			Name:           name1,

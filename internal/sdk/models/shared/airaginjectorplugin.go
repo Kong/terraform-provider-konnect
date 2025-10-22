@@ -429,7 +429,7 @@ func (a *AiRagInjectorPluginHuggingface) GetWaitForModel() *bool {
 
 // AiRagInjectorPluginOptions - Key/value settings for the model
 type AiRagInjectorPluginOptions struct {
-	Azure       AiRagInjectorPluginAzure        `json:"azure"`
+	Azure       *AiRagInjectorPluginAzure       `json:"azure"`
 	Bedrock     *AiRagInjectorPluginBedrock     `json:"bedrock"`
 	Gemini      *AiRagInjectorPluginGemini      `json:"gemini"`
 	Huggingface *AiRagInjectorPluginHuggingface `json:"huggingface"`
@@ -442,15 +442,15 @@ func (a AiRagInjectorPluginOptions) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiRagInjectorPluginOptions) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"azure"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AiRagInjectorPluginOptions) GetAzure() AiRagInjectorPluginAzure {
+func (a *AiRagInjectorPluginOptions) GetAzure() *AiRagInjectorPluginAzure {
 	if a == nil {
-		return AiRagInjectorPluginAzure{}
+		return nil
 	}
 	return a.Azure
 }

@@ -13,5 +13,5 @@ type VaultAuthPluginConfig struct {
 	RunOnPreflight  types.Bool   `tfsdk:"run_on_preflight"`
 	SecretTokenName types.String `tfsdk:"secret_token_name"`
 	TokensInBody    types.Bool   `tfsdk:"tokens_in_body"`
-	Vault           types.String `tfsdk:"vault"`
+	Vault           *Set         `tfsdk:"vault"`
 }

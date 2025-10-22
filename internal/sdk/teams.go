@@ -214,7 +214,7 @@ func (s *Teams) CreateTeam(ctx context.Context, request *shared.CreateTeam, opts
 
 }
 
-// GetTeam - Fetch Team
+// GetTeam - Get a Team
 // Returns information about a team from a given team ID.
 func (s *Teams) GetTeam(ctx context.Context, request operations.GetTeamRequest, opts ...operations.Option) (*operations.GetTeamResponse, error) {
 	o := operations.Options{}

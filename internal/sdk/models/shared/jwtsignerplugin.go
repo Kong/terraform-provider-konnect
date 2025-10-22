@@ -136,6 +136,30 @@ func (e *AccessTokenIntrospectionConsumerBy) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// AccessTokenJwksURIClientCertificate - The client certificate that will be used to authenticate Kong if `access_token_jwks_uri` is an https uri that requires mTLS Auth.
+type AccessTokenJwksURIClientCertificate struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (a *AccessTokenJwksURIClientCertificate) GetID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ID
+}
+
+// AccessTokenKeysetClientCertificate - The client certificate that will be used to authenticate Kong if `access_token_keyset` is an https uri that requires mTLS Auth.
+type AccessTokenKeysetClientCertificate struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (a *AccessTokenKeysetClientCertificate) GetID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ID
+}
+
 // AccessTokenSigningAlgorithm - When this plugin sets the upstream header as specified with `config.access_token_upstream_header`, re-signs the original access token using the private keys of the JWT Signer plugin. Specify the algorithm that is used to sign the token. The `config.access_token_issuer` specifies which `keyset` is used to sign the new token issued by Kong using the specified signing algorithm.
 type AccessTokenSigningAlgorithm string
 
@@ -251,6 +275,30 @@ func (e *ChannelTokenIntrospectionConsumerBy) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// ChannelTokenJwksURIClientCertificate - The client certificate that will be used to authenticate Kong if `access_token_jwks_uri` is an https uri that requires mTLS Auth.
+type ChannelTokenJwksURIClientCertificate struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (c *ChannelTokenJwksURIClientCertificate) GetID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ID
+}
+
+// ChannelTokenKeysetClientCertificate - The client certificate that will be used to authenticate Kong if `channel_token_keyset` is an https uri that requires mTLS Auth.
+type ChannelTokenKeysetClientCertificate struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (c *ChannelTokenKeysetClientCertificate) GetID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ID
+}
+
 // ChannelTokenSigningAlgorithm - When this plugin sets the upstream header as specified with `config.channel_token_upstream_header`, it also re-signs the original channel token using private keys of this plugin. Specify the algorithm that is used to sign the token.
 type ChannelTokenSigningAlgorithm string
 
@@ -340,7 +388,7 @@ type JwtSignerPluginConfig struct {
 	// Specify the URI where the plugin can fetch the public keys (JWKS) to verify the signature of the access token.
 	AccessTokenJwksURI *string `default:"null" json:"access_token_jwks_uri"`
 	// The client certificate that will be used to authenticate Kong if `access_token_jwks_uri` is an https uri that requires mTLS Auth.
-	AccessTokenJwksURIClientCertificate *string `default:"null" json:"access_token_jwks_uri_client_certificate"`
+	AccessTokenJwksURIClientCertificate *AccessTokenJwksURIClientCertificate `json:"access_token_jwks_uri_client_certificate"`
 	// The client password that will be used to authenticate Kong if `access_token_jwks_uri` is a uri that requires Basic Auth. Should be configured together with `access_token_jwks_uri_client_username`
 	AccessTokenJwksURIClientPassword *string `default:"null" json:"access_token_jwks_uri_client_password"`
 	// The client username that will be used to authenticate Kong if `access_token_jwks_uri` is a uri that requires Basic Auth. Should be configured together with `access_token_jwks_uri_client_password`
@@ -350,7 +398,7 @@ type JwtSignerPluginConfig struct {
 	// The name of the keyset containing signing keys.
 	AccessTokenKeyset *string `default:"kong" json:"access_token_keyset"`
 	// The client certificate that will be used to authenticate Kong if `access_token_keyset` is an https uri that requires mTLS Auth.
-	AccessTokenKeysetClientCertificate *string `default:"null" json:"access_token_keyset_client_certificate"`
+	AccessTokenKeysetClientCertificate *AccessTokenKeysetClientCertificate `json:"access_token_keyset_client_certificate"`
 	// The client password that will be used to authenticate Kong if `access_token_keyset` is a uri that requires Basic Auth. Should be configured together with `access_token_keyset_client_username`
 	AccessTokenKeysetClientPassword *string `default:"null" json:"access_token_keyset_client_password"`
 	// The client username that will be used to authenticate Kong if `access_token_keyset` is a uri that requires Basic Auth. Should be configured together with `access_token_keyset_client_password`
@@ -414,7 +462,7 @@ type JwtSignerPluginConfig struct {
 	// If you want to use `config.verify_channel_token_signature`, you must specify the URI where the plugin can fetch the public keys (JWKS) to verify the signature of the channel token. If you don't specify a URI and you pass a JWT token to the plugin, then the plugin responds with `401 Unauthorized`.
 	ChannelTokenJwksURI *string `default:"null" json:"channel_token_jwks_uri"`
 	// The client certificate that will be used to authenticate Kong if `access_token_jwks_uri` is an https uri that requires mTLS Auth.
-	ChannelTokenJwksURIClientCertificate *string `default:"null" json:"channel_token_jwks_uri_client_certificate"`
+	ChannelTokenJwksURIClientCertificate *ChannelTokenJwksURIClientCertificate `json:"channel_token_jwks_uri_client_certificate"`
 	// The client password that will be used to authenticate Kong if `channel_token_jwks_uri` is a uri that requires Basic Auth. Should be configured together with `channel_token_jwks_uri_client_username`
 	ChannelTokenJwksURIClientPassword *string `default:"null" json:"channel_token_jwks_uri_client_password"`
 	// The client username that will be used to authenticate Kong if `channel_token_jwks_uri` is a uri that requires Basic Auth. Should be configured together with `channel_token_jwks_uri_client_password`
@@ -424,7 +472,7 @@ type JwtSignerPluginConfig struct {
 	// The name of the keyset containing signing keys.
 	ChannelTokenKeyset *string `default:"kong" json:"channel_token_keyset"`
 	// The client certificate that will be used to authenticate Kong if `channel_token_keyset` is an https uri that requires mTLS Auth.
-	ChannelTokenKeysetClientCertificate *string `default:"null" json:"channel_token_keyset_client_certificate"`
+	ChannelTokenKeysetClientCertificate *ChannelTokenKeysetClientCertificate `json:"channel_token_keyset_client_certificate"`
 	// The client password that will be used to authenticate Kong if `channel_token_keyset` is a uri that requires Basic Auth. Should be configured together with `channel_token_keyset_client_username`
 	ChannelTokenKeysetClientPassword *string `default:"null" json:"channel_token_keyset_client_password"`
 	// The client username that will be used to authenticate Kong if `channel_token_keyset` is a uri that requires Basic Auth. Should be configured together with `channel_token_keyset_client_password`
@@ -612,7 +660,7 @@ func (j *JwtSignerPluginConfig) GetAccessTokenJwksURI() *string {
 	return j.AccessTokenJwksURI
 }
 
-func (j *JwtSignerPluginConfig) GetAccessTokenJwksURIClientCertificate() *string {
+func (j *JwtSignerPluginConfig) GetAccessTokenJwksURIClientCertificate() *AccessTokenJwksURIClientCertificate {
 	if j == nil {
 		return nil
 	}
@@ -647,7 +695,7 @@ func (j *JwtSignerPluginConfig) GetAccessTokenKeyset() *string {
 	return j.AccessTokenKeyset
 }
 
-func (j *JwtSignerPluginConfig) GetAccessTokenKeysetClientCertificate() *string {
+func (j *JwtSignerPluginConfig) GetAccessTokenKeysetClientCertificate() *AccessTokenKeysetClientCertificate {
 	if j == nil {
 		return nil
 	}
@@ -871,7 +919,7 @@ func (j *JwtSignerPluginConfig) GetChannelTokenJwksURI() *string {
 	return j.ChannelTokenJwksURI
 }
 
-func (j *JwtSignerPluginConfig) GetChannelTokenJwksURIClientCertificate() *string {
+func (j *JwtSignerPluginConfig) GetChannelTokenJwksURIClientCertificate() *ChannelTokenJwksURIClientCertificate {
 	if j == nil {
 		return nil
 	}
@@ -906,7 +954,7 @@ func (j *JwtSignerPluginConfig) GetChannelTokenKeyset() *string {
 	return j.ChannelTokenKeyset
 }
 
-func (j *JwtSignerPluginConfig) GetChannelTokenKeysetClientCertificate() *string {
+func (j *JwtSignerPluginConfig) GetChannelTokenKeysetClientCertificate() *ChannelTokenKeysetClientCertificate {
 	if j == nil {
 		return nil
 	}

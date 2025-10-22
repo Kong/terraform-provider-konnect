@@ -31,7 +31,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
-	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -396,6 +395,9 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 								"cache": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
+									Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+										"bypass": types.BoolType,
+									})),
 									Attributes: map[string]schema.Attribute{
 										"bypass": schema.BoolAttribute{
 											Computed:    true,
@@ -404,10 +406,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 											Description: `If ` + "`" + `true` + "`" + `, skips caching the callout response. Default: false`,
 										},
 									},
-									Description: `Callout caching configuration. Not Null`,
-									Validators: []validator.Object{
-										speakeasy_objectvalidators.NotNull(),
-									},
+									Description: `Callout caching configuration.`,
 								},
 								"depends_on": schema.ListAttribute{
 									Computed:    true,
@@ -431,6 +430,13 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 										"body": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
+											Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+												"custom": types.MapType{
+													ElemType: jsontypes.NormalizedType{},
+												},
+												"decode":  types.BoolType,
+												"forward": types.BoolType,
+											})),
 											Attributes: map[string]schema.Attribute{
 												"custom": schema.MapAttribute{
 													Optional:    true,
@@ -453,10 +459,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 													Description: `If ` + "`" + `true` + "`" + `, forwards the incoming request's body to the callout request. Default: false`,
 												},
 											},
-											Description: `Callout request body customizations. Not Null`,
-											Validators: []validator.Object{
-												speakeasy_objectvalidators.NotNull(),
-											},
+											Description: `Callout request body customizations.`,
 										},
 										"by_lua": schema.StringAttribute{
 											Optional:    true,
@@ -465,6 +468,15 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 										"error": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
+											Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+												"error_response_code": types.Int64Type,
+												"error_response_msg":  types.StringType,
+												"http_statuses": types.ListType{
+													ElemType: types.Int64Type,
+												},
+												"on_error": types.StringType,
+												"retries":  types.Int64Type,
+											})),
 											Attributes: map[string]schema.Attribute{
 												"error_response_code": schema.Int64Attribute{
 													Computed:    true,
@@ -503,14 +515,17 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 													Description: `The number of retries the plugin will attempt on TCP and HTTP errors if ` + "`" + `on_error` + "`" + ` is set to ` + "`" + `retry` + "`" + `. Default: 2`,
 												},
 											},
-											Description: `The error handling policy the plugin will apply to TCP and HTTP errors. Not Null`,
-											Validators: []validator.Object{
-												speakeasy_objectvalidators.NotNull(),
-											},
+											Description: `The error handling policy the plugin will apply to TCP and HTTP errors.`,
 										},
 										"headers": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
+											Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+												"custom": types.MapType{
+													ElemType: jsontypes.NormalizedType{},
+												},
+												"forward": types.BoolType,
+											})),
 											Attributes: map[string]schema.Attribute{
 												"custom": schema.MapAttribute{
 													Optional:    true,
@@ -527,14 +542,30 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 													Description: `If ` + "`" + `true` + "`" + `, forwards the incoming request's headers to the callout request. Default: false`,
 												},
 											},
-											Description: `Callout request header customizations. Not Null`,
-											Validators: []validator.Object{
-												speakeasy_objectvalidators.NotNull(),
-											},
+											Description: `Callout request header customizations.`,
 										},
 										"http_opts": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
+											Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+												"proxy": types.ObjectType{
+													AttrTypes: map[string]attr.Type{
+														`auth_password`: types.StringType,
+														`auth_username`: types.StringType,
+														`http_proxy`:    types.StringType,
+														`https_proxy`:   types.StringType,
+													},
+												},
+												"ssl_server_name": types.StringType,
+												"ssl_verify":      types.BoolType,
+												"timeouts": types.ObjectType{
+													AttrTypes: map[string]attr.Type{
+														`connect`: types.Int64Type,
+														`read`:    types.Int64Type,
+														`write`:   types.Int64Type,
+													},
+												},
+											})),
 											Attributes: map[string]schema.Attribute{
 												"proxy": schema.SingleNestedAttribute{
 													Computed: true,
@@ -609,23 +640,23 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 													Description: `Socket timeouts in milliseconds. All or none must be set.`,
 												},
 											},
-											Description: `HTTP connection parameters. Not Null`,
-											Validators: []validator.Object{
-												speakeasy_objectvalidators.NotNull(),
-											},
+											Description: `HTTP connection parameters.`,
 										},
 										"method": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
 											Default:     stringdefault.StaticString(`GET`),
 											Description: `The HTTP method that will be requested. Default: "GET"`,
-											Validators: []validator.String{
-												stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Z]+$`), "must match pattern "+regexp.MustCompile(`^[A-Z]+$`).String()),
-											},
 										},
 										"query": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
+											Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+												"custom": types.MapType{
+													ElemType: jsontypes.NormalizedType{},
+												},
+												"forward": types.BoolType,
+											})),
 											Attributes: map[string]schema.Attribute{
 												"custom": schema.MapAttribute{
 													Optional:    true,
@@ -642,10 +673,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 													Description: `If ` + "`" + `true` + "`" + `, forwards the incoming request's query params to the callout request. Default: false`,
 												},
 											},
-											Description: `Callout request query param customizations. Not Null`,
-											Validators: []validator.Object{
-												speakeasy_objectvalidators.NotNull(),
-											},
+											Description: `Callout request query param customizations.`,
 										},
 										"url": schema.StringAttribute{
 											Computed:    true,
@@ -664,10 +692,28 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 								"response": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
+									Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+										"body": types.ObjectType{
+											AttrTypes: map[string]attr.Type{
+												`decode`: types.BoolType,
+												`store`:  types.BoolType,
+											},
+										},
+										"by_lua": types.StringType,
+										"headers": types.ObjectType{
+											AttrTypes: map[string]attr.Type{
+												`store`: types.BoolType,
+											},
+										},
+									})),
 									Attributes: map[string]schema.Attribute{
 										"body": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
+											Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+												"decode": types.BoolType,
+												"store":  types.BoolType,
+											})),
 											Attributes: map[string]schema.Attribute{
 												"decode": schema.BoolAttribute{
 													Computed:    true,
@@ -682,10 +728,6 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 													Description: `If ` + "`" + `false` + "`" + `, skips storing the callout response body into kong.ctx.shared.callouts.<name>.response.body. Default: true`,
 												},
 											},
-											Description: `Not Null`,
-											Validators: []validator.Object{
-												speakeasy_objectvalidators.NotNull(),
-											},
 										},
 										"by_lua": schema.StringAttribute{
 											Optional:    true,
@@ -694,6 +736,9 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 										"headers": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
+											Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+												"store": types.BoolType,
+											})),
 											Attributes: map[string]schema.Attribute{
 												"store": schema.BoolAttribute{
 													Computed:    true,
@@ -702,16 +747,10 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 													Description: `If ` + "`" + `false` + "`" + `, skips storing the callout response headers into kong.ctx.shared.callouts.<name>.response.headers. Default: true`,
 												},
 											},
-											Description: `Callout response header customizations. Not Null`,
-											Validators: []validator.Object{
-												speakeasy_objectvalidators.NotNull(),
-											},
+											Description: `Callout response header customizations.`,
 										},
 									},
-									Description: `Configurations of callout response handling. Not Null`,
-									Validators: []validator.Object{
-										speakeasy_objectvalidators.NotNull(),
-									},
+									Description: `Configurations of callout response handling.`,
 								},
 							},
 						},

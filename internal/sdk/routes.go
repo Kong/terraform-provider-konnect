@@ -341,7 +341,7 @@ func (s *Routes) DeleteRoute(ctx context.Context, request operations.DeleteRoute
 
 }
 
-// GetRoute - Fetch a Route
+// GetRoute - Get a Route
 // Get a Route using ID or name.
 func (s *Routes) GetRoute(ctx context.Context, request operations.GetRouteRequest, opts ...operations.Option) (*operations.GetRouteResponse, error) {
 	o := operations.Options{}
@@ -782,7 +782,7 @@ func (s *Routes) DeleteRouteRouteExpression(ctx context.Context, request operati
 
 }
 
-// GetRouteRouteExpression - Fetch a Route
+// GetRouteRouteExpression - Get a Route
 // Get a Route using ID or name.
 func (s *Routes) GetRouteRouteExpression(ctx context.Context, request operations.GetRouteRouteExpressionRequest, opts ...operations.Option) (*operations.GetRouteRouteExpressionResponse, error) {
 	o := operations.Options{}

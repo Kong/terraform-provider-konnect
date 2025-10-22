@@ -3,13 +3,12 @@
 package types
 
 import (
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type UDPLogPluginConfig struct {
-	CustomFieldsByLua map[string]jsontypes.Normalized `tfsdk:"custom_fields_by_lua"`
-	Host              types.String                    `tfsdk:"host"`
-	Port              types.Int64                     `tfsdk:"port"`
-	Timeout           types.Float64                   `tfsdk:"timeout"`
+	CustomFieldsByLua map[string]types.String `tfsdk:"custom_fields_by_lua"`
+	Host              types.String            `tfsdk:"host"`
+	Port              types.Int64             `tfsdk:"port"`
+	Timeout           types.Float64           `tfsdk:"timeout"`
 }

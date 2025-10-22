@@ -292,7 +292,7 @@ type SessionPluginConfig struct {
 	// The session cookie rolling timeout, in seconds. Specifies how long the session can be used until it needs to be renewed.
 	RollingTimeout *float64 `default:"3600" json:"rolling_timeout"`
 	// The secret that is used in keyed HMAC generation.
-	Secret *string `default:"M5N0CyFrAZwpB7F72PpY3J4S5n3KL77fs6xMuY8b7SMc" json:"secret"`
+	Secret *string `default:"null" json:"secret"`
 	// The duration, in seconds, after which an old cookie is discarded, starting from the moment when the session becomes outdated and is replaced by a new one.
 	StaleTTL *float64 `default:"10" json:"stale_ttl"`
 	// Determines where the session data is stored. `kong`: Stores encrypted session data into Kong's current database strategy; the cookie will not contain any session data. `cookie`: Stores encrypted session data within the cookie itself.

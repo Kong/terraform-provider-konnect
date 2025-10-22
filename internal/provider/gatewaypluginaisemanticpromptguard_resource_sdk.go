@@ -43,9 +43,14 @@ func (r *GatewayPluginAiSemanticPromptGuardResourceModel) RefreshFromSharedAiSem
 			r.Config.Embeddings.Model.Options = nil
 		} else {
 			r.Config.Embeddings.Model.Options = &tfTypes.AiProxyAdvancedPluginOptions{}
-			r.Config.Embeddings.Model.Options.Azure.APIVersion = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.APIVersion)
-			r.Config.Embeddings.Model.Options.Azure.DeploymentID = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.DeploymentID)
-			r.Config.Embeddings.Model.Options.Azure.Instance = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.Instance)
+			if resp.Config.Embeddings.Model.Options.Azure == nil {
+				r.Config.Embeddings.Model.Options.Azure = nil
+			} else {
+				r.Config.Embeddings.Model.Options.Azure = &tfTypes.Azure{}
+				r.Config.Embeddings.Model.Options.Azure.APIVersion = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.APIVersion)
+				r.Config.Embeddings.Model.Options.Azure.DeploymentID = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.DeploymentID)
+				r.Config.Embeddings.Model.Options.Azure.Instance = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.Instance)
+			}
 			if resp.Config.Embeddings.Model.Options.Bedrock == nil {
 				r.Config.Embeddings.Model.Options.Bedrock = nil
 			} else {
@@ -552,28 +557,31 @@ func (r *GatewayPluginAiSemanticPromptGuardResourceModel) ToSharedAiSemanticProm
 
 	var optionsVar *shared.AiSemanticPromptGuardPluginOptions
 	if r.Config.Embeddings.Model.Options != nil {
-		apiVersion := new(string)
-		if !r.Config.Embeddings.Model.Options.Azure.APIVersion.IsUnknown() && !r.Config.Embeddings.Model.Options.Azure.APIVersion.IsNull() {
-			*apiVersion = r.Config.Embeddings.Model.Options.Azure.APIVersion.ValueString()
-		} else {
-			apiVersion = nil
-		}
-		deploymentID := new(string)
-		if !r.Config.Embeddings.Model.Options.Azure.DeploymentID.IsUnknown() && !r.Config.Embeddings.Model.Options.Azure.DeploymentID.IsNull() {
-			*deploymentID = r.Config.Embeddings.Model.Options.Azure.DeploymentID.ValueString()
-		} else {
-			deploymentID = nil
-		}
-		instance := new(string)
-		if !r.Config.Embeddings.Model.Options.Azure.Instance.IsUnknown() && !r.Config.Embeddings.Model.Options.Azure.Instance.IsNull() {
-			*instance = r.Config.Embeddings.Model.Options.Azure.Instance.ValueString()
-		} else {
-			instance = nil
-		}
-		azure := shared.AiSemanticPromptGuardPluginAzure{
-			APIVersion:   apiVersion,
-			DeploymentID: deploymentID,
-			Instance:     instance,
+		var azure *shared.AiSemanticPromptGuardPluginAzure
+		if r.Config.Embeddings.Model.Options.Azure != nil {
+			apiVersion := new(string)
+			if !r.Config.Embeddings.Model.Options.Azure.APIVersion.IsUnknown() && !r.Config.Embeddings.Model.Options.Azure.APIVersion.IsNull() {
+				*apiVersion = r.Config.Embeddings.Model.Options.Azure.APIVersion.ValueString()
+			} else {
+				apiVersion = nil
+			}
+			deploymentID := new(string)
+			if !r.Config.Embeddings.Model.Options.Azure.DeploymentID.IsUnknown() && !r.Config.Embeddings.Model.Options.Azure.DeploymentID.IsNull() {
+				*deploymentID = r.Config.Embeddings.Model.Options.Azure.DeploymentID.ValueString()
+			} else {
+				deploymentID = nil
+			}
+			instance := new(string)
+			if !r.Config.Embeddings.Model.Options.Azure.Instance.IsUnknown() && !r.Config.Embeddings.Model.Options.Azure.Instance.IsNull() {
+				*instance = r.Config.Embeddings.Model.Options.Azure.Instance.ValueString()
+			} else {
+				instance = nil
+			}
+			azure = &shared.AiSemanticPromptGuardPluginAzure{
+				APIVersion:   apiVersion,
+				DeploymentID: deploymentID,
+				Instance:     instance,
+			}
 		}
 		var bedrock *shared.AiSemanticPromptGuardPluginBedrock
 		if r.Config.Embeddings.Model.Options.Bedrock != nil {

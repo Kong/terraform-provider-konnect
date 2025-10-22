@@ -302,7 +302,7 @@ type Oauth2IntrospectionPlugin struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	InstanceName *string                            `default:"null" json:"instance_name"`
-	name         string                             `const:"oauth-2-introspection" json:"name"`
+	name         string                             `const:"oauth2-introspection" json:"name"`
 	Ordering     *Oauth2IntrospectionPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []Oauth2IntrospectionPluginPartials `json:"partials"`
@@ -359,7 +359,7 @@ func (o *Oauth2IntrospectionPlugin) GetInstanceName() *string {
 }
 
 func (o *Oauth2IntrospectionPlugin) GetName() string {
-	return "oauth-2-introspection"
+	return "oauth2-introspection"
 }
 
 func (o *Oauth2IntrospectionPlugin) GetOrdering() *Oauth2IntrospectionPluginOrdering {

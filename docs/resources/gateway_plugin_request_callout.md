@@ -234,11 +234,11 @@ Optional:
 
 Optional:
 
-- `cache` (Attributes) Callout caching configuration. Not Null (see [below for nested schema](#nestedatt--config--callouts--cache))
+- `cache` (Attributes) Callout caching configuration. (see [below for nested schema](#nestedatt--config--callouts--cache))
 - `depends_on` (List of String) An array of callout names the current callout depends on. This dependency list determines the callout execution order via a topological sorting algorithm. Default: []
 - `name` (String) A string identifier for a callout. A callout object is referenceable via its name in the `kong.ctx.shared.callouts.<name>`. Not Null
 - `request` (Attributes) The customizations for the callout request. Not Null (see [below for nested schema](#nestedatt--config--callouts--request))
-- `response` (Attributes) Configurations of callout response handling. Not Null (see [below for nested schema](#nestedatt--config--callouts--response))
+- `response` (Attributes) Configurations of callout response handling. (see [below for nested schema](#nestedatt--config--callouts--response))
 
 <a id="nestedatt--config--callouts--cache"></a>
 ### Nested Schema for `config.callouts.cache`
@@ -253,13 +253,13 @@ Optional:
 
 Optional:
 
-- `body` (Attributes) Callout request body customizations. Not Null (see [below for nested schema](#nestedatt--config--callouts--request--body))
+- `body` (Attributes) Callout request body customizations. (see [below for nested schema](#nestedatt--config--callouts--request--body))
 - `by_lua` (String) Lua code that executes before the callout request is made. **Warning** can impact system behavior. Standard Lua sandboxing restrictions apply.
-- `error` (Attributes) The error handling policy the plugin will apply to TCP and HTTP errors. Not Null (see [below for nested schema](#nestedatt--config--callouts--request--error))
-- `headers` (Attributes) Callout request header customizations. Not Null (see [below for nested schema](#nestedatt--config--callouts--request--headers))
-- `http_opts` (Attributes) HTTP connection parameters. Not Null (see [below for nested schema](#nestedatt--config--callouts--request--http_opts))
+- `error` (Attributes) The error handling policy the plugin will apply to TCP and HTTP errors. (see [below for nested schema](#nestedatt--config--callouts--request--error))
+- `headers` (Attributes) Callout request header customizations. (see [below for nested schema](#nestedatt--config--callouts--request--headers))
+- `http_opts` (Attributes) HTTP connection parameters. (see [below for nested schema](#nestedatt--config--callouts--request--http_opts))
 - `method` (String) The HTTP method that will be requested. Default: "GET"
-- `query` (Attributes) Callout request query param customizations. Not Null (see [below for nested schema](#nestedatt--config--callouts--request--query))
+- `query` (Attributes) Callout request query param customizations. (see [below for nested schema](#nestedatt--config--callouts--request--query))
 - `url` (String) The URL that will be requested. Not Null
 
 <a id="nestedatt--config--callouts--request--body"></a>
@@ -340,9 +340,9 @@ Optional:
 
 Optional:
 
-- `body` (Attributes) Not Null (see [below for nested schema](#nestedatt--config--callouts--response--body))
+- `body` (Attributes) (see [below for nested schema](#nestedatt--config--callouts--response--body))
 - `by_lua` (String) Lua code that executes after the callout response is received, before caching takes place. Can produce side effects. Standard Lua sandboxing restrictions apply.
-- `headers` (Attributes) Callout response header customizations. Not Null (see [below for nested schema](#nestedatt--config--callouts--response--headers))
+- `headers` (Attributes) Callout response header customizations. (see [below for nested schema](#nestedatt--config--callouts--response--headers))
 
 <a id="nestedatt--config--callouts--response--body"></a>
 ### Nested Schema for `config.callouts.response.body`

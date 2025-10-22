@@ -52,6 +52,9 @@ Optional:
 
 Read-Only:
 
+- `expires_at` (String) An ISO-8601 timestamp representation of the ssl certificate expiration date.
+- `skip_ca_check` (Boolean) True when the provided certificate chain is served as-is without validation against a public trust store.
+- `uploaded_at` (String) An ISO-8601 timestamp representation of the ssl certificate upload date.
 - `validation_errors` (List of String)
 - `verification_status` (String) must be one of ["verified", "pending", "error"]
 

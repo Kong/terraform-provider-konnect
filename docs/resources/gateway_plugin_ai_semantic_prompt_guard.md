@@ -243,12 +243,9 @@ Optional:
 <a id="nestedatt--config--embeddings--model--options"></a>
 ### Nested Schema for `config.embeddings.model.options`
 
-Required:
-
-- `azure` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--model--options--azure))
-
 Optional:
 
+- `azure` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--model--options--azure))
 - `bedrock` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--model--options--bedrock))
 - `gemini` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--model--options--gemini))
 - `huggingface` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--model--options--huggingface))

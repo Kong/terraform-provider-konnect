@@ -319,7 +319,7 @@ func (s *KeySets) DeleteKeySet(ctx context.Context, request operations.DeleteKey
 
 }
 
-// GetKeySet - Fetch a KeySet
+// GetKeySet - Get a KeySet
 // Get a KeySet using ID or name.
 func (s *KeySets) GetKeySet(ctx context.Context, request operations.GetKeySetRequest, opts ...operations.Option) (*operations.GetKeySetResponse, error) {
 	o := operations.Options{}

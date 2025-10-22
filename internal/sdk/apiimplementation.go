@@ -278,7 +278,7 @@ func (s *APIImplementation) CreateAPIImplementation(ctx context.Context, request
 
 }
 
-// FetchAPIImplementation - Fetch API Implementation
+// FetchAPIImplementation - Get an API Implementation
 // Retrieve a gateway implementation for this API
 func (s *APIImplementation) FetchAPIImplementation(ctx context.Context, request operations.FetchAPIImplementationRequest, opts ...operations.Option) (*operations.FetchAPIImplementationResponse, error) {
 	o := operations.Options{}

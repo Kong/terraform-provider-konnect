@@ -256,7 +256,7 @@ func (s *APIPublication) PublishAPIToPortal(ctx context.Context, request operati
 
 }
 
-// FetchPublication - Fetch Publication
+// FetchPublication - Get a Publication
 // Retrieve an API's publication in a portal.
 // If the API is not published to the portal, a 404 response is returned.
 func (s *APIPublication) FetchPublication(ctx context.Context, request operations.FetchPublicationRequest, opts ...operations.Option) (*operations.FetchPublicationResponse, error) {

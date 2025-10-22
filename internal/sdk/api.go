@@ -278,8 +278,8 @@ func (s *API) CreateAPI(ctx context.Context, request shared.CreateAPIRequest, op
 
 }
 
-// FetchAPI - Fetch API
-// Fetches an API.
+// FetchAPI - Get an API
+// Get an API.
 func (s *API) FetchAPI(ctx context.Context, request operations.FetchAPIRequest, opts ...operations.Option) (*operations.FetchAPIResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

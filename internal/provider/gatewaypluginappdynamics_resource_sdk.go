@@ -4,6 +4,8 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -11,25 +13,22 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginKeyAuthEncResourceModel) RefreshFromSharedKeyAuthEncPlugin(ctx context.Context, resp *shared.KeyAuthEncPlugin) diag.Diagnostics {
+func (r *GatewayPluginAppDynamicsResourceModel) RefreshFromSharedAppDynamicsPlugin(ctx context.Context, resp *shared.AppDynamicsPlugin) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.KeyAuthEncPluginConfig{}
-			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
-			r.Config.KeyInBody = types.BoolPointerValue(resp.Config.KeyInBody)
-			r.Config.KeyInHeader = types.BoolPointerValue(resp.Config.KeyInHeader)
-			r.Config.KeyInQuery = types.BoolPointerValue(resp.Config.KeyInQuery)
-			r.Config.KeyNames = make([]types.String, 0, len(resp.Config.KeyNames))
-			for _, v := range resp.Config.KeyNames {
-				r.Config.KeyNames = append(r.Config.KeyNames, types.StringValue(v))
+		if resp.Config != nil {
+			r.Config = make(map[string]jsontypes.Normalized, len(resp.Config))
+			for key, value := range resp.Config {
+				result, _ := json.Marshal(value)
+				r.Config[key] = jsontypes.NewNormalizedValue(string(result))
 			}
-			r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
-			r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
+		}
+		if resp.Consumer == nil {
+			r.Consumer = nil
+		} else {
+			r.Consumer = &tfTypes.Set{}
+			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -99,28 +98,28 @@ func (r *GatewayPluginKeyAuthEncResourceModel) RefreshFromSharedKeyAuthEncPlugin
 	return diags
 }
 
-func (r *GatewayPluginKeyAuthEncResourceModel) ToOperationsCreateKeyauthencPluginRequest(ctx context.Context) (*operations.CreateKeyauthencPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsCreateAppdynamicsPluginRequest(ctx context.Context) (*operations.CreateAppdynamicsPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	keyAuthEncPlugin, keyAuthEncPluginDiags := r.ToSharedKeyAuthEncPlugin(ctx)
-	diags.Append(keyAuthEncPluginDiags...)
+	appDynamicsPlugin, appDynamicsPluginDiags := r.ToSharedAppDynamicsPlugin(ctx)
+	diags.Append(appDynamicsPluginDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
-	out := operations.CreateKeyauthencPluginRequest{
-		ControlPlaneID:   controlPlaneID,
-		KeyAuthEncPlugin: *keyAuthEncPlugin,
+	out := operations.CreateAppdynamicsPluginRequest{
+		ControlPlaneID:    controlPlaneID,
+		AppDynamicsPlugin: *appDynamicsPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginKeyAuthEncResourceModel) ToOperationsDeleteKeyauthencPluginRequest(ctx context.Context) (*operations.DeleteKeyauthencPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsDeleteAppdynamicsPluginRequest(ctx context.Context) (*operations.DeleteAppdynamicsPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -129,7 +128,7 @@ func (r *GatewayPluginKeyAuthEncResourceModel) ToOperationsDeleteKeyauthencPlugi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.DeleteKeyauthencPluginRequest{
+	out := operations.DeleteAppdynamicsPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 	}
@@ -137,7 +136,7 @@ func (r *GatewayPluginKeyAuthEncResourceModel) ToOperationsDeleteKeyauthencPlugi
 	return &out, diags
 }
 
-func (r *GatewayPluginKeyAuthEncResourceModel) ToOperationsGetKeyauthencPluginRequest(ctx context.Context) (*operations.GetKeyauthencPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsGetAppdynamicsPluginRequest(ctx context.Context) (*operations.GetAppdynamicsPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -146,7 +145,7 @@ func (r *GatewayPluginKeyAuthEncResourceModel) ToOperationsGetKeyauthencPluginRe
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	out := operations.GetKeyauthencPluginRequest{
+	out := operations.GetAppdynamicsPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
 	}
@@ -154,7 +153,7 @@ func (r *GatewayPluginKeyAuthEncResourceModel) ToOperationsGetKeyauthencPluginRe
 	return &out, diags
 }
 
-func (r *GatewayPluginKeyAuthEncResourceModel) ToOperationsUpdateKeyauthencPluginRequest(ctx context.Context) (*operations.UpdateKeyauthencPluginRequest, diag.Diagnostics) {
+func (r *GatewayPluginAppDynamicsResourceModel) ToOperationsUpdateAppdynamicsPluginRequest(ctx context.Context) (*operations.UpdateAppdynamicsPluginRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var pluginID string
@@ -163,23 +162,23 @@ func (r *GatewayPluginKeyAuthEncResourceModel) ToOperationsUpdateKeyauthencPlugi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	keyAuthEncPlugin, keyAuthEncPluginDiags := r.ToSharedKeyAuthEncPlugin(ctx)
-	diags.Append(keyAuthEncPluginDiags...)
+	appDynamicsPlugin, appDynamicsPluginDiags := r.ToSharedAppDynamicsPlugin(ctx)
+	diags.Append(appDynamicsPluginDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
-	out := operations.UpdateKeyauthencPluginRequest{
-		PluginID:         pluginID,
-		ControlPlaneID:   controlPlaneID,
-		KeyAuthEncPlugin: *keyAuthEncPlugin,
+	out := operations.UpdateAppdynamicsPluginRequest{
+		PluginID:          pluginID,
+		ControlPlaneID:    controlPlaneID,
+		AppDynamicsPlugin: *appDynamicsPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginKeyAuthEncResourceModel) ToSharedKeyAuthEncPlugin(ctx context.Context) (*shared.KeyAuthEncPlugin, diag.Diagnostics) {
+func (r *GatewayPluginAppDynamicsResourceModel) ToSharedAppDynamicsPlugin(ctx context.Context) (*shared.AppDynamicsPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	createdAt := new(int64)
@@ -206,36 +205,36 @@ func (r *GatewayPluginKeyAuthEncResourceModel) ToSharedKeyAuthEncPlugin(ctx cont
 	} else {
 		instanceName = nil
 	}
-	var ordering *shared.KeyAuthEncPluginOrdering
+	var ordering *shared.AppDynamicsPluginOrdering
 	if r.Ordering != nil {
-		var after *shared.KeyAuthEncPluginAfter
+		var after *shared.AppDynamicsPluginAfter
 		if r.Ordering.After != nil {
 			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
-			after = &shared.KeyAuthEncPluginAfter{
+			after = &shared.AppDynamicsPluginAfter{
 				Access: access,
 			}
 		}
-		var before *shared.KeyAuthEncPluginBefore
+		var before *shared.AppDynamicsPluginBefore
 		if r.Ordering.Before != nil {
 			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
-			before = &shared.KeyAuthEncPluginBefore{
+			before = &shared.AppDynamicsPluginBefore{
 				Access: access1,
 			}
 		}
-		ordering = &shared.KeyAuthEncPluginOrdering{
+		ordering = &shared.AppDynamicsPluginOrdering{
 			After:  after,
 			Before: before,
 		}
 	}
-	var partials []shared.KeyAuthEncPluginPartials
+	var partials []shared.AppDynamicsPluginPartials
 	if r.Partials != nil {
-		partials = make([]shared.KeyAuthEncPluginPartials, 0, len(r.Partials))
+		partials = make([]shared.AppDynamicsPluginPartials, 0, len(r.Partials))
 		for _, partialsItem := range r.Partials {
 			id1 := new(string)
 			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
@@ -255,7 +254,7 @@ func (r *GatewayPluginKeyAuthEncResourceModel) ToSharedKeyAuthEncPlugin(ctx cont
 			} else {
 				path = nil
 			}
-			partials = append(partials, shared.KeyAuthEncPluginPartials{
+			partials = append(partials, shared.AppDynamicsPluginPartials{
 				ID:   id1,
 				Name: name,
 				Path: path,
@@ -275,94 +274,53 @@ func (r *GatewayPluginKeyAuthEncResourceModel) ToSharedKeyAuthEncPlugin(ctx cont
 	} else {
 		updatedAt = nil
 	}
-	var config *shared.KeyAuthEncPluginConfig
-	if r.Config != nil {
-		anonymous := new(string)
-		if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
-			*anonymous = r.Config.Anonymous.ValueString()
-		} else {
-			anonymous = nil
-		}
-		hideCredentials := new(bool)
-		if !r.Config.HideCredentials.IsUnknown() && !r.Config.HideCredentials.IsNull() {
-			*hideCredentials = r.Config.HideCredentials.ValueBool()
-		} else {
-			hideCredentials = nil
-		}
-		keyInBody := new(bool)
-		if !r.Config.KeyInBody.IsUnknown() && !r.Config.KeyInBody.IsNull() {
-			*keyInBody = r.Config.KeyInBody.ValueBool()
-		} else {
-			keyInBody = nil
-		}
-		keyInHeader := new(bool)
-		if !r.Config.KeyInHeader.IsUnknown() && !r.Config.KeyInHeader.IsNull() {
-			*keyInHeader = r.Config.KeyInHeader.ValueBool()
-		} else {
-			keyInHeader = nil
-		}
-		keyInQuery := new(bool)
-		if !r.Config.KeyInQuery.IsUnknown() && !r.Config.KeyInQuery.IsNull() {
-			*keyInQuery = r.Config.KeyInQuery.ValueBool()
-		} else {
-			keyInQuery = nil
-		}
-		keyNames := make([]string, 0, len(r.Config.KeyNames))
-		for _, keyNamesItem := range r.Config.KeyNames {
-			keyNames = append(keyNames, keyNamesItem.ValueString())
-		}
-		realm := new(string)
-		if !r.Config.Realm.IsUnknown() && !r.Config.Realm.IsNull() {
-			*realm = r.Config.Realm.ValueString()
-		} else {
-			realm = nil
-		}
-		runOnPreflight := new(bool)
-		if !r.Config.RunOnPreflight.IsUnknown() && !r.Config.RunOnPreflight.IsNull() {
-			*runOnPreflight = r.Config.RunOnPreflight.ValueBool()
-		} else {
-			runOnPreflight = nil
-		}
-		config = &shared.KeyAuthEncPluginConfig{
-			Anonymous:       anonymous,
-			HideCredentials: hideCredentials,
-			KeyInBody:       keyInBody,
-			KeyInHeader:     keyInHeader,
-			KeyInQuery:      keyInQuery,
-			KeyNames:        keyNames,
-			Realm:           realm,
-			RunOnPreflight:  runOnPreflight,
-		}
+	config := make(map[string]interface{})
+	for configKey, configValue := range r.Config {
+		var configInst interface{}
+		_ = json.Unmarshal([]byte(configValue.ValueString()), &configInst)
+		config[configKey] = configInst
 	}
-	protocols := make([]shared.KeyAuthEncPluginProtocols, 0, len(r.Protocols))
-	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.KeyAuthEncPluginProtocols(protocolsItem.ValueString()))
-	}
-	var route *shared.KeyAuthEncPluginRoute
-	if r.Route != nil {
+	var consumer *shared.AppDynamicsPluginConsumer
+	if r.Consumer != nil {
 		id2 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id2 = r.Route.ID.ValueString()
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id2 = r.Consumer.ID.ValueString()
 		} else {
 			id2 = nil
 		}
-		route = &shared.KeyAuthEncPluginRoute{
+		consumer = &shared.AppDynamicsPluginConsumer{
 			ID: id2,
 		}
 	}
-	var service *shared.KeyAuthEncPluginService
-	if r.Service != nil {
+	protocols := make([]shared.AppDynamicsPluginProtocols, 0, len(r.Protocols))
+	for _, protocolsItem := range r.Protocols {
+		protocols = append(protocols, shared.AppDynamicsPluginProtocols(protocolsItem.ValueString()))
+	}
+	var route *shared.AppDynamicsPluginRoute
+	if r.Route != nil {
 		id3 := new(string)
-		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id3 = r.Service.ID.ValueString()
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id3 = r.Route.ID.ValueString()
 		} else {
 			id3 = nil
 		}
-		service = &shared.KeyAuthEncPluginService{
+		route = &shared.AppDynamicsPluginRoute{
 			ID: id3,
 		}
 	}
-	out := shared.KeyAuthEncPlugin{
+	var service *shared.AppDynamicsPluginService
+	if r.Service != nil {
+		id4 := new(string)
+		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
+			*id4 = r.Service.ID.ValueString()
+		} else {
+			id4 = nil
+		}
+		service = &shared.AppDynamicsPluginService{
+			ID: id4,
+		}
+	}
+	out := shared.AppDynamicsPlugin{
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
@@ -372,6 +330,7 @@ func (r *GatewayPluginKeyAuthEncResourceModel) ToSharedKeyAuthEncPlugin(ctx cont
 		Tags:         tags,
 		UpdatedAt:    updatedAt,
 		Config:       config,
+		Consumer:     consumer,
 		Protocols:    protocols,
 		Route:        route,
 		Service:      service,

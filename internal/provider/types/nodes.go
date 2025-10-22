@@ -2,11 +2,10 @@
 
 package types
 
-import (
-	"github.com/hashicorp/terraform-plugin-framework/types"
-)
-
 type Nodes struct {
-	Name types.String `tfsdk:"name"`
-	Type types.String `tfsdk:"type"`
+	Call     *Call     `queryParam:"inline" tfsdk:"call" tfPlanOnly:"true"`
+	Exit     *Exit     `queryParam:"inline" tfsdk:"exit" tfPlanOnly:"true"`
+	Jq       *Jq       `queryParam:"inline" tfsdk:"jq" tfPlanOnly:"true"`
+	Property *Property `queryParam:"inline" tfsdk:"property" tfPlanOnly:"true"`
+	Static   *Static   `queryParam:"inline" tfsdk:"static" tfPlanOnly:"true"`
 }

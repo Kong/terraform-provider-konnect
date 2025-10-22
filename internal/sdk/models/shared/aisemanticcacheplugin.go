@@ -429,7 +429,7 @@ func (a *AiSemanticCachePluginHuggingface) GetWaitForModel() *bool {
 
 // AiSemanticCachePluginOptions - Key/value settings for the model
 type AiSemanticCachePluginOptions struct {
-	Azure       AiSemanticCachePluginAzure        `json:"azure"`
+	Azure       *AiSemanticCachePluginAzure       `json:"azure"`
 	Bedrock     *AiSemanticCachePluginBedrock     `json:"bedrock"`
 	Gemini      *AiSemanticCachePluginGemini      `json:"gemini"`
 	Huggingface *AiSemanticCachePluginHuggingface `json:"huggingface"`
@@ -442,15 +442,15 @@ func (a AiSemanticCachePluginOptions) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticCachePluginOptions) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"azure"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AiSemanticCachePluginOptions) GetAzure() AiSemanticCachePluginAzure {
+func (a *AiSemanticCachePluginOptions) GetAzure() *AiSemanticCachePluginAzure {
 	if a == nil {
-		return AiSemanticCachePluginAzure{}
+		return nil
 	}
 	return a.Azure
 }

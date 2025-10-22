@@ -7,21 +7,28 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
@@ -83,28 +90,355 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 								speakeasy_objectvalidators.NotNull(),
 							},
 							Attributes: map[string]schema.Attribute{
-								"name": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid ` + "`" + `snake_case` + "`" + ` or ` + "`" + `kebab-case` + "`" + `. Not Null`,
-									Validators: []validator.String{
-										speakeasy_stringvalidators.NotNull(),
-										stringvalidator.UTF8LengthBetween(1, 255),
+								"call": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"input": schema.StringAttribute{
+											Optional:    true,
+											Description: `call node input`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"inputs": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+												"body":    types.StringType,
+												"headers": types.StringType,
+												"query":   types.StringType,
+											})),
+											Attributes: map[string]schema.Attribute{
+												"body": schema.StringAttribute{
+													Optional:    true,
+													Description: `HTTP request body`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+												"headers": schema.StringAttribute{
+													Optional:    true,
+													Description: `HTTP request headers`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+												"query": schema.StringAttribute{
+													Optional:    true,
+													Description: `HTTP request query`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+											},
+											Description: `call node inputs`,
+										},
+										"method": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     stringdefault.StaticString(`GET`),
+											Description: `A string representing an HTTP method, such as GET, POST, PUT, or DELETE. The string must contain only uppercase letters. Default: "GET"`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 32),
+											},
+										},
+										"name": schema.StringAttribute{
+											Optional:    true,
+											Description: `A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid ` + "`" + `snake_case` + "`" + ` or ` + "`" + `kebab-case` + "`" + `.`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"output": schema.StringAttribute{
+											Optional:    true,
+											Description: `call node output`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"outputs": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+												"body":    types.StringType,
+												"headers": types.StringType,
+												"status":  types.StringType,
+											})),
+											Attributes: map[string]schema.Attribute{
+												"body": schema.StringAttribute{
+													Optional:    true,
+													Description: `HTTP response body`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+												"headers": schema.StringAttribute{
+													Optional:    true,
+													Description: `HTTP response headers`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+												"status": schema.StringAttribute{
+													Optional:    true,
+													Description: `HTTP response status code`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+											},
+											Description: `call node outputs`,
+										},
+										"ssl_server_name": schema.StringAttribute{
+											Optional:    true,
+											Description: `A string representing an SNI (server name indication) value for TLS.`,
+										},
+										"timeout": schema.Int64Attribute{
+											Optional:    true,
+											Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+											Validators: []validator.Int64{
+												int64validator.AtMost(2147483646),
+											},
+										},
+										"url": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search. Not Null`,
+											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
+											},
+										},
+									},
+									Description: `Make an external HTTP request`,
+									Validators: []validator.Object{
+										objectvalidator.ConflictsWith(path.Expressions{
+											path.MatchRelative().AtParent().AtName("exit"),
+											path.MatchRelative().AtParent().AtName("jq"),
+											path.MatchRelative().AtParent().AtName("property"),
+											path.MatchRelative().AtParent().AtName("static"),
+										}...),
 									},
 								},
-								"type": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `Not Null; must be one of ["call", "exit", "jq", "property", "static"]`,
-									Validators: []validator.String{
-										speakeasy_stringvalidators.NotNull(),
-										stringvalidator.OneOf(
-											"call",
-											"exit",
-											"jq",
-											"property",
-											"static",
-										),
+								"exit": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"input": schema.StringAttribute{
+											Optional:    true,
+											Description: `exit node input`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"inputs": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+												"body":    types.StringType,
+												"headers": types.StringType,
+											})),
+											Attributes: map[string]schema.Attribute{
+												"body": schema.StringAttribute{
+													Optional:    true,
+													Description: `HTTP response body`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+												"headers": schema.StringAttribute{
+													Optional:    true,
+													Description: `HTTP response headers`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+											},
+											Description: `exit node inputs`,
+										},
+										"name": schema.StringAttribute{
+											Optional:    true,
+											Description: `A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid ` + "`" + `snake_case` + "`" + ` or ` + "`" + `kebab-case` + "`" + `.`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"status": schema.Int64Attribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     int64default.StaticInt64(200),
+											Description: `HTTP status code. Default: 200`,
+											Validators: []validator.Int64{
+												int64validator.Between(200, 599),
+											},
+										},
+										"warn_headers_sent": schema.BoolAttribute{
+											Optional: true,
+										},
+									},
+									Description: `Terminate the request and send a response to the client`,
+									Validators: []validator.Object{
+										objectvalidator.ConflictsWith(path.Expressions{
+											path.MatchRelative().AtParent().AtName("call"),
+											path.MatchRelative().AtParent().AtName("jq"),
+											path.MatchRelative().AtParent().AtName("property"),
+											path.MatchRelative().AtParent().AtName("static"),
+										}...),
+									},
+								},
+								"jq": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"input": schema.StringAttribute{
+											Optional:    true,
+											Description: `filter input(s)`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"inputs": schema.MapAttribute{
+											Optional:    true,
+											ElementType: jsontypes.NormalizedType{},
+											Description: `filter input(s)`,
+											Validators: []validator.Map{
+												mapvalidator.ValueStringsAre(validators.IsValidJSON()),
+											},
+										},
+										"jq": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The jq filter text. Refer to https://jqlang.org/manual/ for full documentation. Not Null`,
+											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
+												stringvalidator.UTF8LengthBetween(1, 10240),
+											},
+										},
+										"name": schema.StringAttribute{
+											Optional:    true,
+											Description: `A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid ` + "`" + `snake_case` + "`" + ` or ` + "`" + `kebab-case` + "`" + `.`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"output": schema.StringAttribute{
+											Optional:    true,
+											Description: `filter output(s)`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+									},
+									Description: `Process data using ` + "`" + `jq` + "`" + ` syntax`,
+									Validators: []validator.Object{
+										objectvalidator.ConflictsWith(path.Expressions{
+											path.MatchRelative().AtParent().AtName("call"),
+											path.MatchRelative().AtParent().AtName("exit"),
+											path.MatchRelative().AtParent().AtName("property"),
+											path.MatchRelative().AtParent().AtName("static"),
+										}...),
+									},
+								},
+								"property": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"content_type": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The expected mime type of the property value. When set to ` + "`" + `application/json` + "`" + `, SET operations will JSON-encode input data before writing it, and GET operations will JSON-decode output data after reading it. Otherwise, this setting has no effect. must be one of ["application/json", "application/octet-stream", "text/plain"]`,
+											Validators: []validator.String{
+												stringvalidator.OneOf(
+													"application/json",
+													"application/octet-stream",
+													"text/plain",
+												),
+											},
+										},
+										"input": schema.StringAttribute{
+											Optional:    true,
+											Description: `Property input source. When connected, this node operates in SET mode and writes input data to the property. Otherwise, the node operates in GET mode and reads the property.`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"name": schema.StringAttribute{
+											Optional:    true,
+											Description: `A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid ` + "`" + `snake_case` + "`" + ` or ` + "`" + `kebab-case` + "`" + `.`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"output": schema.StringAttribute{
+											Optional:    true,
+											Description: `Property output. This can be connected regardless of whether the node is operating in GET mode or SET mode.`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"property": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `The property name to get/set. Not Null`,
+											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+									},
+									Description: `Get or set a property`,
+									Validators: []validator.Object{
+										objectvalidator.ConflictsWith(path.Expressions{
+											path.MatchRelative().AtParent().AtName("call"),
+											path.MatchRelative().AtParent().AtName("exit"),
+											path.MatchRelative().AtParent().AtName("jq"),
+											path.MatchRelative().AtParent().AtName("static"),
+										}...),
+									},
+								},
+								"static": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"name": schema.StringAttribute{
+											Optional:    true,
+											Description: `A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid ` + "`" + `snake_case` + "`" + ` or ` + "`" + `kebab-case` + "`" + `.`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"output": schema.StringAttribute{
+											Optional:    true,
+											Description: `The entire ` + "`" + `.values` + "`" + ` map`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"outputs": schema.MapAttribute{
+											Optional:    true,
+											ElementType: jsontypes.NormalizedType{},
+											Description: `Individual items from ` + "`" + `.values` + "`" + `, referenced by key`,
+											Validators: []validator.Map{
+												mapvalidator.ValueStringsAre(validators.IsValidJSON()),
+											},
+										},
+										"values": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `An object with string keys and freeform values. Not Null`,
+											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
+											},
+										},
+									},
+									Description: `Produce reusable outputs from statically-configured values`,
+									Validators: []validator.Object{
+										objectvalidator.ConflictsWith(path.Expressions{
+											path.MatchRelative().AtParent().AtName("call"),
+											path.MatchRelative().AtParent().AtName("exit"),
+											path.MatchRelative().AtParent().AtName("jq"),
+											path.MatchRelative().AtParent().AtName("property"),
+										}...),
 									},
 								},
 							},
