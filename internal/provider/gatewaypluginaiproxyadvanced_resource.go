@@ -400,7 +400,13 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 										})),
 										Attributes: map[string]schema.Attribute{
 											"azure": schema.SingleNestedAttribute{
-												Required: true,
+												Computed: true,
+												Optional: true,
+												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+													"api_version":   types.StringType,
+													"deployment_id": types.StringType,
+													"instance":      types.StringType,
+												})),
 												Attributes: map[string]schema.Attribute{
 													"api_version": schema.StringAttribute{
 														Computed:    true,
@@ -685,6 +691,10 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 								"logging": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
+									Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+										"log_payloads":   types.BoolType,
+										"log_statistics": types.BoolType,
+									})),
 									Attributes: map[string]schema.Attribute{
 										"log_payloads": schema.BoolAttribute{
 											Computed:    true,
@@ -698,10 +708,6 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 											Default:     booldefault.StaticBool(false),
 											Description: `If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output. Default: false`,
 										},
-									},
-									Description: `Not Null`,
-									Validators: []validator.Object{
-										speakeasy_objectvalidators.NotNull(),
 									},
 								},
 								"model": schema.SingleNestedAttribute{
@@ -1102,7 +1108,22 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 								},
 							},
 							"pgvector": schema.SingleNestedAttribute{
-								Required: true,
+								Computed: true,
+								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"database":     types.StringType,
+									"host":         types.StringType,
+									"password":     types.StringType,
+									"port":         types.Int64Type,
+									"ssl":          types.BoolType,
+									"ssl_cert":     types.StringType,
+									"ssl_cert_key": types.StringType,
+									"ssl_required": types.BoolType,
+									"ssl_verify":   types.BoolType,
+									"ssl_version":  types.StringType,
+									"timeout":      types.Float64Type,
+									"user":         types.StringType,
+								})),
 								Attributes: map[string]schema.Attribute{
 									"database": schema.StringAttribute{
 										Computed:    true,
@@ -1180,7 +1201,45 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 								},
 							},
 							"redis": schema.SingleNestedAttribute{
-								Required: true,
+								Computed: true,
+								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"cluster_max_redirections": types.Int64Type,
+									"cluster_nodes": types.ListType{
+										ElemType: types.ObjectType{
+											AttrTypes: map[string]attr.Type{
+												`ip`:   types.StringType,
+												`port`: types.Int64Type,
+											},
+										},
+									},
+									"connect_timeout":       types.Int64Type,
+									"connection_is_proxied": types.BoolType,
+									"database":              types.Int64Type,
+									"host":                  types.StringType,
+									"keepalive_backlog":     types.Int64Type,
+									"keepalive_pool_size":   types.Int64Type,
+									"password":              types.StringType,
+									"port":                  types.Int64Type,
+									"read_timeout":          types.Int64Type,
+									"send_timeout":          types.Int64Type,
+									"sentinel_master":       types.StringType,
+									"sentinel_nodes": types.ListType{
+										ElemType: types.ObjectType{
+											AttrTypes: map[string]attr.Type{
+												`host`: types.StringType,
+												`port`: types.Int64Type,
+											},
+										},
+									},
+									"sentinel_password": types.StringType,
+									"sentinel_role":     types.StringType,
+									"sentinel_username": types.StringType,
+									"server_name":       types.StringType,
+									"ssl":               types.BoolType,
+									"ssl_verify":        types.BoolType,
+									"username":          types.StringType,
+								})),
 								Attributes: map[string]schema.Attribute{
 									"cluster_max_redirections": schema.Int64Attribute{
 										Computed:    true,

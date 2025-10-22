@@ -251,7 +251,7 @@ func (s *DPCertificates) CreateDataplaneCertificate(ctx context.Context, request
 
 }
 
-// GetDataplaneCertificate - Fetch DP Client Certificate
+// GetDataplaneCertificate - Get a DP Client Certificate
 // Retrieve a pinned dataplane client certificate associated to this control plane. A pinned dataplane certificate allows dataplanes configured with the certificate and corresponding private key to establish connection with this control plane.
 func (s *DPCertificates) GetDataplaneCertificate(ctx context.Context, request operations.GetDataplaneCertificateRequest, opts ...operations.Option) (*operations.GetDataplaneCertificateResponse, error) {
 	o := operations.Options{}

@@ -300,7 +300,7 @@ func (s *APIDocumentation) CreateAPIDocument(ctx context.Context, request operat
 
 }
 
-// FetchAPIDocument - Fetch API Document
+// FetchAPIDocument - Get an API Document
 // Returns a document for the API.
 func (s *APIDocumentation) FetchAPIDocument(ctx context.Context, request operations.FetchAPIDocumentRequest, opts ...operations.Option) (*operations.FetchAPIDocumentResponse, error) {
 	o := operations.Options{}

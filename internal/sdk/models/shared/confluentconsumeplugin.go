@@ -285,7 +285,7 @@ func (c *ConfluentConsumePluginAuthentication) GetMode() *ConfluentConsumePlugin
 }
 
 type ConfluentConsumePluginConfluent struct {
-	Authentication ConfluentConsumePluginAuthentication `json:"authentication"`
+	Authentication *ConfluentConsumePluginAuthentication `json:"authentication"`
 	// Set to false to disable SSL certificate verification when connecting to the schema registry.
 	SslVerify *bool `default:"true" json:"ssl_verify"`
 	// The TTL in seconds for the schema registry cache.
@@ -299,15 +299,15 @@ func (c ConfluentConsumePluginConfluent) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfluentConsumePluginConfluent) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"authentication"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *ConfluentConsumePluginConfluent) GetAuthentication() ConfluentConsumePluginAuthentication {
+func (c *ConfluentConsumePluginConfluent) GetAuthentication() *ConfluentConsumePluginAuthentication {
 	if c == nil {
-		return ConfluentConsumePluginAuthentication{}
+		return nil
 	}
 	return c.Authentication
 }
@@ -423,7 +423,7 @@ func (c *ConfluentConsumePluginConfigAuthentication) GetMode() *ConfluentConsume
 }
 
 type ConfluentConsumePluginConfigConfluent struct {
-	Authentication ConfluentConsumePluginConfigAuthentication `json:"authentication"`
+	Authentication *ConfluentConsumePluginConfigAuthentication `json:"authentication"`
 	// Set to false to disable SSL certificate verification when connecting to the schema registry.
 	SslVerify *bool `default:"true" json:"ssl_verify"`
 	// The TTL in seconds for the schema registry cache.
@@ -437,15 +437,15 @@ func (c ConfluentConsumePluginConfigConfluent) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfluentConsumePluginConfigConfluent) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"authentication"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *ConfluentConsumePluginConfigConfluent) GetAuthentication() ConfluentConsumePluginConfigAuthentication {
+func (c *ConfluentConsumePluginConfigConfluent) GetAuthentication() *ConfluentConsumePluginConfigAuthentication {
 	if c == nil {
-		return ConfluentConsumePluginConfigAuthentication{}
+		return nil
 	}
 	return c.Authentication
 }
@@ -486,7 +486,7 @@ func (c *ConfluentConsumePluginConfigSchemaRegistry) GetConfluent() *ConfluentCo
 type Topics struct {
 	Name string `json:"name"`
 	// The plugin-global schema registry configuration.
-	SchemaRegistry ConfluentConsumePluginConfigSchemaRegistry `json:"schema_registry"`
+	SchemaRegistry *ConfluentConsumePluginConfigSchemaRegistry `json:"schema_registry"`
 }
 
 func (t *Topics) GetName() string {
@@ -496,9 +496,9 @@ func (t *Topics) GetName() string {
 	return t.Name
 }
 
-func (t *Topics) GetSchemaRegistry() ConfluentConsumePluginConfigSchemaRegistry {
+func (t *Topics) GetSchemaRegistry() *ConfluentConsumePluginConfigSchemaRegistry {
 	if t == nil {
-		return ConfluentConsumePluginConfigSchemaRegistry{}
+		return nil
 	}
 	return t.SchemaRegistry
 }

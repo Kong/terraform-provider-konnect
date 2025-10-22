@@ -279,7 +279,7 @@ func (s *Targets) DeleteTargetWithUpstream(ctx context.Context, request operatio
 
 }
 
-// GetTargetWithUpstream - Fetch a Target associated with an Upstream
+// GetTargetWithUpstream - Get a Target associated with an Upstream
 // Get a Target associated with an Upstream using ID or target.
 func (s *Targets) GetTargetWithUpstream(ctx context.Context, request operations.GetTargetWithUpstreamRequest, opts ...operations.Option) (*operations.GetTargetWithUpstreamResponse, error) {
 	o := operations.Options{}

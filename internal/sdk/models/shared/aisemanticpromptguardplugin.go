@@ -429,7 +429,7 @@ func (a *AiSemanticPromptGuardPluginHuggingface) GetWaitForModel() *bool {
 
 // AiSemanticPromptGuardPluginOptions - Key/value settings for the model
 type AiSemanticPromptGuardPluginOptions struct {
-	Azure       AiSemanticPromptGuardPluginAzure        `json:"azure"`
+	Azure       *AiSemanticPromptGuardPluginAzure       `json:"azure"`
 	Bedrock     *AiSemanticPromptGuardPluginBedrock     `json:"bedrock"`
 	Gemini      *AiSemanticPromptGuardPluginGemini      `json:"gemini"`
 	Huggingface *AiSemanticPromptGuardPluginHuggingface `json:"huggingface"`
@@ -442,15 +442,15 @@ func (a AiSemanticPromptGuardPluginOptions) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticPromptGuardPluginOptions) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"azure"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AiSemanticPromptGuardPluginOptions) GetAzure() AiSemanticPromptGuardPluginAzure {
+func (a *AiSemanticPromptGuardPluginOptions) GetAzure() *AiSemanticPromptGuardPluginAzure {
 	if a == nil {
-		return AiSemanticPromptGuardPluginAzure{}
+		return nil
 	}
 	return a.Azure
 }

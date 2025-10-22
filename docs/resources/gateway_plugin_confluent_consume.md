@@ -163,7 +163,7 @@ Optional:
 Optional:
 
 - `name` (String) Not Null
-- `schema_registry` (Attributes) The plugin-global schema registry configuration. Not Null (see [below for nested schema](#nestedatt--config--topics--schema_registry))
+- `schema_registry` (Attributes) The plugin-global schema registry configuration. (see [below for nested schema](#nestedatt--config--topics--schema_registry))
 
 <a id="nestedatt--config--topics--schema_registry"></a>
 ### Nested Schema for `config.topics.schema_registry`
@@ -177,7 +177,7 @@ Optional:
 
 Optional:
 
-- `authentication` (Attributes) Not Null (see [below for nested schema](#nestedatt--config--topics--schema_registry--confluent--authentication))
+- `authentication` (Attributes) (see [below for nested schema](#nestedatt--config--topics--schema_registry--confluent--authentication))
 - `ssl_verify` (Boolean) Set to false to disable SSL certificate verification when connecting to the schema registry. Default: true
 - `ttl` (Number) The TTL in seconds for the schema registry cache.
 - `url` (String) The URL of the schema registry.
@@ -222,12 +222,9 @@ Optional:
 <a id="nestedatt--config--schema_registry--confluent"></a>
 ### Nested Schema for `config.schema_registry.confluent`
 
-Required:
-
-- `authentication` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication))
-
 Optional:
 
+- `authentication` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication))
 - `ssl_verify` (Boolean) Set to false to disable SSL certificate verification when connecting to the schema registry. Default: true
 - `ttl` (Number) The TTL in seconds for the schema registry cache.
 - `url` (String) The URL of the schema registry.

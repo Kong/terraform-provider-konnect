@@ -7,77 +7,77 @@ import (
 	"net/http"
 )
 
-type UpdateKeyauthencPluginRequest struct {
+type UpdateAppdynamicsPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID   string                  `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	KeyAuthEncPlugin shared.KeyAuthEncPlugin `request:"mediaType=application/json"`
+	ControlPlaneID    string                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	AppDynamicsPlugin shared.AppDynamicsPlugin `request:"mediaType=application/json"`
 }
 
-func (u *UpdateKeyauthencPluginRequest) GetPluginID() string {
+func (u *UpdateAppdynamicsPluginRequest) GetPluginID() string {
 	if u == nil {
 		return ""
 	}
 	return u.PluginID
 }
 
-func (u *UpdateKeyauthencPluginRequest) GetControlPlaneID() string {
+func (u *UpdateAppdynamicsPluginRequest) GetControlPlaneID() string {
 	if u == nil {
 		return ""
 	}
 	return u.ControlPlaneID
 }
 
-func (u *UpdateKeyauthencPluginRequest) GetKeyAuthEncPlugin() shared.KeyAuthEncPlugin {
+func (u *UpdateAppdynamicsPluginRequest) GetAppDynamicsPlugin() shared.AppDynamicsPlugin {
 	if u == nil {
-		return shared.KeyAuthEncPlugin{}
+		return shared.AppDynamicsPlugin{}
 	}
-	return u.KeyAuthEncPlugin
+	return u.AppDynamicsPlugin
 }
 
-type UpdateKeyauthencPluginResponse struct {
+type UpdateAppdynamicsPluginResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// KeyAuthEnc plugin
-	KeyAuthEncPlugin *shared.KeyAuthEncPlugin
+	// AppDynamics plugin
+	AppDynamicsPlugin *shared.AppDynamicsPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (u *UpdateKeyauthencPluginResponse) GetContentType() string {
+func (u *UpdateAppdynamicsPluginResponse) GetContentType() string {
 	if u == nil {
 		return ""
 	}
 	return u.ContentType
 }
 
-func (u *UpdateKeyauthencPluginResponse) GetStatusCode() int {
+func (u *UpdateAppdynamicsPluginResponse) GetStatusCode() int {
 	if u == nil {
 		return 0
 	}
 	return u.StatusCode
 }
 
-func (u *UpdateKeyauthencPluginResponse) GetRawResponse() *http.Response {
+func (u *UpdateAppdynamicsPluginResponse) GetRawResponse() *http.Response {
 	if u == nil {
 		return nil
 	}
 	return u.RawResponse
 }
 
-func (u *UpdateKeyauthencPluginResponse) GetKeyAuthEncPlugin() *shared.KeyAuthEncPlugin {
+func (u *UpdateAppdynamicsPluginResponse) GetAppDynamicsPlugin() *shared.AppDynamicsPlugin {
 	if u == nil {
 		return nil
 	}
-	return u.KeyAuthEncPlugin
+	return u.AppDynamicsPlugin
 }
 
-func (u *UpdateKeyauthencPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+func (u *UpdateAppdynamicsPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if u == nil {
 		return nil
 	}

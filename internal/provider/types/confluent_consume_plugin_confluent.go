@@ -7,8 +7,8 @@ import (
 )
 
 type ConfluentConsumePluginConfluent struct {
-	Authentication ConfluentPluginAuthentication `tfsdk:"authentication"`
-	SslVerify      types.Bool                    `tfsdk:"ssl_verify"`
-	TTL            types.Float64                 `tfsdk:"ttl"`
-	URL            types.String                  `tfsdk:"url"`
+	Authentication *ConfluentPluginAuthentication `tfsdk:"authentication"`
+	SslVerify      types.Bool                     `tfsdk:"ssl_verify"`
+	TTL            types.Float64                  `tfsdk:"ttl"`
+	URL            types.String                   `tfsdk:"url"`
 }

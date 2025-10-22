@@ -301,7 +301,7 @@ func (s *APISpecification) CreateAPISpec(ctx context.Context, request operations
 
 }
 
-// FetchAPISpec - Fetch API Specification
+// FetchAPISpec - Get API Specification
 // Fetches the specification (OpenAPI or AsyncAPI) of an API.
 // **Note:** This endpoint is deprecated and will be removed: use /versions instead.
 //

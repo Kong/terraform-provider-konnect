@@ -844,19 +844,19 @@ func (r *RequestCalloutPluginQuery) GetForward() *bool {
 // Request - The customizations for the callout request.
 type Request struct {
 	// Callout request body customizations.
-	Body RequestCalloutPluginConfigBody `json:"body"`
+	Body *RequestCalloutPluginConfigBody `json:"body"`
 	// Lua code that executes before the callout request is made. **Warning** can impact system behavior. Standard Lua sandboxing restrictions apply.
 	ByLua *string `default:"null" json:"by_lua"`
 	// The error handling policy the plugin will apply to TCP and HTTP errors.
-	Error Error `json:"error"`
+	Error *Error `json:"error"`
 	// Callout request header customizations.
-	Headers RequestCalloutPluginConfigCalloutsHeaders `json:"headers"`
+	Headers *RequestCalloutPluginConfigCalloutsHeaders `json:"headers"`
 	// HTTP connection parameters.
-	HTTPOpts HTTPOpts `json:"http_opts"`
+	HTTPOpts *HTTPOpts `json:"http_opts"`
 	// The HTTP method that will be requested.
 	Method *string `default:"GET" json:"method"`
 	// Callout request query param customizations.
-	Query RequestCalloutPluginQuery `json:"query"`
+	Query *RequestCalloutPluginQuery `json:"query"`
 	// The URL that will be requested.
 	URL string `json:"url"`
 }
@@ -866,15 +866,15 @@ func (r Request) MarshalJSON() ([]byte, error) {
 }
 
 func (r *Request) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"body", "error", "headers", "http_opts", "query", "url"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"url"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *Request) GetBody() RequestCalloutPluginConfigBody {
+func (r *Request) GetBody() *RequestCalloutPluginConfigBody {
 	if r == nil {
-		return RequestCalloutPluginConfigBody{}
+		return nil
 	}
 	return r.Body
 }
@@ -886,23 +886,23 @@ func (r *Request) GetByLua() *string {
 	return r.ByLua
 }
 
-func (r *Request) GetError() Error {
+func (r *Request) GetError() *Error {
 	if r == nil {
-		return Error{}
+		return nil
 	}
 	return r.Error
 }
 
-func (r *Request) GetHeaders() RequestCalloutPluginConfigCalloutsHeaders {
+func (r *Request) GetHeaders() *RequestCalloutPluginConfigCalloutsHeaders {
 	if r == nil {
-		return RequestCalloutPluginConfigCalloutsHeaders{}
+		return nil
 	}
 	return r.Headers
 }
 
-func (r *Request) GetHTTPOpts() HTTPOpts {
+func (r *Request) GetHTTPOpts() *HTTPOpts {
 	if r == nil {
-		return HTTPOpts{}
+		return nil
 	}
 	return r.HTTPOpts
 }
@@ -914,9 +914,9 @@ func (r *Request) GetMethod() *string {
 	return r.Method
 }
 
-func (r *Request) GetQuery() RequestCalloutPluginQuery {
+func (r *Request) GetQuery() *RequestCalloutPluginQuery {
 	if r == nil {
-		return RequestCalloutPluginQuery{}
+		return nil
 	}
 	return r.Query
 }
@@ -986,11 +986,11 @@ func (r *RequestCalloutPluginConfigHeaders) GetStore() *bool {
 
 // Response - Configurations of callout response handling.
 type Response struct {
-	Body RequestCalloutPluginBody `json:"body"`
+	Body *RequestCalloutPluginBody `json:"body"`
 	// Lua code that executes after the callout response is received, before caching takes place. Can produce side effects. Standard Lua sandboxing restrictions apply.
 	ByLua *string `default:"null" json:"by_lua"`
 	// Callout response header customizations.
-	Headers RequestCalloutPluginConfigHeaders `json:"headers"`
+	Headers *RequestCalloutPluginConfigHeaders `json:"headers"`
 }
 
 func (r Response) MarshalJSON() ([]byte, error) {
@@ -998,15 +998,15 @@ func (r Response) MarshalJSON() ([]byte, error) {
 }
 
 func (r *Response) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"body", "headers"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *Response) GetBody() RequestCalloutPluginBody {
+func (r *Response) GetBody() *RequestCalloutPluginBody {
 	if r == nil {
-		return RequestCalloutPluginBody{}
+		return nil
 	}
 	return r.Body
 }
@@ -1018,16 +1018,16 @@ func (r *Response) GetByLua() *string {
 	return r.ByLua
 }
 
-func (r *Response) GetHeaders() RequestCalloutPluginConfigHeaders {
+func (r *Response) GetHeaders() *RequestCalloutPluginConfigHeaders {
 	if r == nil {
-		return RequestCalloutPluginConfigHeaders{}
+		return nil
 	}
 	return r.Headers
 }
 
 type Callouts struct {
 	// Callout caching configuration.
-	Cache RequestCalloutPluginCache `json:"cache"`
+	Cache *RequestCalloutPluginCache `json:"cache"`
 	// An array of callout names the current callout depends on. This dependency list determines the callout execution order via a topological sorting algorithm.
 	DependsOn []string `json:"depends_on,omitempty"`
 	// A string identifier for a callout. A callout object is referenceable via its name in the `kong.ctx.shared.callouts.<name>`
@@ -1035,12 +1035,12 @@ type Callouts struct {
 	// The customizations for the callout request.
 	Request Request `json:"request"`
 	// Configurations of callout response handling.
-	Response Response `json:"response"`
+	Response *Response `json:"response"`
 }
 
-func (c *Callouts) GetCache() RequestCalloutPluginCache {
+func (c *Callouts) GetCache() *RequestCalloutPluginCache {
 	if c == nil {
-		return RequestCalloutPluginCache{}
+		return nil
 	}
 	return c.Cache
 }
@@ -1066,9 +1066,9 @@ func (c *Callouts) GetRequest() Request {
 	return c.Request
 }
 
-func (c *Callouts) GetResponse() Response {
+func (c *Callouts) GetResponse() *Response {
 	if c == nil {
-		return Response{}
+		return nil
 	}
 	return c.Response
 }

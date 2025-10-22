@@ -7,8 +7,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
-	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -24,8 +22,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
-	speakeasy_mapvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/mapvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
@@ -78,7 +74,7 @@ func (r *GatewayPluginRouteByHeaderResource) Schema(ctx context.Context, req res
 						ElemType: types.ObjectType{
 							AttrTypes: map[string]attr.Type{
 								`condition`: types.MapType{
-									ElemType: jsontypes.NormalizedType{},
+									ElemType: types.StringType,
 								},
 								`upstream_name`: types.StringType,
 							},
@@ -95,14 +91,8 @@ func (r *GatewayPluginRouteByHeaderResource) Schema(ctx context.Context, req res
 							},
 							Attributes: map[string]schema.Attribute{
 								"condition": schema.MapAttribute{
-									Computed:    true,
 									Optional:    true,
-									ElementType: jsontypes.NormalizedType{},
-									Description: `Not Null`,
-									Validators: []validator.Map{
-										speakeasy_mapvalidators.NotNull(),
-										mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-									},
+									ElementType: types.StringType,
 								},
 								"upstream_name": schema.StringAttribute{
 									Computed:    true,

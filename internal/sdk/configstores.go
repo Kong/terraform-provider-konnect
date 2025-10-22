@@ -257,7 +257,7 @@ func (s *ConfigStores) CreateConfigStore(ctx context.Context, request operations
 
 }
 
-// GetConfigStore - Fetch Config Store
+// GetConfigStore - Get a Config Store
 // Returns a Config Store
 func (s *ConfigStores) GetConfigStore(ctx context.Context, request operations.GetConfigStoreRequest, opts ...operations.Option) (*operations.GetConfigStoreResponse, error) {
 	o := operations.Options{}

@@ -31,7 +31,7 @@ func newPlatformIPs(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *
 	}
 }
 
-// ListIPAddresses - Platform IP Addresses
+// ListIPAddresses - List Platform IP Addresses
 // Get Konnect IP addresses by region/hostname, ingress, and egress
 func (s *PlatformIPs) ListIPAddresses(ctx context.Context, opts ...operations.Option) (*operations.ListIPAddressesResponse, error) {
 	o := operations.Options{}

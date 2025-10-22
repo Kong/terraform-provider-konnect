@@ -133,7 +133,6 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				},
 			},
 			"display_name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `The display name of the portal. This value will be the portal's ` + "`" + `name` + "`" + ` in Portal API.`,
 				Validators: []validator.String{

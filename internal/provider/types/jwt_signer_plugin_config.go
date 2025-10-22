@@ -23,12 +23,12 @@ type JwtSignerPluginConfig struct {
 	AccessTokenIntrospectionTimeout         types.Float64                   `tfsdk:"access_token_introspection_timeout"`
 	AccessTokenIssuer                       types.String                    `tfsdk:"access_token_issuer"`
 	AccessTokenJwksURI                      types.String                    `tfsdk:"access_token_jwks_uri"`
-	AccessTokenJwksURIClientCertificate     types.String                    `tfsdk:"access_token_jwks_uri_client_certificate"`
+	AccessTokenJwksURIClientCertificate     *Set                            `tfsdk:"access_token_jwks_uri_client_certificate"`
 	AccessTokenJwksURIClientPassword        types.String                    `tfsdk:"access_token_jwks_uri_client_password"`
 	AccessTokenJwksURIClientUsername        types.String                    `tfsdk:"access_token_jwks_uri_client_username"`
 	AccessTokenJwksURIRotatePeriod          types.Float64                   `tfsdk:"access_token_jwks_uri_rotate_period"`
 	AccessTokenKeyset                       types.String                    `tfsdk:"access_token_keyset"`
-	AccessTokenKeysetClientCertificate      types.String                    `tfsdk:"access_token_keyset_client_certificate"`
+	AccessTokenKeysetClientCertificate      *Set                            `tfsdk:"access_token_keyset_client_certificate"`
 	AccessTokenKeysetClientPassword         types.String                    `tfsdk:"access_token_keyset_client_password"`
 	AccessTokenKeysetClientUsername         types.String                    `tfsdk:"access_token_keyset_client_username"`
 	AccessTokenKeysetRotatePeriod           types.Float64                   `tfsdk:"access_token_keyset_rotate_period"`
@@ -60,12 +60,12 @@ type JwtSignerPluginConfig struct {
 	ChannelTokenIntrospectionTimeout        types.Float64                   `tfsdk:"channel_token_introspection_timeout"`
 	ChannelTokenIssuer                      types.String                    `tfsdk:"channel_token_issuer"`
 	ChannelTokenJwksURI                     types.String                    `tfsdk:"channel_token_jwks_uri"`
-	ChannelTokenJwksURIClientCertificate    types.String                    `tfsdk:"channel_token_jwks_uri_client_certificate"`
+	ChannelTokenJwksURIClientCertificate    *Set                            `tfsdk:"channel_token_jwks_uri_client_certificate"`
 	ChannelTokenJwksURIClientPassword       types.String                    `tfsdk:"channel_token_jwks_uri_client_password"`
 	ChannelTokenJwksURIClientUsername       types.String                    `tfsdk:"channel_token_jwks_uri_client_username"`
 	ChannelTokenJwksURIRotatePeriod         types.Float64                   `tfsdk:"channel_token_jwks_uri_rotate_period"`
 	ChannelTokenKeyset                      types.String                    `tfsdk:"channel_token_keyset"`
-	ChannelTokenKeysetClientCertificate     types.String                    `tfsdk:"channel_token_keyset_client_certificate"`
+	ChannelTokenKeysetClientCertificate     *Set                            `tfsdk:"channel_token_keyset_client_certificate"`
 	ChannelTokenKeysetClientPassword        types.String                    `tfsdk:"channel_token_keyset_client_password"`
 	ChannelTokenKeysetClientUsername        types.String                    `tfsdk:"channel_token_keyset_client_username"`
 	ChannelTokenKeysetRotatePeriod          types.Float64                   `tfsdk:"channel_token_keyset_rotate_period"`

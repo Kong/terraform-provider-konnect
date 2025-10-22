@@ -384,8 +384,8 @@ func (k *KafkaUpstreamPluginValueSchema) GetSubjectName() *string {
 }
 
 type KafkaUpstreamPluginConfluent struct {
-	Authentication KafkaUpstreamPluginConfigAuthentication `json:"authentication"`
-	KeySchema      *KafkaUpstreamPluginKeySchema           `json:"key_schema"`
+	Authentication *KafkaUpstreamPluginConfigAuthentication `json:"authentication"`
+	KeySchema      *KafkaUpstreamPluginKeySchema            `json:"key_schema"`
 	// Set to false to disable SSL certificate verification when connecting to the schema registry.
 	SslVerify *bool `default:"true" json:"ssl_verify"`
 	// The TTL in seconds for the schema registry cache.
@@ -400,15 +400,15 @@ func (k KafkaUpstreamPluginConfluent) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaUpstreamPluginConfluent) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"authentication"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (k *KafkaUpstreamPluginConfluent) GetAuthentication() KafkaUpstreamPluginConfigAuthentication {
+func (k *KafkaUpstreamPluginConfluent) GetAuthentication() *KafkaUpstreamPluginConfigAuthentication {
 	if k == nil {
-		return KafkaUpstreamPluginConfigAuthentication{}
+		return nil
 	}
 	return k.Authentication
 }

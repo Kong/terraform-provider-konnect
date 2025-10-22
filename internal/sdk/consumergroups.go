@@ -320,7 +320,7 @@ func (s *ConsumerGroups) DeleteConsumerGroup(ctx context.Context, request operat
 
 }
 
-// GetConsumerGroup - Fetch a Consumer Group
+// GetConsumerGroup - Get a Consumer Group
 // Get a Consumer Group using ID.
 func (s *ConsumerGroups) GetConsumerGroup(ctx context.Context, request operations.GetConsumerGroupRequest, opts ...operations.Option) (*operations.GetConsumerGroupResponse, error) {
 	o := operations.Options{}

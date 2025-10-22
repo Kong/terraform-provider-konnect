@@ -65,12 +65,22 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 			r.Config.AccessTokenIntrospectionTimeout = types.Float64PointerValue(resp.Config.AccessTokenIntrospectionTimeout)
 			r.Config.AccessTokenIssuer = types.StringPointerValue(resp.Config.AccessTokenIssuer)
 			r.Config.AccessTokenJwksURI = types.StringPointerValue(resp.Config.AccessTokenJwksURI)
-			r.Config.AccessTokenJwksURIClientCertificate = types.StringPointerValue(resp.Config.AccessTokenJwksURIClientCertificate)
+			if resp.Config.AccessTokenJwksURIClientCertificate == nil {
+				r.Config.AccessTokenJwksURIClientCertificate = nil
+			} else {
+				r.Config.AccessTokenJwksURIClientCertificate = &tfTypes.Set{}
+				r.Config.AccessTokenJwksURIClientCertificate.ID = types.StringPointerValue(resp.Config.AccessTokenJwksURIClientCertificate.ID)
+			}
 			r.Config.AccessTokenJwksURIClientPassword = types.StringPointerValue(resp.Config.AccessTokenJwksURIClientPassword)
 			r.Config.AccessTokenJwksURIClientUsername = types.StringPointerValue(resp.Config.AccessTokenJwksURIClientUsername)
 			r.Config.AccessTokenJwksURIRotatePeriod = types.Float64PointerValue(resp.Config.AccessTokenJwksURIRotatePeriod)
 			r.Config.AccessTokenKeyset = types.StringPointerValue(resp.Config.AccessTokenKeyset)
-			r.Config.AccessTokenKeysetClientCertificate = types.StringPointerValue(resp.Config.AccessTokenKeysetClientCertificate)
+			if resp.Config.AccessTokenKeysetClientCertificate == nil {
+				r.Config.AccessTokenKeysetClientCertificate = nil
+			} else {
+				r.Config.AccessTokenKeysetClientCertificate = &tfTypes.Set{}
+				r.Config.AccessTokenKeysetClientCertificate.ID = types.StringPointerValue(resp.Config.AccessTokenKeysetClientCertificate.ID)
+			}
 			r.Config.AccessTokenKeysetClientPassword = types.StringPointerValue(resp.Config.AccessTokenKeysetClientPassword)
 			r.Config.AccessTokenKeysetClientUsername = types.StringPointerValue(resp.Config.AccessTokenKeysetClientUsername)
 			r.Config.AccessTokenKeysetRotatePeriod = types.Float64PointerValue(resp.Config.AccessTokenKeysetRotatePeriod)
@@ -161,12 +171,22 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 			r.Config.ChannelTokenIntrospectionTimeout = types.Float64PointerValue(resp.Config.ChannelTokenIntrospectionTimeout)
 			r.Config.ChannelTokenIssuer = types.StringPointerValue(resp.Config.ChannelTokenIssuer)
 			r.Config.ChannelTokenJwksURI = types.StringPointerValue(resp.Config.ChannelTokenJwksURI)
-			r.Config.ChannelTokenJwksURIClientCertificate = types.StringPointerValue(resp.Config.ChannelTokenJwksURIClientCertificate)
+			if resp.Config.ChannelTokenJwksURIClientCertificate == nil {
+				r.Config.ChannelTokenJwksURIClientCertificate = nil
+			} else {
+				r.Config.ChannelTokenJwksURIClientCertificate = &tfTypes.Set{}
+				r.Config.ChannelTokenJwksURIClientCertificate.ID = types.StringPointerValue(resp.Config.ChannelTokenJwksURIClientCertificate.ID)
+			}
 			r.Config.ChannelTokenJwksURIClientPassword = types.StringPointerValue(resp.Config.ChannelTokenJwksURIClientPassword)
 			r.Config.ChannelTokenJwksURIClientUsername = types.StringPointerValue(resp.Config.ChannelTokenJwksURIClientUsername)
 			r.Config.ChannelTokenJwksURIRotatePeriod = types.Float64PointerValue(resp.Config.ChannelTokenJwksURIRotatePeriod)
 			r.Config.ChannelTokenKeyset = types.StringPointerValue(resp.Config.ChannelTokenKeyset)
-			r.Config.ChannelTokenKeysetClientCertificate = types.StringPointerValue(resp.Config.ChannelTokenKeysetClientCertificate)
+			if resp.Config.ChannelTokenKeysetClientCertificate == nil {
+				r.Config.ChannelTokenKeysetClientCertificate = nil
+			} else {
+				r.Config.ChannelTokenKeysetClientCertificate = &tfTypes.Set{}
+				r.Config.ChannelTokenKeysetClientCertificate.ID = types.StringPointerValue(resp.Config.ChannelTokenKeysetClientCertificate.ID)
+			}
 			r.Config.ChannelTokenKeysetClientPassword = types.StringPointerValue(resp.Config.ChannelTokenKeysetClientPassword)
 			r.Config.ChannelTokenKeysetClientUsername = types.StringPointerValue(resp.Config.ChannelTokenKeysetClientUsername)
 			r.Config.ChannelTokenKeysetRotatePeriod = types.Float64PointerValue(resp.Config.ChannelTokenKeysetRotatePeriod)
@@ -573,11 +593,17 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 		} else {
 			accessTokenJwksURI = nil
 		}
-		accessTokenJwksURIClientCertificate := new(string)
-		if !r.Config.AccessTokenJwksURIClientCertificate.IsUnknown() && !r.Config.AccessTokenJwksURIClientCertificate.IsNull() {
-			*accessTokenJwksURIClientCertificate = r.Config.AccessTokenJwksURIClientCertificate.ValueString()
-		} else {
-			accessTokenJwksURIClientCertificate = nil
+		var accessTokenJwksURIClientCertificate *shared.AccessTokenJwksURIClientCertificate
+		if r.Config.AccessTokenJwksURIClientCertificate != nil {
+			id2 := new(string)
+			if !r.Config.AccessTokenJwksURIClientCertificate.ID.IsUnknown() && !r.Config.AccessTokenJwksURIClientCertificate.ID.IsNull() {
+				*id2 = r.Config.AccessTokenJwksURIClientCertificate.ID.ValueString()
+			} else {
+				id2 = nil
+			}
+			accessTokenJwksURIClientCertificate = &shared.AccessTokenJwksURIClientCertificate{
+				ID: id2,
+			}
 		}
 		accessTokenJwksURIClientPassword := new(string)
 		if !r.Config.AccessTokenJwksURIClientPassword.IsUnknown() && !r.Config.AccessTokenJwksURIClientPassword.IsNull() {
@@ -603,11 +629,17 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 		} else {
 			accessTokenKeyset = nil
 		}
-		accessTokenKeysetClientCertificate := new(string)
-		if !r.Config.AccessTokenKeysetClientCertificate.IsUnknown() && !r.Config.AccessTokenKeysetClientCertificate.IsNull() {
-			*accessTokenKeysetClientCertificate = r.Config.AccessTokenKeysetClientCertificate.ValueString()
-		} else {
-			accessTokenKeysetClientCertificate = nil
+		var accessTokenKeysetClientCertificate *shared.AccessTokenKeysetClientCertificate
+		if r.Config.AccessTokenKeysetClientCertificate != nil {
+			id3 := new(string)
+			if !r.Config.AccessTokenKeysetClientCertificate.ID.IsUnknown() && !r.Config.AccessTokenKeysetClientCertificate.ID.IsNull() {
+				*id3 = r.Config.AccessTokenKeysetClientCertificate.ID.ValueString()
+			} else {
+				id3 = nil
+			}
+			accessTokenKeysetClientCertificate = &shared.AccessTokenKeysetClientCertificate{
+				ID: id3,
+			}
 		}
 		accessTokenKeysetClientPassword := new(string)
 		if !r.Config.AccessTokenKeysetClientPassword.IsUnknown() && !r.Config.AccessTokenKeysetClientPassword.IsNull() {
@@ -792,11 +824,17 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 		} else {
 			channelTokenJwksURI = nil
 		}
-		channelTokenJwksURIClientCertificate := new(string)
-		if !r.Config.ChannelTokenJwksURIClientCertificate.IsUnknown() && !r.Config.ChannelTokenJwksURIClientCertificate.IsNull() {
-			*channelTokenJwksURIClientCertificate = r.Config.ChannelTokenJwksURIClientCertificate.ValueString()
-		} else {
-			channelTokenJwksURIClientCertificate = nil
+		var channelTokenJwksURIClientCertificate *shared.ChannelTokenJwksURIClientCertificate
+		if r.Config.ChannelTokenJwksURIClientCertificate != nil {
+			id4 := new(string)
+			if !r.Config.ChannelTokenJwksURIClientCertificate.ID.IsUnknown() && !r.Config.ChannelTokenJwksURIClientCertificate.ID.IsNull() {
+				*id4 = r.Config.ChannelTokenJwksURIClientCertificate.ID.ValueString()
+			} else {
+				id4 = nil
+			}
+			channelTokenJwksURIClientCertificate = &shared.ChannelTokenJwksURIClientCertificate{
+				ID: id4,
+			}
 		}
 		channelTokenJwksURIClientPassword := new(string)
 		if !r.Config.ChannelTokenJwksURIClientPassword.IsUnknown() && !r.Config.ChannelTokenJwksURIClientPassword.IsNull() {
@@ -822,11 +860,17 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 		} else {
 			channelTokenKeyset = nil
 		}
-		channelTokenKeysetClientCertificate := new(string)
-		if !r.Config.ChannelTokenKeysetClientCertificate.IsUnknown() && !r.Config.ChannelTokenKeysetClientCertificate.IsNull() {
-			*channelTokenKeysetClientCertificate = r.Config.ChannelTokenKeysetClientCertificate.ValueString()
-		} else {
-			channelTokenKeysetClientCertificate = nil
+		var channelTokenKeysetClientCertificate *shared.ChannelTokenKeysetClientCertificate
+		if r.Config.ChannelTokenKeysetClientCertificate != nil {
+			id5 := new(string)
+			if !r.Config.ChannelTokenKeysetClientCertificate.ID.IsUnknown() && !r.Config.ChannelTokenKeysetClientCertificate.ID.IsNull() {
+				*id5 = r.Config.ChannelTokenKeysetClientCertificate.ID.ValueString()
+			} else {
+				id5 = nil
+			}
+			channelTokenKeysetClientCertificate = &shared.ChannelTokenKeysetClientCertificate{
+				ID: id5,
+			}
 		}
 		channelTokenKeysetClientPassword := new(string)
 		if !r.Config.ChannelTokenKeysetClientPassword.IsUnknown() && !r.Config.ChannelTokenKeysetClientPassword.IsNull() {
@@ -1135,26 +1179,26 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 	}
 	var route *shared.JwtSignerPluginRoute
 	if r.Route != nil {
-		id2 := new(string)
+		id6 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id2 = r.Route.ID.ValueString()
+			*id6 = r.Route.ID.ValueString()
 		} else {
-			id2 = nil
+			id6 = nil
 		}
 		route = &shared.JwtSignerPluginRoute{
-			ID: id2,
+			ID: id6,
 		}
 	}
 	var service *shared.JwtSignerPluginService
 	if r.Service != nil {
-		id3 := new(string)
+		id7 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id3 = r.Service.ID.ValueString()
+			*id7 = r.Service.ID.ValueString()
 		} else {
-			id3 = nil
+			id7 = nil
 		}
 		service = &shared.JwtSignerPluginService{
-			ID: id3,
+			ID: id7,
 		}
 	}
 	out := shared.JwtSignerPlugin{

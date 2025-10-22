@@ -7,7 +7,7 @@ import (
 )
 
 type AiProxyAdvancedPluginOptions struct {
-	Azure       Azure        `tfsdk:"azure"`
+	Azure       *Azure       `tfsdk:"azure"`
 	Bedrock     *Bedrock     `tfsdk:"bedrock"`
 	Gemini      *Gemini      `tfsdk:"gemini"`
 	Huggingface *Huggingface `tfsdk:"huggingface"`

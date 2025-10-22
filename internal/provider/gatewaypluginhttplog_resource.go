@@ -7,10 +7,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/float64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -29,7 +27,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 )
 
@@ -90,11 +87,8 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 					},
 					"custom_fields_by_lua": schema.MapAttribute{
 						Optional:    true,
-						ElementType: jsontypes.NormalizedType{},
+						ElementType: types.StringType,
 						Description: `Lua code as a key-value map`,
-						Validators: []validator.Map{
-							mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-						},
 					},
 					"flush_timeout": schema.Float64Attribute{
 						Optional:    true,
@@ -102,11 +96,8 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 					},
 					"headers": schema.MapAttribute{
 						Optional:    true,
-						ElementType: jsontypes.NormalizedType{},
+						ElementType: types.StringType,
 						Description: `An optional table of headers included in the HTTP message to the upstream server. Values are indexed by header name, and each header name accepts a single string.`,
-						Validators: []validator.Map{
-							mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-						},
 					},
 					"http_endpoint": schema.StringAttribute{
 						Required:    true,

@@ -100,21 +100,29 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 					"access_token_introspection_scopes_required": types.ListType{
 						ElemType: types.StringType,
 					},
-					"access_token_introspection_timeout":       types.Float64Type,
-					"access_token_issuer":                      types.StringType,
-					"access_token_jwks_uri":                    types.StringType,
-					"access_token_jwks_uri_client_certificate": types.StringType,
-					"access_token_jwks_uri_client_password":    types.StringType,
-					"access_token_jwks_uri_client_username":    types.StringType,
-					"access_token_jwks_uri_rotate_period":      types.Float64Type,
-					"access_token_keyset":                      types.StringType,
-					"access_token_keyset_client_certificate":   types.StringType,
-					"access_token_keyset_client_password":      types.StringType,
-					"access_token_keyset_client_username":      types.StringType,
-					"access_token_keyset_rotate_period":        types.Float64Type,
-					"access_token_leeway":                      types.Float64Type,
-					"access_token_optional":                    types.BoolType,
-					"access_token_request_header":              types.StringType,
+					"access_token_introspection_timeout": types.Float64Type,
+					"access_token_issuer":                types.StringType,
+					"access_token_jwks_uri":              types.StringType,
+					"access_token_jwks_uri_client_certificate": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`id`: types.StringType,
+						},
+					},
+					"access_token_jwks_uri_client_password": types.StringType,
+					"access_token_jwks_uri_client_username": types.StringType,
+					"access_token_jwks_uri_rotate_period":   types.Float64Type,
+					"access_token_keyset":                   types.StringType,
+					"access_token_keyset_client_certificate": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`id`: types.StringType,
+						},
+					},
+					"access_token_keyset_client_password": types.StringType,
+					"access_token_keyset_client_username": types.StringType,
+					"access_token_keyset_rotate_period":   types.Float64Type,
+					"access_token_leeway":                 types.Float64Type,
+					"access_token_optional":               types.BoolType,
+					"access_token_request_header":         types.StringType,
 					"access_token_scopes_claim": types.ListType{
 						ElemType: types.StringType,
 					},
@@ -161,21 +169,29 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 					"channel_token_introspection_scopes_required": types.ListType{
 						ElemType: types.StringType,
 					},
-					"channel_token_introspection_timeout":       types.Float64Type,
-					"channel_token_issuer":                      types.StringType,
-					"channel_token_jwks_uri":                    types.StringType,
-					"channel_token_jwks_uri_client_certificate": types.StringType,
-					"channel_token_jwks_uri_client_password":    types.StringType,
-					"channel_token_jwks_uri_client_username":    types.StringType,
-					"channel_token_jwks_uri_rotate_period":      types.Float64Type,
-					"channel_token_keyset":                      types.StringType,
-					"channel_token_keyset_client_certificate":   types.StringType,
-					"channel_token_keyset_client_password":      types.StringType,
-					"channel_token_keyset_client_username":      types.StringType,
-					"channel_token_keyset_rotate_period":        types.Float64Type,
-					"channel_token_leeway":                      types.Float64Type,
-					"channel_token_optional":                    types.BoolType,
-					"channel_token_request_header":              types.StringType,
+					"channel_token_introspection_timeout": types.Float64Type,
+					"channel_token_issuer":                types.StringType,
+					"channel_token_jwks_uri":              types.StringType,
+					"channel_token_jwks_uri_client_certificate": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`id`: types.StringType,
+						},
+					},
+					"channel_token_jwks_uri_client_password": types.StringType,
+					"channel_token_jwks_uri_client_username": types.StringType,
+					"channel_token_jwks_uri_rotate_period":   types.Float64Type,
+					"channel_token_keyset":                   types.StringType,
+					"channel_token_keyset_client_certificate": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`id`: types.StringType,
+						},
+					},
+					"channel_token_keyset_client_password": types.StringType,
+					"channel_token_keyset_client_username": types.StringType,
+					"channel_token_keyset_rotate_period":   types.Float64Type,
+					"channel_token_leeway":                 types.Float64Type,
+					"channel_token_optional":               types.BoolType,
+					"channel_token_request_header":         types.StringType,
 					"channel_token_scopes_claim": types.ListType{
 						ElemType: types.StringType,
 					},
@@ -306,8 +322,18 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 						Optional:    true,
 						Description: `Specify the URI where the plugin can fetch the public keys (JWKS) to verify the signature of the access token.`,
 					},
-					"access_token_jwks_uri_client_certificate": schema.StringAttribute{
-						Optional:    true,
+					"access_token_jwks_uri_client_certificate": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"id": types.StringType,
+						})),
+						Attributes: map[string]schema.Attribute{
+							"id": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+							},
+						},
 						Description: `The client certificate that will be used to authenticate Kong if ` + "`" + `access_token_jwks_uri` + "`" + ` is an https uri that requires mTLS Auth.`,
 					},
 					"access_token_jwks_uri_client_password": schema.StringAttribute{
@@ -330,8 +356,18 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 						Default:     stringdefault.StaticString(`kong`),
 						Description: `The name of the keyset containing signing keys. Default: "kong"`,
 					},
-					"access_token_keyset_client_certificate": schema.StringAttribute{
-						Optional:    true,
+					"access_token_keyset_client_certificate": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"id": types.StringType,
+						})),
+						Attributes: map[string]schema.Attribute{
+							"id": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+							},
+						},
 						Description: `The client certificate that will be used to authenticate Kong if ` + "`" + `access_token_keyset` + "`" + ` is an https uri that requires mTLS Auth.`,
 					},
 					"access_token_keyset_client_password": schema.StringAttribute{
@@ -531,8 +567,18 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 						Optional:    true,
 						Description: `If you want to use ` + "`" + `config.verify_channel_token_signature` + "`" + `, you must specify the URI where the plugin can fetch the public keys (JWKS) to verify the signature of the channel token. If you don't specify a URI and you pass a JWT token to the plugin, then the plugin responds with ` + "`" + `401 Unauthorized` + "`" + `.`,
 					},
-					"channel_token_jwks_uri_client_certificate": schema.StringAttribute{
-						Optional:    true,
+					"channel_token_jwks_uri_client_certificate": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"id": types.StringType,
+						})),
+						Attributes: map[string]schema.Attribute{
+							"id": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+							},
+						},
 						Description: `The client certificate that will be used to authenticate Kong if ` + "`" + `access_token_jwks_uri` + "`" + ` is an https uri that requires mTLS Auth.`,
 					},
 					"channel_token_jwks_uri_client_password": schema.StringAttribute{
@@ -555,8 +601,18 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 						Default:     stringdefault.StaticString(`kong`),
 						Description: `The name of the keyset containing signing keys. Default: "kong"`,
 					},
-					"channel_token_keyset_client_certificate": schema.StringAttribute{
-						Optional:    true,
+					"channel_token_keyset_client_certificate": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"id": types.StringType,
+						})),
+						Attributes: map[string]schema.Attribute{
+							"id": schema.StringAttribute{
+								Computed: true,
+								Optional: true,
+							},
+						},
 						Description: `The client certificate that will be used to authenticate Kong if ` + "`" + `channel_token_keyset` + "`" + ` is an https uri that requires mTLS Auth.`,
 					},
 					"channel_token_keyset_client_password": schema.StringAttribute{

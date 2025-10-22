@@ -271,8 +271,8 @@ func (v *ValueSchema) GetSubjectName() *string {
 }
 
 type Confluent struct {
-	Authentication ConfluentPluginAuthentication `json:"authentication"`
-	KeySchema      *KeySchema                    `json:"key_schema"`
+	Authentication *ConfluentPluginAuthentication `json:"authentication"`
+	KeySchema      *KeySchema                     `json:"key_schema"`
 	// Set to false to disable SSL certificate verification when connecting to the schema registry.
 	SslVerify *bool `default:"true" json:"ssl_verify"`
 	// The TTL in seconds for the schema registry cache.
@@ -287,15 +287,15 @@ func (c Confluent) MarshalJSON() ([]byte, error) {
 }
 
 func (c *Confluent) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"authentication"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *Confluent) GetAuthentication() ConfluentPluginAuthentication {
+func (c *Confluent) GetAuthentication() *ConfluentPluginAuthentication {
 	if c == nil {
-		return ConfluentPluginAuthentication{}
+		return nil
 	}
 	return c.Authentication
 }

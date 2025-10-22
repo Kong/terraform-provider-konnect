@@ -18,7 +18,7 @@ resource "konnect_gateway_plugin_route_by_header" "my_gatewaypluginroutebyheader
     rules = [
       {
         condition = {
-          key = jsonencode("value")
+          key = "value"
         }
         upstream_name = "...my_upstream_name..."
       }
@@ -102,7 +102,7 @@ Optional:
 
 Optional:
 
-- `condition` (Map of String) Not Null
+- `condition` (Map of String)
 - `upstream_name` (String) Not Null
 
 

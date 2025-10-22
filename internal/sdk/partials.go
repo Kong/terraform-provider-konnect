@@ -319,7 +319,7 @@ func (s *Partials) DeletePartial(ctx context.Context, request operations.DeleteP
 
 }
 
-// GetPartial - Fetch a Partial
+// GetPartial - Get a Partial
 // Get a Partial using ID.
 func (s *Partials) GetPartial(ctx context.Context, request operations.GetPartialRequest, opts ...operations.Option) (*operations.GetPartialResponse, error) {
 	o := operations.Options{}

@@ -10,6 +10,9 @@ type CreatePortalCustomDomainSSL struct {
 	CustomCertificate        types.String   `tfsdk:"custom_certificate"`
 	CustomPrivateKey         types.String   `tfsdk:"custom_private_key"`
 	DomainVerificationMethod types.String   `tfsdk:"domain_verification_method"`
+	ExpiresAt                types.String   `tfsdk:"expires_at"`
+	SkipCaCheck              types.Bool     `tfsdk:"skip_ca_check"`
+	UploadedAt               types.String   `tfsdk:"uploaded_at"`
 	ValidationErrors         []types.String `tfsdk:"validation_errors"`
 	VerificationStatus       types.String   `tfsdk:"verification_status"`
 }

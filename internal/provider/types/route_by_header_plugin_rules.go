@@ -3,11 +3,10 @@
 package types
 
 import (
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type RouteByHeaderPluginRules struct {
-	Condition    map[string]jsontypes.Normalized `tfsdk:"condition"`
-	UpstreamName types.String                    `tfsdk:"upstream_name"`
+	Condition    map[string]types.String `tfsdk:"condition"`
+	UpstreamName types.String            `tfsdk:"upstream_name"`
 }

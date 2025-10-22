@@ -323,7 +323,7 @@ func (s *Certificates) DeleteCertificate(ctx context.Context, request operations
 
 }
 
-// GetCertificate - Fetch a Certificate
+// GetCertificate - Get a Certificate
 // Get a Certificate using ID.
 func (s *Certificates) GetCertificate(ctx context.Context, request operations.GetCertificateRequest, opts ...operations.Option) (*operations.GetCertificateResponse, error) {
 	o := operations.Options{}

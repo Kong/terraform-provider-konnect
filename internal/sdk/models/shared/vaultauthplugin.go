@@ -78,6 +78,18 @@ func (v *VaultAuthPluginPartials) GetPath() *string {
 	return v.Path
 }
 
+// VaultAuthPluginVault - A reference to an existing `vault` object within the database. `vault` entities define the connection and authentication parameters used to connect to a Vault HTTP(S) API.
+type VaultAuthPluginVault struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (v *VaultAuthPluginVault) GetID() *string {
+	if v == nil {
+		return nil
+	}
+	return v.ID
+}
+
 type VaultAuthPluginConfig struct {
 	// Describes an array of comma-separated parameter names where the plugin looks for an access token. The client must send the access token in one of those key names, and the plugin will try to read the credential from a header or the querystring parameter with the same name. The key names can only contain [a-z], [A-Z], [0-9], [_], and [-].
 	AccessTokenName *string `default:"access_token" json:"access_token_name"`
@@ -92,7 +104,7 @@ type VaultAuthPluginConfig struct {
 	// If enabled, the plugin will read the request body (if said request has one and its MIME type is supported) and try to find the key in it. Supported MIME types are `application/www-form-urlencoded`, `application/json`, and `multipart/form-data`.
 	TokensInBody *bool `default:"false" json:"tokens_in_body"`
 	// A reference to an existing `vault` object within the database. `vault` entities define the connection and authentication parameters used to connect to a Vault HTTP(S) API.
-	Vault string `json:"vault"`
+	Vault *VaultAuthPluginVault `json:"vault"`
 }
 
 func (v VaultAuthPluginConfig) MarshalJSON() ([]byte, error) {
@@ -100,7 +112,7 @@ func (v VaultAuthPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VaultAuthPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"vault"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -148,9 +160,9 @@ func (v *VaultAuthPluginConfig) GetTokensInBody() *bool {
 	return v.TokensInBody
 }
 
-func (v *VaultAuthPluginConfig) GetVault() string {
+func (v *VaultAuthPluginConfig) GetVault() *VaultAuthPluginVault {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.Vault
 }
@@ -228,8 +240,8 @@ type VaultAuthPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                `json:"updated_at,omitempty"`
-	Config    VaultAuthPluginConfig `json:"config"`
+	UpdatedAt *int64                 `json:"updated_at,omitempty"`
+	Config    *VaultAuthPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
 	Protocols []VaultAuthPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -243,7 +255,7 @@ func (v VaultAuthPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VaultAuthPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil
@@ -309,9 +321,9 @@ func (v *VaultAuthPlugin) GetUpdatedAt() *int64 {
 	return v.UpdatedAt
 }
 
-func (v *VaultAuthPlugin) GetConfig() VaultAuthPluginConfig {
+func (v *VaultAuthPlugin) GetConfig() *VaultAuthPluginConfig {
 	if v == nil {
-		return VaultAuthPluginConfig{}
+		return nil
 	}
 	return v.Config
 }

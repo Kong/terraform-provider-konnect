@@ -198,7 +198,7 @@ Optional:
 
 Optional:
 
-- `authentication` (Attributes) Not Null (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication))
+- `authentication` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication))
 - `key_schema` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--key_schema))
 - `ssl_verify` (Boolean) Set to false to disable SSL certificate verification when connecting to the schema registry. Default: true
 - `ttl` (Number) The TTL in seconds for the schema registry cache.

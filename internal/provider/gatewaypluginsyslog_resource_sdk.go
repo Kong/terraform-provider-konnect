@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -27,10 +25,9 @@ func (r *GatewayPluginSyslogResourceModel) RefreshFromSharedSyslogPlugin(ctx con
 				r.Config.ClientErrorsSeverity = types.StringNull()
 			}
 			if resp.Config.CustomFieldsByLua != nil {
-				r.Config.CustomFieldsByLua = make(map[string]jsontypes.Normalized, len(resp.Config.CustomFieldsByLua))
+				r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
 				for key, value := range resp.Config.CustomFieldsByLua {
-					result, _ := json.Marshal(value)
-					r.Config.CustomFieldsByLua[key] = jsontypes.NewNormalizedValue(string(result))
+					r.Config.CustomFieldsByLua[key] = types.StringValue(value)
 				}
 			}
 			if resp.Config.Facility != nil {
@@ -312,10 +309,11 @@ func (r *GatewayPluginSyslogResourceModel) ToSharedSyslogPlugin(ctx context.Cont
 		} else {
 			clientErrorsSeverity = nil
 		}
-		customFieldsByLua := make(map[string]interface{})
+		customFieldsByLua := make(map[string]string)
 		for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
-			var customFieldsByLuaInst interface{}
-			_ = json.Unmarshal([]byte(customFieldsByLuaValue.ValueString()), &customFieldsByLuaInst)
+			var customFieldsByLuaInst string
+			customFieldsByLuaInst = customFieldsByLuaValue.ValueString()
+
 			customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
 		}
 		facility := new(shared.Facility)

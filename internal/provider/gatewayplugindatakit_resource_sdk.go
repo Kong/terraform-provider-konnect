@@ -4,6 +4,8 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -21,8 +23,85 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 		for _, nodesItem := range resp.Config.Nodes {
 			var nodes tfTypes.Nodes
 
-			nodes.Name = types.StringValue(nodesItem.Name)
-			nodes.Type = types.StringValue(string(nodesItem.Type))
+			if nodesItem.Call != nil {
+				nodes.Call = &tfTypes.Call{}
+				nodes.Call.Input = types.StringPointerValue(nodesItem.Call.Input)
+				if nodesItem.Call.Inputs == nil {
+					nodes.Call.Inputs = nil
+				} else {
+					nodes.Call.Inputs = &tfTypes.Inputs{}
+					nodes.Call.Inputs.Body = types.StringPointerValue(nodesItem.Call.Inputs.Body)
+					nodes.Call.Inputs.Headers = types.StringPointerValue(nodesItem.Call.Inputs.Headers)
+					nodes.Call.Inputs.Query = types.StringPointerValue(nodesItem.Call.Inputs.Query)
+				}
+				nodes.Call.Method = types.StringPointerValue(nodesItem.Call.Method)
+				nodes.Call.Name = types.StringPointerValue(nodesItem.Call.Name)
+				nodes.Call.Output = types.StringPointerValue(nodesItem.Call.Output)
+				if nodesItem.Call.Outputs == nil {
+					nodes.Call.Outputs = nil
+				} else {
+					nodes.Call.Outputs = &tfTypes.Outputs{}
+					nodes.Call.Outputs.Body = types.StringPointerValue(nodesItem.Call.Outputs.Body)
+					nodes.Call.Outputs.Headers = types.StringPointerValue(nodesItem.Call.Outputs.Headers)
+					nodes.Call.Outputs.Status = types.StringPointerValue(nodesItem.Call.Outputs.Status)
+				}
+				nodes.Call.SslServerName = types.StringPointerValue(nodesItem.Call.SslServerName)
+				nodes.Call.Timeout = types.Int64PointerValue(nodesItem.Call.Timeout)
+				nodes.Call.URL = types.StringValue(nodesItem.Call.URL)
+			}
+			if nodesItem.Exit != nil {
+				nodes.Exit = &tfTypes.Exit{}
+				nodes.Exit.Input = types.StringPointerValue(nodesItem.Exit.Input)
+				if nodesItem.Exit.Inputs == nil {
+					nodes.Exit.Inputs = nil
+				} else {
+					nodes.Exit.Inputs = &tfTypes.NodesInputs{}
+					nodes.Exit.Inputs.Body = types.StringPointerValue(nodesItem.Exit.Inputs.Body)
+					nodes.Exit.Inputs.Headers = types.StringPointerValue(nodesItem.Exit.Inputs.Headers)
+				}
+				nodes.Exit.Name = types.StringPointerValue(nodesItem.Exit.Name)
+				nodes.Exit.Status = types.Int64PointerValue(nodesItem.Exit.Status)
+				nodes.Exit.WarnHeadersSent = types.BoolPointerValue(nodesItem.Exit.WarnHeadersSent)
+			}
+			if nodesItem.Jq != nil {
+				nodes.Jq = &tfTypes.Jq{}
+				nodes.Jq.Input = types.StringPointerValue(nodesItem.Jq.Input)
+				if nodesItem.Jq.Inputs != nil {
+					nodes.Jq.Inputs = make(map[string]jsontypes.Normalized, len(nodesItem.Jq.Inputs))
+					for key, value := range nodesItem.Jq.Inputs {
+						result, _ := json.Marshal(value)
+						nodes.Jq.Inputs[key] = jsontypes.NewNormalizedValue(string(result))
+					}
+				}
+				nodes.Jq.Jq = types.StringValue(nodesItem.Jq.Jq)
+				nodes.Jq.Name = types.StringPointerValue(nodesItem.Jq.Name)
+				nodes.Jq.Output = types.StringPointerValue(nodesItem.Jq.Output)
+			}
+			if nodesItem.Property != nil {
+				nodes.Property = &tfTypes.Property{}
+				if nodesItem.Property.ContentType != nil {
+					nodes.Property.ContentType = types.StringValue(string(*nodesItem.Property.ContentType))
+				} else {
+					nodes.Property.ContentType = types.StringNull()
+				}
+				nodes.Property.Input = types.StringPointerValue(nodesItem.Property.Input)
+				nodes.Property.Name = types.StringPointerValue(nodesItem.Property.Name)
+				nodes.Property.Output = types.StringPointerValue(nodesItem.Property.Output)
+				nodes.Property.Property = types.StringValue(nodesItem.Property.Property)
+			}
+			if nodesItem.Static != nil {
+				nodes.Static = &tfTypes.Static{}
+				nodes.Static.Name = types.StringPointerValue(nodesItem.Static.Name)
+				nodes.Static.Output = types.StringPointerValue(nodesItem.Static.Output)
+				if nodesItem.Static.Outputs != nil {
+					nodes.Static.Outputs = make(map[string]jsontypes.Normalized, len(nodesItem.Static.Outputs))
+					for key1, value1 := range nodesItem.Static.Outputs {
+						result1, _ := json.Marshal(value1)
+						nodes.Static.Outputs[key1] = jsontypes.NewNormalizedValue(string(result1))
+					}
+				}
+				nodes.Static.Values = types.StringValue(nodesItem.Static.Values)
+			}
 
 			r.Config.Nodes = append(r.Config.Nodes, nodes)
 		}
@@ -290,14 +369,278 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 	}
 	nodes := make([]shared.Nodes, 0, len(r.Config.Nodes))
 	for _, nodesItem := range r.Config.Nodes {
-		var name1 string
-		name1 = nodesItem.Name.ValueString()
+		if nodesItem.Call != nil {
+			input := new(string)
+			if !nodesItem.Call.Input.IsUnknown() && !nodesItem.Call.Input.IsNull() {
+				*input = nodesItem.Call.Input.ValueString()
+			} else {
+				input = nil
+			}
+			var inputs *shared.Inputs
+			if nodesItem.Call.Inputs != nil {
+				body := new(string)
+				if !nodesItem.Call.Inputs.Body.IsUnknown() && !nodesItem.Call.Inputs.Body.IsNull() {
+					*body = nodesItem.Call.Inputs.Body.ValueString()
+				} else {
+					body = nil
+				}
+				headers := new(string)
+				if !nodesItem.Call.Inputs.Headers.IsUnknown() && !nodesItem.Call.Inputs.Headers.IsNull() {
+					*headers = nodesItem.Call.Inputs.Headers.ValueString()
+				} else {
+					headers = nil
+				}
+				query := new(string)
+				if !nodesItem.Call.Inputs.Query.IsUnknown() && !nodesItem.Call.Inputs.Query.IsNull() {
+					*query = nodesItem.Call.Inputs.Query.ValueString()
+				} else {
+					query = nil
+				}
+				inputs = &shared.Inputs{
+					Body:    body,
+					Headers: headers,
+					Query:   query,
+				}
+			}
+			method := new(string)
+			if !nodesItem.Call.Method.IsUnknown() && !nodesItem.Call.Method.IsNull() {
+				*method = nodesItem.Call.Method.ValueString()
+			} else {
+				method = nil
+			}
+			name1 := new(string)
+			if !nodesItem.Call.Name.IsUnknown() && !nodesItem.Call.Name.IsNull() {
+				*name1 = nodesItem.Call.Name.ValueString()
+			} else {
+				name1 = nil
+			}
+			output := new(string)
+			if !nodesItem.Call.Output.IsUnknown() && !nodesItem.Call.Output.IsNull() {
+				*output = nodesItem.Call.Output.ValueString()
+			} else {
+				output = nil
+			}
+			var outputs *shared.Outputs
+			if nodesItem.Call.Outputs != nil {
+				body1 := new(string)
+				if !nodesItem.Call.Outputs.Body.IsUnknown() && !nodesItem.Call.Outputs.Body.IsNull() {
+					*body1 = nodesItem.Call.Outputs.Body.ValueString()
+				} else {
+					body1 = nil
+				}
+				headers1 := new(string)
+				if !nodesItem.Call.Outputs.Headers.IsUnknown() && !nodesItem.Call.Outputs.Headers.IsNull() {
+					*headers1 = nodesItem.Call.Outputs.Headers.ValueString()
+				} else {
+					headers1 = nil
+				}
+				status := new(string)
+				if !nodesItem.Call.Outputs.Status.IsUnknown() && !nodesItem.Call.Outputs.Status.IsNull() {
+					*status = nodesItem.Call.Outputs.Status.ValueString()
+				} else {
+					status = nil
+				}
+				outputs = &shared.Outputs{
+					Body:    body1,
+					Headers: headers1,
+					Status:  status,
+				}
+			}
+			sslServerName := new(string)
+			if !nodesItem.Call.SslServerName.IsUnknown() && !nodesItem.Call.SslServerName.IsNull() {
+				*sslServerName = nodesItem.Call.SslServerName.ValueString()
+			} else {
+				sslServerName = nil
+			}
+			timeout := new(int64)
+			if !nodesItem.Call.Timeout.IsUnknown() && !nodesItem.Call.Timeout.IsNull() {
+				*timeout = nodesItem.Call.Timeout.ValueInt64()
+			} else {
+				timeout = nil
+			}
+			var url string
+			url = nodesItem.Call.URL.ValueString()
 
-		typeVar := shared.DatakitPluginType(nodesItem.Type.ValueString())
-		nodes = append(nodes, shared.Nodes{
-			Name: name1,
-			Type: typeVar,
-		})
+			call := shared.Call{
+				Input:         input,
+				Inputs:        inputs,
+				Method:        method,
+				Name:          name1,
+				Output:        output,
+				Outputs:       outputs,
+				SslServerName: sslServerName,
+				Timeout:       timeout,
+				URL:           url,
+			}
+			nodes = append(nodes, shared.Nodes{
+				Call: &call,
+			})
+		}
+		if nodesItem.Exit != nil {
+			input1 := new(string)
+			if !nodesItem.Exit.Input.IsUnknown() && !nodesItem.Exit.Input.IsNull() {
+				*input1 = nodesItem.Exit.Input.ValueString()
+			} else {
+				input1 = nil
+			}
+			var inputs1 *shared.NodesInputs
+			if nodesItem.Exit.Inputs != nil {
+				body2 := new(string)
+				if !nodesItem.Exit.Inputs.Body.IsUnknown() && !nodesItem.Exit.Inputs.Body.IsNull() {
+					*body2 = nodesItem.Exit.Inputs.Body.ValueString()
+				} else {
+					body2 = nil
+				}
+				headers2 := new(string)
+				if !nodesItem.Exit.Inputs.Headers.IsUnknown() && !nodesItem.Exit.Inputs.Headers.IsNull() {
+					*headers2 = nodesItem.Exit.Inputs.Headers.ValueString()
+				} else {
+					headers2 = nil
+				}
+				inputs1 = &shared.NodesInputs{
+					Body:    body2,
+					Headers: headers2,
+				}
+			}
+			name2 := new(string)
+			if !nodesItem.Exit.Name.IsUnknown() && !nodesItem.Exit.Name.IsNull() {
+				*name2 = nodesItem.Exit.Name.ValueString()
+			} else {
+				name2 = nil
+			}
+			status1 := new(int64)
+			if !nodesItem.Exit.Status.IsUnknown() && !nodesItem.Exit.Status.IsNull() {
+				*status1 = nodesItem.Exit.Status.ValueInt64()
+			} else {
+				status1 = nil
+			}
+			warnHeadersSent := new(bool)
+			if !nodesItem.Exit.WarnHeadersSent.IsUnknown() && !nodesItem.Exit.WarnHeadersSent.IsNull() {
+				*warnHeadersSent = nodesItem.Exit.WarnHeadersSent.ValueBool()
+			} else {
+				warnHeadersSent = nil
+			}
+			exit := shared.Exit{
+				Input:           input1,
+				Inputs:          inputs1,
+				Name:            name2,
+				Status:          status1,
+				WarnHeadersSent: warnHeadersSent,
+			}
+			nodes = append(nodes, shared.Nodes{
+				Exit: &exit,
+			})
+		}
+		if nodesItem.Jq != nil {
+			input2 := new(string)
+			if !nodesItem.Jq.Input.IsUnknown() && !nodesItem.Jq.Input.IsNull() {
+				*input2 = nodesItem.Jq.Input.ValueString()
+			} else {
+				input2 = nil
+			}
+			inputs2 := make(map[string]interface{})
+			for inputsKey, inputsValue := range nodesItem.Jq.Inputs {
+				var inputsInst interface{}
+				_ = json.Unmarshal([]byte(inputsValue.ValueString()), &inputsInst)
+				inputs2[inputsKey] = inputsInst
+			}
+			var jq1 string
+			jq1 = nodesItem.Jq.Jq.ValueString()
+
+			name3 := new(string)
+			if !nodesItem.Jq.Name.IsUnknown() && !nodesItem.Jq.Name.IsNull() {
+				*name3 = nodesItem.Jq.Name.ValueString()
+			} else {
+				name3 = nil
+			}
+			output1 := new(string)
+			if !nodesItem.Jq.Output.IsUnknown() && !nodesItem.Jq.Output.IsNull() {
+				*output1 = nodesItem.Jq.Output.ValueString()
+			} else {
+				output1 = nil
+			}
+			jq := shared.Jq{
+				Input:  input2,
+				Inputs: inputs2,
+				Jq:     jq1,
+				Name:   name3,
+				Output: output1,
+			}
+			nodes = append(nodes, shared.Nodes{
+				Jq: &jq,
+			})
+		}
+		if nodesItem.Property != nil {
+			contentType := new(shared.NodesContentType)
+			if !nodesItem.Property.ContentType.IsUnknown() && !nodesItem.Property.ContentType.IsNull() {
+				*contentType = shared.NodesContentType(nodesItem.Property.ContentType.ValueString())
+			} else {
+				contentType = nil
+			}
+			input3 := new(string)
+			if !nodesItem.Property.Input.IsUnknown() && !nodesItem.Property.Input.IsNull() {
+				*input3 = nodesItem.Property.Input.ValueString()
+			} else {
+				input3 = nil
+			}
+			name4 := new(string)
+			if !nodesItem.Property.Name.IsUnknown() && !nodesItem.Property.Name.IsNull() {
+				*name4 = nodesItem.Property.Name.ValueString()
+			} else {
+				name4 = nil
+			}
+			output2 := new(string)
+			if !nodesItem.Property.Output.IsUnknown() && !nodesItem.Property.Output.IsNull() {
+				*output2 = nodesItem.Property.Output.ValueString()
+			} else {
+				output2 = nil
+			}
+			var property1 string
+			property1 = nodesItem.Property.Property.ValueString()
+
+			property := shared.Property{
+				ContentType: contentType,
+				Input:       input3,
+				Name:        name4,
+				Output:      output2,
+				Property:    property1,
+			}
+			nodes = append(nodes, shared.Nodes{
+				Property: &property,
+			})
+		}
+		if nodesItem.Static != nil {
+			name5 := new(string)
+			if !nodesItem.Static.Name.IsUnknown() && !nodesItem.Static.Name.IsNull() {
+				*name5 = nodesItem.Static.Name.ValueString()
+			} else {
+				name5 = nil
+			}
+			output3 := new(string)
+			if !nodesItem.Static.Output.IsUnknown() && !nodesItem.Static.Output.IsNull() {
+				*output3 = nodesItem.Static.Output.ValueString()
+			} else {
+				output3 = nil
+			}
+			outputs1 := make(map[string]interface{})
+			for outputsKey, outputsValue := range nodesItem.Static.Outputs {
+				var outputsInst interface{}
+				_ = json.Unmarshal([]byte(outputsValue.ValueString()), &outputsInst)
+				outputs1[outputsKey] = outputsInst
+			}
+			var values string
+			values = nodesItem.Static.Values.ValueString()
+
+			static := shared.Static{
+				Name:    name5,
+				Output:  output3,
+				Outputs: outputs1,
+				Values:  values,
+			}
+			nodes = append(nodes, shared.Nodes{
+				Static: &static,
+			})
+		}
 	}
 	config := shared.DatakitPluginConfig{
 		Debug: debug,

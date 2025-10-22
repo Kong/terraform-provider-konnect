@@ -4,8 +4,10 @@ package shared
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/types"
 )
 
 type DatakitPluginAfter struct {
@@ -78,60 +80,631 @@ func (d *DatakitPluginPartials) GetPath() *string {
 	return d.Path
 }
 
-type DatakitPluginType string
+// Static - Produce reusable outputs from statically-configured values
+type Static struct {
+	// A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+	Name *string `default:"null" json:"name"`
+	// The entire `.values` map
+	Output *string `default:"null" json:"output"`
+	// Individual items from `.values`, referenced by key
+	Outputs map[string]any `json:"outputs,omitempty"`
+	type_   *string        `const:"static" json:"type,omitempty"`
+	// An object with string keys and freeform values
+	Values string `json:"values"`
+}
+
+func (s Static) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *Static) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"values"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *Static) GetName() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Name
+}
+
+func (s *Static) GetOutput() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Output
+}
+
+func (s *Static) GetOutputs() map[string]any {
+	if s == nil {
+		return nil
+	}
+	return s.Outputs
+}
+
+func (s *Static) GetType() *string {
+	return types.Pointer("static")
+}
+
+func (s *Static) GetValues() string {
+	if s == nil {
+		return ""
+	}
+	return s.Values
+}
+
+// NodesContentType - The expected mime type of the property value. When set to `application/json`, SET operations will JSON-encode input data before writing it, and GET operations will JSON-decode output data after reading it. Otherwise, this setting has no effect.
+type NodesContentType string
 
 const (
-	DatakitPluginTypeCall     DatakitPluginType = "call"
-	DatakitPluginTypeExit     DatakitPluginType = "exit"
-	DatakitPluginTypeJq       DatakitPluginType = "jq"
-	DatakitPluginTypeProperty DatakitPluginType = "property"
-	DatakitPluginTypeStatic   DatakitPluginType = "static"
+	NodesContentTypeApplicationJSON        NodesContentType = "application/json"
+	NodesContentTypeApplicationOctetStream NodesContentType = "application/octet-stream"
+	NodesContentTypeTextPlain              NodesContentType = "text/plain"
 )
 
-func (e DatakitPluginType) ToPointer() *DatakitPluginType {
+func (e NodesContentType) ToPointer() *NodesContentType {
 	return &e
 }
-func (e *DatakitPluginType) UnmarshalJSON(data []byte) error {
+func (e *NodesContentType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
-	case "call":
+	case "application/json":
 		fallthrough
-	case "exit":
+	case "application/octet-stream":
 		fallthrough
-	case "jq":
-		fallthrough
-	case "property":
-		fallthrough
-	case "static":
-		*e = DatakitPluginType(v)
+	case "text/plain":
+		*e = NodesContentType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for DatakitPluginType: %v", v)
+		return fmt.Errorf("invalid value for NodesContentType: %v", v)
 	}
 }
 
-// Nodes - datakit nodes
-type Nodes struct {
+// Property - Get or set a property
+type Property struct {
+	// The expected mime type of the property value. When set to `application/json`, SET operations will JSON-encode input data before writing it, and GET operations will JSON-decode output data after reading it. Otherwise, this setting has no effect.
+	ContentType *NodesContentType `json:"content_type,omitempty"`
+	// Property input source. When connected, this node operates in SET mode and writes input data to the property. Otherwise, the node operates in GET mode and reads the property.
+	Input *string `default:"null" json:"input"`
 	// A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
-	Name string            `json:"name"`
-	Type DatakitPluginType `json:"type"`
+	Name *string `default:"null" json:"name"`
+	// Property output. This can be connected regardless of whether the node is operating in GET mode or SET mode.
+	Output *string `default:"null" json:"output"`
+	// The property name to get/set
+	Property string  `json:"property"`
+	type_    *string `const:"property" json:"type,omitempty"`
 }
 
-func (n *Nodes) GetName() string {
-	if n == nil {
+func (p Property) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *Property) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"property"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *Property) GetContentType() *NodesContentType {
+	if p == nil {
+		return nil
+	}
+	return p.ContentType
+}
+
+func (p *Property) GetInput() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Input
+}
+
+func (p *Property) GetName() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Name
+}
+
+func (p *Property) GetOutput() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Output
+}
+
+func (p *Property) GetProperty() string {
+	if p == nil {
 		return ""
 	}
-	return n.Name
+	return p.Property
 }
 
-func (n *Nodes) GetType() DatakitPluginType {
-	if n == nil {
-		return DatakitPluginType("")
+func (p *Property) GetType() *string {
+	return types.Pointer("property")
+}
+
+// Jq - Process data using `jq` syntax
+type Jq struct {
+	// filter input(s)
+	Input *string `default:"null" json:"input"`
+	// filter input(s)
+	Inputs map[string]any `json:"inputs,omitempty"`
+	// The jq filter text. Refer to https://jqlang.org/manual/ for full documentation.
+	Jq string `json:"jq"`
+	// A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+	Name *string `default:"null" json:"name"`
+	// filter output(s)
+	Output *string `default:"null" json:"output"`
+	type_  *string `const:"jq" json:"type,omitempty"`
+}
+
+func (j Jq) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *Jq) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, []string{"jq"}); err != nil {
+		return err
 	}
-	return n.Type
+	return nil
+}
+
+func (j *Jq) GetInput() *string {
+	if j == nil {
+		return nil
+	}
+	return j.Input
+}
+
+func (j *Jq) GetInputs() map[string]any {
+	if j == nil {
+		return nil
+	}
+	return j.Inputs
+}
+
+func (j *Jq) GetJq() string {
+	if j == nil {
+		return ""
+	}
+	return j.Jq
+}
+
+func (j *Jq) GetName() *string {
+	if j == nil {
+		return nil
+	}
+	return j.Name
+}
+
+func (j *Jq) GetOutput() *string {
+	if j == nil {
+		return nil
+	}
+	return j.Output
+}
+
+func (j *Jq) GetType() *string {
+	return types.Pointer("jq")
+}
+
+// NodesInputs - exit node inputs
+type NodesInputs struct {
+	// HTTP response body
+	Body *string `default:"null" json:"body"`
+	// HTTP response headers
+	Headers *string `default:"null" json:"headers"`
+}
+
+func (n NodesInputs) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(n, "", false)
+}
+
+func (n *NodesInputs) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &n, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (n *NodesInputs) GetBody() *string {
+	if n == nil {
+		return nil
+	}
+	return n.Body
+}
+
+func (n *NodesInputs) GetHeaders() *string {
+	if n == nil {
+		return nil
+	}
+	return n.Headers
+}
+
+// Exit - Terminate the request and send a response to the client
+type Exit struct {
+	// exit node input
+	Input *string `default:"null" json:"input"`
+	// exit node inputs
+	Inputs *NodesInputs `json:"inputs"`
+	// A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+	Name *string `default:"null" json:"name"`
+	// HTTP status code
+	Status          *int64  `default:"200" json:"status"`
+	type_           *string `const:"exit" json:"type,omitempty"`
+	WarnHeadersSent *bool   `default:"null" json:"warn_headers_sent"`
+}
+
+func (e Exit) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *Exit) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (e *Exit) GetInput() *string {
+	if e == nil {
+		return nil
+	}
+	return e.Input
+}
+
+func (e *Exit) GetInputs() *NodesInputs {
+	if e == nil {
+		return nil
+	}
+	return e.Inputs
+}
+
+func (e *Exit) GetName() *string {
+	if e == nil {
+		return nil
+	}
+	return e.Name
+}
+
+func (e *Exit) GetStatus() *int64 {
+	if e == nil {
+		return nil
+	}
+	return e.Status
+}
+
+func (e *Exit) GetType() *string {
+	return types.Pointer("exit")
+}
+
+func (e *Exit) GetWarnHeadersSent() *bool {
+	if e == nil {
+		return nil
+	}
+	return e.WarnHeadersSent
+}
+
+// Inputs - call node inputs
+type Inputs struct {
+	// HTTP request body
+	Body *string `default:"null" json:"body"`
+	// HTTP request headers
+	Headers *string `default:"null" json:"headers"`
+	// HTTP request query
+	Query *string `default:"null" json:"query"`
+}
+
+func (i Inputs) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *Inputs) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (i *Inputs) GetBody() *string {
+	if i == nil {
+		return nil
+	}
+	return i.Body
+}
+
+func (i *Inputs) GetHeaders() *string {
+	if i == nil {
+		return nil
+	}
+	return i.Headers
+}
+
+func (i *Inputs) GetQuery() *string {
+	if i == nil {
+		return nil
+	}
+	return i.Query
+}
+
+// Outputs - call node outputs
+type Outputs struct {
+	// HTTP response body
+	Body *string `default:"null" json:"body"`
+	// HTTP response headers
+	Headers *string `default:"null" json:"headers"`
+	// HTTP response status code
+	Status *string `default:"null" json:"status"`
+}
+
+func (o Outputs) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *Outputs) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *Outputs) GetBody() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Body
+}
+
+func (o *Outputs) GetHeaders() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Headers
+}
+
+func (o *Outputs) GetStatus() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Status
+}
+
+// Call - Make an external HTTP request
+type Call struct {
+	// call node input
+	Input *string `default:"null" json:"input"`
+	// call node inputs
+	Inputs *Inputs `json:"inputs"`
+	// A string representing an HTTP method, such as GET, POST, PUT, or DELETE. The string must contain only uppercase letters.
+	Method *string `default:"GET" json:"method"`
+	// A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+	Name *string `default:"null" json:"name"`
+	// call node output
+	Output *string `default:"null" json:"output"`
+	// call node outputs
+	Outputs *Outputs `json:"outputs"`
+	// A string representing an SNI (server name indication) value for TLS.
+	SslServerName *string `default:"null" json:"ssl_server_name"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	Timeout *int64  `default:"null" json:"timeout"`
+	type_   *string `const:"call" json:"type,omitempty"`
+	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
+	URL string `json:"url"`
+}
+
+func (c Call) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *Call) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"url"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *Call) GetInput() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Input
+}
+
+func (c *Call) GetInputs() *Inputs {
+	if c == nil {
+		return nil
+	}
+	return c.Inputs
+}
+
+func (c *Call) GetMethod() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Method
+}
+
+func (c *Call) GetName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Name
+}
+
+func (c *Call) GetOutput() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Output
+}
+
+func (c *Call) GetOutputs() *Outputs {
+	if c == nil {
+		return nil
+	}
+	return c.Outputs
+}
+
+func (c *Call) GetSslServerName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.SslServerName
+}
+
+func (c *Call) GetTimeout() *int64 {
+	if c == nil {
+		return nil
+	}
+	return c.Timeout
+}
+
+func (c *Call) GetType() *string {
+	return types.Pointer("call")
+}
+
+func (c *Call) GetURL() string {
+	if c == nil {
+		return ""
+	}
+	return c.URL
+}
+
+type NodesType string
+
+const (
+	NodesTypeCall     NodesType = "call"
+	NodesTypeExit     NodesType = "exit"
+	NodesTypeJq       NodesType = "jq"
+	NodesTypeProperty NodesType = "property"
+	NodesTypeStatic   NodesType = "static"
+)
+
+type Nodes struct {
+	Call     *Call     `queryParam:"inline,name=nodes"`
+	Exit     *Exit     `queryParam:"inline,name=nodes"`
+	Jq       *Jq       `queryParam:"inline,name=nodes"`
+	Property *Property `queryParam:"inline,name=nodes"`
+	Static   *Static   `queryParam:"inline,name=nodes"`
+
+	Type NodesType
+}
+
+func CreateNodesCall(call Call) Nodes {
+	typ := NodesTypeCall
+
+	return Nodes{
+		Call: &call,
+		Type: typ,
+	}
+}
+
+func CreateNodesExit(exit Exit) Nodes {
+	typ := NodesTypeExit
+
+	return Nodes{
+		Exit: &exit,
+		Type: typ,
+	}
+}
+
+func CreateNodesJq(jq Jq) Nodes {
+	typ := NodesTypeJq
+
+	return Nodes{
+		Jq:   &jq,
+		Type: typ,
+	}
+}
+
+func CreateNodesProperty(property Property) Nodes {
+	typ := NodesTypeProperty
+
+	return Nodes{
+		Property: &property,
+		Type:     typ,
+	}
+}
+
+func CreateNodesStatic(static Static) Nodes {
+	typ := NodesTypeStatic
+
+	return Nodes{
+		Static: &static,
+		Type:   typ,
+	}
+}
+
+func (u *Nodes) UnmarshalJSON(data []byte) error {
+
+	var call Call = Call{}
+	if err := utils.UnmarshalJSON(data, &call, "", true, nil); err == nil {
+		u.Call = &call
+		u.Type = NodesTypeCall
+		return nil
+	}
+
+	var exit Exit = Exit{}
+	if err := utils.UnmarshalJSON(data, &exit, "", true, nil); err == nil {
+		u.Exit = &exit
+		u.Type = NodesTypeExit
+		return nil
+	}
+
+	var jq Jq = Jq{}
+	if err := utils.UnmarshalJSON(data, &jq, "", true, nil); err == nil {
+		u.Jq = &jq
+		u.Type = NodesTypeJq
+		return nil
+	}
+
+	var property Property = Property{}
+	if err := utils.UnmarshalJSON(data, &property, "", true, nil); err == nil {
+		u.Property = &property
+		u.Type = NodesTypeProperty
+		return nil
+	}
+
+	var static Static = Static{}
+	if err := utils.UnmarshalJSON(data, &static, "", true, nil); err == nil {
+		u.Static = &static
+		u.Type = NodesTypeStatic
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for Nodes", string(data))
+}
+
+func (u Nodes) MarshalJSON() ([]byte, error) {
+	if u.Call != nil {
+		return utils.MarshalJSON(u.Call, "", true)
+	}
+
+	if u.Exit != nil {
+		return utils.MarshalJSON(u.Exit, "", true)
+	}
+
+	if u.Jq != nil {
+		return utils.MarshalJSON(u.Jq, "", true)
+	}
+
+	if u.Property != nil {
+		return utils.MarshalJSON(u.Property, "", true)
+	}
+
+	if u.Static != nil {
+		return utils.MarshalJSON(u.Static, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type Nodes: all fields are null")
 }
 
 type DatakitPluginConfig struct {

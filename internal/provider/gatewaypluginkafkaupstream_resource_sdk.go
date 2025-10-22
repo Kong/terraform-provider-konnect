@@ -86,17 +86,22 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) RefreshFromSharedKafkaUpstream
 				r.Config.SchemaRegistry.Confluent = nil
 			} else {
 				r.Config.SchemaRegistry.Confluent = &tfTypes.Confluent{}
-				if resp.Config.SchemaRegistry.Confluent.Authentication.Basic == nil {
-					r.Config.SchemaRegistry.Confluent.Authentication.Basic = nil
+				if resp.Config.SchemaRegistry.Confluent.Authentication == nil {
+					r.Config.SchemaRegistry.Confluent.Authentication = nil
 				} else {
-					r.Config.SchemaRegistry.Confluent.Authentication.Basic = &tfTypes.Basic{}
-					r.Config.SchemaRegistry.Confluent.Authentication.Basic.Password = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Password)
-					r.Config.SchemaRegistry.Confluent.Authentication.Basic.Username = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Username)
-				}
-				if resp.Config.SchemaRegistry.Confluent.Authentication.Mode != nil {
-					r.Config.SchemaRegistry.Confluent.Authentication.Mode = types.StringValue(string(*resp.Config.SchemaRegistry.Confluent.Authentication.Mode))
-				} else {
-					r.Config.SchemaRegistry.Confluent.Authentication.Mode = types.StringNull()
+					r.Config.SchemaRegistry.Confluent.Authentication = &tfTypes.ConfluentPluginAuthentication{}
+					if resp.Config.SchemaRegistry.Confluent.Authentication.Basic == nil {
+						r.Config.SchemaRegistry.Confluent.Authentication.Basic = nil
+					} else {
+						r.Config.SchemaRegistry.Confluent.Authentication.Basic = &tfTypes.Basic{}
+						r.Config.SchemaRegistry.Confluent.Authentication.Basic.Password = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Password)
+						r.Config.SchemaRegistry.Confluent.Authentication.Basic.Username = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Username)
+					}
+					if resp.Config.SchemaRegistry.Confluent.Authentication.Mode != nil {
+						r.Config.SchemaRegistry.Confluent.Authentication.Mode = types.StringValue(string(*resp.Config.SchemaRegistry.Confluent.Authentication.Mode))
+					} else {
+						r.Config.SchemaRegistry.Confluent.Authentication.Mode = types.StringNull()
+					}
 				}
 				if resp.Config.SchemaRegistry.Confluent.KeySchema == nil {
 					r.Config.SchemaRegistry.Confluent.KeySchema = nil
@@ -553,28 +558,31 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToSharedKafkaUpstreamPlugin(ct
 	if r.Config.SchemaRegistry != nil {
 		var confluent *shared.KafkaUpstreamPluginConfluent
 		if r.Config.SchemaRegistry.Confluent != nil {
-			var basic *shared.KafkaUpstreamPluginBasic
-			if r.Config.SchemaRegistry.Confluent.Authentication.Basic != nil {
-				var password1 string
-				password1 = r.Config.SchemaRegistry.Confluent.Authentication.Basic.Password.ValueString()
+			var authentication1 *shared.KafkaUpstreamPluginConfigAuthentication
+			if r.Config.SchemaRegistry.Confluent.Authentication != nil {
+				var basic *shared.KafkaUpstreamPluginBasic
+				if r.Config.SchemaRegistry.Confluent.Authentication.Basic != nil {
+					var password1 string
+					password1 = r.Config.SchemaRegistry.Confluent.Authentication.Basic.Password.ValueString()
 
-				var username string
-				username = r.Config.SchemaRegistry.Confluent.Authentication.Basic.Username.ValueString()
+					var username string
+					username = r.Config.SchemaRegistry.Confluent.Authentication.Basic.Username.ValueString()
 
-				basic = &shared.KafkaUpstreamPluginBasic{
-					Password: password1,
-					Username: username,
+					basic = &shared.KafkaUpstreamPluginBasic{
+						Password: password1,
+						Username: username,
+					}
 				}
-			}
-			mode := new(shared.KafkaUpstreamPluginMode)
-			if !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsNull() {
-				*mode = shared.KafkaUpstreamPluginMode(r.Config.SchemaRegistry.Confluent.Authentication.Mode.ValueString())
-			} else {
-				mode = nil
-			}
-			authentication1 := shared.KafkaUpstreamPluginConfigAuthentication{
-				Basic: basic,
-				Mode:  mode,
+				mode := new(shared.KafkaUpstreamPluginMode)
+				if !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsNull() {
+					*mode = shared.KafkaUpstreamPluginMode(r.Config.SchemaRegistry.Confluent.Authentication.Mode.ValueString())
+				} else {
+					mode = nil
+				}
+				authentication1 = &shared.KafkaUpstreamPluginConfigAuthentication{
+					Basic: basic,
+					Mode:  mode,
+				}
 			}
 			var keySchema *shared.KafkaUpstreamPluginKeySchema
 			if r.Config.SchemaRegistry.Confluent.KeySchema != nil {

@@ -7,13 +7,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
@@ -23,26 +24,28 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &GatewayPluginKeyAuthEncResource{}
-var _ resource.ResourceWithImportState = &GatewayPluginKeyAuthEncResource{}
+var _ resource.Resource = &GatewayPluginAppDynamicsResource{}
+var _ resource.ResourceWithImportState = &GatewayPluginAppDynamicsResource{}
 
-func NewGatewayPluginKeyAuthEncResource() resource.Resource {
-	return &GatewayPluginKeyAuthEncResource{}
+func NewGatewayPluginAppDynamicsResource() resource.Resource {
+	return &GatewayPluginAppDynamicsResource{}
 }
 
-// GatewayPluginKeyAuthEncResource defines the resource implementation.
-type GatewayPluginKeyAuthEncResource struct {
+// GatewayPluginAppDynamicsResource defines the resource implementation.
+type GatewayPluginAppDynamicsResource struct {
 	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 
-// GatewayPluginKeyAuthEncResourceModel describes the resource data model.
-type GatewayPluginKeyAuthEncResourceModel struct {
-	Config         *tfTypes.KeyAuthEncPluginConfig `tfsdk:"config"`
+// GatewayPluginAppDynamicsResourceModel describes the resource data model.
+type GatewayPluginAppDynamicsResourceModel struct {
+	Config         map[string]jsontypes.Normalized `tfsdk:"config"`
+	Consumer       *tfTypes.Set                    `tfsdk:"consumer"`
 	ControlPlaneID types.String                    `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                     `tfsdk:"created_at"`
 	Enabled        types.Bool                      `tfsdk:"enabled"`
@@ -57,76 +60,34 @@ type GatewayPluginKeyAuthEncResourceModel struct {
 	UpdatedAt      types.Int64                     `tfsdk:"updated_at"`
 }
 
-func (r *GatewayPluginKeyAuthEncResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_gateway_plugin_key_auth_enc"
+func (r *GatewayPluginAppDynamicsResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_gateway_plugin_app_dynamics"
 }
 
-func (r *GatewayPluginKeyAuthEncResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *GatewayPluginAppDynamicsResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "GatewayPluginKeyAuthEnc Resource",
+		MarkdownDescription: "GatewayPluginAppDynamics Resource",
 		Attributes: map[string]schema.Attribute{
-			"config": schema.SingleNestedAttribute{
+			"config": schema.MapAttribute{
+				Optional:    true,
+				ElementType: jsontypes.NormalizedType{},
+				Validators: []validator.Map{
+					mapvalidator.ValueStringsAre(validators.IsValidJSON()),
+				},
+			},
+			"consumer": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
 				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"anonymous":        types.StringType,
-					"hide_credentials": types.BoolType,
-					"key_in_body":      types.BoolType,
-					"key_in_header":    types.BoolType,
-					"key_in_query":     types.BoolType,
-					"key_names": types.ListType{
-						ElemType: types.StringType,
-					},
-					"realm":            types.StringType,
-					"run_on_preflight": types.BoolType,
+					"id": types.StringType,
 				})),
 				Attributes: map[string]schema.Attribute{
-					"anonymous": schema.StringAttribute{
-						Optional:    true,
-						Description: `An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure ` + "`" + `4xx` + "`" + `. Note that this value must refer to the consumer ` + "`" + `id` + "`" + ` or ` + "`" + `username` + "`" + ` attribute, and **not** its ` + "`" + `custom_id` + "`" + `.`,
-					},
-					"hide_credentials": schema.BoolAttribute{
-						Computed:    true,
-						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `An optional boolean value telling the plugin to show or hide the credential from the upstream service. If ` + "`" + `true` + "`" + `, the plugin strips the credential from the request (i.e., the header, query string, or request body containing the key) before proxying it. Default: false`,
-					},
-					"key_in_body": schema.BoolAttribute{
-						Computed:    true,
-						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `If enabled, the plugin reads the request body (if said request has one and its MIME type is supported) and tries to find the key in it. Supported MIME types: ` + "`" + `application/www-form-urlencoded` + "`" + `, ` + "`" + `application/json` + "`" + `, and ` + "`" + `multipart/form-data` + "`" + `. Default: false`,
-					},
-					"key_in_header": schema.BoolAttribute{
-						Computed:    true,
-						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `If enabled (default), the plugin reads the request header and tries to find the key in it. Default: true`,
-					},
-					"key_in_query": schema.BoolAttribute{
-						Computed:    true,
-						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `If enabled (default), the plugin reads the query parameter in the request and tries to find the key in it. Default: true`,
-					},
-					"key_names": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
-						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("apikey")})),
-						ElementType: types.StringType,
-						Description: `Describes an array of parameter names where the plugin will look for a key. The client must send the authentication key in one of those key names, and the plugin will try to read the credential from a header, request body, or query string parameter with the same name.  Key names may only contain [a-z], [A-Z], [0-9], [_] underscore, and [-] hyphen. Default: ["apikey"]`,
-					},
-					"realm": schema.StringAttribute{
-						Optional:    true,
-						Description: `When authentication fails the plugin sends ` + "`" + `WWW-Authenticate` + "`" + ` header with ` + "`" + `realm` + "`" + ` attribute value.`,
-					},
-					"run_on_preflight": schema.BoolAttribute{
-						Computed:    true,
-						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `A boolean value that indicates whether the plugin should run (and try to authenticate) on ` + "`" + `OPTIONS` + "`" + ` preflight requests. If set to ` + "`" + `false` + "`" + `, then ` + "`" + `OPTIONS` + "`" + ` requests are always allowed. Default: true`,
+					"id": schema.StringAttribute{
+						Computed: true,
+						Optional: true,
 					},
 				},
+				Description: `If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.`,
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required: true,
@@ -238,11 +199,9 @@ func (r *GatewayPluginKeyAuthEncResource) Schema(ctx context.Context, req resour
 					types.StringValue("grpcs"),
 					types.StringValue("http"),
 					types.StringValue("https"),
-					types.StringValue("ws"),
-					types.StringValue("wss"),
 				})),
 				ElementType: types.StringType,
-				Description: `A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls. Default: ["grpc","grpcs","http","https","ws","wss"]`,
+				Description: `A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,
@@ -286,7 +245,7 @@ func (r *GatewayPluginKeyAuthEncResource) Schema(ctx context.Context, req resour
 	}
 }
 
-func (r *GatewayPluginKeyAuthEncResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *GatewayPluginAppDynamicsResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -306,8 +265,8 @@ func (r *GatewayPluginKeyAuthEncResource) Configure(ctx context.Context, req res
 	r.client = client
 }
 
-func (r *GatewayPluginKeyAuthEncResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *GatewayPluginKeyAuthEncResourceModel
+func (r *GatewayPluginAppDynamicsResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *GatewayPluginAppDynamicsResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -324,13 +283,13 @@ func (r *GatewayPluginKeyAuthEncResource) Create(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateKeyauthencPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateAppdynamicsPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.CreateKeyauthencPlugin(ctx, *request)
+	res, err := r.client.Plugins.CreateAppdynamicsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -346,11 +305,11 @@ func (r *GatewayPluginKeyAuthEncResource) Create(ctx context.Context, req resour
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.KeyAuthEncPlugin != nil) {
+	if !(res.AppDynamicsPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedKeyAuthEncPlugin(ctx, res.KeyAuthEncPlugin)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppDynamicsPlugin(ctx, res.AppDynamicsPlugin)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -366,8 +325,8 @@ func (r *GatewayPluginKeyAuthEncResource) Create(ctx context.Context, req resour
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginKeyAuthEncResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *GatewayPluginKeyAuthEncResourceModel
+func (r *GatewayPluginAppDynamicsResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *GatewayPluginAppDynamicsResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -384,13 +343,13 @@ func (r *GatewayPluginKeyAuthEncResource) Read(ctx context.Context, req resource
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetKeyauthencPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsGetAppdynamicsPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.GetKeyauthencPlugin(ctx, *request)
+	res, err := r.client.Plugins.GetAppdynamicsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -410,11 +369,11 @@ func (r *GatewayPluginKeyAuthEncResource) Read(ctx context.Context, req resource
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.KeyAuthEncPlugin != nil) {
+	if !(res.AppDynamicsPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedKeyAuthEncPlugin(ctx, res.KeyAuthEncPlugin)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppDynamicsPlugin(ctx, res.AppDynamicsPlugin)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -424,8 +383,8 @@ func (r *GatewayPluginKeyAuthEncResource) Read(ctx context.Context, req resource
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginKeyAuthEncResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *GatewayPluginKeyAuthEncResourceModel
+func (r *GatewayPluginAppDynamicsResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *GatewayPluginAppDynamicsResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -438,13 +397,13 @@ func (r *GatewayPluginKeyAuthEncResource) Update(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateKeyauthencPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdateAppdynamicsPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.UpdateKeyauthencPlugin(ctx, *request)
+	res, err := r.client.Plugins.UpdateAppdynamicsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -460,11 +419,11 @@ func (r *GatewayPluginKeyAuthEncResource) Update(ctx context.Context, req resour
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.KeyAuthEncPlugin != nil) {
+	if !(res.AppDynamicsPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedKeyAuthEncPlugin(ctx, res.KeyAuthEncPlugin)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAppDynamicsPlugin(ctx, res.AppDynamicsPlugin)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -480,8 +439,8 @@ func (r *GatewayPluginKeyAuthEncResource) Update(ctx context.Context, req resour
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayPluginKeyAuthEncResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *GatewayPluginKeyAuthEncResourceModel
+func (r *GatewayPluginAppDynamicsResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *GatewayPluginAppDynamicsResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -498,13 +457,13 @@ func (r *GatewayPluginKeyAuthEncResource) Delete(ctx context.Context, req resour
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteKeyauthencPluginRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteAppdynamicsPluginRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Plugins.DeleteKeyauthencPlugin(ctx, *request)
+	res, err := r.client.Plugins.DeleteAppdynamicsPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -523,7 +482,7 @@ func (r *GatewayPluginKeyAuthEncResource) Delete(ctx context.Context, req resour
 
 }
 
-func (r *GatewayPluginKeyAuthEncResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *GatewayPluginAppDynamicsResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {

@@ -7,10 +7,10 @@ import (
 )
 
 type Confluent struct {
-	Authentication ConfluentPluginAuthentication `tfsdk:"authentication"`
-	KeySchema      *KeySchema                    `tfsdk:"key_schema"`
-	SslVerify      types.Bool                    `tfsdk:"ssl_verify"`
-	TTL            types.Float64                 `tfsdk:"ttl"`
-	URL            types.String                  `tfsdk:"url"`
-	ValueSchema    *KeySchema                    `tfsdk:"value_schema"`
+	Authentication *ConfluentPluginAuthentication `tfsdk:"authentication"`
+	KeySchema      *KeySchema                     `tfsdk:"key_schema"`
+	SslVerify      types.Bool                     `tfsdk:"ssl_verify"`
+	TTL            types.Float64                  `tfsdk:"ttl"`
+	URL            types.String                   `tfsdk:"url"`
+	ValueSchema    *KeySchema                     `tfsdk:"value_schema"`
 }

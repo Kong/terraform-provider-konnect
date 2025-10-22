@@ -7,69 +7,69 @@ import (
 	"net/http"
 )
 
-type GetKeyauthencPluginRequest struct {
+type GetAppdynamicsPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (g *GetKeyauthencPluginRequest) GetPluginID() string {
+func (g *GetAppdynamicsPluginRequest) GetPluginID() string {
 	if g == nil {
 		return ""
 	}
 	return g.PluginID
 }
 
-func (g *GetKeyauthencPluginRequest) GetControlPlaneID() string {
+func (g *GetAppdynamicsPluginRequest) GetControlPlaneID() string {
 	if g == nil {
 		return ""
 	}
 	return g.ControlPlaneID
 }
 
-type GetKeyauthencPluginResponse struct {
+type GetAppdynamicsPluginResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// KeyAuthEnc plugin
-	KeyAuthEncPlugin *shared.KeyAuthEncPlugin
+	// AppDynamics plugin
+	AppDynamicsPlugin *shared.AppDynamicsPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (g *GetKeyauthencPluginResponse) GetContentType() string {
+func (g *GetAppdynamicsPluginResponse) GetContentType() string {
 	if g == nil {
 		return ""
 	}
 	return g.ContentType
 }
 
-func (g *GetKeyauthencPluginResponse) GetStatusCode() int {
+func (g *GetAppdynamicsPluginResponse) GetStatusCode() int {
 	if g == nil {
 		return 0
 	}
 	return g.StatusCode
 }
 
-func (g *GetKeyauthencPluginResponse) GetRawResponse() *http.Response {
+func (g *GetAppdynamicsPluginResponse) GetRawResponse() *http.Response {
 	if g == nil {
 		return nil
 	}
 	return g.RawResponse
 }
 
-func (g *GetKeyauthencPluginResponse) GetKeyAuthEncPlugin() *shared.KeyAuthEncPlugin {
+func (g *GetAppdynamicsPluginResponse) GetAppDynamicsPlugin() *shared.AppDynamicsPlugin {
 	if g == nil {
 		return nil
 	}
-	return g.KeyAuthEncPlugin
+	return g.AppDynamicsPlugin
 }
 
-func (g *GetKeyauthencPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+func (g *GetAppdynamicsPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if g == nil {
 		return nil
 	}

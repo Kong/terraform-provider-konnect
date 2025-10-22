@@ -325,7 +325,7 @@ func (s *Vaults) DeleteVault(ctx context.Context, request operations.DeleteVault
 
 }
 
-// GetVault - Fetch a Vault
+// GetVault - Get a Vault
 // Get a Vault using ID or prefix.
 func (s *Vaults) GetVault(ctx context.Context, request operations.GetVaultRequest, opts ...operations.Option) (*operations.GetVaultResponse, error) {
 	o := operations.Options{}

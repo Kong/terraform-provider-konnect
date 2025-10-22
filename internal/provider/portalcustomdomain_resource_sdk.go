@@ -23,6 +23,9 @@ func (r *PortalCustomDomainResourceModel) RefreshFromSharedPortalCustomDomain(ct
 		r.Ssl.CustomCertificate = sslPriorData.CustomCertificate
 		r.Ssl.CustomPrivateKey = sslPriorData.CustomPrivateKey
 		r.Ssl.DomainVerificationMethod = types.StringValue(string(resp.Ssl.DomainVerificationMethod))
+		r.Ssl.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.Ssl.ExpiresAt))
+		r.Ssl.SkipCaCheck = types.BoolPointerValue(resp.Ssl.SkipCaCheck)
+		r.Ssl.UploadedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.Ssl.UploadedAt))
 		r.Ssl.ValidationErrors = make([]types.String, 0, len(resp.Ssl.ValidationErrors))
 		for _, v := range resp.Ssl.ValidationErrors {
 			r.Ssl.ValidationErrors = append(r.Ssl.ValidationErrors, types.StringValue(v))

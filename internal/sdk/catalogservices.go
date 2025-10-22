@@ -251,7 +251,7 @@ func (s *CatalogServices) CreateCatalogService(ctx context.Context, request shar
 
 }
 
-// FetchCatalogService - Fetch Service
+// FetchCatalogService - Get a Service
 // Fetches a service.
 func (s *CatalogServices) FetchCatalogService(ctx context.Context, request operations.FetchCatalogServiceRequest, opts ...operations.Option) (*operations.FetchCatalogServiceResponse, error) {
 	o := operations.Options{}

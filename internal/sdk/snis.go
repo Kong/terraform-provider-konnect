@@ -321,7 +321,7 @@ func (s *SNIs) DeleteSni(ctx context.Context, request operations.DeleteSniReques
 
 }
 
-// GetSni - Fetch an SNI
+// GetSni - Get an SNI
 // Get an SNI using ID or name.
 func (s *SNIs) GetSni(ctx context.Context, request operations.GetSniRequest, opts ...operations.Option) (*operations.GetSniResponse, error) {
 	o := operations.Options{}

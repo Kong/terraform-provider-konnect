@@ -7,28 +7,28 @@ import (
 	"net/http"
 )
 
-type DeleteKeyauthencPluginRequest struct {
+type DeleteAppdynamicsPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (d *DeleteKeyauthencPluginRequest) GetPluginID() string {
+func (d *DeleteAppdynamicsPluginRequest) GetPluginID() string {
 	if d == nil {
 		return ""
 	}
 	return d.PluginID
 }
 
-func (d *DeleteKeyauthencPluginRequest) GetControlPlaneID() string {
+func (d *DeleteAppdynamicsPluginRequest) GetControlPlaneID() string {
 	if d == nil {
 		return ""
 	}
 	return d.ControlPlaneID
 }
 
-type DeleteKeyauthencPluginResponse struct {
+type DeleteAppdynamicsPluginResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
@@ -39,28 +39,28 @@ type DeleteKeyauthencPluginResponse struct {
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (d *DeleteKeyauthencPluginResponse) GetContentType() string {
+func (d *DeleteAppdynamicsPluginResponse) GetContentType() string {
 	if d == nil {
 		return ""
 	}
 	return d.ContentType
 }
 
-func (d *DeleteKeyauthencPluginResponse) GetStatusCode() int {
+func (d *DeleteAppdynamicsPluginResponse) GetStatusCode() int {
 	if d == nil {
 		return 0
 	}
 	return d.StatusCode
 }
 
-func (d *DeleteKeyauthencPluginResponse) GetRawResponse() *http.Response {
+func (d *DeleteAppdynamicsPluginResponse) GetRawResponse() *http.Response {
 	if d == nil {
 		return nil
 	}
 	return d.RawResponse
 }
 
-func (d *DeleteKeyauthencPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+func (d *DeleteAppdynamicsPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if d == nil {
 		return nil
 	}

@@ -72,17 +72,22 @@ func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(c
 				r.Config.SchemaRegistry.Confluent = nil
 			} else {
 				r.Config.SchemaRegistry.Confluent = &tfTypes.Confluent{}
-				if resp.Config.SchemaRegistry.Confluent.Authentication.Basic == nil {
-					r.Config.SchemaRegistry.Confluent.Authentication.Basic = nil
+				if resp.Config.SchemaRegistry.Confluent.Authentication == nil {
+					r.Config.SchemaRegistry.Confluent.Authentication = nil
 				} else {
-					r.Config.SchemaRegistry.Confluent.Authentication.Basic = &tfTypes.Basic{}
-					r.Config.SchemaRegistry.Confluent.Authentication.Basic.Password = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Password)
-					r.Config.SchemaRegistry.Confluent.Authentication.Basic.Username = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Username)
-				}
-				if resp.Config.SchemaRegistry.Confluent.Authentication.Mode != nil {
-					r.Config.SchemaRegistry.Confluent.Authentication.Mode = types.StringValue(string(*resp.Config.SchemaRegistry.Confluent.Authentication.Mode))
-				} else {
-					r.Config.SchemaRegistry.Confluent.Authentication.Mode = types.StringNull()
+					r.Config.SchemaRegistry.Confluent.Authentication = &tfTypes.ConfluentPluginAuthentication{}
+					if resp.Config.SchemaRegistry.Confluent.Authentication.Basic == nil {
+						r.Config.SchemaRegistry.Confluent.Authentication.Basic = nil
+					} else {
+						r.Config.SchemaRegistry.Confluent.Authentication.Basic = &tfTypes.Basic{}
+						r.Config.SchemaRegistry.Confluent.Authentication.Basic.Password = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Password)
+						r.Config.SchemaRegistry.Confluent.Authentication.Basic.Username = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Username)
+					}
+					if resp.Config.SchemaRegistry.Confluent.Authentication.Mode != nil {
+						r.Config.SchemaRegistry.Confluent.Authentication.Mode = types.StringValue(string(*resp.Config.SchemaRegistry.Confluent.Authentication.Mode))
+					} else {
+						r.Config.SchemaRegistry.Confluent.Authentication.Mode = types.StringNull()
+					}
 				}
 				if resp.Config.SchemaRegistry.Confluent.KeySchema == nil {
 					r.Config.SchemaRegistry.Confluent.KeySchema = nil
@@ -510,28 +515,31 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 	if r.Config.SchemaRegistry != nil {
 		var confluent *shared.Confluent
 		if r.Config.SchemaRegistry.Confluent != nil {
-			var basic *shared.Basic
-			if r.Config.SchemaRegistry.Confluent.Authentication.Basic != nil {
-				var password string
-				password = r.Config.SchemaRegistry.Confluent.Authentication.Basic.Password.ValueString()
+			var authentication *shared.ConfluentPluginAuthentication
+			if r.Config.SchemaRegistry.Confluent.Authentication != nil {
+				var basic *shared.Basic
+				if r.Config.SchemaRegistry.Confluent.Authentication.Basic != nil {
+					var password string
+					password = r.Config.SchemaRegistry.Confluent.Authentication.Basic.Password.ValueString()
 
-				var username string
-				username = r.Config.SchemaRegistry.Confluent.Authentication.Basic.Username.ValueString()
+					var username string
+					username = r.Config.SchemaRegistry.Confluent.Authentication.Basic.Username.ValueString()
 
-				basic = &shared.Basic{
-					Password: password,
-					Username: username,
+					basic = &shared.Basic{
+						Password: password,
+						Username: username,
+					}
 				}
-			}
-			mode := new(shared.ConfluentPluginMode)
-			if !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsNull() {
-				*mode = shared.ConfluentPluginMode(r.Config.SchemaRegistry.Confluent.Authentication.Mode.ValueString())
-			} else {
-				mode = nil
-			}
-			authentication := shared.ConfluentPluginAuthentication{
-				Basic: basic,
-				Mode:  mode,
+				mode := new(shared.ConfluentPluginMode)
+				if !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Mode.IsNull() {
+					*mode = shared.ConfluentPluginMode(r.Config.SchemaRegistry.Confluent.Authentication.Mode.ValueString())
+				} else {
+					mode = nil
+				}
+				authentication = &shared.ConfluentPluginAuthentication{
+					Basic: basic,
+					Mode:  mode,
+				}
 			}
 			var keySchema *shared.KeySchema
 			if r.Config.SchemaRegistry.Confluent.KeySchema != nil {

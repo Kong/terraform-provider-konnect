@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 639f3ebe28a76e636445f6f519e11b93
+  docChecksum: 5d0b9406c4454f72a790fe2529405370
   docVersion: 2.0.0
   speakeasyVersion: 1.636.2
   generationVersion: 2.723.8
@@ -213,6 +213,9 @@ generatedFiles:
   - examples/resources/konnect_gateway_plugin_ai_semantic_prompt_guard/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_ai_semantic_prompt_guard/import.sh
   - examples/resources/konnect_gateway_plugin_ai_semantic_prompt_guard/resource.tf
+  - examples/resources/konnect_gateway_plugin_app_dynamics/import-by-string-id.tf
+  - examples/resources/konnect_gateway_plugin_app_dynamics/import.sh
+  - examples/resources/konnect_gateway_plugin_app_dynamics/resource.tf
   - examples/resources/konnect_gateway_plugin_aws_lambda/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_aws_lambda/import.sh
   - examples/resources/konnect_gateway_plugin_aws_lambda/resource.tf
@@ -243,9 +246,6 @@ generatedFiles:
   - examples/resources/konnect_gateway_plugin_datadog/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_datadog/import.sh
   - examples/resources/konnect_gateway_plugin_datadog/resource.tf
-  - examples/resources/konnect_gateway_plugin_datadog_tracing/import-by-string-id.tf
-  - examples/resources/konnect_gateway_plugin_datadog_tracing/import.sh
-  - examples/resources/konnect_gateway_plugin_datadog_tracing/resource.tf
   - examples/resources/konnect_gateway_plugin_datakit/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_datakit/import.sh
   - examples/resources/konnect_gateway_plugin_datakit/resource.tf
@@ -315,9 +315,6 @@ generatedFiles:
   - examples/resources/konnect_gateway_plugin_key_auth/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_key_auth/import.sh
   - examples/resources/konnect_gateway_plugin_key_auth/resource.tf
-  - examples/resources/konnect_gateway_plugin_key_auth_enc/import-by-string-id.tf
-  - examples/resources/konnect_gateway_plugin_key_auth_enc/import.sh
-  - examples/resources/konnect_gateway_plugin_key_auth_enc/resource.tf
   - examples/resources/konnect_gateway_plugin_ldap_auth/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_ldap_auth/import.sh
   - examples/resources/konnect_gateway_plugin_ldap_auth/resource.tf
@@ -690,6 +687,8 @@ generatedFiles:
   - internal/provider/gatewaypluginaisemanticcache_resource_sdk.go
   - internal/provider/gatewaypluginaisemanticpromptguard_resource.go
   - internal/provider/gatewaypluginaisemanticpromptguard_resource_sdk.go
+  - internal/provider/gatewaypluginappdynamics_resource.go
+  - internal/provider/gatewaypluginappdynamics_resource_sdk.go
   - internal/provider/gatewaypluginawslambda_resource.go
   - internal/provider/gatewaypluginawslambda_resource_sdk.go
   - internal/provider/gatewaypluginazurefunctions_resource.go
@@ -710,8 +709,6 @@ generatedFiles:
   - internal/provider/gatewayplugincors_resource_sdk.go
   - internal/provider/gatewayplugindatadog_resource.go
   - internal/provider/gatewayplugindatadog_resource_sdk.go
-  - internal/provider/gatewayplugindatadogtracing_resource.go
-  - internal/provider/gatewayplugindatadogtracing_resource_sdk.go
   - internal/provider/gatewayplugindatakit_resource.go
   - internal/provider/gatewayplugindatakit_resource_sdk.go
   - internal/provider/gatewayplugindegraphql_resource.go
@@ -758,8 +755,6 @@ generatedFiles:
   - internal/provider/gatewaypluginkafkaupstream_resource_sdk.go
   - internal/provider/gatewaypluginkeyauth_resource.go
   - internal/provider/gatewaypluginkeyauth_resource_sdk.go
-  - internal/provider/gatewaypluginkeyauthenc_resource.go
-  - internal/provider/gatewaypluginkeyauthenc_resource_sdk.go
   - internal/provider/gatewaypluginldapauth_resource.go
   - internal/provider/gatewaypluginldapauth_resource_sdk.go
   - internal/provider/gatewaypluginldapauthadvanced_resource.go
@@ -974,7 +969,6 @@ generatedFiles:
   - internal/provider/types/ai_response_transformer_plugin_config.go
   - internal/provider/types/ai_sanitizer_plugin_config.go
   - internal/provider/types/ai_semantic_cache_plugin_config.go
-  - internal/provider/types/ai_semantic_cache_plugin_vectordb.go
   - internal/provider/types/ai_semantic_prompt_guard_plugin_config.go
   - internal/provider/types/allow.go
   - internal/provider/types/api_implementation_service.go
@@ -1024,6 +1018,7 @@ generatedFiles:
   - internal/provider/types/bot_detection_plugin_config.go
   - internal/provider/types/button.go
   - internal/provider/types/cache.go
+  - internal/provider/types/call.go
   - internal/provider/types/callouts.go
   - internal/provider/types/canary_plugin_config.go
   - internal/provider/types/catalog.go
@@ -1058,13 +1053,13 @@ generatedFiles:
   - internal/provider/types/custom_injections.go
   - internal/provider/types/custom_patterns.go
   - internal/provider/types/datadog_plugin_config.go
-  - internal/provider/types/datadog_tracing_plugin_config.go
   - internal/provider/types/datakit_plugin_config.go
   - internal/provider/types/dcr_provider.go
   - internal/provider/types/degraphql_plugin_config.go
   - internal/provider/types/destinations.go
   - internal/provider/types/embeddings.go
   - internal/provider/types/error.go
+  - internal/provider/types/exit.go
   - internal/provider/types/exit_transformer_plugin_config.go
   - internal/provider/types/extra_options.go
   - internal/provider/types/file_log_plugin_config.go
@@ -1091,8 +1086,10 @@ generatedFiles:
   - internal/provider/types/id.go
   - internal/provider/types/identity_realms.go
   - internal/provider/types/injection_protection_plugin_config.go
+  - internal/provider/types/inputs.go
   - internal/provider/types/integration_ref_without_instance.go
   - internal/provider/types/ip_restriction_plugin_config.go
+  - internal/provider/types/jq.go
   - internal/provider/types/jq_plugin_config.go
   - internal/provider/types/json_threat_protection_plugin_config.go
   - internal/provider/types/jwe_decrypt_plugin_config.go
@@ -1102,7 +1099,6 @@ generatedFiles:
   - internal/provider/types/kafka_consume_plugin_security.go
   - internal/provider/types/kafka_log_plugin_config.go
   - internal/provider/types/kafka_upstream_plugin_config.go
-  - internal/provider/types/key_auth_enc_plugin_config.go
   - internal/provider/types/key_auth_plugin_config.go
   - internal/provider/types/key_schema.go
   - internal/provider/types/ldap_auth_advanced_plugin_config.go
@@ -1129,6 +1125,7 @@ generatedFiles:
   - internal/provider/types/name.go
   - internal/provider/types/network_provider_metadata.go
   - internal/provider/types/nodes.go
+  - internal/provider/types/nodes_inputs.go
   - internal/provider/types/oas_validation_plugin_config.go
   - internal/provider/types/oauth.go
   - internal/provider/types/oauth2_introspection_plugin_config.go
@@ -1139,6 +1136,7 @@ generatedFiles:
   - internal/provider/types/openid_connect_plugin_redis.go
   - internal/provider/types/opentelemetry_plugin_config.go
   - internal/provider/types/options_obj.go
+  - internal/provider/types/outputs.go
   - internal/provider/types/page_meta.go
   - internal/provider/types/paginated_meta.go
   - internal/provider/types/parameter_schema.go
@@ -1164,6 +1162,7 @@ generatedFiles:
   - internal/provider/types/prometheus_plugin_config.go
   - internal/provider/types/prompts.go
   - internal/provider/types/propagation.go
+  - internal/provider/types/property.go
   - internal/provider/types/provider_account.go
   - internal/provider/types/proxy.go
   - internal/provider/types/proxy_cache_advanced_plugin_config.go
@@ -1224,6 +1223,7 @@ generatedFiles:
   - internal/provider/types/solace_upstream_plugin_destinations.go
   - internal/provider/types/spec_renderer.go
   - internal/provider/types/standard_webhooks_plugin_config.go
+  - internal/provider/types/static.go
   - internal/provider/types/statsd_advanced_plugin_config.go
   - internal/provider/types/statsd_plugin_config.go
   - internal/provider/types/statsd_plugin_metrics.go
@@ -1354,6 +1354,7 @@ generatedFiles:
   - internal/sdk/models/operations/createapispec.go
   - internal/sdk/models/operations/createapiversion.go
   - internal/sdk/models/operations/createappauthstrategy.go
+  - internal/sdk/models/operations/createappdynamicsplugin.go
   - internal/sdk/models/operations/createauditlogdestination.go
   - internal/sdk/models/operations/createawslambdaplugin.go
   - internal/sdk/models/operations/createazurefunctionsplugin.go
@@ -1380,7 +1381,6 @@ generatedFiles:
   - internal/sdk/models/operations/createcustomdomains.go
   - internal/sdk/models/operations/createcustomplugin.go
   - internal/sdk/models/operations/createdatadogplugin.go
-  - internal/sdk/models/operations/createdatadogtracingplugin.go
   - internal/sdk/models/operations/createdatakitplugin.go
   - internal/sdk/models/operations/createdataplanecertificate.go
   - internal/sdk/models/operations/createdegraphqlplugin.go
@@ -1409,7 +1409,6 @@ generatedFiles:
   - internal/sdk/models/operations/createkafkalogplugin.go
   - internal/sdk/models/operations/createkafkaupstreamplugin.go
   - internal/sdk/models/operations/createkey.go
-  - internal/sdk/models/operations/createkeyauthencplugin.go
   - internal/sdk/models/operations/createkeyauthplugin.go
   - internal/sdk/models/operations/createkeyauthwithconsumer.go
   - internal/sdk/models/operations/createkeyset.go
@@ -1512,6 +1511,7 @@ generatedFiles:
   - internal/sdk/models/operations/deleteapispec.go
   - internal/sdk/models/operations/deleteapiversion.go
   - internal/sdk/models/operations/deleteappauthstrategy.go
+  - internal/sdk/models/operations/deleteappdynamicsplugin.go
   - internal/sdk/models/operations/deleteauditlogdestination.go
   - internal/sdk/models/operations/deleteauditlogwebhook.go
   - internal/sdk/models/operations/deleteawslambdaplugin.go
@@ -1538,7 +1538,6 @@ generatedFiles:
   - internal/sdk/models/operations/deletecustomdomain.go
   - internal/sdk/models/operations/deletecustomplugin.go
   - internal/sdk/models/operations/deletedatadogplugin.go
-  - internal/sdk/models/operations/deletedatadogtracingplugin.go
   - internal/sdk/models/operations/deletedatakitplugin.go
   - internal/sdk/models/operations/deletedataplanecertificate.go
   - internal/sdk/models/operations/deletedegraphqlplugin.go
@@ -1568,7 +1567,6 @@ generatedFiles:
   - internal/sdk/models/operations/deletekafkalogplugin.go
   - internal/sdk/models/operations/deletekafkaupstreamplugin.go
   - internal/sdk/models/operations/deletekey.go
-  - internal/sdk/models/operations/deletekeyauthencplugin.go
   - internal/sdk/models/operations/deletekeyauthplugin.go
   - internal/sdk/models/operations/deletekeyauthwithconsumer.go
   - internal/sdk/models/operations/deletekeyset.go
@@ -1682,6 +1680,7 @@ generatedFiles:
   - internal/sdk/models/operations/getapiproductversion.go
   - internal/sdk/models/operations/getapiproductversionspec.go
   - internal/sdk/models/operations/getappauthstrategy.go
+  - internal/sdk/models/operations/getappdynamicsplugin.go
   - internal/sdk/models/operations/getauditlogdestination.go
   - internal/sdk/models/operations/getauditlogwebhook.go
   - internal/sdk/models/operations/getawslambdaplugin.go
@@ -1708,7 +1707,6 @@ generatedFiles:
   - internal/sdk/models/operations/getcustomdomain.go
   - internal/sdk/models/operations/getcustomplugin.go
   - internal/sdk/models/operations/getdatadogplugin.go
-  - internal/sdk/models/operations/getdatadogtracingplugin.go
   - internal/sdk/models/operations/getdatakitplugin.go
   - internal/sdk/models/operations/getdataplanecertificate.go
   - internal/sdk/models/operations/getdegraphqlplugin.go
@@ -1737,7 +1735,6 @@ generatedFiles:
   - internal/sdk/models/operations/getkafkalogplugin.go
   - internal/sdk/models/operations/getkafkaupstreamplugin.go
   - internal/sdk/models/operations/getkey.go
-  - internal/sdk/models/operations/getkeyauthencplugin.go
   - internal/sdk/models/operations/getkeyauthplugin.go
   - internal/sdk/models/operations/getkeyauthwithconsumer.go
   - internal/sdk/models/operations/getkeyset.go
@@ -1873,6 +1870,7 @@ generatedFiles:
   - internal/sdk/models/operations/updateapispec.go
   - internal/sdk/models/operations/updateapiversion.go
   - internal/sdk/models/operations/updateappauthstrategy.go
+  - internal/sdk/models/operations/updateappdynamicsplugin.go
   - internal/sdk/models/operations/updateauditlogdestination.go
   - internal/sdk/models/operations/updateauditlogwebhook.go
   - internal/sdk/models/operations/updateawslambdaplugin.go
@@ -1891,7 +1889,6 @@ generatedFiles:
   - internal/sdk/models/operations/updatecorsplugin.go
   - internal/sdk/models/operations/updatecp.go
   - internal/sdk/models/operations/updatedatadogplugin.go
-  - internal/sdk/models/operations/updatedatadogtracingplugin.go
   - internal/sdk/models/operations/updatedatakitplugin.go
   - internal/sdk/models/operations/updatedegraphqlplugin.go
   - internal/sdk/models/operations/updateexittransformerplugin.go
@@ -1915,7 +1912,6 @@ generatedFiles:
   - internal/sdk/models/operations/updatekafkaconsumeplugin.go
   - internal/sdk/models/operations/updatekafkalogplugin.go
   - internal/sdk/models/operations/updatekafkaupstreamplugin.go
-  - internal/sdk/models/operations/updatekeyauthencplugin.go
   - internal/sdk/models/operations/updatekeyauthplugin.go
   - internal/sdk/models/operations/updateldapauthadvancedplugin.go
   - internal/sdk/models/operations/updateldapauthplugin.go
@@ -2043,6 +2039,7 @@ generatedFiles:
   - internal/sdk/models/shared/apiversionsummary.go
   - internal/sdk/models/shared/appauthstrategyconfigkeyauth.go
   - internal/sdk/models/shared/appauthstrategyconfigopenidconnect.go
+  - internal/sdk/models/shared/appdynamicsplugin.go
   - internal/sdk/models/shared/assignedrole.go
   - internal/sdk/models/shared/assignrole.go
   - internal/sdk/models/shared/auditlogdestination.go
@@ -2154,7 +2151,6 @@ generatedFiles:
   - internal/sdk/models/shared/customdomainstate.go
   - internal/sdk/models/shared/customplugin.go
   - internal/sdk/models/shared/datadogplugin.go
-  - internal/sdk/models/shared/datadogtracingplugin.go
   - internal/sdk/models/shared/datakitplugin.go
   - internal/sdk/models/shared/dataplaneclientcertificate.go
   - internal/sdk/models/shared/dataplaneclientcertificaterequest.go
@@ -2212,7 +2208,6 @@ generatedFiles:
   - internal/sdk/models/shared/kafkaupstreamplugin.go
   - internal/sdk/models/shared/key.go
   - internal/sdk/models/shared/keyauth.go
-  - internal/sdk/models/shared/keyauthencplugin.go
   - internal/sdk/models/shared/keyauthplugin.go
   - internal/sdk/models/shared/keyauthwithoutparents.go
   - internal/sdk/models/shared/keyset.go
@@ -8077,7 +8072,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "oauth-2-introspection", "ordering": null, "partials": null, "tags": null, "config": {"anonymous": "", "authorization_value": "<value>", "consumer_by": "username", "custom_claims_forward": [], "hide_credentials": false, "introspect_request": false, "introspection_url": "https://flimsy-almighty.info", "keepalive": 60000, "run_on_preflight": true, "timeout": 10000, "token_type_hint": null, "ttl": 30}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "oauth2-introspection", "ordering": null, "partials": null, "tags": null, "config": {"anonymous": "", "authorization_value": "<value>", "consumer_by": "username", "custom_claims_forward": [], "hide_credentials": false, "introspect_request": false, "introspection_url": "https://flimsy-almighty.info", "keepalive": 60000, "run_on_preflight": true, "timeout": 10000, "token_type_hint": null, "ttl": 30}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 676685}
   update-oauth2introspection-plugin:
@@ -8099,10 +8094,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "oauth-2-introspection", "ordering": null, "partials": null, "tags": null, "config": {"anonymous": "", "authorization_value": "<value>", "consumer_by": "username", "custom_claims_forward": [], "hide_credentials": false, "introspect_request": false, "introspection_url": "https://hollow-exterior.info", "keepalive": 60000, "run_on_preflight": true, "timeout": 10000, "token_type_hint": null, "ttl": 30}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "oauth2-introspection", "ordering": null, "partials": null, "tags": null, "config": {"anonymous": "", "authorization_value": "<value>", "consumer_by": "username", "custom_claims_forward": [], "hide_credentials": false, "introspect_request": false, "introspection_url": "https://hollow-exterior.info", "keepalive": 60000, "run_on_preflight": true, "timeout": 10000, "token_type_hint": null, "ttl": 30}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "oauth-2-introspection", "ordering": null, "partials": null, "tags": null, "config": {"anonymous": "", "authorization_value": "<value>", "consumer_by": "username", "custom_claims_forward": [], "hide_credentials": false, "introspect_request": false, "introspection_url": "https://hollow-exterior.info", "keepalive": 60000, "run_on_preflight": true, "timeout": 10000, "token_type_hint": null, "ttl": 30}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "oauth2-introspection", "ordering": null, "partials": null, "tags": null, "config": {"anonymous": "", "authorization_value": "<value>", "consumer_by": "username", "custom_claims_forward": [], "hide_credentials": false, "introspect_request": false, "introspection_url": "https://hollow-exterior.info", "keepalive": 60000, "run_on_preflight": true, "timeout": 10000, "token_type_hint": null, "ttl": 30}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 821407}
   delete-opa-plugin:
@@ -10345,7 +10340,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "vault-auth", "ordering": null, "partials": null, "tags": null, "config": {"access_token_name": "access_token", "anonymous": null, "hide_credentials": false, "run_on_preflight": true, "secret_token_name": "secret_token", "tokens_in_body": false, "vault": "<value>"}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "vault-auth", "ordering": null, "partials": null, "tags": null, "config": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 968834}
   update-vaultauth-plugin:
@@ -10367,10 +10362,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "vault-auth", "ordering": null, "partials": null, "tags": null, "config": {"access_token_name": "access_token", "anonymous": null, "hide_credentials": false, "run_on_preflight": true, "secret_token_name": "secret_token", "tokens_in_body": false, "vault": "<value>"}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "vault-auth", "ordering": null, "partials": null, "tags": null, "config": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "vault-auth", "ordering": null, "partials": null, "tags": null, "config": {"access_token_name": "access_token", "anonymous": null, "hide_credentials": false, "run_on_preflight": true, "secret_token_name": "secret_token", "tokens_in_body": false, "vault": "<value>"}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "vault-auth", "ordering": null, "partials": null, "tags": null, "config": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 612350}
   delete-websocketsizelimit-plugin:
@@ -11303,10 +11298,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "oauth-2-introspection", "ordering": null, "partials": null, "tags": null, "config": {"anonymous": "", "authorization_value": "<value>", "consumer_by": "username", "custom_claims_forward": [], "hide_credentials": false, "introspect_request": false, "introspection_url": "https://essential-spirit.biz", "keepalive": 60000, "run_on_preflight": true, "timeout": 10000, "token_type_hint": null, "ttl": 30}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "oauth2-introspection", "ordering": null, "partials": null, "tags": null, "config": {"anonymous": "", "authorization_value": "<value>", "consumer_by": "username", "custom_claims_forward": [], "hide_credentials": false, "introspect_request": false, "introspection_url": "https://essential-spirit.biz", "keepalive": 60000, "run_on_preflight": true, "timeout": 10000, "token_type_hint": null, "ttl": 30}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"enabled": true, "instance_name": null, "name": "oauth-2-introspection", "ordering": null, "partials": null, "tags": null, "config": {"anonymous": "", "authorization_value": "<value>", "consumer_by": "username", "custom_claims_forward": [], "hide_credentials": false, "introspect_request": false, "introspection_url": "https://essential-spirit.biz", "keepalive": 60000, "run_on_preflight": true, "timeout": 10000, "token_type_hint": null, "ttl": 30}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "oauth2-introspection", "ordering": null, "partials": null, "tags": null, "config": {"anonymous": "", "authorization_value": "<value>", "consumer_by": "username", "custom_claims_forward": [], "hide_credentials": false, "introspect_request": false, "introspection_url": "https://essential-spirit.biz", "keepalive": 60000, "run_on_preflight": true, "timeout": 10000, "token_type_hint": null, "ttl": 30}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 776584}
   create-opa-plugin:
@@ -11735,10 +11730,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "vault-auth", "ordering": null, "partials": null, "tags": null, "config": {"access_token_name": "access_token", "anonymous": null, "hide_credentials": false, "run_on_preflight": true, "secret_token_name": "secret_token", "tokens_in_body": false, "vault": "<value>"}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "vault-auth", "ordering": null, "partials": null, "tags": null, "config": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"enabled": true, "instance_name": null, "name": "vault-auth", "ordering": null, "partials": null, "tags": null, "config": {"access_token_name": "access_token", "anonymous": null, "hide_credentials": false, "run_on_preflight": true, "secret_token_name": "secret_token", "tokens_in_body": false, "vault": "<value>"}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "vault-auth", "ordering": null, "partials": null, "tags": null, "config": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 314334}
   create-websocketsizelimit-plugin:
@@ -12400,7 +12395,7 @@ examples:
   create-portal:
     speakeasy-default-create-portal:
       requestBody:
-        application/json: {"name": "DevPortal", "description": null, "authentication_enabled": true, "rbac_enabled": false, "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "labels": {"env": "test"}}
+        application/json: {"name": "DevPortal", "display_name": null, "description": null, "authentication_enabled": true, "rbac_enabled": false, "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "labels": {"env": "test"}}
       responses:
         "201":
           application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "Portal A", "display_name": "Developer Portal A", "description": null, "authentication_enabled": true, "rbac_enabled": false, "default_api_visibility": "public", "default_page_visibility": "private", "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "default_domain": "123455678abcd.us.portal.konghq.com", "canonical_domain": "insistent-elevator.org", "labels": {"env": "test"}}
@@ -12416,7 +12411,7 @@ examples:
         path:
           portalId: "efe853b6-a55c-4929-9b80-c39a22b01c7a"
       requestBody:
-        application/json: {"name": null, "description": null, "authentication_enabled": true, "rbac_enabled": false, "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "labels": {"env": "test"}}
+        application/json: {"name": null, "display_name": null, "description": null, "authentication_enabled": true, "rbac_enabled": false, "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "labels": {"env": "test"}}
       responses:
         "200":
           application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "Portal A", "display_name": "Developer Portal A", "description": null, "authentication_enabled": true, "rbac_enabled": false, "default_api_visibility": "private", "default_page_visibility": "private", "default_application_auth_strategy_id": null, "auto_approve_developers": false, "auto_approve_applications": false, "default_domain": "123455678abcd.us.portal.konghq.com", "canonical_domain": "international-flight.biz", "labels": {"env": "test"}}
@@ -13254,10 +13249,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "datakit", "ordering": null, "partials": null, "tags": null, "config": {"debug": false, "nodes": [{"name": "<value>", "type": "exit"}]}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "datakit", "ordering": null, "partials": null, "tags": null, "config": {"debug": false, "nodes": [{"input": null, "inputs": null, "name": "<value>", "status": 200, "type": "exit", "warn_headers_sent": null}]}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"enabled": true, "instance_name": null, "name": "datakit", "ordering": null, "partials": null, "tags": null, "config": {"debug": false, "nodes": [{"name": "<value>", "type": "exit"}]}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "datakit", "ordering": null, "partials": null, "tags": null, "config": {"debug": false, "nodes": [{"input": null, "inputs": null, "name": "<value>", "status": 200, "type": "exit", "warn_headers_sent": null}]}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 905900}
   create-solaceupstream-plugin:
@@ -13723,7 +13718,7 @@ examples:
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"hostname": "messy-assist.info", "enabled": true, "ssl": {"domain_verification_method": "http", "verification_status": "verified"}, "cname_status": "pending", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"hostname": "messy-assist.info", "enabled": true, "ssl": {"domain_verification_method": "http", "verification_status": "verified", "uploaded_at": "2022-11-04T20:10:06.927Z", "expires_at": "2022-11-04T20:10:06.927Z"}, "cname_status": "pending", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -13739,7 +13734,7 @@ examples:
         application/json: {"hostname": "lavish-custody.org", "enabled": true, "ssl": {}}
       responses:
         "201":
-          application/json: {"hostname": "royal-challenge.com", "enabled": false, "ssl": {"domain_verification_method": "custom_certificate", "verification_status": "error"}, "cname_status": "verified", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"hostname": "royal-challenge.com", "enabled": false, "ssl": {"domain_verification_method": "custom_certificate", "verification_status": "error", "uploaded_at": "2022-11-04T20:10:06.927Z", "expires_at": "2022-11-04T20:10:06.927Z"}, "cname_status": "verified", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 842364, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -13757,7 +13752,7 @@ examples:
         application/json: {"enabled": null}
       responses:
         "200":
-          application/json: {"hostname": "sorrowful-couch.name", "enabled": true, "ssl": {"domain_verification_method": "http", "verification_status": "pending"}, "cname_status": "verified", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"hostname": "sorrowful-couch.name", "enabled": true, "ssl": {"domain_verification_method": "http", "verification_status": "pending", "uploaded_at": "2022-11-04T20:10:06.927Z", "expires_at": "2022-11-04T20:10:06.927Z"}, "cname_status": "verified", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 515147, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -14452,5 +14447,50 @@ examples:
           application/problem+json: {"status": 149186, "title": "<value>", "instance": "<value>", "detail": "<value>"}
         "503":
           application/problem+json: {"status": 503, "title": "Service Unavailable", "instance": "konnect:trace:2287285207635123011", "detail": "Could not retrieve permissions to check resource accessibility."}
+  delete-appdynamics-plugin:
+    speakeasy-default-delete-appdynamics-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/json: {"message": "<value>", "status": 757307}
+  get-appdynamics-plugin:
+    speakeasy-default-get-appdynamics-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"enabled": true, "instance_name": null, "name": "app-dynamics", "ordering": null, "partials": null, "tags": null, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 761049}
+  update-appdynamics-plugin:
+    speakeasy-default-update-appdynamics-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "instance_name": null, "name": "app-dynamics", "ordering": null, "partials": null, "tags": null, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "200":
+          application/json: {"enabled": true, "instance_name": null, "name": "app-dynamics", "ordering": null, "partials": null, "tags": null, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 920434}
+  create-appdynamics-plugin:
+    speakeasy-default-create-appdynamics-plugin:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "instance_name": null, "name": "app-dynamics", "ordering": null, "partials": null, "tags": null, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "201":
+          application/json: {"enabled": true, "instance_name": null, "name": "app-dynamics", "ordering": null, "partials": null, "tags": null, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 429810}
 examplesVersion: 1.0.2
 generatedTests: {}
