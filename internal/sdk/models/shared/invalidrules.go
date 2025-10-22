@@ -32,6 +32,7 @@ const (
 	InvalidRulesIsSupportedNetworkAvailabilityZoneList InvalidRules = "is_supported_network_availability_zone_list"
 	InvalidRulesIsSupportedNetworkCidrBlock            InvalidRules = "is_supported_network_cidr_block"
 	InvalidRulesIsSupportedProviderRegion              InvalidRules = "is_supported_provider_region"
+	InvalidRulesType                                   InvalidRules = "type"
 )
 
 func (e InvalidRules) ToPointer() *InvalidRules {
@@ -84,6 +85,8 @@ func (e *InvalidRules) UnmarshalJSON(data []byte) error {
 	case "is_supported_network_cidr_block":
 		fallthrough
 	case "is_supported_provider_region":
+		fallthrough
+	case "type":
 		*e = InvalidRules(v)
 		return nil
 	default:
