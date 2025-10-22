@@ -1893,7 +1893,12 @@ paths:
       summary: Create Private DNS
       description: Creates a new Private DNS for a given network.
       parameters:
-        - $ref: '#/components/parameters/NetworkIdForChildren'
+        - name: networkId
+          in: path
+          description: The network to operate on.
+          required: true
+          schema:
+            $ref: '#/components/schemas/NetworkId'
       requestBody:
         required: true
         content:
@@ -1937,7 +1942,12 @@ paths:
       summary: Get Private DNS
       description: Retrieves a Private DNS by ID for a given network.
       parameters:
-        - $ref: '#/components/parameters/NetworkIdForChildren'
+        - name: networkId
+          in: path
+          description: The network to operate on.
+          required: true
+          schema:
+            $ref: '#/components/schemas/NetworkId'
         - $ref: '#/components/parameters/PrivateDnsId'
       responses:
         '200':
@@ -1961,7 +1971,12 @@ paths:
       summary: Delete Private DNS
       description: Deletes a Private DNS by ID for a given network.
       parameters:
-        - $ref: '#/components/parameters/NetworkIdForChildren'
+        - name: networkId
+          in: path
+          description: The network to operate on.
+          required: true
+          schema:
+            $ref: '#/components/schemas/NetworkId'
         - $ref: '#/components/parameters/PrivateDnsId'
       responses:
         '204':
@@ -1998,7 +2013,12 @@ paths:
       summary: Create Transit Gateway
       description: Creates a new transit gateway for a given network.
       parameters:
-        - $ref: '#/components/parameters/NetworkIdForChildren'
+        - name: networkId
+          in: path
+          description: The network to operate on.
+          required: true
+          schema:
+            $ref: '#/components/schemas/NetworkId'
       requestBody:
         required: true
         content:
@@ -2042,7 +2062,13 @@ paths:
       summary: Get Transit Gateway
       description: Retrieves a transit gateway by ID for a given network.
       parameters:
-        - $ref: '#/components/parameters/NetworkIdForChildren'
+        - name: networkId
+          in: path
+          description: The network to operate on.
+          required: true
+          schema:
+            $ref: '#/components/schemas/NetworkId'
+          x-speakeasy-param-force-new: true
         - $ref: '#/components/parameters/TransitGatewayId'
       responses:
         '200':
@@ -2066,7 +2092,13 @@ paths:
       summary: Delete Transit Gateway
       description: Deletes a transit gateway by ID for a given network.
       parameters:
-        - $ref: '#/components/parameters/NetworkIdForChildren'
+        - name: networkId
+          in: path
+          description: The network to operate on.
+          required: true
+          schema:
+            $ref: '#/components/schemas/NetworkId'
+          x-speakeasy-param-force-new: true
         - $ref: '#/components/parameters/TransitGatewayId'
       responses:
         '204':
@@ -15917,13 +15949,6 @@ components:
       schema:
         $ref: '#/components/schemas/NetworkId'
       x-speakeasy-match: id
-    NetworkIdForChildren:
-      name: networkId
-      in: path
-      description: The network to operate on.
-      required: true
-      schema:
-        $ref: '#/components/schemas/NetworkId'
     PageId:
       schema:
         type: string
@@ -18095,7 +18120,7 @@ components:
         - entity_version
         - created_at
         - updated_at
-      title: AWS VPC Peering Gateway
+      title: AWS Vpc Peering Gateway
     AwsResourceEndpointGatewayResponse:
       type: object
       properties:
@@ -18333,7 +18358,7 @@ components:
         - name
         - cidr_blocks
         - transit_gateway_attachment_config
-      title: AWS VPC Peering Gateway
+      title: AWS Vpc Peering Gateway
       x-speakeasy-name-override: AWSVpcPeeringGateway
     CreateAwsResourceEndpointGateway:
       type: object
@@ -49456,11 +49481,9 @@ components:
               display_name:
                 description: The display name of the portal. This value will be the portal's `name` in Portal API.
                 type: string
-                default: null
                 maxLength: 255
                 minLength: 1
-                nullable: true
-                x-speakeasy-param-computed: false
+                nullable: false
               description:
                 description: A description of the portal.
                 type: string
@@ -49546,11 +49569,9 @@ components:
               display_name:
                 description: The display name of the portal. This value will be the portal's `name` in Portal API.
                 type: string
-                default: null
                 maxLength: 255
                 minLength: 1
-                nullable: true
-                x-speakeasy-param-computed: false
+                nullable: false
               description:
                 description: A description of the portal.
                 type: string
@@ -50861,6 +50882,7 @@ components:
                       type: string
                       maxLength: 255
                       minLength: 1
+                      nullable: false
                     description:
                       description: A description of the portal.
                       type: string
@@ -50962,6 +50984,7 @@ components:
                 type: string
                 maxLength: 255
                 minLength: 1
+                nullable: false
               description:
                 description: A description of the portal.
                 type: string
