@@ -67,7 +67,7 @@ type CreatePortal struct {
 	// The name of the portal, used to distinguish it from other portals. Name must be unique.
 	Name string `json:"name"`
 	// The display name of the portal. This value will be the portal's `name` in Portal API.
-	DisplayName *string `default:"null" json:"display_name"`
+	DisplayName *string `json:"display_name,omitempty"`
 	// A description of the portal.
 	Description *string `default:"null" json:"description"`
 	// Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications.
