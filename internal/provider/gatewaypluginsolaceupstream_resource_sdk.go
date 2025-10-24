@@ -24,10 +24,10 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) RefreshFromSharedSolaceUpstre
 		} else {
 			r.Config.Message.DeliveryMode = types.StringNull()
 		}
-		r.Config.Message.Destinations = []tfTypes.SolaceUpstreamPluginDestinations{}
+		r.Config.Message.Destinations = []tfTypes.Binds{}
 
 		for _, destinationsItem := range resp.Config.Message.Destinations {
-			var destinations tfTypes.SolaceUpstreamPluginDestinations
+			var destinations tfTypes.Binds
 
 			destinations.Name = types.StringValue(destinationsItem.Name)
 			if destinationsItem.Type != nil {
@@ -57,7 +57,7 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) RefreshFromSharedSolaceUpstre
 		if resp.Config.Session.Authentication == nil {
 			r.Config.Session.Authentication = nil
 		} else {
-			r.Config.Session.Authentication = &tfTypes.SolaceUpstreamPluginAuthentication{}
+			r.Config.Session.Authentication = &tfTypes.SolaceConsumePluginAuthentication{}
 			r.Config.Session.Authentication.AccessToken = types.StringPointerValue(resp.Config.Session.Authentication.AccessToken)
 			r.Config.Session.Authentication.AccessTokenHeader = types.StringPointerValue(resp.Config.Session.Authentication.AccessTokenHeader)
 			r.Config.Session.Authentication.IDToken = types.StringPointerValue(resp.Config.Session.Authentication.IDToken)
@@ -70,9 +70,14 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) RefreshFromSharedSolaceUpstre
 			}
 			r.Config.Session.Authentication.Username = types.StringPointerValue(resp.Config.Session.Authentication.Username)
 		}
+		r.Config.Session.CalculateMessageExpiry = types.BoolPointerValue(resp.Config.Session.CalculateMessageExpiry)
 		r.Config.Session.ConnectTimeout = types.Int64PointerValue(resp.Config.Session.ConnectTimeout)
+		r.Config.Session.GenerateRcvTimestamps = types.BoolPointerValue(resp.Config.Session.GenerateRcvTimestamps)
+		r.Config.Session.GenerateSendTimestamps = types.BoolPointerValue(resp.Config.Session.GenerateSendTimestamps)
+		r.Config.Session.GenerateSenderID = types.BoolPointerValue(resp.Config.Session.GenerateSenderID)
+		r.Config.Session.GenerateSequenceNumber = types.BoolPointerValue(resp.Config.Session.GenerateSequenceNumber)
 		r.Config.Session.Host = types.StringValue(resp.Config.Session.Host)
-		if resp.Config.Session.Properties != nil {
+		if len(resp.Config.Session.Properties) > 0 {
 			r.Config.Session.Properties = make(map[string]jsontypes.Normalized, len(resp.Config.Session.Properties))
 			for key, value := range resp.Config.Session.Properties {
 				result, _ := json.Marshal(value)
@@ -88,11 +93,11 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) RefreshFromSharedSolaceUpstre
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			r.Ordering = &tfTypes.AcePluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After = &tfTypes.AcePluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -101,7 +106,7 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) RefreshFromSharedSolaceUpstre
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.AcePluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
@@ -337,9 +342,9 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToSharedSolaceUpstreamPlugin(
 	} else {
 		defaultContent = nil
 	}
-	deliveryMode := new(shared.DeliveryMode)
+	deliveryMode := new(shared.SolaceUpstreamPluginDeliveryMode)
 	if !r.Config.Message.DeliveryMode.IsUnknown() && !r.Config.Message.DeliveryMode.IsNull() {
-		*deliveryMode = shared.DeliveryMode(r.Config.Message.DeliveryMode.ValueString())
+		*deliveryMode = shared.SolaceUpstreamPluginDeliveryMode(r.Config.Message.DeliveryMode.ValueString())
 	} else {
 		deliveryMode = nil
 	}
@@ -426,7 +431,7 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToSharedSolaceUpstreamPlugin(
 	} else {
 		ttl = nil
 	}
-	message := shared.Message{
+	message := shared.SolaceUpstreamPluginMessage{
 		AckTimeout:     ackTimeout,
 		DefaultContent: defaultContent,
 		DeliveryMode:   deliveryMode,
@@ -475,9 +480,9 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToSharedSolaceUpstreamPlugin(
 		} else {
 			password = nil
 		}
-		scheme := new(shared.Scheme)
+		scheme := new(shared.SolaceUpstreamPluginScheme)
 		if !r.Config.Session.Authentication.Scheme.IsUnknown() && !r.Config.Session.Authentication.Scheme.IsNull() {
-			*scheme = shared.Scheme(r.Config.Session.Authentication.Scheme.ValueString())
+			*scheme = shared.SolaceUpstreamPluginScheme(r.Config.Session.Authentication.Scheme.ValueString())
 		} else {
 			scheme = nil
 		}
@@ -497,11 +502,41 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToSharedSolaceUpstreamPlugin(
 			Username:          username,
 		}
 	}
+	calculateMessageExpiry := new(bool)
+	if !r.Config.Session.CalculateMessageExpiry.IsUnknown() && !r.Config.Session.CalculateMessageExpiry.IsNull() {
+		*calculateMessageExpiry = r.Config.Session.CalculateMessageExpiry.ValueBool()
+	} else {
+		calculateMessageExpiry = nil
+	}
 	connectTimeout := new(int64)
 	if !r.Config.Session.ConnectTimeout.IsUnknown() && !r.Config.Session.ConnectTimeout.IsNull() {
 		*connectTimeout = r.Config.Session.ConnectTimeout.ValueInt64()
 	} else {
 		connectTimeout = nil
+	}
+	generateRcvTimestamps := new(bool)
+	if !r.Config.Session.GenerateRcvTimestamps.IsUnknown() && !r.Config.Session.GenerateRcvTimestamps.IsNull() {
+		*generateRcvTimestamps = r.Config.Session.GenerateRcvTimestamps.ValueBool()
+	} else {
+		generateRcvTimestamps = nil
+	}
+	generateSendTimestamps := new(bool)
+	if !r.Config.Session.GenerateSendTimestamps.IsUnknown() && !r.Config.Session.GenerateSendTimestamps.IsNull() {
+		*generateSendTimestamps = r.Config.Session.GenerateSendTimestamps.ValueBool()
+	} else {
+		generateSendTimestamps = nil
+	}
+	generateSenderID := new(bool)
+	if !r.Config.Session.GenerateSenderID.IsUnknown() && !r.Config.Session.GenerateSenderID.IsNull() {
+		*generateSenderID = r.Config.Session.GenerateSenderID.ValueBool()
+	} else {
+		generateSenderID = nil
+	}
+	generateSequenceNumber := new(bool)
+	if !r.Config.Session.GenerateSequenceNumber.IsUnknown() && !r.Config.Session.GenerateSequenceNumber.IsNull() {
+		*generateSequenceNumber = r.Config.Session.GenerateSequenceNumber.ValueBool()
+	} else {
+		generateSequenceNumber = nil
 	}
 	var host string
 	host = r.Config.Session.Host.ValueString()
@@ -524,9 +559,14 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToSharedSolaceUpstreamPlugin(
 	} else {
 		vpnName = nil
 	}
-	session := shared.Session{
+	session := shared.SolaceUpstreamPluginSession{
 		Authentication:         authentication,
+		CalculateMessageExpiry: calculateMessageExpiry,
 		ConnectTimeout:         connectTimeout,
+		GenerateRcvTimestamps:  generateRcvTimestamps,
+		GenerateSendTimestamps: generateSendTimestamps,
+		GenerateSenderID:       generateSenderID,
+		GenerateSequenceNumber: generateSequenceNumber,
 		Host:                   host,
 		Properties:             properties,
 		SslValidateCertificate: sslValidateCertificate,

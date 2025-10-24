@@ -48,7 +48,7 @@ type GatewayPluginPrometheusResourceModel struct {
 	Enabled        types.Bool                      `tfsdk:"enabled"`
 	ID             types.String                    `tfsdk:"id"`
 	InstanceName   types.String                    `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering      `tfsdk:"ordering"`
+	Ordering       *tfTypes.AcePluginOrdering      `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials              `tfsdk:"partials"`
 	Protocols      []types.String                  `tfsdk:"protocols"`
 	Route          *tfTypes.Set                    `tfsdk:"route"`
@@ -115,10 +115,7 @@ func (r *GatewayPluginPrometheusResource) Schema(ctx context.Context, req resour
 						Description: `A boolean value that determines if upstream metrics should be collected. If enabled, ` + "`" + `upstream_target_health` + "`" + ` metric will be exported. Default: false`,
 					},
 					"wasm_metrics": schema.BoolAttribute{
-						Computed:    true,
-						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `A boolean value that determines if Wasm metrics should be collected. Default: false`,
+						Optional: true,
 					},
 				},
 			},

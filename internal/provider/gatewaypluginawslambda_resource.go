@@ -52,7 +52,7 @@ type GatewayPluginAwsLambdaResourceModel struct {
 	Enabled        types.Bool                     `tfsdk:"enabled"`
 	ID             types.String                   `tfsdk:"id"`
 	InstanceName   types.String                   `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering     `tfsdk:"ordering"`
+	Ordering       *tfTypes.AcePluginOrdering     `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials             `tfsdk:"partials"`
 	Protocols      []types.String                 `tfsdk:"protocols"`
 	Route          *tfTypes.Set                   `tfsdk:"route"`
@@ -73,33 +73,34 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 				Computed: true,
 				Optional: true,
 				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"aws_assume_role_arn":       types.StringType,
-					"aws_imds_protocol_version": types.StringType,
-					"aws_key":                   types.StringType,
-					"aws_region":                types.StringType,
-					"aws_role_session_name":     types.StringType,
-					"aws_secret":                types.StringType,
-					"aws_sts_endpoint_url":      types.StringType,
-					"awsgateway_compatible":     types.BoolType,
-					"base64_encode_body":        types.BoolType,
-					"disable_https":             types.BoolType,
-					"empty_arrays_mode":         types.StringType,
-					"forward_request_body":      types.BoolType,
-					"forward_request_headers":   types.BoolType,
-					"forward_request_method":    types.BoolType,
-					"forward_request_uri":       types.BoolType,
-					"function_name":             types.StringType,
-					"host":                      types.StringType,
-					"invocation_type":           types.StringType,
-					"is_proxy_integration":      types.BoolType,
-					"keepalive":                 types.Float64Type,
-					"log_type":                  types.StringType,
-					"port":                      types.Int64Type,
-					"proxy_url":                 types.StringType,
-					"qualifier":                 types.StringType,
-					"skip_large_bodies":         types.BoolType,
-					"timeout":                   types.Float64Type,
-					"unhandled_status":          types.Int64Type,
+					"aws_assume_role_arn":                   types.StringType,
+					"aws_imds_protocol_version":             types.StringType,
+					"aws_key":                               types.StringType,
+					"aws_region":                            types.StringType,
+					"aws_role_session_name":                 types.StringType,
+					"aws_secret":                            types.StringType,
+					"aws_sts_endpoint_url":                  types.StringType,
+					"awsgateway_compatible":                 types.BoolType,
+					"awsgateway_compatible_payload_version": types.StringType,
+					"base64_encode_body":                    types.BoolType,
+					"disable_https":                         types.BoolType,
+					"empty_arrays_mode":                     types.StringType,
+					"forward_request_body":                  types.BoolType,
+					"forward_request_headers":               types.BoolType,
+					"forward_request_method":                types.BoolType,
+					"forward_request_uri":                   types.BoolType,
+					"function_name":                         types.StringType,
+					"host":                                  types.StringType,
+					"invocation_type":                       types.StringType,
+					"is_proxy_integration":                  types.BoolType,
+					"keepalive":                             types.Float64Type,
+					"log_type":                              types.StringType,
+					"port":                                  types.Int64Type,
+					"proxy_url":                             types.StringType,
+					"qualifier":                             types.StringType,
+					"skip_large_bodies":                     types.BoolType,
+					"timeout":                               types.Float64Type,
+					"unhandled_status":                      types.Int64Type,
 				})),
 				Attributes: map[string]schema.Attribute{
 					"aws_assume_role_arn": schema.StringAttribute{
@@ -142,6 +143,18 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 						Optional:    true,
 						Default:     booldefault.StaticBool(false),
 						Description: `An optional value that defines whether the plugin should wrap requests into the Amazon API gateway. Default: false`,
+					},
+					"awsgateway_compatible_payload_version": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     stringdefault.StaticString(`1.0`),
+						Description: `An optional value that defines which version will be used to generate the AWS API Gateway compatible payload. The default will be ` + "`" + `1.0` + "`" + `. Default: "1.0"; must be one of ["1.0", "2.0"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"1.0",
+								"2.0",
+							),
+						},
 					},
 					"base64_encode_body": schema.BoolAttribute{
 						Computed:    true,

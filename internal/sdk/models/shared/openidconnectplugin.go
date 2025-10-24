@@ -190,28 +190,28 @@ func (e *BearerTokenParamType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type ClientAlg string
+type OpenidConnectPluginClientAlg string
 
 const (
-	ClientAlgEs256 ClientAlg = "ES256"
-	ClientAlgEs384 ClientAlg = "ES384"
-	ClientAlgEs512 ClientAlg = "ES512"
-	ClientAlgEdDsa ClientAlg = "EdDSA"
-	ClientAlgHs256 ClientAlg = "HS256"
-	ClientAlgHs384 ClientAlg = "HS384"
-	ClientAlgHs512 ClientAlg = "HS512"
-	ClientAlgPs256 ClientAlg = "PS256"
-	ClientAlgPs384 ClientAlg = "PS384"
-	ClientAlgPs512 ClientAlg = "PS512"
-	ClientAlgRs256 ClientAlg = "RS256"
-	ClientAlgRs384 ClientAlg = "RS384"
-	ClientAlgRs512 ClientAlg = "RS512"
+	OpenidConnectPluginClientAlgEs256 OpenidConnectPluginClientAlg = "ES256"
+	OpenidConnectPluginClientAlgEs384 OpenidConnectPluginClientAlg = "ES384"
+	OpenidConnectPluginClientAlgEs512 OpenidConnectPluginClientAlg = "ES512"
+	OpenidConnectPluginClientAlgEdDsa OpenidConnectPluginClientAlg = "EdDSA"
+	OpenidConnectPluginClientAlgHs256 OpenidConnectPluginClientAlg = "HS256"
+	OpenidConnectPluginClientAlgHs384 OpenidConnectPluginClientAlg = "HS384"
+	OpenidConnectPluginClientAlgHs512 OpenidConnectPluginClientAlg = "HS512"
+	OpenidConnectPluginClientAlgPs256 OpenidConnectPluginClientAlg = "PS256"
+	OpenidConnectPluginClientAlgPs384 OpenidConnectPluginClientAlg = "PS384"
+	OpenidConnectPluginClientAlgPs512 OpenidConnectPluginClientAlg = "PS512"
+	OpenidConnectPluginClientAlgRs256 OpenidConnectPluginClientAlg = "RS256"
+	OpenidConnectPluginClientAlgRs384 OpenidConnectPluginClientAlg = "RS384"
+	OpenidConnectPluginClientAlgRs512 OpenidConnectPluginClientAlg = "RS512"
 )
 
-func (e ClientAlg) ToPointer() *ClientAlg {
+func (e OpenidConnectPluginClientAlg) ToPointer() *OpenidConnectPluginClientAlg {
 	return &e
 }
-func (e *ClientAlg) UnmarshalJSON(data []byte) error {
+func (e *OpenidConnectPluginClientAlg) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -242,29 +242,29 @@ func (e *ClientAlg) UnmarshalJSON(data []byte) error {
 	case "RS384":
 		fallthrough
 	case "RS512":
-		*e = ClientAlg(v)
+		*e = OpenidConnectPluginClientAlg(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for ClientAlg: %v", v)
+		return fmt.Errorf("invalid value for OpenidConnectPluginClientAlg: %v", v)
 	}
 }
 
-type ClientAuth string
+type OpenidConnectPluginClientAuth string
 
 const (
-	ClientAuthClientSecretBasic       ClientAuth = "client_secret_basic"
-	ClientAuthClientSecretJwt         ClientAuth = "client_secret_jwt"
-	ClientAuthClientSecretPost        ClientAuth = "client_secret_post"
-	ClientAuthNone                    ClientAuth = "none"
-	ClientAuthPrivateKeyJwt           ClientAuth = "private_key_jwt"
-	ClientAuthSelfSignedTLSClientAuth ClientAuth = "self_signed_tls_client_auth"
-	ClientAuthTLSClientAuth           ClientAuth = "tls_client_auth"
+	OpenidConnectPluginClientAuthClientSecretBasic       OpenidConnectPluginClientAuth = "client_secret_basic"
+	OpenidConnectPluginClientAuthClientSecretJwt         OpenidConnectPluginClientAuth = "client_secret_jwt"
+	OpenidConnectPluginClientAuthClientSecretPost        OpenidConnectPluginClientAuth = "client_secret_post"
+	OpenidConnectPluginClientAuthNone                    OpenidConnectPluginClientAuth = "none"
+	OpenidConnectPluginClientAuthPrivateKeyJwt           OpenidConnectPluginClientAuth = "private_key_jwt"
+	OpenidConnectPluginClientAuthSelfSignedTLSClientAuth OpenidConnectPluginClientAuth = "self_signed_tls_client_auth"
+	OpenidConnectPluginClientAuthTLSClientAuth           OpenidConnectPluginClientAuth = "tls_client_auth"
 )
 
-func (e ClientAuth) ToPointer() *ClientAuth {
+func (e OpenidConnectPluginClientAuth) ToPointer() *OpenidConnectPluginClientAuth {
 	return &e
 }
-func (e *ClientAuth) UnmarshalJSON(data []byte) error {
+func (e *OpenidConnectPluginClientAuth) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -283,10 +283,10 @@ func (e *ClientAuth) UnmarshalJSON(data []byte) error {
 	case "self_signed_tls_client_auth":
 		fallthrough
 	case "tls_client_auth":
-		*e = ClientAuth(v)
+		*e = OpenidConnectPluginClientAuth(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for ClientAuth: %v", v)
+		return fmt.Errorf("invalid value for OpenidConnectPluginClientAuth: %v", v)
 	}
 }
 
@@ -1802,6 +1802,35 @@ func (e *RevocationEndpointAuthMethod) UnmarshalJSON(data []byte) error {
 	}
 }
 
+type SessionBind string
+
+const (
+	SessionBindIP        SessionBind = "ip"
+	SessionBindScheme    SessionBind = "scheme"
+	SessionBindUserAgent SessionBind = "user-agent"
+)
+
+func (e SessionBind) ToPointer() *SessionBind {
+	return &e
+}
+func (e *SessionBind) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "ip":
+		fallthrough
+	case "scheme":
+		fallthrough
+	case "user-agent":
+		*e = SessionBind(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for SessionBind: %v", v)
+	}
+}
+
 // SessionCookieSameSite - Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
 type SessionCookieSameSite string
 
@@ -2115,11 +2144,11 @@ type OpenidConnectPluginConfig struct {
 	// If given, these claims are forbidden in the token payload.
 	ClaimsForbidden []string `json:"claims_forbidden"`
 	// The algorithm to use for client_secret_jwt (only HS***) or private_key_jwt authentication.
-	ClientAlg []ClientAlg `json:"client_alg"`
+	ClientAlg []OpenidConnectPluginClientAlg `json:"client_alg"`
 	// The client to use for this request (the selection is made with a request parameter with the same name).
 	ClientArg *string `default:"client_id" json:"client_arg"`
 	// The default OpenID Connect client authentication method is 'client_secret_basic' (using 'Authorization: Basic' header), 'client_secret_post' (credentials in body), 'client_secret_jwt' (signed client assertion in body), 'private_key_jwt' (private key-signed assertion), 'tls_client_auth' (client certificate), 'self_signed_tls_client_auth' (self-signed client certificate), and 'none' (no authentication).
-	ClientAuth []ClientAuth `json:"client_auth"`
+	ClientAuth []OpenidConnectPluginClientAuth `json:"client_auth"`
 	// Where to look for the client credentials: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search from the HTTP request body.
 	ClientCredentialsParamType []ClientCredentialsParamType `json:"client_credentials_param_type,omitempty"`
 	// The client id(s) that the plugin uses when it calls authenticated endpoints on the identity provider.
@@ -2135,6 +2164,10 @@ type OpenidConnectPluginConfig struct {
 	ConsumerBy []OpenidConnectPluginConsumerBy `json:"consumer_by,omitempty"`
 	// The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	ConsumerClaim []string `json:"consumer_claim"`
+	// The claim used for consumer groups mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
+	ConsumerGroupsClaim []string `json:"consumer_groups_claim"`
+	// Do not terminate the request if consumer groups mapping fails.
+	ConsumerGroupsOptional *bool `default:"false" json:"consumer_groups_optional"`
 	// Do not terminate the request if consumer mapping fails.
 	ConsumerOptional *bool `default:"false" json:"consumer_optional"`
 	// The claim used to derive virtual credentials (e.g. to be consumed by the rate-limiting plugin), in case the consumer mapping is not used. If multiple values are set, it means the claim is inside a nested object of the token payload.
@@ -2354,6 +2387,8 @@ type OpenidConnectPluginConfig struct {
 	SessionAbsoluteTimeout *float64 `default:"86400" json:"session_absolute_timeout"`
 	// The session audience, which is the intended target application. For example `"my-application"`.
 	SessionAudience *string `default:"default" json:"session_audience"`
+	// Bind the session to data acquired from the HTTP request or connection.
+	SessionBind []SessionBind `json:"session_bind"`
 	// The session cookie Domain flag.
 	SessionCookieDomain *string `default:"null" json:"session_cookie_domain"`
 	// Forbids JavaScript from accessing the cookie, for example, through the `Document.cookie` property.
@@ -2724,7 +2759,7 @@ func (o *OpenidConnectPluginConfig) GetClaimsForbidden() []string {
 	return o.ClaimsForbidden
 }
 
-func (o *OpenidConnectPluginConfig) GetClientAlg() []ClientAlg {
+func (o *OpenidConnectPluginConfig) GetClientAlg() []OpenidConnectPluginClientAlg {
 	if o == nil {
 		return nil
 	}
@@ -2738,7 +2773,7 @@ func (o *OpenidConnectPluginConfig) GetClientArg() *string {
 	return o.ClientArg
 }
 
-func (o *OpenidConnectPluginConfig) GetClientAuth() []ClientAuth {
+func (o *OpenidConnectPluginConfig) GetClientAuth() []OpenidConnectPluginClientAuth {
 	if o == nil {
 		return nil
 	}
@@ -2799,6 +2834,20 @@ func (o *OpenidConnectPluginConfig) GetConsumerClaim() []string {
 		return nil
 	}
 	return o.ConsumerClaim
+}
+
+func (o *OpenidConnectPluginConfig) GetConsumerGroupsClaim() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroupsClaim
+}
+
+func (o *OpenidConnectPluginConfig) GetConsumerGroupsOptional() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroupsOptional
 }
 
 func (o *OpenidConnectPluginConfig) GetConsumerOptional() *bool {
@@ -3562,6 +3611,13 @@ func (o *OpenidConnectPluginConfig) GetSessionAudience() *string {
 		return nil
 	}
 	return o.SessionAudience
+}
+
+func (o *OpenidConnectPluginConfig) GetSessionBind() []SessionBind {
+	if o == nil {
+		return nil
+	}
+	return o.SessionBind
 }
 
 func (o *OpenidConnectPluginConfig) GetSessionCookieDomain() *string {

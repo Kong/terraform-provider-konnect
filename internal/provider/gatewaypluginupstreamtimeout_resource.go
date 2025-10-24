@@ -49,7 +49,7 @@ type GatewayPluginUpstreamTimeoutResourceModel struct {
 	Enabled        types.Bool                           `tfsdk:"enabled"`
 	ID             types.String                         `tfsdk:"id"`
 	InstanceName   types.String                         `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering           `tfsdk:"ordering"`
+	Ordering       *tfTypes.AcePluginOrdering           `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials                   `tfsdk:"partials"`
 	Protocols      []types.String                       `tfsdk:"protocols"`
 	Route          *tfTypes.Set                         `tfsdk:"route"`
@@ -77,21 +77,21 @@ func (r *GatewayPluginUpstreamTimeoutResource) Schema(ctx context.Context, req r
 				Attributes: map[string]schema.Attribute{
 					"connect_timeout": schema.Int64Attribute{
 						Optional:    true,
-						Description: `An integer representing a timeout in milliseconds. Must be between 1 and 2^31-2.`,
+						Description: `The timeout in milliseconds for establishing a connection to the upstream server. Must be an integer between 1 and 2^31-2.`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(2147483646),
 						},
 					},
 					"read_timeout": schema.Int64Attribute{
 						Optional:    true,
-						Description: `An integer representing a timeout in milliseconds. Must be between 1 and 2^31-2.`,
+						Description: `The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server. Must be an integer between 1 and 2^31-2.`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(2147483646),
 						},
 					},
 					"send_timeout": schema.Int64Attribute{
 						Optional:    true,
-						Description: `An integer representing a timeout in milliseconds. Must be between 1 and 2^31-2.`,
+						Description: `The timeout in milliseconds between two successive write operations for transmitting a request to the upstream server. Must be an integer between 1 and 2^31-2.`,
 						Validators: []validator.Int64{
 							int64validator.AtMost(2147483646),
 						},

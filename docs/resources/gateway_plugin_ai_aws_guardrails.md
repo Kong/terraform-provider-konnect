@@ -16,8 +16,11 @@ GatewayPluginAiAwsGuardrails Resource
 resource "konnect_gateway_plugin_ai_aws_guardrails" "my_gatewaypluginaiawsguardrails" {
   config = {
     aws_access_key_id     = "...my_aws_access_key_id..."
+    aws_assume_role_arn   = "...my_aws_assume_role_arn..."
     aws_region            = "...my_aws_region..."
+    aws_role_session_name = "...my_aws_role_session_name..."
     aws_secret_access_key = "...my_aws_secret_access_key..."
+    aws_sts_endpoint_url  = "...my_aws_sts_endpoint_url..."
     guarding_mode         = "INPUT"
     guardrails_id         = "...my_guardrails_id..."
     guardrails_version    = "...my_guardrails_version..."
@@ -108,9 +111,12 @@ Required:
 Optional:
 
 - `aws_access_key_id` (String) The AWS access key ID to use for authentication
+- `aws_assume_role_arn` (String) The target AWS IAM role ARN used to access the guardrails service
+- `aws_role_session_name` (String) The identifier of the assumed role session
 - `aws_secret_access_key` (String) The AWS secret access key to use for authentication
+- `aws_sts_endpoint_url` (String) Override the STS endpoint URL when assuming a different role
 - `guarding_mode` (String) The guardrail mode to use for the request. Default: "INPUT"; must be one of ["BOTH", "INPUT", "OUTPUT"]
-- `response_buffer_size` (Number) The amount of token receiving from upstream to be buffered before sending to the guardrails service. This only applies to the response content guard. Default: 100
+- `response_buffer_size` (Number) The amount of bytes receiving from upstream to be buffered before sending to the guardrails service. This only applies to the response content guard. Default: 100
 - `stop_on_error` (Boolean) Stop processing if an error occurs. Default: true
 - `text_source` (String) Select where to pick the 'text' for the Content Guard Services request. Default: "concatenate_all_content"; must be one of ["concatenate_all_content", "concatenate_user_content"]
 - `timeout` (Number) Connection timeout with the bedrock service. Default: 10000

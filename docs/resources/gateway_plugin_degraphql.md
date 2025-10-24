@@ -84,7 +84,7 @@ resource "konnect_gateway_plugin_degraphql" "my_gatewayplugindegraphql" {
 
 Optional:
 
-- `graphql_server_path` (String) A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes). Default: "/graphql"
+- `graphql_server_path` (String) The GraphQL endpoint serve path. Default: "/graphql"
 
 
 <a id="nestedatt--ordering"></a>

@@ -7,8 +7,8 @@ import (
 )
 
 type Llm struct {
-	Auth      *Auth        `tfsdk:"auth"`
-	Logging   *Logging     `tfsdk:"logging"`
-	Model     Model        `tfsdk:"model"`
-	RouteType types.String `tfsdk:"route_type"`
+	Auth      *AiLlmAsJudgePluginAuth    `tfsdk:"auth"`
+	Logging   *AiLlmAsJudgePluginLogging `tfsdk:"logging"`
+	Model     AiLlmAsJudgePluginModel    `tfsdk:"model"`
+	RouteType types.String               `tfsdk:"route_type"`
 }

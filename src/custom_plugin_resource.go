@@ -408,21 +408,21 @@ func tagsToStringSlice(s []string) []basetypes.StringValue {
 	return x
 }
 
-func orderingToValue(o *shared.Ordering) *tfTypes.ACLPluginOrdering {
+func orderingToValue(o *shared.Ordering) *tfTypes.AcePluginOrdering {
 	if o == nil {
 		return nil
 	}
 
-	x := &tfTypes.ACLPluginOrdering{}
+	x := &tfTypes.AcePluginOrdering{}
 
 	if o.After != nil {
-		x.After = &tfTypes.ACLPluginAfter{
+		x.After = &tfTypes.AcePluginAfter{
 			Access: tagsToStringSlice(o.After.Access),
 		}
 	}
 
 	if o.Before != nil {
-		x.Before = &tfTypes.ACLPluginAfter{
+		x.Before = &tfTypes.AcePluginAfter{
 			Access: tagsToStringSlice(o.Before.Access),
 		}
 	}

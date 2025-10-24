@@ -31,9 +31,12 @@ resource "konnect_gateway_plugin_ai_azure_content_safety" "my_gatewaypluginaiazu
     ]
     content_safety_key    = "...my_content_safety_key..."
     content_safety_url    = "...my_content_safety_url..."
+    guarding_mode         = "INPUT"
     halt_on_blocklist_hit = false
     output_type           = "FourSeverityLevels"
+    response_buffer_size  = 7.56
     reveal_failure_reason = false
+    stop_on_error         = false
     text_source           = "concatenate_user_content"
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
@@ -115,9 +118,12 @@ Optional:
 - `blocklist_names` (List of String) Use these configured blocklists (in Azure Content Services) when inspecting content.
 - `categories` (Attributes List) Array of categories, and their thresholds, to measure on. (see [below for nested schema](#nestedatt--config--categories))
 - `content_safety_key` (String) If `azure_use_managed_identity` is true, set the API key to call Content Safety.
+- `guarding_mode` (String) The guard mode to use for the request. Default: "INPUT"; must be one of ["BOTH", "INPUT", "OUTPUT"]
 - `halt_on_blocklist_hit` (Boolean) Tells Azure to reject the request if any blocklist filter is hit. Default: true
 - `output_type` (String) See https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/content-filter#content-filtering-categories. Default: "FourSeverityLevels"; must be one of ["EightSeverityLevels", "FourSeverityLevels"]
+- `response_buffer_size` (Number) The amount of bytes receiving from upstream to be buffered before sending to the guardrails service. This only applies to the response content guard. Default: 100
 - `reveal_failure_reason` (Boolean) Set true to tell the caller why their request was rejected, if so. Default: true
+- `stop_on_error` (Boolean) Stop processing if an error occurs. Default: true
 - `text_source` (String) Select where to pick the 'text' for the Azure Content Services request. Default: "concatenate_all_content"; must be one of ["concatenate_all_content", "concatenate_user_content"]
 
 <a id="nestedatt--config--categories"></a>

@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/float64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -53,7 +54,7 @@ type GatewayPluginRateLimitingAdvancedResourceModel struct {
 	Enabled        types.Bool                               `tfsdk:"enabled"`
 	ID             types.String                             `tfsdk:"id"`
 	InstanceName   types.String                             `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering               `tfsdk:"ordering"`
+	Ordering       *tfTypes.AcePluginOrdering               `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials                       `tfsdk:"partials"`
 	Protocols      []types.String                           `tfsdk:"protocols"`
 	Route          *tfTypes.Set                             `tfsdk:"route"`
@@ -373,6 +374,51 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 					"sync_rate": schema.Float64Attribute{
 						Optional:    true,
 						Description: `How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 will sync the counters in the specified number of seconds. The minimum allowed interval is 0.02 seconds (20ms).`,
+					},
+					"throttling": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"enabled":     types.BoolType,
+							"interval":    types.Float64Type,
+							"queue_limit": types.Float64Type,
+							"retry_times": types.Float64Type,
+						})),
+						Attributes: map[string]schema.Attribute{
+							"enabled": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Determines if the throttling feature is enabled or not. Default: false`,
+							},
+							"interval": schema.Float64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     float64default.StaticFloat64(5),
+								Description: `The period between two successive retries for an individual request (in seconds). Default: 5`,
+								Validators: []validator.Float64{
+									float64validator.Between(1, 1000000),
+								},
+							},
+							"queue_limit": schema.Float64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     float64default.StaticFloat64(5),
+								Description: `The maximum number of requests allowed for throttling. Default: 5`,
+								Validators: []validator.Float64{
+									float64validator.Between(1, 1000000),
+								},
+							},
+							"retry_times": schema.Float64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     float64default.StaticFloat64(3),
+								Description: `The maximum number of retries for an individual request. Default: 3`,
+								Validators: []validator.Float64{
+									float64validator.Between(1, 1000000),
+								},
+							},
+						},
 					},
 					"window_size": schema.ListAttribute{
 						Required:    true,

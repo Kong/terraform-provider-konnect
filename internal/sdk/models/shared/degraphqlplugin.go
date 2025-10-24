@@ -79,7 +79,7 @@ func (d *DegraphqlPluginPartials) GetPath() *string {
 }
 
 type DegraphqlPluginConfig struct {
-	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
+	// The GraphQL endpoint serve path
 	GraphqlServerPath *string `default:"/graphql" json:"graphql_server_path"`
 }
 

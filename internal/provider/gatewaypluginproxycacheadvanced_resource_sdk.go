@@ -26,13 +26,13 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) RefreshFromSharedProxyCac
 		if resp.Config.Memory == nil {
 			r.Config.Memory = nil
 		} else {
-			r.Config.Memory = &tfTypes.Memory{}
+			r.Config.Memory = &tfTypes.DatakitPluginMemory{}
 			r.Config.Memory.DictionaryName = types.StringPointerValue(resp.Config.Memory.DictionaryName)
 		}
 		if resp.Config.Redis == nil {
 			r.Config.Redis = nil
 		} else {
-			r.Config.Redis = &tfTypes.AiProxyAdvancedPluginRedis{}
+			r.Config.Redis = &tfTypes.AcePluginRedis{}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
 			if resp.Config.Redis.ClusterNodes != nil {
 				r.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
@@ -130,11 +130,11 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) RefreshFromSharedProxyCac
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			r.Ordering = &tfTypes.AcePluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After = &tfTypes.AcePluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -143,7 +143,7 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) RefreshFromSharedProxyCac
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.AcePluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

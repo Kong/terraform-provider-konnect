@@ -8,12 +8,14 @@ import (
 
 type AiSanitizerPluginConfig struct {
 	Anonymize        []types.String   `tfsdk:"anonymize"`
+	BlockIfDetected  types.Bool       `tfsdk:"block_if_detected"`
 	CustomPatterns   []CustomPatterns `tfsdk:"custom_patterns"`
 	Host             types.String     `tfsdk:"host"`
 	KeepaliveTimeout types.Float64    `tfsdk:"keepalive_timeout"`
 	Port             types.Float64    `tfsdk:"port"`
 	RecoverRedacted  types.Bool       `tfsdk:"recover_redacted"`
 	RedactType       types.String     `tfsdk:"redact_type"`
+	SanitizationMode types.String     `tfsdk:"sanitization_mode"`
 	Scheme           types.String     `tfsdk:"scheme"`
 	StopOnError      types.Bool       `tfsdk:"stop_on_error"`
 	Timeout          types.Float64    `tfsdk:"timeout"`

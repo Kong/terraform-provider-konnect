@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 9593ece96dcfe974e2584fb60074364c
+  docChecksum: 7589637b24bd029aba3af89c6b60c669
   docVersion: 2.0.0
   speakeasyVersion: 1.636.2
   generationVersion: 2.723.8
@@ -162,6 +162,9 @@ generatedFiles:
   - examples/resources/konnect_gateway_partial/import-by-string-id.tf
   - examples/resources/konnect_gateway_partial/import.sh
   - examples/resources/konnect_gateway_partial/resource.tf
+  - examples/resources/konnect_gateway_plugin_ace/import-by-string-id.tf
+  - examples/resources/konnect_gateway_plugin_ace/import.sh
+  - examples/resources/konnect_gateway_plugin_ace/resource.tf
   - examples/resources/konnect_gateway_plugin_acl/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_acl/import.sh
   - examples/resources/konnect_gateway_plugin_acl/resource.tf
@@ -174,6 +177,18 @@ generatedFiles:
   - examples/resources/konnect_gateway_plugin_ai_azure_content_safety/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_ai_azure_content_safety/import.sh
   - examples/resources/konnect_gateway_plugin_ai_azure_content_safety/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_gcp_model_armor/import-by-string-id.tf
+  - examples/resources/konnect_gateway_plugin_ai_gcp_model_armor/import.sh
+  - examples/resources/konnect_gateway_plugin_ai_gcp_model_armor/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_llm_as_judge/import-by-string-id.tf
+  - examples/resources/konnect_gateway_plugin_ai_llm_as_judge/import.sh
+  - examples/resources/konnect_gateway_plugin_ai_llm_as_judge/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_mcp_oauth2/import-by-string-id.tf
+  - examples/resources/konnect_gateway_plugin_ai_mcp_oauth2/import.sh
+  - examples/resources/konnect_gateway_plugin_ai_mcp_oauth2/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_mcp_proxy/import-by-string-id.tf
+  - examples/resources/konnect_gateway_plugin_ai_mcp_proxy/import.sh
+  - examples/resources/konnect_gateway_plugin_ai_mcp_proxy/resource.tf
   - examples/resources/konnect_gateway_plugin_ai_prompt_compressor/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_ai_prompt_compressor/import.sh
   - examples/resources/konnect_gateway_plugin_ai_prompt_compressor/resource.tf
@@ -213,6 +228,9 @@ generatedFiles:
   - examples/resources/konnect_gateway_plugin_ai_semantic_prompt_guard/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_ai_semantic_prompt_guard/import.sh
   - examples/resources/konnect_gateway_plugin_ai_semantic_prompt_guard/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_semantic_response_guard/import-by-string-id.tf
+  - examples/resources/konnect_gateway_plugin_ai_semantic_response_guard/import.sh
+  - examples/resources/konnect_gateway_plugin_ai_semantic_response_guard/resource.tf
   - examples/resources/konnect_gateway_plugin_app_dynamics/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_app_dynamics/import.sh
   - examples/resources/konnect_gateway_plugin_app_dynamics/resource.tf
@@ -411,6 +429,12 @@ generatedFiles:
   - examples/resources/konnect_gateway_plugin_session/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_session/import.sh
   - examples/resources/konnect_gateway_plugin_session/resource.tf
+  - examples/resources/konnect_gateway_plugin_solace_consume/import-by-string-id.tf
+  - examples/resources/konnect_gateway_plugin_solace_consume/import.sh
+  - examples/resources/konnect_gateway_plugin_solace_consume/resource.tf
+  - examples/resources/konnect_gateway_plugin_solace_log/import-by-string-id.tf
+  - examples/resources/konnect_gateway_plugin_solace_log/import.sh
+  - examples/resources/konnect_gateway_plugin_solace_log/resource.tf
   - examples/resources/konnect_gateway_plugin_solace_upstream/import-by-string-id.tf
   - examples/resources/konnect_gateway_plugin_solace_upstream/import.sh
   - examples/resources/konnect_gateway_plugin_solace_upstream/resource.tf
@@ -653,6 +677,8 @@ generatedFiles:
   - internal/provider/gatewaymtlsauth_resource_sdk.go
   - internal/provider/gatewaypartial_resource.go
   - internal/provider/gatewaypartial_resource_sdk.go
+  - internal/provider/gatewaypluginace_resource.go
+  - internal/provider/gatewaypluginace_resource_sdk.go
   - internal/provider/gatewaypluginacl_resource.go
   - internal/provider/gatewaypluginacl_resource_sdk.go
   - internal/provider/gatewaypluginacme_resource.go
@@ -661,6 +687,14 @@ generatedFiles:
   - internal/provider/gatewaypluginaiawsguardrails_resource_sdk.go
   - internal/provider/gatewaypluginaiazurecontentsafety_resource.go
   - internal/provider/gatewaypluginaiazurecontentsafety_resource_sdk.go
+  - internal/provider/gatewaypluginaigcpmodelarmor_resource.go
+  - internal/provider/gatewaypluginaigcpmodelarmor_resource_sdk.go
+  - internal/provider/gatewaypluginaillmasjudge_resource.go
+  - internal/provider/gatewaypluginaillmasjudge_resource_sdk.go
+  - internal/provider/gatewaypluginaimcpoauth2_resource.go
+  - internal/provider/gatewaypluginaimcpoauth2_resource_sdk.go
+  - internal/provider/gatewaypluginaimcpproxy_resource.go
+  - internal/provider/gatewaypluginaimcpproxy_resource_sdk.go
   - internal/provider/gatewaypluginaipromptcompressor_resource.go
   - internal/provider/gatewaypluginaipromptcompressor_resource_sdk.go
   - internal/provider/gatewaypluginaipromptdecorator_resource.go
@@ -687,6 +721,8 @@ generatedFiles:
   - internal/provider/gatewaypluginaisemanticcache_resource_sdk.go
   - internal/provider/gatewaypluginaisemanticpromptguard_resource.go
   - internal/provider/gatewaypluginaisemanticpromptguard_resource_sdk.go
+  - internal/provider/gatewaypluginaisemanticresponseguard_resource.go
+  - internal/provider/gatewaypluginaisemanticresponseguard_resource_sdk.go
   - internal/provider/gatewaypluginappdynamics_resource.go
   - internal/provider/gatewaypluginappdynamics_resource_sdk.go
   - internal/provider/gatewaypluginawslambda_resource.go
@@ -819,6 +855,10 @@ generatedFiles:
   - internal/provider/gatewaypluginserviceprotection_resource_sdk.go
   - internal/provider/gatewaypluginsession_resource.go
   - internal/provider/gatewaypluginsession_resource_sdk.go
+  - internal/provider/gatewaypluginsolaceconsume_resource.go
+  - internal/provider/gatewaypluginsolaceconsume_resource_sdk.go
+  - internal/provider/gatewaypluginsolacelog_resource.go
+  - internal/provider/gatewaypluginsolacelog_resource_sdk.go
   - internal/provider/gatewaypluginsolaceupstream_resource.go
   - internal/provider/gatewaypluginsolaceupstream_resource_sdk.go
   - internal/provider/gatewaypluginstandardwebhooks_resource.go
@@ -942,9 +982,11 @@ generatedFiles:
   - internal/provider/typeconvert/datetime.go
   - internal/provider/typeconvert/int.go
   - internal/provider/types/account_key.go
-  - internal/provider/types/acl_plugin_after.go
+  - internal/provider/types/ace_plugin_after.go
+  - internal/provider/types/ace_plugin_config.go
+  - internal/provider/types/ace_plugin_ordering.go
+  - internal/provider/types/ace_plugin_redis.go
   - internal/provider/types/acl_plugin_config.go
-  - internal/provider/types/acl_plugin_ordering.go
   - internal/provider/types/acme_plugin_config.go
   - internal/provider/types/acme_plugin_redis.go
   - internal/provider/types/acme_plugin_vault.go
@@ -952,15 +994,27 @@ generatedFiles:
   - internal/provider/types/add.go
   - internal/provider/types/ai_aws_guardrails_plugin_config.go
   - internal/provider/types/ai_azure_content_safety_plugin_config.go
+  - internal/provider/types/ai_gcp_model_armor_plugin_config.go
+  - internal/provider/types/ai_llm_as_judge_plugin_auth.go
+  - internal/provider/types/ai_llm_as_judge_plugin_bedrock.go
+  - internal/provider/types/ai_llm_as_judge_plugin_cohere.go
+  - internal/provider/types/ai_llm_as_judge_plugin_config.go
+  - internal/provider/types/ai_llm_as_judge_plugin_gemini.go
+  - internal/provider/types/ai_llm_as_judge_plugin_huggingface.go
+  - internal/provider/types/ai_llm_as_judge_plugin_logging.go
+  - internal/provider/types/ai_llm_as_judge_plugin_model.go
+  - internal/provider/types/ai_llm_as_judge_plugin_options.go
+  - internal/provider/types/ai_mcp_oauth2_plugin_config.go
+  - internal/provider/types/ai_mcp_proxy_plugin_config.go
   - internal/provider/types/ai_prompt_compressor_plugin_config.go
   - internal/provider/types/ai_prompt_decorator_plugin_append.go
   - internal/provider/types/ai_prompt_decorator_plugin_config.go
   - internal/provider/types/ai_prompt_guard_plugin_config.go
   - internal/provider/types/ai_prompt_template_plugin_config.go
   - internal/provider/types/ai_proxy_advanced_plugin_config.go
+  - internal/provider/types/ai_proxy_advanced_plugin_gemini.go
   - internal/provider/types/ai_proxy_advanced_plugin_model.go
   - internal/provider/types/ai_proxy_advanced_plugin_options.go
-  - internal/provider/types/ai_proxy_advanced_plugin_redis.go
   - internal/provider/types/ai_proxy_plugin_config.go
   - internal/provider/types/ai_rag_injector_plugin_config.go
   - internal/provider/types/ai_rag_injector_plugin_vectordb.go
@@ -970,7 +1024,11 @@ generatedFiles:
   - internal/provider/types/ai_sanitizer_plugin_config.go
   - internal/provider/types/ai_semantic_cache_plugin_config.go
   - internal/provider/types/ai_semantic_prompt_guard_plugin_config.go
+  - internal/provider/types/ai_semantic_response_guard_plugin_config.go
+  - internal/provider/types/ai_semantic_response_guard_plugin_rules.go
+  - internal/provider/types/ai_semantic_response_guard_plugin_vectordb.go
   - internal/provider/types/allow.go
+  - internal/provider/types/annotations.go
   - internal/provider/types/api_implementation_service.go
   - internal/provider/types/api_product_portal.go
   - internal/provider/types/api_product_version_auth_strategy.go
@@ -981,7 +1039,6 @@ generatedFiles:
   - internal/provider/types/app_auth_strategy_key_auth_request_configs.go
   - internal/provider/types/app_auth_strategy_open_id_connect_request.go
   - internal/provider/types/app_auth_strategy_open_id_connect_request_configs.go
-  - internal/provider/types/auth.go
   - internal/provider/types/auth_strategy.go
   - internal/provider/types/auth_strategy_client_credentials.go
   - internal/provider/types/auth_strategy_key_auth.go
@@ -1011,11 +1068,12 @@ generatedFiles:
   - internal/provider/types/balancer.go
   - internal/provider/types/basic.go
   - internal/provider/types/basic_auth_plugin_config.go
-  - internal/provider/types/bedrock.go
   - internal/provider/types/behavior.go
   - internal/provider/types/binary.go
+  - internal/provider/types/binds.go
   - internal/provider/types/bootstrap_servers.go
   - internal/provider/types/bot_detection_plugin_config.go
+  - internal/provider/types/branch.go
   - internal/provider/types/button.go
   - internal/provider/types/cache.go
   - internal/provider/types/call.go
@@ -1023,10 +1081,9 @@ generatedFiles:
   - internal/provider/types/canary_plugin_config.go
   - internal/provider/types/catalog.go
   - internal/provider/types/categories.go
-  - internal/provider/types/client.go
+  - internal/provider/types/claim_to_header.go
   - internal/provider/types/client_jwk.go
   - internal/provider/types/cluster_type.go
-  - internal/provider/types/cohere.go
   - internal/provider/types/colors.go
   - internal/provider/types/compression_ranges.go
   - internal/provider/types/config.go
@@ -1053,7 +1110,11 @@ generatedFiles:
   - internal/provider/types/custom_injections.go
   - internal/provider/types/custom_patterns.go
   - internal/provider/types/datadog_plugin_config.go
+  - internal/provider/types/datakit_plugin_cache.go
   - internal/provider/types/datakit_plugin_config.go
+  - internal/provider/types/datakit_plugin_memory.go
+  - internal/provider/types/datakit_plugin_nodes_inputs.go
+  - internal/provider/types/datakit_plugin_nodes_outputs.go
   - internal/provider/types/dcr_provider.go
   - internal/provider/types/degraphql_plugin_config.go
   - internal/provider/types/destinations.go
@@ -1063,6 +1124,7 @@ generatedFiles:
   - internal/provider/types/exit_transformer_plugin_config.go
   - internal/provider/types/extra_options.go
   - internal/provider/types/file_log_plugin_config.go
+  - internal/provider/types/flow.go
   - internal/provider/types/forward_proxy_plugin_config.go
   - internal/provider/types/gateway_service_payload.go
   - internal/provider/types/gcp_private_hosted_zone_attachment_config.go
@@ -1070,7 +1132,6 @@ generatedFiles:
   - internal/provider/types/gcp_vpc_peering_transit_gateway.go
   - internal/provider/types/gcpvpc_peering_attachment_config.go
   - internal/provider/types/gcpvpc_peering_gateway_response.go
-  - internal/provider/types/gemini.go
   - internal/provider/types/graphql_proxy_cache_advanced_plugin_config.go
   - internal/provider/types/graphql_rate_limiting_advanced_plugin_config.go
   - internal/provider/types/grpc_gateway_plugin_config.go
@@ -1082,7 +1143,6 @@ generatedFiles:
   - internal/provider/types/hmac_auth_plugin_config.go
   - internal/provider/types/http_log_plugin_config.go
   - internal/provider/types/http_opts.go
-  - internal/provider/types/huggingface.go
   - internal/provider/types/id.go
   - internal/provider/types/identity_realms.go
   - internal/provider/types/injection_protection_plugin_config.go
@@ -1097,6 +1157,7 @@ generatedFiles:
   - internal/provider/types/jwt_signer_plugin_config.go
   - internal/provider/types/kafka_consume_plugin_config.go
   - internal/provider/types/kafka_consume_plugin_security.go
+  - internal/provider/types/kafka_consume_plugin_topics.go
   - internal/provider/types/kafka_log_plugin_config.go
   - internal/provider/types/kafka_upstream_plugin_config.go
   - internal/provider/types/key_auth_plugin_config.go
@@ -1105,10 +1166,8 @@ generatedFiles:
   - internal/provider/types/ldap_auth_plugin_config.go
   - internal/provider/types/llm.go
   - internal/provider/types/llm_providers.go
-  - internal/provider/types/logging.go
   - internal/provider/types/loggly_plugin_config.go
   - internal/provider/types/members.go
-  - internal/provider/types/memory.go
   - internal/provider/types/menu.go
   - internal/provider/types/mesh_control_plane.go
   - internal/provider/types/mesh_control_plane_feature.go
@@ -1118,16 +1177,19 @@ generatedFiles:
   - internal/provider/types/metrics.go
   - internal/provider/types/missing_permission.go
   - internal/provider/types/mocking_plugin_config.go
-  - internal/provider/types/model.go
   - internal/provider/types/mtls_auth_plugin_config.go
   - internal/provider/types/multi_key_auth.go
   - internal/provider/types/multi_key_auth_credential.go
   - internal/provider/types/name.go
   - internal/provider/types/network_provider_metadata.go
   - internal/provider/types/nodes.go
+  - internal/provider/types/nodes_cache.go
   - internal/provider/types/nodes_inputs.go
+  - internal/provider/types/nodes_outputs.go
   - internal/provider/types/oas_validation_plugin_config.go
   - internal/provider/types/oauth.go
+  - internal/provider/types/oauth2.go
+  - internal/provider/types/oauth2_client.go
   - internal/provider/types/oauth2_introspection_plugin_config.go
   - internal/provider/types/oauth_auth_config.go
   - internal/provider/types/oauth_config.go
@@ -1135,11 +1197,11 @@ generatedFiles:
   - internal/provider/types/openid_connect_plugin_config.go
   - internal/provider/types/openid_connect_plugin_redis.go
   - internal/provider/types/opentelemetry_plugin_config.go
-  - internal/provider/types/options_obj.go
   - internal/provider/types/outputs.go
   - internal/provider/types/page_meta.go
   - internal/provider/types/paginated_meta.go
   - internal/provider/types/parameter_schema.go
+  - internal/provider/types/parameters.go
   - internal/provider/types/partial_redis_ce.go
   - internal/provider/types/partial_redis_ce_config.go
   - internal/provider/types/partial_redis_ee.go
@@ -1150,6 +1212,7 @@ generatedFiles:
   - internal/provider/types/passive.go
   - internal/provider/types/pem.go
   - internal/provider/types/pgvector.go
+  - internal/provider/types/polling.go
   - internal/provider/types/portal_claim_mappings.go
   - internal/provider/types/portal_filter_parameters.go
   - internal/provider/types/portal_footer_menu_section.go
@@ -1169,6 +1232,7 @@ generatedFiles:
   - internal/provider/types/proxy_cache_plugin_config.go
   - internal/provider/types/proxy_url.go
   - internal/provider/types/queue.go
+  - internal/provider/types/rate_limiting.go
   - internal/provider/types/rate_limiting_advanced_plugin_config.go
   - internal/provider/types/rate_limiting_advanced_plugin_redis.go
   - internal/provider/types/rate_limiting_plugin_config.go
@@ -1191,6 +1255,7 @@ generatedFiles:
   - internal/provider/types/request_transformer_advanced_plugin_replace.go
   - internal/provider/types/request_transformer_plugin_config.go
   - internal/provider/types/request_validator_plugin_config.go
+  - internal/provider/types/resources.go
   - internal/provider/types/response.go
   - internal/provider/types/response_headers.go
   - internal/provider/types/response_ratelimiting_plugin_config.go
@@ -1208,9 +1273,11 @@ generatedFiles:
   - internal/provider/types/route_transformer_advanced_plugin_config.go
   - internal/provider/types/rules.go
   - internal/provider/types/saml_plugin_config.go
+  - internal/provider/types/schema.go
   - internal/provider/types/schema_registry.go
   - internal/provider/types/search.go
   - internal/provider/types/section.go
+  - internal/provider/types/server.go
   - internal/provider/types/serverless_control_plane.go
   - internal/provider/types/service_protection_plugin_config.go
   - internal/provider/types/service_reference.go
@@ -1218,9 +1285,11 @@ generatedFiles:
   - internal/provider/types/session_plugin_config.go
   - internal/provider/types/set.go
   - internal/provider/types/shm.go
-  - internal/provider/types/solace_upstream_plugin_authentication.go
+  - internal/provider/types/solace_consume_plugin_authentication.go
+  - internal/provider/types/solace_consume_plugin_config.go
+  - internal/provider/types/solace_log_plugin_config.go
   - internal/provider/types/solace_upstream_plugin_config.go
-  - internal/provider/types/solace_upstream_plugin_destinations.go
+  - internal/provider/types/solace_upstream_plugin_message.go
   - internal/provider/types/spec_renderer.go
   - internal/provider/types/standard_webhooks_plugin_config.go
   - internal/provider/types/static.go
@@ -1235,10 +1304,12 @@ generatedFiles:
   - internal/provider/types/templates.go
   - internal/provider/types/text.go
   - internal/provider/types/theme.go
+  - internal/provider/types/throttling.go
   - internal/provider/types/timeouts.go
   - internal/provider/types/tls_handshake_modifier_plugin_config.go
   - internal/provider/types/tls_metadata_headers_plugin_config.go
   - internal/provider/types/tls_sans.go
+  - internal/provider/types/tools.go
   - internal/provider/types/topics.go
   - internal/provider/types/transform.go
   - internal/provider/types/transit_gateway_dns_config.go
@@ -1261,6 +1332,7 @@ generatedFiles:
   - internal/provider/types/validation_messages.go
   - internal/provider/types/vault_auth_plugin_config.go
   - internal/provider/types/vectordb.go
+  - internal/provider/types/websocket.go
   - internal/provider/types/websocket_size_limit_plugin_config.go
   - internal/provider/types/websocket_validator_plugin_client.go
   - internal/provider/types/websocket_validator_plugin_config.go
@@ -1326,11 +1398,16 @@ generatedFiles:
   - internal/sdk/models/errors/sdkerror.go
   - internal/sdk/models/operations/addconsumertogroup.go
   - internal/sdk/models/operations/addusertoteam.go
+  - internal/sdk/models/operations/createaceplugin.go
   - internal/sdk/models/operations/createaclplugin.go
   - internal/sdk/models/operations/createaclwithconsumer.go
   - internal/sdk/models/operations/createacmeplugin.go
   - internal/sdk/models/operations/createaiawsguardrailsplugin.go
   - internal/sdk/models/operations/createaiazurecontentsafetyplugin.go
+  - internal/sdk/models/operations/createaigcpmodelarmorplugin.go
+  - internal/sdk/models/operations/createaillmasjudgeplugin.go
+  - internal/sdk/models/operations/createaimcpoauth2plugin.go
+  - internal/sdk/models/operations/createaimcpproxyplugin.go
   - internal/sdk/models/operations/createaipromptcompressorplugin.go
   - internal/sdk/models/operations/createaipromptdecoratorplugin.go
   - internal/sdk/models/operations/createaipromptguardplugin.go
@@ -1344,6 +1421,7 @@ generatedFiles:
   - internal/sdk/models/operations/createaisanitizerplugin.go
   - internal/sdk/models/operations/createaisemanticcacheplugin.go
   - internal/sdk/models/operations/createaisemanticpromptguardplugin.go
+  - internal/sdk/models/operations/createaisemanticresponseguardplugin.go
   - internal/sdk/models/operations/createapi.go
   - internal/sdk/models/operations/createapidocument.go
   - internal/sdk/models/operations/createapiimplementation.go
@@ -1462,6 +1540,8 @@ generatedFiles:
   - internal/sdk/models/operations/createserviceprotectionplugin.go
   - internal/sdk/models/operations/createsessionplugin.go
   - internal/sdk/models/operations/createsni.go
+  - internal/sdk/models/operations/createsolaceconsumeplugin.go
+  - internal/sdk/models/operations/createsolacelogplugin.go
   - internal/sdk/models/operations/createsolaceupstreamplugin.go
   - internal/sdk/models/operations/createstandardwebhooksplugin.go
   - internal/sdk/models/operations/createstatsdadvancedplugin.go
@@ -1483,11 +1563,16 @@ generatedFiles:
   - internal/sdk/models/operations/createwebsocketvalidatorplugin.go
   - internal/sdk/models/operations/createxmlthreatprotectionplugin.go
   - internal/sdk/models/operations/createzipkinplugin.go
+  - internal/sdk/models/operations/deleteaceplugin.go
   - internal/sdk/models/operations/deleteaclplugin.go
   - internal/sdk/models/operations/deleteaclwithconsumer.go
   - internal/sdk/models/operations/deleteacmeplugin.go
   - internal/sdk/models/operations/deleteaiawsguardrailsplugin.go
   - internal/sdk/models/operations/deleteaiazurecontentsafetyplugin.go
+  - internal/sdk/models/operations/deleteaigcpmodelarmorplugin.go
+  - internal/sdk/models/operations/deleteaillmasjudgeplugin.go
+  - internal/sdk/models/operations/deleteaimcpoauth2plugin.go
+  - internal/sdk/models/operations/deleteaimcpproxyplugin.go
   - internal/sdk/models/operations/deleteaipromptcompressorplugin.go
   - internal/sdk/models/operations/deleteaipromptdecoratorplugin.go
   - internal/sdk/models/operations/deleteaipromptguardplugin.go
@@ -1501,6 +1586,7 @@ generatedFiles:
   - internal/sdk/models/operations/deleteaisanitizerplugin.go
   - internal/sdk/models/operations/deleteaisemanticcacheplugin.go
   - internal/sdk/models/operations/deleteaisemanticpromptguardplugin.go
+  - internal/sdk/models/operations/deleteaisemanticresponseguardplugin.go
   - internal/sdk/models/operations/deleteapi.go
   - internal/sdk/models/operations/deleteapidocument.go
   - internal/sdk/models/operations/deleteapiimplementation.go
@@ -1623,6 +1709,8 @@ generatedFiles:
   - internal/sdk/models/operations/deleteserviceprotectionplugin.go
   - internal/sdk/models/operations/deletesessionplugin.go
   - internal/sdk/models/operations/deletesni.go
+  - internal/sdk/models/operations/deletesolaceconsumeplugin.go
+  - internal/sdk/models/operations/deletesolacelogplugin.go
   - internal/sdk/models/operations/deletesolaceupstreamplugin.go
   - internal/sdk/models/operations/deletestandardwebhooksplugin.go
   - internal/sdk/models/operations/deletestatsdadvancedplugin.go
@@ -1657,11 +1745,16 @@ generatedFiles:
   - internal/sdk/models/operations/fetchintegrationinstance.go
   - internal/sdk/models/operations/fetchpluginschema.go
   - internal/sdk/models/operations/fetchpublication.go
+  - internal/sdk/models/operations/getaceplugin.go
   - internal/sdk/models/operations/getaclplugin.go
   - internal/sdk/models/operations/getaclwithconsumer.go
   - internal/sdk/models/operations/getacmeplugin.go
   - internal/sdk/models/operations/getaiawsguardrailsplugin.go
   - internal/sdk/models/operations/getaiazurecontentsafetyplugin.go
+  - internal/sdk/models/operations/getaigcpmodelarmorplugin.go
+  - internal/sdk/models/operations/getaillmasjudgeplugin.go
+  - internal/sdk/models/operations/getaimcpoauth2plugin.go
+  - internal/sdk/models/operations/getaimcpproxyplugin.go
   - internal/sdk/models/operations/getaipromptcompressorplugin.go
   - internal/sdk/models/operations/getaipromptdecoratorplugin.go
   - internal/sdk/models/operations/getaipromptguardplugin.go
@@ -1675,6 +1768,7 @@ generatedFiles:
   - internal/sdk/models/operations/getaisanitizerplugin.go
   - internal/sdk/models/operations/getaisemanticcacheplugin.go
   - internal/sdk/models/operations/getaisemanticpromptguardplugin.go
+  - internal/sdk/models/operations/getaisemanticresponseguardplugin.go
   - internal/sdk/models/operations/getapiproduct.go
   - internal/sdk/models/operations/getapiproductdocument.go
   - internal/sdk/models/operations/getapiproductversion.go
@@ -1795,6 +1889,8 @@ generatedFiles:
   - internal/sdk/models/operations/getserviceprotectionplugin.go
   - internal/sdk/models/operations/getsessionplugin.go
   - internal/sdk/models/operations/getsni.go
+  - internal/sdk/models/operations/getsolaceconsumeplugin.go
+  - internal/sdk/models/operations/getsolacelogplugin.go
   - internal/sdk/models/operations/getsolaceupstreamplugin.go
   - internal/sdk/models/operations/getstandardwebhooksplugin.go
   - internal/sdk/models/operations/getstatsdadvancedplugin.go
@@ -1844,10 +1940,15 @@ generatedFiles:
   - internal/sdk/models/operations/replaceportalproductversion.go
   - internal/sdk/models/operations/teamsassignrole.go
   - internal/sdk/models/operations/teamsremoverole.go
+  - internal/sdk/models/operations/updateaceplugin.go
   - internal/sdk/models/operations/updateaclplugin.go
   - internal/sdk/models/operations/updateacmeplugin.go
   - internal/sdk/models/operations/updateaiawsguardrailsplugin.go
   - internal/sdk/models/operations/updateaiazurecontentsafetyplugin.go
+  - internal/sdk/models/operations/updateaigcpmodelarmorplugin.go
+  - internal/sdk/models/operations/updateaillmasjudgeplugin.go
+  - internal/sdk/models/operations/updateaimcpoauth2plugin.go
+  - internal/sdk/models/operations/updateaimcpproxyplugin.go
   - internal/sdk/models/operations/updateaipromptcompressorplugin.go
   - internal/sdk/models/operations/updateaipromptdecoratorplugin.go
   - internal/sdk/models/operations/updateaipromptguardplugin.go
@@ -1861,6 +1962,7 @@ generatedFiles:
   - internal/sdk/models/operations/updateaisanitizerplugin.go
   - internal/sdk/models/operations/updateaisemanticcacheplugin.go
   - internal/sdk/models/operations/updateaisemanticpromptguardplugin.go
+  - internal/sdk/models/operations/updateaisemanticresponseguardplugin.go
   - internal/sdk/models/operations/updateapi.go
   - internal/sdk/models/operations/updateapidocument.go
   - internal/sdk/models/operations/updateapiproduct.go
@@ -1956,6 +2058,8 @@ generatedFiles:
   - internal/sdk/models/operations/updatesamlplugin.go
   - internal/sdk/models/operations/updateserviceprotectionplugin.go
   - internal/sdk/models/operations/updatesessionplugin.go
+  - internal/sdk/models/operations/updatesolaceconsumeplugin.go
+  - internal/sdk/models/operations/updatesolacelogplugin.go
   - internal/sdk/models/operations/updatesolaceupstreamplugin.go
   - internal/sdk/models/operations/updatestandardwebhooksplugin.go
   - internal/sdk/models/operations/updatestatsdadvancedplugin.go
@@ -1989,6 +2093,7 @@ generatedFiles:
   - internal/sdk/models/operations/upsertsni.go
   - internal/sdk/models/operations/upsertupstream.go
   - internal/sdk/models/operations/upsertvault.go
+  - internal/sdk/models/shared/aceplugin.go
   - internal/sdk/models/shared/acl.go
   - internal/sdk/models/shared/aclplugin.go
   - internal/sdk/models/shared/aclwithoutparents.go
@@ -1997,6 +2102,10 @@ generatedFiles:
   - internal/sdk/models/shared/addusertoteam.go
   - internal/sdk/models/shared/aiawsguardrailsplugin.go
   - internal/sdk/models/shared/aiazurecontentsafetyplugin.go
+  - internal/sdk/models/shared/aigcpmodelarmorplugin.go
+  - internal/sdk/models/shared/aillmasjudgeplugin.go
+  - internal/sdk/models/shared/aimcpoauth2plugin.go
+  - internal/sdk/models/shared/aimcpproxyplugin.go
   - internal/sdk/models/shared/aipromptcompressorplugin.go
   - internal/sdk/models/shared/aipromptdecoratorplugin.go
   - internal/sdk/models/shared/aipromptguardplugin.go
@@ -2010,6 +2119,7 @@ generatedFiles:
   - internal/sdk/models/shared/aisanitizerplugin.go
   - internal/sdk/models/shared/aisemanticcacheplugin.go
   - internal/sdk/models/shared/aisemanticpromptguardplugin.go
+  - internal/sdk/models/shared/aisemanticresponseguardplugin.go
   - internal/sdk/models/shared/apiaccess.go
   - internal/sdk/models/shared/apidocument.go
   - internal/sdk/models/shared/apidocumentresponse.go
@@ -2321,6 +2431,8 @@ generatedFiles:
   - internal/sdk/models/shared/slugconflict.go
   - internal/sdk/models/shared/sni.go
   - internal/sdk/models/shared/snippetvisibilitystatus.go
+  - internal/sdk/models/shared/solaceconsumeplugin.go
+  - internal/sdk/models/shared/solacelogplugin.go
   - internal/sdk/models/shared/solaceupstreamplugin.go
   - internal/sdk/models/shared/standardwebhooksplugin.go
   - internal/sdk/models/shared/statsdadvancedplugin.go
@@ -4670,7 +4782,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "ai-azure-content-safety", "ordering": null, "partials": null, "tags": null, "config": {"azure_api_version": "2023-10-01", "azure_client_id": null, "azure_client_secret": null, "azure_tenant_id": null, "azure_use_managed_identity": false, "blocklist_names": null, "categories": null, "content_safety_key": null, "content_safety_url": "https://icy-discourse.com", "halt_on_blocklist_hit": true, "output_type": "FourSeverityLevels", "reveal_failure_reason": true, "text_source": "concatenate_all_content"}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-azure-content-safety", "ordering": null, "partials": null, "tags": null, "config": {"azure_api_version": "2023-10-01", "azure_client_id": null, "azure_client_secret": null, "azure_tenant_id": null, "azure_use_managed_identity": false, "blocklist_names": null, "categories": null, "content_safety_key": null, "content_safety_url": "https://icy-discourse.com", "guarding_mode": "INPUT", "halt_on_blocklist_hit": true, "output_type": "FourSeverityLevels", "response_buffer_size": 100, "reveal_failure_reason": true, "stop_on_error": true, "text_source": "concatenate_all_content"}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 950088}
   update-aiazurecontentsafety-plugin:
@@ -4692,10 +4804,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "ai-azure-content-safety", "ordering": null, "partials": null, "tags": null, "config": {"azure_api_version": "2023-10-01", "azure_client_id": null, "azure_client_secret": null, "azure_tenant_id": null, "azure_use_managed_identity": false, "blocklist_names": null, "categories": null, "content_safety_key": null, "content_safety_url": "https://deafening-eyeliner.net", "halt_on_blocklist_hit": true, "output_type": "FourSeverityLevels", "reveal_failure_reason": true, "text_source": "concatenate_all_content"}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "ai-azure-content-safety", "ordering": null, "partials": null, "tags": null, "config": {"azure_api_version": "2023-10-01", "azure_client_id": null, "azure_client_secret": null, "azure_tenant_id": null, "azure_use_managed_identity": false, "blocklist_names": null, "categories": null, "content_safety_key": null, "content_safety_url": "https://deafening-eyeliner.net", "guarding_mode": "INPUT", "halt_on_blocklist_hit": true, "output_type": "FourSeverityLevels", "response_buffer_size": 100, "reveal_failure_reason": true, "stop_on_error": true, "text_source": "concatenate_all_content"}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "ai-azure-content-safety", "ordering": null, "partials": null, "tags": null, "config": {"azure_api_version": "2023-10-01", "azure_client_id": null, "azure_client_secret": null, "azure_tenant_id": null, "azure_use_managed_identity": false, "blocklist_names": null, "categories": null, "content_safety_key": null, "content_safety_url": "https://deafening-eyeliner.net", "halt_on_blocklist_hit": true, "output_type": "FourSeverityLevels", "reveal_failure_reason": true, "text_source": "concatenate_all_content"}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-azure-content-safety", "ordering": null, "partials": null, "tags": null, "config": {"azure_api_version": "2023-10-01", "azure_client_id": null, "azure_client_secret": null, "azure_tenant_id": null, "azure_use_managed_identity": false, "blocklist_names": null, "categories": null, "content_safety_key": null, "content_safety_url": "https://deafening-eyeliner.net", "guarding_mode": "INPUT", "halt_on_blocklist_hit": true, "output_type": "FourSeverityLevels", "response_buffer_size": 100, "reveal_failure_reason": true, "stop_on_error": true, "text_source": "concatenate_all_content"}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 596047}
   delete-aipromptdecorator-plugin:
@@ -5867,7 +5979,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "confluent-consume", "ordering": null, "partials": null, "tags": null, "config": {"auto_offset_reset": "latest", "bootstrap_servers": null, "cluster_api_key": "<value>", "cluster_api_secret": "<value>", "cluster_name": null, "commit_strategy": "auto", "confluent_cloud_api_key": null, "confluent_cloud_api_secret": null, "keepalive": 60000, "keepalive_enabled": false, "message_deserializer": "noop", "mode": "http-get", "schema_registry": null, "timeout": 10000, "topics": []}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "confluent-consume", "ordering": null, "partials": null, "tags": null, "config": {"auto_offset_reset": "latest", "bootstrap_servers": null, "cluster_api_key": "<value>", "cluster_api_secret": "<value>", "cluster_name": null, "commit_strategy": "auto", "confluent_cloud_api_key": null, "confluent_cloud_api_secret": null, "dlq_topic": null, "enable_dlq": null, "keepalive": 60000, "keepalive_enabled": false, "message_by_lua_functions": null, "message_deserializer": "noop", "mode": "http-get", "schema_registry": null, "timeout": 10000, "topics": []}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 321081}
   update-confluentconsume-plugin:
@@ -5889,10 +6001,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "confluent-consume", "ordering": null, "partials": null, "tags": null, "config": {"auto_offset_reset": "latest", "bootstrap_servers": null, "cluster_api_key": "<value>", "cluster_api_secret": "<value>", "cluster_name": null, "commit_strategy": "auto", "confluent_cloud_api_key": null, "confluent_cloud_api_secret": null, "keepalive": 60000, "keepalive_enabled": false, "message_deserializer": "noop", "mode": "http-get", "schema_registry": null, "timeout": 10000, "topics": []}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "confluent-consume", "ordering": null, "partials": null, "tags": null, "config": {"auto_offset_reset": "latest", "bootstrap_servers": null, "cluster_api_key": "<value>", "cluster_api_secret": "<value>", "cluster_name": null, "commit_strategy": "auto", "confluent_cloud_api_key": null, "confluent_cloud_api_secret": null, "dlq_topic": null, "enable_dlq": null, "keepalive": 60000, "keepalive_enabled": false, "message_by_lua_functions": null, "message_deserializer": "noop", "mode": "http-get", "schema_registry": null, "timeout": 10000, "topics": []}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "confluent-consume", "ordering": null, "partials": null, "tags": null, "config": {"auto_offset_reset": "latest", "bootstrap_servers": null, "cluster_api_key": "<value>", "cluster_api_secret": "<value>", "cluster_name": null, "commit_strategy": "auto", "confluent_cloud_api_key": null, "confluent_cloud_api_secret": null, "keepalive": 60000, "keepalive_enabled": false, "message_deserializer": "noop", "mode": "http-get", "schema_registry": null, "timeout": 10000, "topics": []}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "confluent-consume", "ordering": null, "partials": null, "tags": null, "config": {"auto_offset_reset": "latest", "bootstrap_servers": null, "cluster_api_key": "<value>", "cluster_api_secret": "<value>", "cluster_name": null, "commit_strategy": "auto", "confluent_cloud_api_key": null, "confluent_cloud_api_secret": null, "dlq_topic": null, "enable_dlq": null, "keepalive": 60000, "keepalive_enabled": false, "message_by_lua_functions": null, "message_deserializer": "noop", "mode": "http-get", "schema_registry": null, "timeout": 10000, "topics": []}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 162799}
   delete-correlationid-plugin:
@@ -7316,7 +7428,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "kafka-consume", "ordering": null, "partials": null, "tags": null, "config": {"authentication": null, "auto_offset_reset": "latest", "bootstrap_servers": [{"host": "primary-chasuble.org", "port": 207515}], "cluster_name": null, "commit_strategy": "auto", "message_deserializer": "noop", "mode": "http-get", "schema_registry": null, "security": null, "topics": []}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "kafka-consume", "ordering": null, "partials": null, "tags": null, "config": {"auto_offset_reset": "latest", "bootstrap_servers": [{"host": "primary-chasuble.org", "port": 207515}], "cluster_name": null, "commit_strategy": "auto", "dlq_topic": null, "enable_dlq": null, "message_by_lua_functions": null, "message_deserializer": "noop", "mode": "http-get", "topics": []}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null}
         "401":
           application/json: {"message": "<value>", "status": 950692}
   update-kafkaconsume-plugin:
@@ -7338,10 +7450,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "kafka-consume", "ordering": null, "partials": null, "tags": null, "config": {"authentication": null, "auto_offset_reset": "latest", "bootstrap_servers": [{"host": "stale-hawk.info", "port": 674490}], "cluster_name": null, "commit_strategy": "auto", "message_deserializer": "noop", "mode": "http-get", "schema_registry": null, "security": null, "topics": [{"name": "<value>", "schema_registry": {"confluent": null}}]}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "kafka-consume", "ordering": null, "partials": null, "tags": null, "config": {"auto_offset_reset": "latest", "bootstrap_servers": [{"host": "stale-hawk.info", "port": 674490}], "cluster_name": null, "commit_strategy": "auto", "dlq_topic": null, "enable_dlq": null, "message_by_lua_functions": null, "message_deserializer": "noop", "mode": "http-get", "topics": [{"name": "<value>", "schema_registry": {"confluent": null}}]}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null}
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "kafka-consume", "ordering": null, "partials": null, "tags": null, "config": {"authentication": null, "auto_offset_reset": "latest", "bootstrap_servers": [{"host": "stale-hawk.info", "port": 674490}], "cluster_name": null, "commit_strategy": "auto", "message_deserializer": "noop", "mode": "http-get", "schema_registry": null, "security": null, "topics": [{"name": "<value>", "schema_registry": {"confluent": null}}]}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "kafka-consume", "ordering": null, "partials": null, "tags": null, "config": {"auto_offset_reset": "latest", "bootstrap_servers": [{"host": "stale-hawk.info", "port": 674490}], "cluster_name": null, "commit_strategy": "auto", "dlq_topic": null, "enable_dlq": null, "message_by_lua_functions": null, "message_deserializer": "noop", "mode": "http-get", "topics": [{"name": "<value>", "schema_registry": {"confluent": null}}]}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null}
         "401":
           application/json: {"message": "<value>", "status": 593841}
   delete-kafkalog-plugin:
@@ -8198,7 +8310,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "openid-connect", "ordering": null, "partials": null, "tags": null, "config": {"anonymous": null, "audience": null, "audience_claim": ["aud"], "audience_required": null, "auth_methods": ["authorization_code", "bearer", "client_credentials", "introspection", "kong_oauth2", "password", "refresh_token", "session", "userinfo"], "authenticated_groups_claim": null, "authorization_cookie_domain": null, "authorization_cookie_http_only": true, "authorization_cookie_name": "authorization", "authorization_cookie_path": "/", "authorization_cookie_same_site": "Default", "authorization_cookie_secure": null, "authorization_endpoint": null, "authorization_query_args_client": null, "authorization_query_args_names": null, "authorization_query_args_values": null, "authorization_rolling_timeout": 600, "bearer_token_cookie_name": null, "bearer_token_param_type": ["body", "header", "query"], "by_username_ignore_case": false, "cache_introspection": true, "cache_token_exchange": true, "cache_tokens": true, "cache_ttl": 3600, "cache_ttl_max": null, "cache_ttl_min": null, "cache_ttl_neg": null, "cache_ttl_resurrect": null, "cache_user_info": true, "claims_forbidden": null, "client_alg": null, "client_arg": "client_id", "client_auth": null, "client_credentials_param_type": ["body", "header", "query"], "client_id": null, "client_jwk": null, "client_secret": null, "cluster_cache_strategy": "off", "consumer_by": ["custom_id", "username"], "consumer_claim": null, "consumer_optional": false, "credential_claim": ["sub"], "disable_session": null, "discovery_headers_names": null, "discovery_headers_values": null, "display_errors": false, "domains": null, "downstream_access_token_header": null, "downstream_access_token_jwk_header": null, "downstream_headers_claims": null, "downstream_headers_names": null, "downstream_id_token_header": null, "downstream_id_token_jwk_header": null, "downstream_introspection_header": null, "downstream_introspection_jwt_header": null, "downstream_refresh_token_header": null, "downstream_session_id_header": null, "downstream_user_info_header": null, "downstream_user_info_jwt_header": null, "dpop_proof_lifetime": 300, "dpop_use_nonce": false, "enable_hs_signatures": false, "end_session_endpoint": null, "expose_error_code": true, "extra_jwks_uris": null, "forbidden_destroy_session": true, "forbidden_error_message": "Forbidden", "forbidden_redirect_uri": null, "groups_claim": ["groups"], "groups_required": null, "hide_credentials": false, "http_proxy": null, "http_proxy_authorization": null, "https_proxy": null, "https_proxy_authorization": null, "id_token_param_name": null, "id_token_param_type": ["body", "header", "query"], "ignore_signature": [], "introspect_jwt_tokens": false, "introspection_accept": "application/json", "introspection_check_active": true, "introspection_endpoint": null, "introspection_headers_client": null, "introspection_headers_names": null, "introspection_headers_values": null, "introspection_hint": "access_token", "introspection_post_args_client": null, "introspection_post_args_client_headers": null, "introspection_post_args_names": null, "introspection_post_args_values": null, "introspection_token_param_name": "token", "issuer": "jcb", "issuers_allowed": null, "jwt_session_claim": "sid", "jwt_session_cookie": null, "keepalive": true, "leeway": 0, "login_action": "upstream", "login_methods": ["authorization_code"], "login_redirect_mode": "fragment", "login_redirect_uri": null, "login_tokens": ["id_token"], "logout_methods": ["DELETE", "POST"], "logout_post_arg": null, "logout_query_arg": null, "logout_redirect_uri": null, "logout_revoke": false, "logout_revoke_access_token": true, "logout_revoke_refresh_token": true, "logout_uri_suffix": null, "max_age": null, "mtls_introspection_endpoint": null, "mtls_revocation_endpoint": null, "mtls_token_endpoint": null, "no_proxy": null, "password_param_type": ["body", "header", "query"], "preserve_query_args": false, "proof_of_possession_auth_methods_validation": true, "proof_of_possession_dpop": "off", "proof_of_possession_mtls": "off", "pushed_authorization_request_endpoint": null, "redirect_uri": null, "rediscovery_lifetime": 30, "refresh_token_param_name": null, "refresh_token_param_type": ["body", "header", "query"], "refresh_tokens": true, "require_proof_key_for_code_exchange": null, "require_pushed_authorization_requests": null, "require_signed_request_object": null, "resolve_distributed_claims": false, "response_mode": "query", "response_type": ["code"], "reverify": false, "revocation_endpoint": null, "revocation_token_param_name": "token", "roles_claim": ["roles"], "roles_required": null, "run_on_preflight": true, "scopes": [], "scopes_claim": ["scope"], "scopes_required": null, "search_user_info": false, "session_absolute_timeout": 86400, "session_audience": "default", "session_cookie_domain": null, "session_cookie_http_only": true, "session_cookie_name": "session", "session_cookie_path": "/", "session_cookie_same_site": "Lax", "session_cookie_secure": null, "session_enforce_same_subject": false, "session_hash_storage_key": false, "session_hash_subject": false, "session_idling_timeout": 900, "session_memcached_host": "127.0.0.1", "session_memcached_port": 11211, "session_memcached_prefix": null, "session_memcached_socket": null, "session_remember": false, "session_remember_absolute_timeout": 2592000, "session_remember_cookie_name": "remember", "session_remember_rolling_timeout": 604800, "session_request_headers": null, "session_response_headers": null, "session_rolling_timeout": 3600, "session_secret": null, "session_storage": "cookie", "session_store_metadata": false, "ssl_verify": false, "timeout": 10000, "tls_client_auth_cert_id": null, "tls_client_auth_ssl_verify": true, "token_cache_key_include_scope": false, "token_endpoint": null, "token_exchange_endpoint": null, "token_headers_client": null, "token_headers_grants": null, "token_headers_names": null, "token_headers_prefix": null, "token_headers_replay": null, "token_headers_values": null, "token_post_args_client": null, "token_post_args_names": null, "token_post_args_values": null, "unauthorized_destroy_session": true, "unauthorized_error_message": "Unauthorized", "unauthorized_redirect_uri": null, "unexpected_redirect_uri": null, "upstream_access_token_header": "authorization:bearer", "upstream_access_token_jwk_header": null, "upstream_headers_claims": null, "upstream_headers_names": null, "upstream_id_token_header": null, "upstream_id_token_jwk_header": null, "upstream_introspection_header": null, "upstream_introspection_jwt_header": null, "upstream_refresh_token_header": null, "upstream_session_id_header": null, "upstream_user_info_header": null, "upstream_user_info_jwt_header": null, "userinfo_accept": "application/json", "userinfo_endpoint": null, "userinfo_headers_client": null, "userinfo_headers_names": null, "userinfo_headers_values": null, "userinfo_query_args_client": null, "userinfo_query_args_names": null, "userinfo_query_args_values": null, "using_pseudo_issuer": false, "verify_claims": true, "verify_nonce": true, "verify_parameters": false, "verify_signature": true}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "openid-connect", "ordering": null, "partials": null, "tags": null, "config": {"anonymous": null, "audience": null, "audience_claim": ["aud"], "audience_required": null, "auth_methods": ["authorization_code", "bearer", "client_credentials", "introspection", "kong_oauth2", "password", "refresh_token", "session", "userinfo"], "authenticated_groups_claim": null, "authorization_cookie_domain": null, "authorization_cookie_http_only": true, "authorization_cookie_name": "authorization", "authorization_cookie_path": "/", "authorization_cookie_same_site": "Default", "authorization_cookie_secure": null, "authorization_endpoint": null, "authorization_query_args_client": null, "authorization_query_args_names": null, "authorization_query_args_values": null, "authorization_rolling_timeout": 600, "bearer_token_cookie_name": null, "bearer_token_param_type": ["body", "header", "query"], "by_username_ignore_case": false, "cache_introspection": true, "cache_token_exchange": true, "cache_tokens": true, "cache_ttl": 3600, "cache_ttl_max": null, "cache_ttl_min": null, "cache_ttl_neg": null, "cache_ttl_resurrect": null, "cache_user_info": true, "claims_forbidden": null, "client_alg": null, "client_arg": "client_id", "client_auth": null, "client_credentials_param_type": ["body", "header", "query"], "client_id": null, "client_jwk": null, "client_secret": null, "cluster_cache_strategy": "off", "consumer_by": ["custom_id", "username"], "consumer_claim": null, "consumer_groups_claim": null, "consumer_groups_optional": false, "consumer_optional": false, "credential_claim": ["sub"], "disable_session": null, "discovery_headers_names": null, "discovery_headers_values": null, "display_errors": false, "domains": null, "downstream_access_token_header": null, "downstream_access_token_jwk_header": null, "downstream_headers_claims": null, "downstream_headers_names": null, "downstream_id_token_header": null, "downstream_id_token_jwk_header": null, "downstream_introspection_header": null, "downstream_introspection_jwt_header": null, "downstream_refresh_token_header": null, "downstream_session_id_header": null, "downstream_user_info_header": null, "downstream_user_info_jwt_header": null, "dpop_proof_lifetime": 300, "dpop_use_nonce": false, "enable_hs_signatures": false, "end_session_endpoint": null, "expose_error_code": true, "extra_jwks_uris": null, "forbidden_destroy_session": true, "forbidden_error_message": "Forbidden", "forbidden_redirect_uri": null, "groups_claim": ["groups"], "groups_required": null, "hide_credentials": false, "http_proxy": null, "http_proxy_authorization": null, "https_proxy": null, "https_proxy_authorization": null, "id_token_param_name": null, "id_token_param_type": ["body", "header", "query"], "ignore_signature": [], "introspect_jwt_tokens": false, "introspection_accept": "application/json", "introspection_check_active": true, "introspection_endpoint": null, "introspection_headers_client": null, "introspection_headers_names": null, "introspection_headers_values": null, "introspection_hint": "access_token", "introspection_post_args_client": null, "introspection_post_args_client_headers": null, "introspection_post_args_names": null, "introspection_post_args_values": null, "introspection_token_param_name": "token", "issuer": "jcb", "issuers_allowed": null, "jwt_session_claim": "sid", "jwt_session_cookie": null, "keepalive": true, "leeway": 0, "login_action": "upstream", "login_methods": ["authorization_code"], "login_redirect_mode": "fragment", "login_redirect_uri": null, "login_tokens": ["id_token"], "logout_methods": ["DELETE", "POST"], "logout_post_arg": null, "logout_query_arg": null, "logout_redirect_uri": null, "logout_revoke": false, "logout_revoke_access_token": true, "logout_revoke_refresh_token": true, "logout_uri_suffix": null, "max_age": null, "mtls_introspection_endpoint": null, "mtls_revocation_endpoint": null, "mtls_token_endpoint": null, "no_proxy": null, "password_param_type": ["body", "header", "query"], "preserve_query_args": false, "proof_of_possession_auth_methods_validation": true, "proof_of_possession_dpop": "off", "proof_of_possession_mtls": "off", "pushed_authorization_request_endpoint": null, "redirect_uri": null, "rediscovery_lifetime": 30, "refresh_token_param_name": null, "refresh_token_param_type": ["body", "header", "query"], "refresh_tokens": true, "require_proof_key_for_code_exchange": null, "require_pushed_authorization_requests": null, "require_signed_request_object": null, "resolve_distributed_claims": false, "response_mode": "query", "response_type": ["code"], "reverify": false, "revocation_endpoint": null, "revocation_token_param_name": "token", "roles_claim": ["roles"], "roles_required": null, "run_on_preflight": true, "scopes": [], "scopes_claim": ["scope"], "scopes_required": null, "search_user_info": false, "session_absolute_timeout": 86400, "session_audience": "default", "session_bind": null, "session_cookie_domain": null, "session_cookie_http_only": true, "session_cookie_name": "session", "session_cookie_path": "/", "session_cookie_same_site": "Lax", "session_cookie_secure": null, "session_enforce_same_subject": false, "session_hash_storage_key": false, "session_hash_subject": false, "session_idling_timeout": 900, "session_memcached_host": "127.0.0.1", "session_memcached_port": 11211, "session_memcached_prefix": null, "session_memcached_socket": null, "session_remember": false, "session_remember_absolute_timeout": 2592000, "session_remember_cookie_name": "remember", "session_remember_rolling_timeout": 604800, "session_request_headers": null, "session_response_headers": null, "session_rolling_timeout": 3600, "session_secret": null, "session_storage": "cookie", "session_store_metadata": false, "ssl_verify": false, "timeout": 10000, "tls_client_auth_cert_id": null, "tls_client_auth_ssl_verify": true, "token_cache_key_include_scope": false, "token_endpoint": null, "token_exchange_endpoint": null, "token_headers_client": null, "token_headers_grants": null, "token_headers_names": null, "token_headers_prefix": null, "token_headers_replay": null, "token_headers_values": null, "token_post_args_client": null, "token_post_args_names": null, "token_post_args_values": null, "unauthorized_destroy_session": true, "unauthorized_error_message": "Unauthorized", "unauthorized_redirect_uri": null, "unexpected_redirect_uri": null, "upstream_access_token_header": "authorization:bearer", "upstream_access_token_jwk_header": null, "upstream_headers_claims": null, "upstream_headers_names": null, "upstream_id_token_header": null, "upstream_id_token_jwk_header": null, "upstream_introspection_header": null, "upstream_introspection_jwt_header": null, "upstream_refresh_token_header": null, "upstream_session_id_header": null, "upstream_user_info_header": null, "upstream_user_info_jwt_header": null, "userinfo_accept": "application/json", "userinfo_endpoint": null, "userinfo_headers_client": null, "userinfo_headers_names": null, "userinfo_headers_values": null, "userinfo_query_args_client": null, "userinfo_query_args_names": null, "userinfo_query_args_values": null, "using_pseudo_issuer": false, "verify_claims": true, "verify_nonce": true, "verify_parameters": false, "verify_signature": true}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 635996}
   update-openidconnect-plugin:
@@ -8220,10 +8332,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "openid-connect", "ordering": null, "partials": null, "tags": null, "config": {"anonymous": null, "audience": null, "audience_claim": ["aud"], "audience_required": null, "auth_methods": ["authorization_code", "bearer", "client_credentials", "introspection", "kong_oauth2", "password", "refresh_token", "session", "userinfo"], "authenticated_groups_claim": null, "authorization_cookie_domain": null, "authorization_cookie_http_only": true, "authorization_cookie_name": "authorization", "authorization_cookie_path": "/", "authorization_cookie_same_site": "Default", "authorization_cookie_secure": null, "authorization_endpoint": null, "authorization_query_args_client": null, "authorization_query_args_names": null, "authorization_query_args_values": null, "authorization_rolling_timeout": 600, "bearer_token_cookie_name": null, "bearer_token_param_type": ["body", "header", "query"], "by_username_ignore_case": false, "cache_introspection": true, "cache_token_exchange": true, "cache_tokens": true, "cache_ttl": 3600, "cache_ttl_max": null, "cache_ttl_min": null, "cache_ttl_neg": null, "cache_ttl_resurrect": null, "cache_user_info": true, "claims_forbidden": null, "client_alg": null, "client_arg": "client_id", "client_auth": null, "client_credentials_param_type": ["body", "header", "query"], "client_id": null, "client_jwk": null, "client_secret": null, "cluster_cache_strategy": "off", "consumer_by": ["custom_id", "username"], "consumer_claim": null, "consumer_optional": false, "credential_claim": ["sub"], "disable_session": null, "discovery_headers_names": null, "discovery_headers_values": null, "display_errors": false, "domains": null, "downstream_access_token_header": null, "downstream_access_token_jwk_header": null, "downstream_headers_claims": null, "downstream_headers_names": null, "downstream_id_token_header": null, "downstream_id_token_jwk_header": null, "downstream_introspection_header": null, "downstream_introspection_jwt_header": null, "downstream_refresh_token_header": null, "downstream_session_id_header": null, "downstream_user_info_header": null, "downstream_user_info_jwt_header": null, "dpop_proof_lifetime": 300, "dpop_use_nonce": false, "enable_hs_signatures": false, "end_session_endpoint": null, "expose_error_code": true, "extra_jwks_uris": null, "forbidden_destroy_session": true, "forbidden_error_message": "Forbidden", "forbidden_redirect_uri": null, "groups_claim": ["groups"], "groups_required": null, "hide_credentials": false, "http_proxy": null, "http_proxy_authorization": null, "https_proxy": null, "https_proxy_authorization": null, "id_token_param_name": null, "id_token_param_type": ["body", "header", "query"], "ignore_signature": [], "introspect_jwt_tokens": false, "introspection_accept": "application/json", "introspection_check_active": true, "introspection_endpoint": null, "introspection_headers_client": null, "introspection_headers_names": null, "introspection_headers_values": null, "introspection_hint": "access_token", "introspection_post_args_client": null, "introspection_post_args_client_headers": null, "introspection_post_args_names": null, "introspection_post_args_values": null, "introspection_token_param_name": "token", "issuer": "mastercard", "issuers_allowed": null, "jwt_session_claim": "sid", "jwt_session_cookie": null, "keepalive": true, "leeway": 0, "login_action": "upstream", "login_methods": ["authorization_code"], "login_redirect_mode": "fragment", "login_redirect_uri": null, "login_tokens": ["id_token"], "logout_methods": ["DELETE", "POST"], "logout_post_arg": null, "logout_query_arg": null, "logout_redirect_uri": null, "logout_revoke": false, "logout_revoke_access_token": true, "logout_revoke_refresh_token": true, "logout_uri_suffix": null, "max_age": null, "mtls_introspection_endpoint": null, "mtls_revocation_endpoint": null, "mtls_token_endpoint": null, "no_proxy": null, "password_param_type": ["body", "header", "query"], "preserve_query_args": false, "proof_of_possession_auth_methods_validation": true, "proof_of_possession_dpop": "off", "proof_of_possession_mtls": "off", "pushed_authorization_request_endpoint": null, "redirect_uri": null, "rediscovery_lifetime": 30, "refresh_token_param_name": null, "refresh_token_param_type": ["body", "header", "query"], "refresh_tokens": true, "require_proof_key_for_code_exchange": null, "require_pushed_authorization_requests": null, "require_signed_request_object": null, "resolve_distributed_claims": false, "response_mode": "query", "response_type": ["code"], "reverify": false, "revocation_endpoint": null, "revocation_token_param_name": "token", "roles_claim": ["roles"], "roles_required": null, "run_on_preflight": true, "scopes": [], "scopes_claim": ["scope"], "scopes_required": null, "search_user_info": false, "session_absolute_timeout": 86400, "session_audience": "default", "session_cookie_domain": null, "session_cookie_http_only": true, "session_cookie_name": "session", "session_cookie_path": "/", "session_cookie_same_site": "Lax", "session_cookie_secure": null, "session_enforce_same_subject": false, "session_hash_storage_key": false, "session_hash_subject": false, "session_idling_timeout": 900, "session_memcached_host": "127.0.0.1", "session_memcached_port": 11211, "session_memcached_prefix": null, "session_memcached_socket": null, "session_remember": false, "session_remember_absolute_timeout": 2592000, "session_remember_cookie_name": "remember", "session_remember_rolling_timeout": 604800, "session_request_headers": null, "session_response_headers": null, "session_rolling_timeout": 3600, "session_secret": null, "session_storage": "cookie", "session_store_metadata": false, "ssl_verify": false, "timeout": 10000, "tls_client_auth_cert_id": null, "tls_client_auth_ssl_verify": true, "token_cache_key_include_scope": false, "token_endpoint": null, "token_exchange_endpoint": null, "token_headers_client": null, "token_headers_grants": null, "token_headers_names": null, "token_headers_prefix": null, "token_headers_replay": null, "token_headers_values": null, "token_post_args_client": null, "token_post_args_names": null, "token_post_args_values": null, "unauthorized_destroy_session": true, "unauthorized_error_message": "Unauthorized", "unauthorized_redirect_uri": null, "unexpected_redirect_uri": null, "upstream_access_token_header": "authorization:bearer", "upstream_access_token_jwk_header": null, "upstream_headers_claims": null, "upstream_headers_names": null, "upstream_id_token_header": null, "upstream_id_token_jwk_header": null, "upstream_introspection_header": null, "upstream_introspection_jwt_header": null, "upstream_refresh_token_header": null, "upstream_session_id_header": null, "upstream_user_info_header": null, "upstream_user_info_jwt_header": null, "userinfo_accept": "application/json", "userinfo_endpoint": null, "userinfo_headers_client": null, "userinfo_headers_names": null, "userinfo_headers_values": null, "userinfo_query_args_client": null, "userinfo_query_args_names": null, "userinfo_query_args_values": null, "using_pseudo_issuer": false, "verify_claims": true, "verify_nonce": true, "verify_parameters": false, "verify_signature": true}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "openid-connect", "ordering": null, "partials": null, "tags": null, "config": {"anonymous": null, "audience": null, "audience_claim": ["aud"], "audience_required": null, "auth_methods": ["authorization_code", "bearer", "client_credentials", "introspection", "kong_oauth2", "password", "refresh_token", "session", "userinfo"], "authenticated_groups_claim": null, "authorization_cookie_domain": null, "authorization_cookie_http_only": true, "authorization_cookie_name": "authorization", "authorization_cookie_path": "/", "authorization_cookie_same_site": "Default", "authorization_cookie_secure": null, "authorization_endpoint": null, "authorization_query_args_client": null, "authorization_query_args_names": null, "authorization_query_args_values": null, "authorization_rolling_timeout": 600, "bearer_token_cookie_name": null, "bearer_token_param_type": ["body", "header", "query"], "by_username_ignore_case": false, "cache_introspection": true, "cache_token_exchange": true, "cache_tokens": true, "cache_ttl": 3600, "cache_ttl_max": null, "cache_ttl_min": null, "cache_ttl_neg": null, "cache_ttl_resurrect": null, "cache_user_info": true, "claims_forbidden": null, "client_alg": null, "client_arg": "client_id", "client_auth": null, "client_credentials_param_type": ["body", "header", "query"], "client_id": null, "client_jwk": null, "client_secret": null, "cluster_cache_strategy": "off", "consumer_by": ["custom_id", "username"], "consumer_claim": null, "consumer_groups_claim": null, "consumer_groups_optional": false, "consumer_optional": false, "credential_claim": ["sub"], "disable_session": null, "discovery_headers_names": null, "discovery_headers_values": null, "display_errors": false, "domains": null, "downstream_access_token_header": null, "downstream_access_token_jwk_header": null, "downstream_headers_claims": null, "downstream_headers_names": null, "downstream_id_token_header": null, "downstream_id_token_jwk_header": null, "downstream_introspection_header": null, "downstream_introspection_jwt_header": null, "downstream_refresh_token_header": null, "downstream_session_id_header": null, "downstream_user_info_header": null, "downstream_user_info_jwt_header": null, "dpop_proof_lifetime": 300, "dpop_use_nonce": false, "enable_hs_signatures": false, "end_session_endpoint": null, "expose_error_code": true, "extra_jwks_uris": null, "forbidden_destroy_session": true, "forbidden_error_message": "Forbidden", "forbidden_redirect_uri": null, "groups_claim": ["groups"], "groups_required": null, "hide_credentials": false, "http_proxy": null, "http_proxy_authorization": null, "https_proxy": null, "https_proxy_authorization": null, "id_token_param_name": null, "id_token_param_type": ["body", "header", "query"], "ignore_signature": [], "introspect_jwt_tokens": false, "introspection_accept": "application/json", "introspection_check_active": true, "introspection_endpoint": null, "introspection_headers_client": null, "introspection_headers_names": null, "introspection_headers_values": null, "introspection_hint": "access_token", "introspection_post_args_client": null, "introspection_post_args_client_headers": null, "introspection_post_args_names": null, "introspection_post_args_values": null, "introspection_token_param_name": "token", "issuer": "mastercard", "issuers_allowed": null, "jwt_session_claim": "sid", "jwt_session_cookie": null, "keepalive": true, "leeway": 0, "login_action": "upstream", "login_methods": ["authorization_code"], "login_redirect_mode": "fragment", "login_redirect_uri": null, "login_tokens": ["id_token"], "logout_methods": ["DELETE", "POST"], "logout_post_arg": null, "logout_query_arg": null, "logout_redirect_uri": null, "logout_revoke": false, "logout_revoke_access_token": true, "logout_revoke_refresh_token": true, "logout_uri_suffix": null, "max_age": null, "mtls_introspection_endpoint": null, "mtls_revocation_endpoint": null, "mtls_token_endpoint": null, "no_proxy": null, "password_param_type": ["body", "header", "query"], "preserve_query_args": false, "proof_of_possession_auth_methods_validation": true, "proof_of_possession_dpop": "off", "proof_of_possession_mtls": "off", "pushed_authorization_request_endpoint": null, "redirect_uri": null, "rediscovery_lifetime": 30, "refresh_token_param_name": null, "refresh_token_param_type": ["body", "header", "query"], "refresh_tokens": true, "require_proof_key_for_code_exchange": null, "require_pushed_authorization_requests": null, "require_signed_request_object": null, "resolve_distributed_claims": false, "response_mode": "query", "response_type": ["code"], "reverify": false, "revocation_endpoint": null, "revocation_token_param_name": "token", "roles_claim": ["roles"], "roles_required": null, "run_on_preflight": true, "scopes": [], "scopes_claim": ["scope"], "scopes_required": null, "search_user_info": false, "session_absolute_timeout": 86400, "session_audience": "default", "session_bind": null, "session_cookie_domain": null, "session_cookie_http_only": true, "session_cookie_name": "session", "session_cookie_path": "/", "session_cookie_same_site": "Lax", "session_cookie_secure": null, "session_enforce_same_subject": false, "session_hash_storage_key": false, "session_hash_subject": false, "session_idling_timeout": 900, "session_memcached_host": "127.0.0.1", "session_memcached_port": 11211, "session_memcached_prefix": null, "session_memcached_socket": null, "session_remember": false, "session_remember_absolute_timeout": 2592000, "session_remember_cookie_name": "remember", "session_remember_rolling_timeout": 604800, "session_request_headers": null, "session_response_headers": null, "session_rolling_timeout": 3600, "session_secret": null, "session_storage": "cookie", "session_store_metadata": false, "ssl_verify": false, "timeout": 10000, "tls_client_auth_cert_id": null, "tls_client_auth_ssl_verify": true, "token_cache_key_include_scope": false, "token_endpoint": null, "token_exchange_endpoint": null, "token_headers_client": null, "token_headers_grants": null, "token_headers_names": null, "token_headers_prefix": null, "token_headers_replay": null, "token_headers_values": null, "token_post_args_client": null, "token_post_args_names": null, "token_post_args_values": null, "unauthorized_destroy_session": true, "unauthorized_error_message": "Unauthorized", "unauthorized_redirect_uri": null, "unexpected_redirect_uri": null, "upstream_access_token_header": "authorization:bearer", "upstream_access_token_jwk_header": null, "upstream_headers_claims": null, "upstream_headers_names": null, "upstream_id_token_header": null, "upstream_id_token_jwk_header": null, "upstream_introspection_header": null, "upstream_introspection_jwt_header": null, "upstream_refresh_token_header": null, "upstream_session_id_header": null, "upstream_user_info_header": null, "upstream_user_info_jwt_header": null, "userinfo_accept": "application/json", "userinfo_endpoint": null, "userinfo_headers_client": null, "userinfo_headers_names": null, "userinfo_headers_values": null, "userinfo_query_args_client": null, "userinfo_query_args_names": null, "userinfo_query_args_values": null, "using_pseudo_issuer": false, "verify_claims": true, "verify_nonce": true, "verify_parameters": false, "verify_signature": true}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "openid-connect", "ordering": null, "partials": null, "tags": null, "config": {"anonymous": null, "audience": null, "audience_claim": ["aud"], "audience_required": null, "auth_methods": ["authorization_code", "bearer", "client_credentials", "introspection", "kong_oauth2", "password", "refresh_token", "session", "userinfo"], "authenticated_groups_claim": null, "authorization_cookie_domain": null, "authorization_cookie_http_only": true, "authorization_cookie_name": "authorization", "authorization_cookie_path": "/", "authorization_cookie_same_site": "Default", "authorization_cookie_secure": null, "authorization_endpoint": null, "authorization_query_args_client": null, "authorization_query_args_names": null, "authorization_query_args_values": null, "authorization_rolling_timeout": 600, "bearer_token_cookie_name": null, "bearer_token_param_type": ["body", "header", "query"], "by_username_ignore_case": false, "cache_introspection": true, "cache_token_exchange": true, "cache_tokens": true, "cache_ttl": 3600, "cache_ttl_max": null, "cache_ttl_min": null, "cache_ttl_neg": null, "cache_ttl_resurrect": null, "cache_user_info": true, "claims_forbidden": null, "client_alg": null, "client_arg": "client_id", "client_auth": null, "client_credentials_param_type": ["body", "header", "query"], "client_id": null, "client_jwk": null, "client_secret": null, "cluster_cache_strategy": "off", "consumer_by": ["custom_id", "username"], "consumer_claim": null, "consumer_optional": false, "credential_claim": ["sub"], "disable_session": null, "discovery_headers_names": null, "discovery_headers_values": null, "display_errors": false, "domains": null, "downstream_access_token_header": null, "downstream_access_token_jwk_header": null, "downstream_headers_claims": null, "downstream_headers_names": null, "downstream_id_token_header": null, "downstream_id_token_jwk_header": null, "downstream_introspection_header": null, "downstream_introspection_jwt_header": null, "downstream_refresh_token_header": null, "downstream_session_id_header": null, "downstream_user_info_header": null, "downstream_user_info_jwt_header": null, "dpop_proof_lifetime": 300, "dpop_use_nonce": false, "enable_hs_signatures": false, "end_session_endpoint": null, "expose_error_code": true, "extra_jwks_uris": null, "forbidden_destroy_session": true, "forbidden_error_message": "Forbidden", "forbidden_redirect_uri": null, "groups_claim": ["groups"], "groups_required": null, "hide_credentials": false, "http_proxy": null, "http_proxy_authorization": null, "https_proxy": null, "https_proxy_authorization": null, "id_token_param_name": null, "id_token_param_type": ["body", "header", "query"], "ignore_signature": [], "introspect_jwt_tokens": false, "introspection_accept": "application/json", "introspection_check_active": true, "introspection_endpoint": null, "introspection_headers_client": null, "introspection_headers_names": null, "introspection_headers_values": null, "introspection_hint": "access_token", "introspection_post_args_client": null, "introspection_post_args_client_headers": null, "introspection_post_args_names": null, "introspection_post_args_values": null, "introspection_token_param_name": "token", "issuer": "mastercard", "issuers_allowed": null, "jwt_session_claim": "sid", "jwt_session_cookie": null, "keepalive": true, "leeway": 0, "login_action": "upstream", "login_methods": ["authorization_code"], "login_redirect_mode": "fragment", "login_redirect_uri": null, "login_tokens": ["id_token"], "logout_methods": ["DELETE", "POST"], "logout_post_arg": null, "logout_query_arg": null, "logout_redirect_uri": null, "logout_revoke": false, "logout_revoke_access_token": true, "logout_revoke_refresh_token": true, "logout_uri_suffix": null, "max_age": null, "mtls_introspection_endpoint": null, "mtls_revocation_endpoint": null, "mtls_token_endpoint": null, "no_proxy": null, "password_param_type": ["body", "header", "query"], "preserve_query_args": false, "proof_of_possession_auth_methods_validation": true, "proof_of_possession_dpop": "off", "proof_of_possession_mtls": "off", "pushed_authorization_request_endpoint": null, "redirect_uri": null, "rediscovery_lifetime": 30, "refresh_token_param_name": null, "refresh_token_param_type": ["body", "header", "query"], "refresh_tokens": true, "require_proof_key_for_code_exchange": null, "require_pushed_authorization_requests": null, "require_signed_request_object": null, "resolve_distributed_claims": false, "response_mode": "query", "response_type": ["code"], "reverify": false, "revocation_endpoint": null, "revocation_token_param_name": "token", "roles_claim": ["roles"], "roles_required": null, "run_on_preflight": true, "scopes": [], "scopes_claim": ["scope"], "scopes_required": null, "search_user_info": false, "session_absolute_timeout": 86400, "session_audience": "default", "session_cookie_domain": null, "session_cookie_http_only": true, "session_cookie_name": "session", "session_cookie_path": "/", "session_cookie_same_site": "Lax", "session_cookie_secure": null, "session_enforce_same_subject": false, "session_hash_storage_key": false, "session_hash_subject": false, "session_idling_timeout": 900, "session_memcached_host": "127.0.0.1", "session_memcached_port": 11211, "session_memcached_prefix": null, "session_memcached_socket": null, "session_remember": false, "session_remember_absolute_timeout": 2592000, "session_remember_cookie_name": "remember", "session_remember_rolling_timeout": 604800, "session_request_headers": null, "session_response_headers": null, "session_rolling_timeout": 3600, "session_secret": null, "session_storage": "cookie", "session_store_metadata": false, "ssl_verify": false, "timeout": 10000, "tls_client_auth_cert_id": null, "tls_client_auth_ssl_verify": true, "token_cache_key_include_scope": false, "token_endpoint": null, "token_exchange_endpoint": null, "token_headers_client": null, "token_headers_grants": null, "token_headers_names": null, "token_headers_prefix": null, "token_headers_replay": null, "token_headers_values": null, "token_post_args_client": null, "token_post_args_names": null, "token_post_args_values": null, "unauthorized_destroy_session": true, "unauthorized_error_message": "Unauthorized", "unauthorized_redirect_uri": null, "unexpected_redirect_uri": null, "upstream_access_token_header": "authorization:bearer", "upstream_access_token_jwk_header": null, "upstream_headers_claims": null, "upstream_headers_names": null, "upstream_id_token_header": null, "upstream_id_token_jwk_header": null, "upstream_introspection_header": null, "upstream_introspection_jwt_header": null, "upstream_refresh_token_header": null, "upstream_session_id_header": null, "upstream_user_info_header": null, "upstream_user_info_jwt_header": null, "userinfo_accept": "application/json", "userinfo_endpoint": null, "userinfo_headers_client": null, "userinfo_headers_names": null, "userinfo_headers_values": null, "userinfo_query_args_client": null, "userinfo_query_args_names": null, "userinfo_query_args_values": null, "using_pseudo_issuer": false, "verify_claims": true, "verify_nonce": true, "verify_parameters": false, "verify_signature": true}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "openid-connect", "ordering": null, "partials": null, "tags": null, "config": {"anonymous": null, "audience": null, "audience_claim": ["aud"], "audience_required": null, "auth_methods": ["authorization_code", "bearer", "client_credentials", "introspection", "kong_oauth2", "password", "refresh_token", "session", "userinfo"], "authenticated_groups_claim": null, "authorization_cookie_domain": null, "authorization_cookie_http_only": true, "authorization_cookie_name": "authorization", "authorization_cookie_path": "/", "authorization_cookie_same_site": "Default", "authorization_cookie_secure": null, "authorization_endpoint": null, "authorization_query_args_client": null, "authorization_query_args_names": null, "authorization_query_args_values": null, "authorization_rolling_timeout": 600, "bearer_token_cookie_name": null, "bearer_token_param_type": ["body", "header", "query"], "by_username_ignore_case": false, "cache_introspection": true, "cache_token_exchange": true, "cache_tokens": true, "cache_ttl": 3600, "cache_ttl_max": null, "cache_ttl_min": null, "cache_ttl_neg": null, "cache_ttl_resurrect": null, "cache_user_info": true, "claims_forbidden": null, "client_alg": null, "client_arg": "client_id", "client_auth": null, "client_credentials_param_type": ["body", "header", "query"], "client_id": null, "client_jwk": null, "client_secret": null, "cluster_cache_strategy": "off", "consumer_by": ["custom_id", "username"], "consumer_claim": null, "consumer_groups_claim": null, "consumer_groups_optional": false, "consumer_optional": false, "credential_claim": ["sub"], "disable_session": null, "discovery_headers_names": null, "discovery_headers_values": null, "display_errors": false, "domains": null, "downstream_access_token_header": null, "downstream_access_token_jwk_header": null, "downstream_headers_claims": null, "downstream_headers_names": null, "downstream_id_token_header": null, "downstream_id_token_jwk_header": null, "downstream_introspection_header": null, "downstream_introspection_jwt_header": null, "downstream_refresh_token_header": null, "downstream_session_id_header": null, "downstream_user_info_header": null, "downstream_user_info_jwt_header": null, "dpop_proof_lifetime": 300, "dpop_use_nonce": false, "enable_hs_signatures": false, "end_session_endpoint": null, "expose_error_code": true, "extra_jwks_uris": null, "forbidden_destroy_session": true, "forbidden_error_message": "Forbidden", "forbidden_redirect_uri": null, "groups_claim": ["groups"], "groups_required": null, "hide_credentials": false, "http_proxy": null, "http_proxy_authorization": null, "https_proxy": null, "https_proxy_authorization": null, "id_token_param_name": null, "id_token_param_type": ["body", "header", "query"], "ignore_signature": [], "introspect_jwt_tokens": false, "introspection_accept": "application/json", "introspection_check_active": true, "introspection_endpoint": null, "introspection_headers_client": null, "introspection_headers_names": null, "introspection_headers_values": null, "introspection_hint": "access_token", "introspection_post_args_client": null, "introspection_post_args_client_headers": null, "introspection_post_args_names": null, "introspection_post_args_values": null, "introspection_token_param_name": "token", "issuer": "mastercard", "issuers_allowed": null, "jwt_session_claim": "sid", "jwt_session_cookie": null, "keepalive": true, "leeway": 0, "login_action": "upstream", "login_methods": ["authorization_code"], "login_redirect_mode": "fragment", "login_redirect_uri": null, "login_tokens": ["id_token"], "logout_methods": ["DELETE", "POST"], "logout_post_arg": null, "logout_query_arg": null, "logout_redirect_uri": null, "logout_revoke": false, "logout_revoke_access_token": true, "logout_revoke_refresh_token": true, "logout_uri_suffix": null, "max_age": null, "mtls_introspection_endpoint": null, "mtls_revocation_endpoint": null, "mtls_token_endpoint": null, "no_proxy": null, "password_param_type": ["body", "header", "query"], "preserve_query_args": false, "proof_of_possession_auth_methods_validation": true, "proof_of_possession_dpop": "off", "proof_of_possession_mtls": "off", "pushed_authorization_request_endpoint": null, "redirect_uri": null, "rediscovery_lifetime": 30, "refresh_token_param_name": null, "refresh_token_param_type": ["body", "header", "query"], "refresh_tokens": true, "require_proof_key_for_code_exchange": null, "require_pushed_authorization_requests": null, "require_signed_request_object": null, "resolve_distributed_claims": false, "response_mode": "query", "response_type": ["code"], "reverify": false, "revocation_endpoint": null, "revocation_token_param_name": "token", "roles_claim": ["roles"], "roles_required": null, "run_on_preflight": true, "scopes": [], "scopes_claim": ["scope"], "scopes_required": null, "search_user_info": false, "session_absolute_timeout": 86400, "session_audience": "default", "session_bind": null, "session_cookie_domain": null, "session_cookie_http_only": true, "session_cookie_name": "session", "session_cookie_path": "/", "session_cookie_same_site": "Lax", "session_cookie_secure": null, "session_enforce_same_subject": false, "session_hash_storage_key": false, "session_hash_subject": false, "session_idling_timeout": 900, "session_memcached_host": "127.0.0.1", "session_memcached_port": 11211, "session_memcached_prefix": null, "session_memcached_socket": null, "session_remember": false, "session_remember_absolute_timeout": 2592000, "session_remember_cookie_name": "remember", "session_remember_rolling_timeout": 604800, "session_request_headers": null, "session_response_headers": null, "session_rolling_timeout": 3600, "session_secret": null, "session_storage": "cookie", "session_store_metadata": false, "ssl_verify": false, "timeout": 10000, "tls_client_auth_cert_id": null, "tls_client_auth_ssl_verify": true, "token_cache_key_include_scope": false, "token_endpoint": null, "token_exchange_endpoint": null, "token_headers_client": null, "token_headers_grants": null, "token_headers_names": null, "token_headers_prefix": null, "token_headers_replay": null, "token_headers_values": null, "token_post_args_client": null, "token_post_args_names": null, "token_post_args_values": null, "unauthorized_destroy_session": true, "unauthorized_error_message": "Unauthorized", "unauthorized_redirect_uri": null, "unexpected_redirect_uri": null, "upstream_access_token_header": "authorization:bearer", "upstream_access_token_jwk_header": null, "upstream_headers_claims": null, "upstream_headers_names": null, "upstream_id_token_header": null, "upstream_id_token_jwk_header": null, "upstream_introspection_header": null, "upstream_introspection_jwt_header": null, "upstream_refresh_token_header": null, "upstream_session_id_header": null, "upstream_user_info_header": null, "upstream_user_info_jwt_header": null, "userinfo_accept": "application/json", "userinfo_endpoint": null, "userinfo_headers_client": null, "userinfo_headers_names": null, "userinfo_headers_values": null, "userinfo_query_args_client": null, "userinfo_query_args_names": null, "userinfo_query_args_values": null, "using_pseudo_issuer": false, "verify_claims": true, "verify_nonce": true, "verify_parameters": false, "verify_signature": true}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 670120}
   delete-opentelemetry-plugin:
@@ -8702,7 +8814,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "rate-limiting-advanced", "ordering": null, "partials": null, "tags": null, "config": {"compound_identifier": null, "consumer_groups": null, "dictionary_name": "kong_rate_limiting_counters", "disable_penalty": false, "enforce_consumer_groups": false, "error_code": 429, "error_message": "API rate limit exceeded", "header_name": null, "hide_client_headers": false, "identifier": "consumer", "limit": [3020.94], "lock_dictionary_name": "kong_locks", "namespace": null, "path": null, "retry_after_jitter_max": 0, "strategy": "local", "sync_rate": null, "window_size": [2528.48, 6676.72, 4410.69], "window_type": "sliding"}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "rate-limiting-advanced", "ordering": null, "partials": null, "tags": null, "config": {"compound_identifier": null, "consumer_groups": null, "dictionary_name": "kong_rate_limiting_counters", "disable_penalty": false, "enforce_consumer_groups": false, "error_code": 429, "error_message": "API rate limit exceeded", "header_name": null, "hide_client_headers": false, "identifier": "consumer", "limit": [3020.94], "lock_dictionary_name": "kong_locks", "namespace": null, "path": null, "retry_after_jitter_max": 0, "strategy": "local", "sync_rate": null, "throttling": null, "window_size": [2528.48, 6676.72, 4410.69], "window_type": "sliding"}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 369253}
   update-ratelimitingadvanced-plugin:
@@ -8724,10 +8836,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "rate-limiting-advanced", "ordering": null, "partials": null, "tags": null, "config": {"compound_identifier": null, "consumer_groups": null, "dictionary_name": "kong_rate_limiting_counters", "disable_penalty": false, "enforce_consumer_groups": false, "error_code": 429, "error_message": "API rate limit exceeded", "header_name": null, "hide_client_headers": false, "identifier": "consumer", "limit": [7767.61, 1267.71, 903.59], "lock_dictionary_name": "kong_locks", "namespace": null, "path": null, "retry_after_jitter_max": 0, "strategy": "local", "sync_rate": null, "window_size": [6415.93, 7987.32, 166.11], "window_type": "sliding"}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "rate-limiting-advanced", "ordering": null, "partials": null, "tags": null, "config": {"compound_identifier": null, "consumer_groups": null, "dictionary_name": "kong_rate_limiting_counters", "disable_penalty": false, "enforce_consumer_groups": false, "error_code": 429, "error_message": "API rate limit exceeded", "header_name": null, "hide_client_headers": false, "identifier": "consumer", "limit": [7767.61, 1267.71, 903.59], "lock_dictionary_name": "kong_locks", "namespace": null, "path": null, "retry_after_jitter_max": 0, "strategy": "local", "sync_rate": null, "throttling": null, "window_size": [6415.93, 7987.32, 166.11], "window_type": "sliding"}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "rate-limiting-advanced", "ordering": null, "partials": null, "tags": null, "config": {"compound_identifier": null, "consumer_groups": null, "dictionary_name": "kong_rate_limiting_counters", "disable_penalty": false, "enforce_consumer_groups": false, "error_code": 429, "error_message": "API rate limit exceeded", "header_name": null, "hide_client_headers": false, "identifier": "consumer", "limit": [7767.61, 1267.71, 903.59], "lock_dictionary_name": "kong_locks", "namespace": null, "path": null, "retry_after_jitter_max": 0, "strategy": "local", "sync_rate": null, "window_size": [6415.93, 7987.32, 166.11], "window_type": "sliding"}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "rate-limiting-advanced", "ordering": null, "partials": null, "tags": null, "config": {"compound_identifier": null, "consumer_groups": null, "dictionary_name": "kong_rate_limiting_counters", "disable_penalty": false, "enforce_consumer_groups": false, "error_code": 429, "error_message": "API rate limit exceeded", "header_name": null, "hide_client_headers": false, "identifier": "consumer", "limit": [7767.61, 1267.71, 903.59], "lock_dictionary_name": "kong_locks", "namespace": null, "path": null, "retry_after_jitter_max": 0, "strategy": "local", "sync_rate": null, "throttling": null, "window_size": [6415.93, 7987.32, 166.11], "window_type": "sliding"}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 856301}
   delete-redirect-plugin:
@@ -10650,10 +10762,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "ai-azure-content-safety", "ordering": null, "partials": null, "tags": null, "config": {"azure_api_version": "2023-10-01", "azure_client_id": null, "azure_client_secret": null, "azure_tenant_id": null, "azure_use_managed_identity": false, "blocklist_names": null, "categories": null, "content_safety_key": null, "content_safety_url": "https://sure-footed-pocket-watch.name", "halt_on_blocklist_hit": true, "output_type": "FourSeverityLevels", "reveal_failure_reason": true, "text_source": "concatenate_all_content"}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "ai-azure-content-safety", "ordering": null, "partials": null, "tags": null, "config": {"azure_api_version": "2023-10-01", "azure_client_id": null, "azure_client_secret": null, "azure_tenant_id": null, "azure_use_managed_identity": false, "blocklist_names": null, "categories": null, "content_safety_key": null, "content_safety_url": "https://sure-footed-pocket-watch.name", "guarding_mode": "INPUT", "halt_on_blocklist_hit": true, "output_type": "FourSeverityLevels", "response_buffer_size": 100, "reveal_failure_reason": true, "stop_on_error": true, "text_source": "concatenate_all_content"}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"enabled": true, "instance_name": null, "name": "ai-azure-content-safety", "ordering": null, "partials": null, "tags": null, "config": {"azure_api_version": "2023-10-01", "azure_client_id": null, "azure_client_secret": null, "azure_tenant_id": null, "azure_use_managed_identity": false, "blocklist_names": null, "categories": null, "content_safety_key": null, "content_safety_url": "https://sure-footed-pocket-watch.name", "halt_on_blocklist_hit": true, "output_type": "FourSeverityLevels", "reveal_failure_reason": true, "text_source": "concatenate_all_content"}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-azure-content-safety", "ordering": null, "partials": null, "tags": null, "config": {"azure_api_version": "2023-10-01", "azure_client_id": null, "azure_client_secret": null, "azure_tenant_id": null, "azure_use_managed_identity": false, "blocklist_names": null, "categories": null, "content_safety_key": null, "content_safety_url": "https://sure-footed-pocket-watch.name", "guarding_mode": "INPUT", "halt_on_blocklist_hit": true, "output_type": "FourSeverityLevels", "response_buffer_size": 100, "reveal_failure_reason": true, "stop_on_error": true, "text_source": "concatenate_all_content"}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 798365}
   create-aipromptdecorator-plugin:
@@ -10878,10 +10990,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "confluent-consume", "ordering": null, "partials": null, "tags": null, "config": {"auto_offset_reset": "latest", "bootstrap_servers": null, "cluster_api_key": "<value>", "cluster_api_secret": "<value>", "cluster_name": null, "commit_strategy": "auto", "confluent_cloud_api_key": null, "confluent_cloud_api_secret": null, "keepalive": 60000, "keepalive_enabled": false, "message_deserializer": "noop", "mode": "http-get", "schema_registry": null, "timeout": 10000, "topics": [{"name": "<value>", "schema_registry": {"confluent": null}}]}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "confluent-consume", "ordering": null, "partials": null, "tags": null, "config": {"auto_offset_reset": "latest", "bootstrap_servers": null, "cluster_api_key": "<value>", "cluster_api_secret": "<value>", "cluster_name": null, "commit_strategy": "auto", "confluent_cloud_api_key": null, "confluent_cloud_api_secret": null, "dlq_topic": null, "enable_dlq": null, "keepalive": 60000, "keepalive_enabled": false, "message_by_lua_functions": null, "message_deserializer": "noop", "mode": "http-get", "schema_registry": null, "timeout": 10000, "topics": [{"name": "<value>", "schema_registry": {"confluent": null}}]}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"enabled": true, "instance_name": null, "name": "confluent-consume", "ordering": null, "partials": null, "tags": null, "config": {"auto_offset_reset": "latest", "bootstrap_servers": null, "cluster_api_key": "<value>", "cluster_api_secret": "<value>", "cluster_name": null, "commit_strategy": "auto", "confluent_cloud_api_key": null, "confluent_cloud_api_secret": null, "keepalive": 60000, "keepalive_enabled": false, "message_deserializer": "noop", "mode": "http-get", "schema_registry": null, "timeout": 10000, "topics": [{"name": "<value>", "schema_registry": {"confluent": null}}]}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "confluent-consume", "ordering": null, "partials": null, "tags": null, "config": {"auto_offset_reset": "latest", "bootstrap_servers": null, "cluster_api_key": "<value>", "cluster_api_secret": "<value>", "cluster_name": null, "commit_strategy": "auto", "confluent_cloud_api_key": null, "confluent_cloud_api_secret": null, "dlq_topic": null, "enable_dlq": null, "keepalive": 60000, "keepalive_enabled": false, "message_by_lua_functions": null, "message_deserializer": "noop", "mode": "http-get", "schema_registry": null, "timeout": 10000, "topics": [{"name": "<value>", "schema_registry": {"confluent": null}}]}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 791735}
   create-correlationid-plugin:
@@ -11154,10 +11266,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "kafka-consume", "ordering": null, "partials": null, "tags": null, "config": {"authentication": null, "auto_offset_reset": "latest", "bootstrap_servers": [{"host": "definite-sushi.info", "port": 293488}], "cluster_name": null, "commit_strategy": "auto", "message_deserializer": "noop", "mode": "http-get", "schema_registry": null, "security": null, "topics": [{"name": "<value>", "schema_registry": {"confluent": null}}]}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "kafka-consume", "ordering": null, "partials": null, "tags": null, "config": {"auto_offset_reset": "latest", "bootstrap_servers": [{"host": "definite-sushi.info", "port": 293488}], "cluster_name": null, "commit_strategy": "auto", "dlq_topic": null, "enable_dlq": null, "message_by_lua_functions": null, "message_deserializer": "noop", "mode": "http-get", "topics": [{"name": "<value>", "schema_registry": {"confluent": null}}]}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null}
       responses:
         "201":
-          application/json: {"enabled": true, "instance_name": null, "name": "kafka-consume", "ordering": null, "partials": null, "tags": null, "config": {"authentication": null, "auto_offset_reset": "latest", "bootstrap_servers": [{"host": "definite-sushi.info", "port": 293488}], "cluster_name": null, "commit_strategy": "auto", "message_deserializer": "noop", "mode": "http-get", "schema_registry": null, "security": null, "topics": [{"name": "<value>", "schema_registry": {"confluent": null}}]}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "kafka-consume", "ordering": null, "partials": null, "tags": null, "config": {"auto_offset_reset": "latest", "bootstrap_servers": [{"host": "definite-sushi.info", "port": 293488}], "cluster_name": null, "commit_strategy": "auto", "dlq_topic": null, "enable_dlq": null, "message_by_lua_functions": null, "message_deserializer": "noop", "mode": "http-get", "topics": [{"name": "<value>", "schema_registry": {"confluent": null}}]}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null}
         "401":
           application/json: {"message": "<value>", "status": 865760}
   create-kafkalog-plugin:
@@ -11322,10 +11434,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "openid-connect", "ordering": null, "partials": null, "tags": null, "config": {"anonymous": null, "audience": null, "audience_claim": ["aud"], "audience_required": null, "auth_methods": ["authorization_code", "bearer", "client_credentials", "introspection", "kong_oauth2", "password", "refresh_token", "session", "userinfo"], "authenticated_groups_claim": null, "authorization_cookie_domain": null, "authorization_cookie_http_only": true, "authorization_cookie_name": "authorization", "authorization_cookie_path": "/", "authorization_cookie_same_site": "Default", "authorization_cookie_secure": null, "authorization_endpoint": null, "authorization_query_args_client": null, "authorization_query_args_names": null, "authorization_query_args_values": null, "authorization_rolling_timeout": 600, "bearer_token_cookie_name": null, "bearer_token_param_type": ["body", "header", "query"], "by_username_ignore_case": false, "cache_introspection": true, "cache_token_exchange": true, "cache_tokens": true, "cache_ttl": 3600, "cache_ttl_max": null, "cache_ttl_min": null, "cache_ttl_neg": null, "cache_ttl_resurrect": null, "cache_user_info": true, "claims_forbidden": null, "client_alg": null, "client_arg": "client_id", "client_auth": null, "client_credentials_param_type": ["body", "header", "query"], "client_id": null, "client_jwk": null, "client_secret": null, "cluster_cache_strategy": "off", "consumer_by": ["custom_id", "username"], "consumer_claim": null, "consumer_optional": false, "credential_claim": ["sub"], "disable_session": null, "discovery_headers_names": null, "discovery_headers_values": null, "display_errors": false, "domains": null, "downstream_access_token_header": null, "downstream_access_token_jwk_header": null, "downstream_headers_claims": null, "downstream_headers_names": null, "downstream_id_token_header": null, "downstream_id_token_jwk_header": null, "downstream_introspection_header": null, "downstream_introspection_jwt_header": null, "downstream_refresh_token_header": null, "downstream_session_id_header": null, "downstream_user_info_header": null, "downstream_user_info_jwt_header": null, "dpop_proof_lifetime": 300, "dpop_use_nonce": false, "enable_hs_signatures": false, "end_session_endpoint": null, "expose_error_code": true, "extra_jwks_uris": null, "forbidden_destroy_session": true, "forbidden_error_message": "Forbidden", "forbidden_redirect_uri": null, "groups_claim": ["groups"], "groups_required": null, "hide_credentials": false, "http_proxy": null, "http_proxy_authorization": null, "https_proxy": null, "https_proxy_authorization": null, "id_token_param_name": null, "id_token_param_type": ["body", "header", "query"], "ignore_signature": [], "introspect_jwt_tokens": false, "introspection_accept": "application/json", "introspection_check_active": true, "introspection_endpoint": null, "introspection_headers_client": null, "introspection_headers_names": null, "introspection_headers_values": null, "introspection_hint": "access_token", "introspection_post_args_client": null, "introspection_post_args_client_headers": null, "introspection_post_args_names": null, "introspection_post_args_values": null, "introspection_token_param_name": "token", "issuer": "jcb", "issuers_allowed": null, "jwt_session_claim": "sid", "jwt_session_cookie": null, "keepalive": true, "leeway": 0, "login_action": "upstream", "login_methods": ["authorization_code"], "login_redirect_mode": "fragment", "login_redirect_uri": null, "login_tokens": ["id_token"], "logout_methods": ["DELETE", "POST"], "logout_post_arg": null, "logout_query_arg": null, "logout_redirect_uri": null, "logout_revoke": false, "logout_revoke_access_token": true, "logout_revoke_refresh_token": true, "logout_uri_suffix": null, "max_age": null, "mtls_introspection_endpoint": null, "mtls_revocation_endpoint": null, "mtls_token_endpoint": null, "no_proxy": null, "password_param_type": ["body", "header", "query"], "preserve_query_args": false, "proof_of_possession_auth_methods_validation": true, "proof_of_possession_dpop": "off", "proof_of_possession_mtls": "off", "pushed_authorization_request_endpoint": null, "redirect_uri": null, "rediscovery_lifetime": 30, "refresh_token_param_name": null, "refresh_token_param_type": ["body", "header", "query"], "refresh_tokens": true, "require_proof_key_for_code_exchange": null, "require_pushed_authorization_requests": null, "require_signed_request_object": null, "resolve_distributed_claims": false, "response_mode": "query", "response_type": ["code"], "reverify": false, "revocation_endpoint": null, "revocation_token_param_name": "token", "roles_claim": ["roles"], "roles_required": null, "run_on_preflight": true, "scopes": [], "scopes_claim": ["scope"], "scopes_required": null, "search_user_info": false, "session_absolute_timeout": 86400, "session_audience": "default", "session_cookie_domain": null, "session_cookie_http_only": true, "session_cookie_name": "session", "session_cookie_path": "/", "session_cookie_same_site": "Lax", "session_cookie_secure": null, "session_enforce_same_subject": false, "session_hash_storage_key": false, "session_hash_subject": false, "session_idling_timeout": 900, "session_memcached_host": "127.0.0.1", "session_memcached_port": 11211, "session_memcached_prefix": null, "session_memcached_socket": null, "session_remember": false, "session_remember_absolute_timeout": 2592000, "session_remember_cookie_name": "remember", "session_remember_rolling_timeout": 604800, "session_request_headers": null, "session_response_headers": null, "session_rolling_timeout": 3600, "session_secret": null, "session_storage": "cookie", "session_store_metadata": false, "ssl_verify": false, "timeout": 10000, "tls_client_auth_cert_id": null, "tls_client_auth_ssl_verify": true, "token_cache_key_include_scope": false, "token_endpoint": null, "token_exchange_endpoint": null, "token_headers_client": null, "token_headers_grants": null, "token_headers_names": null, "token_headers_prefix": null, "token_headers_replay": null, "token_headers_values": null, "token_post_args_client": null, "token_post_args_names": null, "token_post_args_values": null, "unauthorized_destroy_session": true, "unauthorized_error_message": "Unauthorized", "unauthorized_redirect_uri": null, "unexpected_redirect_uri": null, "upstream_access_token_header": "authorization:bearer", "upstream_access_token_jwk_header": null, "upstream_headers_claims": null, "upstream_headers_names": null, "upstream_id_token_header": null, "upstream_id_token_jwk_header": null, "upstream_introspection_header": null, "upstream_introspection_jwt_header": null, "upstream_refresh_token_header": null, "upstream_session_id_header": null, "upstream_user_info_header": null, "upstream_user_info_jwt_header": null, "userinfo_accept": "application/json", "userinfo_endpoint": null, "userinfo_headers_client": null, "userinfo_headers_names": null, "userinfo_headers_values": null, "userinfo_query_args_client": null, "userinfo_query_args_names": null, "userinfo_query_args_values": null, "using_pseudo_issuer": false, "verify_claims": true, "verify_nonce": true, "verify_parameters": false, "verify_signature": true}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "openid-connect", "ordering": null, "partials": null, "tags": null, "config": {"anonymous": null, "audience": null, "audience_claim": ["aud"], "audience_required": null, "auth_methods": ["authorization_code", "bearer", "client_credentials", "introspection", "kong_oauth2", "password", "refresh_token", "session", "userinfo"], "authenticated_groups_claim": null, "authorization_cookie_domain": null, "authorization_cookie_http_only": true, "authorization_cookie_name": "authorization", "authorization_cookie_path": "/", "authorization_cookie_same_site": "Default", "authorization_cookie_secure": null, "authorization_endpoint": null, "authorization_query_args_client": null, "authorization_query_args_names": null, "authorization_query_args_values": null, "authorization_rolling_timeout": 600, "bearer_token_cookie_name": null, "bearer_token_param_type": ["body", "header", "query"], "by_username_ignore_case": false, "cache_introspection": true, "cache_token_exchange": true, "cache_tokens": true, "cache_ttl": 3600, "cache_ttl_max": null, "cache_ttl_min": null, "cache_ttl_neg": null, "cache_ttl_resurrect": null, "cache_user_info": true, "claims_forbidden": null, "client_alg": null, "client_arg": "client_id", "client_auth": null, "client_credentials_param_type": ["body", "header", "query"], "client_id": null, "client_jwk": null, "client_secret": null, "cluster_cache_strategy": "off", "consumer_by": ["custom_id", "username"], "consumer_claim": null, "consumer_groups_claim": null, "consumer_groups_optional": false, "consumer_optional": false, "credential_claim": ["sub"], "disable_session": null, "discovery_headers_names": null, "discovery_headers_values": null, "display_errors": false, "domains": null, "downstream_access_token_header": null, "downstream_access_token_jwk_header": null, "downstream_headers_claims": null, "downstream_headers_names": null, "downstream_id_token_header": null, "downstream_id_token_jwk_header": null, "downstream_introspection_header": null, "downstream_introspection_jwt_header": null, "downstream_refresh_token_header": null, "downstream_session_id_header": null, "downstream_user_info_header": null, "downstream_user_info_jwt_header": null, "dpop_proof_lifetime": 300, "dpop_use_nonce": false, "enable_hs_signatures": false, "end_session_endpoint": null, "expose_error_code": true, "extra_jwks_uris": null, "forbidden_destroy_session": true, "forbidden_error_message": "Forbidden", "forbidden_redirect_uri": null, "groups_claim": ["groups"], "groups_required": null, "hide_credentials": false, "http_proxy": null, "http_proxy_authorization": null, "https_proxy": null, "https_proxy_authorization": null, "id_token_param_name": null, "id_token_param_type": ["body", "header", "query"], "ignore_signature": [], "introspect_jwt_tokens": false, "introspection_accept": "application/json", "introspection_check_active": true, "introspection_endpoint": null, "introspection_headers_client": null, "introspection_headers_names": null, "introspection_headers_values": null, "introspection_hint": "access_token", "introspection_post_args_client": null, "introspection_post_args_client_headers": null, "introspection_post_args_names": null, "introspection_post_args_values": null, "introspection_token_param_name": "token", "issuer": "jcb", "issuers_allowed": null, "jwt_session_claim": "sid", "jwt_session_cookie": null, "keepalive": true, "leeway": 0, "login_action": "upstream", "login_methods": ["authorization_code"], "login_redirect_mode": "fragment", "login_redirect_uri": null, "login_tokens": ["id_token"], "logout_methods": ["DELETE", "POST"], "logout_post_arg": null, "logout_query_arg": null, "logout_redirect_uri": null, "logout_revoke": false, "logout_revoke_access_token": true, "logout_revoke_refresh_token": true, "logout_uri_suffix": null, "max_age": null, "mtls_introspection_endpoint": null, "mtls_revocation_endpoint": null, "mtls_token_endpoint": null, "no_proxy": null, "password_param_type": ["body", "header", "query"], "preserve_query_args": false, "proof_of_possession_auth_methods_validation": true, "proof_of_possession_dpop": "off", "proof_of_possession_mtls": "off", "pushed_authorization_request_endpoint": null, "redirect_uri": null, "rediscovery_lifetime": 30, "refresh_token_param_name": null, "refresh_token_param_type": ["body", "header", "query"], "refresh_tokens": true, "require_proof_key_for_code_exchange": null, "require_pushed_authorization_requests": null, "require_signed_request_object": null, "resolve_distributed_claims": false, "response_mode": "query", "response_type": ["code"], "reverify": false, "revocation_endpoint": null, "revocation_token_param_name": "token", "roles_claim": ["roles"], "roles_required": null, "run_on_preflight": true, "scopes": [], "scopes_claim": ["scope"], "scopes_required": null, "search_user_info": false, "session_absolute_timeout": 86400, "session_audience": "default", "session_bind": null, "session_cookie_domain": null, "session_cookie_http_only": true, "session_cookie_name": "session", "session_cookie_path": "/", "session_cookie_same_site": "Lax", "session_cookie_secure": null, "session_enforce_same_subject": false, "session_hash_storage_key": false, "session_hash_subject": false, "session_idling_timeout": 900, "session_memcached_host": "127.0.0.1", "session_memcached_port": 11211, "session_memcached_prefix": null, "session_memcached_socket": null, "session_remember": false, "session_remember_absolute_timeout": 2592000, "session_remember_cookie_name": "remember", "session_remember_rolling_timeout": 604800, "session_request_headers": null, "session_response_headers": null, "session_rolling_timeout": 3600, "session_secret": null, "session_storage": "cookie", "session_store_metadata": false, "ssl_verify": false, "timeout": 10000, "tls_client_auth_cert_id": null, "tls_client_auth_ssl_verify": true, "token_cache_key_include_scope": false, "token_endpoint": null, "token_exchange_endpoint": null, "token_headers_client": null, "token_headers_grants": null, "token_headers_names": null, "token_headers_prefix": null, "token_headers_replay": null, "token_headers_values": null, "token_post_args_client": null, "token_post_args_names": null, "token_post_args_values": null, "unauthorized_destroy_session": true, "unauthorized_error_message": "Unauthorized", "unauthorized_redirect_uri": null, "unexpected_redirect_uri": null, "upstream_access_token_header": "authorization:bearer", "upstream_access_token_jwk_header": null, "upstream_headers_claims": null, "upstream_headers_names": null, "upstream_id_token_header": null, "upstream_id_token_jwk_header": null, "upstream_introspection_header": null, "upstream_introspection_jwt_header": null, "upstream_refresh_token_header": null, "upstream_session_id_header": null, "upstream_user_info_header": null, "upstream_user_info_jwt_header": null, "userinfo_accept": "application/json", "userinfo_endpoint": null, "userinfo_headers_client": null, "userinfo_headers_names": null, "userinfo_headers_values": null, "userinfo_query_args_client": null, "userinfo_query_args_names": null, "userinfo_query_args_values": null, "using_pseudo_issuer": false, "verify_claims": true, "verify_nonce": true, "verify_parameters": false, "verify_signature": true}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"enabled": true, "instance_name": null, "name": "openid-connect", "ordering": null, "partials": null, "tags": null, "config": {"anonymous": null, "audience": null, "audience_claim": ["aud"], "audience_required": null, "auth_methods": ["authorization_code", "bearer", "client_credentials", "introspection", "kong_oauth2", "password", "refresh_token", "session", "userinfo"], "authenticated_groups_claim": null, "authorization_cookie_domain": null, "authorization_cookie_http_only": true, "authorization_cookie_name": "authorization", "authorization_cookie_path": "/", "authorization_cookie_same_site": "Default", "authorization_cookie_secure": null, "authorization_endpoint": null, "authorization_query_args_client": null, "authorization_query_args_names": null, "authorization_query_args_values": null, "authorization_rolling_timeout": 600, "bearer_token_cookie_name": null, "bearer_token_param_type": ["body", "header", "query"], "by_username_ignore_case": false, "cache_introspection": true, "cache_token_exchange": true, "cache_tokens": true, "cache_ttl": 3600, "cache_ttl_max": null, "cache_ttl_min": null, "cache_ttl_neg": null, "cache_ttl_resurrect": null, "cache_user_info": true, "claims_forbidden": null, "client_alg": null, "client_arg": "client_id", "client_auth": null, "client_credentials_param_type": ["body", "header", "query"], "client_id": null, "client_jwk": null, "client_secret": null, "cluster_cache_strategy": "off", "consumer_by": ["custom_id", "username"], "consumer_claim": null, "consumer_optional": false, "credential_claim": ["sub"], "disable_session": null, "discovery_headers_names": null, "discovery_headers_values": null, "display_errors": false, "domains": null, "downstream_access_token_header": null, "downstream_access_token_jwk_header": null, "downstream_headers_claims": null, "downstream_headers_names": null, "downstream_id_token_header": null, "downstream_id_token_jwk_header": null, "downstream_introspection_header": null, "downstream_introspection_jwt_header": null, "downstream_refresh_token_header": null, "downstream_session_id_header": null, "downstream_user_info_header": null, "downstream_user_info_jwt_header": null, "dpop_proof_lifetime": 300, "dpop_use_nonce": false, "enable_hs_signatures": false, "end_session_endpoint": null, "expose_error_code": true, "extra_jwks_uris": null, "forbidden_destroy_session": true, "forbidden_error_message": "Forbidden", "forbidden_redirect_uri": null, "groups_claim": ["groups"], "groups_required": null, "hide_credentials": false, "http_proxy": null, "http_proxy_authorization": null, "https_proxy": null, "https_proxy_authorization": null, "id_token_param_name": null, "id_token_param_type": ["body", "header", "query"], "ignore_signature": [], "introspect_jwt_tokens": false, "introspection_accept": "application/json", "introspection_check_active": true, "introspection_endpoint": null, "introspection_headers_client": null, "introspection_headers_names": null, "introspection_headers_values": null, "introspection_hint": "access_token", "introspection_post_args_client": null, "introspection_post_args_client_headers": null, "introspection_post_args_names": null, "introspection_post_args_values": null, "introspection_token_param_name": "token", "issuer": "jcb", "issuers_allowed": null, "jwt_session_claim": "sid", "jwt_session_cookie": null, "keepalive": true, "leeway": 0, "login_action": "upstream", "login_methods": ["authorization_code"], "login_redirect_mode": "fragment", "login_redirect_uri": null, "login_tokens": ["id_token"], "logout_methods": ["DELETE", "POST"], "logout_post_arg": null, "logout_query_arg": null, "logout_redirect_uri": null, "logout_revoke": false, "logout_revoke_access_token": true, "logout_revoke_refresh_token": true, "logout_uri_suffix": null, "max_age": null, "mtls_introspection_endpoint": null, "mtls_revocation_endpoint": null, "mtls_token_endpoint": null, "no_proxy": null, "password_param_type": ["body", "header", "query"], "preserve_query_args": false, "proof_of_possession_auth_methods_validation": true, "proof_of_possession_dpop": "off", "proof_of_possession_mtls": "off", "pushed_authorization_request_endpoint": null, "redirect_uri": null, "rediscovery_lifetime": 30, "refresh_token_param_name": null, "refresh_token_param_type": ["body", "header", "query"], "refresh_tokens": true, "require_proof_key_for_code_exchange": null, "require_pushed_authorization_requests": null, "require_signed_request_object": null, "resolve_distributed_claims": false, "response_mode": "query", "response_type": ["code"], "reverify": false, "revocation_endpoint": null, "revocation_token_param_name": "token", "roles_claim": ["roles"], "roles_required": null, "run_on_preflight": true, "scopes": [], "scopes_claim": ["scope"], "scopes_required": null, "search_user_info": false, "session_absolute_timeout": 86400, "session_audience": "default", "session_cookie_domain": null, "session_cookie_http_only": true, "session_cookie_name": "session", "session_cookie_path": "/", "session_cookie_same_site": "Lax", "session_cookie_secure": null, "session_enforce_same_subject": false, "session_hash_storage_key": false, "session_hash_subject": false, "session_idling_timeout": 900, "session_memcached_host": "127.0.0.1", "session_memcached_port": 11211, "session_memcached_prefix": null, "session_memcached_socket": null, "session_remember": false, "session_remember_absolute_timeout": 2592000, "session_remember_cookie_name": "remember", "session_remember_rolling_timeout": 604800, "session_request_headers": null, "session_response_headers": null, "session_rolling_timeout": 3600, "session_secret": null, "session_storage": "cookie", "session_store_metadata": false, "ssl_verify": false, "timeout": 10000, "tls_client_auth_cert_id": null, "tls_client_auth_ssl_verify": true, "token_cache_key_include_scope": false, "token_endpoint": null, "token_exchange_endpoint": null, "token_headers_client": null, "token_headers_grants": null, "token_headers_names": null, "token_headers_prefix": null, "token_headers_replay": null, "token_headers_values": null, "token_post_args_client": null, "token_post_args_names": null, "token_post_args_values": null, "unauthorized_destroy_session": true, "unauthorized_error_message": "Unauthorized", "unauthorized_redirect_uri": null, "unexpected_redirect_uri": null, "upstream_access_token_header": "authorization:bearer", "upstream_access_token_jwk_header": null, "upstream_headers_claims": null, "upstream_headers_names": null, "upstream_id_token_header": null, "upstream_id_token_jwk_header": null, "upstream_introspection_header": null, "upstream_introspection_jwt_header": null, "upstream_refresh_token_header": null, "upstream_session_id_header": null, "upstream_user_info_header": null, "upstream_user_info_jwt_header": null, "userinfo_accept": "application/json", "userinfo_endpoint": null, "userinfo_headers_client": null, "userinfo_headers_names": null, "userinfo_headers_values": null, "userinfo_query_args_client": null, "userinfo_query_args_names": null, "userinfo_query_args_values": null, "using_pseudo_issuer": false, "verify_claims": true, "verify_nonce": true, "verify_parameters": false, "verify_signature": true}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "openid-connect", "ordering": null, "partials": null, "tags": null, "config": {"anonymous": null, "audience": null, "audience_claim": ["aud"], "audience_required": null, "auth_methods": ["authorization_code", "bearer", "client_credentials", "introspection", "kong_oauth2", "password", "refresh_token", "session", "userinfo"], "authenticated_groups_claim": null, "authorization_cookie_domain": null, "authorization_cookie_http_only": true, "authorization_cookie_name": "authorization", "authorization_cookie_path": "/", "authorization_cookie_same_site": "Default", "authorization_cookie_secure": null, "authorization_endpoint": null, "authorization_query_args_client": null, "authorization_query_args_names": null, "authorization_query_args_values": null, "authorization_rolling_timeout": 600, "bearer_token_cookie_name": null, "bearer_token_param_type": ["body", "header", "query"], "by_username_ignore_case": false, "cache_introspection": true, "cache_token_exchange": true, "cache_tokens": true, "cache_ttl": 3600, "cache_ttl_max": null, "cache_ttl_min": null, "cache_ttl_neg": null, "cache_ttl_resurrect": null, "cache_user_info": true, "claims_forbidden": null, "client_alg": null, "client_arg": "client_id", "client_auth": null, "client_credentials_param_type": ["body", "header", "query"], "client_id": null, "client_jwk": null, "client_secret": null, "cluster_cache_strategy": "off", "consumer_by": ["custom_id", "username"], "consumer_claim": null, "consumer_groups_claim": null, "consumer_groups_optional": false, "consumer_optional": false, "credential_claim": ["sub"], "disable_session": null, "discovery_headers_names": null, "discovery_headers_values": null, "display_errors": false, "domains": null, "downstream_access_token_header": null, "downstream_access_token_jwk_header": null, "downstream_headers_claims": null, "downstream_headers_names": null, "downstream_id_token_header": null, "downstream_id_token_jwk_header": null, "downstream_introspection_header": null, "downstream_introspection_jwt_header": null, "downstream_refresh_token_header": null, "downstream_session_id_header": null, "downstream_user_info_header": null, "downstream_user_info_jwt_header": null, "dpop_proof_lifetime": 300, "dpop_use_nonce": false, "enable_hs_signatures": false, "end_session_endpoint": null, "expose_error_code": true, "extra_jwks_uris": null, "forbidden_destroy_session": true, "forbidden_error_message": "Forbidden", "forbidden_redirect_uri": null, "groups_claim": ["groups"], "groups_required": null, "hide_credentials": false, "http_proxy": null, "http_proxy_authorization": null, "https_proxy": null, "https_proxy_authorization": null, "id_token_param_name": null, "id_token_param_type": ["body", "header", "query"], "ignore_signature": [], "introspect_jwt_tokens": false, "introspection_accept": "application/json", "introspection_check_active": true, "introspection_endpoint": null, "introspection_headers_client": null, "introspection_headers_names": null, "introspection_headers_values": null, "introspection_hint": "access_token", "introspection_post_args_client": null, "introspection_post_args_client_headers": null, "introspection_post_args_names": null, "introspection_post_args_values": null, "introspection_token_param_name": "token", "issuer": "jcb", "issuers_allowed": null, "jwt_session_claim": "sid", "jwt_session_cookie": null, "keepalive": true, "leeway": 0, "login_action": "upstream", "login_methods": ["authorization_code"], "login_redirect_mode": "fragment", "login_redirect_uri": null, "login_tokens": ["id_token"], "logout_methods": ["DELETE", "POST"], "logout_post_arg": null, "logout_query_arg": null, "logout_redirect_uri": null, "logout_revoke": false, "logout_revoke_access_token": true, "logout_revoke_refresh_token": true, "logout_uri_suffix": null, "max_age": null, "mtls_introspection_endpoint": null, "mtls_revocation_endpoint": null, "mtls_token_endpoint": null, "no_proxy": null, "password_param_type": ["body", "header", "query"], "preserve_query_args": false, "proof_of_possession_auth_methods_validation": true, "proof_of_possession_dpop": "off", "proof_of_possession_mtls": "off", "pushed_authorization_request_endpoint": null, "redirect_uri": null, "rediscovery_lifetime": 30, "refresh_token_param_name": null, "refresh_token_param_type": ["body", "header", "query"], "refresh_tokens": true, "require_proof_key_for_code_exchange": null, "require_pushed_authorization_requests": null, "require_signed_request_object": null, "resolve_distributed_claims": false, "response_mode": "query", "response_type": ["code"], "reverify": false, "revocation_endpoint": null, "revocation_token_param_name": "token", "roles_claim": ["roles"], "roles_required": null, "run_on_preflight": true, "scopes": [], "scopes_claim": ["scope"], "scopes_required": null, "search_user_info": false, "session_absolute_timeout": 86400, "session_audience": "default", "session_bind": null, "session_cookie_domain": null, "session_cookie_http_only": true, "session_cookie_name": "session", "session_cookie_path": "/", "session_cookie_same_site": "Lax", "session_cookie_secure": null, "session_enforce_same_subject": false, "session_hash_storage_key": false, "session_hash_subject": false, "session_idling_timeout": 900, "session_memcached_host": "127.0.0.1", "session_memcached_port": 11211, "session_memcached_prefix": null, "session_memcached_socket": null, "session_remember": false, "session_remember_absolute_timeout": 2592000, "session_remember_cookie_name": "remember", "session_remember_rolling_timeout": 604800, "session_request_headers": null, "session_response_headers": null, "session_rolling_timeout": 3600, "session_secret": null, "session_storage": "cookie", "session_store_metadata": false, "ssl_verify": false, "timeout": 10000, "tls_client_auth_cert_id": null, "tls_client_auth_ssl_verify": true, "token_cache_key_include_scope": false, "token_endpoint": null, "token_exchange_endpoint": null, "token_headers_client": null, "token_headers_grants": null, "token_headers_names": null, "token_headers_prefix": null, "token_headers_replay": null, "token_headers_values": null, "token_post_args_client": null, "token_post_args_names": null, "token_post_args_values": null, "unauthorized_destroy_session": true, "unauthorized_error_message": "Unauthorized", "unauthorized_redirect_uri": null, "unexpected_redirect_uri": null, "upstream_access_token_header": "authorization:bearer", "upstream_access_token_jwk_header": null, "upstream_headers_claims": null, "upstream_headers_names": null, "upstream_id_token_header": null, "upstream_id_token_jwk_header": null, "upstream_introspection_header": null, "upstream_introspection_jwt_header": null, "upstream_refresh_token_header": null, "upstream_session_id_header": null, "upstream_user_info_header": null, "upstream_user_info_jwt_header": null, "userinfo_accept": "application/json", "userinfo_endpoint": null, "userinfo_headers_client": null, "userinfo_headers_names": null, "userinfo_headers_values": null, "userinfo_query_args_client": null, "userinfo_query_args_names": null, "userinfo_query_args_values": null, "using_pseudo_issuer": false, "verify_claims": true, "verify_nonce": true, "verify_parameters": false, "verify_signature": true}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 625602}
   create-opentelemetry-plugin:
@@ -11418,10 +11530,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "rate-limiting-advanced", "ordering": null, "partials": null, "tags": null, "config": {"compound_identifier": null, "consumer_groups": null, "dictionary_name": "kong_rate_limiting_counters", "disable_penalty": false, "enforce_consumer_groups": false, "error_code": 429, "error_message": "API rate limit exceeded", "header_name": null, "hide_client_headers": false, "identifier": "consumer", "limit": [481.69, 1966.64, 2061.56], "lock_dictionary_name": "kong_locks", "namespace": null, "path": null, "retry_after_jitter_max": 0, "strategy": "local", "sync_rate": null, "window_size": [139.64, 9425.18, 2892.92], "window_type": "sliding"}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "rate-limiting-advanced", "ordering": null, "partials": null, "tags": null, "config": {"compound_identifier": null, "consumer_groups": null, "dictionary_name": "kong_rate_limiting_counters", "disable_penalty": false, "enforce_consumer_groups": false, "error_code": 429, "error_message": "API rate limit exceeded", "header_name": null, "hide_client_headers": false, "identifier": "consumer", "limit": [481.69, 1966.64, 2061.56], "lock_dictionary_name": "kong_locks", "namespace": null, "path": null, "retry_after_jitter_max": 0, "strategy": "local", "sync_rate": null, "throttling": null, "window_size": [139.64, 9425.18, 2892.92], "window_type": "sliding"}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"enabled": true, "instance_name": null, "name": "rate-limiting-advanced", "ordering": null, "partials": null, "tags": null, "config": {"compound_identifier": null, "consumer_groups": null, "dictionary_name": "kong_rate_limiting_counters", "disable_penalty": false, "enforce_consumer_groups": false, "error_code": 429, "error_message": "API rate limit exceeded", "header_name": null, "hide_client_headers": false, "identifier": "consumer", "limit": [481.69, 1966.64, 2061.56], "lock_dictionary_name": "kong_locks", "namespace": null, "path": null, "retry_after_jitter_max": 0, "strategy": "local", "sync_rate": null, "window_size": [139.64, 9425.18, 2892.92], "window_type": "sliding"}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "rate-limiting-advanced", "ordering": null, "partials": null, "tags": null, "config": {"compound_identifier": null, "consumer_groups": null, "dictionary_name": "kong_rate_limiting_counters", "disable_penalty": false, "enforce_consumer_groups": false, "error_code": 429, "error_message": "API rate limit exceeded", "header_name": null, "hide_client_headers": false, "identifier": "consumer", "limit": [481.69, 1966.64, 2061.56], "lock_dictionary_name": "kong_locks", "namespace": null, "path": null, "retry_after_jitter_max": 0, "strategy": "local", "sync_rate": null, "throttling": null, "window_size": [139.64, 9425.18, 2892.92], "window_type": "sliding"}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 923464}
   create-redirect-plugin:
@@ -12185,10 +12297,10 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           UpstreamIdForTarget: "5a078780-5d4c-4aae-984a-bdc6f52113d8"
       requestBody:
-        application/json: {"id": "089292a7-ba3d-4d88-acf0-97b4b2e2621a", "tags": null, "target": "203.0.113.42", "upstream": null, "weight": 100}
+        application/json: {"failover": false, "id": "089292a7-ba3d-4d88-acf0-97b4b2e2621a", "tags": null, "target": "203.0.113.42", "upstream": null, "weight": 100}
       responses:
         "201":
-          application/json: {"id": "089292a7-ba3d-4d88-acf0-97b4b2e2621a", "tags": null, "target": "203.0.113.42", "upstream": {"id": "5f1d7e76-2fed-4806-a6af-869984f025cb"}, "weight": 100}
+          application/json: {"failover": false, "id": "089292a7-ba3d-4d88-acf0-97b4b2e2621a", "tags": null, "target": "203.0.113.42", "upstream": {"id": "5f1d7e76-2fed-4806-a6af-869984f025cb"}, "weight": 100}
   delete-target-with-upstream:
     "":
       parameters:
@@ -12220,7 +12332,7 @@ examples:
           TargetId: "5a078780-5d4c-4aae-984a-bdc6f52113d8"
       responses:
         "200":
-          application/json: {"id": "089292a7-ba3d-4d88-acf0-97b4b2e2621a", "tags": null, "target": "203.0.113.42", "upstream": {"id": "5f1d7e76-2fed-4806-a6af-869984f025cb"}, "weight": 100}
+          application/json: {"failover": false, "id": "089292a7-ba3d-4d88-acf0-97b4b2e2621a", "tags": null, "target": "203.0.113.42", "upstream": {"id": "5f1d7e76-2fed-4806-a6af-869984f025cb"}, "weight": 100}
   create-vault:
     speakeasy-default-create-vault:
       parameters:
@@ -13104,7 +13216,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "ai-aws-guardrails", "ordering": null, "partials": null, "tags": null, "config": {"aws_access_key_id": null, "aws_region": "<value>", "aws_secret_access_key": null, "guarding_mode": "INPUT", "guardrails_id": "<id>", "guardrails_version": "<value>", "response_buffer_size": 100, "stop_on_error": true, "text_source": "concatenate_all_content", "timeout": 10000}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-aws-guardrails", "ordering": null, "partials": null, "tags": null, "config": {"aws_access_key_id": null, "aws_assume_role_arn": null, "aws_region": "<value>", "aws_role_session_name": null, "aws_secret_access_key": null, "aws_sts_endpoint_url": null, "guarding_mode": "INPUT", "guardrails_id": "<id>", "guardrails_version": "<value>", "response_buffer_size": 100, "stop_on_error": true, "text_source": "concatenate_all_content", "timeout": 10000}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 867373}
   update-aiawsguardrails-plugin:
@@ -13114,10 +13226,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "ai-aws-guardrails", "ordering": null, "partials": null, "tags": null, "config": {"aws_access_key_id": null, "aws_region": "<value>", "aws_secret_access_key": null, "guarding_mode": "INPUT", "guardrails_id": "<id>", "guardrails_version": "<value>", "response_buffer_size": 100, "stop_on_error": true, "text_source": "concatenate_all_content", "timeout": 10000}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "ai-aws-guardrails", "ordering": null, "partials": null, "tags": null, "config": {"aws_access_key_id": null, "aws_assume_role_arn": null, "aws_region": "<value>", "aws_role_session_name": null, "aws_secret_access_key": null, "aws_sts_endpoint_url": null, "guarding_mode": "INPUT", "guardrails_id": "<id>", "guardrails_version": "<value>", "response_buffer_size": 100, "stop_on_error": true, "text_source": "concatenate_all_content", "timeout": 10000}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "ai-aws-guardrails", "ordering": null, "partials": null, "tags": null, "config": {"aws_access_key_id": null, "aws_region": "<value>", "aws_secret_access_key": null, "guarding_mode": "INPUT", "guardrails_id": "<id>", "guardrails_version": "<value>", "response_buffer_size": 100, "stop_on_error": true, "text_source": "concatenate_all_content", "timeout": 10000}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-aws-guardrails", "ordering": null, "partials": null, "tags": null, "config": {"aws_access_key_id": null, "aws_assume_role_arn": null, "aws_region": "<value>", "aws_role_session_name": null, "aws_secret_access_key": null, "aws_sts_endpoint_url": null, "guarding_mode": "INPUT", "guardrails_id": "<id>", "guardrails_version": "<value>", "response_buffer_size": 100, "stop_on_error": true, "text_source": "concatenate_all_content", "timeout": 10000}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 585575}
   delete-aipromptcompressor-plugin:
@@ -13170,7 +13282,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "datakit", "ordering": null, "partials": null, "tags": null, "config": {"debug": false, "nodes": []}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "datakit", "ordering": null, "partials": null, "tags": null, "config": {"debug": false, "nodes": [], "resources": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 165028}
   update-datakit-plugin:
@@ -13180,10 +13292,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "datakit", "ordering": null, "partials": null, "tags": null, "config": {"debug": false, "nodes": []}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "datakit", "ordering": null, "partials": null, "tags": null, "config": {"debug": false, "nodes": [], "resources": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "datakit", "ordering": null, "partials": null, "tags": null, "config": {"debug": false, "nodes": []}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "datakit", "ordering": null, "partials": null, "tags": null, "config": {"debug": false, "nodes": [], "resources": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 116732}
   delete-solaceupstream-plugin:
@@ -13203,7 +13315,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "solace-upstream", "ordering": null, "partials": null, "tags": null, "config": {"message": {"ack_timeout": 2000, "default_content": null, "delivery_mode": "DIRECT", "destinations": [], "dmq_eligible": false, "forward_body": false, "forward_headers": false, "forward_method": false, "forward_uri": false, "functions": null, "priority": 4, "sender_id": "kong", "tracing": false, "tracing_sampled": false, "ttl": 0}, "session": {"authentication": null, "connect_timeout": 3000, "host": "left-dandelion.com", "ssl_validate_certificate": false, "vpn_name": null}}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "solace-upstream", "ordering": null, "partials": null, "tags": null, "config": {"message": {"ack_timeout": 2000, "default_content": null, "delivery_mode": "DIRECT", "destinations": [], "dmq_eligible": false, "forward_body": false, "forward_headers": false, "forward_method": false, "forward_uri": false, "functions": null, "priority": 4, "sender_id": null, "tracing": false, "tracing_sampled": false, "ttl": 0}, "session": {"authentication": null, "calculate_message_expiry": true, "connect_timeout": 3000, "generate_rcv_timestamps": true, "generate_send_timestamps": true, "generate_sender_id": true, "generate_sequence_number": true, "host": "left-dandelion.com", "ssl_validate_certificate": false, "vpn_name": null}}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 790942}
   update-solaceupstream-plugin:
@@ -13213,10 +13325,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "solace-upstream", "ordering": null, "partials": null, "tags": null, "config": {"message": {"ack_timeout": 2000, "default_content": null, "delivery_mode": "DIRECT", "destinations": [], "dmq_eligible": false, "forward_body": false, "forward_headers": false, "forward_method": false, "forward_uri": false, "functions": null, "priority": 4, "sender_id": "kong", "tracing": false, "tracing_sampled": false, "ttl": 0}, "session": {"authentication": null, "connect_timeout": 3000, "host": "unlucky-soup.name", "ssl_validate_certificate": false, "vpn_name": null}}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "solace-upstream", "ordering": null, "partials": null, "tags": null, "config": {"message": {"ack_timeout": 2000, "default_content": null, "delivery_mode": "DIRECT", "destinations": [], "dmq_eligible": false, "forward_body": false, "forward_headers": false, "forward_method": false, "forward_uri": false, "functions": null, "priority": 4, "sender_id": null, "tracing": false, "tracing_sampled": false, "ttl": 0}, "session": {"authentication": null, "calculate_message_expiry": true, "connect_timeout": 3000, "generate_rcv_timestamps": true, "generate_send_timestamps": true, "generate_sender_id": true, "generate_sequence_number": true, "host": "unlucky-soup.name", "ssl_validate_certificate": false, "vpn_name": null}}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "solace-upstream", "ordering": null, "partials": null, "tags": null, "config": {"message": {"ack_timeout": 2000, "default_content": null, "delivery_mode": "DIRECT", "destinations": [], "dmq_eligible": false, "forward_body": false, "forward_headers": false, "forward_method": false, "forward_uri": false, "functions": null, "priority": 4, "sender_id": "kong", "tracing": false, "tracing_sampled": false, "ttl": 0}, "session": {"authentication": null, "connect_timeout": 3000, "host": "unlucky-soup.name", "ssl_validate_certificate": false, "vpn_name": null}}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "solace-upstream", "ordering": null, "partials": null, "tags": null, "config": {"message": {"ack_timeout": 2000, "default_content": null, "delivery_mode": "DIRECT", "destinations": [], "dmq_eligible": false, "forward_body": false, "forward_headers": false, "forward_method": false, "forward_uri": false, "functions": null, "priority": 4, "sender_id": null, "tracing": false, "tracing_sampled": false, "ttl": 0}, "session": {"authentication": null, "calculate_message_expiry": true, "connect_timeout": 3000, "generate_rcv_timestamps": true, "generate_send_timestamps": true, "generate_sender_id": true, "generate_sequence_number": true, "host": "unlucky-soup.name", "ssl_validate_certificate": false, "vpn_name": null}}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 593021}
   create-aiawsguardrails-plugin:
@@ -13225,10 +13337,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "ai-aws-guardrails", "ordering": null, "partials": null, "tags": null, "config": {"aws_access_key_id": null, "aws_region": "<value>", "aws_secret_access_key": null, "guarding_mode": "INPUT", "guardrails_id": "<id>", "guardrails_version": "<value>", "response_buffer_size": 100, "stop_on_error": true, "text_source": "concatenate_all_content", "timeout": 10000}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "ai-aws-guardrails", "ordering": null, "partials": null, "tags": null, "config": {"aws_access_key_id": null, "aws_assume_role_arn": null, "aws_region": "<value>", "aws_role_session_name": null, "aws_secret_access_key": null, "aws_sts_endpoint_url": null, "guarding_mode": "INPUT", "guardrails_id": "<id>", "guardrails_version": "<value>", "response_buffer_size": 100, "stop_on_error": true, "text_source": "concatenate_all_content", "timeout": 10000}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"enabled": true, "instance_name": null, "name": "ai-aws-guardrails", "ordering": null, "partials": null, "tags": null, "config": {"aws_access_key_id": null, "aws_region": "<value>", "aws_secret_access_key": null, "guarding_mode": "INPUT", "guardrails_id": "<id>", "guardrails_version": "<value>", "response_buffer_size": 100, "stop_on_error": true, "text_source": "concatenate_all_content", "timeout": 10000}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-aws-guardrails", "ordering": null, "partials": null, "tags": null, "config": {"aws_access_key_id": null, "aws_assume_role_arn": null, "aws_region": "<value>", "aws_role_session_name": null, "aws_secret_access_key": null, "aws_sts_endpoint_url": null, "guarding_mode": "INPUT", "guardrails_id": "<id>", "guardrails_version": "<value>", "response_buffer_size": 100, "stop_on_error": true, "text_source": "concatenate_all_content", "timeout": 10000}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 148291}
   create-aipromptcompressor-plugin:
@@ -13249,10 +13361,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "datakit", "ordering": null, "partials": null, "tags": null, "config": {"debug": false, "nodes": [{"input": null, "inputs": null, "name": "<value>", "status": 200, "type": "exit", "warn_headers_sent": null}]}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "datakit", "ordering": null, "partials": null, "tags": null, "config": {"debug": false, "nodes": [{"input": null, "inputs": null, "name": "<value>", "status": 200, "type": "exit", "warn_headers_sent": null}], "resources": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"enabled": true, "instance_name": null, "name": "datakit", "ordering": null, "partials": null, "tags": null, "config": {"debug": false, "nodes": [{"input": null, "inputs": null, "name": "<value>", "status": 200, "type": "exit", "warn_headers_sent": null}]}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "datakit", "ordering": null, "partials": null, "tags": null, "config": {"debug": false, "nodes": [{"input": null, "inputs": null, "name": "<value>", "status": 200, "type": "exit", "warn_headers_sent": null}], "resources": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 905900}
   create-solaceupstream-plugin:
@@ -13261,10 +13373,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "solace-upstream", "ordering": null, "partials": null, "tags": null, "config": {"message": {"ack_timeout": 2000, "default_content": null, "delivery_mode": "DIRECT", "destinations": [{"name": "<value>", "type": "QUEUE"}], "dmq_eligible": false, "forward_body": false, "forward_headers": false, "forward_method": false, "forward_uri": false, "functions": null, "priority": 4, "sender_id": "kong", "tracing": false, "tracing_sampled": false, "ttl": 0}, "session": {"authentication": null, "connect_timeout": 3000, "host": "soupy-joy.org", "ssl_validate_certificate": false, "vpn_name": null}}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "solace-upstream", "ordering": null, "partials": null, "tags": null, "config": {"message": {"ack_timeout": 2000, "default_content": null, "delivery_mode": "DIRECT", "destinations": [{"name": "<value>", "type": "QUEUE"}], "dmq_eligible": false, "forward_body": false, "forward_headers": false, "forward_method": false, "forward_uri": false, "functions": null, "priority": 4, "sender_id": null, "tracing": false, "tracing_sampled": false, "ttl": 0}, "session": {"authentication": null, "calculate_message_expiry": true, "connect_timeout": 3000, "generate_rcv_timestamps": true, "generate_send_timestamps": true, "generate_sender_id": true, "generate_sequence_number": true, "host": "soupy-joy.org", "ssl_validate_certificate": false, "vpn_name": null}}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"enabled": true, "instance_name": null, "name": "solace-upstream", "ordering": null, "partials": null, "tags": null, "config": {"message": {"ack_timeout": 2000, "default_content": null, "delivery_mode": "DIRECT", "destinations": [{"name": "<value>", "type": "QUEUE"}], "dmq_eligible": false, "forward_body": false, "forward_headers": false, "forward_method": false, "forward_uri": false, "functions": null, "priority": 4, "sender_id": "kong", "tracing": false, "tracing_sampled": false, "ttl": 0}, "session": {"authentication": null, "connect_timeout": 3000, "host": "soupy-joy.org", "ssl_validate_certificate": false, "vpn_name": null}}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "solace-upstream", "ordering": null, "partials": null, "tags": null, "config": {"message": {"ack_timeout": 2000, "default_content": null, "delivery_mode": "DIRECT", "destinations": [{"name": "<value>", "type": "QUEUE"}], "dmq_eligible": false, "forward_body": false, "forward_headers": false, "forward_method": false, "forward_uri": false, "functions": null, "priority": 4, "sender_id": null, "tracing": false, "tracing_sampled": false, "ttl": 0}, "session": {"authentication": null, "calculate_message_expiry": true, "connect_timeout": 3000, "generate_rcv_timestamps": true, "generate_send_timestamps": true, "generate_sender_id": true, "generate_sequence_number": true, "host": "soupy-joy.org", "ssl_validate_certificate": false, "vpn_name": null}}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 205409}
   get-cmek:
@@ -14492,5 +14604,365 @@ examples:
           application/json: {"enabled": true, "instance_name": null, "name": "app-dynamics", "ordering": null, "partials": null, "tags": null, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 429810}
+  delete-ace-plugin:
+    speakeasy-default-delete-ace-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/json: {"message": "<value>", "status": 884927}
+  get-ace-plugin:
+    speakeasy-default-get-ace-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"enabled": true, "instance_name": null, "name": "ace", "ordering": null, "partials": null, "tags": null, "config": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 133033}
+  update-ace-plugin:
+    speakeasy-default-update-ace-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "instance_name": null, "name": "ace", "ordering": null, "partials": null, "tags": null, "config": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "200":
+          application/json: {"enabled": true, "instance_name": null, "name": "ace", "ordering": null, "partials": null, "tags": null, "config": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 95920}
+  delete-aigcpmodelarmor-plugin:
+    speakeasy-default-delete-aigcpmodelarmor-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/json: {"message": "<value>", "status": 610677}
+  get-aigcpmodelarmor-plugin:
+    speakeasy-default-get-aigcpmodelarmor-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-gcp-model-armor", "ordering": null, "partials": null, "tags": null, "config": {"enable_multi_language_detection": false, "gcp_service_account_json": null, "gcp_use_service_account": false, "guarding_mode": "INPUT", "location_id": "<id>", "project_id": "<id>", "request_failure_message": "Request was filtered by GCP Model Armor", "response_buffer_size": 100, "response_failure_message": "Response was filtered by GCP Model Armor", "reveal_failure_categories": false, "source_language": null, "stop_on_error": true, "template_id": "<id>", "text_source": "last_message", "timeout": 10000}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 864209}
+  update-aigcpmodelarmor-plugin:
+    speakeasy-default-update-aigcpmodelarmor-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "instance_name": null, "name": "ai-gcp-model-armor", "ordering": null, "partials": null, "tags": null, "config": {"enable_multi_language_detection": false, "gcp_service_account_json": null, "gcp_use_service_account": false, "guarding_mode": "INPUT", "location_id": "<id>", "project_id": "<id>", "request_failure_message": "Request was filtered by GCP Model Armor", "response_buffer_size": 100, "response_failure_message": "Response was filtered by GCP Model Armor", "reveal_failure_categories": false, "source_language": null, "stop_on_error": true, "template_id": "<id>", "text_source": "last_message", "timeout": 10000}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "200":
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-gcp-model-armor", "ordering": null, "partials": null, "tags": null, "config": {"enable_multi_language_detection": false, "gcp_service_account_json": null, "gcp_use_service_account": false, "guarding_mode": "INPUT", "location_id": "<id>", "project_id": "<id>", "request_failure_message": "Request was filtered by GCP Model Armor", "response_buffer_size": 100, "response_failure_message": "Response was filtered by GCP Model Armor", "reveal_failure_categories": false, "source_language": null, "stop_on_error": true, "template_id": "<id>", "text_source": "last_message", "timeout": 10000}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 611887}
+  delete-aillmasjudge-plugin:
+    speakeasy-default-delete-aillmasjudge-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/json: {"message": "<value>", "status": 80681}
+  get-aillmasjudge-plugin:
+    speakeasy-default-get-aillmasjudge-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-llm-as-judge", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "ignore_assistant_prompts": true, "ignore_system_prompts": true, "ignore_tool_prompts": true, "llm": {"auth": null, "logging": null, "model": {"name": null, "options": null, "provider": "llama2"}, "route_type": "llm/v1/responses"}, "message_countback": 1, "prompt": "You are a strict evaluator. You will be given a prompt and a response. Your task is to judge whether the response is correct or incorrect. You must assign a score between 1 and 100, where: 100 represents a completely correct and ideal response, 1 represents a completely incorrect or irrelevant response. Your score must be a single number only — no text, labels, or explanations. Use the full range of values (e.g., 13, 47, 86), not just round numbers like 10, 50, or 100. Be accurate and consistent, as this score will be used by another model for learning and evaluation.", "sampling_rate": 1}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 713715}
+  update-aillmasjudge-plugin:
+    speakeasy-default-update-aillmasjudge-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "instance_name": null, "name": "ai-llm-as-judge", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "ignore_assistant_prompts": true, "ignore_system_prompts": true, "ignore_tool_prompts": true, "llm": {"auth": null, "logging": null, "model": {"name": null, "options": null, "provider": "bedrock"}, "route_type": "llm/v1/assistants"}, "message_countback": 1, "prompt": "You are a strict evaluator. You will be given a prompt and a response. Your task is to judge whether the response is correct or incorrect. You must assign a score between 1 and 100, where: 100 represents a completely correct and ideal response, 1 represents a completely incorrect or irrelevant response. Your score must be a single number only — no text, labels, or explanations. Use the full range of values (e.g., 13, 47, 86), not just round numbers like 10, 50, or 100. Be accurate and consistent, as this score will be used by another model for learning and evaluation.", "sampling_rate": 1}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "200":
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-llm-as-judge", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "ignore_assistant_prompts": true, "ignore_system_prompts": true, "ignore_tool_prompts": true, "llm": {"auth": null, "logging": null, "model": {"name": null, "options": null, "provider": "bedrock"}, "route_type": "llm/v1/assistants"}, "message_countback": 1, "prompt": "You are a strict evaluator. You will be given a prompt and a response. Your task is to judge whether the response is correct or incorrect. You must assign a score between 1 and 100, where: 100 represents a completely correct and ideal response, 1 represents a completely incorrect or irrelevant response. Your score must be a single number only — no text, labels, or explanations. Use the full range of values (e.g., 13, 47, 86), not just round numbers like 10, 50, or 100. Be accurate and consistent, as this score will be used by another model for learning and evaluation.", "sampling_rate": 1}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 26358}
+  delete-aimcpoauth2-plugin:
+    speakeasy-default-delete-aimcpoauth2-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/json: {"message": "<value>", "status": 705852}
+  get-aimcpoauth2-plugin:
+    speakeasy-default-get-aimcpoauth2-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-mcp-oauth2", "ordering": null, "partials": null, "tags": null, "config": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 224220}
+  update-aimcpoauth2-plugin:
+    speakeasy-default-update-aimcpoauth2-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "instance_name": null, "name": "ai-mcp-oauth2", "ordering": null, "partials": null, "tags": null, "config": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "200":
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-mcp-oauth2", "ordering": null, "partials": null, "tags": null, "config": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 821330}
+  delete-aimcpproxy-plugin:
+    speakeasy-default-delete-aimcpproxy-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/json: {"message": "<value>", "status": 558244}
+  get-aimcpproxy-plugin:
+    speakeasy-default-get-aimcpproxy-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-mcp-proxy", "ordering": null, "partials": null, "tags": null, "config": {"max_request_body_size": 8192, "mode": "passthrough-listener", "server": null, "tools": null}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 98572}
+  update-aimcpproxy-plugin:
+    speakeasy-default-update-aimcpproxy-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "instance_name": null, "name": "ai-mcp-proxy", "ordering": null, "partials": null, "tags": null, "config": {"max_request_body_size": 8192, "mode": "conversion-listener", "server": null, "tools": null}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "200":
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-mcp-proxy", "ordering": null, "partials": null, "tags": null, "config": {"max_request_body_size": 8192, "mode": "conversion-listener", "server": null, "tools": null}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 275161}
+  delete-aisemanticresponseguard-plugin:
+    speakeasy-default-delete-aisemanticresponseguard-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/json: {"message": "<value>", "status": 661007}
+  get-aisemanticresponseguard-plugin:
+    speakeasy-default-get-aisemanticresponseguard-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-semantic-response-guard", "ordering": null, "partials": null, "tags": null, "config": {"embeddings": {"auth": null, "model": {"name": "<value>", "options": null, "provider": "huggingface"}}, "genai_category": "text/generation", "llm_format": "openai", "rules": null, "search": null, "vectordb": {"dimensions": 654506, "distance_metric": "cosine", "pgvector": null, "strategy": "pgvector", "threshold": 6719.86}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 321239}
+  update-aisemanticresponseguard-plugin:
+    speakeasy-default-update-aisemanticresponseguard-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "instance_name": null, "name": "ai-semantic-response-guard", "ordering": null, "partials": null, "tags": null, "config": {"embeddings": {"auth": null, "model": {"name": "<value>", "options": null, "provider": "gemini"}}, "genai_category": "text/generation", "llm_format": "openai", "rules": null, "search": null, "vectordb": {"dimensions": 593133, "distance_metric": "euclidean", "pgvector": null, "strategy": "pgvector", "threshold": 371.96}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "200":
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-semantic-response-guard", "ordering": null, "partials": null, "tags": null, "config": {"embeddings": {"auth": null, "model": {"name": "<value>", "options": null, "provider": "gemini"}}, "genai_category": "text/generation", "llm_format": "openai", "rules": null, "search": null, "vectordb": {"dimensions": 593133, "distance_metric": "euclidean", "pgvector": null, "strategy": "pgvector", "threshold": 371.96}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 29488}
+  delete-solaceconsume-plugin:
+    speakeasy-default-delete-solaceconsume-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/json: {"message": "<value>", "status": 725709}
+  get-solaceconsume-plugin:
+    speakeasy-default-get-solaceconsume-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"enabled": true, "instance_name": null, "name": "solace-consume", "ordering": null, "partials": null, "tags": null, "config": {"flow": {"ack_mode": "CLIENT", "binds": [{"name": "<value>", "type": "QUEUE"}], "functions": null, "max_unacked_messages": -1, "selector": null, "wait_timeout": 50, "window_size": 255}, "mode": "POLLING", "session": {"authentication": null, "calculate_message_expiry": true, "connect_timeout": 3000, "generate_rcv_timestamps": true, "generate_send_timestamps": true, "generate_sender_id": true, "generate_sequence_number": true, "host": "noted-spork.org", "ssl_validate_certificate": false, "vpn_name": null}}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 298822}
+  update-solaceconsume-plugin:
+    speakeasy-default-update-solaceconsume-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "instance_name": null, "name": "solace-consume", "ordering": null, "partials": null, "tags": null, "config": {"flow": {"ack_mode": "CLIENT", "binds": [], "functions": null, "max_unacked_messages": -1, "selector": null, "wait_timeout": 50, "window_size": 255}, "mode": "POLLING", "session": {"authentication": null, "calculate_message_expiry": true, "connect_timeout": 3000, "generate_rcv_timestamps": true, "generate_send_timestamps": true, "generate_sender_id": true, "generate_sequence_number": true, "host": "parallel-bracelet.biz", "ssl_validate_certificate": false, "vpn_name": null}}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "200":
+          application/json: {"enabled": true, "instance_name": null, "name": "solace-consume", "ordering": null, "partials": null, "tags": null, "config": {"flow": {"ack_mode": "CLIENT", "binds": [], "functions": null, "max_unacked_messages": -1, "selector": null, "wait_timeout": 50, "window_size": 255}, "mode": "POLLING", "session": {"authentication": null, "calculate_message_expiry": true, "connect_timeout": 3000, "generate_rcv_timestamps": true, "generate_send_timestamps": true, "generate_sender_id": true, "generate_sequence_number": true, "host": "parallel-bracelet.biz", "ssl_validate_certificate": false, "vpn_name": null}}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 979755}
+  delete-solacelog-plugin:
+    speakeasy-default-delete-solacelog-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/json: {"message": "<value>", "status": 714721}
+  get-solacelog-plugin:
+    speakeasy-default-get-solacelog-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"enabled": true, "instance_name": null, "name": "solace-log", "ordering": null, "partials": null, "tags": null, "config": {"message": {"ack_timeout": 2000, "delivery_mode": "DIRECT", "destinations": [{"name": "<value>", "type": "QUEUE"}], "dmq_eligible": false, "priority": 4, "sender_id": null, "tracing": false, "tracing_sampled": false, "ttl": 0}, "session": {"authentication": null, "calculate_message_expiry": true, "connect_timeout": 3000, "generate_rcv_timestamps": true, "generate_send_timestamps": true, "generate_sender_id": true, "generate_sequence_number": true, "host": "unripe-pearl.biz", "ssl_validate_certificate": false, "vpn_name": null}}, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 563280}
+  update-solacelog-plugin:
+    speakeasy-default-update-solacelog-plugin:
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "instance_name": null, "name": "solace-log", "ordering": null, "partials": null, "tags": null, "config": {"message": {"ack_timeout": 2000, "delivery_mode": "DIRECT", "destinations": [], "dmq_eligible": false, "priority": 4, "sender_id": null, "tracing": false, "tracing_sampled": false, "ttl": 0}, "session": {"authentication": null, "calculate_message_expiry": true, "connect_timeout": 3000, "generate_rcv_timestamps": true, "generate_send_timestamps": true, "generate_sender_id": true, "generate_sequence_number": true, "host": "thick-roundabout.org", "ssl_validate_certificate": false, "vpn_name": null}}, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
+      responses:
+        "200":
+          application/json: {"enabled": true, "instance_name": null, "name": "solace-log", "ordering": null, "partials": null, "tags": null, "config": {"message": {"ack_timeout": 2000, "delivery_mode": "DIRECT", "destinations": [], "dmq_eligible": false, "priority": 4, "sender_id": null, "tracing": false, "tracing_sampled": false, "ttl": 0}, "session": {"authentication": null, "calculate_message_expiry": true, "connect_timeout": 3000, "generate_rcv_timestamps": true, "generate_send_timestamps": true, "generate_sender_id": true, "generate_sequence_number": true, "host": "thick-roundabout.org", "ssl_validate_certificate": false, "vpn_name": null}}, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 747972}
+  create-ace-plugin:
+    speakeasy-default-create-ace-plugin:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "instance_name": null, "name": "ace", "ordering": null, "partials": null, "tags": null, "config": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "201":
+          application/json: {"enabled": true, "instance_name": null, "name": "ace", "ordering": null, "partials": null, "tags": null, "config": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 840678}
+  create-aigcpmodelarmor-plugin:
+    speakeasy-default-create-aigcpmodelarmor-plugin:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "instance_name": null, "name": "ai-gcp-model-armor", "ordering": null, "partials": null, "tags": null, "config": {"enable_multi_language_detection": false, "gcp_service_account_json": null, "gcp_use_service_account": false, "guarding_mode": "INPUT", "location_id": "<id>", "project_id": "<id>", "request_failure_message": "Request was filtered by GCP Model Armor", "response_buffer_size": 100, "response_failure_message": "Response was filtered by GCP Model Armor", "reveal_failure_categories": false, "source_language": null, "stop_on_error": true, "template_id": "<id>", "text_source": "last_message", "timeout": 10000}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "201":
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-gcp-model-armor", "ordering": null, "partials": null, "tags": null, "config": {"enable_multi_language_detection": false, "gcp_service_account_json": null, "gcp_use_service_account": false, "guarding_mode": "INPUT", "location_id": "<id>", "project_id": "<id>", "request_failure_message": "Request was filtered by GCP Model Armor", "response_buffer_size": 100, "response_failure_message": "Response was filtered by GCP Model Armor", "reveal_failure_categories": false, "source_language": null, "stop_on_error": true, "template_id": "<id>", "text_source": "last_message", "timeout": 10000}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 153937}
+  create-aillmasjudge-plugin:
+    speakeasy-default-create-aillmasjudge-plugin:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "instance_name": null, "name": "ai-llm-as-judge", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "ignore_assistant_prompts": true, "ignore_system_prompts": true, "ignore_tool_prompts": true, "llm": {"auth": null, "logging": null, "model": {"name": null, "options": null, "provider": "huggingface"}, "route_type": "audio/v1/audio/translations"}, "message_countback": 1, "prompt": "You are a strict evaluator. You will be given a prompt and a response. Your task is to judge whether the response is correct or incorrect. You must assign a score between 1 and 100, where: 100 represents a completely correct and ideal response, 1 represents a completely incorrect or irrelevant response. Your score must be a single number only — no text, labels, or explanations. Use the full range of values (e.g., 13, 47, 86), not just round numbers like 10, 50, or 100. Be accurate and consistent, as this score will be used by another model for learning and evaluation.", "sampling_rate": 1}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "201":
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-llm-as-judge", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "ignore_assistant_prompts": true, "ignore_system_prompts": true, "ignore_tool_prompts": true, "llm": {"auth": null, "logging": null, "model": {"name": null, "options": null, "provider": "huggingface"}, "route_type": "audio/v1/audio/translations"}, "message_countback": 1, "prompt": "You are a strict evaluator. You will be given a prompt and a response. Your task is to judge whether the response is correct or incorrect. You must assign a score between 1 and 100, where: 100 represents a completely correct and ideal response, 1 represents a completely incorrect or irrelevant response. Your score must be a single number only — no text, labels, or explanations. Use the full range of values (e.g., 13, 47, 86), not just round numbers like 10, 50, or 100. Be accurate and consistent, as this score will be used by another model for learning and evaluation.", "sampling_rate": 1}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 871661}
+  create-aimcpoauth2-plugin:
+    speakeasy-default-create-aimcpoauth2-plugin:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "instance_name": null, "name": "ai-mcp-oauth2", "ordering": null, "partials": null, "tags": null, "config": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "201":
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-mcp-oauth2", "ordering": null, "partials": null, "tags": null, "config": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 239969}
+  create-aimcpproxy-plugin:
+    speakeasy-default-create-aimcpproxy-plugin:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "instance_name": null, "name": "ai-mcp-proxy", "ordering": null, "partials": null, "tags": null, "config": {"max_request_body_size": 8192, "mode": "listener", "server": null, "tools": null}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "201":
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-mcp-proxy", "ordering": null, "partials": null, "tags": null, "config": {"max_request_body_size": 8192, "mode": "listener", "server": null, "tools": null}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 729148}
+  create-aisemanticresponseguard-plugin:
+    speakeasy-default-create-aisemanticresponseguard-plugin:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "instance_name": null, "name": "ai-semantic-response-guard", "ordering": null, "partials": null, "tags": null, "config": {"embeddings": {"auth": null, "model": {"name": "<value>", "options": null, "provider": "azure"}}, "genai_category": "text/generation", "llm_format": "openai", "rules": null, "search": null, "vectordb": {"dimensions": 767565, "distance_metric": "cosine", "pgvector": null, "strategy": "pgvector", "threshold": 4404.78}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "201":
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-semantic-response-guard", "ordering": null, "partials": null, "tags": null, "config": {"embeddings": {"auth": null, "model": {"name": "<value>", "options": null, "provider": "azure"}}, "genai_category": "text/generation", "llm_format": "openai", "rules": null, "search": null, "vectordb": {"dimensions": 767565, "distance_metric": "cosine", "pgvector": null, "strategy": "pgvector", "threshold": 4404.78}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 657511}
+  create-solaceconsume-plugin:
+    speakeasy-default-create-solaceconsume-plugin:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "instance_name": null, "name": "solace-consume", "ordering": null, "partials": null, "tags": null, "config": {"flow": {"ack_mode": "CLIENT", "binds": [{"name": "<value>", "type": "QUEUE"}], "functions": null, "max_unacked_messages": -1, "selector": null, "wait_timeout": 50, "window_size": 255}, "mode": "POLLING", "session": {"authentication": null, "calculate_message_expiry": true, "connect_timeout": 3000, "generate_rcv_timestamps": true, "generate_send_timestamps": true, "generate_sender_id": true, "generate_sequence_number": true, "host": "instructive-bonfire.net", "ssl_validate_certificate": false, "vpn_name": null}}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "201":
+          application/json: {"enabled": true, "instance_name": null, "name": "solace-consume", "ordering": null, "partials": null, "tags": null, "config": {"flow": {"ack_mode": "CLIENT", "binds": [{"name": "<value>", "type": "QUEUE"}], "functions": null, "max_unacked_messages": -1, "selector": null, "wait_timeout": 50, "window_size": 255}, "mode": "POLLING", "session": {"authentication": null, "calculate_message_expiry": true, "connect_timeout": 3000, "generate_rcv_timestamps": true, "generate_send_timestamps": true, "generate_sender_id": true, "generate_sequence_number": true, "host": "instructive-bonfire.net", "ssl_validate_certificate": false, "vpn_name": null}}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 79591}
+  create-solacelog-plugin:
+    speakeasy-default-create-solacelog-plugin:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "instance_name": null, "name": "solace-log", "ordering": null, "partials": null, "tags": null, "config": {"message": {"ack_timeout": 2000, "delivery_mode": "DIRECT", "destinations": [], "dmq_eligible": false, "priority": 4, "sender_id": null, "tracing": false, "tracing_sampled": false, "ttl": 0}, "session": {"authentication": null, "calculate_message_expiry": true, "connect_timeout": 3000, "generate_rcv_timestamps": true, "generate_send_timestamps": true, "generate_sender_id": true, "generate_sequence_number": true, "host": "urban-step.com", "ssl_validate_certificate": false, "vpn_name": null}}, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
+      responses:
+        "201":
+          application/json: {"enabled": true, "instance_name": null, "name": "solace-log", "ordering": null, "partials": null, "tags": null, "config": {"message": {"ack_timeout": 2000, "delivery_mode": "DIRECT", "destinations": [], "dmq_eligible": false, "priority": 4, "sender_id": null, "tracing": false, "tracing_sampled": false, "ttl": 0}, "session": {"authentication": null, "calculate_message_expiry": true, "connect_timeout": 3000, "generate_rcv_timestamps": true, "generate_send_timestamps": true, "generate_sender_id": true, "generate_sequence_number": true, "host": "urban-step.com", "ssl_validate_certificate": false, "vpn_name": null}}, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 924512}
 examplesVersion: 1.0.2
 generatedTests: {}

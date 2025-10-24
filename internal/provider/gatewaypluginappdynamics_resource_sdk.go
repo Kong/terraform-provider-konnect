@@ -17,7 +17,7 @@ func (r *GatewayPluginAppDynamicsResourceModel) RefreshFromSharedAppDynamicsPlug
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.Config != nil {
+		if len(resp.Config) > 0 {
 			r.Config = make(map[string]jsontypes.Normalized, len(resp.Config))
 			for key, value := range resp.Config {
 				result, _ := json.Marshal(value)
@@ -37,11 +37,11 @@ func (r *GatewayPluginAppDynamicsResourceModel) RefreshFromSharedAppDynamicsPlug
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			r.Ordering = &tfTypes.AcePluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After = &tfTypes.AcePluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -50,7 +50,7 @@ func (r *GatewayPluginAppDynamicsResourceModel) RefreshFromSharedAppDynamicsPlug
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.AcePluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

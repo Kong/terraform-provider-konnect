@@ -7,13 +7,13 @@ import (
 )
 
 type AiProxyPluginConfig struct {
-	Auth               *Auth        `tfsdk:"auth"`
-	GenaiCategory      types.String `tfsdk:"genai_category"`
-	LlmFormat          types.String `tfsdk:"llm_format"`
-	Logging            *Logging     `tfsdk:"logging"`
-	MaxRequestBodySize types.Int64  `tfsdk:"max_request_body_size"`
-	Model              Model        `tfsdk:"model"`
-	ModelNameHeader    types.Bool   `tfsdk:"model_name_header"`
-	ResponseStreaming  types.String `tfsdk:"response_streaming"`
-	RouteType          types.String `tfsdk:"route_type"`
+	Auth               *AiLlmAsJudgePluginAuth    `tfsdk:"auth"`
+	GenaiCategory      types.String               `tfsdk:"genai_category"`
+	LlmFormat          types.String               `tfsdk:"llm_format"`
+	Logging            *AiLlmAsJudgePluginLogging `tfsdk:"logging"`
+	MaxRequestBodySize types.Int64                `tfsdk:"max_request_body_size"`
+	Model              AiLlmAsJudgePluginModel    `tfsdk:"model"`
+	ModelNameHeader    types.Bool                 `tfsdk:"model_name_header"`
+	ResponseStreaming  types.String               `tfsdk:"response_streaming"`
+	RouteType          types.String               `tfsdk:"route_type"`
 }

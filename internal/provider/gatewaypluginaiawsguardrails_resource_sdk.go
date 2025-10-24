@@ -16,8 +16,11 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) RefreshFromSharedAiAwsGuardr
 
 	if resp != nil {
 		r.Config.AwsAccessKeyID = types.StringPointerValue(resp.Config.AwsAccessKeyID)
+		r.Config.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.AwsAssumeRoleArn)
 		r.Config.AwsRegion = types.StringValue(resp.Config.AwsRegion)
+		r.Config.AwsRoleSessionName = types.StringPointerValue(resp.Config.AwsRoleSessionName)
 		r.Config.AwsSecretAccessKey = types.StringPointerValue(resp.Config.AwsSecretAccessKey)
+		r.Config.AwsStsEndpointURL = types.StringPointerValue(resp.Config.AwsStsEndpointURL)
 		if resp.Config.GuardingMode != nil {
 			r.Config.GuardingMode = types.StringValue(string(*resp.Config.GuardingMode))
 		} else {
@@ -52,11 +55,11 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) RefreshFromSharedAiAwsGuardr
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			r.Ordering = &tfTypes.AcePluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After = &tfTypes.AcePluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -65,7 +68,7 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) RefreshFromSharedAiAwsGuardr
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.AcePluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
@@ -295,14 +298,32 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) ToSharedAiAwsGuardrailsPlugi
 	} else {
 		awsAccessKeyID = nil
 	}
+	awsAssumeRoleArn := new(string)
+	if !r.Config.AwsAssumeRoleArn.IsUnknown() && !r.Config.AwsAssumeRoleArn.IsNull() {
+		*awsAssumeRoleArn = r.Config.AwsAssumeRoleArn.ValueString()
+	} else {
+		awsAssumeRoleArn = nil
+	}
 	var awsRegion string
 	awsRegion = r.Config.AwsRegion.ValueString()
 
+	awsRoleSessionName := new(string)
+	if !r.Config.AwsRoleSessionName.IsUnknown() && !r.Config.AwsRoleSessionName.IsNull() {
+		*awsRoleSessionName = r.Config.AwsRoleSessionName.ValueString()
+	} else {
+		awsRoleSessionName = nil
+	}
 	awsSecretAccessKey := new(string)
 	if !r.Config.AwsSecretAccessKey.IsUnknown() && !r.Config.AwsSecretAccessKey.IsNull() {
 		*awsSecretAccessKey = r.Config.AwsSecretAccessKey.ValueString()
 	} else {
 		awsSecretAccessKey = nil
+	}
+	awsStsEndpointURL := new(string)
+	if !r.Config.AwsStsEndpointURL.IsUnknown() && !r.Config.AwsStsEndpointURL.IsNull() {
+		*awsStsEndpointURL = r.Config.AwsStsEndpointURL.ValueString()
+	} else {
+		awsStsEndpointURL = nil
 	}
 	guardingMode := new(shared.GuardingMode)
 	if !r.Config.GuardingMode.IsUnknown() && !r.Config.GuardingMode.IsNull() {
@@ -342,8 +363,11 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) ToSharedAiAwsGuardrailsPlugi
 	}
 	config := shared.AiAwsGuardrailsPluginConfig{
 		AwsAccessKeyID:     awsAccessKeyID,
+		AwsAssumeRoleArn:   awsAssumeRoleArn,
 		AwsRegion:          awsRegion,
+		AwsRoleSessionName: awsRoleSessionName,
 		AwsSecretAccessKey: awsSecretAccessKey,
+		AwsStsEndpointURL:  awsStsEndpointURL,
 		GuardingMode:       guardingMode,
 		GuardrailsID:       guardrailsID,
 		GuardrailsVersion:  guardrailsVersion,

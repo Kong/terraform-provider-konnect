@@ -24,7 +24,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 		if resp.Config.Llm.Auth == nil {
 			r.Config.Llm.Auth = nil
 		} else {
-			r.Config.Llm.Auth = &tfTypes.Auth{}
+			r.Config.Llm.Auth = &tfTypes.AiLlmAsJudgePluginAuth{}
 			r.Config.Llm.Auth.AllowOverride = types.BoolPointerValue(resp.Config.Llm.Auth.AllowOverride)
 			r.Config.Llm.Auth.AwsAccessKeyID = types.StringPointerValue(resp.Config.Llm.Auth.AwsAccessKeyID)
 			r.Config.Llm.Auth.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Llm.Auth.AwsSecretAccessKey)
@@ -47,7 +47,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 		if resp.Config.Llm.Logging == nil {
 			r.Config.Llm.Logging = nil
 		} else {
-			r.Config.Llm.Logging = &tfTypes.Logging{}
+			r.Config.Llm.Logging = &tfTypes.AiLlmAsJudgePluginLogging{}
 			r.Config.Llm.Logging.LogPayloads = types.BoolPointerValue(resp.Config.Llm.Logging.LogPayloads)
 			r.Config.Llm.Logging.LogStatistics = types.BoolPointerValue(resp.Config.Llm.Logging.LogStatistics)
 		}
@@ -55,7 +55,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 		if resp.Config.Llm.Model.Options == nil {
 			r.Config.Llm.Model.Options = nil
 		} else {
-			r.Config.Llm.Model.Options = &tfTypes.OptionsObj{}
+			r.Config.Llm.Model.Options = &tfTypes.AiLlmAsJudgePluginOptions{}
 			r.Config.Llm.Model.Options.AnthropicVersion = types.StringPointerValue(resp.Config.Llm.Model.Options.AnthropicVersion)
 			r.Config.Llm.Model.Options.AzureAPIVersion = types.StringPointerValue(resp.Config.Llm.Model.Options.AzureAPIVersion)
 			r.Config.Llm.Model.Options.AzureDeploymentID = types.StringPointerValue(resp.Config.Llm.Model.Options.AzureDeploymentID)
@@ -63,7 +63,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 			if resp.Config.Llm.Model.Options.Bedrock == nil {
 				r.Config.Llm.Model.Options.Bedrock = nil
 			} else {
-				r.Config.Llm.Model.Options.Bedrock = &tfTypes.Bedrock{}
+				r.Config.Llm.Model.Options.Bedrock = &tfTypes.AiLlmAsJudgePluginBedrock{}
 				r.Config.Llm.Model.Options.Bedrock.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.AwsAssumeRoleArn)
 				r.Config.Llm.Model.Options.Bedrock.AwsRegion = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.AwsRegion)
 				r.Config.Llm.Model.Options.Bedrock.AwsRoleSessionName = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.AwsRoleSessionName)
@@ -74,7 +74,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 			if resp.Config.Llm.Model.Options.Cohere == nil {
 				r.Config.Llm.Model.Options.Cohere = nil
 			} else {
-				r.Config.Llm.Model.Options.Cohere = &tfTypes.Cohere{}
+				r.Config.Llm.Model.Options.Cohere = &tfTypes.AiLlmAsJudgePluginCohere{}
 				if resp.Config.Llm.Model.Options.Cohere.EmbeddingInputType != nil {
 					r.Config.Llm.Model.Options.Cohere.EmbeddingInputType = types.StringValue(string(*resp.Config.Llm.Model.Options.Cohere.EmbeddingInputType))
 				} else {
@@ -86,15 +86,16 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 			if resp.Config.Llm.Model.Options.Gemini == nil {
 				r.Config.Llm.Model.Options.Gemini = nil
 			} else {
-				r.Config.Llm.Model.Options.Gemini = &tfTypes.Gemini{}
+				r.Config.Llm.Model.Options.Gemini = &tfTypes.AiLlmAsJudgePluginGemini{}
 				r.Config.Llm.Model.Options.Gemini.APIEndpoint = types.StringPointerValue(resp.Config.Llm.Model.Options.Gemini.APIEndpoint)
+				r.Config.Llm.Model.Options.Gemini.EndpointID = types.StringPointerValue(resp.Config.Llm.Model.Options.Gemini.EndpointID)
 				r.Config.Llm.Model.Options.Gemini.LocationID = types.StringPointerValue(resp.Config.Llm.Model.Options.Gemini.LocationID)
 				r.Config.Llm.Model.Options.Gemini.ProjectID = types.StringPointerValue(resp.Config.Llm.Model.Options.Gemini.ProjectID)
 			}
 			if resp.Config.Llm.Model.Options.Huggingface == nil {
 				r.Config.Llm.Model.Options.Huggingface = nil
 			} else {
-				r.Config.Llm.Model.Options.Huggingface = &tfTypes.Huggingface{}
+				r.Config.Llm.Model.Options.Huggingface = &tfTypes.AiLlmAsJudgePluginHuggingface{}
 				r.Config.Llm.Model.Options.Huggingface.UseCache = types.BoolPointerValue(resp.Config.Llm.Model.Options.Huggingface.UseCache)
 				r.Config.Llm.Model.Options.Huggingface.WaitForModel = types.BoolPointerValue(resp.Config.Llm.Model.Options.Huggingface.WaitForModel)
 			}
@@ -135,11 +136,11 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			r.Ordering = &tfTypes.AcePluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After = &tfTypes.AcePluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -148,7 +149,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.AcePluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
@@ -642,6 +643,12 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 			} else {
 				apiEndpoint = nil
 			}
+			endpointID := new(string)
+			if !r.Config.Llm.Model.Options.Gemini.EndpointID.IsUnknown() && !r.Config.Llm.Model.Options.Gemini.EndpointID.IsNull() {
+				*endpointID = r.Config.Llm.Model.Options.Gemini.EndpointID.ValueString()
+			} else {
+				endpointID = nil
+			}
 			locationID := new(string)
 			if !r.Config.Llm.Model.Options.Gemini.LocationID.IsUnknown() && !r.Config.Llm.Model.Options.Gemini.LocationID.IsNull() {
 				*locationID = r.Config.Llm.Model.Options.Gemini.LocationID.ValueString()
@@ -656,6 +663,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 			}
 			gemini = &shared.AiRequestTransformerPluginGemini{
 				APIEndpoint: apiEndpoint,
+				EndpointID:  endpointID,
 				LocationID:  locationID,
 				ProjectID:   projectID,
 			}
@@ -768,7 +776,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 		Provider: provider,
 	}
 	routeType := shared.AiRequestTransformerPluginRouteType(r.Config.Llm.RouteType.ValueString())
-	llm := shared.Llm{
+	llm := shared.AiRequestTransformerPluginLlm{
 		Auth:      auth,
 		Logging:   logging,
 		Model:     model,

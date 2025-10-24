@@ -171,7 +171,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		if resp.Config.ClusterCacheRedis == nil {
 			r.Config.ClusterCacheRedis = nil
 		} else {
-			r.Config.ClusterCacheRedis = &tfTypes.AiProxyAdvancedPluginRedis{}
+			r.Config.ClusterCacheRedis = &tfTypes.AcePluginRedis{}
 			r.Config.ClusterCacheRedis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.ClusterCacheRedis.ClusterMaxRedirections)
 			if resp.Config.ClusterCacheRedis.ClusterNodes != nil {
 				r.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
@@ -235,6 +235,13 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 				r.Config.ConsumerClaim = append(r.Config.ConsumerClaim, types.StringValue(v))
 			}
 		}
+		if resp.Config.ConsumerGroupsClaim != nil {
+			r.Config.ConsumerGroupsClaim = make([]types.String, 0, len(resp.Config.ConsumerGroupsClaim))
+			for _, v := range resp.Config.ConsumerGroupsClaim {
+				r.Config.ConsumerGroupsClaim = append(r.Config.ConsumerGroupsClaim, types.StringValue(v))
+			}
+		}
+		r.Config.ConsumerGroupsOptional = types.BoolPointerValue(resp.Config.ConsumerGroupsOptional)
 		r.Config.ConsumerOptional = types.BoolPointerValue(resp.Config.ConsumerOptional)
 		r.Config.CredentialClaim = make([]types.String, 0, len(resp.Config.CredentialClaim))
 		for _, v := range resp.Config.CredentialClaim {
@@ -584,6 +591,12 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		r.Config.SearchUserInfo = types.BoolPointerValue(resp.Config.SearchUserInfo)
 		r.Config.SessionAbsoluteTimeout = types.Float64PointerValue(resp.Config.SessionAbsoluteTimeout)
 		r.Config.SessionAudience = types.StringPointerValue(resp.Config.SessionAudience)
+		if resp.Config.SessionBind != nil {
+			r.Config.SessionBind = make([]types.String, 0, len(resp.Config.SessionBind))
+			for _, v := range resp.Config.SessionBind {
+				r.Config.SessionBind = append(r.Config.SessionBind, types.StringValue(string(v)))
+			}
+		}
 		r.Config.SessionCookieDomain = types.StringPointerValue(resp.Config.SessionCookieDomain)
 		r.Config.SessionCookieHTTPOnly = types.BoolPointerValue(resp.Config.SessionCookieHTTPOnly)
 		r.Config.SessionCookieName = types.StringPointerValue(resp.Config.SessionCookieName)
@@ -777,11 +790,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			r.Ordering = &tfTypes.AcePluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After = &tfTypes.AcePluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -790,7 +803,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.AcePluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
@@ -1201,11 +1214,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 			claimsForbidden = append(claimsForbidden, claimsForbiddenItem.ValueString())
 		}
 	}
-	var clientAlg []shared.ClientAlg
+	var clientAlg []shared.OpenidConnectPluginClientAlg
 	if r.Config.ClientAlg != nil {
-		clientAlg = make([]shared.ClientAlg, 0, len(r.Config.ClientAlg))
+		clientAlg = make([]shared.OpenidConnectPluginClientAlg, 0, len(r.Config.ClientAlg))
 		for _, clientAlgItem := range r.Config.ClientAlg {
-			clientAlg = append(clientAlg, shared.ClientAlg(clientAlgItem.ValueString()))
+			clientAlg = append(clientAlg, shared.OpenidConnectPluginClientAlg(clientAlgItem.ValueString()))
 		}
 	}
 	clientArg := new(string)
@@ -1214,11 +1227,11 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		clientArg = nil
 	}
-	var clientAuth []shared.ClientAuth
+	var clientAuth []shared.OpenidConnectPluginClientAuth
 	if r.Config.ClientAuth != nil {
-		clientAuth = make([]shared.ClientAuth, 0, len(r.Config.ClientAuth))
+		clientAuth = make([]shared.OpenidConnectPluginClientAuth, 0, len(r.Config.ClientAuth))
 		for _, clientAuthItem := range r.Config.ClientAuth {
-			clientAuth = append(clientAuth, shared.ClientAuth(clientAuthItem.ValueString()))
+			clientAuth = append(clientAuth, shared.OpenidConnectPluginClientAuth(clientAuthItem.ValueString()))
 		}
 	}
 	clientCredentialsParamType := make([]shared.ClientCredentialsParamType, 0, len(r.Config.ClientCredentialsParamType))
@@ -1624,6 +1637,19 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		for _, consumerClaimItem := range r.Config.ConsumerClaim {
 			consumerClaim = append(consumerClaim, consumerClaimItem.ValueString())
 		}
+	}
+	var consumerGroupsClaim []string
+	if r.Config.ConsumerGroupsClaim != nil {
+		consumerGroupsClaim = make([]string, 0, len(r.Config.ConsumerGroupsClaim))
+		for _, consumerGroupsClaimItem := range r.Config.ConsumerGroupsClaim {
+			consumerGroupsClaim = append(consumerGroupsClaim, consumerGroupsClaimItem.ValueString())
+		}
+	}
+	consumerGroupsOptional := new(bool)
+	if !r.Config.ConsumerGroupsOptional.IsUnknown() && !r.Config.ConsumerGroupsOptional.IsNull() {
+		*consumerGroupsOptional = r.Config.ConsumerGroupsOptional.ValueBool()
+	} else {
+		consumerGroupsOptional = nil
 	}
 	consumerOptional := new(bool)
 	if !r.Config.ConsumerOptional.IsUnknown() && !r.Config.ConsumerOptional.IsNull() {
@@ -2467,6 +2493,13 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		sessionAudience = nil
 	}
+	var sessionBind []shared.SessionBind
+	if r.Config.SessionBind != nil {
+		sessionBind = make([]shared.SessionBind, 0, len(r.Config.SessionBind))
+		for _, sessionBindItem := range r.Config.SessionBind {
+			sessionBind = append(sessionBind, shared.SessionBind(sessionBindItem.ValueString()))
+		}
+	}
 	sessionCookieDomain := new(string)
 	if !r.Config.SessionCookieDomain.IsUnknown() && !r.Config.SessionCookieDomain.IsNull() {
 		*sessionCookieDomain = r.Config.SessionCookieDomain.ValueString()
@@ -2950,6 +2983,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		ClusterCacheStrategy:                   clusterCacheStrategy,
 		ConsumerBy:                             consumerBy,
 		ConsumerClaim:                          consumerClaim,
+		ConsumerGroupsClaim:                    consumerGroupsClaim,
+		ConsumerGroupsOptional:                 consumerGroupsOptional,
 		ConsumerOptional:                       consumerOptional,
 		CredentialClaim:                        credentialClaim,
 		DisableSession:                         disableSession,
@@ -3059,6 +3094,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		SearchUserInfo:                     searchUserInfo,
 		SessionAbsoluteTimeout:             sessionAbsoluteTimeout,
 		SessionAudience:                    sessionAudience,
+		SessionBind:                        sessionBind,
 		SessionCookieDomain:                sessionCookieDomain,
 		SessionCookieHTTPOnly:              sessionCookieHTTPOnly,
 		SessionCookieName:                  sessionCookieName,

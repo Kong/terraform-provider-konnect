@@ -12,6 +12,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
@@ -23,6 +25,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/boolplanmodifier"
 	speakeasy_float64planmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/float64planmodifier"
 	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/int64planmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
@@ -48,6 +51,7 @@ type GatewayTargetResource struct {
 type GatewayTargetResourceModel struct {
 	ControlPlaneID types.String   `tfsdk:"control_plane_id"`
 	CreatedAt      types.Float64  `tfsdk:"created_at"`
+	Failover       types.Bool     `tfsdk:"failover"`
 	ID             types.String   `tfsdk:"id"`
 	Tags           []types.String `tfsdk:"tags"`
 	Target         types.String   `tfsdk:"target"`
@@ -80,6 +84,16 @@ func (r *GatewayTargetResource) Schema(ctx context.Context, req resource.SchemaR
 					speakeasy_float64planmodifier.SuppressDiff(speakeasy_float64planmodifier.ExplicitSuppress),
 				},
 				Description: `Unix epoch when the resource was created. Requires replacement if changed.`,
+			},
+			"failover": schema.BoolAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  booldefault.StaticBool(false),
+				PlanModifiers: []planmodifier.Bool{
+					boolplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+				},
+				Description: `Whether to use this target only as backup or not. Default: false; Requires replacement if changed.`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,

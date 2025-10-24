@@ -54,7 +54,7 @@ type GatewayPluginSolaceUpstreamResourceModel struct {
 	Enabled        types.Bool                         `tfsdk:"enabled"`
 	ID             types.String                       `tfsdk:"id"`
 	InstanceName   types.String                       `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering         `tfsdk:"ordering"`
+	Ordering       *tfTypes.AcePluginOrdering         `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials                 `tfsdk:"partials"`
 	Protocols      []types.String                     `tfsdk:"protocols"`
 	Route          *tfTypes.Set                       `tfsdk:"route"`
@@ -81,7 +81,7 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 								Computed:    true,
 								Optional:    true,
 								Default:     int64default.StaticInt64(2000),
-								Description: `When using a non-DIRECT guaranteed delivery mode, this property sets the message acknowledgement timeout (waiting time). Default: 2000`,
+								Description: `When using a non-DIRECT guaranteed delivery mode, this property sets the message acknowledgement timeout in milliseconds (waiting time). Default: 2000`,
 								Validators: []validator.Int64{
 									int64validator.Between(1, 100000),
 								},
@@ -112,7 +112,7 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 										"name": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `The name of the destination. You can use ` + "`" + `$(uri_captures['topic_name']` + "`" + ` in this field. Not Null`,
+											Description: `The name of the destination. You can use $(uri_captures['<capture-identifier>']) in this field (replace ` + "`" + `<capture-identifier>` + "`" + ` with a real value, for example ` + "`" + `$uri_captures[’queue’]` + "`" + ` when the matched route has a path ` + "`" + `~/(?<queue>[a-z]+)` + "`" + `). Not Null`,
 											Validators: []validator.String{
 												speakeasy_stringvalidators.NotNull(),
 											},
@@ -178,10 +178,8 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 								},
 							},
 							"sender_id": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
-								Default:     stringdefault.StaticString(`kong`),
-								Description: `Allows the application to set the content of the sender identifier. Default: "kong"`,
+								Description: `Allows the application to set the content of the sender identifier.`,
 							},
 							"tracing": schema.BoolAttribute{
 								Computed:    true,
@@ -237,6 +235,9 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 									"password": schema.StringAttribute{
 										Optional:    true,
 										Description: `The password used with ` + "`" + `BASIC` + "`" + ` authentication scheme when connecting to an event broker.`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtMost(128),
+										},
 									},
 									"scheme": schema.StringAttribute{
 										Computed:    true,
@@ -253,10 +254,19 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 									},
 									"username": schema.StringAttribute{
 										Optional:    true,
-										Description: `The username used with ` + "`" + `BASIC` + "`" + ` authentication scheme when connecting to an event broker .`,
+										Description: `The username used with ` + "`" + `BASIC` + "`" + ` authentication scheme when connecting to an event broker.`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtMost(189),
+										},
 									},
 								},
 								Description: `Session authentication related configuration.`,
+							},
+							"calculate_message_expiry": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `If this property is true and time-to-live has a positive value in a message, the expiration time is calculated when the message is sent or received. Default: true`,
 							},
 							"connect_timeout": schema.Int64Attribute{
 								Computed:    true,
@@ -267,11 +277,36 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 									int64validator.Between(100, 100000),
 								},
 							},
+							"generate_rcv_timestamps": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `When enabled, a receive timestamp is recorded for each message. Default: true`,
+							},
+							"generate_send_timestamps": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `When enabled, a send timestamp is automatically included (if not already present) in the Solace-defined fields for each message sent. Default: true`,
+							},
+							"generate_sender_id": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `When enabled, a sender id is automatically included (if not already present) in the Solace-defined fields for each message sent. Default: true`,
+							},
+							"generate_sequence_number": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(true),
+								Description: `When enabled, a sequence number is automatically included (if not already present) in the Solace-defined fields for each message sent. Default: true`,
+							},
 							"host": schema.StringAttribute{
 								Required:    true,
 								Description: `The IPv4 or IPv6 address or host name to connect to (see: https://docs.solace.com/API-Developer-Online-Ref-Documentation/c/index.html#host-entry).`,
 							},
 							"properties": schema.MapAttribute{
+								Computed:    true,
 								Optional:    true,
 								ElementType: jsontypes.NormalizedType{},
 								Description: `Additional Solace session properties (each setting needs to have ` + "`" + `SESSION_` + "`" + ` prefix).`,
@@ -288,6 +323,9 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 							"vpn_name": schema.StringAttribute{
 								Optional:    true,
 								Description: `The name of the Message VPN to attempt to join when connecting to an event broker.`,
+								Validators: []validator.String{
+									stringvalidator.UTF8LengthAtMost(32),
+								},
 							},
 						},
 						Description: `Session related configuration.`,

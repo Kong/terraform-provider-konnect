@@ -105,6 +105,33 @@ func (e *AwsImdsProtocolVersion) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// AwsgatewayCompatiblePayloadVersion - An optional value that defines which version will be used to generate the AWS API Gateway compatible payload. The default will be `1.0`.
+type AwsgatewayCompatiblePayloadVersion string
+
+const (
+	AwsgatewayCompatiblePayloadVersionOneDot0 AwsgatewayCompatiblePayloadVersion = "1.0"
+	AwsgatewayCompatiblePayloadVersionTwoDot0 AwsgatewayCompatiblePayloadVersion = "2.0"
+)
+
+func (e AwsgatewayCompatiblePayloadVersion) ToPointer() *AwsgatewayCompatiblePayloadVersion {
+	return &e
+}
+func (e *AwsgatewayCompatiblePayloadVersion) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "1.0":
+		fallthrough
+	case "2.0":
+		*e = AwsgatewayCompatiblePayloadVersion(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AwsgatewayCompatiblePayloadVersion: %v", v)
+	}
+}
+
 // EmptyArraysMode - An optional value that defines whether Kong should send empty arrays (returned by Lambda function) as `[]` arrays or `{}` objects in JSON responses. The value `legacy` means Kong will send empty arrays as `{}` objects in response
 type EmptyArraysMode string
 
@@ -206,6 +233,8 @@ type AwsLambdaPluginConfig struct {
 	AwsStsEndpointURL *string `default:"null" json:"aws_sts_endpoint_url"`
 	// An optional value that defines whether the plugin should wrap requests into the Amazon API gateway.
 	AwsgatewayCompatible *bool `default:"false" json:"awsgateway_compatible"`
+	// An optional value that defines which version will be used to generate the AWS API Gateway compatible payload. The default will be `1.0`.
+	AwsgatewayCompatiblePayloadVersion *AwsgatewayCompatiblePayloadVersion `default:"1.0" json:"awsgateway_compatible_payload_version"`
 	// An optional value that Base64-encodes the request body.
 	Base64EncodeBody *bool `default:"true" json:"base64_encode_body"`
 	DisableHTTPS     *bool `default:"false" json:"disable_https"`
@@ -310,6 +339,13 @@ func (a *AwsLambdaPluginConfig) GetAwsgatewayCompatible() *bool {
 		return nil
 	}
 	return a.AwsgatewayCompatible
+}
+
+func (a *AwsLambdaPluginConfig) GetAwsgatewayCompatiblePayloadVersion() *AwsgatewayCompatiblePayloadVersion {
+	if a == nil {
+		return nil
+	}
+	return a.AwsgatewayCompatiblePayloadVersion
 }
 
 func (a *AwsLambdaPluginConfig) GetBase64EncodeBody() *bool {

@@ -857,7 +857,7 @@ type Request struct {
 	Method *string `default:"GET" json:"method"`
 	// Callout request query param customizations.
 	Query *RequestCalloutPluginQuery `json:"query"`
-	// The URL that will be requested.
+	// The URL that will be requested. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
 	URL string `json:"url"`
 }
 

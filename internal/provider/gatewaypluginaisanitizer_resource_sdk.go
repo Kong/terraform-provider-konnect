@@ -23,6 +23,7 @@ func (r *GatewayPluginAiSanitizerResourceModel) RefreshFromSharedAiSanitizerPlug
 			for _, v := range resp.Config.Anonymize {
 				r.Config.Anonymize = append(r.Config.Anonymize, types.StringValue(string(v)))
 			}
+			r.Config.BlockIfDetected = types.BoolPointerValue(resp.Config.BlockIfDetected)
 			if resp.Config.CustomPatterns != nil {
 				r.Config.CustomPatterns = []tfTypes.CustomPatterns{}
 
@@ -44,6 +45,11 @@ func (r *GatewayPluginAiSanitizerResourceModel) RefreshFromSharedAiSanitizerPlug
 				r.Config.RedactType = types.StringValue(string(*resp.Config.RedactType))
 			} else {
 				r.Config.RedactType = types.StringNull()
+			}
+			if resp.Config.SanitizationMode != nil {
+				r.Config.SanitizationMode = types.StringValue(string(*resp.Config.SanitizationMode))
+			} else {
+				r.Config.SanitizationMode = types.StringNull()
 			}
 			r.Config.Scheme = types.StringPointerValue(resp.Config.Scheme)
 			r.Config.StopOnError = types.BoolPointerValue(resp.Config.StopOnError)
@@ -68,11 +74,11 @@ func (r *GatewayPluginAiSanitizerResourceModel) RefreshFromSharedAiSanitizerPlug
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			r.Ordering = &tfTypes.AcePluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After = &tfTypes.AcePluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -81,7 +87,7 @@ func (r *GatewayPluginAiSanitizerResourceModel) RefreshFromSharedAiSanitizerPlug
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.AcePluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
@@ -311,6 +317,12 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToSharedAiSanitizerPlugin(ctx co
 		for _, anonymizeItem := range r.Config.Anonymize {
 			anonymize = append(anonymize, shared.Anonymize(anonymizeItem.ValueString()))
 		}
+		blockIfDetected := new(bool)
+		if !r.Config.BlockIfDetected.IsUnknown() && !r.Config.BlockIfDetected.IsNull() {
+			*blockIfDetected = r.Config.BlockIfDetected.ValueBool()
+		} else {
+			blockIfDetected = nil
+		}
 		var customPatterns []shared.CustomPatterns
 		if r.Config.CustomPatterns != nil {
 			customPatterns = make([]shared.CustomPatterns, 0, len(r.Config.CustomPatterns))
@@ -364,6 +376,12 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToSharedAiSanitizerPlugin(ctx co
 		} else {
 			redactType = nil
 		}
+		sanitizationMode := new(shared.SanitizationMode)
+		if !r.Config.SanitizationMode.IsUnknown() && !r.Config.SanitizationMode.IsNull() {
+			*sanitizationMode = shared.SanitizationMode(r.Config.SanitizationMode.ValueString())
+		} else {
+			sanitizationMode = nil
+		}
 		scheme := new(string)
 		if !r.Config.Scheme.IsUnknown() && !r.Config.Scheme.IsNull() {
 			*scheme = r.Config.Scheme.ValueString()
@@ -384,12 +402,14 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToSharedAiSanitizerPlugin(ctx co
 		}
 		config = &shared.AiSanitizerPluginConfig{
 			Anonymize:        anonymize,
+			BlockIfDetected:  blockIfDetected,
 			CustomPatterns:   customPatterns,
 			Host:             host,
 			KeepaliveTimeout: keepaliveTimeout,
 			Port:             port,
 			RecoverRedacted:  recoverRedacted,
 			RedactType:       redactType,
+			SanitizationMode: sanitizationMode,
 			Scheme:           scheme,
 			StopOnError:      stopOnError,
 			Timeout:          timeout,

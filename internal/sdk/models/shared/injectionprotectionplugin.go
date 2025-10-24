@@ -169,7 +169,9 @@ type Locations string
 const (
 	LocationsBody         Locations = "body"
 	LocationsHeaders      Locations = "headers"
+	LocationsPath         Locations = "path"
 	LocationsPathAndQuery Locations = "path_and_query"
+	LocationsQuery        Locations = "query"
 )
 
 func (e Locations) ToPointer() *Locations {
@@ -185,7 +187,11 @@ func (e *Locations) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "headers":
 		fallthrough
+	case "path":
+		fallthrough
 	case "path_and_query":
+		fallthrough
+	case "query":
 		*e = Locations(v)
 		return nil
 	default:

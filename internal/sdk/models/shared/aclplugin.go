@@ -49,7 +49,7 @@ func (a *ACLPluginOrdering) GetBefore() *ACLPluginBefore {
 	return a.Before
 }
 
-type Partials struct {
+type ACLPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
@@ -57,25 +57,25 @@ type Partials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (p *Partials) GetID() *string {
-	if p == nil {
+func (a *ACLPluginPartials) GetID() *string {
+	if a == nil {
 		return nil
 	}
-	return p.ID
+	return a.ID
 }
 
-func (p *Partials) GetName() *string {
-	if p == nil {
+func (a *ACLPluginPartials) GetName() *string {
+	if a == nil {
 		return nil
 	}
-	return p.Name
+	return a.Name
 }
 
-func (p *Partials) GetPath() *string {
-	if p == nil {
+func (a *ACLPluginPartials) GetPath() *string {
+	if a == nil {
 		return nil
 	}
-	return p.Path
+	return a.Path
 }
 
 type ACLPluginConfig struct {
@@ -206,7 +206,7 @@ type ACLPlugin struct {
 	name         string             `const:"acl" json:"name"`
 	Ordering     *ACLPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []Partials `json:"partials"`
+	Partials []ACLPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
@@ -270,7 +270,7 @@ func (a *ACLPlugin) GetOrdering() *ACLPluginOrdering {
 	return a.Ordering
 }
 
-func (a *ACLPlugin) GetPartials() []Partials {
+func (a *ACLPlugin) GetPartials() []ACLPluginPartials {
 	if a == nil {
 		return nil
 	}

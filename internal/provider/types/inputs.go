@@ -7,7 +7,7 @@ import (
 )
 
 type Inputs struct {
-	Body    types.String `tfsdk:"body"`
-	Headers types.String `tfsdk:"headers"`
-	Query   types.String `tfsdk:"query"`
+	Data types.String `tfsdk:"data"`
+	Key  types.String `tfsdk:"key"`
+	TTL  types.String `tfsdk:"ttl"`
 }

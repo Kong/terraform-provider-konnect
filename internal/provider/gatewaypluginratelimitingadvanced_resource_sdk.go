@@ -110,6 +110,15 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 			r.Config.Strategy = types.StringNull()
 		}
 		r.Config.SyncRate = types.Float64PointerValue(resp.Config.SyncRate)
+		if resp.Config.Throttling == nil {
+			r.Config.Throttling = nil
+		} else {
+			r.Config.Throttling = &tfTypes.Throttling{}
+			r.Config.Throttling.Enabled = types.BoolPointerValue(resp.Config.Throttling.Enabled)
+			r.Config.Throttling.Interval = types.Float64PointerValue(resp.Config.Throttling.Interval)
+			r.Config.Throttling.QueueLimit = types.Float64PointerValue(resp.Config.Throttling.QueueLimit)
+			r.Config.Throttling.RetryTimes = types.Float64PointerValue(resp.Config.Throttling.RetryTimes)
+		}
 		r.Config.WindowSize = make([]types.Float64, 0, len(resp.Config.WindowSize))
 		for _, v := range resp.Config.WindowSize {
 			r.Config.WindowSize = append(r.Config.WindowSize, types.Float64Value(v))
@@ -138,11 +147,11 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			r.Ordering = &tfTypes.AcePluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After = &tfTypes.AcePluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -151,7 +160,7 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.AcePluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
@@ -668,6 +677,39 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdv
 	} else {
 		syncRate = nil
 	}
+	var throttling *shared.Throttling
+	if r.Config.Throttling != nil {
+		enabled1 := new(bool)
+		if !r.Config.Throttling.Enabled.IsUnknown() && !r.Config.Throttling.Enabled.IsNull() {
+			*enabled1 = r.Config.Throttling.Enabled.ValueBool()
+		} else {
+			enabled1 = nil
+		}
+		interval := new(float64)
+		if !r.Config.Throttling.Interval.IsUnknown() && !r.Config.Throttling.Interval.IsNull() {
+			*interval = r.Config.Throttling.Interval.ValueFloat64()
+		} else {
+			interval = nil
+		}
+		queueLimit := new(float64)
+		if !r.Config.Throttling.QueueLimit.IsUnknown() && !r.Config.Throttling.QueueLimit.IsNull() {
+			*queueLimit = r.Config.Throttling.QueueLimit.ValueFloat64()
+		} else {
+			queueLimit = nil
+		}
+		retryTimes := new(float64)
+		if !r.Config.Throttling.RetryTimes.IsUnknown() && !r.Config.Throttling.RetryTimes.IsNull() {
+			*retryTimes = r.Config.Throttling.RetryTimes.ValueFloat64()
+		} else {
+			retryTimes = nil
+		}
+		throttling = &shared.Throttling{
+			Enabled:    enabled1,
+			Interval:   interval,
+			QueueLimit: queueLimit,
+			RetryTimes: retryTimes,
+		}
+	}
 	windowSize := make([]float64, 0, len(r.Config.WindowSize))
 	for _, windowSizeItem := range r.Config.WindowSize {
 		windowSize = append(windowSize, windowSizeItem.ValueFloat64())
@@ -697,6 +739,7 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdv
 		RetryAfterJitterMax:   retryAfterJitterMax,
 		Strategy:              strategy,
 		SyncRate:              syncRate,
+		Throttling:            throttling,
 		WindowSize:            windowSize,
 		WindowType:            windowType,
 	}

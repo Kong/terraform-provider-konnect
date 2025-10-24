@@ -31,6 +31,11 @@ func (r *GatewayPluginAwsLambdaResourceModel) RefreshFromSharedAwsLambdaPlugin(c
 			r.Config.AwsSecret = types.StringPointerValue(resp.Config.AwsSecret)
 			r.Config.AwsStsEndpointURL = types.StringPointerValue(resp.Config.AwsStsEndpointURL)
 			r.Config.AwsgatewayCompatible = types.BoolPointerValue(resp.Config.AwsgatewayCompatible)
+			if resp.Config.AwsgatewayCompatiblePayloadVersion != nil {
+				r.Config.AwsgatewayCompatiblePayloadVersion = types.StringValue(string(*resp.Config.AwsgatewayCompatiblePayloadVersion))
+			} else {
+				r.Config.AwsgatewayCompatiblePayloadVersion = types.StringNull()
+			}
 			r.Config.Base64EncodeBody = types.BoolPointerValue(resp.Config.Base64EncodeBody)
 			r.Config.DisableHTTPS = types.BoolPointerValue(resp.Config.DisableHTTPS)
 			if resp.Config.EmptyArraysMode != nil {
@@ -76,11 +81,11 @@ func (r *GatewayPluginAwsLambdaResourceModel) RefreshFromSharedAwsLambdaPlugin(c
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			r.Ordering = &tfTypes.AcePluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After = &tfTypes.AcePluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -89,7 +94,7 @@ func (r *GatewayPluginAwsLambdaResourceModel) RefreshFromSharedAwsLambdaPlugin(c
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.AcePluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
@@ -363,6 +368,12 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToSharedAwsLambdaPlugin(ctx contex
 		} else {
 			awsgatewayCompatible = nil
 		}
+		awsgatewayCompatiblePayloadVersion := new(shared.AwsgatewayCompatiblePayloadVersion)
+		if !r.Config.AwsgatewayCompatiblePayloadVersion.IsUnknown() && !r.Config.AwsgatewayCompatiblePayloadVersion.IsNull() {
+			*awsgatewayCompatiblePayloadVersion = shared.AwsgatewayCompatiblePayloadVersion(r.Config.AwsgatewayCompatiblePayloadVersion.ValueString())
+		} else {
+			awsgatewayCompatiblePayloadVersion = nil
+		}
 		base64EncodeBody := new(bool)
 		if !r.Config.Base64EncodeBody.IsUnknown() && !r.Config.Base64EncodeBody.IsNull() {
 			*base64EncodeBody = r.Config.Base64EncodeBody.ValueBool()
@@ -478,33 +489,34 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToSharedAwsLambdaPlugin(ctx contex
 			unhandledStatus = nil
 		}
 		config = &shared.AwsLambdaPluginConfig{
-			AwsAssumeRoleArn:       awsAssumeRoleArn,
-			AwsImdsProtocolVersion: awsImdsProtocolVersion,
-			AwsKey:                 awsKey,
-			AwsRegion:              awsRegion,
-			AwsRoleSessionName:     awsRoleSessionName,
-			AwsSecret:              awsSecret,
-			AwsStsEndpointURL:      awsStsEndpointURL,
-			AwsgatewayCompatible:   awsgatewayCompatible,
-			Base64EncodeBody:       base64EncodeBody,
-			DisableHTTPS:           disableHTTPS,
-			EmptyArraysMode:        emptyArraysMode,
-			ForwardRequestBody:     forwardRequestBody,
-			ForwardRequestHeaders:  forwardRequestHeaders,
-			ForwardRequestMethod:   forwardRequestMethod,
-			ForwardRequestURI:      forwardRequestURI,
-			FunctionName:           functionName,
-			Host:                   host,
-			InvocationType:         invocationType,
-			IsProxyIntegration:     isProxyIntegration,
-			Keepalive:              keepalive,
-			LogType:                logType,
-			Port:                   port,
-			ProxyURL:               proxyURL,
-			Qualifier:              qualifier,
-			SkipLargeBodies:        skipLargeBodies,
-			Timeout:                timeout,
-			UnhandledStatus:        unhandledStatus,
+			AwsAssumeRoleArn:                   awsAssumeRoleArn,
+			AwsImdsProtocolVersion:             awsImdsProtocolVersion,
+			AwsKey:                             awsKey,
+			AwsRegion:                          awsRegion,
+			AwsRoleSessionName:                 awsRoleSessionName,
+			AwsSecret:                          awsSecret,
+			AwsStsEndpointURL:                  awsStsEndpointURL,
+			AwsgatewayCompatible:               awsgatewayCompatible,
+			AwsgatewayCompatiblePayloadVersion: awsgatewayCompatiblePayloadVersion,
+			Base64EncodeBody:                   base64EncodeBody,
+			DisableHTTPS:                       disableHTTPS,
+			EmptyArraysMode:                    emptyArraysMode,
+			ForwardRequestBody:                 forwardRequestBody,
+			ForwardRequestHeaders:              forwardRequestHeaders,
+			ForwardRequestMethod:               forwardRequestMethod,
+			ForwardRequestURI:                  forwardRequestURI,
+			FunctionName:                       functionName,
+			Host:                               host,
+			InvocationType:                     invocationType,
+			IsProxyIntegration:                 isProxyIntegration,
+			Keepalive:                          keepalive,
+			LogType:                            logType,
+			Port:                               port,
+			ProxyURL:                           proxyURL,
+			Qualifier:                          qualifier,
+			SkipLargeBodies:                    skipLargeBodies,
+			Timeout:                            timeout,
+			UnhandledStatus:                    unhandledStatus,
 		}
 	}
 	var consumer *shared.AwsLambdaPluginConsumer

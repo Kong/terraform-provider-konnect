@@ -51,7 +51,7 @@ type GatewayPluginAiAwsGuardrailsResourceModel struct {
 	Enabled        types.Bool                          `tfsdk:"enabled"`
 	ID             types.String                        `tfsdk:"id"`
 	InstanceName   types.String                        `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering          `tfsdk:"ordering"`
+	Ordering       *tfTypes.AcePluginOrdering          `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials                  `tfsdk:"partials"`
 	Protocols      []types.String                      `tfsdk:"protocols"`
 	Route          *tfTypes.Set                        `tfsdk:"route"`
@@ -75,13 +75,25 @@ func (r *GatewayPluginAiAwsGuardrailsResource) Schema(ctx context.Context, req r
 						Optional:    true,
 						Description: `The AWS access key ID to use for authentication`,
 					},
+					"aws_assume_role_arn": schema.StringAttribute{
+						Optional:    true,
+						Description: `The target AWS IAM role ARN used to access the guardrails service`,
+					},
 					"aws_region": schema.StringAttribute{
 						Required:    true,
 						Description: `The AWS region to use for the Bedrock API`,
 					},
+					"aws_role_session_name": schema.StringAttribute{
+						Optional:    true,
+						Description: `The identifier of the assumed role session`,
+					},
 					"aws_secret_access_key": schema.StringAttribute{
 						Optional:    true,
 						Description: `The AWS secret access key to use for authentication`,
+					},
+					"aws_sts_endpoint_url": schema.StringAttribute{
+						Optional:    true,
+						Description: `Override the STS endpoint URL when assuming a different role`,
 					},
 					"guarding_mode": schema.StringAttribute{
 						Computed:    true,
@@ -108,7 +120,7 @@ func (r *GatewayPluginAiAwsGuardrailsResource) Schema(ctx context.Context, req r
 						Computed:    true,
 						Optional:    true,
 						Default:     float64default.StaticFloat64(100),
-						Description: `The amount of token receiving from upstream to be buffered before sending to the guardrails service. This only applies to the response content guard. Default: 100`,
+						Description: `The amount of bytes receiving from upstream to be buffered before sending to the guardrails service. This only applies to the response content guard. Default: 100`,
 					},
 					"stop_on_error": schema.BoolAttribute{
 						Computed:    true,

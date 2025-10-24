@@ -40,13 +40,20 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) RefreshFromSharedAiAzur
 		}
 		r.Config.ContentSafetyKey = types.StringPointerValue(resp.Config.ContentSafetyKey)
 		r.Config.ContentSafetyURL = types.StringValue(resp.Config.ContentSafetyURL)
+		if resp.Config.GuardingMode != nil {
+			r.Config.GuardingMode = types.StringValue(string(*resp.Config.GuardingMode))
+		} else {
+			r.Config.GuardingMode = types.StringNull()
+		}
 		r.Config.HaltOnBlocklistHit = types.BoolPointerValue(resp.Config.HaltOnBlocklistHit)
 		if resp.Config.OutputType != nil {
 			r.Config.OutputType = types.StringValue(string(*resp.Config.OutputType))
 		} else {
 			r.Config.OutputType = types.StringNull()
 		}
+		r.Config.ResponseBufferSize = types.Float64PointerValue(resp.Config.ResponseBufferSize)
 		r.Config.RevealFailureReason = types.BoolPointerValue(resp.Config.RevealFailureReason)
+		r.Config.StopOnError = types.BoolPointerValue(resp.Config.StopOnError)
 		if resp.Config.TextSource != nil {
 			r.Config.TextSource = types.StringValue(string(*resp.Config.TextSource))
 		} else {
@@ -59,11 +66,11 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) RefreshFromSharedAiAzur
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			r.Ordering = &tfTypes.AcePluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After = &tfTypes.AcePluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -72,7 +79,7 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) RefreshFromSharedAiAzur
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.AcePluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
@@ -358,6 +365,12 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentS
 	var contentSafetyURL string
 	contentSafetyURL = r.Config.ContentSafetyURL.ValueString()
 
+	guardingMode := new(shared.AiAzureContentSafetyPluginGuardingMode)
+	if !r.Config.GuardingMode.IsUnknown() && !r.Config.GuardingMode.IsNull() {
+		*guardingMode = shared.AiAzureContentSafetyPluginGuardingMode(r.Config.GuardingMode.ValueString())
+	} else {
+		guardingMode = nil
+	}
 	haltOnBlocklistHit := new(bool)
 	if !r.Config.HaltOnBlocklistHit.IsUnknown() && !r.Config.HaltOnBlocklistHit.IsNull() {
 		*haltOnBlocklistHit = r.Config.HaltOnBlocklistHit.ValueBool()
@@ -370,11 +383,23 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentS
 	} else {
 		outputType = nil
 	}
+	responseBufferSize := new(float64)
+	if !r.Config.ResponseBufferSize.IsUnknown() && !r.Config.ResponseBufferSize.IsNull() {
+		*responseBufferSize = r.Config.ResponseBufferSize.ValueFloat64()
+	} else {
+		responseBufferSize = nil
+	}
 	revealFailureReason := new(bool)
 	if !r.Config.RevealFailureReason.IsUnknown() && !r.Config.RevealFailureReason.IsNull() {
 		*revealFailureReason = r.Config.RevealFailureReason.ValueBool()
 	} else {
 		revealFailureReason = nil
+	}
+	stopOnError := new(bool)
+	if !r.Config.StopOnError.IsUnknown() && !r.Config.StopOnError.IsNull() {
+		*stopOnError = r.Config.StopOnError.ValueBool()
+	} else {
+		stopOnError = nil
 	}
 	textSource := new(shared.AiAzureContentSafetyPluginTextSource)
 	if !r.Config.TextSource.IsUnknown() && !r.Config.TextSource.IsNull() {
@@ -392,9 +417,12 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentS
 		Categories:              categories,
 		ContentSafetyKey:        contentSafetyKey,
 		ContentSafetyURL:        contentSafetyURL,
+		GuardingMode:            guardingMode,
 		HaltOnBlocklistHit:      haltOnBlocklistHit,
 		OutputType:              outputType,
+		ResponseBufferSize:      responseBufferSize,
 		RevealFailureReason:     revealFailureReason,
+		StopOnError:             stopOnError,
 		TextSource:              textSource,
 	}
 	protocols := make([]shared.AiAzureContentSafetyPluginProtocols, 0, len(r.Protocols))

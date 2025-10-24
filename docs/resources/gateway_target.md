@@ -16,6 +16,7 @@ GatewayTarget Resource
 resource "konnect_gateway_target" "my_gatewaytarget" {
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 2.48
+  failover         = false
   id               = "...my_id..."
   tags = [
     "..."
@@ -42,6 +43,7 @@ resource "konnect_gateway_target" "my_gatewaytarget" {
 ### Optional
 
 - `created_at` (Number) Unix epoch when the resource was created. Requires replacement if changed.
+- `failover` (Boolean) Whether to use this target only as backup or not. Default: false; Requires replacement if changed.
 - `id` (String) A string representing a UUID (universally unique identifier). Requires replacement if changed.
 - `tags` (List of String) An optional set of strings associated with the Target for grouping and filtering. Requires replacement if changed.
 - `updated_at` (Number) Unix epoch when the resource was last updated. Requires replacement if changed.

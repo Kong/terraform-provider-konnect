@@ -4,6 +4,8 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -88,6 +90,67 @@ func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(c
 					} else {
 						r.Config.SchemaRegistry.Confluent.Authentication.Mode = types.StringNull()
 					}
+					if resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2 == nil {
+						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2 = nil
+					} else {
+						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2 = &tfTypes.Oauth2{}
+						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Audience = make([]types.String, 0, len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Audience))
+						for _, v := range resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Audience {
+							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Audience = append(r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Audience, types.StringValue(v))
+						}
+						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientID = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientID)
+						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret)
+						if resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.GrantType != nil {
+							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.GrantType = types.StringValue(string(*resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.GrantType))
+						} else {
+							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.GrantType = types.StringNull()
+						}
+						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Password = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Password)
+						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes = make([]types.String, 0, len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes))
+						for _, v := range resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes {
+							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes = append(r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes, types.StringValue(v))
+						}
+						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint)
+						if len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders) > 0 {
+							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders = make(map[string]jsontypes.Normalized, len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders))
+							for key, value := range resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders {
+								result, _ := json.Marshal(value)
+								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders[key] = jsontypes.NewNormalizedValue(string(result))
+							}
+						}
+						if len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs) > 0 {
+							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs = make(map[string]jsontypes.Normalized, len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs))
+							for key1, value1 := range resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs {
+								result1, _ := json.Marshal(value1)
+								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs[key1] = jsontypes.NewNormalizedValue(string(result1))
+							}
+						}
+						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Username = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Username)
+					}
+					if resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client == nil {
+						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client = nil
+					} else {
+						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client = &tfTypes.Oauth2Client{}
+						if resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.AuthMethod != nil {
+							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.AuthMethod = types.StringValue(string(*resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.AuthMethod))
+						} else {
+							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.AuthMethod = types.StringNull()
+						}
+						if resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.ClientSecretJwtAlg != nil {
+							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.ClientSecretJwtAlg = types.StringValue(string(*resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.ClientSecretJwtAlg))
+						} else {
+							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.ClientSecretJwtAlg = types.StringNull()
+						}
+						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPProxy = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPProxy)
+						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPProxyAuthorization = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPProxyAuthorization)
+						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPVersion = types.Float64PointerValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPVersion)
+						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPSProxy = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPSProxy)
+						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPSProxyAuthorization = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPSProxyAuthorization)
+						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.KeepAlive = types.BoolPointerValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.KeepAlive)
+						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.NoProxy = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.NoProxy)
+						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.SslVerify = types.BoolPointerValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.SslVerify)
+						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.Timeout = types.Int64PointerValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.Timeout)
+					}
 				}
 				if resp.Config.SchemaRegistry.Confluent.KeySchema == nil {
 					r.Config.SchemaRegistry.Confluent.KeySchema = nil
@@ -124,11 +187,11 @@ func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(c
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			r.Ordering = &tfTypes.AcePluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After = &tfTypes.AcePluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -137,7 +200,7 @@ func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(c
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.AcePluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
@@ -536,9 +599,161 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 				} else {
 					mode = nil
 				}
+				var oauth2 *shared.Oauth2
+				if r.Config.SchemaRegistry.Confluent.Authentication.Oauth2 != nil {
+					audience := make([]string, 0, len(r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Audience))
+					for _, audienceItem := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Audience {
+						audience = append(audience, audienceItem.ValueString())
+					}
+					clientID := new(string)
+					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.IsNull() {
+						*clientID = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.ValueString()
+					} else {
+						clientID = nil
+					}
+					clientSecret := new(string)
+					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret.IsNull() {
+						*clientSecret = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret.ValueString()
+					} else {
+						clientSecret = nil
+					}
+					grantType := new(shared.ConfluentPluginGrantType)
+					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.GrantType.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.GrantType.IsNull() {
+						*grantType = shared.ConfluentPluginGrantType(r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.GrantType.ValueString())
+					} else {
+						grantType = nil
+					}
+					password1 := new(string)
+					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Password.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Password.IsNull() {
+						*password1 = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Password.ValueString()
+					} else {
+						password1 = nil
+					}
+					scopes := make([]string, 0, len(r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes))
+					for _, scopesItem := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes {
+						scopes = append(scopes, scopesItem.ValueString())
+					}
+					var tokenEndpoint string
+					tokenEndpoint = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint.ValueString()
+
+					tokenHeaders := make(map[string]interface{})
+					for tokenHeadersKey, tokenHeadersValue := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders {
+						var tokenHeadersInst interface{}
+						_ = json.Unmarshal([]byte(tokenHeadersValue.ValueString()), &tokenHeadersInst)
+						tokenHeaders[tokenHeadersKey] = tokenHeadersInst
+					}
+					tokenPostArgs := make(map[string]interface{})
+					for tokenPostArgsKey, tokenPostArgsValue := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs {
+						var tokenPostArgsInst interface{}
+						_ = json.Unmarshal([]byte(tokenPostArgsValue.ValueString()), &tokenPostArgsInst)
+						tokenPostArgs[tokenPostArgsKey] = tokenPostArgsInst
+					}
+					username1 := new(string)
+					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Username.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Username.IsNull() {
+						*username1 = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Username.ValueString()
+					} else {
+						username1 = nil
+					}
+					oauth2 = &shared.Oauth2{
+						Audience:      audience,
+						ClientID:      clientID,
+						ClientSecret:  clientSecret,
+						GrantType:     grantType,
+						Password:      password1,
+						Scopes:        scopes,
+						TokenEndpoint: tokenEndpoint,
+						TokenHeaders:  tokenHeaders,
+						TokenPostArgs: tokenPostArgs,
+						Username:      username1,
+					}
+				}
+				var oauth2Client *shared.Oauth2Client
+				if r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client != nil {
+					authMethod := new(shared.ConfluentPluginAuthMethod)
+					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.AuthMethod.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.AuthMethod.IsNull() {
+						*authMethod = shared.ConfluentPluginAuthMethod(r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.AuthMethod.ValueString())
+					} else {
+						authMethod = nil
+					}
+					clientSecretJwtAlg := new(shared.ConfluentPluginClientSecretJwtAlg)
+					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.ClientSecretJwtAlg.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.ClientSecretJwtAlg.IsNull() {
+						*clientSecretJwtAlg = shared.ConfluentPluginClientSecretJwtAlg(r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.ClientSecretJwtAlg.ValueString())
+					} else {
+						clientSecretJwtAlg = nil
+					}
+					httpProxy := new(string)
+					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPProxy.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPProxy.IsNull() {
+						*httpProxy = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPProxy.ValueString()
+					} else {
+						httpProxy = nil
+					}
+					httpProxyAuthorization := new(string)
+					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPProxyAuthorization.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPProxyAuthorization.IsNull() {
+						*httpProxyAuthorization = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPProxyAuthorization.ValueString()
+					} else {
+						httpProxyAuthorization = nil
+					}
+					httpVersion := new(float64)
+					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPVersion.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPVersion.IsNull() {
+						*httpVersion = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPVersion.ValueFloat64()
+					} else {
+						httpVersion = nil
+					}
+					httpsProxy := new(string)
+					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPSProxy.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPSProxy.IsNull() {
+						*httpsProxy = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPSProxy.ValueString()
+					} else {
+						httpsProxy = nil
+					}
+					httpsProxyAuthorization := new(string)
+					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPSProxyAuthorization.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPSProxyAuthorization.IsNull() {
+						*httpsProxyAuthorization = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPSProxyAuthorization.ValueString()
+					} else {
+						httpsProxyAuthorization = nil
+					}
+					keepAlive := new(bool)
+					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.KeepAlive.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.KeepAlive.IsNull() {
+						*keepAlive = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.KeepAlive.ValueBool()
+					} else {
+						keepAlive = nil
+					}
+					noProxy := new(string)
+					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.NoProxy.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.NoProxy.IsNull() {
+						*noProxy = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.NoProxy.ValueString()
+					} else {
+						noProxy = nil
+					}
+					sslVerify := new(bool)
+					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.SslVerify.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.SslVerify.IsNull() {
+						*sslVerify = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.SslVerify.ValueBool()
+					} else {
+						sslVerify = nil
+					}
+					timeout := new(int64)
+					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.Timeout.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.Timeout.IsNull() {
+						*timeout = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2Client.Timeout.ValueInt64()
+					} else {
+						timeout = nil
+					}
+					oauth2Client = &shared.Oauth2Client{
+						AuthMethod:              authMethod,
+						ClientSecretJwtAlg:      clientSecretJwtAlg,
+						HTTPProxy:               httpProxy,
+						HTTPProxyAuthorization:  httpProxyAuthorization,
+						HTTPVersion:             httpVersion,
+						HTTPSProxy:              httpsProxy,
+						HTTPSProxyAuthorization: httpsProxyAuthorization,
+						KeepAlive:               keepAlive,
+						NoProxy:                 noProxy,
+						SslVerify:               sslVerify,
+						Timeout:                 timeout,
+					}
+				}
 				authentication = &shared.ConfluentPluginAuthentication{
-					Basic: basic,
-					Mode:  mode,
+					Basic:        basic,
+					Mode:         mode,
+					Oauth2:       oauth2,
+					Oauth2Client: oauth2Client,
 				}
 			}
 			var keySchema *shared.KeySchema
@@ -560,11 +775,11 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 					SubjectName:   subjectName,
 				}
 			}
-			sslVerify := new(bool)
+			sslVerify1 := new(bool)
 			if !r.Config.SchemaRegistry.Confluent.SslVerify.IsUnknown() && !r.Config.SchemaRegistry.Confluent.SslVerify.IsNull() {
-				*sslVerify = r.Config.SchemaRegistry.Confluent.SslVerify.ValueBool()
+				*sslVerify1 = r.Config.SchemaRegistry.Confluent.SslVerify.ValueBool()
 			} else {
-				sslVerify = nil
+				sslVerify1 = nil
 			}
 			ttl := new(float64)
 			if !r.Config.SchemaRegistry.Confluent.TTL.IsUnknown() && !r.Config.SchemaRegistry.Confluent.TTL.IsNull() {
@@ -600,7 +815,7 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 			confluent = &shared.Confluent{
 				Authentication: authentication,
 				KeySchema:      keySchema,
-				SslVerify:      sslVerify,
+				SslVerify:      sslVerify1,
 				TTL:            ttl,
 				URL:            url,
 				ValueSchema:    valueSchema,
@@ -610,11 +825,11 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 			Confluent: confluent,
 		}
 	}
-	timeout := new(int64)
+	timeout1 := new(int64)
 	if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
-		*timeout = r.Config.Timeout.ValueInt64()
+		*timeout1 = r.Config.Timeout.ValueInt64()
 	} else {
-		timeout = nil
+		timeout1 = nil
 	}
 	var topic string
 	topic = r.Config.Topic.ValueString()
@@ -651,7 +866,7 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 		ProducerRequestRetriesMaxAttempts:            producerRequestRetriesMaxAttempts,
 		ProducerRequestTimeout:                       producerRequestTimeout,
 		SchemaRegistry:                               schemaRegistry,
-		Timeout:                                      timeout,
+		Timeout:                                      timeout1,
 		Topic:                                        topic,
 		TopicsQueryArg:                               topicsQueryArg,
 	}

@@ -97,6 +97,36 @@ func (c *Categories) GetRejectionLevel() int64 {
 	return c.RejectionLevel
 }
 
+// AiAzureContentSafetyPluginGuardingMode - The guard mode to use for the request
+type AiAzureContentSafetyPluginGuardingMode string
+
+const (
+	AiAzureContentSafetyPluginGuardingModeBoth   AiAzureContentSafetyPluginGuardingMode = "BOTH"
+	AiAzureContentSafetyPluginGuardingModeInput  AiAzureContentSafetyPluginGuardingMode = "INPUT"
+	AiAzureContentSafetyPluginGuardingModeOutput AiAzureContentSafetyPluginGuardingMode = "OUTPUT"
+)
+
+func (e AiAzureContentSafetyPluginGuardingMode) ToPointer() *AiAzureContentSafetyPluginGuardingMode {
+	return &e
+}
+func (e *AiAzureContentSafetyPluginGuardingMode) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "BOTH":
+		fallthrough
+	case "INPUT":
+		fallthrough
+	case "OUTPUT":
+		*e = AiAzureContentSafetyPluginGuardingMode(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AiAzureContentSafetyPluginGuardingMode: %v", v)
+	}
+}
+
 // OutputType - See https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/content-filter#content-filtering-categories
 type OutputType string
 
@@ -170,12 +200,18 @@ type AiAzureContentSafetyPluginConfig struct {
 	ContentSafetyKey *string `default:"null" json:"content_safety_key"`
 	// Full URL, inc protocol, of the Azure Content Safety instance.
 	ContentSafetyURL string `json:"content_safety_url"`
+	// The guard mode to use for the request
+	GuardingMode *AiAzureContentSafetyPluginGuardingMode `default:"INPUT" json:"guarding_mode"`
 	// Tells Azure to reject the request if any blocklist filter is hit.
 	HaltOnBlocklistHit *bool `default:"true" json:"halt_on_blocklist_hit"`
 	// See https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/content-filter#content-filtering-categories
 	OutputType *OutputType `default:"FourSeverityLevels" json:"output_type"`
+	// The amount of bytes receiving from upstream to be buffered before sending to the guardrails service. This only applies to the response content guard.
+	ResponseBufferSize *float64 `default:"100" json:"response_buffer_size"`
 	// Set true to tell the caller why their request was rejected, if so.
 	RevealFailureReason *bool `default:"true" json:"reveal_failure_reason"`
+	// Stop processing if an error occurs
+	StopOnError *bool `default:"true" json:"stop_on_error"`
 	// Select where to pick the 'text' for the Azure Content Services request.
 	TextSource *AiAzureContentSafetyPluginTextSource `default:"concatenate_all_content" json:"text_source"`
 }
@@ -254,6 +290,13 @@ func (a *AiAzureContentSafetyPluginConfig) GetContentSafetyURL() string {
 	return a.ContentSafetyURL
 }
 
+func (a *AiAzureContentSafetyPluginConfig) GetGuardingMode() *AiAzureContentSafetyPluginGuardingMode {
+	if a == nil {
+		return nil
+	}
+	return a.GuardingMode
+}
+
 func (a *AiAzureContentSafetyPluginConfig) GetHaltOnBlocklistHit() *bool {
 	if a == nil {
 		return nil
@@ -268,11 +311,25 @@ func (a *AiAzureContentSafetyPluginConfig) GetOutputType() *OutputType {
 	return a.OutputType
 }
 
+func (a *AiAzureContentSafetyPluginConfig) GetResponseBufferSize() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.ResponseBufferSize
+}
+
 func (a *AiAzureContentSafetyPluginConfig) GetRevealFailureReason() *bool {
 	if a == nil {
 		return nil
 	}
 	return a.RevealFailureReason
+}
+
+func (a *AiAzureContentSafetyPluginConfig) GetStopOnError() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.StopOnError
 }
 
 func (a *AiAzureContentSafetyPluginConfig) GetTextSource() *AiAzureContentSafetyPluginTextSource {

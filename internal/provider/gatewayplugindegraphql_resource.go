@@ -48,7 +48,7 @@ type GatewayPluginDegraphqlResourceModel struct {
 	Enabled        types.Bool                     `tfsdk:"enabled"`
 	ID             types.String                   `tfsdk:"id"`
 	InstanceName   types.String                   `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering     `tfsdk:"ordering"`
+	Ordering       *tfTypes.AcePluginOrdering     `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials             `tfsdk:"partials"`
 	Protocols      []types.String                 `tfsdk:"protocols"`
 	Route          *tfTypes.Set                   `tfsdk:"route"`
@@ -76,7 +76,7 @@ func (r *GatewayPluginDegraphqlResource) Schema(ctx context.Context, req resourc
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`/graphql`),
-						Description: `A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes). Default: "/graphql"`,
+						Description: `The GraphQL endpoint serve path. Default: "/graphql"`,
 					},
 				},
 			},

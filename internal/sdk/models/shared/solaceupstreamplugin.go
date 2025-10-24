@@ -78,18 +78,18 @@ func (s *SolaceUpstreamPluginPartials) GetPath() *string {
 	return s.Path
 }
 
-// DeliveryMode - Sets the message delivery mode.
-type DeliveryMode string
+// SolaceUpstreamPluginDeliveryMode - Sets the message delivery mode.
+type SolaceUpstreamPluginDeliveryMode string
 
 const (
-	DeliveryModeDirect     DeliveryMode = "DIRECT"
-	DeliveryModePersistent DeliveryMode = "PERSISTENT"
+	SolaceUpstreamPluginDeliveryModeDirect     SolaceUpstreamPluginDeliveryMode = "DIRECT"
+	SolaceUpstreamPluginDeliveryModePersistent SolaceUpstreamPluginDeliveryMode = "PERSISTENT"
 )
 
-func (e DeliveryMode) ToPointer() *DeliveryMode {
+func (e SolaceUpstreamPluginDeliveryMode) ToPointer() *SolaceUpstreamPluginDeliveryMode {
 	return &e
 }
-func (e *DeliveryMode) UnmarshalJSON(data []byte) error {
+func (e *SolaceUpstreamPluginDeliveryMode) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -98,10 +98,10 @@ func (e *DeliveryMode) UnmarshalJSON(data []byte) error {
 	case "DIRECT":
 		fallthrough
 	case "PERSISTENT":
-		*e = DeliveryMode(v)
+		*e = SolaceUpstreamPluginDeliveryMode(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for DeliveryMode: %v", v)
+		return fmt.Errorf("invalid value for SolaceUpstreamPluginDeliveryMode: %v", v)
 	}
 }
 
@@ -133,7 +133,7 @@ func (e *SolaceUpstreamPluginType) UnmarshalJSON(data []byte) error {
 }
 
 type SolaceUpstreamPluginDestinations struct {
-	// The name of the destination. You can use `$(uri_captures['topic_name']` in this field.
+	// The name of the destination. You can use $(uri_captures['<capture-identifier>']) in this field (replace `<capture-identifier>` with a real value, for example `$uri_captures[’queue’]` when the matched route has a path `~/(?<queue>[a-z]+)`).
 	Name string `json:"name"`
 	// The type of the destination.
 	Type *SolaceUpstreamPluginType `default:"QUEUE" json:"type"`
@@ -164,14 +164,14 @@ func (s *SolaceUpstreamPluginDestinations) GetType() *SolaceUpstreamPluginType {
 	return s.Type
 }
 
-// Message - The message related configuration.
-type Message struct {
-	// When using a non-DIRECT guaranteed delivery mode, this property sets the message acknowledgement timeout (waiting time).
+// SolaceUpstreamPluginMessage - The message related configuration.
+type SolaceUpstreamPluginMessage struct {
+	// When using a non-DIRECT guaranteed delivery mode, this property sets the message acknowledgement timeout in milliseconds (waiting time).
 	AckTimeout *int64 `default:"2000" json:"ack_timeout"`
 	// When not using `forward_method`, `forward_uri`, `forward_headers` or `forward_body`, this sets the message content.
 	DefaultContent *string `default:"null" json:"default_content"`
 	// Sets the message delivery mode.
-	DeliveryMode *DeliveryMode `default:"DIRECT" json:"delivery_mode"`
+	DeliveryMode *SolaceUpstreamPluginDeliveryMode `default:"DIRECT" json:"delivery_mode"`
 	// The message destinations.
 	Destinations []SolaceUpstreamPluginDestinations `json:"destinations"`
 	// Sets the dead message queue (DMQ) eligible property on the message.
@@ -189,7 +189,7 @@ type Message struct {
 	// Sets the message priority.
 	Priority *int64 `default:"4" json:"priority"`
 	// Allows the application to set the content of the sender identifier.
-	SenderID *string `default:"kong" json:"sender_id"`
+	SenderID *string `default:"null" json:"sender_id"`
 	// Enable or disable the tracing. This is primarily used for distributed tracing and message correlation, especially in debugging or tracking message flows across multiple systems.
 	Tracing *bool `default:"false" json:"tracing"`
 	// Indicates whether the message should be included in distributed tracing (i.e., if it should be "sampled" for the tracing)
@@ -198,135 +198,135 @@ type Message struct {
 	TTL *int64 `default:"0" json:"ttl"`
 }
 
-func (m Message) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(m, "", false)
+func (s SolaceUpstreamPluginMessage) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
 }
 
-func (m *Message) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"destinations"}); err != nil {
+func (s *SolaceUpstreamPluginMessage) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"destinations"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (m *Message) GetAckTimeout() *int64 {
-	if m == nil {
+func (s *SolaceUpstreamPluginMessage) GetAckTimeout() *int64 {
+	if s == nil {
 		return nil
 	}
-	return m.AckTimeout
+	return s.AckTimeout
 }
 
-func (m *Message) GetDefaultContent() *string {
-	if m == nil {
+func (s *SolaceUpstreamPluginMessage) GetDefaultContent() *string {
+	if s == nil {
 		return nil
 	}
-	return m.DefaultContent
+	return s.DefaultContent
 }
 
-func (m *Message) GetDeliveryMode() *DeliveryMode {
-	if m == nil {
+func (s *SolaceUpstreamPluginMessage) GetDeliveryMode() *SolaceUpstreamPluginDeliveryMode {
+	if s == nil {
 		return nil
 	}
-	return m.DeliveryMode
+	return s.DeliveryMode
 }
 
-func (m *Message) GetDestinations() []SolaceUpstreamPluginDestinations {
-	if m == nil {
+func (s *SolaceUpstreamPluginMessage) GetDestinations() []SolaceUpstreamPluginDestinations {
+	if s == nil {
 		return []SolaceUpstreamPluginDestinations{}
 	}
-	return m.Destinations
+	return s.Destinations
 }
 
-func (m *Message) GetDmqEligible() *bool {
-	if m == nil {
+func (s *SolaceUpstreamPluginMessage) GetDmqEligible() *bool {
+	if s == nil {
 		return nil
 	}
-	return m.DmqEligible
+	return s.DmqEligible
 }
 
-func (m *Message) GetForwardBody() *bool {
-	if m == nil {
+func (s *SolaceUpstreamPluginMessage) GetForwardBody() *bool {
+	if s == nil {
 		return nil
 	}
-	return m.ForwardBody
+	return s.ForwardBody
 }
 
-func (m *Message) GetForwardHeaders() *bool {
-	if m == nil {
+func (s *SolaceUpstreamPluginMessage) GetForwardHeaders() *bool {
+	if s == nil {
 		return nil
 	}
-	return m.ForwardHeaders
+	return s.ForwardHeaders
 }
 
-func (m *Message) GetForwardMethod() *bool {
-	if m == nil {
+func (s *SolaceUpstreamPluginMessage) GetForwardMethod() *bool {
+	if s == nil {
 		return nil
 	}
-	return m.ForwardMethod
+	return s.ForwardMethod
 }
 
-func (m *Message) GetForwardURI() *bool {
-	if m == nil {
+func (s *SolaceUpstreamPluginMessage) GetForwardURI() *bool {
+	if s == nil {
 		return nil
 	}
-	return m.ForwardURI
+	return s.ForwardURI
 }
 
-func (m *Message) GetFunctions() []string {
-	if m == nil {
+func (s *SolaceUpstreamPluginMessage) GetFunctions() []string {
+	if s == nil {
 		return nil
 	}
-	return m.Functions
+	return s.Functions
 }
 
-func (m *Message) GetPriority() *int64 {
-	if m == nil {
+func (s *SolaceUpstreamPluginMessage) GetPriority() *int64 {
+	if s == nil {
 		return nil
 	}
-	return m.Priority
+	return s.Priority
 }
 
-func (m *Message) GetSenderID() *string {
-	if m == nil {
+func (s *SolaceUpstreamPluginMessage) GetSenderID() *string {
+	if s == nil {
 		return nil
 	}
-	return m.SenderID
+	return s.SenderID
 }
 
-func (m *Message) GetTracing() *bool {
-	if m == nil {
+func (s *SolaceUpstreamPluginMessage) GetTracing() *bool {
+	if s == nil {
 		return nil
 	}
-	return m.Tracing
+	return s.Tracing
 }
 
-func (m *Message) GetTracingSampled() *bool {
-	if m == nil {
+func (s *SolaceUpstreamPluginMessage) GetTracingSampled() *bool {
+	if s == nil {
 		return nil
 	}
-	return m.TracingSampled
+	return s.TracingSampled
 }
 
-func (m *Message) GetTTL() *int64 {
-	if m == nil {
+func (s *SolaceUpstreamPluginMessage) GetTTL() *int64 {
+	if s == nil {
 		return nil
 	}
-	return m.TTL
+	return s.TTL
 }
 
-// Scheme - The client authentication scheme used when connection to an event broker.
-type Scheme string
+// SolaceUpstreamPluginScheme - The client authentication scheme used when connection to an event broker.
+type SolaceUpstreamPluginScheme string
 
 const (
-	SchemeBasic  Scheme = "BASIC"
-	SchemeNone   Scheme = "NONE"
-	SchemeOauth2 Scheme = "OAUTH2"
+	SolaceUpstreamPluginSchemeBasic  SolaceUpstreamPluginScheme = "BASIC"
+	SolaceUpstreamPluginSchemeNone   SolaceUpstreamPluginScheme = "NONE"
+	SolaceUpstreamPluginSchemeOauth2 SolaceUpstreamPluginScheme = "OAUTH2"
 )
 
-func (e Scheme) ToPointer() *Scheme {
+func (e SolaceUpstreamPluginScheme) ToPointer() *SolaceUpstreamPluginScheme {
 	return &e
 }
-func (e *Scheme) UnmarshalJSON(data []byte) error {
+func (e *SolaceUpstreamPluginScheme) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -337,10 +337,10 @@ func (e *Scheme) UnmarshalJSON(data []byte) error {
 	case "NONE":
 		fallthrough
 	case "OAUTH2":
-		*e = Scheme(v)
+		*e = SolaceUpstreamPluginScheme(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Scheme: %v", v)
+		return fmt.Errorf("invalid value for SolaceUpstreamPluginScheme: %v", v)
 	}
 }
 
@@ -355,8 +355,8 @@ type SolaceUpstreamPluginAuthentication struct {
 	// The password used with `BASIC` authentication scheme when connecting to an event broker.
 	Password *string `default:"null" json:"password"`
 	// The client authentication scheme used when connection to an event broker.
-	Scheme *Scheme `default:"BASIC" json:"scheme"`
-	// The username used with `BASIC` authentication scheme when connecting to an event broker .
+	Scheme *SolaceUpstreamPluginScheme `default:"BASIC" json:"scheme"`
+	// The username used with `BASIC` authentication scheme when connecting to an event broker.
 	Username *string `default:"null" json:"username"`
 }
 
@@ -406,7 +406,7 @@ func (s *SolaceUpstreamPluginAuthentication) GetPassword() *string {
 	return s.Password
 }
 
-func (s *SolaceUpstreamPluginAuthentication) GetScheme() *Scheme {
+func (s *SolaceUpstreamPluginAuthentication) GetScheme() *SolaceUpstreamPluginScheme {
 	if s == nil {
 		return nil
 	}
@@ -420,12 +420,22 @@ func (s *SolaceUpstreamPluginAuthentication) GetUsername() *string {
 	return s.Username
 }
 
-// Session related configuration.
-type Session struct {
+// SolaceUpstreamPluginSession - Session related configuration.
+type SolaceUpstreamPluginSession struct {
 	// Session authentication related configuration.
 	Authentication *SolaceUpstreamPluginAuthentication `json:"authentication"`
+	// If this property is true and time-to-live has a positive value in a message, the expiration time is calculated when the message is sent or received
+	CalculateMessageExpiry *bool `default:"true" json:"calculate_message_expiry"`
 	// The timeout period (in milliseconds) for a connect operation to a given host (per host).
 	ConnectTimeout *int64 `default:"3000" json:"connect_timeout"`
+	// When enabled, a receive timestamp is recorded for each message.
+	GenerateRcvTimestamps *bool `default:"true" json:"generate_rcv_timestamps"`
+	// When enabled, a send timestamp is automatically included (if not already present) in the Solace-defined fields for each message sent.
+	GenerateSendTimestamps *bool `default:"true" json:"generate_send_timestamps"`
+	// When enabled, a sender id is automatically included (if not already present) in the Solace-defined fields for each message sent.
+	GenerateSenderID *bool `default:"true" json:"generate_sender_id"`
+	// When enabled, a sequence number is automatically included (if not already present) in the Solace-defined fields for each message sent.
+	GenerateSequenceNumber *bool `default:"true" json:"generate_sequence_number"`
 	// The IPv4 or IPv6 address or host name to connect to (see: https://docs.solace.com/API-Developer-Online-Ref-Documentation/c/index.html#host-entry).
 	Host string `json:"host"`
 	// Additional Solace session properties (each setting needs to have `SESSION_` prefix).
@@ -436,53 +446,88 @@ type Session struct {
 	VpnName *string `default:"null" json:"vpn_name"`
 }
 
-func (s Session) MarshalJSON() ([]byte, error) {
+func (s SolaceUpstreamPluginSession) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(s, "", false)
 }
 
-func (s *Session) UnmarshalJSON(data []byte) error {
+func (s *SolaceUpstreamPluginSession) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"host"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *Session) GetAuthentication() *SolaceUpstreamPluginAuthentication {
+func (s *SolaceUpstreamPluginSession) GetAuthentication() *SolaceUpstreamPluginAuthentication {
 	if s == nil {
 		return nil
 	}
 	return s.Authentication
 }
 
-func (s *Session) GetConnectTimeout() *int64 {
+func (s *SolaceUpstreamPluginSession) GetCalculateMessageExpiry() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.CalculateMessageExpiry
+}
+
+func (s *SolaceUpstreamPluginSession) GetConnectTimeout() *int64 {
 	if s == nil {
 		return nil
 	}
 	return s.ConnectTimeout
 }
 
-func (s *Session) GetHost() string {
+func (s *SolaceUpstreamPluginSession) GetGenerateRcvTimestamps() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.GenerateRcvTimestamps
+}
+
+func (s *SolaceUpstreamPluginSession) GetGenerateSendTimestamps() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.GenerateSendTimestamps
+}
+
+func (s *SolaceUpstreamPluginSession) GetGenerateSenderID() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.GenerateSenderID
+}
+
+func (s *SolaceUpstreamPluginSession) GetGenerateSequenceNumber() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.GenerateSequenceNumber
+}
+
+func (s *SolaceUpstreamPluginSession) GetHost() string {
 	if s == nil {
 		return ""
 	}
 	return s.Host
 }
 
-func (s *Session) GetProperties() map[string]any {
+func (s *SolaceUpstreamPluginSession) GetProperties() map[string]any {
 	if s == nil {
 		return nil
 	}
 	return s.Properties
 }
 
-func (s *Session) GetSslValidateCertificate() *bool {
+func (s *SolaceUpstreamPluginSession) GetSslValidateCertificate() *bool {
 	if s == nil {
 		return nil
 	}
 	return s.SslValidateCertificate
 }
 
-func (s *Session) GetVpnName() *string {
+func (s *SolaceUpstreamPluginSession) GetVpnName() *string {
 	if s == nil {
 		return nil
 	}
@@ -491,21 +536,21 @@ func (s *Session) GetVpnName() *string {
 
 type SolaceUpstreamPluginConfig struct {
 	// The message related configuration.
-	Message Message `json:"message"`
+	Message SolaceUpstreamPluginMessage `json:"message"`
 	// Session related configuration.
-	Session Session `json:"session"`
+	Session SolaceUpstreamPluginSession `json:"session"`
 }
 
-func (s *SolaceUpstreamPluginConfig) GetMessage() Message {
+func (s *SolaceUpstreamPluginConfig) GetMessage() SolaceUpstreamPluginMessage {
 	if s == nil {
-		return Message{}
+		return SolaceUpstreamPluginMessage{}
 	}
 	return s.Message
 }
 
-func (s *SolaceUpstreamPluginConfig) GetSession() Session {
+func (s *SolaceUpstreamPluginConfig) GetSession() SolaceUpstreamPluginSession {
 	if s == nil {
-		return Session{}
+		return SolaceUpstreamPluginSession{}
 	}
 	return s.Session
 }

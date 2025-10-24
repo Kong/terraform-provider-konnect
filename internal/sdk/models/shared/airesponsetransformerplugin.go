@@ -416,6 +416,8 @@ func (a *AiResponseTransformerPluginCohere) GetWaitForModel() *bool {
 type AiResponseTransformerPluginGemini struct {
 	// If running Gemini on Vertex, specify the regional API endpoint (hostname only).
 	APIEndpoint *string `default:"null" json:"api_endpoint"`
+	// If running Gemini on Vertex Model Garden, specify the endpoint ID.
+	EndpointID *string `default:"null" json:"endpoint_id"`
 	// If running Gemini on Vertex, specify the location ID.
 	LocationID *string `default:"null" json:"location_id"`
 	// If running Gemini on Vertex, specify the project ID.
@@ -438,6 +440,13 @@ func (a *AiResponseTransformerPluginGemini) GetAPIEndpoint() *string {
 		return nil
 	}
 	return a.APIEndpoint
+}
+
+func (a *AiResponseTransformerPluginGemini) GetEndpointID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.EndpointID
 }
 
 func (a *AiResponseTransformerPluginGemini) GetLocationID() *string {

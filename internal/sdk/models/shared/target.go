@@ -22,6 +22,8 @@ func (t *TargetUpstream) GetID() *string {
 type Target struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *float64 `json:"created_at,omitempty"`
+	// Whether to use this target only as backup or not.
+	Failover *bool `default:"false" json:"failover"`
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// An optional set of strings associated with the Target for grouping and filtering.
@@ -52,6 +54,13 @@ func (t *Target) GetCreatedAt() *float64 {
 		return nil
 	}
 	return t.CreatedAt
+}
+
+func (t *Target) GetFailover() *bool {
+	if t == nil {
+		return nil
+	}
+	return t.Failover
 }
 
 func (t *Target) GetID() *string {

@@ -49,8 +49,13 @@ resource "konnect_gateway_plugin_solace_upstream" "my_gatewaypluginsolaceupstrea
         scheme              = "NONE"
         username            = "...my_username..."
       }
-      connect_timeout = 82788
-      host            = "...my_host..."
+      calculate_message_expiry = false
+      connect_timeout          = 82788
+      generate_rcv_timestamps  = false
+      generate_send_timestamps = false
+      generate_sender_id       = false
+      generate_sequence_number = false
+      host                     = "...my_host..."
       properties = {
         key = jsonencode("value")
       }
@@ -137,7 +142,7 @@ Required:
 
 Optional:
 
-- `ack_timeout` (Number) When using a non-DIRECT guaranteed delivery mode, this property sets the message acknowledgement timeout (waiting time). Default: 2000
+- `ack_timeout` (Number) When using a non-DIRECT guaranteed delivery mode, this property sets the message acknowledgement timeout in milliseconds (waiting time). Default: 2000
 - `default_content` (String) When not using `forward_method`, `forward_uri`, `forward_headers` or `forward_body`, this sets the message content.
 - `delivery_mode` (String) Sets the message delivery mode. Default: "DIRECT"; must be one of ["DIRECT", "PERSISTENT"]
 - `dmq_eligible` (Boolean) Sets the dead message queue (DMQ) eligible property on the message. Default: false
@@ -147,7 +152,7 @@ Optional:
 - `forward_uri` (Boolean) Include the request URI and the URI arguments (as in, query arguments) in the message. Default: false
 - `functions` (List of String) The Lua functions that manipulates (or generates) the message being sent to Solace. The `message` variable can be used to access the current message content, and the function can return a new content.
 - `priority` (Number) Sets the message priority. Default: 4
-- `sender_id` (String) Allows the application to set the content of the sender identifier. Default: "kong"
+- `sender_id` (String) Allows the application to set the content of the sender identifier.
 - `tracing` (Boolean) Enable or disable the tracing. This is primarily used for distributed tracing and message correlation, especially in debugging or tracking message flows across multiple systems. Default: false
 - `tracing_sampled` (Boolean) Indicates whether the message should be included in distributed tracing (i.e., if it should be "sampled" for the tracing). Default: false
 - `ttl` (Number) Sets the time to live (TTL) in milliseconds for the message. Setting the time to live to zero disables the TTL for the message. Default: 0
@@ -157,7 +162,7 @@ Optional:
 
 Optional:
 
-- `name` (String) The name of the destination. You can use `$(uri_captures['topic_name']` in this field. Not Null
+- `name` (String) The name of the destination. You can use $(uri_captures['<capture-identifier>']) in this field (replace `<capture-identifier>` with a real value, for example `$uri_captures[’queue’]` when the matched route has a path `~/(?<queue>[a-z]+)`). Not Null
 - `type` (String) The type of the destination. Default: "QUEUE"; must be one of ["QUEUE", "TOPIC"]
 
 
@@ -172,7 +177,12 @@ Required:
 Optional:
 
 - `authentication` (Attributes) Session authentication related configuration. (see [below for nested schema](#nestedatt--config--session--authentication))
+- `calculate_message_expiry` (Boolean) If this property is true and time-to-live has a positive value in a message, the expiration time is calculated when the message is sent or received. Default: true
 - `connect_timeout` (Number) The timeout period (in milliseconds) for a connect operation to a given host (per host). Default: 3000
+- `generate_rcv_timestamps` (Boolean) When enabled, a receive timestamp is recorded for each message. Default: true
+- `generate_send_timestamps` (Boolean) When enabled, a send timestamp is automatically included (if not already present) in the Solace-defined fields for each message sent. Default: true
+- `generate_sender_id` (Boolean) When enabled, a sender id is automatically included (if not already present) in the Solace-defined fields for each message sent. Default: true
+- `generate_sequence_number` (Boolean) When enabled, a sequence number is automatically included (if not already present) in the Solace-defined fields for each message sent. Default: true
 - `properties` (Map of String) Additional Solace session properties (each setting needs to have `SESSION_` prefix).
 - `ssl_validate_certificate` (Boolean) Indicates whether the API should validate server certificates with the trusted certificates. Default: false
 - `vpn_name` (String) The name of the Message VPN to attempt to join when connecting to an event broker.
@@ -188,7 +198,7 @@ Optional:
 - `id_token_header` (String)
 - `password` (String) The password used with `BASIC` authentication scheme when connecting to an event broker.
 - `scheme` (String) The client authentication scheme used when connection to an event broker. Default: "BASIC"; must be one of ["BASIC", "NONE", "OAUTH2"]
-- `username` (String) The username used with `BASIC` authentication scheme when connecting to an event broker .
+- `username` (String) The username used with `BASIC` authentication scheme when connecting to an event broker.
 
 
 

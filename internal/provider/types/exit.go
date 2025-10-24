@@ -7,9 +7,9 @@ import (
 )
 
 type Exit struct {
-	Input           types.String `tfsdk:"input"`
-	Inputs          *NodesInputs `tfsdk:"inputs"`
-	Name            types.String `tfsdk:"name"`
-	Status          types.Int64  `tfsdk:"status"`
-	WarnHeadersSent types.Bool   `tfsdk:"warn_headers_sent"`
+	Input           types.String              `tfsdk:"input"`
+	Inputs          *DatakitPluginNodesInputs `tfsdk:"inputs"`
+	Name            types.String              `tfsdk:"name"`
+	Status          types.Int64               `tfsdk:"status"`
+	WarnHeadersSent types.Bool                `tfsdk:"warn_headers_sent"`
 }

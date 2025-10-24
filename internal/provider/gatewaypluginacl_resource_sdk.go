@@ -42,11 +42,11 @@ func (r *GatewayPluginACLResourceModel) RefreshFromSharedACLPlugin(ctx context.C
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			r.Ordering = &tfTypes.AcePluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After = &tfTypes.AcePluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -55,7 +55,7 @@ func (r *GatewayPluginACLResourceModel) RefreshFromSharedACLPlugin(ctx context.C
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.AcePluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
@@ -237,9 +237,9 @@ func (r *GatewayPluginACLResourceModel) ToSharedACLPlugin(ctx context.Context) (
 			Before: before,
 		}
 	}
-	var partials []shared.Partials
+	var partials []shared.ACLPluginPartials
 	if r.Partials != nil {
-		partials = make([]shared.Partials, 0, len(r.Partials))
+		partials = make([]shared.ACLPluginPartials, 0, len(r.Partials))
 		for _, partialsItem := range r.Partials {
 			id1 := new(string)
 			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
@@ -259,7 +259,7 @@ func (r *GatewayPluginACLResourceModel) ToSharedACLPlugin(ctx context.Context) (
 			} else {
 				path = nil
 			}
-			partials = append(partials, shared.Partials{
+			partials = append(partials, shared.ACLPluginPartials{
 				ID:   id1,
 				Name: name,
 				Path: path,

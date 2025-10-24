@@ -78,6 +78,35 @@ func (s *SessionPluginPartials) GetPath() *string {
 	return s.Path
 }
 
+type Bind string
+
+const (
+	BindIP        Bind = "ip"
+	BindScheme    Bind = "scheme"
+	BindUserAgent Bind = "user-agent"
+)
+
+func (e Bind) ToPointer() *Bind {
+	return &e
+}
+func (e *Bind) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "ip":
+		fallthrough
+	case "scheme":
+		fallthrough
+	case "user-agent":
+		*e = Bind(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for Bind: %v", v)
+	}
+}
+
 // CookieSameSite - Determines whether and how a cookie may be sent with cross-site requests.
 type CookieSameSite string
 
@@ -254,6 +283,8 @@ type SessionPluginConfig struct {
 	AbsoluteTimeout *float64 `default:"86400" json:"absolute_timeout"`
 	// The session audience, which is the intended target application. For example `"my-application"`.
 	Audience *string `default:"default" json:"audience"`
+	// Bind the session to data acquired from the HTTP request or connection.
+	Bind []Bind `json:"bind"`
 	// The domain with which the cookie is intended to be exchanged.
 	CookieDomain *string `default:"null" json:"cookie_domain"`
 	// Applies the `HttpOnly` tag so that the cookie is sent only to a server.
@@ -324,6 +355,13 @@ func (s *SessionPluginConfig) GetAudience() *string {
 		return nil
 	}
 	return s.Audience
+}
+
+func (s *SessionPluginConfig) GetBind() []Bind {
+	if s == nil {
+		return nil
+	}
+	return s.Bind
 }
 
 func (s *SessionPluginConfig) GetCookieDomain() *string {

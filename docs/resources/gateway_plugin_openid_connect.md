@@ -155,7 +155,11 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     consumer_claim = [
       "..."
     ]
-    consumer_optional = true
+    consumer_groups_claim = [
+      "..."
+    ]
+    consumer_groups_optional = true
+    consumer_optional        = true
     credential_claim = [
       "..."
     ]
@@ -365,9 +369,12 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     scopes_required = [
       "..."
     ]
-    search_user_info                  = false
-    session_absolute_timeout          = 6.27
-    session_audience                  = "...my_session_audience..."
+    search_user_info         = false
+    session_absolute_timeout = 6.27
+    session_audience         = "...my_session_audience..."
+    session_bind = [
+      "scheme"
+    ]
     session_cookie_domain             = "...my_session_cookie_domain..."
     session_cookie_http_only          = false
     session_cookie_name               = "...my_session_cookie_name..."
@@ -592,6 +599,8 @@ Optional:
 - `cluster_cache_strategy` (String) The strategy to use for the cluster cache. If set, the plugin will share cache with nodes configured with the same strategy backend. Currentlly only introspection cache is shared. Default: "off"; must be one of ["off", "redis"]
 - `consumer_by` (List of String) Consumer fields used for mapping: - `id`: try to find the matching Consumer by `id` - `username`: try to find the matching Consumer by `username` - `custom_id`: try to find the matching Consumer by `custom_id`. Default: ["custom_id","username"]
 - `consumer_claim` (List of String) The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
+- `consumer_groups_claim` (List of String) The claim used for consumer groups mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
+- `consumer_groups_optional` (Boolean) Do not terminate the request if consumer groups mapping fails. Default: false
 - `consumer_optional` (Boolean) Do not terminate the request if consumer mapping fails. Default: false
 - `credential_claim` (List of String) The claim used to derive virtual credentials (e.g. to be consumed by the rate-limiting plugin), in case the consumer mapping is not used. If multiple values are set, it means the claim is inside a nested object of the token payload. Default: ["sub"]
 - `disable_session` (List of String) Disable issuing the session cookie with the specified grants.
@@ -703,6 +712,7 @@ Default: false
 - `search_user_info` (Boolean) Specify whether to use the user info endpoint to get additional claims for consumer mapping, credential mapping, authenticated groups, and upstream and downstream headers. Default: false
 - `session_absolute_timeout` (Number) Limits how long the session can be renewed in seconds, until re-authentication is required. 0 disables the checks. Default: 86400
 - `session_audience` (String) The session audience, which is the intended target application. For example `"my-application"`. Default: "default"
+- `session_bind` (List of String) Bind the session to data acquired from the HTTP request or connection.
 - `session_cookie_domain` (String) The session cookie Domain flag.
 - `session_cookie_http_only` (Boolean) Forbids JavaScript from accessing the cookie, for example, through the `Document.cookie` property. Default: true
 - `session_cookie_name` (String) The session cookie name. Default: "session"

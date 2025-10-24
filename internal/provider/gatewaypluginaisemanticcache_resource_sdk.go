@@ -20,7 +20,7 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) RefreshFromSharedAiSemanticC
 		if resp.Config.Embeddings.Auth == nil {
 			r.Config.Embeddings.Auth = nil
 		} else {
-			r.Config.Embeddings.Auth = &tfTypes.Auth{}
+			r.Config.Embeddings.Auth = &tfTypes.AiLlmAsJudgePluginAuth{}
 			r.Config.Embeddings.Auth.AllowOverride = types.BoolPointerValue(resp.Config.Embeddings.Auth.AllowOverride)
 			r.Config.Embeddings.Auth.AwsAccessKeyID = types.StringPointerValue(resp.Config.Embeddings.Auth.AwsAccessKeyID)
 			r.Config.Embeddings.Auth.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Embeddings.Auth.AwsSecretAccessKey)
@@ -56,7 +56,7 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) RefreshFromSharedAiSemanticC
 			if resp.Config.Embeddings.Model.Options.Bedrock == nil {
 				r.Config.Embeddings.Model.Options.Bedrock = nil
 			} else {
-				r.Config.Embeddings.Model.Options.Bedrock = &tfTypes.Bedrock{}
+				r.Config.Embeddings.Model.Options.Bedrock = &tfTypes.AiLlmAsJudgePluginBedrock{}
 				r.Config.Embeddings.Model.Options.Bedrock.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsAssumeRoleArn)
 				r.Config.Embeddings.Model.Options.Bedrock.AwsRegion = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsRegion)
 				r.Config.Embeddings.Model.Options.Bedrock.AwsRoleSessionName = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsRoleSessionName)
@@ -67,7 +67,7 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) RefreshFromSharedAiSemanticC
 			if resp.Config.Embeddings.Model.Options.Gemini == nil {
 				r.Config.Embeddings.Model.Options.Gemini = nil
 			} else {
-				r.Config.Embeddings.Model.Options.Gemini = &tfTypes.Gemini{}
+				r.Config.Embeddings.Model.Options.Gemini = &tfTypes.AiProxyAdvancedPluginGemini{}
 				r.Config.Embeddings.Model.Options.Gemini.APIEndpoint = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Gemini.APIEndpoint)
 				r.Config.Embeddings.Model.Options.Gemini.LocationID = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Gemini.LocationID)
 				r.Config.Embeddings.Model.Options.Gemini.ProjectID = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Gemini.ProjectID)
@@ -75,7 +75,7 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) RefreshFromSharedAiSemanticC
 			if resp.Config.Embeddings.Model.Options.Huggingface == nil {
 				r.Config.Embeddings.Model.Options.Huggingface = nil
 			} else {
-				r.Config.Embeddings.Model.Options.Huggingface = &tfTypes.Huggingface{}
+				r.Config.Embeddings.Model.Options.Huggingface = &tfTypes.AiLlmAsJudgePluginHuggingface{}
 				r.Config.Embeddings.Model.Options.Huggingface.UseCache = types.BoolPointerValue(resp.Config.Embeddings.Model.Options.Huggingface.UseCache)
 				r.Config.Embeddings.Model.Options.Huggingface.WaitForModel = types.BoolPointerValue(resp.Config.Embeddings.Model.Options.Huggingface.WaitForModel)
 			}
@@ -119,7 +119,7 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) RefreshFromSharedAiSemanticC
 		if resp.Config.Vectordb.Redis == nil {
 			r.Config.Vectordb.Redis = nil
 		} else {
-			r.Config.Vectordb.Redis = &tfTypes.AiProxyAdvancedPluginRedis{}
+			r.Config.Vectordb.Redis = &tfTypes.AcePluginRedis{}
 			r.Config.Vectordb.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Vectordb.Redis.ClusterMaxRedirections)
 			if resp.Config.Vectordb.Redis.ClusterNodes != nil {
 				r.Config.Vectordb.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
@@ -189,11 +189,11 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) RefreshFromSharedAiSemanticC
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			r.Ordering = &tfTypes.AcePluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After = &tfTypes.AcePluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -202,7 +202,7 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) RefreshFromSharedAiSemanticC
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.AcePluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

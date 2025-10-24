@@ -17,6 +17,9 @@ resource "konnect_gateway_plugin_session" "my_gatewaypluginsession" {
   config = {
     absolute_timeout = 1.93
     audience         = "...my_audience..."
+    bind = [
+      "user-agent"
+    ]
     cookie_domain    = "...my_cookie_domain..."
     cookie_http_only = true
     cookie_name      = "...my_cookie_name..."
@@ -116,6 +119,7 @@ Optional:
 
 - `absolute_timeout` (Number) The session cookie absolute timeout, in seconds. Specifies how long the session can be used until it is no longer valid. Default: 86400
 - `audience` (String) The session audience, which is the intended target application. For example `"my-application"`. Default: "default"
+- `bind` (List of String) Bind the session to data acquired from the HTTP request or connection.
 - `cookie_domain` (String) The domain with which the cookie is intended to be exchanged.
 - `cookie_http_only` (Boolean) Applies the `HttpOnly` tag so that the cookie is sent only to a server. Default: true
 - `cookie_name` (String) The name of the cookie. Default: "session"

@@ -54,7 +54,7 @@ type GatewayPluginAcmeResourceModel struct {
 	Enabled        types.Bool                 `tfsdk:"enabled"`
 	ID             types.String               `tfsdk:"id"`
 	InstanceName   types.String               `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering `tfsdk:"ordering"`
+	Ordering       *tfTypes.AcePluginOrdering `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials         `tfsdk:"partials"`
 	Protocols      []types.String             `tfsdk:"protocols"`
 	Tags           []types.String             `tfsdk:"tags"`
@@ -287,6 +287,7 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 								},
 							},
 							"kong": schema.MapAttribute{
+								Computed:    true,
 								Optional:    true,
 								ElementType: jsontypes.NormalizedType{},
 								Validators: []validator.Map{

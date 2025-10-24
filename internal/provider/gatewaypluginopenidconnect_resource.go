@@ -52,7 +52,7 @@ type GatewayPluginOpenidConnectResourceModel struct {
 	Enabled        types.Bool                        `tfsdk:"enabled"`
 	ID             types.String                      `tfsdk:"id"`
 	InstanceName   types.String                      `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering        `tfsdk:"ordering"`
+	Ordering       *tfTypes.AcePluginOrdering        `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials                `tfsdk:"partials"`
 	Protocols      []types.String                    `tfsdk:"protocols"`
 	Route          *tfTypes.Set                      `tfsdk:"route"`
@@ -590,6 +590,17 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.`,
+					},
+					"consumer_groups_claim": schema.ListAttribute{
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `The claim used for consumer groups mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.`,
+					},
+					"consumer_groups_optional": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `Do not terminate the request if consumer groups mapping fails. Default: false`,
 					},
 					"consumer_optional": schema.BoolAttribute{
 						Computed:    true,
@@ -1445,6 +1456,11 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						Default:     stringdefault.StaticString(`default`),
 						Description: `The session audience, which is the intended target application. For example ` + "`" + `"my-application"` + "`" + `. Default: "default"`,
+					},
+					"session_bind": schema.ListAttribute{
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `Bind the session to data acquired from the HTTP request or connection.`,
 					},
 					"session_cookie_domain": schema.StringAttribute{
 						Optional:    true,
