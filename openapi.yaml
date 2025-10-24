@@ -24940,10 +24940,7 @@ components:
                   x-speakeasy-param-computed: false
                 kong:
                   type: object
-                  default: null
                   additionalProperties: true
-                  nullable: true
-                  x-speakeasy-param-computed: false
                 redis:
                   type: object
                   default: null
@@ -26097,10 +26094,7 @@ components:
             args:
               description: Additional arguments to send in the POST body.
               type: object
-              default: null
               additionalProperties: true
-              nullable: true
-              x-speakeasy-param-computed: false
             authorization_servers:
               type: array
               items:
@@ -26180,10 +26174,7 @@ components:
             headers:
               description: Additional headers for the introspection request.
               type: object
-              default: null
               additionalProperties: true
-              nullable: true
-              x-speakeasy-param-computed: false
             http_proxy:
               description: HTTP proxy to use.
               type: string
@@ -26199,7 +26190,7 @@ components:
             http_version:
               description: The HTTP version used for requests.
               type: number
-              default: 1.1
+              x-speakeasy-param-computed: true
             https_proxy:
               description: HTTPS proxy to use.
               type: string
@@ -26344,8 +26335,6 @@ components:
           properties:
             logging:
               type: object
-              default: null
-              nullable: true
               properties:
                 log_payloads:
                   description: 'If enabled, will log the request and response body into the Kong log plugin(s) output.'
@@ -26355,7 +26344,7 @@ components:
                   description: 'If enabled, will add mcp metrics into the Kong log plugin(s) output.'
                   type: boolean
                   default: false
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             max_request_body_size:
               description: max allowed body size allowed to be handled as MCP request.
               type: integer
@@ -26434,10 +26423,7 @@ components:
                   headers:
                     description: 'The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.'
                     type: object
-                    default: null
                     additionalProperties: true
-                    nullable: true
-                    x-speakeasy-param-computed: false
                   host:
                     description: 'The host of the exported API. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.'
                     type: string
@@ -26481,10 +26467,7 @@ components:
                   query:
                     description: 'The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.'
                     type: object
-                    default: null
                     additionalProperties: true
-                    nullable: true
-                    x-speakeasy-param-computed: false
                   request_body:
                     description: 'The API requestBody specification defined in OpenAPI. For example, ''{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}''.See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details.'
                     type: string
@@ -32339,8 +32322,6 @@ components:
                   x-speakeasy-param-computed: false
                 redis:
                   type: object
-                  default: null
-                  nullable: true
                   properties:
                     cluster_max_redirections:
                       description: Maximum retry attempts for redirection.
@@ -32493,7 +32474,7 @@ components:
                       nullable: true
                       x-referenceable: true
                       x-speakeasy-param-computed: false
-                  x-speakeasy-param-computed: false
+                  x-speakeasy-param-computed: true
                 strategy:
                   description: which vector database driver to use
                   type: string
@@ -32580,10 +32561,7 @@ components:
       properties:
         config:
           type: object
-          default: null
           additionalProperties: true
-          nullable: true
-          x-speakeasy-param-computed: false
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -33663,17 +33641,11 @@ components:
                             token_headers:
                               description: Extra headers to be passed in the token endpoint request.
                               type: object
-                              default: null
                               additionalProperties: true
-                              nullable: true
-                              x-speakeasy-param-computed: false
                             token_post_args:
                               description: Extra post arguments to be passed in the token endpoint request.
                               type: object
-                              default: null
                               additionalProperties: true
-                              nullable: true
-                              x-speakeasy-param-computed: false
                             username:
                               description: The username to use if `config.oauth.grant_type` is set to `password`.
                               type: string
@@ -33883,17 +33855,11 @@ components:
                                   token_headers:
                                     description: Extra headers to be passed in the token endpoint request.
                                     type: object
-                                    default: null
                                     additionalProperties: true
-                                    nullable: true
-                                    x-speakeasy-param-computed: false
                                   token_post_args:
                                     description: Extra post arguments to be passed in the token endpoint request.
                                     type: object
-                                    default: null
                                     additionalProperties: true
-                                    nullable: true
-                                    x-speakeasy-param-computed: false
                                   username:
                                     description: The username to use if `config.oauth.grant_type` is set to `password`.
                                     type: string
@@ -34297,17 +34263,11 @@ components:
                             token_headers:
                               description: Extra headers to be passed in the token endpoint request.
                               type: object
-                              default: null
                               additionalProperties: true
-                              nullable: true
-                              x-speakeasy-param-computed: false
                             token_post_args:
                               description: Extra post arguments to be passed in the token endpoint request.
                               type: object
-                              default: null
                               additionalProperties: true
-                              nullable: true
-                              x-speakeasy-param-computed: false
                             username:
                               description: The username to use if `config.oauth.grant_type` is set to `password`.
                               type: string
@@ -35452,10 +35412,7 @@ components:
                       inputs:
                         description: filter input(s)
                         type: object
-                        default: null
                         additionalProperties: true
-                        nullable: true
-                        x-speakeasy-param-computed: false
                       jq:
                         description: 'The jq filter text. Refer to https://jqlang.org/manual/ for full documentation.'
                         type: string
@@ -35553,10 +35510,7 @@ components:
                       outputs:
                         description: 'Individual items from `.values`, referenced by key'
                         type: object
-                        default: null
                         additionalProperties: true
-                        nullable: true
-                        x-speakeasy-param-computed: false
                       type:
                         type: string
                         const: static
@@ -35755,12 +35709,9 @@ components:
                   x-speakeasy-param-computed: false
                 vault:
                   type: object
-                  default: null
                   additionalProperties: true
                   maxLength: 64
                   minLength: 1
-                  nullable: true
-                  x-speakeasy-param-computed: false
               x-speakeasy-param-computed: false
           required:
             - nodes
@@ -38592,24 +38543,15 @@ components:
             add_access_token_claims:
               description: 'Add customized claims if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim''s value.'
               type: object
-              default: null
               additionalProperties: true
-              nullable: true
-              x-speakeasy-param-computed: false
             add_channel_token_claims:
               description: 'Add customized claims if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim''s value.'
               type: object
-              default: null
               additionalProperties: true
-              nullable: true
-              x-speakeasy-param-computed: false
             add_claims:
               description: 'Add customized claims to both tokens if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim''s value.'
               type: object
-              default: null
               additionalProperties: true
-              nullable: true
-              x-speakeasy-param-computed: false
             cache_access_token_introspection:
               description: Whether to cache access token introspection results.
               type: boolean
@@ -39054,24 +38996,15 @@ components:
             set_access_token_claims:
               description: 'Set customized claims. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim''s value.'
               type: object
-              default: null
               additionalProperties: true
-              nullable: true
-              x-speakeasy-param-computed: false
             set_channel_token_claims:
               description: 'Set customized claims. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim''s value.'
               type: object
-              default: null
               additionalProperties: true
-              nullable: true
-              x-speakeasy-param-computed: false
             set_claims:
               description: 'Set customized claims to both tokens. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim''s value.'
               type: object
-              default: null
               additionalProperties: true
-              nullable: true
-              x-speakeasy-param-computed: false
             trust_access_token_introspection:
               description: 'Use this parameter to enable and disable further checks on a payload before the new token is signed. If you set this to `true`, the expiry or scopes are not checked on a payload.'
               type: boolean
@@ -39234,8 +39167,6 @@ components:
           properties:
             authentication:
               type: object
-              default: null
-              nullable: true
               properties:
                 mechanism:
                   description: 'The SASL authentication mechanism.  Supported options: `PLAIN` or `SCRAM-SHA-256`.'
@@ -39271,7 +39202,7 @@ components:
                   x-encrypted: true
                   x-referenceable: true
                   x-speakeasy-param-computed: false
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             auto_offset_reset:
               description: The offset to start from when there is no initial offset in the consumer group.
               type: string
@@ -39347,8 +39278,6 @@ components:
             schema_registry:
               description: The plugin-global schema registry configuration.
               type: object
-              default: null
-              nullable: true
               properties:
                 confluent:
                   type: object
@@ -39440,17 +39369,11 @@ components:
                             token_headers:
                               description: Extra headers to be passed in the token endpoint request.
                               type: object
-                              default: null
                               additionalProperties: true
-                              nullable: true
-                              x-speakeasy-param-computed: false
                             token_post_args:
                               description: Extra post arguments to be passed in the token endpoint request.
                               type: object
-                              default: null
                               additionalProperties: true
-                              nullable: true
-                              x-speakeasy-param-computed: false
                             username:
                               description: The username to use if `config.oauth.grant_type` is set to `password`.
                               type: string
@@ -39552,11 +39475,9 @@ components:
                       nullable: true
                       x-speakeasy-param-computed: false
                   x-speakeasy-param-computed: false
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             security:
               type: object
-              default: null
-              nullable: true
               properties:
                 certificate_id:
                   description: UUID of certificate entity for mTLS authentication.
@@ -39570,7 +39491,7 @@ components:
                   default: null
                   nullable: true
                   x-speakeasy-param-computed: false
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             topics:
               description: The Kafka topics and their configuration you want to consume from.
               type: array
@@ -39581,8 +39502,6 @@ components:
                   schema_registry:
                     description: The plugin-global schema registry configuration.
                     type: object
-                    default: null
-                    nullable: true
                     properties:
                       confluent:
                         type: object
@@ -39674,17 +39593,11 @@ components:
                                   token_headers:
                                     description: Extra headers to be passed in the token endpoint request.
                                     type: object
-                                    default: null
                                     additionalProperties: true
-                                    nullable: true
-                                    x-speakeasy-param-computed: false
                                   token_post_args:
                                     description: Extra post arguments to be passed in the token endpoint request.
                                     type: object
-                                    default: null
                                     additionalProperties: true
-                                    nullable: true
-                                    x-speakeasy-param-computed: false
                                   username:
                                     description: The username to use if `config.oauth.grant_type` is set to `password`.
                                     type: string
@@ -39786,7 +39699,7 @@ components:
                             nullable: true
                             x-speakeasy-param-computed: false
                         x-speakeasy-param-computed: false
-                    x-speakeasy-param-computed: false
+                    x-speakeasy-param-computed: true
                 required:
                   - name
                 type: object
@@ -40070,17 +39983,11 @@ components:
                             token_headers:
                               description: Extra headers to be passed in the token endpoint request.
                               type: object
-                              default: null
                               additionalProperties: true
-                              nullable: true
-                              x-speakeasy-param-computed: false
                             token_post_args:
                               description: Extra post arguments to be passed in the token endpoint request.
                               type: object
-                              default: null
                               additionalProperties: true
-                              nullable: true
-                              x-speakeasy-param-computed: false
                             username:
                               description: The username to use if `config.oauth.grant_type` is set to `password`.
                               type: string
@@ -40557,17 +40464,11 @@ components:
                             token_headers:
                               description: Extra headers to be passed in the token endpoint request.
                               type: object
-                              default: null
                               additionalProperties: true
-                              nullable: true
-                              x-speakeasy-param-computed: false
                             token_post_args:
                               description: Extra post arguments to be passed in the token endpoint request.
                               type: object
-                              default: null
                               additionalProperties: true
-                              nullable: true
-                              x-speakeasy-param-computed: false
                             username:
                               description: The username to use if `config.oauth.grant_type` is set to `password`.
                               type: string
@@ -42065,10 +41966,7 @@ components:
             custom_introspection_headers:
               description: A list of custom headers to be added in the introspection request.
               type: object
-              default: null
               additionalProperties: true
-              nullable: true
-              x-speakeasy-param-computed: false
             hide_credentials:
               description: An optional boolean value telling the plugin to hide the credential to the upstream API server. It will be removed by Kong before proxying the request.
               type: boolean
@@ -44879,10 +44777,8 @@ components:
         config:
           description: 'The configuration properties for the Plugin which can be found on the plugins documentation page in the [Kong Hub](https://docs.konghq.com/hub/).'
           type: object
-          default: null
           additionalProperties: true
           nullable: true
-          x-speakeasy-param-computed: false
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -46855,10 +46751,7 @@ components:
                           custom:
                             description: The custom body fields to be added to the callout HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
                             type: object
-                            default: null
                             additionalProperties: true
-                            nullable: true
-                            x-speakeasy-param-computed: false
                           decode:
                             description: 'If `true`, decodes the request''s body and make it available for customizations. Only JSON content type is supported.'
                             type: boolean
@@ -46919,10 +46812,7 @@ components:
                           custom:
                             description: The custom headers to be added in the callout HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
                             type: object
-                            default: null
                             additionalProperties: true
-                            nullable: true
-                            x-speakeasy-param-computed: false
                           forward:
                             description: 'If `true`, forwards the incoming request''s headers to the callout request. '
                             type: boolean
@@ -47023,10 +46913,7 @@ components:
                           custom:
                             description: The custom query params to be added in the callout HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
                             type: object
-                            default: null
                             additionalProperties: true
-                            nullable: true
-                            x-speakeasy-param-computed: false
                           forward:
                             description: 'If `true`, forwards the incoming request''s query params to the callout request. '
                             type: boolean
@@ -47095,10 +46982,7 @@ components:
                     custom:
                       description: The custom body fields to be added in the upstream request body. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
                       type: object
-                      default: null
                       additionalProperties: true
-                      nullable: true
-                      x-speakeasy-param-computed: false
                     decode:
                       description: 'If `true`, decodes the request''s body to make it available for upstream by_lua customizations. Only JSON content type is supported.'
                       type: boolean
@@ -47123,10 +47007,7 @@ components:
                     custom:
                       description: The custom headers to be added in the upstream HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
                       type: object
-                      default: null
                       additionalProperties: true
-                      nullable: true
-                      x-speakeasy-param-computed: false
                     forward:
                       description: 'If `false`, does not forward request headers to upstream request.'
                       type: boolean
@@ -47141,10 +47022,7 @@ components:
                     custom:
                       description: The custom query params to be added in the upstream HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
                       type: object
-                      default: null
                       additionalProperties: true
-                      nullable: true
-                      x-speakeasy-param-computed: false
                     forward:
                       description: 'If `false`, does not forward request query params to upstream request.'
                       type: boolean
@@ -47991,11 +47869,8 @@ components:
             limits:
               description: A map that defines rate limits for the plugin.
               type: object
-              default: null
               additionalProperties: true
               minLength: 1
-              nullable: true
-              x-speakeasy-param-computed: false
             policy:
               description: The rate-limiting policies to use for retrieving and incrementing the limits.
               type: string
@@ -50227,10 +50102,7 @@ components:
                 properties:
                   description: Additional Solace flow properties (each setting needs to have `FLOW_` prefix).
                   type: object
-                  default: null
                   additionalProperties: true
-                  nullable: true
-                  x-speakeasy-param-computed: false
                 selector:
                   description: The selector when binding to an endpoint.
                   type: string
@@ -50263,8 +50135,6 @@ components:
             polling:
               description: The `POLLING` mode related configuration settings.
               type: object
-              default: null
-              nullable: true
               properties:
                 timeout:
                   description: 'Polling timeout in milliseconds. When set to `0`, the polling works like short-polling and waits at maximum the Flow `wait_timeout` amount of time for the new messages (short-polling). When set to larger than `0`, the connection is kept open and only closed after the timeout or in case messages appear earlier (long-polling).'
@@ -50272,7 +50142,7 @@ components:
                   default: 0
                   maximum: 300000
                   minimum: 0
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             session:
               description: Session related configuration.
               type: object
@@ -50369,10 +50239,7 @@ components:
                 properties:
                   description: Additional Solace session properties (each setting needs to have `SESSION_` prefix).
                   type: object
-                  default: null
                   additionalProperties: true
-                  nullable: true
-                  x-speakeasy-param-computed: false
                 ssl_validate_certificate:
                   description: Indicates whether the API should validate server certificates with the trusted certificates.
                   type: boolean
@@ -50389,8 +50256,6 @@ components:
             websocket:
               description: The `WEBSOCKET` mode related configuration settings.
               type: object
-              default: null
-              nullable: true
               properties:
                 max_recv_len:
                   description: Specifies the maximal length of payload allowed when receiving WebSocket frames.
@@ -50406,7 +50271,7 @@ components:
                   default: 1000
                   maximum: 60000
                   minimum: 1
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
           required:
             - flow
             - session
@@ -50630,10 +50495,7 @@ components:
                 properties:
                   description: Additional Solace session properties (each setting needs to have `SESSION_` prefix).
                   type: object
-                  default: null
                   additionalProperties: true
-                  nullable: true
-                  x-speakeasy-param-computed: false
                 ssl_validate_certificate:
                   description: Indicates whether the API should validate server certificates with the trusted certificates.
                   type: boolean
@@ -50896,10 +50758,7 @@ components:
                 properties:
                   description: Additional Solace session properties (each setting needs to have `SESSION_` prefix).
                   type: object
-                  default: null
                   additionalProperties: true
-                  nullable: true
-                  x-speakeasy-param-computed: false
                 ssl_validate_certificate:
                   description: Indicates whether the API should validate server certificates with the trusted certificates.
                   type: boolean
@@ -53234,10 +53093,8 @@ components:
         config:
           description: The configuration properties for the Vault which can be found on the vaults' documentation page.
           type: object
-          default: null
           additionalProperties: true
           nullable: true
-          x-speakeasy-param-computed: false
           x-speakeasy-type-override: any
         created_at:
           description: Unix epoch when the resource was created.
