@@ -572,11 +572,11 @@ type SolaceConsumePluginConfig struct {
 	// The mode of operation for the plugin. The `AUTO` determines the mode automatically from the client request.
 	Mode *SolaceConsumePluginMode `default:"POLLING" json:"mode"`
 	// The `POLLING` mode related configuration settings.
-	Polling *Polling `json:"polling"`
+	Polling *Polling `json:"polling,omitempty"`
 	// Session related configuration.
 	Session Session `json:"session"`
 	// The `WEBSOCKET` mode related configuration settings.
-	Websocket *Websocket `json:"websocket"`
+	Websocket *Websocket `json:"websocket,omitempty"`
 }
 
 func (s SolaceConsumePluginConfig) MarshalJSON() ([]byte, error) {

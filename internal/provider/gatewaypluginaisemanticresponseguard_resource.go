@@ -532,43 +532,6 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Schema(ctx context.Contex
 							"redis": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"cluster_max_redirections": types.Int64Type,
-									"cluster_nodes": types.ListType{
-										ElemType: types.ObjectType{
-											AttrTypes: map[string]attr.Type{
-												`ip`:   types.StringType,
-												`port`: types.Int64Type,
-											},
-										},
-									},
-									"connect_timeout":       types.Int64Type,
-									"connection_is_proxied": types.BoolType,
-									"database":              types.Int64Type,
-									"host":                  types.StringType,
-									"keepalive_backlog":     types.Int64Type,
-									"keepalive_pool_size":   types.Int64Type,
-									"password":              types.StringType,
-									"port":                  types.Int64Type,
-									"read_timeout":          types.Int64Type,
-									"send_timeout":          types.Int64Type,
-									"sentinel_master":       types.StringType,
-									"sentinel_nodes": types.ListType{
-										ElemType: types.ObjectType{
-											AttrTypes: map[string]attr.Type{
-												`host`: types.StringType,
-												`port`: types.Int64Type,
-											},
-										},
-									},
-									"sentinel_password": types.StringType,
-									"sentinel_role":     types.StringType,
-									"sentinel_username": types.StringType,
-									"server_name":       types.StringType,
-									"ssl":               types.BoolType,
-									"ssl_verify":        types.BoolType,
-									"username":          types.StringType,
-								})),
 								Attributes: map[string]schema.Attribute{
 									"cluster_max_redirections": schema.Int64Attribute{
 										Computed:    true,

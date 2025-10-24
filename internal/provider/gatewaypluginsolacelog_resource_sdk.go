@@ -72,7 +72,7 @@ func (r *GatewayPluginSolaceLogResourceModel) RefreshFromSharedSolaceLogPlugin(c
 		r.Config.Session.GenerateSenderID = types.BoolPointerValue(resp.Config.Session.GenerateSenderID)
 		r.Config.Session.GenerateSequenceNumber = types.BoolPointerValue(resp.Config.Session.GenerateSequenceNumber)
 		r.Config.Session.Host = types.StringValue(resp.Config.Session.Host)
-		if resp.Config.Session.Properties != nil {
+		if len(resp.Config.Session.Properties) > 0 {
 			r.Config.Session.Properties = make(map[string]jsontypes.Normalized, len(resp.Config.Session.Properties))
 			for key1, value1 := range resp.Config.Session.Properties {
 				result, _ := json.Marshal(value1)

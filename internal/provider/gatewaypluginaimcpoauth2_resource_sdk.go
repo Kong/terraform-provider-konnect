@@ -21,7 +21,7 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) RefreshFromSharedAiMcpOauth2Plug
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.AiMcpOauth2PluginConfig{}
-			if resp.Config.Args != nil {
+			if len(resp.Config.Args) > 0 {
 				r.Config.Args = make(map[string]jsontypes.Normalized, len(resp.Config.Args))
 				for key, value := range resp.Config.Args {
 					result, _ := json.Marshal(value)
@@ -58,7 +58,7 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) RefreshFromSharedAiMcpOauth2Plug
 			r.Config.ClientID = types.StringValue(resp.Config.ClientID)
 			r.Config.ClientJwk = types.StringPointerValue(resp.Config.ClientJwk)
 			r.Config.ClientSecret = types.StringPointerValue(resp.Config.ClientSecret)
-			if resp.Config.Headers != nil {
+			if len(resp.Config.Headers) > 0 {
 				r.Config.Headers = make(map[string]jsontypes.Normalized, len(resp.Config.Headers))
 				for key1, value1 := range resp.Config.Headers {
 					result1, _ := json.Marshal(value1)

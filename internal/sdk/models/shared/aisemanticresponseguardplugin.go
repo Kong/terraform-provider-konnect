@@ -1219,7 +1219,7 @@ type AiSemanticResponseGuardPluginVectordb struct {
 	// the distance metric to use for vector searches
 	DistanceMetric AiSemanticResponseGuardPluginDistanceMetric `json:"distance_metric"`
 	Pgvector       *AiSemanticResponseGuardPluginPgvector      `json:"pgvector"`
-	Redis          *AiSemanticResponseGuardPluginRedis         `json:"redis"`
+	Redis          *AiSemanticResponseGuardPluginRedis         `json:"redis,omitempty"`
 	// which vector database driver to use
 	Strategy AiSemanticResponseGuardPluginStrategy `json:"strategy"`
 	// the default similarity threshold for accepting semantic search results (float)

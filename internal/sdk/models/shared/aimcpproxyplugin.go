@@ -464,7 +464,7 @@ func (t *Tools) GetScheme() *Scheme {
 }
 
 type AiMcpProxyPluginConfig struct {
-	Logging *Logging `json:"logging"`
+	Logging *Logging `json:"logging,omitempty"`
 	// max allowed body size allowed to be handled as MCP request.
 	MaxRequestBodySize *int64 `default:"8192" json:"max_request_body_size"`
 	// The mode of the MCP proxy. Possible values are: 'passthrough-listener', 'conversion-listener', 'conversion-only', 'listener'.

@@ -69,6 +69,7 @@ func (r *GatewayPluginAppDynamicsResource) Schema(ctx context.Context, req resou
 		MarkdownDescription: "GatewayPluginAppDynamics Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.MapAttribute{
+				Computed:    true,
 				Optional:    true,
 				ElementType: jsontypes.NormalizedType{},
 				Validators: []validator.Map{

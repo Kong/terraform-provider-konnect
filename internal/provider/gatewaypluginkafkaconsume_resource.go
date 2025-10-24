@@ -81,13 +81,6 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 					"authentication": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"mechanism": types.StringType,
-							"password":  types.StringType,
-							"strategy":  types.StringType,
-							"tokenauth": types.BoolType,
-							"user":      types.StringType,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"mechanism": schema.StringAttribute{
 								Computed:    true,
@@ -220,63 +213,6 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 					"schema_registry": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"confluent": types.ObjectType{
-								AttrTypes: map[string]attr.Type{
-									`authentication`: types.ObjectType{
-										AttrTypes: map[string]attr.Type{
-											`basic`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`password`: types.StringType,
-													`username`: types.StringType,
-												},
-											},
-											`mode`: types.StringType,
-											`oauth2`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`audience`: types.ListType{
-														ElemType: types.StringType,
-													},
-													`client_id`:     types.StringType,
-													`client_secret`: types.StringType,
-													`grant_type`:    types.StringType,
-													`password`:      types.StringType,
-													`scopes`: types.ListType{
-														ElemType: types.StringType,
-													},
-													`token_endpoint`: types.StringType,
-													`token_headers`: types.MapType{
-														ElemType: jsontypes.NormalizedType{},
-													},
-													`token_post_args`: types.MapType{
-														ElemType: jsontypes.NormalizedType{},
-													},
-													`username`: types.StringType,
-												},
-											},
-											`oauth2_client`: types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`auth_method`:               types.StringType,
-													`client_secret_jwt_alg`:     types.StringType,
-													`http_proxy`:                types.StringType,
-													`http_proxy_authorization`:  types.StringType,
-													`http_version`:              types.Float64Type,
-													`https_proxy`:               types.StringType,
-													`https_proxy_authorization`: types.StringType,
-													`keep_alive`:                types.BoolType,
-													`no_proxy`:                  types.StringType,
-													`ssl_verify`:                types.BoolType,
-													`timeout`:                   types.Int64Type,
-												},
-											},
-										},
-									},
-									`ssl_verify`: types.BoolType,
-									`ttl`:        types.Float64Type,
-									`url`:        types.StringType,
-								},
-							},
-						})),
 						Attributes: map[string]schema.Attribute{
 							"confluent": schema.SingleNestedAttribute{
 								Computed: true,
@@ -394,10 +330,20 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 												})),
 												Attributes: map[string]schema.Attribute{
 													"password": schema.StringAttribute{
-														Required: true,
+														Computed:    true,
+														Optional:    true,
+														Description: `Not Null`,
+														Validators: []validator.String{
+															speakeasy_stringvalidators.NotNull(),
+														},
 													},
 													"username": schema.StringAttribute{
-														Required: true,
+														Computed:    true,
+														Optional:    true,
+														Description: `Not Null`,
+														Validators: []validator.String{
+															speakeasy_stringvalidators.NotNull(),
+														},
 													},
 												},
 											},
@@ -477,10 +423,15 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 														Description: `List of scopes to request from the IdP when obtaining a new token. Default: ["openid"]`,
 													},
 													"token_endpoint": schema.StringAttribute{
-														Required:    true,
-														Description: `The token endpoint URI.`,
+														Computed:    true,
+														Optional:    true,
+														Description: `The token endpoint URI. Not Null`,
+														Validators: []validator.String{
+															speakeasy_stringvalidators.NotNull(),
+														},
 													},
 													"token_headers": schema.MapAttribute{
+														Computed:    true,
 														Optional:    true,
 														ElementType: jsontypes.NormalizedType{},
 														Description: `Extra headers to be passed in the token endpoint request.`,
@@ -489,6 +440,7 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 														},
 													},
 													"token_post_args": schema.MapAttribute{
+														Computed:    true,
 														Optional:    true,
 														ElementType: jsontypes.NormalizedType{},
 														Description: `Extra post arguments to be passed in the token endpoint request.`,
@@ -621,10 +573,6 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 					"security": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"certificate_id": types.StringType,
-							"ssl":            types.BoolType,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"certificate_id": schema.StringAttribute{
 								Optional:    true,
@@ -654,63 +602,6 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 								"schema_registry": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
-									Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-										"confluent": types.ObjectType{
-											AttrTypes: map[string]attr.Type{
-												`authentication`: types.ObjectType{
-													AttrTypes: map[string]attr.Type{
-														`basic`: types.ObjectType{
-															AttrTypes: map[string]attr.Type{
-																`password`: types.StringType,
-																`username`: types.StringType,
-															},
-														},
-														`mode`: types.StringType,
-														`oauth2`: types.ObjectType{
-															AttrTypes: map[string]attr.Type{
-																`audience`: types.ListType{
-																	ElemType: types.StringType,
-																},
-																`client_id`:     types.StringType,
-																`client_secret`: types.StringType,
-																`grant_type`:    types.StringType,
-																`password`:      types.StringType,
-																`scopes`: types.ListType{
-																	ElemType: types.StringType,
-																},
-																`token_endpoint`: types.StringType,
-																`token_headers`: types.MapType{
-																	ElemType: jsontypes.NormalizedType{},
-																},
-																`token_post_args`: types.MapType{
-																	ElemType: jsontypes.NormalizedType{},
-																},
-																`username`: types.StringType,
-															},
-														},
-														`oauth2_client`: types.ObjectType{
-															AttrTypes: map[string]attr.Type{
-																`auth_method`:               types.StringType,
-																`client_secret_jwt_alg`:     types.StringType,
-																`http_proxy`:                types.StringType,
-																`http_proxy_authorization`:  types.StringType,
-																`http_version`:              types.Float64Type,
-																`https_proxy`:               types.StringType,
-																`https_proxy_authorization`: types.StringType,
-																`keep_alive`:                types.BoolType,
-																`no_proxy`:                  types.StringType,
-																`ssl_verify`:                types.BoolType,
-																`timeout`:                   types.Int64Type,
-															},
-														},
-													},
-												},
-												`ssl_verify`: types.BoolType,
-												`ttl`:        types.Float64Type,
-												`url`:        types.StringType,
-											},
-										},
-									})),
 									Attributes: map[string]schema.Attribute{
 										"confluent": schema.SingleNestedAttribute{
 											Computed: true,
@@ -929,6 +820,7 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 																	},
 																},
 																"token_headers": schema.MapAttribute{
+																	Computed:    true,
 																	Optional:    true,
 																	ElementType: jsontypes.NormalizedType{},
 																	Description: `Extra headers to be passed in the token endpoint request.`,
@@ -937,6 +829,7 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 																	},
 																},
 																"token_post_args": schema.MapAttribute{
+																	Computed:    true,
 																	Optional:    true,
 																	ElementType: jsontypes.NormalizedType{},
 																	Description: `Extra post arguments to be passed in the token endpoint request.`,

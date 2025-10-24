@@ -51,7 +51,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 					tools.Annotations.Title = types.StringPointerValue(toolsItem.Annotations.Title)
 				}
 				tools.Description = types.StringValue(toolsItem.Description)
-				if toolsItem.Headers != nil {
+				if len(toolsItem.Headers) > 0 {
 					tools.Headers = make(map[string]jsontypes.Normalized, len(toolsItem.Headers))
 					for key, value := range toolsItem.Headers {
 						result, _ := json.Marshal(value)
@@ -83,7 +83,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 					tools.Parameters = append(tools.Parameters, parameters)
 				}
 				tools.Path = types.StringPointerValue(toolsItem.Path)
-				if toolsItem.Query != nil {
+				if len(toolsItem.Query) > 0 {
 					tools.Query = make(map[string]jsontypes.Normalized, len(toolsItem.Query))
 					for key1, value1 := range toolsItem.Query {
 						result1, _ := json.Marshal(value1)

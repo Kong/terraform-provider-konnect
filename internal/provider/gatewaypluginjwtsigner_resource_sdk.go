@@ -225,21 +225,21 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 			}
 			r.Config.AccessTokenUpstreamHeader = types.StringPointerValue(resp.Config.AccessTokenUpstreamHeader)
 			r.Config.AccessTokenUpstreamLeeway = types.Float64PointerValue(resp.Config.AccessTokenUpstreamLeeway)
-			if resp.Config.AddAccessTokenClaims != nil {
+			if len(resp.Config.AddAccessTokenClaims) > 0 {
 				r.Config.AddAccessTokenClaims = make(map[string]jsontypes.Normalized, len(resp.Config.AddAccessTokenClaims))
 				for key, value := range resp.Config.AddAccessTokenClaims {
 					result, _ := json.Marshal(value)
 					r.Config.AddAccessTokenClaims[key] = jsontypes.NewNormalizedValue(string(result))
 				}
 			}
-			if resp.Config.AddChannelTokenClaims != nil {
+			if len(resp.Config.AddChannelTokenClaims) > 0 {
 				r.Config.AddChannelTokenClaims = make(map[string]jsontypes.Normalized, len(resp.Config.AddChannelTokenClaims))
 				for key1, value1 := range resp.Config.AddChannelTokenClaims {
 					result1, _ := json.Marshal(value1)
 					r.Config.AddChannelTokenClaims[key1] = jsontypes.NewNormalizedValue(string(result1))
 				}
 			}
-			if resp.Config.AddClaims != nil {
+			if len(resp.Config.AddClaims) > 0 {
 				r.Config.AddClaims = make(map[string]jsontypes.Normalized, len(resp.Config.AddClaims))
 				for key2, value2 := range resp.Config.AddClaims {
 					result2, _ := json.Marshal(value2)
@@ -467,21 +467,21 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 			for _, v := range resp.Config.RemoveChannelTokenClaims {
 				r.Config.RemoveChannelTokenClaims = append(r.Config.RemoveChannelTokenClaims, types.StringValue(v))
 			}
-			if resp.Config.SetAccessTokenClaims != nil {
+			if len(resp.Config.SetAccessTokenClaims) > 0 {
 				r.Config.SetAccessTokenClaims = make(map[string]jsontypes.Normalized, len(resp.Config.SetAccessTokenClaims))
 				for key3, value3 := range resp.Config.SetAccessTokenClaims {
 					result3, _ := json.Marshal(value3)
 					r.Config.SetAccessTokenClaims[key3] = jsontypes.NewNormalizedValue(string(result3))
 				}
 			}
-			if resp.Config.SetChannelTokenClaims != nil {
+			if len(resp.Config.SetChannelTokenClaims) > 0 {
 				r.Config.SetChannelTokenClaims = make(map[string]jsontypes.Normalized, len(resp.Config.SetChannelTokenClaims))
 				for key4, value4 := range resp.Config.SetChannelTokenClaims {
 					result4, _ := json.Marshal(value4)
 					r.Config.SetChannelTokenClaims[key4] = jsontypes.NewNormalizedValue(string(result4))
 				}
 			}
-			if resp.Config.SetClaims != nil {
+			if len(resp.Config.SetClaims) > 0 {
 				r.Config.SetClaims = make(map[string]jsontypes.Normalized, len(resp.Config.SetClaims))
 				for key5, value5 := range resp.Config.SetClaims {
 					result5, _ := json.Marshal(value5)

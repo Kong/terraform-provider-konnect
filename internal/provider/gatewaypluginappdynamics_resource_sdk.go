@@ -17,7 +17,7 @@ func (r *GatewayPluginAppDynamicsResourceModel) RefreshFromSharedAppDynamicsPlug
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.Config != nil {
+		if len(resp.Config) > 0 {
 			r.Config = make(map[string]jsontypes.Normalized, len(resp.Config))
 			for key, value := range resp.Config {
 				result, _ := json.Marshal(value)

@@ -119,14 +119,14 @@ func (r *GatewayPluginKafkaConsumeResourceModel) RefreshFromSharedKafkaConsumePl
 							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes = append(r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes, types.StringValue(v))
 						}
 						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint)
-						if resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders != nil {
+						if len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders) > 0 {
 							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders = make(map[string]jsontypes.Normalized, len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders))
 							for key, value := range resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders {
 								result, _ := json.Marshal(value)
 								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders[key] = jsontypes.NewNormalizedValue(string(result))
 							}
 						}
-						if resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs != nil {
+						if len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs) > 0 {
 							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs = make(map[string]jsontypes.Normalized, len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs))
 							for key1, value1 := range resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs {
 								result1, _ := json.Marshal(value1)
@@ -172,10 +172,10 @@ func (r *GatewayPluginKafkaConsumeResourceModel) RefreshFromSharedKafkaConsumePl
 			r.Config.Security.CertificateID = types.StringPointerValue(resp.Config.Security.CertificateID)
 			r.Config.Security.Ssl = types.BoolPointerValue(resp.Config.Security.Ssl)
 		}
-		r.Config.Topics = []tfTypes.Topics{}
+		r.Config.Topics = []tfTypes.KafkaConsumePluginTopics{}
 
 		for _, topicsItem := range resp.Config.Topics {
-			var topics tfTypes.Topics
+			var topics tfTypes.KafkaConsumePluginTopics
 
 			topics.Name = types.StringValue(topicsItem.Name)
 			if topicsItem.SchemaRegistry == nil {
@@ -223,14 +223,14 @@ func (r *GatewayPluginKafkaConsumeResourceModel) RefreshFromSharedKafkaConsumePl
 								topics.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes = append(topics.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes, types.StringValue(v))
 							}
 							topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint = types.StringValue(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint)
-							if topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders != nil {
+							if len(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders) > 0 {
 								topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders = make(map[string]jsontypes.Normalized, len(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders))
 								for key2, value2 := range topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders {
 									result2, _ := json.Marshal(value2)
 									topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders[key2] = jsontypes.NewNormalizedValue(string(result2))
 								}
 							}
-							if topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs != nil {
+							if len(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs) > 0 {
 								topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs = make(map[string]jsontypes.Normalized, len(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs))
 								for key3, value3 := range topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs {
 									result3, _ := json.Marshal(value3)

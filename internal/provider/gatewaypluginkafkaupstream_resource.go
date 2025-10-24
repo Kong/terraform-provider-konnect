@@ -551,6 +551,7 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 														Description: `The token endpoint URI.`,
 													},
 													"token_headers": schema.MapAttribute{
+														Computed:    true,
 														Optional:    true,
 														ElementType: jsontypes.NormalizedType{},
 														Description: `Extra headers to be passed in the token endpoint request.`,
@@ -559,6 +560,7 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 														},
 													},
 													"token_post_args": schema.MapAttribute{
+														Computed:    true,
 														Optional:    true,
 														ElementType: jsontypes.NormalizedType{},
 														Description: `Extra post arguments to be passed in the token endpoint request.`,

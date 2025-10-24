@@ -256,7 +256,7 @@ type AiMcpOauth2PluginConfig struct {
 	// HTTP proxy authorization header.
 	HTTPProxyAuthorization *string `default:"null" json:"http_proxy_authorization"`
 	// The HTTP version used for requests.
-	HTTPVersion *float64 `default:"1.1" json:"http_version"`
+	HTTPVersion *float64 `json:"http_version,omitempty"`
 	// HTTPS proxy to use.
 	HTTPSProxy *string `default:"null" json:"https_proxy"`
 	// HTTPS proxy authorization header.
