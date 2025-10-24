@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 8525a45c08d94ee9740032f60786f3aa
+  docChecksum: 7589637b24bd029aba3af89c6b60c669
   docVersion: 2.0.0
   speakeasyVersion: 1.636.2
   generationVersion: 2.723.8
@@ -1026,6 +1026,7 @@ generatedFiles:
   - internal/provider/types/ai_semantic_prompt_guard_plugin_config.go
   - internal/provider/types/ai_semantic_response_guard_plugin_config.go
   - internal/provider/types/ai_semantic_response_guard_plugin_rules.go
+  - internal/provider/types/ai_semantic_response_guard_plugin_vectordb.go
   - internal/provider/types/allow.go
   - internal/provider/types/annotations.go
   - internal/provider/types/api_implementation_service.go
@@ -1156,6 +1157,7 @@ generatedFiles:
   - internal/provider/types/jwt_signer_plugin_config.go
   - internal/provider/types/kafka_consume_plugin_config.go
   - internal/provider/types/kafka_consume_plugin_security.go
+  - internal/provider/types/kafka_consume_plugin_topics.go
   - internal/provider/types/kafka_log_plugin_config.go
   - internal/provider/types/kafka_upstream_plugin_config.go
   - internal/provider/types/key_auth_plugin_config.go
@@ -7426,7 +7428,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "kafka-consume", "ordering": null, "partials": null, "tags": null, "config": {"authentication": null, "auto_offset_reset": "latest", "bootstrap_servers": [{"host": "primary-chasuble.org", "port": 207515}], "cluster_name": null, "commit_strategy": "auto", "dlq_topic": null, "enable_dlq": null, "message_by_lua_functions": null, "message_deserializer": "noop", "mode": "http-get", "schema_registry": null, "security": null, "topics": []}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "kafka-consume", "ordering": null, "partials": null, "tags": null, "config": {"auto_offset_reset": "latest", "bootstrap_servers": [{"host": "primary-chasuble.org", "port": 207515}], "cluster_name": null, "commit_strategy": "auto", "dlq_topic": null, "enable_dlq": null, "message_by_lua_functions": null, "message_deserializer": "noop", "mode": "http-get", "topics": []}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null}
         "401":
           application/json: {"message": "<value>", "status": 950692}
   update-kafkaconsume-plugin:
@@ -7448,10 +7450,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "kafka-consume", "ordering": null, "partials": null, "tags": null, "config": {"authentication": null, "auto_offset_reset": "latest", "bootstrap_servers": [{"host": "stale-hawk.info", "port": 674490}], "cluster_name": null, "commit_strategy": "auto", "dlq_topic": null, "enable_dlq": null, "message_by_lua_functions": null, "message_deserializer": "noop", "mode": "http-get", "schema_registry": null, "security": null, "topics": [{"name": "<value>", "schema_registry": {"confluent": null}}]}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "kafka-consume", "ordering": null, "partials": null, "tags": null, "config": {"auto_offset_reset": "latest", "bootstrap_servers": [{"host": "stale-hawk.info", "port": 674490}], "cluster_name": null, "commit_strategy": "auto", "dlq_topic": null, "enable_dlq": null, "message_by_lua_functions": null, "message_deserializer": "noop", "mode": "http-get", "topics": [{"name": "<value>", "schema_registry": {"confluent": null}}]}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null}
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "kafka-consume", "ordering": null, "partials": null, "tags": null, "config": {"authentication": null, "auto_offset_reset": "latest", "bootstrap_servers": [{"host": "stale-hawk.info", "port": 674490}], "cluster_name": null, "commit_strategy": "auto", "dlq_topic": null, "enable_dlq": null, "message_by_lua_functions": null, "message_deserializer": "noop", "mode": "http-get", "schema_registry": null, "security": null, "topics": [{"name": "<value>", "schema_registry": {"confluent": null}}]}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "kafka-consume", "ordering": null, "partials": null, "tags": null, "config": {"auto_offset_reset": "latest", "bootstrap_servers": [{"host": "stale-hawk.info", "port": 674490}], "cluster_name": null, "commit_strategy": "auto", "dlq_topic": null, "enable_dlq": null, "message_by_lua_functions": null, "message_deserializer": "noop", "mode": "http-get", "topics": [{"name": "<value>", "schema_registry": {"confluent": null}}]}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null}
         "401":
           application/json: {"message": "<value>", "status": 593841}
   delete-kafkalog-plugin:
@@ -11264,10 +11266,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "kafka-consume", "ordering": null, "partials": null, "tags": null, "config": {"authentication": null, "auto_offset_reset": "latest", "bootstrap_servers": [{"host": "definite-sushi.info", "port": 293488}], "cluster_name": null, "commit_strategy": "auto", "dlq_topic": null, "enable_dlq": null, "message_by_lua_functions": null, "message_deserializer": "noop", "mode": "http-get", "schema_registry": null, "security": null, "topics": [{"name": "<value>", "schema_registry": {"confluent": null}}]}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "kafka-consume", "ordering": null, "partials": null, "tags": null, "config": {"auto_offset_reset": "latest", "bootstrap_servers": [{"host": "definite-sushi.info", "port": 293488}], "cluster_name": null, "commit_strategy": "auto", "dlq_topic": null, "enable_dlq": null, "message_by_lua_functions": null, "message_deserializer": "noop", "mode": "http-get", "topics": [{"name": "<value>", "schema_registry": {"confluent": null}}]}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null}
       responses:
         "201":
-          application/json: {"enabled": true, "instance_name": null, "name": "kafka-consume", "ordering": null, "partials": null, "tags": null, "config": {"authentication": null, "auto_offset_reset": "latest", "bootstrap_servers": [{"host": "definite-sushi.info", "port": 293488}], "cluster_name": null, "commit_strategy": "auto", "dlq_topic": null, "enable_dlq": null, "message_by_lua_functions": null, "message_deserializer": "noop", "mode": "http-get", "schema_registry": null, "security": null, "topics": [{"name": "<value>", "schema_registry": {"confluent": null}}]}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "kafka-consume", "ordering": null, "partials": null, "tags": null, "config": {"auto_offset_reset": "latest", "bootstrap_servers": [{"host": "definite-sushi.info", "port": 293488}], "cluster_name": null, "commit_strategy": "auto", "dlq_topic": null, "enable_dlq": null, "message_by_lua_functions": null, "message_deserializer": "noop", "mode": "http-get", "topics": [{"name": "<value>", "schema_registry": {"confluent": null}}]}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https", "ws", "wss"], "route": null}
         "401":
           application/json: {"message": "<value>", "status": 865760}
   create-kafkalog-plugin:
@@ -14751,7 +14753,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "ai-mcp-proxy", "ordering": null, "partials": null, "tags": null, "config": {"logging": null, "max_request_body_size": 8192, "mode": "passthrough-listener", "server": null, "tools": null}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-mcp-proxy", "ordering": null, "partials": null, "tags": null, "config": {"max_request_body_size": 8192, "mode": "passthrough-listener", "server": null, "tools": null}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 98572}
   update-aimcpproxy-plugin:
@@ -14761,10 +14763,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "ai-mcp-proxy", "ordering": null, "partials": null, "tags": null, "config": {"logging": null, "max_request_body_size": 8192, "mode": "conversion-listener", "server": null, "tools": null}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "ai-mcp-proxy", "ordering": null, "partials": null, "tags": null, "config": {"max_request_body_size": 8192, "mode": "conversion-listener", "server": null, "tools": null}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "ai-mcp-proxy", "ordering": null, "partials": null, "tags": null, "config": {"logging": null, "max_request_body_size": 8192, "mode": "conversion-listener", "server": null, "tools": null}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-mcp-proxy", "ordering": null, "partials": null, "tags": null, "config": {"max_request_body_size": 8192, "mode": "conversion-listener", "server": null, "tools": null}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 275161}
   delete-aisemanticresponseguard-plugin:
@@ -14784,7 +14786,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "ai-semantic-response-guard", "ordering": null, "partials": null, "tags": null, "config": {"embeddings": {"auth": null, "model": {"name": "<value>", "options": null, "provider": "huggingface"}}, "genai_category": "text/generation", "llm_format": "openai", "rules": null, "search": null, "vectordb": {"dimensions": 654506, "distance_metric": "cosine", "pgvector": null, "redis": null, "strategy": "pgvector", "threshold": 6719.86}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-semantic-response-guard", "ordering": null, "partials": null, "tags": null, "config": {"embeddings": {"auth": null, "model": {"name": "<value>", "options": null, "provider": "huggingface"}}, "genai_category": "text/generation", "llm_format": "openai", "rules": null, "search": null, "vectordb": {"dimensions": 654506, "distance_metric": "cosine", "pgvector": null, "strategy": "pgvector", "threshold": 6719.86}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 321239}
   update-aisemanticresponseguard-plugin:
@@ -14794,10 +14796,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "ai-semantic-response-guard", "ordering": null, "partials": null, "tags": null, "config": {"embeddings": {"auth": null, "model": {"name": "<value>", "options": null, "provider": "gemini"}}, "genai_category": "text/generation", "llm_format": "openai", "rules": null, "search": null, "vectordb": {"dimensions": 593133, "distance_metric": "euclidean", "pgvector": null, "redis": null, "strategy": "pgvector", "threshold": 371.96}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "ai-semantic-response-guard", "ordering": null, "partials": null, "tags": null, "config": {"embeddings": {"auth": null, "model": {"name": "<value>", "options": null, "provider": "gemini"}}, "genai_category": "text/generation", "llm_format": "openai", "rules": null, "search": null, "vectordb": {"dimensions": 593133, "distance_metric": "euclidean", "pgvector": null, "strategy": "pgvector", "threshold": 371.96}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "ai-semantic-response-guard", "ordering": null, "partials": null, "tags": null, "config": {"embeddings": {"auth": null, "model": {"name": "<value>", "options": null, "provider": "gemini"}}, "genai_category": "text/generation", "llm_format": "openai", "rules": null, "search": null, "vectordb": {"dimensions": 593133, "distance_metric": "euclidean", "pgvector": null, "redis": null, "strategy": "pgvector", "threshold": 371.96}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-semantic-response-guard", "ordering": null, "partials": null, "tags": null, "config": {"embeddings": {"auth": null, "model": {"name": "<value>", "options": null, "provider": "gemini"}}, "genai_category": "text/generation", "llm_format": "openai", "rules": null, "search": null, "vectordb": {"dimensions": 593133, "distance_metric": "euclidean", "pgvector": null, "strategy": "pgvector", "threshold": 371.96}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 29488}
   delete-solaceconsume-plugin:
@@ -14817,7 +14819,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "solace-consume", "ordering": null, "partials": null, "tags": null, "config": {"flow": {"ack_mode": "CLIENT", "binds": [{"name": "<value>", "type": "QUEUE"}], "functions": null, "max_unacked_messages": -1, "selector": null, "wait_timeout": 50, "window_size": 255}, "mode": "POLLING", "polling": null, "session": {"authentication": null, "calculate_message_expiry": true, "connect_timeout": 3000, "generate_rcv_timestamps": true, "generate_send_timestamps": true, "generate_sender_id": true, "generate_sequence_number": true, "host": "noted-spork.org", "ssl_validate_certificate": false, "vpn_name": null}, "websocket": null}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "solace-consume", "ordering": null, "partials": null, "tags": null, "config": {"flow": {"ack_mode": "CLIENT", "binds": [{"name": "<value>", "type": "QUEUE"}], "functions": null, "max_unacked_messages": -1, "selector": null, "wait_timeout": 50, "window_size": 255}, "mode": "POLLING", "session": {"authentication": null, "calculate_message_expiry": true, "connect_timeout": 3000, "generate_rcv_timestamps": true, "generate_send_timestamps": true, "generate_sender_id": true, "generate_sequence_number": true, "host": "noted-spork.org", "ssl_validate_certificate": false, "vpn_name": null}}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 298822}
   update-solaceconsume-plugin:
@@ -14827,10 +14829,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "solace-consume", "ordering": null, "partials": null, "tags": null, "config": {"flow": {"ack_mode": "CLIENT", "binds": [], "functions": null, "max_unacked_messages": -1, "selector": null, "wait_timeout": 50, "window_size": 255}, "mode": "POLLING", "polling": null, "session": {"authentication": null, "calculate_message_expiry": true, "connect_timeout": 3000, "generate_rcv_timestamps": true, "generate_send_timestamps": true, "generate_sender_id": true, "generate_sequence_number": true, "host": "parallel-bracelet.biz", "ssl_validate_certificate": false, "vpn_name": null}, "websocket": null}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "solace-consume", "ordering": null, "partials": null, "tags": null, "config": {"flow": {"ack_mode": "CLIENT", "binds": [], "functions": null, "max_unacked_messages": -1, "selector": null, "wait_timeout": 50, "window_size": 255}, "mode": "POLLING", "session": {"authentication": null, "calculate_message_expiry": true, "connect_timeout": 3000, "generate_rcv_timestamps": true, "generate_send_timestamps": true, "generate_sender_id": true, "generate_sequence_number": true, "host": "parallel-bracelet.biz", "ssl_validate_certificate": false, "vpn_name": null}}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"enabled": true, "instance_name": null, "name": "solace-consume", "ordering": null, "partials": null, "tags": null, "config": {"flow": {"ack_mode": "CLIENT", "binds": [], "functions": null, "max_unacked_messages": -1, "selector": null, "wait_timeout": 50, "window_size": 255}, "mode": "POLLING", "polling": null, "session": {"authentication": null, "calculate_message_expiry": true, "connect_timeout": 3000, "generate_rcv_timestamps": true, "generate_send_timestamps": true, "generate_sender_id": true, "generate_sequence_number": true, "host": "parallel-bracelet.biz", "ssl_validate_certificate": false, "vpn_name": null}, "websocket": null}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "solace-consume", "ordering": null, "partials": null, "tags": null, "config": {"flow": {"ack_mode": "CLIENT", "binds": [], "functions": null, "max_unacked_messages": -1, "selector": null, "wait_timeout": 50, "window_size": 255}, "mode": "POLLING", "session": {"authentication": null, "calculate_message_expiry": true, "connect_timeout": 3000, "generate_rcv_timestamps": true, "generate_send_timestamps": true, "generate_sender_id": true, "generate_sequence_number": true, "host": "parallel-bracelet.biz", "ssl_validate_certificate": false, "vpn_name": null}}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 979755}
   delete-solacelog-plugin:
@@ -14920,10 +14922,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "ai-mcp-proxy", "ordering": null, "partials": null, "tags": null, "config": {"logging": null, "max_request_body_size": 8192, "mode": "listener", "server": null, "tools": null}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "ai-mcp-proxy", "ordering": null, "partials": null, "tags": null, "config": {"max_request_body_size": 8192, "mode": "listener", "server": null, "tools": null}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"enabled": true, "instance_name": null, "name": "ai-mcp-proxy", "ordering": null, "partials": null, "tags": null, "config": {"logging": null, "max_request_body_size": 8192, "mode": "listener", "server": null, "tools": null}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-mcp-proxy", "ordering": null, "partials": null, "tags": null, "config": {"max_request_body_size": 8192, "mode": "listener", "server": null, "tools": null}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 729148}
   create-aisemanticresponseguard-plugin:
@@ -14932,10 +14934,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "ai-semantic-response-guard", "ordering": null, "partials": null, "tags": null, "config": {"embeddings": {"auth": null, "model": {"name": "<value>", "options": null, "provider": "azure"}}, "genai_category": "text/generation", "llm_format": "openai", "rules": null, "search": null, "vectordb": {"dimensions": 767565, "distance_metric": "cosine", "pgvector": null, "redis": null, "strategy": "pgvector", "threshold": 4404.78}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "ai-semantic-response-guard", "ordering": null, "partials": null, "tags": null, "config": {"embeddings": {"auth": null, "model": {"name": "<value>", "options": null, "provider": "azure"}}, "genai_category": "text/generation", "llm_format": "openai", "rules": null, "search": null, "vectordb": {"dimensions": 767565, "distance_metric": "cosine", "pgvector": null, "strategy": "pgvector", "threshold": 4404.78}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"enabled": true, "instance_name": null, "name": "ai-semantic-response-guard", "ordering": null, "partials": null, "tags": null, "config": {"embeddings": {"auth": null, "model": {"name": "<value>", "options": null, "provider": "azure"}}, "genai_category": "text/generation", "llm_format": "openai", "rules": null, "search": null, "vectordb": {"dimensions": 767565, "distance_metric": "cosine", "pgvector": null, "redis": null, "strategy": "pgvector", "threshold": 4404.78}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "ai-semantic-response-guard", "ordering": null, "partials": null, "tags": null, "config": {"embeddings": {"auth": null, "model": {"name": "<value>", "options": null, "provider": "azure"}}, "genai_category": "text/generation", "llm_format": "openai", "rules": null, "search": null, "vectordb": {"dimensions": 767565, "distance_metric": "cosine", "pgvector": null, "strategy": "pgvector", "threshold": 4404.78}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 657511}
   create-solaceconsume-plugin:
@@ -14944,10 +14946,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"enabled": true, "instance_name": null, "name": "solace-consume", "ordering": null, "partials": null, "tags": null, "config": {"flow": {"ack_mode": "CLIENT", "binds": [{"name": "<value>", "type": "QUEUE"}], "functions": null, "max_unacked_messages": -1, "selector": null, "wait_timeout": 50, "window_size": 255}, "mode": "POLLING", "polling": null, "session": {"authentication": null, "calculate_message_expiry": true, "connect_timeout": 3000, "generate_rcv_timestamps": true, "generate_send_timestamps": true, "generate_sender_id": true, "generate_sequence_number": true, "host": "instructive-bonfire.net", "ssl_validate_certificate": false, "vpn_name": null}, "websocket": null}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"enabled": true, "instance_name": null, "name": "solace-consume", "ordering": null, "partials": null, "tags": null, "config": {"flow": {"ack_mode": "CLIENT", "binds": [{"name": "<value>", "type": "QUEUE"}], "functions": null, "max_unacked_messages": -1, "selector": null, "wait_timeout": 50, "window_size": 255}, "mode": "POLLING", "session": {"authentication": null, "calculate_message_expiry": true, "connect_timeout": 3000, "generate_rcv_timestamps": true, "generate_send_timestamps": true, "generate_sender_id": true, "generate_sequence_number": true, "host": "instructive-bonfire.net", "ssl_validate_certificate": false, "vpn_name": null}}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"enabled": true, "instance_name": null, "name": "solace-consume", "ordering": null, "partials": null, "tags": null, "config": {"flow": {"ack_mode": "CLIENT", "binds": [{"name": "<value>", "type": "QUEUE"}], "functions": null, "max_unacked_messages": -1, "selector": null, "wait_timeout": 50, "window_size": 255}, "mode": "POLLING", "polling": null, "session": {"authentication": null, "calculate_message_expiry": true, "connect_timeout": 3000, "generate_rcv_timestamps": true, "generate_send_timestamps": true, "generate_sender_id": true, "generate_sequence_number": true, "host": "instructive-bonfire.net", "ssl_validate_certificate": false, "vpn_name": null}, "websocket": null}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"enabled": true, "instance_name": null, "name": "solace-consume", "ordering": null, "partials": null, "tags": null, "config": {"flow": {"ack_mode": "CLIENT", "binds": [{"name": "<value>", "type": "QUEUE"}], "functions": null, "max_unacked_messages": -1, "selector": null, "wait_timeout": 50, "window_size": 255}, "mode": "POLLING", "session": {"authentication": null, "calculate_message_expiry": true, "connect_timeout": 3000, "generate_rcv_timestamps": true, "generate_send_timestamps": true, "generate_sender_id": true, "generate_sequence_number": true, "host": "instructive-bonfire.net", "ssl_validate_certificate": false, "vpn_name": null}}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 79591}
   create-solacelog-plugin:

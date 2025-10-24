@@ -137,6 +137,7 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 						},
 					},
 					"limits": schema.MapAttribute{
+						Computed:    true,
 						Optional:    true,
 						ElementType: jsontypes.NormalizedType{},
 						Description: `A map that defines rate limits for the plugin.`,

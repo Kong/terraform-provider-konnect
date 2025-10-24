@@ -19,5 +19,5 @@ type KafkaConsumePluginConfig struct {
 	Mode                  types.String                          `tfsdk:"mode"`
 	SchemaRegistry        *ConfluentConsumePluginSchemaRegistry `tfsdk:"schema_registry"`
 	Security              *KafkaConsumePluginSecurity           `tfsdk:"security"`
-	Topics                []Topics                              `tfsdk:"topics"`
+	Topics                []KafkaConsumePluginTopics            `tfsdk:"topics"`
 }

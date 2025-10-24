@@ -737,6 +737,7 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 						Description: `If you want to add or subtract (using a negative value) expiry time (in seconds) of the original access token, you can specify a value that is added to the original access token's ` + "`" + `exp` + "`" + ` claim. Default: 0`,
 					},
 					"add_access_token_claims": schema.MapAttribute{
+						Computed:    true,
 						Optional:    true,
 						ElementType: jsontypes.NormalizedType{},
 						Description: `Add customized claims if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
@@ -745,6 +746,7 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 						},
 					},
 					"add_channel_token_claims": schema.MapAttribute{
+						Computed:    true,
 						Optional:    true,
 						ElementType: jsontypes.NormalizedType{},
 						Description: `Add customized claims if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
@@ -753,6 +755,7 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 						},
 					},
 					"add_claims": schema.MapAttribute{
+						Computed:    true,
 						Optional:    true,
 						ElementType: jsontypes.NormalizedType{},
 						Description: `Add customized claims to both tokens if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
@@ -1162,6 +1165,7 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 						Description: `remove claims. It should be an array, and each element is a claim key string. Default: []`,
 					},
 					"set_access_token_claims": schema.MapAttribute{
+						Computed:    true,
 						Optional:    true,
 						ElementType: jsontypes.NormalizedType{},
 						Description: `Set customized claims. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
@@ -1170,6 +1174,7 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 						},
 					},
 					"set_channel_token_claims": schema.MapAttribute{
+						Computed:    true,
 						Optional:    true,
 						ElementType: jsontypes.NormalizedType{},
 						Description: `Set customized claims. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
@@ -1178,6 +1183,7 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 						},
 					},
 					"set_claims": schema.MapAttribute{
+						Computed:    true,
 						Optional:    true,
 						ElementType: jsontypes.NormalizedType{},
 						Description: `Set customized claims to both tokens. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,

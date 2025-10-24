@@ -1280,7 +1280,7 @@ func (k *KafkaConsumePluginConfigSchemaRegistry) GetConfluent() *KafkaConsumePlu
 type KafkaConsumePluginTopics struct {
 	Name string `json:"name"`
 	// The plugin-global schema registry configuration.
-	SchemaRegistry *KafkaConsumePluginConfigSchemaRegistry `json:"schema_registry"`
+	SchemaRegistry *KafkaConsumePluginConfigSchemaRegistry `json:"schema_registry,omitempty"`
 }
 
 func (k *KafkaConsumePluginTopics) GetName() string {
@@ -1298,7 +1298,7 @@ func (k *KafkaConsumePluginTopics) GetSchemaRegistry() *KafkaConsumePluginConfig
 }
 
 type KafkaConsumePluginConfig struct {
-	Authentication *Authentication `json:"authentication"`
+	Authentication *Authentication `json:"authentication,omitempty"`
 	// The offset to start from when there is no initial offset in the consumer group.
 	AutoOffsetReset *KafkaConsumePluginAutoOffsetReset `default:"latest" json:"auto_offset_reset"`
 	// Set of bootstrap brokers in a `{host: host, port: port}` list format.
@@ -1318,8 +1318,8 @@ type KafkaConsumePluginConfig struct {
 	// The mode of operation for the plugin.
 	Mode *KafkaConsumePluginMode `default:"http-get" json:"mode"`
 	// The plugin-global schema registry configuration.
-	SchemaRegistry *KafkaConsumePluginSchemaRegistry `json:"schema_registry"`
-	Security       *KafkaConsumePluginSecurity       `json:"security"`
+	SchemaRegistry *KafkaConsumePluginSchemaRegistry `json:"schema_registry,omitempty"`
+	Security       *KafkaConsumePluginSecurity       `json:"security,omitempty"`
 	// The Kafka topics and their configuration you want to consume from.
 	Topics []KafkaConsumePluginTopics `json:"topics"`
 }

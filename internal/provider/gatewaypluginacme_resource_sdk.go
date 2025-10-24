@@ -69,7 +69,7 @@ func (r *GatewayPluginAcmeResourceModel) RefreshFromSharedAcmePlugin(ctx context
 				r.Config.StorageConfig.Consul.Timeout = types.Float64PointerValue(resp.Config.StorageConfig.Consul.Timeout)
 				r.Config.StorageConfig.Consul.Token = types.StringPointerValue(resp.Config.StorageConfig.Consul.Token)
 			}
-			if resp.Config.StorageConfig.Kong != nil {
+			if len(resp.Config.StorageConfig.Kong) > 0 {
 				r.Config.StorageConfig.Kong = make(map[string]jsontypes.Normalized, len(resp.Config.StorageConfig.Kong))
 				for key, value := range resp.Config.StorageConfig.Kong {
 					result, _ := json.Marshal(value)

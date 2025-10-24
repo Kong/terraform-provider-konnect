@@ -143,7 +143,7 @@ Optional:
 - `headers` (Map of String) Additional headers for the introspection request.
 - `http_proxy` (String) HTTP proxy to use.
 - `http_proxy_authorization` (String) HTTP proxy authorization header.
-- `http_version` (Number) The HTTP version used for requests. Default: 1.1
+- `http_version` (Number) The HTTP version used for requests.
 - `https_proxy` (String) HTTPS proxy to use.
 - `https_proxy_authorization` (String) HTTPS proxy authorization header.
 - `insecure_relaxed_audience_validation` (Boolean) If enabled, the plugin will not validate the audience of the access token. Disable it if the authorization server does not correctly set the audience claim according to RFC 8707 and MCP specification. Default: false

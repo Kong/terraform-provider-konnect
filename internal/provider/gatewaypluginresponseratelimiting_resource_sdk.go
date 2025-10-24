@@ -30,7 +30,7 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) RefreshFromSharedRespon
 			} else {
 				r.Config.LimitBy = types.StringNull()
 			}
-			if resp.Config.Limits != nil {
+			if len(resp.Config.Limits) > 0 {
 				r.Config.Limits = make(map[string]jsontypes.Normalized, len(resp.Config.Limits))
 				for key, value := range resp.Config.Limits {
 					result, _ := json.Marshal(value)

@@ -116,7 +116,7 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 			if nodesItem.Jq != nil {
 				nodes.Jq = &tfTypes.Jq{}
 				nodes.Jq.Input = types.StringPointerValue(nodesItem.Jq.Input)
-				if nodesItem.Jq.Inputs != nil {
+				if len(nodesItem.Jq.Inputs) > 0 {
 					nodes.Jq.Inputs = make(map[string]jsontypes.Normalized, len(nodesItem.Jq.Inputs))
 					for key, value := range nodesItem.Jq.Inputs {
 						result, _ := json.Marshal(value)
@@ -143,7 +143,7 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 				nodes.Static = &tfTypes.Static{}
 				nodes.Static.Name = types.StringPointerValue(nodesItem.Static.Name)
 				nodes.Static.Output = types.StringPointerValue(nodesItem.Static.Output)
-				if nodesItem.Static.Outputs != nil {
+				if len(nodesItem.Static.Outputs) > 0 {
 					nodes.Static.Outputs = make(map[string]jsontypes.Normalized, len(nodesItem.Static.Outputs))
 					for key1, value1 := range nodesItem.Static.Outputs {
 						result1, _ := json.Marshal(value1)
@@ -227,7 +227,7 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 					r.Config.Resources.Cache.Strategy = types.StringNull()
 				}
 			}
-			if resp.Config.Resources.Vault != nil {
+			if len(resp.Config.Resources.Vault) > 0 {
 				r.Config.Resources.Vault = make(map[string]jsontypes.Normalized, len(resp.Config.Resources.Vault))
 				for key2, value2 := range resp.Config.Resources.Vault {
 					result2, _ := json.Marshal(value2)

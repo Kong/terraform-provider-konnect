@@ -76,10 +76,6 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 					"logging": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"log_payloads":   types.BoolType,
-							"log_statistics": types.BoolType,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"log_payloads": schema.BoolAttribute{
 								Computed:    true,
@@ -189,6 +185,7 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 									},
 								},
 								"headers": schema.MapAttribute{
+									Computed:    true,
 									Optional:    true,
 									ElementType: jsontypes.NormalizedType{},
 									Description: `The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.`,
@@ -257,6 +254,7 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 									Description: `The path of the exported API. By default, Kong will extract the path from API configuration. If the configured path is not exactly matched, this field is required. Paths not starting with '/' are treated as relative paths.`,
 								},
 								"query": schema.MapAttribute{
+									Computed:    true,
 									Optional:    true,
 									ElementType: jsontypes.NormalizedType{},
 									Description: `The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.`,

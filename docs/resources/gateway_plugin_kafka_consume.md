@@ -360,18 +360,14 @@ Optional:
 <a id="nestedatt--config--schema_registry--confluent--authentication--basic"></a>
 ### Nested Schema for `config.schema_registry.confluent.authentication.basic`
 
-Required:
+Optional:
 
-- `password` (String)
-- `username` (String)
+- `password` (String) Not Null
+- `username` (String) Not Null
 
 
 <a id="nestedatt--config--schema_registry--confluent--authentication--oauth2"></a>
 ### Nested Schema for `config.schema_registry.confluent.authentication.oauth2`
-
-Required:
-
-- `token_endpoint` (String) The token endpoint URI.
 
 Optional:
 
@@ -381,6 +377,7 @@ Optional:
 - `grant_type` (String) The OAuth grant type to be used. Default: "client_credentials"; must be one of ["client_credentials", "password"]
 - `password` (String) The password to use if `config.oauth.grant_type` is set to `password`.
 - `scopes` (List of String) List of scopes to request from the IdP when obtaining a new token. Default: ["openid"]
+- `token_endpoint` (String) The token endpoint URI. Not Null
 - `token_headers` (Map of String) Extra headers to be passed in the token endpoint request.
 - `token_post_args` (Map of String) Extra post arguments to be passed in the token endpoint request.
 - `username` (String) The username to use if `config.oauth.grant_type` is set to `password`.

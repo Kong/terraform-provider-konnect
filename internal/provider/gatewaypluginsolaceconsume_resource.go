@@ -128,6 +128,7 @@ func (r *GatewayPluginSolaceConsumeResource) Schema(ctx context.Context, req res
 								Description: `This property controls the maximum number of messages that may be unacknowledged on the Flow. Default: -1`,
 							},
 							"properties": schema.MapAttribute{
+								Computed:    true,
 								Optional:    true,
 								ElementType: jsontypes.NormalizedType{},
 								Description: `Additional Solace flow properties (each setting needs to have ` + "`" + `FLOW_` + "`" + ` prefix).`,
@@ -177,9 +178,6 @@ func (r *GatewayPluginSolaceConsumeResource) Schema(ctx context.Context, req res
 					"polling": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"timeout": types.Int64Type,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"timeout": schema.Int64Attribute{
 								Computed:    true,
@@ -297,6 +295,7 @@ func (r *GatewayPluginSolaceConsumeResource) Schema(ctx context.Context, req res
 								Description: `The IPv4 or IPv6 address or host name to connect to (see: https://docs.solace.com/API-Developer-Online-Ref-Documentation/c/index.html#host-entry).`,
 							},
 							"properties": schema.MapAttribute{
+								Computed:    true,
 								Optional:    true,
 								ElementType: jsontypes.NormalizedType{},
 								Description: `Additional Solace session properties (each setting needs to have ` + "`" + `SESSION_` + "`" + ` prefix).`,
@@ -323,11 +322,6 @@ func (r *GatewayPluginSolaceConsumeResource) Schema(ctx context.Context, req res
 					"websocket": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"max_recv_len": types.Int64Type,
-							"max_send_len": types.Int64Type,
-							"timeout":      types.Int64Type,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"max_recv_len": schema.Int64Attribute{
 								Computed:    true,

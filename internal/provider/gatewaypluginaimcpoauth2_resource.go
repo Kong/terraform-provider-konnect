@@ -122,6 +122,7 @@ func (r *GatewayPluginAiMcpOauth2Resource) Schema(ctx context.Context, req resou
 				})),
 				Attributes: map[string]schema.Attribute{
 					"args": schema.MapAttribute{
+						Computed:    true,
 						Optional:    true,
 						ElementType: jsontypes.NormalizedType{},
 						Description: `Additional arguments to send in the POST body.`,
@@ -216,6 +217,7 @@ func (r *GatewayPluginAiMcpOauth2Resource) Schema(ctx context.Context, req resou
 						Description: `The client secret for authentication.`,
 					},
 					"headers": schema.MapAttribute{
+						Computed:    true,
 						Optional:    true,
 						ElementType: jsontypes.NormalizedType{},
 						Description: `Additional headers for the introspection request.`,
@@ -234,8 +236,7 @@ func (r *GatewayPluginAiMcpOauth2Resource) Schema(ctx context.Context, req resou
 					"http_version": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     float64default.StaticFloat64(1.1),
-						Description: `The HTTP version used for requests. Default: 1.1`,
+						Description: `The HTTP version used for requests.`,
 					},
 					"https_proxy": schema.StringAttribute{
 						Optional:    true,
