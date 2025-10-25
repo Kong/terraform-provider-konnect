@@ -93,7 +93,10 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 									},
 								},
 								"id": schema.StringAttribute{
-									Computed:    true,
+									Computed: true,
+									PlanModifiers: []planmodifier.String{
+										speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+									},
 									Description: `The Application Auth Strategy ID.`,
 								},
 								"name": schema.StringAttribute{
@@ -120,7 +123,10 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 									},
 								},
 								"id": schema.StringAttribute{
-									Computed:    true,
+									Computed: true,
+									PlanModifiers: []planmodifier.String{
+										speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+									},
 									Description: `The Application Auth Strategy ID.`,
 								},
 								"key_names": schema.ListAttribute{
@@ -175,7 +181,10 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 				Description: `Whether the api product version on the portal is deprecated`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Contains a unique identifier used for this resource.`,
 			},
 			"notify_developers": schema.BoolAttribute{
@@ -187,7 +196,10 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 				Description: `The Portal identifier`,
 			},
 			"product_version_id": schema.StringAttribute{
-				Required:    true,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `API product version identifier`,
 			},
 			"publish_status": schema.StringAttribute{

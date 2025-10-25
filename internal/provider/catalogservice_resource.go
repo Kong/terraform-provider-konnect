@@ -85,7 +85,10 @@ func (r *CatalogServiceResource) Schema(ctx context.Context, req resource.Schema
 				},
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `The service ID.`,
 			},
 			"labels": schema.MapAttribute{

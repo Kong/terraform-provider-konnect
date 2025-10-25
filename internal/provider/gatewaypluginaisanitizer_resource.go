@@ -136,10 +136,8 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 									},
 								},
 								"score": schema.Float64Attribute{
-									Computed:    true,
-									Optional:    true,
-									Default:     float64default.StaticFloat64(0.5),
-									Description: `Default: 0.5`,
+									Computed: true,
+									Optional: true,
 									Validators: []validator.Float64{
 										float64validator.Between(0, 1),
 									},
