@@ -689,18 +689,7 @@ func (a *AiSemanticResponseGuardPluginRules) GetMaxResponseBodySize() *int64 {
 
 type AiSemanticResponseGuardPluginSearch struct {
 	// Threshold for the similarity score to be considered a match.
-	Threshold *float64 `default:"0.5" json:"threshold"`
-}
-
-func (a AiSemanticResponseGuardPluginSearch) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
-}
-
-func (a *AiSemanticResponseGuardPluginSearch) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
-		return err
-	}
-	return nil
+	Threshold *float64 `json:"threshold,omitempty"`
 }
 
 func (a *AiSemanticResponseGuardPluginSearch) GetThreshold() *float64 {

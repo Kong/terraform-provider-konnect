@@ -71,7 +71,10 @@ func (r *APIProductResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `The description of the API product.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `The API product ID.`,
 			},
 			"labels": schema.MapAttribute{

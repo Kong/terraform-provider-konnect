@@ -161,18 +161,7 @@ func (e *Anonymize) UnmarshalJSON(data []byte) error {
 type CustomPatterns struct {
 	Name  string   `json:"name"`
 	Regex string   `json:"regex"`
-	Score *float64 `default:"0.5" json:"score"`
-}
-
-func (c CustomPatterns) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
-}
-
-func (c *CustomPatterns) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "regex"}); err != nil {
-		return err
-	}
-	return nil
+	Score *float64 `json:"score,omitempty"`
 }
 
 func (c *CustomPatterns) GetName() string {

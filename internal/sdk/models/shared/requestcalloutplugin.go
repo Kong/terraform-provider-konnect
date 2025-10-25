@@ -432,8 +432,8 @@ func (e *RequestCalloutPluginStrategy) UnmarshalJSON(data []byte) error {
 type Cache struct {
 	// TTL in seconds of cache entities.
 	CacheTTL *int64                      `default:"300" json:"cache_ttl"`
-	Memory   *RequestCalloutPluginMemory `json:"memory"`
-	Redis    *RequestCalloutPluginRedis  `json:"redis"`
+	Memory   *RequestCalloutPluginMemory `json:"memory,omitempty"`
+	Redis    *RequestCalloutPluginRedis  `json:"redis,omitempty"`
 	// The backing data store in which to hold cache entities. Accepted values are: `off`, `memory`, and `redis`.
 	Strategy *RequestCalloutPluginStrategy `default:"off" json:"strategy"`
 }
@@ -1184,13 +1184,13 @@ func (q *Query) GetForward() *bool {
 // RequestCalloutPluginUpstream - Customizations to the upstream request.
 type RequestCalloutPluginUpstream struct {
 	// Callout request body customizations.
-	Body *Body `json:"body"`
+	Body *Body `json:"body,omitempty"`
 	// Lua code that executes before the upstream request is made. Can produce side effects. Standard Lua sandboxing restrictions apply.
 	ByLua *string `default:"null" json:"by_lua"`
 	// Callout request header customizations.
-	Headers *RequestCalloutPluginHeaders `json:"headers"`
+	Headers *RequestCalloutPluginHeaders `json:"headers,omitempty"`
 	// Upstream request query param customizations.
-	Query *Query `json:"query"`
+	Query *Query `json:"query,omitempty"`
 }
 
 func (r RequestCalloutPluginUpstream) MarshalJSON() ([]byte, error) {
@@ -1234,11 +1234,11 @@ func (r *RequestCalloutPluginUpstream) GetQuery() *Query {
 
 type RequestCalloutPluginConfig struct {
 	// Plugin global caching configuration.
-	Cache *Cache `json:"cache"`
+	Cache *Cache `json:"cache,omitempty"`
 	// A collection of callout objects, where each object represents an HTTP request made in the context of a proxy request.
 	Callouts []Callouts `json:"callouts"`
 	// Customizations to the upstream request.
-	Upstream *RequestCalloutPluginUpstream `json:"upstream"`
+	Upstream *RequestCalloutPluginUpstream `json:"upstream,omitempty"`
 }
 
 func (r *RequestCalloutPluginConfig) GetCache() *Cache {

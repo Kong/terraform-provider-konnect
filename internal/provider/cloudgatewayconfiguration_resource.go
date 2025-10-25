@@ -15,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_float64planmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/float64planmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
@@ -90,7 +91,10 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 				Required: true,
 			},
 			"created_at": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `An RFC-3339 timestamp representation of configuration creation date.`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -205,7 +209,10 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 							},
 						},
 						"created_at": schema.StringAttribute{
-							Computed:    true,
+							Computed: true,
+							PlanModifiers: []planmodifier.String{
+								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+							},
 							Description: `An RFC-3339 timestamp representation of data-plane group creation date.`,
 							Validators: []validator.String{
 								validators.IsRFC3339(),
@@ -247,7 +254,10 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 							Description: `Array of environment variables to set for a data-plane group.`,
 						},
 						"id": schema.StringAttribute{
-							Computed:    true,
+							Computed: true,
+							PlanModifiers: []planmodifier.String{
+								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+							},
 							Description: `ID of the data-plane group that represents a deployment target for a set of data-planes.`,
 						},
 						"private_ip_addresses": schema.ListAttribute{
@@ -289,7 +299,10 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 							},
 						},
 						"updated_at": schema.StringAttribute{
-							Computed:    true,
+							Computed: true,
+							PlanModifiers: []planmodifier.String{
+								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+							},
 							Description: `An RFC-3339 timestamp representation of data-plane group update date.`,
 							Validators: []validator.String{
 								validators.IsRFC3339(),
@@ -300,14 +313,23 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 				Description: `List of data-plane groups that describe where to deploy instances, along with how many instances.`,
 			},
 			"entity_version": schema.Float64Attribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.Float64{
+					speakeasy_float64planmodifier.SuppressDiff(speakeasy_float64planmodifier.ExplicitSuppress),
+				},
 				Description: `Positive, monotonically increasing version integer, to serialize configuration changes.`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 			},
 			"updated_at": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `An RFC-3339 timestamp representation of configuration update date.`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),

@@ -15,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/boolplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
@@ -92,7 +93,10 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"auth_type": schema.StringAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						Description: `The auth type value of the cluster associated with the Runtime Group. must be one of ["pinned_client_certs", "pki_client_certs"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
@@ -102,11 +106,17 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 						},
 					},
 					"cloud_gateway": schema.BoolAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.Bool{
+							speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+						},
 						Description: `Whether the Control Plane can be used for cloud-gateways.`,
 					},
 					"cluster_type": schema.StringAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						Description: `The ClusterType value of the cluster associated with the Control Plane. must be one of ["CLUSTER_TYPE_CONTROL_PLANE", "CLUSTER_TYPE_K8S_INGRESS_CONTROLLER", "CLUSTER_TYPE_CONTROL_PLANE_GROUP", "CLUSTER_TYPE_SERVERLESS", "CLUSTER_TYPE_HYBRID"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
@@ -119,7 +129,10 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 						},
 					},
 					"control_plane_endpoint": schema.StringAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						Description: `Control Plane Endpoint.`,
 					},
 					"proxy_urls": schema.SetNestedAttribute{
@@ -143,7 +156,10 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 						Description: `Array of proxy URLs associated with reaching the data-planes connected to a control-plane.`,
 					},
 					"telemetry_endpoint": schema.StringAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						Description: `Telemetry Endpoint.`,
 					},
 				},

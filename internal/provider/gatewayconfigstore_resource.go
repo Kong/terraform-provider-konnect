@@ -70,7 +70,10 @@ func (r *GatewayConfigStoreResource) Schema(ctx context.Context, req resource.Sc
 				},
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `The Config Store ID.`,
 			},
 			"name": schema.StringAttribute{

@@ -457,7 +457,7 @@ type ZipkinPluginQueue struct {
 	// The number of of queue delivery timers. -1 indicates unlimited.
 	ConcurrencyLimit *ZipkinPluginConcurrencyLimit `default:"1" json:"concurrency_limit"`
 	// Time in seconds before the initial retry is made for a failing batch.
-	InitialRetryDelay *float64 `default:"0.01" json:"initial_retry_delay"`
+	InitialRetryDelay *float64 `json:"initial_retry_delay,omitempty"`
 	// Maximum number of entries that can be processed at a time.
 	MaxBatchSize *int64 `default:"1" json:"max_batch_size"`
 	// Maximum number of bytes that can be waiting on a queue, requires string content.
@@ -610,7 +610,7 @@ type ZipkinPluginConfig struct {
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout *int64 `default:"5000" json:"read_timeout"`
 	// How often to sample requests that do not contain trace IDs. Set to `0` to turn sampling off, or to `1` to sample **all** requests.
-	SampleRatio *float64 `default:"0.001" json:"sample_ratio"`
+	SampleRatio *float64 `json:"sample_ratio,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	SendTimeout *int64 `default:"5000" json:"send_timeout"`
 	// The tags specified on this property will be added to the generated request traces.

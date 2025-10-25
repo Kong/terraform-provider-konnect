@@ -414,8 +414,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Schema(ctx context.Contex
 							"threshold": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     float64default.StaticFloat64(0.5),
-								Description: `Threshold for the similarity score to be considered a match. Default: 0.5`,
+								Description: `Threshold for the similarity score to be considered a match.`,
 							},
 						},
 					},

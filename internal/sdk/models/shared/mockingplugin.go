@@ -92,7 +92,7 @@ type MockingPluginConfig struct {
 	// The maximum value in seconds of delay time. Set this value when `random_delay` is enabled and you want to adjust the default. The value must be greater than the `min_delay_time`.
 	MaxDelayTime *float64 `default:"1" json:"max_delay_time"`
 	// The minimum value in seconds of delay time. Set this value when `random_delay` is enabled and you want to adjust the default. The value must be less than the `max_delay_time`.
-	MinDelayTime *float64 `default:"0.001" json:"min_delay_time"`
+	MinDelayTime *float64 `json:"min_delay_time,omitempty"`
 	// Enables a random delay in the mocked response. Introduces delays to simulate real-time response times by APIs.
 	RandomDelay *bool `default:"false" json:"random_delay"`
 	// Randomly selects one example and returns it. This parameter requires the spec to have multiple examples configured.

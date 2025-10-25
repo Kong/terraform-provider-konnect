@@ -20,6 +20,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/int64planmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
@@ -64,7 +65,10 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"created_at": schema.StringAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						Description: `An RFC-3339 timestamp representation of Private DNS creation date.`,
 						Validators: []validator.String{
 							validators.IsRFC3339(),
@@ -72,11 +76,17 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 					},
 					"entity_version": schema.Int64Attribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.Int64{
+							speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
+						},
 						MarkdownDescription: `Monotonically-increasing version count of the Private DNS, to indicate the order of updates to the` + "\n" +
 							`Private DNS.`,
 					},
 					"id": schema.StringAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -147,7 +157,10 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 						Description: `Metadata describing the backing state of the Private Dns and why it may be in an erroneous state.`,
 					},
 					"updated_at": schema.StringAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						Description: `An RFC-3339 timestamp representation of Private DNS update date.`,
 						Validators: []validator.String{
 							validators.IsRFC3339(),
@@ -165,7 +178,10 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"created_at": schema.StringAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						Description: `An RFC-3339 timestamp representation of Private DNS creation date.`,
 						Validators: []validator.String{
 							validators.IsRFC3339(),
@@ -173,11 +189,17 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 					},
 					"entity_version": schema.Int64Attribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.Int64{
+							speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
+						},
 						MarkdownDescription: `Monotonically-increasing version count of the Private DNS, to indicate the order of updates to the` + "\n" +
 							`Private DNS.`,
 					},
 					"id": schema.StringAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -239,7 +261,10 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 						Description: `Metadata describing the backing state of the Private Dns and why it may be in an erroneous state.`,
 					},
 					"updated_at": schema.StringAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						Description: `An RFC-3339 timestamp representation of Private DNS update date.`,
 						Validators: []validator.String{
 							validators.IsRFC3339(),
@@ -255,6 +280,9 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 			},
 			"entity_version": schema.Int64Attribute{
 				Computed: true,
+				PlanModifiers: []planmodifier.Int64{
+					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
+				},
 				MarkdownDescription: `Monotonically-increasing version count of the Private DNS, to indicate the order of updates to the` + "\n" +
 					`Private DNS.`,
 			},
@@ -262,7 +290,10 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"created_at": schema.StringAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						Description: `An RFC-3339 timestamp representation of Private DNS creation date.`,
 						Validators: []validator.String{
 							validators.IsRFC3339(),
@@ -270,11 +301,17 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 					},
 					"entity_version": schema.Int64Attribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.Int64{
+							speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
+						},
 						MarkdownDescription: `Monotonically-increasing version count of the Private DNS, to indicate the order of updates to the` + "\n" +
 							`Private DNS.`,
 					},
 					"id": schema.StringAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -344,7 +381,10 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 						Description: `Metadata describing the backing state of the Private Dns and why it may be in an erroneous state.`,
 					},
 					"updated_at": schema.StringAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						Description: `An RFC-3339 timestamp representation of Private DNS update date.`,
 						Validators: []validator.String{
 							validators.IsRFC3339(),
@@ -360,6 +400,9 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 			},
 			"name": schema.StringAttribute{
 				Computed: true,

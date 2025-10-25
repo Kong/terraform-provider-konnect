@@ -105,7 +105,7 @@ Optional:
 - `include_base_path` (Boolean) Indicates whether to include the base path when performing path match evaluation. Default: false
 - `included_status_codes` (List of Number) A global list of the HTTP status codes that can only be selected and returned.
 - `max_delay_time` (Number) The maximum value in seconds of delay time. Set this value when `random_delay` is enabled and you want to adjust the default. The value must be greater than the `min_delay_time`. Default: 1
-- `min_delay_time` (Number) The minimum value in seconds of delay time. Set this value when `random_delay` is enabled and you want to adjust the default. The value must be less than the `max_delay_time`. Default: 0.001
+- `min_delay_time` (Number) The minimum value in seconds of delay time. Set this value when `random_delay` is enabled and you want to adjust the default. The value must be less than the `max_delay_time`.
 - `random_delay` (Boolean) Enables a random delay in the mocked response. Introduces delays to simulate real-time response times by APIs. Default: false
 - `random_examples` (Boolean) Randomly selects one example and returns it. This parameter requires the spec to have multiple examples configured. Default: false
 - `random_status_code` (Boolean) Determines whether to randomly select an HTTP status code from the responses of the corresponding API method. The default value is `false`, which means the minimum HTTP status code is always selected and returned. Default: false

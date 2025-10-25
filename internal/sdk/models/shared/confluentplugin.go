@@ -379,7 +379,7 @@ type Oauth2Client struct {
 	// The `Proxy-Authorization` header value to be used with `http_proxy`.
 	HTTPProxyAuthorization *string `default:"null" json:"http_proxy_authorization"`
 	// The HTTP version used for requests made by this plugin. Supported values: `1.1` for HTTP 1.1 and `1.0` for HTTP 1.0.
-	HTTPVersion *float64 `default:"1.1" json:"http_version"`
+	HTTPVersion *float64 `json:"http_version,omitempty"`
 	// The proxy to use when making HTTPS requests to the IdP.
 	HTTPSProxy *string `default:"null" json:"https_proxy"`
 	// The `Proxy-Authorization` header value to be used with `https_proxy`.

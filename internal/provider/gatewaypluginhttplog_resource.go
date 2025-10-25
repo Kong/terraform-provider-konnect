@@ -148,8 +148,7 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 							"initial_retry_delay": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     float64default.StaticFloat64(0.01),
-								Description: `Time in seconds before the initial retry is made for a failing batch. Default: 0.01`,
+								Description: `Time in seconds before the initial retry is made for a failing batch.`,
 								Validators: []validator.Float64{
 									float64validator.Between(0.001, 1000000),
 								},

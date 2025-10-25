@@ -289,7 +289,7 @@ Optional:
 - `client_secret_jwt_alg` (String) The algorithm to use with JWT when using `client_secret_jwt` authentication. Default: "HS512"; must be one of ["HS256", "HS512"]
 - `http_proxy` (String) The proxy to use when making HTTP requests to the IdP.
 - `http_proxy_authorization` (String) The `Proxy-Authorization` header value to be used with `http_proxy`.
-- `http_version` (Number) The HTTP version used for requests made by this plugin. Supported values: `1.1` for HTTP 1.1 and `1.0` for HTTP 1.0. Default: 1.1
+- `http_version` (Number) The HTTP version used for requests made by this plugin. Supported values: `1.1` for HTTP 1.1 and `1.0` for HTTP 1.0.
 - `https_proxy` (String) The proxy to use when making HTTPS requests to the IdP.
 - `https_proxy_authorization` (String) The `Proxy-Authorization` header value to be used with `https_proxy`.
 - `keep_alive` (Boolean) Whether to use keepalive connections to the IdP. Default: true

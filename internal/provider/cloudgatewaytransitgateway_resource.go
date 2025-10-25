@@ -19,6 +19,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/int64planmodifier"
+	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/objectplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
@@ -187,7 +190,10 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"created_at": schema.StringAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						Description: `An RFC-3339 timestamp representation of transit gateway creation date.`,
 						Validators: []validator.String{
 							validators.IsRFC3339(),
@@ -215,11 +221,17 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 					},
 					"entity_version": schema.Int64Attribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.Int64{
+							speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
+						},
 						MarkdownDescription: `Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the` + "\n" +
 							`transit gateway.`,
 					},
 					"id": schema.StringAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -227,6 +239,9 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 					},
 					"state": schema.StringAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						MarkdownDescription: `The current state of the Transit Gateway. Possible values:` + "\n" +
 							`- ` + "`" + `created` + "`" + ` - The attachment has been created but is not attached to transit gateway.` + "\n" +
 							`- ` + "`" + `initializing` + "`" + ` - The attachment is in the process of being initialized and is setting up necessary resources.` + "\n" +
@@ -250,6 +265,9 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 					},
 					"state_metadata": schema.SingleNestedAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.Object{
+							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+						},
 						Attributes: map[string]schema.Attribute{
 							"reason": schema.StringAttribute{
 								Computed:    true,
@@ -292,6 +310,9 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 										},
 										"state": schema.StringAttribute{
 											Computed: true,
+											PlanModifiers: []planmodifier.String{
+												speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+											},
 											MarkdownDescription: `The current state of the resource config in AWS Resource Endpoint. Possible values:` + "\n" +
 												`- ` + "`" + `initializing` + "`" + ` - The config is in the process of being initialized and is setting up necessary resources.` + "\n" +
 												`- ` + "`" + `missing` + "`" + ` - The config is missing and is no longer accepting new traffic.` + "\n" +
@@ -316,7 +337,10 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 						},
 					},
 					"updated_at": schema.StringAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						Description: `An RFC-3339 timestamp representation of transit gateway update date.`,
 						Validators: []validator.String{
 							validators.IsRFC3339(),
@@ -455,7 +479,10 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 							`network.`,
 					},
 					"created_at": schema.StringAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						Description: `An RFC-3339 timestamp representation of transit gateway creation date.`,
 						Validators: []validator.String{
 							validators.IsRFC3339(),
@@ -483,11 +510,17 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 					},
 					"entity_version": schema.Int64Attribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.Int64{
+							speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
+						},
 						MarkdownDescription: `Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the` + "\n" +
 							`transit gateway.`,
 					},
 					"id": schema.StringAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -495,6 +528,9 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 					},
 					"state": schema.StringAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						MarkdownDescription: `The current state of the Transit Gateway. Possible values:` + "\n" +
 							`- ` + "`" + `created` + "`" + ` - The attachment has been created but is not attached to transit gateway.` + "\n" +
 							`- ` + "`" + `initializing` + "`" + ` - The attachment is in the process of being initialized and is setting up necessary resources.` + "\n" +
@@ -518,6 +554,9 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 					},
 					"state_metadata": schema.SingleNestedAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.Object{
+							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+						},
 						Attributes: map[string]schema.Attribute{
 							"reason": schema.StringAttribute{
 								Computed:    true,
@@ -553,7 +592,10 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 						},
 					},
 					"updated_at": schema.StringAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						Description: `An RFC-3339 timestamp representation of transit gateway update date.`,
 						Validators: []validator.String{
 							validators.IsRFC3339(),
@@ -699,7 +741,10 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 							`network.`,
 					},
 					"created_at": schema.StringAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						Description: `An RFC-3339 timestamp representation of transit gateway creation date.`,
 						Validators: []validator.String{
 							validators.IsRFC3339(),
@@ -727,11 +772,17 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 					},
 					"entity_version": schema.Int64Attribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.Int64{
+							speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
+						},
 						MarkdownDescription: `Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the` + "\n" +
 							`transit gateway.`,
 					},
 					"id": schema.StringAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -739,6 +790,9 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 					},
 					"state": schema.StringAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						MarkdownDescription: `The current state of the Transit Gateway. Possible values:` + "\n" +
 							`- ` + "`" + `created` + "`" + ` - The attachment has been created but is not attached to transit gateway.` + "\n" +
 							`- ` + "`" + `initializing` + "`" + ` - The attachment is in the process of being initialized and is setting up necessary resources.` + "\n" +
@@ -762,6 +816,9 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 					},
 					"state_metadata": schema.SingleNestedAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.Object{
+							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+						},
 						Attributes: map[string]schema.Attribute{
 							"reason": schema.StringAttribute{
 								Computed:    true,
@@ -798,7 +855,10 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 						},
 					},
 					"updated_at": schema.StringAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						Description: `An RFC-3339 timestamp representation of transit gateway update date.`,
 						Validators: []validator.String{
 							validators.IsRFC3339(),
@@ -935,7 +995,10 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"created_at": schema.StringAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						Description: `An RFC-3339 timestamp representation of transit gateway creation date.`,
 						Validators: []validator.String{
 							validators.IsRFC3339(),
@@ -963,11 +1026,17 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 					},
 					"entity_version": schema.Int64Attribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.Int64{
+							speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
+						},
 						MarkdownDescription: `Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the` + "\n" +
 							`transit gateway.`,
 					},
 					"id": schema.StringAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -975,6 +1044,9 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 					},
 					"state": schema.StringAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						MarkdownDescription: `The current state of the Transit Gateway. Possible values:` + "\n" +
 							`- ` + "`" + `created` + "`" + ` - The attachment has been created but is not attached to transit gateway.` + "\n" +
 							`- ` + "`" + `initializing` + "`" + ` - The attachment is in the process of being initialized and is setting up necessary resources.` + "\n" +
@@ -998,6 +1070,9 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 					},
 					"state_metadata": schema.SingleNestedAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.Object{
+							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+						},
 						Attributes: map[string]schema.Attribute{
 							"reason": schema.StringAttribute{
 								Computed:    true,
@@ -1041,7 +1116,10 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 						},
 					},
 					"updated_at": schema.StringAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						Description: `An RFC-3339 timestamp representation of transit gateway update date.`,
 						Validators: []validator.String{
 							validators.IsRFC3339(),
@@ -1064,6 +1142,9 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 			},
 			"entity_version": schema.Int64Attribute{
 				Computed: true,
+				PlanModifiers: []planmodifier.Int64{
+					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
+				},
 				MarkdownDescription: `Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the` + "\n" +
 					`transit gateway.`,
 			},
@@ -1169,7 +1250,10 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"created_at": schema.StringAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						Description: `An RFC-3339 timestamp representation of transit gateway creation date.`,
 						Validators: []validator.String{
 							validators.IsRFC3339(),
@@ -1197,11 +1281,17 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 					},
 					"entity_version": schema.Int64Attribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.Int64{
+							speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
+						},
 						MarkdownDescription: `Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the` + "\n" +
 							`transit gateway.`,
 					},
 					"id": schema.StringAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 					},
 					"name": schema.StringAttribute{
 						Computed:    true,
@@ -1209,6 +1299,9 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 					},
 					"state": schema.StringAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						MarkdownDescription: `The current state of the Transit Gateway. Possible values:` + "\n" +
 							`- ` + "`" + `created` + "`" + ` - The attachment has been created but is not attached to transit gateway.` + "\n" +
 							`- ` + "`" + `initializing` + "`" + ` - The attachment is in the process of being initialized and is setting up necessary resources.` + "\n" +
@@ -1232,6 +1325,9 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 					},
 					"state_metadata": schema.SingleNestedAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.Object{
+							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+						},
 						Attributes: map[string]schema.Attribute{
 							"reason": schema.StringAttribute{
 								Computed:    true,
@@ -1267,7 +1363,10 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 						},
 					},
 					"updated_at": schema.StringAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						Description: `An RFC-3339 timestamp representation of transit gateway update date.`,
 						Validators: []validator.String{
 							validators.IsRFC3339(),
@@ -1290,6 +1389,9 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 			},
 			"name": schema.StringAttribute{
 				Computed:    true,

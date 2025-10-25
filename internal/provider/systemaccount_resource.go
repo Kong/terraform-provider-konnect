@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 )
@@ -50,7 +51,10 @@ func (r *SystemAccountResource) Schema(ctx context.Context, req resource.SchemaR
 		MarkdownDescription: "SystemAccount Resource",
 		Attributes: map[string]schema.Attribute{
 			"created_at": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Timestamp of when the system account was created.`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -61,7 +65,10 @@ func (r *SystemAccountResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `Description of the system account. Useful when the system account name is not sufficient to differentiate one system account from another.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `ID of the system account.`,
 			},
 			"konnect_managed": schema.BoolAttribute{
@@ -76,7 +83,10 @@ func (r *SystemAccountResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `Name of the system account.`,
 			},
 			"updated_at": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Timestamp of when the system account was last updated.`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),

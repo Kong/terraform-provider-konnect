@@ -80,54 +80,6 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 					"cache": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"cache_ttl": types.Int64Type,
-							"memory": types.ObjectType{
-								AttrTypes: map[string]attr.Type{
-									`dictionary_name`: types.StringType,
-								},
-							},
-							"redis": types.ObjectType{
-								AttrTypes: map[string]attr.Type{
-									`cluster_max_redirections`: types.Int64Type,
-									`cluster_nodes`: types.ListType{
-										ElemType: types.ObjectType{
-											AttrTypes: map[string]attr.Type{
-												`ip`:   types.StringType,
-												`port`: types.Int64Type,
-											},
-										},
-									},
-									`connect_timeout`:       types.Int64Type,
-									`connection_is_proxied`: types.BoolType,
-									`database`:              types.Int64Type,
-									`host`:                  types.StringType,
-									`keepalive_backlog`:     types.Int64Type,
-									`keepalive_pool_size`:   types.Int64Type,
-									`password`:              types.StringType,
-									`port`:                  types.Int64Type,
-									`read_timeout`:          types.Int64Type,
-									`send_timeout`:          types.Int64Type,
-									`sentinel_master`:       types.StringType,
-									`sentinel_nodes`: types.ListType{
-										ElemType: types.ObjectType{
-											AttrTypes: map[string]attr.Type{
-												`host`: types.StringType,
-												`port`: types.Int64Type,
-											},
-										},
-									},
-									`sentinel_password`: types.StringType,
-									`sentinel_role`:     types.StringType,
-									`sentinel_username`: types.StringType,
-									`server_name`:       types.StringType,
-									`ssl`:               types.BoolType,
-									`ssl_verify`:        types.BoolType,
-									`username`:          types.StringType,
-								},
-							},
-							"strategy": types.StringType,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"cache_ttl": schema.Int64Attribute{
 								Computed:    true,
@@ -138,9 +90,6 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 							"memory": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"dictionary_name": types.StringType,
-								})),
 								Attributes: map[string]schema.Attribute{
 									"dictionary_name": schema.StringAttribute{
 										Computed:    true,
@@ -153,43 +102,6 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 							"redis": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"cluster_max_redirections": types.Int64Type,
-									"cluster_nodes": types.ListType{
-										ElemType: types.ObjectType{
-											AttrTypes: map[string]attr.Type{
-												`ip`:   types.StringType,
-												`port`: types.Int64Type,
-											},
-										},
-									},
-									"connect_timeout":       types.Int64Type,
-									"connection_is_proxied": types.BoolType,
-									"database":              types.Int64Type,
-									"host":                  types.StringType,
-									"keepalive_backlog":     types.Int64Type,
-									"keepalive_pool_size":   types.Int64Type,
-									"password":              types.StringType,
-									"port":                  types.Int64Type,
-									"read_timeout":          types.Int64Type,
-									"send_timeout":          types.Int64Type,
-									"sentinel_master":       types.StringType,
-									"sentinel_nodes": types.ListType{
-										ElemType: types.ObjectType{
-											AttrTypes: map[string]attr.Type{
-												`host`: types.StringType,
-												`port`: types.Int64Type,
-											},
-										},
-									},
-									"sentinel_password": types.StringType,
-									"sentinel_role":     types.StringType,
-									"sentinel_username": types.StringType,
-									"server_name":       types.StringType,
-									"ssl":               types.BoolType,
-									"ssl_verify":        types.BoolType,
-									"username":          types.StringType,
-								})),
 								Attributes: map[string]schema.Attribute{
 									"cluster_max_redirections": schema.Int64Attribute{
 										Computed:    true,
@@ -762,45 +674,10 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 					"upstream": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"body": types.ObjectType{
-								AttrTypes: map[string]attr.Type{
-									`custom`: types.MapType{
-										ElemType: jsontypes.NormalizedType{},
-									},
-									`decode`:  types.BoolType,
-									`forward`: types.BoolType,
-								},
-							},
-							"by_lua": types.StringType,
-							"headers": types.ObjectType{
-								AttrTypes: map[string]attr.Type{
-									`custom`: types.MapType{
-										ElemType: jsontypes.NormalizedType{},
-									},
-									`forward`: types.BoolType,
-								},
-							},
-							"query": types.ObjectType{
-								AttrTypes: map[string]attr.Type{
-									`custom`: types.MapType{
-										ElemType: jsontypes.NormalizedType{},
-									},
-									`forward`: types.BoolType,
-								},
-							},
-						})),
 						Attributes: map[string]schema.Attribute{
 							"body": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"custom": types.MapType{
-										ElemType: jsontypes.NormalizedType{},
-									},
-									"decode":  types.BoolType,
-									"forward": types.BoolType,
-								})),
 								Attributes: map[string]schema.Attribute{
 									"custom": schema.MapAttribute{
 										Computed:    true,
@@ -833,12 +710,6 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 							"headers": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"custom": types.MapType{
-										ElemType: jsontypes.NormalizedType{},
-									},
-									"forward": types.BoolType,
-								})),
 								Attributes: map[string]schema.Attribute{
 									"custom": schema.MapAttribute{
 										Computed:    true,
@@ -861,12 +732,6 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 							"query": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"custom": types.MapType{
-										ElemType: jsontypes.NormalizedType{},
-									},
-									"forward": types.BoolType,
-								})),
 								Attributes: map[string]schema.Attribute{
 									"custom": schema.MapAttribute{
 										Computed:    true,

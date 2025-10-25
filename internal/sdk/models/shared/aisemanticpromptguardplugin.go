@@ -707,18 +707,7 @@ func (r *Rules) GetMaxRequestBodySize() *int64 {
 
 type Search struct {
 	// Threshold for the similarity score to be considered a match.
-	Threshold *float64 `default:"0.5" json:"threshold"`
-}
-
-func (s Search) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(s, "", false)
-}
-
-func (s *Search) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
-		return err
-	}
-	return nil
+	Threshold *float64 `json:"threshold,omitempty"`
 }
 
 func (s *Search) GetThreshold() *float64 {

@@ -82,7 +82,10 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Description: `Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin. Default: false`,
 			},
 			"canonical_domain": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `The canonical domain of the developer portal`,
 			},
 			"created_at": schema.StringAttribute{
@@ -111,7 +114,10 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Description: `The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to ` + "`" + `null` + "`" + `, API publications will not use an authentication strategy unless set during publication.`,
 			},
 			"default_domain": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a ` + "`" + `custom_domain` + "``" + `.`,
 			},
 			"default_page_visibility": schema.StringAttribute{
@@ -156,7 +162,10 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				},
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Contains a unique identifier used for this resource.`,
 			},
 			"labels": schema.MapAttribute{
