@@ -411,7 +411,7 @@ Optional:
 
 Optional:
 
-- `threshold` (Number) Threshold for the similarity score to be considered a match. Default: 0.5
+- `threshold` (Number) Threshold for the similarity score to be considered a match.
 
 
 

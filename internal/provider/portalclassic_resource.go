@@ -106,7 +106,10 @@ func (r *PortalClassicResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `Default strategy ID applied on applications for the portal`,
 			},
 			"default_domain": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a ` + "`" + `custom_domain` + "``" + `.`,
 			},
 			"description": schema.StringAttribute{
@@ -141,7 +144,10 @@ func (r *PortalClassicResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Contains a unique identifier used for this resource.`,
 			},
 			"is_public": schema.BoolAttribute{

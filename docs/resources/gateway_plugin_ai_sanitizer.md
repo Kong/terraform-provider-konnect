@@ -131,7 +131,7 @@ Optional:
 
 - `name` (String) Not Null
 - `regex` (String) Not Null
-- `score` (Number) Default: 0.5
+- `score` (Number)
 
 
 

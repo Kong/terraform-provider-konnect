@@ -58,7 +58,10 @@ func (r *PortalCustomDomainResource) Schema(ctx context.Context, req resource.Sc
 		MarkdownDescription: "PortalCustomDomain Resource",
 		Attributes: map[string]schema.Attribute{
 			"cname_status": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `must be one of ["verified", "pending"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(

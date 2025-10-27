@@ -82,7 +82,10 @@ func (r *APIProductSpecificationResource) Schema(ctx context.Context, req resour
 				},
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `The API product version specification identifier.`,
 			},
 			"name": schema.StringAttribute{

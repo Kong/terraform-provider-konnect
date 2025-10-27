@@ -288,8 +288,7 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 							"initial_retry_delay": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     float64default.StaticFloat64(0.01),
-								Description: `Time in seconds before the initial retry is made for a failing batch. Default: 0.01`,
+								Description: `Time in seconds before the initial retry is made for a failing batch.`,
 								Validators: []validator.Float64{
 									float64validator.Between(0.001, 1000000),
 								},
@@ -354,8 +353,7 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 					"sample_ratio": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     float64default.StaticFloat64(0.001),
-						Description: `How often to sample requests that do not contain trace IDs. Set to ` + "`" + `0` + "`" + ` to turn sampling off, or to ` + "`" + `1` + "`" + ` to sample **all** requests. Default: 0.001`,
+						Description: `How often to sample requests that do not contain trace IDs. Set to ` + "`" + `0` + "`" + ` to turn sampling off, or to ` + "`" + `1` + "`" + ` to sample **all** requests.`,
 						Validators: []validator.Float64{
 							float64validator.Between(0, 1),
 						},
