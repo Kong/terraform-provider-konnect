@@ -25,13 +25,13 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			if resp.Config.Cache.Memory == nil {
 				r.Config.Cache.Memory = nil
 			} else {
-				r.Config.Cache.Memory = &tfTypes.Memory{}
+				r.Config.Cache.Memory = &tfTypes.DatakitPluginMemory{}
 				r.Config.Cache.Memory.DictionaryName = types.StringPointerValue(resp.Config.Cache.Memory.DictionaryName)
 			}
 			if resp.Config.Cache.Redis == nil {
 				r.Config.Cache.Redis = nil
 			} else {
-				r.Config.Cache.Redis = &tfTypes.AiProxyAdvancedPluginRedis{}
+				r.Config.Cache.Redis = &tfTypes.AcePluginRedis{}
 				r.Config.Cache.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Cache.Redis.ClusterMaxRedirections)
 				if resp.Config.Cache.Redis.ClusterNodes != nil {
 					r.Config.Cache.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
@@ -106,7 +106,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				callouts.Request.Body = nil
 			} else {
 				callouts.Request.Body = &tfTypes.RequestCalloutPluginConfigBody{}
-				if calloutsItem.Request.Body.Custom != nil {
+				if len(calloutsItem.Request.Body.Custom) > 0 {
 					callouts.Request.Body.Custom = make(map[string]jsontypes.Normalized, len(calloutsItem.Request.Body.Custom))
 					for key, value := range calloutsItem.Request.Body.Custom {
 						result, _ := json.Marshal(value)
@@ -140,7 +140,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				callouts.Request.Headers = nil
 			} else {
 				callouts.Request.Headers = &tfTypes.RequestCalloutPluginConfigCalloutsHeaders{}
-				if calloutsItem.Request.Headers.Custom != nil {
+				if len(calloutsItem.Request.Headers.Custom) > 0 {
 					callouts.Request.Headers.Custom = make(map[string]jsontypes.Normalized, len(calloutsItem.Request.Headers.Custom))
 					for key1, value1 := range calloutsItem.Request.Headers.Custom {
 						result1, _ := json.Marshal(value1)
@@ -178,7 +178,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				callouts.Request.Query = nil
 			} else {
 				callouts.Request.Query = &tfTypes.RequestCalloutPluginConfigCalloutsHeaders{}
-				if calloutsItem.Request.Query.Custom != nil {
+				if len(calloutsItem.Request.Query.Custom) > 0 {
 					callouts.Request.Query.Custom = make(map[string]jsontypes.Normalized, len(calloutsItem.Request.Query.Custom))
 					for key2, value2 := range calloutsItem.Request.Query.Custom {
 						result2, _ := json.Marshal(value2)
@@ -218,7 +218,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				r.Config.Upstream.Body = nil
 			} else {
 				r.Config.Upstream.Body = &tfTypes.RequestCalloutPluginConfigBody{}
-				if resp.Config.Upstream.Body.Custom != nil {
+				if len(resp.Config.Upstream.Body.Custom) > 0 {
 					r.Config.Upstream.Body.Custom = make(map[string]jsontypes.Normalized, len(resp.Config.Upstream.Body.Custom))
 					for key3, value3 := range resp.Config.Upstream.Body.Custom {
 						result3, _ := json.Marshal(value3)
@@ -233,7 +233,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				r.Config.Upstream.Headers = nil
 			} else {
 				r.Config.Upstream.Headers = &tfTypes.RequestCalloutPluginConfigCalloutsHeaders{}
-				if resp.Config.Upstream.Headers.Custom != nil {
+				if len(resp.Config.Upstream.Headers.Custom) > 0 {
 					r.Config.Upstream.Headers.Custom = make(map[string]jsontypes.Normalized, len(resp.Config.Upstream.Headers.Custom))
 					for key4, value4 := range resp.Config.Upstream.Headers.Custom {
 						result4, _ := json.Marshal(value4)
@@ -246,7 +246,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				r.Config.Upstream.Query = nil
 			} else {
 				r.Config.Upstream.Query = &tfTypes.RequestCalloutPluginConfigCalloutsHeaders{}
-				if resp.Config.Upstream.Query.Custom != nil {
+				if len(resp.Config.Upstream.Query.Custom) > 0 {
 					r.Config.Upstream.Query.Custom = make(map[string]jsontypes.Normalized, len(resp.Config.Upstream.Query.Custom))
 					for key5, value5 := range resp.Config.Upstream.Query.Custom {
 						result5, _ := json.Marshal(value5)
@@ -275,11 +275,11 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			r.Ordering = &tfTypes.AcePluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After = &tfTypes.AcePluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -288,7 +288,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.AcePluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

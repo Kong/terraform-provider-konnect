@@ -260,7 +260,7 @@ Optional:
 - `http_opts` (Attributes) HTTP connection parameters. (see [below for nested schema](#nestedatt--config--callouts--request--http_opts))
 - `method` (String) The HTTP method that will be requested. Default: "GET"
 - `query` (Attributes) Callout request query param customizations. (see [below for nested schema](#nestedatt--config--callouts--request--query))
-- `url` (String) The URL that will be requested. Not Null
+- `url` (String) The URL that will be requested. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates. Not Null
 
 <a id="nestedatt--config--callouts--request--body"></a>
 ### Nested Schema for `config.callouts.request.body`

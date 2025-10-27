@@ -15,33 +15,34 @@ GatewayPluginAwsLambda Resource
 ```terraform
 resource "konnect_gateway_plugin_aws_lambda" "my_gatewaypluginawslambda" {
   config = {
-    aws_assume_role_arn       = "...my_aws_assume_role_arn..."
-    aws_imds_protocol_version = "v1"
-    aws_key                   = "...my_aws_key..."
-    aws_region                = "...my_aws_region..."
-    aws_role_session_name     = "...my_aws_role_session_name..."
-    aws_secret                = "...my_aws_secret..."
-    aws_sts_endpoint_url      = "...my_aws_sts_endpoint_url..."
-    awsgateway_compatible     = true
-    base64_encode_body        = false
-    disable_https             = false
-    empty_arrays_mode         = "legacy"
-    forward_request_body      = false
-    forward_request_headers   = true
-    forward_request_method    = true
-    forward_request_uri       = true
-    function_name             = "...my_function_name..."
-    host                      = "...my_host..."
-    invocation_type           = "DryRun"
-    is_proxy_integration      = false
-    keepalive                 = 6.97
-    log_type                  = "None"
-    port                      = 25235
-    proxy_url                 = "...my_proxy_url..."
-    qualifier                 = "...my_qualifier..."
-    skip_large_bodies         = false
-    timeout                   = 4.31
-    unhandled_status          = 115
+    aws_assume_role_arn                   = "...my_aws_assume_role_arn..."
+    aws_imds_protocol_version             = "v1"
+    aws_key                               = "...my_aws_key..."
+    aws_region                            = "...my_aws_region..."
+    aws_role_session_name                 = "...my_aws_role_session_name..."
+    aws_secret                            = "...my_aws_secret..."
+    aws_sts_endpoint_url                  = "...my_aws_sts_endpoint_url..."
+    awsgateway_compatible                 = true
+    awsgateway_compatible_payload_version = "1.0"
+    base64_encode_body                    = false
+    disable_https                         = false
+    empty_arrays_mode                     = "legacy"
+    forward_request_body                  = false
+    forward_request_headers               = true
+    forward_request_method                = true
+    forward_request_uri                   = true
+    function_name                         = "...my_function_name..."
+    host                                  = "...my_host..."
+    invocation_type                       = "DryRun"
+    is_proxy_integration                  = false
+    keepalive                             = 6.97
+    log_type                              = "None"
+    port                                  = 25235
+    proxy_url                             = "...my_proxy_url..."
+    qualifier                             = "...my_qualifier..."
+    skip_large_bodies                     = false
+    timeout                               = 4.31
+    unhandled_status                      = 115
   }
   consumer = {
     id = "...my_id..."
@@ -122,6 +123,7 @@ Optional:
 - `aws_secret` (String) The AWS secret credential to be used when invoking the function.
 - `aws_sts_endpoint_url` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
 - `awsgateway_compatible` (Boolean) An optional value that defines whether the plugin should wrap requests into the Amazon API gateway. Default: false
+- `awsgateway_compatible_payload_version` (String) An optional value that defines which version will be used to generate the AWS API Gateway compatible payload. The default will be `1.0`. Default: "1.0"; must be one of ["1.0", "2.0"]
 - `base64_encode_body` (Boolean) An optional value that Base64-encodes the request body. Default: true
 - `disable_https` (Boolean) Default: false
 - `empty_arrays_mode` (String) An optional value that defines whether Kong should send empty arrays (returned by Lambda function) as `[]` arrays or `{}` objects in JSON responses. The value `legacy` means Kong will send empty arrays as `{}` objects in response. Default: "legacy"; must be one of ["correct", "legacy"]

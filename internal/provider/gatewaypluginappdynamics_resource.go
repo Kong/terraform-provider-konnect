@@ -51,7 +51,7 @@ type GatewayPluginAppDynamicsResourceModel struct {
 	Enabled        types.Bool                      `tfsdk:"enabled"`
 	ID             types.String                    `tfsdk:"id"`
 	InstanceName   types.String                    `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering      `tfsdk:"ordering"`
+	Ordering       *tfTypes.AcePluginOrdering      `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials              `tfsdk:"partials"`
 	Protocols      []types.String                  `tfsdk:"protocols"`
 	Route          *tfTypes.Set                    `tfsdk:"route"`
@@ -69,6 +69,7 @@ func (r *GatewayPluginAppDynamicsResource) Schema(ctx context.Context, req resou
 		MarkdownDescription: "GatewayPluginAppDynamics Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.MapAttribute{
+				Computed:    true,
 				Optional:    true,
 				ElementType: jsontypes.NormalizedType{},
 				Validators: []validator.Map{

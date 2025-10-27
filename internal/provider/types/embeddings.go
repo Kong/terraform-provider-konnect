@@ -3,6 +3,6 @@
 package types
 
 type Embeddings struct {
-	Auth  *Auth                      `tfsdk:"auth"`
+	Auth  *AiLlmAsJudgePluginAuth    `tfsdk:"auth"`
 	Model AiProxyAdvancedPluginModel `tfsdk:"model"`
 }

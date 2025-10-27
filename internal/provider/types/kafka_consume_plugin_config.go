@@ -7,14 +7,17 @@ import (
 )
 
 type KafkaConsumePluginConfig struct {
-	Authentication      *Authentication                       `tfsdk:"authentication"`
-	AutoOffsetReset     types.String                          `tfsdk:"auto_offset_reset"`
-	BootstrapServers    []BootstrapServers                    `tfsdk:"bootstrap_servers"`
-	ClusterName         types.String                          `tfsdk:"cluster_name"`
-	CommitStrategy      types.String                          `tfsdk:"commit_strategy"`
-	MessageDeserializer types.String                          `tfsdk:"message_deserializer"`
-	Mode                types.String                          `tfsdk:"mode"`
-	SchemaRegistry      *ConfluentConsumePluginSchemaRegistry `tfsdk:"schema_registry"`
-	Security            *KafkaConsumePluginSecurity           `tfsdk:"security"`
-	Topics              []Topics                              `tfsdk:"topics"`
+	Authentication        *Authentication                       `tfsdk:"authentication"`
+	AutoOffsetReset       types.String                          `tfsdk:"auto_offset_reset"`
+	BootstrapServers      []BootstrapServers                    `tfsdk:"bootstrap_servers"`
+	ClusterName           types.String                          `tfsdk:"cluster_name"`
+	CommitStrategy        types.String                          `tfsdk:"commit_strategy"`
+	DlqTopic              types.String                          `tfsdk:"dlq_topic"`
+	EnableDlq             types.Bool                            `tfsdk:"enable_dlq"`
+	MessageByLuaFunctions []types.String                        `tfsdk:"message_by_lua_functions"`
+	MessageDeserializer   types.String                          `tfsdk:"message_deserializer"`
+	Mode                  types.String                          `tfsdk:"mode"`
+	SchemaRegistry        *ConfluentConsumePluginSchemaRegistry `tfsdk:"schema_registry"`
+	Security              *KafkaConsumePluginSecurity           `tfsdk:"security"`
+	Topics                []KafkaConsumePluginTopics            `tfsdk:"topics"`
 }

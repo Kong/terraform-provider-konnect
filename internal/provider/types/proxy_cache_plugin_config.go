@@ -7,16 +7,16 @@ import (
 )
 
 type ProxyCachePluginConfig struct {
-	CacheControl    types.Bool       `tfsdk:"cache_control"`
-	CacheTTL        types.Int64      `tfsdk:"cache_ttl"`
-	ContentType     []types.String   `tfsdk:"content_type"`
-	IgnoreURICase   types.Bool       `tfsdk:"ignore_uri_case"`
-	Memory          *Memory          `tfsdk:"memory"`
-	RequestMethod   []types.String   `tfsdk:"request_method"`
-	ResponseCode    []types.Int64    `tfsdk:"response_code"`
-	ResponseHeaders *ResponseHeaders `tfsdk:"response_headers"`
-	StorageTTL      types.Int64      `tfsdk:"storage_ttl"`
-	Strategy        types.String     `tfsdk:"strategy"`
-	VaryHeaders     []types.String   `tfsdk:"vary_headers"`
-	VaryQueryParams []types.String   `tfsdk:"vary_query_params"`
+	CacheControl    types.Bool           `tfsdk:"cache_control"`
+	CacheTTL        types.Int64          `tfsdk:"cache_ttl"`
+	ContentType     []types.String       `tfsdk:"content_type"`
+	IgnoreURICase   types.Bool           `tfsdk:"ignore_uri_case"`
+	Memory          *DatakitPluginMemory `tfsdk:"memory"`
+	RequestMethod   []types.String       `tfsdk:"request_method"`
+	ResponseCode    []types.Int64        `tfsdk:"response_code"`
+	ResponseHeaders *ResponseHeaders     `tfsdk:"response_headers"`
+	StorageTTL      types.Int64          `tfsdk:"storage_ttl"`
+	Strategy        types.String         `tfsdk:"strategy"`
+	VaryHeaders     []types.String       `tfsdk:"vary_headers"`
+	VaryQueryParams []types.String       `tfsdk:"vary_query_params"`
 }

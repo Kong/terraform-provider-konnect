@@ -21,6 +21,12 @@ func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(ctx c
 			r.Config = &tfTypes.SessionPluginConfig{}
 			r.Config.AbsoluteTimeout = types.Float64PointerValue(resp.Config.AbsoluteTimeout)
 			r.Config.Audience = types.StringPointerValue(resp.Config.Audience)
+			if resp.Config.Bind != nil {
+				r.Config.Bind = make([]types.String, 0, len(resp.Config.Bind))
+				for _, v := range resp.Config.Bind {
+					r.Config.Bind = append(r.Config.Bind, types.StringValue(string(v)))
+				}
+			}
 			r.Config.CookieDomain = types.StringPointerValue(resp.Config.CookieDomain)
 			r.Config.CookieHTTPOnly = types.BoolPointerValue(resp.Config.CookieHTTPOnly)
 			r.Config.CookieName = types.StringPointerValue(resp.Config.CookieName)
@@ -73,11 +79,11 @@ func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(ctx c
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			r.Ordering = &tfTypes.AcePluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After = &tfTypes.AcePluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -86,7 +92,7 @@ func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(ctx c
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.AcePluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
@@ -324,6 +330,13 @@ func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin(ctx context.Co
 		} else {
 			audience = nil
 		}
+		var bind []shared.Bind
+		if r.Config.Bind != nil {
+			bind = make([]shared.Bind, 0, len(r.Config.Bind))
+			for _, bindItem := range r.Config.Bind {
+				bind = append(bind, shared.Bind(bindItem.ValueString()))
+			}
+		}
 		cookieDomain := new(string)
 		if !r.Config.CookieDomain.IsUnknown() && !r.Config.CookieDomain.IsNull() {
 			*cookieDomain = r.Config.CookieDomain.ValueString()
@@ -465,6 +478,7 @@ func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin(ctx context.Co
 		config = &shared.SessionPluginConfig{
 			AbsoluteTimeout:         absoluteTimeout,
 			Audience:                audience,
+			Bind:                    bind,
 			CookieDomain:            cookieDomain,
 			CookieHTTPOnly:          cookieHTTPOnly,
 			CookieName:              cookieName,

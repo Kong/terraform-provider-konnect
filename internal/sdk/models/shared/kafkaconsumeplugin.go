@@ -346,8 +346,9 @@ func (k *KafkaConsumePluginBasic) GetUsername() string {
 type KafkaConsumePluginConfigMode string
 
 const (
-	KafkaConsumePluginConfigModeBasic KafkaConsumePluginConfigMode = "basic"
-	KafkaConsumePluginConfigModeNone  KafkaConsumePluginConfigMode = "none"
+	KafkaConsumePluginConfigModeBasic  KafkaConsumePluginConfigMode = "basic"
+	KafkaConsumePluginConfigModeNone   KafkaConsumePluginConfigMode = "none"
+	KafkaConsumePluginConfigModeOauth2 KafkaConsumePluginConfigMode = "oauth2"
 )
 
 func (e KafkaConsumePluginConfigMode) ToPointer() *KafkaConsumePluginConfigMode {
@@ -362,6 +363,8 @@ func (e *KafkaConsumePluginConfigMode) UnmarshalJSON(data []byte) error {
 	case "basic":
 		fallthrough
 	case "none":
+		fallthrough
+	case "oauth2":
 		*e = KafkaConsumePluginConfigMode(v)
 		return nil
 	default:
@@ -369,10 +372,316 @@ func (e *KafkaConsumePluginConfigMode) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// KafkaConsumePluginGrantType - The OAuth grant type to be used.
+type KafkaConsumePluginGrantType string
+
+const (
+	KafkaConsumePluginGrantTypeClientCredentials KafkaConsumePluginGrantType = "client_credentials"
+	KafkaConsumePluginGrantTypePassword          KafkaConsumePluginGrantType = "password"
+)
+
+func (e KafkaConsumePluginGrantType) ToPointer() *KafkaConsumePluginGrantType {
+	return &e
+}
+func (e *KafkaConsumePluginGrantType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "client_credentials":
+		fallthrough
+	case "password":
+		*e = KafkaConsumePluginGrantType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for KafkaConsumePluginGrantType: %v", v)
+	}
+}
+
+type KafkaConsumePluginOauth2 struct {
+	// List of audiences passed to the IdP when obtaining a new token.
+	Audience []string `json:"audience,omitempty"`
+	// The client ID for the application registration in the IdP.
+	ClientID *string `default:"null" json:"client_id"`
+	// The client secret for the application registration in the IdP.
+	ClientSecret *string `default:"null" json:"client_secret"`
+	// The OAuth grant type to be used.
+	GrantType *KafkaConsumePluginGrantType `default:"client_credentials" json:"grant_type"`
+	// The password to use if `config.oauth.grant_type` is set to `password`.
+	Password *string `default:"null" json:"password"`
+	// List of scopes to request from the IdP when obtaining a new token.
+	Scopes []string `json:"scopes,omitempty"`
+	// The token endpoint URI.
+	TokenEndpoint string `json:"token_endpoint"`
+	// Extra headers to be passed in the token endpoint request.
+	TokenHeaders map[string]any `json:"token_headers,omitempty"`
+	// Extra post arguments to be passed in the token endpoint request.
+	TokenPostArgs map[string]any `json:"token_post_args,omitempty"`
+	// The username to use if `config.oauth.grant_type` is set to `password`.
+	Username *string `default:"null" json:"username"`
+}
+
+func (k KafkaConsumePluginOauth2) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaConsumePluginOauth2) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"token_endpoint"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (k *KafkaConsumePluginOauth2) GetAudience() []string {
+	if k == nil {
+		return nil
+	}
+	return k.Audience
+}
+
+func (k *KafkaConsumePluginOauth2) GetClientID() *string {
+	if k == nil {
+		return nil
+	}
+	return k.ClientID
+}
+
+func (k *KafkaConsumePluginOauth2) GetClientSecret() *string {
+	if k == nil {
+		return nil
+	}
+	return k.ClientSecret
+}
+
+func (k *KafkaConsumePluginOauth2) GetGrantType() *KafkaConsumePluginGrantType {
+	if k == nil {
+		return nil
+	}
+	return k.GrantType
+}
+
+func (k *KafkaConsumePluginOauth2) GetPassword() *string {
+	if k == nil {
+		return nil
+	}
+	return k.Password
+}
+
+func (k *KafkaConsumePluginOauth2) GetScopes() []string {
+	if k == nil {
+		return nil
+	}
+	return k.Scopes
+}
+
+func (k *KafkaConsumePluginOauth2) GetTokenEndpoint() string {
+	if k == nil {
+		return ""
+	}
+	return k.TokenEndpoint
+}
+
+func (k *KafkaConsumePluginOauth2) GetTokenHeaders() map[string]any {
+	if k == nil {
+		return nil
+	}
+	return k.TokenHeaders
+}
+
+func (k *KafkaConsumePluginOauth2) GetTokenPostArgs() map[string]any {
+	if k == nil {
+		return nil
+	}
+	return k.TokenPostArgs
+}
+
+func (k *KafkaConsumePluginOauth2) GetUsername() *string {
+	if k == nil {
+		return nil
+	}
+	return k.Username
+}
+
+// KafkaConsumePluginAuthMethod - The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body.
+type KafkaConsumePluginAuthMethod string
+
+const (
+	KafkaConsumePluginAuthMethodClientSecretBasic KafkaConsumePluginAuthMethod = "client_secret_basic"
+	KafkaConsumePluginAuthMethodClientSecretJwt   KafkaConsumePluginAuthMethod = "client_secret_jwt"
+	KafkaConsumePluginAuthMethodClientSecretPost  KafkaConsumePluginAuthMethod = "client_secret_post"
+	KafkaConsumePluginAuthMethodNone              KafkaConsumePluginAuthMethod = "none"
+)
+
+func (e KafkaConsumePluginAuthMethod) ToPointer() *KafkaConsumePluginAuthMethod {
+	return &e
+}
+func (e *KafkaConsumePluginAuthMethod) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "client_secret_basic":
+		fallthrough
+	case "client_secret_jwt":
+		fallthrough
+	case "client_secret_post":
+		fallthrough
+	case "none":
+		*e = KafkaConsumePluginAuthMethod(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for KafkaConsumePluginAuthMethod: %v", v)
+	}
+}
+
+// KafkaConsumePluginClientSecretJwtAlg - The algorithm to use with JWT when using `client_secret_jwt` authentication.
+type KafkaConsumePluginClientSecretJwtAlg string
+
+const (
+	KafkaConsumePluginClientSecretJwtAlgHs256 KafkaConsumePluginClientSecretJwtAlg = "HS256"
+	KafkaConsumePluginClientSecretJwtAlgHs512 KafkaConsumePluginClientSecretJwtAlg = "HS512"
+)
+
+func (e KafkaConsumePluginClientSecretJwtAlg) ToPointer() *KafkaConsumePluginClientSecretJwtAlg {
+	return &e
+}
+func (e *KafkaConsumePluginClientSecretJwtAlg) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "HS256":
+		fallthrough
+	case "HS512":
+		*e = KafkaConsumePluginClientSecretJwtAlg(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for KafkaConsumePluginClientSecretJwtAlg: %v", v)
+	}
+}
+
+type KafkaConsumePluginOauth2Client struct {
+	// The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body.
+	AuthMethod *KafkaConsumePluginAuthMethod `default:"client_secret_post" json:"auth_method"`
+	// The algorithm to use with JWT when using `client_secret_jwt` authentication.
+	ClientSecretJwtAlg *KafkaConsumePluginClientSecretJwtAlg `default:"HS512" json:"client_secret_jwt_alg"`
+	// The proxy to use when making HTTP requests to the IdP.
+	HTTPProxy *string `default:"null" json:"http_proxy"`
+	// The `Proxy-Authorization` header value to be used with `http_proxy`.
+	HTTPProxyAuthorization *string `default:"null" json:"http_proxy_authorization"`
+	// The HTTP version used for requests made by this plugin. Supported values: `1.1` for HTTP 1.1 and `1.0` for HTTP 1.0.
+	HTTPVersion *float64 `default:"1.1" json:"http_version"`
+	// The proxy to use when making HTTPS requests to the IdP.
+	HTTPSProxy *string `default:"null" json:"https_proxy"`
+	// The `Proxy-Authorization` header value to be used with `https_proxy`.
+	HTTPSProxyAuthorization *string `default:"null" json:"https_proxy_authorization"`
+	// Whether to use keepalive connections to the IdP.
+	KeepAlive *bool `default:"true" json:"keep_alive"`
+	// A comma-separated list of hosts that should not be proxied.
+	NoProxy *string `default:"null" json:"no_proxy"`
+	// Whether to verify the certificate presented by the IdP when using HTTPS.
+	SslVerify *bool `default:"false" json:"ssl_verify"`
+	// Network I/O timeout for requests to the IdP in milliseconds.
+	Timeout *int64 `default:"10000" json:"timeout"`
+}
+
+func (k KafkaConsumePluginOauth2Client) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaConsumePluginOauth2Client) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (k *KafkaConsumePluginOauth2Client) GetAuthMethod() *KafkaConsumePluginAuthMethod {
+	if k == nil {
+		return nil
+	}
+	return k.AuthMethod
+}
+
+func (k *KafkaConsumePluginOauth2Client) GetClientSecretJwtAlg() *KafkaConsumePluginClientSecretJwtAlg {
+	if k == nil {
+		return nil
+	}
+	return k.ClientSecretJwtAlg
+}
+
+func (k *KafkaConsumePluginOauth2Client) GetHTTPProxy() *string {
+	if k == nil {
+		return nil
+	}
+	return k.HTTPProxy
+}
+
+func (k *KafkaConsumePluginOauth2Client) GetHTTPProxyAuthorization() *string {
+	if k == nil {
+		return nil
+	}
+	return k.HTTPProxyAuthorization
+}
+
+func (k *KafkaConsumePluginOauth2Client) GetHTTPVersion() *float64 {
+	if k == nil {
+		return nil
+	}
+	return k.HTTPVersion
+}
+
+func (k *KafkaConsumePluginOauth2Client) GetHTTPSProxy() *string {
+	if k == nil {
+		return nil
+	}
+	return k.HTTPSProxy
+}
+
+func (k *KafkaConsumePluginOauth2Client) GetHTTPSProxyAuthorization() *string {
+	if k == nil {
+		return nil
+	}
+	return k.HTTPSProxyAuthorization
+}
+
+func (k *KafkaConsumePluginOauth2Client) GetKeepAlive() *bool {
+	if k == nil {
+		return nil
+	}
+	return k.KeepAlive
+}
+
+func (k *KafkaConsumePluginOauth2Client) GetNoProxy() *string {
+	if k == nil {
+		return nil
+	}
+	return k.NoProxy
+}
+
+func (k *KafkaConsumePluginOauth2Client) GetSslVerify() *bool {
+	if k == nil {
+		return nil
+	}
+	return k.SslVerify
+}
+
+func (k *KafkaConsumePluginOauth2Client) GetTimeout() *int64 {
+	if k == nil {
+		return nil
+	}
+	return k.Timeout
+}
+
 type KafkaConsumePluginAuthentication struct {
 	Basic *KafkaConsumePluginBasic `json:"basic"`
 	// Authentication mode to use with the schema registry.
-	Mode *KafkaConsumePluginConfigMode `default:"none" json:"mode"`
+	Mode         *KafkaConsumePluginConfigMode   `default:"none" json:"mode"`
+	Oauth2       *KafkaConsumePluginOauth2       `json:"oauth2"`
+	Oauth2Client *KafkaConsumePluginOauth2Client `json:"oauth2_client"`
 }
 
 func (k KafkaConsumePluginAuthentication) MarshalJSON() ([]byte, error) {
@@ -398,6 +707,20 @@ func (k *KafkaConsumePluginAuthentication) GetMode() *KafkaConsumePluginConfigMo
 		return nil
 	}
 	return k.Mode
+}
+
+func (k *KafkaConsumePluginAuthentication) GetOauth2() *KafkaConsumePluginOauth2 {
+	if k == nil {
+		return nil
+	}
+	return k.Oauth2
+}
+
+func (k *KafkaConsumePluginAuthentication) GetOauth2Client() *KafkaConsumePluginOauth2Client {
+	if k == nil {
+		return nil
+	}
+	return k.Oauth2Client
 }
 
 type KafkaConsumePluginConfluent struct {
@@ -516,8 +839,9 @@ func (k *KafkaConsumePluginConfigBasic) GetUsername() string {
 type KafkaConsumePluginConfigTopicsMode string
 
 const (
-	KafkaConsumePluginConfigTopicsModeBasic KafkaConsumePluginConfigTopicsMode = "basic"
-	KafkaConsumePluginConfigTopicsModeNone  KafkaConsumePluginConfigTopicsMode = "none"
+	KafkaConsumePluginConfigTopicsModeBasic  KafkaConsumePluginConfigTopicsMode = "basic"
+	KafkaConsumePluginConfigTopicsModeNone   KafkaConsumePluginConfigTopicsMode = "none"
+	KafkaConsumePluginConfigTopicsModeOauth2 KafkaConsumePluginConfigTopicsMode = "oauth2"
 )
 
 func (e KafkaConsumePluginConfigTopicsMode) ToPointer() *KafkaConsumePluginConfigTopicsMode {
@@ -532,6 +856,8 @@ func (e *KafkaConsumePluginConfigTopicsMode) UnmarshalJSON(data []byte) error {
 	case "basic":
 		fallthrough
 	case "none":
+		fallthrough
+	case "oauth2":
 		*e = KafkaConsumePluginConfigTopicsMode(v)
 		return nil
 	default:
@@ -539,10 +865,316 @@ func (e *KafkaConsumePluginConfigTopicsMode) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// KafkaConsumePluginConfigGrantType - The OAuth grant type to be used.
+type KafkaConsumePluginConfigGrantType string
+
+const (
+	KafkaConsumePluginConfigGrantTypeClientCredentials KafkaConsumePluginConfigGrantType = "client_credentials"
+	KafkaConsumePluginConfigGrantTypePassword          KafkaConsumePluginConfigGrantType = "password"
+)
+
+func (e KafkaConsumePluginConfigGrantType) ToPointer() *KafkaConsumePluginConfigGrantType {
+	return &e
+}
+func (e *KafkaConsumePluginConfigGrantType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "client_credentials":
+		fallthrough
+	case "password":
+		*e = KafkaConsumePluginConfigGrantType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for KafkaConsumePluginConfigGrantType: %v", v)
+	}
+}
+
+type KafkaConsumePluginConfigOauth2 struct {
+	// List of audiences passed to the IdP when obtaining a new token.
+	Audience []string `json:"audience,omitempty"`
+	// The client ID for the application registration in the IdP.
+	ClientID *string `default:"null" json:"client_id"`
+	// The client secret for the application registration in the IdP.
+	ClientSecret *string `default:"null" json:"client_secret"`
+	// The OAuth grant type to be used.
+	GrantType *KafkaConsumePluginConfigGrantType `default:"client_credentials" json:"grant_type"`
+	// The password to use if `config.oauth.grant_type` is set to `password`.
+	Password *string `default:"null" json:"password"`
+	// List of scopes to request from the IdP when obtaining a new token.
+	Scopes []string `json:"scopes,omitempty"`
+	// The token endpoint URI.
+	TokenEndpoint string `json:"token_endpoint"`
+	// Extra headers to be passed in the token endpoint request.
+	TokenHeaders map[string]any `json:"token_headers,omitempty"`
+	// Extra post arguments to be passed in the token endpoint request.
+	TokenPostArgs map[string]any `json:"token_post_args,omitempty"`
+	// The username to use if `config.oauth.grant_type` is set to `password`.
+	Username *string `default:"null" json:"username"`
+}
+
+func (k KafkaConsumePluginConfigOauth2) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaConsumePluginConfigOauth2) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"token_endpoint"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (k *KafkaConsumePluginConfigOauth2) GetAudience() []string {
+	if k == nil {
+		return nil
+	}
+	return k.Audience
+}
+
+func (k *KafkaConsumePluginConfigOauth2) GetClientID() *string {
+	if k == nil {
+		return nil
+	}
+	return k.ClientID
+}
+
+func (k *KafkaConsumePluginConfigOauth2) GetClientSecret() *string {
+	if k == nil {
+		return nil
+	}
+	return k.ClientSecret
+}
+
+func (k *KafkaConsumePluginConfigOauth2) GetGrantType() *KafkaConsumePluginConfigGrantType {
+	if k == nil {
+		return nil
+	}
+	return k.GrantType
+}
+
+func (k *KafkaConsumePluginConfigOauth2) GetPassword() *string {
+	if k == nil {
+		return nil
+	}
+	return k.Password
+}
+
+func (k *KafkaConsumePluginConfigOauth2) GetScopes() []string {
+	if k == nil {
+		return nil
+	}
+	return k.Scopes
+}
+
+func (k *KafkaConsumePluginConfigOauth2) GetTokenEndpoint() string {
+	if k == nil {
+		return ""
+	}
+	return k.TokenEndpoint
+}
+
+func (k *KafkaConsumePluginConfigOauth2) GetTokenHeaders() map[string]any {
+	if k == nil {
+		return nil
+	}
+	return k.TokenHeaders
+}
+
+func (k *KafkaConsumePluginConfigOauth2) GetTokenPostArgs() map[string]any {
+	if k == nil {
+		return nil
+	}
+	return k.TokenPostArgs
+}
+
+func (k *KafkaConsumePluginConfigOauth2) GetUsername() *string {
+	if k == nil {
+		return nil
+	}
+	return k.Username
+}
+
+// KafkaConsumePluginConfigAuthMethod - The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body.
+type KafkaConsumePluginConfigAuthMethod string
+
+const (
+	KafkaConsumePluginConfigAuthMethodClientSecretBasic KafkaConsumePluginConfigAuthMethod = "client_secret_basic"
+	KafkaConsumePluginConfigAuthMethodClientSecretJwt   KafkaConsumePluginConfigAuthMethod = "client_secret_jwt"
+	KafkaConsumePluginConfigAuthMethodClientSecretPost  KafkaConsumePluginConfigAuthMethod = "client_secret_post"
+	KafkaConsumePluginConfigAuthMethodNone              KafkaConsumePluginConfigAuthMethod = "none"
+)
+
+func (e KafkaConsumePluginConfigAuthMethod) ToPointer() *KafkaConsumePluginConfigAuthMethod {
+	return &e
+}
+func (e *KafkaConsumePluginConfigAuthMethod) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "client_secret_basic":
+		fallthrough
+	case "client_secret_jwt":
+		fallthrough
+	case "client_secret_post":
+		fallthrough
+	case "none":
+		*e = KafkaConsumePluginConfigAuthMethod(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for KafkaConsumePluginConfigAuthMethod: %v", v)
+	}
+}
+
+// KafkaConsumePluginConfigClientSecretJwtAlg - The algorithm to use with JWT when using `client_secret_jwt` authentication.
+type KafkaConsumePluginConfigClientSecretJwtAlg string
+
+const (
+	KafkaConsumePluginConfigClientSecretJwtAlgHs256 KafkaConsumePluginConfigClientSecretJwtAlg = "HS256"
+	KafkaConsumePluginConfigClientSecretJwtAlgHs512 KafkaConsumePluginConfigClientSecretJwtAlg = "HS512"
+)
+
+func (e KafkaConsumePluginConfigClientSecretJwtAlg) ToPointer() *KafkaConsumePluginConfigClientSecretJwtAlg {
+	return &e
+}
+func (e *KafkaConsumePluginConfigClientSecretJwtAlg) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "HS256":
+		fallthrough
+	case "HS512":
+		*e = KafkaConsumePluginConfigClientSecretJwtAlg(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for KafkaConsumePluginConfigClientSecretJwtAlg: %v", v)
+	}
+}
+
+type KafkaConsumePluginConfigOauth2Client struct {
+	// The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body.
+	AuthMethod *KafkaConsumePluginConfigAuthMethod `default:"client_secret_post" json:"auth_method"`
+	// The algorithm to use with JWT when using `client_secret_jwt` authentication.
+	ClientSecretJwtAlg *KafkaConsumePluginConfigClientSecretJwtAlg `default:"HS512" json:"client_secret_jwt_alg"`
+	// The proxy to use when making HTTP requests to the IdP.
+	HTTPProxy *string `default:"null" json:"http_proxy"`
+	// The `Proxy-Authorization` header value to be used with `http_proxy`.
+	HTTPProxyAuthorization *string `default:"null" json:"http_proxy_authorization"`
+	// The HTTP version used for requests made by this plugin. Supported values: `1.1` for HTTP 1.1 and `1.0` for HTTP 1.0.
+	HTTPVersion *float64 `default:"1.1" json:"http_version"`
+	// The proxy to use when making HTTPS requests to the IdP.
+	HTTPSProxy *string `default:"null" json:"https_proxy"`
+	// The `Proxy-Authorization` header value to be used with `https_proxy`.
+	HTTPSProxyAuthorization *string `default:"null" json:"https_proxy_authorization"`
+	// Whether to use keepalive connections to the IdP.
+	KeepAlive *bool `default:"true" json:"keep_alive"`
+	// A comma-separated list of hosts that should not be proxied.
+	NoProxy *string `default:"null" json:"no_proxy"`
+	// Whether to verify the certificate presented by the IdP when using HTTPS.
+	SslVerify *bool `default:"false" json:"ssl_verify"`
+	// Network I/O timeout for requests to the IdP in milliseconds.
+	Timeout *int64 `default:"10000" json:"timeout"`
+}
+
+func (k KafkaConsumePluginConfigOauth2Client) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaConsumePluginConfigOauth2Client) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (k *KafkaConsumePluginConfigOauth2Client) GetAuthMethod() *KafkaConsumePluginConfigAuthMethod {
+	if k == nil {
+		return nil
+	}
+	return k.AuthMethod
+}
+
+func (k *KafkaConsumePluginConfigOauth2Client) GetClientSecretJwtAlg() *KafkaConsumePluginConfigClientSecretJwtAlg {
+	if k == nil {
+		return nil
+	}
+	return k.ClientSecretJwtAlg
+}
+
+func (k *KafkaConsumePluginConfigOauth2Client) GetHTTPProxy() *string {
+	if k == nil {
+		return nil
+	}
+	return k.HTTPProxy
+}
+
+func (k *KafkaConsumePluginConfigOauth2Client) GetHTTPProxyAuthorization() *string {
+	if k == nil {
+		return nil
+	}
+	return k.HTTPProxyAuthorization
+}
+
+func (k *KafkaConsumePluginConfigOauth2Client) GetHTTPVersion() *float64 {
+	if k == nil {
+		return nil
+	}
+	return k.HTTPVersion
+}
+
+func (k *KafkaConsumePluginConfigOauth2Client) GetHTTPSProxy() *string {
+	if k == nil {
+		return nil
+	}
+	return k.HTTPSProxy
+}
+
+func (k *KafkaConsumePluginConfigOauth2Client) GetHTTPSProxyAuthorization() *string {
+	if k == nil {
+		return nil
+	}
+	return k.HTTPSProxyAuthorization
+}
+
+func (k *KafkaConsumePluginConfigOauth2Client) GetKeepAlive() *bool {
+	if k == nil {
+		return nil
+	}
+	return k.KeepAlive
+}
+
+func (k *KafkaConsumePluginConfigOauth2Client) GetNoProxy() *string {
+	if k == nil {
+		return nil
+	}
+	return k.NoProxy
+}
+
+func (k *KafkaConsumePluginConfigOauth2Client) GetSslVerify() *bool {
+	if k == nil {
+		return nil
+	}
+	return k.SslVerify
+}
+
+func (k *KafkaConsumePluginConfigOauth2Client) GetTimeout() *int64 {
+	if k == nil {
+		return nil
+	}
+	return k.Timeout
+}
+
 type KafkaConsumePluginConfigAuthentication struct {
 	Basic *KafkaConsumePluginConfigBasic `json:"basic"`
 	// Authentication mode to use with the schema registry.
-	Mode *KafkaConsumePluginConfigTopicsMode `default:"none" json:"mode"`
+	Mode         *KafkaConsumePluginConfigTopicsMode   `default:"none" json:"mode"`
+	Oauth2       *KafkaConsumePluginConfigOauth2       `json:"oauth2"`
+	Oauth2Client *KafkaConsumePluginConfigOauth2Client `json:"oauth2_client"`
 }
 
 func (k KafkaConsumePluginConfigAuthentication) MarshalJSON() ([]byte, error) {
@@ -568,6 +1200,20 @@ func (k *KafkaConsumePluginConfigAuthentication) GetMode() *KafkaConsumePluginCo
 		return nil
 	}
 	return k.Mode
+}
+
+func (k *KafkaConsumePluginConfigAuthentication) GetOauth2() *KafkaConsumePluginConfigOauth2 {
+	if k == nil {
+		return nil
+	}
+	return k.Oauth2
+}
+
+func (k *KafkaConsumePluginConfigAuthentication) GetOauth2Client() *KafkaConsumePluginConfigOauth2Client {
+	if k == nil {
+		return nil
+	}
+	return k.Oauth2Client
 }
 
 type KafkaConsumePluginConfigConfluent struct {
@@ -634,7 +1280,7 @@ func (k *KafkaConsumePluginConfigSchemaRegistry) GetConfluent() *KafkaConsumePlu
 type KafkaConsumePluginTopics struct {
 	Name string `json:"name"`
 	// The plugin-global schema registry configuration.
-	SchemaRegistry *KafkaConsumePluginConfigSchemaRegistry `json:"schema_registry"`
+	SchemaRegistry *KafkaConsumePluginConfigSchemaRegistry `json:"schema_registry,omitempty"`
 }
 
 func (k *KafkaConsumePluginTopics) GetName() string {
@@ -652,7 +1298,7 @@ func (k *KafkaConsumePluginTopics) GetSchemaRegistry() *KafkaConsumePluginConfig
 }
 
 type KafkaConsumePluginConfig struct {
-	Authentication *Authentication `json:"authentication"`
+	Authentication *Authentication `json:"authentication,omitempty"`
 	// The offset to start from when there is no initial offset in the consumer group.
 	AutoOffsetReset *KafkaConsumePluginAutoOffsetReset `default:"latest" json:"auto_offset_reset"`
 	// Set of bootstrap brokers in a `{host: host, port: port}` list format.
@@ -661,13 +1307,19 @@ type KafkaConsumePluginConfig struct {
 	ClusterName *string `default:"null" json:"cluster_name"`
 	// The strategy to use for committing offsets.
 	CommitStrategy *KafkaConsumePluginCommitStrategy `default:"auto" json:"commit_strategy"`
+	// The topic to use for the Dead Letter Queue.
+	DlqTopic *string `default:"null" json:"dlq_topic"`
+	// Enables Dead Letter Queue. When enabled, if the message doesn't conform to the schema (from Schema Registry) or there's an error in the `message_by_lua_functions`, it will be forwarded to `dlq_topic` that can be processed later.
+	EnableDlq *bool `default:"null" json:"enable_dlq"`
+	// The Lua functions that manipulates the message being sent to the client.
+	MessageByLuaFunctions []string `json:"message_by_lua_functions"`
 	// The deserializer to use for the consumed messages.
 	MessageDeserializer *KafkaConsumePluginMessageDeserializer `default:"noop" json:"message_deserializer"`
 	// The mode of operation for the plugin.
 	Mode *KafkaConsumePluginMode `default:"http-get" json:"mode"`
 	// The plugin-global schema registry configuration.
-	SchemaRegistry *KafkaConsumePluginSchemaRegistry `json:"schema_registry"`
-	Security       *KafkaConsumePluginSecurity       `json:"security"`
+	SchemaRegistry *KafkaConsumePluginSchemaRegistry `json:"schema_registry,omitempty"`
+	Security       *KafkaConsumePluginSecurity       `json:"security,omitempty"`
 	// The Kafka topics and their configuration you want to consume from.
 	Topics []KafkaConsumePluginTopics `json:"topics"`
 }
@@ -716,6 +1368,27 @@ func (k *KafkaConsumePluginConfig) GetCommitStrategy() *KafkaConsumePluginCommit
 		return nil
 	}
 	return k.CommitStrategy
+}
+
+func (k *KafkaConsumePluginConfig) GetDlqTopic() *string {
+	if k == nil {
+		return nil
+	}
+	return k.DlqTopic
+}
+
+func (k *KafkaConsumePluginConfig) GetEnableDlq() *bool {
+	if k == nil {
+		return nil
+	}
+	return k.EnableDlq
+}
+
+func (k *KafkaConsumePluginConfig) GetMessageByLuaFunctions() []string {
+	if k == nil {
+		return nil
+	}
+	return k.MessageByLuaFunctions
 }
 
 func (k *KafkaConsumePluginConfig) GetMessageDeserializer() *KafkaConsumePluginMessageDeserializer {
@@ -815,18 +1488,6 @@ func (k *KafkaConsumePluginRoute) GetID() *string {
 	return k.ID
 }
 
-// KafkaConsumePluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-type KafkaConsumePluginService struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (k *KafkaConsumePluginService) GetID() *string {
-	if k == nil {
-		return nil
-	}
-	return k.ID
-}
-
 // KafkaConsumePlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type KafkaConsumePlugin struct {
 	// Unix epoch when the resource was created.
@@ -852,8 +1513,6 @@ type KafkaConsumePlugin struct {
 	Protocols []KafkaConsumePluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *KafkaConsumePluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *KafkaConsumePluginService `json:"service"`
 }
 
 func (k KafkaConsumePlugin) MarshalJSON() ([]byte, error) {
@@ -953,11 +1612,4 @@ func (k *KafkaConsumePlugin) GetRoute() *KafkaConsumePluginRoute {
 		return nil
 	}
 	return k.Route
-}
-
-func (k *KafkaConsumePlugin) GetService() *KafkaConsumePluginService {
-	if k == nil {
-		return nil
-	}
-	return k.Service
 }

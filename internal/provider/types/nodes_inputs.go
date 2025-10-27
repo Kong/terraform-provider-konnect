@@ -9,4 +9,5 @@ import (
 type NodesInputs struct {
 	Body    types.String `tfsdk:"body"`
 	Headers types.String `tfsdk:"headers"`
+	Query   types.String `tfsdk:"query"`
 }

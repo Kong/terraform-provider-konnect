@@ -416,6 +416,8 @@ func (a *AiRequestTransformerPluginCohere) GetWaitForModel() *bool {
 type AiRequestTransformerPluginGemini struct {
 	// If running Gemini on Vertex, specify the regional API endpoint (hostname only).
 	APIEndpoint *string `default:"null" json:"api_endpoint"`
+	// If running Gemini on Vertex Model Garden, specify the endpoint ID.
+	EndpointID *string `default:"null" json:"endpoint_id"`
 	// If running Gemini on Vertex, specify the location ID.
 	LocationID *string `default:"null" json:"location_id"`
 	// If running Gemini on Vertex, specify the project ID.
@@ -438,6 +440,13 @@ func (a *AiRequestTransformerPluginGemini) GetAPIEndpoint() *string {
 		return nil
 	}
 	return a.APIEndpoint
+}
+
+func (a *AiRequestTransformerPluginGemini) GetEndpointID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.EndpointID
 }
 
 func (a *AiRequestTransformerPluginGemini) GetLocationID() *string {
@@ -877,7 +886,7 @@ func (e *AiRequestTransformerPluginRouteType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type Llm struct {
+type AiRequestTransformerPluginLlm struct {
 	Auth    *AiRequestTransformerPluginAuth    `json:"auth"`
 	Logging *AiRequestTransformerPluginLogging `json:"logging"`
 	Model   AiRequestTransformerPluginModel    `json:"model"`
@@ -885,32 +894,32 @@ type Llm struct {
 	RouteType AiRequestTransformerPluginRouteType `json:"route_type"`
 }
 
-func (l *Llm) GetAuth() *AiRequestTransformerPluginAuth {
-	if l == nil {
+func (a *AiRequestTransformerPluginLlm) GetAuth() *AiRequestTransformerPluginAuth {
+	if a == nil {
 		return nil
 	}
-	return l.Auth
+	return a.Auth
 }
 
-func (l *Llm) GetLogging() *AiRequestTransformerPluginLogging {
-	if l == nil {
+func (a *AiRequestTransformerPluginLlm) GetLogging() *AiRequestTransformerPluginLogging {
+	if a == nil {
 		return nil
 	}
-	return l.Logging
+	return a.Logging
 }
 
-func (l *Llm) GetModel() AiRequestTransformerPluginModel {
-	if l == nil {
+func (a *AiRequestTransformerPluginLlm) GetModel() AiRequestTransformerPluginModel {
+	if a == nil {
 		return AiRequestTransformerPluginModel{}
 	}
-	return l.Model
+	return a.Model
 }
 
-func (l *Llm) GetRouteType() AiRequestTransformerPluginRouteType {
-	if l == nil {
+func (a *AiRequestTransformerPluginLlm) GetRouteType() AiRequestTransformerPluginRouteType {
+	if a == nil {
 		return AiRequestTransformerPluginRouteType("")
 	}
-	return l.RouteType
+	return a.RouteType
 }
 
 type AiRequestTransformerPluginConfig struct {
@@ -925,8 +934,8 @@ type AiRequestTransformerPluginConfig struct {
 	// An integer representing a port number between 0 and 65535, inclusive.
 	HTTPSProxyPort *int64 `default:"null" json:"https_proxy_port"`
 	// Verify the TLS certificate of the AI upstream service.
-	HTTPSVerify *bool `default:"true" json:"https_verify"`
-	Llm         Llm   `json:"llm"`
+	HTTPSVerify *bool                         `default:"true" json:"https_verify"`
+	Llm         AiRequestTransformerPluginLlm `json:"llm"`
 	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
 	MaxRequestBodySize *int64 `default:"8192" json:"max_request_body_size"`
 	// Use this prompt to tune the LLM system/assistant message for the incoming proxy request (from the client), and what you are expecting in return.
@@ -988,9 +997,9 @@ func (a *AiRequestTransformerPluginConfig) GetHTTPSVerify() *bool {
 	return a.HTTPSVerify
 }
 
-func (a *AiRequestTransformerPluginConfig) GetLlm() Llm {
+func (a *AiRequestTransformerPluginConfig) GetLlm() AiRequestTransformerPluginLlm {
 	if a == nil {
-		return Llm{}
+		return AiRequestTransformerPluginLlm{}
 	}
 	return a.Llm
 }

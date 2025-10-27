@@ -7,13 +7,13 @@ import (
 )
 
 type Call struct {
-	Input         types.String `tfsdk:"input"`
-	Inputs        *Inputs      `tfsdk:"inputs"`
-	Method        types.String `tfsdk:"method"`
-	Name          types.String `tfsdk:"name"`
-	Output        types.String `tfsdk:"output"`
-	Outputs       *Outputs     `tfsdk:"outputs"`
-	SslServerName types.String `tfsdk:"ssl_server_name"`
-	Timeout       types.Int64  `tfsdk:"timeout"`
-	URL           types.String `tfsdk:"url"`
+	Input         types.String               `tfsdk:"input"`
+	Inputs        *NodesInputs               `tfsdk:"inputs"`
+	Method        types.String               `tfsdk:"method"`
+	Name          types.String               `tfsdk:"name"`
+	Output        types.String               `tfsdk:"output"`
+	Outputs       *DatakitPluginNodesOutputs `tfsdk:"outputs"`
+	SslServerName types.String               `tfsdk:"ssl_server_name"`
+	Timeout       types.Int64                `tfsdk:"timeout"`
+	URL           types.String               `tfsdk:"url"`
 }

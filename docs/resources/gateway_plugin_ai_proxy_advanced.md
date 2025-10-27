@@ -126,6 +126,7 @@ resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadva
             embeddings_dimensions = 6
             gemini = {
               api_endpoint = "...my_api_endpoint..."
+              endpoint_id  = "...my_endpoint_id..."
               location_id  = "...my_location_id..."
               project_id   = "...my_project_id..."
             }
@@ -396,6 +397,7 @@ Optional:
 Optional:
 
 - `api_endpoint` (String) If running Gemini on Vertex, specify the regional API endpoint (hostname only).
+- `endpoint_id` (String) If running Gemini on Vertex Model Garden, specify the endpoint ID.
 - `location_id` (String) If running Gemini on Vertex, specify the location ID.
 - `project_id` (String) If running Gemini on Vertex, specify the project ID.
 
@@ -425,7 +427,7 @@ Optional:
 - `read_timeout` (Number) Default: 60000
 - `retries` (Number) The number of retries to execute upon failure to proxy. Default: 5
 - `slots` (Number) The number of slots in the load balancer algorithm. Default: 10000
-- `tokens_count_strategy` (String) What tokens to use for usage calculation. Available values are: `total_tokens` `prompt_tokens`, `completion_tokens` and `cost`. Default: "total-tokens"; must be one of ["completion-tokens", "cost", "prompt-tokens", "total-tokens"]
+- `tokens_count_strategy` (String) What tokens to use for usage calculation. Available values are: `total_tokens` `prompt_tokens`, `completion_tokens` and `cost`. Default: "total-tokens"; must be one of ["completion-tokens", "cost", "llm-accuracy", "prompt-tokens", "total-tokens"]
 - `write_timeout` (Number) Default: 60000
 
 

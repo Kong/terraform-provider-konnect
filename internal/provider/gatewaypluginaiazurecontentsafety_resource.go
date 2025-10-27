@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
@@ -50,7 +51,7 @@ type GatewayPluginAiAzureContentSafetyResourceModel struct {
 	Enabled        types.Bool                               `tfsdk:"enabled"`
 	ID             types.String                             `tfsdk:"id"`
 	InstanceName   types.String                             `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering               `tfsdk:"ordering"`
+	Ordering       *tfTypes.AcePluginOrdering               `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials                       `tfsdk:"partials"`
 	Protocols      []types.String                           `tfsdk:"protocols"`
 	Route          *tfTypes.Set                             `tfsdk:"route"`
@@ -137,6 +138,19 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 						Required:    true,
 						Description: `Full URL, inc protocol, of the Azure Content Safety instance.`,
 					},
+					"guarding_mode": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     stringdefault.StaticString(`INPUT`),
+						Description: `The guard mode to use for the request. Default: "INPUT"; must be one of ["BOTH", "INPUT", "OUTPUT"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"BOTH",
+								"INPUT",
+								"OUTPUT",
+							),
+						},
+					},
 					"halt_on_blocklist_hit": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -155,11 +169,23 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 							),
 						},
 					},
+					"response_buffer_size": schema.Float64Attribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     float64default.StaticFloat64(100),
+						Description: `The amount of bytes receiving from upstream to be buffered before sending to the guardrails service. This only applies to the response content guard. Default: 100`,
+					},
 					"reveal_failure_reason": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     booldefault.StaticBool(true),
 						Description: `Set true to tell the caller why their request was rejected, if so. Default: true`,
+					},
+					"stop_on_error": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(true),
+						Description: `Stop processing if an error occurs. Default: true`,
 					},
 					"text_source": schema.StringAttribute{
 						Computed:    true,

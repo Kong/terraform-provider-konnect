@@ -3,9 +3,11 @@
 package types
 
 type Nodes struct {
-	Call     *Call     `queryParam:"inline" tfsdk:"call" tfPlanOnly:"true"`
-	Exit     *Exit     `queryParam:"inline" tfsdk:"exit" tfPlanOnly:"true"`
-	Jq       *Jq       `queryParam:"inline" tfsdk:"jq" tfPlanOnly:"true"`
-	Property *Property `queryParam:"inline" tfsdk:"property" tfPlanOnly:"true"`
-	Static   *Static   `queryParam:"inline" tfsdk:"static" tfPlanOnly:"true"`
+	Branch   *Branch     `queryParam:"inline" tfsdk:"branch" tfPlanOnly:"true"`
+	Cache    *NodesCache `queryParam:"inline" tfsdk:"cache" tfPlanOnly:"true"`
+	Call     *Call       `queryParam:"inline" tfsdk:"call" tfPlanOnly:"true"`
+	Exit     *Exit       `queryParam:"inline" tfsdk:"exit" tfPlanOnly:"true"`
+	Jq       *Jq         `queryParam:"inline" tfsdk:"jq" tfPlanOnly:"true"`
+	Property *Property   `queryParam:"inline" tfsdk:"property" tfPlanOnly:"true"`
+	Static   *Static     `queryParam:"inline" tfsdk:"static" tfPlanOnly:"true"`
 }

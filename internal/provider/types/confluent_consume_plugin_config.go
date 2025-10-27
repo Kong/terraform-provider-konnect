@@ -15,8 +15,11 @@ type ConfluentConsumePluginConfig struct {
 	CommitStrategy          types.String                          `tfsdk:"commit_strategy"`
 	ConfluentCloudAPIKey    types.String                          `tfsdk:"confluent_cloud_api_key"`
 	ConfluentCloudAPISecret types.String                          `tfsdk:"confluent_cloud_api_secret"`
+	DlqTopic                types.String                          `tfsdk:"dlq_topic"`
+	EnableDlq               types.Bool                            `tfsdk:"enable_dlq"`
 	Keepalive               types.Int64                           `tfsdk:"keepalive"`
 	KeepaliveEnabled        types.Bool                            `tfsdk:"keepalive_enabled"`
+	MessageByLuaFunctions   []types.String                        `tfsdk:"message_by_lua_functions"`
 	MessageDeserializer     types.String                          `tfsdk:"message_deserializer"`
 	Mode                    types.String                          `tfsdk:"mode"`
 	SchemaRegistry          *ConfluentConsumePluginSchemaRegistry `tfsdk:"schema_registry"`

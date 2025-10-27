@@ -53,7 +53,7 @@ type GatewayPluginAiResponseTransformerResourceModel struct {
 	Enabled        types.Bool                                `tfsdk:"enabled"`
 	ID             types.String                              `tfsdk:"id"`
 	InstanceName   types.String                              `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering                `tfsdk:"ordering"`
+	Ordering       *tfTypes.AcePluginOrdering                `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials                        `tfsdk:"partials"`
 	Protocols      []types.String                            `tfsdk:"protocols"`
 	Route          *tfTypes.Set                              `tfsdk:"route"`
@@ -258,6 +258,7 @@ func (r *GatewayPluginAiResponseTransformerResource) Schema(ctx context.Context,
 											"gemini": types.ObjectType{
 												AttrTypes: map[string]attr.Type{
 													`api_endpoint`: types.StringType,
+													`endpoint_id`:  types.StringType,
 													`location_id`:  types.StringType,
 													`project_id`:   types.StringType,
 												},
@@ -376,6 +377,7 @@ func (r *GatewayPluginAiResponseTransformerResource) Schema(ctx context.Context,
 												Optional: true,
 												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
 													"api_endpoint": types.StringType,
+													"endpoint_id":  types.StringType,
 													"location_id":  types.StringType,
 													"project_id":   types.StringType,
 												})),
@@ -383,6 +385,10 @@ func (r *GatewayPluginAiResponseTransformerResource) Schema(ctx context.Context,
 													"api_endpoint": schema.StringAttribute{
 														Optional:    true,
 														Description: `If running Gemini on Vertex, specify the regional API endpoint (hostname only).`,
+													},
+													"endpoint_id": schema.StringAttribute{
+														Optional:    true,
+														Description: `If running Gemini on Vertex Model Garden, specify the endpoint ID.`,
 													},
 													"location_id": schema.StringAttribute{
 														Optional:    true,

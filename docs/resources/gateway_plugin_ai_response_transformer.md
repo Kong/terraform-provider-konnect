@@ -64,6 +64,7 @@ resource "konnect_gateway_plugin_ai_response_transformer" "my_gatewaypluginaires
           embeddings_dimensions = 4
           gemini = {
             api_endpoint = "...my_api_endpoint..."
+            endpoint_id  = "...my_endpoint_id..."
             location_id  = "...my_location_id..."
             project_id   = "...my_project_id..."
           }
@@ -259,6 +260,7 @@ Optional:
 Optional:
 
 - `api_endpoint` (String) If running Gemini on Vertex, specify the regional API endpoint (hostname only).
+- `endpoint_id` (String) If running Gemini on Vertex Model Garden, specify the endpoint ID.
 - `location_id` (String) If running Gemini on Vertex, specify the location ID.
 - `project_id` (String) If running Gemini on Vertex, specify the project ID.
 

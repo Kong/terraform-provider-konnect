@@ -8,8 +8,11 @@ import (
 
 type AiAwsGuardrailsPluginConfig struct {
 	AwsAccessKeyID     types.String  `tfsdk:"aws_access_key_id"`
+	AwsAssumeRoleArn   types.String  `tfsdk:"aws_assume_role_arn"`
 	AwsRegion          types.String  `tfsdk:"aws_region"`
+	AwsRoleSessionName types.String  `tfsdk:"aws_role_session_name"`
 	AwsSecretAccessKey types.String  `tfsdk:"aws_secret_access_key"`
+	AwsStsEndpointURL  types.String  `tfsdk:"aws_sts_endpoint_url"`
 	GuardingMode       types.String  `tfsdk:"guarding_mode"`
 	GuardrailsID       types.String  `tfsdk:"guardrails_id"`
 	GuardrailsVersion  types.String  `tfsdk:"guardrails_version"`

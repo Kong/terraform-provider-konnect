@@ -9,6 +9,7 @@ import (
 type SessionPluginConfig struct {
 	AbsoluteTimeout         types.Float64  `tfsdk:"absolute_timeout"`
 	Audience                types.String   `tfsdk:"audience"`
+	Bind                    []types.String `tfsdk:"bind"`
 	CookieDomain            types.String   `tfsdk:"cookie_domain"`
 	CookieHTTPOnly          types.Bool     `tfsdk:"cookie_http_only"`
 	CookieName              types.String   `tfsdk:"cookie_name"`

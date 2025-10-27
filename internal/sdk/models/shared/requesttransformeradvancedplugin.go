@@ -358,7 +358,7 @@ type RequestTransformerAdvancedPluginConfig struct {
 	Add    *RequestTransformerAdvancedPluginAdd    `json:"add,omitempty"`
 	Allow  *Allow                                  `json:"allow,omitempty"`
 	Append *RequestTransformerAdvancedPluginAppend `json:"append,omitempty"`
-	// Specify whether dots (for example, `customers.info.phone`) should be treated as part of a property name or used to descend into nested JSON objects.  See [Arrays and nested objects](#arrays-and-nested-objects).
+	// Specify whether dots (for example, `customers.info.phone`) should be treated as part of a property name or used to descend into nested JSON objects.
 	DotsInKeys *bool `default:"true" json:"dots_in_keys"`
 	// A string representing an HTTP method, such as GET, POST, PUT, or DELETE. The string must contain only uppercase letters.
 	HTTPMethod *string                                  `default:"null" json:"http_method"`

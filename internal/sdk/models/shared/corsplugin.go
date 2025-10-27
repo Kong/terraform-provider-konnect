@@ -138,7 +138,7 @@ type CorsPluginConfig struct {
 	MaxAge *float64 `default:"null" json:"max_age"`
 	// 'Value for the `Access-Control-Allow-Methods` header. Available options include `GET`, `HEAD`, `PUT`, `PATCH`, `POST`, `DELETE`, `OPTIONS`, `TRACE`, `CONNECT`. By default, all options are allowed.'
 	Methods []Methods `json:"methods,omitempty"`
-	// List of allowed domains for the `Access-Control-Allow-Origin` header. If you want to allow all origins, add `*` as a single value to this configuration field. The accepted values can either be flat strings or PCRE regexes.
+	// List of allowed domains for the `Access-Control-Allow-Origin` header. If you want to allow all origins, add `*` as a single value to this configuration field. The accepted values can either be flat strings or PCRE regexes. NOTE: If you don't specify any allowed domains, all origins are allowed.
 	Origins []string `json:"origins"`
 	// A boolean value that instructs the plugin to proxy the `OPTIONS` preflight request to the Upstream service.
 	PreflightContinue *bool `default:"false" json:"preflight_continue"`
