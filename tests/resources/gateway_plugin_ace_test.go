@@ -11,8 +11,6 @@ func TestGatewayPluginAce(t *testing.T) {
 	t.Parallel()
 	t.Skip("ACE plugin is behind a feature flag")
 
-	// We create a plugin definition for a built in plugin, but use
-	// the custom plugin resource to ensure it works
 	t.Run("smoke", func(t *testing.T) {
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
