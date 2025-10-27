@@ -82,7 +82,10 @@ func (r *PortalPageResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Contains a unique identifier used for this resource.`,
 			},
 			"parent_page_id": schema.StringAttribute{

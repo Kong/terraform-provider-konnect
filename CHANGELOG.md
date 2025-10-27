@@ -15,6 +15,10 @@
   * `gateway_plugin_solace_consume`
   * `gateway_plugin_solace_log`
 
+### Bug Fixes
+* Fix perpetual diff in `konnect_gateway_plugin_request_callout` and `konnect_gateway_plugin_response_transformer`
+* Fix unnecessary planned changes seen in child resources when parent was updated.
+
 ## 3.3.0
 > Released on 2025/10/14
 

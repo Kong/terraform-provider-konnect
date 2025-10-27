@@ -81,7 +81,10 @@ func (r *PortalSnippetResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Contains a unique identifier used for this resource.`,
 			},
 			"name": schema.StringAttribute{

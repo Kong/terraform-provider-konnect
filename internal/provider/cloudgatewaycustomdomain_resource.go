@@ -14,6 +14,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/int64planmodifier"
+	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
@@ -89,7 +91,10 @@ func (r *CloudGatewayCustomDomainResource) Schema(ctx context.Context, req resou
 				Description: `Requires replacement if changed.`,
 			},
 			"created_at": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `An RFC-3339 timestamp representation of custom domain creation date.`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -105,11 +110,17 @@ func (r *CloudGatewayCustomDomainResource) Schema(ctx context.Context, req resou
 			},
 			"entity_version": schema.Int64Attribute{
 				Computed: true,
+				PlanModifiers: []planmodifier.Int64{
+					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
+				},
 				MarkdownDescription: `Monotonically-increasing version count of the custom domain, to indicate the order of updates to the custom` + "\n" +
 					`domain.`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 			},
 			"sni_id": schema.StringAttribute{
 				Computed: true,
@@ -117,7 +128,10 @@ func (r *CloudGatewayCustomDomainResource) Schema(ctx context.Context, req resou
 					`via the control-planes API for this custom domain's control-plane.`,
 			},
 			"state": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `State of the custom domain. must be one of ["created", "initializing", "ready", "terminating", "terminated", "error"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
@@ -132,6 +146,9 @@ func (r *CloudGatewayCustomDomainResource) Schema(ctx context.Context, req resou
 			},
 			"state_metadata": schema.SingleNestedAttribute{
 				Computed: true,
+				PlanModifiers: []planmodifier.Object{
+					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+				},
 				Attributes: map[string]schema.Attribute{
 					"reason": schema.StringAttribute{
 						Computed:    true,
@@ -145,7 +162,10 @@ func (r *CloudGatewayCustomDomainResource) Schema(ctx context.Context, req resou
 				Description: `Metadata describing the backing state of the custom domain and why it may be in an erroneous state.`,
 			},
 			"updated_at": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `An RFC-3339 timestamp representation of custom domain update date.`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
