@@ -132,10 +132,17 @@ func (r *PortalCustomDomainResourceModel) ToSharedCreatePortalCustomDomainReques
 	} else {
 		customPrivateKey = nil
 	}
+	skipCaCheck := new(bool)
+	if !r.Ssl.SkipCaCheck.IsUnknown() && !r.Ssl.SkipCaCheck.IsNull() {
+		*skipCaCheck = r.Ssl.SkipCaCheck.ValueBool()
+	} else {
+		skipCaCheck = nil
+	}
 	ssl := shared.CreatePortalCustomDomainSSL{
 		DomainVerificationMethod: domainVerificationMethod,
 		CustomCertificate:        customCertificate,
 		CustomPrivateKey:         customPrivateKey,
+		SkipCaCheck:              skipCaCheck,
 	}
 	out := shared.CreatePortalCustomDomainRequest{
 		Hostname: hostname,
