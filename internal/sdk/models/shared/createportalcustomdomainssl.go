@@ -39,6 +39,9 @@ type CreatePortalCustomDomainSSL struct {
 	CustomCertificate *string `json:"custom_certificate,omitempty"`
 	// Custom certificate private key to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate"
 	CustomPrivateKey *string `json:"custom_private_key,omitempty"`
+	// Advanced option. If true, the custom certificate is served exactly as provided, without attempting to bundle against a public trust store. Required for certificates issued by an internal/private CA.
+	//
+	SkipCaCheck *bool `json:"skip_ca_check,omitempty"`
 }
 
 func (c *CreatePortalCustomDomainSSL) GetDomainVerificationMethod() *DomainVerificationMethod {
@@ -60,4 +63,11 @@ func (c *CreatePortalCustomDomainSSL) GetCustomPrivateKey() *string {
 		return nil
 	}
 	return c.CustomPrivateKey
+}
+
+func (c *CreatePortalCustomDomainSSL) GetSkipCaCheck() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.SkipCaCheck
 }

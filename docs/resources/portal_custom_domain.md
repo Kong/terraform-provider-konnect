@@ -21,6 +21,7 @@ resource "konnect_portal_custom_domain" "my_portalcustomdomain" {
     custom_certificate         = "...my_custom_certificate..."
     custom_private_key         = "...my_custom_private_key..."
     domain_verification_method = "custom_certificate"
+    skip_ca_check              = true
   }
 }
 ```
@@ -49,11 +50,11 @@ Optional:
 - `custom_certificate` (String) Custom certificate to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate". Requires replacement if changed.
 - `custom_private_key` (String) Custom certificate private key to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate". Requires replacement if changed.
 - `domain_verification_method` (String) must be one of ["custom_certificate", "http"]; Requires replacement if changed.
+- `skip_ca_check` (Boolean) Advanced option. If true, the custom certificate is served exactly as provided, without attempting to bundle against a public trust store. Required for certificates issued by an internal/private CA. Requires replacement if changed.
 
 Read-Only:
 
 - `expires_at` (String) An ISO-8601 timestamp representation of the ssl certificate expiration date.
-- `skip_ca_check` (Boolean) True when the provided certificate chain is served as-is without validation against a public trust store.
 - `uploaded_at` (String) An ISO-8601 timestamp representation of the ssl certificate upload date.
 - `validation_errors` (List of String)
 - `verification_status` (String) must be one of ["verified", "pending", "error"]
