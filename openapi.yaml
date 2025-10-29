@@ -54594,6 +54594,11 @@ components:
           description: Custom certificate private key to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate"
           type: string
           nullable: false
+        skip_ca_check:
+          description: |
+            Advanced option. If true, the custom certificate is served exactly as provided, without attempting to bundle against a public trust store. Required for certificates issued by an internal/private CA.
+          type: boolean
+          nullable: false
       additionalProperties: false
     CreateApiKeyPayload:
       type: object
