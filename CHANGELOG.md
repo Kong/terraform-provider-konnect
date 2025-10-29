@@ -1,7 +1,7 @@
 # Changelog
 
 ## 3.4.0
-> Released on 2025/??/??
+> Released on 2025/10/29
 
 ### Features
 * Add support for new Gateway 3.12 plugins:
