@@ -49,7 +49,7 @@ type GatewayPluginMockingResourceModel struct {
 	Enabled        types.Bool                   `tfsdk:"enabled"`
 	ID             types.String                 `tfsdk:"id"`
 	InstanceName   types.String                 `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering   `tfsdk:"ordering"`
+	Ordering       *tfTypes.AcePluginOrdering   `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials           `tfsdk:"partials"`
 	Protocols      []types.String               `tfsdk:"protocols"`
 	Route          *tfTypes.Set                 `tfsdk:"route"`
@@ -116,8 +116,7 @@ func (r *GatewayPluginMockingResource) Schema(ctx context.Context, req resource.
 					"min_delay_time": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     float64default.StaticFloat64(0.001),
-						Description: `The minimum value in seconds of delay time. Set this value when ` + "`" + `random_delay` + "`" + ` is enabled and you want to adjust the default. The value must be less than the ` + "`" + `max_delay_time` + "`" + `. Default: 0.001`,
+						Description: `The minimum value in seconds of delay time. Set this value when ` + "`" + `random_delay` + "`" + ` is enabled and you want to adjust the default. The value must be less than the ` + "`" + `max_delay_time` + "`" + `.`,
 					},
 					"random_delay": schema.BoolAttribute{
 						Computed:    true,

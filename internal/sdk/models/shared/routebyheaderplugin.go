@@ -79,13 +79,13 @@ func (r *RouteByHeaderPluginPartials) GetPath() *string {
 }
 
 type RouteByHeaderPluginRules struct {
-	Condition    map[string]any `json:"condition"`
-	UpstreamName string         `json:"upstream_name"`
+	Condition    map[string]string `json:"condition,omitempty"`
+	UpstreamName string            `json:"upstream_name"`
 }
 
-func (r *RouteByHeaderPluginRules) GetCondition() map[string]any {
+func (r *RouteByHeaderPluginRules) GetCondition() map[string]string {
 	if r == nil {
-		return map[string]any{}
+		return nil
 	}
 	return r.Condition
 }

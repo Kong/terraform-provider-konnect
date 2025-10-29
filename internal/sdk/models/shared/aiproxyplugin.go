@@ -317,36 +317,36 @@ func (e *AiProxyPluginLlmFormat) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type Logging struct {
+type AiProxyPluginLogging struct {
 	// If enabled, will log the request and response body into the Kong log plugin(s) output.
 	LogPayloads *bool `default:"false" json:"log_payloads"`
 	// If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.
 	LogStatistics *bool `default:"false" json:"log_statistics"`
 }
 
-func (l Logging) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(l, "", false)
+func (a AiProxyPluginLogging) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (l *Logging) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
+func (a *AiProxyPluginLogging) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (l *Logging) GetLogPayloads() *bool {
-	if l == nil {
+func (a *AiProxyPluginLogging) GetLogPayloads() *bool {
+	if a == nil {
 		return nil
 	}
-	return l.LogPayloads
+	return a.LogPayloads
 }
 
-func (l *Logging) GetLogStatistics() *bool {
-	if l == nil {
+func (a *AiProxyPluginLogging) GetLogStatistics() *bool {
+	if a == nil {
 		return nil
 	}
-	return l.LogStatistics
+	return a.LogStatistics
 }
 
 type Bedrock struct {
@@ -488,6 +488,8 @@ func (c *Cohere) GetWaitForModel() *bool {
 type Gemini struct {
 	// If running Gemini on Vertex, specify the regional API endpoint (hostname only).
 	APIEndpoint *string `default:"null" json:"api_endpoint"`
+	// If running Gemini on Vertex Model Garden, specify the endpoint ID.
+	EndpointID *string `default:"null" json:"endpoint_id"`
 	// If running Gemini on Vertex, specify the location ID.
 	LocationID *string `default:"null" json:"location_id"`
 	// If running Gemini on Vertex, specify the project ID.
@@ -510,6 +512,13 @@ func (g *Gemini) GetAPIEndpoint() *string {
 		return nil
 	}
 	return g.APIEndpoint
+}
+
+func (g *Gemini) GetEndpointID() *string {
+	if g == nil {
+		return nil
+	}
+	return g.EndpointID
 }
 
 func (g *Gemini) GetLocationID() *string {
@@ -985,7 +994,7 @@ type AiProxyPluginConfig struct {
 	GenaiCategory *AiProxyPluginGenaiCategory `default:"text/generation" json:"genai_category"`
 	// LLM input and output format and schema to use
 	LlmFormat *AiProxyPluginLlmFormat `default:"openai" json:"llm_format"`
-	Logging   *Logging                `json:"logging"`
+	Logging   *AiProxyPluginLogging   `json:"logging"`
 	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
 	MaxRequestBodySize *int64 `default:"8192" json:"max_request_body_size"`
 	Model              Model  `json:"model"`
@@ -1029,7 +1038,7 @@ func (a *AiProxyPluginConfig) GetLlmFormat() *AiProxyPluginLlmFormat {
 	return a.LlmFormat
 }
 
-func (a *AiProxyPluginConfig) GetLogging() *Logging {
+func (a *AiProxyPluginConfig) GetLogging() *AiProxyPluginLogging {
 	if a == nil {
 		return nil
 	}

@@ -53,7 +53,7 @@ type GatewayPluginAiSemanticPromptGuardResourceModel struct {
 	Enabled        types.Bool                                `tfsdk:"enabled"`
 	ID             types.String                              `tfsdk:"id"`
 	InstanceName   types.String                              `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering                `tfsdk:"ordering"`
+	Ordering       *tfTypes.AcePluginOrdering                `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials                        `tfsdk:"partials"`
 	Protocols      []types.String                            `tfsdk:"protocols"`
 	Route          *tfTypes.Set                              `tfsdk:"route"`
@@ -212,7 +212,13 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										})),
 										Attributes: map[string]schema.Attribute{
 											"azure": schema.SingleNestedAttribute{
-												Required: true,
+												Computed: true,
+												Optional: true,
+												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+													"api_version":   types.StringType,
+													"deployment_id": types.StringType,
+													"instance":      types.StringType,
+												})),
 												Attributes: map[string]schema.Attribute{
 													"api_version": schema.StringAttribute{
 														Computed:    true,
@@ -422,8 +428,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 							"threshold": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     float64default.StaticFloat64(0.5),
-								Description: `Threshold for the similarity score to be considered a match. Default: 0.5`,
+								Description: `Threshold for the similarity score to be considered a match.`,
 							},
 						},
 					},

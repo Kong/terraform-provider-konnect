@@ -54,7 +54,7 @@ type GatewayPluginAiSanitizerResourceModel struct {
 	Enabled        types.Bool                       `tfsdk:"enabled"`
 	ID             types.String                     `tfsdk:"id"`
 	InstanceName   types.String                     `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering       `tfsdk:"ordering"`
+	Ordering       *tfTypes.AcePluginOrdering       `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials               `tfsdk:"partials"`
 	Protocols      []types.String                   `tfsdk:"protocols"`
 	Route          *tfTypes.Set                     `tfsdk:"route"`
@@ -78,6 +78,7 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 					"anonymize": types.ListType{
 						ElemType: types.StringType,
 					},
+					"block_if_detected": types.BoolType,
 					"custom_patterns": types.ListType{
 						ElemType: types.ObjectType{
 							AttrTypes: map[string]attr.Type{
@@ -92,6 +93,7 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 					"port":              types.Float64Type,
 					"recover_redacted":  types.BoolType,
 					"redact_type":       types.StringType,
+					"sanitization_mode": types.StringType,
 					"scheme":            types.StringType,
 					"stop_on_error":     types.BoolType,
 					"timeout":           types.Float64Type,
@@ -103,6 +105,12 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("all_and_credentials")})),
 						ElementType: types.StringType,
 						Description: `List of types to be anonymized. Default: ["all_and_credentials"]`,
+					},
+					"block_if_detected": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `Whether to block requests containing PII data. Default: false`,
 					},
 					"custom_patterns": schema.ListNestedAttribute{
 						Optional: true,
@@ -128,10 +136,8 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 									},
 								},
 								"score": schema.Float64Attribute{
-									Computed:    true,
-									Optional:    true,
-									Default:     float64default.StaticFloat64(0.5),
-									Description: `Default: 0.5`,
+									Computed: true,
+									Optional: true,
 									Validators: []validator.Float64{
 										float64validator.Between(0, 1),
 									},
@@ -162,7 +168,7 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 						Computed:    true,
 						Optional:    true,
 						Default:     booldefault.StaticBool(true),
-						Description: `Whether to recover redacted data. Default: true`,
+						Description: `Whether to recover redacted data. This doesn't apply to the redacted output. Default: true`,
 					},
 					"redact_type": schema.StringAttribute{
 						Computed:    true,
@@ -173,6 +179,19 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 							stringvalidator.OneOf(
 								"placeholder",
 								"synthetic",
+							),
+						},
+					},
+					"sanitization_mode": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     stringdefault.StaticString(`INPUT`),
+						Description: `The sanitization mode to use for the request. Default: "INPUT"; must be one of ["BOTH", "INPUT", "OUTPUT"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"BOTH",
+								"INPUT",
+								"OUTPUT",
 							),
 						},
 					},

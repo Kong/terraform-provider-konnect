@@ -55,6 +55,7 @@ func (r *GatewayVaultResource) Schema(ctx context.Context, req resource.SchemaRe
 		Attributes: map[string]schema.Attribute{
 			"config": schema.StringAttribute{
 				CustomType:  jsontypes.NormalizedType{},
+				Computed:    true,
 				Optional:    true,
 				Description: `The configuration properties for the Vault which can be found on the vaults' documentation page. Parsed as JSON.`,
 			},

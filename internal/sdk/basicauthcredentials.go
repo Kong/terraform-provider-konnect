@@ -276,7 +276,7 @@ func (s *BasicAuthCredentials) DeleteBasicAuthWithConsumer(ctx context.Context, 
 
 }
 
-// GetBasicAuthWithConsumer - Fetch a Basic-auth credential associated with a Consumer
+// GetBasicAuthWithConsumer - Get a Basic-auth credential associated with a Consumer
 // Get a Basic-auth credential associated with a Consumer using ID.
 func (s *BasicAuthCredentials) GetBasicAuthWithConsumer(ctx context.Context, request operations.GetBasicAuthWithConsumerRequest, opts ...operations.Option) (*operations.GetBasicAuthWithConsumerResponse, error) {
 	o := operations.Options{}

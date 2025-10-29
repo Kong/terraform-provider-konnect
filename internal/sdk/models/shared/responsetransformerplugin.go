@@ -291,11 +291,11 @@ func (r *ResponseTransformerPluginReplace) GetJSONTypes() []ResponseTransformerP
 }
 
 type ResponseTransformerPluginConfig struct {
-	Add     *ResponseTransformerPluginAdd     `json:"add"`
-	Append  *ResponseTransformerPluginAppend  `json:"append"`
-	Remove  *ResponseTransformerPluginRemove  `json:"remove"`
-	Rename  *ResponseTransformerPluginRename  `json:"rename"`
-	Replace *ResponseTransformerPluginReplace `json:"replace"`
+	Add     *ResponseTransformerPluginAdd     `json:"add,omitempty"`
+	Append  *ResponseTransformerPluginAppend  `json:"append,omitempty"`
+	Remove  *ResponseTransformerPluginRemove  `json:"remove,omitempty"`
+	Rename  *ResponseTransformerPluginRename  `json:"rename,omitempty"`
+	Replace *ResponseTransformerPluginReplace `json:"replace,omitempty"`
 }
 
 func (r *ResponseTransformerPluginConfig) GetAdd() *ResponseTransformerPluginAdd {

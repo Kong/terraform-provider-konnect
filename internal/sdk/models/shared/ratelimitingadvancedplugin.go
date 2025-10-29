@@ -521,6 +521,56 @@ func (e *RateLimitingAdvancedPluginStrategy) UnmarshalJSON(data []byte) error {
 	}
 }
 
+type Throttling struct {
+	// Determines if the throttling feature is enabled or not
+	Enabled *bool `default:"false" json:"enabled"`
+	// The period between two successive retries for an individual request (in seconds)
+	Interval *float64 `default:"5" json:"interval"`
+	// The maximum number of requests allowed for throttling
+	QueueLimit *float64 `default:"5" json:"queue_limit"`
+	// The maximum number of retries for an individual request
+	RetryTimes *float64 `default:"3" json:"retry_times"`
+}
+
+func (t Throttling) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *Throttling) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (t *Throttling) GetEnabled() *bool {
+	if t == nil {
+		return nil
+	}
+	return t.Enabled
+}
+
+func (t *Throttling) GetInterval() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.Interval
+}
+
+func (t *Throttling) GetQueueLimit() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.QueueLimit
+}
+
+func (t *Throttling) GetRetryTimes() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.RetryTimes
+}
+
 // RateLimitingAdvancedPluginWindowType - Sets the time window type to either `sliding` (default) or `fixed`. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters.
 type RateLimitingAdvancedPluginWindowType string
 
@@ -583,7 +633,8 @@ type RateLimitingAdvancedPluginConfig struct {
 	// The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local` and `cluster`.
 	Strategy *RateLimitingAdvancedPluginStrategy `default:"local" json:"strategy"`
 	// How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 will sync the counters in the specified number of seconds. The minimum allowed interval is 0.02 seconds (20ms).
-	SyncRate *float64 `default:"null" json:"sync_rate"`
+	SyncRate   *float64    `default:"null" json:"sync_rate"`
+	Throttling *Throttling `json:"throttling"`
 	// One or more window sizes to apply a limit to (defined in seconds). There must be a matching number of window limits and sizes specified.
 	WindowSize []float64 `json:"window_size"`
 	// Sets the time window type to either `sliding` (default) or `fixed`. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters.
@@ -725,6 +776,13 @@ func (r *RateLimitingAdvancedPluginConfig) GetSyncRate() *float64 {
 		return nil
 	}
 	return r.SyncRate
+}
+
+func (r *RateLimitingAdvancedPluginConfig) GetThrottling() *Throttling {
+	if r == nil {
+		return nil
+	}
+	return r.Throttling
 }
 
 func (r *RateLimitingAdvancedPluginConfig) GetWindowSize() []float64 {

@@ -7,8 +7,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
-	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -24,7 +22,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 )
 
@@ -51,7 +48,7 @@ type GatewayPluginFileLogResourceModel struct {
 	Enabled        types.Bool                  `tfsdk:"enabled"`
 	ID             types.String                `tfsdk:"id"`
 	InstanceName   types.String                `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering  `tfsdk:"ordering"`
+	Ordering       *tfTypes.AcePluginOrdering  `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials          `tfsdk:"partials"`
 	Protocols      []types.String              `tfsdk:"protocols"`
 	Route          *tfTypes.Set                `tfsdk:"route"`
@@ -74,11 +71,8 @@ func (r *GatewayPluginFileLogResource) Schema(ctx context.Context, req resource.
 					"custom_fields_by_lua": schema.MapAttribute{
 						Computed:    true,
 						Optional:    true,
-						ElementType: jsontypes.NormalizedType{},
+						ElementType: types.StringType,
 						Description: `Lua code as a key-value map`,
-						Validators: []validator.Map{
-							mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-						},
 					},
 					"path": schema.StringAttribute{
 						Required:    true,

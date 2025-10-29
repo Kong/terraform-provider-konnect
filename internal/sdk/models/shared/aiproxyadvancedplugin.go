@@ -203,6 +203,7 @@ type AiProxyAdvancedPluginTokensCountStrategy string
 const (
 	AiProxyAdvancedPluginTokensCountStrategyCompletionTokens AiProxyAdvancedPluginTokensCountStrategy = "completion-tokens"
 	AiProxyAdvancedPluginTokensCountStrategyCost             AiProxyAdvancedPluginTokensCountStrategy = "cost"
+	AiProxyAdvancedPluginTokensCountStrategyLlmAccuracy      AiProxyAdvancedPluginTokensCountStrategy = "llm-accuracy"
 	AiProxyAdvancedPluginTokensCountStrategyPromptTokens     AiProxyAdvancedPluginTokensCountStrategy = "prompt-tokens"
 	AiProxyAdvancedPluginTokensCountStrategyTotalTokens      AiProxyAdvancedPluginTokensCountStrategy = "total-tokens"
 )
@@ -219,6 +220,8 @@ func (e *AiProxyAdvancedPluginTokensCountStrategy) UnmarshalJSON(data []byte) er
 	case "completion-tokens":
 		fallthrough
 	case "cost":
+		fallthrough
+	case "llm-accuracy":
 		fallthrough
 	case "prompt-tokens":
 		fallthrough
@@ -682,7 +685,7 @@ func (a *AiProxyAdvancedPluginHuggingface) GetWaitForModel() *bool {
 
 // AiProxyAdvancedPluginOptions - Key/value settings for the model
 type AiProxyAdvancedPluginOptions struct {
-	Azure       Azure                             `json:"azure"`
+	Azure       *Azure                            `json:"azure"`
 	Bedrock     *AiProxyAdvancedPluginBedrock     `json:"bedrock"`
 	Gemini      *AiProxyAdvancedPluginGemini      `json:"gemini"`
 	Huggingface *AiProxyAdvancedPluginHuggingface `json:"huggingface"`
@@ -695,15 +698,15 @@ func (a AiProxyAdvancedPluginOptions) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyAdvancedPluginOptions) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"azure"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AiProxyAdvancedPluginOptions) GetAzure() Azure {
+func (a *AiProxyAdvancedPluginOptions) GetAzure() *Azure {
 	if a == nil {
-		return Azure{}
+		return nil
 	}
 	return a.Azure
 }
@@ -1267,6 +1270,8 @@ func (a *AiProxyAdvancedPluginCohere) GetWaitForModel() *bool {
 type AiProxyAdvancedPluginConfigGemini struct {
 	// If running Gemini on Vertex, specify the regional API endpoint (hostname only).
 	APIEndpoint *string `default:"null" json:"api_endpoint"`
+	// If running Gemini on Vertex Model Garden, specify the endpoint ID.
+	EndpointID *string `default:"null" json:"endpoint_id"`
 	// If running Gemini on Vertex, specify the location ID.
 	LocationID *string `default:"null" json:"location_id"`
 	// If running Gemini on Vertex, specify the project ID.
@@ -1289,6 +1294,13 @@ func (a *AiProxyAdvancedPluginConfigGemini) GetAPIEndpoint() *string {
 		return nil
 	}
 	return a.APIEndpoint
+}
+
+func (a *AiProxyAdvancedPluginConfigGemini) GetEndpointID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.EndpointID
 }
 
 func (a *AiProxyAdvancedPluginConfigGemini) GetLocationID() *string {
@@ -1732,7 +1744,7 @@ type Targets struct {
 	Auth *AiProxyAdvancedPluginConfigAuth `json:"auth"`
 	// The semantic description of the target, required if using semantic load balancing. Specially, setting this to 'CATCHALL' will indicate such target to be used when no other targets match the semantic threshold.
 	Description *string                          `default:"null" json:"description"`
-	Logging     AiProxyAdvancedPluginLogging     `json:"logging"`
+	Logging     *AiProxyAdvancedPluginLogging    `json:"logging"`
 	Model       AiProxyAdvancedPluginConfigModel `json:"model"`
 	// The model's operation implementation, for this provider.
 	RouteType AiProxyAdvancedPluginRouteType `json:"route_type"`
@@ -1745,7 +1757,7 @@ func (t Targets) MarshalJSON() ([]byte, error) {
 }
 
 func (t *Targets) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"logging", "model", "route_type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"model", "route_type"}); err != nil {
 		return err
 	}
 	return nil
@@ -1765,9 +1777,9 @@ func (t *Targets) GetDescription() *string {
 	return t.Description
 }
 
-func (t *Targets) GetLogging() AiProxyAdvancedPluginLogging {
+func (t *Targets) GetLogging() *AiProxyAdvancedPluginLogging {
 	if t == nil {
-		return AiProxyAdvancedPluginLogging{}
+		return nil
 	}
 	return t.Logging
 }
@@ -2300,9 +2312,9 @@ type Vectordb struct {
 	// the desired dimensionality for the vectors
 	Dimensions int64 `json:"dimensions"`
 	// the distance metric to use for vector searches
-	DistanceMetric DistanceMetric             `json:"distance_metric"`
-	Pgvector       Pgvector                   `json:"pgvector"`
-	Redis          AiProxyAdvancedPluginRedis `json:"redis"`
+	DistanceMetric DistanceMetric              `json:"distance_metric"`
+	Pgvector       *Pgvector                   `json:"pgvector"`
+	Redis          *AiProxyAdvancedPluginRedis `json:"redis"`
 	// which vector database driver to use
 	Strategy AiProxyAdvancedPluginStrategy `json:"strategy"`
 	// the default similarity threshold for accepting semantic search results (float)
@@ -2323,16 +2335,16 @@ func (v *Vectordb) GetDistanceMetric() DistanceMetric {
 	return v.DistanceMetric
 }
 
-func (v *Vectordb) GetPgvector() Pgvector {
+func (v *Vectordb) GetPgvector() *Pgvector {
 	if v == nil {
-		return Pgvector{}
+		return nil
 	}
 	return v.Pgvector
 }
 
-func (v *Vectordb) GetRedis() AiProxyAdvancedPluginRedis {
+func (v *Vectordb) GetRedis() *AiProxyAdvancedPluginRedis {
 	if v == nil {
-		return AiProxyAdvancedPluginRedis{}
+		return nil
 	}
 	return v.Redis
 }

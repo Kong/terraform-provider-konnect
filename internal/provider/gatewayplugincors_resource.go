@@ -48,7 +48,7 @@ type GatewayPluginCorsResourceModel struct {
 	Enabled        types.Bool                 `tfsdk:"enabled"`
 	ID             types.String               `tfsdk:"id"`
 	InstanceName   types.String               `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering `tfsdk:"ordering"`
+	Ordering       *tfTypes.AcePluginOrdering `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials         `tfsdk:"partials"`
 	Protocols      []types.String             `tfsdk:"protocols"`
 	Route          *tfTypes.Set               `tfsdk:"route"`
@@ -134,7 +134,7 @@ func (r *GatewayPluginCorsResource) Schema(ctx context.Context, req resource.Sch
 					"origins": schema.ListAttribute{
 						Optional:    true,
 						ElementType: types.StringType,
-						Description: `List of allowed domains for the ` + "`" + `Access-Control-Allow-Origin` + "`" + ` header. If you want to allow all origins, add ` + "`" + `*` + "`" + ` as a single value to this configuration field. The accepted values can either be flat strings or PCRE regexes.`,
+						Description: `List of allowed domains for the ` + "`" + `Access-Control-Allow-Origin` + "`" + ` header. If you want to allow all origins, add ` + "`" + `*` + "`" + ` as a single value to this configuration field. The accepted values can either be flat strings or PCRE regexes. NOTE: If you don't specify any allowed domains, all origins are allowed.`,
 					},
 					"preflight_continue": schema.BoolAttribute{
 						Computed:    true,

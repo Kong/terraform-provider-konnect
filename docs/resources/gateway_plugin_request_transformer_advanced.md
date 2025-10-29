@@ -166,7 +166,7 @@ Optional:
 - `add` (Attributes) (see [below for nested schema](#nestedatt--config--add))
 - `allow` (Attributes) (see [below for nested schema](#nestedatt--config--allow))
 - `append` (Attributes) (see [below for nested schema](#nestedatt--config--append))
-- `dots_in_keys` (Boolean) Specify whether dots (for example, `customers.info.phone`) should be treated as part of a property name or used to descend into nested JSON objects.  See [Arrays and nested objects](#arrays-and-nested-objects). Default: true
+- `dots_in_keys` (Boolean) Specify whether dots (for example, `customers.info.phone`) should be treated as part of a property name or used to descend into nested JSON objects. Default: true
 - `http_method` (String) A string representing an HTTP method, such as GET, POST, PUT, or DELETE. The string must contain only uppercase letters.
 - `remove` (Attributes) (see [below for nested schema](#nestedatt--config--remove))
 - `rename` (Attributes) (see [below for nested schema](#nestedatt--config--rename))

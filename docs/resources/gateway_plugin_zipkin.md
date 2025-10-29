@@ -143,7 +143,7 @@ Optional:
 - `propagation` (Attributes) (see [below for nested schema](#nestedatt--config--propagation))
 - `queue` (Attributes) (see [below for nested schema](#nestedatt--config--queue))
 - `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 5000
-- `sample_ratio` (Number) How often to sample requests that do not contain trace IDs. Set to `0` to turn sampling off, or to `1` to sample **all** requests. Default: 0.001
+- `sample_ratio` (Number) How often to sample requests that do not contain trace IDs. Set to `0` to turn sampling off, or to `1` to sample **all** requests.
 - `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 5000
 - `static_tags` (Attributes List) The tags specified on this property will be added to the generated request traces. (see [below for nested schema](#nestedatt--config--static_tags))
 - `tags_header` (String) The Zipkin plugin will add extra headers to the tags associated with any HTTP requests that come with a header named as configured by this property. Default: "Zipkin-Tags"
@@ -166,7 +166,7 @@ Optional:
 Optional:
 
 - `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of ["-1", "1"]
-- `initial_retry_delay` (Number) Time in seconds before the initial retry is made for a failing batch. Default: 0.01
+- `initial_retry_delay` (Number) Time in seconds before the initial retry is made for a failing batch.
 - `max_batch_size` (Number) Maximum number of entries that can be processed at a time. Default: 1
 - `max_bytes` (Number) Maximum number of bytes that can be waiting on a queue, requires string content.
 - `max_coalescing_delay` (Number) Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler. Default: 1

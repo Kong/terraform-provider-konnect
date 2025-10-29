@@ -18,6 +18,7 @@ resource "konnect_gateway_plugin_ai_sanitizer" "my_gatewaypluginaisanitizer" {
     anonymize = [
       "ssn"
     ]
+    block_if_detected = false
     custom_patterns = [
       {
         name  = "...my_name..."
@@ -30,6 +31,7 @@ resource "konnect_gateway_plugin_ai_sanitizer" "my_gatewaypluginaisanitizer" {
     port              = 6.01
     recover_redacted  = true
     redact_type       = "placeholder"
+    sanitization_mode = "OUTPUT"
     scheme            = "...my_scheme..."
     stop_on_error     = false
     timeout           = 1.92
@@ -110,12 +112,14 @@ resource "konnect_gateway_plugin_ai_sanitizer" "my_gatewaypluginaisanitizer" {
 Optional:
 
 - `anonymize` (List of String) List of types to be anonymized. Default: ["all_and_credentials"]
+- `block_if_detected` (Boolean) Whether to block requests containing PII data. Default: false
 - `custom_patterns` (Attributes List) List of custom patterns to be used for anonymization (see [below for nested schema](#nestedatt--config--custom_patterns))
 - `host` (String) The host of the sanitizer. Default: "localhost"
 - `keepalive_timeout` (Number) The keepalive timeout for the established http connnection. Default: 60000
 - `port` (Number) The port of the sanitizer. Default: 8080
-- `recover_redacted` (Boolean) Whether to recover redacted data. Default: true
+- `recover_redacted` (Boolean) Whether to recover redacted data. This doesn't apply to the redacted output. Default: true
 - `redact_type` (String) What value to be used to redacted to. Default: "placeholder"; must be one of ["placeholder", "synthetic"]
+- `sanitization_mode` (String) The sanitization mode to use for the request. Default: "INPUT"; must be one of ["BOTH", "INPUT", "OUTPUT"]
 - `scheme` (String) The protocol can be http and https. Default: "http"
 - `stop_on_error` (Boolean) Stop processing if an error occurs. Default: true
 - `timeout` (Number) Connection timeout with the sanitizer. Default: 10000
@@ -127,7 +131,7 @@ Optional:
 
 - `name` (String) Not Null
 - `regex` (String) Not Null
-- `score` (Number) Default: 0.5
+- `score` (Number)
 
 
 

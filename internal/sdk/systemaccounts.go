@@ -216,7 +216,7 @@ func (s *SystemAccounts) PostSystemAccounts(ctx context.Context, request *shared
 
 }
 
-// GetSystemAccountsID - Fetch System Account
+// GetSystemAccountsID - Get a System Account
 // Returns the system account (SA) for the SA ID specified as a path parameter.
 func (s *SystemAccounts) GetSystemAccountsID(ctx context.Context, request operations.GetSystemAccountsIDRequest, opts ...operations.Option) (*operations.GetSystemAccountsIDResponse, error) {
 	o := operations.Options{}

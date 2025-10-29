@@ -126,6 +126,7 @@ resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadva
             embeddings_dimensions = 6
             gemini = {
               api_endpoint = "...my_api_endpoint..."
+              endpoint_id  = "...my_endpoint_id..."
               location_id  = "...my_location_id..."
               project_id   = "...my_project_id..."
             }
@@ -299,7 +300,7 @@ Optional:
 
 - `auth` (Attributes) (see [below for nested schema](#nestedatt--config--targets--auth))
 - `description` (String) The semantic description of the target, required if using semantic load balancing. Specially, setting this to 'CATCHALL' will indicate such target to be used when no other targets match the semantic threshold.
-- `logging` (Attributes) Not Null (see [below for nested schema](#nestedatt--config--targets--logging))
+- `logging` (Attributes) (see [below for nested schema](#nestedatt--config--targets--logging))
 - `model` (Attributes) Not Null (see [below for nested schema](#nestedatt--config--targets--model))
 - `route_type` (String) The model's operation implementation, for this provider. Not Null; must be one of ["audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime"]
 - `weight` (Number) The weight this target gets within the upstream loadbalancer (1-65535). Default: 100
@@ -396,6 +397,7 @@ Optional:
 Optional:
 
 - `api_endpoint` (String) If running Gemini on Vertex, specify the regional API endpoint (hostname only).
+- `endpoint_id` (String) If running Gemini on Vertex Model Garden, specify the endpoint ID.
 - `location_id` (String) If running Gemini on Vertex, specify the location ID.
 - `project_id` (String) If running Gemini on Vertex, specify the project ID.
 
@@ -425,7 +427,7 @@ Optional:
 - `read_timeout` (Number) Default: 60000
 - `retries` (Number) The number of retries to execute upon failure to proxy. Default: 5
 - `slots` (Number) The number of slots in the load balancer algorithm. Default: 10000
-- `tokens_count_strategy` (String) What tokens to use for usage calculation. Available values are: `total_tokens` `prompt_tokens`, `completion_tokens` and `cost`. Default: "total-tokens"; must be one of ["completion-tokens", "cost", "prompt-tokens", "total-tokens"]
+- `tokens_count_strategy` (String) What tokens to use for usage calculation. Available values are: `total_tokens` `prompt_tokens`, `completion_tokens` and `cost`. Default: "total-tokens"; must be one of ["completion-tokens", "cost", "llm-accuracy", "prompt-tokens", "total-tokens"]
 - `write_timeout` (Number) Default: 60000
 
 
@@ -455,12 +457,9 @@ Optional:
 <a id="nestedatt--config--embeddings--model--options"></a>
 ### Nested Schema for `config.embeddings.model.options`
 
-Required:
-
-- `azure` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--model--options--azure))
-
 Optional:
 
+- `azure` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--model--options--azure))
 - `bedrock` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--model--options--bedrock))
 - `gemini` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--model--options--gemini))
 - `huggingface` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--model--options--huggingface))
@@ -539,10 +538,13 @@ Required:
 
 - `dimensions` (Number) the desired dimensionality for the vectors
 - `distance_metric` (String) the distance metric to use for vector searches. must be one of ["cosine", "euclidean"]
-- `pgvector` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb--pgvector))
-- `redis` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb--redis))
 - `strategy` (String) which vector database driver to use. must be one of ["pgvector", "redis"]
 - `threshold` (Number) the default similarity threshold for accepting semantic search results (float)
+
+Optional:
+
+- `pgvector` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb--pgvector))
+- `redis` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb--redis))
 
 <a id="nestedatt--config--vectordb--pgvector"></a>
 ### Nested Schema for `config.vectordb.pgvector`

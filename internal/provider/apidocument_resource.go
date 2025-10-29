@@ -76,7 +76,10 @@ func (r *APIDocumentResource) Schema(ctx context.Context, req resource.SchemaReq
 				},
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `The API document identifier.`,
 			},
 			"parent_document_id": schema.StringAttribute{

@@ -245,7 +245,7 @@ func (s *IntegrationInstances) CreateIntegrationInstance(ctx context.Context, re
 
 }
 
-// FetchIntegrationInstance - Fetch Integration Instance
+// FetchIntegrationInstance - Get an Integration Instance
 // Fetches a integration instance.
 func (s *IntegrationInstances) FetchIntegrationInstance(ctx context.Context, request operations.FetchIntegrationInstanceRequest, opts ...operations.Option) (*operations.FetchIntegrationInstanceResponse, error) {
 	o := operations.Options{}

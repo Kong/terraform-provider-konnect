@@ -136,6 +136,30 @@ func (e *AccessTokenIntrospectionConsumerBy) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// AccessTokenJwksURIClientCertificate - The client certificate that will be used to authenticate Kong if `access_token_jwks_uri` is an https uri that requires mTLS Auth.
+type AccessTokenJwksURIClientCertificate struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (a *AccessTokenJwksURIClientCertificate) GetID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ID
+}
+
+// AccessTokenKeysetClientCertificate - The client certificate that will be used to authenticate Kong if `access_token_keyset` is an https uri that requires mTLS Auth.
+type AccessTokenKeysetClientCertificate struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (a *AccessTokenKeysetClientCertificate) GetID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ID
+}
+
 // AccessTokenSigningAlgorithm - When this plugin sets the upstream header as specified with `config.access_token_upstream_header`, re-signs the original access token using the private keys of the JWT Signer plugin. Specify the algorithm that is used to sign the token. The `config.access_token_issuer` specifies which `keyset` is used to sign the new token issued by Kong using the specified signing algorithm.
 type AccessTokenSigningAlgorithm string
 
@@ -251,6 +275,30 @@ func (e *ChannelTokenIntrospectionConsumerBy) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// ChannelTokenJwksURIClientCertificate - The client certificate that will be used to authenticate Kong if `access_token_jwks_uri` is an https uri that requires mTLS Auth.
+type ChannelTokenJwksURIClientCertificate struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (c *ChannelTokenJwksURIClientCertificate) GetID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ID
+}
+
+// ChannelTokenKeysetClientCertificate - The client certificate that will be used to authenticate Kong if `channel_token_keyset` is an https uri that requires mTLS Auth.
+type ChannelTokenKeysetClientCertificate struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (c *ChannelTokenKeysetClientCertificate) GetID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ID
+}
+
 // ChannelTokenSigningAlgorithm - When this plugin sets the upstream header as specified with `config.channel_token_upstream_header`, it also re-signs the original channel token using private keys of this plugin. Specify the algorithm that is used to sign the token.
 type ChannelTokenSigningAlgorithm string
 
@@ -309,10 +357,20 @@ func (e *ChannelTokenSigningAlgorithm) UnmarshalJSON(data []byte) error {
 }
 
 type JwtSignerPluginConfig struct {
+	// Specify the claim in an access token to verify against values of `config.access_token_audiences_allowed`.
+	AccessTokenAudienceClaim []string `json:"access_token_audience_claim,omitempty"`
+	// The audiences allowed to be present in the access token claim specified by `config.access_token_audience_claim`.
+	AccessTokenAudiencesAllowed []string `json:"access_token_audiences_allowed"`
 	// When the plugin tries to apply an access token to a Kong consumer mapping, it tries to find a matching Kong consumer from properties defined using this configuration parameter. The parameter can take an array of alues. Valid values are `id`, `username`, and `custom_id`.
 	AccessTokenConsumerBy []AccessTokenConsumerBy `json:"access_token_consumer_by,omitempty"`
 	// When you set a value for this parameter, the plugin tries to map an arbitrary claim specified with this configuration parameter (for example, `sub` or `username`) in an access token to Kong consumer entity.
 	AccessTokenConsumerClaim []string `json:"access_token_consumer_claim"`
+	// Specify the expiry claim in an access token to verify if the default `exp` is not used.
+	AccessTokenExpiryClaim []string `json:"access_token_expiry_claim,omitempty"`
+	// Specify the claim in an access token introspection to verify against values of `config.access_token_introspection_audiences_allowed`.
+	AccessTokenIntrospectionAudienceClaim []string `json:"access_token_introspection_audience_claim,omitempty"`
+	// The audiences allowed to be present in the access token introspection claim specified by `config.access_token_introspection_audience_claim`.
+	AccessTokenIntrospectionAudiencesAllowed []string `json:"access_token_introspection_audiences_allowed"`
 	// If the introspection endpoint requires client authentication (client being the JWT Signer plugin), you can specify the `Authorization` header's value with this configuration parameter.
 	AccessTokenIntrospectionAuthorization *string `default:"null" json:"access_token_introspection_authorization"`
 	// This parameter allows you to pass URL encoded request body arguments. For example: `resource=` or `a=1&b=&c`.
@@ -323,24 +381,44 @@ type JwtSignerPluginConfig struct {
 	AccessTokenIntrospectionConsumerClaim []string `json:"access_token_introspection_consumer_claim"`
 	// When you use `opaque` access tokens and you want to turn on access token introspection, you need to specify the OAuth 2.0 introspection endpoint URI with this configuration parameter.
 	AccessTokenIntrospectionEndpoint *string `default:"null" json:"access_token_introspection_endpoint"`
+	// Specify the expiry claim in an access token introspection to verify if the default `exp` is not used.
+	AccessTokenIntrospectionExpiryClaim []string `json:"access_token_introspection_expiry_claim,omitempty"`
 	// If you need to give `hint` parameter when introspecting an access token, use this parameter to specify the value. By default, the plugin sends `hint=access_token`.
 	AccessTokenIntrospectionHint *string `default:"access_token" json:"access_token_introspection_hint"`
+	// Specify the claim in an access token introspection to verify against values of `config.access_token_introspection_issuers_allowed`.
+	AccessTokenIntrospectionIssuerClaim []string `json:"access_token_introspection_issuer_claim,omitempty"`
+	// The issuers allowed to be present in the access token introspection claim specified by `config.access_token_introspection_issuer_claim`.
+	AccessTokenIntrospectionIssuersAllowed []string `json:"access_token_introspection_issuers_allowed"`
 	// If your introspection endpoint returns an access token in one of the keys (or claims) within the introspection results (`JSON`). If the key cannot be found, the plugin responds with `401 Unauthorized`. Also if the key is found but cannot be decoded as JWT, it also responds with `401 Unauthorized`.
 	AccessTokenIntrospectionJwtClaim []string `json:"access_token_introspection_jwt_claim"`
-	// Adjusts clock skew between the token issuer introspection results and Kong. The value is added to introspection results (`JSON`) `exp` claim/property before checking token expiry against Kong servers current time in seconds. You can disable access token introspection `expiry` verification altogether with `config.verify_access_token_introspection_expiry`.
+	// Adjusts clock skew between the token issuer introspection results and Kong. The value will be used to time-related claim verification. For example, it will be added to introspection results (`JSON`) `exp` claim/property before checking token expiry against Kong servers current time in seconds. You can disable access token introspection `expiry` verification altogether with `config.verify_access_token_introspection_expiry`.
 	AccessTokenIntrospectionLeeway *float64 `default:"0" json:"access_token_introspection_leeway"`
+	// Specify the notbefore claim in an access token introspection to verify if the default `nbf` is not used.
+	AccessTokenIntrospectionNotbeforeClaim []string `json:"access_token_introspection_notbefore_claim,omitempty"`
+	// Specify the optional claims of the access token introspection result. These claims are only validated when they are present. Every claim is specified by an array. If the array has multiple elements, it means the claim is inside a nested object of the payload.
+	AccessTokenIntrospectionOptionalClaims [][]string `json:"access_token_introspection_optional_claims"`
+	// Specify the required claims that must be present in the access token introspection result. Every claim is specified by an array. If the array has multiple elements, it means the claim is inside a nested object of the payload.
+	AccessTokenIntrospectionRequiredClaims [][]string `json:"access_token_introspection_required_claims"`
 	// Specify the claim/property in access token introspection results (`JSON`) to be verified against values of `config.access_token_introspection_scopes_required`. This supports nested claims. For example, with Keycloak you could use `[ "realm_access", "roles" ]`, hich can be given as `realm_access,roles` (form post). If the claim is not found in access token introspection results, and you have specified `config.access_token_introspection_scopes_required`, the plugin responds with `403 Forbidden`.
 	AccessTokenIntrospectionScopesClaim []string `json:"access_token_introspection_scopes_claim,omitempty"`
 	// Specify the required values (or scopes) that are checked by an introspection claim/property specified by `config.access_token_introspection_scopes_claim`.
 	AccessTokenIntrospectionScopesRequired []string `json:"access_token_introspection_scopes_required"`
+	// Specify the claim in an access token introspection to verify against values of `config.access_token_introspection_subjects_allowed`.
+	AccessTokenIntrospectionSubjectClaim []string `json:"access_token_introspection_subject_claim,omitempty"`
+	// The subjects allowed to be present in the access token introspection claim specified by `config.access_token_introspection_subject_claim`.
+	AccessTokenIntrospectionSubjectsAllowed []string `json:"access_token_introspection_subjects_allowed"`
 	// Timeout in milliseconds for an introspection request. The plugin tries to introspect twice if the first request fails for some reason. If both requests timeout, then the plugin runs two times the `config.access_token_introspection_timeout` on access token introspection.
 	AccessTokenIntrospectionTimeout *float64 `default:"null" json:"access_token_introspection_timeout"`
 	// The `iss` claim of a signed or re-signed access token is set to this value. Original `iss` claim of the incoming token (possibly introspected) is stored in `original_iss` claim of the newly signed access token.
 	AccessTokenIssuer *string `default:"kong" json:"access_token_issuer"`
+	// Specify the claim in an access token to verify against values of `config.access_token_issuers_allowed`.
+	AccessTokenIssuerClaim []string `json:"access_token_issuer_claim,omitempty"`
+	// The issuers allowed to be present in the access token claim specified by `config.access_token_issuer_claim`.
+	AccessTokenIssuersAllowed []string `json:"access_token_issuers_allowed"`
 	// Specify the URI where the plugin can fetch the public keys (JWKS) to verify the signature of the access token.
 	AccessTokenJwksURI *string `default:"null" json:"access_token_jwks_uri"`
 	// The client certificate that will be used to authenticate Kong if `access_token_jwks_uri` is an https uri that requires mTLS Auth.
-	AccessTokenJwksURIClientCertificate *string `default:"null" json:"access_token_jwks_uri_client_certificate"`
+	AccessTokenJwksURIClientCertificate *AccessTokenJwksURIClientCertificate `json:"access_token_jwks_uri_client_certificate"`
 	// The client password that will be used to authenticate Kong if `access_token_jwks_uri` is a uri that requires Basic Auth. Should be configured together with `access_token_jwks_uri_client_username`
 	AccessTokenJwksURIClientPassword *string `default:"null" json:"access_token_jwks_uri_client_password"`
 	// The client username that will be used to authenticate Kong if `access_token_jwks_uri` is a uri that requires Basic Auth. Should be configured together with `access_token_jwks_uri_client_password`
@@ -350,25 +428,37 @@ type JwtSignerPluginConfig struct {
 	// The name of the keyset containing signing keys.
 	AccessTokenKeyset *string `default:"kong" json:"access_token_keyset"`
 	// The client certificate that will be used to authenticate Kong if `access_token_keyset` is an https uri that requires mTLS Auth.
-	AccessTokenKeysetClientCertificate *string `default:"null" json:"access_token_keyset_client_certificate"`
+	AccessTokenKeysetClientCertificate *AccessTokenKeysetClientCertificate `json:"access_token_keyset_client_certificate"`
 	// The client password that will be used to authenticate Kong if `access_token_keyset` is a uri that requires Basic Auth. Should be configured together with `access_token_keyset_client_username`
 	AccessTokenKeysetClientPassword *string `default:"null" json:"access_token_keyset_client_password"`
 	// The client username that will be used to authenticate Kong if `access_token_keyset` is a uri that requires Basic Auth. Should be configured together with `access_token_keyset_client_password`
 	AccessTokenKeysetClientUsername *string `default:"null" json:"access_token_keyset_client_username"`
 	// Specify the period (in seconds) to auto-rotate the jwks for `access_token_keyset`. The default value 0 means no auto-rotation.
 	AccessTokenKeysetRotatePeriod *float64 `default:"0" json:"access_token_keyset_rotate_period"`
-	// Adjusts clock skew between the token issuer and Kong. The value is added to the token's `exp` claim before checking token expiry against Kong servers' current time in seconds. You can disable access token `expiry` verification altogether with `config.verify_access_token_expiry`.
+	// Adjusts clock skew between the token issuer and Kong. The value will be used to time-related claim verification. For example, it will be added to the token's `exp` claim before checking token expiry against Kong servers' current time in seconds. You can disable access token `expiry` verification altogether with `config.verify_access_token_expiry`.
 	AccessTokenLeeway *float64 `default:"0" json:"access_token_leeway"`
+	// Specify the notbefore claim in an access token to verify if the default `nbf` is not used.
+	AccessTokenNotbeforeClaim []string `json:"access_token_notbefore_claim,omitempty"`
 	// If an access token is not provided or no `config.access_token_request_header` is specified, the plugin cannot verify the access token. In that case, the plugin normally responds with `401 Unauthorized` (client didn't send a token) or `500 Unexpected` (a configuration error). Use this parameter to allow the request to proceed even when there is no token to check. If the token is provided, then this parameter has no effect
 	AccessTokenOptional *bool `default:"false" json:"access_token_optional"`
+	// Specify the optional claims of the access token. These claims are only validated when they are present. Every claim is specified by an array. If the array has multiple elements, it means the claim is inside a nested object of the payload.
+	AccessTokenOptionalClaims [][]string `json:"access_token_optional_claims"`
 	// This parameter tells the name of the header where to look for the access token.
 	AccessTokenRequestHeader *string `default:"Authorization" json:"access_token_request_header"`
+	// Specify the required claims that must be present in the access token. Every claim is specified by an array. If the array has multiple elements, it means the claim is inside a nested object of the payload.
+	AccessTokenRequiredClaims [][]string `json:"access_token_required_claims"`
 	// Specify the claim in an access token to verify against values of `config.access_token_scopes_required`.
 	AccessTokenScopesClaim []string `json:"access_token_scopes_claim,omitempty"`
 	// Specify the required values (or scopes) that are checked by a claim specified by `config.access_token_scopes_claim`.
 	AccessTokenScopesRequired []string `json:"access_token_scopes_required"`
+	// Quickly turn access token signing or re-signing off and on as needed. If turned off, the plugin will not send the signed or resigned token to the upstream.
+	AccessTokenSigning *bool `default:"true" json:"access_token_signing"`
 	// When this plugin sets the upstream header as specified with `config.access_token_upstream_header`, re-signs the original access token using the private keys of the JWT Signer plugin. Specify the algorithm that is used to sign the token. The `config.access_token_issuer` specifies which `keyset` is used to sign the new token issued by Kong using the specified signing algorithm.
 	AccessTokenSigningAlgorithm *AccessTokenSigningAlgorithm `default:"RS256" json:"access_token_signing_algorithm"`
+	// Specify the claim in an access token to verify against values of `config.access_token_subjects_allowed`.
+	AccessTokenSubjectClaim []string `json:"access_token_subject_claim,omitempty"`
+	// The subjects allowed to be present in the access token claim specified by `config.access_token_subject_claim`.
+	AccessTokenSubjectsAllowed []string `json:"access_token_subjects_allowed"`
 	// Removes the `config.access_token_request_header` from the request after reading its value. With `config.access_token_upstream_header`, you can specify the upstream header where the plugin adds the Kong signed token. If you don't specify a value, such as use `null` or `""` (empty string), the plugin does not even try to sign or re-sign the token.
 	AccessTokenUpstreamHeader *string `default:"Authorization:Bearer" json:"access_token_upstream_header"`
 	// If you want to add or subtract (using a negative value) expiry time (in seconds) of the original access token, you can specify a value that is added to the original access token's `exp` claim.
@@ -383,10 +473,20 @@ type JwtSignerPluginConfig struct {
 	CacheAccessTokenIntrospection *bool `default:"true" json:"cache_access_token_introspection"`
 	// Whether to cache channel token introspection results.
 	CacheChannelTokenIntrospection *bool `default:"true" json:"cache_channel_token_introspection"`
+	// Specify the claim in a channel token to verify against values of `config.channel_token_audiences_allowed`.
+	ChannelTokenAudienceClaim []string `json:"channel_token_audience_claim,omitempty"`
+	// The audiences allowed to be present in the channel token claim specified by `config.channel_token_audience_claim`.
+	ChannelTokenAudiencesAllowed []string `json:"channel_token_audiences_allowed"`
 	// When the plugin tries to do channel token to Kong consumer mapping, it tries to find a matching Kong consumer from properties defined using this configuration parameter. The parameter can take an array of valid values: `id`, `username`, and `custom_id`.
 	ChannelTokenConsumerBy []ChannelTokenConsumerBy `json:"channel_token_consumer_by,omitempty"`
 	// When you set a value for this parameter, the plugin tries to map an arbitrary claim specified with this configuration parameter. Kong consumers have an `id`, a `username`, and a `custom_id`. If this parameter is enabled but the mapping fails, such as when there's a non-existent Kong consumer, the plugin responds with `403 Forbidden`.
 	ChannelTokenConsumerClaim []string `json:"channel_token_consumer_claim"`
+	// Specify the expiry claim in a channel token to verify if the default `exp` is not used.
+	ChannelTokenExpiryClaim []string `json:"channel_token_expiry_claim,omitempty"`
+	// Specify the claim in a channel token introspection to verify against values of `config.channel_token_introspection_audiences_allowed`.
+	ChannelTokenIntrospectionAudienceClaim []string `json:"channel_token_introspection_audience_claim,omitempty"`
+	// The audiences allowed to be present in the channel token introspection claim specified by `config.channel_token_introspection_audience_claim`.
+	ChannelTokenIntrospectionAudiencesAllowed []string `json:"channel_token_introspection_audiences_allowed"`
 	// When using `opaque` channel tokens, and you want to turn on channel token introspection, you need to specify the OAuth 2.0 introspection endpoint URI with this configuration parameter. Otherwise the plugin will not try introspection, and instead returns `401 Unauthorized` when using opaque channel tokens.
 	ChannelTokenIntrospectionAuthorization *string `default:"null" json:"channel_token_introspection_authorization"`
 	// If you need to pass additional body arguments to introspection endpoint when the plugin introspects the opaque channel token, you can use this config parameter to specify them. You should URL encode the value. For example: `resource=` or `a=1&b=&c`.
@@ -397,24 +497,44 @@ type JwtSignerPluginConfig struct {
 	ChannelTokenIntrospectionConsumerClaim []string `json:"channel_token_introspection_consumer_claim"`
 	// When you use `opaque` access tokens and you want to turn on access token introspection, you need to specify the OAuth 2.0 introspection endpoint URI with this configuration parameter. Otherwise, the plugin does not try introspection and returns `401 Unauthorized` instead.
 	ChannelTokenIntrospectionEndpoint *string `default:"null" json:"channel_token_introspection_endpoint"`
+	// Specify the expiry claim in a channel token to verify if the default `exp` is not used.
+	ChannelTokenIntrospectionExpiryClaim []string `json:"channel_token_introspection_expiry_claim,omitempty"`
 	// If you need to give `hint` parameter when introspecting a channel token, you can use this parameter to specify the value of such parameter. By default, a `hint` isn't sent with channel token introspection.
 	ChannelTokenIntrospectionHint *string `default:"null" json:"channel_token_introspection_hint"`
+	// Specify the claim in a channel token introspection to verify against values of `config.channel_token_introspection_issuers_allowed`.
+	ChannelTokenIntrospectionIssuerClaim []string `json:"channel_token_introspection_issuer_claim,omitempty"`
+	// The issuers allowed to be present in the channel token introspection claim specified by `config.channel_token_introspection_issuer_claim`.
+	ChannelTokenIntrospectionIssuersAllowed []string `json:"channel_token_introspection_issuers_allowed"`
 	// If your introspection endpoint returns a channel token in one of the keys (or claims) in the introspection results (`JSON`), the plugin can use that value instead of the introspection results when doing expiry verification and signing of the new token issued by Kong.
 	ChannelTokenIntrospectionJwtClaim []string `json:"channel_token_introspection_jwt_claim"`
-	// You can use this parameter to adjust clock skew between the token issuer introspection results and Kong. The value will be added to introspection results (`JSON`) `exp` claim/property before checking token expiry against Kong servers current time (in seconds). You can disable channel token introspection `expiry` verification altogether with `config.verify_channel_token_introspection_expiry`.
+	// You can use this parameter to adjust clock skew between the token issuer introspection results and Kong. The value will be used to time-related claim verification. For example, it will be added to introspection results (`JSON`) `exp` claim/property before checking token expiry against Kong servers current time (in seconds). You can disable channel token introspection `expiry` verification altogether with `config.verify_channel_token_introspection_expiry`.
 	ChannelTokenIntrospectionLeeway *float64 `default:"0" json:"channel_token_introspection_leeway"`
+	// Specify the notbefore claim in a channel token to verify if the default `nbf` is not used.
+	ChannelTokenIntrospectionNotbeforeClaim []string `json:"channel_token_introspection_notbefore_claim,omitempty"`
+	// Specify the optional claims of the channel token introspection. These claims are only validated when they are present. Every claim is specified by an array. If the array has multiple elements, it means the claim is inside a nested object of the payload.
+	ChannelTokenIntrospectionOptionalClaims [][]string `json:"channel_token_introspection_optional_claims"`
+	// Specify the required claims that must be present in the channel token introspection. Every claim is specified by an array. If the array has multiple elements, it means the claim is inside a nested object of the payload.
+	ChannelTokenIntrospectionRequiredClaims [][]string `json:"channel_token_introspection_required_claims"`
 	// Use this parameter to specify the claim/property in channel token introspection results (`JSON`) to be verified against values of `config.channel_token_introspection_scopes_required`. This supports nested claims.
 	ChannelTokenIntrospectionScopesClaim []string `json:"channel_token_introspection_scopes_claim,omitempty"`
 	// Use this parameter to specify the required values (or scopes) that are checked by an introspection claim/property specified by `config.channel_token_introspection_scopes_claim`.
 	ChannelTokenIntrospectionScopesRequired []string `json:"channel_token_introspection_scopes_required"`
+	// Specify the claim in a channel token to verify against values of `config.channel_token_introspection_subjects_allowed`.
+	ChannelTokenIntrospectionSubjectClaim []string `json:"channel_token_introspection_subject_claim,omitempty"`
+	// The subjects allowed to be present in the channel token introspection claim specified by `config.channel_token_introspection_subject_claim`.
+	ChannelTokenIntrospectionSubjectsAllowed []string `json:"channel_token_introspection_subjects_allowed"`
 	// Timeout in milliseconds for an introspection request. The plugin tries to introspect twice if the first request fails for some reason. If both requests timeout, then the plugin runs two times the `config.access_token_introspection_timeout` on channel token introspection.
 	ChannelTokenIntrospectionTimeout *float64 `default:"null" json:"channel_token_introspection_timeout"`
 	// The `iss` claim of the re-signed channel token is set to this value, which is `kong` by default. The original `iss` claim of the incoming token (possibly introspected) is stored in the `original_iss` claim of the newly signed channel token.
 	ChannelTokenIssuer *string `default:"kong" json:"channel_token_issuer"`
+	// Specify the claim in a channel token to verify against values of `config.channel_token_issuers_allowed`.
+	ChannelTokenIssuerClaim []string `json:"channel_token_issuer_claim,omitempty"`
+	// The issuers allowed to be present in the channel token claim specified by `config.channel_token_issuer_claim`.
+	ChannelTokenIssuersAllowed []string `json:"channel_token_issuers_allowed"`
 	// If you want to use `config.verify_channel_token_signature`, you must specify the URI where the plugin can fetch the public keys (JWKS) to verify the signature of the channel token. If you don't specify a URI and you pass a JWT token to the plugin, then the plugin responds with `401 Unauthorized`.
 	ChannelTokenJwksURI *string `default:"null" json:"channel_token_jwks_uri"`
 	// The client certificate that will be used to authenticate Kong if `access_token_jwks_uri` is an https uri that requires mTLS Auth.
-	ChannelTokenJwksURIClientCertificate *string `default:"null" json:"channel_token_jwks_uri_client_certificate"`
+	ChannelTokenJwksURIClientCertificate *ChannelTokenJwksURIClientCertificate `json:"channel_token_jwks_uri_client_certificate"`
 	// The client password that will be used to authenticate Kong if `channel_token_jwks_uri` is a uri that requires Basic Auth. Should be configured together with `channel_token_jwks_uri_client_username`
 	ChannelTokenJwksURIClientPassword *string `default:"null" json:"channel_token_jwks_uri_client_password"`
 	// The client username that will be used to authenticate Kong if `channel_token_jwks_uri` is a uri that requires Basic Auth. Should be configured together with `channel_token_jwks_uri_client_password`
@@ -424,25 +544,37 @@ type JwtSignerPluginConfig struct {
 	// The name of the keyset containing signing keys.
 	ChannelTokenKeyset *string `default:"kong" json:"channel_token_keyset"`
 	// The client certificate that will be used to authenticate Kong if `channel_token_keyset` is an https uri that requires mTLS Auth.
-	ChannelTokenKeysetClientCertificate *string `default:"null" json:"channel_token_keyset_client_certificate"`
+	ChannelTokenKeysetClientCertificate *ChannelTokenKeysetClientCertificate `json:"channel_token_keyset_client_certificate"`
 	// The client password that will be used to authenticate Kong if `channel_token_keyset` is a uri that requires Basic Auth. Should be configured together with `channel_token_keyset_client_username`
 	ChannelTokenKeysetClientPassword *string `default:"null" json:"channel_token_keyset_client_password"`
 	// The client username that will be used to authenticate Kong if `channel_token_keyset` is a uri that requires Basic Auth. Should be configured together with `channel_token_keyset_client_password`
 	ChannelTokenKeysetClientUsername *string `default:"null" json:"channel_token_keyset_client_username"`
 	// Specify the period (in seconds) to auto-rotate the jwks for `channel_token_keyset`. The default value 0 means no auto-rotation.
 	ChannelTokenKeysetRotatePeriod *float64 `default:"0" json:"channel_token_keyset_rotate_period"`
-	// Adjusts clock skew between the token issuer and Kong. The value will be added to token's `exp` claim before checking token expiry against Kong servers current time in seconds. You can disable channel token `expiry` verification altogether with `config.verify_channel_token_expiry`.
+	// Adjusts clock skew between the token issuer and Kong. The value will be used to time-related claim verification. For example, it will be added to token's `exp` claim before checking token expiry against Kong servers current time in seconds. You can disable channel token `expiry` verification altogether with `config.verify_channel_token_expiry`.
 	ChannelTokenLeeway *float64 `default:"0" json:"channel_token_leeway"`
+	// Specify the notbefore claim in a channel token to verify if the default `nbf` is not used.
+	ChannelTokenNotbeforeClaim []string `json:"channel_token_notbefore_claim,omitempty"`
 	// If a channel token is not provided or no `config.channel_token_request_header` is specified, the plugin cannot verify the channel token. In that case, the plugin normally responds with `401 Unauthorized` (client didn't send a token) or `500 Unexpected` (a configuration error). Enable this parameter to allow the request to proceed even when there is no channel token to check. If the channel token is provided, then this parameter has no effect
 	ChannelTokenOptional *bool `default:"false" json:"channel_token_optional"`
+	// Specify the optional claims of the channel token. These claims are only validated when they are present. Every claim is specified by an array. If the array has multiple elements, it means the claim is inside a nested object of the payload.
+	ChannelTokenOptionalClaims [][]string `json:"channel_token_optional_claims"`
 	// This parameter tells the name of the header where to look for the channel token. If you don't want to do anything with the channel token, then you can set this to `null` or `""` (empty string).
 	ChannelTokenRequestHeader *string `default:"null" json:"channel_token_request_header"`
+	// Specify the required claims that must be present in the channel token. Every claim is specified by an array. If the array has multiple elements, it means the claim is inside a nested object of the payload.
+	ChannelTokenRequiredClaims [][]string `json:"channel_token_required_claims"`
 	// Specify the claim in a channel token to verify against values of `config.channel_token_scopes_required`. This supports nested claims.
 	ChannelTokenScopesClaim []string `json:"channel_token_scopes_claim,omitempty"`
 	// Specify the required values (or scopes) that are checked by a claim specified by `config.channel_token_scopes_claim`.
 	ChannelTokenScopesRequired []string `json:"channel_token_scopes_required"`
+	// Quickly turn channel token signing or re-signing off and on as needed. If turned off, the plugin will not send the signed or resigned token to the upstream.
+	ChannelTokenSigning *bool `default:"true" json:"channel_token_signing"`
 	// When this plugin sets the upstream header as specified with `config.channel_token_upstream_header`, it also re-signs the original channel token using private keys of this plugin. Specify the algorithm that is used to sign the token.
 	ChannelTokenSigningAlgorithm *ChannelTokenSigningAlgorithm `default:"RS256" json:"channel_token_signing_algorithm"`
+	// Specify the claim in a channel token to verify against values of `config.channel_token_subjects_allowed`.
+	ChannelTokenSubjectClaim []string `json:"channel_token_subject_claim,omitempty"`
+	// The subjects allowed to be present in the channel token claim specified by `config.channel_token_subject_claim`.
+	ChannelTokenSubjectsAllowed []string `json:"channel_token_subjects_allowed"`
 	// This plugin removes the `config.channel_token_request_header` from the request after reading its value.
 	ChannelTokenUpstreamHeader *string `default:"null" json:"channel_token_upstream_header"`
 	// If you want to add or perhaps subtract (using negative value) expiry time of the original channel token, you can specify a value that is added to the original channel token's `exp` claim.
@@ -475,25 +607,57 @@ type JwtSignerPluginConfig struct {
 	TrustAccessTokenIntrospection *bool `default:"true" json:"trust_access_token_introspection"`
 	// Providing an opaque channel token for plugin introspection, and verifying expiry and scopes on introspection results may make further payload checks unnecessary before the plugin signs a new token. This also applies when using a JWT token with introspection JSON as per config.channel_token_introspection_jwt_claim. Use this parameter to manage additional payload checks before signing a new token. With true (default), payload's expiry or scopes aren't checked.
 	TrustChannelTokenIntrospection *bool `default:"true" json:"trust_channel_token_introspection"`
+	// Quickly turn off and on the access token required audiences verification, specified with `config.access_token_audiences_required`.
+	VerifyAccessTokenAudience *bool `default:"true" json:"verify_access_token_audience"`
 	// Quickly turn access token expiry verification off and on as needed.
 	VerifyAccessTokenExpiry *bool `default:"true" json:"verify_access_token_expiry"`
+	// Quickly turn off and on the access token introspection required audiences verification, specified with `config.access_token_introspection_audiences_required`.
+	VerifyAccessTokenIntrospectionAudience *bool `default:"true" json:"verify_access_token_introspection_audience"`
 	// Quickly turn access token introspection expiry verification off and on as needed.
 	VerifyAccessTokenIntrospectionExpiry *bool `default:"true" json:"verify_access_token_introspection_expiry"`
+	// Quickly turn off and on the access token introspection allowed issuers verification, specified with `config.access_token_introspection_issuers_allowed`.
+	VerifyAccessTokenIntrospectionIssuer *bool `default:"true" json:"verify_access_token_introspection_issuer"`
+	// Quickly turn off and on the access token introspection notbefore verification.
+	VerifyAccessTokenIntrospectionNotbefore *bool `default:"false" json:"verify_access_token_introspection_notbefore"`
 	// Quickly turn off and on the access token introspection scopes verification, specified with `config.access_token_introspection_scopes_required`.
 	VerifyAccessTokenIntrospectionScopes *bool `default:"true" json:"verify_access_token_introspection_scopes"`
+	// Quickly turn off and on the access token introspection required subjects verification, specified with `config.access_token_introspection_subjects_required`.
+	VerifyAccessTokenIntrospectionSubject *bool `default:"true" json:"verify_access_token_introspection_subject"`
+	// Quickly turn off and on the access token allowed issuers verification, specified with `config.access_token_issuers_allowed`.
+	VerifyAccessTokenIssuer *bool `default:"true" json:"verify_access_token_issuer"`
+	// Quickly turn off and on the access token notbefore verification.
+	VerifyAccessTokenNotbefore *bool `default:"false" json:"verify_access_token_notbefore"`
 	// Quickly turn off and on the access token required scopes verification, specified with `config.access_token_scopes_required`.
 	VerifyAccessTokenScopes *bool `default:"true" json:"verify_access_token_scopes"`
 	// Quickly turn access token signature verification off and on as needed.
 	VerifyAccessTokenSignature *bool `default:"true" json:"verify_access_token_signature"`
+	// Quickly turn off and on the access token required subjects verification, specified with `config.access_token_subjects_required`.
+	VerifyAccessTokenSubject *bool `default:"true" json:"verify_access_token_subject"`
+	// Quickly turn off and on the channel token required audiences verification, specified with `config.channel_token_audiences_required`.
+	VerifyChannelTokenAudience *bool `default:"true" json:"verify_channel_token_audience"`
 	VerifyChannelTokenExpiry   *bool `default:"true" json:"verify_channel_token_expiry"`
+	// Quickly turn off and on the channel token introspection required audiences verification, specified with `config.channel_token_introspection_audiences_required`.
+	VerifyChannelTokenIntrospectionAudience *bool `default:"true" json:"verify_channel_token_introspection_audience"`
 	// Quickly turn on/off the channel token introspection expiry verification.
 	VerifyChannelTokenIntrospectionExpiry *bool `default:"true" json:"verify_channel_token_introspection_expiry"`
+	// Quickly turn off and on the channel token introspection allowed issuers verification, specified with `config.channel_token_introspection_issuers_allowed`.
+	VerifyChannelTokenIntrospectionIssuer *bool `default:"true" json:"verify_channel_token_introspection_issuer"`
+	// Quickly turn off and on the channel token introspection notbefore verification.
+	VerifyChannelTokenIntrospectionNotbefore *bool `default:"false" json:"verify_channel_token_introspection_notbefore"`
 	// Quickly turn on/off the channel token introspection scopes verification specified with `config.channel_token_introspection_scopes_required`.
 	VerifyChannelTokenIntrospectionScopes *bool `default:"true" json:"verify_channel_token_introspection_scopes"`
+	// Quickly turn off and on the channel token introspection required subjects verification, specified with `config.channel_token_introspection_subjects_required`.
+	VerifyChannelTokenIntrospectionSubject *bool `default:"true" json:"verify_channel_token_introspection_subject"`
+	// Quickly turn off and on the channel token allowed issuers verification, specified with `config.channel_token_issuers_allowed`.
+	VerifyChannelTokenIssuer *bool `default:"true" json:"verify_channel_token_issuer"`
+	// Quickly turn off and on the channel token notbefore verification.
+	VerifyChannelTokenNotbefore *bool `default:"false" json:"verify_channel_token_notbefore"`
 	// Quickly turn on/off the channel token required scopes verification specified with `config.channel_token_scopes_required`.
 	VerifyChannelTokenScopes *bool `default:"true" json:"verify_channel_token_scopes"`
 	// Quickly turn on/off the channel token signature verification.
 	VerifyChannelTokenSignature *bool `default:"true" json:"verify_channel_token_signature"`
+	// Quickly turn off and on the channel token required subjects verification, specified with `config.channel_token_subjects_required`.
+	VerifyChannelTokenSubject *bool `default:"true" json:"verify_channel_token_subject"`
 }
 
 func (j JwtSignerPluginConfig) MarshalJSON() ([]byte, error) {
@@ -505,6 +669,20 @@ func (j *JwtSignerPluginConfig) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (j *JwtSignerPluginConfig) GetAccessTokenAudienceClaim() []string {
+	if j == nil {
+		return nil
+	}
+	return j.AccessTokenAudienceClaim
+}
+
+func (j *JwtSignerPluginConfig) GetAccessTokenAudiencesAllowed() []string {
+	if j == nil {
+		return nil
+	}
+	return j.AccessTokenAudiencesAllowed
 }
 
 func (j *JwtSignerPluginConfig) GetAccessTokenConsumerBy() []AccessTokenConsumerBy {
@@ -519,6 +697,27 @@ func (j *JwtSignerPluginConfig) GetAccessTokenConsumerClaim() []string {
 		return nil
 	}
 	return j.AccessTokenConsumerClaim
+}
+
+func (j *JwtSignerPluginConfig) GetAccessTokenExpiryClaim() []string {
+	if j == nil {
+		return nil
+	}
+	return j.AccessTokenExpiryClaim
+}
+
+func (j *JwtSignerPluginConfig) GetAccessTokenIntrospectionAudienceClaim() []string {
+	if j == nil {
+		return nil
+	}
+	return j.AccessTokenIntrospectionAudienceClaim
+}
+
+func (j *JwtSignerPluginConfig) GetAccessTokenIntrospectionAudiencesAllowed() []string {
+	if j == nil {
+		return nil
+	}
+	return j.AccessTokenIntrospectionAudiencesAllowed
 }
 
 func (j *JwtSignerPluginConfig) GetAccessTokenIntrospectionAuthorization() *string {
@@ -556,11 +755,32 @@ func (j *JwtSignerPluginConfig) GetAccessTokenIntrospectionEndpoint() *string {
 	return j.AccessTokenIntrospectionEndpoint
 }
 
+func (j *JwtSignerPluginConfig) GetAccessTokenIntrospectionExpiryClaim() []string {
+	if j == nil {
+		return nil
+	}
+	return j.AccessTokenIntrospectionExpiryClaim
+}
+
 func (j *JwtSignerPluginConfig) GetAccessTokenIntrospectionHint() *string {
 	if j == nil {
 		return nil
 	}
 	return j.AccessTokenIntrospectionHint
+}
+
+func (j *JwtSignerPluginConfig) GetAccessTokenIntrospectionIssuerClaim() []string {
+	if j == nil {
+		return nil
+	}
+	return j.AccessTokenIntrospectionIssuerClaim
+}
+
+func (j *JwtSignerPluginConfig) GetAccessTokenIntrospectionIssuersAllowed() []string {
+	if j == nil {
+		return nil
+	}
+	return j.AccessTokenIntrospectionIssuersAllowed
 }
 
 func (j *JwtSignerPluginConfig) GetAccessTokenIntrospectionJwtClaim() []string {
@@ -577,6 +797,27 @@ func (j *JwtSignerPluginConfig) GetAccessTokenIntrospectionLeeway() *float64 {
 	return j.AccessTokenIntrospectionLeeway
 }
 
+func (j *JwtSignerPluginConfig) GetAccessTokenIntrospectionNotbeforeClaim() []string {
+	if j == nil {
+		return nil
+	}
+	return j.AccessTokenIntrospectionNotbeforeClaim
+}
+
+func (j *JwtSignerPluginConfig) GetAccessTokenIntrospectionOptionalClaims() [][]string {
+	if j == nil {
+		return nil
+	}
+	return j.AccessTokenIntrospectionOptionalClaims
+}
+
+func (j *JwtSignerPluginConfig) GetAccessTokenIntrospectionRequiredClaims() [][]string {
+	if j == nil {
+		return nil
+	}
+	return j.AccessTokenIntrospectionRequiredClaims
+}
+
 func (j *JwtSignerPluginConfig) GetAccessTokenIntrospectionScopesClaim() []string {
 	if j == nil {
 		return nil
@@ -589,6 +830,20 @@ func (j *JwtSignerPluginConfig) GetAccessTokenIntrospectionScopesRequired() []st
 		return nil
 	}
 	return j.AccessTokenIntrospectionScopesRequired
+}
+
+func (j *JwtSignerPluginConfig) GetAccessTokenIntrospectionSubjectClaim() []string {
+	if j == nil {
+		return nil
+	}
+	return j.AccessTokenIntrospectionSubjectClaim
+}
+
+func (j *JwtSignerPluginConfig) GetAccessTokenIntrospectionSubjectsAllowed() []string {
+	if j == nil {
+		return nil
+	}
+	return j.AccessTokenIntrospectionSubjectsAllowed
 }
 
 func (j *JwtSignerPluginConfig) GetAccessTokenIntrospectionTimeout() *float64 {
@@ -605,6 +860,20 @@ func (j *JwtSignerPluginConfig) GetAccessTokenIssuer() *string {
 	return j.AccessTokenIssuer
 }
 
+func (j *JwtSignerPluginConfig) GetAccessTokenIssuerClaim() []string {
+	if j == nil {
+		return nil
+	}
+	return j.AccessTokenIssuerClaim
+}
+
+func (j *JwtSignerPluginConfig) GetAccessTokenIssuersAllowed() []string {
+	if j == nil {
+		return nil
+	}
+	return j.AccessTokenIssuersAllowed
+}
+
 func (j *JwtSignerPluginConfig) GetAccessTokenJwksURI() *string {
 	if j == nil {
 		return nil
@@ -612,7 +881,7 @@ func (j *JwtSignerPluginConfig) GetAccessTokenJwksURI() *string {
 	return j.AccessTokenJwksURI
 }
 
-func (j *JwtSignerPluginConfig) GetAccessTokenJwksURIClientCertificate() *string {
+func (j *JwtSignerPluginConfig) GetAccessTokenJwksURIClientCertificate() *AccessTokenJwksURIClientCertificate {
 	if j == nil {
 		return nil
 	}
@@ -647,7 +916,7 @@ func (j *JwtSignerPluginConfig) GetAccessTokenKeyset() *string {
 	return j.AccessTokenKeyset
 }
 
-func (j *JwtSignerPluginConfig) GetAccessTokenKeysetClientCertificate() *string {
+func (j *JwtSignerPluginConfig) GetAccessTokenKeysetClientCertificate() *AccessTokenKeysetClientCertificate {
 	if j == nil {
 		return nil
 	}
@@ -682,6 +951,13 @@ func (j *JwtSignerPluginConfig) GetAccessTokenLeeway() *float64 {
 	return j.AccessTokenLeeway
 }
 
+func (j *JwtSignerPluginConfig) GetAccessTokenNotbeforeClaim() []string {
+	if j == nil {
+		return nil
+	}
+	return j.AccessTokenNotbeforeClaim
+}
+
 func (j *JwtSignerPluginConfig) GetAccessTokenOptional() *bool {
 	if j == nil {
 		return nil
@@ -689,11 +965,25 @@ func (j *JwtSignerPluginConfig) GetAccessTokenOptional() *bool {
 	return j.AccessTokenOptional
 }
 
+func (j *JwtSignerPluginConfig) GetAccessTokenOptionalClaims() [][]string {
+	if j == nil {
+		return nil
+	}
+	return j.AccessTokenOptionalClaims
+}
+
 func (j *JwtSignerPluginConfig) GetAccessTokenRequestHeader() *string {
 	if j == nil {
 		return nil
 	}
 	return j.AccessTokenRequestHeader
+}
+
+func (j *JwtSignerPluginConfig) GetAccessTokenRequiredClaims() [][]string {
+	if j == nil {
+		return nil
+	}
+	return j.AccessTokenRequiredClaims
 }
 
 func (j *JwtSignerPluginConfig) GetAccessTokenScopesClaim() []string {
@@ -710,11 +1000,32 @@ func (j *JwtSignerPluginConfig) GetAccessTokenScopesRequired() []string {
 	return j.AccessTokenScopesRequired
 }
 
+func (j *JwtSignerPluginConfig) GetAccessTokenSigning() *bool {
+	if j == nil {
+		return nil
+	}
+	return j.AccessTokenSigning
+}
+
 func (j *JwtSignerPluginConfig) GetAccessTokenSigningAlgorithm() *AccessTokenSigningAlgorithm {
 	if j == nil {
 		return nil
 	}
 	return j.AccessTokenSigningAlgorithm
+}
+
+func (j *JwtSignerPluginConfig) GetAccessTokenSubjectClaim() []string {
+	if j == nil {
+		return nil
+	}
+	return j.AccessTokenSubjectClaim
+}
+
+func (j *JwtSignerPluginConfig) GetAccessTokenSubjectsAllowed() []string {
+	if j == nil {
+		return nil
+	}
+	return j.AccessTokenSubjectsAllowed
 }
 
 func (j *JwtSignerPluginConfig) GetAccessTokenUpstreamHeader() *string {
@@ -766,6 +1077,20 @@ func (j *JwtSignerPluginConfig) GetCacheChannelTokenIntrospection() *bool {
 	return j.CacheChannelTokenIntrospection
 }
 
+func (j *JwtSignerPluginConfig) GetChannelTokenAudienceClaim() []string {
+	if j == nil {
+		return nil
+	}
+	return j.ChannelTokenAudienceClaim
+}
+
+func (j *JwtSignerPluginConfig) GetChannelTokenAudiencesAllowed() []string {
+	if j == nil {
+		return nil
+	}
+	return j.ChannelTokenAudiencesAllowed
+}
+
 func (j *JwtSignerPluginConfig) GetChannelTokenConsumerBy() []ChannelTokenConsumerBy {
 	if j == nil {
 		return nil
@@ -778,6 +1103,27 @@ func (j *JwtSignerPluginConfig) GetChannelTokenConsumerClaim() []string {
 		return nil
 	}
 	return j.ChannelTokenConsumerClaim
+}
+
+func (j *JwtSignerPluginConfig) GetChannelTokenExpiryClaim() []string {
+	if j == nil {
+		return nil
+	}
+	return j.ChannelTokenExpiryClaim
+}
+
+func (j *JwtSignerPluginConfig) GetChannelTokenIntrospectionAudienceClaim() []string {
+	if j == nil {
+		return nil
+	}
+	return j.ChannelTokenIntrospectionAudienceClaim
+}
+
+func (j *JwtSignerPluginConfig) GetChannelTokenIntrospectionAudiencesAllowed() []string {
+	if j == nil {
+		return nil
+	}
+	return j.ChannelTokenIntrospectionAudiencesAllowed
 }
 
 func (j *JwtSignerPluginConfig) GetChannelTokenIntrospectionAuthorization() *string {
@@ -815,11 +1161,32 @@ func (j *JwtSignerPluginConfig) GetChannelTokenIntrospectionEndpoint() *string {
 	return j.ChannelTokenIntrospectionEndpoint
 }
 
+func (j *JwtSignerPluginConfig) GetChannelTokenIntrospectionExpiryClaim() []string {
+	if j == nil {
+		return nil
+	}
+	return j.ChannelTokenIntrospectionExpiryClaim
+}
+
 func (j *JwtSignerPluginConfig) GetChannelTokenIntrospectionHint() *string {
 	if j == nil {
 		return nil
 	}
 	return j.ChannelTokenIntrospectionHint
+}
+
+func (j *JwtSignerPluginConfig) GetChannelTokenIntrospectionIssuerClaim() []string {
+	if j == nil {
+		return nil
+	}
+	return j.ChannelTokenIntrospectionIssuerClaim
+}
+
+func (j *JwtSignerPluginConfig) GetChannelTokenIntrospectionIssuersAllowed() []string {
+	if j == nil {
+		return nil
+	}
+	return j.ChannelTokenIntrospectionIssuersAllowed
 }
 
 func (j *JwtSignerPluginConfig) GetChannelTokenIntrospectionJwtClaim() []string {
@@ -836,6 +1203,27 @@ func (j *JwtSignerPluginConfig) GetChannelTokenIntrospectionLeeway() *float64 {
 	return j.ChannelTokenIntrospectionLeeway
 }
 
+func (j *JwtSignerPluginConfig) GetChannelTokenIntrospectionNotbeforeClaim() []string {
+	if j == nil {
+		return nil
+	}
+	return j.ChannelTokenIntrospectionNotbeforeClaim
+}
+
+func (j *JwtSignerPluginConfig) GetChannelTokenIntrospectionOptionalClaims() [][]string {
+	if j == nil {
+		return nil
+	}
+	return j.ChannelTokenIntrospectionOptionalClaims
+}
+
+func (j *JwtSignerPluginConfig) GetChannelTokenIntrospectionRequiredClaims() [][]string {
+	if j == nil {
+		return nil
+	}
+	return j.ChannelTokenIntrospectionRequiredClaims
+}
+
 func (j *JwtSignerPluginConfig) GetChannelTokenIntrospectionScopesClaim() []string {
 	if j == nil {
 		return nil
@@ -848,6 +1236,20 @@ func (j *JwtSignerPluginConfig) GetChannelTokenIntrospectionScopesRequired() []s
 		return nil
 	}
 	return j.ChannelTokenIntrospectionScopesRequired
+}
+
+func (j *JwtSignerPluginConfig) GetChannelTokenIntrospectionSubjectClaim() []string {
+	if j == nil {
+		return nil
+	}
+	return j.ChannelTokenIntrospectionSubjectClaim
+}
+
+func (j *JwtSignerPluginConfig) GetChannelTokenIntrospectionSubjectsAllowed() []string {
+	if j == nil {
+		return nil
+	}
+	return j.ChannelTokenIntrospectionSubjectsAllowed
 }
 
 func (j *JwtSignerPluginConfig) GetChannelTokenIntrospectionTimeout() *float64 {
@@ -864,6 +1266,20 @@ func (j *JwtSignerPluginConfig) GetChannelTokenIssuer() *string {
 	return j.ChannelTokenIssuer
 }
 
+func (j *JwtSignerPluginConfig) GetChannelTokenIssuerClaim() []string {
+	if j == nil {
+		return nil
+	}
+	return j.ChannelTokenIssuerClaim
+}
+
+func (j *JwtSignerPluginConfig) GetChannelTokenIssuersAllowed() []string {
+	if j == nil {
+		return nil
+	}
+	return j.ChannelTokenIssuersAllowed
+}
+
 func (j *JwtSignerPluginConfig) GetChannelTokenJwksURI() *string {
 	if j == nil {
 		return nil
@@ -871,7 +1287,7 @@ func (j *JwtSignerPluginConfig) GetChannelTokenJwksURI() *string {
 	return j.ChannelTokenJwksURI
 }
 
-func (j *JwtSignerPluginConfig) GetChannelTokenJwksURIClientCertificate() *string {
+func (j *JwtSignerPluginConfig) GetChannelTokenJwksURIClientCertificate() *ChannelTokenJwksURIClientCertificate {
 	if j == nil {
 		return nil
 	}
@@ -906,7 +1322,7 @@ func (j *JwtSignerPluginConfig) GetChannelTokenKeyset() *string {
 	return j.ChannelTokenKeyset
 }
 
-func (j *JwtSignerPluginConfig) GetChannelTokenKeysetClientCertificate() *string {
+func (j *JwtSignerPluginConfig) GetChannelTokenKeysetClientCertificate() *ChannelTokenKeysetClientCertificate {
 	if j == nil {
 		return nil
 	}
@@ -941,6 +1357,13 @@ func (j *JwtSignerPluginConfig) GetChannelTokenLeeway() *float64 {
 	return j.ChannelTokenLeeway
 }
 
+func (j *JwtSignerPluginConfig) GetChannelTokenNotbeforeClaim() []string {
+	if j == nil {
+		return nil
+	}
+	return j.ChannelTokenNotbeforeClaim
+}
+
 func (j *JwtSignerPluginConfig) GetChannelTokenOptional() *bool {
 	if j == nil {
 		return nil
@@ -948,11 +1371,25 @@ func (j *JwtSignerPluginConfig) GetChannelTokenOptional() *bool {
 	return j.ChannelTokenOptional
 }
 
+func (j *JwtSignerPluginConfig) GetChannelTokenOptionalClaims() [][]string {
+	if j == nil {
+		return nil
+	}
+	return j.ChannelTokenOptionalClaims
+}
+
 func (j *JwtSignerPluginConfig) GetChannelTokenRequestHeader() *string {
 	if j == nil {
 		return nil
 	}
 	return j.ChannelTokenRequestHeader
+}
+
+func (j *JwtSignerPluginConfig) GetChannelTokenRequiredClaims() [][]string {
+	if j == nil {
+		return nil
+	}
+	return j.ChannelTokenRequiredClaims
 }
 
 func (j *JwtSignerPluginConfig) GetChannelTokenScopesClaim() []string {
@@ -969,11 +1406,32 @@ func (j *JwtSignerPluginConfig) GetChannelTokenScopesRequired() []string {
 	return j.ChannelTokenScopesRequired
 }
 
+func (j *JwtSignerPluginConfig) GetChannelTokenSigning() *bool {
+	if j == nil {
+		return nil
+	}
+	return j.ChannelTokenSigning
+}
+
 func (j *JwtSignerPluginConfig) GetChannelTokenSigningAlgorithm() *ChannelTokenSigningAlgorithm {
 	if j == nil {
 		return nil
 	}
 	return j.ChannelTokenSigningAlgorithm
+}
+
+func (j *JwtSignerPluginConfig) GetChannelTokenSubjectClaim() []string {
+	if j == nil {
+		return nil
+	}
+	return j.ChannelTokenSubjectClaim
+}
+
+func (j *JwtSignerPluginConfig) GetChannelTokenSubjectsAllowed() []string {
+	if j == nil {
+		return nil
+	}
+	return j.ChannelTokenSubjectsAllowed
 }
 
 func (j *JwtSignerPluginConfig) GetChannelTokenUpstreamHeader() *string {
@@ -1088,11 +1546,25 @@ func (j *JwtSignerPluginConfig) GetTrustChannelTokenIntrospection() *bool {
 	return j.TrustChannelTokenIntrospection
 }
 
+func (j *JwtSignerPluginConfig) GetVerifyAccessTokenAudience() *bool {
+	if j == nil {
+		return nil
+	}
+	return j.VerifyAccessTokenAudience
+}
+
 func (j *JwtSignerPluginConfig) GetVerifyAccessTokenExpiry() *bool {
 	if j == nil {
 		return nil
 	}
 	return j.VerifyAccessTokenExpiry
+}
+
+func (j *JwtSignerPluginConfig) GetVerifyAccessTokenIntrospectionAudience() *bool {
+	if j == nil {
+		return nil
+	}
+	return j.VerifyAccessTokenIntrospectionAudience
 }
 
 func (j *JwtSignerPluginConfig) GetVerifyAccessTokenIntrospectionExpiry() *bool {
@@ -1102,11 +1574,46 @@ func (j *JwtSignerPluginConfig) GetVerifyAccessTokenIntrospectionExpiry() *bool 
 	return j.VerifyAccessTokenIntrospectionExpiry
 }
 
+func (j *JwtSignerPluginConfig) GetVerifyAccessTokenIntrospectionIssuer() *bool {
+	if j == nil {
+		return nil
+	}
+	return j.VerifyAccessTokenIntrospectionIssuer
+}
+
+func (j *JwtSignerPluginConfig) GetVerifyAccessTokenIntrospectionNotbefore() *bool {
+	if j == nil {
+		return nil
+	}
+	return j.VerifyAccessTokenIntrospectionNotbefore
+}
+
 func (j *JwtSignerPluginConfig) GetVerifyAccessTokenIntrospectionScopes() *bool {
 	if j == nil {
 		return nil
 	}
 	return j.VerifyAccessTokenIntrospectionScopes
+}
+
+func (j *JwtSignerPluginConfig) GetVerifyAccessTokenIntrospectionSubject() *bool {
+	if j == nil {
+		return nil
+	}
+	return j.VerifyAccessTokenIntrospectionSubject
+}
+
+func (j *JwtSignerPluginConfig) GetVerifyAccessTokenIssuer() *bool {
+	if j == nil {
+		return nil
+	}
+	return j.VerifyAccessTokenIssuer
+}
+
+func (j *JwtSignerPluginConfig) GetVerifyAccessTokenNotbefore() *bool {
+	if j == nil {
+		return nil
+	}
+	return j.VerifyAccessTokenNotbefore
 }
 
 func (j *JwtSignerPluginConfig) GetVerifyAccessTokenScopes() *bool {
@@ -1123,11 +1630,32 @@ func (j *JwtSignerPluginConfig) GetVerifyAccessTokenSignature() *bool {
 	return j.VerifyAccessTokenSignature
 }
 
+func (j *JwtSignerPluginConfig) GetVerifyAccessTokenSubject() *bool {
+	if j == nil {
+		return nil
+	}
+	return j.VerifyAccessTokenSubject
+}
+
+func (j *JwtSignerPluginConfig) GetVerifyChannelTokenAudience() *bool {
+	if j == nil {
+		return nil
+	}
+	return j.VerifyChannelTokenAudience
+}
+
 func (j *JwtSignerPluginConfig) GetVerifyChannelTokenExpiry() *bool {
 	if j == nil {
 		return nil
 	}
 	return j.VerifyChannelTokenExpiry
+}
+
+func (j *JwtSignerPluginConfig) GetVerifyChannelTokenIntrospectionAudience() *bool {
+	if j == nil {
+		return nil
+	}
+	return j.VerifyChannelTokenIntrospectionAudience
 }
 
 func (j *JwtSignerPluginConfig) GetVerifyChannelTokenIntrospectionExpiry() *bool {
@@ -1137,11 +1665,46 @@ func (j *JwtSignerPluginConfig) GetVerifyChannelTokenIntrospectionExpiry() *bool
 	return j.VerifyChannelTokenIntrospectionExpiry
 }
 
+func (j *JwtSignerPluginConfig) GetVerifyChannelTokenIntrospectionIssuer() *bool {
+	if j == nil {
+		return nil
+	}
+	return j.VerifyChannelTokenIntrospectionIssuer
+}
+
+func (j *JwtSignerPluginConfig) GetVerifyChannelTokenIntrospectionNotbefore() *bool {
+	if j == nil {
+		return nil
+	}
+	return j.VerifyChannelTokenIntrospectionNotbefore
+}
+
 func (j *JwtSignerPluginConfig) GetVerifyChannelTokenIntrospectionScopes() *bool {
 	if j == nil {
 		return nil
 	}
 	return j.VerifyChannelTokenIntrospectionScopes
+}
+
+func (j *JwtSignerPluginConfig) GetVerifyChannelTokenIntrospectionSubject() *bool {
+	if j == nil {
+		return nil
+	}
+	return j.VerifyChannelTokenIntrospectionSubject
+}
+
+func (j *JwtSignerPluginConfig) GetVerifyChannelTokenIssuer() *bool {
+	if j == nil {
+		return nil
+	}
+	return j.VerifyChannelTokenIssuer
+}
+
+func (j *JwtSignerPluginConfig) GetVerifyChannelTokenNotbefore() *bool {
+	if j == nil {
+		return nil
+	}
+	return j.VerifyChannelTokenNotbefore
 }
 
 func (j *JwtSignerPluginConfig) GetVerifyChannelTokenScopes() *bool {
@@ -1156,6 +1719,13 @@ func (j *JwtSignerPluginConfig) GetVerifyChannelTokenSignature() *bool {
 		return nil
 	}
 	return j.VerifyChannelTokenSignature
+}
+
+func (j *JwtSignerPluginConfig) GetVerifyChannelTokenSubject() *bool {
+	if j == nil {
+		return nil
+	}
+	return j.VerifyChannelTokenSubject
 }
 
 type JwtSignerPluginProtocols string

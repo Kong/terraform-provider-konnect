@@ -1,5 +1,24 @@
 # Changelog
 
+## 3.4.0
+> Released on 2025/10/29
+
+### Features
+* Add support for new Gateway 3.12 plugins:
+  * `gateway_plugin_ace`
+  * `gateway_plugin_ai_gcp_model_armor`
+  * `gateway_plugin_ai_llm_as_judge`
+  * `gateway_plugin_kafka_consume`
+  * `gateway_plugin_ai_mcp_oauth2`
+  * `gateway_plugin_ai_mcp_proxy`
+  * `gateway_plugin_ai_semantic_response_guard`
+  * `gateway_plugin_solace_consume`
+  * `gateway_plugin_solace_log`
+
+### Bug Fixes
+* Fix perpetual diff in `konnect_gateway_plugin_request_callout` and `konnect_gateway_plugin_response_transformer`
+* Fix unnecessary planned changes seen in child resources when parent was updated.
+
 ## 3.3.0
 > Released on 2025/10/14
 

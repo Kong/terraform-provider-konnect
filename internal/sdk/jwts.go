@@ -276,7 +276,7 @@ func (s *JWTs) DeleteJwtWithConsumer(ctx context.Context, request operations.Del
 
 }
 
-// GetJwtWithConsumer - Fetch a JWT associated with a Consumer
+// GetJwtWithConsumer - Get a JWT associated with a Consumer
 // Get a JWT associated with a Consumer using ID.
 func (s *JWTs) GetJwtWithConsumer(ctx context.Context, request operations.GetJwtWithConsumerRequest, opts ...operations.Option) (*operations.GetJwtWithConsumerResponse, error) {
 	o := operations.Options{}

@@ -276,7 +276,7 @@ func (s *APIKeys) DeleteKeyAuthWithConsumer(ctx context.Context, request operati
 
 }
 
-// GetKeyAuthWithConsumer - Fetch an API-key associated with a Consumer
+// GetKeyAuthWithConsumer - Get an API-key associated with a Consumer
 // Get an API-key associated with a Consumer using ID.
 func (s *APIKeys) GetKeyAuthWithConsumer(ctx context.Context, request operations.GetKeyAuthWithConsumerRequest, opts ...operations.Option) (*operations.GetKeyAuthWithConsumerResponse, error) {
 	o := operations.Options{}

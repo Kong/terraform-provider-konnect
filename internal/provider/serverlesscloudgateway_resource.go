@@ -115,12 +115,18 @@ func (r *ServerlessCloudGatewayResource) Schema(ctx context.Context, req resourc
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Validators: []validator.String{
 					validators.IsRFC3339(),
 				},
 			},
 			"gateway_endpoint": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Endpoint for the serverless cloud gateway.`,
 			},
 			"labels": schema.MapAttribute{
@@ -135,6 +141,9 @@ func (r *ServerlessCloudGatewayResource) Schema(ctx context.Context, req resourc
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Validators: []validator.String{
 					validators.IsRFC3339(),
 				},

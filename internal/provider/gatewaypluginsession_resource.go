@@ -50,7 +50,7 @@ type GatewayPluginSessionResourceModel struct {
 	Enabled        types.Bool                   `tfsdk:"enabled"`
 	ID             types.String                 `tfsdk:"id"`
 	InstanceName   types.String                 `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering   `tfsdk:"ordering"`
+	Ordering       *tfTypes.AcePluginOrdering   `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials           `tfsdk:"partials"`
 	Protocols      []types.String               `tfsdk:"protocols"`
 	Route          *tfTypes.Set                 `tfsdk:"route"`
@@ -73,6 +73,9 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
 					"absolute_timeout": types.Float64Type,
 					"audience":         types.StringType,
+					"bind": types.ListType{
+						ElemType: types.StringType,
+					},
 					"cookie_domain":    types.StringType,
 					"cookie_http_only": types.BoolType,
 					"cookie_name":      types.StringType,
@@ -115,6 +118,11 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 						Optional:    true,
 						Default:     stringdefault.StaticString(`default`),
 						Description: `The session audience, which is the intended target application. For example ` + "`" + `"my-application"` + "`" + `. Default: "default"`,
+					},
+					"bind": schema.ListAttribute{
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `Bind the session to data acquired from the HTTP request or connection.`,
 					},
 					"cookie_domain": schema.StringAttribute{
 						Optional:    true,
@@ -239,10 +247,8 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 						Description: `The session cookie rolling timeout, in seconds. Specifies how long the session can be used until it needs to be renewed. Default: 3600`,
 					},
 					"secret": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString(`M5N0CyFrAZwpB7F72PpY3J4S5n3KL77fs6xMuY8b7SMc`),
-						Description: `The secret that is used in keyed HMAC generation. Default: "M5N0CyFrAZwpB7F72PpY3J4S5n3KL77fs6xMuY8b7SMc"`,
+						Description: `The secret that is used in keyed HMAC generation.`,
 					},
 					"stale_ttl": schema.Float64Attribute{
 						Computed:    true,

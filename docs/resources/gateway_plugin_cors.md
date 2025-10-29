@@ -106,7 +106,7 @@ Optional:
 - `headers` (List of String) Value for the `Access-Control-Allow-Headers` header.
 - `max_age` (Number) Indicates how long the results of the preflight request can be cached, in `seconds`.
 - `methods` (List of String) 'Value for the `Access-Control-Allow-Methods` header. Available options include `GET`, `HEAD`, `PUT`, `PATCH`, `POST`, `DELETE`, `OPTIONS`, `TRACE`, `CONNECT`. By default, all options are allowed.'. Default: ["CONNECT","DELETE","GET","HEAD","OPTIONS","PATCH","POST","PUT","TRACE"]
-- `origins` (List of String) List of allowed domains for the `Access-Control-Allow-Origin` header. If you want to allow all origins, add `*` as a single value to this configuration field. The accepted values can either be flat strings or PCRE regexes.
+- `origins` (List of String) List of allowed domains for the `Access-Control-Allow-Origin` header. If you want to allow all origins, add `*` as a single value to this configuration field. The accepted values can either be flat strings or PCRE regexes. NOTE: If you don't specify any allowed domains, all origins are allowed.
 - `preflight_continue` (Boolean) A boolean value that instructs the plugin to proxy the `OPTIONS` preflight request to the Upstream service. Default: false
 - `private_network` (Boolean) Flag to determine whether the `Access-Control-Allow-Private-Network` header should be sent with `true` as the value. Default: false
 

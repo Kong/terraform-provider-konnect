@@ -265,8 +265,9 @@ func (k *KafkaUpstreamPluginBasic) GetUsername() string {
 type KafkaUpstreamPluginMode string
 
 const (
-	KafkaUpstreamPluginModeBasic KafkaUpstreamPluginMode = "basic"
-	KafkaUpstreamPluginModeNone  KafkaUpstreamPluginMode = "none"
+	KafkaUpstreamPluginModeBasic  KafkaUpstreamPluginMode = "basic"
+	KafkaUpstreamPluginModeNone   KafkaUpstreamPluginMode = "none"
+	KafkaUpstreamPluginModeOauth2 KafkaUpstreamPluginMode = "oauth2"
 )
 
 func (e KafkaUpstreamPluginMode) ToPointer() *KafkaUpstreamPluginMode {
@@ -281,6 +282,8 @@ func (e *KafkaUpstreamPluginMode) UnmarshalJSON(data []byte) error {
 	case "basic":
 		fallthrough
 	case "none":
+		fallthrough
+	case "oauth2":
 		*e = KafkaUpstreamPluginMode(v)
 		return nil
 	default:
@@ -288,10 +291,316 @@ func (e *KafkaUpstreamPluginMode) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// KafkaUpstreamPluginGrantType - The OAuth grant type to be used.
+type KafkaUpstreamPluginGrantType string
+
+const (
+	KafkaUpstreamPluginGrantTypeClientCredentials KafkaUpstreamPluginGrantType = "client_credentials"
+	KafkaUpstreamPluginGrantTypePassword          KafkaUpstreamPluginGrantType = "password"
+)
+
+func (e KafkaUpstreamPluginGrantType) ToPointer() *KafkaUpstreamPluginGrantType {
+	return &e
+}
+func (e *KafkaUpstreamPluginGrantType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "client_credentials":
+		fallthrough
+	case "password":
+		*e = KafkaUpstreamPluginGrantType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for KafkaUpstreamPluginGrantType: %v", v)
+	}
+}
+
+type KafkaUpstreamPluginOauth2 struct {
+	// List of audiences passed to the IdP when obtaining a new token.
+	Audience []string `json:"audience,omitempty"`
+	// The client ID for the application registration in the IdP.
+	ClientID *string `default:"null" json:"client_id"`
+	// The client secret for the application registration in the IdP.
+	ClientSecret *string `default:"null" json:"client_secret"`
+	// The OAuth grant type to be used.
+	GrantType *KafkaUpstreamPluginGrantType `default:"client_credentials" json:"grant_type"`
+	// The password to use if `config.oauth.grant_type` is set to `password`.
+	Password *string `default:"null" json:"password"`
+	// List of scopes to request from the IdP when obtaining a new token.
+	Scopes []string `json:"scopes,omitempty"`
+	// The token endpoint URI.
+	TokenEndpoint string `json:"token_endpoint"`
+	// Extra headers to be passed in the token endpoint request.
+	TokenHeaders map[string]any `json:"token_headers,omitempty"`
+	// Extra post arguments to be passed in the token endpoint request.
+	TokenPostArgs map[string]any `json:"token_post_args,omitempty"`
+	// The username to use if `config.oauth.grant_type` is set to `password`.
+	Username *string `default:"null" json:"username"`
+}
+
+func (k KafkaUpstreamPluginOauth2) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginOauth2) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"token_endpoint"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (k *KafkaUpstreamPluginOauth2) GetAudience() []string {
+	if k == nil {
+		return nil
+	}
+	return k.Audience
+}
+
+func (k *KafkaUpstreamPluginOauth2) GetClientID() *string {
+	if k == nil {
+		return nil
+	}
+	return k.ClientID
+}
+
+func (k *KafkaUpstreamPluginOauth2) GetClientSecret() *string {
+	if k == nil {
+		return nil
+	}
+	return k.ClientSecret
+}
+
+func (k *KafkaUpstreamPluginOauth2) GetGrantType() *KafkaUpstreamPluginGrantType {
+	if k == nil {
+		return nil
+	}
+	return k.GrantType
+}
+
+func (k *KafkaUpstreamPluginOauth2) GetPassword() *string {
+	if k == nil {
+		return nil
+	}
+	return k.Password
+}
+
+func (k *KafkaUpstreamPluginOauth2) GetScopes() []string {
+	if k == nil {
+		return nil
+	}
+	return k.Scopes
+}
+
+func (k *KafkaUpstreamPluginOauth2) GetTokenEndpoint() string {
+	if k == nil {
+		return ""
+	}
+	return k.TokenEndpoint
+}
+
+func (k *KafkaUpstreamPluginOauth2) GetTokenHeaders() map[string]any {
+	if k == nil {
+		return nil
+	}
+	return k.TokenHeaders
+}
+
+func (k *KafkaUpstreamPluginOauth2) GetTokenPostArgs() map[string]any {
+	if k == nil {
+		return nil
+	}
+	return k.TokenPostArgs
+}
+
+func (k *KafkaUpstreamPluginOauth2) GetUsername() *string {
+	if k == nil {
+		return nil
+	}
+	return k.Username
+}
+
+// KafkaUpstreamPluginAuthMethod - The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body.
+type KafkaUpstreamPluginAuthMethod string
+
+const (
+	KafkaUpstreamPluginAuthMethodClientSecretBasic KafkaUpstreamPluginAuthMethod = "client_secret_basic"
+	KafkaUpstreamPluginAuthMethodClientSecretJwt   KafkaUpstreamPluginAuthMethod = "client_secret_jwt"
+	KafkaUpstreamPluginAuthMethodClientSecretPost  KafkaUpstreamPluginAuthMethod = "client_secret_post"
+	KafkaUpstreamPluginAuthMethodNone              KafkaUpstreamPluginAuthMethod = "none"
+)
+
+func (e KafkaUpstreamPluginAuthMethod) ToPointer() *KafkaUpstreamPluginAuthMethod {
+	return &e
+}
+func (e *KafkaUpstreamPluginAuthMethod) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "client_secret_basic":
+		fallthrough
+	case "client_secret_jwt":
+		fallthrough
+	case "client_secret_post":
+		fallthrough
+	case "none":
+		*e = KafkaUpstreamPluginAuthMethod(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for KafkaUpstreamPluginAuthMethod: %v", v)
+	}
+}
+
+// KafkaUpstreamPluginClientSecretJwtAlg - The algorithm to use with JWT when using `client_secret_jwt` authentication.
+type KafkaUpstreamPluginClientSecretJwtAlg string
+
+const (
+	KafkaUpstreamPluginClientSecretJwtAlgHs256 KafkaUpstreamPluginClientSecretJwtAlg = "HS256"
+	KafkaUpstreamPluginClientSecretJwtAlgHs512 KafkaUpstreamPluginClientSecretJwtAlg = "HS512"
+)
+
+func (e KafkaUpstreamPluginClientSecretJwtAlg) ToPointer() *KafkaUpstreamPluginClientSecretJwtAlg {
+	return &e
+}
+func (e *KafkaUpstreamPluginClientSecretJwtAlg) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "HS256":
+		fallthrough
+	case "HS512":
+		*e = KafkaUpstreamPluginClientSecretJwtAlg(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for KafkaUpstreamPluginClientSecretJwtAlg: %v", v)
+	}
+}
+
+type KafkaUpstreamPluginOauth2Client struct {
+	// The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body.
+	AuthMethod *KafkaUpstreamPluginAuthMethod `default:"client_secret_post" json:"auth_method"`
+	// The algorithm to use with JWT when using `client_secret_jwt` authentication.
+	ClientSecretJwtAlg *KafkaUpstreamPluginClientSecretJwtAlg `default:"HS512" json:"client_secret_jwt_alg"`
+	// The proxy to use when making HTTP requests to the IdP.
+	HTTPProxy *string `default:"null" json:"http_proxy"`
+	// The `Proxy-Authorization` header value to be used with `http_proxy`.
+	HTTPProxyAuthorization *string `default:"null" json:"http_proxy_authorization"`
+	// The HTTP version used for requests made by this plugin. Supported values: `1.1` for HTTP 1.1 and `1.0` for HTTP 1.0.
+	HTTPVersion *float64 `json:"http_version,omitempty"`
+	// The proxy to use when making HTTPS requests to the IdP.
+	HTTPSProxy *string `default:"null" json:"https_proxy"`
+	// The `Proxy-Authorization` header value to be used with `https_proxy`.
+	HTTPSProxyAuthorization *string `default:"null" json:"https_proxy_authorization"`
+	// Whether to use keepalive connections to the IdP.
+	KeepAlive *bool `default:"true" json:"keep_alive"`
+	// A comma-separated list of hosts that should not be proxied.
+	NoProxy *string `default:"null" json:"no_proxy"`
+	// Whether to verify the certificate presented by the IdP when using HTTPS.
+	SslVerify *bool `default:"false" json:"ssl_verify"`
+	// Network I/O timeout for requests to the IdP in milliseconds.
+	Timeout *int64 `default:"10000" json:"timeout"`
+}
+
+func (k KafkaUpstreamPluginOauth2Client) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginOauth2Client) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (k *KafkaUpstreamPluginOauth2Client) GetAuthMethod() *KafkaUpstreamPluginAuthMethod {
+	if k == nil {
+		return nil
+	}
+	return k.AuthMethod
+}
+
+func (k *KafkaUpstreamPluginOauth2Client) GetClientSecretJwtAlg() *KafkaUpstreamPluginClientSecretJwtAlg {
+	if k == nil {
+		return nil
+	}
+	return k.ClientSecretJwtAlg
+}
+
+func (k *KafkaUpstreamPluginOauth2Client) GetHTTPProxy() *string {
+	if k == nil {
+		return nil
+	}
+	return k.HTTPProxy
+}
+
+func (k *KafkaUpstreamPluginOauth2Client) GetHTTPProxyAuthorization() *string {
+	if k == nil {
+		return nil
+	}
+	return k.HTTPProxyAuthorization
+}
+
+func (k *KafkaUpstreamPluginOauth2Client) GetHTTPVersion() *float64 {
+	if k == nil {
+		return nil
+	}
+	return k.HTTPVersion
+}
+
+func (k *KafkaUpstreamPluginOauth2Client) GetHTTPSProxy() *string {
+	if k == nil {
+		return nil
+	}
+	return k.HTTPSProxy
+}
+
+func (k *KafkaUpstreamPluginOauth2Client) GetHTTPSProxyAuthorization() *string {
+	if k == nil {
+		return nil
+	}
+	return k.HTTPSProxyAuthorization
+}
+
+func (k *KafkaUpstreamPluginOauth2Client) GetKeepAlive() *bool {
+	if k == nil {
+		return nil
+	}
+	return k.KeepAlive
+}
+
+func (k *KafkaUpstreamPluginOauth2Client) GetNoProxy() *string {
+	if k == nil {
+		return nil
+	}
+	return k.NoProxy
+}
+
+func (k *KafkaUpstreamPluginOauth2Client) GetSslVerify() *bool {
+	if k == nil {
+		return nil
+	}
+	return k.SslVerify
+}
+
+func (k *KafkaUpstreamPluginOauth2Client) GetTimeout() *int64 {
+	if k == nil {
+		return nil
+	}
+	return k.Timeout
+}
+
 type KafkaUpstreamPluginConfigAuthentication struct {
 	Basic *KafkaUpstreamPluginBasic `json:"basic"`
 	// Authentication mode to use with the schema registry.
-	Mode *KafkaUpstreamPluginMode `default:"none" json:"mode"`
+	Mode         *KafkaUpstreamPluginMode         `default:"none" json:"mode"`
+	Oauth2       *KafkaUpstreamPluginOauth2       `json:"oauth2"`
+	Oauth2Client *KafkaUpstreamPluginOauth2Client `json:"oauth2_client"`
 }
 
 func (k KafkaUpstreamPluginConfigAuthentication) MarshalJSON() ([]byte, error) {
@@ -317,6 +626,20 @@ func (k *KafkaUpstreamPluginConfigAuthentication) GetMode() *KafkaUpstreamPlugin
 		return nil
 	}
 	return k.Mode
+}
+
+func (k *KafkaUpstreamPluginConfigAuthentication) GetOauth2() *KafkaUpstreamPluginOauth2 {
+	if k == nil {
+		return nil
+	}
+	return k.Oauth2
+}
+
+func (k *KafkaUpstreamPluginConfigAuthentication) GetOauth2Client() *KafkaUpstreamPluginOauth2Client {
+	if k == nil {
+		return nil
+	}
+	return k.Oauth2Client
 }
 
 type KafkaUpstreamPluginKeySchema struct {
@@ -384,8 +707,8 @@ func (k *KafkaUpstreamPluginValueSchema) GetSubjectName() *string {
 }
 
 type KafkaUpstreamPluginConfluent struct {
-	Authentication KafkaUpstreamPluginConfigAuthentication `json:"authentication"`
-	KeySchema      *KafkaUpstreamPluginKeySchema           `json:"key_schema"`
+	Authentication *KafkaUpstreamPluginConfigAuthentication `json:"authentication"`
+	KeySchema      *KafkaUpstreamPluginKeySchema            `json:"key_schema"`
 	// Set to false to disable SSL certificate verification when connecting to the schema registry.
 	SslVerify *bool `default:"true" json:"ssl_verify"`
 	// The TTL in seconds for the schema registry cache.
@@ -400,15 +723,15 @@ func (k KafkaUpstreamPluginConfluent) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaUpstreamPluginConfluent) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"authentication"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (k *KafkaUpstreamPluginConfluent) GetAuthentication() KafkaUpstreamPluginConfigAuthentication {
+func (k *KafkaUpstreamPluginConfluent) GetAuthentication() *KafkaUpstreamPluginConfigAuthentication {
 	if k == nil {
-		return KafkaUpstreamPluginConfigAuthentication{}
+		return nil
 	}
 	return k.Authentication
 }

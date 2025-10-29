@@ -25,6 +25,7 @@ type RateLimitingAdvancedPluginConfig struct {
 	RetryAfterJitterMax   types.Float64                    `tfsdk:"retry_after_jitter_max"`
 	Strategy              types.String                     `tfsdk:"strategy"`
 	SyncRate              types.Float64                    `tfsdk:"sync_rate"`
+	Throttling            *Throttling                      `tfsdk:"throttling"`
 	WindowSize            []types.Float64                  `tfsdk:"window_size"`
 	WindowType            types.String                     `tfsdk:"window_type"`
 }

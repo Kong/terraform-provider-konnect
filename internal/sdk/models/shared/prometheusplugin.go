@@ -91,8 +91,7 @@ type PrometheusPluginConfig struct {
 	StatusCodeMetrics *bool `default:"false" json:"status_code_metrics"`
 	// A boolean value that determines if upstream metrics should be collected. If enabled, `upstream_target_health` metric will be exported.
 	UpstreamHealthMetrics *bool `default:"false" json:"upstream_health_metrics"`
-	// A boolean value that determines if Wasm metrics should be collected.
-	WasmMetrics *bool `default:"false" json:"wasm_metrics"`
+	WasmMetrics           *bool `default:"null" json:"wasm_metrics"`
 }
 
 func (p PrometheusPluginConfig) MarshalJSON() ([]byte, error) {

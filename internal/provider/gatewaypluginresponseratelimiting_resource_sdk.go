@@ -30,7 +30,7 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) RefreshFromSharedRespon
 			} else {
 				r.Config.LimitBy = types.StringNull()
 			}
-			if resp.Config.Limits != nil {
+			if len(resp.Config.Limits) > 0 {
 				r.Config.Limits = make(map[string]jsontypes.Normalized, len(resp.Config.Limits))
 				for key, value := range resp.Config.Limits {
 					result, _ := json.Marshal(value)
@@ -70,11 +70,11 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) RefreshFromSharedRespon
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			r.Ordering = &tfTypes.AcePluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After = &tfTypes.AcePluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -83,7 +83,7 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) RefreshFromSharedRespon
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.AcePluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

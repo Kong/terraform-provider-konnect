@@ -298,7 +298,7 @@ func (s *APIProductDocumentation) CreateAPIProductDocument(ctx context.Context, 
 
 }
 
-// GetAPIProductDocument - Fetch API Product Document
+// GetAPIProductDocument - Get an API Product Document
 // Returns a document for the API product.
 func (s *APIProductDocumentation) GetAPIProductDocument(ctx context.Context, request operations.GetAPIProductDocumentRequest, opts ...operations.Option) (*operations.GetAPIProductDocumentResponse, error) {
 	o := operations.Options{}

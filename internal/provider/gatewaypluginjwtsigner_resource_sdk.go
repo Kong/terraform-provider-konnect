@@ -21,6 +21,16 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.JwtSignerPluginConfig{}
+			r.Config.AccessTokenAudienceClaim = make([]types.String, 0, len(resp.Config.AccessTokenAudienceClaim))
+			for _, v := range resp.Config.AccessTokenAudienceClaim {
+				r.Config.AccessTokenAudienceClaim = append(r.Config.AccessTokenAudienceClaim, types.StringValue(v))
+			}
+			if resp.Config.AccessTokenAudiencesAllowed != nil {
+				r.Config.AccessTokenAudiencesAllowed = make([]types.String, 0, len(resp.Config.AccessTokenAudiencesAllowed))
+				for _, v := range resp.Config.AccessTokenAudiencesAllowed {
+					r.Config.AccessTokenAudiencesAllowed = append(r.Config.AccessTokenAudiencesAllowed, types.StringValue(v))
+				}
+			}
 			r.Config.AccessTokenConsumerBy = make([]types.String, 0, len(resp.Config.AccessTokenConsumerBy))
 			for _, v := range resp.Config.AccessTokenConsumerBy {
 				r.Config.AccessTokenConsumerBy = append(r.Config.AccessTokenConsumerBy, types.StringValue(string(v)))
@@ -29,6 +39,20 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 				r.Config.AccessTokenConsumerClaim = make([]types.String, 0, len(resp.Config.AccessTokenConsumerClaim))
 				for _, v := range resp.Config.AccessTokenConsumerClaim {
 					r.Config.AccessTokenConsumerClaim = append(r.Config.AccessTokenConsumerClaim, types.StringValue(v))
+				}
+			}
+			r.Config.AccessTokenExpiryClaim = make([]types.String, 0, len(resp.Config.AccessTokenExpiryClaim))
+			for _, v := range resp.Config.AccessTokenExpiryClaim {
+				r.Config.AccessTokenExpiryClaim = append(r.Config.AccessTokenExpiryClaim, types.StringValue(v))
+			}
+			r.Config.AccessTokenIntrospectionAudienceClaim = make([]types.String, 0, len(resp.Config.AccessTokenIntrospectionAudienceClaim))
+			for _, v := range resp.Config.AccessTokenIntrospectionAudienceClaim {
+				r.Config.AccessTokenIntrospectionAudienceClaim = append(r.Config.AccessTokenIntrospectionAudienceClaim, types.StringValue(v))
+			}
+			if resp.Config.AccessTokenIntrospectionAudiencesAllowed != nil {
+				r.Config.AccessTokenIntrospectionAudiencesAllowed = make([]types.String, 0, len(resp.Config.AccessTokenIntrospectionAudiencesAllowed))
+				for _, v := range resp.Config.AccessTokenIntrospectionAudiencesAllowed {
+					r.Config.AccessTokenIntrospectionAudiencesAllowed = append(r.Config.AccessTokenIntrospectionAudiencesAllowed, types.StringValue(v))
 				}
 			}
 			r.Config.AccessTokenIntrospectionAuthorization = types.StringPointerValue(resp.Config.AccessTokenIntrospectionAuthorization)
@@ -44,7 +68,21 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 				}
 			}
 			r.Config.AccessTokenIntrospectionEndpoint = types.StringPointerValue(resp.Config.AccessTokenIntrospectionEndpoint)
+			r.Config.AccessTokenIntrospectionExpiryClaim = make([]types.String, 0, len(resp.Config.AccessTokenIntrospectionExpiryClaim))
+			for _, v := range resp.Config.AccessTokenIntrospectionExpiryClaim {
+				r.Config.AccessTokenIntrospectionExpiryClaim = append(r.Config.AccessTokenIntrospectionExpiryClaim, types.StringValue(v))
+			}
 			r.Config.AccessTokenIntrospectionHint = types.StringPointerValue(resp.Config.AccessTokenIntrospectionHint)
+			r.Config.AccessTokenIntrospectionIssuerClaim = make([]types.String, 0, len(resp.Config.AccessTokenIntrospectionIssuerClaim))
+			for _, v := range resp.Config.AccessTokenIntrospectionIssuerClaim {
+				r.Config.AccessTokenIntrospectionIssuerClaim = append(r.Config.AccessTokenIntrospectionIssuerClaim, types.StringValue(v))
+			}
+			if resp.Config.AccessTokenIntrospectionIssuersAllowed != nil {
+				r.Config.AccessTokenIntrospectionIssuersAllowed = make([]types.String, 0, len(resp.Config.AccessTokenIntrospectionIssuersAllowed))
+				for _, v := range resp.Config.AccessTokenIntrospectionIssuersAllowed {
+					r.Config.AccessTokenIntrospectionIssuersAllowed = append(r.Config.AccessTokenIntrospectionIssuersAllowed, types.StringValue(v))
+				}
+			}
 			if resp.Config.AccessTokenIntrospectionJwtClaim != nil {
 				r.Config.AccessTokenIntrospectionJwtClaim = make([]types.String, 0, len(resp.Config.AccessTokenIntrospectionJwtClaim))
 				for _, v := range resp.Config.AccessTokenIntrospectionJwtClaim {
@@ -52,6 +90,32 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 				}
 			}
 			r.Config.AccessTokenIntrospectionLeeway = types.Float64PointerValue(resp.Config.AccessTokenIntrospectionLeeway)
+			r.Config.AccessTokenIntrospectionNotbeforeClaim = make([]types.String, 0, len(resp.Config.AccessTokenIntrospectionNotbeforeClaim))
+			for _, v := range resp.Config.AccessTokenIntrospectionNotbeforeClaim {
+				r.Config.AccessTokenIntrospectionNotbeforeClaim = append(r.Config.AccessTokenIntrospectionNotbeforeClaim, types.StringValue(v))
+			}
+			if resp.Config.AccessTokenIntrospectionOptionalClaims != nil {
+				r.Config.AccessTokenIntrospectionOptionalClaims = nil
+				for _, accessTokenIntrospectionOptionalClaimsItem := range resp.Config.AccessTokenIntrospectionOptionalClaims {
+					var accessTokenIntrospectionOptionalClaims []types.String
+					accessTokenIntrospectionOptionalClaims = make([]types.String, 0, len(accessTokenIntrospectionOptionalClaimsItem))
+					for _, v := range accessTokenIntrospectionOptionalClaimsItem {
+						accessTokenIntrospectionOptionalClaims = append(accessTokenIntrospectionOptionalClaims, types.StringValue(v))
+					}
+					r.Config.AccessTokenIntrospectionOptionalClaims = append(r.Config.AccessTokenIntrospectionOptionalClaims, accessTokenIntrospectionOptionalClaims)
+				}
+			}
+			if resp.Config.AccessTokenIntrospectionRequiredClaims != nil {
+				r.Config.AccessTokenIntrospectionRequiredClaims = nil
+				for _, accessTokenIntrospectionRequiredClaimsItem := range resp.Config.AccessTokenIntrospectionRequiredClaims {
+					var accessTokenIntrospectionRequiredClaims []types.String
+					accessTokenIntrospectionRequiredClaims = make([]types.String, 0, len(accessTokenIntrospectionRequiredClaimsItem))
+					for _, v := range accessTokenIntrospectionRequiredClaimsItem {
+						accessTokenIntrospectionRequiredClaims = append(accessTokenIntrospectionRequiredClaims, types.StringValue(v))
+					}
+					r.Config.AccessTokenIntrospectionRequiredClaims = append(r.Config.AccessTokenIntrospectionRequiredClaims, accessTokenIntrospectionRequiredClaims)
+				}
+			}
 			r.Config.AccessTokenIntrospectionScopesClaim = make([]types.String, 0, len(resp.Config.AccessTokenIntrospectionScopesClaim))
 			for _, v := range resp.Config.AccessTokenIntrospectionScopesClaim {
 				r.Config.AccessTokenIntrospectionScopesClaim = append(r.Config.AccessTokenIntrospectionScopesClaim, types.StringValue(v))
@@ -62,21 +126,77 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 					r.Config.AccessTokenIntrospectionScopesRequired = append(r.Config.AccessTokenIntrospectionScopesRequired, types.StringValue(v))
 				}
 			}
+			r.Config.AccessTokenIntrospectionSubjectClaim = make([]types.String, 0, len(resp.Config.AccessTokenIntrospectionSubjectClaim))
+			for _, v := range resp.Config.AccessTokenIntrospectionSubjectClaim {
+				r.Config.AccessTokenIntrospectionSubjectClaim = append(r.Config.AccessTokenIntrospectionSubjectClaim, types.StringValue(v))
+			}
+			if resp.Config.AccessTokenIntrospectionSubjectsAllowed != nil {
+				r.Config.AccessTokenIntrospectionSubjectsAllowed = make([]types.String, 0, len(resp.Config.AccessTokenIntrospectionSubjectsAllowed))
+				for _, v := range resp.Config.AccessTokenIntrospectionSubjectsAllowed {
+					r.Config.AccessTokenIntrospectionSubjectsAllowed = append(r.Config.AccessTokenIntrospectionSubjectsAllowed, types.StringValue(v))
+				}
+			}
 			r.Config.AccessTokenIntrospectionTimeout = types.Float64PointerValue(resp.Config.AccessTokenIntrospectionTimeout)
 			r.Config.AccessTokenIssuer = types.StringPointerValue(resp.Config.AccessTokenIssuer)
+			r.Config.AccessTokenIssuerClaim = make([]types.String, 0, len(resp.Config.AccessTokenIssuerClaim))
+			for _, v := range resp.Config.AccessTokenIssuerClaim {
+				r.Config.AccessTokenIssuerClaim = append(r.Config.AccessTokenIssuerClaim, types.StringValue(v))
+			}
+			if resp.Config.AccessTokenIssuersAllowed != nil {
+				r.Config.AccessTokenIssuersAllowed = make([]types.String, 0, len(resp.Config.AccessTokenIssuersAllowed))
+				for _, v := range resp.Config.AccessTokenIssuersAllowed {
+					r.Config.AccessTokenIssuersAllowed = append(r.Config.AccessTokenIssuersAllowed, types.StringValue(v))
+				}
+			}
 			r.Config.AccessTokenJwksURI = types.StringPointerValue(resp.Config.AccessTokenJwksURI)
-			r.Config.AccessTokenJwksURIClientCertificate = types.StringPointerValue(resp.Config.AccessTokenJwksURIClientCertificate)
+			if resp.Config.AccessTokenJwksURIClientCertificate == nil {
+				r.Config.AccessTokenJwksURIClientCertificate = nil
+			} else {
+				r.Config.AccessTokenJwksURIClientCertificate = &tfTypes.Set{}
+				r.Config.AccessTokenJwksURIClientCertificate.ID = types.StringPointerValue(resp.Config.AccessTokenJwksURIClientCertificate.ID)
+			}
 			r.Config.AccessTokenJwksURIClientPassword = types.StringPointerValue(resp.Config.AccessTokenJwksURIClientPassword)
 			r.Config.AccessTokenJwksURIClientUsername = types.StringPointerValue(resp.Config.AccessTokenJwksURIClientUsername)
 			r.Config.AccessTokenJwksURIRotatePeriod = types.Float64PointerValue(resp.Config.AccessTokenJwksURIRotatePeriod)
 			r.Config.AccessTokenKeyset = types.StringPointerValue(resp.Config.AccessTokenKeyset)
-			r.Config.AccessTokenKeysetClientCertificate = types.StringPointerValue(resp.Config.AccessTokenKeysetClientCertificate)
+			if resp.Config.AccessTokenKeysetClientCertificate == nil {
+				r.Config.AccessTokenKeysetClientCertificate = nil
+			} else {
+				r.Config.AccessTokenKeysetClientCertificate = &tfTypes.Set{}
+				r.Config.AccessTokenKeysetClientCertificate.ID = types.StringPointerValue(resp.Config.AccessTokenKeysetClientCertificate.ID)
+			}
 			r.Config.AccessTokenKeysetClientPassword = types.StringPointerValue(resp.Config.AccessTokenKeysetClientPassword)
 			r.Config.AccessTokenKeysetClientUsername = types.StringPointerValue(resp.Config.AccessTokenKeysetClientUsername)
 			r.Config.AccessTokenKeysetRotatePeriod = types.Float64PointerValue(resp.Config.AccessTokenKeysetRotatePeriod)
 			r.Config.AccessTokenLeeway = types.Float64PointerValue(resp.Config.AccessTokenLeeway)
+			r.Config.AccessTokenNotbeforeClaim = make([]types.String, 0, len(resp.Config.AccessTokenNotbeforeClaim))
+			for _, v := range resp.Config.AccessTokenNotbeforeClaim {
+				r.Config.AccessTokenNotbeforeClaim = append(r.Config.AccessTokenNotbeforeClaim, types.StringValue(v))
+			}
 			r.Config.AccessTokenOptional = types.BoolPointerValue(resp.Config.AccessTokenOptional)
+			if resp.Config.AccessTokenOptionalClaims != nil {
+				r.Config.AccessTokenOptionalClaims = nil
+				for _, accessTokenOptionalClaimsItem := range resp.Config.AccessTokenOptionalClaims {
+					var accessTokenOptionalClaims []types.String
+					accessTokenOptionalClaims = make([]types.String, 0, len(accessTokenOptionalClaimsItem))
+					for _, v := range accessTokenOptionalClaimsItem {
+						accessTokenOptionalClaims = append(accessTokenOptionalClaims, types.StringValue(v))
+					}
+					r.Config.AccessTokenOptionalClaims = append(r.Config.AccessTokenOptionalClaims, accessTokenOptionalClaims)
+				}
+			}
 			r.Config.AccessTokenRequestHeader = types.StringPointerValue(resp.Config.AccessTokenRequestHeader)
+			if resp.Config.AccessTokenRequiredClaims != nil {
+				r.Config.AccessTokenRequiredClaims = nil
+				for _, accessTokenRequiredClaimsItem := range resp.Config.AccessTokenRequiredClaims {
+					var accessTokenRequiredClaims []types.String
+					accessTokenRequiredClaims = make([]types.String, 0, len(accessTokenRequiredClaimsItem))
+					for _, v := range accessTokenRequiredClaimsItem {
+						accessTokenRequiredClaims = append(accessTokenRequiredClaims, types.StringValue(v))
+					}
+					r.Config.AccessTokenRequiredClaims = append(r.Config.AccessTokenRequiredClaims, accessTokenRequiredClaims)
+				}
+			}
 			r.Config.AccessTokenScopesClaim = make([]types.String, 0, len(resp.Config.AccessTokenScopesClaim))
 			for _, v := range resp.Config.AccessTokenScopesClaim {
 				r.Config.AccessTokenScopesClaim = append(r.Config.AccessTokenScopesClaim, types.StringValue(v))
@@ -87,28 +207,39 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 					r.Config.AccessTokenScopesRequired = append(r.Config.AccessTokenScopesRequired, types.StringValue(v))
 				}
 			}
+			r.Config.AccessTokenSigning = types.BoolPointerValue(resp.Config.AccessTokenSigning)
 			if resp.Config.AccessTokenSigningAlgorithm != nil {
 				r.Config.AccessTokenSigningAlgorithm = types.StringValue(string(*resp.Config.AccessTokenSigningAlgorithm))
 			} else {
 				r.Config.AccessTokenSigningAlgorithm = types.StringNull()
 			}
+			r.Config.AccessTokenSubjectClaim = make([]types.String, 0, len(resp.Config.AccessTokenSubjectClaim))
+			for _, v := range resp.Config.AccessTokenSubjectClaim {
+				r.Config.AccessTokenSubjectClaim = append(r.Config.AccessTokenSubjectClaim, types.StringValue(v))
+			}
+			if resp.Config.AccessTokenSubjectsAllowed != nil {
+				r.Config.AccessTokenSubjectsAllowed = make([]types.String, 0, len(resp.Config.AccessTokenSubjectsAllowed))
+				for _, v := range resp.Config.AccessTokenSubjectsAllowed {
+					r.Config.AccessTokenSubjectsAllowed = append(r.Config.AccessTokenSubjectsAllowed, types.StringValue(v))
+				}
+			}
 			r.Config.AccessTokenUpstreamHeader = types.StringPointerValue(resp.Config.AccessTokenUpstreamHeader)
 			r.Config.AccessTokenUpstreamLeeway = types.Float64PointerValue(resp.Config.AccessTokenUpstreamLeeway)
-			if resp.Config.AddAccessTokenClaims != nil {
+			if len(resp.Config.AddAccessTokenClaims) > 0 {
 				r.Config.AddAccessTokenClaims = make(map[string]jsontypes.Normalized, len(resp.Config.AddAccessTokenClaims))
 				for key, value := range resp.Config.AddAccessTokenClaims {
 					result, _ := json.Marshal(value)
 					r.Config.AddAccessTokenClaims[key] = jsontypes.NewNormalizedValue(string(result))
 				}
 			}
-			if resp.Config.AddChannelTokenClaims != nil {
+			if len(resp.Config.AddChannelTokenClaims) > 0 {
 				r.Config.AddChannelTokenClaims = make(map[string]jsontypes.Normalized, len(resp.Config.AddChannelTokenClaims))
 				for key1, value1 := range resp.Config.AddChannelTokenClaims {
 					result1, _ := json.Marshal(value1)
 					r.Config.AddChannelTokenClaims[key1] = jsontypes.NewNormalizedValue(string(result1))
 				}
 			}
-			if resp.Config.AddClaims != nil {
+			if len(resp.Config.AddClaims) > 0 {
 				r.Config.AddClaims = make(map[string]jsontypes.Normalized, len(resp.Config.AddClaims))
 				for key2, value2 := range resp.Config.AddClaims {
 					result2, _ := json.Marshal(value2)
@@ -117,6 +248,16 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 			}
 			r.Config.CacheAccessTokenIntrospection = types.BoolPointerValue(resp.Config.CacheAccessTokenIntrospection)
 			r.Config.CacheChannelTokenIntrospection = types.BoolPointerValue(resp.Config.CacheChannelTokenIntrospection)
+			r.Config.ChannelTokenAudienceClaim = make([]types.String, 0, len(resp.Config.ChannelTokenAudienceClaim))
+			for _, v := range resp.Config.ChannelTokenAudienceClaim {
+				r.Config.ChannelTokenAudienceClaim = append(r.Config.ChannelTokenAudienceClaim, types.StringValue(v))
+			}
+			if resp.Config.ChannelTokenAudiencesAllowed != nil {
+				r.Config.ChannelTokenAudiencesAllowed = make([]types.String, 0, len(resp.Config.ChannelTokenAudiencesAllowed))
+				for _, v := range resp.Config.ChannelTokenAudiencesAllowed {
+					r.Config.ChannelTokenAudiencesAllowed = append(r.Config.ChannelTokenAudiencesAllowed, types.StringValue(v))
+				}
+			}
 			r.Config.ChannelTokenConsumerBy = make([]types.String, 0, len(resp.Config.ChannelTokenConsumerBy))
 			for _, v := range resp.Config.ChannelTokenConsumerBy {
 				r.Config.ChannelTokenConsumerBy = append(r.Config.ChannelTokenConsumerBy, types.StringValue(string(v)))
@@ -125,6 +266,20 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 				r.Config.ChannelTokenConsumerClaim = make([]types.String, 0, len(resp.Config.ChannelTokenConsumerClaim))
 				for _, v := range resp.Config.ChannelTokenConsumerClaim {
 					r.Config.ChannelTokenConsumerClaim = append(r.Config.ChannelTokenConsumerClaim, types.StringValue(v))
+				}
+			}
+			r.Config.ChannelTokenExpiryClaim = make([]types.String, 0, len(resp.Config.ChannelTokenExpiryClaim))
+			for _, v := range resp.Config.ChannelTokenExpiryClaim {
+				r.Config.ChannelTokenExpiryClaim = append(r.Config.ChannelTokenExpiryClaim, types.StringValue(v))
+			}
+			r.Config.ChannelTokenIntrospectionAudienceClaim = make([]types.String, 0, len(resp.Config.ChannelTokenIntrospectionAudienceClaim))
+			for _, v := range resp.Config.ChannelTokenIntrospectionAudienceClaim {
+				r.Config.ChannelTokenIntrospectionAudienceClaim = append(r.Config.ChannelTokenIntrospectionAudienceClaim, types.StringValue(v))
+			}
+			if resp.Config.ChannelTokenIntrospectionAudiencesAllowed != nil {
+				r.Config.ChannelTokenIntrospectionAudiencesAllowed = make([]types.String, 0, len(resp.Config.ChannelTokenIntrospectionAudiencesAllowed))
+				for _, v := range resp.Config.ChannelTokenIntrospectionAudiencesAllowed {
+					r.Config.ChannelTokenIntrospectionAudiencesAllowed = append(r.Config.ChannelTokenIntrospectionAudiencesAllowed, types.StringValue(v))
 				}
 			}
 			r.Config.ChannelTokenIntrospectionAuthorization = types.StringPointerValue(resp.Config.ChannelTokenIntrospectionAuthorization)
@@ -140,7 +295,21 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 				}
 			}
 			r.Config.ChannelTokenIntrospectionEndpoint = types.StringPointerValue(resp.Config.ChannelTokenIntrospectionEndpoint)
+			r.Config.ChannelTokenIntrospectionExpiryClaim = make([]types.String, 0, len(resp.Config.ChannelTokenIntrospectionExpiryClaim))
+			for _, v := range resp.Config.ChannelTokenIntrospectionExpiryClaim {
+				r.Config.ChannelTokenIntrospectionExpiryClaim = append(r.Config.ChannelTokenIntrospectionExpiryClaim, types.StringValue(v))
+			}
 			r.Config.ChannelTokenIntrospectionHint = types.StringPointerValue(resp.Config.ChannelTokenIntrospectionHint)
+			r.Config.ChannelTokenIntrospectionIssuerClaim = make([]types.String, 0, len(resp.Config.ChannelTokenIntrospectionIssuerClaim))
+			for _, v := range resp.Config.ChannelTokenIntrospectionIssuerClaim {
+				r.Config.ChannelTokenIntrospectionIssuerClaim = append(r.Config.ChannelTokenIntrospectionIssuerClaim, types.StringValue(v))
+			}
+			if resp.Config.ChannelTokenIntrospectionIssuersAllowed != nil {
+				r.Config.ChannelTokenIntrospectionIssuersAllowed = make([]types.String, 0, len(resp.Config.ChannelTokenIntrospectionIssuersAllowed))
+				for _, v := range resp.Config.ChannelTokenIntrospectionIssuersAllowed {
+					r.Config.ChannelTokenIntrospectionIssuersAllowed = append(r.Config.ChannelTokenIntrospectionIssuersAllowed, types.StringValue(v))
+				}
+			}
 			if resp.Config.ChannelTokenIntrospectionJwtClaim != nil {
 				r.Config.ChannelTokenIntrospectionJwtClaim = make([]types.String, 0, len(resp.Config.ChannelTokenIntrospectionJwtClaim))
 				for _, v := range resp.Config.ChannelTokenIntrospectionJwtClaim {
@@ -148,6 +317,32 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 				}
 			}
 			r.Config.ChannelTokenIntrospectionLeeway = types.Float64PointerValue(resp.Config.ChannelTokenIntrospectionLeeway)
+			r.Config.ChannelTokenIntrospectionNotbeforeClaim = make([]types.String, 0, len(resp.Config.ChannelTokenIntrospectionNotbeforeClaim))
+			for _, v := range resp.Config.ChannelTokenIntrospectionNotbeforeClaim {
+				r.Config.ChannelTokenIntrospectionNotbeforeClaim = append(r.Config.ChannelTokenIntrospectionNotbeforeClaim, types.StringValue(v))
+			}
+			if resp.Config.ChannelTokenIntrospectionOptionalClaims != nil {
+				r.Config.ChannelTokenIntrospectionOptionalClaims = nil
+				for _, channelTokenIntrospectionOptionalClaimsItem := range resp.Config.ChannelTokenIntrospectionOptionalClaims {
+					var channelTokenIntrospectionOptionalClaims []types.String
+					channelTokenIntrospectionOptionalClaims = make([]types.String, 0, len(channelTokenIntrospectionOptionalClaimsItem))
+					for _, v := range channelTokenIntrospectionOptionalClaimsItem {
+						channelTokenIntrospectionOptionalClaims = append(channelTokenIntrospectionOptionalClaims, types.StringValue(v))
+					}
+					r.Config.ChannelTokenIntrospectionOptionalClaims = append(r.Config.ChannelTokenIntrospectionOptionalClaims, channelTokenIntrospectionOptionalClaims)
+				}
+			}
+			if resp.Config.ChannelTokenIntrospectionRequiredClaims != nil {
+				r.Config.ChannelTokenIntrospectionRequiredClaims = nil
+				for _, channelTokenIntrospectionRequiredClaimsItem := range resp.Config.ChannelTokenIntrospectionRequiredClaims {
+					var channelTokenIntrospectionRequiredClaims []types.String
+					channelTokenIntrospectionRequiredClaims = make([]types.String, 0, len(channelTokenIntrospectionRequiredClaimsItem))
+					for _, v := range channelTokenIntrospectionRequiredClaimsItem {
+						channelTokenIntrospectionRequiredClaims = append(channelTokenIntrospectionRequiredClaims, types.StringValue(v))
+					}
+					r.Config.ChannelTokenIntrospectionRequiredClaims = append(r.Config.ChannelTokenIntrospectionRequiredClaims, channelTokenIntrospectionRequiredClaims)
+				}
+			}
 			r.Config.ChannelTokenIntrospectionScopesClaim = make([]types.String, 0, len(resp.Config.ChannelTokenIntrospectionScopesClaim))
 			for _, v := range resp.Config.ChannelTokenIntrospectionScopesClaim {
 				r.Config.ChannelTokenIntrospectionScopesClaim = append(r.Config.ChannelTokenIntrospectionScopesClaim, types.StringValue(v))
@@ -158,21 +353,77 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 					r.Config.ChannelTokenIntrospectionScopesRequired = append(r.Config.ChannelTokenIntrospectionScopesRequired, types.StringValue(v))
 				}
 			}
+			r.Config.ChannelTokenIntrospectionSubjectClaim = make([]types.String, 0, len(resp.Config.ChannelTokenIntrospectionSubjectClaim))
+			for _, v := range resp.Config.ChannelTokenIntrospectionSubjectClaim {
+				r.Config.ChannelTokenIntrospectionSubjectClaim = append(r.Config.ChannelTokenIntrospectionSubjectClaim, types.StringValue(v))
+			}
+			if resp.Config.ChannelTokenIntrospectionSubjectsAllowed != nil {
+				r.Config.ChannelTokenIntrospectionSubjectsAllowed = make([]types.String, 0, len(resp.Config.ChannelTokenIntrospectionSubjectsAllowed))
+				for _, v := range resp.Config.ChannelTokenIntrospectionSubjectsAllowed {
+					r.Config.ChannelTokenIntrospectionSubjectsAllowed = append(r.Config.ChannelTokenIntrospectionSubjectsAllowed, types.StringValue(v))
+				}
+			}
 			r.Config.ChannelTokenIntrospectionTimeout = types.Float64PointerValue(resp.Config.ChannelTokenIntrospectionTimeout)
 			r.Config.ChannelTokenIssuer = types.StringPointerValue(resp.Config.ChannelTokenIssuer)
+			r.Config.ChannelTokenIssuerClaim = make([]types.String, 0, len(resp.Config.ChannelTokenIssuerClaim))
+			for _, v := range resp.Config.ChannelTokenIssuerClaim {
+				r.Config.ChannelTokenIssuerClaim = append(r.Config.ChannelTokenIssuerClaim, types.StringValue(v))
+			}
+			if resp.Config.ChannelTokenIssuersAllowed != nil {
+				r.Config.ChannelTokenIssuersAllowed = make([]types.String, 0, len(resp.Config.ChannelTokenIssuersAllowed))
+				for _, v := range resp.Config.ChannelTokenIssuersAllowed {
+					r.Config.ChannelTokenIssuersAllowed = append(r.Config.ChannelTokenIssuersAllowed, types.StringValue(v))
+				}
+			}
 			r.Config.ChannelTokenJwksURI = types.StringPointerValue(resp.Config.ChannelTokenJwksURI)
-			r.Config.ChannelTokenJwksURIClientCertificate = types.StringPointerValue(resp.Config.ChannelTokenJwksURIClientCertificate)
+			if resp.Config.ChannelTokenJwksURIClientCertificate == nil {
+				r.Config.ChannelTokenJwksURIClientCertificate = nil
+			} else {
+				r.Config.ChannelTokenJwksURIClientCertificate = &tfTypes.Set{}
+				r.Config.ChannelTokenJwksURIClientCertificate.ID = types.StringPointerValue(resp.Config.ChannelTokenJwksURIClientCertificate.ID)
+			}
 			r.Config.ChannelTokenJwksURIClientPassword = types.StringPointerValue(resp.Config.ChannelTokenJwksURIClientPassword)
 			r.Config.ChannelTokenJwksURIClientUsername = types.StringPointerValue(resp.Config.ChannelTokenJwksURIClientUsername)
 			r.Config.ChannelTokenJwksURIRotatePeriod = types.Float64PointerValue(resp.Config.ChannelTokenJwksURIRotatePeriod)
 			r.Config.ChannelTokenKeyset = types.StringPointerValue(resp.Config.ChannelTokenKeyset)
-			r.Config.ChannelTokenKeysetClientCertificate = types.StringPointerValue(resp.Config.ChannelTokenKeysetClientCertificate)
+			if resp.Config.ChannelTokenKeysetClientCertificate == nil {
+				r.Config.ChannelTokenKeysetClientCertificate = nil
+			} else {
+				r.Config.ChannelTokenKeysetClientCertificate = &tfTypes.Set{}
+				r.Config.ChannelTokenKeysetClientCertificate.ID = types.StringPointerValue(resp.Config.ChannelTokenKeysetClientCertificate.ID)
+			}
 			r.Config.ChannelTokenKeysetClientPassword = types.StringPointerValue(resp.Config.ChannelTokenKeysetClientPassword)
 			r.Config.ChannelTokenKeysetClientUsername = types.StringPointerValue(resp.Config.ChannelTokenKeysetClientUsername)
 			r.Config.ChannelTokenKeysetRotatePeriod = types.Float64PointerValue(resp.Config.ChannelTokenKeysetRotatePeriod)
 			r.Config.ChannelTokenLeeway = types.Float64PointerValue(resp.Config.ChannelTokenLeeway)
+			r.Config.ChannelTokenNotbeforeClaim = make([]types.String, 0, len(resp.Config.ChannelTokenNotbeforeClaim))
+			for _, v := range resp.Config.ChannelTokenNotbeforeClaim {
+				r.Config.ChannelTokenNotbeforeClaim = append(r.Config.ChannelTokenNotbeforeClaim, types.StringValue(v))
+			}
 			r.Config.ChannelTokenOptional = types.BoolPointerValue(resp.Config.ChannelTokenOptional)
+			if resp.Config.ChannelTokenOptionalClaims != nil {
+				r.Config.ChannelTokenOptionalClaims = nil
+				for _, channelTokenOptionalClaimsItem := range resp.Config.ChannelTokenOptionalClaims {
+					var channelTokenOptionalClaims []types.String
+					channelTokenOptionalClaims = make([]types.String, 0, len(channelTokenOptionalClaimsItem))
+					for _, v := range channelTokenOptionalClaimsItem {
+						channelTokenOptionalClaims = append(channelTokenOptionalClaims, types.StringValue(v))
+					}
+					r.Config.ChannelTokenOptionalClaims = append(r.Config.ChannelTokenOptionalClaims, channelTokenOptionalClaims)
+				}
+			}
 			r.Config.ChannelTokenRequestHeader = types.StringPointerValue(resp.Config.ChannelTokenRequestHeader)
+			if resp.Config.ChannelTokenRequiredClaims != nil {
+				r.Config.ChannelTokenRequiredClaims = nil
+				for _, channelTokenRequiredClaimsItem := range resp.Config.ChannelTokenRequiredClaims {
+					var channelTokenRequiredClaims []types.String
+					channelTokenRequiredClaims = make([]types.String, 0, len(channelTokenRequiredClaimsItem))
+					for _, v := range channelTokenRequiredClaimsItem {
+						channelTokenRequiredClaims = append(channelTokenRequiredClaims, types.StringValue(v))
+					}
+					r.Config.ChannelTokenRequiredClaims = append(r.Config.ChannelTokenRequiredClaims, channelTokenRequiredClaims)
+				}
+			}
 			r.Config.ChannelTokenScopesClaim = make([]types.String, 0, len(resp.Config.ChannelTokenScopesClaim))
 			for _, v := range resp.Config.ChannelTokenScopesClaim {
 				r.Config.ChannelTokenScopesClaim = append(r.Config.ChannelTokenScopesClaim, types.StringValue(v))
@@ -183,10 +434,21 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 					r.Config.ChannelTokenScopesRequired = append(r.Config.ChannelTokenScopesRequired, types.StringValue(v))
 				}
 			}
+			r.Config.ChannelTokenSigning = types.BoolPointerValue(resp.Config.ChannelTokenSigning)
 			if resp.Config.ChannelTokenSigningAlgorithm != nil {
 				r.Config.ChannelTokenSigningAlgorithm = types.StringValue(string(*resp.Config.ChannelTokenSigningAlgorithm))
 			} else {
 				r.Config.ChannelTokenSigningAlgorithm = types.StringNull()
+			}
+			r.Config.ChannelTokenSubjectClaim = make([]types.String, 0, len(resp.Config.ChannelTokenSubjectClaim))
+			for _, v := range resp.Config.ChannelTokenSubjectClaim {
+				r.Config.ChannelTokenSubjectClaim = append(r.Config.ChannelTokenSubjectClaim, types.StringValue(v))
+			}
+			if resp.Config.ChannelTokenSubjectsAllowed != nil {
+				r.Config.ChannelTokenSubjectsAllowed = make([]types.String, 0, len(resp.Config.ChannelTokenSubjectsAllowed))
+				for _, v := range resp.Config.ChannelTokenSubjectsAllowed {
+					r.Config.ChannelTokenSubjectsAllowed = append(r.Config.ChannelTokenSubjectsAllowed, types.StringValue(v))
+				}
 			}
 			r.Config.ChannelTokenUpstreamHeader = types.StringPointerValue(resp.Config.ChannelTokenUpstreamHeader)
 			r.Config.ChannelTokenUpstreamLeeway = types.Float64PointerValue(resp.Config.ChannelTokenUpstreamLeeway)
@@ -205,21 +467,21 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 			for _, v := range resp.Config.RemoveChannelTokenClaims {
 				r.Config.RemoveChannelTokenClaims = append(r.Config.RemoveChannelTokenClaims, types.StringValue(v))
 			}
-			if resp.Config.SetAccessTokenClaims != nil {
+			if len(resp.Config.SetAccessTokenClaims) > 0 {
 				r.Config.SetAccessTokenClaims = make(map[string]jsontypes.Normalized, len(resp.Config.SetAccessTokenClaims))
 				for key3, value3 := range resp.Config.SetAccessTokenClaims {
 					result3, _ := json.Marshal(value3)
 					r.Config.SetAccessTokenClaims[key3] = jsontypes.NewNormalizedValue(string(result3))
 				}
 			}
-			if resp.Config.SetChannelTokenClaims != nil {
+			if len(resp.Config.SetChannelTokenClaims) > 0 {
 				r.Config.SetChannelTokenClaims = make(map[string]jsontypes.Normalized, len(resp.Config.SetChannelTokenClaims))
 				for key4, value4 := range resp.Config.SetChannelTokenClaims {
 					result4, _ := json.Marshal(value4)
 					r.Config.SetChannelTokenClaims[key4] = jsontypes.NewNormalizedValue(string(result4))
 				}
 			}
-			if resp.Config.SetClaims != nil {
+			if len(resp.Config.SetClaims) > 0 {
 				r.Config.SetClaims = make(map[string]jsontypes.Normalized, len(resp.Config.SetClaims))
 				for key5, value5 := range resp.Config.SetClaims {
 					result5, _ := json.Marshal(value5)
@@ -228,16 +490,32 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 			}
 			r.Config.TrustAccessTokenIntrospection = types.BoolPointerValue(resp.Config.TrustAccessTokenIntrospection)
 			r.Config.TrustChannelTokenIntrospection = types.BoolPointerValue(resp.Config.TrustChannelTokenIntrospection)
+			r.Config.VerifyAccessTokenAudience = types.BoolPointerValue(resp.Config.VerifyAccessTokenAudience)
 			r.Config.VerifyAccessTokenExpiry = types.BoolPointerValue(resp.Config.VerifyAccessTokenExpiry)
+			r.Config.VerifyAccessTokenIntrospectionAudience = types.BoolPointerValue(resp.Config.VerifyAccessTokenIntrospectionAudience)
 			r.Config.VerifyAccessTokenIntrospectionExpiry = types.BoolPointerValue(resp.Config.VerifyAccessTokenIntrospectionExpiry)
+			r.Config.VerifyAccessTokenIntrospectionIssuer = types.BoolPointerValue(resp.Config.VerifyAccessTokenIntrospectionIssuer)
+			r.Config.VerifyAccessTokenIntrospectionNotbefore = types.BoolPointerValue(resp.Config.VerifyAccessTokenIntrospectionNotbefore)
 			r.Config.VerifyAccessTokenIntrospectionScopes = types.BoolPointerValue(resp.Config.VerifyAccessTokenIntrospectionScopes)
+			r.Config.VerifyAccessTokenIntrospectionSubject = types.BoolPointerValue(resp.Config.VerifyAccessTokenIntrospectionSubject)
+			r.Config.VerifyAccessTokenIssuer = types.BoolPointerValue(resp.Config.VerifyAccessTokenIssuer)
+			r.Config.VerifyAccessTokenNotbefore = types.BoolPointerValue(resp.Config.VerifyAccessTokenNotbefore)
 			r.Config.VerifyAccessTokenScopes = types.BoolPointerValue(resp.Config.VerifyAccessTokenScopes)
 			r.Config.VerifyAccessTokenSignature = types.BoolPointerValue(resp.Config.VerifyAccessTokenSignature)
+			r.Config.VerifyAccessTokenSubject = types.BoolPointerValue(resp.Config.VerifyAccessTokenSubject)
+			r.Config.VerifyChannelTokenAudience = types.BoolPointerValue(resp.Config.VerifyChannelTokenAudience)
 			r.Config.VerifyChannelTokenExpiry = types.BoolPointerValue(resp.Config.VerifyChannelTokenExpiry)
+			r.Config.VerifyChannelTokenIntrospectionAudience = types.BoolPointerValue(resp.Config.VerifyChannelTokenIntrospectionAudience)
 			r.Config.VerifyChannelTokenIntrospectionExpiry = types.BoolPointerValue(resp.Config.VerifyChannelTokenIntrospectionExpiry)
+			r.Config.VerifyChannelTokenIntrospectionIssuer = types.BoolPointerValue(resp.Config.VerifyChannelTokenIntrospectionIssuer)
+			r.Config.VerifyChannelTokenIntrospectionNotbefore = types.BoolPointerValue(resp.Config.VerifyChannelTokenIntrospectionNotbefore)
 			r.Config.VerifyChannelTokenIntrospectionScopes = types.BoolPointerValue(resp.Config.VerifyChannelTokenIntrospectionScopes)
+			r.Config.VerifyChannelTokenIntrospectionSubject = types.BoolPointerValue(resp.Config.VerifyChannelTokenIntrospectionSubject)
+			r.Config.VerifyChannelTokenIssuer = types.BoolPointerValue(resp.Config.VerifyChannelTokenIssuer)
+			r.Config.VerifyChannelTokenNotbefore = types.BoolPointerValue(resp.Config.VerifyChannelTokenNotbefore)
 			r.Config.VerifyChannelTokenScopes = types.BoolPointerValue(resp.Config.VerifyChannelTokenScopes)
 			r.Config.VerifyChannelTokenSignature = types.BoolPointerValue(resp.Config.VerifyChannelTokenSignature)
+			r.Config.VerifyChannelTokenSubject = types.BoolPointerValue(resp.Config.VerifyChannelTokenSubject)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -246,11 +524,11 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			r.Ordering = &tfTypes.AcePluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After = &tfTypes.AcePluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -259,7 +537,7 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.AcePluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
@@ -485,6 +763,17 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 	}
 	var config *shared.JwtSignerPluginConfig
 	if r.Config != nil {
+		accessTokenAudienceClaim := make([]string, 0, len(r.Config.AccessTokenAudienceClaim))
+		for _, accessTokenAudienceClaimItem := range r.Config.AccessTokenAudienceClaim {
+			accessTokenAudienceClaim = append(accessTokenAudienceClaim, accessTokenAudienceClaimItem.ValueString())
+		}
+		var accessTokenAudiencesAllowed []string
+		if r.Config.AccessTokenAudiencesAllowed != nil {
+			accessTokenAudiencesAllowed = make([]string, 0, len(r.Config.AccessTokenAudiencesAllowed))
+			for _, accessTokenAudiencesAllowedItem := range r.Config.AccessTokenAudiencesAllowed {
+				accessTokenAudiencesAllowed = append(accessTokenAudiencesAllowed, accessTokenAudiencesAllowedItem.ValueString())
+			}
+		}
 		accessTokenConsumerBy := make([]shared.AccessTokenConsumerBy, 0, len(r.Config.AccessTokenConsumerBy))
 		for _, accessTokenConsumerByItem := range r.Config.AccessTokenConsumerBy {
 			accessTokenConsumerBy = append(accessTokenConsumerBy, shared.AccessTokenConsumerBy(accessTokenConsumerByItem.ValueString()))
@@ -494,6 +783,21 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 			accessTokenConsumerClaim = make([]string, 0, len(r.Config.AccessTokenConsumerClaim))
 			for _, accessTokenConsumerClaimItem := range r.Config.AccessTokenConsumerClaim {
 				accessTokenConsumerClaim = append(accessTokenConsumerClaim, accessTokenConsumerClaimItem.ValueString())
+			}
+		}
+		accessTokenExpiryClaim := make([]string, 0, len(r.Config.AccessTokenExpiryClaim))
+		for _, accessTokenExpiryClaimItem := range r.Config.AccessTokenExpiryClaim {
+			accessTokenExpiryClaim = append(accessTokenExpiryClaim, accessTokenExpiryClaimItem.ValueString())
+		}
+		accessTokenIntrospectionAudienceClaim := make([]string, 0, len(r.Config.AccessTokenIntrospectionAudienceClaim))
+		for _, accessTokenIntrospectionAudienceClaimItem := range r.Config.AccessTokenIntrospectionAudienceClaim {
+			accessTokenIntrospectionAudienceClaim = append(accessTokenIntrospectionAudienceClaim, accessTokenIntrospectionAudienceClaimItem.ValueString())
+		}
+		var accessTokenIntrospectionAudiencesAllowed []string
+		if r.Config.AccessTokenIntrospectionAudiencesAllowed != nil {
+			accessTokenIntrospectionAudiencesAllowed = make([]string, 0, len(r.Config.AccessTokenIntrospectionAudiencesAllowed))
+			for _, accessTokenIntrospectionAudiencesAllowedItem := range r.Config.AccessTokenIntrospectionAudiencesAllowed {
+				accessTokenIntrospectionAudiencesAllowed = append(accessTokenIntrospectionAudiencesAllowed, accessTokenIntrospectionAudiencesAllowedItem.ValueString())
 			}
 		}
 		accessTokenIntrospectionAuthorization := new(string)
@@ -525,11 +829,26 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 		} else {
 			accessTokenIntrospectionEndpoint = nil
 		}
+		accessTokenIntrospectionExpiryClaim := make([]string, 0, len(r.Config.AccessTokenIntrospectionExpiryClaim))
+		for _, accessTokenIntrospectionExpiryClaimItem := range r.Config.AccessTokenIntrospectionExpiryClaim {
+			accessTokenIntrospectionExpiryClaim = append(accessTokenIntrospectionExpiryClaim, accessTokenIntrospectionExpiryClaimItem.ValueString())
+		}
 		accessTokenIntrospectionHint := new(string)
 		if !r.Config.AccessTokenIntrospectionHint.IsUnknown() && !r.Config.AccessTokenIntrospectionHint.IsNull() {
 			*accessTokenIntrospectionHint = r.Config.AccessTokenIntrospectionHint.ValueString()
 		} else {
 			accessTokenIntrospectionHint = nil
+		}
+		accessTokenIntrospectionIssuerClaim := make([]string, 0, len(r.Config.AccessTokenIntrospectionIssuerClaim))
+		for _, accessTokenIntrospectionIssuerClaimItem := range r.Config.AccessTokenIntrospectionIssuerClaim {
+			accessTokenIntrospectionIssuerClaim = append(accessTokenIntrospectionIssuerClaim, accessTokenIntrospectionIssuerClaimItem.ValueString())
+		}
+		var accessTokenIntrospectionIssuersAllowed []string
+		if r.Config.AccessTokenIntrospectionIssuersAllowed != nil {
+			accessTokenIntrospectionIssuersAllowed = make([]string, 0, len(r.Config.AccessTokenIntrospectionIssuersAllowed))
+			for _, accessTokenIntrospectionIssuersAllowedItem := range r.Config.AccessTokenIntrospectionIssuersAllowed {
+				accessTokenIntrospectionIssuersAllowed = append(accessTokenIntrospectionIssuersAllowed, accessTokenIntrospectionIssuersAllowedItem.ValueString())
+			}
 		}
 		var accessTokenIntrospectionJwtClaim []string
 		if r.Config.AccessTokenIntrospectionJwtClaim != nil {
@@ -544,6 +863,32 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 		} else {
 			accessTokenIntrospectionLeeway = nil
 		}
+		accessTokenIntrospectionNotbeforeClaim := make([]string, 0, len(r.Config.AccessTokenIntrospectionNotbeforeClaim))
+		for _, accessTokenIntrospectionNotbeforeClaimItem := range r.Config.AccessTokenIntrospectionNotbeforeClaim {
+			accessTokenIntrospectionNotbeforeClaim = append(accessTokenIntrospectionNotbeforeClaim, accessTokenIntrospectionNotbeforeClaimItem.ValueString())
+		}
+		var accessTokenIntrospectionOptionalClaims [][]string
+		if r.Config.AccessTokenIntrospectionOptionalClaims != nil {
+			accessTokenIntrospectionOptionalClaims = make([][]string, 0, len(r.Config.AccessTokenIntrospectionOptionalClaims))
+			for _, accessTokenIntrospectionOptionalClaimsItem := range r.Config.AccessTokenIntrospectionOptionalClaims {
+				accessTokenIntrospectionOptionalClaimsTmp := make([]string, 0, len(accessTokenIntrospectionOptionalClaimsItem))
+				for _, item := range accessTokenIntrospectionOptionalClaimsItem {
+					accessTokenIntrospectionOptionalClaimsTmp = append(accessTokenIntrospectionOptionalClaimsTmp, item.ValueString())
+				}
+				accessTokenIntrospectionOptionalClaims = append(accessTokenIntrospectionOptionalClaims, accessTokenIntrospectionOptionalClaimsTmp)
+			}
+		}
+		var accessTokenIntrospectionRequiredClaims [][]string
+		if r.Config.AccessTokenIntrospectionRequiredClaims != nil {
+			accessTokenIntrospectionRequiredClaims = make([][]string, 0, len(r.Config.AccessTokenIntrospectionRequiredClaims))
+			for _, accessTokenIntrospectionRequiredClaimsItem := range r.Config.AccessTokenIntrospectionRequiredClaims {
+				accessTokenIntrospectionRequiredClaimsTmp := make([]string, 0, len(accessTokenIntrospectionRequiredClaimsItem))
+				for _, item1 := range accessTokenIntrospectionRequiredClaimsItem {
+					accessTokenIntrospectionRequiredClaimsTmp = append(accessTokenIntrospectionRequiredClaimsTmp, item1.ValueString())
+				}
+				accessTokenIntrospectionRequiredClaims = append(accessTokenIntrospectionRequiredClaims, accessTokenIntrospectionRequiredClaimsTmp)
+			}
+		}
 		accessTokenIntrospectionScopesClaim := make([]string, 0, len(r.Config.AccessTokenIntrospectionScopesClaim))
 		for _, accessTokenIntrospectionScopesClaimItem := range r.Config.AccessTokenIntrospectionScopesClaim {
 			accessTokenIntrospectionScopesClaim = append(accessTokenIntrospectionScopesClaim, accessTokenIntrospectionScopesClaimItem.ValueString())
@@ -553,6 +898,17 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 			accessTokenIntrospectionScopesRequired = make([]string, 0, len(r.Config.AccessTokenIntrospectionScopesRequired))
 			for _, accessTokenIntrospectionScopesRequiredItem := range r.Config.AccessTokenIntrospectionScopesRequired {
 				accessTokenIntrospectionScopesRequired = append(accessTokenIntrospectionScopesRequired, accessTokenIntrospectionScopesRequiredItem.ValueString())
+			}
+		}
+		accessTokenIntrospectionSubjectClaim := make([]string, 0, len(r.Config.AccessTokenIntrospectionSubjectClaim))
+		for _, accessTokenIntrospectionSubjectClaimItem := range r.Config.AccessTokenIntrospectionSubjectClaim {
+			accessTokenIntrospectionSubjectClaim = append(accessTokenIntrospectionSubjectClaim, accessTokenIntrospectionSubjectClaimItem.ValueString())
+		}
+		var accessTokenIntrospectionSubjectsAllowed []string
+		if r.Config.AccessTokenIntrospectionSubjectsAllowed != nil {
+			accessTokenIntrospectionSubjectsAllowed = make([]string, 0, len(r.Config.AccessTokenIntrospectionSubjectsAllowed))
+			for _, accessTokenIntrospectionSubjectsAllowedItem := range r.Config.AccessTokenIntrospectionSubjectsAllowed {
+				accessTokenIntrospectionSubjectsAllowed = append(accessTokenIntrospectionSubjectsAllowed, accessTokenIntrospectionSubjectsAllowedItem.ValueString())
 			}
 		}
 		accessTokenIntrospectionTimeout := new(float64)
@@ -567,17 +923,34 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 		} else {
 			accessTokenIssuer = nil
 		}
+		accessTokenIssuerClaim := make([]string, 0, len(r.Config.AccessTokenIssuerClaim))
+		for _, accessTokenIssuerClaimItem := range r.Config.AccessTokenIssuerClaim {
+			accessTokenIssuerClaim = append(accessTokenIssuerClaim, accessTokenIssuerClaimItem.ValueString())
+		}
+		var accessTokenIssuersAllowed []string
+		if r.Config.AccessTokenIssuersAllowed != nil {
+			accessTokenIssuersAllowed = make([]string, 0, len(r.Config.AccessTokenIssuersAllowed))
+			for _, accessTokenIssuersAllowedItem := range r.Config.AccessTokenIssuersAllowed {
+				accessTokenIssuersAllowed = append(accessTokenIssuersAllowed, accessTokenIssuersAllowedItem.ValueString())
+			}
+		}
 		accessTokenJwksURI := new(string)
 		if !r.Config.AccessTokenJwksURI.IsUnknown() && !r.Config.AccessTokenJwksURI.IsNull() {
 			*accessTokenJwksURI = r.Config.AccessTokenJwksURI.ValueString()
 		} else {
 			accessTokenJwksURI = nil
 		}
-		accessTokenJwksURIClientCertificate := new(string)
-		if !r.Config.AccessTokenJwksURIClientCertificate.IsUnknown() && !r.Config.AccessTokenJwksURIClientCertificate.IsNull() {
-			*accessTokenJwksURIClientCertificate = r.Config.AccessTokenJwksURIClientCertificate.ValueString()
-		} else {
-			accessTokenJwksURIClientCertificate = nil
+		var accessTokenJwksURIClientCertificate *shared.AccessTokenJwksURIClientCertificate
+		if r.Config.AccessTokenJwksURIClientCertificate != nil {
+			id2 := new(string)
+			if !r.Config.AccessTokenJwksURIClientCertificate.ID.IsUnknown() && !r.Config.AccessTokenJwksURIClientCertificate.ID.IsNull() {
+				*id2 = r.Config.AccessTokenJwksURIClientCertificate.ID.ValueString()
+			} else {
+				id2 = nil
+			}
+			accessTokenJwksURIClientCertificate = &shared.AccessTokenJwksURIClientCertificate{
+				ID: id2,
+			}
 		}
 		accessTokenJwksURIClientPassword := new(string)
 		if !r.Config.AccessTokenJwksURIClientPassword.IsUnknown() && !r.Config.AccessTokenJwksURIClientPassword.IsNull() {
@@ -603,11 +976,17 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 		} else {
 			accessTokenKeyset = nil
 		}
-		accessTokenKeysetClientCertificate := new(string)
-		if !r.Config.AccessTokenKeysetClientCertificate.IsUnknown() && !r.Config.AccessTokenKeysetClientCertificate.IsNull() {
-			*accessTokenKeysetClientCertificate = r.Config.AccessTokenKeysetClientCertificate.ValueString()
-		} else {
-			accessTokenKeysetClientCertificate = nil
+		var accessTokenKeysetClientCertificate *shared.AccessTokenKeysetClientCertificate
+		if r.Config.AccessTokenKeysetClientCertificate != nil {
+			id3 := new(string)
+			if !r.Config.AccessTokenKeysetClientCertificate.ID.IsUnknown() && !r.Config.AccessTokenKeysetClientCertificate.ID.IsNull() {
+				*id3 = r.Config.AccessTokenKeysetClientCertificate.ID.ValueString()
+			} else {
+				id3 = nil
+			}
+			accessTokenKeysetClientCertificate = &shared.AccessTokenKeysetClientCertificate{
+				ID: id3,
+			}
 		}
 		accessTokenKeysetClientPassword := new(string)
 		if !r.Config.AccessTokenKeysetClientPassword.IsUnknown() && !r.Config.AccessTokenKeysetClientPassword.IsNull() {
@@ -633,17 +1012,43 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 		} else {
 			accessTokenLeeway = nil
 		}
+		accessTokenNotbeforeClaim := make([]string, 0, len(r.Config.AccessTokenNotbeforeClaim))
+		for _, accessTokenNotbeforeClaimItem := range r.Config.AccessTokenNotbeforeClaim {
+			accessTokenNotbeforeClaim = append(accessTokenNotbeforeClaim, accessTokenNotbeforeClaimItem.ValueString())
+		}
 		accessTokenOptional := new(bool)
 		if !r.Config.AccessTokenOptional.IsUnknown() && !r.Config.AccessTokenOptional.IsNull() {
 			*accessTokenOptional = r.Config.AccessTokenOptional.ValueBool()
 		} else {
 			accessTokenOptional = nil
 		}
+		var accessTokenOptionalClaims [][]string
+		if r.Config.AccessTokenOptionalClaims != nil {
+			accessTokenOptionalClaims = make([][]string, 0, len(r.Config.AccessTokenOptionalClaims))
+			for _, accessTokenOptionalClaimsItem := range r.Config.AccessTokenOptionalClaims {
+				accessTokenOptionalClaimsTmp := make([]string, 0, len(accessTokenOptionalClaimsItem))
+				for _, item2 := range accessTokenOptionalClaimsItem {
+					accessTokenOptionalClaimsTmp = append(accessTokenOptionalClaimsTmp, item2.ValueString())
+				}
+				accessTokenOptionalClaims = append(accessTokenOptionalClaims, accessTokenOptionalClaimsTmp)
+			}
+		}
 		accessTokenRequestHeader := new(string)
 		if !r.Config.AccessTokenRequestHeader.IsUnknown() && !r.Config.AccessTokenRequestHeader.IsNull() {
 			*accessTokenRequestHeader = r.Config.AccessTokenRequestHeader.ValueString()
 		} else {
 			accessTokenRequestHeader = nil
+		}
+		var accessTokenRequiredClaims [][]string
+		if r.Config.AccessTokenRequiredClaims != nil {
+			accessTokenRequiredClaims = make([][]string, 0, len(r.Config.AccessTokenRequiredClaims))
+			for _, accessTokenRequiredClaimsItem := range r.Config.AccessTokenRequiredClaims {
+				accessTokenRequiredClaimsTmp := make([]string, 0, len(accessTokenRequiredClaimsItem))
+				for _, item3 := range accessTokenRequiredClaimsItem {
+					accessTokenRequiredClaimsTmp = append(accessTokenRequiredClaimsTmp, item3.ValueString())
+				}
+				accessTokenRequiredClaims = append(accessTokenRequiredClaims, accessTokenRequiredClaimsTmp)
+			}
 		}
 		accessTokenScopesClaim := make([]string, 0, len(r.Config.AccessTokenScopesClaim))
 		for _, accessTokenScopesClaimItem := range r.Config.AccessTokenScopesClaim {
@@ -656,11 +1061,28 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 				accessTokenScopesRequired = append(accessTokenScopesRequired, accessTokenScopesRequiredItem.ValueString())
 			}
 		}
+		accessTokenSigning := new(bool)
+		if !r.Config.AccessTokenSigning.IsUnknown() && !r.Config.AccessTokenSigning.IsNull() {
+			*accessTokenSigning = r.Config.AccessTokenSigning.ValueBool()
+		} else {
+			accessTokenSigning = nil
+		}
 		accessTokenSigningAlgorithm := new(shared.AccessTokenSigningAlgorithm)
 		if !r.Config.AccessTokenSigningAlgorithm.IsUnknown() && !r.Config.AccessTokenSigningAlgorithm.IsNull() {
 			*accessTokenSigningAlgorithm = shared.AccessTokenSigningAlgorithm(r.Config.AccessTokenSigningAlgorithm.ValueString())
 		} else {
 			accessTokenSigningAlgorithm = nil
+		}
+		accessTokenSubjectClaim := make([]string, 0, len(r.Config.AccessTokenSubjectClaim))
+		for _, accessTokenSubjectClaimItem := range r.Config.AccessTokenSubjectClaim {
+			accessTokenSubjectClaim = append(accessTokenSubjectClaim, accessTokenSubjectClaimItem.ValueString())
+		}
+		var accessTokenSubjectsAllowed []string
+		if r.Config.AccessTokenSubjectsAllowed != nil {
+			accessTokenSubjectsAllowed = make([]string, 0, len(r.Config.AccessTokenSubjectsAllowed))
+			for _, accessTokenSubjectsAllowedItem := range r.Config.AccessTokenSubjectsAllowed {
+				accessTokenSubjectsAllowed = append(accessTokenSubjectsAllowed, accessTokenSubjectsAllowedItem.ValueString())
+			}
 		}
 		accessTokenUpstreamHeader := new(string)
 		if !r.Config.AccessTokenUpstreamHeader.IsUnknown() && !r.Config.AccessTokenUpstreamHeader.IsNull() {
@@ -704,6 +1126,17 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 		} else {
 			cacheChannelTokenIntrospection = nil
 		}
+		channelTokenAudienceClaim := make([]string, 0, len(r.Config.ChannelTokenAudienceClaim))
+		for _, channelTokenAudienceClaimItem := range r.Config.ChannelTokenAudienceClaim {
+			channelTokenAudienceClaim = append(channelTokenAudienceClaim, channelTokenAudienceClaimItem.ValueString())
+		}
+		var channelTokenAudiencesAllowed []string
+		if r.Config.ChannelTokenAudiencesAllowed != nil {
+			channelTokenAudiencesAllowed = make([]string, 0, len(r.Config.ChannelTokenAudiencesAllowed))
+			for _, channelTokenAudiencesAllowedItem := range r.Config.ChannelTokenAudiencesAllowed {
+				channelTokenAudiencesAllowed = append(channelTokenAudiencesAllowed, channelTokenAudiencesAllowedItem.ValueString())
+			}
+		}
 		channelTokenConsumerBy := make([]shared.ChannelTokenConsumerBy, 0, len(r.Config.ChannelTokenConsumerBy))
 		for _, channelTokenConsumerByItem := range r.Config.ChannelTokenConsumerBy {
 			channelTokenConsumerBy = append(channelTokenConsumerBy, shared.ChannelTokenConsumerBy(channelTokenConsumerByItem.ValueString()))
@@ -713,6 +1146,21 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 			channelTokenConsumerClaim = make([]string, 0, len(r.Config.ChannelTokenConsumerClaim))
 			for _, channelTokenConsumerClaimItem := range r.Config.ChannelTokenConsumerClaim {
 				channelTokenConsumerClaim = append(channelTokenConsumerClaim, channelTokenConsumerClaimItem.ValueString())
+			}
+		}
+		channelTokenExpiryClaim := make([]string, 0, len(r.Config.ChannelTokenExpiryClaim))
+		for _, channelTokenExpiryClaimItem := range r.Config.ChannelTokenExpiryClaim {
+			channelTokenExpiryClaim = append(channelTokenExpiryClaim, channelTokenExpiryClaimItem.ValueString())
+		}
+		channelTokenIntrospectionAudienceClaim := make([]string, 0, len(r.Config.ChannelTokenIntrospectionAudienceClaim))
+		for _, channelTokenIntrospectionAudienceClaimItem := range r.Config.ChannelTokenIntrospectionAudienceClaim {
+			channelTokenIntrospectionAudienceClaim = append(channelTokenIntrospectionAudienceClaim, channelTokenIntrospectionAudienceClaimItem.ValueString())
+		}
+		var channelTokenIntrospectionAudiencesAllowed []string
+		if r.Config.ChannelTokenIntrospectionAudiencesAllowed != nil {
+			channelTokenIntrospectionAudiencesAllowed = make([]string, 0, len(r.Config.ChannelTokenIntrospectionAudiencesAllowed))
+			for _, channelTokenIntrospectionAudiencesAllowedItem := range r.Config.ChannelTokenIntrospectionAudiencesAllowed {
+				channelTokenIntrospectionAudiencesAllowed = append(channelTokenIntrospectionAudiencesAllowed, channelTokenIntrospectionAudiencesAllowedItem.ValueString())
 			}
 		}
 		channelTokenIntrospectionAuthorization := new(string)
@@ -744,11 +1192,26 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 		} else {
 			channelTokenIntrospectionEndpoint = nil
 		}
+		channelTokenIntrospectionExpiryClaim := make([]string, 0, len(r.Config.ChannelTokenIntrospectionExpiryClaim))
+		for _, channelTokenIntrospectionExpiryClaimItem := range r.Config.ChannelTokenIntrospectionExpiryClaim {
+			channelTokenIntrospectionExpiryClaim = append(channelTokenIntrospectionExpiryClaim, channelTokenIntrospectionExpiryClaimItem.ValueString())
+		}
 		channelTokenIntrospectionHint := new(string)
 		if !r.Config.ChannelTokenIntrospectionHint.IsUnknown() && !r.Config.ChannelTokenIntrospectionHint.IsNull() {
 			*channelTokenIntrospectionHint = r.Config.ChannelTokenIntrospectionHint.ValueString()
 		} else {
 			channelTokenIntrospectionHint = nil
+		}
+		channelTokenIntrospectionIssuerClaim := make([]string, 0, len(r.Config.ChannelTokenIntrospectionIssuerClaim))
+		for _, channelTokenIntrospectionIssuerClaimItem := range r.Config.ChannelTokenIntrospectionIssuerClaim {
+			channelTokenIntrospectionIssuerClaim = append(channelTokenIntrospectionIssuerClaim, channelTokenIntrospectionIssuerClaimItem.ValueString())
+		}
+		var channelTokenIntrospectionIssuersAllowed []string
+		if r.Config.ChannelTokenIntrospectionIssuersAllowed != nil {
+			channelTokenIntrospectionIssuersAllowed = make([]string, 0, len(r.Config.ChannelTokenIntrospectionIssuersAllowed))
+			for _, channelTokenIntrospectionIssuersAllowedItem := range r.Config.ChannelTokenIntrospectionIssuersAllowed {
+				channelTokenIntrospectionIssuersAllowed = append(channelTokenIntrospectionIssuersAllowed, channelTokenIntrospectionIssuersAllowedItem.ValueString())
+			}
 		}
 		var channelTokenIntrospectionJwtClaim []string
 		if r.Config.ChannelTokenIntrospectionJwtClaim != nil {
@@ -763,6 +1226,32 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 		} else {
 			channelTokenIntrospectionLeeway = nil
 		}
+		channelTokenIntrospectionNotbeforeClaim := make([]string, 0, len(r.Config.ChannelTokenIntrospectionNotbeforeClaim))
+		for _, channelTokenIntrospectionNotbeforeClaimItem := range r.Config.ChannelTokenIntrospectionNotbeforeClaim {
+			channelTokenIntrospectionNotbeforeClaim = append(channelTokenIntrospectionNotbeforeClaim, channelTokenIntrospectionNotbeforeClaimItem.ValueString())
+		}
+		var channelTokenIntrospectionOptionalClaims [][]string
+		if r.Config.ChannelTokenIntrospectionOptionalClaims != nil {
+			channelTokenIntrospectionOptionalClaims = make([][]string, 0, len(r.Config.ChannelTokenIntrospectionOptionalClaims))
+			for _, channelTokenIntrospectionOptionalClaimsItem := range r.Config.ChannelTokenIntrospectionOptionalClaims {
+				channelTokenIntrospectionOptionalClaimsTmp := make([]string, 0, len(channelTokenIntrospectionOptionalClaimsItem))
+				for _, item4 := range channelTokenIntrospectionOptionalClaimsItem {
+					channelTokenIntrospectionOptionalClaimsTmp = append(channelTokenIntrospectionOptionalClaimsTmp, item4.ValueString())
+				}
+				channelTokenIntrospectionOptionalClaims = append(channelTokenIntrospectionOptionalClaims, channelTokenIntrospectionOptionalClaimsTmp)
+			}
+		}
+		var channelTokenIntrospectionRequiredClaims [][]string
+		if r.Config.ChannelTokenIntrospectionRequiredClaims != nil {
+			channelTokenIntrospectionRequiredClaims = make([][]string, 0, len(r.Config.ChannelTokenIntrospectionRequiredClaims))
+			for _, channelTokenIntrospectionRequiredClaimsItem := range r.Config.ChannelTokenIntrospectionRequiredClaims {
+				channelTokenIntrospectionRequiredClaimsTmp := make([]string, 0, len(channelTokenIntrospectionRequiredClaimsItem))
+				for _, item5 := range channelTokenIntrospectionRequiredClaimsItem {
+					channelTokenIntrospectionRequiredClaimsTmp = append(channelTokenIntrospectionRequiredClaimsTmp, item5.ValueString())
+				}
+				channelTokenIntrospectionRequiredClaims = append(channelTokenIntrospectionRequiredClaims, channelTokenIntrospectionRequiredClaimsTmp)
+			}
+		}
 		channelTokenIntrospectionScopesClaim := make([]string, 0, len(r.Config.ChannelTokenIntrospectionScopesClaim))
 		for _, channelTokenIntrospectionScopesClaimItem := range r.Config.ChannelTokenIntrospectionScopesClaim {
 			channelTokenIntrospectionScopesClaim = append(channelTokenIntrospectionScopesClaim, channelTokenIntrospectionScopesClaimItem.ValueString())
@@ -772,6 +1261,17 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 			channelTokenIntrospectionScopesRequired = make([]string, 0, len(r.Config.ChannelTokenIntrospectionScopesRequired))
 			for _, channelTokenIntrospectionScopesRequiredItem := range r.Config.ChannelTokenIntrospectionScopesRequired {
 				channelTokenIntrospectionScopesRequired = append(channelTokenIntrospectionScopesRequired, channelTokenIntrospectionScopesRequiredItem.ValueString())
+			}
+		}
+		channelTokenIntrospectionSubjectClaim := make([]string, 0, len(r.Config.ChannelTokenIntrospectionSubjectClaim))
+		for _, channelTokenIntrospectionSubjectClaimItem := range r.Config.ChannelTokenIntrospectionSubjectClaim {
+			channelTokenIntrospectionSubjectClaim = append(channelTokenIntrospectionSubjectClaim, channelTokenIntrospectionSubjectClaimItem.ValueString())
+		}
+		var channelTokenIntrospectionSubjectsAllowed []string
+		if r.Config.ChannelTokenIntrospectionSubjectsAllowed != nil {
+			channelTokenIntrospectionSubjectsAllowed = make([]string, 0, len(r.Config.ChannelTokenIntrospectionSubjectsAllowed))
+			for _, channelTokenIntrospectionSubjectsAllowedItem := range r.Config.ChannelTokenIntrospectionSubjectsAllowed {
+				channelTokenIntrospectionSubjectsAllowed = append(channelTokenIntrospectionSubjectsAllowed, channelTokenIntrospectionSubjectsAllowedItem.ValueString())
 			}
 		}
 		channelTokenIntrospectionTimeout := new(float64)
@@ -786,17 +1286,34 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 		} else {
 			channelTokenIssuer = nil
 		}
+		channelTokenIssuerClaim := make([]string, 0, len(r.Config.ChannelTokenIssuerClaim))
+		for _, channelTokenIssuerClaimItem := range r.Config.ChannelTokenIssuerClaim {
+			channelTokenIssuerClaim = append(channelTokenIssuerClaim, channelTokenIssuerClaimItem.ValueString())
+		}
+		var channelTokenIssuersAllowed []string
+		if r.Config.ChannelTokenIssuersAllowed != nil {
+			channelTokenIssuersAllowed = make([]string, 0, len(r.Config.ChannelTokenIssuersAllowed))
+			for _, channelTokenIssuersAllowedItem := range r.Config.ChannelTokenIssuersAllowed {
+				channelTokenIssuersAllowed = append(channelTokenIssuersAllowed, channelTokenIssuersAllowedItem.ValueString())
+			}
+		}
 		channelTokenJwksURI := new(string)
 		if !r.Config.ChannelTokenJwksURI.IsUnknown() && !r.Config.ChannelTokenJwksURI.IsNull() {
 			*channelTokenJwksURI = r.Config.ChannelTokenJwksURI.ValueString()
 		} else {
 			channelTokenJwksURI = nil
 		}
-		channelTokenJwksURIClientCertificate := new(string)
-		if !r.Config.ChannelTokenJwksURIClientCertificate.IsUnknown() && !r.Config.ChannelTokenJwksURIClientCertificate.IsNull() {
-			*channelTokenJwksURIClientCertificate = r.Config.ChannelTokenJwksURIClientCertificate.ValueString()
-		} else {
-			channelTokenJwksURIClientCertificate = nil
+		var channelTokenJwksURIClientCertificate *shared.ChannelTokenJwksURIClientCertificate
+		if r.Config.ChannelTokenJwksURIClientCertificate != nil {
+			id4 := new(string)
+			if !r.Config.ChannelTokenJwksURIClientCertificate.ID.IsUnknown() && !r.Config.ChannelTokenJwksURIClientCertificate.ID.IsNull() {
+				*id4 = r.Config.ChannelTokenJwksURIClientCertificate.ID.ValueString()
+			} else {
+				id4 = nil
+			}
+			channelTokenJwksURIClientCertificate = &shared.ChannelTokenJwksURIClientCertificate{
+				ID: id4,
+			}
 		}
 		channelTokenJwksURIClientPassword := new(string)
 		if !r.Config.ChannelTokenJwksURIClientPassword.IsUnknown() && !r.Config.ChannelTokenJwksURIClientPassword.IsNull() {
@@ -822,11 +1339,17 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 		} else {
 			channelTokenKeyset = nil
 		}
-		channelTokenKeysetClientCertificate := new(string)
-		if !r.Config.ChannelTokenKeysetClientCertificate.IsUnknown() && !r.Config.ChannelTokenKeysetClientCertificate.IsNull() {
-			*channelTokenKeysetClientCertificate = r.Config.ChannelTokenKeysetClientCertificate.ValueString()
-		} else {
-			channelTokenKeysetClientCertificate = nil
+		var channelTokenKeysetClientCertificate *shared.ChannelTokenKeysetClientCertificate
+		if r.Config.ChannelTokenKeysetClientCertificate != nil {
+			id5 := new(string)
+			if !r.Config.ChannelTokenKeysetClientCertificate.ID.IsUnknown() && !r.Config.ChannelTokenKeysetClientCertificate.ID.IsNull() {
+				*id5 = r.Config.ChannelTokenKeysetClientCertificate.ID.ValueString()
+			} else {
+				id5 = nil
+			}
+			channelTokenKeysetClientCertificate = &shared.ChannelTokenKeysetClientCertificate{
+				ID: id5,
+			}
 		}
 		channelTokenKeysetClientPassword := new(string)
 		if !r.Config.ChannelTokenKeysetClientPassword.IsUnknown() && !r.Config.ChannelTokenKeysetClientPassword.IsNull() {
@@ -852,17 +1375,43 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 		} else {
 			channelTokenLeeway = nil
 		}
+		channelTokenNotbeforeClaim := make([]string, 0, len(r.Config.ChannelTokenNotbeforeClaim))
+		for _, channelTokenNotbeforeClaimItem := range r.Config.ChannelTokenNotbeforeClaim {
+			channelTokenNotbeforeClaim = append(channelTokenNotbeforeClaim, channelTokenNotbeforeClaimItem.ValueString())
+		}
 		channelTokenOptional := new(bool)
 		if !r.Config.ChannelTokenOptional.IsUnknown() && !r.Config.ChannelTokenOptional.IsNull() {
 			*channelTokenOptional = r.Config.ChannelTokenOptional.ValueBool()
 		} else {
 			channelTokenOptional = nil
 		}
+		var channelTokenOptionalClaims [][]string
+		if r.Config.ChannelTokenOptionalClaims != nil {
+			channelTokenOptionalClaims = make([][]string, 0, len(r.Config.ChannelTokenOptionalClaims))
+			for _, channelTokenOptionalClaimsItem := range r.Config.ChannelTokenOptionalClaims {
+				channelTokenOptionalClaimsTmp := make([]string, 0, len(channelTokenOptionalClaimsItem))
+				for _, item6 := range channelTokenOptionalClaimsItem {
+					channelTokenOptionalClaimsTmp = append(channelTokenOptionalClaimsTmp, item6.ValueString())
+				}
+				channelTokenOptionalClaims = append(channelTokenOptionalClaims, channelTokenOptionalClaimsTmp)
+			}
+		}
 		channelTokenRequestHeader := new(string)
 		if !r.Config.ChannelTokenRequestHeader.IsUnknown() && !r.Config.ChannelTokenRequestHeader.IsNull() {
 			*channelTokenRequestHeader = r.Config.ChannelTokenRequestHeader.ValueString()
 		} else {
 			channelTokenRequestHeader = nil
+		}
+		var channelTokenRequiredClaims [][]string
+		if r.Config.ChannelTokenRequiredClaims != nil {
+			channelTokenRequiredClaims = make([][]string, 0, len(r.Config.ChannelTokenRequiredClaims))
+			for _, channelTokenRequiredClaimsItem := range r.Config.ChannelTokenRequiredClaims {
+				channelTokenRequiredClaimsTmp := make([]string, 0, len(channelTokenRequiredClaimsItem))
+				for _, item7 := range channelTokenRequiredClaimsItem {
+					channelTokenRequiredClaimsTmp = append(channelTokenRequiredClaimsTmp, item7.ValueString())
+				}
+				channelTokenRequiredClaims = append(channelTokenRequiredClaims, channelTokenRequiredClaimsTmp)
+			}
 		}
 		channelTokenScopesClaim := make([]string, 0, len(r.Config.ChannelTokenScopesClaim))
 		for _, channelTokenScopesClaimItem := range r.Config.ChannelTokenScopesClaim {
@@ -875,11 +1424,28 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 				channelTokenScopesRequired = append(channelTokenScopesRequired, channelTokenScopesRequiredItem.ValueString())
 			}
 		}
+		channelTokenSigning := new(bool)
+		if !r.Config.ChannelTokenSigning.IsUnknown() && !r.Config.ChannelTokenSigning.IsNull() {
+			*channelTokenSigning = r.Config.ChannelTokenSigning.ValueBool()
+		} else {
+			channelTokenSigning = nil
+		}
 		channelTokenSigningAlgorithm := new(shared.ChannelTokenSigningAlgorithm)
 		if !r.Config.ChannelTokenSigningAlgorithm.IsUnknown() && !r.Config.ChannelTokenSigningAlgorithm.IsNull() {
 			*channelTokenSigningAlgorithm = shared.ChannelTokenSigningAlgorithm(r.Config.ChannelTokenSigningAlgorithm.ValueString())
 		} else {
 			channelTokenSigningAlgorithm = nil
+		}
+		channelTokenSubjectClaim := make([]string, 0, len(r.Config.ChannelTokenSubjectClaim))
+		for _, channelTokenSubjectClaimItem := range r.Config.ChannelTokenSubjectClaim {
+			channelTokenSubjectClaim = append(channelTokenSubjectClaim, channelTokenSubjectClaimItem.ValueString())
+		}
+		var channelTokenSubjectsAllowed []string
+		if r.Config.ChannelTokenSubjectsAllowed != nil {
+			channelTokenSubjectsAllowed = make([]string, 0, len(r.Config.ChannelTokenSubjectsAllowed))
+			for _, channelTokenSubjectsAllowedItem := range r.Config.ChannelTokenSubjectsAllowed {
+				channelTokenSubjectsAllowed = append(channelTokenSubjectsAllowed, channelTokenSubjectsAllowedItem.ValueString())
+			}
 		}
 		channelTokenUpstreamHeader := new(string)
 		if !r.Config.ChannelTokenUpstreamHeader.IsUnknown() && !r.Config.ChannelTokenUpstreamHeader.IsNull() {
@@ -973,11 +1539,23 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 		} else {
 			trustChannelTokenIntrospection = nil
 		}
+		verifyAccessTokenAudience := new(bool)
+		if !r.Config.VerifyAccessTokenAudience.IsUnknown() && !r.Config.VerifyAccessTokenAudience.IsNull() {
+			*verifyAccessTokenAudience = r.Config.VerifyAccessTokenAudience.ValueBool()
+		} else {
+			verifyAccessTokenAudience = nil
+		}
 		verifyAccessTokenExpiry := new(bool)
 		if !r.Config.VerifyAccessTokenExpiry.IsUnknown() && !r.Config.VerifyAccessTokenExpiry.IsNull() {
 			*verifyAccessTokenExpiry = r.Config.VerifyAccessTokenExpiry.ValueBool()
 		} else {
 			verifyAccessTokenExpiry = nil
+		}
+		verifyAccessTokenIntrospectionAudience := new(bool)
+		if !r.Config.VerifyAccessTokenIntrospectionAudience.IsUnknown() && !r.Config.VerifyAccessTokenIntrospectionAudience.IsNull() {
+			*verifyAccessTokenIntrospectionAudience = r.Config.VerifyAccessTokenIntrospectionAudience.ValueBool()
+		} else {
+			verifyAccessTokenIntrospectionAudience = nil
 		}
 		verifyAccessTokenIntrospectionExpiry := new(bool)
 		if !r.Config.VerifyAccessTokenIntrospectionExpiry.IsUnknown() && !r.Config.VerifyAccessTokenIntrospectionExpiry.IsNull() {
@@ -985,11 +1563,41 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 		} else {
 			verifyAccessTokenIntrospectionExpiry = nil
 		}
+		verifyAccessTokenIntrospectionIssuer := new(bool)
+		if !r.Config.VerifyAccessTokenIntrospectionIssuer.IsUnknown() && !r.Config.VerifyAccessTokenIntrospectionIssuer.IsNull() {
+			*verifyAccessTokenIntrospectionIssuer = r.Config.VerifyAccessTokenIntrospectionIssuer.ValueBool()
+		} else {
+			verifyAccessTokenIntrospectionIssuer = nil
+		}
+		verifyAccessTokenIntrospectionNotbefore := new(bool)
+		if !r.Config.VerifyAccessTokenIntrospectionNotbefore.IsUnknown() && !r.Config.VerifyAccessTokenIntrospectionNotbefore.IsNull() {
+			*verifyAccessTokenIntrospectionNotbefore = r.Config.VerifyAccessTokenIntrospectionNotbefore.ValueBool()
+		} else {
+			verifyAccessTokenIntrospectionNotbefore = nil
+		}
 		verifyAccessTokenIntrospectionScopes := new(bool)
 		if !r.Config.VerifyAccessTokenIntrospectionScopes.IsUnknown() && !r.Config.VerifyAccessTokenIntrospectionScopes.IsNull() {
 			*verifyAccessTokenIntrospectionScopes = r.Config.VerifyAccessTokenIntrospectionScopes.ValueBool()
 		} else {
 			verifyAccessTokenIntrospectionScopes = nil
+		}
+		verifyAccessTokenIntrospectionSubject := new(bool)
+		if !r.Config.VerifyAccessTokenIntrospectionSubject.IsUnknown() && !r.Config.VerifyAccessTokenIntrospectionSubject.IsNull() {
+			*verifyAccessTokenIntrospectionSubject = r.Config.VerifyAccessTokenIntrospectionSubject.ValueBool()
+		} else {
+			verifyAccessTokenIntrospectionSubject = nil
+		}
+		verifyAccessTokenIssuer := new(bool)
+		if !r.Config.VerifyAccessTokenIssuer.IsUnknown() && !r.Config.VerifyAccessTokenIssuer.IsNull() {
+			*verifyAccessTokenIssuer = r.Config.VerifyAccessTokenIssuer.ValueBool()
+		} else {
+			verifyAccessTokenIssuer = nil
+		}
+		verifyAccessTokenNotbefore := new(bool)
+		if !r.Config.VerifyAccessTokenNotbefore.IsUnknown() && !r.Config.VerifyAccessTokenNotbefore.IsNull() {
+			*verifyAccessTokenNotbefore = r.Config.VerifyAccessTokenNotbefore.ValueBool()
+		} else {
+			verifyAccessTokenNotbefore = nil
 		}
 		verifyAccessTokenScopes := new(bool)
 		if !r.Config.VerifyAccessTokenScopes.IsUnknown() && !r.Config.VerifyAccessTokenScopes.IsNull() {
@@ -1003,11 +1611,29 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 		} else {
 			verifyAccessTokenSignature = nil
 		}
+		verifyAccessTokenSubject := new(bool)
+		if !r.Config.VerifyAccessTokenSubject.IsUnknown() && !r.Config.VerifyAccessTokenSubject.IsNull() {
+			*verifyAccessTokenSubject = r.Config.VerifyAccessTokenSubject.ValueBool()
+		} else {
+			verifyAccessTokenSubject = nil
+		}
+		verifyChannelTokenAudience := new(bool)
+		if !r.Config.VerifyChannelTokenAudience.IsUnknown() && !r.Config.VerifyChannelTokenAudience.IsNull() {
+			*verifyChannelTokenAudience = r.Config.VerifyChannelTokenAudience.ValueBool()
+		} else {
+			verifyChannelTokenAudience = nil
+		}
 		verifyChannelTokenExpiry := new(bool)
 		if !r.Config.VerifyChannelTokenExpiry.IsUnknown() && !r.Config.VerifyChannelTokenExpiry.IsNull() {
 			*verifyChannelTokenExpiry = r.Config.VerifyChannelTokenExpiry.ValueBool()
 		} else {
 			verifyChannelTokenExpiry = nil
+		}
+		verifyChannelTokenIntrospectionAudience := new(bool)
+		if !r.Config.VerifyChannelTokenIntrospectionAudience.IsUnknown() && !r.Config.VerifyChannelTokenIntrospectionAudience.IsNull() {
+			*verifyChannelTokenIntrospectionAudience = r.Config.VerifyChannelTokenIntrospectionAudience.ValueBool()
+		} else {
+			verifyChannelTokenIntrospectionAudience = nil
 		}
 		verifyChannelTokenIntrospectionExpiry := new(bool)
 		if !r.Config.VerifyChannelTokenIntrospectionExpiry.IsUnknown() && !r.Config.VerifyChannelTokenIntrospectionExpiry.IsNull() {
@@ -1015,11 +1641,41 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 		} else {
 			verifyChannelTokenIntrospectionExpiry = nil
 		}
+		verifyChannelTokenIntrospectionIssuer := new(bool)
+		if !r.Config.VerifyChannelTokenIntrospectionIssuer.IsUnknown() && !r.Config.VerifyChannelTokenIntrospectionIssuer.IsNull() {
+			*verifyChannelTokenIntrospectionIssuer = r.Config.VerifyChannelTokenIntrospectionIssuer.ValueBool()
+		} else {
+			verifyChannelTokenIntrospectionIssuer = nil
+		}
+		verifyChannelTokenIntrospectionNotbefore := new(bool)
+		if !r.Config.VerifyChannelTokenIntrospectionNotbefore.IsUnknown() && !r.Config.VerifyChannelTokenIntrospectionNotbefore.IsNull() {
+			*verifyChannelTokenIntrospectionNotbefore = r.Config.VerifyChannelTokenIntrospectionNotbefore.ValueBool()
+		} else {
+			verifyChannelTokenIntrospectionNotbefore = nil
+		}
 		verifyChannelTokenIntrospectionScopes := new(bool)
 		if !r.Config.VerifyChannelTokenIntrospectionScopes.IsUnknown() && !r.Config.VerifyChannelTokenIntrospectionScopes.IsNull() {
 			*verifyChannelTokenIntrospectionScopes = r.Config.VerifyChannelTokenIntrospectionScopes.ValueBool()
 		} else {
 			verifyChannelTokenIntrospectionScopes = nil
+		}
+		verifyChannelTokenIntrospectionSubject := new(bool)
+		if !r.Config.VerifyChannelTokenIntrospectionSubject.IsUnknown() && !r.Config.VerifyChannelTokenIntrospectionSubject.IsNull() {
+			*verifyChannelTokenIntrospectionSubject = r.Config.VerifyChannelTokenIntrospectionSubject.ValueBool()
+		} else {
+			verifyChannelTokenIntrospectionSubject = nil
+		}
+		verifyChannelTokenIssuer := new(bool)
+		if !r.Config.VerifyChannelTokenIssuer.IsUnknown() && !r.Config.VerifyChannelTokenIssuer.IsNull() {
+			*verifyChannelTokenIssuer = r.Config.VerifyChannelTokenIssuer.ValueBool()
+		} else {
+			verifyChannelTokenIssuer = nil
+		}
+		verifyChannelTokenNotbefore := new(bool)
+		if !r.Config.VerifyChannelTokenNotbefore.IsUnknown() && !r.Config.VerifyChannelTokenNotbefore.IsNull() {
+			*verifyChannelTokenNotbefore = r.Config.VerifyChannelTokenNotbefore.ValueBool()
+		} else {
+			verifyChannelTokenNotbefore = nil
 		}
 		verifyChannelTokenScopes := new(bool)
 		if !r.Config.VerifyChannelTokenScopes.IsUnknown() && !r.Config.VerifyChannelTokenScopes.IsNull() {
@@ -1033,100 +1689,164 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 		} else {
 			verifyChannelTokenSignature = nil
 		}
+		verifyChannelTokenSubject := new(bool)
+		if !r.Config.VerifyChannelTokenSubject.IsUnknown() && !r.Config.VerifyChannelTokenSubject.IsNull() {
+			*verifyChannelTokenSubject = r.Config.VerifyChannelTokenSubject.ValueBool()
+		} else {
+			verifyChannelTokenSubject = nil
+		}
 		config = &shared.JwtSignerPluginConfig{
-			AccessTokenConsumerBy:                   accessTokenConsumerBy,
-			AccessTokenConsumerClaim:                accessTokenConsumerClaim,
-			AccessTokenIntrospectionAuthorization:   accessTokenIntrospectionAuthorization,
-			AccessTokenIntrospectionBodyArgs:        accessTokenIntrospectionBodyArgs,
-			AccessTokenIntrospectionConsumerBy:      accessTokenIntrospectionConsumerBy,
-			AccessTokenIntrospectionConsumerClaim:   accessTokenIntrospectionConsumerClaim,
-			AccessTokenIntrospectionEndpoint:        accessTokenIntrospectionEndpoint,
-			AccessTokenIntrospectionHint:            accessTokenIntrospectionHint,
-			AccessTokenIntrospectionJwtClaim:        accessTokenIntrospectionJwtClaim,
-			AccessTokenIntrospectionLeeway:          accessTokenIntrospectionLeeway,
-			AccessTokenIntrospectionScopesClaim:     accessTokenIntrospectionScopesClaim,
-			AccessTokenIntrospectionScopesRequired:  accessTokenIntrospectionScopesRequired,
-			AccessTokenIntrospectionTimeout:         accessTokenIntrospectionTimeout,
-			AccessTokenIssuer:                       accessTokenIssuer,
-			AccessTokenJwksURI:                      accessTokenJwksURI,
-			AccessTokenJwksURIClientCertificate:     accessTokenJwksURIClientCertificate,
-			AccessTokenJwksURIClientPassword:        accessTokenJwksURIClientPassword,
-			AccessTokenJwksURIClientUsername:        accessTokenJwksURIClientUsername,
-			AccessTokenJwksURIRotatePeriod:          accessTokenJwksURIRotatePeriod,
-			AccessTokenKeyset:                       accessTokenKeyset,
-			AccessTokenKeysetClientCertificate:      accessTokenKeysetClientCertificate,
-			AccessTokenKeysetClientPassword:         accessTokenKeysetClientPassword,
-			AccessTokenKeysetClientUsername:         accessTokenKeysetClientUsername,
-			AccessTokenKeysetRotatePeriod:           accessTokenKeysetRotatePeriod,
-			AccessTokenLeeway:                       accessTokenLeeway,
-			AccessTokenOptional:                     accessTokenOptional,
-			AccessTokenRequestHeader:                accessTokenRequestHeader,
-			AccessTokenScopesClaim:                  accessTokenScopesClaim,
-			AccessTokenScopesRequired:               accessTokenScopesRequired,
-			AccessTokenSigningAlgorithm:             accessTokenSigningAlgorithm,
-			AccessTokenUpstreamHeader:               accessTokenUpstreamHeader,
-			AccessTokenUpstreamLeeway:               accessTokenUpstreamLeeway,
-			AddAccessTokenClaims:                    addAccessTokenClaims,
-			AddChannelTokenClaims:                   addChannelTokenClaims,
-			AddClaims:                               addClaims,
-			CacheAccessTokenIntrospection:           cacheAccessTokenIntrospection,
-			CacheChannelTokenIntrospection:          cacheChannelTokenIntrospection,
-			ChannelTokenConsumerBy:                  channelTokenConsumerBy,
-			ChannelTokenConsumerClaim:               channelTokenConsumerClaim,
-			ChannelTokenIntrospectionAuthorization:  channelTokenIntrospectionAuthorization,
-			ChannelTokenIntrospectionBodyArgs:       channelTokenIntrospectionBodyArgs,
-			ChannelTokenIntrospectionConsumerBy:     channelTokenIntrospectionConsumerBy,
-			ChannelTokenIntrospectionConsumerClaim:  channelTokenIntrospectionConsumerClaim,
-			ChannelTokenIntrospectionEndpoint:       channelTokenIntrospectionEndpoint,
-			ChannelTokenIntrospectionHint:           channelTokenIntrospectionHint,
-			ChannelTokenIntrospectionJwtClaim:       channelTokenIntrospectionJwtClaim,
-			ChannelTokenIntrospectionLeeway:         channelTokenIntrospectionLeeway,
-			ChannelTokenIntrospectionScopesClaim:    channelTokenIntrospectionScopesClaim,
-			ChannelTokenIntrospectionScopesRequired: channelTokenIntrospectionScopesRequired,
-			ChannelTokenIntrospectionTimeout:        channelTokenIntrospectionTimeout,
-			ChannelTokenIssuer:                      channelTokenIssuer,
-			ChannelTokenJwksURI:                     channelTokenJwksURI,
-			ChannelTokenJwksURIClientCertificate:    channelTokenJwksURIClientCertificate,
-			ChannelTokenJwksURIClientPassword:       channelTokenJwksURIClientPassword,
-			ChannelTokenJwksURIClientUsername:       channelTokenJwksURIClientUsername,
-			ChannelTokenJwksURIRotatePeriod:         channelTokenJwksURIRotatePeriod,
-			ChannelTokenKeyset:                      channelTokenKeyset,
-			ChannelTokenKeysetClientCertificate:     channelTokenKeysetClientCertificate,
-			ChannelTokenKeysetClientPassword:        channelTokenKeysetClientPassword,
-			ChannelTokenKeysetClientUsername:        channelTokenKeysetClientUsername,
-			ChannelTokenKeysetRotatePeriod:          channelTokenKeysetRotatePeriod,
-			ChannelTokenLeeway:                      channelTokenLeeway,
-			ChannelTokenOptional:                    channelTokenOptional,
-			ChannelTokenRequestHeader:               channelTokenRequestHeader,
-			ChannelTokenScopesClaim:                 channelTokenScopesClaim,
-			ChannelTokenScopesRequired:              channelTokenScopesRequired,
-			ChannelTokenSigningAlgorithm:            channelTokenSigningAlgorithm,
-			ChannelTokenUpstreamHeader:              channelTokenUpstreamHeader,
-			ChannelTokenUpstreamLeeway:              channelTokenUpstreamLeeway,
-			EnableAccessTokenIntrospection:          enableAccessTokenIntrospection,
-			EnableChannelTokenIntrospection:         enableChannelTokenIntrospection,
-			EnableHsSignatures:                      enableHsSignatures,
-			EnableInstrumentation:                   enableInstrumentation,
-			OriginalAccessTokenUpstreamHeader:       originalAccessTokenUpstreamHeader,
-			OriginalChannelTokenUpstreamHeader:      originalChannelTokenUpstreamHeader,
-			Realm:                                   realm,
-			RemoveAccessTokenClaims:                 removeAccessTokenClaims,
-			RemoveChannelTokenClaims:                removeChannelTokenClaims,
-			SetAccessTokenClaims:                    setAccessTokenClaims,
-			SetChannelTokenClaims:                   setChannelTokenClaims,
-			SetClaims:                               setClaims,
-			TrustAccessTokenIntrospection:           trustAccessTokenIntrospection,
-			TrustChannelTokenIntrospection:          trustChannelTokenIntrospection,
-			VerifyAccessTokenExpiry:                 verifyAccessTokenExpiry,
-			VerifyAccessTokenIntrospectionExpiry:    verifyAccessTokenIntrospectionExpiry,
-			VerifyAccessTokenIntrospectionScopes:    verifyAccessTokenIntrospectionScopes,
-			VerifyAccessTokenScopes:                 verifyAccessTokenScopes,
-			VerifyAccessTokenSignature:              verifyAccessTokenSignature,
-			VerifyChannelTokenExpiry:                verifyChannelTokenExpiry,
-			VerifyChannelTokenIntrospectionExpiry:   verifyChannelTokenIntrospectionExpiry,
-			VerifyChannelTokenIntrospectionScopes:   verifyChannelTokenIntrospectionScopes,
-			VerifyChannelTokenScopes:                verifyChannelTokenScopes,
-			VerifyChannelTokenSignature:             verifyChannelTokenSignature,
+			AccessTokenAudienceClaim:                  accessTokenAudienceClaim,
+			AccessTokenAudiencesAllowed:               accessTokenAudiencesAllowed,
+			AccessTokenConsumerBy:                     accessTokenConsumerBy,
+			AccessTokenConsumerClaim:                  accessTokenConsumerClaim,
+			AccessTokenExpiryClaim:                    accessTokenExpiryClaim,
+			AccessTokenIntrospectionAudienceClaim:     accessTokenIntrospectionAudienceClaim,
+			AccessTokenIntrospectionAudiencesAllowed:  accessTokenIntrospectionAudiencesAllowed,
+			AccessTokenIntrospectionAuthorization:     accessTokenIntrospectionAuthorization,
+			AccessTokenIntrospectionBodyArgs:          accessTokenIntrospectionBodyArgs,
+			AccessTokenIntrospectionConsumerBy:        accessTokenIntrospectionConsumerBy,
+			AccessTokenIntrospectionConsumerClaim:     accessTokenIntrospectionConsumerClaim,
+			AccessTokenIntrospectionEndpoint:          accessTokenIntrospectionEndpoint,
+			AccessTokenIntrospectionExpiryClaim:       accessTokenIntrospectionExpiryClaim,
+			AccessTokenIntrospectionHint:              accessTokenIntrospectionHint,
+			AccessTokenIntrospectionIssuerClaim:       accessTokenIntrospectionIssuerClaim,
+			AccessTokenIntrospectionIssuersAllowed:    accessTokenIntrospectionIssuersAllowed,
+			AccessTokenIntrospectionJwtClaim:          accessTokenIntrospectionJwtClaim,
+			AccessTokenIntrospectionLeeway:            accessTokenIntrospectionLeeway,
+			AccessTokenIntrospectionNotbeforeClaim:    accessTokenIntrospectionNotbeforeClaim,
+			AccessTokenIntrospectionOptionalClaims:    accessTokenIntrospectionOptionalClaims,
+			AccessTokenIntrospectionRequiredClaims:    accessTokenIntrospectionRequiredClaims,
+			AccessTokenIntrospectionScopesClaim:       accessTokenIntrospectionScopesClaim,
+			AccessTokenIntrospectionScopesRequired:    accessTokenIntrospectionScopesRequired,
+			AccessTokenIntrospectionSubjectClaim:      accessTokenIntrospectionSubjectClaim,
+			AccessTokenIntrospectionSubjectsAllowed:   accessTokenIntrospectionSubjectsAllowed,
+			AccessTokenIntrospectionTimeout:           accessTokenIntrospectionTimeout,
+			AccessTokenIssuer:                         accessTokenIssuer,
+			AccessTokenIssuerClaim:                    accessTokenIssuerClaim,
+			AccessTokenIssuersAllowed:                 accessTokenIssuersAllowed,
+			AccessTokenJwksURI:                        accessTokenJwksURI,
+			AccessTokenJwksURIClientCertificate:       accessTokenJwksURIClientCertificate,
+			AccessTokenJwksURIClientPassword:          accessTokenJwksURIClientPassword,
+			AccessTokenJwksURIClientUsername:          accessTokenJwksURIClientUsername,
+			AccessTokenJwksURIRotatePeriod:            accessTokenJwksURIRotatePeriod,
+			AccessTokenKeyset:                         accessTokenKeyset,
+			AccessTokenKeysetClientCertificate:        accessTokenKeysetClientCertificate,
+			AccessTokenKeysetClientPassword:           accessTokenKeysetClientPassword,
+			AccessTokenKeysetClientUsername:           accessTokenKeysetClientUsername,
+			AccessTokenKeysetRotatePeriod:             accessTokenKeysetRotatePeriod,
+			AccessTokenLeeway:                         accessTokenLeeway,
+			AccessTokenNotbeforeClaim:                 accessTokenNotbeforeClaim,
+			AccessTokenOptional:                       accessTokenOptional,
+			AccessTokenOptionalClaims:                 accessTokenOptionalClaims,
+			AccessTokenRequestHeader:                  accessTokenRequestHeader,
+			AccessTokenRequiredClaims:                 accessTokenRequiredClaims,
+			AccessTokenScopesClaim:                    accessTokenScopesClaim,
+			AccessTokenScopesRequired:                 accessTokenScopesRequired,
+			AccessTokenSigning:                        accessTokenSigning,
+			AccessTokenSigningAlgorithm:               accessTokenSigningAlgorithm,
+			AccessTokenSubjectClaim:                   accessTokenSubjectClaim,
+			AccessTokenSubjectsAllowed:                accessTokenSubjectsAllowed,
+			AccessTokenUpstreamHeader:                 accessTokenUpstreamHeader,
+			AccessTokenUpstreamLeeway:                 accessTokenUpstreamLeeway,
+			AddAccessTokenClaims:                      addAccessTokenClaims,
+			AddChannelTokenClaims:                     addChannelTokenClaims,
+			AddClaims:                                 addClaims,
+			CacheAccessTokenIntrospection:             cacheAccessTokenIntrospection,
+			CacheChannelTokenIntrospection:            cacheChannelTokenIntrospection,
+			ChannelTokenAudienceClaim:                 channelTokenAudienceClaim,
+			ChannelTokenAudiencesAllowed:              channelTokenAudiencesAllowed,
+			ChannelTokenConsumerBy:                    channelTokenConsumerBy,
+			ChannelTokenConsumerClaim:                 channelTokenConsumerClaim,
+			ChannelTokenExpiryClaim:                   channelTokenExpiryClaim,
+			ChannelTokenIntrospectionAudienceClaim:    channelTokenIntrospectionAudienceClaim,
+			ChannelTokenIntrospectionAudiencesAllowed: channelTokenIntrospectionAudiencesAllowed,
+			ChannelTokenIntrospectionAuthorization:    channelTokenIntrospectionAuthorization,
+			ChannelTokenIntrospectionBodyArgs:         channelTokenIntrospectionBodyArgs,
+			ChannelTokenIntrospectionConsumerBy:       channelTokenIntrospectionConsumerBy,
+			ChannelTokenIntrospectionConsumerClaim:    channelTokenIntrospectionConsumerClaim,
+			ChannelTokenIntrospectionEndpoint:         channelTokenIntrospectionEndpoint,
+			ChannelTokenIntrospectionExpiryClaim:      channelTokenIntrospectionExpiryClaim,
+			ChannelTokenIntrospectionHint:             channelTokenIntrospectionHint,
+			ChannelTokenIntrospectionIssuerClaim:      channelTokenIntrospectionIssuerClaim,
+			ChannelTokenIntrospectionIssuersAllowed:   channelTokenIntrospectionIssuersAllowed,
+			ChannelTokenIntrospectionJwtClaim:         channelTokenIntrospectionJwtClaim,
+			ChannelTokenIntrospectionLeeway:           channelTokenIntrospectionLeeway,
+			ChannelTokenIntrospectionNotbeforeClaim:   channelTokenIntrospectionNotbeforeClaim,
+			ChannelTokenIntrospectionOptionalClaims:   channelTokenIntrospectionOptionalClaims,
+			ChannelTokenIntrospectionRequiredClaims:   channelTokenIntrospectionRequiredClaims,
+			ChannelTokenIntrospectionScopesClaim:      channelTokenIntrospectionScopesClaim,
+			ChannelTokenIntrospectionScopesRequired:   channelTokenIntrospectionScopesRequired,
+			ChannelTokenIntrospectionSubjectClaim:     channelTokenIntrospectionSubjectClaim,
+			ChannelTokenIntrospectionSubjectsAllowed:  channelTokenIntrospectionSubjectsAllowed,
+			ChannelTokenIntrospectionTimeout:          channelTokenIntrospectionTimeout,
+			ChannelTokenIssuer:                        channelTokenIssuer,
+			ChannelTokenIssuerClaim:                   channelTokenIssuerClaim,
+			ChannelTokenIssuersAllowed:                channelTokenIssuersAllowed,
+			ChannelTokenJwksURI:                       channelTokenJwksURI,
+			ChannelTokenJwksURIClientCertificate:      channelTokenJwksURIClientCertificate,
+			ChannelTokenJwksURIClientPassword:         channelTokenJwksURIClientPassword,
+			ChannelTokenJwksURIClientUsername:         channelTokenJwksURIClientUsername,
+			ChannelTokenJwksURIRotatePeriod:           channelTokenJwksURIRotatePeriod,
+			ChannelTokenKeyset:                        channelTokenKeyset,
+			ChannelTokenKeysetClientCertificate:       channelTokenKeysetClientCertificate,
+			ChannelTokenKeysetClientPassword:          channelTokenKeysetClientPassword,
+			ChannelTokenKeysetClientUsername:          channelTokenKeysetClientUsername,
+			ChannelTokenKeysetRotatePeriod:            channelTokenKeysetRotatePeriod,
+			ChannelTokenLeeway:                        channelTokenLeeway,
+			ChannelTokenNotbeforeClaim:                channelTokenNotbeforeClaim,
+			ChannelTokenOptional:                      channelTokenOptional,
+			ChannelTokenOptionalClaims:                channelTokenOptionalClaims,
+			ChannelTokenRequestHeader:                 channelTokenRequestHeader,
+			ChannelTokenRequiredClaims:                channelTokenRequiredClaims,
+			ChannelTokenScopesClaim:                   channelTokenScopesClaim,
+			ChannelTokenScopesRequired:                channelTokenScopesRequired,
+			ChannelTokenSigning:                       channelTokenSigning,
+			ChannelTokenSigningAlgorithm:              channelTokenSigningAlgorithm,
+			ChannelTokenSubjectClaim:                  channelTokenSubjectClaim,
+			ChannelTokenSubjectsAllowed:               channelTokenSubjectsAllowed,
+			ChannelTokenUpstreamHeader:                channelTokenUpstreamHeader,
+			ChannelTokenUpstreamLeeway:                channelTokenUpstreamLeeway,
+			EnableAccessTokenIntrospection:            enableAccessTokenIntrospection,
+			EnableChannelTokenIntrospection:           enableChannelTokenIntrospection,
+			EnableHsSignatures:                        enableHsSignatures,
+			EnableInstrumentation:                     enableInstrumentation,
+			OriginalAccessTokenUpstreamHeader:         originalAccessTokenUpstreamHeader,
+			OriginalChannelTokenUpstreamHeader:        originalChannelTokenUpstreamHeader,
+			Realm:                                     realm,
+			RemoveAccessTokenClaims:                   removeAccessTokenClaims,
+			RemoveChannelTokenClaims:                  removeChannelTokenClaims,
+			SetAccessTokenClaims:                      setAccessTokenClaims,
+			SetChannelTokenClaims:                     setChannelTokenClaims,
+			SetClaims:                                 setClaims,
+			TrustAccessTokenIntrospection:             trustAccessTokenIntrospection,
+			TrustChannelTokenIntrospection:            trustChannelTokenIntrospection,
+			VerifyAccessTokenAudience:                 verifyAccessTokenAudience,
+			VerifyAccessTokenExpiry:                   verifyAccessTokenExpiry,
+			VerifyAccessTokenIntrospectionAudience:    verifyAccessTokenIntrospectionAudience,
+			VerifyAccessTokenIntrospectionExpiry:      verifyAccessTokenIntrospectionExpiry,
+			VerifyAccessTokenIntrospectionIssuer:      verifyAccessTokenIntrospectionIssuer,
+			VerifyAccessTokenIntrospectionNotbefore:   verifyAccessTokenIntrospectionNotbefore,
+			VerifyAccessTokenIntrospectionScopes:      verifyAccessTokenIntrospectionScopes,
+			VerifyAccessTokenIntrospectionSubject:     verifyAccessTokenIntrospectionSubject,
+			VerifyAccessTokenIssuer:                   verifyAccessTokenIssuer,
+			VerifyAccessTokenNotbefore:                verifyAccessTokenNotbefore,
+			VerifyAccessTokenScopes:                   verifyAccessTokenScopes,
+			VerifyAccessTokenSignature:                verifyAccessTokenSignature,
+			VerifyAccessTokenSubject:                  verifyAccessTokenSubject,
+			VerifyChannelTokenAudience:                verifyChannelTokenAudience,
+			VerifyChannelTokenExpiry:                  verifyChannelTokenExpiry,
+			VerifyChannelTokenIntrospectionAudience:   verifyChannelTokenIntrospectionAudience,
+			VerifyChannelTokenIntrospectionExpiry:     verifyChannelTokenIntrospectionExpiry,
+			VerifyChannelTokenIntrospectionIssuer:     verifyChannelTokenIntrospectionIssuer,
+			VerifyChannelTokenIntrospectionNotbefore:  verifyChannelTokenIntrospectionNotbefore,
+			VerifyChannelTokenIntrospectionScopes:     verifyChannelTokenIntrospectionScopes,
+			VerifyChannelTokenIntrospectionSubject:    verifyChannelTokenIntrospectionSubject,
+			VerifyChannelTokenIssuer:                  verifyChannelTokenIssuer,
+			VerifyChannelTokenNotbefore:               verifyChannelTokenNotbefore,
+			VerifyChannelTokenScopes:                  verifyChannelTokenScopes,
+			VerifyChannelTokenSignature:               verifyChannelTokenSignature,
+			VerifyChannelTokenSubject:                 verifyChannelTokenSubject,
 		}
 	}
 	protocols := make([]shared.JwtSignerPluginProtocols, 0, len(r.Protocols))
@@ -1135,26 +1855,26 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 	}
 	var route *shared.JwtSignerPluginRoute
 	if r.Route != nil {
-		id2 := new(string)
+		id6 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id2 = r.Route.ID.ValueString()
+			*id6 = r.Route.ID.ValueString()
 		} else {
-			id2 = nil
+			id6 = nil
 		}
 		route = &shared.JwtSignerPluginRoute{
-			ID: id2,
+			ID: id6,
 		}
 	}
 	var service *shared.JwtSignerPluginService
 	if r.Service != nil {
-		id3 := new(string)
+		id7 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id3 = r.Service.ID.ValueString()
+			*id7 = r.Service.ID.ValueString()
 		} else {
-			id3 = nil
+			id7 = nil
 		}
 		service = &shared.JwtSignerPluginService{
-			ID: id3,
+			ID: id7,
 		}
 	}
 	out := shared.JwtSignerPlugin{

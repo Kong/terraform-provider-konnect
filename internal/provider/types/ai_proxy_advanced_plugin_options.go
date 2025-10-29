@@ -7,9 +7,9 @@ import (
 )
 
 type AiProxyAdvancedPluginOptions struct {
-	Azure       Azure        `tfsdk:"azure"`
-	Bedrock     *Bedrock     `tfsdk:"bedrock"`
-	Gemini      *Gemini      `tfsdk:"gemini"`
-	Huggingface *Huggingface `tfsdk:"huggingface"`
-	UpstreamURL types.String `tfsdk:"upstream_url"`
+	Azure       *Azure                         `tfsdk:"azure"`
+	Bedrock     *AiLlmAsJudgePluginBedrock     `tfsdk:"bedrock"`
+	Gemini      *AiProxyAdvancedPluginGemini   `tfsdk:"gemini"`
+	Huggingface *AiLlmAsJudgePluginHuggingface `tfsdk:"huggingface"`
+	UpstreamURL types.String                   `tfsdk:"upstream_url"`
 }

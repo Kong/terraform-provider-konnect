@@ -276,7 +276,7 @@ func (s *MTLSAuthCredentials) DeleteMtlsAuthWithConsumer(ctx context.Context, re
 
 }
 
-// GetMtlsAuthWithConsumer - Fetch a MTLS-auth credential associated with a Consumer
+// GetMtlsAuthWithConsumer - Get a MTLS-auth credential associated with a Consumer
 // Get a MTLS-auth credential associated with a Consumer using ID.
 func (s *MTLSAuthCredentials) GetMtlsAuthWithConsumer(ctx context.Context, request operations.GetMtlsAuthWithConsumerRequest, opts ...operations.Option) (*operations.GetMtlsAuthWithConsumerResponse, error) {
 	o := operations.Options{}

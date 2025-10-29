@@ -472,8 +472,8 @@ type OpentelemetryPluginConfig struct {
 	ConnectTimeout *int64      `default:"1000" json:"connect_timeout"`
 	HeaderType     *HeaderType `default:"preserve" json:"header_type"`
 	// The custom headers to be added in the HTTP request sent to the OTLP server. This setting is useful for adding the authentication headers (token) for the APM backend.
-	Headers                      map[string]any `json:"headers,omitempty"`
-	HTTPResponseHeaderForTraceid *string        `default:"null" json:"http_response_header_for_traceid"`
+	Headers                      map[string]string `json:"headers,omitempty"`
+	HTTPResponseHeaderForTraceid *string           `default:"null" json:"http_response_header_for_traceid"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
 	LogsEndpoint *string                   `default:"null" json:"logs_endpoint"`
 	Propagation  *Propagation              `json:"propagation,omitempty"`
@@ -530,7 +530,7 @@ func (o *OpentelemetryPluginConfig) GetHeaderType() *HeaderType {
 	return o.HeaderType
 }
 
-func (o *OpentelemetryPluginConfig) GetHeaders() map[string]any {
+func (o *OpentelemetryPluginConfig) GetHeaders() map[string]string {
 	if o == nil {
 		return nil
 	}

@@ -322,7 +322,7 @@ func (s *Upstreams) DeleteUpstream(ctx context.Context, request operations.Delet
 
 }
 
-// GetUpstream - Fetch an Upstream
+// GetUpstream - Get an Upstream
 // Get an Upstream using ID or name.
 func (s *Upstreams) GetUpstream(ctx context.Context, request operations.GetUpstreamRequest, opts ...operations.Option) (*operations.GetUpstreamResponse, error) {
 	o := operations.Options{}

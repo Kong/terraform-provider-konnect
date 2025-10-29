@@ -30,10 +30,9 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 				r.Config.HeaderType = types.StringNull()
 			}
 			if resp.Config.Headers != nil {
-				r.Config.Headers = make(map[string]jsontypes.Normalized, len(resp.Config.Headers))
+				r.Config.Headers = make(map[string]types.String, len(resp.Config.Headers))
 				for key, value := range resp.Config.Headers {
-					result, _ := json.Marshal(value)
-					r.Config.Headers[key] = jsontypes.NewNormalizedValue(string(result))
+					r.Config.Headers[key] = types.StringValue(value)
 				}
 			}
 			r.Config.HTTPResponseHeaderForTraceid = types.StringPointerValue(resp.Config.HTTPResponseHeaderForTraceid)
@@ -87,8 +86,8 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 			if len(resp.Config.ResourceAttributes) > 0 {
 				r.Config.ResourceAttributes = make(map[string]jsontypes.Normalized, len(resp.Config.ResourceAttributes))
 				for key1, value1 := range resp.Config.ResourceAttributes {
-					result1, _ := json.Marshal(value1)
-					r.Config.ResourceAttributes[key1] = jsontypes.NewNormalizedValue(string(result1))
+					result, _ := json.Marshal(value1)
+					r.Config.ResourceAttributes[key1] = jsontypes.NewNormalizedValue(string(result))
 				}
 			}
 			r.Config.SamplingRate = types.Float64PointerValue(resp.Config.SamplingRate)
@@ -113,11 +112,11 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			r.Ordering = &tfTypes.AcePluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After = &tfTypes.AcePluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -126,7 +125,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.AcePluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
@@ -376,10 +375,11 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ct
 		} else {
 			headerType = nil
 		}
-		headers := make(map[string]interface{})
+		headers := make(map[string]string)
 		for headersKey, headersValue := range r.Config.Headers {
-			var headersInst interface{}
-			_ = json.Unmarshal([]byte(headersValue.ValueString()), &headersInst)
+			var headersInst string
+			headersInst = headersValue.ValueString()
+
 			headers[headersKey] = headersInst
 		}
 		httpResponseHeaderForTraceid := new(string)

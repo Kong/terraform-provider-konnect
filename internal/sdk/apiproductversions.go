@@ -298,7 +298,7 @@ func (s *APIProductVersions) CreateAPIProductVersion(ctx context.Context, reques
 
 }
 
-// GetAPIProductVersion - Fetch API Product Version
+// GetAPIProductVersion - Get an API Product Version
 // Returns a version of an API product.
 func (s *APIProductVersions) GetAPIProductVersion(ctx context.Context, request operations.GetAPIProductVersionRequest, opts ...operations.Option) (*operations.GetAPIProductVersionResponse, error) {
 	o := operations.Options{}

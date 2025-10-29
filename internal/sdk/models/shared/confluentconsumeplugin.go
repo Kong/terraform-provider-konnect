@@ -180,18 +180,19 @@ func (e *MessageDeserializer) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// Mode - The mode of operation for the plugin.
-type Mode string
+// ConfluentConsumePluginMode - The mode of operation for the plugin.
+type ConfluentConsumePluginMode string
 
 const (
-	ModeHTTPGet          Mode = "http-get"
-	ModeServerSentEvents Mode = "server-sent-events"
+	ConfluentConsumePluginModeHTTPGet          ConfluentConsumePluginMode = "http-get"
+	ConfluentConsumePluginModeServerSentEvents ConfluentConsumePluginMode = "server-sent-events"
+	ConfluentConsumePluginModeWebsocket        ConfluentConsumePluginMode = "websocket"
 )
 
-func (e Mode) ToPointer() *Mode {
+func (e ConfluentConsumePluginMode) ToPointer() *ConfluentConsumePluginMode {
 	return &e
 }
-func (e *Mode) UnmarshalJSON(data []byte) error {
+func (e *ConfluentConsumePluginMode) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -200,10 +201,12 @@ func (e *Mode) UnmarshalJSON(data []byte) error {
 	case "http-get":
 		fallthrough
 	case "server-sent-events":
-		*e = Mode(v)
+		fallthrough
+	case "websocket":
+		*e = ConfluentConsumePluginMode(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Mode: %v", v)
+		return fmt.Errorf("invalid value for ConfluentConsumePluginMode: %v", v)
 	}
 }
 
@@ -226,18 +229,19 @@ func (c *ConfluentConsumePluginBasic) GetUsername() string {
 	return c.Username
 }
 
-// ConfluentConsumePluginMode - Authentication mode to use with the schema registry.
-type ConfluentConsumePluginMode string
+// ConfluentConsumePluginConfigMode - Authentication mode to use with the schema registry.
+type ConfluentConsumePluginConfigMode string
 
 const (
-	ConfluentConsumePluginModeBasic ConfluentConsumePluginMode = "basic"
-	ConfluentConsumePluginModeNone  ConfluentConsumePluginMode = "none"
+	ConfluentConsumePluginConfigModeBasic  ConfluentConsumePluginConfigMode = "basic"
+	ConfluentConsumePluginConfigModeNone   ConfluentConsumePluginConfigMode = "none"
+	ConfluentConsumePluginConfigModeOauth2 ConfluentConsumePluginConfigMode = "oauth2"
 )
 
-func (e ConfluentConsumePluginMode) ToPointer() *ConfluentConsumePluginMode {
+func (e ConfluentConsumePluginConfigMode) ToPointer() *ConfluentConsumePluginConfigMode {
 	return &e
 }
-func (e *ConfluentConsumePluginMode) UnmarshalJSON(data []byte) error {
+func (e *ConfluentConsumePluginConfigMode) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -246,17 +250,325 @@ func (e *ConfluentConsumePluginMode) UnmarshalJSON(data []byte) error {
 	case "basic":
 		fallthrough
 	case "none":
-		*e = ConfluentConsumePluginMode(v)
+		fallthrough
+	case "oauth2":
+		*e = ConfluentConsumePluginConfigMode(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for ConfluentConsumePluginMode: %v", v)
+		return fmt.Errorf("invalid value for ConfluentConsumePluginConfigMode: %v", v)
 	}
+}
+
+// ConfluentConsumePluginGrantType - The OAuth grant type to be used.
+type ConfluentConsumePluginGrantType string
+
+const (
+	ConfluentConsumePluginGrantTypeClientCredentials ConfluentConsumePluginGrantType = "client_credentials"
+	ConfluentConsumePluginGrantTypePassword          ConfluentConsumePluginGrantType = "password"
+)
+
+func (e ConfluentConsumePluginGrantType) ToPointer() *ConfluentConsumePluginGrantType {
+	return &e
+}
+func (e *ConfluentConsumePluginGrantType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "client_credentials":
+		fallthrough
+	case "password":
+		*e = ConfluentConsumePluginGrantType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ConfluentConsumePluginGrantType: %v", v)
+	}
+}
+
+type ConfluentConsumePluginOauth2 struct {
+	// List of audiences passed to the IdP when obtaining a new token.
+	Audience []string `json:"audience,omitempty"`
+	// The client ID for the application registration in the IdP.
+	ClientID *string `default:"null" json:"client_id"`
+	// The client secret for the application registration in the IdP.
+	ClientSecret *string `default:"null" json:"client_secret"`
+	// The OAuth grant type to be used.
+	GrantType *ConfluentConsumePluginGrantType `default:"client_credentials" json:"grant_type"`
+	// The password to use if `config.oauth.grant_type` is set to `password`.
+	Password *string `default:"null" json:"password"`
+	// List of scopes to request from the IdP when obtaining a new token.
+	Scopes []string `json:"scopes,omitempty"`
+	// The token endpoint URI.
+	TokenEndpoint string `json:"token_endpoint"`
+	// Extra headers to be passed in the token endpoint request.
+	TokenHeaders map[string]any `json:"token_headers,omitempty"`
+	// Extra post arguments to be passed in the token endpoint request.
+	TokenPostArgs map[string]any `json:"token_post_args,omitempty"`
+	// The username to use if `config.oauth.grant_type` is set to `password`.
+	Username *string `default:"null" json:"username"`
+}
+
+func (c ConfluentConsumePluginOauth2) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ConfluentConsumePluginOauth2) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"token_endpoint"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *ConfluentConsumePluginOauth2) GetAudience() []string {
+	if c == nil {
+		return nil
+	}
+	return c.Audience
+}
+
+func (c *ConfluentConsumePluginOauth2) GetClientID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ClientID
+}
+
+func (c *ConfluentConsumePluginOauth2) GetClientSecret() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ClientSecret
+}
+
+func (c *ConfluentConsumePluginOauth2) GetGrantType() *ConfluentConsumePluginGrantType {
+	if c == nil {
+		return nil
+	}
+	return c.GrantType
+}
+
+func (c *ConfluentConsumePluginOauth2) GetPassword() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Password
+}
+
+func (c *ConfluentConsumePluginOauth2) GetScopes() []string {
+	if c == nil {
+		return nil
+	}
+	return c.Scopes
+}
+
+func (c *ConfluentConsumePluginOauth2) GetTokenEndpoint() string {
+	if c == nil {
+		return ""
+	}
+	return c.TokenEndpoint
+}
+
+func (c *ConfluentConsumePluginOauth2) GetTokenHeaders() map[string]any {
+	if c == nil {
+		return nil
+	}
+	return c.TokenHeaders
+}
+
+func (c *ConfluentConsumePluginOauth2) GetTokenPostArgs() map[string]any {
+	if c == nil {
+		return nil
+	}
+	return c.TokenPostArgs
+}
+
+func (c *ConfluentConsumePluginOauth2) GetUsername() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Username
+}
+
+// ConfluentConsumePluginAuthMethod - The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body.
+type ConfluentConsumePluginAuthMethod string
+
+const (
+	ConfluentConsumePluginAuthMethodClientSecretBasic ConfluentConsumePluginAuthMethod = "client_secret_basic"
+	ConfluentConsumePluginAuthMethodClientSecretJwt   ConfluentConsumePluginAuthMethod = "client_secret_jwt"
+	ConfluentConsumePluginAuthMethodClientSecretPost  ConfluentConsumePluginAuthMethod = "client_secret_post"
+	ConfluentConsumePluginAuthMethodNone              ConfluentConsumePluginAuthMethod = "none"
+)
+
+func (e ConfluentConsumePluginAuthMethod) ToPointer() *ConfluentConsumePluginAuthMethod {
+	return &e
+}
+func (e *ConfluentConsumePluginAuthMethod) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "client_secret_basic":
+		fallthrough
+	case "client_secret_jwt":
+		fallthrough
+	case "client_secret_post":
+		fallthrough
+	case "none":
+		*e = ConfluentConsumePluginAuthMethod(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ConfluentConsumePluginAuthMethod: %v", v)
+	}
+}
+
+// ConfluentConsumePluginClientSecretJwtAlg - The algorithm to use with JWT when using `client_secret_jwt` authentication.
+type ConfluentConsumePluginClientSecretJwtAlg string
+
+const (
+	ConfluentConsumePluginClientSecretJwtAlgHs256 ConfluentConsumePluginClientSecretJwtAlg = "HS256"
+	ConfluentConsumePluginClientSecretJwtAlgHs512 ConfluentConsumePluginClientSecretJwtAlg = "HS512"
+)
+
+func (e ConfluentConsumePluginClientSecretJwtAlg) ToPointer() *ConfluentConsumePluginClientSecretJwtAlg {
+	return &e
+}
+func (e *ConfluentConsumePluginClientSecretJwtAlg) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "HS256":
+		fallthrough
+	case "HS512":
+		*e = ConfluentConsumePluginClientSecretJwtAlg(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ConfluentConsumePluginClientSecretJwtAlg: %v", v)
+	}
+}
+
+type ConfluentConsumePluginOauth2Client struct {
+	// The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body.
+	AuthMethod *ConfluentConsumePluginAuthMethod `default:"client_secret_post" json:"auth_method"`
+	// The algorithm to use with JWT when using `client_secret_jwt` authentication.
+	ClientSecretJwtAlg *ConfluentConsumePluginClientSecretJwtAlg `default:"HS512" json:"client_secret_jwt_alg"`
+	// The proxy to use when making HTTP requests to the IdP.
+	HTTPProxy *string `default:"null" json:"http_proxy"`
+	// The `Proxy-Authorization` header value to be used with `http_proxy`.
+	HTTPProxyAuthorization *string `default:"null" json:"http_proxy_authorization"`
+	// The HTTP version used for requests made by this plugin. Supported values: `1.1` for HTTP 1.1 and `1.0` for HTTP 1.0.
+	HTTPVersion *float64 `json:"http_version,omitempty"`
+	// The proxy to use when making HTTPS requests to the IdP.
+	HTTPSProxy *string `default:"null" json:"https_proxy"`
+	// The `Proxy-Authorization` header value to be used with `https_proxy`.
+	HTTPSProxyAuthorization *string `default:"null" json:"https_proxy_authorization"`
+	// Whether to use keepalive connections to the IdP.
+	KeepAlive *bool `default:"true" json:"keep_alive"`
+	// A comma-separated list of hosts that should not be proxied.
+	NoProxy *string `default:"null" json:"no_proxy"`
+	// Whether to verify the certificate presented by the IdP when using HTTPS.
+	SslVerify *bool `default:"false" json:"ssl_verify"`
+	// Network I/O timeout for requests to the IdP in milliseconds.
+	Timeout *int64 `default:"10000" json:"timeout"`
+}
+
+func (c ConfluentConsumePluginOauth2Client) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ConfluentConsumePluginOauth2Client) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *ConfluentConsumePluginOauth2Client) GetAuthMethod() *ConfluentConsumePluginAuthMethod {
+	if c == nil {
+		return nil
+	}
+	return c.AuthMethod
+}
+
+func (c *ConfluentConsumePluginOauth2Client) GetClientSecretJwtAlg() *ConfluentConsumePluginClientSecretJwtAlg {
+	if c == nil {
+		return nil
+	}
+	return c.ClientSecretJwtAlg
+}
+
+func (c *ConfluentConsumePluginOauth2Client) GetHTTPProxy() *string {
+	if c == nil {
+		return nil
+	}
+	return c.HTTPProxy
+}
+
+func (c *ConfluentConsumePluginOauth2Client) GetHTTPProxyAuthorization() *string {
+	if c == nil {
+		return nil
+	}
+	return c.HTTPProxyAuthorization
+}
+
+func (c *ConfluentConsumePluginOauth2Client) GetHTTPVersion() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.HTTPVersion
+}
+
+func (c *ConfluentConsumePluginOauth2Client) GetHTTPSProxy() *string {
+	if c == nil {
+		return nil
+	}
+	return c.HTTPSProxy
+}
+
+func (c *ConfluentConsumePluginOauth2Client) GetHTTPSProxyAuthorization() *string {
+	if c == nil {
+		return nil
+	}
+	return c.HTTPSProxyAuthorization
+}
+
+func (c *ConfluentConsumePluginOauth2Client) GetKeepAlive() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.KeepAlive
+}
+
+func (c *ConfluentConsumePluginOauth2Client) GetNoProxy() *string {
+	if c == nil {
+		return nil
+	}
+	return c.NoProxy
+}
+
+func (c *ConfluentConsumePluginOauth2Client) GetSslVerify() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.SslVerify
+}
+
+func (c *ConfluentConsumePluginOauth2Client) GetTimeout() *int64 {
+	if c == nil {
+		return nil
+	}
+	return c.Timeout
 }
 
 type ConfluentConsumePluginAuthentication struct {
 	Basic *ConfluentConsumePluginBasic `json:"basic"`
 	// Authentication mode to use with the schema registry.
-	Mode *ConfluentConsumePluginMode `default:"none" json:"mode"`
+	Mode         *ConfluentConsumePluginConfigMode   `default:"none" json:"mode"`
+	Oauth2       *ConfluentConsumePluginOauth2       `json:"oauth2"`
+	Oauth2Client *ConfluentConsumePluginOauth2Client `json:"oauth2_client"`
 }
 
 func (c ConfluentConsumePluginAuthentication) MarshalJSON() ([]byte, error) {
@@ -277,15 +589,29 @@ func (c *ConfluentConsumePluginAuthentication) GetBasic() *ConfluentConsumePlugi
 	return c.Basic
 }
 
-func (c *ConfluentConsumePluginAuthentication) GetMode() *ConfluentConsumePluginMode {
+func (c *ConfluentConsumePluginAuthentication) GetMode() *ConfluentConsumePluginConfigMode {
 	if c == nil {
 		return nil
 	}
 	return c.Mode
 }
 
+func (c *ConfluentConsumePluginAuthentication) GetOauth2() *ConfluentConsumePluginOauth2 {
+	if c == nil {
+		return nil
+	}
+	return c.Oauth2
+}
+
+func (c *ConfluentConsumePluginAuthentication) GetOauth2Client() *ConfluentConsumePluginOauth2Client {
+	if c == nil {
+		return nil
+	}
+	return c.Oauth2Client
+}
+
 type ConfluentConsumePluginConfluent struct {
-	Authentication ConfluentConsumePluginAuthentication `json:"authentication"`
+	Authentication *ConfluentConsumePluginAuthentication `json:"authentication"`
 	// Set to false to disable SSL certificate verification when connecting to the schema registry.
 	SslVerify *bool `default:"true" json:"ssl_verify"`
 	// The TTL in seconds for the schema registry cache.
@@ -299,15 +625,15 @@ func (c ConfluentConsumePluginConfluent) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfluentConsumePluginConfluent) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"authentication"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *ConfluentConsumePluginConfluent) GetAuthentication() ConfluentConsumePluginAuthentication {
+func (c *ConfluentConsumePluginConfluent) GetAuthentication() *ConfluentConsumePluginAuthentication {
 	if c == nil {
-		return ConfluentConsumePluginAuthentication{}
+		return nil
 	}
 	return c.Authentication
 }
@@ -364,18 +690,19 @@ func (c *ConfluentConsumePluginConfigBasic) GetUsername() string {
 	return c.Username
 }
 
-// ConfluentConsumePluginConfigMode - Authentication mode to use with the schema registry.
-type ConfluentConsumePluginConfigMode string
+// ConfluentConsumePluginConfigTopicsMode - Authentication mode to use with the schema registry.
+type ConfluentConsumePluginConfigTopicsMode string
 
 const (
-	ConfluentConsumePluginConfigModeBasic ConfluentConsumePluginConfigMode = "basic"
-	ConfluentConsumePluginConfigModeNone  ConfluentConsumePluginConfigMode = "none"
+	ConfluentConsumePluginConfigTopicsModeBasic  ConfluentConsumePluginConfigTopicsMode = "basic"
+	ConfluentConsumePluginConfigTopicsModeNone   ConfluentConsumePluginConfigTopicsMode = "none"
+	ConfluentConsumePluginConfigTopicsModeOauth2 ConfluentConsumePluginConfigTopicsMode = "oauth2"
 )
 
-func (e ConfluentConsumePluginConfigMode) ToPointer() *ConfluentConsumePluginConfigMode {
+func (e ConfluentConsumePluginConfigTopicsMode) ToPointer() *ConfluentConsumePluginConfigTopicsMode {
 	return &e
 }
-func (e *ConfluentConsumePluginConfigMode) UnmarshalJSON(data []byte) error {
+func (e *ConfluentConsumePluginConfigTopicsMode) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -384,17 +711,325 @@ func (e *ConfluentConsumePluginConfigMode) UnmarshalJSON(data []byte) error {
 	case "basic":
 		fallthrough
 	case "none":
-		*e = ConfluentConsumePluginConfigMode(v)
+		fallthrough
+	case "oauth2":
+		*e = ConfluentConsumePluginConfigTopicsMode(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for ConfluentConsumePluginConfigMode: %v", v)
+		return fmt.Errorf("invalid value for ConfluentConsumePluginConfigTopicsMode: %v", v)
 	}
+}
+
+// ConfluentConsumePluginConfigGrantType - The OAuth grant type to be used.
+type ConfluentConsumePluginConfigGrantType string
+
+const (
+	ConfluentConsumePluginConfigGrantTypeClientCredentials ConfluentConsumePluginConfigGrantType = "client_credentials"
+	ConfluentConsumePluginConfigGrantTypePassword          ConfluentConsumePluginConfigGrantType = "password"
+)
+
+func (e ConfluentConsumePluginConfigGrantType) ToPointer() *ConfluentConsumePluginConfigGrantType {
+	return &e
+}
+func (e *ConfluentConsumePluginConfigGrantType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "client_credentials":
+		fallthrough
+	case "password":
+		*e = ConfluentConsumePluginConfigGrantType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ConfluentConsumePluginConfigGrantType: %v", v)
+	}
+}
+
+type ConfluentConsumePluginConfigOauth2 struct {
+	// List of audiences passed to the IdP when obtaining a new token.
+	Audience []string `json:"audience,omitempty"`
+	// The client ID for the application registration in the IdP.
+	ClientID *string `default:"null" json:"client_id"`
+	// The client secret for the application registration in the IdP.
+	ClientSecret *string `default:"null" json:"client_secret"`
+	// The OAuth grant type to be used.
+	GrantType *ConfluentConsumePluginConfigGrantType `default:"client_credentials" json:"grant_type"`
+	// The password to use if `config.oauth.grant_type` is set to `password`.
+	Password *string `default:"null" json:"password"`
+	// List of scopes to request from the IdP when obtaining a new token.
+	Scopes []string `json:"scopes,omitempty"`
+	// The token endpoint URI.
+	TokenEndpoint string `json:"token_endpoint"`
+	// Extra headers to be passed in the token endpoint request.
+	TokenHeaders map[string]any `json:"token_headers,omitempty"`
+	// Extra post arguments to be passed in the token endpoint request.
+	TokenPostArgs map[string]any `json:"token_post_args,omitempty"`
+	// The username to use if `config.oauth.grant_type` is set to `password`.
+	Username *string `default:"null" json:"username"`
+}
+
+func (c ConfluentConsumePluginConfigOauth2) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ConfluentConsumePluginConfigOauth2) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"token_endpoint"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *ConfluentConsumePluginConfigOauth2) GetAudience() []string {
+	if c == nil {
+		return nil
+	}
+	return c.Audience
+}
+
+func (c *ConfluentConsumePluginConfigOauth2) GetClientID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ClientID
+}
+
+func (c *ConfluentConsumePluginConfigOauth2) GetClientSecret() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ClientSecret
+}
+
+func (c *ConfluentConsumePluginConfigOauth2) GetGrantType() *ConfluentConsumePluginConfigGrantType {
+	if c == nil {
+		return nil
+	}
+	return c.GrantType
+}
+
+func (c *ConfluentConsumePluginConfigOauth2) GetPassword() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Password
+}
+
+func (c *ConfluentConsumePluginConfigOauth2) GetScopes() []string {
+	if c == nil {
+		return nil
+	}
+	return c.Scopes
+}
+
+func (c *ConfluentConsumePluginConfigOauth2) GetTokenEndpoint() string {
+	if c == nil {
+		return ""
+	}
+	return c.TokenEndpoint
+}
+
+func (c *ConfluentConsumePluginConfigOauth2) GetTokenHeaders() map[string]any {
+	if c == nil {
+		return nil
+	}
+	return c.TokenHeaders
+}
+
+func (c *ConfluentConsumePluginConfigOauth2) GetTokenPostArgs() map[string]any {
+	if c == nil {
+		return nil
+	}
+	return c.TokenPostArgs
+}
+
+func (c *ConfluentConsumePluginConfigOauth2) GetUsername() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Username
+}
+
+// ConfluentConsumePluginConfigAuthMethod - The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body.
+type ConfluentConsumePluginConfigAuthMethod string
+
+const (
+	ConfluentConsumePluginConfigAuthMethodClientSecretBasic ConfluentConsumePluginConfigAuthMethod = "client_secret_basic"
+	ConfluentConsumePluginConfigAuthMethodClientSecretJwt   ConfluentConsumePluginConfigAuthMethod = "client_secret_jwt"
+	ConfluentConsumePluginConfigAuthMethodClientSecretPost  ConfluentConsumePluginConfigAuthMethod = "client_secret_post"
+	ConfluentConsumePluginConfigAuthMethodNone              ConfluentConsumePluginConfigAuthMethod = "none"
+)
+
+func (e ConfluentConsumePluginConfigAuthMethod) ToPointer() *ConfluentConsumePluginConfigAuthMethod {
+	return &e
+}
+func (e *ConfluentConsumePluginConfigAuthMethod) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "client_secret_basic":
+		fallthrough
+	case "client_secret_jwt":
+		fallthrough
+	case "client_secret_post":
+		fallthrough
+	case "none":
+		*e = ConfluentConsumePluginConfigAuthMethod(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ConfluentConsumePluginConfigAuthMethod: %v", v)
+	}
+}
+
+// ConfluentConsumePluginConfigClientSecretJwtAlg - The algorithm to use with JWT when using `client_secret_jwt` authentication.
+type ConfluentConsumePluginConfigClientSecretJwtAlg string
+
+const (
+	ConfluentConsumePluginConfigClientSecretJwtAlgHs256 ConfluentConsumePluginConfigClientSecretJwtAlg = "HS256"
+	ConfluentConsumePluginConfigClientSecretJwtAlgHs512 ConfluentConsumePluginConfigClientSecretJwtAlg = "HS512"
+)
+
+func (e ConfluentConsumePluginConfigClientSecretJwtAlg) ToPointer() *ConfluentConsumePluginConfigClientSecretJwtAlg {
+	return &e
+}
+func (e *ConfluentConsumePluginConfigClientSecretJwtAlg) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "HS256":
+		fallthrough
+	case "HS512":
+		*e = ConfluentConsumePluginConfigClientSecretJwtAlg(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ConfluentConsumePluginConfigClientSecretJwtAlg: %v", v)
+	}
+}
+
+type ConfluentConsumePluginConfigOauth2Client struct {
+	// The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body.
+	AuthMethod *ConfluentConsumePluginConfigAuthMethod `default:"client_secret_post" json:"auth_method"`
+	// The algorithm to use with JWT when using `client_secret_jwt` authentication.
+	ClientSecretJwtAlg *ConfluentConsumePluginConfigClientSecretJwtAlg `default:"HS512" json:"client_secret_jwt_alg"`
+	// The proxy to use when making HTTP requests to the IdP.
+	HTTPProxy *string `default:"null" json:"http_proxy"`
+	// The `Proxy-Authorization` header value to be used with `http_proxy`.
+	HTTPProxyAuthorization *string `default:"null" json:"http_proxy_authorization"`
+	// The HTTP version used for requests made by this plugin. Supported values: `1.1` for HTTP 1.1 and `1.0` for HTTP 1.0.
+	HTTPVersion *float64 `json:"http_version,omitempty"`
+	// The proxy to use when making HTTPS requests to the IdP.
+	HTTPSProxy *string `default:"null" json:"https_proxy"`
+	// The `Proxy-Authorization` header value to be used with `https_proxy`.
+	HTTPSProxyAuthorization *string `default:"null" json:"https_proxy_authorization"`
+	// Whether to use keepalive connections to the IdP.
+	KeepAlive *bool `default:"true" json:"keep_alive"`
+	// A comma-separated list of hosts that should not be proxied.
+	NoProxy *string `default:"null" json:"no_proxy"`
+	// Whether to verify the certificate presented by the IdP when using HTTPS.
+	SslVerify *bool `default:"false" json:"ssl_verify"`
+	// Network I/O timeout for requests to the IdP in milliseconds.
+	Timeout *int64 `default:"10000" json:"timeout"`
+}
+
+func (c ConfluentConsumePluginConfigOauth2Client) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ConfluentConsumePluginConfigOauth2Client) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *ConfluentConsumePluginConfigOauth2Client) GetAuthMethod() *ConfluentConsumePluginConfigAuthMethod {
+	if c == nil {
+		return nil
+	}
+	return c.AuthMethod
+}
+
+func (c *ConfluentConsumePluginConfigOauth2Client) GetClientSecretJwtAlg() *ConfluentConsumePluginConfigClientSecretJwtAlg {
+	if c == nil {
+		return nil
+	}
+	return c.ClientSecretJwtAlg
+}
+
+func (c *ConfluentConsumePluginConfigOauth2Client) GetHTTPProxy() *string {
+	if c == nil {
+		return nil
+	}
+	return c.HTTPProxy
+}
+
+func (c *ConfluentConsumePluginConfigOauth2Client) GetHTTPProxyAuthorization() *string {
+	if c == nil {
+		return nil
+	}
+	return c.HTTPProxyAuthorization
+}
+
+func (c *ConfluentConsumePluginConfigOauth2Client) GetHTTPVersion() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.HTTPVersion
+}
+
+func (c *ConfluentConsumePluginConfigOauth2Client) GetHTTPSProxy() *string {
+	if c == nil {
+		return nil
+	}
+	return c.HTTPSProxy
+}
+
+func (c *ConfluentConsumePluginConfigOauth2Client) GetHTTPSProxyAuthorization() *string {
+	if c == nil {
+		return nil
+	}
+	return c.HTTPSProxyAuthorization
+}
+
+func (c *ConfluentConsumePluginConfigOauth2Client) GetKeepAlive() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.KeepAlive
+}
+
+func (c *ConfluentConsumePluginConfigOauth2Client) GetNoProxy() *string {
+	if c == nil {
+		return nil
+	}
+	return c.NoProxy
+}
+
+func (c *ConfluentConsumePluginConfigOauth2Client) GetSslVerify() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.SslVerify
+}
+
+func (c *ConfluentConsumePluginConfigOauth2Client) GetTimeout() *int64 {
+	if c == nil {
+		return nil
+	}
+	return c.Timeout
 }
 
 type ConfluentConsumePluginConfigAuthentication struct {
 	Basic *ConfluentConsumePluginConfigBasic `json:"basic"`
 	// Authentication mode to use with the schema registry.
-	Mode *ConfluentConsumePluginConfigMode `default:"none" json:"mode"`
+	Mode         *ConfluentConsumePluginConfigTopicsMode   `default:"none" json:"mode"`
+	Oauth2       *ConfluentConsumePluginConfigOauth2       `json:"oauth2"`
+	Oauth2Client *ConfluentConsumePluginConfigOauth2Client `json:"oauth2_client"`
 }
 
 func (c ConfluentConsumePluginConfigAuthentication) MarshalJSON() ([]byte, error) {
@@ -415,15 +1050,29 @@ func (c *ConfluentConsumePluginConfigAuthentication) GetBasic() *ConfluentConsum
 	return c.Basic
 }
 
-func (c *ConfluentConsumePluginConfigAuthentication) GetMode() *ConfluentConsumePluginConfigMode {
+func (c *ConfluentConsumePluginConfigAuthentication) GetMode() *ConfluentConsumePluginConfigTopicsMode {
 	if c == nil {
 		return nil
 	}
 	return c.Mode
 }
 
+func (c *ConfluentConsumePluginConfigAuthentication) GetOauth2() *ConfluentConsumePluginConfigOauth2 {
+	if c == nil {
+		return nil
+	}
+	return c.Oauth2
+}
+
+func (c *ConfluentConsumePluginConfigAuthentication) GetOauth2Client() *ConfluentConsumePluginConfigOauth2Client {
+	if c == nil {
+		return nil
+	}
+	return c.Oauth2Client
+}
+
 type ConfluentConsumePluginConfigConfluent struct {
-	Authentication ConfluentConsumePluginConfigAuthentication `json:"authentication"`
+	Authentication *ConfluentConsumePluginConfigAuthentication `json:"authentication"`
 	// Set to false to disable SSL certificate verification when connecting to the schema registry.
 	SslVerify *bool `default:"true" json:"ssl_verify"`
 	// The TTL in seconds for the schema registry cache.
@@ -437,15 +1086,15 @@ func (c ConfluentConsumePluginConfigConfluent) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfluentConsumePluginConfigConfluent) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"authentication"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *ConfluentConsumePluginConfigConfluent) GetAuthentication() ConfluentConsumePluginConfigAuthentication {
+func (c *ConfluentConsumePluginConfigConfluent) GetAuthentication() *ConfluentConsumePluginConfigAuthentication {
 	if c == nil {
-		return ConfluentConsumePluginConfigAuthentication{}
+		return nil
 	}
 	return c.Authentication
 }
@@ -486,7 +1135,7 @@ func (c *ConfluentConsumePluginConfigSchemaRegistry) GetConfluent() *ConfluentCo
 type Topics struct {
 	Name string `json:"name"`
 	// The plugin-global schema registry configuration.
-	SchemaRegistry ConfluentConsumePluginConfigSchemaRegistry `json:"schema_registry"`
+	SchemaRegistry *ConfluentConsumePluginConfigSchemaRegistry `json:"schema_registry"`
 }
 
 func (t *Topics) GetName() string {
@@ -496,9 +1145,9 @@ func (t *Topics) GetName() string {
 	return t.Name
 }
 
-func (t *Topics) GetSchemaRegistry() ConfluentConsumePluginConfigSchemaRegistry {
+func (t *Topics) GetSchemaRegistry() *ConfluentConsumePluginConfigSchemaRegistry {
 	if t == nil {
-		return ConfluentConsumePluginConfigSchemaRegistry{}
+		return nil
 	}
 	return t.SchemaRegistry
 }
@@ -520,13 +1169,19 @@ type ConfluentConsumePluginConfig struct {
 	ConfluentCloudAPIKey *string `default:"null" json:"confluent_cloud_api_key"`
 	// The corresponding secret for the Confluent Cloud API key.
 	ConfluentCloudAPISecret *string `default:"null" json:"confluent_cloud_api_secret"`
+	// The topic to use for the Dead Letter Queue.
+	DlqTopic *string `default:"null" json:"dlq_topic"`
+	// Enables Dead Letter Queue. When enabled, if the message doesn't conform to the schema (from Schema Registry) or there's an error in the `message_by_lua_functions`, it will be forwarded to `dlq_topic` that can be processed later.
+	EnableDlq *bool `default:"null" json:"enable_dlq"`
 	// Keepalive timeout in milliseconds.
 	Keepalive        *int64 `default:"60000" json:"keepalive"`
 	KeepaliveEnabled *bool  `default:"false" json:"keepalive_enabled"`
+	// The Lua functions that manipulates the message being sent to the client.
+	MessageByLuaFunctions []string `json:"message_by_lua_functions"`
 	// The deserializer to use for the consumed messages.
 	MessageDeserializer *MessageDeserializer `default:"noop" json:"message_deserializer"`
 	// The mode of operation for the plugin.
-	Mode *Mode `default:"http-get" json:"mode"`
+	Mode *ConfluentConsumePluginMode `default:"http-get" json:"mode"`
 	// The plugin-global schema registry configuration.
 	SchemaRegistry *ConfluentConsumePluginSchemaRegistry `json:"schema_registry"`
 	// Socket timeout in milliseconds.
@@ -602,6 +1257,20 @@ func (c *ConfluentConsumePluginConfig) GetConfluentCloudAPISecret() *string {
 	return c.ConfluentCloudAPISecret
 }
 
+func (c *ConfluentConsumePluginConfig) GetDlqTopic() *string {
+	if c == nil {
+		return nil
+	}
+	return c.DlqTopic
+}
+
+func (c *ConfluentConsumePluginConfig) GetEnableDlq() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.EnableDlq
+}
+
 func (c *ConfluentConsumePluginConfig) GetKeepalive() *int64 {
 	if c == nil {
 		return nil
@@ -616,6 +1285,13 @@ func (c *ConfluentConsumePluginConfig) GetKeepaliveEnabled() *bool {
 	return c.KeepaliveEnabled
 }
 
+func (c *ConfluentConsumePluginConfig) GetMessageByLuaFunctions() []string {
+	if c == nil {
+		return nil
+	}
+	return c.MessageByLuaFunctions
+}
+
 func (c *ConfluentConsumePluginConfig) GetMessageDeserializer() *MessageDeserializer {
 	if c == nil {
 		return nil
@@ -623,7 +1299,7 @@ func (c *ConfluentConsumePluginConfig) GetMessageDeserializer() *MessageDeserial
 	return c.MessageDeserializer
 }
 
-func (c *ConfluentConsumePluginConfig) GetMode() *Mode {
+func (c *ConfluentConsumePluginConfig) GetMode() *ConfluentConsumePluginMode {
 	if c == nil {
 		return nil
 	}
@@ -670,6 +1346,8 @@ const (
 	ConfluentConsumePluginProtocolsGrpcs ConfluentConsumePluginProtocols = "grpcs"
 	ConfluentConsumePluginProtocolsHTTP  ConfluentConsumePluginProtocols = "http"
 	ConfluentConsumePluginProtocolsHTTPS ConfluentConsumePluginProtocols = "https"
+	ConfluentConsumePluginProtocolsWs    ConfluentConsumePluginProtocols = "ws"
+	ConfluentConsumePluginProtocolsWss   ConfluentConsumePluginProtocols = "wss"
 )
 
 func (e ConfluentConsumePluginProtocols) ToPointer() *ConfluentConsumePluginProtocols {
@@ -688,6 +1366,10 @@ func (e *ConfluentConsumePluginProtocols) UnmarshalJSON(data []byte) error {
 	case "http":
 		fallthrough
 	case "https":
+		fallthrough
+	case "ws":
+		fallthrough
+	case "wss":
 		*e = ConfluentConsumePluginProtocols(v)
 		return nil
 	default:
@@ -740,7 +1422,7 @@ type ConfluentConsumePlugin struct {
 	Config    ConfluentConsumePluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *ConfluentConsumePluginConsumer `json:"consumer"`
-	// A set of strings representing HTTP protocols.
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []ConfluentConsumePluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *ConfluentConsumePluginRoute `json:"route"`

@@ -54,7 +54,7 @@ type GatewayPluginAiSemanticCacheResourceModel struct {
 	Enabled        types.Bool                          `tfsdk:"enabled"`
 	ID             types.String                        `tfsdk:"id"`
 	InstanceName   types.String                        `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering          `tfsdk:"ordering"`
+	Ordering       *tfTypes.AcePluginOrdering          `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials                  `tfsdk:"partials"`
 	Protocols      []types.String                      `tfsdk:"protocols"`
 	Route          *tfTypes.Set                        `tfsdk:"route"`
@@ -225,7 +225,13 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 										})),
 										Attributes: map[string]schema.Attribute{
 											"azure": schema.SingleNestedAttribute{
-												Required: true,
+												Computed: true,
+												Optional: true,
+												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+													"api_version":   types.StringType,
+													"deployment_id": types.StringType,
+													"instance":      types.StringType,
+												})),
 												Attributes: map[string]schema.Attribute{
 													"api_version": schema.StringAttribute{
 														Computed:    true,

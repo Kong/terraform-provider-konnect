@@ -258,7 +258,7 @@ func (s *APIProducts) CreateAPIProduct(ctx context.Context, request shared.Creat
 
 }
 
-// GetAPIProduct - Fetch API product
+// GetAPIProduct - Get an API product
 // Returns an API product.
 func (s *APIProducts) GetAPIProduct(ctx context.Context, request operations.GetAPIProductRequest, opts ...operations.Option) (*operations.GetAPIProductResponse, error) {
 	o := operations.Options{}

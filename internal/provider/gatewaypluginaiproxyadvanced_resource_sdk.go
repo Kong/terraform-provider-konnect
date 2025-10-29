@@ -52,7 +52,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 			if resp.Config.Embeddings.Auth == nil {
 				r.Config.Embeddings.Auth = nil
 			} else {
-				r.Config.Embeddings.Auth = &tfTypes.Auth{}
+				r.Config.Embeddings.Auth = &tfTypes.AiLlmAsJudgePluginAuth{}
 				r.Config.Embeddings.Auth.AllowOverride = types.BoolPointerValue(resp.Config.Embeddings.Auth.AllowOverride)
 				r.Config.Embeddings.Auth.AwsAccessKeyID = types.StringPointerValue(resp.Config.Embeddings.Auth.AwsAccessKeyID)
 				r.Config.Embeddings.Auth.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Embeddings.Auth.AwsSecretAccessKey)
@@ -77,13 +77,18 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				r.Config.Embeddings.Model.Options = nil
 			} else {
 				r.Config.Embeddings.Model.Options = &tfTypes.AiProxyAdvancedPluginOptions{}
-				r.Config.Embeddings.Model.Options.Azure.APIVersion = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.APIVersion)
-				r.Config.Embeddings.Model.Options.Azure.DeploymentID = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.DeploymentID)
-				r.Config.Embeddings.Model.Options.Azure.Instance = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.Instance)
+				if resp.Config.Embeddings.Model.Options.Azure == nil {
+					r.Config.Embeddings.Model.Options.Azure = nil
+				} else {
+					r.Config.Embeddings.Model.Options.Azure = &tfTypes.Azure{}
+					r.Config.Embeddings.Model.Options.Azure.APIVersion = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.APIVersion)
+					r.Config.Embeddings.Model.Options.Azure.DeploymentID = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.DeploymentID)
+					r.Config.Embeddings.Model.Options.Azure.Instance = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.Instance)
+				}
 				if resp.Config.Embeddings.Model.Options.Bedrock == nil {
 					r.Config.Embeddings.Model.Options.Bedrock = nil
 				} else {
-					r.Config.Embeddings.Model.Options.Bedrock = &tfTypes.Bedrock{}
+					r.Config.Embeddings.Model.Options.Bedrock = &tfTypes.AiLlmAsJudgePluginBedrock{}
 					r.Config.Embeddings.Model.Options.Bedrock.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsAssumeRoleArn)
 					r.Config.Embeddings.Model.Options.Bedrock.AwsRegion = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsRegion)
 					r.Config.Embeddings.Model.Options.Bedrock.AwsRoleSessionName = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsRoleSessionName)
@@ -94,7 +99,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				if resp.Config.Embeddings.Model.Options.Gemini == nil {
 					r.Config.Embeddings.Model.Options.Gemini = nil
 				} else {
-					r.Config.Embeddings.Model.Options.Gemini = &tfTypes.Gemini{}
+					r.Config.Embeddings.Model.Options.Gemini = &tfTypes.AiProxyAdvancedPluginGemini{}
 					r.Config.Embeddings.Model.Options.Gemini.APIEndpoint = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Gemini.APIEndpoint)
 					r.Config.Embeddings.Model.Options.Gemini.LocationID = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Gemini.LocationID)
 					r.Config.Embeddings.Model.Options.Gemini.ProjectID = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Gemini.ProjectID)
@@ -102,7 +107,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				if resp.Config.Embeddings.Model.Options.Huggingface == nil {
 					r.Config.Embeddings.Model.Options.Huggingface = nil
 				} else {
-					r.Config.Embeddings.Model.Options.Huggingface = &tfTypes.Huggingface{}
+					r.Config.Embeddings.Model.Options.Huggingface = &tfTypes.AiLlmAsJudgePluginHuggingface{}
 					r.Config.Embeddings.Model.Options.Huggingface.UseCache = types.BoolPointerValue(resp.Config.Embeddings.Model.Options.Huggingface.UseCache)
 					r.Config.Embeddings.Model.Options.Huggingface.WaitForModel = types.BoolPointerValue(resp.Config.Embeddings.Model.Options.Huggingface.WaitForModel)
 				}
@@ -135,7 +140,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 			if targetsItem.Auth == nil {
 				targets.Auth = nil
 			} else {
-				targets.Auth = &tfTypes.Auth{}
+				targets.Auth = &tfTypes.AiLlmAsJudgePluginAuth{}
 				targets.Auth.AllowOverride = types.BoolPointerValue(targetsItem.Auth.AllowOverride)
 				targets.Auth.AwsAccessKeyID = types.StringPointerValue(targetsItem.Auth.AwsAccessKeyID)
 				targets.Auth.AwsSecretAccessKey = types.StringPointerValue(targetsItem.Auth.AwsSecretAccessKey)
@@ -156,13 +161,18 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				targets.Auth.ParamValue = types.StringPointerValue(targetsItem.Auth.ParamValue)
 			}
 			targets.Description = types.StringPointerValue(targetsItem.Description)
-			targets.Logging.LogPayloads = types.BoolPointerValue(targetsItem.Logging.LogPayloads)
-			targets.Logging.LogStatistics = types.BoolPointerValue(targetsItem.Logging.LogStatistics)
+			if targetsItem.Logging == nil {
+				targets.Logging = nil
+			} else {
+				targets.Logging = &tfTypes.AiLlmAsJudgePluginLogging{}
+				targets.Logging.LogPayloads = types.BoolPointerValue(targetsItem.Logging.LogPayloads)
+				targets.Logging.LogStatistics = types.BoolPointerValue(targetsItem.Logging.LogStatistics)
+			}
 			targets.Model.Name = types.StringPointerValue(targetsItem.Model.Name)
 			if targetsItem.Model.Options == nil {
 				targets.Model.Options = nil
 			} else {
-				targets.Model.Options = &tfTypes.OptionsObj{}
+				targets.Model.Options = &tfTypes.AiLlmAsJudgePluginOptions{}
 				targets.Model.Options.AnthropicVersion = types.StringPointerValue(targetsItem.Model.Options.AnthropicVersion)
 				targets.Model.Options.AzureAPIVersion = types.StringPointerValue(targetsItem.Model.Options.AzureAPIVersion)
 				targets.Model.Options.AzureDeploymentID = types.StringPointerValue(targetsItem.Model.Options.AzureDeploymentID)
@@ -170,7 +180,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				if targetsItem.Model.Options.Bedrock == nil {
 					targets.Model.Options.Bedrock = nil
 				} else {
-					targets.Model.Options.Bedrock = &tfTypes.Bedrock{}
+					targets.Model.Options.Bedrock = &tfTypes.AiLlmAsJudgePluginBedrock{}
 					targets.Model.Options.Bedrock.AwsAssumeRoleArn = types.StringPointerValue(targetsItem.Model.Options.Bedrock.AwsAssumeRoleArn)
 					targets.Model.Options.Bedrock.AwsRegion = types.StringPointerValue(targetsItem.Model.Options.Bedrock.AwsRegion)
 					targets.Model.Options.Bedrock.AwsRoleSessionName = types.StringPointerValue(targetsItem.Model.Options.Bedrock.AwsRoleSessionName)
@@ -181,7 +191,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				if targetsItem.Model.Options.Cohere == nil {
 					targets.Model.Options.Cohere = nil
 				} else {
-					targets.Model.Options.Cohere = &tfTypes.Cohere{}
+					targets.Model.Options.Cohere = &tfTypes.AiLlmAsJudgePluginCohere{}
 					if targetsItem.Model.Options.Cohere.EmbeddingInputType != nil {
 						targets.Model.Options.Cohere.EmbeddingInputType = types.StringValue(string(*targetsItem.Model.Options.Cohere.EmbeddingInputType))
 					} else {
@@ -193,15 +203,16 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				if targetsItem.Model.Options.Gemini == nil {
 					targets.Model.Options.Gemini = nil
 				} else {
-					targets.Model.Options.Gemini = &tfTypes.Gemini{}
+					targets.Model.Options.Gemini = &tfTypes.AiLlmAsJudgePluginGemini{}
 					targets.Model.Options.Gemini.APIEndpoint = types.StringPointerValue(targetsItem.Model.Options.Gemini.APIEndpoint)
+					targets.Model.Options.Gemini.EndpointID = types.StringPointerValue(targetsItem.Model.Options.Gemini.EndpointID)
 					targets.Model.Options.Gemini.LocationID = types.StringPointerValue(targetsItem.Model.Options.Gemini.LocationID)
 					targets.Model.Options.Gemini.ProjectID = types.StringPointerValue(targetsItem.Model.Options.Gemini.ProjectID)
 				}
 				if targetsItem.Model.Options.Huggingface == nil {
 					targets.Model.Options.Huggingface = nil
 				} else {
-					targets.Model.Options.Huggingface = &tfTypes.Huggingface{}
+					targets.Model.Options.Huggingface = &tfTypes.AiLlmAsJudgePluginHuggingface{}
 					targets.Model.Options.Huggingface.UseCache = types.BoolPointerValue(targetsItem.Model.Options.Huggingface.UseCache)
 					targets.Model.Options.Huggingface.WaitForModel = types.BoolPointerValue(targetsItem.Model.Options.Huggingface.WaitForModel)
 				}
@@ -236,69 +247,79 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 			r.Config.Vectordb = &tfTypes.Vectordb{}
 			r.Config.Vectordb.Dimensions = types.Int64Value(resp.Config.Vectordb.Dimensions)
 			r.Config.Vectordb.DistanceMetric = types.StringValue(string(resp.Config.Vectordb.DistanceMetric))
-			r.Config.Vectordb.Pgvector.Database = types.StringPointerValue(resp.Config.Vectordb.Pgvector.Database)
-			r.Config.Vectordb.Pgvector.Host = types.StringPointerValue(resp.Config.Vectordb.Pgvector.Host)
-			r.Config.Vectordb.Pgvector.Password = types.StringPointerValue(resp.Config.Vectordb.Pgvector.Password)
-			r.Config.Vectordb.Pgvector.Port = types.Int64PointerValue(resp.Config.Vectordb.Pgvector.Port)
-			r.Config.Vectordb.Pgvector.Ssl = types.BoolPointerValue(resp.Config.Vectordb.Pgvector.Ssl)
-			r.Config.Vectordb.Pgvector.SslCert = types.StringPointerValue(resp.Config.Vectordb.Pgvector.SslCert)
-			r.Config.Vectordb.Pgvector.SslCertKey = types.StringPointerValue(resp.Config.Vectordb.Pgvector.SslCertKey)
-			r.Config.Vectordb.Pgvector.SslRequired = types.BoolPointerValue(resp.Config.Vectordb.Pgvector.SslRequired)
-			r.Config.Vectordb.Pgvector.SslVerify = types.BoolPointerValue(resp.Config.Vectordb.Pgvector.SslVerify)
-			if resp.Config.Vectordb.Pgvector.SslVersion != nil {
-				r.Config.Vectordb.Pgvector.SslVersion = types.StringValue(string(*resp.Config.Vectordb.Pgvector.SslVersion))
+			if resp.Config.Vectordb.Pgvector == nil {
+				r.Config.Vectordb.Pgvector = nil
 			} else {
-				r.Config.Vectordb.Pgvector.SslVersion = types.StringNull()
-			}
-			r.Config.Vectordb.Pgvector.Timeout = types.Float64PointerValue(resp.Config.Vectordb.Pgvector.Timeout)
-			r.Config.Vectordb.Pgvector.User = types.StringPointerValue(resp.Config.Vectordb.Pgvector.User)
-			r.Config.Vectordb.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Vectordb.Redis.ClusterMaxRedirections)
-			if resp.Config.Vectordb.Redis.ClusterNodes != nil {
-				r.Config.Vectordb.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
-
-				for _, clusterNodesItem := range resp.Config.Vectordb.Redis.ClusterNodes {
-					var clusterNodes tfTypes.PartialRedisEeClusterNodes
-
-					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
-					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
-
-					r.Config.Vectordb.Redis.ClusterNodes = append(r.Config.Vectordb.Redis.ClusterNodes, clusterNodes)
+				r.Config.Vectordb.Pgvector = &tfTypes.Pgvector{}
+				r.Config.Vectordb.Pgvector.Database = types.StringPointerValue(resp.Config.Vectordb.Pgvector.Database)
+				r.Config.Vectordb.Pgvector.Host = types.StringPointerValue(resp.Config.Vectordb.Pgvector.Host)
+				r.Config.Vectordb.Pgvector.Password = types.StringPointerValue(resp.Config.Vectordb.Pgvector.Password)
+				r.Config.Vectordb.Pgvector.Port = types.Int64PointerValue(resp.Config.Vectordb.Pgvector.Port)
+				r.Config.Vectordb.Pgvector.Ssl = types.BoolPointerValue(resp.Config.Vectordb.Pgvector.Ssl)
+				r.Config.Vectordb.Pgvector.SslCert = types.StringPointerValue(resp.Config.Vectordb.Pgvector.SslCert)
+				r.Config.Vectordb.Pgvector.SslCertKey = types.StringPointerValue(resp.Config.Vectordb.Pgvector.SslCertKey)
+				r.Config.Vectordb.Pgvector.SslRequired = types.BoolPointerValue(resp.Config.Vectordb.Pgvector.SslRequired)
+				r.Config.Vectordb.Pgvector.SslVerify = types.BoolPointerValue(resp.Config.Vectordb.Pgvector.SslVerify)
+				if resp.Config.Vectordb.Pgvector.SslVersion != nil {
+					r.Config.Vectordb.Pgvector.SslVersion = types.StringValue(string(*resp.Config.Vectordb.Pgvector.SslVersion))
+				} else {
+					r.Config.Vectordb.Pgvector.SslVersion = types.StringNull()
 				}
+				r.Config.Vectordb.Pgvector.Timeout = types.Float64PointerValue(resp.Config.Vectordb.Pgvector.Timeout)
+				r.Config.Vectordb.Pgvector.User = types.StringPointerValue(resp.Config.Vectordb.Pgvector.User)
 			}
-			r.Config.Vectordb.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.ConnectTimeout)
-			r.Config.Vectordb.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Vectordb.Redis.ConnectionIsProxied)
-			r.Config.Vectordb.Redis.Database = types.Int64PointerValue(resp.Config.Vectordb.Redis.Database)
-			r.Config.Vectordb.Redis.Host = types.StringPointerValue(resp.Config.Vectordb.Redis.Host)
-			r.Config.Vectordb.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Vectordb.Redis.KeepaliveBacklog)
-			r.Config.Vectordb.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Vectordb.Redis.KeepalivePoolSize)
-			r.Config.Vectordb.Redis.Password = types.StringPointerValue(resp.Config.Vectordb.Redis.Password)
-			r.Config.Vectordb.Redis.Port = types.Int64PointerValue(resp.Config.Vectordb.Redis.Port)
-			r.Config.Vectordb.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.ReadTimeout)
-			r.Config.Vectordb.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.SendTimeout)
-			r.Config.Vectordb.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Vectordb.Redis.SentinelMaster)
-			if resp.Config.Vectordb.Redis.SentinelNodes != nil {
-				r.Config.Vectordb.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
-
-				for _, sentinelNodesItem := range resp.Config.Vectordb.Redis.SentinelNodes {
-					var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
-
-					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
-					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
-
-					r.Config.Vectordb.Redis.SentinelNodes = append(r.Config.Vectordb.Redis.SentinelNodes, sentinelNodes)
-				}
-			}
-			r.Config.Vectordb.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Vectordb.Redis.SentinelPassword)
-			if resp.Config.Vectordb.Redis.SentinelRole != nil {
-				r.Config.Vectordb.Redis.SentinelRole = types.StringValue(string(*resp.Config.Vectordb.Redis.SentinelRole))
+			if resp.Config.Vectordb.Redis == nil {
+				r.Config.Vectordb.Redis = nil
 			} else {
-				r.Config.Vectordb.Redis.SentinelRole = types.StringNull()
+				r.Config.Vectordb.Redis = &tfTypes.AcePluginRedis{}
+				r.Config.Vectordb.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Vectordb.Redis.ClusterMaxRedirections)
+				if resp.Config.Vectordb.Redis.ClusterNodes != nil {
+					r.Config.Vectordb.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+
+					for _, clusterNodesItem := range resp.Config.Vectordb.Redis.ClusterNodes {
+						var clusterNodes tfTypes.PartialRedisEeClusterNodes
+
+						clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
+						clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
+
+						r.Config.Vectordb.Redis.ClusterNodes = append(r.Config.Vectordb.Redis.ClusterNodes, clusterNodes)
+					}
+				}
+				r.Config.Vectordb.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.ConnectTimeout)
+				r.Config.Vectordb.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Vectordb.Redis.ConnectionIsProxied)
+				r.Config.Vectordb.Redis.Database = types.Int64PointerValue(resp.Config.Vectordb.Redis.Database)
+				r.Config.Vectordb.Redis.Host = types.StringPointerValue(resp.Config.Vectordb.Redis.Host)
+				r.Config.Vectordb.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Vectordb.Redis.KeepaliveBacklog)
+				r.Config.Vectordb.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Vectordb.Redis.KeepalivePoolSize)
+				r.Config.Vectordb.Redis.Password = types.StringPointerValue(resp.Config.Vectordb.Redis.Password)
+				r.Config.Vectordb.Redis.Port = types.Int64PointerValue(resp.Config.Vectordb.Redis.Port)
+				r.Config.Vectordb.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.ReadTimeout)
+				r.Config.Vectordb.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.SendTimeout)
+				r.Config.Vectordb.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Vectordb.Redis.SentinelMaster)
+				if resp.Config.Vectordb.Redis.SentinelNodes != nil {
+					r.Config.Vectordb.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+
+					for _, sentinelNodesItem := range resp.Config.Vectordb.Redis.SentinelNodes {
+						var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+
+						sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
+						sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+
+						r.Config.Vectordb.Redis.SentinelNodes = append(r.Config.Vectordb.Redis.SentinelNodes, sentinelNodes)
+					}
+				}
+				r.Config.Vectordb.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Vectordb.Redis.SentinelPassword)
+				if resp.Config.Vectordb.Redis.SentinelRole != nil {
+					r.Config.Vectordb.Redis.SentinelRole = types.StringValue(string(*resp.Config.Vectordb.Redis.SentinelRole))
+				} else {
+					r.Config.Vectordb.Redis.SentinelRole = types.StringNull()
+				}
+				r.Config.Vectordb.Redis.SentinelUsername = types.StringPointerValue(resp.Config.Vectordb.Redis.SentinelUsername)
+				r.Config.Vectordb.Redis.ServerName = types.StringPointerValue(resp.Config.Vectordb.Redis.ServerName)
+				r.Config.Vectordb.Redis.Ssl = types.BoolPointerValue(resp.Config.Vectordb.Redis.Ssl)
+				r.Config.Vectordb.Redis.SslVerify = types.BoolPointerValue(resp.Config.Vectordb.Redis.SslVerify)
+				r.Config.Vectordb.Redis.Username = types.StringPointerValue(resp.Config.Vectordb.Redis.Username)
 			}
-			r.Config.Vectordb.Redis.SentinelUsername = types.StringPointerValue(resp.Config.Vectordb.Redis.SentinelUsername)
-			r.Config.Vectordb.Redis.ServerName = types.StringPointerValue(resp.Config.Vectordb.Redis.ServerName)
-			r.Config.Vectordb.Redis.Ssl = types.BoolPointerValue(resp.Config.Vectordb.Redis.Ssl)
-			r.Config.Vectordb.Redis.SslVerify = types.BoolPointerValue(resp.Config.Vectordb.Redis.SslVerify)
-			r.Config.Vectordb.Redis.Username = types.StringPointerValue(resp.Config.Vectordb.Redis.Username)
 			r.Config.Vectordb.Strategy = types.StringValue(string(resp.Config.Vectordb.Strategy))
 			r.Config.Vectordb.Threshold = types.Float64Value(resp.Config.Vectordb.Threshold)
 		}
@@ -321,11 +342,11 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			r.Ordering = &tfTypes.AcePluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After = &tfTypes.AcePluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -334,7 +355,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.AcePluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
@@ -741,28 +762,31 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 
 		var optionsVar *shared.AiProxyAdvancedPluginOptions
 		if r.Config.Embeddings.Model.Options != nil {
-			apiVersion := new(string)
-			if !r.Config.Embeddings.Model.Options.Azure.APIVersion.IsUnknown() && !r.Config.Embeddings.Model.Options.Azure.APIVersion.IsNull() {
-				*apiVersion = r.Config.Embeddings.Model.Options.Azure.APIVersion.ValueString()
-			} else {
-				apiVersion = nil
-			}
-			deploymentID := new(string)
-			if !r.Config.Embeddings.Model.Options.Azure.DeploymentID.IsUnknown() && !r.Config.Embeddings.Model.Options.Azure.DeploymentID.IsNull() {
-				*deploymentID = r.Config.Embeddings.Model.Options.Azure.DeploymentID.ValueString()
-			} else {
-				deploymentID = nil
-			}
-			instance := new(string)
-			if !r.Config.Embeddings.Model.Options.Azure.Instance.IsUnknown() && !r.Config.Embeddings.Model.Options.Azure.Instance.IsNull() {
-				*instance = r.Config.Embeddings.Model.Options.Azure.Instance.ValueString()
-			} else {
-				instance = nil
-			}
-			azure := shared.Azure{
-				APIVersion:   apiVersion,
-				DeploymentID: deploymentID,
-				Instance:     instance,
+			var azure *shared.Azure
+			if r.Config.Embeddings.Model.Options.Azure != nil {
+				apiVersion := new(string)
+				if !r.Config.Embeddings.Model.Options.Azure.APIVersion.IsUnknown() && !r.Config.Embeddings.Model.Options.Azure.APIVersion.IsNull() {
+					*apiVersion = r.Config.Embeddings.Model.Options.Azure.APIVersion.ValueString()
+				} else {
+					apiVersion = nil
+				}
+				deploymentID := new(string)
+				if !r.Config.Embeddings.Model.Options.Azure.DeploymentID.IsUnknown() && !r.Config.Embeddings.Model.Options.Azure.DeploymentID.IsNull() {
+					*deploymentID = r.Config.Embeddings.Model.Options.Azure.DeploymentID.ValueString()
+				} else {
+					deploymentID = nil
+				}
+				instance := new(string)
+				if !r.Config.Embeddings.Model.Options.Azure.Instance.IsUnknown() && !r.Config.Embeddings.Model.Options.Azure.Instance.IsNull() {
+					*instance = r.Config.Embeddings.Model.Options.Azure.Instance.ValueString()
+				} else {
+					instance = nil
+				}
+				azure = &shared.Azure{
+					APIVersion:   apiVersion,
+					DeploymentID: deploymentID,
+					Instance:     instance,
+				}
 			}
 			var bedrock *shared.AiProxyAdvancedPluginBedrock
 			if r.Config.Embeddings.Model.Options.Bedrock != nil {
@@ -1022,21 +1046,24 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 		} else {
 			description = nil
 		}
-		logPayloads := new(bool)
-		if !targetsItem.Logging.LogPayloads.IsUnknown() && !targetsItem.Logging.LogPayloads.IsNull() {
-			*logPayloads = targetsItem.Logging.LogPayloads.ValueBool()
-		} else {
-			logPayloads = nil
-		}
-		logStatistics := new(bool)
-		if !targetsItem.Logging.LogStatistics.IsUnknown() && !targetsItem.Logging.LogStatistics.IsNull() {
-			*logStatistics = targetsItem.Logging.LogStatistics.ValueBool()
-		} else {
-			logStatistics = nil
-		}
-		logging := shared.AiProxyAdvancedPluginLogging{
-			LogPayloads:   logPayloads,
-			LogStatistics: logStatistics,
+		var logging *shared.AiProxyAdvancedPluginLogging
+		if targetsItem.Logging != nil {
+			logPayloads := new(bool)
+			if !targetsItem.Logging.LogPayloads.IsUnknown() && !targetsItem.Logging.LogPayloads.IsNull() {
+				*logPayloads = targetsItem.Logging.LogPayloads.ValueBool()
+			} else {
+				logPayloads = nil
+			}
+			logStatistics := new(bool)
+			if !targetsItem.Logging.LogStatistics.IsUnknown() && !targetsItem.Logging.LogStatistics.IsNull() {
+				*logStatistics = targetsItem.Logging.LogStatistics.ValueBool()
+			} else {
+				logStatistics = nil
+			}
+			logging = &shared.AiProxyAdvancedPluginLogging{
+				LogPayloads:   logPayloads,
+				LogStatistics: logStatistics,
+			}
 		}
 		name2 := new(string)
 		if !targetsItem.Model.Name.IsUnknown() && !targetsItem.Model.Name.IsNull() {
@@ -1150,6 +1177,12 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 				} else {
 					apiEndpoint1 = nil
 				}
+				endpointID := new(string)
+				if !targetsItem.Model.Options.Gemini.EndpointID.IsUnknown() && !targetsItem.Model.Options.Gemini.EndpointID.IsNull() {
+					*endpointID = targetsItem.Model.Options.Gemini.EndpointID.ValueString()
+				} else {
+					endpointID = nil
+				}
 				locationId1 := new(string)
 				if !targetsItem.Model.Options.Gemini.LocationID.IsUnknown() && !targetsItem.Model.Options.Gemini.LocationID.IsNull() {
 					*locationId1 = targetsItem.Model.Options.Gemini.LocationID.ValueString()
@@ -1164,6 +1197,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 				}
 				gemini1 = &shared.AiProxyAdvancedPluginConfigGemini{
 					APIEndpoint: apiEndpoint1,
+					EndpointID:  endpointID,
 					LocationID:  locationId1,
 					ProjectID:   projectId1,
 				}
@@ -1297,272 +1331,278 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 		dimensions = r.Config.Vectordb.Dimensions.ValueInt64()
 
 		distanceMetric := shared.DistanceMetric(r.Config.Vectordb.DistanceMetric.ValueString())
-		database := new(string)
-		if !r.Config.Vectordb.Pgvector.Database.IsUnknown() && !r.Config.Vectordb.Pgvector.Database.IsNull() {
-			*database = r.Config.Vectordb.Pgvector.Database.ValueString()
-		} else {
-			database = nil
-		}
-		host := new(string)
-		if !r.Config.Vectordb.Pgvector.Host.IsUnknown() && !r.Config.Vectordb.Pgvector.Host.IsNull() {
-			*host = r.Config.Vectordb.Pgvector.Host.ValueString()
-		} else {
-			host = nil
-		}
-		password := new(string)
-		if !r.Config.Vectordb.Pgvector.Password.IsUnknown() && !r.Config.Vectordb.Pgvector.Password.IsNull() {
-			*password = r.Config.Vectordb.Pgvector.Password.ValueString()
-		} else {
-			password = nil
-		}
-		port := new(int64)
-		if !r.Config.Vectordb.Pgvector.Port.IsUnknown() && !r.Config.Vectordb.Pgvector.Port.IsNull() {
-			*port = r.Config.Vectordb.Pgvector.Port.ValueInt64()
-		} else {
-			port = nil
-		}
-		ssl := new(bool)
-		if !r.Config.Vectordb.Pgvector.Ssl.IsUnknown() && !r.Config.Vectordb.Pgvector.Ssl.IsNull() {
-			*ssl = r.Config.Vectordb.Pgvector.Ssl.ValueBool()
-		} else {
-			ssl = nil
-		}
-		sslCert := new(string)
-		if !r.Config.Vectordb.Pgvector.SslCert.IsUnknown() && !r.Config.Vectordb.Pgvector.SslCert.IsNull() {
-			*sslCert = r.Config.Vectordb.Pgvector.SslCert.ValueString()
-		} else {
-			sslCert = nil
-		}
-		sslCertKey := new(string)
-		if !r.Config.Vectordb.Pgvector.SslCertKey.IsUnknown() && !r.Config.Vectordb.Pgvector.SslCertKey.IsNull() {
-			*sslCertKey = r.Config.Vectordb.Pgvector.SslCertKey.ValueString()
-		} else {
-			sslCertKey = nil
-		}
-		sslRequired := new(bool)
-		if !r.Config.Vectordb.Pgvector.SslRequired.IsUnknown() && !r.Config.Vectordb.Pgvector.SslRequired.IsNull() {
-			*sslRequired = r.Config.Vectordb.Pgvector.SslRequired.ValueBool()
-		} else {
-			sslRequired = nil
-		}
-		sslVerify := new(bool)
-		if !r.Config.Vectordb.Pgvector.SslVerify.IsUnknown() && !r.Config.Vectordb.Pgvector.SslVerify.IsNull() {
-			*sslVerify = r.Config.Vectordb.Pgvector.SslVerify.ValueBool()
-		} else {
-			sslVerify = nil
-		}
-		sslVersion := new(shared.SslVersion)
-		if !r.Config.Vectordb.Pgvector.SslVersion.IsUnknown() && !r.Config.Vectordb.Pgvector.SslVersion.IsNull() {
-			*sslVersion = shared.SslVersion(r.Config.Vectordb.Pgvector.SslVersion.ValueString())
-		} else {
-			sslVersion = nil
-		}
-		timeout := new(float64)
-		if !r.Config.Vectordb.Pgvector.Timeout.IsUnknown() && !r.Config.Vectordb.Pgvector.Timeout.IsNull() {
-			*timeout = r.Config.Vectordb.Pgvector.Timeout.ValueFloat64()
-		} else {
-			timeout = nil
-		}
-		user := new(string)
-		if !r.Config.Vectordb.Pgvector.User.IsUnknown() && !r.Config.Vectordb.Pgvector.User.IsNull() {
-			*user = r.Config.Vectordb.Pgvector.User.ValueString()
-		} else {
-			user = nil
-		}
-		pgvector := shared.Pgvector{
-			Database:    database,
-			Host:        host,
-			Password:    password,
-			Port:        port,
-			Ssl:         ssl,
-			SslCert:     sslCert,
-			SslCertKey:  sslCertKey,
-			SslRequired: sslRequired,
-			SslVerify:   sslVerify,
-			SslVersion:  sslVersion,
-			Timeout:     timeout,
-			User:        user,
-		}
-		clusterMaxRedirections := new(int64)
-		if !r.Config.Vectordb.Redis.ClusterMaxRedirections.IsUnknown() && !r.Config.Vectordb.Redis.ClusterMaxRedirections.IsNull() {
-			*clusterMaxRedirections = r.Config.Vectordb.Redis.ClusterMaxRedirections.ValueInt64()
-		} else {
-			clusterMaxRedirections = nil
-		}
-		var clusterNodes []shared.AiProxyAdvancedPluginClusterNodes
-		if r.Config.Vectordb.Redis.ClusterNodes != nil {
-			clusterNodes = make([]shared.AiProxyAdvancedPluginClusterNodes, 0, len(r.Config.Vectordb.Redis.ClusterNodes))
-			for _, clusterNodesItem := range r.Config.Vectordb.Redis.ClusterNodes {
-				ip := new(string)
-				if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
-					*ip = clusterNodesItem.IP.ValueString()
-				} else {
-					ip = nil
-				}
-				port1 := new(int64)
-				if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
-					*port1 = clusterNodesItem.Port.ValueInt64()
-				} else {
-					port1 = nil
-				}
-				clusterNodes = append(clusterNodes, shared.AiProxyAdvancedPluginClusterNodes{
-					IP:   ip,
-					Port: port1,
-				})
+		var pgvector *shared.Pgvector
+		if r.Config.Vectordb.Pgvector != nil {
+			database := new(string)
+			if !r.Config.Vectordb.Pgvector.Database.IsUnknown() && !r.Config.Vectordb.Pgvector.Database.IsNull() {
+				*database = r.Config.Vectordb.Pgvector.Database.ValueString()
+			} else {
+				database = nil
+			}
+			host := new(string)
+			if !r.Config.Vectordb.Pgvector.Host.IsUnknown() && !r.Config.Vectordb.Pgvector.Host.IsNull() {
+				*host = r.Config.Vectordb.Pgvector.Host.ValueString()
+			} else {
+				host = nil
+			}
+			password := new(string)
+			if !r.Config.Vectordb.Pgvector.Password.IsUnknown() && !r.Config.Vectordb.Pgvector.Password.IsNull() {
+				*password = r.Config.Vectordb.Pgvector.Password.ValueString()
+			} else {
+				password = nil
+			}
+			port := new(int64)
+			if !r.Config.Vectordb.Pgvector.Port.IsUnknown() && !r.Config.Vectordb.Pgvector.Port.IsNull() {
+				*port = r.Config.Vectordb.Pgvector.Port.ValueInt64()
+			} else {
+				port = nil
+			}
+			ssl := new(bool)
+			if !r.Config.Vectordb.Pgvector.Ssl.IsUnknown() && !r.Config.Vectordb.Pgvector.Ssl.IsNull() {
+				*ssl = r.Config.Vectordb.Pgvector.Ssl.ValueBool()
+			} else {
+				ssl = nil
+			}
+			sslCert := new(string)
+			if !r.Config.Vectordb.Pgvector.SslCert.IsUnknown() && !r.Config.Vectordb.Pgvector.SslCert.IsNull() {
+				*sslCert = r.Config.Vectordb.Pgvector.SslCert.ValueString()
+			} else {
+				sslCert = nil
+			}
+			sslCertKey := new(string)
+			if !r.Config.Vectordb.Pgvector.SslCertKey.IsUnknown() && !r.Config.Vectordb.Pgvector.SslCertKey.IsNull() {
+				*sslCertKey = r.Config.Vectordb.Pgvector.SslCertKey.ValueString()
+			} else {
+				sslCertKey = nil
+			}
+			sslRequired := new(bool)
+			if !r.Config.Vectordb.Pgvector.SslRequired.IsUnknown() && !r.Config.Vectordb.Pgvector.SslRequired.IsNull() {
+				*sslRequired = r.Config.Vectordb.Pgvector.SslRequired.ValueBool()
+			} else {
+				sslRequired = nil
+			}
+			sslVerify := new(bool)
+			if !r.Config.Vectordb.Pgvector.SslVerify.IsUnknown() && !r.Config.Vectordb.Pgvector.SslVerify.IsNull() {
+				*sslVerify = r.Config.Vectordb.Pgvector.SslVerify.ValueBool()
+			} else {
+				sslVerify = nil
+			}
+			sslVersion := new(shared.SslVersion)
+			if !r.Config.Vectordb.Pgvector.SslVersion.IsUnknown() && !r.Config.Vectordb.Pgvector.SslVersion.IsNull() {
+				*sslVersion = shared.SslVersion(r.Config.Vectordb.Pgvector.SslVersion.ValueString())
+			} else {
+				sslVersion = nil
+			}
+			timeout := new(float64)
+			if !r.Config.Vectordb.Pgvector.Timeout.IsUnknown() && !r.Config.Vectordb.Pgvector.Timeout.IsNull() {
+				*timeout = r.Config.Vectordb.Pgvector.Timeout.ValueFloat64()
+			} else {
+				timeout = nil
+			}
+			user := new(string)
+			if !r.Config.Vectordb.Pgvector.User.IsUnknown() && !r.Config.Vectordb.Pgvector.User.IsNull() {
+				*user = r.Config.Vectordb.Pgvector.User.ValueString()
+			} else {
+				user = nil
+			}
+			pgvector = &shared.Pgvector{
+				Database:    database,
+				Host:        host,
+				Password:    password,
+				Port:        port,
+				Ssl:         ssl,
+				SslCert:     sslCert,
+				SslCertKey:  sslCertKey,
+				SslRequired: sslRequired,
+				SslVerify:   sslVerify,
+				SslVersion:  sslVersion,
+				Timeout:     timeout,
+				User:        user,
 			}
 		}
-		connectTimeout1 := new(int64)
-		if !r.Config.Vectordb.Redis.ConnectTimeout.IsUnknown() && !r.Config.Vectordb.Redis.ConnectTimeout.IsNull() {
-			*connectTimeout1 = r.Config.Vectordb.Redis.ConnectTimeout.ValueInt64()
-		} else {
-			connectTimeout1 = nil
-		}
-		connectionIsProxied := new(bool)
-		if !r.Config.Vectordb.Redis.ConnectionIsProxied.IsUnknown() && !r.Config.Vectordb.Redis.ConnectionIsProxied.IsNull() {
-			*connectionIsProxied = r.Config.Vectordb.Redis.ConnectionIsProxied.ValueBool()
-		} else {
-			connectionIsProxied = nil
-		}
-		database1 := new(int64)
-		if !r.Config.Vectordb.Redis.Database.IsUnknown() && !r.Config.Vectordb.Redis.Database.IsNull() {
-			*database1 = r.Config.Vectordb.Redis.Database.ValueInt64()
-		} else {
-			database1 = nil
-		}
-		host1 := new(string)
-		if !r.Config.Vectordb.Redis.Host.IsUnknown() && !r.Config.Vectordb.Redis.Host.IsNull() {
-			*host1 = r.Config.Vectordb.Redis.Host.ValueString()
-		} else {
-			host1 = nil
-		}
-		keepaliveBacklog := new(int64)
-		if !r.Config.Vectordb.Redis.KeepaliveBacklog.IsUnknown() && !r.Config.Vectordb.Redis.KeepaliveBacklog.IsNull() {
-			*keepaliveBacklog = r.Config.Vectordb.Redis.KeepaliveBacklog.ValueInt64()
-		} else {
-			keepaliveBacklog = nil
-		}
-		keepalivePoolSize := new(int64)
-		if !r.Config.Vectordb.Redis.KeepalivePoolSize.IsUnknown() && !r.Config.Vectordb.Redis.KeepalivePoolSize.IsNull() {
-			*keepalivePoolSize = r.Config.Vectordb.Redis.KeepalivePoolSize.ValueInt64()
-		} else {
-			keepalivePoolSize = nil
-		}
-		password1 := new(string)
-		if !r.Config.Vectordb.Redis.Password.IsUnknown() && !r.Config.Vectordb.Redis.Password.IsNull() {
-			*password1 = r.Config.Vectordb.Redis.Password.ValueString()
-		} else {
-			password1 = nil
-		}
-		port2 := new(int64)
-		if !r.Config.Vectordb.Redis.Port.IsUnknown() && !r.Config.Vectordb.Redis.Port.IsNull() {
-			*port2 = r.Config.Vectordb.Redis.Port.ValueInt64()
-		} else {
-			port2 = nil
-		}
-		readTimeout1 := new(int64)
-		if !r.Config.Vectordb.Redis.ReadTimeout.IsUnknown() && !r.Config.Vectordb.Redis.ReadTimeout.IsNull() {
-			*readTimeout1 = r.Config.Vectordb.Redis.ReadTimeout.ValueInt64()
-		} else {
-			readTimeout1 = nil
-		}
-		sendTimeout := new(int64)
-		if !r.Config.Vectordb.Redis.SendTimeout.IsUnknown() && !r.Config.Vectordb.Redis.SendTimeout.IsNull() {
-			*sendTimeout = r.Config.Vectordb.Redis.SendTimeout.ValueInt64()
-		} else {
-			sendTimeout = nil
-		}
-		sentinelMaster := new(string)
-		if !r.Config.Vectordb.Redis.SentinelMaster.IsUnknown() && !r.Config.Vectordb.Redis.SentinelMaster.IsNull() {
-			*sentinelMaster = r.Config.Vectordb.Redis.SentinelMaster.ValueString()
-		} else {
-			sentinelMaster = nil
-		}
-		var sentinelNodes []shared.AiProxyAdvancedPluginSentinelNodes
-		if r.Config.Vectordb.Redis.SentinelNodes != nil {
-			sentinelNodes = make([]shared.AiProxyAdvancedPluginSentinelNodes, 0, len(r.Config.Vectordb.Redis.SentinelNodes))
-			for _, sentinelNodesItem := range r.Config.Vectordb.Redis.SentinelNodes {
-				host2 := new(string)
-				if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
-					*host2 = sentinelNodesItem.Host.ValueString()
-				} else {
-					host2 = nil
-				}
-				port3 := new(int64)
-				if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
-					*port3 = sentinelNodesItem.Port.ValueInt64()
-				} else {
-					port3 = nil
-				}
-				sentinelNodes = append(sentinelNodes, shared.AiProxyAdvancedPluginSentinelNodes{
-					Host: host2,
-					Port: port3,
-				})
+		var redis *shared.AiProxyAdvancedPluginRedis
+		if r.Config.Vectordb.Redis != nil {
+			clusterMaxRedirections := new(int64)
+			if !r.Config.Vectordb.Redis.ClusterMaxRedirections.IsUnknown() && !r.Config.Vectordb.Redis.ClusterMaxRedirections.IsNull() {
+				*clusterMaxRedirections = r.Config.Vectordb.Redis.ClusterMaxRedirections.ValueInt64()
+			} else {
+				clusterMaxRedirections = nil
 			}
-		}
-		sentinelPassword := new(string)
-		if !r.Config.Vectordb.Redis.SentinelPassword.IsUnknown() && !r.Config.Vectordb.Redis.SentinelPassword.IsNull() {
-			*sentinelPassword = r.Config.Vectordb.Redis.SentinelPassword.ValueString()
-		} else {
-			sentinelPassword = nil
-		}
-		sentinelRole := new(shared.AiProxyAdvancedPluginSentinelRole)
-		if !r.Config.Vectordb.Redis.SentinelRole.IsUnknown() && !r.Config.Vectordb.Redis.SentinelRole.IsNull() {
-			*sentinelRole = shared.AiProxyAdvancedPluginSentinelRole(r.Config.Vectordb.Redis.SentinelRole.ValueString())
-		} else {
-			sentinelRole = nil
-		}
-		sentinelUsername := new(string)
-		if !r.Config.Vectordb.Redis.SentinelUsername.IsUnknown() && !r.Config.Vectordb.Redis.SentinelUsername.IsNull() {
-			*sentinelUsername = r.Config.Vectordb.Redis.SentinelUsername.ValueString()
-		} else {
-			sentinelUsername = nil
-		}
-		serverName := new(string)
-		if !r.Config.Vectordb.Redis.ServerName.IsUnknown() && !r.Config.Vectordb.Redis.ServerName.IsNull() {
-			*serverName = r.Config.Vectordb.Redis.ServerName.ValueString()
-		} else {
-			serverName = nil
-		}
-		ssl1 := new(bool)
-		if !r.Config.Vectordb.Redis.Ssl.IsUnknown() && !r.Config.Vectordb.Redis.Ssl.IsNull() {
-			*ssl1 = r.Config.Vectordb.Redis.Ssl.ValueBool()
-		} else {
-			ssl1 = nil
-		}
-		sslVerify1 := new(bool)
-		if !r.Config.Vectordb.Redis.SslVerify.IsUnknown() && !r.Config.Vectordb.Redis.SslVerify.IsNull() {
-			*sslVerify1 = r.Config.Vectordb.Redis.SslVerify.ValueBool()
-		} else {
-			sslVerify1 = nil
-		}
-		username := new(string)
-		if !r.Config.Vectordb.Redis.Username.IsUnknown() && !r.Config.Vectordb.Redis.Username.IsNull() {
-			*username = r.Config.Vectordb.Redis.Username.ValueString()
-		} else {
-			username = nil
-		}
-		redis := shared.AiProxyAdvancedPluginRedis{
-			ClusterMaxRedirections: clusterMaxRedirections,
-			ClusterNodes:           clusterNodes,
-			ConnectTimeout:         connectTimeout1,
-			ConnectionIsProxied:    connectionIsProxied,
-			Database:               database1,
-			Host:                   host1,
-			KeepaliveBacklog:       keepaliveBacklog,
-			KeepalivePoolSize:      keepalivePoolSize,
-			Password:               password1,
-			Port:                   port2,
-			ReadTimeout:            readTimeout1,
-			SendTimeout:            sendTimeout,
-			SentinelMaster:         sentinelMaster,
-			SentinelNodes:          sentinelNodes,
-			SentinelPassword:       sentinelPassword,
-			SentinelRole:           sentinelRole,
-			SentinelUsername:       sentinelUsername,
-			ServerName:             serverName,
-			Ssl:                    ssl1,
-			SslVerify:              sslVerify1,
-			Username:               username,
+			var clusterNodes []shared.AiProxyAdvancedPluginClusterNodes
+			if r.Config.Vectordb.Redis.ClusterNodes != nil {
+				clusterNodes = make([]shared.AiProxyAdvancedPluginClusterNodes, 0, len(r.Config.Vectordb.Redis.ClusterNodes))
+				for _, clusterNodesItem := range r.Config.Vectordb.Redis.ClusterNodes {
+					ip := new(string)
+					if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
+						*ip = clusterNodesItem.IP.ValueString()
+					} else {
+						ip = nil
+					}
+					port1 := new(int64)
+					if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
+						*port1 = clusterNodesItem.Port.ValueInt64()
+					} else {
+						port1 = nil
+					}
+					clusterNodes = append(clusterNodes, shared.AiProxyAdvancedPluginClusterNodes{
+						IP:   ip,
+						Port: port1,
+					})
+				}
+			}
+			connectTimeout1 := new(int64)
+			if !r.Config.Vectordb.Redis.ConnectTimeout.IsUnknown() && !r.Config.Vectordb.Redis.ConnectTimeout.IsNull() {
+				*connectTimeout1 = r.Config.Vectordb.Redis.ConnectTimeout.ValueInt64()
+			} else {
+				connectTimeout1 = nil
+			}
+			connectionIsProxied := new(bool)
+			if !r.Config.Vectordb.Redis.ConnectionIsProxied.IsUnknown() && !r.Config.Vectordb.Redis.ConnectionIsProxied.IsNull() {
+				*connectionIsProxied = r.Config.Vectordb.Redis.ConnectionIsProxied.ValueBool()
+			} else {
+				connectionIsProxied = nil
+			}
+			database1 := new(int64)
+			if !r.Config.Vectordb.Redis.Database.IsUnknown() && !r.Config.Vectordb.Redis.Database.IsNull() {
+				*database1 = r.Config.Vectordb.Redis.Database.ValueInt64()
+			} else {
+				database1 = nil
+			}
+			host1 := new(string)
+			if !r.Config.Vectordb.Redis.Host.IsUnknown() && !r.Config.Vectordb.Redis.Host.IsNull() {
+				*host1 = r.Config.Vectordb.Redis.Host.ValueString()
+			} else {
+				host1 = nil
+			}
+			keepaliveBacklog := new(int64)
+			if !r.Config.Vectordb.Redis.KeepaliveBacklog.IsUnknown() && !r.Config.Vectordb.Redis.KeepaliveBacklog.IsNull() {
+				*keepaliveBacklog = r.Config.Vectordb.Redis.KeepaliveBacklog.ValueInt64()
+			} else {
+				keepaliveBacklog = nil
+			}
+			keepalivePoolSize := new(int64)
+			if !r.Config.Vectordb.Redis.KeepalivePoolSize.IsUnknown() && !r.Config.Vectordb.Redis.KeepalivePoolSize.IsNull() {
+				*keepalivePoolSize = r.Config.Vectordb.Redis.KeepalivePoolSize.ValueInt64()
+			} else {
+				keepalivePoolSize = nil
+			}
+			password1 := new(string)
+			if !r.Config.Vectordb.Redis.Password.IsUnknown() && !r.Config.Vectordb.Redis.Password.IsNull() {
+				*password1 = r.Config.Vectordb.Redis.Password.ValueString()
+			} else {
+				password1 = nil
+			}
+			port2 := new(int64)
+			if !r.Config.Vectordb.Redis.Port.IsUnknown() && !r.Config.Vectordb.Redis.Port.IsNull() {
+				*port2 = r.Config.Vectordb.Redis.Port.ValueInt64()
+			} else {
+				port2 = nil
+			}
+			readTimeout1 := new(int64)
+			if !r.Config.Vectordb.Redis.ReadTimeout.IsUnknown() && !r.Config.Vectordb.Redis.ReadTimeout.IsNull() {
+				*readTimeout1 = r.Config.Vectordb.Redis.ReadTimeout.ValueInt64()
+			} else {
+				readTimeout1 = nil
+			}
+			sendTimeout := new(int64)
+			if !r.Config.Vectordb.Redis.SendTimeout.IsUnknown() && !r.Config.Vectordb.Redis.SendTimeout.IsNull() {
+				*sendTimeout = r.Config.Vectordb.Redis.SendTimeout.ValueInt64()
+			} else {
+				sendTimeout = nil
+			}
+			sentinelMaster := new(string)
+			if !r.Config.Vectordb.Redis.SentinelMaster.IsUnknown() && !r.Config.Vectordb.Redis.SentinelMaster.IsNull() {
+				*sentinelMaster = r.Config.Vectordb.Redis.SentinelMaster.ValueString()
+			} else {
+				sentinelMaster = nil
+			}
+			var sentinelNodes []shared.AiProxyAdvancedPluginSentinelNodes
+			if r.Config.Vectordb.Redis.SentinelNodes != nil {
+				sentinelNodes = make([]shared.AiProxyAdvancedPluginSentinelNodes, 0, len(r.Config.Vectordb.Redis.SentinelNodes))
+				for _, sentinelNodesItem := range r.Config.Vectordb.Redis.SentinelNodes {
+					host2 := new(string)
+					if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
+						*host2 = sentinelNodesItem.Host.ValueString()
+					} else {
+						host2 = nil
+					}
+					port3 := new(int64)
+					if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
+						*port3 = sentinelNodesItem.Port.ValueInt64()
+					} else {
+						port3 = nil
+					}
+					sentinelNodes = append(sentinelNodes, shared.AiProxyAdvancedPluginSentinelNodes{
+						Host: host2,
+						Port: port3,
+					})
+				}
+			}
+			sentinelPassword := new(string)
+			if !r.Config.Vectordb.Redis.SentinelPassword.IsUnknown() && !r.Config.Vectordb.Redis.SentinelPassword.IsNull() {
+				*sentinelPassword = r.Config.Vectordb.Redis.SentinelPassword.ValueString()
+			} else {
+				sentinelPassword = nil
+			}
+			sentinelRole := new(shared.AiProxyAdvancedPluginSentinelRole)
+			if !r.Config.Vectordb.Redis.SentinelRole.IsUnknown() && !r.Config.Vectordb.Redis.SentinelRole.IsNull() {
+				*sentinelRole = shared.AiProxyAdvancedPluginSentinelRole(r.Config.Vectordb.Redis.SentinelRole.ValueString())
+			} else {
+				sentinelRole = nil
+			}
+			sentinelUsername := new(string)
+			if !r.Config.Vectordb.Redis.SentinelUsername.IsUnknown() && !r.Config.Vectordb.Redis.SentinelUsername.IsNull() {
+				*sentinelUsername = r.Config.Vectordb.Redis.SentinelUsername.ValueString()
+			} else {
+				sentinelUsername = nil
+			}
+			serverName := new(string)
+			if !r.Config.Vectordb.Redis.ServerName.IsUnknown() && !r.Config.Vectordb.Redis.ServerName.IsNull() {
+				*serverName = r.Config.Vectordb.Redis.ServerName.ValueString()
+			} else {
+				serverName = nil
+			}
+			ssl1 := new(bool)
+			if !r.Config.Vectordb.Redis.Ssl.IsUnknown() && !r.Config.Vectordb.Redis.Ssl.IsNull() {
+				*ssl1 = r.Config.Vectordb.Redis.Ssl.ValueBool()
+			} else {
+				ssl1 = nil
+			}
+			sslVerify1 := new(bool)
+			if !r.Config.Vectordb.Redis.SslVerify.IsUnknown() && !r.Config.Vectordb.Redis.SslVerify.IsNull() {
+				*sslVerify1 = r.Config.Vectordb.Redis.SslVerify.ValueBool()
+			} else {
+				sslVerify1 = nil
+			}
+			username := new(string)
+			if !r.Config.Vectordb.Redis.Username.IsUnknown() && !r.Config.Vectordb.Redis.Username.IsNull() {
+				*username = r.Config.Vectordb.Redis.Username.ValueString()
+			} else {
+				username = nil
+			}
+			redis = &shared.AiProxyAdvancedPluginRedis{
+				ClusterMaxRedirections: clusterMaxRedirections,
+				ClusterNodes:           clusterNodes,
+				ConnectTimeout:         connectTimeout1,
+				ConnectionIsProxied:    connectionIsProxied,
+				Database:               database1,
+				Host:                   host1,
+				KeepaliveBacklog:       keepaliveBacklog,
+				KeepalivePoolSize:      keepalivePoolSize,
+				Password:               password1,
+				Port:                   port2,
+				ReadTimeout:            readTimeout1,
+				SendTimeout:            sendTimeout,
+				SentinelMaster:         sentinelMaster,
+				SentinelNodes:          sentinelNodes,
+				SentinelPassword:       sentinelPassword,
+				SentinelRole:           sentinelRole,
+				SentinelUsername:       sentinelUsername,
+				ServerName:             serverName,
+				Ssl:                    ssl1,
+				SslVerify:              sslVerify1,
+				Username:               username,
+			}
 		}
 		strategy := shared.AiProxyAdvancedPluginStrategy(r.Config.Vectordb.Strategy.ValueString())
 		var threshold float64

@@ -12,7 +12,7 @@ type OpentelemetryPluginConfig struct {
 	BatchSpanCount               types.Int64                     `tfsdk:"batch_span_count"`
 	ConnectTimeout               types.Int64                     `tfsdk:"connect_timeout"`
 	HeaderType                   types.String                    `tfsdk:"header_type"`
-	Headers                      map[string]jsontypes.Normalized `tfsdk:"headers"`
+	Headers                      map[string]types.String         `tfsdk:"headers"`
 	HTTPResponseHeaderForTraceid types.String                    `tfsdk:"http_response_header_for_traceid"`
 	LogsEndpoint                 types.String                    `tfsdk:"logs_endpoint"`
 	Propagation                  *Propagation                    `tfsdk:"propagation"`

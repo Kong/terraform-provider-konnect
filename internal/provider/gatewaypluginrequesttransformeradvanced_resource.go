@@ -24,7 +24,6 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
-	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -51,7 +50,7 @@ type GatewayPluginRequestTransformerAdvancedResourceModel struct {
 	Enabled        types.Bool                                      `tfsdk:"enabled"`
 	ID             types.String                                    `tfsdk:"id"`
 	InstanceName   types.String                                    `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering                      `tfsdk:"ordering"`
+	Ordering       *tfTypes.AcePluginOrdering                      `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials                              `tfsdk:"partials"`
 	Protocols      []types.String                                  `tfsdk:"protocols"`
 	Route          *tfTypes.Set                                    `tfsdk:"route"`
@@ -240,14 +239,11 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 						Computed:    true,
 						Optional:    true,
 						Default:     booldefault.StaticBool(true),
-						Description: `Specify whether dots (for example, ` + "`" + `customers.info.phone` + "`" + `) should be treated as part of a property name or used to descend into nested JSON objects.  See [Arrays and nested objects](#arrays-and-nested-objects). Default: true`,
+						Description: `Specify whether dots (for example, ` + "`" + `customers.info.phone` + "`" + `) should be treated as part of a property name or used to descend into nested JSON objects. Default: true`,
 					},
 					"http_method": schema.StringAttribute{
 						Optional:    true,
 						Description: `A string representing an HTTP method, such as GET, POST, PUT, or DELETE. The string must contain only uppercase letters.`,
-						Validators: []validator.String{
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Z]+$`), "must match pattern "+regexp.MustCompile(`^[A-Z]+$`).String()),
-						},
 					},
 					"remove": schema.SingleNestedAttribute{
 						Computed: true,

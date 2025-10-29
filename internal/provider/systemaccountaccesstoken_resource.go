@@ -60,7 +60,10 @@ func (r *SystemAccountAccessTokenResource) Schema(ctx context.Context, req resou
 				Description: `ID of the system account.`,
 			},
 			"created_at": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Timestamp of when the system account access token was created.`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -79,11 +82,17 @@ func (r *SystemAccountAccessTokenResource) Schema(ctx context.Context, req resou
 				},
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `ID of the system account access token.`,
 			},
 			"last_used_at": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Timestamp of when the system account access token was last used.`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -93,12 +102,18 @@ func (r *SystemAccountAccessTokenResource) Schema(ctx context.Context, req resou
 				Required: true,
 			},
 			"token": schema.StringAttribute{
-				Computed:    true,
-				Sensitive:   true,
+				Computed:  true,
+				Sensitive: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `The token of the system account access token.`,
 			},
 			"updated_at": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Timestamp of when the system account access token was last updated.`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),

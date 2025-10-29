@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -26,11 +24,10 @@ func (r *GatewayPluginRouteByHeaderResourceModel) RefreshFromSharedRouteByHeader
 			for _, rulesItem := range resp.Config.Rules {
 				var rules tfTypes.RouteByHeaderPluginRules
 
-				if len(rulesItem.Condition) > 0 {
-					rules.Condition = make(map[string]jsontypes.Normalized, len(rulesItem.Condition))
+				if rulesItem.Condition != nil {
+					rules.Condition = make(map[string]types.String, len(rulesItem.Condition))
 					for key, value := range rulesItem.Condition {
-						result, _ := json.Marshal(value)
-						rules.Condition[key] = jsontypes.NewNormalizedValue(string(result))
+						rules.Condition[key] = types.StringValue(value)
 					}
 				}
 				rules.UpstreamName = types.StringValue(rulesItem.UpstreamName)
@@ -51,11 +48,11 @@ func (r *GatewayPluginRouteByHeaderResourceModel) RefreshFromSharedRouteByHeader
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			r.Ordering = &tfTypes.AcePluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After = &tfTypes.AcePluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -64,7 +61,7 @@ func (r *GatewayPluginRouteByHeaderResourceModel) RefreshFromSharedRouteByHeader
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.AcePluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
@@ -292,10 +289,11 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedRouteByHeaderPlugin(ct
 	if r.Config != nil {
 		rules := make([]shared.RouteByHeaderPluginRules, 0, len(r.Config.Rules))
 		for _, rulesItem := range r.Config.Rules {
-			condition := make(map[string]interface{})
+			condition := make(map[string]string)
 			for conditionKey, conditionValue := range rulesItem.Condition {
-				var conditionInst interface{}
-				_ = json.Unmarshal([]byte(conditionValue.ValueString()), &conditionInst)
+				var conditionInst string
+				conditionInst = conditionValue.ValueString()
+
 				condition[conditionKey] = conditionInst
 			}
 			var upstreamName string

@@ -18,7 +18,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 		if resp.Config.Embeddings.Auth == nil {
 			r.Config.Embeddings.Auth = nil
 		} else {
-			r.Config.Embeddings.Auth = &tfTypes.Auth{}
+			r.Config.Embeddings.Auth = &tfTypes.AiLlmAsJudgePluginAuth{}
 			r.Config.Embeddings.Auth.AllowOverride = types.BoolPointerValue(resp.Config.Embeddings.Auth.AllowOverride)
 			r.Config.Embeddings.Auth.AwsAccessKeyID = types.StringPointerValue(resp.Config.Embeddings.Auth.AwsAccessKeyID)
 			r.Config.Embeddings.Auth.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Embeddings.Auth.AwsSecretAccessKey)
@@ -43,13 +43,18 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 			r.Config.Embeddings.Model.Options = nil
 		} else {
 			r.Config.Embeddings.Model.Options = &tfTypes.AiProxyAdvancedPluginOptions{}
-			r.Config.Embeddings.Model.Options.Azure.APIVersion = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.APIVersion)
-			r.Config.Embeddings.Model.Options.Azure.DeploymentID = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.DeploymentID)
-			r.Config.Embeddings.Model.Options.Azure.Instance = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.Instance)
+			if resp.Config.Embeddings.Model.Options.Azure == nil {
+				r.Config.Embeddings.Model.Options.Azure = nil
+			} else {
+				r.Config.Embeddings.Model.Options.Azure = &tfTypes.Azure{}
+				r.Config.Embeddings.Model.Options.Azure.APIVersion = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.APIVersion)
+				r.Config.Embeddings.Model.Options.Azure.DeploymentID = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.DeploymentID)
+				r.Config.Embeddings.Model.Options.Azure.Instance = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.Instance)
+			}
 			if resp.Config.Embeddings.Model.Options.Bedrock == nil {
 				r.Config.Embeddings.Model.Options.Bedrock = nil
 			} else {
-				r.Config.Embeddings.Model.Options.Bedrock = &tfTypes.Bedrock{}
+				r.Config.Embeddings.Model.Options.Bedrock = &tfTypes.AiLlmAsJudgePluginBedrock{}
 				r.Config.Embeddings.Model.Options.Bedrock.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsAssumeRoleArn)
 				r.Config.Embeddings.Model.Options.Bedrock.AwsRegion = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsRegion)
 				r.Config.Embeddings.Model.Options.Bedrock.AwsRoleSessionName = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsRoleSessionName)
@@ -60,7 +65,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 			if resp.Config.Embeddings.Model.Options.Gemini == nil {
 				r.Config.Embeddings.Model.Options.Gemini = nil
 			} else {
-				r.Config.Embeddings.Model.Options.Gemini = &tfTypes.Gemini{}
+				r.Config.Embeddings.Model.Options.Gemini = &tfTypes.AiProxyAdvancedPluginGemini{}
 				r.Config.Embeddings.Model.Options.Gemini.APIEndpoint = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Gemini.APIEndpoint)
 				r.Config.Embeddings.Model.Options.Gemini.LocationID = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Gemini.LocationID)
 				r.Config.Embeddings.Model.Options.Gemini.ProjectID = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Gemini.ProjectID)
@@ -68,7 +73,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 			if resp.Config.Embeddings.Model.Options.Huggingface == nil {
 				r.Config.Embeddings.Model.Options.Huggingface = nil
 			} else {
-				r.Config.Embeddings.Model.Options.Huggingface = &tfTypes.Huggingface{}
+				r.Config.Embeddings.Model.Options.Huggingface = &tfTypes.AiLlmAsJudgePluginHuggingface{}
 				r.Config.Embeddings.Model.Options.Huggingface.UseCache = types.BoolPointerValue(resp.Config.Embeddings.Model.Options.Huggingface.UseCache)
 				r.Config.Embeddings.Model.Options.Huggingface.WaitForModel = types.BoolPointerValue(resp.Config.Embeddings.Model.Options.Huggingface.WaitForModel)
 			}
@@ -109,7 +114,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 		if resp.Config.Vectordb.Redis == nil {
 			r.Config.Vectordb.Redis = nil
 		} else {
-			r.Config.Vectordb.Redis = &tfTypes.AiProxyAdvancedPluginRedis{}
+			r.Config.Vectordb.Redis = &tfTypes.AcePluginRedis{}
 			r.Config.Vectordb.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Vectordb.Redis.ClusterMaxRedirections)
 			if resp.Config.Vectordb.Redis.ClusterNodes != nil {
 				r.Config.Vectordb.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
@@ -179,11 +184,11 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
+			r.Ordering = &tfTypes.AcePluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
+				r.Ordering.After = &tfTypes.AcePluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -192,7 +197,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.AcePluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
@@ -524,28 +529,31 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin(ct
 
 	var optionsVar *shared.AiRagInjectorPluginOptions
 	if r.Config.Embeddings.Model.Options != nil {
-		apiVersion := new(string)
-		if !r.Config.Embeddings.Model.Options.Azure.APIVersion.IsUnknown() && !r.Config.Embeddings.Model.Options.Azure.APIVersion.IsNull() {
-			*apiVersion = r.Config.Embeddings.Model.Options.Azure.APIVersion.ValueString()
-		} else {
-			apiVersion = nil
-		}
-		deploymentID := new(string)
-		if !r.Config.Embeddings.Model.Options.Azure.DeploymentID.IsUnknown() && !r.Config.Embeddings.Model.Options.Azure.DeploymentID.IsNull() {
-			*deploymentID = r.Config.Embeddings.Model.Options.Azure.DeploymentID.ValueString()
-		} else {
-			deploymentID = nil
-		}
-		instance := new(string)
-		if !r.Config.Embeddings.Model.Options.Azure.Instance.IsUnknown() && !r.Config.Embeddings.Model.Options.Azure.Instance.IsNull() {
-			*instance = r.Config.Embeddings.Model.Options.Azure.Instance.ValueString()
-		} else {
-			instance = nil
-		}
-		azure := shared.AiRagInjectorPluginAzure{
-			APIVersion:   apiVersion,
-			DeploymentID: deploymentID,
-			Instance:     instance,
+		var azure *shared.AiRagInjectorPluginAzure
+		if r.Config.Embeddings.Model.Options.Azure != nil {
+			apiVersion := new(string)
+			if !r.Config.Embeddings.Model.Options.Azure.APIVersion.IsUnknown() && !r.Config.Embeddings.Model.Options.Azure.APIVersion.IsNull() {
+				*apiVersion = r.Config.Embeddings.Model.Options.Azure.APIVersion.ValueString()
+			} else {
+				apiVersion = nil
+			}
+			deploymentID := new(string)
+			if !r.Config.Embeddings.Model.Options.Azure.DeploymentID.IsUnknown() && !r.Config.Embeddings.Model.Options.Azure.DeploymentID.IsNull() {
+				*deploymentID = r.Config.Embeddings.Model.Options.Azure.DeploymentID.ValueString()
+			} else {
+				deploymentID = nil
+			}
+			instance := new(string)
+			if !r.Config.Embeddings.Model.Options.Azure.Instance.IsUnknown() && !r.Config.Embeddings.Model.Options.Azure.Instance.IsNull() {
+				*instance = r.Config.Embeddings.Model.Options.Azure.Instance.ValueString()
+			} else {
+				instance = nil
+			}
+			azure = &shared.AiRagInjectorPluginAzure{
+				APIVersion:   apiVersion,
+				DeploymentID: deploymentID,
+				Instance:     instance,
+			}
 		}
 		var bedrock *shared.AiRagInjectorPluginBedrock
 		if r.Config.Embeddings.Model.Options.Bedrock != nil {

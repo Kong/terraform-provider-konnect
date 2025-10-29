@@ -3,29 +3,28 @@
 package types
 
 import (
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type KafkaLogPluginConfig struct {
-	Authentication                               *Authentication                 `tfsdk:"authentication"`
-	BootstrapServers                             []BootstrapServers              `tfsdk:"bootstrap_servers"`
-	ClusterName                                  types.String                    `tfsdk:"cluster_name"`
-	CustomFieldsByLua                            map[string]jsontypes.Normalized `tfsdk:"custom_fields_by_lua"`
-	Keepalive                                    types.Int64                     `tfsdk:"keepalive"`
-	KeepaliveEnabled                             types.Bool                      `tfsdk:"keepalive_enabled"`
-	KeyQueryArg                                  types.String                    `tfsdk:"key_query_arg"`
-	ProducerAsync                                types.Bool                      `tfsdk:"producer_async"`
-	ProducerAsyncBufferingLimitsMessagesInMemory types.Int64                     `tfsdk:"producer_async_buffering_limits_messages_in_memory"`
-	ProducerAsyncFlushTimeout                    types.Int64                     `tfsdk:"producer_async_flush_timeout"`
-	ProducerRequestAcks                          types.Int64                     `tfsdk:"producer_request_acks"`
-	ProducerRequestLimitsBytesPerRequest         types.Int64                     `tfsdk:"producer_request_limits_bytes_per_request"`
-	ProducerRequestLimitsMessagesPerRequest      types.Int64                     `tfsdk:"producer_request_limits_messages_per_request"`
-	ProducerRequestRetriesBackoffTimeout         types.Int64                     `tfsdk:"producer_request_retries_backoff_timeout"`
-	ProducerRequestRetriesMaxAttempts            types.Int64                     `tfsdk:"producer_request_retries_max_attempts"`
-	ProducerRequestTimeout                       types.Int64                     `tfsdk:"producer_request_timeout"`
-	SchemaRegistry                               *SchemaRegistry                 `tfsdk:"schema_registry"`
-	Security                                     *KafkaConsumePluginSecurity     `tfsdk:"security"`
-	Timeout                                      types.Int64                     `tfsdk:"timeout"`
-	Topic                                        types.String                    `tfsdk:"topic"`
+	Authentication                               *Authentication             `tfsdk:"authentication"`
+	BootstrapServers                             []BootstrapServers          `tfsdk:"bootstrap_servers"`
+	ClusterName                                  types.String                `tfsdk:"cluster_name"`
+	CustomFieldsByLua                            map[string]types.String     `tfsdk:"custom_fields_by_lua"`
+	Keepalive                                    types.Int64                 `tfsdk:"keepalive"`
+	KeepaliveEnabled                             types.Bool                  `tfsdk:"keepalive_enabled"`
+	KeyQueryArg                                  types.String                `tfsdk:"key_query_arg"`
+	ProducerAsync                                types.Bool                  `tfsdk:"producer_async"`
+	ProducerAsyncBufferingLimitsMessagesInMemory types.Int64                 `tfsdk:"producer_async_buffering_limits_messages_in_memory"`
+	ProducerAsyncFlushTimeout                    types.Int64                 `tfsdk:"producer_async_flush_timeout"`
+	ProducerRequestAcks                          types.Int64                 `tfsdk:"producer_request_acks"`
+	ProducerRequestLimitsBytesPerRequest         types.Int64                 `tfsdk:"producer_request_limits_bytes_per_request"`
+	ProducerRequestLimitsMessagesPerRequest      types.Int64                 `tfsdk:"producer_request_limits_messages_per_request"`
+	ProducerRequestRetriesBackoffTimeout         types.Int64                 `tfsdk:"producer_request_retries_backoff_timeout"`
+	ProducerRequestRetriesMaxAttempts            types.Int64                 `tfsdk:"producer_request_retries_max_attempts"`
+	ProducerRequestTimeout                       types.Int64                 `tfsdk:"producer_request_timeout"`
+	SchemaRegistry                               *SchemaRegistry             `tfsdk:"schema_registry"`
+	Security                                     *KafkaConsumePluginSecurity `tfsdk:"security"`
+	Timeout                                      types.Int64                 `tfsdk:"timeout"`
+	Topic                                        types.String                `tfsdk:"topic"`
 }

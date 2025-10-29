@@ -30,7 +30,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
-	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -55,7 +54,7 @@ type GatewayPluginAcmeResourceModel struct {
 	Enabled        types.Bool                 `tfsdk:"enabled"`
 	ID             types.String               `tfsdk:"id"`
 	InstanceName   types.String               `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering `tfsdk:"ordering"`
+	Ordering       *tfTypes.AcePluginOrdering `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials         `tfsdk:"partials"`
 	Protocols      []types.String             `tfsdk:"protocols"`
 	Tags           []types.String             `tfsdk:"tags"`
@@ -76,9 +75,6 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 					"account_email": schema.StringAttribute{
 						Required:    true,
 						Description: `The account identifier. Can be reused in a different plugin instance.`,
-						Validators: []validator.String{
-							stringvalidator.RegexMatches(regexp.MustCompile(`[a-zA-Z0-9]*[!-/:-@[-`+"`"+`{-~]*@+[a-zA-Z0-9]*%.?[a-zA-Z0-9]*`), "must match pattern "+regexp.MustCompile(`[a-zA-Z0-9]*[!-/:-@[-`+"`"+`{-~]*@+[a-zA-Z0-9]*%.?[a-zA-Z0-9]*`).String()),
-						},
 					},
 					"account_key": schema.SingleNestedAttribute{
 						Computed: true,
@@ -291,6 +287,7 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 								},
 							},
 							"kong": schema.MapAttribute{
+								Computed:    true,
 								Optional:    true,
 								ElementType: jsontypes.NormalizedType{},
 								Validators: []validator.Map{

@@ -579,7 +579,7 @@ type Upstream struct {
 	// The name of the route URI capture to take the value from as hash input. Only required when `hash_on` is set to `uri_capture`.
 	HashOnURICapture *string `default:"null" json:"hash_on_uri_capture"`
 	// The array of healthchecks.
-	Healthchecks *Healthchecks `json:"healthchecks,omitempty"`
+	Healthchecks *Healthchecks `json:"healthchecks"`
 	// The hostname to be used as `Host` header when proxying requests through Kong.
 	HostHeader *string `default:"null" json:"host_header"`
 	// A string representing a UUID (universally unique identifier).

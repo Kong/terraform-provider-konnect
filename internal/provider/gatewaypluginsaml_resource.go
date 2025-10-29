@@ -27,7 +27,6 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
-	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -52,7 +51,7 @@ type GatewayPluginSamlResourceModel struct {
 	Enabled        types.Bool                 `tfsdk:"enabled"`
 	ID             types.String               `tfsdk:"id"`
 	InstanceName   types.String               `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering `tfsdk:"ordering"`
+	Ordering       *tfTypes.AcePluginOrdering `tfsdk:"ordering"`
 	Partials       []tfTypes.Partials         `tfsdk:"partials"`
 	Protocols      []types.String             `tfsdk:"protocols"`
 	Route          *tfTypes.Set               `tfsdk:"route"`
@@ -539,7 +538,6 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						Description: `The session secret. This must be a random string of 32 characters from the base64 alphabet (letters, numbers, ` + "`" + `/` + "`" + `, ` + "`" + `_` + "`" + ` and ` + "`" + `+` + "`" + `). It is used as the secret key for encrypting session data as well as state information that is sent to the IdP in the authentication exchange.`,
 						Validators: []validator.String{
 							stringvalidator.UTF8LengthBetween(32, 32),
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9a-zA-Z/_+]+$`), "must match pattern "+regexp.MustCompile(`^[0-9a-zA-Z/_+]+$`).String()),
 						},
 					},
 					"session_storage": schema.StringAttribute{

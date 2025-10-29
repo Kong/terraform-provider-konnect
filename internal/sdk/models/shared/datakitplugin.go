@@ -4,8 +4,10 @@ package shared
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/types"
 )
 
 type DatakitPluginAfter struct {
@@ -78,65 +80,1356 @@ func (d *DatakitPluginPartials) GetPath() *string {
 	return d.Path
 }
 
-type DatakitPluginType string
+// Static - Produce reusable outputs from statically-configured values
+type Static struct {
+	// A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+	Name *string `default:"null" json:"name"`
+	// The entire `.values` map
+	Output *string `default:"null" json:"output"`
+	// Individual items from `.values`, referenced by key
+	Outputs map[string]any `json:"outputs,omitempty"`
+	type_   *string        `const:"static" json:"type,omitempty"`
+	// An object with string keys and freeform values
+	Values string `json:"values"`
+}
+
+func (s Static) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *Static) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"values"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *Static) GetName() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Name
+}
+
+func (s *Static) GetOutput() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Output
+}
+
+func (s *Static) GetOutputs() map[string]any {
+	if s == nil {
+		return nil
+	}
+	return s.Outputs
+}
+
+func (s *Static) GetType() *string {
+	return types.Pointer("static")
+}
+
+func (s *Static) GetValues() string {
+	if s == nil {
+		return ""
+	}
+	return s.Values
+}
+
+// NodesContentType - The expected mime type of the property value. When set to `application/json`, SET operations will JSON-encode input data before writing it, and GET operations will JSON-decode output data after reading it. Otherwise, this setting has no effect.
+type NodesContentType string
 
 const (
-	DatakitPluginTypeCall     DatakitPluginType = "call"
-	DatakitPluginTypeExit     DatakitPluginType = "exit"
-	DatakitPluginTypeJq       DatakitPluginType = "jq"
-	DatakitPluginTypeProperty DatakitPluginType = "property"
-	DatakitPluginTypeStatic   DatakitPluginType = "static"
+	NodesContentTypeApplicationJSON        NodesContentType = "application/json"
+	NodesContentTypeApplicationOctetStream NodesContentType = "application/octet-stream"
+	NodesContentTypeTextPlain              NodesContentType = "text/plain"
 )
 
-func (e DatakitPluginType) ToPointer() *DatakitPluginType {
+func (e NodesContentType) ToPointer() *NodesContentType {
 	return &e
 }
-func (e *DatakitPluginType) UnmarshalJSON(data []byte) error {
+func (e *NodesContentType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
-	case "call":
+	case "application/json":
 		fallthrough
-	case "exit":
+	case "application/octet-stream":
 		fallthrough
-	case "jq":
-		fallthrough
-	case "property":
-		fallthrough
-	case "static":
-		*e = DatakitPluginType(v)
+	case "text/plain":
+		*e = NodesContentType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for DatakitPluginType: %v", v)
+		return fmt.Errorf("invalid value for NodesContentType: %v", v)
 	}
 }
 
-// Nodes - datakit nodes
-type Nodes struct {
+// Property - Get or set a property
+type Property struct {
+	// The expected mime type of the property value. When set to `application/json`, SET operations will JSON-encode input data before writing it, and GET operations will JSON-decode output data after reading it. Otherwise, this setting has no effect.
+	ContentType *NodesContentType `json:"content_type,omitempty"`
+	// Property input source. When connected, this node operates in SET mode and writes input data to the property. Otherwise, the node operates in GET mode and reads the property.
+	Input *string `default:"null" json:"input"`
 	// A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
-	Name string            `json:"name"`
-	Type DatakitPluginType `json:"type"`
+	Name *string `default:"null" json:"name"`
+	// Property output. This can be connected regardless of whether the node is operating in GET mode or SET mode.
+	Output *string `default:"null" json:"output"`
+	// The property name to get/set
+	Property string  `json:"property"`
+	type_    *string `const:"property" json:"type,omitempty"`
 }
 
-func (n *Nodes) GetName() string {
-	if n == nil {
+func (p Property) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *Property) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"property"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *Property) GetContentType() *NodesContentType {
+	if p == nil {
+		return nil
+	}
+	return p.ContentType
+}
+
+func (p *Property) GetInput() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Input
+}
+
+func (p *Property) GetName() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Name
+}
+
+func (p *Property) GetOutput() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Output
+}
+
+func (p *Property) GetProperty() string {
+	if p == nil {
 		return ""
+	}
+	return p.Property
+}
+
+func (p *Property) GetType() *string {
+	return types.Pointer("property")
+}
+
+// Jq - Process data using `jq` syntax
+type Jq struct {
+	// filter input(s)
+	Input *string `default:"null" json:"input"`
+	// filter input(s)
+	Inputs map[string]any `json:"inputs,omitempty"`
+	// The jq filter text. Refer to https://jqlang.org/manual/ for full documentation.
+	Jq string `json:"jq"`
+	// A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+	Name *string `default:"null" json:"name"`
+	// filter output(s)
+	Output *string `default:"null" json:"output"`
+	type_  *string `const:"jq" json:"type,omitempty"`
+}
+
+func (j Jq) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *Jq) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, []string{"jq"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (j *Jq) GetInput() *string {
+	if j == nil {
+		return nil
+	}
+	return j.Input
+}
+
+func (j *Jq) GetInputs() map[string]any {
+	if j == nil {
+		return nil
+	}
+	return j.Inputs
+}
+
+func (j *Jq) GetJq() string {
+	if j == nil {
+		return ""
+	}
+	return j.Jq
+}
+
+func (j *Jq) GetName() *string {
+	if j == nil {
+		return nil
+	}
+	return j.Name
+}
+
+func (j *Jq) GetOutput() *string {
+	if j == nil {
+		return nil
+	}
+	return j.Output
+}
+
+func (j *Jq) GetType() *string {
+	return types.Pointer("jq")
+}
+
+// DatakitPluginNodesInputs - exit node inputs
+type DatakitPluginNodesInputs struct {
+	// HTTP response body
+	Body *string `default:"null" json:"body"`
+	// HTTP response headers
+	Headers *string `default:"null" json:"headers"`
+}
+
+func (d DatakitPluginNodesInputs) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatakitPluginNodesInputs) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *DatakitPluginNodesInputs) GetBody() *string {
+	if d == nil {
+		return nil
+	}
+	return d.Body
+}
+
+func (d *DatakitPluginNodesInputs) GetHeaders() *string {
+	if d == nil {
+		return nil
+	}
+	return d.Headers
+}
+
+// Exit - Terminate the request and send a response to the client
+type Exit struct {
+	// exit node input
+	Input *string `default:"null" json:"input"`
+	// exit node inputs
+	Inputs *DatakitPluginNodesInputs `json:"inputs"`
+	// A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+	Name *string `default:"null" json:"name"`
+	// HTTP status code
+	Status          *int64  `default:"200" json:"status"`
+	type_           *string `const:"exit" json:"type,omitempty"`
+	WarnHeadersSent *bool   `default:"null" json:"warn_headers_sent"`
+}
+
+func (e Exit) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *Exit) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (e *Exit) GetInput() *string {
+	if e == nil {
+		return nil
+	}
+	return e.Input
+}
+
+func (e *Exit) GetInputs() *DatakitPluginNodesInputs {
+	if e == nil {
+		return nil
+	}
+	return e.Inputs
+}
+
+func (e *Exit) GetName() *string {
+	if e == nil {
+		return nil
+	}
+	return e.Name
+}
+
+func (e *Exit) GetStatus() *int64 {
+	if e == nil {
+		return nil
+	}
+	return e.Status
+}
+
+func (e *Exit) GetType() *string {
+	return types.Pointer("exit")
+}
+
+func (e *Exit) GetWarnHeadersSent() *bool {
+	if e == nil {
+		return nil
+	}
+	return e.WarnHeadersSent
+}
+
+// NodesInputs - call node inputs
+type NodesInputs struct {
+	// HTTP request body
+	Body *string `default:"null" json:"body"`
+	// HTTP request headers
+	Headers *string `default:"null" json:"headers"`
+	// HTTP request query
+	Query *string `default:"null" json:"query"`
+}
+
+func (n NodesInputs) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(n, "", false)
+}
+
+func (n *NodesInputs) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &n, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (n *NodesInputs) GetBody() *string {
+	if n == nil {
+		return nil
+	}
+	return n.Body
+}
+
+func (n *NodesInputs) GetHeaders() *string {
+	if n == nil {
+		return nil
+	}
+	return n.Headers
+}
+
+func (n *NodesInputs) GetQuery() *string {
+	if n == nil {
+		return nil
+	}
+	return n.Query
+}
+
+// DatakitPluginNodesOutputs - call node outputs
+type DatakitPluginNodesOutputs struct {
+	// HTTP response body
+	Body *string `default:"null" json:"body"`
+	// HTTP response headers
+	Headers *string `default:"null" json:"headers"`
+	// HTTP response status code
+	Status *string `default:"null" json:"status"`
+}
+
+func (d DatakitPluginNodesOutputs) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatakitPluginNodesOutputs) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *DatakitPluginNodesOutputs) GetBody() *string {
+	if d == nil {
+		return nil
+	}
+	return d.Body
+}
+
+func (d *DatakitPluginNodesOutputs) GetHeaders() *string {
+	if d == nil {
+		return nil
+	}
+	return d.Headers
+}
+
+func (d *DatakitPluginNodesOutputs) GetStatus() *string {
+	if d == nil {
+		return nil
+	}
+	return d.Status
+}
+
+// Call - Make an external HTTP request
+type Call struct {
+	// call node input
+	Input *string `default:"null" json:"input"`
+	// call node inputs
+	Inputs *NodesInputs `json:"inputs"`
+	// A string representing an HTTP method, such as GET, POST, PUT, or DELETE. The string must contain only uppercase letters.
+	Method *string `default:"GET" json:"method"`
+	// A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+	Name *string `default:"null" json:"name"`
+	// call node output
+	Output *string `default:"null" json:"output"`
+	// call node outputs
+	Outputs *DatakitPluginNodesOutputs `json:"outputs"`
+	// A string representing an SNI (server name indication) value for TLS.
+	SslServerName *string `default:"null" json:"ssl_server_name"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	Timeout *int64  `default:"null" json:"timeout"`
+	type_   *string `const:"call" json:"type,omitempty"`
+	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
+	URL string `json:"url"`
+}
+
+func (c Call) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *Call) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"url"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *Call) GetInput() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Input
+}
+
+func (c *Call) GetInputs() *NodesInputs {
+	if c == nil {
+		return nil
+	}
+	return c.Inputs
+}
+
+func (c *Call) GetMethod() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Method
+}
+
+func (c *Call) GetName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Name
+}
+
+func (c *Call) GetOutput() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Output
+}
+
+func (c *Call) GetOutputs() *DatakitPluginNodesOutputs {
+	if c == nil {
+		return nil
+	}
+	return c.Outputs
+}
+
+func (c *Call) GetSslServerName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.SslServerName
+}
+
+func (c *Call) GetTimeout() *int64 {
+	if c == nil {
+		return nil
+	}
+	return c.Timeout
+}
+
+func (c *Call) GetType() *string {
+	return types.Pointer("call")
+}
+
+func (c *Call) GetURL() string {
+	if c == nil {
+		return ""
+	}
+	return c.URL
+}
+
+// Inputs - cache node inputs
+type Inputs struct {
+	// The data to be cached.
+	Data *string `default:"null" json:"data"`
+	// The cache key.
+	Key *string `default:"null" json:"key"`
+	// The TTL in seconds.
+	TTL *string `default:"null" json:"ttl"`
+}
+
+func (i Inputs) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *Inputs) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (i *Inputs) GetData() *string {
+	if i == nil {
+		return nil
+	}
+	return i.Data
+}
+
+func (i *Inputs) GetKey() *string {
+	if i == nil {
+		return nil
+	}
+	return i.Key
+}
+
+func (i *Inputs) GetTTL() *string {
+	if i == nil {
+		return nil
+	}
+	return i.TTL
+}
+
+// NodesOutputs - cache node outputs
+type NodesOutputs struct {
+	// The data that was cached.
+	Data *string `default:"null" json:"data"`
+	// Signals a cache hit.
+	Hit *string `default:"null" json:"hit"`
+	// Signals a cache miss.
+	Miss *string `default:"null" json:"miss"`
+	// Signals whether data was stored in cache.
+	Stored *string `default:"null" json:"stored"`
+}
+
+func (n NodesOutputs) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(n, "", false)
+}
+
+func (n *NodesOutputs) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &n, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (n *NodesOutputs) GetData() *string {
+	if n == nil {
+		return nil
+	}
+	return n.Data
+}
+
+func (n *NodesOutputs) GetHit() *string {
+	if n == nil {
+		return nil
+	}
+	return n.Hit
+}
+
+func (n *NodesOutputs) GetMiss() *string {
+	if n == nil {
+		return nil
+	}
+	return n.Miss
+}
+
+func (n *NodesOutputs) GetStored() *string {
+	if n == nil {
+		return nil
+	}
+	return n.Stored
+}
+
+// NodesCache - Fetch cached data
+type NodesCache struct {
+	BypassOnError *bool `default:"null" json:"bypass_on_error"`
+	// cache node input
+	Input *string `default:"null" json:"input"`
+	// cache node inputs
+	Inputs *Inputs `json:"inputs"`
+	// A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+	Name *string `default:"null" json:"name"`
+	// cache node output
+	Output *string `default:"null" json:"output"`
+	// cache node outputs
+	Outputs *NodesOutputs `json:"outputs"`
+	TTL     *int64        `default:"null" json:"ttl"`
+	type_   *string       `const:"cache" json:"type,omitempty"`
+}
+
+func (n NodesCache) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(n, "", false)
+}
+
+func (n *NodesCache) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &n, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (n *NodesCache) GetBypassOnError() *bool {
+	if n == nil {
+		return nil
+	}
+	return n.BypassOnError
+}
+
+func (n *NodesCache) GetInput() *string {
+	if n == nil {
+		return nil
+	}
+	return n.Input
+}
+
+func (n *NodesCache) GetInputs() *Inputs {
+	if n == nil {
+		return nil
+	}
+	return n.Inputs
+}
+
+func (n *NodesCache) GetName() *string {
+	if n == nil {
+		return nil
 	}
 	return n.Name
 }
 
-func (n *Nodes) GetType() DatakitPluginType {
+func (n *NodesCache) GetOutput() *string {
 	if n == nil {
-		return DatakitPluginType("")
+		return nil
 	}
-	return n.Type
+	return n.Output
+}
+
+func (n *NodesCache) GetOutputs() *NodesOutputs {
+	if n == nil {
+		return nil
+	}
+	return n.Outputs
+}
+
+func (n *NodesCache) GetTTL() *int64 {
+	if n == nil {
+		return nil
+	}
+	return n.TTL
+}
+
+func (n *NodesCache) GetType() *string {
+	return types.Pointer("cache")
+}
+
+// Outputs - branch node outputs
+type Outputs struct {
+	// node output
+	Else *string `default:"null" json:"else"`
+	// node output
+	Then *string `default:"null" json:"then"`
+}
+
+func (o Outputs) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *Outputs) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *Outputs) GetElse() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Else
+}
+
+func (o *Outputs) GetThen() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Then
+}
+
+// Branch - Execute different nodes based on some input condition
+type Branch struct {
+	// nodes to execute if the input condition is `false`
+	Else []string `json:"else"`
+	// branch node input
+	Input *string `default:"null" json:"input"`
+	// A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+	Name *string `default:"null" json:"name"`
+	// branch node output
+	Output *string `default:"null" json:"output"`
+	// branch node outputs
+	Outputs *Outputs `json:"outputs"`
+	// nodes to execute if the input condition is `true`
+	Then  []string `json:"then"`
+	type_ *string  `const:"branch" json:"type,omitempty"`
+}
+
+func (b Branch) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *Branch) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (b *Branch) GetElse() []string {
+	if b == nil {
+		return nil
+	}
+	return b.Else
+}
+
+func (b *Branch) GetInput() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Input
+}
+
+func (b *Branch) GetName() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Name
+}
+
+func (b *Branch) GetOutput() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Output
+}
+
+func (b *Branch) GetOutputs() *Outputs {
+	if b == nil {
+		return nil
+	}
+	return b.Outputs
+}
+
+func (b *Branch) GetThen() []string {
+	if b == nil {
+		return nil
+	}
+	return b.Then
+}
+
+func (b *Branch) GetType() *string {
+	return types.Pointer("branch")
+}
+
+type NodesType string
+
+const (
+	NodesTypeBranch     NodesType = "branch"
+	NodesTypeNodesCache NodesType = "nodes_cache"
+	NodesTypeCall       NodesType = "call"
+	NodesTypeExit       NodesType = "exit"
+	NodesTypeJq         NodesType = "jq"
+	NodesTypeProperty   NodesType = "property"
+	NodesTypeStatic     NodesType = "static"
+)
+
+type Nodes struct {
+	Branch     *Branch     `queryParam:"inline,name=nodes"`
+	NodesCache *NodesCache `queryParam:"inline,name=nodes"`
+	Call       *Call       `queryParam:"inline,name=nodes"`
+	Exit       *Exit       `queryParam:"inline,name=nodes"`
+	Jq         *Jq         `queryParam:"inline,name=nodes"`
+	Property   *Property   `queryParam:"inline,name=nodes"`
+	Static     *Static     `queryParam:"inline,name=nodes"`
+
+	Type NodesType
+}
+
+func CreateNodesBranch(branch Branch) Nodes {
+	typ := NodesTypeBranch
+
+	return Nodes{
+		Branch: &branch,
+		Type:   typ,
+	}
+}
+
+func CreateNodesNodesCache(nodesCache NodesCache) Nodes {
+	typ := NodesTypeNodesCache
+
+	return Nodes{
+		NodesCache: &nodesCache,
+		Type:       typ,
+	}
+}
+
+func CreateNodesCall(call Call) Nodes {
+	typ := NodesTypeCall
+
+	return Nodes{
+		Call: &call,
+		Type: typ,
+	}
+}
+
+func CreateNodesExit(exit Exit) Nodes {
+	typ := NodesTypeExit
+
+	return Nodes{
+		Exit: &exit,
+		Type: typ,
+	}
+}
+
+func CreateNodesJq(jq Jq) Nodes {
+	typ := NodesTypeJq
+
+	return Nodes{
+		Jq:   &jq,
+		Type: typ,
+	}
+}
+
+func CreateNodesProperty(property Property) Nodes {
+	typ := NodesTypeProperty
+
+	return Nodes{
+		Property: &property,
+		Type:     typ,
+	}
+}
+
+func CreateNodesStatic(static Static) Nodes {
+	typ := NodesTypeStatic
+
+	return Nodes{
+		Static: &static,
+		Type:   typ,
+	}
+}
+
+func (u *Nodes) UnmarshalJSON(data []byte) error {
+
+	var branch Branch = Branch{}
+	if err := utils.UnmarshalJSON(data, &branch, "", true, nil); err == nil {
+		u.Branch = &branch
+		u.Type = NodesTypeBranch
+		return nil
+	}
+
+	var call Call = Call{}
+	if err := utils.UnmarshalJSON(data, &call, "", true, nil); err == nil {
+		u.Call = &call
+		u.Type = NodesTypeCall
+		return nil
+	}
+
+	var nodesCache NodesCache = NodesCache{}
+	if err := utils.UnmarshalJSON(data, &nodesCache, "", true, nil); err == nil {
+		u.NodesCache = &nodesCache
+		u.Type = NodesTypeNodesCache
+		return nil
+	}
+
+	var exit Exit = Exit{}
+	if err := utils.UnmarshalJSON(data, &exit, "", true, nil); err == nil {
+		u.Exit = &exit
+		u.Type = NodesTypeExit
+		return nil
+	}
+
+	var jq Jq = Jq{}
+	if err := utils.UnmarshalJSON(data, &jq, "", true, nil); err == nil {
+		u.Jq = &jq
+		u.Type = NodesTypeJq
+		return nil
+	}
+
+	var property Property = Property{}
+	if err := utils.UnmarshalJSON(data, &property, "", true, nil); err == nil {
+		u.Property = &property
+		u.Type = NodesTypeProperty
+		return nil
+	}
+
+	var static Static = Static{}
+	if err := utils.UnmarshalJSON(data, &static, "", true, nil); err == nil {
+		u.Static = &static
+		u.Type = NodesTypeStatic
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for Nodes", string(data))
+}
+
+func (u Nodes) MarshalJSON() ([]byte, error) {
+	if u.Branch != nil {
+		return utils.MarshalJSON(u.Branch, "", true)
+	}
+
+	if u.NodesCache != nil {
+		return utils.MarshalJSON(u.NodesCache, "", true)
+	}
+
+	if u.Call != nil {
+		return utils.MarshalJSON(u.Call, "", true)
+	}
+
+	if u.Exit != nil {
+		return utils.MarshalJSON(u.Exit, "", true)
+	}
+
+	if u.Jq != nil {
+		return utils.MarshalJSON(u.Jq, "", true)
+	}
+
+	if u.Property != nil {
+		return utils.MarshalJSON(u.Property, "", true)
+	}
+
+	if u.Static != nil {
+		return utils.MarshalJSON(u.Static, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type Nodes: all fields are null")
+}
+
+type DatakitPluginMemory struct {
+	// The name of the shared dictionary in which to hold cache entities when the memory strategy is selected. Note that this dictionary currently must be defined manually in the Kong Nginx template.
+	DictionaryName *string `default:"kong_db_cache" json:"dictionary_name"`
+}
+
+func (d DatakitPluginMemory) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatakitPluginMemory) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *DatakitPluginMemory) GetDictionaryName() *string {
+	if d == nil {
+		return nil
+	}
+	return d.DictionaryName
+}
+
+type DatakitPluginClusterNodes struct {
+	// A string representing a host name, such as example.com.
+	IP *string `default:"127.0.0.1" json:"ip"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (d DatakitPluginClusterNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatakitPluginClusterNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *DatakitPluginClusterNodes) GetIP() *string {
+	if d == nil {
+		return nil
+	}
+	return d.IP
+}
+
+func (d *DatakitPluginClusterNodes) GetPort() *int64 {
+	if d == nil {
+		return nil
+	}
+	return d.Port
+}
+
+type DatakitPluginSentinelNodes struct {
+	// A string representing a host name, such as example.com.
+	Host *string `default:"127.0.0.1" json:"host"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `default:"6379" json:"port"`
+}
+
+func (d DatakitPluginSentinelNodes) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatakitPluginSentinelNodes) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *DatakitPluginSentinelNodes) GetHost() *string {
+	if d == nil {
+		return nil
+	}
+	return d.Host
+}
+
+func (d *DatakitPluginSentinelNodes) GetPort() *int64 {
+	if d == nil {
+		return nil
+	}
+	return d.Port
+}
+
+// DatakitPluginSentinelRole - Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
+type DatakitPluginSentinelRole string
+
+const (
+	DatakitPluginSentinelRoleAny    DatakitPluginSentinelRole = "any"
+	DatakitPluginSentinelRoleMaster DatakitPluginSentinelRole = "master"
+	DatakitPluginSentinelRoleSlave  DatakitPluginSentinelRole = "slave"
+)
+
+func (e DatakitPluginSentinelRole) ToPointer() *DatakitPluginSentinelRole {
+	return &e
+}
+func (e *DatakitPluginSentinelRole) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "any":
+		fallthrough
+	case "master":
+		fallthrough
+	case "slave":
+		*e = DatakitPluginSentinelRole(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for DatakitPluginSentinelRole: %v", v)
+	}
+}
+
+type DatakitPluginRedis struct {
+	// Maximum retry attempts for redirection.
+	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
+	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
+	ClusterNodes []DatakitPluginClusterNodes `json:"cluster_nodes"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
+	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
+	ConnectionIsProxied *bool `default:"false" json:"connection_is_proxied"`
+	// Database to use for the Redis connection when using the `redis` strategy
+	Database *int64 `default:"0" json:"database"`
+	// A string representing a host name, such as example.com.
+	Host *string `default:"127.0.0.1" json:"host"`
+	// Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
+	KeepaliveBacklog *int64 `default:"null" json:"keepalive_backlog"`
+	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
+	KeepalivePoolSize *int64 `default:"256" json:"keepalive_pool_size"`
+	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+	Password *string `default:"null" json:"password"`
+	// An integer representing a port number between 0 and 65535, inclusive.
+	Port *int64 `default:"6379" json:"port"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
+	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+	SendTimeout *int64 `default:"2000" json:"send_timeout"`
+	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+	SentinelMaster *string `default:"null" json:"sentinel_master"`
+	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
+	SentinelNodes []DatakitPluginSentinelNodes `json:"sentinel_nodes"`
+	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+	SentinelPassword *string `default:"null" json:"sentinel_password"`
+	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
+	SentinelRole *DatakitPluginSentinelRole `json:"sentinel_role,omitempty"`
+	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+	SentinelUsername *string `default:"null" json:"sentinel_username"`
+	// A string representing an SNI (server name indication) value for TLS.
+	ServerName *string `default:"null" json:"server_name"`
+	// If set to true, uses SSL to connect to Redis.
+	Ssl *bool `default:"false" json:"ssl"`
+	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
+	SslVerify *bool `default:"false" json:"ssl_verify"`
+	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+	Username *string `default:"null" json:"username"`
+}
+
+func (d DatakitPluginRedis) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatakitPluginRedis) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *DatakitPluginRedis) GetClusterMaxRedirections() *int64 {
+	if d == nil {
+		return nil
+	}
+	return d.ClusterMaxRedirections
+}
+
+func (d *DatakitPluginRedis) GetClusterNodes() []DatakitPluginClusterNodes {
+	if d == nil {
+		return nil
+	}
+	return d.ClusterNodes
+}
+
+func (d *DatakitPluginRedis) GetConnectTimeout() *int64 {
+	if d == nil {
+		return nil
+	}
+	return d.ConnectTimeout
+}
+
+func (d *DatakitPluginRedis) GetConnectionIsProxied() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.ConnectionIsProxied
+}
+
+func (d *DatakitPluginRedis) GetDatabase() *int64 {
+	if d == nil {
+		return nil
+	}
+	return d.Database
+}
+
+func (d *DatakitPluginRedis) GetHost() *string {
+	if d == nil {
+		return nil
+	}
+	return d.Host
+}
+
+func (d *DatakitPluginRedis) GetKeepaliveBacklog() *int64 {
+	if d == nil {
+		return nil
+	}
+	return d.KeepaliveBacklog
+}
+
+func (d *DatakitPluginRedis) GetKeepalivePoolSize() *int64 {
+	if d == nil {
+		return nil
+	}
+	return d.KeepalivePoolSize
+}
+
+func (d *DatakitPluginRedis) GetPassword() *string {
+	if d == nil {
+		return nil
+	}
+	return d.Password
+}
+
+func (d *DatakitPluginRedis) GetPort() *int64 {
+	if d == nil {
+		return nil
+	}
+	return d.Port
+}
+
+func (d *DatakitPluginRedis) GetReadTimeout() *int64 {
+	if d == nil {
+		return nil
+	}
+	return d.ReadTimeout
+}
+
+func (d *DatakitPluginRedis) GetSendTimeout() *int64 {
+	if d == nil {
+		return nil
+	}
+	return d.SendTimeout
+}
+
+func (d *DatakitPluginRedis) GetSentinelMaster() *string {
+	if d == nil {
+		return nil
+	}
+	return d.SentinelMaster
+}
+
+func (d *DatakitPluginRedis) GetSentinelNodes() []DatakitPluginSentinelNodes {
+	if d == nil {
+		return nil
+	}
+	return d.SentinelNodes
+}
+
+func (d *DatakitPluginRedis) GetSentinelPassword() *string {
+	if d == nil {
+		return nil
+	}
+	return d.SentinelPassword
+}
+
+func (d *DatakitPluginRedis) GetSentinelRole() *DatakitPluginSentinelRole {
+	if d == nil {
+		return nil
+	}
+	return d.SentinelRole
+}
+
+func (d *DatakitPluginRedis) GetSentinelUsername() *string {
+	if d == nil {
+		return nil
+	}
+	return d.SentinelUsername
+}
+
+func (d *DatakitPluginRedis) GetServerName() *string {
+	if d == nil {
+		return nil
+	}
+	return d.ServerName
+}
+
+func (d *DatakitPluginRedis) GetSsl() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.Ssl
+}
+
+func (d *DatakitPluginRedis) GetSslVerify() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.SslVerify
+}
+
+func (d *DatakitPluginRedis) GetUsername() *string {
+	if d == nil {
+		return nil
+	}
+	return d.Username
+}
+
+// DatakitPluginStrategy - The backing data store in which to hold cache entities. Accepted values are: `memory` and `redis`.
+type DatakitPluginStrategy string
+
+const (
+	DatakitPluginStrategyMemory DatakitPluginStrategy = "memory"
+	DatakitPluginStrategyRedis  DatakitPluginStrategy = "redis"
+)
+
+func (e DatakitPluginStrategy) ToPointer() *DatakitPluginStrategy {
+	return &e
+}
+func (e *DatakitPluginStrategy) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "memory":
+		fallthrough
+	case "redis":
+		*e = DatakitPluginStrategy(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for DatakitPluginStrategy: %v", v)
+	}
+}
+
+type DatakitPluginCache struct {
+	Memory *DatakitPluginMemory `json:"memory"`
+	Redis  *DatakitPluginRedis  `json:"redis"`
+	// The backing data store in which to hold cache entities. Accepted values are: `memory` and `redis`.
+	Strategy *DatakitPluginStrategy `json:"strategy,omitempty"`
+}
+
+func (d *DatakitPluginCache) GetMemory() *DatakitPluginMemory {
+	if d == nil {
+		return nil
+	}
+	return d.Memory
+}
+
+func (d *DatakitPluginCache) GetRedis() *DatakitPluginRedis {
+	if d == nil {
+		return nil
+	}
+	return d.Redis
+}
+
+func (d *DatakitPluginCache) GetStrategy() *DatakitPluginStrategy {
+	if d == nil {
+		return nil
+	}
+	return d.Strategy
+}
+
+type Resources struct {
+	Cache *DatakitPluginCache `json:"cache"`
+	Vault map[string]any      `json:"vault,omitempty"`
+}
+
+func (r *Resources) GetCache() *DatakitPluginCache {
+	if r == nil {
+		return nil
+	}
+	return r.Cache
+}
+
+func (r *Resources) GetVault() map[string]any {
+	if r == nil {
+		return nil
+	}
+	return r.Vault
 }
 
 type DatakitPluginConfig struct {
-	Debug *bool   `default:"false" json:"debug"`
-	Nodes []Nodes `json:"nodes"`
+	Debug     *bool      `default:"false" json:"debug"`
+	Nodes     []Nodes    `json:"nodes"`
+	Resources *Resources `json:"resources"`
 }
 
 func (d DatakitPluginConfig) MarshalJSON() ([]byte, error) {
@@ -162,6 +1455,13 @@ func (d *DatakitPluginConfig) GetNodes() []Nodes {
 		return []Nodes{}
 	}
 	return d.Nodes
+}
+
+func (d *DatakitPluginConfig) GetResources() *Resources {
+	if d == nil {
+		return nil
+	}
+	return d.Resources
 }
 
 // DatakitPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
