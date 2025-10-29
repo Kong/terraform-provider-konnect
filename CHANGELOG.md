@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.4.1
+> Released on 2025/10/29
+
+### Bug Fixes
+* Support `skip_ca_check` in `konnect_portal_custom_domain` resource
+
 ## 3.4.0
 > Released on 2025/10/29
 
