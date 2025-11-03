@@ -287,7 +287,6 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 								},
 							},
 							"kong": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: jsontypes.NormalizedType{},
 								Validators: []validator.Map{

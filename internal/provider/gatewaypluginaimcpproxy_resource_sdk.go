@@ -51,7 +51,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 					tools.Annotations.Title = types.StringPointerValue(toolsItem.Annotations.Title)
 				}
 				tools.Description = types.StringValue(toolsItem.Description)
-				if len(toolsItem.Headers) > 0 {
+				if toolsItem.Headers != nil {
 					tools.Headers = make(map[string]jsontypes.Normalized, len(toolsItem.Headers))
 					for key, value := range toolsItem.Headers {
 						result, _ := json.Marshal(value)
@@ -83,7 +83,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 					tools.Parameters = append(tools.Parameters, parameters)
 				}
 				tools.Path = types.StringPointerValue(toolsItem.Path)
-				if len(toolsItem.Query) > 0 {
+				if toolsItem.Query != nil {
 					tools.Query = make(map[string]jsontypes.Normalized, len(toolsItem.Query))
 					for key1, value1 := range toolsItem.Query {
 						result1, _ := json.Marshal(value1)
@@ -443,11 +443,14 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 			var description string
 			description = toolsItem.Description.ValueString()
 
-			headers := make(map[string]interface{})
-			for headersKey, headersValue := range toolsItem.Headers {
-				var headersInst interface{}
-				_ = json.Unmarshal([]byte(headersValue.ValueString()), &headersInst)
-				headers[headersKey] = headersInst
+			var headers map[string]interface{}
+			if toolsItem.Headers != nil {
+				headers := make(map[string]interface{})
+				for headersKey, headersValue := range toolsItem.Headers {
+					var headersInst interface{}
+					_ = json.Unmarshal([]byte(headersValue.ValueString()), &headersInst)
+					headers[headersKey] = headersInst
+				}
 			}
 			host := new(string)
 			if !toolsItem.Host.IsUnknown() && !toolsItem.Host.IsNull() {
@@ -513,11 +516,14 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 			} else {
 				path1 = nil
 			}
-			query := make(map[string]interface{})
-			for queryKey, queryValue := range toolsItem.Query {
-				var queryInst interface{}
-				_ = json.Unmarshal([]byte(queryValue.ValueString()), &queryInst)
-				query[queryKey] = queryInst
+			var query map[string]interface{}
+			if toolsItem.Query != nil {
+				query := make(map[string]interface{})
+				for queryKey, queryValue := range toolsItem.Query {
+					var queryInst interface{}
+					_ = json.Unmarshal([]byte(queryValue.ValueString()), &queryInst)
+					query[queryKey] = queryInst
+				}
 			}
 			requestBody := new(string)
 			if !toolsItem.RequestBody.IsUnknown() && !toolsItem.RequestBody.IsNull() {

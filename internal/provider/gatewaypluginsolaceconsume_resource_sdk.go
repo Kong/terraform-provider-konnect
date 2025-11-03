@@ -43,7 +43,7 @@ func (r *GatewayPluginSolaceConsumeResourceModel) RefreshFromSharedSolaceConsume
 			}
 		}
 		r.Config.Flow.MaxUnackedMessages = types.Int64PointerValue(resp.Config.Flow.MaxUnackedMessages)
-		if len(resp.Config.Flow.Properties) > 0 {
+		if resp.Config.Flow.Properties != nil {
 			r.Config.Flow.Properties = make(map[string]jsontypes.Normalized, len(resp.Config.Flow.Properties))
 			for key, value := range resp.Config.Flow.Properties {
 				result, _ := json.Marshal(value)
@@ -87,7 +87,7 @@ func (r *GatewayPluginSolaceConsumeResourceModel) RefreshFromSharedSolaceConsume
 		r.Config.Session.GenerateSenderID = types.BoolPointerValue(resp.Config.Session.GenerateSenderID)
 		r.Config.Session.GenerateSequenceNumber = types.BoolPointerValue(resp.Config.Session.GenerateSequenceNumber)
 		r.Config.Session.Host = types.StringValue(resp.Config.Session.Host)
-		if len(resp.Config.Session.Properties) > 0 {
+		if resp.Config.Session.Properties != nil {
 			r.Config.Session.Properties = make(map[string]jsontypes.Normalized, len(resp.Config.Session.Properties))
 			for key1, value1 := range resp.Config.Session.Properties {
 				result1, _ := json.Marshal(value1)
@@ -383,11 +383,14 @@ func (r *GatewayPluginSolaceConsumeResourceModel) ToSharedSolaceConsumePlugin(ct
 	} else {
 		maxUnackedMessages = nil
 	}
-	properties := make(map[string]interface{})
-	for propertiesKey, propertiesValue := range r.Config.Flow.Properties {
-		var propertiesInst interface{}
-		_ = json.Unmarshal([]byte(propertiesValue.ValueString()), &propertiesInst)
-		properties[propertiesKey] = propertiesInst
+	var properties map[string]interface{}
+	if r.Config.Flow.Properties != nil {
+		properties := make(map[string]interface{})
+		for propertiesKey, propertiesValue := range r.Config.Flow.Properties {
+			var propertiesInst interface{}
+			_ = json.Unmarshal([]byte(propertiesValue.ValueString()), &propertiesInst)
+			properties[propertiesKey] = propertiesInst
+		}
 	}
 	selector := new(string)
 	if !r.Config.Flow.Selector.IsUnknown() && !r.Config.Flow.Selector.IsNull() {
@@ -528,11 +531,14 @@ func (r *GatewayPluginSolaceConsumeResourceModel) ToSharedSolaceConsumePlugin(ct
 	var host string
 	host = r.Config.Session.Host.ValueString()
 
-	properties1 := make(map[string]interface{})
-	for propertiesKey1, propertiesValue1 := range r.Config.Session.Properties {
-		var propertiesInst1 interface{}
-		_ = json.Unmarshal([]byte(propertiesValue1.ValueString()), &propertiesInst1)
-		properties1[propertiesKey1] = propertiesInst1
+	var properties1 map[string]interface{}
+	if r.Config.Session.Properties != nil {
+		properties1 := make(map[string]interface{})
+		for propertiesKey1, propertiesValue1 := range r.Config.Session.Properties {
+			var propertiesInst1 interface{}
+			_ = json.Unmarshal([]byte(propertiesValue1.ValueString()), &propertiesInst1)
+			properties1[propertiesKey1] = propertiesInst1
+		}
 	}
 	sslValidateCertificate := new(bool)
 	if !r.Config.Session.SslValidateCertificate.IsUnknown() && !r.Config.Session.SslValidateCertificate.IsNull() {

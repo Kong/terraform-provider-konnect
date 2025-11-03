@@ -17,7 +17,7 @@ func (r *GatewayPluginAppDynamicsResourceModel) RefreshFromSharedAppDynamicsPlug
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if len(resp.Config) > 0 {
+		if resp.Config != nil {
 			r.Config = make(map[string]jsontypes.Normalized, len(resp.Config))
 			for key, value := range resp.Config {
 				result, _ := json.Marshal(value)
@@ -274,11 +274,14 @@ func (r *GatewayPluginAppDynamicsResourceModel) ToSharedAppDynamicsPlugin(ctx co
 	} else {
 		updatedAt = nil
 	}
-	config := make(map[string]interface{})
-	for configKey, configValue := range r.Config {
-		var configInst interface{}
-		_ = json.Unmarshal([]byte(configValue.ValueString()), &configInst)
-		config[configKey] = configInst
+	var config map[string]interface{}
+	if r.Config != nil {
+		config := make(map[string]interface{})
+		for configKey, configValue := range r.Config {
+			var configInst interface{}
+			_ = json.Unmarshal([]byte(configValue.ValueString()), &configInst)
+			config[configKey] = configInst
+		}
 	}
 	var consumer *shared.AppDynamicsPluginConsumer
 	if r.Consumer != nil {

@@ -225,21 +225,21 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 			}
 			r.Config.AccessTokenUpstreamHeader = types.StringPointerValue(resp.Config.AccessTokenUpstreamHeader)
 			r.Config.AccessTokenUpstreamLeeway = types.Float64PointerValue(resp.Config.AccessTokenUpstreamLeeway)
-			if len(resp.Config.AddAccessTokenClaims) > 0 {
+			if resp.Config.AddAccessTokenClaims != nil {
 				r.Config.AddAccessTokenClaims = make(map[string]jsontypes.Normalized, len(resp.Config.AddAccessTokenClaims))
 				for key, value := range resp.Config.AddAccessTokenClaims {
 					result, _ := json.Marshal(value)
 					r.Config.AddAccessTokenClaims[key] = jsontypes.NewNormalizedValue(string(result))
 				}
 			}
-			if len(resp.Config.AddChannelTokenClaims) > 0 {
+			if resp.Config.AddChannelTokenClaims != nil {
 				r.Config.AddChannelTokenClaims = make(map[string]jsontypes.Normalized, len(resp.Config.AddChannelTokenClaims))
 				for key1, value1 := range resp.Config.AddChannelTokenClaims {
 					result1, _ := json.Marshal(value1)
 					r.Config.AddChannelTokenClaims[key1] = jsontypes.NewNormalizedValue(string(result1))
 				}
 			}
-			if len(resp.Config.AddClaims) > 0 {
+			if resp.Config.AddClaims != nil {
 				r.Config.AddClaims = make(map[string]jsontypes.Normalized, len(resp.Config.AddClaims))
 				for key2, value2 := range resp.Config.AddClaims {
 					result2, _ := json.Marshal(value2)
@@ -467,21 +467,21 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 			for _, v := range resp.Config.RemoveChannelTokenClaims {
 				r.Config.RemoveChannelTokenClaims = append(r.Config.RemoveChannelTokenClaims, types.StringValue(v))
 			}
-			if len(resp.Config.SetAccessTokenClaims) > 0 {
+			if resp.Config.SetAccessTokenClaims != nil {
 				r.Config.SetAccessTokenClaims = make(map[string]jsontypes.Normalized, len(resp.Config.SetAccessTokenClaims))
 				for key3, value3 := range resp.Config.SetAccessTokenClaims {
 					result3, _ := json.Marshal(value3)
 					r.Config.SetAccessTokenClaims[key3] = jsontypes.NewNormalizedValue(string(result3))
 				}
 			}
-			if len(resp.Config.SetChannelTokenClaims) > 0 {
+			if resp.Config.SetChannelTokenClaims != nil {
 				r.Config.SetChannelTokenClaims = make(map[string]jsontypes.Normalized, len(resp.Config.SetChannelTokenClaims))
 				for key4, value4 := range resp.Config.SetChannelTokenClaims {
 					result4, _ := json.Marshal(value4)
 					r.Config.SetChannelTokenClaims[key4] = jsontypes.NewNormalizedValue(string(result4))
 				}
 			}
-			if len(resp.Config.SetClaims) > 0 {
+			if resp.Config.SetClaims != nil {
 				r.Config.SetClaims = make(map[string]jsontypes.Normalized, len(resp.Config.SetClaims))
 				for key5, value5 := range resp.Config.SetClaims {
 					result5, _ := json.Marshal(value5)
@@ -1096,23 +1096,32 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 		} else {
 			accessTokenUpstreamLeeway = nil
 		}
-		addAccessTokenClaims := make(map[string]interface{})
-		for addAccessTokenClaimsKey, addAccessTokenClaimsValue := range r.Config.AddAccessTokenClaims {
-			var addAccessTokenClaimsInst interface{}
-			_ = json.Unmarshal([]byte(addAccessTokenClaimsValue.ValueString()), &addAccessTokenClaimsInst)
-			addAccessTokenClaims[addAccessTokenClaimsKey] = addAccessTokenClaimsInst
+		var addAccessTokenClaims map[string]interface{}
+		if r.Config.AddAccessTokenClaims != nil {
+			addAccessTokenClaims := make(map[string]interface{})
+			for addAccessTokenClaimsKey, addAccessTokenClaimsValue := range r.Config.AddAccessTokenClaims {
+				var addAccessTokenClaimsInst interface{}
+				_ = json.Unmarshal([]byte(addAccessTokenClaimsValue.ValueString()), &addAccessTokenClaimsInst)
+				addAccessTokenClaims[addAccessTokenClaimsKey] = addAccessTokenClaimsInst
+			}
 		}
-		addChannelTokenClaims := make(map[string]interface{})
-		for addChannelTokenClaimsKey, addChannelTokenClaimsValue := range r.Config.AddChannelTokenClaims {
-			var addChannelTokenClaimsInst interface{}
-			_ = json.Unmarshal([]byte(addChannelTokenClaimsValue.ValueString()), &addChannelTokenClaimsInst)
-			addChannelTokenClaims[addChannelTokenClaimsKey] = addChannelTokenClaimsInst
+		var addChannelTokenClaims map[string]interface{}
+		if r.Config.AddChannelTokenClaims != nil {
+			addChannelTokenClaims := make(map[string]interface{})
+			for addChannelTokenClaimsKey, addChannelTokenClaimsValue := range r.Config.AddChannelTokenClaims {
+				var addChannelTokenClaimsInst interface{}
+				_ = json.Unmarshal([]byte(addChannelTokenClaimsValue.ValueString()), &addChannelTokenClaimsInst)
+				addChannelTokenClaims[addChannelTokenClaimsKey] = addChannelTokenClaimsInst
+			}
 		}
-		addClaims := make(map[string]interface{})
-		for addClaimsKey, addClaimsValue := range r.Config.AddClaims {
-			var addClaimsInst interface{}
-			_ = json.Unmarshal([]byte(addClaimsValue.ValueString()), &addClaimsInst)
-			addClaims[addClaimsKey] = addClaimsInst
+		var addClaims map[string]interface{}
+		if r.Config.AddClaims != nil {
+			addClaims := make(map[string]interface{})
+			for addClaimsKey, addClaimsValue := range r.Config.AddClaims {
+				var addClaimsInst interface{}
+				_ = json.Unmarshal([]byte(addClaimsValue.ValueString()), &addClaimsInst)
+				addClaims[addClaimsKey] = addClaimsInst
+			}
 		}
 		cacheAccessTokenIntrospection := new(bool)
 		if !r.Config.CacheAccessTokenIntrospection.IsUnknown() && !r.Config.CacheAccessTokenIntrospection.IsNull() {
@@ -1509,23 +1518,32 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 		for _, removeChannelTokenClaimsItem := range r.Config.RemoveChannelTokenClaims {
 			removeChannelTokenClaims = append(removeChannelTokenClaims, removeChannelTokenClaimsItem.ValueString())
 		}
-		setAccessTokenClaims := make(map[string]interface{})
-		for setAccessTokenClaimsKey, setAccessTokenClaimsValue := range r.Config.SetAccessTokenClaims {
-			var setAccessTokenClaimsInst interface{}
-			_ = json.Unmarshal([]byte(setAccessTokenClaimsValue.ValueString()), &setAccessTokenClaimsInst)
-			setAccessTokenClaims[setAccessTokenClaimsKey] = setAccessTokenClaimsInst
+		var setAccessTokenClaims map[string]interface{}
+		if r.Config.SetAccessTokenClaims != nil {
+			setAccessTokenClaims := make(map[string]interface{})
+			for setAccessTokenClaimsKey, setAccessTokenClaimsValue := range r.Config.SetAccessTokenClaims {
+				var setAccessTokenClaimsInst interface{}
+				_ = json.Unmarshal([]byte(setAccessTokenClaimsValue.ValueString()), &setAccessTokenClaimsInst)
+				setAccessTokenClaims[setAccessTokenClaimsKey] = setAccessTokenClaimsInst
+			}
 		}
-		setChannelTokenClaims := make(map[string]interface{})
-		for setChannelTokenClaimsKey, setChannelTokenClaimsValue := range r.Config.SetChannelTokenClaims {
-			var setChannelTokenClaimsInst interface{}
-			_ = json.Unmarshal([]byte(setChannelTokenClaimsValue.ValueString()), &setChannelTokenClaimsInst)
-			setChannelTokenClaims[setChannelTokenClaimsKey] = setChannelTokenClaimsInst
+		var setChannelTokenClaims map[string]interface{}
+		if r.Config.SetChannelTokenClaims != nil {
+			setChannelTokenClaims := make(map[string]interface{})
+			for setChannelTokenClaimsKey, setChannelTokenClaimsValue := range r.Config.SetChannelTokenClaims {
+				var setChannelTokenClaimsInst interface{}
+				_ = json.Unmarshal([]byte(setChannelTokenClaimsValue.ValueString()), &setChannelTokenClaimsInst)
+				setChannelTokenClaims[setChannelTokenClaimsKey] = setChannelTokenClaimsInst
+			}
 		}
-		setClaims := make(map[string]interface{})
-		for setClaimsKey, setClaimsValue := range r.Config.SetClaims {
-			var setClaimsInst interface{}
-			_ = json.Unmarshal([]byte(setClaimsValue.ValueString()), &setClaimsInst)
-			setClaims[setClaimsKey] = setClaimsInst
+		var setClaims map[string]interface{}
+		if r.Config.SetClaims != nil {
+			setClaims := make(map[string]interface{})
+			for setClaimsKey, setClaimsValue := range r.Config.SetClaims {
+				var setClaimsInst interface{}
+				_ = json.Unmarshal([]byte(setClaimsValue.ValueString()), &setClaimsInst)
+				setClaims[setClaimsKey] = setClaimsInst
+			}
 		}
 		trustAccessTokenIntrospection := new(bool)
 		if !r.Config.TrustAccessTokenIntrospection.IsUnknown() && !r.Config.TrustAccessTokenIntrospection.IsNull() {

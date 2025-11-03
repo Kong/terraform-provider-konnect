@@ -351,7 +351,6 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 											})),
 											Attributes: map[string]schema.Attribute{
 												"custom": schema.MapAttribute{
-													Computed:    true,
 													Optional:    true,
 													ElementType: jsontypes.NormalizedType{},
 													Description: `The custom body fields to be added to the callout HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on ` + "`" + `request-transformer-advanced` + "`" + ` templates.`,
@@ -441,7 +440,6 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 											})),
 											Attributes: map[string]schema.Attribute{
 												"custom": schema.MapAttribute{
-													Computed:    true,
 													Optional:    true,
 													ElementType: jsontypes.NormalizedType{},
 													Description: `The custom headers to be added in the callout HTTP request. Values can contain Lua expressions in the form ` + "`" + `$(some_lua_expression)` + "`" + `. The syntax is based on ` + "`" + `request-transformer-advanced` + "`" + ` templates.`,
@@ -573,7 +571,6 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 											})),
 											Attributes: map[string]schema.Attribute{
 												"custom": schema.MapAttribute{
-													Computed:    true,
 													Optional:    true,
 													ElementType: jsontypes.NormalizedType{},
 													Description: `The custom query params to be added in the callout HTTP request. Values can contain Lua expressions in the form ` + "`" + `$(some_lua_expression)` + "`" + `. The syntax is based on ` + "`" + `request-transformer-advanced` + "`" + ` templates.`,
@@ -680,7 +677,6 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"custom": schema.MapAttribute{
-										Computed:    true,
 										Optional:    true,
 										ElementType: jsontypes.NormalizedType{},
 										Description: `The custom body fields to be added in the upstream request body. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on ` + "`" + `request-transformer-advanced` + "`" + ` templates.`,
@@ -712,7 +708,6 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"custom": schema.MapAttribute{
-										Computed:    true,
 										Optional:    true,
 										ElementType: jsontypes.NormalizedType{},
 										Description: `The custom headers to be added in the upstream HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on ` + "`" + `request-transformer-advanced` + "`" + ` templates.`,
@@ -734,7 +729,6 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"custom": schema.MapAttribute{
-										Computed:    true,
 										Optional:    true,
 										ElementType: jsontypes.NormalizedType{},
 										Description: `The custom query params to be added in the upstream HTTP request. Values can contain Lua expressions in the form ` + "`" + `$(some_lua_expression)` + "`" + `. The syntax is based on ` + "`" + `request-transformer-advanced` + "`" + ` templates.`,
