@@ -1,5 +1,5 @@
 workflowVersion: 1.0.0
-speakeasyVersion: 1.636.2
+speakeasyVersion: 1.645.2
 sources:
   kong:
     inputs:

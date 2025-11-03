@@ -228,13 +228,16 @@ func (r *GatewayRouteResourceModel) ToSharedRouteJSON(ctx context.Context) (*sha
 			})
 		}
 	}
-	headers := make(map[string][]string)
-	for headersKey, headersValue := range r.Headers {
-		headersInst := make([]string, 0, len(headersValue))
-		for _, item := range headersValue {
-			headersInst = append(headersInst, item.ValueString())
+	var headers map[string][]string
+	if r.Headers != nil {
+		headers := make(map[string][]string)
+		for headersKey, headersValue := range r.Headers {
+			headersInst := make([]string, 0, len(headersValue))
+			for _, item := range headersValue {
+				headersInst = append(headersInst, item.ValueString())
+			}
+			headers[headersKey] = headersInst
 		}
-		headers[headersKey] = headersInst
 	}
 	var hosts []string
 	if r.Hosts != nil {

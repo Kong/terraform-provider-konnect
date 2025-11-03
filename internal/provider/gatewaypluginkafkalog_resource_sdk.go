@@ -496,12 +496,15 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin(ctx context.
 	} else {
 		clusterName = nil
 	}
-	customFieldsByLua := make(map[string]string)
-	for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
-		var customFieldsByLuaInst string
-		customFieldsByLuaInst = customFieldsByLuaValue.ValueString()
+	var customFieldsByLua map[string]string
+	if r.Config.CustomFieldsByLua != nil {
+		customFieldsByLua := make(map[string]string)
+		for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
+			var customFieldsByLuaInst string
+			customFieldsByLuaInst = customFieldsByLuaValue.ValueString()
 
-		customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
+			customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
+		}
 	}
 	keepalive := new(int64)
 	if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {

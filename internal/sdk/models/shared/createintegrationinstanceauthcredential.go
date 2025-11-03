@@ -31,10 +31,32 @@ func CreateCreateIntegrationInstanceAuthCredentialMultiKeyAuth(multiKeyAuth Mult
 
 func (u *CreateIntegrationInstanceAuthCredential) UnmarshalJSON(data []byte) error {
 
+	var candidates []utils.UnionCandidate
+
+	// Collect all valid candidates
 	var multiKeyAuth MultiKeyAuth = MultiKeyAuth{}
 	if err := utils.UnmarshalJSON(data, &multiKeyAuth, "", true, nil); err == nil {
-		u.MultiKeyAuth = &multiKeyAuth
-		u.Type = CreateIntegrationInstanceAuthCredentialTypeMultiKeyAuth
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  CreateIntegrationInstanceAuthCredentialTypeMultiKeyAuth,
+			Value: &multiKeyAuth,
+		})
+	}
+
+	if len(candidates) == 0 {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for CreateIntegrationInstanceAuthCredential", string(data))
+	}
+
+	// Pick the best candidate using multi-stage filtering
+	best := utils.PickBestCandidate(candidates)
+	if best == nil {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for CreateIntegrationInstanceAuthCredential", string(data))
+	}
+
+	// Set the union type and value based on the best candidate
+	u.Type = best.Type.(CreateIntegrationInstanceAuthCredentialType)
+	switch best.Type {
+	case CreateIntegrationInstanceAuthCredentialTypeMultiKeyAuth:
+		u.MultiKeyAuth = best.Value.(*MultiKeyAuth)
 		return nil
 	}
 

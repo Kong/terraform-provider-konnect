@@ -43,17 +43,43 @@ func CreateConfigsUpdateAppAuthStrategyRequestKeyAuth(updateAppAuthStrategyReque
 
 func (u *Configs) UnmarshalJSON(data []byte) error {
 
+	var candidates []utils.UnionCandidate
+
+	// Collect all valid candidates
 	var updateAppAuthStrategyRequestOpenIDConnect UpdateAppAuthStrategyRequestOpenIDConnect = UpdateAppAuthStrategyRequestOpenIDConnect{}
 	if err := utils.UnmarshalJSON(data, &updateAppAuthStrategyRequestOpenIDConnect, "", true, nil); err == nil {
-		u.UpdateAppAuthStrategyRequestOpenIDConnect = &updateAppAuthStrategyRequestOpenIDConnect
-		u.Type = ConfigsTypeUpdateAppAuthStrategyRequestOpenIDConnect
-		return nil
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  ConfigsTypeUpdateAppAuthStrategyRequestOpenIDConnect,
+			Value: &updateAppAuthStrategyRequestOpenIDConnect,
+		})
 	}
 
 	var updateAppAuthStrategyRequestKeyAuth UpdateAppAuthStrategyRequestKeyAuth = UpdateAppAuthStrategyRequestKeyAuth{}
 	if err := utils.UnmarshalJSON(data, &updateAppAuthStrategyRequestKeyAuth, "", true, nil); err == nil {
-		u.UpdateAppAuthStrategyRequestKeyAuth = &updateAppAuthStrategyRequestKeyAuth
-		u.Type = ConfigsTypeUpdateAppAuthStrategyRequestKeyAuth
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  ConfigsTypeUpdateAppAuthStrategyRequestKeyAuth,
+			Value: &updateAppAuthStrategyRequestKeyAuth,
+		})
+	}
+
+	if len(candidates) == 0 {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Configs", string(data))
+	}
+
+	// Pick the best candidate using multi-stage filtering
+	best := utils.PickBestCandidate(candidates)
+	if best == nil {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Configs", string(data))
+	}
+
+	// Set the union type and value based on the best candidate
+	u.Type = best.Type.(ConfigsType)
+	switch best.Type {
+	case ConfigsTypeUpdateAppAuthStrategyRequestOpenIDConnect:
+		u.UpdateAppAuthStrategyRequestOpenIDConnect = best.Value.(*UpdateAppAuthStrategyRequestOpenIDConnect)
+		return nil
+	case ConfigsTypeUpdateAppAuthStrategyRequestKeyAuth:
+		u.UpdateAppAuthStrategyRequestKeyAuth = best.Value.(*UpdateAppAuthStrategyRequestKeyAuth)
 		return nil
 	}
 

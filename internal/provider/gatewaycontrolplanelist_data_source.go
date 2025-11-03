@@ -32,7 +32,10 @@ type GatewayControlPlaneListDataSourceModel struct {
 	Data         []tfTypes.ControlPlane                `tfsdk:"data"`
 	Filter       *tfTypes.ControlPlaneFilterParameters `queryParam:"style=deepObject,explode=true,name=filter" tfsdk:"filter"`
 	FilterLabels types.String                          `queryParam:"style=form,explode=true,name=labels" tfsdk:"filter_labels"`
+	Number       types.Float64                         `tfsdk:"number"`
+	Size         types.Float64                         `tfsdk:"size"`
 	Sort         types.String                          `queryParam:"style=form,explode=true,name=sort" tfsdk:"sort"`
+	Total        types.Float64                         `tfsdk:"total"`
 }
 
 // Metadata returns the data source type name.
@@ -171,10 +174,19 @@ func (r *GatewayControlPlaneListDataSource) Schema(ctx context.Context, req data
 				Optional:    true,
 				Description: `Filter control planes in the response by associated labels.`,
 			},
+			"number": schema.Float64Attribute{
+				Computed: true,
+			},
+			"size": schema.Float64Attribute{
+				Computed: true,
+			},
 			"sort": schema.StringAttribute{
 				Optional: true,
 				MarkdownDescription: `Sorts a collection of control-planes. Supported sort attributes are:` + "\n" +
 					`  - created_at`,
+			},
+			"total": schema.Float64Attribute{
+				Computed: true,
 			},
 		},
 	}
@@ -244,7 +256,8 @@ func (r *GatewayControlPlaneListDataSource) Read(ctx context.Context, req dataso
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedControlPlane(ctx, res.ListControlPlanesResponse.Data)...)
+	data.Data = nil
+	resp.Diagnostics.Append(data.RefreshFromSharedListControlPlanesResponse(ctx, res.ListControlPlanesResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -263,7 +276,7 @@ func (r *GatewayControlPlaneListDataSource) Read(ctx context.Context, req dataso
 			break
 		}
 
-		resp.Diagnostics.Append(data.RefreshFromSharedControlPlane(ctx, res.ListControlPlanesResponse.Data)...)
+		resp.Diagnostics.Append(data.RefreshFromSharedListControlPlanesResponse(ctx, res.ListControlPlanesResponse)...)
 
 		if resp.Diagnostics.HasError() {
 			return

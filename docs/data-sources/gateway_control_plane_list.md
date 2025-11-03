@@ -48,6 +48,9 @@ data "konnect_gateway_control_plane_list" "my_gatewaycontrolplanelist" {
 ### Read-Only
 
 - `data` (Attributes List) (see [below for nested schema](#nestedatt--data))
+- `number` (Number)
+- `size` (Number)
+- `total` (Number)
 
 <a id="nestedatt--filter"></a>
 ### Nested Schema for `filter`

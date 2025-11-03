@@ -375,12 +375,15 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ct
 		} else {
 			headerType = nil
 		}
-		headers := make(map[string]string)
-		for headersKey, headersValue := range r.Config.Headers {
-			var headersInst string
-			headersInst = headersValue.ValueString()
+		var headers map[string]string
+		if r.Config.Headers != nil {
+			headers := make(map[string]string)
+			for headersKey, headersValue := range r.Config.Headers {
+				var headersInst string
+				headersInst = headersValue.ValueString()
 
-			headers[headersKey] = headersInst
+				headers[headersKey] = headersInst
+			}
 		}
 		httpResponseHeaderForTraceid := new(string)
 		if !r.Config.HTTPResponseHeaderForTraceid.IsUnknown() && !r.Config.HTTPResponseHeaderForTraceid.IsNull() {

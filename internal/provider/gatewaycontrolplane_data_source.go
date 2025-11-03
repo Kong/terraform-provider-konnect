@@ -36,7 +36,10 @@ type GatewayControlPlaneDataSourceModel struct {
 	ID           types.String                          `tfsdk:"id"`
 	Labels       map[string]types.String               `tfsdk:"labels"`
 	Name         types.String                          `tfsdk:"name"`
+	Number       types.Float64                         `tfsdk:"number"`
+	Size         types.Float64                         `tfsdk:"size"`
 	Sort         types.String                          `queryParam:"style=form,explode=true,name=sort" tfsdk:"sort"`
+	Total        types.Float64                         `tfsdk:"total"`
 }
 
 // Metadata returns the data source type name.
@@ -168,10 +171,19 @@ func (r *GatewayControlPlaneDataSource) Schema(ctx context.Context, req datasour
 				Computed:    true,
 				Description: `The name of the control plane.`,
 			},
+			"number": schema.Float64Attribute{
+				Computed: true,
+			},
+			"size": schema.Float64Attribute{
+				Computed: true,
+			},
 			"sort": schema.StringAttribute{
 				Optional: true,
 				MarkdownDescription: `Sorts a collection of control-planes. Supported sort attributes are:` + "\n" +
 					`  - created_at`,
+			},
+			"total": schema.Float64Attribute{
+				Computed: true,
 			},
 		},
 	}
@@ -237,11 +249,11 @@ func (r *GatewayControlPlaneDataSource) Read(ctx context.Context, req datasource
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.ListControlPlanesResponse != nil && len(res.ListControlPlanesResponse.Data) > 0) {
+	if !(res.ListControlPlanesResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedControlPlane(ctx, &res.ListControlPlanesResponse.Data[0])...)
+	resp.Diagnostics.Append(data.RefreshFromSharedListControlPlanesResponse(ctx, res.ListControlPlanesResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

@@ -330,13 +330,16 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstream(ctx context.Context) (*s
 			} else {
 				concurrency = nil
 			}
-			headers := make(map[string][]string)
-			for headersKey, headersValue := range r.Healthchecks.Active.Headers {
-				headersInst := make([]string, 0, len(headersValue))
-				for _, item := range headersValue {
-					headersInst = append(headersInst, item.ValueString())
+			var headers map[string][]string
+			if r.Healthchecks.Active.Headers != nil {
+				headers := make(map[string][]string)
+				for headersKey, headersValue := range r.Healthchecks.Active.Headers {
+					headersInst := make([]string, 0, len(headersValue))
+					for _, item := range headersValue {
+						headersInst = append(headersInst, item.ValueString())
+					}
+					headers[headersKey] = headersInst
 				}
-				headers[headersKey] = headersInst
 			}
 			var healthy *shared.Healthy
 			if r.Healthchecks.Active.Healthy != nil {
