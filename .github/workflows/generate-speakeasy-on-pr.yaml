@@ -89,7 +89,7 @@ jobs:
 
       - name: Run Generators
         working-directory: repo
-        run: make generate
+        run: make speakeasy
 
       - name: Commit & push changes (if any)
         working-directory: repo
