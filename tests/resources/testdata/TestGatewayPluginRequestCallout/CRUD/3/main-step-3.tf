@@ -23,9 +23,6 @@ resource "konnect_gateway_plugin_request_callout" "my_request_callout" {
             forward = false
           }
           body = {
-            custom = {
-              key = jsonencode("value")
-            }
             decode  = true
             forward = false
           }
