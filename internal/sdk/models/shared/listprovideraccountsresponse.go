@@ -4,7 +4,16 @@ package shared
 
 // ListProviderAccountsResponse - A paginated list for a collection of provider accounts.
 type ListProviderAccountsResponse struct {
+	// returns the pagination information
+	Meta PaginatedMeta     `json:"meta"`
 	Data []ProviderAccount `json:"data"`
+}
+
+func (l *ListProviderAccountsResponse) GetMeta() PaginatedMeta {
+	if l == nil {
+		return PaginatedMeta{}
+	}
+	return l.Meta
 }
 
 func (l *ListProviderAccountsResponse) GetData() []ProviderAccount {

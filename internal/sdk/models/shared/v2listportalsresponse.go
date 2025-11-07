@@ -4,7 +4,16 @@ package shared
 
 // V2ListPortalsResponse - A paginated list of portals in the current region in the organization.
 type V2ListPortalsResponse struct {
-	Data []V2Portal `json:"data"`
+	// returns the pagination information
+	Meta PaginatedMeta `json:"meta"`
+	Data []V2Portal    `json:"data"`
+}
+
+func (v *V2ListPortalsResponse) GetMeta() PaginatedMeta {
+	if v == nil {
+		return PaginatedMeta{}
+	}
+	return v.Meta
 }
 
 func (v *V2ListPortalsResponse) GetData() []V2Portal {
