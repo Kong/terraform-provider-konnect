@@ -17224,6 +17224,7 @@ components:
       required:
         - page
       title: PaginatedMeta
+      x-speakeasy-terraform-ignore: true
     BaseError:
       description: standard error
       type: object
@@ -21993,6 +21994,8 @@ components:
       description: A paginated list of portals in the current region in the organization.
       type: object
       properties:
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
         data:
           type: array
           items:
@@ -55886,6 +55889,8 @@ components:
           schema:
             type: object
             properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
               data:
                 x-speakeasy-entity: GatewayControlPlaneList
                 type: array
@@ -56119,6 +56124,8 @@ components:
             x-speakeasy-entity: CloudGatewayProviderAccountList
             type: object
             properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
               data:
                 type: array
                 items:
@@ -56224,6 +56231,8 @@ components:
           schema:
             type: object
             properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
               data:
                 type: array
                 items:
