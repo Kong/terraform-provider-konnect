@@ -4,16 +4,7 @@ package shared
 
 // ListControlPlanesResponse - A paginated list response for a collection of control planes.
 type ListControlPlanesResponse struct {
-	// returns the pagination information
-	Meta PaginatedMeta  `json:"meta"`
 	Data []ControlPlane `json:"data"`
-}
-
-func (l *ListControlPlanesResponse) GetMeta() PaginatedMeta {
-	if l == nil {
-		return PaginatedMeta{}
-	}
-	return l.Meta
 }
 
 func (l *ListControlPlanesResponse) GetData() []ControlPlane {

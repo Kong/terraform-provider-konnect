@@ -3,13 +3,14 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
 
 type ListControlPlanesRequest struct {
 	// The maximum number of items to include per page. The last page of a collection may include fewer items.
-	PageSize *int64 `queryParam:"style=form,explode=true,name=page[size]"`
+	pageSize int64 `const:"100" queryParam:"style=form,explode=true,name=page[size]"`
 	// Determines which page of the entities to retrieve.
 	PageNumber *int64 `queryParam:"style=form,explode=true,name=page[number]"`
 	// Filters a collection of control-planes.
@@ -22,11 +23,19 @@ type ListControlPlanesRequest struct {
 	Sort *string `queryParam:"style=form,explode=true,name=sort"`
 }
 
-func (l *ListControlPlanesRequest) GetPageSize() *int64 {
-	if l == nil {
-		return nil
+func (l ListControlPlanesRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *ListControlPlanesRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"page[size]"}); err != nil {
+		return err
 	}
-	return l.PageSize
+	return nil
+}
+
+func (l *ListControlPlanesRequest) GetPageSize() int64 {
+	return 100
 }
 
 func (l *ListControlPlanesRequest) GetPageNumber() *int64 {

@@ -289,12 +289,15 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedRouteByHeaderPlugin(ct
 	if r.Config != nil {
 		rules := make([]shared.RouteByHeaderPluginRules, 0, len(r.Config.Rules))
 		for _, rulesItem := range r.Config.Rules {
-			condition := make(map[string]string)
-			for conditionKey, conditionValue := range rulesItem.Condition {
-				var conditionInst string
-				conditionInst = conditionValue.ValueString()
+			var condition map[string]string
+			if rulesItem.Condition != nil {
+				condition = make(map[string]string)
+				for conditionKey, conditionValue := range rulesItem.Condition {
+					var conditionInst string
+					conditionInst = conditionValue.ValueString()
 
-				condition[conditionKey] = conditionInst
+					condition[conditionKey] = conditionInst
+				}
 			}
 			var upstreamName string
 			upstreamName = rulesItem.UpstreamName.ValueString()

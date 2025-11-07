@@ -54,24 +54,54 @@ func CreatePrivateDNSResponseGcpPrivateHostedZoneResponse(gcpPrivateHostedZoneRe
 
 func (u *PrivateDNSResponse) UnmarshalJSON(data []byte) error {
 
+	var candidates []utils.UnionCandidate
+
+	// Collect all valid candidates
 	var awsPrivateHostedZoneResponse AwsPrivateHostedZoneResponse = AwsPrivateHostedZoneResponse{}
 	if err := utils.UnmarshalJSON(data, &awsPrivateHostedZoneResponse, "", true, nil); err == nil {
-		u.AwsPrivateHostedZoneResponse = &awsPrivateHostedZoneResponse
-		u.Type = PrivateDNSResponseTypeAwsPrivateHostedZoneResponse
-		return nil
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  PrivateDNSResponseTypeAwsPrivateHostedZoneResponse,
+			Value: &awsPrivateHostedZoneResponse,
+		})
 	}
 
 	var awsPrivateDNSResolverResponse AwsPrivateDNSResolverResponse = AwsPrivateDNSResolverResponse{}
 	if err := utils.UnmarshalJSON(data, &awsPrivateDNSResolverResponse, "", true, nil); err == nil {
-		u.AwsPrivateDNSResolverResponse = &awsPrivateDNSResolverResponse
-		u.Type = PrivateDNSResponseTypeAwsPrivateDNSResolverResponse
-		return nil
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  PrivateDNSResponseTypeAwsPrivateDNSResolverResponse,
+			Value: &awsPrivateDNSResolverResponse,
+		})
 	}
 
 	var gcpPrivateHostedZoneResponse GcpPrivateHostedZoneResponse = GcpPrivateHostedZoneResponse{}
 	if err := utils.UnmarshalJSON(data, &gcpPrivateHostedZoneResponse, "", true, nil); err == nil {
-		u.GcpPrivateHostedZoneResponse = &gcpPrivateHostedZoneResponse
-		u.Type = PrivateDNSResponseTypeGcpPrivateHostedZoneResponse
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  PrivateDNSResponseTypeGcpPrivateHostedZoneResponse,
+			Value: &gcpPrivateHostedZoneResponse,
+		})
+	}
+
+	if len(candidates) == 0 {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for PrivateDNSResponse", string(data))
+	}
+
+	// Pick the best candidate using multi-stage filtering
+	best := utils.PickBestCandidate(candidates)
+	if best == nil {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for PrivateDNSResponse", string(data))
+	}
+
+	// Set the union type and value based on the best candidate
+	u.Type = best.Type.(PrivateDNSResponseType)
+	switch best.Type {
+	case PrivateDNSResponseTypeAwsPrivateHostedZoneResponse:
+		u.AwsPrivateHostedZoneResponse = best.Value.(*AwsPrivateHostedZoneResponse)
+		return nil
+	case PrivateDNSResponseTypeAwsPrivateDNSResolverResponse:
+		u.AwsPrivateDNSResolverResponse = best.Value.(*AwsPrivateDNSResolverResponse)
+		return nil
+	case PrivateDNSResponseTypeGcpPrivateHostedZoneResponse:
+		u.GcpPrivateHostedZoneResponse = best.Value.(*GcpPrivateHostedZoneResponse)
 		return nil
 	}
 

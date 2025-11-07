@@ -30,7 +30,6 @@ data "konnect_mesh_control_planes" "my_meshcontrolplanes" {
 ### Read-Only
 
 - `data` (Attributes List) (see [below for nested schema](#nestedatt--data))
-- `meta` (Attributes) returns the pagination information (see [below for nested schema](#nestedatt--meta))
 
 <a id="nestedatt--data"></a>
 ### Nested Schema for `data`
@@ -68,22 +67,3 @@ Read-Only:
 Read-Only:
 
 - `enabled` (Boolean)
-
-
-
-
-<a id="nestedatt--meta"></a>
-### Nested Schema for `meta`
-
-Read-Only:
-
-- `page` (Attributes) Contains pagination query parameters and the total number of objects returned. (see [below for nested schema](#nestedatt--meta--page))
-
-<a id="nestedatt--meta--page"></a>
-### Nested Schema for `meta.page`
-
-Read-Only:
-
-- `number` (Number)
-- `size` (Number)
-- `total` (Number)

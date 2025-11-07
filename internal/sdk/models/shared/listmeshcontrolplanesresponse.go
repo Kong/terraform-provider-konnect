@@ -4,16 +4,7 @@ package shared
 
 // ListMeshControlPlanesResponse - A paginated list response for a collection of control planes.
 type ListMeshControlPlanesResponse struct {
-	// returns the pagination information
-	Meta *PaginatedMeta     `json:"meta,omitempty"`
 	Data []MeshControlPlane `json:"data,omitempty"`
-}
-
-func (l *ListMeshControlPlanesResponse) GetMeta() *PaginatedMeta {
-	if l == nil {
-		return nil
-	}
-	return l.Meta
 }
 
 func (l *ListMeshControlPlanesResponse) GetData() []MeshControlPlane {

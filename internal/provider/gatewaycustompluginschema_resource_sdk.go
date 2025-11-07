@@ -23,6 +23,21 @@ func (r *GatewayCustomPluginSchemaResourceModel) RefreshFromSharedItem(ctx conte
 	return diags
 }
 
+func (r *GatewayCustomPluginSchemaResourceModel) RefreshFromSharedPluginSchemas(ctx context.Context, resp *shared.PluginSchemas) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedItem(ctx, resp.Item)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
 func (r *GatewayCustomPluginSchemaResourceModel) ToOperationsCreatePluginSchemasRequest(ctx context.Context) (*operations.CreatePluginSchemasRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

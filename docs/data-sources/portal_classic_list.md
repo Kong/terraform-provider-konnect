@@ -43,7 +43,6 @@ data "konnect_portal_classic_list" "my_portalclassiclist" {
 ### Read-Only
 
 - `data` (Attributes List) (see [below for nested schema](#nestedatt--data))
-- `meta` (Attributes) returns the pagination information (see [below for nested schema](#nestedatt--meta))
 
 <a id="nestedatt--data"></a>
 ### Nested Schema for `data`
@@ -70,20 +69,3 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `published_product_count` (Number) Number of api products published to the portal
 - `rbac_enabled` (Boolean) Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for products until unless assigned to teams with access to view and consume specific products.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
-
-
-<a id="nestedatt--meta"></a>
-### Nested Schema for `meta`
-
-Read-Only:
-
-- `page` (Attributes) Contains pagination query parameters and the total number of objects returned. (see [below for nested schema](#nestedatt--meta--page))
-
-<a id="nestedatt--meta--page"></a>
-### Nested Schema for `meta.page`
-
-Read-Only:
-
-- `number` (Number)
-- `size` (Number)
-- `total` (Number)

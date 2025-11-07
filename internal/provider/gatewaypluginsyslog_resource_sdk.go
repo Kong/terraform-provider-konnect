@@ -309,12 +309,15 @@ func (r *GatewayPluginSyslogResourceModel) ToSharedSyslogPlugin(ctx context.Cont
 		} else {
 			clientErrorsSeverity = nil
 		}
-		customFieldsByLua := make(map[string]string)
-		for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
-			var customFieldsByLuaInst string
-			customFieldsByLuaInst = customFieldsByLuaValue.ValueString()
+		var customFieldsByLua map[string]string
+		if r.Config.CustomFieldsByLua != nil {
+			customFieldsByLua = make(map[string]string)
+			for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
+				var customFieldsByLuaInst string
+				customFieldsByLuaInst = customFieldsByLuaValue.ValueString()
 
-			customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
+				customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
+			}
 		}
 		facility := new(shared.Facility)
 		if !r.Config.Facility.IsUnknown() && !r.Config.Facility.IsNull() {
