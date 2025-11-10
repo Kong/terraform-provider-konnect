@@ -123,6 +123,10 @@ data "http" "production_cp" {
 }
 ```
 
+## Terraform Compatibility and Versioning
+As a best practice, HashiCorp expects customers to stay current within two (2) releases from the latest major release of Terraform in order to receive optimal support. We encourage users of the terraform-provider-konnect to follow the same guidance.  
+While the provider may continue to work with older versions of Terraform, the user experience can degrade over time.
+
 <!-- No SDK Installation -->
 <!-- No SDK Example Usage -->
 <!-- No SDK Available Operations -->
