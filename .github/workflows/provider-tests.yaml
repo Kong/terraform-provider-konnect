@@ -3,7 +3,7 @@ name: Terraform Provider Tests
 on:
   pull_request:
     paths:
-      - ".github/workflows/test.yaml"
+      - ".github/workflows/provider-tests.yaml"
       - "**.go"
 
 permissions:
