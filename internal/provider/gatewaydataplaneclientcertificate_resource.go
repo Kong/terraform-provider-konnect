@@ -138,11 +138,11 @@ func (r *GatewayDataPlaneClientCertificateResource) Create(ctx context.Context, 
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.DataPlaneClientCertificateResponse != nil && res.DataPlaneClientCertificateResponse.Item != nil) {
+	if !(res.DataPlaneClientCertificateResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedDataPlaneClientCertificate(ctx, res.DataPlaneClientCertificateResponse.Item)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedDataPlaneClientCertificateResponse(ctx, res.DataPlaneClientCertificateResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -202,11 +202,11 @@ func (r *GatewayDataPlaneClientCertificateResource) Read(ctx context.Context, re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.DataPlaneClientCertificateResponse != nil && res.DataPlaneClientCertificateResponse.Item != nil) {
+	if !(res.DataPlaneClientCertificateResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedDataPlaneClientCertificate(ctx, res.DataPlaneClientCertificateResponse.Item)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedDataPlaneClientCertificateResponse(ctx, res.DataPlaneClientCertificateResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

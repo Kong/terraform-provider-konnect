@@ -11,6 +11,26 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
+func (r *PortalDataSourceModel) RefreshFromSharedListPortalsResponse(ctx context.Context, resp *shared.ListPortalsResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if len(resp.Data) == 0 {
+			diags.AddError("Unexpected response from API", "Missing response body array data.")
+			return diags
+		}
+
+		diags.Append(r.RefreshFromSharedPortal(ctx, &resp.Data[0])...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
 func (r *PortalDataSourceModel) RefreshFromSharedPortal(ctx context.Context, resp *shared.Portal) diag.Diagnostics {
 	var diags diag.Diagnostics
 

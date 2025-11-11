@@ -23,6 +23,21 @@ func (r *GatewayDataPlaneClientCertificateResourceModel) RefreshFromSharedDataPl
 	return diags
 }
 
+func (r *GatewayDataPlaneClientCertificateResourceModel) RefreshFromSharedDataPlaneClientCertificateResponse(ctx context.Context, resp *shared.DataPlaneClientCertificateResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedDataPlaneClientCertificate(ctx, resp.Item)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
 func (r *GatewayDataPlaneClientCertificateResourceModel) ToOperationsCreateDataplaneCertificateRequest(ctx context.Context) (*operations.CreateDataplaneCertificateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

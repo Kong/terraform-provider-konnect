@@ -244,7 +244,8 @@ func (r *GatewayControlPlaneListDataSource) Read(ctx context.Context, req dataso
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedControlPlane(ctx, res.ListControlPlanesResponse.Data)...)
+	data.Data = nil
+	resp.Diagnostics.Append(data.RefreshFromSharedListControlPlanesResponse(ctx, res.ListControlPlanesResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -263,7 +264,7 @@ func (r *GatewayControlPlaneListDataSource) Read(ctx context.Context, req dataso
 			break
 		}
 
-		resp.Diagnostics.Append(data.RefreshFromSharedControlPlane(ctx, res.ListControlPlanesResponse.Data)...)
+		resp.Diagnostics.Append(data.RefreshFromSharedListControlPlanesResponse(ctx, res.ListControlPlanesResponse)...)
 
 		if resp.Diagnostics.HasError() {
 			return

@@ -29,6 +29,21 @@ func (r *GatewayConsumerGroupResourceModel) RefreshFromSharedConsumerGroup(ctx c
 	return diags
 }
 
+func (r *GatewayConsumerGroupResourceModel) RefreshFromSharedConsumerGroupInsideWrapper(ctx context.Context, resp *shared.ConsumerGroupInsideWrapper) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		diags.Append(r.RefreshFromSharedConsumerGroup(ctx, resp.ConsumerGroup)...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
 func (r *GatewayConsumerGroupResourceModel) ToOperationsCreateConsumerGroupRequest(ctx context.Context) (*operations.CreateConsumerGroupRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

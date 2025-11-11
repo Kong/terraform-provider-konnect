@@ -42,17 +42,43 @@ func CreateConfigurationDataPlaneGroupAutoscaleConfigurationDataPlaneGroupAutosc
 
 func (u *ConfigurationDataPlaneGroupAutoscale) UnmarshalJSON(data []byte) error {
 
+	var candidates []utils.UnionCandidate
+
+	// Collect all valid candidates
 	var configurationDataPlaneGroupAutoscaleStatic ConfigurationDataPlaneGroupAutoscaleStatic = ConfigurationDataPlaneGroupAutoscaleStatic{}
 	if err := utils.UnmarshalJSON(data, &configurationDataPlaneGroupAutoscaleStatic, "", true, nil); err == nil {
-		u.ConfigurationDataPlaneGroupAutoscaleStatic = &configurationDataPlaneGroupAutoscaleStatic
-		u.Type = ConfigurationDataPlaneGroupAutoscaleTypeConfigurationDataPlaneGroupAutoscaleStatic
-		return nil
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  ConfigurationDataPlaneGroupAutoscaleTypeConfigurationDataPlaneGroupAutoscaleStatic,
+			Value: &configurationDataPlaneGroupAutoscaleStatic,
+		})
 	}
 
 	var configurationDataPlaneGroupAutoscaleAutopilot ConfigurationDataPlaneGroupAutoscaleAutopilot = ConfigurationDataPlaneGroupAutoscaleAutopilot{}
 	if err := utils.UnmarshalJSON(data, &configurationDataPlaneGroupAutoscaleAutopilot, "", true, nil); err == nil {
-		u.ConfigurationDataPlaneGroupAutoscaleAutopilot = &configurationDataPlaneGroupAutoscaleAutopilot
-		u.Type = ConfigurationDataPlaneGroupAutoscaleTypeConfigurationDataPlaneGroupAutoscaleAutopilot
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  ConfigurationDataPlaneGroupAutoscaleTypeConfigurationDataPlaneGroupAutoscaleAutopilot,
+			Value: &configurationDataPlaneGroupAutoscaleAutopilot,
+		})
+	}
+
+	if len(candidates) == 0 {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for ConfigurationDataPlaneGroupAutoscale", string(data))
+	}
+
+	// Pick the best candidate using multi-stage filtering
+	best := utils.PickBestCandidate(candidates)
+	if best == nil {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for ConfigurationDataPlaneGroupAutoscale", string(data))
+	}
+
+	// Set the union type and value based on the best candidate
+	u.Type = best.Type.(ConfigurationDataPlaneGroupAutoscaleType)
+	switch best.Type {
+	case ConfigurationDataPlaneGroupAutoscaleTypeConfigurationDataPlaneGroupAutoscaleStatic:
+		u.ConfigurationDataPlaneGroupAutoscaleStatic = best.Value.(*ConfigurationDataPlaneGroupAutoscaleStatic)
+		return nil
+	case ConfigurationDataPlaneGroupAutoscaleTypeConfigurationDataPlaneGroupAutoscaleAutopilot:
+		u.ConfigurationDataPlaneGroupAutoscaleAutopilot = best.Value.(*ConfigurationDataPlaneGroupAutoscaleAutopilot)
 		return nil
 	}
 

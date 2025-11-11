@@ -2159,7 +2159,13 @@ paths:
       summary: List Control Planes
       description: Returns an array of control plane objects containing information about the Konnect Control Planes.
       parameters:
-        - $ref: '#/components/parameters/PageSize'
+        - name: 'page[size]'
+          in: query
+          description: The maximum number of items to include per page. The last page of a collection may include fewer items.
+          required: true
+          schema:
+            type: integer
+            const: 100
         - $ref: '#/components/parameters/PageNumber'
         - $ref: '#/components/parameters/ControlPlaneFilter'
         - $ref: '#/components/parameters/FilterByLabels'
@@ -17196,12 +17202,15 @@ components:
         number:
           type: number
           example: 1
+          x-speakeasy-terraform-ignore: true
         size:
           type: number
           example: 10
+          x-speakeasy-terraform-ignore: true
         total:
           type: number
           example: 100
+          x-speakeasy-terraform-ignore: true
       required:
         - number
         - size
@@ -17215,6 +17224,7 @@ components:
       required:
         - page
       title: PaginatedMeta
+      x-speakeasy-terraform-ignore: true
     BaseError:
       description: standard error
       type: object

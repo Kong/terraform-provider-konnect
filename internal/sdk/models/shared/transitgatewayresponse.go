@@ -76,38 +76,76 @@ func CreateTransitGatewayResponseAwsResourceEndpointGatewayResponse(awsResourceE
 
 func (u *TransitGatewayResponse) UnmarshalJSON(data []byte) error {
 
+	var candidates []utils.UnionCandidate
+
+	// Collect all valid candidates
 	var awsTransitGatewayResponse AwsTransitGatewayResponse = AwsTransitGatewayResponse{}
 	if err := utils.UnmarshalJSON(data, &awsTransitGatewayResponse, "", true, nil); err == nil {
-		u.AwsTransitGatewayResponse = &awsTransitGatewayResponse
-		u.Type = TransitGatewayResponseTypeAwsTransitGatewayResponse
-		return nil
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  TransitGatewayResponseTypeAwsTransitGatewayResponse,
+			Value: &awsTransitGatewayResponse,
+		})
 	}
 
 	var awsVpcPeeringGatewayResponse AwsVpcPeeringGatewayResponse = AwsVpcPeeringGatewayResponse{}
 	if err := utils.UnmarshalJSON(data, &awsVpcPeeringGatewayResponse, "", true, nil); err == nil {
-		u.AwsVpcPeeringGatewayResponse = &awsVpcPeeringGatewayResponse
-		u.Type = TransitGatewayResponseTypeAwsVpcPeeringGatewayResponse
-		return nil
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  TransitGatewayResponseTypeAwsVpcPeeringGatewayResponse,
+			Value: &awsVpcPeeringGatewayResponse,
+		})
 	}
 
 	var azureTransitGatewayResponse AzureTransitGatewayResponse = AzureTransitGatewayResponse{}
 	if err := utils.UnmarshalJSON(data, &azureTransitGatewayResponse, "", true, nil); err == nil {
-		u.AzureTransitGatewayResponse = &azureTransitGatewayResponse
-		u.Type = TransitGatewayResponseTypeAzureTransitGatewayResponse
-		return nil
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  TransitGatewayResponseTypeAzureTransitGatewayResponse,
+			Value: &azureTransitGatewayResponse,
+		})
 	}
 
 	var gcpvpcPeeringGatewayResponse GCPVPCPeeringGatewayResponse = GCPVPCPeeringGatewayResponse{}
 	if err := utils.UnmarshalJSON(data, &gcpvpcPeeringGatewayResponse, "", true, nil); err == nil {
-		u.GCPVPCPeeringGatewayResponse = &gcpvpcPeeringGatewayResponse
-		u.Type = TransitGatewayResponseTypeGCPVPCPeeringGatewayResponse
-		return nil
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  TransitGatewayResponseTypeGCPVPCPeeringGatewayResponse,
+			Value: &gcpvpcPeeringGatewayResponse,
+		})
 	}
 
 	var awsResourceEndpointGatewayResponse AwsResourceEndpointGatewayResponse = AwsResourceEndpointGatewayResponse{}
 	if err := utils.UnmarshalJSON(data, &awsResourceEndpointGatewayResponse, "", true, nil); err == nil {
-		u.AwsResourceEndpointGatewayResponse = &awsResourceEndpointGatewayResponse
-		u.Type = TransitGatewayResponseTypeAwsResourceEndpointGatewayResponse
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  TransitGatewayResponseTypeAwsResourceEndpointGatewayResponse,
+			Value: &awsResourceEndpointGatewayResponse,
+		})
+	}
+
+	if len(candidates) == 0 {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for TransitGatewayResponse", string(data))
+	}
+
+	// Pick the best candidate using multi-stage filtering
+	best := utils.PickBestCandidate(candidates)
+	if best == nil {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for TransitGatewayResponse", string(data))
+	}
+
+	// Set the union type and value based on the best candidate
+	u.Type = best.Type.(TransitGatewayResponseType)
+	switch best.Type {
+	case TransitGatewayResponseTypeAwsTransitGatewayResponse:
+		u.AwsTransitGatewayResponse = best.Value.(*AwsTransitGatewayResponse)
+		return nil
+	case TransitGatewayResponseTypeAwsVpcPeeringGatewayResponse:
+		u.AwsVpcPeeringGatewayResponse = best.Value.(*AwsVpcPeeringGatewayResponse)
+		return nil
+	case TransitGatewayResponseTypeAzureTransitGatewayResponse:
+		u.AzureTransitGatewayResponse = best.Value.(*AzureTransitGatewayResponse)
+		return nil
+	case TransitGatewayResponseTypeGCPVPCPeeringGatewayResponse:
+		u.GCPVPCPeeringGatewayResponse = best.Value.(*GCPVPCPeeringGatewayResponse)
+		return nil
+	case TransitGatewayResponseTypeAwsResourceEndpointGatewayResponse:
+		u.AwsResourceEndpointGatewayResponse = best.Value.(*AwsResourceEndpointGatewayResponse)
 		return nil
 	}
 

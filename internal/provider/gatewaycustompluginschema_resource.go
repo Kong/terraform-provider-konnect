@@ -135,11 +135,11 @@ func (r *GatewayCustomPluginSchemaResource) Create(ctx context.Context, req reso
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.PluginSchemas != nil && res.PluginSchemas.Item != nil) {
+	if !(res.PluginSchemas != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedItem(ctx, res.PluginSchemas.Item)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedPluginSchemas(ctx, res.PluginSchemas)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -199,11 +199,11 @@ func (r *GatewayCustomPluginSchemaResource) Read(ctx context.Context, req resour
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.PluginSchemas != nil && res.PluginSchemas.Item != nil) {
+	if !(res.PluginSchemas != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedItem(ctx, res.PluginSchemas.Item)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedPluginSchemas(ctx, res.PluginSchemas)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -249,11 +249,11 @@ func (r *GatewayCustomPluginSchemaResource) Update(ctx context.Context, req reso
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.PluginSchemas != nil && res.PluginSchemas.Item != nil) {
+	if !(res.PluginSchemas != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedItem(ctx, res.PluginSchemas.Item)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedPluginSchemas(ctx, res.PluginSchemas)...)
 
 	if resp.Diagnostics.HasError() {
 		return

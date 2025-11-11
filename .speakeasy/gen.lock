@@ -1,18 +1,18 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 34a1b661814dcb60eb216b109ab016bd
+  docChecksum: de1842029a2f71f21257d1323678d759
   docVersion: 2.0.0
-  speakeasyVersion: 1.636.2
-  generationVersion: 2.723.8
+  speakeasyVersion: 1.648.0
+  generationVersion: 2.737.0
   releaseVersion: 3.4.1
-  configChecksum: 3420d3f6fc1ece84dfa1f048c8e5693f
+  configChecksum: 14cbc05ef6009425f848693c055e9847
 features:
   terraform:
     additionalDependencies: 0.1.0
-    additionalProperties: 0.1.2
+    additionalProperties: 0.1.3
     constsAndDefaults: 0.3.0
-    core: 3.45.3
+    core: 3.46.5
     deepObjectParams: 0.1.0
     deprecations: 2.82.0
     globalSecurity: 2.82.1
@@ -20,14 +20,14 @@ features:
     groups: 2.81.3
     ignores: 2.81.1
     inputOutputModels: 2.83.0
-    methodServerURLs: 2.82.1
+    methodServerURLs: 2.83.0
     nameOverrides: 2.81.3
     nullables: 0.0.0
-    pagination: 2.83.1
+    pagination: 2.83.4
     retries: 2.81.4
     sets: 0.1.2
     typeOverrides: 2.81.1
-    unions: 2.81.18
+    unions: 2.82.2
 generatedFiles:
   - .gitattributes
   - USAGE.md
@@ -1198,8 +1198,6 @@ generatedFiles:
   - internal/provider/types/openid_connect_plugin_redis.go
   - internal/provider/types/opentelemetry_plugin_config.go
   - internal/provider/types/outputs.go
-  - internal/provider/types/page_meta.go
-  - internal/provider/types/paginated_meta.go
   - internal/provider/types/parameter_schema.go
   - internal/provider/types/parameters.go
   - internal/provider/types/partial_redis_ce.go

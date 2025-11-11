@@ -331,12 +331,15 @@ func (r *GatewayPluginSolaceLogResourceModel) ToSharedSolaceLogPlugin(ctx contex
 	} else {
 		ackTimeout = nil
 	}
-	customFieldsByLua := make(map[string]string)
-	for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.Message.CustomFieldsByLua {
-		var customFieldsByLuaInst string
-		customFieldsByLuaInst = customFieldsByLuaValue.ValueString()
+	var customFieldsByLua map[string]string
+	if r.Config.Message.CustomFieldsByLua != nil {
+		customFieldsByLua = make(map[string]string)
+		for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.Message.CustomFieldsByLua {
+			var customFieldsByLuaInst string
+			customFieldsByLuaInst = customFieldsByLuaValue.ValueString()
 
-		customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
+			customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
+		}
 	}
 	deliveryMode := new(shared.DeliveryMode)
 	if !r.Config.Message.DeliveryMode.IsUnknown() && !r.Config.Message.DeliveryMode.IsNull() {

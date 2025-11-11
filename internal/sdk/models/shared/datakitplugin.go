@@ -948,52 +948,98 @@ func CreateNodesStatic(static Static) Nodes {
 
 func (u *Nodes) UnmarshalJSON(data []byte) error {
 
+	var candidates []utils.UnionCandidate
+
+	// Collect all valid candidates
 	var branch Branch = Branch{}
 	if err := utils.UnmarshalJSON(data, &branch, "", true, nil); err == nil {
-		u.Branch = &branch
-		u.Type = NodesTypeBranch
-		return nil
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  NodesTypeBranch,
+			Value: &branch,
+		})
 	}
 
 	var call Call = Call{}
 	if err := utils.UnmarshalJSON(data, &call, "", true, nil); err == nil {
-		u.Call = &call
-		u.Type = NodesTypeCall
-		return nil
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  NodesTypeCall,
+			Value: &call,
+		})
 	}
 
 	var nodesCache NodesCache = NodesCache{}
 	if err := utils.UnmarshalJSON(data, &nodesCache, "", true, nil); err == nil {
-		u.NodesCache = &nodesCache
-		u.Type = NodesTypeNodesCache
-		return nil
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  NodesTypeNodesCache,
+			Value: &nodesCache,
+		})
 	}
 
 	var exit Exit = Exit{}
 	if err := utils.UnmarshalJSON(data, &exit, "", true, nil); err == nil {
-		u.Exit = &exit
-		u.Type = NodesTypeExit
-		return nil
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  NodesTypeExit,
+			Value: &exit,
+		})
 	}
 
 	var jq Jq = Jq{}
 	if err := utils.UnmarshalJSON(data, &jq, "", true, nil); err == nil {
-		u.Jq = &jq
-		u.Type = NodesTypeJq
-		return nil
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  NodesTypeJq,
+			Value: &jq,
+		})
 	}
 
 	var property Property = Property{}
 	if err := utils.UnmarshalJSON(data, &property, "", true, nil); err == nil {
-		u.Property = &property
-		u.Type = NodesTypeProperty
-		return nil
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  NodesTypeProperty,
+			Value: &property,
+		})
 	}
 
 	var static Static = Static{}
 	if err := utils.UnmarshalJSON(data, &static, "", true, nil); err == nil {
-		u.Static = &static
-		u.Type = NodesTypeStatic
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  NodesTypeStatic,
+			Value: &static,
+		})
+	}
+
+	if len(candidates) == 0 {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Nodes", string(data))
+	}
+
+	// Pick the best candidate using multi-stage filtering
+	best := utils.PickBestCandidate(candidates)
+	if best == nil {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Nodes", string(data))
+	}
+
+	// Set the union type and value based on the best candidate
+	u.Type = best.Type.(NodesType)
+	switch best.Type {
+	case NodesTypeBranch:
+		u.Branch = best.Value.(*Branch)
+		return nil
+	case NodesTypeCall:
+		u.Call = best.Value.(*Call)
+		return nil
+	case NodesTypeNodesCache:
+		u.NodesCache = best.Value.(*NodesCache)
+		return nil
+	case NodesTypeExit:
+		u.Exit = best.Value.(*Exit)
+		return nil
+	case NodesTypeJq:
+		u.Jq = best.Value.(*Jq)
+		return nil
+	case NodesTypeProperty:
+		u.Property = best.Value.(*Property)
+		return nil
+	case NodesTypeStatic:
+		u.Static = best.Value.(*Static)
 		return nil
 	}
 

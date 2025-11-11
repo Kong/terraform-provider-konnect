@@ -53,24 +53,54 @@ func CreatePrivateDNSAttachmentConfigGcpPrivateHostedZoneAttachmentConfig(gcpPri
 
 func (u *PrivateDNSAttachmentConfig) UnmarshalJSON(data []byte) error {
 
+	var candidates []utils.UnionCandidate
+
+	// Collect all valid candidates
 	var gcpPrivateHostedZoneAttachmentConfig GcpPrivateHostedZoneAttachmentConfig = GcpPrivateHostedZoneAttachmentConfig{}
 	if err := utils.UnmarshalJSON(data, &gcpPrivateHostedZoneAttachmentConfig, "", true, nil); err == nil {
-		u.GcpPrivateHostedZoneAttachmentConfig = &gcpPrivateHostedZoneAttachmentConfig
-		u.Type = PrivateDNSAttachmentConfigTypeGcpPrivateHostedZoneAttachmentConfig
-		return nil
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  PrivateDNSAttachmentConfigTypeGcpPrivateHostedZoneAttachmentConfig,
+			Value: &gcpPrivateHostedZoneAttachmentConfig,
+		})
 	}
 
 	var awsPrivateHostedZoneAttachmentConfig AwsPrivateHostedZoneAttachmentConfig = AwsPrivateHostedZoneAttachmentConfig{}
 	if err := utils.UnmarshalJSON(data, &awsPrivateHostedZoneAttachmentConfig, "", true, nil); err == nil {
-		u.AwsPrivateHostedZoneAttachmentConfig = &awsPrivateHostedZoneAttachmentConfig
-		u.Type = PrivateDNSAttachmentConfigTypeAwsPrivateHostedZoneAttachmentConfig
-		return nil
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  PrivateDNSAttachmentConfigTypeAwsPrivateHostedZoneAttachmentConfig,
+			Value: &awsPrivateHostedZoneAttachmentConfig,
+		})
 	}
 
 	var awsPrivateDNSResolverAttachmentConfig AwsPrivateDNSResolverAttachmentConfig = AwsPrivateDNSResolverAttachmentConfig{}
 	if err := utils.UnmarshalJSON(data, &awsPrivateDNSResolverAttachmentConfig, "", true, nil); err == nil {
-		u.AwsPrivateDNSResolverAttachmentConfig = &awsPrivateDNSResolverAttachmentConfig
-		u.Type = PrivateDNSAttachmentConfigTypeAwsPrivateDNSResolverAttachmentConfig
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  PrivateDNSAttachmentConfigTypeAwsPrivateDNSResolverAttachmentConfig,
+			Value: &awsPrivateDNSResolverAttachmentConfig,
+		})
+	}
+
+	if len(candidates) == 0 {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for PrivateDNSAttachmentConfig", string(data))
+	}
+
+	// Pick the best candidate using multi-stage filtering
+	best := utils.PickBestCandidate(candidates)
+	if best == nil {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for PrivateDNSAttachmentConfig", string(data))
+	}
+
+	// Set the union type and value based on the best candidate
+	u.Type = best.Type.(PrivateDNSAttachmentConfigType)
+	switch best.Type {
+	case PrivateDNSAttachmentConfigTypeGcpPrivateHostedZoneAttachmentConfig:
+		u.GcpPrivateHostedZoneAttachmentConfig = best.Value.(*GcpPrivateHostedZoneAttachmentConfig)
+		return nil
+	case PrivateDNSAttachmentConfigTypeAwsPrivateHostedZoneAttachmentConfig:
+		u.AwsPrivateHostedZoneAttachmentConfig = best.Value.(*AwsPrivateHostedZoneAttachmentConfig)
+		return nil
+	case PrivateDNSAttachmentConfigTypeAwsPrivateDNSResolverAttachmentConfig:
+		u.AwsPrivateDNSResolverAttachmentConfig = best.Value.(*AwsPrivateDNSResolverAttachmentConfig)
 		return nil
 	}
 
