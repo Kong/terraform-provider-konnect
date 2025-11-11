@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.5.0
+> Released on 2025/??/??
+
+### Bug Fixes
+* Support setting unstructured objects to `null` - for example `config.callouts[*].request.custom` in `konnect_gateway_plugin_request_callout` resource
+
 ## 3.4.1
 > Released on 2025/10/29
 

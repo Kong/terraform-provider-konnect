@@ -430,7 +430,6 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 														},
 													},
 													"token_headers": schema.MapAttribute{
-														Computed:    true,
 														Optional:    true,
 														ElementType: jsontypes.NormalizedType{},
 														Description: `Extra headers to be passed in the token endpoint request.`,
@@ -439,7 +438,6 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 														},
 													},
 													"token_post_args": schema.MapAttribute{
-														Computed:    true,
 														Optional:    true,
 														ElementType: jsontypes.NormalizedType{},
 														Description: `Extra post arguments to be passed in the token endpoint request.`,
@@ -818,7 +816,6 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 																	},
 																},
 																"token_headers": schema.MapAttribute{
-																	Computed:    true,
 																	Optional:    true,
 																	ElementType: jsontypes.NormalizedType{},
 																	Description: `Extra headers to be passed in the token endpoint request.`,
@@ -827,7 +824,6 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 																	},
 																},
 																"token_post_args": schema.MapAttribute{
-																	Computed:    true,
 																	Optional:    true,
 																	ElementType: jsontypes.NormalizedType{},
 																	Description: `Extra post arguments to be passed in the token endpoint request.`,

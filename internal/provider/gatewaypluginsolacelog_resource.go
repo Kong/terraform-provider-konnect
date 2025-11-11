@@ -278,7 +278,6 @@ func (r *GatewayPluginSolaceLogResource) Schema(ctx context.Context, req resourc
 								Description: `The IPv4 or IPv6 address or host name to connect to (see: https://docs.solace.com/API-Developer-Online-Ref-Documentation/c/index.html#host-entry).`,
 							},
 							"properties": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: jsontypes.NormalizedType{},
 								Description: `Additional Solace session properties (each setting needs to have ` + "`" + `SESSION_` + "`" + ` prefix).`,

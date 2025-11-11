@@ -464,7 +464,6 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 														Description: `The token endpoint URI.`,
 													},
 													"token_headers": schema.MapAttribute{
-														Computed:    true,
 														Optional:    true,
 														ElementType: jsontypes.NormalizedType{},
 														Description: `Extra headers to be passed in the token endpoint request.`,
@@ -473,7 +472,6 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 														},
 													},
 													"token_post_args": schema.MapAttribute{
-														Computed:    true,
 														Optional:    true,
 														ElementType: jsontypes.NormalizedType{},
 														Description: `Extra post arguments to be passed in the token endpoint request.`,
@@ -901,7 +899,6 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 																	},
 																},
 																"token_headers": schema.MapAttribute{
-																	Computed:    true,
 																	Optional:    true,
 																	ElementType: jsontypes.NormalizedType{},
 																	Description: `Extra headers to be passed in the token endpoint request.`,
@@ -910,7 +907,6 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 																	},
 																},
 																"token_post_args": schema.MapAttribute{
-																	Computed:    true,
 																	Optional:    true,
 																	ElementType: jsontypes.NormalizedType{},
 																	Description: `Extra post arguments to be passed in the token endpoint request.`,
