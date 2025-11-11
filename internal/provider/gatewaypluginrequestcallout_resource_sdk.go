@@ -106,7 +106,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				callouts.Request.Body = nil
 			} else {
 				callouts.Request.Body = &tfTypes.RequestCalloutPluginConfigBody{}
-				if len(calloutsItem.Request.Body.Custom) > 0 {
+				if calloutsItem.Request.Body.Custom != nil {
 					callouts.Request.Body.Custom = make(map[string]jsontypes.Normalized, len(calloutsItem.Request.Body.Custom))
 					for key, value := range calloutsItem.Request.Body.Custom {
 						result, _ := json.Marshal(value)
@@ -140,7 +140,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				callouts.Request.Headers = nil
 			} else {
 				callouts.Request.Headers = &tfTypes.RequestCalloutPluginConfigCalloutsHeaders{}
-				if len(calloutsItem.Request.Headers.Custom) > 0 {
+				if calloutsItem.Request.Headers.Custom != nil {
 					callouts.Request.Headers.Custom = make(map[string]jsontypes.Normalized, len(calloutsItem.Request.Headers.Custom))
 					for key1, value1 := range calloutsItem.Request.Headers.Custom {
 						result1, _ := json.Marshal(value1)
@@ -178,7 +178,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				callouts.Request.Query = nil
 			} else {
 				callouts.Request.Query = &tfTypes.RequestCalloutPluginConfigCalloutsHeaders{}
-				if len(calloutsItem.Request.Query.Custom) > 0 {
+				if calloutsItem.Request.Query.Custom != nil {
 					callouts.Request.Query.Custom = make(map[string]jsontypes.Normalized, len(calloutsItem.Request.Query.Custom))
 					for key2, value2 := range calloutsItem.Request.Query.Custom {
 						result2, _ := json.Marshal(value2)
@@ -218,7 +218,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				r.Config.Upstream.Body = nil
 			} else {
 				r.Config.Upstream.Body = &tfTypes.RequestCalloutPluginConfigBody{}
-				if len(resp.Config.Upstream.Body.Custom) > 0 {
+				if resp.Config.Upstream.Body.Custom != nil {
 					r.Config.Upstream.Body.Custom = make(map[string]jsontypes.Normalized, len(resp.Config.Upstream.Body.Custom))
 					for key3, value3 := range resp.Config.Upstream.Body.Custom {
 						result3, _ := json.Marshal(value3)
@@ -233,7 +233,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				r.Config.Upstream.Headers = nil
 			} else {
 				r.Config.Upstream.Headers = &tfTypes.RequestCalloutPluginConfigCalloutsHeaders{}
-				if len(resp.Config.Upstream.Headers.Custom) > 0 {
+				if resp.Config.Upstream.Headers.Custom != nil {
 					r.Config.Upstream.Headers.Custom = make(map[string]jsontypes.Normalized, len(resp.Config.Upstream.Headers.Custom))
 					for key4, value4 := range resp.Config.Upstream.Headers.Custom {
 						result4, _ := json.Marshal(value4)
@@ -246,7 +246,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				r.Config.Upstream.Query = nil
 			} else {
 				r.Config.Upstream.Query = &tfTypes.RequestCalloutPluginConfigCalloutsHeaders{}
-				if len(resp.Config.Upstream.Query.Custom) > 0 {
+				if resp.Config.Upstream.Query.Custom != nil {
 					r.Config.Upstream.Query.Custom = make(map[string]jsontypes.Normalized, len(resp.Config.Upstream.Query.Custom))
 					for key5, value5 := range resp.Config.Upstream.Query.Custom {
 						result5, _ := json.Marshal(value5)
@@ -752,11 +752,14 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 
 		var body *shared.RequestCalloutPluginConfigBody
 		if calloutsItem.Request.Body != nil {
-			custom := make(map[string]interface{})
-			for customKey, customValue := range calloutsItem.Request.Body.Custom {
-				var customInst interface{}
-				_ = json.Unmarshal([]byte(customValue.ValueString()), &customInst)
-				custom[customKey] = customInst
+			var custom map[string]interface{}
+			if calloutsItem.Request.Body.Custom != nil {
+				custom = make(map[string]interface{})
+				for customKey, customValue := range calloutsItem.Request.Body.Custom {
+					var customInst interface{}
+					_ = json.Unmarshal([]byte(customValue.ValueString()), &customInst)
+					custom[customKey] = customInst
+				}
 			}
 			decode := new(bool)
 			if !calloutsItem.Request.Body.Decode.IsUnknown() && !calloutsItem.Request.Body.Decode.IsNull() {
@@ -825,11 +828,14 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 		}
 		var headers *shared.RequestCalloutPluginConfigCalloutsHeaders
 		if calloutsItem.Request.Headers != nil {
-			custom1 := make(map[string]interface{})
-			for customKey1, customValue1 := range calloutsItem.Request.Headers.Custom {
-				var customInst1 interface{}
-				_ = json.Unmarshal([]byte(customValue1.ValueString()), &customInst1)
-				custom1[customKey1] = customInst1
+			var custom1 map[string]interface{}
+			if calloutsItem.Request.Headers.Custom != nil {
+				custom1 = make(map[string]interface{})
+				for customKey1, customValue1 := range calloutsItem.Request.Headers.Custom {
+					var customInst1 interface{}
+					_ = json.Unmarshal([]byte(customValue1.ValueString()), &customInst1)
+					custom1[customKey1] = customInst1
+				}
 			}
 			forward1 := new(bool)
 			if !calloutsItem.Request.Headers.Forward.IsUnknown() && !calloutsItem.Request.Headers.Forward.IsNull() {
@@ -930,11 +936,14 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 		}
 		var query *shared.RequestCalloutPluginQuery
 		if calloutsItem.Request.Query != nil {
-			custom2 := make(map[string]interface{})
-			for customKey2, customValue2 := range calloutsItem.Request.Query.Custom {
-				var customInst2 interface{}
-				_ = json.Unmarshal([]byte(customValue2.ValueString()), &customInst2)
-				custom2[customKey2] = customInst2
+			var custom2 map[string]interface{}
+			if calloutsItem.Request.Query.Custom != nil {
+				custom2 = make(map[string]interface{})
+				for customKey2, customValue2 := range calloutsItem.Request.Query.Custom {
+					var customInst2 interface{}
+					_ = json.Unmarshal([]byte(customValue2.ValueString()), &customInst2)
+					custom2[customKey2] = customInst2
+				}
 			}
 			forward2 := new(bool)
 			if !calloutsItem.Request.Query.Forward.IsUnknown() && !calloutsItem.Request.Query.Forward.IsNull() {
@@ -1017,11 +1026,14 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 	if r.Config.Upstream != nil {
 		var body2 *shared.Body
 		if r.Config.Upstream.Body != nil {
-			custom3 := make(map[string]interface{})
-			for customKey3, customValue3 := range r.Config.Upstream.Body.Custom {
-				var customInst3 interface{}
-				_ = json.Unmarshal([]byte(customValue3.ValueString()), &customInst3)
-				custom3[customKey3] = customInst3
+			var custom3 map[string]interface{}
+			if r.Config.Upstream.Body.Custom != nil {
+				custom3 = make(map[string]interface{})
+				for customKey3, customValue3 := range r.Config.Upstream.Body.Custom {
+					var customInst3 interface{}
+					_ = json.Unmarshal([]byte(customValue3.ValueString()), &customInst3)
+					custom3[customKey3] = customInst3
+				}
 			}
 			decode2 := new(bool)
 			if !r.Config.Upstream.Body.Decode.IsUnknown() && !r.Config.Upstream.Body.Decode.IsNull() {
@@ -1049,11 +1061,14 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 		}
 		var headers2 *shared.RequestCalloutPluginHeaders
 		if r.Config.Upstream.Headers != nil {
-			custom4 := make(map[string]interface{})
-			for customKey4, customValue4 := range r.Config.Upstream.Headers.Custom {
-				var customInst4 interface{}
-				_ = json.Unmarshal([]byte(customValue4.ValueString()), &customInst4)
-				custom4[customKey4] = customInst4
+			var custom4 map[string]interface{}
+			if r.Config.Upstream.Headers.Custom != nil {
+				custom4 = make(map[string]interface{})
+				for customKey4, customValue4 := range r.Config.Upstream.Headers.Custom {
+					var customInst4 interface{}
+					_ = json.Unmarshal([]byte(customValue4.ValueString()), &customInst4)
+					custom4[customKey4] = customInst4
+				}
 			}
 			forward4 := new(bool)
 			if !r.Config.Upstream.Headers.Forward.IsUnknown() && !r.Config.Upstream.Headers.Forward.IsNull() {
@@ -1068,11 +1083,14 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 		}
 		var query1 *shared.Query
 		if r.Config.Upstream.Query != nil {
-			custom5 := make(map[string]interface{})
-			for customKey5, customValue5 := range r.Config.Upstream.Query.Custom {
-				var customInst5 interface{}
-				_ = json.Unmarshal([]byte(customValue5.ValueString()), &customInst5)
-				custom5[customKey5] = customInst5
+			var custom5 map[string]interface{}
+			if r.Config.Upstream.Query.Custom != nil {
+				custom5 = make(map[string]interface{})
+				for customKey5, customValue5 := range r.Config.Upstream.Query.Custom {
+					var customInst5 interface{}
+					_ = json.Unmarshal([]byte(customValue5.ValueString()), &customInst5)
+					custom5[customKey5] = customInst5
+				}
 			}
 			forward5 := new(bool)
 			if !r.Config.Upstream.Query.Forward.IsUnknown() && !r.Config.Upstream.Query.Forward.IsNull() {

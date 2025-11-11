@@ -20,9 +20,6 @@ resource "konnect_gateway_plugin_request_callout" "my_request_callout" {
           url = "http://httpbin.org/uuid"
           method = "GET"
           headers = {
-            custom = {
-              key = jsonencode("value")
-            }
             forward = false
           }
           body = {
@@ -33,9 +30,6 @@ resource "konnect_gateway_plugin_request_callout" "my_request_callout" {
             forward = false
           }
           query = {
-            custom = {
-              key = jsonencode("value")
-            }
             forward = true
           }
           error = {

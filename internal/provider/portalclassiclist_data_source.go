@@ -29,11 +29,10 @@ type PortalClassicListDataSource struct {
 
 // PortalClassicListDataSourceModel describes the data model.
 type PortalClassicListDataSourceModel struct {
-	Data       []tfTypes.V2Portal    `tfsdk:"data"`
-	Meta       tfTypes.PaginatedMeta `tfsdk:"meta"`
-	PageNumber types.Int64           `queryParam:"style=form,explode=true,name=page[number]" tfsdk:"page_number"`
-	PageSize   types.Int64           `queryParam:"style=form,explode=true,name=page[size]" tfsdk:"page_size"`
-	Sort       types.String          `queryParam:"style=form,explode=true,name=sort" tfsdk:"sort"`
+	Data       []tfTypes.V2Portal `tfsdk:"data"`
+	PageNumber types.Int64        `queryParam:"style=form,explode=true,name=page[number]" tfsdk:"page_number"`
+	PageSize   types.Int64        `queryParam:"style=form,explode=true,name=page[size]" tfsdk:"page_size"`
+	Sort       types.String       `queryParam:"style=form,explode=true,name=sort" tfsdk:"sort"`
 }
 
 // Metadata returns the data source type name.
@@ -128,27 +127,6 @@ func (r *PortalClassicListDataSource) Schema(ctx context.Context, req datasource
 						},
 					},
 				},
-			},
-			"meta": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"page": schema.SingleNestedAttribute{
-						Computed: true,
-						Attributes: map[string]schema.Attribute{
-							"number": schema.Float64Attribute{
-								Computed: true,
-							},
-							"size": schema.Float64Attribute{
-								Computed: true,
-							},
-							"total": schema.Float64Attribute{
-								Computed: true,
-							},
-						},
-						Description: `Contains pagination query parameters and the total number of objects returned.`,
-					},
-				},
-				Description: `returns the pagination information`,
 			},
 			"page_number": schema.Int64Attribute{
 				Optional:    true,

@@ -316,12 +316,15 @@ func (r *GatewayPluginHTTPLogResourceModel) ToSharedHTTPLogPlugin(ctx context.Co
 	} else {
 		contentType = nil
 	}
-	customFieldsByLua := make(map[string]string)
-	for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
-		var customFieldsByLuaInst string
-		customFieldsByLuaInst = customFieldsByLuaValue.ValueString()
+	var customFieldsByLua map[string]string
+	if r.Config.CustomFieldsByLua != nil {
+		customFieldsByLua = make(map[string]string)
+		for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
+			var customFieldsByLuaInst string
+			customFieldsByLuaInst = customFieldsByLuaValue.ValueString()
 
-		customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
+			customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
+		}
 	}
 	flushTimeout := new(float64)
 	if !r.Config.FlushTimeout.IsUnknown() && !r.Config.FlushTimeout.IsNull() {
@@ -329,12 +332,15 @@ func (r *GatewayPluginHTTPLogResourceModel) ToSharedHTTPLogPlugin(ctx context.Co
 	} else {
 		flushTimeout = nil
 	}
-	headers := make(map[string]string)
-	for headersKey, headersValue := range r.Config.Headers {
-		var headersInst string
-		headersInst = headersValue.ValueString()
+	var headers map[string]string
+	if r.Config.Headers != nil {
+		headers = make(map[string]string)
+		for headersKey, headersValue := range r.Config.Headers {
+			var headersInst string
+			headersInst = headersValue.ValueString()
 
-		headers[headersKey] = headersInst
+			headers[headersKey] = headersInst
+		}
 	}
 	var httpEndpoint string
 	httpEndpoint = r.Config.HTTPEndpoint.ValueString()

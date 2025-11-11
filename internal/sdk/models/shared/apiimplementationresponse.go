@@ -84,10 +84,32 @@ func CreateAPIImplementationResponseAPIImplementationResponseServiceReference(ap
 
 func (u *APIImplementationResponse) UnmarshalJSON(data []byte) error {
 
+	var candidates []utils.UnionCandidate
+
+	// Collect all valid candidates
 	var apiImplementationResponseServiceReference APIImplementationResponseServiceReference = APIImplementationResponseServiceReference{}
 	if err := utils.UnmarshalJSON(data, &apiImplementationResponseServiceReference, "", true, nil); err == nil {
-		u.APIImplementationResponseServiceReference = &apiImplementationResponseServiceReference
-		u.Type = APIImplementationResponseTypeAPIImplementationResponseServiceReference
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  APIImplementationResponseTypeAPIImplementationResponseServiceReference,
+			Value: &apiImplementationResponseServiceReference,
+		})
+	}
+
+	if len(candidates) == 0 {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for APIImplementationResponse", string(data))
+	}
+
+	// Pick the best candidate using multi-stage filtering
+	best := utils.PickBestCandidate(candidates)
+	if best == nil {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for APIImplementationResponse", string(data))
+	}
+
+	// Set the union type and value based on the best candidate
+	u.Type = best.Type.(APIImplementationResponseType)
+	switch best.Type {
+	case APIImplementationResponseTypeAPIImplementationResponseServiceReference:
+		u.APIImplementationResponseServiceReference = best.Value.(*APIImplementationResponseServiceReference)
 		return nil
 	}
 

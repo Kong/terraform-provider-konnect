@@ -29,9 +29,6 @@ func (r *CloudGatewayProviderAccountListDataSourceModel) RefreshFromSharedListPr
 
 			r.Data = append(r.Data, data)
 		}
-		r.Meta.Page.Number = types.Float64Value(resp.Meta.Page.Number)
-		r.Meta.Page.Size = types.Float64Value(resp.Meta.Page.Size)
-		r.Meta.Page.Total = types.Float64Value(resp.Meta.Page.Total)
 	}
 
 	return diags

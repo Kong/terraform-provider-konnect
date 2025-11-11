@@ -30,7 +30,6 @@ data "konnect_cloud_gateway_provider_account_list" "my_cloudgatewayprovideraccou
 ### Read-Only
 
 - `data` (Attributes List) (see [below for nested schema](#nestedatt--data))
-- `meta` (Attributes) returns the pagination information (see [below for nested schema](#nestedatt--meta))
 
 <a id="nestedatt--data"></a>
 ### Nested Schema for `data`
@@ -42,20 +41,3 @@ Read-Only:
 - `provider` (String) Name of cloud provider.
 - `provider_account_id` (String) ID of the cloud provider account.
 - `updated_at` (String) An RFC-3339 timestamp representation of provider account update date.
-
-
-<a id="nestedatt--meta"></a>
-### Nested Schema for `meta`
-
-Read-Only:
-
-- `page` (Attributes) Contains pagination query parameters and the total number of objects returned. (see [below for nested schema](#nestedatt--meta--page))
-
-<a id="nestedatt--meta--page"></a>
-### Nested Schema for `meta.page`
-
-Read-Only:
-
-- `number` (Number)
-- `size` (Number)
-- `total` (Number)

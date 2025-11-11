@@ -21,7 +21,7 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) RefreshFromSharedAiMcpOauth2Plug
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.AiMcpOauth2PluginConfig{}
-			if len(resp.Config.Args) > 0 {
+			if resp.Config.Args != nil {
 				r.Config.Args = make(map[string]jsontypes.Normalized, len(resp.Config.Args))
 				for key, value := range resp.Config.Args {
 					result, _ := json.Marshal(value)
@@ -58,7 +58,7 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) RefreshFromSharedAiMcpOauth2Plug
 			r.Config.ClientID = types.StringValue(resp.Config.ClientID)
 			r.Config.ClientJwk = types.StringPointerValue(resp.Config.ClientJwk)
 			r.Config.ClientSecret = types.StringPointerValue(resp.Config.ClientSecret)
-			if len(resp.Config.Headers) > 0 {
+			if resp.Config.Headers != nil {
 				r.Config.Headers = make(map[string]jsontypes.Normalized, len(resp.Config.Headers))
 				for key1, value1 := range resp.Config.Headers {
 					result1, _ := json.Marshal(value1)
@@ -341,11 +341,14 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 	}
 	var config *shared.AiMcpOauth2PluginConfig
 	if r.Config != nil {
-		args := make(map[string]interface{})
-		for argsKey, argsValue := range r.Config.Args {
-			var argsInst interface{}
-			_ = json.Unmarshal([]byte(argsValue.ValueString()), &argsInst)
-			args[argsKey] = argsInst
+		var args map[string]interface{}
+		if r.Config.Args != nil {
+			args = make(map[string]interface{})
+			for argsKey, argsValue := range r.Config.Args {
+				var argsInst interface{}
+				_ = json.Unmarshal([]byte(argsValue.ValueString()), &argsInst)
+				args[argsKey] = argsInst
+			}
 		}
 		authorizationServers := make([]string, 0, len(r.Config.AuthorizationServers))
 		for _, authorizationServersItem := range r.Config.AuthorizationServers {
@@ -400,11 +403,14 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 		} else {
 			clientSecret = nil
 		}
-		headers := make(map[string]interface{})
-		for headersKey, headersValue := range r.Config.Headers {
-			var headersInst interface{}
-			_ = json.Unmarshal([]byte(headersValue.ValueString()), &headersInst)
-			headers[headersKey] = headersInst
+		var headers map[string]interface{}
+		if r.Config.Headers != nil {
+			headers = make(map[string]interface{})
+			for headersKey, headersValue := range r.Config.Headers {
+				var headersInst interface{}
+				_ = json.Unmarshal([]byte(headersValue.ValueString()), &headersInst)
+				headers[headersKey] = headersInst
+			}
 		}
 		httpProxy := new(string)
 		if !r.Config.HTTPProxy.IsUnknown() && !r.Config.HTTPProxy.IsNull() {

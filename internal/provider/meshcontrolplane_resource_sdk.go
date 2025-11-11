@@ -139,15 +139,18 @@ func (r *MeshControlPlaneResourceModel) ToSharedCreateMeshControlPlaneRequest(ct
 			MeshCreation:              meshCreation,
 		})
 	}
-	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
-		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
-		} else {
-			labelsInst = nil
+	var labels map[string]*string
+	if r.Labels != nil {
+		labels = make(map[string]*string)
+		for labelsKey, labelsValue := range r.Labels {
+			labelsInst := new(string)
+			if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
+				*labelsInst = labelsValue.ValueString()
+			} else {
+				labelsInst = nil
+			}
+			labels[labelsKey] = labelsInst
 		}
-		labels[labelsKey] = labelsInst
 	}
 	out := shared.CreateMeshControlPlaneRequest{
 		Name:        name,
@@ -171,12 +174,15 @@ func (r *MeshControlPlaneResourceModel) ToSharedPutMeshControlPlaneRequest(ctx c
 	} else {
 		description = nil
 	}
-	labels := make(map[string]string)
-	for labelsKey, labelsValue := range r.Labels {
-		var labelsInst string
-		labelsInst = labelsValue.ValueString()
+	var labels map[string]string
+	if r.Labels != nil {
+		labels = make(map[string]string)
+		for labelsKey, labelsValue := range r.Labels {
+			var labelsInst string
+			labelsInst = labelsValue.ValueString()
 
-		labels[labelsKey] = labelsInst
+			labels[labelsKey] = labelsInst
+		}
 	}
 	out := shared.PutMeshControlPlaneRequest{
 		Name:        name,

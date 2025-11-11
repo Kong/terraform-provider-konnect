@@ -30,7 +30,6 @@ type CloudGatewayProviderAccountListDataSource struct {
 // CloudGatewayProviderAccountListDataSourceModel describes the data model.
 type CloudGatewayProviderAccountListDataSourceModel struct {
 	Data       []tfTypes.ProviderAccount `tfsdk:"data"`
-	Meta       tfTypes.PaginatedMeta     `tfsdk:"meta"`
 	PageNumber types.Int64               `queryParam:"style=form,explode=true,name=page[number]" tfsdk:"page_number"`
 	PageSize   types.Int64               `queryParam:"style=form,explode=true,name=page[size]" tfsdk:"page_size"`
 }
@@ -71,27 +70,6 @@ func (r *CloudGatewayProviderAccountListDataSource) Schema(ctx context.Context, 
 						},
 					},
 				},
-			},
-			"meta": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"page": schema.SingleNestedAttribute{
-						Computed: true,
-						Attributes: map[string]schema.Attribute{
-							"number": schema.Float64Attribute{
-								Computed: true,
-							},
-							"size": schema.Float64Attribute{
-								Computed: true,
-							},
-							"total": schema.Float64Attribute{
-								Computed: true,
-							},
-						},
-						Description: `Contains pagination query parameters and the total number of objects returned.`,
-					},
-				},
-				Description: `returns the pagination information`,
 			},
 			"page_number": schema.Int64Attribute{
 				Optional:    true,

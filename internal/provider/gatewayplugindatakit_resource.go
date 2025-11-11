@@ -493,7 +493,6 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											},
 										},
 										"inputs": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: jsontypes.NormalizedType{},
 											Description: `filter input(s)`,
@@ -615,7 +614,6 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											},
 										},
 										"outputs": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: jsontypes.NormalizedType{},
 											Description: `Individual items from ` + "`" + `.values` + "`" + `, referenced by key`,
@@ -1004,7 +1002,6 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 								},
 							},
 							"vault": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: jsontypes.NormalizedType{},
 								Validators: []validator.Map{

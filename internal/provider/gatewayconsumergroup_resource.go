@@ -208,11 +208,11 @@ func (r *GatewayConsumerGroupResource) Read(ctx context.Context, req resource.Re
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.ConsumerGroupInsideWrapper != nil && res.ConsumerGroupInsideWrapper.ConsumerGroup != nil) {
+	if !(res.ConsumerGroupInsideWrapper != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedConsumerGroup(ctx, res.ConsumerGroupInsideWrapper.ConsumerGroup)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedConsumerGroupInsideWrapper(ctx, res.ConsumerGroupInsideWrapper)...)
 
 	if resp.Diagnostics.HasError() {
 		return

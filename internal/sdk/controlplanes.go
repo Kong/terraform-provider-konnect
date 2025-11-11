@@ -182,18 +182,9 @@ func (s *ControlPlanes) ListControlPlanes(ctx context.Context, request operation
 			return nil, nil
 		}
 
-		l := 0
-		if request.PageSize != nil {
-			l = int(*request.PageSize)
-		}
-		if len(arr) < l {
-			return nil, nil
-		}
-
 		return s.ListControlPlanes(
 			ctx,
 			operations.ListControlPlanesRequest{
-				PageSize:     request.PageSize,
 				PageNumber:   &nP,
 				Filter:       request.Filter,
 				FilterLabels: request.FilterLabels,

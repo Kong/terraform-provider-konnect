@@ -32,10 +32,32 @@ func CreateIntegrationInstanceAuthConfigOauthAuthConfig(oauthAuthConfig OauthAut
 
 func (u *IntegrationInstanceAuthConfig) UnmarshalJSON(data []byte) error {
 
+	var candidates []utils.UnionCandidate
+
+	// Collect all valid candidates
 	var oauthAuthConfig OauthAuthConfig = OauthAuthConfig{}
 	if err := utils.UnmarshalJSON(data, &oauthAuthConfig, "", true, nil); err == nil {
-		u.OauthAuthConfig = &oauthAuthConfig
-		u.Type = IntegrationInstanceAuthConfigTypeOauthAuthConfig
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  IntegrationInstanceAuthConfigTypeOauthAuthConfig,
+			Value: &oauthAuthConfig,
+		})
+	}
+
+	if len(candidates) == 0 {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for IntegrationInstanceAuthConfig", string(data))
+	}
+
+	// Pick the best candidate using multi-stage filtering
+	best := utils.PickBestCandidate(candidates)
+	if best == nil {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for IntegrationInstanceAuthConfig", string(data))
+	}
+
+	// Set the union type and value based on the best candidate
+	u.Type = best.Type.(IntegrationInstanceAuthConfigType)
+	switch best.Type {
+	case IntegrationInstanceAuthConfigTypeOauthAuthConfig:
+		u.OauthAuthConfig = best.Value.(*OauthAuthConfig)
 		return nil
 	}
 

@@ -43,6 +43,26 @@ func (r *GatewayControlPlaneDataSourceModel) RefreshFromSharedControlPlane(ctx c
 	return diags
 }
 
+func (r *GatewayControlPlaneDataSourceModel) RefreshFromSharedListControlPlanesResponse(ctx context.Context, resp *shared.ListControlPlanesResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if len(resp.Data) == 0 {
+			diags.AddError("Unexpected response from API", "Missing response body array data.")
+			return diags
+		}
+
+		diags.Append(r.RefreshFromSharedControlPlane(ctx, &resp.Data[0])...)
+
+		if diags.HasError() {
+			return diags
+		}
+
+	}
+
+	return diags
+}
+
 func (r *GatewayControlPlaneDataSourceModel) ToOperationsListControlPlanesSingleResourceRequest(ctx context.Context) (*operations.ListControlPlanesSingleResourceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

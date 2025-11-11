@@ -393,11 +393,11 @@ func (r *PortalDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.ListPortalsResponse != nil && len(res.ListPortalsResponse.Data) > 0) {
+	if !(res.ListPortalsResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPortal(ctx, &res.ListPortalsResponse.Data[0])...)
+	resp.Diagnostics.Append(data.RefreshFromSharedListPortalsResponse(ctx, res.ListPortalsResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

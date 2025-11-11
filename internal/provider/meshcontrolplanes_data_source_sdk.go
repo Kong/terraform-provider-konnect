@@ -56,14 +56,6 @@ func (r *MeshControlPlanesDataSourceModel) RefreshFromSharedListMeshControlPlane
 
 			r.Data = append(r.Data, data)
 		}
-		if resp.Meta == nil {
-			r.Meta = nil
-		} else {
-			r.Meta = &tfTypes.PaginatedMeta{}
-			r.Meta.Page.Number = types.Float64Value(resp.Meta.Page.Number)
-			r.Meta.Page.Size = types.Float64Value(resp.Meta.Page.Size)
-			r.Meta.Page.Total = types.Float64Value(resp.Meta.Page.Total)
-		}
 	}
 
 	return diags

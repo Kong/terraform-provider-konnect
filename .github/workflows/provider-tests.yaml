@@ -3,7 +3,7 @@ name: Terraform Provider Tests
 on:
   pull_request:
     paths:
-      - ".github/workflows/test.yaml"
+      - ".github/workflows/provider-tests.yaml"
       - "**.go"
 
 permissions:
@@ -19,7 +19,7 @@ jobs:
         # Only test against one version for now as these tests are not
         # namespaced and will conflict
         terraform-version:
-          - "1.11.*"
+          - "1.13.*"
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf # v2.11.1

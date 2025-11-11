@@ -31,10 +31,32 @@ func CreateUpsertIntegrationInstanceAuthConfigOauthConfig(oauthConfig OauthConfi
 
 func (u *UpsertIntegrationInstanceAuthConfig) UnmarshalJSON(data []byte) error {
 
+	var candidates []utils.UnionCandidate
+
+	// Collect all valid candidates
 	var oauthConfig OauthConfig = OauthConfig{}
 	if err := utils.UnmarshalJSON(data, &oauthConfig, "", true, nil); err == nil {
-		u.OauthConfig = &oauthConfig
-		u.Type = UpsertIntegrationInstanceAuthConfigTypeOauthConfig
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  UpsertIntegrationInstanceAuthConfigTypeOauthConfig,
+			Value: &oauthConfig,
+		})
+	}
+
+	if len(candidates) == 0 {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for UpsertIntegrationInstanceAuthConfig", string(data))
+	}
+
+	// Pick the best candidate using multi-stage filtering
+	best := utils.PickBestCandidate(candidates)
+	if best == nil {
+		return fmt.Errorf("could not unmarshal `%s` into any supported union types for UpsertIntegrationInstanceAuthConfig", string(data))
+	}
+
+	// Set the union type and value based on the best candidate
+	u.Type = best.Type.(UpsertIntegrationInstanceAuthConfigType)
+	switch best.Type {
+	case UpsertIntegrationInstanceAuthConfigTypeOauthConfig:
+		u.OauthConfig = best.Value.(*OauthConfig)
 		return nil
 	}
 

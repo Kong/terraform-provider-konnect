@@ -77,7 +77,7 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) RefreshFromSharedSolaceUpstre
 		r.Config.Session.GenerateSenderID = types.BoolPointerValue(resp.Config.Session.GenerateSenderID)
 		r.Config.Session.GenerateSequenceNumber = types.BoolPointerValue(resp.Config.Session.GenerateSequenceNumber)
 		r.Config.Session.Host = types.StringValue(resp.Config.Session.Host)
-		if len(resp.Config.Session.Properties) > 0 {
+		if resp.Config.Session.Properties != nil {
 			r.Config.Session.Properties = make(map[string]jsontypes.Normalized, len(resp.Config.Session.Properties))
 			for key, value := range resp.Config.Session.Properties {
 				result, _ := json.Marshal(value)
@@ -541,11 +541,14 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToSharedSolaceUpstreamPlugin(
 	var host string
 	host = r.Config.Session.Host.ValueString()
 
-	properties := make(map[string]interface{})
-	for propertiesKey, propertiesValue := range r.Config.Session.Properties {
-		var propertiesInst interface{}
-		_ = json.Unmarshal([]byte(propertiesValue.ValueString()), &propertiesInst)
-		properties[propertiesKey] = propertiesInst
+	var properties map[string]interface{}
+	if r.Config.Session.Properties != nil {
+		properties = make(map[string]interface{})
+		for propertiesKey, propertiesValue := range r.Config.Session.Properties {
+			var propertiesInst interface{}
+			_ = json.Unmarshal([]byte(propertiesValue.ValueString()), &propertiesInst)
+			properties[propertiesKey] = propertiesInst
+		}
 	}
 	sslValidateCertificate := new(bool)
 	if !r.Config.Session.SslValidateCertificate.IsUnknown() && !r.Config.Session.SslValidateCertificate.IsNull() {
