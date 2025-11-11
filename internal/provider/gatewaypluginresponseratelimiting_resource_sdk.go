@@ -30,7 +30,7 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) RefreshFromSharedRespon
 			} else {
 				r.Config.LimitBy = types.StringNull()
 			}
-			if len(resp.Config.Limits) > 0 {
+			if resp.Config.Limits != nil {
 				r.Config.Limits = make(map[string]jsontypes.Normalized, len(resp.Config.Limits))
 				for key, value := range resp.Config.Limits {
 					result, _ := json.Marshal(value)
@@ -339,11 +339,14 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelim
 		} else {
 			limitBy = nil
 		}
-		limits := make(map[string]interface{})
-		for limitsKey, limitsValue := range r.Config.Limits {
-			var limitsInst interface{}
-			_ = json.Unmarshal([]byte(limitsValue.ValueString()), &limitsInst)
-			limits[limitsKey] = limitsInst
+		var limits map[string]interface{}
+		if r.Config.Limits != nil {
+			limits = make(map[string]interface{})
+			for limitsKey, limitsValue := range r.Config.Limits {
+				var limitsInst interface{}
+				_ = json.Unmarshal([]byte(limitsValue.ValueString()), &limitsInst)
+				limits[limitsKey] = limitsInst
+			}
 		}
 		policy := new(shared.ResponseRatelimitingPluginPolicy)
 		if !r.Config.Policy.IsUnknown() && !r.Config.Policy.IsNull() {

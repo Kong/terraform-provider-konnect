@@ -69,7 +69,7 @@ func (r *GatewayPluginAcmeResourceModel) RefreshFromSharedAcmePlugin(ctx context
 				r.Config.StorageConfig.Consul.Timeout = types.Float64PointerValue(resp.Config.StorageConfig.Consul.Timeout)
 				r.Config.StorageConfig.Consul.Token = types.StringPointerValue(resp.Config.StorageConfig.Consul.Token)
 			}
-			if len(resp.Config.StorageConfig.Kong) > 0 {
+			if resp.Config.StorageConfig.Kong != nil {
 				r.Config.StorageConfig.Kong = make(map[string]jsontypes.Normalized, len(resp.Config.StorageConfig.Kong))
 				for key, value := range resp.Config.StorageConfig.Kong {
 					result, _ := json.Marshal(value)
@@ -499,11 +499,14 @@ func (r *GatewayPluginAcmeResourceModel) ToSharedAcmePlugin(ctx context.Context)
 				Token:   token,
 			}
 		}
-		kong := make(map[string]interface{})
-		for kongKey, kongValue := range r.Config.StorageConfig.Kong {
-			var kongInst interface{}
-			_ = json.Unmarshal([]byte(kongValue.ValueString()), &kongInst)
-			kong[kongKey] = kongInst
+		var kong map[string]interface{}
+		if r.Config.StorageConfig.Kong != nil {
+			kong = make(map[string]interface{})
+			for kongKey, kongValue := range r.Config.StorageConfig.Kong {
+				var kongInst interface{}
+				_ = json.Unmarshal([]byte(kongValue.ValueString()), &kongInst)
+				kong[kongKey] = kongInst
+			}
 		}
 		var redis *shared.AcmePluginRedis
 		if r.Config.StorageConfig.Redis != nil {
