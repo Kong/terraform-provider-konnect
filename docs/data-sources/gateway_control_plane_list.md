@@ -17,17 +17,17 @@ data "konnect_gateway_control_plane_list" "my_gatewaycontrolplanelist" {
   filter = {
     cloud_gateway = true
     cluster_type = {
-      eq  = "...my_eq..."
-      neq = "...my_neq..."
+      eq  = "?filter[field_name_here][eq]=foo"
+      neq = "?filter[field_name_here][neq]=bar"
     }
     id = {
-      eq  = "...my_eq..."
-      oeq = "...my_oeq..."
+      eq  = "?filter[field_name_here][eq]=foo"
+      oeq = "?filter[field_name_here][oeq]=foo,bar"
     }
     name = {
-      contains = "...my_contains..."
-      eq       = "...my_eq..."
-      neq      = "...my_neq..."
+      contains = "?filter[field_name_here][contains]=foo"
+      eq       = "?filter[field_name_here][eq]=foo"
+      neq      = "?filter[field_name_here][neq]=bar"
     }
   }
   filter_labels = "key:value,existCheck"
@@ -55,17 +55,17 @@ data "konnect_gateway_control_plane_list" "my_gatewaycontrolplanelist" {
 Optional:
 
 - `cloud_gateway` (Boolean) Filter by a boolean value (true/false).
-- `cluster_type` (Attributes) Filters on the given string field value by exact match inequality. (see [below for nested schema](#nestedatt--filter--cluster_type))
-- `id` (Attributes) Returns entities that exact match any of the comma-delimited phrases in the filter string. (see [below for nested schema](#nestedatt--filter--id))
-- `name` (Attributes) Filters on the given string field value by exact match inequality. (see [below for nested schema](#nestedatt--filter--name))
+- `cluster_type` (Attributes) Filter using **one** of the following operators: `eq`, `neq` (see [below for nested schema](#nestedatt--filter--cluster_type))
+- `id` (Attributes) Filter using **one** of the following operators: `eq`, `oeq` (see [below for nested schema](#nestedatt--filter--id))
+- `name` (Attributes) Filter using **one** of the following operators: `eq`, `neq`, `contains` (see [below for nested schema](#nestedatt--filter--name))
 
 <a id="nestedatt--filter--cluster_type"></a>
 ### Nested Schema for `filter.cluster_type`
 
 Optional:
 
-- `eq` (String)
-- `neq` (String)
+- `eq` (String) The field exactly matches the provided value.
+- `neq` (String) The field does not match the provided value.
 
 
 <a id="nestedatt--filter--id"></a>
@@ -73,8 +73,8 @@ Optional:
 
 Optional:
 
-- `eq` (String)
-- `oeq` (String)
+- `eq` (String) The field exactly matches the provided value.
+- `oeq` (String) The field matches any of the provided values.
 
 
 <a id="nestedatt--filter--name"></a>
@@ -82,9 +82,9 @@ Optional:
 
 Optional:
 
-- `contains` (String)
-- `eq` (String)
-- `neq` (String)
+- `contains` (String) The field contains the provided value.
+- `eq` (String) The field exactly matches the provided value.
+- `neq` (String) The field does not match the provided value.
 
 
 

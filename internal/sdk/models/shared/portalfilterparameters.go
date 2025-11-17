@@ -3,29 +3,29 @@
 package shared
 
 type PortalFilterParameters struct {
-	// Filters on the given string field value by exact match inequality.
+	// Filter using **one** of the following operators: `eq`, `oeq`, `neq`
 	ID *UUIDFieldFilter `queryParam:"name=id"`
-	// Filters on the given string field value by exact match inequality.
+	// Filter using **one** of the following operators: `eq`, `oeq`, `neq`, `contains`, `ocontains`
 	Name *StringFieldFilter `queryParam:"name=name"`
-	// Filters on the given string field value by exact match inequality.
+	// Filter using **one** of the following operators: `eq`, `oeq`, `neq`, `contains`, `ocontains`
 	Description *StringFieldFilter `queryParam:"name=description"`
 	// Filter by a boolean value (true/false).
 	AuthenticationEnabled *bool `queryParam:"name=authentication_enabled"`
 	// Filter by a boolean value (true/false).
 	RbacEnabled *bool `queryParam:"name=rbac_enabled"`
-	// Filters on the given string field value by exact match inequality.
+	// Filter using **one** of the following operators: `eq`, `oeq`, `neq`, `contains`, `ocontains`
 	DefaultAPIVisibility *StringFieldFilter `queryParam:"name=default_api_visibility"`
-	// Filters on the given string field value by exact match inequality.
+	// Filter using **one** of the following operators: `eq`, `oeq`, `neq`, `contains`, `ocontains`
 	DefaultPageVisibility *StringFieldFilter `queryParam:"name=default_page_visibility"`
-	// Filters on the given string field value by exact match inequality.
+	// Filter using **one** of the following operators: `eq`, `oeq`, `neq`
 	DefaultApplicationAuthStrategyID *UUIDFieldFilter `queryParam:"name=default_application_auth_strategy_id"`
 	// Filter by a boolean value (true/false).
 	AutoApproveDevelopers *bool `queryParam:"name=auto_approve_developers"`
 	// Filter by a boolean value (true/false).
 	AutoApproveApplications *bool `queryParam:"name=auto_approve_applications"`
-	// Filters on the given string field value by exact match inequality.
+	// Filter using **one** of the following operators: `eq`, `oeq`, `neq`, `contains`, `ocontains`
 	DefaultDomain *StringFieldFilter `queryParam:"name=default_domain"`
-	// Filters on the given string field value by exact match inequality.
+	// Filter using **one** of the following operators: `eq`, `oeq`, `neq`, `contains`, `ocontains`
 	CanonicalDomain *StringFieldFilter `queryParam:"name=canonical_domain"`
 }
 

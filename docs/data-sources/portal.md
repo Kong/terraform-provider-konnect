@@ -19,56 +19,56 @@ data "konnect_portal" "my_portal" {
     auto_approve_applications = true
     auto_approve_developers   = true
     canonical_domain = {
-      contains  = "...my_contains..."
-      eq        = "...my_eq..."
-      neq       = "...my_neq..."
-      ocontains = "...my_ocontains..."
-      oeq       = "...my_oeq..."
+      contains  = "?filter[field_name_here][contains]=foo"
+      eq        = "?filter[field_name_here][eq]=foo"
+      neq       = "?filter[field_name_here][neq]=bar"
+      ocontains = "?filter[field_name_here][ocontains]=foo,bar"
+      oeq       = "?filter[field_name_here][oeq]=foo,bar"
     }
     default_api_visibility = {
-      contains  = "...my_contains..."
-      eq        = "...my_eq..."
-      neq       = "...my_neq..."
-      ocontains = "...my_ocontains..."
-      oeq       = "...my_oeq..."
+      contains  = "?filter[field_name_here][contains]=foo"
+      eq        = "?filter[field_name_here][eq]=foo"
+      neq       = "?filter[field_name_here][neq]=bar"
+      ocontains = "?filter[field_name_here][ocontains]=foo,bar"
+      oeq       = "?filter[field_name_here][oeq]=foo,bar"
     }
     default_application_auth_strategy_id = {
-      eq  = "...my_eq..."
-      neq = "...my_neq..."
-      oeq = "...my_oeq..."
+      eq  = "?filter[field_name_here][eq]=foo"
+      neq = "?filter[field_name_here][neq]=bar"
+      oeq = "?filter[field_name_here][oeq]=foo,bar"
     }
     default_domain = {
-      contains  = "...my_contains..."
-      eq        = "...my_eq..."
-      neq       = "...my_neq..."
-      ocontains = "...my_ocontains..."
-      oeq       = "...my_oeq..."
+      contains  = "?filter[field_name_here][contains]=foo"
+      eq        = "?filter[field_name_here][eq]=foo"
+      neq       = "?filter[field_name_here][neq]=bar"
+      ocontains = "?filter[field_name_here][ocontains]=foo,bar"
+      oeq       = "?filter[field_name_here][oeq]=foo,bar"
     }
     default_page_visibility = {
-      contains  = "...my_contains..."
-      eq        = "...my_eq..."
-      neq       = "...my_neq..."
-      ocontains = "...my_ocontains..."
-      oeq       = "...my_oeq..."
+      contains  = "?filter[field_name_here][contains]=foo"
+      eq        = "?filter[field_name_here][eq]=foo"
+      neq       = "?filter[field_name_here][neq]=bar"
+      ocontains = "?filter[field_name_here][ocontains]=foo,bar"
+      oeq       = "?filter[field_name_here][oeq]=foo,bar"
     }
     description = {
-      contains  = "...my_contains..."
-      eq        = "...my_eq..."
-      neq       = "...my_neq..."
-      ocontains = "...my_ocontains..."
-      oeq       = "...my_oeq..."
+      contains  = "?filter[field_name_here][contains]=foo"
+      eq        = "?filter[field_name_here][eq]=foo"
+      neq       = "?filter[field_name_here][neq]=bar"
+      ocontains = "?filter[field_name_here][ocontains]=foo,bar"
+      oeq       = "?filter[field_name_here][oeq]=foo,bar"
     }
     id = {
-      eq  = "...my_eq..."
-      neq = "...my_neq..."
-      oeq = "...my_oeq..."
+      eq  = "?filter[field_name_here][eq]=foo"
+      neq = "?filter[field_name_here][neq]=bar"
+      oeq = "?filter[field_name_here][oeq]=foo,bar"
     }
     name = {
-      contains  = "...my_contains..."
-      eq        = "...my_eq..."
-      neq       = "...my_neq..."
-      ocontains = "...my_ocontains..."
-      oeq       = "...my_oeq..."
+      contains  = "?filter[field_name_here][contains]=foo"
+      eq        = "?filter[field_name_here][eq]=foo"
+      neq       = "?filter[field_name_here][neq]=bar"
+      ocontains = "?filter[field_name_here][ocontains]=foo,bar"
+      oeq       = "?filter[field_name_here][oeq]=foo,bar"
     }
     rbac_enabled = true
   }
@@ -127,14 +127,14 @@ Optional:
 - `authentication_enabled` (Boolean) Filter by a boolean value (true/false).
 - `auto_approve_applications` (Boolean) Filter by a boolean value (true/false).
 - `auto_approve_developers` (Boolean) Filter by a boolean value (true/false).
-- `canonical_domain` (Attributes) Filters on the given string field value by exact match inequality. (see [below for nested schema](#nestedatt--filter--canonical_domain))
-- `default_api_visibility` (Attributes) Filters on the given string field value by exact match inequality. (see [below for nested schema](#nestedatt--filter--default_api_visibility))
-- `default_application_auth_strategy_id` (Attributes) Filters on the given string field value by exact match inequality. (see [below for nested schema](#nestedatt--filter--default_application_auth_strategy_id))
-- `default_domain` (Attributes) Filters on the given string field value by exact match inequality. (see [below for nested schema](#nestedatt--filter--default_domain))
-- `default_page_visibility` (Attributes) Filters on the given string field value by exact match inequality. (see [below for nested schema](#nestedatt--filter--default_page_visibility))
-- `description` (Attributes) Filters on the given string field value by exact match inequality. (see [below for nested schema](#nestedatt--filter--description))
-- `id` (Attributes) Filters on the given string field value by exact match inequality. (see [below for nested schema](#nestedatt--filter--id))
-- `name` (Attributes) Filters on the given string field value by exact match inequality. (see [below for nested schema](#nestedatt--filter--name))
+- `canonical_domain` (Attributes) Filter using **one** of the following operators: `eq`, `oeq`, `neq`, `contains`, `ocontains` (see [below for nested schema](#nestedatt--filter--canonical_domain))
+- `default_api_visibility` (Attributes) Filter using **one** of the following operators: `eq`, `oeq`, `neq`, `contains`, `ocontains` (see [below for nested schema](#nestedatt--filter--default_api_visibility))
+- `default_application_auth_strategy_id` (Attributes) Filter using **one** of the following operators: `eq`, `oeq`, `neq` (see [below for nested schema](#nestedatt--filter--default_application_auth_strategy_id))
+- `default_domain` (Attributes) Filter using **one** of the following operators: `eq`, `oeq`, `neq`, `contains`, `ocontains` (see [below for nested schema](#nestedatt--filter--default_domain))
+- `default_page_visibility` (Attributes) Filter using **one** of the following operators: `eq`, `oeq`, `neq`, `contains`, `ocontains` (see [below for nested schema](#nestedatt--filter--default_page_visibility))
+- `description` (Attributes) Filter using **one** of the following operators: `eq`, `oeq`, `neq`, `contains`, `ocontains` (see [below for nested schema](#nestedatt--filter--description))
+- `id` (Attributes) Filter using **one** of the following operators: `eq`, `oeq`, `neq` (see [below for nested schema](#nestedatt--filter--id))
+- `name` (Attributes) Filter using **one** of the following operators: `eq`, `oeq`, `neq`, `contains`, `ocontains` (see [below for nested schema](#nestedatt--filter--name))
 - `rbac_enabled` (Boolean) Filter by a boolean value (true/false).
 
 <a id="nestedatt--filter--canonical_domain"></a>
@@ -142,11 +142,11 @@ Optional:
 
 Optional:
 
-- `contains` (String)
-- `eq` (String)
-- `neq` (String)
-- `ocontains` (String)
-- `oeq` (String)
+- `contains` (String) The field contains the provided value.
+- `eq` (String) The field exactly matches the provided value.
+- `neq` (String) The field does not match the provided value.
+- `ocontains` (String) The field contains any of the provided values.
+- `oeq` (String) The field matches any of the provided values.
 
 
 <a id="nestedatt--filter--default_api_visibility"></a>
@@ -154,11 +154,11 @@ Optional:
 
 Optional:
 
-- `contains` (String)
-- `eq` (String)
-- `neq` (String)
-- `ocontains` (String)
-- `oeq` (String)
+- `contains` (String) The field contains the provided value.
+- `eq` (String) The field exactly matches the provided value.
+- `neq` (String) The field does not match the provided value.
+- `ocontains` (String) The field contains any of the provided values.
+- `oeq` (String) The field matches any of the provided values.
 
 
 <a id="nestedatt--filter--default_application_auth_strategy_id"></a>
@@ -166,9 +166,9 @@ Optional:
 
 Optional:
 
-- `eq` (String)
-- `neq` (String)
-- `oeq` (String)
+- `eq` (String) The field exactly matches the provided value.
+- `neq` (String) The field does not match the provided value.
+- `oeq` (String) The field matches any of the provided values.
 
 
 <a id="nestedatt--filter--default_domain"></a>
@@ -176,11 +176,11 @@ Optional:
 
 Optional:
 
-- `contains` (String)
-- `eq` (String)
-- `neq` (String)
-- `ocontains` (String)
-- `oeq` (String)
+- `contains` (String) The field contains the provided value.
+- `eq` (String) The field exactly matches the provided value.
+- `neq` (String) The field does not match the provided value.
+- `ocontains` (String) The field contains any of the provided values.
+- `oeq` (String) The field matches any of the provided values.
 
 
 <a id="nestedatt--filter--default_page_visibility"></a>
@@ -188,11 +188,11 @@ Optional:
 
 Optional:
 
-- `contains` (String)
-- `eq` (String)
-- `neq` (String)
-- `ocontains` (String)
-- `oeq` (String)
+- `contains` (String) The field contains the provided value.
+- `eq` (String) The field exactly matches the provided value.
+- `neq` (String) The field does not match the provided value.
+- `ocontains` (String) The field contains any of the provided values.
+- `oeq` (String) The field matches any of the provided values.
 
 
 <a id="nestedatt--filter--description"></a>
@@ -200,11 +200,11 @@ Optional:
 
 Optional:
 
-- `contains` (String)
-- `eq` (String)
-- `neq` (String)
-- `ocontains` (String)
-- `oeq` (String)
+- `contains` (String) The field contains the provided value.
+- `eq` (String) The field exactly matches the provided value.
+- `neq` (String) The field does not match the provided value.
+- `ocontains` (String) The field contains any of the provided values.
+- `oeq` (String) The field matches any of the provided values.
 
 
 <a id="nestedatt--filter--id"></a>
@@ -212,9 +212,9 @@ Optional:
 
 Optional:
 
-- `eq` (String)
-- `neq` (String)
-- `oeq` (String)
+- `eq` (String) The field exactly matches the provided value.
+- `neq` (String) The field does not match the provided value.
+- `oeq` (String) The field matches any of the provided values.
 
 
 <a id="nestedatt--filter--name"></a>
@@ -222,8 +222,8 @@ Optional:
 
 Optional:
 
-- `contains` (String)
-- `eq` (String)
-- `neq` (String)
-- `ocontains` (String)
-- `oeq` (String)
+- `contains` (String) The field contains the provided value.
+- `eq` (String) The field exactly matches the provided value.
+- `neq` (String) The field does not match the provided value.
+- `ocontains` (String) The field contains any of the provided values.
+- `oeq` (String) The field matches any of the provided values.
