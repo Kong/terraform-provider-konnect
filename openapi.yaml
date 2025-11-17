@@ -17157,11 +17157,9 @@ components:
             eq:
               description: The field exactly matches the provided value.
               type: string
-              example: '?filter[field_name_here][eq]=foo'
             oeq:
               description: The field matches any of the provided values.
               type: string
-              example: '?filter[field_name_here][oeq]=foo,bar'
         name:
           description: 'Filter using **one** of the following operators: `eq`, `neq`, `contains`'
           type: object
@@ -17170,15 +17168,12 @@ components:
             eq:
               description: The field exactly matches the provided value.
               type: string
-              example: '?filter[field_name_here][eq]=foo'
             contains:
               description: The field contains the provided value.
               type: string
-              example: '?filter[field_name_here][contains]=foo'
             neq:
               description: The field does not match the provided value.
               type: string
-              example: '?filter[field_name_here][neq]=bar'
         cluster_type:
           description: 'Filter using **one** of the following operators: `eq`, `neq`'
           type: object
@@ -17187,11 +17182,9 @@ components:
             eq:
               description: The field exactly matches the provided value.
               type: string
-              example: '?filter[field_name_here][eq]=foo'
             neq:
               description: The field does not match the provided value.
               type: string
-              example: '?filter[field_name_here][neq]=bar'
         cloud_gateway:
           $ref: '#/components/schemas/BooleanFieldFilter'
       additionalProperties: false
@@ -20273,23 +20266,18 @@ components:
         eq:
           description: The field exactly matches the provided value.
           type: string
-          example: '?filter[field_name_here][eq]=foo'
         contains:
           description: The field contains the provided value.
           type: string
-          example: '?filter[field_name_here][contains]=foo'
         ocontains:
           description: The field contains any of the provided values.
           type: string
-          example: '?filter[field_name_here][ocontains]=foo,bar'
         oeq:
           description: The field matches any of the provided values.
           type: string
-          example: '?filter[field_name_here][oeq]=foo,bar'
         neq:
           description: The field does not match the provided value.
           type: string
-          example: '?filter[field_name_here][neq]=bar'
       additionalProperties: false
     PublicLabels:
       description: |
@@ -20375,15 +20363,12 @@ components:
         eq:
           description: The field exactly matches the provided value.
           type: string
-          example: '?filter[field_name_here][eq]=foo'
         oeq:
           description: The field matches any of the provided values.
           type: string
-          example: '?filter[field_name_here][oeq]=foo,bar'
         neq:
           description: The field does not match the provided value.
           type: string
-          example: '?filter[field_name_here][neq]=bar'
       additionalProperties: false
     DcrProviderType:
       description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
