@@ -19,56 +19,56 @@ data "konnect_portal" "my_portal" {
     auto_approve_applications = true
     auto_approve_developers   = true
     canonical_domain = {
-      contains  = "?filter[field_name_here][contains]=foo"
-      eq        = "?filter[field_name_here][eq]=foo"
-      neq       = "?filter[field_name_here][neq]=bar"
-      ocontains = "?filter[field_name_here][ocontains]=foo,bar"
-      oeq       = "?filter[field_name_here][oeq]=foo,bar"
+      contains  = "...my_contains..."
+      eq        = "...my_eq..."
+      neq       = "...my_neq..."
+      ocontains = "...my_ocontains..."
+      oeq       = "...my_oeq..."
     }
     default_api_visibility = {
-      contains  = "?filter[field_name_here][contains]=foo"
-      eq        = "?filter[field_name_here][eq]=foo"
-      neq       = "?filter[field_name_here][neq]=bar"
-      ocontains = "?filter[field_name_here][ocontains]=foo,bar"
-      oeq       = "?filter[field_name_here][oeq]=foo,bar"
+      contains  = "...my_contains..."
+      eq        = "...my_eq..."
+      neq       = "...my_neq..."
+      ocontains = "...my_ocontains..."
+      oeq       = "...my_oeq..."
     }
     default_application_auth_strategy_id = {
-      eq  = "?filter[field_name_here][eq]=foo"
-      neq = "?filter[field_name_here][neq]=bar"
-      oeq = "?filter[field_name_here][oeq]=foo,bar"
+      eq  = "...my_eq..."
+      neq = "...my_neq..."
+      oeq = "...my_oeq..."
     }
     default_domain = {
-      contains  = "?filter[field_name_here][contains]=foo"
-      eq        = "?filter[field_name_here][eq]=foo"
-      neq       = "?filter[field_name_here][neq]=bar"
-      ocontains = "?filter[field_name_here][ocontains]=foo,bar"
-      oeq       = "?filter[field_name_here][oeq]=foo,bar"
+      contains  = "...my_contains..."
+      eq        = "...my_eq..."
+      neq       = "...my_neq..."
+      ocontains = "...my_ocontains..."
+      oeq       = "...my_oeq..."
     }
     default_page_visibility = {
-      contains  = "?filter[field_name_here][contains]=foo"
-      eq        = "?filter[field_name_here][eq]=foo"
-      neq       = "?filter[field_name_here][neq]=bar"
-      ocontains = "?filter[field_name_here][ocontains]=foo,bar"
-      oeq       = "?filter[field_name_here][oeq]=foo,bar"
+      contains  = "...my_contains..."
+      eq        = "...my_eq..."
+      neq       = "...my_neq..."
+      ocontains = "...my_ocontains..."
+      oeq       = "...my_oeq..."
     }
     description = {
-      contains  = "?filter[field_name_here][contains]=foo"
-      eq        = "?filter[field_name_here][eq]=foo"
-      neq       = "?filter[field_name_here][neq]=bar"
-      ocontains = "?filter[field_name_here][ocontains]=foo,bar"
-      oeq       = "?filter[field_name_here][oeq]=foo,bar"
+      contains  = "...my_contains..."
+      eq        = "...my_eq..."
+      neq       = "...my_neq..."
+      ocontains = "...my_ocontains..."
+      oeq       = "...my_oeq..."
     }
     id = {
-      eq  = "?filter[field_name_here][eq]=foo"
-      neq = "?filter[field_name_here][neq]=bar"
-      oeq = "?filter[field_name_here][oeq]=foo,bar"
+      eq  = "...my_eq..."
+      neq = "...my_neq..."
+      oeq = "...my_oeq..."
     }
     name = {
-      contains  = "?filter[field_name_here][contains]=foo"
-      eq        = "?filter[field_name_here][eq]=foo"
-      neq       = "?filter[field_name_here][neq]=bar"
-      ocontains = "?filter[field_name_here][ocontains]=foo,bar"
-      oeq       = "?filter[field_name_here][oeq]=foo,bar"
+      contains  = "...my_contains..."
+      eq        = "...my_eq..."
+      neq       = "...my_neq..."
+      ocontains = "...my_ocontains..."
+      oeq       = "...my_oeq..."
     }
     rbac_enabled = true
   }

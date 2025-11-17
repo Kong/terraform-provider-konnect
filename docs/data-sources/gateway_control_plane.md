@@ -17,17 +17,17 @@ data "konnect_gateway_control_plane" "my_gatewaycontrolplane" {
   filter = {
     cloud_gateway = true
     cluster_type = {
-      eq  = "?filter[field_name_here][eq]=foo"
-      neq = "?filter[field_name_here][neq]=bar"
+      eq  = "...my_eq..."
+      neq = "...my_neq..."
     }
     id = {
-      eq  = "?filter[field_name_here][eq]=foo"
-      oeq = "?filter[field_name_here][oeq]=foo,bar"
+      eq  = "...my_eq..."
+      oeq = "...my_oeq..."
     }
     name = {
-      contains = "?filter[field_name_here][contains]=foo"
-      eq       = "?filter[field_name_here][eq]=foo"
-      neq      = "?filter[field_name_here][neq]=bar"
+      contains = "...my_contains..."
+      eq       = "...my_eq..."
+      neq      = "...my_neq..."
     }
   }
   filter_labels = "key:value,existCheck"
