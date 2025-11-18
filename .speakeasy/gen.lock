@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 7fe07b56549a2be32af60594d4454899
+  docChecksum: cdd93a3110eefe107d892393d9c2c5f9
   docVersion: 2.0.0
   speakeasyVersion: 1.653.0
   generationVersion: 2.748.0
@@ -3371,7 +3371,7 @@ examples:
         query:
           page[size]: 100
           page[number]: 1
-          filter: {"cloud_gateway": true}
+          filter: {"id": {"eq": "?filter[field_name_here][eq]=foo", "oeq": "?filter[field_name_here][oeq]=foo,bar"}, "name": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "neq": "?filter[field_name_here][neq]=bar"}, "cluster_type": {"eq": "?filter[field_name_here][eq]=foo", "neq": "?filter[field_name_here][neq]=bar"}}
           labels: "key:value,existCheck"
           sort: "created_at desc"
       responses:
@@ -12492,7 +12492,7 @@ examples:
         query:
           page[size]: 100
           page[number]: 1
-          filter: {"authentication_enabled": true, "rbac_enabled": true, "auto_approve_developers": true, "auto_approve_applications": true}
+          filter: {"id": {"eq": "?filter[field_name_here][eq]=foo", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "name": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "description": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "default_api_visibility": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "default_page_visibility": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "default_application_auth_strategy_id": {"eq": "?filter[field_name_here][eq]=foo", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "default_domain": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "canonical_domain": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}}
       responses:
         "200":
           application/json: {"data": [{"id": "8f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-02-07T17:46:57.52Z", "updated_at": "2022-10-08T17:00:00.52Z", "name": "Portal A", "display_name": "Developer Portal A", "description": "The Portal A", "authentication_enabled": true, "rbac_enabled": true, "default_api_visibility": "public", "default_page_visibility": "private", "default_application_auth_strategy_id": null, "auto_approve_developers": true, "auto_approve_applications": false, "default_domain": "123455678abcd.us.portal.konghq.com", "canonical_domain": "rapid-step.biz"}], "meta": {"page": {"number": 1, "size": 10, "total": 100}}}
@@ -14544,6 +14544,7 @@ examples:
           page[number]: 1
           labels: "key:value,existCheck"
           sort: "created_at desc"
+          filter: {"id": {"eq": "?filter[field_name_here][eq]=foo", "oeq": "?filter[field_name_here][oeq]=foo,bar"}, "name": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "neq": "?filter[field_name_here][neq]=bar"}, "cluster_type": {"eq": "?filter[field_name_here][eq]=foo", "neq": "?filter[field_name_here][neq]=bar"}}
       responses:
         "200":
           application/json: {"meta": {"page": {"number": 1, "size": 10, "total": 100}}, "data": []}

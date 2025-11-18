@@ -17150,33 +17150,40 @@ components:
       type: object
       properties:
         id:
-          description: Returns entities that exact match any of the comma-delimited phrases in the filter string.
+          description: 'Filter using **one** of the following operators: `eq`, `oeq`'
           type: object
           additionalProperties: false
           properties:
             eq:
+              description: The field exactly matches the provided value.
               type: string
             oeq:
+              description: The field matches any of the provided values.
               type: string
         name:
-          description: Filters on the given string field value by exact match inequality.
+          description: 'Filter using **one** of the following operators: `eq`, `neq`, `contains`'
           type: object
           additionalProperties: false
           properties:
             eq:
+              description: The field exactly matches the provided value.
               type: string
             contains:
+              description: The field contains the provided value.
               type: string
             neq:
+              description: The field does not match the provided value.
               type: string
         cluster_type:
-          description: Filters on the given string field value by exact match inequality.
+          description: 'Filter using **one** of the following operators: `eq`, `neq`'
           type: object
           additionalProperties: false
           properties:
             eq:
+              description: The field exactly matches the provided value.
               type: string
             neq:
+              description: The field does not match the provided value.
               type: string
         cloud_gateway:
           $ref: '#/components/schemas/BooleanFieldFilter'
@@ -20253,18 +20260,23 @@ components:
         - control_plane_id
       x-speakeasy-param-computed: false
     StringFieldFilter:
-      description: Filters on the given string field value by exact match inequality.
+      description: 'Filter using **one** of the following operators: `eq`, `oeq`, `neq`, `contains`, `ocontains`'
       type: object
       properties:
         eq:
+          description: The field exactly matches the provided value.
           type: string
         contains:
+          description: The field contains the provided value.
           type: string
         ocontains:
+          description: The field contains any of the provided values.
           type: string
         oeq:
+          description: The field matches any of the provided values.
           type: string
         neq:
+          description: The field does not match the provided value.
           type: string
       additionalProperties: false
     PublicLabels:
@@ -20345,14 +20357,17 @@ components:
         - unpublished
       x-speakeasy-unknown-values: allow
     UuidFieldFilter:
-      description: Filters on the given string field value by exact match inequality.
+      description: 'Filter using **one** of the following operators: `eq`, `oeq`, `neq`'
       type: object
       properties:
         eq:
+          description: The field exactly matches the provided value.
           type: string
         oeq:
+          description: The field matches any of the provided values.
           type: string
         neq:
+          description: The field does not match the provided value.
           type: string
       additionalProperties: false
     DcrProviderType:

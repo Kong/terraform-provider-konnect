@@ -2,9 +2,11 @@
 
 package shared
 
-// ID - Returns entities that exact match any of the comma-delimited phrases in the filter string.
+// ID - Filter using **one** of the following operators: `eq`, `oeq`
 type ID struct {
-	Eq  *string `queryParam:"name=eq"`
+	// The field exactly matches the provided value.
+	Eq *string `queryParam:"name=eq"`
+	// The field matches any of the provided values.
 	Oeq *string `queryParam:"name=oeq"`
 }
 
@@ -22,11 +24,14 @@ func (i *ID) GetOeq() *string {
 	return i.Oeq
 }
 
-// Name - Filters on the given string field value by exact match inequality.
+// Name - Filter using **one** of the following operators: `eq`, `neq`, `contains`
 type Name struct {
-	Eq       *string `queryParam:"name=eq"`
+	// The field exactly matches the provided value.
+	Eq *string `queryParam:"name=eq"`
+	// The field contains the provided value.
 	Contains *string `queryParam:"name=contains"`
-	Neq      *string `queryParam:"name=neq"`
+	// The field does not match the provided value.
+	Neq *string `queryParam:"name=neq"`
 }
 
 func (n *Name) GetEq() *string {
@@ -50,9 +55,11 @@ func (n *Name) GetNeq() *string {
 	return n.Neq
 }
 
-// ClusterType - Filters on the given string field value by exact match inequality.
+// ClusterType - Filter using **one** of the following operators: `eq`, `neq`
 type ClusterType struct {
-	Eq  *string `queryParam:"name=eq"`
+	// The field exactly matches the provided value.
+	Eq *string `queryParam:"name=eq"`
+	// The field does not match the provided value.
 	Neq *string `queryParam:"name=neq"`
 }
 
@@ -71,11 +78,11 @@ func (c *ClusterType) GetNeq() *string {
 }
 
 type ControlPlaneFilterParameters struct {
-	// Returns entities that exact match any of the comma-delimited phrases in the filter string.
+	// Filter using **one** of the following operators: `eq`, `oeq`
 	ID *ID `queryParam:"name=id"`
-	// Filters on the given string field value by exact match inequality.
+	// Filter using **one** of the following operators: `eq`, `neq`, `contains`
 	Name *Name `queryParam:"name=name"`
-	// Filters on the given string field value by exact match inequality.
+	// Filter using **one** of the following operators: `eq`, `neq`
 	ClusterType *ClusterType `queryParam:"name=cluster_type"`
 	// Filter by a boolean value (true/false).
 	CloudGateway *bool `queryParam:"name=cloud_gateway"`
