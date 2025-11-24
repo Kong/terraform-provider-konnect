@@ -37,7 +37,9 @@ resource "konnect_gateway_plugin_ai_mcp_proxy" "my_gatewaypluginaimcpproxy" {
         }
         description = "...my_description..."
         headers = {
-          key = jsonencode("value")
+          key = [
+            # ...
+          ]
         }
         host   = "...my_host..."
         method = "GET"
@@ -54,7 +56,9 @@ resource "konnect_gateway_plugin_ai_mcp_proxy" "my_gatewaypluginaimcpproxy" {
         ]
         path = "...my_path..."
         query = {
-          key = jsonencode("value")
+          key = [
+            # ...
+          ]
         }
         request_body = "...my_request_body..."
         scheme       = "https"
@@ -163,12 +167,12 @@ Optional:
 
 - `annotations` (Attributes) (see [below for nested schema](#nestedatt--config--tools--annotations))
 - `description` (String) The description of the MCP tool. This is used to provide information about the tool's functionality and usage. Not Null
-- `headers` (Map of String) The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.
+- `headers` (Map of List of String) The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.
 - `host` (String) The host of the exported API. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.
 - `method` (String) The method of the exported API. By default, Kong will extract the method from API configuration. If the configured method is not exactly matched, this field is required. must be one of ["DELETE", "GET", "PATCH", "POST", "PUT"]
 - `parameters` (Attributes List) The API parameters specification defined in OpenAPI. For example, '[{"name": "city", "in": "query", "description": "Name of the city to get the weather for", "required": true, "schema": {"type": "string"}}]'.See https://swagger.io/docs/specification/v3_0/describing-parameters/ for more details. (see [below for nested schema](#nestedatt--config--tools--parameters))
 - `path` (String) The path of the exported API. By default, Kong will extract the path from API configuration. If the configured path is not exactly matched, this field is required. Paths not starting with '/' are treated as relative paths.
-- `query` (Map of String) The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.
+- `query` (Map of List of String) The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.
 - `request_body` (String) The API requestBody specification defined in OpenAPI. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details.
 - `scheme` (String) The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it. must be one of ["http", "https"]
 

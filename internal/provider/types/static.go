@@ -3,13 +3,12 @@
 package types
 
 import (
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type Static struct {
-	Name    types.String                    `tfsdk:"name"`
-	Output  types.String                    `tfsdk:"output"`
-	Outputs map[string]jsontypes.Normalized `tfsdk:"outputs"`
-	Values  types.String                    `tfsdk:"values"`
+	Name    types.String            `tfsdk:"name"`
+	Output  types.String            `tfsdk:"output"`
+	Outputs map[string]types.String `tfsdk:"outputs"`
+	Values  types.String            `tfsdk:"values"`
 }

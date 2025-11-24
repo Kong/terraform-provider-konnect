@@ -504,7 +504,7 @@ func (r *RequestCalloutPluginCache) GetBypass() *bool {
 // RequestCalloutPluginConfigBody - Callout request body customizations.
 type RequestCalloutPluginConfigBody struct {
 	// The custom body fields to be added to the callout HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
-	Custom map[string]any `json:"custom,omitempty"`
+	Custom map[string]string `json:"custom,omitempty"`
 	// If `true`, decodes the request's body and make it available for customizations. Only JSON content type is supported.
 	Decode *bool `default:"false" json:"decode"`
 	// If `true`, forwards the incoming request's body to the callout request.
@@ -522,7 +522,7 @@ func (r *RequestCalloutPluginConfigBody) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (r *RequestCalloutPluginConfigBody) GetCustom() map[string]any {
+func (r *RequestCalloutPluginConfigBody) GetCustom() map[string]string {
 	if r == nil {
 		return nil
 	}
@@ -634,7 +634,7 @@ func (e *Error) GetRetries() *int64 {
 // RequestCalloutPluginConfigCalloutsHeaders - Callout request header customizations.
 type RequestCalloutPluginConfigCalloutsHeaders struct {
 	// The custom headers to be added in the callout HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
-	Custom map[string]any `json:"custom,omitempty"`
+	Custom map[string]string `json:"custom,omitempty"`
 	// If `true`, forwards the incoming request's headers to the callout request.
 	Forward *bool `default:"false" json:"forward"`
 }
@@ -650,7 +650,7 @@ func (r *RequestCalloutPluginConfigCalloutsHeaders) UnmarshalJSON(data []byte) e
 	return nil
 }
 
-func (r *RequestCalloutPluginConfigCalloutsHeaders) GetCustom() map[string]any {
+func (r *RequestCalloutPluginConfigCalloutsHeaders) GetCustom() map[string]string {
 	if r == nil {
 		return nil
 	}
@@ -811,7 +811,7 @@ func (h *HTTPOpts) GetTimeouts() *Timeouts {
 // RequestCalloutPluginQuery - Callout request query param customizations.
 type RequestCalloutPluginQuery struct {
 	// The custom query params to be added in the callout HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
-	Custom map[string]any `json:"custom,omitempty"`
+	Custom map[string]string `json:"custom,omitempty"`
 	// If `true`, forwards the incoming request's query params to the callout request.
 	Forward *bool `default:"false" json:"forward"`
 }
@@ -827,7 +827,7 @@ func (r *RequestCalloutPluginQuery) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (r *RequestCalloutPluginQuery) GetCustom() map[string]any {
+func (r *RequestCalloutPluginQuery) GetCustom() map[string]string {
 	if r == nil {
 		return nil
 	}
@@ -1076,7 +1076,7 @@ func (c *Callouts) GetResponse() *Response {
 // Body - Callout request body customizations.
 type Body struct {
 	// The custom body fields to be added in the upstream request body. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
-	Custom map[string]any `json:"custom,omitempty"`
+	Custom map[string]string `json:"custom,omitempty"`
 	// If `true`, decodes the request's body to make it available for upstream by_lua customizations. Only JSON content type is supported.
 	Decode *bool `default:"true" json:"decode"`
 	// If `false`, skips forwarding the incoming request's body to the upstream request.
@@ -1094,7 +1094,7 @@ func (b *Body) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (b *Body) GetCustom() map[string]any {
+func (b *Body) GetCustom() map[string]string {
 	if b == nil {
 		return nil
 	}
@@ -1118,7 +1118,7 @@ func (b *Body) GetForward() *bool {
 // RequestCalloutPluginHeaders - Callout request header customizations.
 type RequestCalloutPluginHeaders struct {
 	// The custom headers to be added in the upstream HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
-	Custom map[string]any `json:"custom,omitempty"`
+	Custom map[string]string `json:"custom,omitempty"`
 	// If `false`, does not forward request headers to upstream request.
 	Forward *bool `default:"true" json:"forward"`
 }
@@ -1134,7 +1134,7 @@ func (r *RequestCalloutPluginHeaders) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (r *RequestCalloutPluginHeaders) GetCustom() map[string]any {
+func (r *RequestCalloutPluginHeaders) GetCustom() map[string]string {
 	if r == nil {
 		return nil
 	}
@@ -1151,7 +1151,7 @@ func (r *RequestCalloutPluginHeaders) GetForward() *bool {
 // Query - Upstream request query param customizations.
 type Query struct {
 	// The custom query params to be added in the upstream HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
-	Custom map[string]any `json:"custom,omitempty"`
+	Custom map[string]string `json:"custom,omitempty"`
 	// If `false`, does not forward request query params to upstream request.
 	Forward *bool `default:"true" json:"forward"`
 }
@@ -1167,7 +1167,7 @@ func (q *Query) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (q *Query) GetCustom() map[string]any {
+func (q *Query) GetCustom() map[string]string {
 	if q == nil {
 		return nil
 	}

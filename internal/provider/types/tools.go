@@ -3,19 +3,18 @@
 package types
 
 import (
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type Tools struct {
-	Annotations *Annotations                    `tfsdk:"annotations"`
-	Description types.String                    `tfsdk:"description"`
-	Headers     map[string]jsontypes.Normalized `tfsdk:"headers"`
-	Host        types.String                    `tfsdk:"host"`
-	Method      types.String                    `tfsdk:"method"`
-	Parameters  []Parameters                    `tfsdk:"parameters"`
-	Path        types.String                    `tfsdk:"path"`
-	Query       map[string]jsontypes.Normalized `tfsdk:"query"`
-	RequestBody types.String                    `tfsdk:"request_body"`
-	Scheme      types.String                    `tfsdk:"scheme"`
+	Annotations *Annotations              `tfsdk:"annotations"`
+	Description types.String              `tfsdk:"description"`
+	Headers     map[string][]types.String `tfsdk:"headers"`
+	Host        types.String              `tfsdk:"host"`
+	Method      types.String              `tfsdk:"method"`
+	Parameters  []Parameters              `tfsdk:"parameters"`
+	Path        types.String              `tfsdk:"path"`
+	Query       map[string][]types.String `tfsdk:"query"`
+	RequestBody types.String              `tfsdk:"request_body"`
+	Scheme      types.String              `tfsdk:"scheme"`
 }

@@ -139,13 +139,13 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     access_token_upstream_header = "...my_access_token_upstream_header..."
     access_token_upstream_leeway = 1.88
     add_access_token_claims = {
-      key = jsonencode("value")
+      key = "value"
     }
     add_channel_token_claims = {
-      key = jsonencode("value")
+      key = "value"
     }
     add_claims = {
-      key = jsonencode("value")
+      key = "value"
     }
     cache_access_token_introspection  = false
     cache_channel_token_introspection = true
@@ -286,13 +286,13 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
       "..."
     ]
     set_access_token_claims = {
-      key = jsonencode("value")
+      key = "value"
     }
     set_channel_token_claims = {
-      key = jsonencode("value")
+      key = "value"
     }
     set_claims = {
-      key = jsonencode("value")
+      key = "value"
     }
     trust_access_token_introspection             = true
     trust_channel_token_introspection            = false

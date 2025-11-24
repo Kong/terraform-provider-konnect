@@ -365,7 +365,7 @@ type Tools struct {
 	// The description of the MCP tool. This is used to provide information about the tool's functionality and usage.
 	Description string `json:"description"`
 	// The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.
-	Headers map[string]any `json:"headers,omitempty"`
+	Headers map[string][]string `json:"headers,omitempty"`
 	// The host of the exported API. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.
 	Host *string `default:"null" json:"host"`
 	// The method of the exported API. By default, Kong will extract the method from API configuration. If the configured method is not exactly matched, this field is required.
@@ -375,7 +375,7 @@ type Tools struct {
 	// The path of the exported API. By default, Kong will extract the path from API configuration. If the configured path is not exactly matched, this field is required. Paths not starting with '/' are treated as relative paths.
 	Path *string `default:"null" json:"path"`
 	// The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.
-	Query map[string]any `json:"query,omitempty"`
+	Query map[string][]string `json:"query,omitempty"`
 	// The API requestBody specification defined in OpenAPI. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details.
 	RequestBody *string `default:"null" json:"request_body"`
 	// The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it.
@@ -407,7 +407,7 @@ func (t *Tools) GetDescription() string {
 	return t.Description
 }
 
-func (t *Tools) GetHeaders() map[string]any {
+func (t *Tools) GetHeaders() map[string][]string {
 	if t == nil {
 		return nil
 	}
@@ -442,7 +442,7 @@ func (t *Tools) GetPath() *string {
 	return t.Path
 }
 
-func (t *Tools) GetQuery() map[string]any {
+func (t *Tools) GetQuery() map[string][]string {
 	if t == nil {
 		return nil
 	}

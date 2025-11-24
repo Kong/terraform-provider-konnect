@@ -48,7 +48,7 @@ resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" 
     }
     read_timeout = 1485093464
     resource_attributes = {
-      key = jsonencode("value")
+      key = "value"
     }
     sampling_rate     = 0.37
     sampling_strategy = "parent_drop_probability_fallback"

@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -52,10 +50,15 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 				}
 				tools.Description = types.StringValue(toolsItem.Description)
 				if toolsItem.Headers != nil {
-					tools.Headers = make(map[string]jsontypes.Normalized, len(toolsItem.Headers))
-					for key, value := range toolsItem.Headers {
-						result, _ := json.Marshal(value)
-						tools.Headers[key] = jsontypes.NewNormalizedValue(string(result))
+					tools.Headers = make(map[string][]types.String, len(toolsItem.Headers))
+					for headersKey, headersValue := range toolsItem.Headers {
+						var headersResult []types.String
+						headersResult = make([]types.String, 0, len(headersValue))
+						for _, v := range headersValue {
+							headersResult = append(headersResult, types.StringValue(v))
+						}
+
+						tools.Headers[headersKey] = headersResult
 					}
 				}
 				tools.Host = types.StringPointerValue(toolsItem.Host)
@@ -84,10 +87,15 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 				}
 				tools.Path = types.StringPointerValue(toolsItem.Path)
 				if toolsItem.Query != nil {
-					tools.Query = make(map[string]jsontypes.Normalized, len(toolsItem.Query))
-					for key1, value1 := range toolsItem.Query {
-						result1, _ := json.Marshal(value1)
-						tools.Query[key1] = jsontypes.NewNormalizedValue(string(result1))
+					tools.Query = make(map[string][]types.String, len(toolsItem.Query))
+					for queryKey, queryValue := range toolsItem.Query {
+						var queryResult []types.String
+						queryResult = make([]types.String, 0, len(queryValue))
+						for _, v := range queryValue {
+							queryResult = append(queryResult, types.StringValue(v))
+						}
+
+						tools.Query[queryKey] = queryResult
 					}
 				}
 				tools.RequestBody = types.StringPointerValue(toolsItem.RequestBody)
@@ -443,12 +451,14 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 			var description string
 			description = toolsItem.Description.ValueString()
 
-			var headers map[string]interface{}
+			var headers map[string][]string
 			if toolsItem.Headers != nil {
-				headers = make(map[string]interface{})
+				headers = make(map[string][]string)
 				for headersKey, headersValue := range toolsItem.Headers {
-					var headersInst interface{}
-					_ = json.Unmarshal([]byte(headersValue.ValueString()), &headersInst)
+					headersInst := make([]string, 0, len(headersValue))
+					for _, item := range headersValue {
+						headersInst = append(headersInst, item.ValueString())
+					}
 					headers[headersKey] = headersInst
 				}
 			}
@@ -516,12 +526,14 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 			} else {
 				path1 = nil
 			}
-			var query map[string]interface{}
+			var query map[string][]string
 			if toolsItem.Query != nil {
-				query = make(map[string]interface{})
+				query = make(map[string][]string)
 				for queryKey, queryValue := range toolsItem.Query {
-					var queryInst interface{}
-					_ = json.Unmarshal([]byte(queryValue.ValueString()), &queryInst)
+					queryInst := make([]string, 0, len(queryValue))
+					for _, item1 := range queryValue {
+						queryInst = append(queryInst, item1.ValueString())
+					}
 					query[queryKey] = queryInst
 				}
 			}

@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -110,17 +108,15 @@ func (r *GatewayPluginConfluentConsumeResourceModel) RefreshFromSharedConfluentC
 						}
 						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint)
 						if resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders != nil {
-							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders = make(map[string]jsontypes.Normalized, len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders))
+							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders = make(map[string]types.String, len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders))
 							for key, value := range resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders {
-								result, _ := json.Marshal(value)
-								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders[key] = jsontypes.NewNormalizedValue(string(result))
+								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders[key] = types.StringValue(value)
 							}
 						}
 						if resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs != nil {
-							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs = make(map[string]jsontypes.Normalized, len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs))
+							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs = make(map[string]types.String, len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs))
 							for key1, value1 := range resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs {
-								result1, _ := json.Marshal(value1)
-								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs[key1] = jsontypes.NewNormalizedValue(string(result1))
+								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs[key1] = types.StringValue(value1)
 							}
 						}
 						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Username = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Username)
@@ -208,17 +204,15 @@ func (r *GatewayPluginConfluentConsumeResourceModel) RefreshFromSharedConfluentC
 							}
 							topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint = types.StringValue(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint)
 							if topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders != nil {
-								topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders = make(map[string]jsontypes.Normalized, len(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders))
+								topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders = make(map[string]types.String, len(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders))
 								for key2, value2 := range topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders {
-									result2, _ := json.Marshal(value2)
-									topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders[key2] = jsontypes.NewNormalizedValue(string(result2))
+									topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders[key2] = types.StringValue(value2)
 								}
 							}
 							if topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs != nil {
-								topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs = make(map[string]jsontypes.Normalized, len(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs))
+								topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs = make(map[string]types.String, len(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs))
 								for key3, value3 := range topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs {
-									result3, _ := json.Marshal(value3)
-									topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs[key3] = jsontypes.NewNormalizedValue(string(result3))
+									topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs[key3] = types.StringValue(value3)
 								}
 							}
 							topics.SchemaRegistry.Confluent.Authentication.Oauth2.Username = types.StringPointerValue(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.Username)
@@ -663,21 +657,23 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 					var tokenEndpoint string
 					tokenEndpoint = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint.ValueString()
 
-					var tokenHeaders map[string]interface{}
+					var tokenHeaders map[string]string
 					if r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders != nil {
-						tokenHeaders = make(map[string]interface{})
+						tokenHeaders = make(map[string]string)
 						for tokenHeadersKey, tokenHeadersValue := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders {
-							var tokenHeadersInst interface{}
-							_ = json.Unmarshal([]byte(tokenHeadersValue.ValueString()), &tokenHeadersInst)
+							var tokenHeadersInst string
+							tokenHeadersInst = tokenHeadersValue.ValueString()
+
 							tokenHeaders[tokenHeadersKey] = tokenHeadersInst
 						}
 					}
-					var tokenPostArgs map[string]interface{}
+					var tokenPostArgs map[string]string
 					if r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs != nil {
-						tokenPostArgs = make(map[string]interface{})
+						tokenPostArgs = make(map[string]string)
 						for tokenPostArgsKey, tokenPostArgsValue := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs {
-							var tokenPostArgsInst interface{}
-							_ = json.Unmarshal([]byte(tokenPostArgsValue.ValueString()), &tokenPostArgsInst)
+							var tokenPostArgsInst string
+							tokenPostArgsInst = tokenPostArgsValue.ValueString()
+
 							tokenPostArgs[tokenPostArgsKey] = tokenPostArgsInst
 						}
 					}
@@ -891,21 +887,23 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 						var tokenEndpoint1 string
 						tokenEndpoint1 = topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint.ValueString()
 
-						var tokenHeaders1 map[string]interface{}
+						var tokenHeaders1 map[string]string
 						if topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders != nil {
-							tokenHeaders1 = make(map[string]interface{})
+							tokenHeaders1 = make(map[string]string)
 							for tokenHeadersKey1, tokenHeadersValue1 := range topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders {
-								var tokenHeadersInst1 interface{}
-								_ = json.Unmarshal([]byte(tokenHeadersValue1.ValueString()), &tokenHeadersInst1)
+								var tokenHeadersInst1 string
+								tokenHeadersInst1 = tokenHeadersValue1.ValueString()
+
 								tokenHeaders1[tokenHeadersKey1] = tokenHeadersInst1
 							}
 						}
-						var tokenPostArgs1 map[string]interface{}
+						var tokenPostArgs1 map[string]string
 						if topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs != nil {
-							tokenPostArgs1 = make(map[string]interface{})
+							tokenPostArgs1 = make(map[string]string)
 							for tokenPostArgsKey1, tokenPostArgsValue1 := range topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs {
-								var tokenPostArgsInst1 interface{}
-								_ = json.Unmarshal([]byte(tokenPostArgsValue1.ValueString()), &tokenPostArgsInst1)
+								var tokenPostArgsInst1 string
+								tokenPostArgsInst1 = tokenPostArgsValue1.ValueString()
+
 								tokenPostArgs1[tokenPostArgsKey1] = tokenPostArgsInst1
 							}
 						}

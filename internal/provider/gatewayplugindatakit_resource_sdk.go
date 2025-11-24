@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -117,10 +115,9 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 				nodes.Jq = &tfTypes.Jq{}
 				nodes.Jq.Input = types.StringPointerValue(nodesItem.Jq.Input)
 				if nodesItem.Jq.Inputs != nil {
-					nodes.Jq.Inputs = make(map[string]jsontypes.Normalized, len(nodesItem.Jq.Inputs))
+					nodes.Jq.Inputs = make(map[string]types.String, len(nodesItem.Jq.Inputs))
 					for key, value := range nodesItem.Jq.Inputs {
-						result, _ := json.Marshal(value)
-						nodes.Jq.Inputs[key] = jsontypes.NewNormalizedValue(string(result))
+						nodes.Jq.Inputs[key] = types.StringValue(value)
 					}
 				}
 				nodes.Jq.Jq = types.StringValue(nodesItem.Jq.Jq)
@@ -144,10 +141,9 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 				nodes.Static.Name = types.StringPointerValue(nodesItem.Static.Name)
 				nodes.Static.Output = types.StringPointerValue(nodesItem.Static.Output)
 				if nodesItem.Static.Outputs != nil {
-					nodes.Static.Outputs = make(map[string]jsontypes.Normalized, len(nodesItem.Static.Outputs))
+					nodes.Static.Outputs = make(map[string]types.String, len(nodesItem.Static.Outputs))
 					for key1, value1 := range nodesItem.Static.Outputs {
-						result1, _ := json.Marshal(value1)
-						nodes.Static.Outputs[key1] = jsontypes.NewNormalizedValue(string(result1))
+						nodes.Static.Outputs[key1] = types.StringValue(value1)
 					}
 				}
 				nodes.Static.Values = types.StringValue(nodesItem.Static.Values)
@@ -228,10 +224,9 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 				}
 			}
 			if resp.Config.Resources.Vault != nil {
-				r.Config.Resources.Vault = make(map[string]jsontypes.Normalized, len(resp.Config.Resources.Vault))
+				r.Config.Resources.Vault = make(map[string]types.String, len(resp.Config.Resources.Vault))
 				for key2, value2 := range resp.Config.Resources.Vault {
-					result2, _ := json.Marshal(value2)
-					r.Config.Resources.Vault[key2] = jsontypes.NewNormalizedValue(string(result2))
+					r.Config.Resources.Vault[key2] = types.StringValue(value2)
 				}
 			}
 		}
@@ -835,12 +830,13 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 			} else {
 				input4 = nil
 			}
-			var inputs3 map[string]interface{}
+			var inputs3 map[string]string
 			if nodesItem.Jq.Inputs != nil {
-				inputs3 = make(map[string]interface{})
+				inputs3 = make(map[string]string)
 				for inputsKey, inputsValue := range nodesItem.Jq.Inputs {
-					var inputsInst interface{}
-					_ = json.Unmarshal([]byte(inputsValue.ValueString()), &inputsInst)
+					var inputsInst string
+					inputsInst = inputsValue.ValueString()
+
 					inputs3[inputsKey] = inputsInst
 				}
 			}
@@ -922,12 +918,13 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 			} else {
 				output5 = nil
 			}
-			var outputs3 map[string]interface{}
+			var outputs3 map[string]string
 			if nodesItem.Static.Outputs != nil {
-				outputs3 = make(map[string]interface{})
+				outputs3 = make(map[string]string)
 				for outputsKey, outputsValue := range nodesItem.Static.Outputs {
-					var outputsInst interface{}
-					_ = json.Unmarshal([]byte(outputsValue.ValueString()), &outputsInst)
+					var outputsInst string
+					outputsInst = outputsValue.ValueString()
+
 					outputs3[outputsKey] = outputsInst
 				}
 			}
@@ -1157,12 +1154,13 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 				Strategy: strategy,
 			}
 		}
-		var vault map[string]interface{}
+		var vault map[string]string
 		if r.Config.Resources.Vault != nil {
-			vault = make(map[string]interface{})
+			vault = make(map[string]string)
 			for vaultKey, vaultValue := range r.Config.Resources.Vault {
-				var vaultInst interface{}
-				_ = json.Unmarshal([]byte(vaultValue.ValueString()), &vaultInst)
+				var vaultInst string
+				vaultInst = vaultValue.ValueString()
+
 				vault[vaultKey] = vaultInst
 			}
 		}

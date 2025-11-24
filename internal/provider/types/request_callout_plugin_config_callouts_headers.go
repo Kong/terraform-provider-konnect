@@ -3,11 +3,10 @@
 package types
 
 import (
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type RequestCalloutPluginConfigCalloutsHeaders struct {
-	Custom  map[string]jsontypes.Normalized `tfsdk:"custom"`
-	Forward types.Bool                      `tfsdk:"forward"`
+	Custom  map[string]types.String `tfsdk:"custom"`
+	Forward types.Bool              `tfsdk:"forward"`
 }

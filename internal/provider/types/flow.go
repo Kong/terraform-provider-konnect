@@ -3,17 +3,16 @@
 package types
 
 import (
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type Flow struct {
-	AckMode            types.String                    `tfsdk:"ack_mode"`
-	Binds              []Binds                         `tfsdk:"binds"`
-	Functions          []types.String                  `tfsdk:"functions"`
-	MaxUnackedMessages types.Int64                     `tfsdk:"max_unacked_messages"`
-	Properties         map[string]jsontypes.Normalized `tfsdk:"properties"`
-	Selector           types.String                    `tfsdk:"selector"`
-	WaitTimeout        types.Int64                     `tfsdk:"wait_timeout"`
-	WindowSize         types.Int64                     `tfsdk:"window_size"`
+	AckMode            types.String            `tfsdk:"ack_mode"`
+	Binds              []Binds                 `tfsdk:"binds"`
+	Functions          []types.String          `tfsdk:"functions"`
+	MaxUnackedMessages types.Int64             `tfsdk:"max_unacked_messages"`
+	Properties         map[string]types.String `tfsdk:"properties"`
+	Selector           types.String            `tfsdk:"selector"`
+	WaitTimeout        types.Int64             `tfsdk:"wait_timeout"`
+	WindowSize         types.Int64             `tfsdk:"window_size"`
 }

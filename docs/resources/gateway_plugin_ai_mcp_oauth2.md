@@ -16,7 +16,7 @@ GatewayPluginAiMcpOauth2 Resource
 resource "konnect_gateway_plugin_ai_mcp_oauth2" "my_gatewaypluginaimcpoauth2" {
   config = {
     args = {
-      key = jsonencode("value")
+      key = "value"
     }
     authorization_servers = [
       "..."
@@ -34,7 +34,7 @@ resource "konnect_gateway_plugin_ai_mcp_oauth2" "my_gatewaypluginaimcpoauth2" {
     client_jwk    = "...my_client_jwk..."
     client_secret = "...my_client_secret..."
     headers = {
-      key = jsonencode("value")
+      key = "value"
     }
     http_proxy                           = "...my_http_proxy..."
     http_proxy_authorization             = "...my_http_proxy_authorization..."

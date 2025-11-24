@@ -7,8 +7,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
-	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -26,7 +24,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
@@ -185,12 +182,11 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 									},
 								},
 								"headers": schema.MapAttribute{
-									Optional:    true,
-									ElementType: jsontypes.NormalizedType{},
-									Description: `The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.`,
-									Validators: []validator.Map{
-										mapvalidator.ValueStringsAre(validators.IsValidJSON()),
+									Optional: true,
+									ElementType: types.ListType{
+										ElemType: types.StringType,
 									},
+									Description: `The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.`,
 								},
 								"host": schema.StringAttribute{
 									Optional:    true,
@@ -253,12 +249,11 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 									Description: `The path of the exported API. By default, Kong will extract the path from API configuration. If the configured path is not exactly matched, this field is required. Paths not starting with '/' are treated as relative paths.`,
 								},
 								"query": schema.MapAttribute{
-									Optional:    true,
-									ElementType: jsontypes.NormalizedType{},
-									Description: `The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.`,
-									Validators: []validator.Map{
-										mapvalidator.ValueStringsAre(validators.IsValidJSON()),
+									Optional: true,
+									ElementType: types.ListType{
+										ElemType: types.StringType,
 									},
+									Description: `The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.`,
 								},
 								"request_body": schema.StringAttribute{
 									Optional:    true,

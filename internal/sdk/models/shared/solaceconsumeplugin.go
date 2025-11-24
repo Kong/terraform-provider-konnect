@@ -171,7 +171,7 @@ type Flow struct {
 	// This property controls the maximum number of messages that may be unacknowledged on the Flow.
 	MaxUnackedMessages *int64 `default:"-1" json:"max_unacked_messages"`
 	// Additional Solace flow properties (each setting needs to have `FLOW_` prefix).
-	Properties map[string]any `json:"properties,omitempty"`
+	Properties map[string]string `json:"properties,omitempty"`
 	// The selector when binding to an endpoint.
 	Selector *string `default:"null" json:"selector"`
 	// Specifies in milliseconds how long to wait for messages to appear on each poll before giving up or retrying.
@@ -219,7 +219,7 @@ func (f *Flow) GetMaxUnackedMessages() *int64 {
 	return f.MaxUnackedMessages
 }
 
-func (f *Flow) GetProperties() map[string]any {
+func (f *Flow) GetProperties() map[string]string {
 	if f == nil {
 		return nil
 	}
@@ -429,7 +429,7 @@ type Session struct {
 	// The IPv4 or IPv6 address or host name to connect to (see: https://docs.solace.com/API-Developer-Online-Ref-Documentation/c/index.html#host-entry).
 	Host string `json:"host"`
 	// Additional Solace session properties (each setting needs to have `SESSION_` prefix).
-	Properties map[string]any `json:"properties,omitempty"`
+	Properties map[string]string `json:"properties,omitempty"`
 	// Indicates whether the API should validate server certificates with the trusted certificates.
 	SslValidateCertificate *bool `default:"false" json:"ssl_validate_certificate"`
 	// The name of the Message VPN to attempt to join when connecting to an event broker.
@@ -503,7 +503,7 @@ func (s *Session) GetHost() string {
 	return s.Host
 }
 
-func (s *Session) GetProperties() map[string]any {
+func (s *Session) GetProperties() map[string]string {
 	if s == nil {
 		return nil
 	}
