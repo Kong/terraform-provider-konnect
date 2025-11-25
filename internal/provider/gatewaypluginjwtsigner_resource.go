@@ -7,8 +7,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
-	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -27,7 +25,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 )
 
@@ -202,13 +199,13 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 					"access_token_upstream_header": types.StringType,
 					"access_token_upstream_leeway": types.Float64Type,
 					"add_access_token_claims": types.MapType{
-						ElemType: jsontypes.NormalizedType{},
+						ElemType: types.StringType,
 					},
 					"add_channel_token_claims": types.MapType{
-						ElemType: jsontypes.NormalizedType{},
+						ElemType: types.StringType,
 					},
 					"add_claims": types.MapType{
-						ElemType: jsontypes.NormalizedType{},
+						ElemType: types.StringType,
 					},
 					"cache_access_token_introspection":  types.BoolType,
 					"cache_channel_token_introspection": types.BoolType,
@@ -353,13 +350,13 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 						ElemType: types.StringType,
 					},
 					"set_access_token_claims": types.MapType{
-						ElemType: jsontypes.NormalizedType{},
+						ElemType: types.StringType,
 					},
 					"set_channel_token_claims": types.MapType{
-						ElemType: jsontypes.NormalizedType{},
+						ElemType: types.StringType,
 					},
 					"set_claims": types.MapType{
-						ElemType: jsontypes.NormalizedType{},
+						ElemType: types.StringType,
 					},
 					"trust_access_token_introspection":             types.BoolType,
 					"trust_channel_token_introspection":            types.BoolType,
@@ -738,27 +735,18 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 					},
 					"add_access_token_claims": schema.MapAttribute{
 						Optional:    true,
-						ElementType: jsontypes.NormalizedType{},
+						ElementType: types.StringType,
 						Description: `Add customized claims if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
-						Validators: []validator.Map{
-							mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-						},
 					},
 					"add_channel_token_claims": schema.MapAttribute{
 						Optional:    true,
-						ElementType: jsontypes.NormalizedType{},
+						ElementType: types.StringType,
 						Description: `Add customized claims if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
-						Validators: []validator.Map{
-							mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-						},
 					},
 					"add_claims": schema.MapAttribute{
 						Optional:    true,
-						ElementType: jsontypes.NormalizedType{},
+						ElementType: types.StringType,
 						Description: `Add customized claims to both tokens if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
-						Validators: []validator.Map{
-							mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-						},
 					},
 					"cache_access_token_introspection": schema.BoolAttribute{
 						Computed:    true,
@@ -1163,27 +1151,18 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 					},
 					"set_access_token_claims": schema.MapAttribute{
 						Optional:    true,
-						ElementType: jsontypes.NormalizedType{},
+						ElementType: types.StringType,
 						Description: `Set customized claims. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
-						Validators: []validator.Map{
-							mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-						},
 					},
 					"set_channel_token_claims": schema.MapAttribute{
 						Optional:    true,
-						ElementType: jsontypes.NormalizedType{},
+						ElementType: types.StringType,
 						Description: `Set customized claims. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
-						Validators: []validator.Map{
-							mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-						},
 					},
 					"set_claims": schema.MapAttribute{
 						Optional:    true,
-						ElementType: jsontypes.NormalizedType{},
+						ElementType: types.StringType,
 						Description: `Set customized claims to both tokens. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
-						Validators: []validator.Map{
-							mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-						},
 					},
 					"trust_access_token_introspection": schema.BoolAttribute{
 						Computed:    true,

@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -44,10 +42,9 @@ func (r *GatewayPluginSolaceConsumeResourceModel) RefreshFromSharedSolaceConsume
 		}
 		r.Config.Flow.MaxUnackedMessages = types.Int64PointerValue(resp.Config.Flow.MaxUnackedMessages)
 		if resp.Config.Flow.Properties != nil {
-			r.Config.Flow.Properties = make(map[string]jsontypes.Normalized, len(resp.Config.Flow.Properties))
+			r.Config.Flow.Properties = make(map[string]types.String, len(resp.Config.Flow.Properties))
 			for key, value := range resp.Config.Flow.Properties {
-				result, _ := json.Marshal(value)
-				r.Config.Flow.Properties[key] = jsontypes.NewNormalizedValue(string(result))
+				r.Config.Flow.Properties[key] = types.StringValue(value)
 			}
 		}
 		r.Config.Flow.Selector = types.StringPointerValue(resp.Config.Flow.Selector)
@@ -88,10 +85,9 @@ func (r *GatewayPluginSolaceConsumeResourceModel) RefreshFromSharedSolaceConsume
 		r.Config.Session.GenerateSequenceNumber = types.BoolPointerValue(resp.Config.Session.GenerateSequenceNumber)
 		r.Config.Session.Host = types.StringValue(resp.Config.Session.Host)
 		if resp.Config.Session.Properties != nil {
-			r.Config.Session.Properties = make(map[string]jsontypes.Normalized, len(resp.Config.Session.Properties))
+			r.Config.Session.Properties = make(map[string]types.String, len(resp.Config.Session.Properties))
 			for key1, value1 := range resp.Config.Session.Properties {
-				result1, _ := json.Marshal(value1)
-				r.Config.Session.Properties[key1] = jsontypes.NewNormalizedValue(string(result1))
+				r.Config.Session.Properties[key1] = types.StringValue(value1)
 			}
 		}
 		r.Config.Session.SslValidateCertificate = types.BoolPointerValue(resp.Config.Session.SslValidateCertificate)
@@ -383,12 +379,13 @@ func (r *GatewayPluginSolaceConsumeResourceModel) ToSharedSolaceConsumePlugin(ct
 	} else {
 		maxUnackedMessages = nil
 	}
-	var properties map[string]interface{}
+	var properties map[string]string
 	if r.Config.Flow.Properties != nil {
-		properties = make(map[string]interface{})
+		properties = make(map[string]string)
 		for propertiesKey, propertiesValue := range r.Config.Flow.Properties {
-			var propertiesInst interface{}
-			_ = json.Unmarshal([]byte(propertiesValue.ValueString()), &propertiesInst)
+			var propertiesInst string
+			propertiesInst = propertiesValue.ValueString()
+
 			properties[propertiesKey] = propertiesInst
 		}
 	}
@@ -531,12 +528,13 @@ func (r *GatewayPluginSolaceConsumeResourceModel) ToSharedSolaceConsumePlugin(ct
 	var host string
 	host = r.Config.Session.Host.ValueString()
 
-	var properties1 map[string]interface{}
+	var properties1 map[string]string
 	if r.Config.Session.Properties != nil {
-		properties1 = make(map[string]interface{})
+		properties1 = make(map[string]string)
 		for propertiesKey1, propertiesValue1 := range r.Config.Session.Properties {
-			var propertiesInst1 interface{}
-			_ = json.Unmarshal([]byte(propertiesValue1.ValueString()), &propertiesInst1)
+			var propertiesInst1 string
+			propertiesInst1 = propertiesValue1.ValueString()
+
 			properties1[propertiesKey1] = propertiesInst1
 		}
 	}

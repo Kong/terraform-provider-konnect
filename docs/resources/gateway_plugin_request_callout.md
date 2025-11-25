@@ -67,7 +67,7 @@ resource "konnect_gateway_plugin_request_callout" "my_gatewaypluginrequestcallou
         request = {
           body = {
             custom = {
-              key = jsonencode("value")
+              key = "value"
             }
             decode  = true
             forward = false
@@ -84,7 +84,7 @@ resource "konnect_gateway_plugin_request_callout" "my_gatewaypluginrequestcallou
           }
           headers = {
             custom = {
-              key = jsonencode("value")
+              key = "value"
             }
             forward = false
           }
@@ -106,7 +106,7 @@ resource "konnect_gateway_plugin_request_callout" "my_gatewaypluginrequestcallou
           method = "...my_method..."
           query = {
             custom = {
-              key = jsonencode("value")
+              key = "value"
             }
             forward = true
           }
@@ -127,7 +127,7 @@ resource "konnect_gateway_plugin_request_callout" "my_gatewaypluginrequestcallou
     upstream = {
       body = {
         custom = {
-          key = jsonencode("value")
+          key = "value"
         }
         decode  = true
         forward = false
@@ -135,13 +135,13 @@ resource "konnect_gateway_plugin_request_callout" "my_gatewaypluginrequestcallou
       by_lua = "...my_by_lua..."
       headers = {
         custom = {
-          key = jsonencode("value")
+          key = "value"
         }
         forward = true
       }
       query = {
         custom = {
-          key = jsonencode("value")
+          key = "value"
         }
         forward = false
       }

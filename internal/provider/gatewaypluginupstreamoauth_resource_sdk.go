@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -145,17 +143,15 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 		}
 		r.Config.Oauth.TokenEndpoint = types.StringValue(resp.Config.Oauth.TokenEndpoint)
 		if len(resp.Config.Oauth.TokenHeaders) > 0 {
-			r.Config.Oauth.TokenHeaders = make(map[string]jsontypes.Normalized, len(resp.Config.Oauth.TokenHeaders))
+			r.Config.Oauth.TokenHeaders = make(map[string]types.String, len(resp.Config.Oauth.TokenHeaders))
 			for key, value := range resp.Config.Oauth.TokenHeaders {
-				result, _ := json.Marshal(value)
-				r.Config.Oauth.TokenHeaders[key] = jsontypes.NewNormalizedValue(string(result))
+				r.Config.Oauth.TokenHeaders[key] = types.StringValue(value)
 			}
 		}
 		if len(resp.Config.Oauth.TokenPostArgs) > 0 {
-			r.Config.Oauth.TokenPostArgs = make(map[string]jsontypes.Normalized, len(resp.Config.Oauth.TokenPostArgs))
+			r.Config.Oauth.TokenPostArgs = make(map[string]types.String, len(resp.Config.Oauth.TokenPostArgs))
 			for key1, value1 := range resp.Config.Oauth.TokenPostArgs {
-				result1, _ := json.Marshal(value1)
-				r.Config.Oauth.TokenPostArgs[key1] = jsontypes.NewNormalizedValue(string(result1))
+				r.Config.Oauth.TokenPostArgs[key1] = types.StringValue(value1)
 			}
 		}
 		r.Config.Oauth.Username = types.StringPointerValue(resp.Config.Oauth.Username)
@@ -804,16 +800,18 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 	var tokenEndpoint string
 	tokenEndpoint = r.Config.Oauth.TokenEndpoint.ValueString()
 
-	tokenHeaders := make(map[string]interface{})
+	tokenHeaders := make(map[string]string)
 	for tokenHeadersKey, tokenHeadersValue := range r.Config.Oauth.TokenHeaders {
-		var tokenHeadersInst interface{}
-		_ = json.Unmarshal([]byte(tokenHeadersValue.ValueString()), &tokenHeadersInst)
+		var tokenHeadersInst string
+		tokenHeadersInst = tokenHeadersValue.ValueString()
+
 		tokenHeaders[tokenHeadersKey] = tokenHeadersInst
 	}
-	tokenPostArgs := make(map[string]interface{})
+	tokenPostArgs := make(map[string]string)
 	for tokenPostArgsKey, tokenPostArgsValue := range r.Config.Oauth.TokenPostArgs {
-		var tokenPostArgsInst interface{}
-		_ = json.Unmarshal([]byte(tokenPostArgsValue.ValueString()), &tokenPostArgsInst)
+		var tokenPostArgsInst string
+		tokenPostArgsInst = tokenPostArgsValue.ValueString()
+
 		tokenPostArgs[tokenPostArgsKey] = tokenPostArgsInst
 	}
 	username1 := new(string)

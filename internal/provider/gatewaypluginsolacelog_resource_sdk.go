@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -73,10 +71,9 @@ func (r *GatewayPluginSolaceLogResourceModel) RefreshFromSharedSolaceLogPlugin(c
 		r.Config.Session.GenerateSequenceNumber = types.BoolPointerValue(resp.Config.Session.GenerateSequenceNumber)
 		r.Config.Session.Host = types.StringValue(resp.Config.Session.Host)
 		if resp.Config.Session.Properties != nil {
-			r.Config.Session.Properties = make(map[string]jsontypes.Normalized, len(resp.Config.Session.Properties))
+			r.Config.Session.Properties = make(map[string]types.String, len(resp.Config.Session.Properties))
 			for key1, value1 := range resp.Config.Session.Properties {
-				result, _ := json.Marshal(value1)
-				r.Config.Session.Properties[key1] = jsontypes.NewNormalizedValue(string(result))
+				r.Config.Session.Properties[key1] = types.StringValue(value1)
 			}
 		}
 		r.Config.Session.SslValidateCertificate = types.BoolPointerValue(resp.Config.Session.SslValidateCertificate)
@@ -504,12 +501,13 @@ func (r *GatewayPluginSolaceLogResourceModel) ToSharedSolaceLogPlugin(ctx contex
 	var host string
 	host = r.Config.Session.Host.ValueString()
 
-	var properties map[string]interface{}
+	var properties map[string]string
 	if r.Config.Session.Properties != nil {
-		properties = make(map[string]interface{})
+		properties = make(map[string]string)
 		for propertiesKey, propertiesValue := range r.Config.Session.Properties {
-			var propertiesInst interface{}
-			_ = json.Unmarshal([]byte(propertiesValue.ValueString()), &propertiesInst)
+			var propertiesInst string
+			propertiesInst = propertiesValue.ValueString()
+
 			properties[propertiesKey] = propertiesInst
 		}
 	}

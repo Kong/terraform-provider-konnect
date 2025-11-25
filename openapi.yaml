@@ -3778,6 +3778,8 @@ paths:
       operationId: get-plugin
       summary: Get a Plugin
       description: Get a Plugin using ID.
+      parameters:
+        - $ref: '#/components/parameters/ExpandPartials'
       responses:
         '200':
           description: Successfully fetched Plugin
@@ -13535,6 +13537,7 @@ paths:
           $ref: '#/components/responses/GetPluginSchemaResponse'
       tags:
         - Plugins
+      x-keep-sdk: true
     parameters:
       - name: pluginName
         in: path
@@ -16578,6 +16581,14 @@ components:
       in: path
       required: true
       x-speakeasy-match: id
+    ExpandPartials:
+      description: Expand partials for the plugin.
+      example: true
+      in: query
+      name: expand_partials
+      schema:
+        type: boolean
+      x-speakeasy-terraform-ignore: true
     FilterByLabels:
       x-speakeasy-name-override: filter_labels
       name: labels
@@ -26334,7 +26345,8 @@ components:
               description: Additional arguments to send in the POST body.
               type: object
               default: null
-              additionalProperties: true
+              additionalProperties:
+                type: string
               nullable: true
               x-speakeasy-param-computed: false
             authorization_servers:
@@ -26419,7 +26431,8 @@ components:
               description: Additional headers for the introspection request.
               type: object
               default: null
-              additionalProperties: true
+              additionalProperties:
+                type: string
               nullable: true
               x-speakeasy-param-computed: false
             http_proxy:
@@ -26674,7 +26687,10 @@ components:
                     description: 'The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.'
                     type: object
                     default: null
-                    additionalProperties: true
+                    additionalProperties:
+                      items:
+                        type: string
+                      type: array
                     nullable: true
                     x-speakeasy-param-computed: false
                   host:
@@ -26722,7 +26738,10 @@ components:
                     description: 'The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.'
                     type: object
                     default: null
-                    additionalProperties: true
+                    additionalProperties:
+                      items:
+                        type: string
+                      type: array
                     nullable: true
                     x-speakeasy-param-computed: false
                   request_body:
@@ -34025,14 +34044,18 @@ components:
                               description: Extra headers to be passed in the token endpoint request.
                               type: object
                               default: null
-                              additionalProperties: true
+                              additionalProperties:
+                                type: string
+                                x-referenceable: true
                               nullable: true
                               x-speakeasy-param-computed: false
                             token_post_args:
                               description: Extra post arguments to be passed in the token endpoint request.
                               type: object
                               default: null
-                              additionalProperties: true
+                              additionalProperties:
+                                type: string
+                                x-referenceable: true
                               nullable: true
                               x-speakeasy-param-computed: false
                             username:
@@ -34249,14 +34272,18 @@ components:
                                     description: Extra headers to be passed in the token endpoint request.
                                     type: object
                                     default: null
-                                    additionalProperties: true
+                                    additionalProperties:
+                                      type: string
+                                      x-referenceable: true
                                     nullable: true
                                     x-speakeasy-param-computed: false
                                   token_post_args:
                                     description: Extra post arguments to be passed in the token endpoint request.
                                     type: object
                                     default: null
-                                    additionalProperties: true
+                                    additionalProperties:
+                                      type: string
+                                      x-referenceable: true
                                     nullable: true
                                     x-speakeasy-param-computed: false
                                   username:
@@ -34669,14 +34696,18 @@ components:
                               description: Extra headers to be passed in the token endpoint request.
                               type: object
                               default: null
-                              additionalProperties: true
+                              additionalProperties:
+                                type: string
+                                x-referenceable: true
                               nullable: true
                               x-speakeasy-param-computed: false
                             token_post_args:
                               description: Extra post arguments to be passed in the token endpoint request.
                               type: object
                               default: null
-                              additionalProperties: true
+                              additionalProperties:
+                                type: string
+                                x-referenceable: true
                               nullable: true
                               x-speakeasy-param-computed: false
                             username:
@@ -35836,7 +35867,10 @@ components:
                         description: filter input(s)
                         type: object
                         default: null
-                        additionalProperties: true
+                        additionalProperties:
+                          maxLength: 255
+                          minLength: 1
+                          type: string
                         nullable: true
                         x-speakeasy-param-computed: false
                       jq:
@@ -35938,7 +35972,10 @@ components:
                         description: 'Individual items from `.values`, referenced by key'
                         type: object
                         default: null
-                        additionalProperties: true
+                        additionalProperties:
+                          maxLength: 255
+                          minLength: 1
+                          type: string
                         nullable: true
                         x-speakeasy-param-computed: false
                       type:
@@ -36142,7 +36179,12 @@ components:
                 vault:
                   type: object
                   default: null
-                  additionalProperties: true
+                  additionalProperties:
+                    maxLength: 4095
+                    minLength: 1
+                    type: string
+                    x-lua-required: true
+                    x-referenceable: true
                   maxLength: 64
                   minLength: 1
                   nullable: true
@@ -39023,21 +39065,24 @@ components:
               description: 'Add customized claims if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim''s value.'
               type: object
               default: null
-              additionalProperties: true
+              additionalProperties:
+                type: string
               nullable: true
               x-speakeasy-param-computed: false
             add_channel_token_claims:
               description: 'Add customized claims if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim''s value.'
               type: object
               default: null
-              additionalProperties: true
+              additionalProperties:
+                type: string
               nullable: true
               x-speakeasy-param-computed: false
             add_claims:
               description: 'Add customized claims to both tokens if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim''s value.'
               type: object
               default: null
-              additionalProperties: true
+              additionalProperties:
+                type: string
               nullable: true
               x-speakeasy-param-computed: false
             cache_access_token_introspection:
@@ -39488,21 +39533,24 @@ components:
               description: 'Set customized claims. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim''s value.'
               type: object
               default: null
-              additionalProperties: true
+              additionalProperties:
+                type: string
               nullable: true
               x-speakeasy-param-computed: false
             set_channel_token_claims:
               description: 'Set customized claims. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim''s value.'
               type: object
               default: null
-              additionalProperties: true
+              additionalProperties:
+                type: string
               nullable: true
               x-speakeasy-param-computed: false
             set_claims:
               description: 'Set customized claims to both tokens. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim''s value.'
               type: object
               default: null
-              additionalProperties: true
+              additionalProperties:
+                type: string
               nullable: true
               x-speakeasy-param-computed: false
             trust_access_token_introspection:
@@ -39878,14 +39926,18 @@ components:
                               description: Extra headers to be passed in the token endpoint request.
                               type: object
                               default: null
-                              additionalProperties: true
+                              additionalProperties:
+                                type: string
+                                x-referenceable: true
                               nullable: true
                               x-speakeasy-param-computed: false
                             token_post_args:
                               description: Extra post arguments to be passed in the token endpoint request.
                               type: object
                               default: null
-                              additionalProperties: true
+                              additionalProperties:
+                                type: string
+                                x-referenceable: true
                               nullable: true
                               x-speakeasy-param-computed: false
                             username:
@@ -40112,14 +40164,18 @@ components:
                                     description: Extra headers to be passed in the token endpoint request.
                                     type: object
                                     default: null
-                                    additionalProperties: true
+                                    additionalProperties:
+                                      type: string
+                                      x-referenceable: true
                                     nullable: true
                                     x-speakeasy-param-computed: false
                                   token_post_args:
                                     description: Extra post arguments to be passed in the token endpoint request.
                                     type: object
                                     default: null
-                                    additionalProperties: true
+                                    additionalProperties:
+                                      type: string
+                                      x-referenceable: true
                                     nullable: true
                                     x-speakeasy-param-computed: false
                                   username:
@@ -40515,14 +40571,18 @@ components:
                               description: Extra headers to be passed in the token endpoint request.
                               type: object
                               default: null
-                              additionalProperties: true
+                              additionalProperties:
+                                type: string
+                                x-referenceable: true
                               nullable: true
                               x-speakeasy-param-computed: false
                             token_post_args:
                               description: Extra post arguments to be passed in the token endpoint request.
                               type: object
                               default: null
-                              additionalProperties: true
+                              additionalProperties:
+                                type: string
+                                x-referenceable: true
                               nullable: true
                               x-speakeasy-param-computed: false
                             username:
@@ -41009,14 +41069,18 @@ components:
                               description: Extra headers to be passed in the token endpoint request.
                               type: object
                               default: null
-                              additionalProperties: true
+                              additionalProperties:
+                                type: string
+                                x-referenceable: true
                               nullable: true
                               x-speakeasy-param-computed: false
                             token_post_args:
                               description: Extra post arguments to be passed in the token endpoint request.
                               type: object
                               default: null
-                              additionalProperties: true
+                              additionalProperties:
+                                type: string
+                                x-referenceable: true
                               nullable: true
                               x-speakeasy-param-computed: false
                             username:
@@ -42537,7 +42601,8 @@ components:
               description: A list of custom headers to be added in the introspection request.
               type: object
               default: null
-              additionalProperties: true
+              additionalProperties:
+                type: string
               nullable: true
               x-speakeasy-param-computed: false
             hide_credentials:
@@ -44998,7 +45063,9 @@ components:
               minimum: 0
             resource_attributes:
               type: object
-              additionalProperties: true
+              additionalProperties:
+                type: string
+                x-lua-required: true
               x-speakeasy-param-computed: true
             sampling_rate:
               description: 'Tracing sampling rate for configuring the probability-based sampler. When set, this value supersedes the global `tracing_sampling_rate` setting from kong.conf.'
@@ -47390,7 +47457,9 @@ components:
                             description: The custom body fields to be added to the callout HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
                             type: object
                             default: null
-                            additionalProperties: true
+                            additionalProperties:
+                              type: string
+                              x-referenceable: true
                             nullable: true
                             x-speakeasy-param-computed: false
                           decode:
@@ -47455,7 +47524,9 @@ components:
                             description: The custom headers to be added in the callout HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
                             type: object
                             default: null
-                            additionalProperties: true
+                            additionalProperties:
+                              type: string
+                              x-referenceable: true
                             nullable: true
                             x-speakeasy-param-computed: false
                           forward:
@@ -47559,7 +47630,9 @@ components:
                             description: The custom query params to be added in the callout HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
                             type: object
                             default: null
-                            additionalProperties: true
+                            additionalProperties:
+                              type: string
+                              x-referenceable: true
                             nullable: true
                             x-speakeasy-param-computed: false
                           forward:
@@ -47627,7 +47700,9 @@ components:
                       description: The custom body fields to be added in the upstream request body. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
                       type: object
                       default: null
-                      additionalProperties: true
+                      additionalProperties:
+                        type: string
+                        x-referenceable: true
                       nullable: true
                       x-speakeasy-param-computed: false
                     decode:
@@ -47653,7 +47728,9 @@ components:
                       description: The custom headers to be added in the upstream HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
                       type: object
                       default: null
-                      additionalProperties: true
+                      additionalProperties:
+                        type: string
+                        x-referenceable: true
                       nullable: true
                       x-speakeasy-param-computed: false
                     forward:
@@ -47669,7 +47746,9 @@ components:
                       description: The custom query params to be added in the upstream HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
                       type: object
                       default: null
-                      additionalProperties: true
+                      additionalProperties:
+                        type: string
+                        x-referenceable: true
                       nullable: true
                       x-speakeasy-param-computed: false
                     forward:
@@ -48533,7 +48612,39 @@ components:
               description: A map that defines rate limits for the plugin.
               type: object
               default: null
-              additionalProperties: true
+              additionalProperties:
+                properties:
+                  day:
+                    type: number
+                    default: null
+                    nullable: true
+                    x-speakeasy-param-computed: false
+                  hour:
+                    type: number
+                    default: null
+                    nullable: true
+                    x-speakeasy-param-computed: false
+                  minute:
+                    type: number
+                    default: null
+                    nullable: true
+                    x-speakeasy-param-computed: false
+                  month:
+                    type: number
+                    default: null
+                    nullable: true
+                    x-speakeasy-param-computed: false
+                  second:
+                    type: number
+                    default: null
+                    nullable: true
+                    x-speakeasy-param-computed: false
+                  year:
+                    type: number
+                    default: null
+                    nullable: true
+                    x-speakeasy-param-computed: false
+                type: object
               minLength: 1
               nullable: true
               x-speakeasy-param-computed: false
@@ -50801,7 +50912,10 @@ components:
                   description: Additional Solace flow properties (each setting needs to have `FLOW_` prefix).
                   type: object
                   default: null
-                  additionalProperties: true
+                  additionalProperties:
+                    type: string
+                    x-lua-required: true
+                    x-referenceable: true
                   nullable: true
                   x-speakeasy-param-computed: false
                 selector:
@@ -50943,7 +51057,10 @@ components:
                   description: Additional Solace session properties (each setting needs to have `SESSION_` prefix).
                   type: object
                   default: null
-                  additionalProperties: true
+                  additionalProperties:
+                    type: string
+                    x-lua-required: true
+                    x-referenceable: true
                   nullable: true
                   x-speakeasy-param-computed: false
                 ssl_validate_certificate:
@@ -51206,7 +51323,10 @@ components:
                   description: Additional Solace session properties (each setting needs to have `SESSION_` prefix).
                   type: object
                   default: null
-                  additionalProperties: true
+                  additionalProperties:
+                    type: string
+                    x-lua-required: true
+                    x-referenceable: true
                   nullable: true
                   x-speakeasy-param-computed: false
                 ssl_validate_certificate:
@@ -51476,7 +51596,10 @@ components:
                   description: Additional Solace session properties (each setting needs to have `SESSION_` prefix).
                   type: object
                   default: null
-                  additionalProperties: true
+                  additionalProperties:
+                    type: string
+                    x-lua-required: true
+                    x-referenceable: true
                   nullable: true
                   x-speakeasy-param-computed: false
                 ssl_validate_certificate:
@@ -53683,12 +53806,16 @@ components:
                 token_headers:
                   description: Extra headers to be passed in the token endpoint request.
                   type: object
-                  additionalProperties: true
+                  additionalProperties:
+                    type: string
+                    x-referenceable: true
                   x-speakeasy-param-computed: true
                 token_post_args:
                   description: Extra post arguments to be passed in the token endpoint request.
                   type: object
-                  additionalProperties: true
+                  additionalProperties:
+                    type: string
+                    x-referenceable: true
                   x-speakeasy-param-computed: true
                 username:
                   description: The username to use if `config.oauth.grant_type` is set to `password`.

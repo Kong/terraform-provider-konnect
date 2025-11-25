@@ -3,17 +3,16 @@
 package types
 
 import (
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type ResponseRatelimitingPluginConfig struct {
-	BlockOnFirstViolation types.Bool                      `tfsdk:"block_on_first_violation"`
-	FaultTolerant         types.Bool                      `tfsdk:"fault_tolerant"`
-	HeaderName            types.String                    `tfsdk:"header_name"`
-	HideClientHeaders     types.Bool                      `tfsdk:"hide_client_headers"`
-	LimitBy               types.String                    `tfsdk:"limit_by"`
-	Limits                map[string]jsontypes.Normalized `tfsdk:"limits"`
-	Policy                types.String                    `tfsdk:"policy"`
-	Redis                 *RateLimitingPluginRedis        `tfsdk:"redis"`
+	BlockOnFirstViolation types.Bool               `tfsdk:"block_on_first_violation"`
+	FaultTolerant         types.Bool               `tfsdk:"fault_tolerant"`
+	HeaderName            types.String             `tfsdk:"header_name"`
+	HideClientHeaders     types.Bool               `tfsdk:"hide_client_headers"`
+	LimitBy               types.String             `tfsdk:"limit_by"`
+	Limits                map[string]Limits        `tfsdk:"limits"`
+	Policy                types.String             `tfsdk:"policy"`
+	Redis                 *RateLimitingPluginRedis `tfsdk:"redis"`
 }

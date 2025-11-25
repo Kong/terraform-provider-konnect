@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -31,10 +29,17 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) RefreshFromSharedRespon
 				r.Config.LimitBy = types.StringNull()
 			}
 			if resp.Config.Limits != nil {
-				r.Config.Limits = make(map[string]jsontypes.Normalized, len(resp.Config.Limits))
-				for key, value := range resp.Config.Limits {
-					result, _ := json.Marshal(value)
-					r.Config.Limits[key] = jsontypes.NewNormalizedValue(string(result))
+				r.Config.Limits = make(map[string]tfTypes.Limits, len(resp.Config.Limits))
+				for limitsKey, limitsValue := range resp.Config.Limits {
+					var limitsResult tfTypes.Limits
+					limitsResult.Day = types.Float64PointerValue(limitsValue.Day)
+					limitsResult.Hour = types.Float64PointerValue(limitsValue.Hour)
+					limitsResult.Minute = types.Float64PointerValue(limitsValue.Minute)
+					limitsResult.Month = types.Float64PointerValue(limitsValue.Month)
+					limitsResult.Second = types.Float64PointerValue(limitsValue.Second)
+					limitsResult.Year = types.Float64PointerValue(limitsValue.Year)
+
+					r.Config.Limits[limitsKey] = limitsResult
 				}
 			}
 			if resp.Config.Policy != nil {
@@ -339,12 +344,54 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelim
 		} else {
 			limitBy = nil
 		}
-		var limits map[string]interface{}
+		var limits map[string]shared.Limits
 		if r.Config.Limits != nil {
-			limits = make(map[string]interface{})
+			limits = make(map[string]shared.Limits)
 			for limitsKey, limitsValue := range r.Config.Limits {
-				var limitsInst interface{}
-				_ = json.Unmarshal([]byte(limitsValue.ValueString()), &limitsInst)
+				day := new(float64)
+				if !limitsValue.Day.IsUnknown() && !limitsValue.Day.IsNull() {
+					*day = limitsValue.Day.ValueFloat64()
+				} else {
+					day = nil
+				}
+				hour := new(float64)
+				if !limitsValue.Hour.IsUnknown() && !limitsValue.Hour.IsNull() {
+					*hour = limitsValue.Hour.ValueFloat64()
+				} else {
+					hour = nil
+				}
+				minute := new(float64)
+				if !limitsValue.Minute.IsUnknown() && !limitsValue.Minute.IsNull() {
+					*minute = limitsValue.Minute.ValueFloat64()
+				} else {
+					minute = nil
+				}
+				month := new(float64)
+				if !limitsValue.Month.IsUnknown() && !limitsValue.Month.IsNull() {
+					*month = limitsValue.Month.ValueFloat64()
+				} else {
+					month = nil
+				}
+				second := new(float64)
+				if !limitsValue.Second.IsUnknown() && !limitsValue.Second.IsNull() {
+					*second = limitsValue.Second.ValueFloat64()
+				} else {
+					second = nil
+				}
+				year := new(float64)
+				if !limitsValue.Year.IsUnknown() && !limitsValue.Year.IsNull() {
+					*year = limitsValue.Year.ValueFloat64()
+				} else {
+					year = nil
+				}
+				limitsInst := shared.Limits{
+					Day:    day,
+					Hour:   hour,
+					Minute: minute,
+					Month:  month,
+					Second: second,
+					Year:   year,
+				}
 				limits[limitsKey] = limitsInst
 			}
 		}

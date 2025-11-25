@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -84,10 +82,9 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 			}
 			r.Config.ReadTimeout = types.Int64PointerValue(resp.Config.ReadTimeout)
 			if len(resp.Config.ResourceAttributes) > 0 {
-				r.Config.ResourceAttributes = make(map[string]jsontypes.Normalized, len(resp.Config.ResourceAttributes))
+				r.Config.ResourceAttributes = make(map[string]types.String, len(resp.Config.ResourceAttributes))
 				for key1, value1 := range resp.Config.ResourceAttributes {
-					result, _ := json.Marshal(value1)
-					r.Config.ResourceAttributes[key1] = jsontypes.NewNormalizedValue(string(result))
+					r.Config.ResourceAttributes[key1] = types.StringValue(value1)
 				}
 			}
 			r.Config.SamplingRate = types.Float64PointerValue(resp.Config.SamplingRate)
@@ -500,10 +497,11 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ct
 		} else {
 			readTimeout = nil
 		}
-		resourceAttributes := make(map[string]interface{})
+		resourceAttributes := make(map[string]string)
 		for resourceAttributesKey, resourceAttributesValue := range r.Config.ResourceAttributes {
-			var resourceAttributesInst interface{}
-			_ = json.Unmarshal([]byte(resourceAttributesValue.ValueString()), &resourceAttributesInst)
+			var resourceAttributesInst string
+			resourceAttributesInst = resourceAttributesValue.ValueString()
+
 			resourceAttributes[resourceAttributesKey] = resourceAttributesInst
 		}
 		samplingRate := new(float64)

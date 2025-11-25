@@ -479,8 +479,8 @@ type OpentelemetryPluginConfig struct {
 	Propagation  *Propagation              `json:"propagation,omitempty"`
 	Queue        *OpentelemetryPluginQueue `json:"queue,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ReadTimeout        *int64         `default:"5000" json:"read_timeout"`
-	ResourceAttributes map[string]any `json:"resource_attributes,omitempty"`
+	ReadTimeout        *int64            `default:"5000" json:"read_timeout"`
+	ResourceAttributes map[string]string `json:"resource_attributes,omitempty"`
 	// Tracing sampling rate for configuring the probability-based sampler. When set, this value supersedes the global `tracing_sampling_rate` setting from kong.conf.
 	SamplingRate *float64 `default:"null" json:"sampling_rate"`
 	// The sampling strategy to use for OTLP `traces`. Set `parent_drop_probability_fallback` if you want parent-based sampling when the parent span contains a `false` sampled flag, and fallback to probability-based sampling otherwise. Set `parent_probability_fallback` if you want parent-based sampling when the parent span contains a valid sampled flag (`true` or `false`), and fallback to probability-based sampling otherwise.
@@ -572,7 +572,7 @@ func (o *OpentelemetryPluginConfig) GetReadTimeout() *int64 {
 	return o.ReadTimeout
 }
 
-func (o *OpentelemetryPluginConfig) GetResourceAttributes() map[string]any {
+func (o *OpentelemetryPluginConfig) GetResourceAttributes() map[string]string {
 	if o == nil {
 		return nil
 	}

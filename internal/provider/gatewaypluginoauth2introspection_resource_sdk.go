@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -29,10 +27,9 @@ func (r *GatewayPluginOauth2IntrospectionResourceModel) RefreshFromSharedOauth2I
 			r.Config.CustomClaimsForward = append(r.Config.CustomClaimsForward, types.StringValue(v))
 		}
 		if resp.Config.CustomIntrospectionHeaders != nil {
-			r.Config.CustomIntrospectionHeaders = make(map[string]jsontypes.Normalized, len(resp.Config.CustomIntrospectionHeaders))
+			r.Config.CustomIntrospectionHeaders = make(map[string]types.String, len(resp.Config.CustomIntrospectionHeaders))
 			for key, value := range resp.Config.CustomIntrospectionHeaders {
-				result, _ := json.Marshal(value)
-				r.Config.CustomIntrospectionHeaders[key] = jsontypes.NewNormalizedValue(string(result))
+				r.Config.CustomIntrospectionHeaders[key] = types.StringValue(value)
 			}
 		}
 		r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
@@ -306,12 +303,13 @@ func (r *GatewayPluginOauth2IntrospectionResourceModel) ToSharedOauth2Introspect
 	for _, customClaimsForwardItem := range r.Config.CustomClaimsForward {
 		customClaimsForward = append(customClaimsForward, customClaimsForwardItem.ValueString())
 	}
-	var customIntrospectionHeaders map[string]interface{}
+	var customIntrospectionHeaders map[string]string
 	if r.Config.CustomIntrospectionHeaders != nil {
-		customIntrospectionHeaders = make(map[string]interface{})
+		customIntrospectionHeaders = make(map[string]string)
 		for customIntrospectionHeadersKey, customIntrospectionHeadersValue := range r.Config.CustomIntrospectionHeaders {
-			var customIntrospectionHeadersInst interface{}
-			_ = json.Unmarshal([]byte(customIntrospectionHeadersValue.ValueString()), &customIntrospectionHeadersInst)
+			var customIntrospectionHeadersInst string
+			customIntrospectionHeadersInst = customIntrospectionHeadersValue.ValueString()
+
 			customIntrospectionHeaders[customIntrospectionHeadersKey] = customIntrospectionHeadersInst
 		}
 	}

@@ -234,8 +234,8 @@ func (e *IntrospectionFormat) UnmarshalJSON(data []byte) error {
 // AiMcpOauth2PluginConfig - The configuration for MCP authorization in OAuth2. If this is enabled, make sure the configured metadata_endpoint is also covered by the same route so the authorization can be applied correctly.
 type AiMcpOauth2PluginConfig struct {
 	// Additional arguments to send in the POST body.
-	Args                 map[string]any `json:"args,omitempty"`
-	AuthorizationServers []string       `json:"authorization_servers"`
+	Args                 map[string]string `json:"args,omitempty"`
+	AuthorizationServers []string          `json:"authorization_servers"`
 	// If enabled, the plugin will cache the introspection response for the access token. This can improve performance by reducing the number of introspection requests to the authorization server.
 	CacheIntrospection *bool           `default:"true" json:"cache_introspection"`
 	ClaimToHeader      []ClaimToHeader `json:"claim_to_header"`
@@ -250,7 +250,7 @@ type AiMcpOauth2PluginConfig struct {
 	// The client secret for authentication.
 	ClientSecret *string `default:"null" json:"client_secret"`
 	// Additional headers for the introspection request.
-	Headers map[string]any `json:"headers,omitempty"`
+	Headers map[string]string `json:"headers,omitempty"`
 	// HTTP proxy to use.
 	HTTPProxy *string `default:"null" json:"http_proxy"`
 	// HTTP proxy authorization header.
@@ -303,7 +303,7 @@ func (a *AiMcpOauth2PluginConfig) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (a *AiMcpOauth2PluginConfig) GetArgs() map[string]any {
+func (a *AiMcpOauth2PluginConfig) GetArgs() map[string]string {
 	if a == nil {
 		return nil
 	}
@@ -366,7 +366,7 @@ func (a *AiMcpOauth2PluginConfig) GetClientSecret() *string {
 	return a.ClientSecret
 }
 
-func (a *AiMcpOauth2PluginConfig) GetHeaders() map[string]any {
+func (a *AiMcpOauth2PluginConfig) GetHeaders() map[string]string {
 	if a == nil {
 		return nil
 	}

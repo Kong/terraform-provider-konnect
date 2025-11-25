@@ -3,10 +3,10 @@
 package types
 
 import (
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type Resources struct {
-	Cache *DatakitPluginCache             `tfsdk:"cache"`
-	Vault map[string]jsontypes.Normalized `tfsdk:"vault"`
+	Cache *DatakitPluginCache     `tfsdk:"cache"`
+	Vault map[string]types.String `tfsdk:"vault"`
 }

@@ -57,7 +57,7 @@ resource "konnect_gateway_plugin_solace_upstream" "my_gatewaypluginsolaceupstrea
       generate_sequence_number = false
       host                     = "...my_host..."
       properties = {
-        key = jsonencode("value")
+        key = "value"
       }
       ssl_validate_certificate = true
       vpn_name                 = "...my_vpn_name..."

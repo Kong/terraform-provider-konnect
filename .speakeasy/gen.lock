@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: cdd93a3110eefe107d892393d9c2c5f9
+  docChecksum: d3be5f0e0c4870a9098cf8f79eff0be4
   docVersion: 2.0.0
   speakeasyVersion: 1.653.0
   generationVersion: 2.748.0
@@ -1164,6 +1164,7 @@ generatedFiles:
   - internal/provider/types/key_schema.go
   - internal/provider/types/ldap_auth_advanced_plugin_config.go
   - internal/provider/types/ldap_auth_plugin_config.go
+  - internal/provider/types/limits.go
   - internal/provider/types/llm.go
   - internal/provider/types/llm_providers.go
   - internal/provider/types/loggly_plugin_config.go
@@ -4589,6 +4590,8 @@ examples:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+        query:
+          expand_partials: true
       responses:
         "200":
           application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "consumer": null, "consumer_group": null, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "instance_name": null, "name": "key-auth", "ordering": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null, "tags": null}

@@ -115,7 +115,7 @@ type Oauth2IntrospectionPluginConfig struct {
 	// A list of custom claims to be forwarded from the introspection response to the upstream request. Claims are forwarded in headers with prefix `X-Credential-{claim-name}`.
 	CustomClaimsForward []string `json:"custom_claims_forward,omitempty"`
 	// A list of custom headers to be added in the introspection request.
-	CustomIntrospectionHeaders map[string]any `json:"custom_introspection_headers,omitempty"`
+	CustomIntrospectionHeaders map[string]string `json:"custom_introspection_headers,omitempty"`
 	// An optional boolean value telling the plugin to hide the credential to the upstream API server. It will be removed by Kong before proxying the request.
 	HideCredentials *bool `default:"false" json:"hide_credentials"`
 	// A boolean indicating whether to forward information about the current downstream request to the introspect endpoint. If true, headers `X-Request-Path` and `X-Request-Http-Method` will be inserted into the introspect request.
@@ -173,7 +173,7 @@ func (o *Oauth2IntrospectionPluginConfig) GetCustomClaimsForward() []string {
 	return o.CustomClaimsForward
 }
 
-func (o *Oauth2IntrospectionPluginConfig) GetCustomIntrospectionHeaders() map[string]any {
+func (o *Oauth2IntrospectionPluginConfig) GetCustomIntrospectionHeaders() map[string]string {
 	if o == nil {
 		return nil
 	}

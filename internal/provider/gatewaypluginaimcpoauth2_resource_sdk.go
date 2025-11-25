@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -22,10 +20,9 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) RefreshFromSharedAiMcpOauth2Plug
 		} else {
 			r.Config = &tfTypes.AiMcpOauth2PluginConfig{}
 			if resp.Config.Args != nil {
-				r.Config.Args = make(map[string]jsontypes.Normalized, len(resp.Config.Args))
+				r.Config.Args = make(map[string]types.String, len(resp.Config.Args))
 				for key, value := range resp.Config.Args {
-					result, _ := json.Marshal(value)
-					r.Config.Args[key] = jsontypes.NewNormalizedValue(string(result))
+					r.Config.Args[key] = types.StringValue(value)
 				}
 			}
 			r.Config.AuthorizationServers = make([]types.String, 0, len(resp.Config.AuthorizationServers))
@@ -59,10 +56,9 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) RefreshFromSharedAiMcpOauth2Plug
 			r.Config.ClientJwk = types.StringPointerValue(resp.Config.ClientJwk)
 			r.Config.ClientSecret = types.StringPointerValue(resp.Config.ClientSecret)
 			if resp.Config.Headers != nil {
-				r.Config.Headers = make(map[string]jsontypes.Normalized, len(resp.Config.Headers))
+				r.Config.Headers = make(map[string]types.String, len(resp.Config.Headers))
 				for key1, value1 := range resp.Config.Headers {
-					result1, _ := json.Marshal(value1)
-					r.Config.Headers[key1] = jsontypes.NewNormalizedValue(string(result1))
+					r.Config.Headers[key1] = types.StringValue(value1)
 				}
 			}
 			r.Config.HTTPProxy = types.StringPointerValue(resp.Config.HTTPProxy)
@@ -341,12 +337,13 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 	}
 	var config *shared.AiMcpOauth2PluginConfig
 	if r.Config != nil {
-		var args map[string]interface{}
+		var args map[string]string
 		if r.Config.Args != nil {
-			args = make(map[string]interface{})
+			args = make(map[string]string)
 			for argsKey, argsValue := range r.Config.Args {
-				var argsInst interface{}
-				_ = json.Unmarshal([]byte(argsValue.ValueString()), &argsInst)
+				var argsInst string
+				argsInst = argsValue.ValueString()
+
 				args[argsKey] = argsInst
 			}
 		}
@@ -403,12 +400,13 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 		} else {
 			clientSecret = nil
 		}
-		var headers map[string]interface{}
+		var headers map[string]string
 		if r.Config.Headers != nil {
-			headers = make(map[string]interface{})
+			headers = make(map[string]string)
 			for headersKey, headersValue := range r.Config.Headers {
-				var headersInst interface{}
-				_ = json.Unmarshal([]byte(headersValue.ValueString()), &headersInst)
+				var headersInst string
+				headersInst = headersValue.ValueString()
+
 				headers[headersKey] = headersInst
 			}
 		}

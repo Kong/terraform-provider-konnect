@@ -21,7 +21,7 @@ resource "konnect_gateway_plugin_datakit" "my_gatewayplugindatakit" {
         jq = {
           input = "...my_input..."
           inputs = {
-            key = jsonencode("value")
+            key = "value"
           }
           jq     = "...my_jq..."
           name   = "...my_name..."
@@ -70,7 +70,7 @@ resource "konnect_gateway_plugin_datakit" "my_gatewayplugindatakit" {
         strategy = "memory"
       }
       vault = {
-        key = jsonencode("value")
+        key = "value"
       }
     }
   }

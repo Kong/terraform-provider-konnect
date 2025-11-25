@@ -3,7 +3,6 @@
 package types
 
 import (
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -16,7 +15,7 @@ type Session struct {
 	GenerateSenderID       types.Bool                         `tfsdk:"generate_sender_id"`
 	GenerateSequenceNumber types.Bool                         `tfsdk:"generate_sequence_number"`
 	Host                   types.String                       `tfsdk:"host"`
-	Properties             map[string]jsontypes.Normalized    `tfsdk:"properties"`
+	Properties             map[string]types.String            `tfsdk:"properties"`
 	SslValidateCertificate types.Bool                         `tfsdk:"ssl_validate_certificate"`
 	VpnName                types.String                       `tfsdk:"vpn_name"`
 }
