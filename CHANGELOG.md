@@ -1,5 +1,16 @@
 # Changelog
 
+## 3.5.0
+> Released on 2025/12/??
+
+### Features
+* 
+
+### Bug Fixes
+* Properties related to IDP, SAML and OIDC are deprecated in `konnect_portal_auth` resource
+* Properties `config.tools[*].headers.key` and `config.tools[*].query.key` in `konnect_gateway_plugin_ai_mcp_proxy` resource now accept list of strings
+* Property `config.limits.key` in `konnect_gateway_plugin_response_ratelimiting` resource now accepts an object
+
 ## 3.4.2
 > Released on 2025/11/11
 
