@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: d3be5f0e0c4870a9098cf8f79eff0be4
+  docChecksum: e7392e5d8a8e1e0b5b4badc690f268cc
   docVersion: 2.0.0
   speakeasyVersion: 1.653.0
   generationVersion: 2.748.0
@@ -1212,7 +1212,7 @@ generatedFiles:
   - internal/provider/types/pem.go
   - internal/provider/types/pgvector.go
   - internal/provider/types/polling.go
-  - internal/provider/types/portal_claim_mappings.go
+  - internal/provider/types/portal_authentication_settings_update_request_portal_claim_mappings.go
   - internal/provider/types/portal_filter_parameters.go
   - internal/provider/types/portal_footer_menu_section.go
   - internal/provider/types/portal_menu_item.go
@@ -2264,7 +2264,6 @@ generatedFiles:
   - internal/sdk/models/shared/dataplaneclientcertificate.go
   - internal/sdk/models/shared/dataplaneclientcertificaterequest.go
   - internal/sdk/models/shared/dataplaneclientcertificateresponse.go
-  - internal/sdk/models/shared/dcrprovidertype.go
   - internal/sdk/models/shared/degraphqlplugin.go
   - internal/sdk/models/shared/exittransformerplugin.go
   - internal/sdk/models/shared/filelogplugin.go
@@ -2380,7 +2379,6 @@ generatedFiles:
   - internal/sdk/models/shared/portalfilterparameters.go
   - internal/sdk/models/shared/portalfootermenusection.go
   - internal/sdk/models/shared/portalmenuitem.go
-  - internal/sdk/models/shared/portaloidcconfig.go
   - internal/sdk/models/shared/portalpageresponse.go
   - internal/sdk/models/shared/portalresponse.go
   - internal/sdk/models/shared/portalsnippetresponse.go
@@ -12593,7 +12591,7 @@ examples:
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": true, "saml_auth_enabled": false, "oidc_team_mapping_enabled": true, "idp_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_config": {"issuer": "https://identity.example.com/v2", "client_id": "x7id0o42lklas0blidl2", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}}
+          application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": true, "oidc_team_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_config": {"issuer": "https://identity.example.com/v2", "client_id": "x7id0o42lklas0blidl2", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
   update-portal-authentication-settings:
@@ -12605,7 +12603,7 @@ examples:
         application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": true, "oidc_team_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_issuer": "https://identity.example.com/v2", "oidc_client_id": "x7id0o42lklas0blidl2", "oidc_client_secret": null, "oidc_scopes": ["email", "openid", "profile"], "oidc_claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}
       responses:
         "200":
-          application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": true, "saml_auth_enabled": false, "oidc_team_mapping_enabled": true, "idp_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_config": {"issuer": "https://identity.example.com/v2", "client_id": "x7id0o42lklas0blidl2", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}}
+          application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": true, "oidc_team_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_config": {"issuer": "https://identity.example.com/v2", "client_id": "x7id0o42lklas0blidl2", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}}
         "400":
           application/problem+json: {"status": 661550, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_items", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}, {"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value 1>"], "source": "body"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>"], "source": "body"}]}
         "401":

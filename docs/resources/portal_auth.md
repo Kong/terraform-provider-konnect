@@ -45,20 +45,20 @@ resource "konnect_portal_auth" "my_portalauth" {
 ### Optional
 
 - `basic_auth_enabled` (Boolean) The organization has basic auth enabled.
-- `idp_mapping_enabled` (Boolean) Whether IdP groups determine the Konnect Portal teams a developer has. This will soon replace oidc_team_mapping_enabled.
+- `idp_mapping_enabled` (Boolean) Whether IdP groups determine the Konnect Portal teams a developer has.
 - `konnect_mapping_enabled` (Boolean) Whether a Konnect Identity Admin assigns teams to a developer.
-- `oidc_auth_enabled` (Boolean) The organization has OIDC disabled.
-- `oidc_claim_mappings` (Attributes) Mappings from a portal developer atribute to an Identity Provider claim. (see [below for nested schema](#nestedatt--oidc_claim_mappings))
-- `oidc_client_id` (String)
-- `oidc_client_secret` (String)
-- `oidc_issuer` (String)
-- `oidc_scopes` (List of String)
-- `oidc_team_mapping_enabled` (Boolean) Whether IdP groups determine the Konnect Portal teams a developer has.
-- `saml_auth_enabled` (Boolean) The portal has SAML enabled or disabled.
+- `oidc_auth_enabled` (Boolean, Deprecated) Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.
+- `oidc_claim_mappings` (Attributes, Deprecated) Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead. (see [below for nested schema](#nestedatt--oidc_claim_mappings))
+- `oidc_client_id` (String, Deprecated) Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.
+- `oidc_client_secret` (String, Deprecated) Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.
+- `oidc_issuer` (String, Deprecated) Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.
+- `oidc_scopes` (List of String, Deprecated) Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.
+- `oidc_team_mapping_enabled` (Boolean, Deprecated) IdP groups determine the Portal Teams a developer has. Replaced by idp_mapping_enabled.
+- `saml_auth_enabled` (Boolean, Deprecated) Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.
 
 ### Read-Only
 
-- `oidc_config` (Attributes) Configuration properties for an OpenID Connect Identity Provider. (see [below for nested schema](#nestedatt--oidc_config))
+- `oidc_config` (Attributes, Deprecated) Configuration properties for an OpenID Connect Identity Provider. (see [below for nested schema](#nestedatt--oidc_config))
 
 <a id="nestedatt--oidc_claim_mappings"></a>
 ### Nested Schema for `oidc_claim_mappings`

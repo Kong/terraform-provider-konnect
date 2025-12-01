@@ -2,37 +2,69 @@
 
 package shared
 
-import (
-	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
-)
+// PortalOIDCConfig - Configuration properties for an OpenID Connect Identity Provider.
+//
+// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
+type PortalOIDCConfig struct {
+	Issuer   string   `json:"issuer"`
+	ClientID string   `json:"client_id"`
+	Scopes   []string `json:"scopes,omitempty"`
+	// Mappings from a portal developer atribute to an Identity Provider claim.
+	ClaimMappings *PortalClaimMappings `json:"claim_mappings,omitempty"`
+}
+
+func (p *PortalOIDCConfig) GetIssuer() string {
+	if p == nil {
+		return ""
+	}
+	return p.Issuer
+}
+
+func (p *PortalOIDCConfig) GetClientID() string {
+	if p == nil {
+		return ""
+	}
+	return p.ClientID
+}
+
+func (p *PortalOIDCConfig) GetScopes() []string {
+	if p == nil {
+		return nil
+	}
+	return p.Scopes
+}
+
+func (p *PortalOIDCConfig) GetClaimMappings() *PortalClaimMappings {
+	if p == nil {
+		return nil
+	}
+	return p.ClaimMappings
+}
 
 // PortalAuthenticationSettingsResponse - The developer authentication settings for a portal.
 type PortalAuthenticationSettingsResponse struct {
 	// The portal has basic auth enabled or disabled.
 	BasicAuthEnabled bool `json:"basic_auth_enabled"`
 	// The portal has OIDC enabled or disabled.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	OidcAuthEnabled bool `json:"oidc_auth_enabled"`
-	// The portal has SAML enabled or disabled.
-	SamlAuthEnabled *bool `default:"null" json:"saml_auth_enabled"`
-	// IdP groups determine the Portal Teams a developer has.
+	// A Konnect Identity Admin assigns teams to a developer.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
+	SamlAuthEnabled *bool `json:"saml_auth_enabled,omitempty"`
+	// IdP groups determine the Portal Teams a developer has. Replaced by idp_mapping_enabled.
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	OidcTeamMappingEnabled bool `json:"oidc_team_mapping_enabled"`
-	// IdP groups determine the Portal Teams a developer has. This will soon replace oidc_team_mapping_enabled.
-	IdpMappingEnabled *bool `default:"null" json:"idp_mapping_enabled"`
+	// Whether IdP groups determine the Konnect Portal teams a developer has.
+	IdpMappingEnabled *bool `json:"idp_mapping_enabled,omitempty"`
 	// A Konnect Identity Admin assigns teams to a developer.
 	KonnectMappingEnabled bool `json:"konnect_mapping_enabled"`
 	// Configuration properties for an OpenID Connect Identity Provider.
-	OidcConfig *PortalOIDCConfig `json:"oidc_config,omitempty"`
-}
-
-func (p PortalAuthenticationSettingsResponse) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(p, "", false)
-}
-
-func (p *PortalAuthenticationSettingsResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"basic_auth_enabled", "oidc_auth_enabled", "oidc_team_mapping_enabled", "konnect_mapping_enabled"}); err != nil {
-		return err
-	}
-	return nil
+	//
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
+	OidcConfig *PortalOIDCConfig `json:"oidc_config"`
 }
 
 func (p *PortalAuthenticationSettingsResponse) GetBasicAuthEnabled() bool {
