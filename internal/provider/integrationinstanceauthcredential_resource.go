@@ -6,7 +6,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -23,8 +22,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
-	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -68,9 +65,6 @@ func (r *IntegrationInstanceAuthCredentialResource) Schema(ctx context.Context, 
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"expires_at": schema.StringAttribute{
 				Computed: true,
@@ -78,9 +72,6 @@ func (r *IntegrationInstanceAuthCredentialResource) Schema(ctx context.Context, 
 					`When expired, the credential must be replaced with a new valid credential to re-enable full functionality for the given integration instance.` + "\n" +
 					`` + "\n" +
 					`A ` + "`" + `null` + "`" + ` value indicates no known expiration time.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
@@ -114,9 +105,6 @@ func (r *IntegrationInstanceAuthCredentialResource) Schema(ctx context.Context, 
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `The machine name of the integration instance that uniquely identifies it within the catalog.`,
-						Validators: []validator.String{
-							stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9a-z.-]+$`), "must match pattern "+regexp.MustCompile(`^[0-9a-z.-]+$`).String()),
-						},
 					},
 				},
 				Description: `Short-hand descriptor of an integration instance.`,
@@ -222,9 +210,6 @@ func (r *IntegrationInstanceAuthCredentialResource) Schema(ctx context.Context, 
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
 					"expires_at": schema.StringAttribute{
 						Computed: true,
@@ -232,9 +217,6 @@ func (r *IntegrationInstanceAuthCredentialResource) Schema(ctx context.Context, 
 							`When expired, the credential must be replaced with a new valid credential to re-enable full functionality for the given integration instance.` + "\n" +
 							`` + "\n" +
 							`A ` + "`" + `null` + "`" + ` value indicates no known expiration time.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
 					"id": schema.StringAttribute{
 						Computed: true,
@@ -268,9 +250,6 @@ func (r *IntegrationInstanceAuthCredentialResource) Schema(ctx context.Context, 
 									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
 								Description: `The machine name of the integration instance that uniquely identifies it within the catalog.`,
-								Validators: []validator.String{
-									stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9a-z.-]+$`), "must match pattern "+regexp.MustCompile(`^[0-9a-z.-]+$`).String()),
-								},
 							},
 						},
 						Description: `Short-hand descriptor of an integration instance.`,
@@ -313,11 +292,6 @@ func (r *IntegrationInstanceAuthCredentialResource) Schema(ctx context.Context, 
 					},
 				},
 				Description: `Represents a credential scoped to an integration instance that supports the ` + "`" + `Multi Key` + "`" + ` authorization strategy.`,
-				Validators: []validator.Object{
-					objectvalidator.ConflictsWith(path.Expressions{
-						path.MatchRelative().AtParent().AtName("multi_key_auth"),
-					}...),
-				},
 			},
 			"tainted": schema.BoolAttribute{
 				Computed: true,
@@ -384,6 +358,13 @@ func (r *IntegrationInstanceAuthCredentialResource) Create(ctx context.Context, 
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode == 409 {
+		resp.Diagnostics.AddError(
+			"Resource Already Exists",
+			"When creating this resource, the API indicated that this resource already exists. You can bring the existing resource under management using Terraform import functionality or retry with a unique configuration.",
+		)
 		return
 	}
 	if res.StatusCode != 201 {
@@ -524,7 +505,10 @@ func (r *IntegrationInstanceAuthCredentialResource) Delete(ctx context.Context, 
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 204 {
+	switch res.StatusCode {
+	case 204, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

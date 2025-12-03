@@ -267,6 +267,7 @@ func (s *Targets) DeleteTargetWithUpstream(ctx context.Context, request operatio
 
 	switch {
 	case httpRes.StatusCode == 204:
+	case httpRes.StatusCode == 404:
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {

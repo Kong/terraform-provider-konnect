@@ -240,8 +240,8 @@ func (r *GatewayPluginPreFunctionResourceModel) ToSharedPreFunctionPlugin(ctx co
 		var after *shared.PreFunctionPluginAfter
 		if r.Ordering.After != nil {
 			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			for accessIndex := range r.Ordering.After.Access {
+				access = append(access, r.Ordering.After.Access[accessIndex].ValueString())
 			}
 			after = &shared.PreFunctionPluginAfter{
 				Access: access,
@@ -250,8 +250,8 @@ func (r *GatewayPluginPreFunctionResourceModel) ToSharedPreFunctionPlugin(ctx co
 		var before *shared.PreFunctionPluginBefore
 		if r.Ordering.Before != nil {
 			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			for accessIndex1 := range r.Ordering.Before.Access {
+				access1 = append(access1, r.Ordering.Before.Access[accessIndex1].ValueString())
 			}
 			before = &shared.PreFunctionPluginBefore{
 				Access: access1,
@@ -265,22 +265,22 @@ func (r *GatewayPluginPreFunctionResourceModel) ToSharedPreFunctionPlugin(ctx co
 	var partials []shared.PreFunctionPluginPartials
 	if r.Partials != nil {
 		partials = make([]shared.PreFunctionPluginPartials, 0, len(r.Partials))
-		for _, partialsItem := range r.Partials {
+		for partialsIndex := range r.Partials {
 			id1 := new(string)
-			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
-				*id1 = partialsItem.ID.ValueString()
+			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
+				*id1 = r.Partials[partialsIndex].ID.ValueString()
 			} else {
 				id1 = nil
 			}
 			name := new(string)
-			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
-				*name = partialsItem.Name.ValueString()
+			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
+				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
 			path := new(string)
-			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
-				*path = partialsItem.Path.ValueString()
+			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
+				*path = r.Partials[partialsIndex].Path.ValueString()
 			} else {
 				path = nil
 			}
@@ -294,8 +294,8 @@ func (r *GatewayPluginPreFunctionResourceModel) ToSharedPreFunctionPlugin(ctx co
 	var tags []string
 	if r.Tags != nil {
 		tags = make([]string, 0, len(r.Tags))
-		for _, tagsItem := range r.Tags {
-			tags = append(tags, tagsItem.ValueString())
+		for tagsIndex := range r.Tags {
+			tags = append(tags, r.Tags[tagsIndex].ValueString())
 		}
 	}
 	updatedAt := new(int64)
@@ -307,44 +307,44 @@ func (r *GatewayPluginPreFunctionResourceModel) ToSharedPreFunctionPlugin(ctx co
 	var config *shared.PreFunctionPluginConfig
 	if r.Config != nil {
 		access2 := make([]string, 0, len(r.Config.Access))
-		for _, accessItem2 := range r.Config.Access {
-			access2 = append(access2, accessItem2.ValueString())
+		for accessIndex2 := range r.Config.Access {
+			access2 = append(access2, r.Config.Access[accessIndex2].ValueString())
 		}
 		bodyFilter := make([]string, 0, len(r.Config.BodyFilter))
-		for _, bodyFilterItem := range r.Config.BodyFilter {
-			bodyFilter = append(bodyFilter, bodyFilterItem.ValueString())
+		for bodyFilterIndex := range r.Config.BodyFilter {
+			bodyFilter = append(bodyFilter, r.Config.BodyFilter[bodyFilterIndex].ValueString())
 		}
 		certificate := make([]string, 0, len(r.Config.Certificate))
-		for _, certificateItem := range r.Config.Certificate {
-			certificate = append(certificate, certificateItem.ValueString())
+		for certificateIndex := range r.Config.Certificate {
+			certificate = append(certificate, r.Config.Certificate[certificateIndex].ValueString())
 		}
 		headerFilter := make([]string, 0, len(r.Config.HeaderFilter))
-		for _, headerFilterItem := range r.Config.HeaderFilter {
-			headerFilter = append(headerFilter, headerFilterItem.ValueString())
+		for headerFilterIndex := range r.Config.HeaderFilter {
+			headerFilter = append(headerFilter, r.Config.HeaderFilter[headerFilterIndex].ValueString())
 		}
 		log := make([]string, 0, len(r.Config.Log))
-		for _, logItem := range r.Config.Log {
-			log = append(log, logItem.ValueString())
+		for logIndex := range r.Config.Log {
+			log = append(log, r.Config.Log[logIndex].ValueString())
 		}
 		rewrite := make([]string, 0, len(r.Config.Rewrite))
-		for _, rewriteItem := range r.Config.Rewrite {
-			rewrite = append(rewrite, rewriteItem.ValueString())
+		for rewriteIndex := range r.Config.Rewrite {
+			rewrite = append(rewrite, r.Config.Rewrite[rewriteIndex].ValueString())
 		}
 		wsClientFrame := make([]string, 0, len(r.Config.WsClientFrame))
-		for _, wsClientFrameItem := range r.Config.WsClientFrame {
-			wsClientFrame = append(wsClientFrame, wsClientFrameItem.ValueString())
+		for wsClientFrameIndex := range r.Config.WsClientFrame {
+			wsClientFrame = append(wsClientFrame, r.Config.WsClientFrame[wsClientFrameIndex].ValueString())
 		}
 		wsClose := make([]string, 0, len(r.Config.WsClose))
-		for _, wsCloseItem := range r.Config.WsClose {
-			wsClose = append(wsClose, wsCloseItem.ValueString())
+		for wsCloseIndex := range r.Config.WsClose {
+			wsClose = append(wsClose, r.Config.WsClose[wsCloseIndex].ValueString())
 		}
 		wsHandshake := make([]string, 0, len(r.Config.WsHandshake))
-		for _, wsHandshakeItem := range r.Config.WsHandshake {
-			wsHandshake = append(wsHandshake, wsHandshakeItem.ValueString())
+		for wsHandshakeIndex := range r.Config.WsHandshake {
+			wsHandshake = append(wsHandshake, r.Config.WsHandshake[wsHandshakeIndex].ValueString())
 		}
 		wsUpstreamFrame := make([]string, 0, len(r.Config.WsUpstreamFrame))
-		for _, wsUpstreamFrameItem := range r.Config.WsUpstreamFrame {
-			wsUpstreamFrame = append(wsUpstreamFrame, wsUpstreamFrameItem.ValueString())
+		for wsUpstreamFrameIndex := range r.Config.WsUpstreamFrame {
+			wsUpstreamFrame = append(wsUpstreamFrame, r.Config.WsUpstreamFrame[wsUpstreamFrameIndex].ValueString())
 		}
 		config = &shared.PreFunctionPluginConfig{
 			Access:          access2,

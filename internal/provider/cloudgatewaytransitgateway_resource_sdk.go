@@ -297,14 +297,14 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 		name = r.AWSTransitGateway.Name.ValueString()
 
 		dnsConfig := make([]shared.TransitGatewayDNSConfig, 0, len(r.AWSTransitGateway.DNSConfig))
-		for _, dnsConfigItem := range r.AWSTransitGateway.DNSConfig {
-			remoteDNSServerIPAddresses := make([]string, 0, len(dnsConfigItem.RemoteDNSServerIPAddresses))
-			for _, remoteDNSServerIPAddressesItem := range dnsConfigItem.RemoteDNSServerIPAddresses {
-				remoteDNSServerIPAddresses = append(remoteDNSServerIPAddresses, remoteDNSServerIPAddressesItem.ValueString())
+		for dnsConfigIndex := range r.AWSTransitGateway.DNSConfig {
+			remoteDNSServerIPAddresses := make([]string, 0, len(r.AWSTransitGateway.DNSConfig[dnsConfigIndex].RemoteDNSServerIPAddresses))
+			for remoteDNSServerIPAddressesIndex := range r.AWSTransitGateway.DNSConfig[dnsConfigIndex].RemoteDNSServerIPAddresses {
+				remoteDNSServerIPAddresses = append(remoteDNSServerIPAddresses, r.AWSTransitGateway.DNSConfig[dnsConfigIndex].RemoteDNSServerIPAddresses[remoteDNSServerIPAddressesIndex].ValueString())
 			}
-			domainProxyList := make([]string, 0, len(dnsConfigItem.DomainProxyList))
-			for _, domainProxyListItem := range dnsConfigItem.DomainProxyList {
-				domainProxyList = append(domainProxyList, domainProxyListItem.ValueString())
+			domainProxyList := make([]string, 0, len(r.AWSTransitGateway.DNSConfig[dnsConfigIndex].DomainProxyList))
+			for domainProxyListIndex := range r.AWSTransitGateway.DNSConfig[dnsConfigIndex].DomainProxyList {
+				domainProxyList = append(domainProxyList, r.AWSTransitGateway.DNSConfig[dnsConfigIndex].DomainProxyList[domainProxyListIndex].ValueString())
 			}
 			dnsConfig = append(dnsConfig, shared.TransitGatewayDNSConfig{
 				RemoteDNSServerIPAddresses: remoteDNSServerIPAddresses,
@@ -312,8 +312,8 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 			})
 		}
 		cidrBlocks := make([]string, 0, len(r.AWSTransitGateway.CidrBlocks))
-		for _, cidrBlocksItem := range r.AWSTransitGateway.CidrBlocks {
-			cidrBlocks = append(cidrBlocks, cidrBlocksItem.ValueString())
+		for cidrBlocksIndex := range r.AWSTransitGateway.CidrBlocks {
+			cidrBlocks = append(cidrBlocks, r.AWSTransitGateway.CidrBlocks[cidrBlocksIndex].ValueString())
 		}
 		kind := shared.AWSTransitGatewayAttachmentType(r.AWSTransitGateway.TransitGatewayAttachmentConfig.Kind.ValueString())
 		var transitGatewayID string
@@ -345,14 +345,14 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 		name1 = r.AWSVpcPeeringGateway.Name.ValueString()
 
 		dnsConfig1 := make([]shared.TransitGatewayDNSConfig, 0, len(r.AWSVpcPeeringGateway.DNSConfig))
-		for _, dnsConfigItem1 := range r.AWSVpcPeeringGateway.DNSConfig {
-			remoteDNSServerIPAddresses1 := make([]string, 0, len(dnsConfigItem1.RemoteDNSServerIPAddresses))
-			for _, remoteDNSServerIPAddressesItem1 := range dnsConfigItem1.RemoteDNSServerIPAddresses {
-				remoteDNSServerIPAddresses1 = append(remoteDNSServerIPAddresses1, remoteDNSServerIPAddressesItem1.ValueString())
+		for dnsConfigIndex1 := range r.AWSVpcPeeringGateway.DNSConfig {
+			remoteDNSServerIPAddresses1 := make([]string, 0, len(r.AWSVpcPeeringGateway.DNSConfig[dnsConfigIndex1].RemoteDNSServerIPAddresses))
+			for remoteDNSServerIPAddressesIndex1 := range r.AWSVpcPeeringGateway.DNSConfig[dnsConfigIndex1].RemoteDNSServerIPAddresses {
+				remoteDNSServerIPAddresses1 = append(remoteDNSServerIPAddresses1, r.AWSVpcPeeringGateway.DNSConfig[dnsConfigIndex1].RemoteDNSServerIPAddresses[remoteDNSServerIPAddressesIndex1].ValueString())
 			}
-			domainProxyList1 := make([]string, 0, len(dnsConfigItem1.DomainProxyList))
-			for _, domainProxyListItem1 := range dnsConfigItem1.DomainProxyList {
-				domainProxyList1 = append(domainProxyList1, domainProxyListItem1.ValueString())
+			domainProxyList1 := make([]string, 0, len(r.AWSVpcPeeringGateway.DNSConfig[dnsConfigIndex1].DomainProxyList))
+			for domainProxyListIndex1 := range r.AWSVpcPeeringGateway.DNSConfig[dnsConfigIndex1].DomainProxyList {
+				domainProxyList1 = append(domainProxyList1, r.AWSVpcPeeringGateway.DNSConfig[dnsConfigIndex1].DomainProxyList[domainProxyListIndex1].ValueString())
 			}
 			dnsConfig1 = append(dnsConfig1, shared.TransitGatewayDNSConfig{
 				RemoteDNSServerIPAddresses: remoteDNSServerIPAddresses1,
@@ -360,8 +360,8 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 			})
 		}
 		cidrBlocks1 := make([]string, 0, len(r.AWSVpcPeeringGateway.CidrBlocks))
-		for _, cidrBlocksItem1 := range r.AWSVpcPeeringGateway.CidrBlocks {
-			cidrBlocks1 = append(cidrBlocks1, cidrBlocksItem1.ValueString())
+		for cidrBlocksIndex1 := range r.AWSVpcPeeringGateway.CidrBlocks {
+			cidrBlocks1 = append(cidrBlocks1, r.AWSVpcPeeringGateway.CidrBlocks[cidrBlocksIndex1].ValueString())
 		}
 		kind1 := shared.AWSVPCPeeringAttachmentConfig(r.AWSVpcPeeringGateway.TransitGatewayAttachmentConfig.Kind.ValueString())
 		var peerAccountID string
@@ -397,14 +397,14 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 		name2 = r.AWSResourceEndpointGateway.Name.ValueString()
 
 		dnsConfig2 := make([]shared.TransitGatewayDNSConfig, 0, len(r.AWSResourceEndpointGateway.DNSConfig))
-		for _, dnsConfigItem2 := range r.AWSResourceEndpointGateway.DNSConfig {
-			remoteDNSServerIPAddresses2 := make([]string, 0, len(dnsConfigItem2.RemoteDNSServerIPAddresses))
-			for _, remoteDNSServerIPAddressesItem2 := range dnsConfigItem2.RemoteDNSServerIPAddresses {
-				remoteDNSServerIPAddresses2 = append(remoteDNSServerIPAddresses2, remoteDNSServerIPAddressesItem2.ValueString())
+		for dnsConfigIndex2 := range r.AWSResourceEndpointGateway.DNSConfig {
+			remoteDNSServerIPAddresses2 := make([]string, 0, len(r.AWSResourceEndpointGateway.DNSConfig[dnsConfigIndex2].RemoteDNSServerIPAddresses))
+			for remoteDNSServerIPAddressesIndex2 := range r.AWSResourceEndpointGateway.DNSConfig[dnsConfigIndex2].RemoteDNSServerIPAddresses {
+				remoteDNSServerIPAddresses2 = append(remoteDNSServerIPAddresses2, r.AWSResourceEndpointGateway.DNSConfig[dnsConfigIndex2].RemoteDNSServerIPAddresses[remoteDNSServerIPAddressesIndex2].ValueString())
 			}
-			domainProxyList2 := make([]string, 0, len(dnsConfigItem2.DomainProxyList))
-			for _, domainProxyListItem2 := range dnsConfigItem2.DomainProxyList {
-				domainProxyList2 = append(domainProxyList2, domainProxyListItem2.ValueString())
+			domainProxyList2 := make([]string, 0, len(r.AWSResourceEndpointGateway.DNSConfig[dnsConfigIndex2].DomainProxyList))
+			for domainProxyListIndex2 := range r.AWSResourceEndpointGateway.DNSConfig[dnsConfigIndex2].DomainProxyList {
+				domainProxyList2 = append(domainProxyList2, r.AWSResourceEndpointGateway.DNSConfig[dnsConfigIndex2].DomainProxyList[domainProxyListIndex2].ValueString())
 			}
 			dnsConfig2 = append(dnsConfig2, shared.TransitGatewayDNSConfig{
 				RemoteDNSServerIPAddresses: remoteDNSServerIPAddresses2,
@@ -416,12 +416,12 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 		ramShareArn1 = r.AWSResourceEndpointGateway.TransitGatewayAttachmentConfig.RAMShareArn.ValueString()
 
 		resourceConfig := make([]shared.AwsResourceEndpointConfig, 0, len(r.AWSResourceEndpointGateway.TransitGatewayAttachmentConfig.ResourceConfig))
-		for _, resourceConfigItem := range r.AWSResourceEndpointGateway.TransitGatewayAttachmentConfig.ResourceConfig {
+		for resourceConfigIndex := range r.AWSResourceEndpointGateway.TransitGatewayAttachmentConfig.ResourceConfig {
 			var resourceConfigID string
-			resourceConfigID = resourceConfigItem.ResourceConfigID.ValueString()
+			resourceConfigID = r.AWSResourceEndpointGateway.TransitGatewayAttachmentConfig.ResourceConfig[resourceConfigIndex].ResourceConfigID.ValueString()
 
 			var domainName string
-			domainName = resourceConfigItem.DomainName.ValueString()
+			domainName = r.AWSResourceEndpointGateway.TransitGatewayAttachmentConfig.ResourceConfig[resourceConfigIndex].DomainName.ValueString()
 
 			resourceConfig = append(resourceConfig, shared.AwsResourceEndpointConfig{
 				ResourceConfigID: resourceConfigID,
@@ -450,14 +450,14 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 		name3 = r.AzureTransitGateway.Name.ValueString()
 
 		dnsConfig3 := make([]shared.TransitGatewayDNSConfig, 0, len(r.AzureTransitGateway.DNSConfig))
-		for _, dnsConfigItem3 := range r.AzureTransitGateway.DNSConfig {
-			remoteDNSServerIPAddresses3 := make([]string, 0, len(dnsConfigItem3.RemoteDNSServerIPAddresses))
-			for _, remoteDNSServerIPAddressesItem3 := range dnsConfigItem3.RemoteDNSServerIPAddresses {
-				remoteDNSServerIPAddresses3 = append(remoteDNSServerIPAddresses3, remoteDNSServerIPAddressesItem3.ValueString())
+		for dnsConfigIndex3 := range r.AzureTransitGateway.DNSConfig {
+			remoteDNSServerIPAddresses3 := make([]string, 0, len(r.AzureTransitGateway.DNSConfig[dnsConfigIndex3].RemoteDNSServerIPAddresses))
+			for remoteDNSServerIPAddressesIndex3 := range r.AzureTransitGateway.DNSConfig[dnsConfigIndex3].RemoteDNSServerIPAddresses {
+				remoteDNSServerIPAddresses3 = append(remoteDNSServerIPAddresses3, r.AzureTransitGateway.DNSConfig[dnsConfigIndex3].RemoteDNSServerIPAddresses[remoteDNSServerIPAddressesIndex3].ValueString())
 			}
-			domainProxyList3 := make([]string, 0, len(dnsConfigItem3.DomainProxyList))
-			for _, domainProxyListItem3 := range dnsConfigItem3.DomainProxyList {
-				domainProxyList3 = append(domainProxyList3, domainProxyListItem3.ValueString())
+			domainProxyList3 := make([]string, 0, len(r.AzureTransitGateway.DNSConfig[dnsConfigIndex3].DomainProxyList))
+			for domainProxyListIndex3 := range r.AzureTransitGateway.DNSConfig[dnsConfigIndex3].DomainProxyList {
+				domainProxyList3 = append(domainProxyList3, r.AzureTransitGateway.DNSConfig[dnsConfigIndex3].DomainProxyList[domainProxyListIndex3].ValueString())
 			}
 			dnsConfig3 = append(dnsConfig3, shared.TransitGatewayDNSConfig{
 				RemoteDNSServerIPAddresses: remoteDNSServerIPAddresses3,
@@ -501,14 +501,14 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 		name4 = r.GcpVpcPeeringTransitGateway.Name.ValueString()
 
 		dnsConfig4 := make([]shared.TransitGatewayDNSConfig, 0, len(r.GcpVpcPeeringTransitGateway.DNSConfig))
-		for _, dnsConfigItem4 := range r.GcpVpcPeeringTransitGateway.DNSConfig {
-			remoteDNSServerIPAddresses4 := make([]string, 0, len(dnsConfigItem4.RemoteDNSServerIPAddresses))
-			for _, remoteDNSServerIPAddressesItem4 := range dnsConfigItem4.RemoteDNSServerIPAddresses {
-				remoteDNSServerIPAddresses4 = append(remoteDNSServerIPAddresses4, remoteDNSServerIPAddressesItem4.ValueString())
+		for dnsConfigIndex4 := range r.GcpVpcPeeringTransitGateway.DNSConfig {
+			remoteDNSServerIPAddresses4 := make([]string, 0, len(r.GcpVpcPeeringTransitGateway.DNSConfig[dnsConfigIndex4].RemoteDNSServerIPAddresses))
+			for remoteDNSServerIPAddressesIndex4 := range r.GcpVpcPeeringTransitGateway.DNSConfig[dnsConfigIndex4].RemoteDNSServerIPAddresses {
+				remoteDNSServerIPAddresses4 = append(remoteDNSServerIPAddresses4, r.GcpVpcPeeringTransitGateway.DNSConfig[dnsConfigIndex4].RemoteDNSServerIPAddresses[remoteDNSServerIPAddressesIndex4].ValueString())
 			}
-			domainProxyList4 := make([]string, 0, len(dnsConfigItem4.DomainProxyList))
-			for _, domainProxyListItem4 := range dnsConfigItem4.DomainProxyList {
-				domainProxyList4 = append(domainProxyList4, domainProxyListItem4.ValueString())
+			domainProxyList4 := make([]string, 0, len(r.GcpVpcPeeringTransitGateway.DNSConfig[dnsConfigIndex4].DomainProxyList))
+			for domainProxyListIndex4 := range r.GcpVpcPeeringTransitGateway.DNSConfig[dnsConfigIndex4].DomainProxyList {
+				domainProxyList4 = append(domainProxyList4, r.GcpVpcPeeringTransitGateway.DNSConfig[dnsConfigIndex4].DomainProxyList[domainProxyListIndex4].ValueString())
 			}
 			dnsConfig4 = append(dnsConfig4, shared.TransitGatewayDNSConfig{
 				RemoteDNSServerIPAddresses: remoteDNSServerIPAddresses4,

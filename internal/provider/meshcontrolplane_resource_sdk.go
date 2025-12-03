@@ -113,21 +113,21 @@ func (r *MeshControlPlaneResourceModel) ToSharedCreateMeshControlPlaneRequest(ct
 		description = nil
 	}
 	features := make([]shared.MeshControlPlaneFeature, 0, len(r.Features))
-	for _, featuresItem := range r.Features {
-		typeVar := shared.Type(featuresItem.Type.ValueString())
+	for featuresIndex := range r.Features {
+		typeVar := shared.Type(r.Features[featuresIndex].Type.ValueString())
 		var hostnameGeneratorCreation *shared.MeshControlPlaneFeatureHostnameGenerationCreation
-		if featuresItem.HostnameGeneratorCreation != nil {
+		if r.Features[featuresIndex].HostnameGeneratorCreation != nil {
 			var enabled bool
-			enabled = featuresItem.HostnameGeneratorCreation.Enabled.ValueBool()
+			enabled = r.Features[featuresIndex].HostnameGeneratorCreation.Enabled.ValueBool()
 
 			hostnameGeneratorCreation = &shared.MeshControlPlaneFeatureHostnameGenerationCreation{
 				Enabled: enabled,
 			}
 		}
 		var meshCreation *shared.MeshControlPlaneFeatureMeshCreation
-		if featuresItem.MeshCreation != nil {
+		if r.Features[featuresIndex].MeshCreation != nil {
 			var enabled1 bool
-			enabled1 = featuresItem.MeshCreation.Enabled.ValueBool()
+			enabled1 = r.Features[featuresIndex].MeshCreation.Enabled.ValueBool()
 
 			meshCreation = &shared.MeshControlPlaneFeatureMeshCreation{
 				Enabled: enabled1,
@@ -142,10 +142,10 @@ func (r *MeshControlPlaneResourceModel) ToSharedCreateMeshControlPlaneRequest(ct
 	var labels map[string]*string
 	if r.Labels != nil {
 		labels = make(map[string]*string)
-		for labelsKey, labelsValue := range r.Labels {
+		for labelsKey := range r.Labels {
 			labelsInst := new(string)
-			if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-				*labelsInst = labelsValue.ValueString()
+			if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+				*labelsInst = r.Labels[labelsKey].ValueString()
 			} else {
 				labelsInst = nil
 			}
@@ -177,9 +177,9 @@ func (r *MeshControlPlaneResourceModel) ToSharedPutMeshControlPlaneRequest(ctx c
 	var labels map[string]string
 	if r.Labels != nil {
 		labels = make(map[string]string)
-		for labelsKey, labelsValue := range r.Labels {
+		for labelsKey := range r.Labels {
 			var labelsInst string
-			labelsInst = labelsValue.ValueString()
+			labelsInst = r.Labels[labelsKey].ValueString()
 
 			labels[labelsKey] = labelsInst
 		}

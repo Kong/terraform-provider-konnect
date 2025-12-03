@@ -299,8 +299,8 @@ func (r *GatewayPluginRequestTransformerResourceModel) ToSharedRequestTransforme
 		var after *shared.RequestTransformerPluginAfter
 		if r.Ordering.After != nil {
 			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			for accessIndex := range r.Ordering.After.Access {
+				access = append(access, r.Ordering.After.Access[accessIndex].ValueString())
 			}
 			after = &shared.RequestTransformerPluginAfter{
 				Access: access,
@@ -309,8 +309,8 @@ func (r *GatewayPluginRequestTransformerResourceModel) ToSharedRequestTransforme
 		var before *shared.RequestTransformerPluginBefore
 		if r.Ordering.Before != nil {
 			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			for accessIndex1 := range r.Ordering.Before.Access {
+				access1 = append(access1, r.Ordering.Before.Access[accessIndex1].ValueString())
 			}
 			before = &shared.RequestTransformerPluginBefore{
 				Access: access1,
@@ -324,22 +324,22 @@ func (r *GatewayPluginRequestTransformerResourceModel) ToSharedRequestTransforme
 	var partials []shared.RequestTransformerPluginPartials
 	if r.Partials != nil {
 		partials = make([]shared.RequestTransformerPluginPartials, 0, len(r.Partials))
-		for _, partialsItem := range r.Partials {
+		for partialsIndex := range r.Partials {
 			id1 := new(string)
-			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
-				*id1 = partialsItem.ID.ValueString()
+			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
+				*id1 = r.Partials[partialsIndex].ID.ValueString()
 			} else {
 				id1 = nil
 			}
 			name := new(string)
-			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
-				*name = partialsItem.Name.ValueString()
+			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
+				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
 			path := new(string)
-			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
-				*path = partialsItem.Path.ValueString()
+			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
+				*path = r.Partials[partialsIndex].Path.ValueString()
 			} else {
 				path = nil
 			}
@@ -353,8 +353,8 @@ func (r *GatewayPluginRequestTransformerResourceModel) ToSharedRequestTransforme
 	var tags []string
 	if r.Tags != nil {
 		tags = make([]string, 0, len(r.Tags))
-		for _, tagsItem := range r.Tags {
-			tags = append(tags, tagsItem.ValueString())
+		for tagsIndex := range r.Tags {
+			tags = append(tags, r.Tags[tagsIndex].ValueString())
 		}
 	}
 	updatedAt := new(int64)
@@ -368,16 +368,16 @@ func (r *GatewayPluginRequestTransformerResourceModel) ToSharedRequestTransforme
 		var add *shared.Add
 		if r.Config.Add != nil {
 			body := make([]string, 0, len(r.Config.Add.Body))
-			for _, bodyItem := range r.Config.Add.Body {
-				body = append(body, bodyItem.ValueString())
+			for bodyIndex := range r.Config.Add.Body {
+				body = append(body, r.Config.Add.Body[bodyIndex].ValueString())
 			}
 			headers := make([]string, 0, len(r.Config.Add.Headers))
-			for _, headersItem := range r.Config.Add.Headers {
-				headers = append(headers, headersItem.ValueString())
+			for headersIndex := range r.Config.Add.Headers {
+				headers = append(headers, r.Config.Add.Headers[headersIndex].ValueString())
 			}
 			querystring := make([]string, 0, len(r.Config.Add.Querystring))
-			for _, querystringItem := range r.Config.Add.Querystring {
-				querystring = append(querystring, querystringItem.ValueString())
+			for querystringIndex := range r.Config.Add.Querystring {
+				querystring = append(querystring, r.Config.Add.Querystring[querystringIndex].ValueString())
 			}
 			add = &shared.Add{
 				Body:        body,
@@ -388,16 +388,16 @@ func (r *GatewayPluginRequestTransformerResourceModel) ToSharedRequestTransforme
 		var append1 *shared.Append
 		if r.Config.Append != nil {
 			body1 := make([]string, 0, len(r.Config.Append.Body))
-			for _, bodyItem1 := range r.Config.Append.Body {
-				body1 = append(body1, bodyItem1.ValueString())
+			for bodyIndex1 := range r.Config.Append.Body {
+				body1 = append(body1, r.Config.Append.Body[bodyIndex1].ValueString())
 			}
 			headers1 := make([]string, 0, len(r.Config.Append.Headers))
-			for _, headersItem1 := range r.Config.Append.Headers {
-				headers1 = append(headers1, headersItem1.ValueString())
+			for headersIndex1 := range r.Config.Append.Headers {
+				headers1 = append(headers1, r.Config.Append.Headers[headersIndex1].ValueString())
 			}
 			querystring1 := make([]string, 0, len(r.Config.Append.Querystring))
-			for _, querystringItem1 := range r.Config.Append.Querystring {
-				querystring1 = append(querystring1, querystringItem1.ValueString())
+			for querystringIndex1 := range r.Config.Append.Querystring {
+				querystring1 = append(querystring1, r.Config.Append.Querystring[querystringIndex1].ValueString())
 			}
 			append1 = &shared.Append{
 				Body:        body1,
@@ -414,16 +414,16 @@ func (r *GatewayPluginRequestTransformerResourceModel) ToSharedRequestTransforme
 		var remove *shared.Remove
 		if r.Config.Remove != nil {
 			body2 := make([]string, 0, len(r.Config.Remove.Body))
-			for _, bodyItem2 := range r.Config.Remove.Body {
-				body2 = append(body2, bodyItem2.ValueString())
+			for bodyIndex2 := range r.Config.Remove.Body {
+				body2 = append(body2, r.Config.Remove.Body[bodyIndex2].ValueString())
 			}
 			headers2 := make([]string, 0, len(r.Config.Remove.Headers))
-			for _, headersItem2 := range r.Config.Remove.Headers {
-				headers2 = append(headers2, headersItem2.ValueString())
+			for headersIndex2 := range r.Config.Remove.Headers {
+				headers2 = append(headers2, r.Config.Remove.Headers[headersIndex2].ValueString())
 			}
 			querystring2 := make([]string, 0, len(r.Config.Remove.Querystring))
-			for _, querystringItem2 := range r.Config.Remove.Querystring {
-				querystring2 = append(querystring2, querystringItem2.ValueString())
+			for querystringIndex2 := range r.Config.Remove.Querystring {
+				querystring2 = append(querystring2, r.Config.Remove.Querystring[querystringIndex2].ValueString())
 			}
 			remove = &shared.Remove{
 				Body:        body2,
@@ -434,16 +434,16 @@ func (r *GatewayPluginRequestTransformerResourceModel) ToSharedRequestTransforme
 		var rename *shared.Rename
 		if r.Config.Rename != nil {
 			body3 := make([]string, 0, len(r.Config.Rename.Body))
-			for _, bodyItem3 := range r.Config.Rename.Body {
-				body3 = append(body3, bodyItem3.ValueString())
+			for bodyIndex3 := range r.Config.Rename.Body {
+				body3 = append(body3, r.Config.Rename.Body[bodyIndex3].ValueString())
 			}
 			headers3 := make([]string, 0, len(r.Config.Rename.Headers))
-			for _, headersItem3 := range r.Config.Rename.Headers {
-				headers3 = append(headers3, headersItem3.ValueString())
+			for headersIndex3 := range r.Config.Rename.Headers {
+				headers3 = append(headers3, r.Config.Rename.Headers[headersIndex3].ValueString())
 			}
 			querystring3 := make([]string, 0, len(r.Config.Rename.Querystring))
-			for _, querystringItem3 := range r.Config.Rename.Querystring {
-				querystring3 = append(querystring3, querystringItem3.ValueString())
+			for querystringIndex3 := range r.Config.Rename.Querystring {
+				querystring3 = append(querystring3, r.Config.Rename.Querystring[querystringIndex3].ValueString())
 			}
 			rename = &shared.Rename{
 				Body:        body3,
@@ -454,16 +454,16 @@ func (r *GatewayPluginRequestTransformerResourceModel) ToSharedRequestTransforme
 		var replace *shared.Replace
 		if r.Config.Replace != nil {
 			body4 := make([]string, 0, len(r.Config.Replace.Body))
-			for _, bodyItem4 := range r.Config.Replace.Body {
-				body4 = append(body4, bodyItem4.ValueString())
+			for bodyIndex4 := range r.Config.Replace.Body {
+				body4 = append(body4, r.Config.Replace.Body[bodyIndex4].ValueString())
 			}
 			headers4 := make([]string, 0, len(r.Config.Replace.Headers))
-			for _, headersItem4 := range r.Config.Replace.Headers {
-				headers4 = append(headers4, headersItem4.ValueString())
+			for headersIndex4 := range r.Config.Replace.Headers {
+				headers4 = append(headers4, r.Config.Replace.Headers[headersIndex4].ValueString())
 			}
 			querystring4 := make([]string, 0, len(r.Config.Replace.Querystring))
-			for _, querystringItem4 := range r.Config.Replace.Querystring {
-				querystring4 = append(querystring4, querystringItem4.ValueString())
+			for querystringIndex4 := range r.Config.Replace.Querystring {
+				querystring4 = append(querystring4, r.Config.Replace.Querystring[querystringIndex4].ValueString())
 			}
 			uri := new(string)
 			if !r.Config.Replace.URI.IsUnknown() && !r.Config.Replace.URI.IsNull() {

@@ -327,8 +327,8 @@ func (r *GatewayPluginSamlResourceModel) ToSharedSamlPlugin(ctx context.Context)
 		var after *shared.SamlPluginAfter
 		if r.Ordering.After != nil {
 			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			for accessIndex := range r.Ordering.After.Access {
+				access = append(access, r.Ordering.After.Access[accessIndex].ValueString())
 			}
 			after = &shared.SamlPluginAfter{
 				Access: access,
@@ -337,8 +337,8 @@ func (r *GatewayPluginSamlResourceModel) ToSharedSamlPlugin(ctx context.Context)
 		var before *shared.SamlPluginBefore
 		if r.Ordering.Before != nil {
 			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			for accessIndex1 := range r.Ordering.Before.Access {
+				access1 = append(access1, r.Ordering.Before.Access[accessIndex1].ValueString())
 			}
 			before = &shared.SamlPluginBefore{
 				Access: access1,
@@ -352,22 +352,22 @@ func (r *GatewayPluginSamlResourceModel) ToSharedSamlPlugin(ctx context.Context)
 	var partials []shared.SamlPluginPartials
 	if r.Partials != nil {
 		partials = make([]shared.SamlPluginPartials, 0, len(r.Partials))
-		for _, partialsItem := range r.Partials {
+		for partialsIndex := range r.Partials {
 			id1 := new(string)
-			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
-				*id1 = partialsItem.ID.ValueString()
+			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
+				*id1 = r.Partials[partialsIndex].ID.ValueString()
 			} else {
 				id1 = nil
 			}
 			name := new(string)
-			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
-				*name = partialsItem.Name.ValueString()
+			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
+				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
 			path := new(string)
-			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
-				*path = partialsItem.Path.ValueString()
+			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
+				*path = r.Partials[partialsIndex].Path.ValueString()
 			} else {
 				path = nil
 			}
@@ -381,8 +381,8 @@ func (r *GatewayPluginSamlResourceModel) ToSharedSamlPlugin(ctx context.Context)
 	var tags []string
 	if r.Tags != nil {
 		tags = make([]string, 0, len(r.Tags))
-		for _, tagsItem := range r.Tags {
-			tags = append(tags, tagsItem.ValueString())
+		for tagsIndex := range r.Tags {
+			tags = append(tags, r.Tags[tagsIndex].ValueString())
 		}
 	}
 	updatedAt := new(int64)
@@ -429,16 +429,16 @@ func (r *GatewayPluginSamlResourceModel) ToSharedSamlPlugin(ctx context.Context)
 		var clusterNodes []shared.SamlPluginClusterNodes
 		if r.Config.Redis.ClusterNodes != nil {
 			clusterNodes = make([]shared.SamlPluginClusterNodes, 0, len(r.Config.Redis.ClusterNodes))
-			for _, clusterNodesItem := range r.Config.Redis.ClusterNodes {
+			for clusterNodesIndex := range r.Config.Redis.ClusterNodes {
 				ip := new(string)
-				if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
-					*ip = clusterNodesItem.IP.ValueString()
+				if !r.Config.Redis.ClusterNodes[clusterNodesIndex].IP.IsUnknown() && !r.Config.Redis.ClusterNodes[clusterNodesIndex].IP.IsNull() {
+					*ip = r.Config.Redis.ClusterNodes[clusterNodesIndex].IP.ValueString()
 				} else {
 					ip = nil
 				}
 				port := new(int64)
-				if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
-					*port = clusterNodesItem.Port.ValueInt64()
+				if !r.Config.Redis.ClusterNodes[clusterNodesIndex].Port.IsUnknown() && !r.Config.Redis.ClusterNodes[clusterNodesIndex].Port.IsNull() {
+					*port = r.Config.Redis.ClusterNodes[clusterNodesIndex].Port.ValueInt64()
 				} else {
 					port = nil
 				}
@@ -523,16 +523,16 @@ func (r *GatewayPluginSamlResourceModel) ToSharedSamlPlugin(ctx context.Context)
 		var sentinelNodes []shared.SamlPluginSentinelNodes
 		if r.Config.Redis.SentinelNodes != nil {
 			sentinelNodes = make([]shared.SamlPluginSentinelNodes, 0, len(r.Config.Redis.SentinelNodes))
-			for _, sentinelNodesItem := range r.Config.Redis.SentinelNodes {
+			for sentinelNodesIndex := range r.Config.Redis.SentinelNodes {
 				host1 := new(string)
-				if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
-					*host1 = sentinelNodesItem.Host.ValueString()
+				if !r.Config.Redis.SentinelNodes[sentinelNodesIndex].Host.IsUnknown() && !r.Config.Redis.SentinelNodes[sentinelNodesIndex].Host.IsNull() {
+					*host1 = r.Config.Redis.SentinelNodes[sentinelNodesIndex].Host.ValueString()
 				} else {
 					host1 = nil
 				}
 				port2 := new(int64)
-				if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
-					*port2 = sentinelNodesItem.Port.ValueInt64()
+				if !r.Config.Redis.SentinelNodes[sentinelNodesIndex].Port.IsUnknown() && !r.Config.Redis.SentinelNodes[sentinelNodesIndex].Port.IsNull() {
+					*port2 = r.Config.Redis.SentinelNodes[sentinelNodesIndex].Port.ValueInt64()
 				} else {
 					port2 = nil
 				}

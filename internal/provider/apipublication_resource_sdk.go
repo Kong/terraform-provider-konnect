@@ -105,8 +105,8 @@ func (r *APIPublicationResourceModel) ToSharedAPIPublication(ctx context.Context
 	var authStrategyIds []string
 	if r.AuthStrategyIds != nil {
 		authStrategyIds = make([]string, 0, len(r.AuthStrategyIds))
-		for _, authStrategyIdsItem := range r.AuthStrategyIds {
-			authStrategyIds = append(authStrategyIds, authStrategyIdsItem.ValueString())
+		for authStrategyIdsIndex := range r.AuthStrategyIds {
+			authStrategyIds = append(authStrategyIds, r.AuthStrategyIds[authStrategyIdsIndex].ValueString())
 		}
 	}
 	visibility := new(shared.APIPublicationVisibility)

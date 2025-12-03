@@ -16,11 +16,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
 
@@ -69,9 +67,6 @@ func (r *APIImplementationResource) Schema(ctx context.Context, req resource.Sch
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
@@ -93,11 +88,9 @@ func (r *APIImplementationResource) Schema(ctx context.Context, req resource.Sch
 				Description: `A Gateway service that implements an API`,
 			},
 			"service_reference": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.Object{
 					objectplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 				},
 				Attributes: map[string]schema.Attribute{
 					"created_at": schema.StringAttribute{
@@ -106,9 +99,6 @@ func (r *APIImplementationResource) Schema(ctx context.Context, req resource.Sch
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
 					"id": schema.StringAttribute{
 						Computed: true,
@@ -122,7 +112,6 @@ func (r *APIImplementationResource) Schema(ctx context.Context, req resource.Sch
 						Optional: true,
 						PlanModifiers: []planmodifier.Object{
 							objectplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 						},
 						Attributes: map[string]schema.Attribute{
 							"control_plane_id": schema.StringAttribute{
@@ -130,7 +119,6 @@ func (r *APIImplementationResource) Schema(ctx context.Context, req resource.Sch
 								Optional: true,
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
-									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
 								Description: `Not Null; Requires replacement if changed.`,
 								Validators: []validator.String{
@@ -142,7 +130,6 @@ func (r *APIImplementationResource) Schema(ctx context.Context, req resource.Sch
 								Optional: true,
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
-									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
 								Description: `Not Null; Requires replacement if changed.`,
 								Validators: []validator.String{
@@ -158,9 +145,6 @@ func (r *APIImplementationResource) Schema(ctx context.Context, req resource.Sch
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
 				},
 				Description: `A gateway service that implements an API. Requires replacement if changed.`,
@@ -171,9 +155,6 @@ func (r *APIImplementationResource) Schema(ctx context.Context, req resource.Sch
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 		},
 	}
@@ -233,6 +214,13 @@ func (r *APIImplementationResource) Create(ctx context.Context, req resource.Cre
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode == 409 {
+		resp.Diagnostics.AddError(
+			"Resource Already Exists",
+			"When creating this resource, the API indicated that this resource already exists. You can bring the existing resource under management using Terraform import functionality or retry with a unique configuration.",
+		)
 		return
 	}
 	if res.StatusCode != 201 {
@@ -373,7 +361,10 @@ func (r *APIImplementationResource) Delete(ctx context.Context, req resource.Del
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 204 {
+	switch res.StatusCode {
+	case 204, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

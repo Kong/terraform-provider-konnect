@@ -112,7 +112,6 @@ Private DNS.
 - `error` - The attachment is in an error state, and is not operational.
 - `terminating` - The attachment is in the process of being deleted.
 - `terminated` - The attachment has been fully deleted and is no longer available.
-must be one of ["created", "initializing", "pending-association", "ready", "error", "terminating", "terminated"]
 - `state_metadata` (Attributes) Metadata describing the backing state of the Private Dns and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--aws_private_dns_resolver_response--state_metadata))
 - `updated_at` (String) An RFC-3339 timestamp representation of Private DNS update date.
 
@@ -122,7 +121,7 @@ must be one of ["created", "initializing", "pending-association", "ready", "erro
 Read-Only:
 
 - `dns_config` (Attributes Map) Object that contains mappings from proxied internal domains to remote DNS server IP address for a Private DNS Resolver. (see [below for nested schema](#nestedatt--aws_private_dns_resolver_response--private_dns_attachment_config--dns_config))
-- `kind` (String) must be "aws-outbound-resolver"
+- `kind` (String)
 
 <a id="nestedatt--aws_private_dns_resolver_response--private_dns_attachment_config--dns_config"></a>
 ### Nested Schema for `aws_private_dns_resolver_response.private_dns_attachment_config.dns_config`
@@ -162,7 +161,6 @@ Private DNS.
 - `error` - The attachment is in an error state, and is not operational.
 - `terminating` - The attachment is in the process of being deleted.
 - `terminated` - The attachment has been fully deleted and is no longer available.
-must be one of ["created", "initializing", "pending-association", "ready", "error", "terminating", "terminated"]
 - `state_metadata` (Attributes) Metadata describing the backing state of the Private Dns and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--aws_private_hosted_zone_response--state_metadata))
 - `updated_at` (String) An RFC-3339 timestamp representation of Private DNS update date.
 
@@ -172,7 +170,7 @@ must be one of ["created", "initializing", "pending-association", "ready", "erro
 Read-Only:
 
 - `hosted_zone_id` (String) AWS Hosted Zone to create attachment to.
-- `kind` (String) must be "aws-private-hosted-zone-attachment"
+- `kind` (String)
 
 
 <a id="nestedatt--aws_private_hosted_zone_response--state_metadata"></a>
@@ -204,7 +202,6 @@ Private DNS.
 - `error` - The attachment is in an error state, and is not operational.
 - `terminating` - The attachment is in the process of being deleted.
 - `terminated` - The attachment has been fully deleted and is no longer available.
-must be one of ["created", "initializing", "pending-association", "ready", "error", "terminating", "terminated"]
 - `state_metadata` (Attributes) Metadata describing the backing state of the Private Dns and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--gcp_private_hosted_zone_response--state_metadata))
 - `updated_at` (String) An RFC-3339 timestamp representation of Private DNS update date.
 
@@ -214,7 +211,7 @@ must be one of ["created", "initializing", "pending-association", "ready", "erro
 Read-Only:
 
 - `domain_name` (String) Domain name to create attachment to.
-- `kind` (String) must be "gcp-private-hosted-zone-attachment"
+- `kind` (String)
 - `peer_project_id` (String) Customer's GCP Project ID.
 - `peer_vpc_name` (String) Customer's GCP VPC ID.
 

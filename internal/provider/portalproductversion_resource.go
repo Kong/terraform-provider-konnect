@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -21,7 +20,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -83,14 +81,7 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 									Description: `Possible developer selectable scopes for an application. Only present when using DCR Provider that supports it.`,
 								},
 								"credential_type": schema.StringAttribute{
-									Computed:    true,
-									Description: `must be one of ["client_credentials", "self_managed_client_credentials"]`,
-									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"client_credentials",
-											"self_managed_client_credentials",
-										),
-									},
+									Computed: true,
 								},
 								"id": schema.StringAttribute{
 									Computed: true,
@@ -106,21 +97,12 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 								},
 							},
 							Description: `Client Credential Auth strategy that the application uses.`,
-							Validators: []validator.Object{
-								objectvalidator.ConflictsWith(path.Expressions{
-									path.MatchRelative().AtParent().AtName("key_auth"),
-								}...),
-							},
 						},
 						"key_auth": schema.SingleNestedAttribute{
 							Computed: true,
 							Attributes: map[string]schema.Attribute{
 								"credential_type": schema.StringAttribute{
-									Computed:    true,
-									Description: `must be "key_auth"`,
-									Validators: []validator.String{
-										stringvalidator.OneOf("key_auth"),
-									},
+									Computed: true,
 								},
 								"id": schema.StringAttribute{
 									Computed: true,
@@ -140,18 +122,10 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 								},
 							},
 							Description: `KeyAuth Auth strategy that the application uses.`,
-							Validators: []validator.Object{
-								objectvalidator.ConflictsWith(path.Expressions{
-									path.MatchRelative().AtParent().AtName("client_credentials"),
-								}...),
-							},
 						},
 					},
 				},
 				Description: `A list of authentication strategies`,
-				Validators: []validator.List{
-					listvalidator.SizeAtMost(1),
-				},
 			},
 			"auth_strategy_ids": schema.ListAttribute{
 				Required:    true,
@@ -172,9 +146,6 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"deprecated": schema.BoolAttribute{
 				Required:    true,
@@ -218,9 +189,6 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 		},
 	}
@@ -530,7 +498,10 @@ func (r *PortalProductVersionResource) Delete(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 204 {
+	switch res.StatusCode {
+	case 204, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

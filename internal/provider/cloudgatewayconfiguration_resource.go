@@ -19,7 +19,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	speakeasy_int64validators "github.com/kong/terraform-provider-konnect/v3/internal/validators/int64validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
@@ -96,9 +95,6 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An RFC-3339 timestamp representation of configuration creation date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"dataplane_groups": schema.SetNestedAttribute{
 				Required: true,
@@ -112,7 +108,6 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 							Optional: true,
 							Attributes: map[string]schema.Attribute{
 								"configuration_data_plane_group_autoscale_autopilot": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"base_rps": schema.Int64Attribute{
@@ -149,7 +144,6 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 									},
 								},
 								"configuration_data_plane_group_autoscale_static": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"instance_type": schema.StringAttribute{
@@ -214,9 +208,6 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 							},
 							Description: `An RFC-3339 timestamp representation of data-plane group creation date.`,
-							Validators: []validator.String{
-								validators.IsRFC3339(),
-							},
 						},
 						"egress_ip_addresses": schema.ListAttribute{
 							Computed:    true,
@@ -287,16 +278,7 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 						},
 						"state": schema.StringAttribute{
 							Computed:    true,
-							Description: `State of the data-plane group. must be one of ["created", "initializing", "ready", "terminating", "terminated"]`,
-							Validators: []validator.String{
-								stringvalidator.OneOf(
-									"created",
-									"initializing",
-									"ready",
-									"terminating",
-									"terminated",
-								),
-							},
+							Description: `State of the data-plane group.`,
 						},
 						"updated_at": schema.StringAttribute{
 							Computed: true,
@@ -304,9 +286,6 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 							},
 							Description: `An RFC-3339 timestamp representation of data-plane group update date.`,
-							Validators: []validator.String{
-								validators.IsRFC3339(),
-							},
 						},
 					},
 				},
@@ -331,9 +310,6 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An RFC-3339 timestamp representation of configuration update date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"version": schema.StringAttribute{
 				Required:    true,
@@ -397,6 +373,13 @@ func (r *CloudGatewayConfigurationResource) Create(ctx context.Context, req reso
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode == 409 {
+		resp.Diagnostics.AddError(
+			"Resource Already Exists",
+			"When creating this resource, the API indicated that this resource already exists. You can bring the existing resource under management using Terraform import functionality or retry with a unique configuration.",
+		)
 		return
 	}
 	if res.StatusCode != 200 {

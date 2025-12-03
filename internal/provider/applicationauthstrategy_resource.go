@@ -22,14 +22,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/boolplanmodifier"
-	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/listplanmodifier"
-	speakeasy_mapplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/mapplanmodifier"
-	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/listvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
@@ -74,9 +69,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 			"display_name": schema.StringAttribute{
 				Computed:    true,
 				Description: `The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.`,
-				Validators: []validator.String{
-					stringvalidator.UTF8LengthAtMost(256),
-				},
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
@@ -86,18 +78,13 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 				Description: `Contains a unique identifier used for this resource.`,
 			},
 			"key_auth": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.Object{
 					objectplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 				},
 				Attributes: map[string]schema.Attribute{
 					"active": schema.BoolAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.Bool{
-							speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
-						},
+						Computed:    true,
 						Description: `At least one published entity is using this auth strategy.`,
 					},
 					"configs": schema.SingleNestedAttribute{
@@ -105,7 +92,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						Optional: true,
 						PlanModifiers: []planmodifier.Object{
 							objectplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 						},
 						Attributes: map[string]schema.Attribute{
 							"key_auth": schema.SingleNestedAttribute{
@@ -113,7 +99,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 								Optional: true,
 								PlanModifiers: []planmodifier.Object{
 									objectplanmodifier.RequiresReplaceIfConfigured(),
-									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 								},
 								Attributes: map[string]schema.Attribute{
 									"key_names": schema.ListAttribute{
@@ -149,9 +134,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
 					"dcr_provider": schema.SingleNestedAttribute{
 						Computed: true,
@@ -168,9 +150,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
 								Description: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.`,
-								Validators: []validator.String{
-									stringvalidator.UTF8LengthBetween(1, 256),
-								},
 							},
 							"id": schema.StringAttribute{
 								Computed: true,
@@ -190,16 +169,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 								PlanModifiers: []planmodifier.String{
 									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
-								Description: `The type of DCR provider. must be one of ["auth0", "azureAd", "curity", "okta", "http"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"auth0",
-										"azureAd",
-										"curity",
-										"okta",
-										"http",
-									),
-								},
+								Description: `The type of DCR provider.`,
 							},
 						},
 					},
@@ -208,7 +178,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						Optional: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI. Not Null; Requires replacement if changed.`,
 						Validators: []validator.String{
@@ -228,7 +197,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						Optional: true,
 						PlanModifiers: []planmodifier.Map{
 							mapplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_mapplanmodifier.SuppressDiff(speakeasy_mapplanmodifier.ExplicitSuppress),
 						},
 						ElementType: types.StringType,
 						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
@@ -241,7 +209,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						Optional: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI. Not Null; Requires replacement if changed.`,
 						Validators: []validator.String{
@@ -254,7 +221,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						Optional: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `Not Null; must be "key_auth"; Requires replacement if changed.`,
 						Validators: []validator.String{
@@ -268,9 +234,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
 				},
 				Description: `Response payload from creating or updating a Key Auth Application Auth Strategy. Requires replacement if changed.`,
@@ -283,23 +246,15 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 			"name": schema.StringAttribute{
 				Computed:    true,
 				Description: `The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.`,
-				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 256),
-				},
 			},
 			"openid_connect": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				PlanModifiers: []planmodifier.Object{
 					objectplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 				},
 				Attributes: map[string]schema.Attribute{
 					"active": schema.BoolAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.Bool{
-							speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
-						},
+						Computed:    true,
 						Description: `At least one published entity is using this auth strategy.`,
 					},
 					"configs": schema.SingleNestedAttribute{
@@ -307,7 +262,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						Optional: true,
 						PlanModifiers: []planmodifier.Object{
 							objectplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 						},
 						Attributes: map[string]schema.Attribute{
 							"openid_connect": schema.SingleNestedAttribute{
@@ -315,7 +269,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 								Optional: true,
 								PlanModifiers: []planmodifier.Object{
 									objectplanmodifier.RequiresReplaceIfConfigured(),
-									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 								},
 								Attributes: map[string]schema.Attribute{
 									"additional_properties": schema.StringAttribute{
@@ -324,7 +277,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 										Optional:   true,
 										PlanModifiers: []planmodifier.String{
 											stringplanmodifier.RequiresReplaceIfConfigured(),
-											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 										},
 										Description: `Requires replacement if changed.; Parsed as JSON.`,
 									},
@@ -333,7 +285,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 										Optional: true,
 										PlanModifiers: []planmodifier.List{
 											listplanmodifier.RequiresReplaceIfConfigured(),
-											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 										},
 										ElementType: types.StringType,
 										Description: `Not Null; Requires replacement if changed.`,
@@ -347,7 +298,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 										Optional: true,
 										PlanModifiers: []planmodifier.List{
 											listplanmodifier.RequiresReplaceIfConfigured(),
-											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 										},
 										ElementType: types.StringType,
 										Description: `Not Null; Requires replacement if changed.`,
@@ -361,7 +311,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 										Optional: true,
 										PlanModifiers: []planmodifier.String{
 											stringplanmodifier.RequiresReplaceIfConfigured(),
-											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 										},
 										Description: `Not Null; Requires replacement if changed.`,
 										Validators: []validator.String{
@@ -374,7 +323,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 										Optional: true,
 										PlanModifiers: []planmodifier.List{
 											listplanmodifier.RequiresReplaceIfConfigured(),
-											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 										},
 										ElementType: types.StringType,
 										Description: `Not Null; Requires replacement if changed.`,
@@ -405,9 +353,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An ISO-8601 timestamp representation of entity creation date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
 					"dcr_provider": schema.SingleNestedAttribute{
 						Computed: true,
@@ -424,9 +369,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
 								Description: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.`,
-								Validators: []validator.String{
-									stringvalidator.UTF8LengthBetween(1, 256),
-								},
 							},
 							"id": schema.StringAttribute{
 								Computed: true,
@@ -446,16 +388,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 								PlanModifiers: []planmodifier.String{
 									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
-								Description: `The type of DCR provider. must be one of ["auth0", "azureAd", "curity", "okta", "http"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"auth0",
-										"azureAd",
-										"curity",
-										"okta",
-										"http",
-									),
-								},
+								Description: `The type of DCR provider.`,
 							},
 						},
 					},
@@ -471,7 +404,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						Optional: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI. Not Null; Requires replacement if changed.`,
 						Validators: []validator.String{
@@ -491,7 +423,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						Optional: true,
 						PlanModifiers: []planmodifier.Map{
 							mapplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_mapplanmodifier.SuppressDiff(speakeasy_mapplanmodifier.ExplicitSuppress),
 						},
 						ElementType: types.StringType,
 						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
@@ -504,7 +435,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						Optional: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI. Not Null; Requires replacement if changed.`,
 						Validators: []validator.String{
@@ -517,7 +447,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						Optional: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `Not Null; must be "openid_connect"; Requires replacement if changed.`,
 						Validators: []validator.String{
@@ -533,9 +462,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An ISO-8601 timestamp representation of entity update date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
 				},
 				Description: `Response payload from creating an OIDC Application Auth Strategy. Requires replacement if changed.`,
@@ -853,7 +779,10 @@ func (r *ApplicationAuthStrategyResource) Delete(ctx context.Context, req resour
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 204 {
+	switch res.StatusCode {
+	case 204, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

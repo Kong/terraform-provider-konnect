@@ -106,21 +106,21 @@ func (r *CloudGatewayConfigurationResourceModel) ToSharedCreateConfigurationRequ
 	version = r.Version.ValueString()
 
 	dataplaneGroups := make([]shared.CreateConfigurationDataPlaneGroup, 0, len(r.DataplaneGroups))
-	for _, dataplaneGroupsItem := range r.DataplaneGroups {
-		provider := shared.ProviderName(dataplaneGroupsItem.Provider.ValueString())
+	for dataplaneGroupsIndex := range r.DataplaneGroups {
+		provider := shared.ProviderName(r.DataplaneGroups[dataplaneGroupsIndex].Provider.ValueString())
 		var region string
-		region = dataplaneGroupsItem.Region.ValueString()
+		region = r.DataplaneGroups[dataplaneGroupsIndex].Region.ValueString()
 
 		var cloudGatewayNetworkID string
-		cloudGatewayNetworkID = dataplaneGroupsItem.CloudGatewayNetworkID.ValueString()
+		cloudGatewayNetworkID = r.DataplaneGroups[dataplaneGroupsIndex].CloudGatewayNetworkID.ValueString()
 
 		var autoscale shared.ConfigurationDataPlaneGroupAutoscale
 		var configurationDataPlaneGroupAutoscaleStatic *shared.ConfigurationDataPlaneGroupAutoscaleStatic
-		if dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic != nil {
-			kind := shared.Kind(dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.Kind.ValueString())
-			instanceType := shared.InstanceTypeName(dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.InstanceType.ValueString())
+		if r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic != nil {
+			kind := shared.Kind(r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.Kind.ValueString())
+			instanceType := shared.InstanceTypeName(r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.InstanceType.ValueString())
 			var requestedInstances int64
-			requestedInstances = dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.RequestedInstances.ValueInt64()
+			requestedInstances = r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.RequestedInstances.ValueInt64()
 
 			configurationDataPlaneGroupAutoscaleStatic = &shared.ConfigurationDataPlaneGroupAutoscaleStatic{
 				Kind:               kind,
@@ -134,14 +134,14 @@ func (r *CloudGatewayConfigurationResourceModel) ToSharedCreateConfigurationRequ
 			}
 		}
 		var configurationDataPlaneGroupAutoscaleAutopilot *shared.ConfigurationDataPlaneGroupAutoscaleAutopilot
-		if dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot != nil {
-			kind1 := shared.ConfigurationDataPlaneGroupAutoscaleAutopilotKind(dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.Kind.ValueString())
+		if r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot != nil {
+			kind1 := shared.ConfigurationDataPlaneGroupAutoscaleAutopilotKind(r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.Kind.ValueString())
 			var baseRps int64
-			baseRps = dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.BaseRps.ValueInt64()
+			baseRps = r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.BaseRps.ValueInt64()
 
 			maxRps := new(int64)
-			if !dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.MaxRps.IsUnknown() && !dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.MaxRps.IsNull() {
-				*maxRps = dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.MaxRps.ValueInt64()
+			if !r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.MaxRps.IsUnknown() && !r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.MaxRps.IsNull() {
+				*maxRps = r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.MaxRps.ValueInt64()
 			} else {
 				maxRps = nil
 			}
@@ -156,13 +156,13 @@ func (r *CloudGatewayConfigurationResourceModel) ToSharedCreateConfigurationRequ
 				ConfigurationDataPlaneGroupAutoscaleAutopilot: configurationDataPlaneGroupAutoscaleAutopilot,
 			}
 		}
-		environment := make([]shared.ConfigurationDataPlaneGroupEnvironmentField, 0, len(dataplaneGroupsItem.Environment))
-		for _, environmentItem := range dataplaneGroupsItem.Environment {
+		environment := make([]shared.ConfigurationDataPlaneGroupEnvironmentField, 0, len(r.DataplaneGroups[dataplaneGroupsIndex].Environment))
+		for environmentIndex := range r.DataplaneGroups[dataplaneGroupsIndex].Environment {
 			var name string
-			name = environmentItem.Name.ValueString()
+			name = r.DataplaneGroups[dataplaneGroupsIndex].Environment[environmentIndex].Name.ValueString()
 
 			var value string
-			value = environmentItem.Value.ValueString()
+			value = r.DataplaneGroups[dataplaneGroupsIndex].Environment[environmentIndex].Value.ValueString()
 
 			environment = append(environment, shared.ConfigurationDataPlaneGroupEnvironmentField{
 				Name:  name,

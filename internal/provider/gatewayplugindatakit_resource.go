@@ -88,7 +88,6 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 							},
 							Attributes: map[string]schema.Attribute{
 								"branch": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"else": schema.ListAttribute{
@@ -161,7 +160,6 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 									},
 								},
 								"cache": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"bypass_on_error": schema.BoolAttribute{
@@ -279,7 +277,6 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 									},
 								},
 								"call": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"input": schema.StringAttribute{
@@ -411,7 +408,6 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 									},
 								},
 								"exit": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"input": schema.StringAttribute{
@@ -479,7 +475,6 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 									},
 								},
 								"jq": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"input": schema.StringAttribute{
@@ -531,7 +526,6 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 									},
 								},
 								"property": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"content_type": schema.StringAttribute{
@@ -590,7 +584,6 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 									},
 								},
 								"static": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"name": schema.StringAttribute{
@@ -1414,7 +1407,10 @@ func (r *GatewayPluginDatakitResource) Delete(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 204 {
+	switch res.StatusCode {
+	case 204, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

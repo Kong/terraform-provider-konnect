@@ -209,16 +209,16 @@ func (r *GatewayRouteResourceModel) ToSharedRouteJSON(ctx context.Context) (*sha
 	var destinations []shared.Destinations
 	if r.Destinations != nil {
 		destinations = make([]shared.Destinations, 0, len(r.Destinations))
-		for _, destinationsItem := range r.Destinations {
+		for destinationsIndex := range r.Destinations {
 			ip := new(string)
-			if !destinationsItem.IP.IsUnknown() && !destinationsItem.IP.IsNull() {
-				*ip = destinationsItem.IP.ValueString()
+			if !r.Destinations[destinationsIndex].IP.IsUnknown() && !r.Destinations[destinationsIndex].IP.IsNull() {
+				*ip = r.Destinations[destinationsIndex].IP.ValueString()
 			} else {
 				ip = nil
 			}
 			port := new(int64)
-			if !destinationsItem.Port.IsUnknown() && !destinationsItem.Port.IsNull() {
-				*port = destinationsItem.Port.ValueInt64()
+			if !r.Destinations[destinationsIndex].Port.IsUnknown() && !r.Destinations[destinationsIndex].Port.IsNull() {
+				*port = r.Destinations[destinationsIndex].Port.ValueInt64()
 			} else {
 				port = nil
 			}
@@ -231,10 +231,10 @@ func (r *GatewayRouteResourceModel) ToSharedRouteJSON(ctx context.Context) (*sha
 	var headers map[string][]string
 	if r.Headers != nil {
 		headers = make(map[string][]string)
-		for headersKey, headersValue := range r.Headers {
-			headersInst := make([]string, 0, len(headersValue))
-			for _, item := range headersValue {
-				headersInst = append(headersInst, item.ValueString())
+		for headersKey := range r.Headers {
+			headersInst := make([]string, 0, len(r.Headers[headersKey]))
+			for index := range r.Headers[headersKey] {
+				headersInst = append(headersInst, r.Headers[headersKey][index].ValueString())
 			}
 			headers[headersKey] = headersInst
 		}
@@ -242,8 +242,8 @@ func (r *GatewayRouteResourceModel) ToSharedRouteJSON(ctx context.Context) (*sha
 	var hosts []string
 	if r.Hosts != nil {
 		hosts = make([]string, 0, len(r.Hosts))
-		for _, hostsItem := range r.Hosts {
-			hosts = append(hosts, hostsItem.ValueString())
+		for hostsIndex := range r.Hosts {
+			hosts = append(hosts, r.Hosts[hostsIndex].ValueString())
 		}
 	}
 	httpsRedirectStatusCode := new(shared.HTTPSRedirectStatusCode)
@@ -261,8 +261,8 @@ func (r *GatewayRouteResourceModel) ToSharedRouteJSON(ctx context.Context) (*sha
 	var methods []string
 	if r.Methods != nil {
 		methods = make([]string, 0, len(r.Methods))
-		for _, methodsItem := range r.Methods {
-			methods = append(methods, methodsItem.ValueString())
+		for methodsIndex := range r.Methods {
+			methods = append(methods, r.Methods[methodsIndex].ValueString())
 		}
 	}
 	name := new(string)
@@ -280,8 +280,8 @@ func (r *GatewayRouteResourceModel) ToSharedRouteJSON(ctx context.Context) (*sha
 	var paths []string
 	if r.Paths != nil {
 		paths = make([]string, 0, len(r.Paths))
-		for _, pathsItem := range r.Paths {
-			paths = append(paths, pathsItem.ValueString())
+		for pathsIndex := range r.Paths {
+			paths = append(paths, r.Paths[pathsIndex].ValueString())
 		}
 	}
 	preserveHost := new(bool)
@@ -330,23 +330,23 @@ func (r *GatewayRouteResourceModel) ToSharedRouteJSON(ctx context.Context) (*sha
 	var snis []string
 	if r.Snis != nil {
 		snis = make([]string, 0, len(r.Snis))
-		for _, snisItem := range r.Snis {
-			snis = append(snis, snisItem.ValueString())
+		for snisIndex := range r.Snis {
+			snis = append(snis, r.Snis[snisIndex].ValueString())
 		}
 	}
 	var sources []shared.Sources
 	if r.Sources != nil {
 		sources = make([]shared.Sources, 0, len(r.Sources))
-		for _, sourcesItem := range r.Sources {
+		for sourcesIndex := range r.Sources {
 			ip1 := new(string)
-			if !sourcesItem.IP.IsUnknown() && !sourcesItem.IP.IsNull() {
-				*ip1 = sourcesItem.IP.ValueString()
+			if !r.Sources[sourcesIndex].IP.IsUnknown() && !r.Sources[sourcesIndex].IP.IsNull() {
+				*ip1 = r.Sources[sourcesIndex].IP.ValueString()
 			} else {
 				ip1 = nil
 			}
 			port1 := new(int64)
-			if !sourcesItem.Port.IsUnknown() && !sourcesItem.Port.IsNull() {
-				*port1 = sourcesItem.Port.ValueInt64()
+			if !r.Sources[sourcesIndex].Port.IsUnknown() && !r.Sources[sourcesIndex].Port.IsNull() {
+				*port1 = r.Sources[sourcesIndex].Port.ValueInt64()
 			} else {
 				port1 = nil
 			}
@@ -365,8 +365,8 @@ func (r *GatewayRouteResourceModel) ToSharedRouteJSON(ctx context.Context) (*sha
 	var tags []string
 	if r.Tags != nil {
 		tags = make([]string, 0, len(r.Tags))
-		for _, tagsItem := range r.Tags {
-			tags = append(tags, tagsItem.ValueString())
+		for tagsIndex := range r.Tags {
+			tags = append(tags, r.Tags[tagsIndex].ValueString())
 		}
 	}
 	updatedAt := new(int64)

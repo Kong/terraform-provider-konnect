@@ -226,8 +226,8 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToSharedIPRestrictionPlugin(ct
 		var after *shared.IPRestrictionPluginAfter
 		if r.Ordering.After != nil {
 			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			for accessIndex := range r.Ordering.After.Access {
+				access = append(access, r.Ordering.After.Access[accessIndex].ValueString())
 			}
 			after = &shared.IPRestrictionPluginAfter{
 				Access: access,
@@ -236,8 +236,8 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToSharedIPRestrictionPlugin(ct
 		var before *shared.IPRestrictionPluginBefore
 		if r.Ordering.Before != nil {
 			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			for accessIndex1 := range r.Ordering.Before.Access {
+				access1 = append(access1, r.Ordering.Before.Access[accessIndex1].ValueString())
 			}
 			before = &shared.IPRestrictionPluginBefore{
 				Access: access1,
@@ -251,22 +251,22 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToSharedIPRestrictionPlugin(ct
 	var partials []shared.IPRestrictionPluginPartials
 	if r.Partials != nil {
 		partials = make([]shared.IPRestrictionPluginPartials, 0, len(r.Partials))
-		for _, partialsItem := range r.Partials {
+		for partialsIndex := range r.Partials {
 			id1 := new(string)
-			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
-				*id1 = partialsItem.ID.ValueString()
+			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
+				*id1 = r.Partials[partialsIndex].ID.ValueString()
 			} else {
 				id1 = nil
 			}
 			name := new(string)
-			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
-				*name = partialsItem.Name.ValueString()
+			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
+				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
 			path := new(string)
-			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
-				*path = partialsItem.Path.ValueString()
+			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
+				*path = r.Partials[partialsIndex].Path.ValueString()
 			} else {
 				path = nil
 			}
@@ -280,8 +280,8 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToSharedIPRestrictionPlugin(ct
 	var tags []string
 	if r.Tags != nil {
 		tags = make([]string, 0, len(r.Tags))
-		for _, tagsItem := range r.Tags {
-			tags = append(tags, tagsItem.ValueString())
+		for tagsIndex := range r.Tags {
+			tags = append(tags, r.Tags[tagsIndex].ValueString())
 		}
 	}
 	updatedAt := new(int64)
@@ -295,15 +295,15 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToSharedIPRestrictionPlugin(ct
 		var allow []string
 		if r.Config.Allow != nil {
 			allow = make([]string, 0, len(r.Config.Allow))
-			for _, allowItem := range r.Config.Allow {
-				allow = append(allow, allowItem.ValueString())
+			for allowIndex := range r.Config.Allow {
+				allow = append(allow, r.Config.Allow[allowIndex].ValueString())
 			}
 		}
 		var deny []string
 		if r.Config.Deny != nil {
 			deny = make([]string, 0, len(r.Config.Deny))
-			for _, denyItem := range r.Config.Deny {
-				deny = append(deny, denyItem.ValueString())
+			for denyIndex := range r.Config.Deny {
+				deny = append(deny, r.Config.Deny[denyIndex].ValueString())
 			}
 		}
 		message := new(string)
