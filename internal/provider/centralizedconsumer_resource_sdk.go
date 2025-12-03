@@ -131,8 +131,8 @@ func (r *CentralizedConsumerResourceModel) ToSharedConsumerCreateRequest(ctx con
 		customID = nil
 	}
 	consumerGroups := make([]string, 0, len(r.ConsumerGroups))
-	for _, consumerGroupsItem := range r.ConsumerGroups {
-		consumerGroups = append(consumerGroups, consumerGroupsItem.ValueString())
+	for consumerGroupsIndex := range r.ConsumerGroups {
+		consumerGroups = append(consumerGroups, r.ConsumerGroups[consumerGroupsIndex].ValueString())
 	}
 	typeVar := new(shared.ConsumerType)
 	if !r.Type.IsUnknown() && !r.Type.IsNull() {
@@ -141,8 +141,8 @@ func (r *CentralizedConsumerResourceModel) ToSharedConsumerCreateRequest(ctx con
 		typeVar = nil
 	}
 	tags := make([]string, 0, len(r.Tags))
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
+	for tagsIndex := range r.Tags {
+		tags = append(tags, r.Tags[tagsIndex].ValueString())
 	}
 	out := shared.ConsumerCreateRequest{
 		Username:       username,
@@ -173,8 +173,8 @@ func (r *CentralizedConsumerResourceModel) ToSharedUpdateConsumerPayload(ctx con
 	var consumerGroups []string
 	if r.ConsumerGroups != nil {
 		consumerGroups = make([]string, 0, len(r.ConsumerGroups))
-		for _, consumerGroupsItem := range r.ConsumerGroups {
-			consumerGroups = append(consumerGroups, consumerGroupsItem.ValueString())
+		for consumerGroupsIndex := range r.ConsumerGroups {
+			consumerGroups = append(consumerGroups, r.ConsumerGroups[consumerGroupsIndex].ValueString())
 		}
 	}
 	typeVar := new(shared.ConsumerType)
@@ -184,8 +184,8 @@ func (r *CentralizedConsumerResourceModel) ToSharedUpdateConsumerPayload(ctx con
 		typeVar = nil
 	}
 	tags := make([]string, 0, len(r.Tags))
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
+	for tagsIndex := range r.Tags {
+		tags = append(tags, r.Tags[tagsIndex].ValueString())
 	}
 	out := shared.UpdateConsumerPayload{
 		Username:       username,

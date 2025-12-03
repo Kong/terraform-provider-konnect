@@ -24,7 +24,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -70,9 +69,6 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An RFC-3339 timestamp representation of Private DNS creation date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
 					"entity_version": schema.Int64Attribute{
 						Computed: true,
@@ -109,13 +105,7 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 								Description: `Object that contains mappings from proxied internal domains to remote DNS server IP address for a Private DNS Resolver.`,
 							},
 							"kind": schema.StringAttribute{
-								Computed:    true,
-								Description: `must be "aws-outbound-resolver"`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"aws-outbound-resolver",
-									),
-								},
+								Computed: true,
 							},
 						},
 					},
@@ -128,19 +118,7 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 							`- ` + "`" + `ready` + "`" + ` - The attachment is fully operational and can route traffic as configured.` + "\n" +
 							`- ` + "`" + `error` + "`" + ` - The attachment is in an error state, and is not operational.` + "\n" +
 							`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted.` + "\n" +
-							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.` + "\n" +
-							`must be one of ["created", "initializing", "pending-association", "ready", "error", "terminating", "terminated"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"created",
-								"initializing",
-								"pending-association",
-								"ready",
-								"error",
-								"terminating",
-								"terminated",
-							),
-						},
+							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.`,
 					},
 					"state_metadata": schema.SingleNestedAttribute{
 						Computed: true,
@@ -162,16 +140,7 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An RFC-3339 timestamp representation of Private DNS update date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
-				},
-				Validators: []validator.Object{
-					objectvalidator.ConflictsWith(path.Expressions{
-						path.MatchRelative().AtParent().AtName("aws_private_hosted_zone_response"),
-						path.MatchRelative().AtParent().AtName("gcp_private_hosted_zone_response"),
-					}...),
 				},
 			},
 			"aws_private_hosted_zone_response": schema.SingleNestedAttribute{
@@ -183,9 +152,6 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An RFC-3339 timestamp representation of Private DNS creation date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
 					"entity_version": schema.Int64Attribute{
 						Computed: true,
@@ -213,13 +179,7 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 								Description: `AWS Hosted Zone to create attachment to.`,
 							},
 							"kind": schema.StringAttribute{
-								Computed:    true,
-								Description: `must be "aws-private-hosted-zone-attachment"`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"aws-private-hosted-zone-attachment",
-									),
-								},
+								Computed: true,
 							},
 						},
 					},
@@ -232,19 +192,7 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 							`- ` + "`" + `ready` + "`" + ` - The attachment is fully operational and can route traffic as configured.` + "\n" +
 							`- ` + "`" + `error` + "`" + ` - The attachment is in an error state, and is not operational.` + "\n" +
 							`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted.` + "\n" +
-							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.` + "\n" +
-							`must be one of ["created", "initializing", "pending-association", "ready", "error", "terminating", "terminated"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"created",
-								"initializing",
-								"pending-association",
-								"ready",
-								"error",
-								"terminating",
-								"terminated",
-							),
-						},
+							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.`,
 					},
 					"state_metadata": schema.SingleNestedAttribute{
 						Computed: true,
@@ -266,16 +214,7 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An RFC-3339 timestamp representation of Private DNS update date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
-				},
-				Validators: []validator.Object{
-					objectvalidator.ConflictsWith(path.Expressions{
-						path.MatchRelative().AtParent().AtName("aws_private_dns_resolver_response"),
-						path.MatchRelative().AtParent().AtName("gcp_private_hosted_zone_response"),
-					}...),
 				},
 			},
 			"entity_version": schema.Int64Attribute{
@@ -295,9 +234,6 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An RFC-3339 timestamp representation of Private DNS creation date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
 					"entity_version": schema.Int64Attribute{
 						Computed: true,
@@ -325,13 +261,7 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 								Description: `Domain name to create attachment to.`,
 							},
 							"kind": schema.StringAttribute{
-								Computed:    true,
-								Description: `must be "gcp-private-hosted-zone-attachment"`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"gcp-private-hosted-zone-attachment",
-									),
-								},
+								Computed: true,
 							},
 							"peer_project_id": schema.StringAttribute{
 								Computed:    true,
@@ -352,19 +282,7 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 							`- ` + "`" + `ready` + "`" + ` - The attachment is fully operational and can route traffic as configured.` + "\n" +
 							`- ` + "`" + `error` + "`" + ` - The attachment is in an error state, and is not operational.` + "\n" +
 							`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted.` + "\n" +
-							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.` + "\n" +
-							`must be one of ["created", "initializing", "pending-association", "ready", "error", "terminating", "terminated"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"created",
-								"initializing",
-								"pending-association",
-								"ready",
-								"error",
-								"terminating",
-								"terminated",
-							),
-						},
+							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.`,
 					},
 					"state_metadata": schema.SingleNestedAttribute{
 						Computed: true,
@@ -386,16 +304,7 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An RFC-3339 timestamp representation of Private DNS update date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
-				},
-				Validators: []validator.Object{
-					objectvalidator.ConflictsWith(path.Expressions{
-						path.MatchRelative().AtParent().AtName("aws_private_dns_resolver_response"),
-						path.MatchRelative().AtParent().AtName("aws_private_hosted_zone_response"),
-					}...),
 				},
 			},
 			"id": schema.StringAttribute{
@@ -620,6 +529,13 @@ func (r *CloudGatewayPrivateDNSResource) Create(ctx context.Context, req resourc
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
+	if res.StatusCode == 409 {
+		resp.Diagnostics.AddError(
+			"Resource Already Exists",
+			"When creating this resource, the API indicated that this resource already exists. You can bring the existing resource under management using Terraform import functionality or retry with a unique configuration.",
+		)
+		return
+	}
 	if res.StatusCode != 201 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
@@ -795,7 +711,10 @@ func (r *CloudGatewayPrivateDNSResource) Delete(ctx context.Context, req resourc
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 204 {
+	switch res.StatusCode {
+	case 204, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

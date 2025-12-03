@@ -39,7 +39,7 @@ domain.
 - `id` (String) The ID of this resource.
 - `sni_id` (String) Server Name Indication ID for this domain and stored on data-planes for this control-plane. Can be retrieved
 via the control-planes API for this custom domain's control-plane.
-- `state` (String) State of the custom domain. must be one of ["created", "initializing", "ready", "terminating", "terminated", "error"]
+- `state` (String) State of the custom domain.
 - `state_metadata` (Attributes) Metadata describing the backing state of the custom domain and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--state_metadata))
 - `updated_at` (String) An RFC-3339 timestamp representation of custom domain update date.
 

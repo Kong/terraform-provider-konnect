@@ -20,7 +20,6 @@ import (
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/listplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -74,9 +73,6 @@ func (r *CentralizedConsumerResource) Schema(ctx context.Context, req resource.S
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"custom_id": schema.StringAttribute{
 				Optional:    true,
@@ -127,9 +123,6 @@ func (r *CentralizedConsumerResource) Schema(ctx context.Context, req resource.S
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"username": schema.StringAttribute{
 				Required:    true,
@@ -372,7 +365,10 @@ func (r *CentralizedConsumerResource) Delete(ctx context.Context, req resource.D
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 204 {
+	switch res.StatusCode {
+	case 204, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

@@ -79,7 +79,7 @@ Read-Only:
 - `egress_ip_addresses` (List of String) List of egress IP addresses for the network that this data-plane group runs on.
 - `id` (String) ID of the data-plane group that represents a deployment target for a set of data-planes.
 - `private_ip_addresses` (List of String) List of private IP addresses of the internal load balancer that proxies traffic to this data-plane group.
-- `state` (String) State of the data-plane group. must be one of ["created", "initializing", "ready", "terminating", "terminated"]
+- `state` (String) State of the data-plane group.
 - `updated_at` (String) An RFC-3339 timestamp representation of data-plane group update date.
 
 <a id="nestedatt--dataplane_groups--autoscale"></a>

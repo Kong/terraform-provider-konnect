@@ -96,8 +96,8 @@ func (r *RealmResourceModel) ToSharedConsumerRealmCreateRequest(ctx context.Cont
 	name = r.Name.ValueString()
 
 	allowedControlPlanes := make([]string, 0, len(r.AllowedControlPlanes))
-	for _, allowedControlPlanesItem := range r.AllowedControlPlanes {
-		allowedControlPlanes = append(allowedControlPlanes, allowedControlPlanesItem.ValueString())
+	for allowedControlPlanesIndex := range r.AllowedControlPlanes {
+		allowedControlPlanes = append(allowedControlPlanes, r.AllowedControlPlanes[allowedControlPlanesIndex].ValueString())
 	}
 	allowAllControlPlanes := new(bool)
 	if !r.AllowAllControlPlanes.IsUnknown() && !r.AllowAllControlPlanes.IsNull() {
@@ -118,8 +118,8 @@ func (r *RealmResourceModel) ToSharedConsumerRealmCreateRequest(ctx context.Cont
 		negativeTTL = nil
 	}
 	consumerGroups := make([]string, 0, len(r.ConsumerGroups))
-	for _, consumerGroupsItem := range r.ConsumerGroups {
-		consumerGroups = append(consumerGroups, consumerGroupsItem.ValueString())
+	for consumerGroupsIndex := range r.ConsumerGroups {
+		consumerGroups = append(consumerGroups, r.ConsumerGroups[consumerGroupsIndex].ValueString())
 	}
 	out := shared.ConsumerRealmCreateRequest{
 		Name:                  name,
@@ -143,8 +143,8 @@ func (r *RealmResourceModel) ToSharedConsumerRealmUpdateRequest(ctx context.Cont
 		name = nil
 	}
 	allowedControlPlanes := make([]string, 0, len(r.AllowedControlPlanes))
-	for _, allowedControlPlanesItem := range r.AllowedControlPlanes {
-		allowedControlPlanes = append(allowedControlPlanes, allowedControlPlanesItem.ValueString())
+	for allowedControlPlanesIndex := range r.AllowedControlPlanes {
+		allowedControlPlanes = append(allowedControlPlanes, r.AllowedControlPlanes[allowedControlPlanesIndex].ValueString())
 	}
 	allowAllControlPlanes := new(bool)
 	if !r.AllowAllControlPlanes.IsUnknown() && !r.AllowAllControlPlanes.IsNull() {
@@ -153,8 +153,8 @@ func (r *RealmResourceModel) ToSharedConsumerRealmUpdateRequest(ctx context.Cont
 		allowAllControlPlanes = nil
 	}
 	consumerGroups := make([]string, 0, len(r.ConsumerGroups))
-	for _, consumerGroupsItem := range r.ConsumerGroups {
-		consumerGroups = append(consumerGroups, consumerGroupsItem.ValueString())
+	for consumerGroupsIndex := range r.ConsumerGroups {
+		consumerGroups = append(consumerGroups, r.ConsumerGroups[consumerGroupsIndex].ValueString())
 	}
 	ttl := new(int64)
 	if !r.TTL.IsUnknown() && !r.TTL.IsNull() {

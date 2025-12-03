@@ -280,8 +280,8 @@ func (r *GatewayPluginSolaceConsumeResourceModel) ToSharedSolaceConsumePlugin(ct
 		var after *shared.SolaceConsumePluginAfter
 		if r.Ordering.After != nil {
 			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			for accessIndex := range r.Ordering.After.Access {
+				access = append(access, r.Ordering.After.Access[accessIndex].ValueString())
 			}
 			after = &shared.SolaceConsumePluginAfter{
 				Access: access,
@@ -290,8 +290,8 @@ func (r *GatewayPluginSolaceConsumeResourceModel) ToSharedSolaceConsumePlugin(ct
 		var before *shared.SolaceConsumePluginBefore
 		if r.Ordering.Before != nil {
 			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			for accessIndex1 := range r.Ordering.Before.Access {
+				access1 = append(access1, r.Ordering.Before.Access[accessIndex1].ValueString())
 			}
 			before = &shared.SolaceConsumePluginBefore{
 				Access: access1,
@@ -305,22 +305,22 @@ func (r *GatewayPluginSolaceConsumeResourceModel) ToSharedSolaceConsumePlugin(ct
 	var partials []shared.SolaceConsumePluginPartials
 	if r.Partials != nil {
 		partials = make([]shared.SolaceConsumePluginPartials, 0, len(r.Partials))
-		for _, partialsItem := range r.Partials {
+		for partialsIndex := range r.Partials {
 			id1 := new(string)
-			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
-				*id1 = partialsItem.ID.ValueString()
+			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
+				*id1 = r.Partials[partialsIndex].ID.ValueString()
 			} else {
 				id1 = nil
 			}
 			name := new(string)
-			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
-				*name = partialsItem.Name.ValueString()
+			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
+				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
 			path := new(string)
-			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
-				*path = partialsItem.Path.ValueString()
+			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
+				*path = r.Partials[partialsIndex].Path.ValueString()
 			} else {
 				path = nil
 			}
@@ -334,8 +334,8 @@ func (r *GatewayPluginSolaceConsumeResourceModel) ToSharedSolaceConsumePlugin(ct
 	var tags []string
 	if r.Tags != nil {
 		tags = make([]string, 0, len(r.Tags))
-		for _, tagsItem := range r.Tags {
-			tags = append(tags, tagsItem.ValueString())
+		for tagsIndex := range r.Tags {
+			tags = append(tags, r.Tags[tagsIndex].ValueString())
 		}
 	}
 	updatedAt := new(int64)
@@ -351,13 +351,13 @@ func (r *GatewayPluginSolaceConsumeResourceModel) ToSharedSolaceConsumePlugin(ct
 		ackMode = nil
 	}
 	binds := make([]shared.Binds, 0, len(r.Config.Flow.Binds))
-	for _, bindsItem := range r.Config.Flow.Binds {
+	for bindsIndex := range r.Config.Flow.Binds {
 		var name1 string
-		name1 = bindsItem.Name.ValueString()
+		name1 = r.Config.Flow.Binds[bindsIndex].Name.ValueString()
 
 		typeVar := new(shared.SolaceConsumePluginType)
-		if !bindsItem.Type.IsUnknown() && !bindsItem.Type.IsNull() {
-			*typeVar = shared.SolaceConsumePluginType(bindsItem.Type.ValueString())
+		if !r.Config.Flow.Binds[bindsIndex].Type.IsUnknown() && !r.Config.Flow.Binds[bindsIndex].Type.IsNull() {
+			*typeVar = shared.SolaceConsumePluginType(r.Config.Flow.Binds[bindsIndex].Type.ValueString())
 		} else {
 			typeVar = nil
 		}
@@ -369,8 +369,8 @@ func (r *GatewayPluginSolaceConsumeResourceModel) ToSharedSolaceConsumePlugin(ct
 	var functions []string
 	if r.Config.Flow.Functions != nil {
 		functions = make([]string, 0, len(r.Config.Flow.Functions))
-		for _, functionsItem := range r.Config.Flow.Functions {
-			functions = append(functions, functionsItem.ValueString())
+		for functionsIndex := range r.Config.Flow.Functions {
+			functions = append(functions, r.Config.Flow.Functions[functionsIndex].ValueString())
 		}
 	}
 	maxUnackedMessages := new(int64)
@@ -382,9 +382,9 @@ func (r *GatewayPluginSolaceConsumeResourceModel) ToSharedSolaceConsumePlugin(ct
 	var properties map[string]string
 	if r.Config.Flow.Properties != nil {
 		properties = make(map[string]string)
-		for propertiesKey, propertiesValue := range r.Config.Flow.Properties {
+		for propertiesKey := range r.Config.Flow.Properties {
 			var propertiesInst string
-			propertiesInst = propertiesValue.ValueString()
+			propertiesInst = r.Config.Flow.Properties[propertiesKey].ValueString()
 
 			properties[propertiesKey] = propertiesInst
 		}
@@ -531,9 +531,9 @@ func (r *GatewayPluginSolaceConsumeResourceModel) ToSharedSolaceConsumePlugin(ct
 	var properties1 map[string]string
 	if r.Config.Session.Properties != nil {
 		properties1 = make(map[string]string)
-		for propertiesKey1, propertiesValue1 := range r.Config.Session.Properties {
+		for propertiesKey1 := range r.Config.Session.Properties {
 			var propertiesInst1 string
-			propertiesInst1 = propertiesValue1.ValueString()
+			propertiesInst1 = r.Config.Session.Properties[propertiesKey1].ValueString()
 
 			properties1[propertiesKey1] = propertiesInst1
 		}

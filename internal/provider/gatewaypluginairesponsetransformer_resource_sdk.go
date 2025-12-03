@@ -316,8 +316,8 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) ToSharedAiResponseTran
 		var after *shared.AiResponseTransformerPluginAfter
 		if r.Ordering.After != nil {
 			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			for accessIndex := range r.Ordering.After.Access {
+				access = append(access, r.Ordering.After.Access[accessIndex].ValueString())
 			}
 			after = &shared.AiResponseTransformerPluginAfter{
 				Access: access,
@@ -326,8 +326,8 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) ToSharedAiResponseTran
 		var before *shared.AiResponseTransformerPluginBefore
 		if r.Ordering.Before != nil {
 			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			for accessIndex1 := range r.Ordering.Before.Access {
+				access1 = append(access1, r.Ordering.Before.Access[accessIndex1].ValueString())
 			}
 			before = &shared.AiResponseTransformerPluginBefore{
 				Access: access1,
@@ -341,22 +341,22 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) ToSharedAiResponseTran
 	var partials []shared.AiResponseTransformerPluginPartials
 	if r.Partials != nil {
 		partials = make([]shared.AiResponseTransformerPluginPartials, 0, len(r.Partials))
-		for _, partialsItem := range r.Partials {
+		for partialsIndex := range r.Partials {
 			id1 := new(string)
-			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
-				*id1 = partialsItem.ID.ValueString()
+			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
+				*id1 = r.Partials[partialsIndex].ID.ValueString()
 			} else {
 				id1 = nil
 			}
 			name := new(string)
-			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
-				*name = partialsItem.Name.ValueString()
+			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
+				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
 			path := new(string)
-			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
-				*path = partialsItem.Path.ValueString()
+			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
+				*path = r.Partials[partialsIndex].Path.ValueString()
 			} else {
 				path = nil
 			}
@@ -370,8 +370,8 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) ToSharedAiResponseTran
 	var tags []string
 	if r.Tags != nil {
 		tags = make([]string, 0, len(r.Tags))
-		for _, tagsItem := range r.Tags {
-			tags = append(tags, tagsItem.ValueString())
+		for tagsIndex := range r.Tags {
+			tags = append(tags, r.Tags[tagsIndex].ValueString())
 		}
 	}
 	updatedAt := new(int64)

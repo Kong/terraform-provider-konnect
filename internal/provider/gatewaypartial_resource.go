@@ -79,7 +79,6 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"redis_ce": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"config": schema.SingleNestedAttribute{
@@ -179,7 +178,6 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 				},
 			},
 			"redis_ee": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"config": schema.SingleNestedAttribute{
@@ -643,7 +641,10 @@ func (r *GatewayPartialResource) Delete(ctx context.Context, req resource.Delete
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 204 {
+	switch res.StatusCode {
+	case 204, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

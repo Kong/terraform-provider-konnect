@@ -264,6 +264,7 @@ func (s *APIKeys) DeleteKeyAuthWithConsumer(ctx context.Context, request operati
 
 	switch {
 	case httpRes.StatusCode == 204:
+	case httpRes.StatusCode == 404:
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {

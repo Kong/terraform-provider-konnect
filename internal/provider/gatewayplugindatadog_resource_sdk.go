@@ -252,8 +252,8 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin(ctx context.Co
 		var after *shared.DatadogPluginAfter
 		if r.Ordering.After != nil {
 			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			for accessIndex := range r.Ordering.After.Access {
+				access = append(access, r.Ordering.After.Access[accessIndex].ValueString())
 			}
 			after = &shared.DatadogPluginAfter{
 				Access: access,
@@ -262,8 +262,8 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin(ctx context.Co
 		var before *shared.DatadogPluginBefore
 		if r.Ordering.Before != nil {
 			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			for accessIndex1 := range r.Ordering.Before.Access {
+				access1 = append(access1, r.Ordering.Before.Access[accessIndex1].ValueString())
 			}
 			before = &shared.DatadogPluginBefore{
 				Access: access1,
@@ -277,22 +277,22 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin(ctx context.Co
 	var partials []shared.DatadogPluginPartials
 	if r.Partials != nil {
 		partials = make([]shared.DatadogPluginPartials, 0, len(r.Partials))
-		for _, partialsItem := range r.Partials {
+		for partialsIndex := range r.Partials {
 			id1 := new(string)
-			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
-				*id1 = partialsItem.ID.ValueString()
+			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
+				*id1 = r.Partials[partialsIndex].ID.ValueString()
 			} else {
 				id1 = nil
 			}
 			name := new(string)
-			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
-				*name = partialsItem.Name.ValueString()
+			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
+				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
 			path := new(string)
-			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
-				*path = partialsItem.Path.ValueString()
+			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
+				*path = r.Partials[partialsIndex].Path.ValueString()
 			} else {
 				path = nil
 			}
@@ -306,8 +306,8 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin(ctx context.Co
 	var tags []string
 	if r.Tags != nil {
 		tags = make([]string, 0, len(r.Tags))
-		for _, tagsItem := range r.Tags {
-			tags = append(tags, tagsItem.ValueString())
+		for tagsIndex := range r.Tags {
+			tags = append(tags, r.Tags[tagsIndex].ValueString())
 		}
 	}
 	updatedAt := new(int64)
@@ -337,24 +337,24 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin(ctx context.Co
 			host = nil
 		}
 		metrics := make([]shared.Metrics, 0, len(r.Config.Metrics))
-		for _, metricsItem := range r.Config.Metrics {
+		for metricsIndex := range r.Config.Metrics {
 			consumerIdentifier := new(shared.ConsumerIdentifier)
-			if !metricsItem.ConsumerIdentifier.IsUnknown() && !metricsItem.ConsumerIdentifier.IsNull() {
-				*consumerIdentifier = shared.ConsumerIdentifier(metricsItem.ConsumerIdentifier.ValueString())
+			if !r.Config.Metrics[metricsIndex].ConsumerIdentifier.IsUnknown() && !r.Config.Metrics[metricsIndex].ConsumerIdentifier.IsNull() {
+				*consumerIdentifier = shared.ConsumerIdentifier(r.Config.Metrics[metricsIndex].ConsumerIdentifier.ValueString())
 			} else {
 				consumerIdentifier = nil
 			}
-			name1 := shared.DatadogPluginName(metricsItem.Name.ValueString())
+			name1 := shared.DatadogPluginName(r.Config.Metrics[metricsIndex].Name.ValueString())
 			sampleRate := new(float64)
-			if !metricsItem.SampleRate.IsUnknown() && !metricsItem.SampleRate.IsNull() {
-				*sampleRate = metricsItem.SampleRate.ValueFloat64()
+			if !r.Config.Metrics[metricsIndex].SampleRate.IsUnknown() && !r.Config.Metrics[metricsIndex].SampleRate.IsNull() {
+				*sampleRate = r.Config.Metrics[metricsIndex].SampleRate.ValueFloat64()
 			} else {
 				sampleRate = nil
 			}
-			statType := shared.StatType(metricsItem.StatType.ValueString())
-			tags1 := make([]string, 0, len(metricsItem.Tags))
-			for _, tagsItem1 := range metricsItem.Tags {
-				tags1 = append(tags1, tagsItem1.ValueString())
+			statType := shared.StatType(r.Config.Metrics[metricsIndex].StatType.ValueString())
+			tags1 := make([]string, 0, len(r.Config.Metrics[metricsIndex].Tags))
+			for tagsIndex1 := range r.Config.Metrics[metricsIndex].Tags {
+				tags1 = append(tags1, r.Config.Metrics[metricsIndex].Tags[tagsIndex1].ValueString())
 			}
 			metrics = append(metrics, shared.Metrics{
 				ConsumerIdentifier: consumerIdentifier,

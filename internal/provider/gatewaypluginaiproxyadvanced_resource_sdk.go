@@ -515,8 +515,8 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 		var after *shared.AiProxyAdvancedPluginAfter
 		if r.Ordering.After != nil {
 			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			for accessIndex := range r.Ordering.After.Access {
+				access = append(access, r.Ordering.After.Access[accessIndex].ValueString())
 			}
 			after = &shared.AiProxyAdvancedPluginAfter{
 				Access: access,
@@ -525,8 +525,8 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 		var before *shared.AiProxyAdvancedPluginBefore
 		if r.Ordering.Before != nil {
 			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			for accessIndex1 := range r.Ordering.Before.Access {
+				access1 = append(access1, r.Ordering.Before.Access[accessIndex1].ValueString())
 			}
 			before = &shared.AiProxyAdvancedPluginBefore{
 				Access: access1,
@@ -540,22 +540,22 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 	var partials []shared.AiProxyAdvancedPluginPartials
 	if r.Partials != nil {
 		partials = make([]shared.AiProxyAdvancedPluginPartials, 0, len(r.Partials))
-		for _, partialsItem := range r.Partials {
+		for partialsIndex := range r.Partials {
 			id1 := new(string)
-			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
-				*id1 = partialsItem.ID.ValueString()
+			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
+				*id1 = r.Partials[partialsIndex].ID.ValueString()
 			} else {
 				id1 = nil
 			}
 			name := new(string)
-			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
-				*name = partialsItem.Name.ValueString()
+			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
+				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
 			path := new(string)
-			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
-				*path = partialsItem.Path.ValueString()
+			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
+				*path = r.Partials[partialsIndex].Path.ValueString()
 			} else {
 				path = nil
 			}
@@ -569,8 +569,8 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 	var tags []string
 	if r.Tags != nil {
 		tags = make([]string, 0, len(r.Tags))
-		for _, tagsItem := range r.Tags {
-			tags = append(tags, tagsItem.ValueString())
+		for tagsIndex := range r.Tags {
+			tags = append(tags, r.Tags[tagsIndex].ValueString())
 		}
 	}
 	updatedAt := new(int64)
@@ -936,90 +936,90 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 		responseStreaming = nil
 	}
 	targets := make([]shared.Targets, 0, len(r.Config.Targets))
-	for _, targetsItem := range r.Config.Targets {
+	for targetsIndex := range r.Config.Targets {
 		var auth1 *shared.AiProxyAdvancedPluginConfigAuth
-		if targetsItem.Auth != nil {
+		if r.Config.Targets[targetsIndex].Auth != nil {
 			allowOverride1 := new(bool)
-			if !targetsItem.Auth.AllowOverride.IsUnknown() && !targetsItem.Auth.AllowOverride.IsNull() {
-				*allowOverride1 = targetsItem.Auth.AllowOverride.ValueBool()
+			if !r.Config.Targets[targetsIndex].Auth.AllowOverride.IsUnknown() && !r.Config.Targets[targetsIndex].Auth.AllowOverride.IsNull() {
+				*allowOverride1 = r.Config.Targets[targetsIndex].Auth.AllowOverride.ValueBool()
 			} else {
 				allowOverride1 = nil
 			}
 			awsAccessKeyId1 := new(string)
-			if !targetsItem.Auth.AwsAccessKeyID.IsUnknown() && !targetsItem.Auth.AwsAccessKeyID.IsNull() {
-				*awsAccessKeyId1 = targetsItem.Auth.AwsAccessKeyID.ValueString()
+			if !r.Config.Targets[targetsIndex].Auth.AwsAccessKeyID.IsUnknown() && !r.Config.Targets[targetsIndex].Auth.AwsAccessKeyID.IsNull() {
+				*awsAccessKeyId1 = r.Config.Targets[targetsIndex].Auth.AwsAccessKeyID.ValueString()
 			} else {
 				awsAccessKeyId1 = nil
 			}
 			awsSecretAccessKey1 := new(string)
-			if !targetsItem.Auth.AwsSecretAccessKey.IsUnknown() && !targetsItem.Auth.AwsSecretAccessKey.IsNull() {
-				*awsSecretAccessKey1 = targetsItem.Auth.AwsSecretAccessKey.ValueString()
+			if !r.Config.Targets[targetsIndex].Auth.AwsSecretAccessKey.IsUnknown() && !r.Config.Targets[targetsIndex].Auth.AwsSecretAccessKey.IsNull() {
+				*awsSecretAccessKey1 = r.Config.Targets[targetsIndex].Auth.AwsSecretAccessKey.ValueString()
 			} else {
 				awsSecretAccessKey1 = nil
 			}
 			azureClientId1 := new(string)
-			if !targetsItem.Auth.AzureClientID.IsUnknown() && !targetsItem.Auth.AzureClientID.IsNull() {
-				*azureClientId1 = targetsItem.Auth.AzureClientID.ValueString()
+			if !r.Config.Targets[targetsIndex].Auth.AzureClientID.IsUnknown() && !r.Config.Targets[targetsIndex].Auth.AzureClientID.IsNull() {
+				*azureClientId1 = r.Config.Targets[targetsIndex].Auth.AzureClientID.ValueString()
 			} else {
 				azureClientId1 = nil
 			}
 			azureClientSecret1 := new(string)
-			if !targetsItem.Auth.AzureClientSecret.IsUnknown() && !targetsItem.Auth.AzureClientSecret.IsNull() {
-				*azureClientSecret1 = targetsItem.Auth.AzureClientSecret.ValueString()
+			if !r.Config.Targets[targetsIndex].Auth.AzureClientSecret.IsUnknown() && !r.Config.Targets[targetsIndex].Auth.AzureClientSecret.IsNull() {
+				*azureClientSecret1 = r.Config.Targets[targetsIndex].Auth.AzureClientSecret.ValueString()
 			} else {
 				azureClientSecret1 = nil
 			}
 			azureTenantId1 := new(string)
-			if !targetsItem.Auth.AzureTenantID.IsUnknown() && !targetsItem.Auth.AzureTenantID.IsNull() {
-				*azureTenantId1 = targetsItem.Auth.AzureTenantID.ValueString()
+			if !r.Config.Targets[targetsIndex].Auth.AzureTenantID.IsUnknown() && !r.Config.Targets[targetsIndex].Auth.AzureTenantID.IsNull() {
+				*azureTenantId1 = r.Config.Targets[targetsIndex].Auth.AzureTenantID.ValueString()
 			} else {
 				azureTenantId1 = nil
 			}
 			azureUseManagedIdentity1 := new(bool)
-			if !targetsItem.Auth.AzureUseManagedIdentity.IsUnknown() && !targetsItem.Auth.AzureUseManagedIdentity.IsNull() {
-				*azureUseManagedIdentity1 = targetsItem.Auth.AzureUseManagedIdentity.ValueBool()
+			if !r.Config.Targets[targetsIndex].Auth.AzureUseManagedIdentity.IsUnknown() && !r.Config.Targets[targetsIndex].Auth.AzureUseManagedIdentity.IsNull() {
+				*azureUseManagedIdentity1 = r.Config.Targets[targetsIndex].Auth.AzureUseManagedIdentity.ValueBool()
 			} else {
 				azureUseManagedIdentity1 = nil
 			}
 			gcpServiceAccountJson1 := new(string)
-			if !targetsItem.Auth.GcpServiceAccountJSON.IsUnknown() && !targetsItem.Auth.GcpServiceAccountJSON.IsNull() {
-				*gcpServiceAccountJson1 = targetsItem.Auth.GcpServiceAccountJSON.ValueString()
+			if !r.Config.Targets[targetsIndex].Auth.GcpServiceAccountJSON.IsUnknown() && !r.Config.Targets[targetsIndex].Auth.GcpServiceAccountJSON.IsNull() {
+				*gcpServiceAccountJson1 = r.Config.Targets[targetsIndex].Auth.GcpServiceAccountJSON.ValueString()
 			} else {
 				gcpServiceAccountJson1 = nil
 			}
 			gcpUseServiceAccount1 := new(bool)
-			if !targetsItem.Auth.GcpUseServiceAccount.IsUnknown() && !targetsItem.Auth.GcpUseServiceAccount.IsNull() {
-				*gcpUseServiceAccount1 = targetsItem.Auth.GcpUseServiceAccount.ValueBool()
+			if !r.Config.Targets[targetsIndex].Auth.GcpUseServiceAccount.IsUnknown() && !r.Config.Targets[targetsIndex].Auth.GcpUseServiceAccount.IsNull() {
+				*gcpUseServiceAccount1 = r.Config.Targets[targetsIndex].Auth.GcpUseServiceAccount.ValueBool()
 			} else {
 				gcpUseServiceAccount1 = nil
 			}
 			headerName1 := new(string)
-			if !targetsItem.Auth.HeaderName.IsUnknown() && !targetsItem.Auth.HeaderName.IsNull() {
-				*headerName1 = targetsItem.Auth.HeaderName.ValueString()
+			if !r.Config.Targets[targetsIndex].Auth.HeaderName.IsUnknown() && !r.Config.Targets[targetsIndex].Auth.HeaderName.IsNull() {
+				*headerName1 = r.Config.Targets[targetsIndex].Auth.HeaderName.ValueString()
 			} else {
 				headerName1 = nil
 			}
 			headerValue1 := new(string)
-			if !targetsItem.Auth.HeaderValue.IsUnknown() && !targetsItem.Auth.HeaderValue.IsNull() {
-				*headerValue1 = targetsItem.Auth.HeaderValue.ValueString()
+			if !r.Config.Targets[targetsIndex].Auth.HeaderValue.IsUnknown() && !r.Config.Targets[targetsIndex].Auth.HeaderValue.IsNull() {
+				*headerValue1 = r.Config.Targets[targetsIndex].Auth.HeaderValue.ValueString()
 			} else {
 				headerValue1 = nil
 			}
 			paramLocation1 := new(shared.AiProxyAdvancedPluginConfigParamLocation)
-			if !targetsItem.Auth.ParamLocation.IsUnknown() && !targetsItem.Auth.ParamLocation.IsNull() {
-				*paramLocation1 = shared.AiProxyAdvancedPluginConfigParamLocation(targetsItem.Auth.ParamLocation.ValueString())
+			if !r.Config.Targets[targetsIndex].Auth.ParamLocation.IsUnknown() && !r.Config.Targets[targetsIndex].Auth.ParamLocation.IsNull() {
+				*paramLocation1 = shared.AiProxyAdvancedPluginConfigParamLocation(r.Config.Targets[targetsIndex].Auth.ParamLocation.ValueString())
 			} else {
 				paramLocation1 = nil
 			}
 			paramName1 := new(string)
-			if !targetsItem.Auth.ParamName.IsUnknown() && !targetsItem.Auth.ParamName.IsNull() {
-				*paramName1 = targetsItem.Auth.ParamName.ValueString()
+			if !r.Config.Targets[targetsIndex].Auth.ParamName.IsUnknown() && !r.Config.Targets[targetsIndex].Auth.ParamName.IsNull() {
+				*paramName1 = r.Config.Targets[targetsIndex].Auth.ParamName.ValueString()
 			} else {
 				paramName1 = nil
 			}
 			paramValue1 := new(string)
-			if !targetsItem.Auth.ParamValue.IsUnknown() && !targetsItem.Auth.ParamValue.IsNull() {
-				*paramValue1 = targetsItem.Auth.ParamValue.ValueString()
+			if !r.Config.Targets[targetsIndex].Auth.ParamValue.IsUnknown() && !r.Config.Targets[targetsIndex].Auth.ParamValue.IsNull() {
+				*paramValue1 = r.Config.Targets[targetsIndex].Auth.ParamValue.ValueString()
 			} else {
 				paramValue1 = nil
 			}
@@ -1041,22 +1041,22 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 			}
 		}
 		description := new(string)
-		if !targetsItem.Description.IsUnknown() && !targetsItem.Description.IsNull() {
-			*description = targetsItem.Description.ValueString()
+		if !r.Config.Targets[targetsIndex].Description.IsUnknown() && !r.Config.Targets[targetsIndex].Description.IsNull() {
+			*description = r.Config.Targets[targetsIndex].Description.ValueString()
 		} else {
 			description = nil
 		}
 		var logging *shared.AiProxyAdvancedPluginLogging
-		if targetsItem.Logging != nil {
+		if r.Config.Targets[targetsIndex].Logging != nil {
 			logPayloads := new(bool)
-			if !targetsItem.Logging.LogPayloads.IsUnknown() && !targetsItem.Logging.LogPayloads.IsNull() {
-				*logPayloads = targetsItem.Logging.LogPayloads.ValueBool()
+			if !r.Config.Targets[targetsIndex].Logging.LogPayloads.IsUnknown() && !r.Config.Targets[targetsIndex].Logging.LogPayloads.IsNull() {
+				*logPayloads = r.Config.Targets[targetsIndex].Logging.LogPayloads.ValueBool()
 			} else {
 				logPayloads = nil
 			}
 			logStatistics := new(bool)
-			if !targetsItem.Logging.LogStatistics.IsUnknown() && !targetsItem.Logging.LogStatistics.IsNull() {
-				*logStatistics = targetsItem.Logging.LogStatistics.ValueBool()
+			if !r.Config.Targets[targetsIndex].Logging.LogStatistics.IsUnknown() && !r.Config.Targets[targetsIndex].Logging.LogStatistics.IsNull() {
+				*logStatistics = r.Config.Targets[targetsIndex].Logging.LogStatistics.ValueBool()
 			} else {
 				logStatistics = nil
 			}
@@ -1066,72 +1066,72 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 			}
 		}
 		name2 := new(string)
-		if !targetsItem.Model.Name.IsUnknown() && !targetsItem.Model.Name.IsNull() {
-			*name2 = targetsItem.Model.Name.ValueString()
+		if !r.Config.Targets[targetsIndex].Model.Name.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Name.IsNull() {
+			*name2 = r.Config.Targets[targetsIndex].Model.Name.ValueString()
 		} else {
 			name2 = nil
 		}
 		var optionsVar1 *shared.AiProxyAdvancedPluginConfigOptions
-		if targetsItem.Model.Options != nil {
+		if r.Config.Targets[targetsIndex].Model.Options != nil {
 			anthropicVersion := new(string)
-			if !targetsItem.Model.Options.AnthropicVersion.IsUnknown() && !targetsItem.Model.Options.AnthropicVersion.IsNull() {
-				*anthropicVersion = targetsItem.Model.Options.AnthropicVersion.ValueString()
+			if !r.Config.Targets[targetsIndex].Model.Options.AnthropicVersion.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.AnthropicVersion.IsNull() {
+				*anthropicVersion = r.Config.Targets[targetsIndex].Model.Options.AnthropicVersion.ValueString()
 			} else {
 				anthropicVersion = nil
 			}
 			azureAPIVersion := new(string)
-			if !targetsItem.Model.Options.AzureAPIVersion.IsUnknown() && !targetsItem.Model.Options.AzureAPIVersion.IsNull() {
-				*azureAPIVersion = targetsItem.Model.Options.AzureAPIVersion.ValueString()
+			if !r.Config.Targets[targetsIndex].Model.Options.AzureAPIVersion.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.AzureAPIVersion.IsNull() {
+				*azureAPIVersion = r.Config.Targets[targetsIndex].Model.Options.AzureAPIVersion.ValueString()
 			} else {
 				azureAPIVersion = nil
 			}
 			azureDeploymentID := new(string)
-			if !targetsItem.Model.Options.AzureDeploymentID.IsUnknown() && !targetsItem.Model.Options.AzureDeploymentID.IsNull() {
-				*azureDeploymentID = targetsItem.Model.Options.AzureDeploymentID.ValueString()
+			if !r.Config.Targets[targetsIndex].Model.Options.AzureDeploymentID.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.AzureDeploymentID.IsNull() {
+				*azureDeploymentID = r.Config.Targets[targetsIndex].Model.Options.AzureDeploymentID.ValueString()
 			} else {
 				azureDeploymentID = nil
 			}
 			azureInstance := new(string)
-			if !targetsItem.Model.Options.AzureInstance.IsUnknown() && !targetsItem.Model.Options.AzureInstance.IsNull() {
-				*azureInstance = targetsItem.Model.Options.AzureInstance.ValueString()
+			if !r.Config.Targets[targetsIndex].Model.Options.AzureInstance.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.AzureInstance.IsNull() {
+				*azureInstance = r.Config.Targets[targetsIndex].Model.Options.AzureInstance.ValueString()
 			} else {
 				azureInstance = nil
 			}
 			var bedrock1 *shared.AiProxyAdvancedPluginConfigBedrock
-			if targetsItem.Model.Options.Bedrock != nil {
+			if r.Config.Targets[targetsIndex].Model.Options.Bedrock != nil {
 				awsAssumeRoleArn1 := new(string)
-				if !targetsItem.Model.Options.Bedrock.AwsAssumeRoleArn.IsUnknown() && !targetsItem.Model.Options.Bedrock.AwsAssumeRoleArn.IsNull() {
-					*awsAssumeRoleArn1 = targetsItem.Model.Options.Bedrock.AwsAssumeRoleArn.ValueString()
+				if !r.Config.Targets[targetsIndex].Model.Options.Bedrock.AwsAssumeRoleArn.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.Bedrock.AwsAssumeRoleArn.IsNull() {
+					*awsAssumeRoleArn1 = r.Config.Targets[targetsIndex].Model.Options.Bedrock.AwsAssumeRoleArn.ValueString()
 				} else {
 					awsAssumeRoleArn1 = nil
 				}
 				awsRegion1 := new(string)
-				if !targetsItem.Model.Options.Bedrock.AwsRegion.IsUnknown() && !targetsItem.Model.Options.Bedrock.AwsRegion.IsNull() {
-					*awsRegion1 = targetsItem.Model.Options.Bedrock.AwsRegion.ValueString()
+				if !r.Config.Targets[targetsIndex].Model.Options.Bedrock.AwsRegion.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.Bedrock.AwsRegion.IsNull() {
+					*awsRegion1 = r.Config.Targets[targetsIndex].Model.Options.Bedrock.AwsRegion.ValueString()
 				} else {
 					awsRegion1 = nil
 				}
 				awsRoleSessionName1 := new(string)
-				if !targetsItem.Model.Options.Bedrock.AwsRoleSessionName.IsUnknown() && !targetsItem.Model.Options.Bedrock.AwsRoleSessionName.IsNull() {
-					*awsRoleSessionName1 = targetsItem.Model.Options.Bedrock.AwsRoleSessionName.ValueString()
+				if !r.Config.Targets[targetsIndex].Model.Options.Bedrock.AwsRoleSessionName.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.Bedrock.AwsRoleSessionName.IsNull() {
+					*awsRoleSessionName1 = r.Config.Targets[targetsIndex].Model.Options.Bedrock.AwsRoleSessionName.ValueString()
 				} else {
 					awsRoleSessionName1 = nil
 				}
 				awsStsEndpointUrl1 := new(string)
-				if !targetsItem.Model.Options.Bedrock.AwsStsEndpointURL.IsUnknown() && !targetsItem.Model.Options.Bedrock.AwsStsEndpointURL.IsNull() {
-					*awsStsEndpointUrl1 = targetsItem.Model.Options.Bedrock.AwsStsEndpointURL.ValueString()
+				if !r.Config.Targets[targetsIndex].Model.Options.Bedrock.AwsStsEndpointURL.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.Bedrock.AwsStsEndpointURL.IsNull() {
+					*awsStsEndpointUrl1 = r.Config.Targets[targetsIndex].Model.Options.Bedrock.AwsStsEndpointURL.ValueString()
 				} else {
 					awsStsEndpointUrl1 = nil
 				}
 				embeddingsNormalize1 := new(bool)
-				if !targetsItem.Model.Options.Bedrock.EmbeddingsNormalize.IsUnknown() && !targetsItem.Model.Options.Bedrock.EmbeddingsNormalize.IsNull() {
-					*embeddingsNormalize1 = targetsItem.Model.Options.Bedrock.EmbeddingsNormalize.ValueBool()
+				if !r.Config.Targets[targetsIndex].Model.Options.Bedrock.EmbeddingsNormalize.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.Bedrock.EmbeddingsNormalize.IsNull() {
+					*embeddingsNormalize1 = r.Config.Targets[targetsIndex].Model.Options.Bedrock.EmbeddingsNormalize.ValueBool()
 				} else {
 					embeddingsNormalize1 = nil
 				}
 				performanceConfigLatency1 := new(string)
-				if !targetsItem.Model.Options.Bedrock.PerformanceConfigLatency.IsUnknown() && !targetsItem.Model.Options.Bedrock.PerformanceConfigLatency.IsNull() {
-					*performanceConfigLatency1 = targetsItem.Model.Options.Bedrock.PerformanceConfigLatency.ValueString()
+				if !r.Config.Targets[targetsIndex].Model.Options.Bedrock.PerformanceConfigLatency.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.Bedrock.PerformanceConfigLatency.IsNull() {
+					*performanceConfigLatency1 = r.Config.Targets[targetsIndex].Model.Options.Bedrock.PerformanceConfigLatency.ValueString()
 				} else {
 					performanceConfigLatency1 = nil
 				}
@@ -1145,16 +1145,16 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 				}
 			}
 			var cohere *shared.AiProxyAdvancedPluginCohere
-			if targetsItem.Model.Options.Cohere != nil {
+			if r.Config.Targets[targetsIndex].Model.Options.Cohere != nil {
 				embeddingInputType := new(shared.AiProxyAdvancedPluginEmbeddingInputType)
-				if !targetsItem.Model.Options.Cohere.EmbeddingInputType.IsUnknown() && !targetsItem.Model.Options.Cohere.EmbeddingInputType.IsNull() {
-					*embeddingInputType = shared.AiProxyAdvancedPluginEmbeddingInputType(targetsItem.Model.Options.Cohere.EmbeddingInputType.ValueString())
+				if !r.Config.Targets[targetsIndex].Model.Options.Cohere.EmbeddingInputType.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.Cohere.EmbeddingInputType.IsNull() {
+					*embeddingInputType = shared.AiProxyAdvancedPluginEmbeddingInputType(r.Config.Targets[targetsIndex].Model.Options.Cohere.EmbeddingInputType.ValueString())
 				} else {
 					embeddingInputType = nil
 				}
 				waitForModel1 := new(bool)
-				if !targetsItem.Model.Options.Cohere.WaitForModel.IsUnknown() && !targetsItem.Model.Options.Cohere.WaitForModel.IsNull() {
-					*waitForModel1 = targetsItem.Model.Options.Cohere.WaitForModel.ValueBool()
+				if !r.Config.Targets[targetsIndex].Model.Options.Cohere.WaitForModel.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.Cohere.WaitForModel.IsNull() {
+					*waitForModel1 = r.Config.Targets[targetsIndex].Model.Options.Cohere.WaitForModel.ValueBool()
 				} else {
 					waitForModel1 = nil
 				}
@@ -1164,34 +1164,34 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 				}
 			}
 			embeddingsDimensions := new(int64)
-			if !targetsItem.Model.Options.EmbeddingsDimensions.IsUnknown() && !targetsItem.Model.Options.EmbeddingsDimensions.IsNull() {
-				*embeddingsDimensions = targetsItem.Model.Options.EmbeddingsDimensions.ValueInt64()
+			if !r.Config.Targets[targetsIndex].Model.Options.EmbeddingsDimensions.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.EmbeddingsDimensions.IsNull() {
+				*embeddingsDimensions = r.Config.Targets[targetsIndex].Model.Options.EmbeddingsDimensions.ValueInt64()
 			} else {
 				embeddingsDimensions = nil
 			}
 			var gemini1 *shared.AiProxyAdvancedPluginConfigGemini
-			if targetsItem.Model.Options.Gemini != nil {
+			if r.Config.Targets[targetsIndex].Model.Options.Gemini != nil {
 				apiEndpoint1 := new(string)
-				if !targetsItem.Model.Options.Gemini.APIEndpoint.IsUnknown() && !targetsItem.Model.Options.Gemini.APIEndpoint.IsNull() {
-					*apiEndpoint1 = targetsItem.Model.Options.Gemini.APIEndpoint.ValueString()
+				if !r.Config.Targets[targetsIndex].Model.Options.Gemini.APIEndpoint.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.Gemini.APIEndpoint.IsNull() {
+					*apiEndpoint1 = r.Config.Targets[targetsIndex].Model.Options.Gemini.APIEndpoint.ValueString()
 				} else {
 					apiEndpoint1 = nil
 				}
 				endpointID := new(string)
-				if !targetsItem.Model.Options.Gemini.EndpointID.IsUnknown() && !targetsItem.Model.Options.Gemini.EndpointID.IsNull() {
-					*endpointID = targetsItem.Model.Options.Gemini.EndpointID.ValueString()
+				if !r.Config.Targets[targetsIndex].Model.Options.Gemini.EndpointID.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.Gemini.EndpointID.IsNull() {
+					*endpointID = r.Config.Targets[targetsIndex].Model.Options.Gemini.EndpointID.ValueString()
 				} else {
 					endpointID = nil
 				}
 				locationId1 := new(string)
-				if !targetsItem.Model.Options.Gemini.LocationID.IsUnknown() && !targetsItem.Model.Options.Gemini.LocationID.IsNull() {
-					*locationId1 = targetsItem.Model.Options.Gemini.LocationID.ValueString()
+				if !r.Config.Targets[targetsIndex].Model.Options.Gemini.LocationID.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.Gemini.LocationID.IsNull() {
+					*locationId1 = r.Config.Targets[targetsIndex].Model.Options.Gemini.LocationID.ValueString()
 				} else {
 					locationId1 = nil
 				}
 				projectId1 := new(string)
-				if !targetsItem.Model.Options.Gemini.ProjectID.IsUnknown() && !targetsItem.Model.Options.Gemini.ProjectID.IsNull() {
-					*projectId1 = targetsItem.Model.Options.Gemini.ProjectID.ValueString()
+				if !r.Config.Targets[targetsIndex].Model.Options.Gemini.ProjectID.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.Gemini.ProjectID.IsNull() {
+					*projectId1 = r.Config.Targets[targetsIndex].Model.Options.Gemini.ProjectID.ValueString()
 				} else {
 					projectId1 = nil
 				}
@@ -1203,16 +1203,16 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 				}
 			}
 			var huggingface1 *shared.AiProxyAdvancedPluginConfigHuggingface
-			if targetsItem.Model.Options.Huggingface != nil {
+			if r.Config.Targets[targetsIndex].Model.Options.Huggingface != nil {
 				useCache1 := new(bool)
-				if !targetsItem.Model.Options.Huggingface.UseCache.IsUnknown() && !targetsItem.Model.Options.Huggingface.UseCache.IsNull() {
-					*useCache1 = targetsItem.Model.Options.Huggingface.UseCache.ValueBool()
+				if !r.Config.Targets[targetsIndex].Model.Options.Huggingface.UseCache.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.Huggingface.UseCache.IsNull() {
+					*useCache1 = r.Config.Targets[targetsIndex].Model.Options.Huggingface.UseCache.ValueBool()
 				} else {
 					useCache1 = nil
 				}
 				waitForModel2 := new(bool)
-				if !targetsItem.Model.Options.Huggingface.WaitForModel.IsUnknown() && !targetsItem.Model.Options.Huggingface.WaitForModel.IsNull() {
-					*waitForModel2 = targetsItem.Model.Options.Huggingface.WaitForModel.ValueBool()
+				if !r.Config.Targets[targetsIndex].Model.Options.Huggingface.WaitForModel.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.Huggingface.WaitForModel.IsNull() {
+					*waitForModel2 = r.Config.Targets[targetsIndex].Model.Options.Huggingface.WaitForModel.ValueBool()
 				} else {
 					waitForModel2 = nil
 				}
@@ -1222,62 +1222,62 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 				}
 			}
 			inputCost := new(float64)
-			if !targetsItem.Model.Options.InputCost.IsUnknown() && !targetsItem.Model.Options.InputCost.IsNull() {
-				*inputCost = targetsItem.Model.Options.InputCost.ValueFloat64()
+			if !r.Config.Targets[targetsIndex].Model.Options.InputCost.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.InputCost.IsNull() {
+				*inputCost = r.Config.Targets[targetsIndex].Model.Options.InputCost.ValueFloat64()
 			} else {
 				inputCost = nil
 			}
 			llama2Format := new(shared.AiProxyAdvancedPluginLlama2Format)
-			if !targetsItem.Model.Options.Llama2Format.IsUnknown() && !targetsItem.Model.Options.Llama2Format.IsNull() {
-				*llama2Format = shared.AiProxyAdvancedPluginLlama2Format(targetsItem.Model.Options.Llama2Format.ValueString())
+			if !r.Config.Targets[targetsIndex].Model.Options.Llama2Format.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.Llama2Format.IsNull() {
+				*llama2Format = shared.AiProxyAdvancedPluginLlama2Format(r.Config.Targets[targetsIndex].Model.Options.Llama2Format.ValueString())
 			} else {
 				llama2Format = nil
 			}
 			maxTokens := new(int64)
-			if !targetsItem.Model.Options.MaxTokens.IsUnknown() && !targetsItem.Model.Options.MaxTokens.IsNull() {
-				*maxTokens = targetsItem.Model.Options.MaxTokens.ValueInt64()
+			if !r.Config.Targets[targetsIndex].Model.Options.MaxTokens.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.MaxTokens.IsNull() {
+				*maxTokens = r.Config.Targets[targetsIndex].Model.Options.MaxTokens.ValueInt64()
 			} else {
 				maxTokens = nil
 			}
 			mistralFormat := new(shared.AiProxyAdvancedPluginMistralFormat)
-			if !targetsItem.Model.Options.MistralFormat.IsUnknown() && !targetsItem.Model.Options.MistralFormat.IsNull() {
-				*mistralFormat = shared.AiProxyAdvancedPluginMistralFormat(targetsItem.Model.Options.MistralFormat.ValueString())
+			if !r.Config.Targets[targetsIndex].Model.Options.MistralFormat.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.MistralFormat.IsNull() {
+				*mistralFormat = shared.AiProxyAdvancedPluginMistralFormat(r.Config.Targets[targetsIndex].Model.Options.MistralFormat.ValueString())
 			} else {
 				mistralFormat = nil
 			}
 			outputCost := new(float64)
-			if !targetsItem.Model.Options.OutputCost.IsUnknown() && !targetsItem.Model.Options.OutputCost.IsNull() {
-				*outputCost = targetsItem.Model.Options.OutputCost.ValueFloat64()
+			if !r.Config.Targets[targetsIndex].Model.Options.OutputCost.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.OutputCost.IsNull() {
+				*outputCost = r.Config.Targets[targetsIndex].Model.Options.OutputCost.ValueFloat64()
 			} else {
 				outputCost = nil
 			}
 			temperature := new(float64)
-			if !targetsItem.Model.Options.Temperature.IsUnknown() && !targetsItem.Model.Options.Temperature.IsNull() {
-				*temperature = targetsItem.Model.Options.Temperature.ValueFloat64()
+			if !r.Config.Targets[targetsIndex].Model.Options.Temperature.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.Temperature.IsNull() {
+				*temperature = r.Config.Targets[targetsIndex].Model.Options.Temperature.ValueFloat64()
 			} else {
 				temperature = nil
 			}
 			topK := new(int64)
-			if !targetsItem.Model.Options.TopK.IsUnknown() && !targetsItem.Model.Options.TopK.IsNull() {
-				*topK = targetsItem.Model.Options.TopK.ValueInt64()
+			if !r.Config.Targets[targetsIndex].Model.Options.TopK.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.TopK.IsNull() {
+				*topK = r.Config.Targets[targetsIndex].Model.Options.TopK.ValueInt64()
 			} else {
 				topK = nil
 			}
 			topP := new(float64)
-			if !targetsItem.Model.Options.TopP.IsUnknown() && !targetsItem.Model.Options.TopP.IsNull() {
-				*topP = targetsItem.Model.Options.TopP.ValueFloat64()
+			if !r.Config.Targets[targetsIndex].Model.Options.TopP.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.TopP.IsNull() {
+				*topP = r.Config.Targets[targetsIndex].Model.Options.TopP.ValueFloat64()
 			} else {
 				topP = nil
 			}
 			upstreamPath := new(string)
-			if !targetsItem.Model.Options.UpstreamPath.IsUnknown() && !targetsItem.Model.Options.UpstreamPath.IsNull() {
-				*upstreamPath = targetsItem.Model.Options.UpstreamPath.ValueString()
+			if !r.Config.Targets[targetsIndex].Model.Options.UpstreamPath.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.UpstreamPath.IsNull() {
+				*upstreamPath = r.Config.Targets[targetsIndex].Model.Options.UpstreamPath.ValueString()
 			} else {
 				upstreamPath = nil
 			}
 			upstreamUrl1 := new(string)
-			if !targetsItem.Model.Options.UpstreamURL.IsUnknown() && !targetsItem.Model.Options.UpstreamURL.IsNull() {
-				*upstreamUrl1 = targetsItem.Model.Options.UpstreamURL.ValueString()
+			if !r.Config.Targets[targetsIndex].Model.Options.UpstreamURL.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.UpstreamURL.IsNull() {
+				*upstreamUrl1 = r.Config.Targets[targetsIndex].Model.Options.UpstreamURL.ValueString()
 			} else {
 				upstreamUrl1 = nil
 			}
@@ -1303,16 +1303,16 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 				UpstreamURL:          upstreamUrl1,
 			}
 		}
-		provider1 := shared.AiProxyAdvancedPluginConfigProvider(targetsItem.Model.Provider.ValueString())
+		provider1 := shared.AiProxyAdvancedPluginConfigProvider(r.Config.Targets[targetsIndex].Model.Provider.ValueString())
 		model1 := shared.AiProxyAdvancedPluginConfigModel{
 			Name:     name2,
 			Options:  optionsVar1,
 			Provider: provider1,
 		}
-		routeType := shared.AiProxyAdvancedPluginRouteType(targetsItem.RouteType.ValueString())
+		routeType := shared.AiProxyAdvancedPluginRouteType(r.Config.Targets[targetsIndex].RouteType.ValueString())
 		weight := new(int64)
-		if !targetsItem.Weight.IsUnknown() && !targetsItem.Weight.IsNull() {
-			*weight = targetsItem.Weight.ValueInt64()
+		if !r.Config.Targets[targetsIndex].Weight.IsUnknown() && !r.Config.Targets[targetsIndex].Weight.IsNull() {
+			*weight = r.Config.Targets[targetsIndex].Weight.ValueInt64()
 		} else {
 			weight = nil
 		}
@@ -1431,16 +1431,16 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 			var clusterNodes []shared.AiProxyAdvancedPluginClusterNodes
 			if r.Config.Vectordb.Redis.ClusterNodes != nil {
 				clusterNodes = make([]shared.AiProxyAdvancedPluginClusterNodes, 0, len(r.Config.Vectordb.Redis.ClusterNodes))
-				for _, clusterNodesItem := range r.Config.Vectordb.Redis.ClusterNodes {
+				for clusterNodesIndex := range r.Config.Vectordb.Redis.ClusterNodes {
 					ip := new(string)
-					if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
-						*ip = clusterNodesItem.IP.ValueString()
+					if !r.Config.Vectordb.Redis.ClusterNodes[clusterNodesIndex].IP.IsUnknown() && !r.Config.Vectordb.Redis.ClusterNodes[clusterNodesIndex].IP.IsNull() {
+						*ip = r.Config.Vectordb.Redis.ClusterNodes[clusterNodesIndex].IP.ValueString()
 					} else {
 						ip = nil
 					}
 					port1 := new(int64)
-					if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
-						*port1 = clusterNodesItem.Port.ValueInt64()
+					if !r.Config.Vectordb.Redis.ClusterNodes[clusterNodesIndex].Port.IsUnknown() && !r.Config.Vectordb.Redis.ClusterNodes[clusterNodesIndex].Port.IsNull() {
+						*port1 = r.Config.Vectordb.Redis.ClusterNodes[clusterNodesIndex].Port.ValueInt64()
 					} else {
 						port1 = nil
 					}
@@ -1519,16 +1519,16 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 			var sentinelNodes []shared.AiProxyAdvancedPluginSentinelNodes
 			if r.Config.Vectordb.Redis.SentinelNodes != nil {
 				sentinelNodes = make([]shared.AiProxyAdvancedPluginSentinelNodes, 0, len(r.Config.Vectordb.Redis.SentinelNodes))
-				for _, sentinelNodesItem := range r.Config.Vectordb.Redis.SentinelNodes {
+				for sentinelNodesIndex := range r.Config.Vectordb.Redis.SentinelNodes {
 					host2 := new(string)
-					if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
-						*host2 = sentinelNodesItem.Host.ValueString()
+					if !r.Config.Vectordb.Redis.SentinelNodes[sentinelNodesIndex].Host.IsUnknown() && !r.Config.Vectordb.Redis.SentinelNodes[sentinelNodesIndex].Host.IsNull() {
+						*host2 = r.Config.Vectordb.Redis.SentinelNodes[sentinelNodesIndex].Host.ValueString()
 					} else {
 						host2 = nil
 					}
 					port3 := new(int64)
-					if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
-						*port3 = sentinelNodesItem.Port.ValueInt64()
+					if !r.Config.Vectordb.Redis.SentinelNodes[sentinelNodesIndex].Port.IsUnknown() && !r.Config.Vectordb.Redis.SentinelNodes[sentinelNodesIndex].Port.IsNull() {
+						*port3 = r.Config.Vectordb.Redis.SentinelNodes[sentinelNodesIndex].Port.ValueInt64()
 					} else {
 						port3 = nil
 					}

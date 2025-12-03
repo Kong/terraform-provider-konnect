@@ -75,7 +75,7 @@ Read-Only:
 - `portal_id` (String)
 - `portal_name` (String)
 - `portal_product_version_id` (String)
-- `publish_status` (String) must be one of ["published", "unpublished"]
+- `publish_status` (String)
 
 <a id="nestedatt--portals--auth_strategies"></a>
 ### Nested Schema for `portals.auth_strategies`

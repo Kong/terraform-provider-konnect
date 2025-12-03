@@ -16,7 +16,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -93,9 +92,6 @@ func (r *AuditLogResource) Schema(ctx context.Context, req resource.SchemaReques
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `Timestamp when this webhook was last updated. Initial value is 0001-01-01T00:00:0Z.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 		},
 	}
@@ -375,7 +371,10 @@ func (r *AuditLogResource) Delete(ctx context.Context, req resource.DeleteReques
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

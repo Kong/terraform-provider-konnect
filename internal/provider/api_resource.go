@@ -6,7 +6,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
-	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -21,7 +20,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	"regexp"
 )
 
@@ -84,9 +82,6 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"description": schema.StringAttribute{
 				Optional:    true,
@@ -148,9 +143,6 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					},
 				},
 				Description: `The list of portals which this API is published to.`,
-				Validators: []validator.List{
-					listvalidator.UniqueValues(),
-				},
 			},
 			"slug": schema.StringAttribute{
 				Computed: true,
@@ -175,9 +167,6 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"version": schema.StringAttribute{
 				Computed:    true,
@@ -458,7 +447,10 @@ func (r *APIResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 204 {
+	switch res.StatusCode {
+	case 204, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

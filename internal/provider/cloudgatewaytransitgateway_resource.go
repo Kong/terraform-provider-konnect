@@ -24,7 +24,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -195,9 +194,6 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An RFC-3339 timestamp representation of transit gateway creation date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
 					"dns_config": schema.ListNestedAttribute{
 						Computed: true,
@@ -249,19 +245,7 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 							`- ` + "`" + `pending-user-action` + "`" + ` The attachment request is awaiting user action in customer VPC.` + "\n" +
 							`- ` + "`" + `ready` + "`" + ` - The transit gateway attachment is fully operational and can route traffic as configured.` + "\n" +
 							`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted and is no longer accepting new traffic.` + "\n" +
-							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.` + "\n" +
-							`must be one of ["created", "initializing", "pending-acceptance", "pending-user-action", "ready", "terminating", "terminated"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"created",
-								"initializing",
-								"pending-acceptance",
-								"pending-user-action",
-								"ready",
-								"terminating",
-								"terminated",
-							),
-						},
+							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.`,
 					},
 					"state_metadata": schema.SingleNestedAttribute{
 						Computed: true,
@@ -284,13 +268,7 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
-								Computed:    true,
-								Description: `must be "aws-resource-endpoint-attachment"`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"aws-resource-endpoint-attachment",
-									),
-								},
+								Computed: true,
 							},
 							"ram_share_arn": schema.StringAttribute{
 								Computed:    true,
@@ -318,17 +296,7 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 												`- ` + "`" + `missing` + "`" + ` - The config is missing and is no longer accepting new traffic.` + "\n" +
 												`- ` + "`" + `ready` + "`" + ` - The config is fully operational and can route traffic as configured.` + "\n" +
 												`- ` + "`" + `error` + "`" + ` - The config is in an error state, and is not operational.` + "\n" +
-												`- ` + "`" + `terminating` + "`" + ` - The config is in the process of being deleted and is no longer accepting new traffic.` + "\n" +
-												`must be one of ["initializing", "missing", "ready", "error", "terminating"]`,
-											Validators: []validator.String{
-												stringvalidator.OneOf(
-													"initializing",
-													"missing",
-													"ready",
-													"error",
-													"terminating",
-												),
-											},
+												`- ` + "`" + `terminating` + "`" + ` - The config is in the process of being deleted and is no longer accepting new traffic.`,
 										},
 									},
 								},
@@ -342,23 +310,7 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An RFC-3339 timestamp representation of transit gateway update date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
-				},
-				Validators: []validator.Object{
-					objectvalidator.ConflictsWith(path.Expressions{
-						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
-						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway_response"),
-						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
-						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
-						path.MatchRelative().AtParent().AtName("gcpvpc_peering_gateway_response"),
-						path.MatchRelative().AtParent().AtName("gcp_vpc_peering_transit_gateway"),
-					}...),
 				},
 			},
 			"aws_transit_gateway": schema.SingleNestedAttribute{
@@ -484,9 +436,6 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An RFC-3339 timestamp representation of transit gateway creation date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
 					"dns_config": schema.ListNestedAttribute{
 						Computed: true,
@@ -538,19 +487,7 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 							`- ` + "`" + `pending-user-action` + "`" + ` The attachment request is awaiting user action in customer VPC.` + "\n" +
 							`- ` + "`" + `ready` + "`" + ` - The transit gateway attachment is fully operational and can route traffic as configured.` + "\n" +
 							`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted and is no longer accepting new traffic.` + "\n" +
-							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.` + "\n" +
-							`must be one of ["created", "initializing", "pending-acceptance", "pending-user-action", "ready", "terminating", "terminated"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"created",
-								"initializing",
-								"pending-acceptance",
-								"pending-user-action",
-								"ready",
-								"terminating",
-								"terminated",
-							),
-						},
+							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.`,
 					},
 					"state_metadata": schema.SingleNestedAttribute{
 						Computed: true,
@@ -573,13 +510,7 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
-								Computed:    true,
-								Description: `must be "aws-transit-gateway-attachment"`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"aws-transit-gateway-attachment",
-									),
-								},
+								Computed: true,
 							},
 							"ram_share_arn": schema.StringAttribute{
 								Computed:    true,
@@ -597,23 +528,7 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An RFC-3339 timestamp representation of transit gateway update date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
-				},
-				Validators: []validator.Object{
-					objectvalidator.ConflictsWith(path.Expressions{
-						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway_response"),
-						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway_response"),
-						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
-						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
-						path.MatchRelative().AtParent().AtName("gcpvpc_peering_gateway_response"),
-						path.MatchRelative().AtParent().AtName("gcp_vpc_peering_transit_gateway"),
-					}...),
 				},
 			},
 			"aws_vpc_peering_gateway": schema.SingleNestedAttribute{
@@ -746,9 +661,6 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An RFC-3339 timestamp representation of transit gateway creation date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
 					"dns_config": schema.ListNestedAttribute{
 						Computed: true,
@@ -800,19 +712,7 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 							`- ` + "`" + `pending-user-action` + "`" + ` The attachment request is awaiting user action in customer VPC.` + "\n" +
 							`- ` + "`" + `ready` + "`" + ` - The transit gateway attachment is fully operational and can route traffic as configured.` + "\n" +
 							`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted and is no longer accepting new traffic.` + "\n" +
-							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.` + "\n" +
-							`must be one of ["created", "initializing", "pending-acceptance", "pending-user-action", "ready", "terminating", "terminated"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"created",
-								"initializing",
-								"pending-acceptance",
-								"pending-user-action",
-								"ready",
-								"terminating",
-								"terminated",
-							),
-						},
+							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.`,
 					},
 					"state_metadata": schema.SingleNestedAttribute{
 						Computed: true,
@@ -835,13 +735,7 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
-								Computed:    true,
-								Description: `must be "aws-vpc-peering-attachment"`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"aws-vpc-peering-attachment",
-									),
-								},
+								Computed: true,
 							},
 							"peer_account_id": schema.StringAttribute{
 								Computed: true,
@@ -860,23 +754,7 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An RFC-3339 timestamp representation of transit gateway update date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
-				},
-				Validators: []validator.Object{
-					objectvalidator.ConflictsWith(path.Expressions{
-						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway_response"),
-						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
-						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
-						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
-						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
-						path.MatchRelative().AtParent().AtName("gcpvpc_peering_gateway_response"),
-						path.MatchRelative().AtParent().AtName("gcp_vpc_peering_transit_gateway"),
-					}...),
 				},
 			},
 			"azure_transit_gateway": schema.SingleNestedAttribute{
@@ -1000,9 +878,6 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An RFC-3339 timestamp representation of transit gateway creation date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
 					"dns_config": schema.ListNestedAttribute{
 						Computed: true,
@@ -1054,19 +929,7 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 							`- ` + "`" + `pending-user-action` + "`" + ` The attachment request is awaiting user action in customer VPC.` + "\n" +
 							`- ` + "`" + `ready` + "`" + ` - The transit gateway attachment is fully operational and can route traffic as configured.` + "\n" +
 							`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted and is no longer accepting new traffic.` + "\n" +
-							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.` + "\n" +
-							`must be one of ["created", "initializing", "pending-acceptance", "pending-user-action", "ready", "terminating", "terminated"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"created",
-								"initializing",
-								"pending-acceptance",
-								"pending-user-action",
-								"ready",
-								"terminating",
-								"terminated",
-							),
-						},
+							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.`,
 					},
 					"state_metadata": schema.SingleNestedAttribute{
 						Computed: true,
@@ -1089,13 +952,7 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
-								Computed:    true,
-								Description: `must be "azure-vnet-peering-attachment"`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"azure-vnet-peering-attachment",
-									),
-								},
+								Computed: true,
 							},
 							"resource_group_name": schema.StringAttribute{
 								Computed:    true,
@@ -1121,23 +978,7 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An RFC-3339 timestamp representation of transit gateway update date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
-				},
-				Validators: []validator.Object{
-					objectvalidator.ConflictsWith(path.Expressions{
-						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway_response"),
-						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
-						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway_response"),
-						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
-						path.MatchRelative().AtParent().AtName("gcpvpc_peering_gateway_response"),
-						path.MatchRelative().AtParent().AtName("gcp_vpc_peering_transit_gateway"),
-					}...),
 				},
 			},
 			"entity_version": schema.Int64Attribute{
@@ -1255,9 +1096,6 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An RFC-3339 timestamp representation of transit gateway creation date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
 					"dns_config": schema.ListNestedAttribute{
 						Computed: true,
@@ -1309,19 +1147,7 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 							`- ` + "`" + `pending-user-action` + "`" + ` The attachment request is awaiting user action in customer VPC.` + "\n" +
 							`- ` + "`" + `ready` + "`" + ` - The transit gateway attachment is fully operational and can route traffic as configured.` + "\n" +
 							`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted and is no longer accepting new traffic.` + "\n" +
-							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.` + "\n" +
-							`must be one of ["created", "initializing", "pending-acceptance", "pending-user-action", "ready", "terminating", "terminated"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"created",
-								"initializing",
-								"pending-acceptance",
-								"pending-user-action",
-								"ready",
-								"terminating",
-								"terminated",
-							),
-						},
+							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.`,
 					},
 					"state_metadata": schema.SingleNestedAttribute{
 						Computed: true,
@@ -1344,13 +1170,7 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
-								Computed:    true,
-								Description: `must be "gcp-vpc-peering-attachment"`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"gcp-vpc-peering-attachment",
-									),
-								},
+								Computed: true,
 							},
 							"peer_project_id": schema.StringAttribute{
 								Computed:    true,
@@ -1368,23 +1188,7 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
 						Description: `An RFC-3339 timestamp representation of transit gateway update date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
 					},
-				},
-				Validators: []validator.Object{
-					objectvalidator.ConflictsWith(path.Expressions{
-						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway_response"),
-						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
-						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway_response"),
-						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
-						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
-						path.MatchRelative().AtParent().AtName("gcp_vpc_peering_transit_gateway"),
-					}...),
 				},
 			},
 			"id": schema.StringAttribute{
@@ -1462,6 +1266,13 @@ func (r *CloudGatewayTransitGatewayResource) Create(ctx context.Context, req res
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode == 409 {
+		resp.Diagnostics.AddError(
+			"Resource Already Exists",
+			"When creating this resource, the API indicated that this resource already exists. You can bring the existing resource under management using Terraform import functionality or retry with a unique configuration.",
+		)
 		return
 	}
 	if res.StatusCode != 201 {
@@ -1602,7 +1413,10 @@ func (r *CloudGatewayTransitGatewayResource) Delete(ctx context.Context, req res
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 204 {
+	switch res.StatusCode {
+	case 204, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

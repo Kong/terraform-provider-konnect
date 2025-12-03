@@ -139,8 +139,8 @@ func (r *PortalAuthResourceModel) ToSharedPortalAuthenticationSettingsUpdateRequ
 	var oidcScopes []string
 	if r.OidcScopes != nil {
 		oidcScopes = make([]string, 0, len(r.OidcScopes))
-		for _, oidcScopesItem := range r.OidcScopes {
-			oidcScopes = append(oidcScopes, oidcScopesItem.ValueString())
+		for oidcScopesIndex := range r.OidcScopes {
+			oidcScopes = append(oidcScopes, r.OidcScopes[oidcScopesIndex].ValueString())
 		}
 	}
 	var oidcClaimMappings *shared.PortalAuthenticationSettingsUpdateRequestPortalClaimMappings

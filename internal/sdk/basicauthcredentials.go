@@ -264,6 +264,7 @@ func (s *BasicAuthCredentials) DeleteBasicAuthWithConsumer(ctx context.Context, 
 
 	switch {
 	case httpRes.StatusCode == 204:
+	case httpRes.StatusCode == 404:
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {

@@ -240,8 +240,8 @@ func (r *GatewayPluginJqResourceModel) ToSharedJqPlugin(ctx context.Context) (*s
 		var after *shared.JqPluginAfter
 		if r.Ordering.After != nil {
 			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			for accessIndex := range r.Ordering.After.Access {
+				access = append(access, r.Ordering.After.Access[accessIndex].ValueString())
 			}
 			after = &shared.JqPluginAfter{
 				Access: access,
@@ -250,8 +250,8 @@ func (r *GatewayPluginJqResourceModel) ToSharedJqPlugin(ctx context.Context) (*s
 		var before *shared.JqPluginBefore
 		if r.Ordering.Before != nil {
 			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			for accessIndex1 := range r.Ordering.Before.Access {
+				access1 = append(access1, r.Ordering.Before.Access[accessIndex1].ValueString())
 			}
 			before = &shared.JqPluginBefore{
 				Access: access1,
@@ -265,22 +265,22 @@ func (r *GatewayPluginJqResourceModel) ToSharedJqPlugin(ctx context.Context) (*s
 	var partials []shared.JqPluginPartials
 	if r.Partials != nil {
 		partials = make([]shared.JqPluginPartials, 0, len(r.Partials))
-		for _, partialsItem := range r.Partials {
+		for partialsIndex := range r.Partials {
 			id1 := new(string)
-			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
-				*id1 = partialsItem.ID.ValueString()
+			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
+				*id1 = r.Partials[partialsIndex].ID.ValueString()
 			} else {
 				id1 = nil
 			}
 			name := new(string)
-			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
-				*name = partialsItem.Name.ValueString()
+			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
+				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
 			path := new(string)
-			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
-				*path = partialsItem.Path.ValueString()
+			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
+				*path = r.Partials[partialsIndex].Path.ValueString()
 			} else {
 				path = nil
 			}
@@ -294,8 +294,8 @@ func (r *GatewayPluginJqResourceModel) ToSharedJqPlugin(ctx context.Context) (*s
 	var tags []string
 	if r.Tags != nil {
 		tags = make([]string, 0, len(r.Tags))
-		for _, tagsItem := range r.Tags {
-			tags = append(tags, tagsItem.ValueString())
+		for tagsIndex := range r.Tags {
+			tags = append(tags, r.Tags[tagsIndex].ValueString())
 		}
 	}
 	updatedAt := new(int64)
@@ -307,8 +307,8 @@ func (r *GatewayPluginJqResourceModel) ToSharedJqPlugin(ctx context.Context) (*s
 	var config *shared.JqPluginConfig
 	if r.Config != nil {
 		requestIfMediaType := make([]string, 0, len(r.Config.RequestIfMediaType))
-		for _, requestIfMediaTypeItem := range r.Config.RequestIfMediaType {
-			requestIfMediaType = append(requestIfMediaType, requestIfMediaTypeItem.ValueString())
+		for requestIfMediaTypeIndex := range r.Config.RequestIfMediaType {
+			requestIfMediaType = append(requestIfMediaType, r.Config.RequestIfMediaType[requestIfMediaTypeIndex].ValueString())
 		}
 		requestJqProgram := new(string)
 		if !r.Config.RequestJqProgram.IsUnknown() && !r.Config.RequestJqProgram.IsNull() {
@@ -357,12 +357,12 @@ func (r *GatewayPluginJqResourceModel) ToSharedJqPlugin(ctx context.Context) (*s
 			}
 		}
 		responseIfMediaType := make([]string, 0, len(r.Config.ResponseIfMediaType))
-		for _, responseIfMediaTypeItem := range r.Config.ResponseIfMediaType {
-			responseIfMediaType = append(responseIfMediaType, responseIfMediaTypeItem.ValueString())
+		for responseIfMediaTypeIndex := range r.Config.ResponseIfMediaType {
+			responseIfMediaType = append(responseIfMediaType, r.Config.ResponseIfMediaType[responseIfMediaTypeIndex].ValueString())
 		}
 		responseIfStatusCode := make([]int64, 0, len(r.Config.ResponseIfStatusCode))
-		for _, responseIfStatusCodeItem := range r.Config.ResponseIfStatusCode {
-			responseIfStatusCode = append(responseIfStatusCode, responseIfStatusCodeItem.ValueInt64())
+		for responseIfStatusCodeIndex := range r.Config.ResponseIfStatusCode {
+			responseIfStatusCode = append(responseIfStatusCode, r.Config.ResponseIfStatusCode[responseIfStatusCodeIndex].ValueInt64())
 		}
 		responseJqProgram := new(string)
 		if !r.Config.ResponseJqProgram.IsUnknown() && !r.Config.ResponseJqProgram.IsNull() {

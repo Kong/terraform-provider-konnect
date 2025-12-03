@@ -125,8 +125,8 @@ func (r *PortalProductVersionResourceModel) ToSharedV2ReplacePortalProductVersio
 
 	publishStatus := shared.V2PortalProductVersionPublishStatus(r.PublishStatus.ValueString())
 	authStrategyIds := make([]string, 0, len(r.AuthStrategyIds))
-	for _, authStrategyIdsItem := range r.AuthStrategyIds {
-		authStrategyIds = append(authStrategyIds, authStrategyIdsItem.ValueString())
+	for authStrategyIdsIndex := range r.AuthStrategyIds {
+		authStrategyIds = append(authStrategyIds, r.AuthStrategyIds[authStrategyIdsIndex].ValueString())
 	}
 	var applicationRegistrationEnabled bool
 	applicationRegistrationEnabled = r.ApplicationRegistrationEnabled.ValueBool()

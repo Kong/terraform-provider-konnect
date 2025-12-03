@@ -221,8 +221,8 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedRouteByHeaderPlugin(ct
 		var after *shared.RouteByHeaderPluginAfter
 		if r.Ordering.After != nil {
 			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			for accessIndex := range r.Ordering.After.Access {
+				access = append(access, r.Ordering.After.Access[accessIndex].ValueString())
 			}
 			after = &shared.RouteByHeaderPluginAfter{
 				Access: access,
@@ -231,8 +231,8 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedRouteByHeaderPlugin(ct
 		var before *shared.RouteByHeaderPluginBefore
 		if r.Ordering.Before != nil {
 			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			for accessIndex1 := range r.Ordering.Before.Access {
+				access1 = append(access1, r.Ordering.Before.Access[accessIndex1].ValueString())
 			}
 			before = &shared.RouteByHeaderPluginBefore{
 				Access: access1,
@@ -246,22 +246,22 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedRouteByHeaderPlugin(ct
 	var partials []shared.RouteByHeaderPluginPartials
 	if r.Partials != nil {
 		partials = make([]shared.RouteByHeaderPluginPartials, 0, len(r.Partials))
-		for _, partialsItem := range r.Partials {
+		for partialsIndex := range r.Partials {
 			id1 := new(string)
-			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
-				*id1 = partialsItem.ID.ValueString()
+			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
+				*id1 = r.Partials[partialsIndex].ID.ValueString()
 			} else {
 				id1 = nil
 			}
 			name := new(string)
-			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
-				*name = partialsItem.Name.ValueString()
+			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
+				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
 			path := new(string)
-			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
-				*path = partialsItem.Path.ValueString()
+			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
+				*path = r.Partials[partialsIndex].Path.ValueString()
 			} else {
 				path = nil
 			}
@@ -275,8 +275,8 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedRouteByHeaderPlugin(ct
 	var tags []string
 	if r.Tags != nil {
 		tags = make([]string, 0, len(r.Tags))
-		for _, tagsItem := range r.Tags {
-			tags = append(tags, tagsItem.ValueString())
+		for tagsIndex := range r.Tags {
+			tags = append(tags, r.Tags[tagsIndex].ValueString())
 		}
 	}
 	updatedAt := new(int64)
@@ -288,19 +288,19 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedRouteByHeaderPlugin(ct
 	var config *shared.RouteByHeaderPluginConfig
 	if r.Config != nil {
 		rules := make([]shared.RouteByHeaderPluginRules, 0, len(r.Config.Rules))
-		for _, rulesItem := range r.Config.Rules {
+		for rulesIndex := range r.Config.Rules {
 			var condition map[string]string
-			if rulesItem.Condition != nil {
+			if r.Config.Rules[rulesIndex].Condition != nil {
 				condition = make(map[string]string)
-				for conditionKey, conditionValue := range rulesItem.Condition {
+				for conditionKey := range r.Config.Rules[rulesIndex].Condition {
 					var conditionInst string
-					conditionInst = conditionValue.ValueString()
+					conditionInst = r.Config.Rules[rulesIndex].Condition[conditionKey].ValueString()
 
 					condition[conditionKey] = conditionInst
 				}
 			}
 			var upstreamName string
-			upstreamName = rulesItem.UpstreamName.ValueString()
+			upstreamName = r.Config.Rules[rulesIndex].UpstreamName.ValueString()
 
 			rules = append(rules, shared.RouteByHeaderPluginRules{
 				Condition:    condition,

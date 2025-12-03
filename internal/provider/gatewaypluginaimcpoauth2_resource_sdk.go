@@ -271,8 +271,8 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 		var after *shared.AiMcpOauth2PluginAfter
 		if r.Ordering.After != nil {
 			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			for accessIndex := range r.Ordering.After.Access {
+				access = append(access, r.Ordering.After.Access[accessIndex].ValueString())
 			}
 			after = &shared.AiMcpOauth2PluginAfter{
 				Access: access,
@@ -281,8 +281,8 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 		var before *shared.AiMcpOauth2PluginBefore
 		if r.Ordering.Before != nil {
 			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			for accessIndex1 := range r.Ordering.Before.Access {
+				access1 = append(access1, r.Ordering.Before.Access[accessIndex1].ValueString())
 			}
 			before = &shared.AiMcpOauth2PluginBefore{
 				Access: access1,
@@ -296,22 +296,22 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 	var partials []shared.AiMcpOauth2PluginPartials
 	if r.Partials != nil {
 		partials = make([]shared.AiMcpOauth2PluginPartials, 0, len(r.Partials))
-		for _, partialsItem := range r.Partials {
+		for partialsIndex := range r.Partials {
 			id1 := new(string)
-			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
-				*id1 = partialsItem.ID.ValueString()
+			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
+				*id1 = r.Partials[partialsIndex].ID.ValueString()
 			} else {
 				id1 = nil
 			}
 			name := new(string)
-			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
-				*name = partialsItem.Name.ValueString()
+			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
+				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
 			path := new(string)
-			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
-				*path = partialsItem.Path.ValueString()
+			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
+				*path = r.Partials[partialsIndex].Path.ValueString()
 			} else {
 				path = nil
 			}
@@ -325,8 +325,8 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 	var tags []string
 	if r.Tags != nil {
 		tags = make([]string, 0, len(r.Tags))
-		for _, tagsItem := range r.Tags {
-			tags = append(tags, tagsItem.ValueString())
+		for tagsIndex := range r.Tags {
+			tags = append(tags, r.Tags[tagsIndex].ValueString())
 		}
 	}
 	updatedAt := new(int64)
@@ -340,16 +340,16 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 		var args map[string]string
 		if r.Config.Args != nil {
 			args = make(map[string]string)
-			for argsKey, argsValue := range r.Config.Args {
+			for argsKey := range r.Config.Args {
 				var argsInst string
-				argsInst = argsValue.ValueString()
+				argsInst = r.Config.Args[argsKey].ValueString()
 
 				args[argsKey] = argsInst
 			}
 		}
 		authorizationServers := make([]string, 0, len(r.Config.AuthorizationServers))
-		for _, authorizationServersItem := range r.Config.AuthorizationServers {
-			authorizationServers = append(authorizationServers, authorizationServersItem.ValueString())
+		for authorizationServersIndex := range r.Config.AuthorizationServers {
+			authorizationServers = append(authorizationServers, r.Config.AuthorizationServers[authorizationServersIndex].ValueString())
 		}
 		cacheIntrospection := new(bool)
 		if !r.Config.CacheIntrospection.IsUnknown() && !r.Config.CacheIntrospection.IsNull() {
@@ -360,12 +360,12 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 		var claimToHeader []shared.ClaimToHeader
 		if r.Config.ClaimToHeader != nil {
 			claimToHeader = make([]shared.ClaimToHeader, 0, len(r.Config.ClaimToHeader))
-			for _, claimToHeaderItem := range r.Config.ClaimToHeader {
+			for claimToHeaderIndex := range r.Config.ClaimToHeader {
 				var claim string
-				claim = claimToHeaderItem.Claim.ValueString()
+				claim = r.Config.ClaimToHeader[claimToHeaderIndex].Claim.ValueString()
 
 				var header string
-				header = claimToHeaderItem.Header.ValueString()
+				header = r.Config.ClaimToHeader[claimToHeaderIndex].Header.ValueString()
 
 				claimToHeader = append(claimToHeader, shared.ClaimToHeader{
 					Claim:  claim,
@@ -403,9 +403,9 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 		var headers map[string]string
 		if r.Config.Headers != nil {
 			headers = make(map[string]string)
-			for headersKey, headersValue := range r.Config.Headers {
+			for headersKey := range r.Config.Headers {
 				var headersInst string
-				headersInst = headersValue.ValueString()
+				headersInst = r.Config.Headers[headersKey].ValueString()
 
 				headers[headersKey] = headersInst
 			}
@@ -491,8 +491,8 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 		var scopesSupported []string
 		if r.Config.ScopesSupported != nil {
 			scopesSupported = make([]string, 0, len(r.Config.ScopesSupported))
-			for _, scopesSupportedItem := range r.Config.ScopesSupported {
-				scopesSupported = append(scopesSupported, scopesSupportedItem.ValueString())
+			for scopesSupportedIndex := range r.Config.ScopesSupported {
+				scopesSupported = append(scopesSupported, r.Config.ScopesSupported[scopesSupportedIndex].ValueString())
 			}
 		}
 		sslVerify := new(bool)

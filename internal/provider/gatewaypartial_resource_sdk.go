@@ -282,8 +282,8 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 		var tags []string
 		if r.RedisCe.Tags != nil {
 			tags = make([]string, 0, len(r.RedisCe.Tags))
-			for _, tagsItem := range r.RedisCe.Tags {
-				tags = append(tags, tagsItem.ValueString())
+			for tagsIndex := range r.RedisCe.Tags {
+				tags = append(tags, r.RedisCe.Tags[tagsIndex].ValueString())
 			}
 		}
 		updatedAt := new(int64)
@@ -317,16 +317,16 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 		var clusterNodes []shared.PartialRedisEeClusterNodes
 		if r.RedisEe.Config.ClusterNodes != nil {
 			clusterNodes = make([]shared.PartialRedisEeClusterNodes, 0, len(r.RedisEe.Config.ClusterNodes))
-			for _, clusterNodesItem := range r.RedisEe.Config.ClusterNodes {
+			for clusterNodesIndex := range r.RedisEe.Config.ClusterNodes {
 				ip := new(string)
-				if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
-					*ip = clusterNodesItem.IP.ValueString()
+				if !r.RedisEe.Config.ClusterNodes[clusterNodesIndex].IP.IsUnknown() && !r.RedisEe.Config.ClusterNodes[clusterNodesIndex].IP.IsNull() {
+					*ip = r.RedisEe.Config.ClusterNodes[clusterNodesIndex].IP.ValueString()
 				} else {
 					ip = nil
 				}
 				port1 := new(int64)
-				if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
-					*port1 = clusterNodesItem.Port.ValueInt64()
+				if !r.RedisEe.Config.ClusterNodes[clusterNodesIndex].Port.IsUnknown() && !r.RedisEe.Config.ClusterNodes[clusterNodesIndex].Port.IsNull() {
+					*port1 = r.RedisEe.Config.ClusterNodes[clusterNodesIndex].Port.ValueInt64()
 				} else {
 					port1 = nil
 				}
@@ -405,16 +405,16 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 		var sentinelNodes []shared.PartialRedisEeSentinelNodes
 		if r.RedisEe.Config.SentinelNodes != nil {
 			sentinelNodes = make([]shared.PartialRedisEeSentinelNodes, 0, len(r.RedisEe.Config.SentinelNodes))
-			for _, sentinelNodesItem := range r.RedisEe.Config.SentinelNodes {
+			for sentinelNodesIndex := range r.RedisEe.Config.SentinelNodes {
 				host2 := new(string)
-				if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
-					*host2 = sentinelNodesItem.Host.ValueString()
+				if !r.RedisEe.Config.SentinelNodes[sentinelNodesIndex].Host.IsUnknown() && !r.RedisEe.Config.SentinelNodes[sentinelNodesIndex].Host.IsNull() {
+					*host2 = r.RedisEe.Config.SentinelNodes[sentinelNodesIndex].Host.ValueString()
 				} else {
 					host2 = nil
 				}
 				port3 := new(int64)
-				if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
-					*port3 = sentinelNodesItem.Port.ValueInt64()
+				if !r.RedisEe.Config.SentinelNodes[sentinelNodesIndex].Port.IsUnknown() && !r.RedisEe.Config.SentinelNodes[sentinelNodesIndex].Port.IsNull() {
+					*port3 = r.RedisEe.Config.SentinelNodes[sentinelNodesIndex].Port.ValueInt64()
 				} else {
 					port3 = nil
 				}
@@ -510,8 +510,8 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 		var tags1 []string
 		if r.RedisEe.Tags != nil {
 			tags1 = make([]string, 0, len(r.RedisEe.Tags))
-			for _, tagsItem1 := range r.RedisEe.Tags {
-				tags1 = append(tags1, tagsItem1.ValueString())
+			for tagsIndex1 := range r.RedisEe.Tags {
+				tags1 = append(tags1, r.RedisEe.Tags[tagsIndex1].ValueString())
 			}
 		}
 		updatedAt1 := new(int64)

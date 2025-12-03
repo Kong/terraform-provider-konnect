@@ -255,8 +255,8 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToSharedAiPromptDecoratorP
 		var after *shared.AiPromptDecoratorPluginAfter
 		if r.Ordering.After != nil {
 			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			for accessIndex := range r.Ordering.After.Access {
+				access = append(access, r.Ordering.After.Access[accessIndex].ValueString())
 			}
 			after = &shared.AiPromptDecoratorPluginAfter{
 				Access: access,
@@ -265,8 +265,8 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToSharedAiPromptDecoratorP
 		var before *shared.AiPromptDecoratorPluginBefore
 		if r.Ordering.Before != nil {
 			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			for accessIndex1 := range r.Ordering.Before.Access {
+				access1 = append(access1, r.Ordering.Before.Access[accessIndex1].ValueString())
 			}
 			before = &shared.AiPromptDecoratorPluginBefore{
 				Access: access1,
@@ -280,22 +280,22 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToSharedAiPromptDecoratorP
 	var partials []shared.AiPromptDecoratorPluginPartials
 	if r.Partials != nil {
 		partials = make([]shared.AiPromptDecoratorPluginPartials, 0, len(r.Partials))
-		for _, partialsItem := range r.Partials {
+		for partialsIndex := range r.Partials {
 			id1 := new(string)
-			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
-				*id1 = partialsItem.ID.ValueString()
+			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
+				*id1 = r.Partials[partialsIndex].ID.ValueString()
 			} else {
 				id1 = nil
 			}
 			name := new(string)
-			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
-				*name = partialsItem.Name.ValueString()
+			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
+				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
 			path := new(string)
-			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
-				*path = partialsItem.Path.ValueString()
+			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
+				*path = r.Partials[partialsIndex].Path.ValueString()
 			} else {
 				path = nil
 			}
@@ -309,8 +309,8 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToSharedAiPromptDecoratorP
 	var tags []string
 	if r.Tags != nil {
 		tags = make([]string, 0, len(r.Tags))
-		for _, tagsItem := range r.Tags {
-			tags = append(tags, tagsItem.ValueString())
+		for tagsIndex := range r.Tags {
+			tags = append(tags, r.Tags[tagsIndex].ValueString())
 		}
 	}
 	updatedAt := new(int64)
@@ -338,13 +338,13 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToSharedAiPromptDecoratorP
 			var append1 []shared.AiPromptDecoratorPluginAppend
 			if r.Config.Prompts.Append != nil {
 				append1 = make([]shared.AiPromptDecoratorPluginAppend, 0, len(r.Config.Prompts.Append))
-				for _, appendItem := range r.Config.Prompts.Append {
+				for appendIndex := range r.Config.Prompts.Append {
 					var content string
-					content = appendItem.Content.ValueString()
+					content = r.Config.Prompts.Append[appendIndex].Content.ValueString()
 
 					role := new(shared.Role)
-					if !appendItem.Role.IsUnknown() && !appendItem.Role.IsNull() {
-						*role = shared.Role(appendItem.Role.ValueString())
+					if !r.Config.Prompts.Append[appendIndex].Role.IsUnknown() && !r.Config.Prompts.Append[appendIndex].Role.IsNull() {
+						*role = shared.Role(r.Config.Prompts.Append[appendIndex].Role.ValueString())
 					} else {
 						role = nil
 					}
@@ -357,13 +357,13 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToSharedAiPromptDecoratorP
 			var prepend []shared.Prepend
 			if r.Config.Prompts.Prepend != nil {
 				prepend = make([]shared.Prepend, 0, len(r.Config.Prompts.Prepend))
-				for _, prependItem := range r.Config.Prompts.Prepend {
+				for prependIndex := range r.Config.Prompts.Prepend {
 					var content1 string
-					content1 = prependItem.Content.ValueString()
+					content1 = r.Config.Prompts.Prepend[prependIndex].Content.ValueString()
 
 					role1 := new(shared.AiPromptDecoratorPluginRole)
-					if !prependItem.Role.IsUnknown() && !prependItem.Role.IsNull() {
-						*role1 = shared.AiPromptDecoratorPluginRole(prependItem.Role.ValueString())
+					if !r.Config.Prompts.Prepend[prependIndex].Role.IsUnknown() && !r.Config.Prompts.Prepend[prependIndex].Role.IsNull() {
+						*role1 = shared.AiPromptDecoratorPluginRole(r.Config.Prompts.Prepend[prependIndex].Role.ValueString())
 					} else {
 						role1 = nil
 					}

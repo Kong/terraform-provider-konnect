@@ -235,8 +235,8 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) ToSharedXMLThreatProtect
 		var after *shared.XMLThreatProtectionPluginAfter
 		if r.Ordering.After != nil {
 			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			for accessIndex := range r.Ordering.After.Access {
+				access = append(access, r.Ordering.After.Access[accessIndex].ValueString())
 			}
 			after = &shared.XMLThreatProtectionPluginAfter{
 				Access: access,
@@ -245,8 +245,8 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) ToSharedXMLThreatProtect
 		var before *shared.XMLThreatProtectionPluginBefore
 		if r.Ordering.Before != nil {
 			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			for accessIndex1 := range r.Ordering.Before.Access {
+				access1 = append(access1, r.Ordering.Before.Access[accessIndex1].ValueString())
 			}
 			before = &shared.XMLThreatProtectionPluginBefore{
 				Access: access1,
@@ -260,22 +260,22 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) ToSharedXMLThreatProtect
 	var partials []shared.XMLThreatProtectionPluginPartials
 	if r.Partials != nil {
 		partials = make([]shared.XMLThreatProtectionPluginPartials, 0, len(r.Partials))
-		for _, partialsItem := range r.Partials {
+		for partialsIndex := range r.Partials {
 			id1 := new(string)
-			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
-				*id1 = partialsItem.ID.ValueString()
+			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
+				*id1 = r.Partials[partialsIndex].ID.ValueString()
 			} else {
 				id1 = nil
 			}
 			name := new(string)
-			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
-				*name = partialsItem.Name.ValueString()
+			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
+				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
 			path := new(string)
-			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
-				*path = partialsItem.Path.ValueString()
+			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
+				*path = r.Partials[partialsIndex].Path.ValueString()
 			} else {
 				path = nil
 			}
@@ -289,8 +289,8 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) ToSharedXMLThreatProtect
 	var tags []string
 	if r.Tags != nil {
 		tags = make([]string, 0, len(r.Tags))
-		for _, tagsItem := range r.Tags {
-			tags = append(tags, tagsItem.ValueString())
+		for tagsIndex := range r.Tags {
+			tags = append(tags, r.Tags[tagsIndex].ValueString())
 		}
 	}
 	updatedAt := new(int64)
@@ -308,8 +308,8 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) ToSharedXMLThreatProtect
 			allowDtd = nil
 		}
 		allowedContentTypes := make([]string, 0, len(r.Config.AllowedContentTypes))
-		for _, allowedContentTypesItem := range r.Config.AllowedContentTypes {
-			allowedContentTypes = append(allowedContentTypes, allowedContentTypesItem.ValueString())
+		for allowedContentTypesIndex := range r.Config.AllowedContentTypes {
+			allowedContentTypes = append(allowedContentTypes, r.Config.AllowedContentTypes[allowedContentTypesIndex].ValueString())
 		}
 		attribute := new(int64)
 		if !r.Config.Attribute.IsUnknown() && !r.Config.Attribute.IsNull() {
@@ -336,8 +336,8 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) ToSharedXMLThreatProtect
 			buffer = nil
 		}
 		checkedContentTypes := make([]string, 0, len(r.Config.CheckedContentTypes))
-		for _, checkedContentTypesItem := range r.Config.CheckedContentTypes {
-			checkedContentTypes = append(checkedContentTypes, checkedContentTypesItem.ValueString())
+		for checkedContentTypesIndex := range r.Config.CheckedContentTypes {
+			checkedContentTypes = append(checkedContentTypes, r.Config.CheckedContentTypes[checkedContentTypesIndex].ValueString())
 		}
 		comment := new(int64)
 		if !r.Config.Comment.IsUnknown() && !r.Config.Comment.IsNull() {

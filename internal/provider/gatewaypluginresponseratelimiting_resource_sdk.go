@@ -248,8 +248,8 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelim
 		var after *shared.ResponseRatelimitingPluginAfter
 		if r.Ordering.After != nil {
 			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			for accessIndex := range r.Ordering.After.Access {
+				access = append(access, r.Ordering.After.Access[accessIndex].ValueString())
 			}
 			after = &shared.ResponseRatelimitingPluginAfter{
 				Access: access,
@@ -258,8 +258,8 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelim
 		var before *shared.ResponseRatelimitingPluginBefore
 		if r.Ordering.Before != nil {
 			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			for accessIndex1 := range r.Ordering.Before.Access {
+				access1 = append(access1, r.Ordering.Before.Access[accessIndex1].ValueString())
 			}
 			before = &shared.ResponseRatelimitingPluginBefore{
 				Access: access1,
@@ -273,22 +273,22 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelim
 	var partials []shared.ResponseRatelimitingPluginPartials
 	if r.Partials != nil {
 		partials = make([]shared.ResponseRatelimitingPluginPartials, 0, len(r.Partials))
-		for _, partialsItem := range r.Partials {
+		for partialsIndex := range r.Partials {
 			id1 := new(string)
-			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
-				*id1 = partialsItem.ID.ValueString()
+			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
+				*id1 = r.Partials[partialsIndex].ID.ValueString()
 			} else {
 				id1 = nil
 			}
 			name := new(string)
-			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
-				*name = partialsItem.Name.ValueString()
+			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
+				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
 			path := new(string)
-			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
-				*path = partialsItem.Path.ValueString()
+			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
+				*path = r.Partials[partialsIndex].Path.ValueString()
 			} else {
 				path = nil
 			}
@@ -302,8 +302,8 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelim
 	var tags []string
 	if r.Tags != nil {
 		tags = make([]string, 0, len(r.Tags))
-		for _, tagsItem := range r.Tags {
-			tags = append(tags, tagsItem.ValueString())
+		for tagsIndex := range r.Tags {
+			tags = append(tags, r.Tags[tagsIndex].ValueString())
 		}
 	}
 	updatedAt := new(int64)
@@ -347,40 +347,40 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelim
 		var limits map[string]shared.Limits
 		if r.Config.Limits != nil {
 			limits = make(map[string]shared.Limits)
-			for limitsKey, limitsValue := range r.Config.Limits {
+			for limitsKey := range r.Config.Limits {
 				day := new(float64)
-				if !limitsValue.Day.IsUnknown() && !limitsValue.Day.IsNull() {
-					*day = limitsValue.Day.ValueFloat64()
+				if !r.Config.Limits[limitsKey].Day.IsUnknown() && !r.Config.Limits[limitsKey].Day.IsNull() {
+					*day = r.Config.Limits[limitsKey].Day.ValueFloat64()
 				} else {
 					day = nil
 				}
 				hour := new(float64)
-				if !limitsValue.Hour.IsUnknown() && !limitsValue.Hour.IsNull() {
-					*hour = limitsValue.Hour.ValueFloat64()
+				if !r.Config.Limits[limitsKey].Hour.IsUnknown() && !r.Config.Limits[limitsKey].Hour.IsNull() {
+					*hour = r.Config.Limits[limitsKey].Hour.ValueFloat64()
 				} else {
 					hour = nil
 				}
 				minute := new(float64)
-				if !limitsValue.Minute.IsUnknown() && !limitsValue.Minute.IsNull() {
-					*minute = limitsValue.Minute.ValueFloat64()
+				if !r.Config.Limits[limitsKey].Minute.IsUnknown() && !r.Config.Limits[limitsKey].Minute.IsNull() {
+					*minute = r.Config.Limits[limitsKey].Minute.ValueFloat64()
 				} else {
 					minute = nil
 				}
 				month := new(float64)
-				if !limitsValue.Month.IsUnknown() && !limitsValue.Month.IsNull() {
-					*month = limitsValue.Month.ValueFloat64()
+				if !r.Config.Limits[limitsKey].Month.IsUnknown() && !r.Config.Limits[limitsKey].Month.IsNull() {
+					*month = r.Config.Limits[limitsKey].Month.ValueFloat64()
 				} else {
 					month = nil
 				}
 				second := new(float64)
-				if !limitsValue.Second.IsUnknown() && !limitsValue.Second.IsNull() {
-					*second = limitsValue.Second.ValueFloat64()
+				if !r.Config.Limits[limitsKey].Second.IsUnknown() && !r.Config.Limits[limitsKey].Second.IsNull() {
+					*second = r.Config.Limits[limitsKey].Second.ValueFloat64()
 				} else {
 					second = nil
 				}
 				year := new(float64)
-				if !limitsValue.Year.IsUnknown() && !limitsValue.Year.IsNull() {
-					*year = limitsValue.Year.ValueFloat64()
+				if !r.Config.Limits[limitsKey].Year.IsUnknown() && !r.Config.Limits[limitsKey].Year.IsNull() {
+					*year = r.Config.Limits[limitsKey].Year.ValueFloat64()
 				} else {
 					year = nil
 				}

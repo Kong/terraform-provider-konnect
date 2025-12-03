@@ -80,9 +80,9 @@ func (r *ServerlessCloudGatewayResourceModel) ToSharedCreateServerlessCloudGatew
 	clusterCertKey = r.ClusterCertKey.ValueString()
 
 	labels := make(map[string]string)
-	for labelsKey, labelsValue := range r.Labels {
+	for labelsKey := range r.Labels {
 		var labelsInst string
-		labelsInst = labelsValue.ValueString()
+		labelsInst = r.Labels[labelsKey].ValueString()
 
 		labels[labelsKey] = labelsInst
 	}

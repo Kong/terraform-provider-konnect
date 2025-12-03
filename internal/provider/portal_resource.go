@@ -17,7 +17,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -94,9 +93,6 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"default_api_visibility": schema.StringAttribute{
 				Computed:    true,
@@ -197,9 +193,6 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 		},
 	}
@@ -435,7 +428,10 @@ func (r *PortalResource) Delete(ctx context.Context, req resource.DeleteRequest,
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 204 {
+	switch res.StatusCode {
+	case 204, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

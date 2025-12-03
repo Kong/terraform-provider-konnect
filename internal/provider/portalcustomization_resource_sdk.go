@@ -194,16 +194,16 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomization(ctx conte
 		var main []shared.PortalMenuItem
 		if r.Menu.Main != nil {
 			main = make([]shared.PortalMenuItem, 0, len(r.Menu.Main))
-			for _, mainItem := range r.Menu.Main {
+			for mainIndex := range r.Menu.Main {
 				var path string
-				path = mainItem.Path.ValueString()
+				path = r.Menu.Main[mainIndex].Path.ValueString()
 
 				var title string
-				title = mainItem.Title.ValueString()
+				title = r.Menu.Main[mainIndex].Title.ValueString()
 
-				visibility := shared.Visibility(mainItem.Visibility.ValueString())
+				visibility := shared.Visibility(r.Menu.Main[mainIndex].Visibility.ValueString())
 				var external bool
-				external = mainItem.External.ValueBool()
+				external = r.Menu.Main[mainIndex].External.ValueBool()
 
 				main = append(main, shared.PortalMenuItem{
 					Path:       path,
@@ -216,21 +216,21 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomization(ctx conte
 		var footerSections []shared.PortalFooterMenuSection
 		if r.Menu.FooterSections != nil {
 			footerSections = make([]shared.PortalFooterMenuSection, 0, len(r.Menu.FooterSections))
-			for _, footerSectionsItem := range r.Menu.FooterSections {
+			for footerSectionsIndex := range r.Menu.FooterSections {
 				var title1 string
-				title1 = footerSectionsItem.Title.ValueString()
+				title1 = r.Menu.FooterSections[footerSectionsIndex].Title.ValueString()
 
-				items := make([]shared.PortalMenuItem, 0, len(footerSectionsItem.Items))
-				for _, itemsItem := range footerSectionsItem.Items {
+				items := make([]shared.PortalMenuItem, 0, len(r.Menu.FooterSections[footerSectionsIndex].Items))
+				for itemsIndex := range r.Menu.FooterSections[footerSectionsIndex].Items {
 					var path1 string
-					path1 = itemsItem.Path.ValueString()
+					path1 = r.Menu.FooterSections[footerSectionsIndex].Items[itemsIndex].Path.ValueString()
 
 					var title2 string
-					title2 = itemsItem.Title.ValueString()
+					title2 = r.Menu.FooterSections[footerSectionsIndex].Items[itemsIndex].Title.ValueString()
 
-					visibility1 := shared.Visibility(itemsItem.Visibility.ValueString())
+					visibility1 := shared.Visibility(r.Menu.FooterSections[footerSectionsIndex].Items[itemsIndex].Visibility.ValueString())
 					var external1 bool
-					external1 = itemsItem.External.ValueBool()
+					external1 = r.Menu.FooterSections[footerSectionsIndex].Items[itemsIndex].External.ValueBool()
 
 					items = append(items, shared.PortalMenuItem{
 						Path:       path1,
@@ -248,16 +248,16 @@ func (r *PortalCustomizationResourceModel) ToSharedPortalCustomization(ctx conte
 		var footerBottom []shared.PortalMenuItem
 		if r.Menu.FooterBottom != nil {
 			footerBottom = make([]shared.PortalMenuItem, 0, len(r.Menu.FooterBottom))
-			for _, footerBottomItem := range r.Menu.FooterBottom {
+			for footerBottomIndex := range r.Menu.FooterBottom {
 				var path2 string
-				path2 = footerBottomItem.Path.ValueString()
+				path2 = r.Menu.FooterBottom[footerBottomIndex].Path.ValueString()
 
 				var title3 string
-				title3 = footerBottomItem.Title.ValueString()
+				title3 = r.Menu.FooterBottom[footerBottomIndex].Title.ValueString()
 
-				visibility2 := shared.Visibility(footerBottomItem.Visibility.ValueString())
+				visibility2 := shared.Visibility(r.Menu.FooterBottom[footerBottomIndex].Visibility.ValueString())
 				var external2 bool
-				external2 = footerBottomItem.External.ValueBool()
+				external2 = r.Menu.FooterBottom[footerBottomIndex].External.ValueBool()
 
 				footerBottom = append(footerBottom, shared.PortalMenuItem{
 					Path:       path2,
