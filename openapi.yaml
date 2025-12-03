@@ -15291,7 +15291,7 @@ paths:
         **Pre-release Endpoint**
         This endpoint is currently in beta and is subject to change.
 
-        Updates the developer authentication configuration for a portal. Developers can be allowed to login using basic auth (email & password) or use Single-Sign-On (SSO) through an OIDC Identity Provider (IdP). Developers can be automatically assigned to teams by mapping claims from thier IdP account.
+        Updates the developer authentication configuration for a portal. Developers can be allowed to login using basic auth (email & password) or use Single-Sign-On through an Identity Provider. Developers can be automatically assigned to teams by mapping claims from their IdP account.
       requestBody:
         $ref: '#/components/requestBodies/UpdatePortalAuthenticationSettings'
       responses:
@@ -20381,17 +20381,6 @@ components:
           description: The field does not match the provided value.
           type: string
       additionalProperties: false
-    DcrProviderType:
-      description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
-      type: string
-      enum:
-        - auth0
-        - azureAd
-        - curity
-        - okta
-        - http
-      title: DcrProviderType
-      x-speakeasy-unknown-values: allow
     AppAuthStrategyConfigKeyAuth:
       description: |
         The most basic mode to configure an Application Auth Strategy for an API Product Version. 
@@ -20562,7 +20551,15 @@ components:
             display_name:
               $ref: '#/components/schemas/DcrProviderDisplayName'
             provider_type:
-              $ref: '#/components/schemas/DcrProviderType'
+              description: The type of DCR provider.
+              type: string
+              enum:
+                - auth0
+                - azureAd
+                - curity
+                - okta
+                - http
+              x-speakeasy-unknown-values: allow
           readOnly: true
           required:
             - id
@@ -20664,7 +20661,15 @@ components:
             display_name:
               $ref: '#/components/schemas/DcrProviderDisplayName'
             provider_type:
-              $ref: '#/components/schemas/DcrProviderType'
+              description: The type of DCR provider.
+              type: string
+              enum:
+                - auth0
+                - azureAd
+                - curity
+                - okta
+                - http
+              x-speakeasy-unknown-values: allow
           readOnly: true
           required:
             - id
@@ -23696,46 +23701,29 @@ components:
       maxProperties: 3
       minProperties: 0
       title: PortalClaimMappings
-    PortalOIDCConfig:
-      description: Configuration properties for an OpenID Connect Identity Provider.
-      type: object
-      properties:
-        issuer:
-          type: string
-          example: 'https://identity.example.com/v2'
-        client_id:
-          type: string
-          example: x7id0o42lklas0blidl2
-        scopes:
-          type: array
-          items:
-            type: string
-            default: openid
-          example:
-            - email
-            - openid
-            - profile
-          default:
-            - email
-            - openid
-            - profile
-        claim_mappings:
-          $ref: '#/components/schemas/PortalClaimMappings'
-      example:
-        issuer: 'https://identity.example.com/v2'
-        client_id: x7id0o42lklas0blidl2
-        scopes:
-          - email
-          - openid
-          - profile
-        claim_mappings:
-          name: name
-          email: email
-          groups: custom-group-claim
-      required:
-        - issuer
-        - client_id
-      title: PortalOIDCConfig
+    OIDCAuthEnabled:
+      description: The portal has OIDC enabled or disabled.
+      type: boolean
+      example: false
+      deprecated: true
+      x-speakeasy-param-computed: true
+    SAMLAuthEnabled:
+      description: A Konnect Identity Admin assigns teams to a developer.
+      type: boolean
+      example: false
+      deprecated: true
+      x-speakeasy-param-computed: true
+    OIDCIdpMappingEnabled:
+      description: IdP groups determine the Portal Teams a developer has. Replaced by idp_mapping_enabled.
+      type: boolean
+      example: true
+      deprecated: true
+      x-speakeasy-param-computed: true
+    IDPMappingEnabled:
+      description: Whether IdP groups determine the Konnect Portal teams a developer has.
+      type: boolean
+      example: true
+      x-speakeasy-param-computed: true
     PortalAuthenticationSettingsResponse:
       x-speakeasy-entity: PortalAuth
       description: The developer authentication settings for a portal.
@@ -23746,33 +23734,61 @@ components:
           type: boolean
           example: true
         oidc_auth_enabled:
-          description: The portal has OIDC enabled or disabled.
-          type: boolean
-          example: false
+          $ref: '#/components/schemas/OIDCAuthEnabled'
         saml_auth_enabled:
-          description: The portal has SAML enabled or disabled.
-          type: boolean
-          example: false
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          $ref: '#/components/schemas/SAMLAuthEnabled'
         oidc_team_mapping_enabled:
-          description: IdP groups determine the Portal Teams a developer has.
-          type: boolean
-          example: true
+          $ref: '#/components/schemas/OIDCIdpMappingEnabled'
         idp_mapping_enabled:
-          description: IdP groups determine the Portal Teams a developer has. This will soon replace oidc_team_mapping_enabled.
-          type: boolean
-          example: true
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          $ref: '#/components/schemas/IDPMappingEnabled'
         konnect_mapping_enabled:
           description: A Konnect Identity Admin assigns teams to a developer.
           type: boolean
           example: false
         oidc_config:
-          $ref: '#/components/schemas/PortalOIDCConfig'
+          description: Configuration properties for an OpenID Connect Identity Provider.
+          type: object
+          example:
+            issuer: 'https://identity.example.com/v2'
+            client_id: x7id0o42lklas0blidl2
+            scopes:
+              - email
+              - openid
+              - profile
+            claim_mappings:
+              name: name
+              email: email
+              groups: custom-group-claim
+          default: null
+          deprecated: true
+          nullable: true
+          properties:
+            issuer:
+              type: string
+              example: 'https://identity.example.com/v2'
+            client_id:
+              type: string
+              example: x7id0o42lklas0blidl2
+            scopes:
+              type: array
+              items:
+                type: string
+                default: openid
+              example:
+                - email
+                - openid
+                - profile
+              default:
+                - email
+                - openid
+                - profile
+            claim_mappings:
+              $ref: '#/components/schemas/PortalClaimMappings'
+          required:
+            - issuer
+            - client_id
+          title: PortalOIDCConfig
+          x-speakeasy-param-computed: false
       example:
         basic_auth_enabled: true
         oidc_auth_enabled: true
@@ -23806,54 +23822,83 @@ components:
           example: true
           x-speakeasy-param-computed: true
         oidc_auth_enabled:
-          description: The organization has OIDC disabled.
+          description: 'Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.'
           type: boolean
           example: false
+          deprecated: true
           x-speakeasy-param-computed: true
         saml_auth_enabled:
-          description: The portal has SAML enabled or disabled.
+          description: 'Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.'
           type: boolean
           example: false
+          deprecated: true
           x-speakeasy-param-computed: true
         oidc_team_mapping_enabled:
-          description: Whether IdP groups determine the Konnect Portal teams a developer has.
-          type: boolean
-          example: true
-          x-speakeasy-param-computed: true
+          $ref: '#/components/schemas/OIDCIdpMappingEnabled'
         konnect_mapping_enabled:
           description: Whether a Konnect Identity Admin assigns teams to a developer.
           type: boolean
           example: false
           x-speakeasy-param-computed: true
         idp_mapping_enabled:
-          description: Whether IdP groups determine the Konnect Portal teams a developer has. This will soon replace oidc_team_mapping_enabled.
-          type: boolean
-          example: true
-          x-speakeasy-param-computed: true
+          $ref: '#/components/schemas/IDPMappingEnabled'
         oidc_issuer:
+          description: 'Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.'
           type: string
           default: null
+          deprecated: true
           nullable: true
           x-speakeasy-param-computed: false
         oidc_client_id:
+          description: 'Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.'
           type: string
           default: null
+          deprecated: true
           nullable: true
           x-speakeasy-param-computed: false
         oidc_client_secret:
+          description: 'Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.'
           type: string
           default: null
+          deprecated: true
           nullable: true
           x-speakeasy-param-computed: false
         oidc_scopes:
+          description: 'Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.'
           type: array
           items:
             type: string
           default: null
+          deprecated: true
           nullable: true
           x-speakeasy-param-computed: false
         oidc_claim_mappings:
-          $ref: '#/components/schemas/PortalClaimMappings'
+          description: 'Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.'
+          type: object
+          example:
+            name: name
+            email: email
+            groups: custom-group-claim
+          default: null
+          deprecated: true
+          maxProperties: 3
+          minProperties: 0
+          nullable: true
+          properties:
+            name:
+              type: string
+              example: name
+              default: name
+            email:
+              type: string
+              example: email
+              default: email
+            groups:
+              type: string
+              example: custom-group-claim
+              default: groups
+          title: PortalClaimMappings
+          x-speakeasy-param-computed: false
       example:
         basic_auth_enabled: true
         oidc_auth_enabled: true

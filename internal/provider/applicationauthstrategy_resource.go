@@ -190,7 +190,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 								PlanModifiers: []planmodifier.String{
 									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
-								Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. must be one of ["auth0", "azureAd", "curity", "okta", "http"]`,
+								Description: `The type of DCR provider. must be one of ["auth0", "azureAd", "curity", "okta", "http"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
 										"auth0",
@@ -446,7 +446,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 								PlanModifiers: []planmodifier.String{
 									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
-								Description: `The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. must be one of ["auth0", "azureAd", "curity", "okta", "http"]`,
+								Description: `The type of DCR provider. must be one of ["auth0", "azureAd", "curity", "okta", "http"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
 										"auth0",

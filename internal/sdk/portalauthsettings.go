@@ -194,7 +194,7 @@ func (s *PortalAuthSettings) GetPortalAuthenticationSettings(ctx context.Context
 // **Pre-release Endpoint**
 // This endpoint is currently in beta and is subject to change.
 //
-// Updates the developer authentication configuration for a portal. Developers can be allowed to login using basic auth (email & password) or use Single-Sign-On (SSO) through an OIDC Identity Provider (IdP). Developers can be automatically assigned to teams by mapping claims from thier IdP account.
+// Updates the developer authentication configuration for a portal. Developers can be allowed to login using basic auth (email & password) or use Single-Sign-On through an Identity Provider. Developers can be automatically assigned to teams by mapping claims from their IdP account.
 func (s *PortalAuthSettings) UpdatePortalAuthenticationSettings(ctx context.Context, request operations.UpdatePortalAuthenticationSettingsRequest, opts ...operations.Option) (*operations.UpdatePortalAuthenticationSettingsResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{

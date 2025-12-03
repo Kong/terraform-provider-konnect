@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -33,19 +34,19 @@ type PortalAuthResource struct {
 
 // PortalAuthResourceModel describes the resource data model.
 type PortalAuthResourceModel struct {
-	BasicAuthEnabled       types.Bool                   `tfsdk:"basic_auth_enabled"`
-	IdpMappingEnabled      types.Bool                   `tfsdk:"idp_mapping_enabled"`
-	KonnectMappingEnabled  types.Bool                   `tfsdk:"konnect_mapping_enabled"`
-	OidcAuthEnabled        types.Bool                   `tfsdk:"oidc_auth_enabled"`
-	OidcClaimMappings      *tfTypes.PortalClaimMappings `tfsdk:"oidc_claim_mappings"`
-	OidcClientID           types.String                 `tfsdk:"oidc_client_id"`
-	OidcClientSecret       types.String                 `tfsdk:"oidc_client_secret"`
-	OidcConfig             *tfTypes.PortalOIDCConfig    `tfsdk:"oidc_config"`
-	OidcIssuer             types.String                 `tfsdk:"oidc_issuer"`
-	OidcScopes             []types.String               `tfsdk:"oidc_scopes"`
-	OidcTeamMappingEnabled types.Bool                   `tfsdk:"oidc_team_mapping_enabled"`
-	PortalID               types.String                 `tfsdk:"portal_id"`
-	SamlAuthEnabled        types.Bool                   `tfsdk:"saml_auth_enabled"`
+	BasicAuthEnabled       types.Bool                                                            `tfsdk:"basic_auth_enabled"`
+	IdpMappingEnabled      types.Bool                                                            `tfsdk:"idp_mapping_enabled"`
+	KonnectMappingEnabled  types.Bool                                                            `tfsdk:"konnect_mapping_enabled"`
+	OidcAuthEnabled        types.Bool                                                            `tfsdk:"oidc_auth_enabled"`
+	OidcClaimMappings      *tfTypes.PortalAuthenticationSettingsUpdateRequestPortalClaimMappings `tfsdk:"oidc_claim_mappings"`
+	OidcClientID           types.String                                                          `tfsdk:"oidc_client_id"`
+	OidcClientSecret       types.String                                                          `tfsdk:"oidc_client_secret"`
+	OidcConfig             *tfTypes.PortalOIDCConfig                                             `tfsdk:"oidc_config"`
+	OidcIssuer             types.String                                                          `tfsdk:"oidc_issuer"`
+	OidcScopes             []types.String                                                        `tfsdk:"oidc_scopes"`
+	OidcTeamMappingEnabled types.Bool                                                            `tfsdk:"oidc_team_mapping_enabled"`
+	PortalID               types.String                                                          `tfsdk:"portal_id"`
+	SamlAuthEnabled        types.Bool                                                            `tfsdk:"saml_auth_enabled"`
 }
 
 func (r *PortalAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,7 +65,7 @@ func (r *PortalAuthResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"idp_mapping_enabled": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether IdP groups determine the Konnect Portal teams a developer has. This will soon replace oidc_team_mapping_enabled.`,
+				Description: `Whether IdP groups determine the Konnect Portal teams a developer has.`,
 			},
 			"konnect_mapping_enabled": schema.BoolAttribute{
 				Computed:    true,
@@ -72,12 +73,19 @@ func (r *PortalAuthResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `Whether a Konnect Identity Admin assigns teams to a developer.`,
 			},
 			"oidc_auth_enabled": schema.BoolAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `The organization has OIDC disabled.`,
+				Computed:           true,
+				Optional:           true,
+				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+				Description:        `Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.`,
 			},
 			"oidc_claim_mappings": schema.SingleNestedAttribute{
+				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"email":  types.StringType,
+					"groups": types.StringType,
+					"name":   types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"email": schema.StringAttribute{
 						Computed:    true,
@@ -98,16 +106,35 @@ func (r *PortalAuthResource) Schema(ctx context.Context, req resource.SchemaRequ
 						Description: `Default: "name"`,
 					},
 				},
-				Description: `Mappings from a portal developer atribute to an Identity Provider claim.`,
+				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+				Description:        `Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.`,
 			},
 			"oidc_client_id": schema.StringAttribute{
-				Optional: true,
+				Optional:           true,
+				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+				Description:        `Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.`,
 			},
 			"oidc_client_secret": schema.StringAttribute{
-				Optional: true,
+				Optional:           true,
+				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+				Description:        `Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.`,
 			},
 			"oidc_config": schema.SingleNestedAttribute{
 				Computed: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"claim_mappings": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`email`:  types.StringType,
+							`groups`: types.StringType,
+							`name`:   types.StringType,
+						},
+					},
+					"client_id": types.StringType,
+					"issuer":    types.StringType,
+					"scopes": types.ListType{
+						ElemType: types.StringType,
+					},
+				})),
 				Attributes: map[string]schema.Attribute{
 					"claim_mappings": schema.SingleNestedAttribute{
 						Computed: true,
@@ -147,28 +174,35 @@ func (r *PortalAuthResource) Schema(ctx context.Context, req resource.SchemaRequ
 						Description: `Default: ["email","openid","profile"]`,
 					},
 				},
-				Description: `Configuration properties for an OpenID Connect Identity Provider.`,
+				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+				Description:        `Configuration properties for an OpenID Connect Identity Provider.`,
 			},
 			"oidc_issuer": schema.StringAttribute{
-				Optional: true,
+				Optional:           true,
+				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+				Description:        `Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.`,
 			},
 			"oidc_scopes": schema.ListAttribute{
-				Optional:    true,
-				ElementType: types.StringType,
+				Optional:           true,
+				ElementType:        types.StringType,
+				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+				Description:        `Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.`,
 			},
 			"oidc_team_mapping_enabled": schema.BoolAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `Whether IdP groups determine the Konnect Portal teams a developer has.`,
+				Computed:           true,
+				Optional:           true,
+				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+				Description:        `IdP groups determine the Portal Teams a developer has. Replaced by idp_mapping_enabled.`,
 			},
 			"portal_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The Portal identifier`,
 			},
 			"saml_auth_enabled": schema.BoolAttribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `The portal has SAML enabled or disabled.`,
+				Computed:           true,
+				Optional:           true,
+				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+				Description:        `Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.`,
 			},
 		},
 	}

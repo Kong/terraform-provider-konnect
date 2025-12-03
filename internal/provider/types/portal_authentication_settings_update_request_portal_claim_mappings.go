@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type PortalClaimMappings struct {
+type PortalAuthenticationSettingsUpdateRequestPortalClaimMappings struct {
 	Email  types.String `tfsdk:"email"`
 	Groups types.String `tfsdk:"groups"`
 	Name   types.String `tfsdk:"name"`
