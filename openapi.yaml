@@ -26757,6 +26757,7 @@ components:
                   parameters:
                     description: 'The API parameters specification defined in OpenAPI. For example, ''[{"name": "city", "in": "query", "description": "Name of the city to get the weather for", "required": true, "schema": {"type": "string"}}]''.See https://swagger.io/docs/specification/v3_0/describing-parameters/ for more details.'
                     items:
+                      additionalProperties: true
                       type: object
                       properties:
                         name:
@@ -26772,6 +26773,7 @@ components:
                               type: string
                         description:
                           type: string
+                    nullable: true
                     type: array
                   path:
                     description: 'The path of the exported API. By default, Kong will extract the path from API configuration. If the configured path is not exactly matched, this field is required. Paths not starting with ''/'' are treated as relative paths.'
@@ -26791,8 +26793,9 @@ components:
                     x-speakeasy-param-computed: false
                   request_body:
                     description: 'The API requestBody specification defined in OpenAPI. For example, ''{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}''.See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details.'
-                    type: string
+                    type: object
                     default: null
+                    additionalProperties: true
                     nullable: true
                     x-speakeasy-param-computed: false
                   scheme:
@@ -36028,9 +36031,9 @@ components:
                         const: static
                       values:
                         description: An object with string keys and freeform values
-                        type: string
-                    required:
-                      - values
+                        type: object
+                        additionalProperties: true
+                        required: true
                     title: static
                     type: object
               maxLength: 64
