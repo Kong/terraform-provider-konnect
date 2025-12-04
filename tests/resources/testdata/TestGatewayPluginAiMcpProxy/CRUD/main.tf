@@ -40,17 +40,9 @@ resource "konnect_gateway_plugin_ai_mcp_proxy" "my_plugin" {
         annotations = {
           title = "Get users orders"
         }
-        parameters = [
-          {
-            name     = "userid"
-            in       = "query"
-            required = true
-
-            schema = {
-              type = "string"
-            }
-            description = "User ID to filter orders"
-        }]
+        request_body = {
+          content = jsonencode({"application/json":{"schema":{"type":"object","properties":{"userid":{"type":"string"}},"required":["userid"]}}})
+        }
     }]
 
     server = {
