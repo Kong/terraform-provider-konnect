@@ -27,7 +27,7 @@ func TestGatewayCustomPlugin(t *testing.T) {
 						resource.TestCheckResourceAttr("konnect_gateway_custom_plugin.custom_basic_auth_with_ordering", "ordering.after.access.0", "request-transformer"),
 					),
 				},
-				{
+				{ // Remove ordering block
 					Config:          providerConfigUs,
 					ConfigDirectory: config.TestStepDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
