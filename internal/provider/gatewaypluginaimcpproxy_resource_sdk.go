@@ -4,6 +4,8 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -67,23 +69,31 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 				} else {
 					tools.Method = types.StringNull()
 				}
-				tools.Parameters = []tfTypes.Parameters{}
+				if toolsItem.Parameters != nil {
+					tools.Parameters = []tfTypes.Parameters{}
 
-				for _, parametersItem := range toolsItem.Parameters {
-					var parameters tfTypes.Parameters
+					for _, parametersItem := range toolsItem.Parameters {
+						var parameters tfTypes.Parameters
 
-					parameters.Description = types.StringPointerValue(parametersItem.Description)
-					parameters.In = types.StringPointerValue(parametersItem.In)
-					parameters.Name = types.StringPointerValue(parametersItem.Name)
-					parameters.Required = types.BoolPointerValue(parametersItem.Required)
-					if parametersItem.Schema == nil {
-						parameters.Schema = nil
-					} else {
-						parameters.Schema = &tfTypes.Schema{}
-						parameters.Schema.Type = types.StringPointerValue(parametersItem.Schema.Type)
+						if parametersItem.AdditionalProperties == nil {
+							parameters.AdditionalProperties = jsontypes.NewNormalizedNull()
+						} else {
+							additionalPropertiesResult, _ := json.Marshal(parametersItem.AdditionalProperties)
+							parameters.AdditionalProperties = jsontypes.NewNormalizedValue(string(additionalPropertiesResult))
+						}
+						parameters.Description = types.StringPointerValue(parametersItem.Description)
+						parameters.In = types.StringPointerValue(parametersItem.In)
+						parameters.Name = types.StringPointerValue(parametersItem.Name)
+						parameters.Required = types.BoolPointerValue(parametersItem.Required)
+						if parametersItem.Schema == nil {
+							parameters.Schema = nil
+						} else {
+							parameters.Schema = &tfTypes.Schema{}
+							parameters.Schema.Type = types.StringPointerValue(parametersItem.Schema.Type)
+						}
+
+						tools.Parameters = append(tools.Parameters, parameters)
 					}
-
-					tools.Parameters = append(tools.Parameters, parameters)
 				}
 				tools.Path = types.StringPointerValue(toolsItem.Path)
 				if toolsItem.Query != nil {
@@ -98,7 +108,13 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 						tools.Query[queryKey] = queryResult
 					}
 				}
-				tools.RequestBody = types.StringPointerValue(toolsItem.RequestBody)
+				if toolsItem.RequestBody != nil {
+					tools.RequestBody = make(map[string]jsontypes.Normalized, len(toolsItem.RequestBody))
+					for key, value := range toolsItem.RequestBody {
+						result, _ := json.Marshal(value)
+						tools.RequestBody[key] = jsontypes.NewNormalizedValue(string(result))
+					}
+				}
 				if toolsItem.Scheme != nil {
 					tools.Scheme = types.StringValue(string(*toolsItem.Scheme))
 				} else {
@@ -474,51 +490,59 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 			} else {
 				method = nil
 			}
-			parameters := make([]shared.Parameters, 0, len(r.Config.Tools[toolsIndex].Parameters))
-			for parametersIndex := range r.Config.Tools[toolsIndex].Parameters {
-				name1 := new(string)
-				if !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Name.IsUnknown() && !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Name.IsNull() {
-					*name1 = r.Config.Tools[toolsIndex].Parameters[parametersIndex].Name.ValueString()
-				} else {
-					name1 = nil
-				}
-				in := new(string)
-				if !r.Config.Tools[toolsIndex].Parameters[parametersIndex].In.IsUnknown() && !r.Config.Tools[toolsIndex].Parameters[parametersIndex].In.IsNull() {
-					*in = r.Config.Tools[toolsIndex].Parameters[parametersIndex].In.ValueString()
-				} else {
-					in = nil
-				}
-				required := new(bool)
-				if !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Required.IsUnknown() && !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Required.IsNull() {
-					*required = r.Config.Tools[toolsIndex].Parameters[parametersIndex].Required.ValueBool()
-				} else {
-					required = nil
-				}
-				var schema *shared.Schema
-				if r.Config.Tools[toolsIndex].Parameters[parametersIndex].Schema != nil {
-					typeVar := new(string)
-					if !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Schema.Type.IsUnknown() && !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Schema.Type.IsNull() {
-						*typeVar = r.Config.Tools[toolsIndex].Parameters[parametersIndex].Schema.Type.ValueString()
+			var parameters []shared.Parameters
+			if r.Config.Tools[toolsIndex].Parameters != nil {
+				parameters = make([]shared.Parameters, 0, len(r.Config.Tools[toolsIndex].Parameters))
+				for parametersIndex := range r.Config.Tools[toolsIndex].Parameters {
+					name1 := new(string)
+					if !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Name.IsUnknown() && !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Name.IsNull() {
+						*name1 = r.Config.Tools[toolsIndex].Parameters[parametersIndex].Name.ValueString()
 					} else {
-						typeVar = nil
+						name1 = nil
 					}
-					schema = &shared.Schema{
-						Type: typeVar,
+					in := new(string)
+					if !r.Config.Tools[toolsIndex].Parameters[parametersIndex].In.IsUnknown() && !r.Config.Tools[toolsIndex].Parameters[parametersIndex].In.IsNull() {
+						*in = r.Config.Tools[toolsIndex].Parameters[parametersIndex].In.ValueString()
+					} else {
+						in = nil
 					}
+					required := new(bool)
+					if !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Required.IsUnknown() && !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Required.IsNull() {
+						*required = r.Config.Tools[toolsIndex].Parameters[parametersIndex].Required.ValueBool()
+					} else {
+						required = nil
+					}
+					var schema *shared.Schema
+					if r.Config.Tools[toolsIndex].Parameters[parametersIndex].Schema != nil {
+						typeVar := new(string)
+						if !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Schema.Type.IsUnknown() && !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Schema.Type.IsNull() {
+							*typeVar = r.Config.Tools[toolsIndex].Parameters[parametersIndex].Schema.Type.ValueString()
+						} else {
+							typeVar = nil
+						}
+						schema = &shared.Schema{
+							Type: typeVar,
+						}
+					}
+					description1 := new(string)
+					if !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Description.IsUnknown() && !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Description.IsNull() {
+						*description1 = r.Config.Tools[toolsIndex].Parameters[parametersIndex].Description.ValueString()
+					} else {
+						description1 = nil
+					}
+					var additionalProperties interface{}
+					if !r.Config.Tools[toolsIndex].Parameters[parametersIndex].AdditionalProperties.IsUnknown() && !r.Config.Tools[toolsIndex].Parameters[parametersIndex].AdditionalProperties.IsNull() {
+						_ = json.Unmarshal([]byte(r.Config.Tools[toolsIndex].Parameters[parametersIndex].AdditionalProperties.ValueString()), &additionalProperties)
+					}
+					parameters = append(parameters, shared.Parameters{
+						Name:                 name1,
+						In:                   in,
+						Required:             required,
+						Schema:               schema,
+						Description:          description1,
+						AdditionalProperties: additionalProperties,
+					})
 				}
-				description1 := new(string)
-				if !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Description.IsUnknown() && !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Description.IsNull() {
-					*description1 = r.Config.Tools[toolsIndex].Parameters[parametersIndex].Description.ValueString()
-				} else {
-					description1 = nil
-				}
-				parameters = append(parameters, shared.Parameters{
-					Name:        name1,
-					In:          in,
-					Required:    required,
-					Schema:      schema,
-					Description: description1,
-				})
 			}
 			path1 := new(string)
 			if !r.Config.Tools[toolsIndex].Path.IsUnknown() && !r.Config.Tools[toolsIndex].Path.IsNull() {
@@ -537,11 +561,14 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 					query[queryKey] = queryInst
 				}
 			}
-			requestBody := new(string)
-			if !r.Config.Tools[toolsIndex].RequestBody.IsUnknown() && !r.Config.Tools[toolsIndex].RequestBody.IsNull() {
-				*requestBody = r.Config.Tools[toolsIndex].RequestBody.ValueString()
-			} else {
-				requestBody = nil
+			var requestBody map[string]interface{}
+			if r.Config.Tools[toolsIndex].RequestBody != nil {
+				requestBody = make(map[string]interface{})
+				for requestBodyKey := range r.Config.Tools[toolsIndex].RequestBody {
+					var requestBodyInst interface{}
+					_ = json.Unmarshal([]byte(r.Config.Tools[toolsIndex].RequestBody[requestBodyKey].ValueString()), &requestBodyInst)
+					requestBody[requestBodyKey] = requestBodyInst
+				}
 			}
 			scheme := new(shared.Scheme)
 			if !r.Config.Tools[toolsIndex].Scheme.IsUnknown() && !r.Config.Tools[toolsIndex].Scheme.IsNull() {

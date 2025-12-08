@@ -291,11 +291,23 @@ func (s *Schema) GetType() *string {
 }
 
 type Parameters struct {
-	Name        *string `json:"name,omitempty"`
-	In          *string `json:"in,omitempty"`
-	Required    *bool   `json:"required,omitempty"`
-	Schema      *Schema `json:"schema,omitempty"`
-	Description *string `json:"description,omitempty"`
+	Name                 *string `json:"name,omitempty"`
+	In                   *string `json:"in,omitempty"`
+	Required             *bool   `json:"required,omitempty"`
+	Schema               *Schema `json:"schema,omitempty"`
+	Description          *string `json:"description,omitempty"`
+	AdditionalProperties any     `additionalProperties:"true" json:"-"`
+}
+
+func (p Parameters) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *Parameters) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *Parameters) GetName() *string {
@@ -331,6 +343,13 @@ func (p *Parameters) GetDescription() *string {
 		return nil
 	}
 	return p.Description
+}
+
+func (p *Parameters) GetAdditionalProperties() any {
+	if p == nil {
+		return nil
+	}
+	return p.AdditionalProperties
 }
 
 // Scheme - The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it.
@@ -377,7 +396,7 @@ type Tools struct {
 	// The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.
 	Query map[string][]string `json:"query,omitempty"`
 	// The API requestBody specification defined in OpenAPI. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details.
-	RequestBody *string `default:"null" json:"request_body"`
+	RequestBody map[string]any `json:"request_body,omitempty"`
 	// The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it.
 	Scheme *Scheme `json:"scheme,omitempty"`
 }
@@ -449,7 +468,7 @@ func (t *Tools) GetQuery() map[string][]string {
 	return t.Query
 }
 
-func (t *Tools) GetRequestBody() *string {
+func (t *Tools) GetRequestBody() map[string]any {
 	if t == nil {
 		return nil
 	}

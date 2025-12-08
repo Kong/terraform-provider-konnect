@@ -45,10 +45,11 @@ resource "konnect_gateway_plugin_ai_mcp_proxy" "my_gatewaypluginaimcpproxy" {
         method = "GET"
         parameters = [
           {
-            description = "...my_description..."
-            in          = "...my_in..."
-            name        = "...my_name..."
-            required    = true
+            additional_properties = "{ \"see\": \"documentation\" }"
+            description           = "...my_description..."
+            in                    = "...my_in..."
+            name                  = "...my_name..."
+            required              = true
             schema = {
               type = "...my_type..."
             }
@@ -60,8 +61,10 @@ resource "konnect_gateway_plugin_ai_mcp_proxy" "my_gatewaypluginaimcpproxy" {
             # ...
           ]
         }
-        request_body = "...my_request_body..."
-        scheme       = "https"
+        request_body = {
+          key = jsonencode("value")
+        }
+        scheme = "https"
       }
     ]
   }
@@ -173,7 +176,7 @@ Optional:
 - `parameters` (Attributes List) The API parameters specification defined in OpenAPI. For example, '[{"name": "city", "in": "query", "description": "Name of the city to get the weather for", "required": true, "schema": {"type": "string"}}]'.See https://swagger.io/docs/specification/v3_0/describing-parameters/ for more details. (see [below for nested schema](#nestedatt--config--tools--parameters))
 - `path` (String) The path of the exported API. By default, Kong will extract the path from API configuration. If the configured path is not exactly matched, this field is required. Paths not starting with '/' are treated as relative paths.
 - `query` (Map of List of String) The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.
-- `request_body` (String) The API requestBody specification defined in OpenAPI. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details.
+- `request_body` (Map of String) The API requestBody specification defined in OpenAPI. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details.
 - `scheme` (String) The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it. must be one of ["http", "https"]
 
 <a id="nestedatt--config--tools--annotations"></a>
@@ -193,6 +196,7 @@ Optional:
 
 Optional:
 
+- `additional_properties` (String) Parsed as JSON.
 - `description` (String)
 - `in` (String)
 - `name` (String)
