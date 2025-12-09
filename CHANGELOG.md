@@ -11,6 +11,8 @@
 * Properties `config.tools[*].headers.key` and `config.tools[*].query.key` in `konnect_gateway_plugin_ai_mcp_proxy` resource now accept list of strings
 * Property `config.limits.key` in `konnect_gateway_plugin_response_ratelimiting` resource now accepts an object
 * Fix panic when dynamic ordering is used with custom plugin
+* `config.tools[i].request_body` can now be set in `konnect_gateway_plugin_ai_mcp_proxy` plugin
+* `config.nodes[i].static.values` can now be set in `konnect_gateway_plugin_datakit` plugin
 
 ## 3.4.2
 > Released on 2025/11/11
