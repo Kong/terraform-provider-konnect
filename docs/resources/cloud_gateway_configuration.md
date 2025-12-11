@@ -49,11 +49,11 @@ resource "konnect_cloud_gateway_configuration" "my_cloudgatewayconfiguration" {
 - `control_plane_geo` (String) Set of control-plane geos supported for deploying cloud-gateways configurations. must be one of ["us", "eu", "au", "me", "in", "sg"]
 - `control_plane_id` (String)
 - `dataplane_groups` (Attributes Set) List of data-plane groups that describe where to deploy instances, along with how many instances. (see [below for nested schema](#nestedatt--dataplane_groups))
-- `version` (String) Supported gateway version.
 
 ### Optional
 
 - `api_access` (String) Type of API access data-plane groups will support for a configuration. Default: "private+public"; must be one of ["private", "public", "private+public"]
+- `version` (String) Supported gateway version.
 
 ### Read-Only
 
@@ -67,8 +67,8 @@ resource "konnect_cloud_gateway_configuration" "my_cloudgatewayconfiguration" {
 
 Optional:
 
-- `autoscale` (Attributes) Not Null (see [below for nested schema](#nestedatt--dataplane_groups--autoscale))
-- `cloud_gateway_network_id` (String) Not Null
+- `autoscale` (Attributes) (see [below for nested schema](#nestedatt--dataplane_groups--autoscale))
+- `cloud_gateway_network_id` (String)
 - `environment` (Attributes List) Array of environment variables to set for a data-plane group. (see [below for nested schema](#nestedatt--dataplane_groups--environment))
 - `provider` (String) Name of cloud provider. Not Null; must be one of ["aws", "azure"]
 - `region` (String) Region ID for cloud provider region. Not Null

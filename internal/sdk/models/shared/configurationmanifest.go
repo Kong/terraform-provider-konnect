@@ -11,7 +11,7 @@ import (
 type ConfigurationManifest struct {
 	ID string `json:"id"`
 	// Supported gateway version.
-	Version string `json:"version"`
+	Version *string `json:"version,omitempty"`
 	// Type of API access data-plane groups will support for a configuration.
 	APIAccess *APIAccess `default:"private+public" json:"api_access"`
 	// Object that describes where data-planes will be deployed to, along with how many instances.
@@ -37,7 +37,7 @@ func (c ConfigurationManifest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfigurationManifest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "version", "dataplane_group_config", "dataplane_groups", "entity_version", "created_at", "updated_at", "control_plane_id", "control_plane_geo"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "dataplane_group_config", "dataplane_groups", "entity_version", "created_at", "updated_at", "control_plane_id", "control_plane_geo"}); err != nil {
 		return err
 	}
 	return nil
@@ -50,9 +50,9 @@ func (c *ConfigurationManifest) GetID() string {
 	return c.ID
 }
 
-func (c *ConfigurationManifest) GetVersion() string {
+func (c *ConfigurationManifest) GetVersion() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.Version
 }

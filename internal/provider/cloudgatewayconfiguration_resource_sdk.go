@@ -29,19 +29,22 @@ func (r *CloudGatewayConfigurationResourceModel) RefreshFromSharedConfigurationM
 		for _, dataplaneGroupsItem := range resp.DataplaneGroups {
 			var dataplaneGroups tfTypes.ConfigurationDataPlaneGroup
 
-			if dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot != nil {
-				dataplaneGroups.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot = &tfTypes.ConfigurationDataPlaneGroupAutoscaleAutopilot{}
-				dataplaneGroups.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.BaseRps = types.Int64Value(dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.BaseRps)
-				dataplaneGroups.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.Kind = types.StringValue(string(dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.Kind))
-				dataplaneGroups.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.MaxRps = types.Int64PointerValue(dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.MaxRps)
+			if dataplaneGroupsItem.Autoscale != nil {
+				dataplaneGroups.Autoscale = &tfTypes.ConfigurationDataPlaneGroupAutoscale{}
+				if dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot != nil {
+					dataplaneGroups.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot = &tfTypes.ConfigurationDataPlaneGroupAutoscaleAutopilot{}
+					dataplaneGroups.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.BaseRps = types.Int64Value(dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.BaseRps)
+					dataplaneGroups.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.Kind = types.StringValue(string(dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.Kind))
+					dataplaneGroups.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.MaxRps = types.Int64PointerValue(dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.MaxRps)
+				}
+				if dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic != nil {
+					dataplaneGroups.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic = &tfTypes.ConfigurationDataPlaneGroupAutoscaleStatic{}
+					dataplaneGroups.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.InstanceType = types.StringValue(string(dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.InstanceType))
+					dataplaneGroups.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.Kind = types.StringValue(string(dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.Kind))
+					dataplaneGroups.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.RequestedInstances = types.Int64Value(dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.RequestedInstances)
+				}
 			}
-			if dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic != nil {
-				dataplaneGroups.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic = &tfTypes.ConfigurationDataPlaneGroupAutoscaleStatic{}
-				dataplaneGroups.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.InstanceType = types.StringValue(string(dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.InstanceType))
-				dataplaneGroups.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.Kind = types.StringValue(string(dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.Kind))
-				dataplaneGroups.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.RequestedInstances = types.Int64Value(dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.RequestedInstances)
-			}
-			dataplaneGroups.CloudGatewayNetworkID = types.StringValue(dataplaneGroupsItem.CloudGatewayNetworkID)
+			dataplaneGroups.CloudGatewayNetworkID = types.StringPointerValue(dataplaneGroupsItem.CloudGatewayNetworkID)
 			dataplaneGroups.CreatedAt = types.StringValue(typeconvert.TimeToString(dataplaneGroupsItem.CreatedAt))
 			if dataplaneGroupsItem.EgressIPAddresses != nil {
 				dataplaneGroups.EgressIPAddresses = make([]types.String, 0, len(dataplaneGroupsItem.EgressIPAddresses))
@@ -76,7 +79,7 @@ func (r *CloudGatewayConfigurationResourceModel) RefreshFromSharedConfigurationM
 		r.EntityVersion = types.Float64Value(resp.EntityVersion)
 		r.ID = types.StringValue(resp.ID)
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
-		r.Version = types.StringValue(resp.Version)
+		r.Version = types.StringPointerValue(resp.Version)
 	}
 
 	return diags
@@ -102,58 +105,66 @@ func (r *CloudGatewayConfigurationResourceModel) ToSharedCreateConfigurationRequ
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
 	controlPlaneGeo := shared.ControlPlaneGeo(r.ControlPlaneGeo.ValueString())
-	var version string
-	version = r.Version.ValueString()
-
+	version := new(string)
+	if !r.Version.IsUnknown() && !r.Version.IsNull() {
+		*version = r.Version.ValueString()
+	} else {
+		version = nil
+	}
 	dataplaneGroups := make([]shared.CreateConfigurationDataPlaneGroup, 0, len(r.DataplaneGroups))
 	for dataplaneGroupsIndex := range r.DataplaneGroups {
 		provider := shared.ProviderName(r.DataplaneGroups[dataplaneGroupsIndex].Provider.ValueString())
 		var region string
 		region = r.DataplaneGroups[dataplaneGroupsIndex].Region.ValueString()
 
-		var cloudGatewayNetworkID string
-		cloudGatewayNetworkID = r.DataplaneGroups[dataplaneGroupsIndex].CloudGatewayNetworkID.ValueString()
-
-		var autoscale shared.ConfigurationDataPlaneGroupAutoscale
-		var configurationDataPlaneGroupAutoscaleStatic *shared.ConfigurationDataPlaneGroupAutoscaleStatic
-		if r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic != nil {
-			kind := shared.Kind(r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.Kind.ValueString())
-			instanceType := shared.InstanceTypeName(r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.InstanceType.ValueString())
-			var requestedInstances int64
-			requestedInstances = r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.RequestedInstances.ValueInt64()
-
-			configurationDataPlaneGroupAutoscaleStatic = &shared.ConfigurationDataPlaneGroupAutoscaleStatic{
-				Kind:               kind,
-				InstanceType:       instanceType,
-				RequestedInstances: requestedInstances,
-			}
+		cloudGatewayNetworkID := new(string)
+		if !r.DataplaneGroups[dataplaneGroupsIndex].CloudGatewayNetworkID.IsUnknown() && !r.DataplaneGroups[dataplaneGroupsIndex].CloudGatewayNetworkID.IsNull() {
+			*cloudGatewayNetworkID = r.DataplaneGroups[dataplaneGroupsIndex].CloudGatewayNetworkID.ValueString()
+		} else {
+			cloudGatewayNetworkID = nil
 		}
-		if configurationDataPlaneGroupAutoscaleStatic != nil {
-			autoscale = shared.ConfigurationDataPlaneGroupAutoscale{
-				ConfigurationDataPlaneGroupAutoscaleStatic: configurationDataPlaneGroupAutoscaleStatic,
-			}
-		}
-		var configurationDataPlaneGroupAutoscaleAutopilot *shared.ConfigurationDataPlaneGroupAutoscaleAutopilot
-		if r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot != nil {
-			kind1 := shared.ConfigurationDataPlaneGroupAutoscaleAutopilotKind(r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.Kind.ValueString())
-			var baseRps int64
-			baseRps = r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.BaseRps.ValueInt64()
+		var autoscale *shared.ConfigurationDataPlaneGroupAutoscale
+		if r.DataplaneGroups[dataplaneGroupsIndex].Autoscale != nil {
+			var configurationDataPlaneGroupAutoscaleStatic *shared.ConfigurationDataPlaneGroupAutoscaleStatic
+			if r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic != nil {
+				kind := shared.Kind(r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.Kind.ValueString())
+				instanceType := shared.InstanceTypeName(r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.InstanceType.ValueString())
+				var requestedInstances int64
+				requestedInstances = r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.RequestedInstances.ValueInt64()
 
-			maxRps := new(int64)
-			if !r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.MaxRps.IsUnknown() && !r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.MaxRps.IsNull() {
-				*maxRps = r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.MaxRps.ValueInt64()
-			} else {
-				maxRps = nil
+				configurationDataPlaneGroupAutoscaleStatic = &shared.ConfigurationDataPlaneGroupAutoscaleStatic{
+					Kind:               kind,
+					InstanceType:       instanceType,
+					RequestedInstances: requestedInstances,
+				}
 			}
-			configurationDataPlaneGroupAutoscaleAutopilot = &shared.ConfigurationDataPlaneGroupAutoscaleAutopilot{
-				Kind:    kind1,
-				BaseRps: baseRps,
-				MaxRps:  maxRps,
+			if configurationDataPlaneGroupAutoscaleStatic != nil {
+				autoscale = &shared.ConfigurationDataPlaneGroupAutoscale{
+					ConfigurationDataPlaneGroupAutoscaleStatic: configurationDataPlaneGroupAutoscaleStatic,
+				}
 			}
-		}
-		if configurationDataPlaneGroupAutoscaleAutopilot != nil {
-			autoscale = shared.ConfigurationDataPlaneGroupAutoscale{
-				ConfigurationDataPlaneGroupAutoscaleAutopilot: configurationDataPlaneGroupAutoscaleAutopilot,
+			var configurationDataPlaneGroupAutoscaleAutopilot *shared.ConfigurationDataPlaneGroupAutoscaleAutopilot
+			if r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot != nil {
+				kind1 := shared.ConfigurationDataPlaneGroupAutoscaleAutopilotKind(r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.Kind.ValueString())
+				var baseRps int64
+				baseRps = r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.BaseRps.ValueInt64()
+
+				maxRps := new(int64)
+				if !r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.MaxRps.IsUnknown() && !r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.MaxRps.IsNull() {
+					*maxRps = r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.MaxRps.ValueInt64()
+				} else {
+					maxRps = nil
+				}
+				configurationDataPlaneGroupAutoscaleAutopilot = &shared.ConfigurationDataPlaneGroupAutoscaleAutopilot{
+					Kind:    kind1,
+					BaseRps: baseRps,
+					MaxRps:  maxRps,
+				}
+			}
+			if configurationDataPlaneGroupAutoscaleAutopilot != nil {
+				autoscale = &shared.ConfigurationDataPlaneGroupAutoscale{
+					ConfigurationDataPlaneGroupAutoscaleAutopilot: configurationDataPlaneGroupAutoscaleAutopilot,
+				}
 			}
 		}
 		environment := make([]shared.ConfigurationDataPlaneGroupEnvironmentField, 0, len(r.DataplaneGroups[dataplaneGroupsIndex].Environment))

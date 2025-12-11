@@ -17791,10 +17791,8 @@ components:
           $ref: '#/components/schemas/ConfigurationDataPlaneGroupEnvironment'
       additionalProperties: false
       required:
-        - autoscale
         - provider
         - region
-        - cloud_gateway_network_id
       title: Configuration Data-Plane Group Config Item
     ConfigurationDataPlaneGroup:
       description: Object that describes the set of data-plane groups currently pointed to this configuration.
@@ -17889,8 +17887,6 @@ components:
         - id
         - provider
         - region
-        - autoscale
-        - cloud_gateway_network_id
         - state
         - created_at
         - updated_at
@@ -17950,7 +17946,6 @@ components:
         - id
         - control_plane_id
         - control_plane_geo
-        - version
         - dataplane_group_config
         - dataplane_groups
         - entity_version
@@ -17973,10 +17968,8 @@ components:
           $ref: '#/components/schemas/ConfigurationDataPlaneGroupEnvironment'
       additionalProperties: false
       required:
-        - autoscale
         - provider
         - region
-        - cloud_gateway_network_id
       title: CreateConfigurationDataPlaneGroup
     ProviderAccount:
       description: Object containing mapping for organization and cloud provider to account ID.
@@ -19384,7 +19377,6 @@ components:
       required:
         - control_plane_id
         - control_plane_geo
-        - version
         - dataplane_groups
       title: CreateConfigurationRequest
     CreateCustomDomainRequest:

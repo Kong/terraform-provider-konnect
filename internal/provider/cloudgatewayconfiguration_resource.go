@@ -186,20 +186,12 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 									},
 								},
 							},
-							Description: `Not Null`,
-							Validators: []validator.Object{
-								speakeasy_objectvalidators.NotNull(),
-							},
 						},
 						"cloud_gateway_network_id": schema.StringAttribute{
 							Computed: true,
 							Optional: true,
 							PlanModifiers: []planmodifier.String{
 								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-							},
-							Description: `Not Null`,
-							Validators: []validator.String{
-								speakeasy_stringvalidators.NotNull(),
 							},
 						},
 						"created_at": schema.StringAttribute{
@@ -312,7 +304,8 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 				Description: `An RFC-3339 timestamp representation of configuration update date.`,
 			},
 			"version": schema.StringAttribute{
-				Required:    true,
+				Computed:    true,
+				Optional:    true,
 				Description: `Supported gateway version.`,
 			},
 		},

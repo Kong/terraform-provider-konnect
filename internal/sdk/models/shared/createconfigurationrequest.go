@@ -12,7 +12,7 @@ type CreateConfigurationRequest struct {
 	// Set of control-plane geos supported for deploying cloud-gateways configurations.
 	ControlPlaneGeo ControlPlaneGeo `json:"control_plane_geo"`
 	// Supported gateway version.
-	Version string `json:"version"`
+	Version *string `json:"version,omitempty"`
 	// List of data-plane groups that describe where to deploy instances, along with how many instances.
 	DataplaneGroups []CreateConfigurationDataPlaneGroup `json:"dataplane_groups"`
 	// Type of API access data-plane groups will support for a configuration.
@@ -24,7 +24,7 @@ func (c CreateConfigurationRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateConfigurationRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"control_plane_id", "control_plane_geo", "version", "dataplane_groups"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"control_plane_id", "control_plane_geo", "dataplane_groups"}); err != nil {
 		return err
 	}
 	return nil
@@ -44,9 +44,9 @@ func (c *CreateConfigurationRequest) GetControlPlaneGeo() ControlPlaneGeo {
 	return c.ControlPlaneGeo
 }
 
-func (c *CreateConfigurationRequest) GetVersion() string {
+func (c *CreateConfigurationRequest) GetVersion() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.Version
 }
