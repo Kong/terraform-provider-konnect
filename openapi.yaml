@@ -26757,7 +26757,6 @@ components:
                   parameters:
                     description: 'The API parameters specification defined in OpenAPI. For example, ''[{"name": "city", "in": "query", "description": "Name of the city to get the weather for", "required": true, "schema": {"type": "string"}}]''.See https://swagger.io/docs/specification/v3_0/describing-parameters/ for more details.'
                     items:
-                      additionalProperties: true
                       type: object
                       properties:
                         name:
