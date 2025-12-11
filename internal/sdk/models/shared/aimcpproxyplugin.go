@@ -377,7 +377,7 @@ type Tools struct {
 	// The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.
 	Query map[string][]string `json:"query,omitempty"`
 	// The API requestBody specification defined in OpenAPI. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details.
-	RequestBody *string `default:"null" json:"request_body"`
+	RequestBody map[string]any `json:"request_body,omitempty"`
 	// The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it.
 	Scheme *Scheme `json:"scheme,omitempty"`
 }
@@ -449,7 +449,7 @@ func (t *Tools) GetQuery() map[string][]string {
 	return t.Query
 }
 
-func (t *Tools) GetRequestBody() *string {
+func (t *Tools) GetRequestBody() map[string]any {
 	if t == nil {
 		return nil
 	}

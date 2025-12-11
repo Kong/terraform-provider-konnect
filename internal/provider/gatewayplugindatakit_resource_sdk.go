@@ -4,6 +4,8 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -146,7 +148,13 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 						nodes.Static.Outputs[key1] = types.StringValue(value1)
 					}
 				}
-				nodes.Static.Values = types.StringValue(nodesItem.Static.Values)
+				if len(nodesItem.Static.Values) > 0 {
+					nodes.Static.Values = make(map[string]jsontypes.Normalized, len(nodesItem.Static.Values))
+					for key2, value2 := range nodesItem.Static.Values {
+						result, _ := json.Marshal(value2)
+						nodes.Static.Values[key2] = jsontypes.NewNormalizedValue(string(result))
+					}
+				}
 			}
 
 			r.Config.Nodes = append(r.Config.Nodes, nodes)
@@ -225,8 +233,8 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 			}
 			if resp.Config.Resources.Vault != nil {
 				r.Config.Resources.Vault = make(map[string]types.String, len(resp.Config.Resources.Vault))
-				for key2, value2 := range resp.Config.Resources.Vault {
-					r.Config.Resources.Vault[key2] = types.StringValue(value2)
+				for key3, value3 := range resp.Config.Resources.Vault {
+					r.Config.Resources.Vault[key3] = types.StringValue(value3)
 				}
 			}
 		}
@@ -928,9 +936,12 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 					outputs3[outputsKey] = outputsInst
 				}
 			}
-			var values string
-			values = r.Config.Nodes[nodesItem].Static.Values.ValueString()
-
+			values := make(map[string]interface{})
+			for valuesKey := range r.Config.Nodes[nodesItem].Static.Values {
+				var valuesInst interface{}
+				_ = json.Unmarshal([]byte(r.Config.Nodes[nodesItem].Static.Values[valuesKey].ValueString()), &valuesInst)
+				values[valuesKey] = valuesInst
+			}
 			static := shared.Static{
 				Name:    name7,
 				Output:  output5,
