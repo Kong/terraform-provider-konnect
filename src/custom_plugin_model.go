@@ -108,9 +108,6 @@ func (r *CustomPluginResourceModel) ToSharedPluginInput() (shared.Plugin, error)
 			for _, after := range r.Ordering.After.Access {
 				orderingAfter = append(orderingAfter, after.ValueString())
 			}
-			pluginInput.Ordering.After = &shared.After{
-				Access: orderingAfter,
-			}
 		}
 
 		if len(orderingBefore) > 0 || len(orderingAfter) > 0 {
