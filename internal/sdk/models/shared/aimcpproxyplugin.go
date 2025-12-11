@@ -291,23 +291,11 @@ func (s *Schema) GetType() *string {
 }
 
 type Parameters struct {
-	Name                 *string `json:"name,omitempty"`
-	In                   *string `json:"in,omitempty"`
-	Required             *bool   `json:"required,omitempty"`
-	Schema               *Schema `json:"schema,omitempty"`
-	Description          *string `json:"description,omitempty"`
-	AdditionalProperties any     `additionalProperties:"true" json:"-"`
-}
-
-func (p Parameters) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(p, "", false)
-}
-
-func (p *Parameters) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
-		return err
-	}
-	return nil
+	Name        *string `json:"name,omitempty"`
+	In          *string `json:"in,omitempty"`
+	Required    *bool   `json:"required,omitempty"`
+	Schema      *Schema `json:"schema,omitempty"`
+	Description *string `json:"description,omitempty"`
 }
 
 func (p *Parameters) GetName() *string {
@@ -343,13 +331,6 @@ func (p *Parameters) GetDescription() *string {
 		return nil
 	}
 	return p.Description
-}
-
-func (p *Parameters) GetAdditionalProperties() any {
-	if p == nil {
-		return nil
-	}
-	return p.AdditionalProperties
 }
 
 // Scheme - The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it.

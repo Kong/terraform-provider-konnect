@@ -217,12 +217,6 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 											speakeasy_objectvalidators.NotNull(),
 										},
 										Attributes: map[string]schema.Attribute{
-											"additional_properties": schema.StringAttribute{
-												CustomType:  jsontypes.NormalizedType{},
-												Computed:    true,
-												Optional:    true,
-												Description: `Parsed as JSON.`,
-											},
 											"description": schema.StringAttribute{
 												Computed: true,
 												Optional: true,

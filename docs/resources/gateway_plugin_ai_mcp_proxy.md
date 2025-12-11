@@ -45,11 +45,10 @@ resource "konnect_gateway_plugin_ai_mcp_proxy" "my_gatewaypluginaimcpproxy" {
         method = "GET"
         parameters = [
           {
-            additional_properties = "{ \"see\": \"documentation\" }"
-            description           = "...my_description..."
-            in                    = "...my_in..."
-            name                  = "...my_name..."
-            required              = true
+            description = "...my_description..."
+            in          = "...my_in..."
+            name        = "...my_name..."
+            required    = true
             schema = {
               type = "...my_type..."
             }
@@ -196,7 +195,6 @@ Optional:
 
 Optional:
 
-- `additional_properties` (String) Parsed as JSON.
 - `description` (String)
 - `in` (String)
 - `name` (String)

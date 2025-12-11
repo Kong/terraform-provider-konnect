@@ -75,12 +75,6 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 					for _, parametersItem := range toolsItem.Parameters {
 						var parameters tfTypes.Parameters
 
-						if parametersItem.AdditionalProperties == nil {
-							parameters.AdditionalProperties = jsontypes.NewNormalizedNull()
-						} else {
-							additionalPropertiesResult, _ := json.Marshal(parametersItem.AdditionalProperties)
-							parameters.AdditionalProperties = jsontypes.NewNormalizedValue(string(additionalPropertiesResult))
-						}
 						parameters.Description = types.StringPointerValue(parametersItem.Description)
 						parameters.In = types.StringPointerValue(parametersItem.In)
 						parameters.Name = types.StringPointerValue(parametersItem.Name)
@@ -530,17 +524,12 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 					} else {
 						description1 = nil
 					}
-					var additionalProperties interface{}
-					if !r.Config.Tools[toolsIndex].Parameters[parametersIndex].AdditionalProperties.IsUnknown() && !r.Config.Tools[toolsIndex].Parameters[parametersIndex].AdditionalProperties.IsNull() {
-						_ = json.Unmarshal([]byte(r.Config.Tools[toolsIndex].Parameters[parametersIndex].AdditionalProperties.ValueString()), &additionalProperties)
-					}
 					parameters = append(parameters, shared.Parameters{
-						Name:                 name1,
-						In:                   in,
-						Required:             required,
-						Schema:               schema,
-						Description:          description1,
-						AdditionalProperties: additionalProperties,
+						Name:        name1,
+						In:          in,
+						Required:    required,
+						Schema:      schema,
+						Description: description1,
 					})
 				}
 			}
