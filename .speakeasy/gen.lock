@@ -1,18 +1,18 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 7fe07b56549a2be32af60594d4454899
+  docChecksum: e7392e5d8a8e1e0b5b4badc690f268cc
   docVersion: 2.0.0
-  speakeasyVersion: 1.648.0
-  generationVersion: 2.737.0
-  releaseVersion: 3.4.2
-  configChecksum: 0f2637189003310a1fb87f8bca996d9b
+  speakeasyVersion: 1.665.0
+  generationVersion: 2.767.2
+  releaseVersion: 3.4.3
+  configChecksum: 8c852536f87dceb9a1dbc7f99585e696
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.3
     constsAndDefaults: 0.3.0
-    core: 3.46.5
+    core: 3.46.18
     deepObjectParams: 0.1.0
     deprecations: 2.82.0
     globalSecurity: 2.82.1
@@ -23,11 +23,11 @@ features:
     methodServerURLs: 2.83.0
     nameOverrides: 2.81.3
     nullables: 0.0.0
-    pagination: 2.83.4
+    pagination: 2.83.5
     retries: 2.81.4
     sets: 0.1.2
     typeOverrides: 2.81.1
-    unions: 2.82.2
+    unions: 2.82.5
 generatedFiles:
   - .gitattributes
   - USAGE.md
@@ -1164,6 +1164,7 @@ generatedFiles:
   - internal/provider/types/key_schema.go
   - internal/provider/types/ldap_auth_advanced_plugin_config.go
   - internal/provider/types/ldap_auth_plugin_config.go
+  - internal/provider/types/limits.go
   - internal/provider/types/llm.go
   - internal/provider/types/llm_providers.go
   - internal/provider/types/loggly_plugin_config.go
@@ -1211,7 +1212,7 @@ generatedFiles:
   - internal/provider/types/pem.go
   - internal/provider/types/pgvector.go
   - internal/provider/types/polling.go
-  - internal/provider/types/portal_claim_mappings.go
+  - internal/provider/types/portal_authentication_settings_update_request_portal_claim_mappings.go
   - internal/provider/types/portal_filter_parameters.go
   - internal/provider/types/portal_footer_menu_section.go
   - internal/provider/types/portal_menu_item.go
@@ -2263,7 +2264,6 @@ generatedFiles:
   - internal/sdk/models/shared/dataplaneclientcertificate.go
   - internal/sdk/models/shared/dataplaneclientcertificaterequest.go
   - internal/sdk/models/shared/dataplaneclientcertificateresponse.go
-  - internal/sdk/models/shared/dcrprovidertype.go
   - internal/sdk/models/shared/degraphqlplugin.go
   - internal/sdk/models/shared/exittransformerplugin.go
   - internal/sdk/models/shared/filelogplugin.go
@@ -2379,7 +2379,6 @@ generatedFiles:
   - internal/sdk/models/shared/portalfilterparameters.go
   - internal/sdk/models/shared/portalfootermenusection.go
   - internal/sdk/models/shared/portalmenuitem.go
-  - internal/sdk/models/shared/portaloidcconfig.go
   - internal/sdk/models/shared/portalpageresponse.go
   - internal/sdk/models/shared/portalresponse.go
   - internal/sdk/models/shared/portalsnippetresponse.go
@@ -3371,7 +3370,7 @@ examples:
         query:
           page[size]: 100
           page[number]: 1
-          filter: {"cloud_gateway": true}
+          filter: {"id": {"eq": "?filter[field_name_here][eq]=foo", "oeq": "?filter[field_name_here][oeq]=foo,bar"}, "name": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "neq": "?filter[field_name_here][neq]=bar"}, "cluster_type": {"eq": "?filter[field_name_here][eq]=foo", "neq": "?filter[field_name_here][neq]=bar"}}
           labels: "key:value,existCheck"
           sort: "created_at desc"
       responses:
@@ -4589,6 +4588,8 @@ examples:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+        query:
+          expand_partials: true
       responses:
         "200":
           application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "consumer": null, "consumer_group": null, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "instance_name": null, "name": "key-auth", "ordering": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null, "tags": null}
@@ -12492,7 +12493,7 @@ examples:
         query:
           page[size]: 100
           page[number]: 1
-          filter: {"authentication_enabled": true, "rbac_enabled": true, "auto_approve_developers": true, "auto_approve_applications": true}
+          filter: {"id": {"eq": "?filter[field_name_here][eq]=foo", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "name": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "description": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "default_api_visibility": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "default_page_visibility": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "default_application_auth_strategy_id": {"eq": "?filter[field_name_here][eq]=foo", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "default_domain": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}, "canonical_domain": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "ocontains": "?filter[field_name_here][ocontains]=foo,bar", "oeq": "?filter[field_name_here][oeq]=foo,bar", "neq": "?filter[field_name_here][neq]=bar"}}
       responses:
         "200":
           application/json: {"data": [{"id": "8f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-02-07T17:46:57.52Z", "updated_at": "2022-10-08T17:00:00.52Z", "name": "Portal A", "display_name": "Developer Portal A", "description": "The Portal A", "authentication_enabled": true, "rbac_enabled": true, "default_api_visibility": "public", "default_page_visibility": "private", "default_application_auth_strategy_id": null, "auto_approve_developers": true, "auto_approve_applications": false, "default_domain": "123455678abcd.us.portal.konghq.com", "canonical_domain": "rapid-step.biz"}], "meta": {"page": {"number": 1, "size": 10, "total": 100}}}
@@ -12590,7 +12591,7 @@ examples:
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": true, "saml_auth_enabled": false, "oidc_team_mapping_enabled": true, "idp_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_config": {"issuer": "https://identity.example.com/v2", "client_id": "x7id0o42lklas0blidl2", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}}
+          application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": true, "oidc_team_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_config": {"issuer": "https://identity.example.com/v2", "client_id": "x7id0o42lklas0blidl2", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
   update-portal-authentication-settings:
@@ -12602,7 +12603,7 @@ examples:
         application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": true, "oidc_team_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_issuer": "https://identity.example.com/v2", "oidc_client_id": "x7id0o42lklas0blidl2", "oidc_client_secret": null, "oidc_scopes": ["email", "openid", "profile"], "oidc_claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}
       responses:
         "200":
-          application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": true, "saml_auth_enabled": false, "oidc_team_mapping_enabled": true, "idp_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_config": {"issuer": "https://identity.example.com/v2", "client_id": "x7id0o42lklas0blidl2", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}}
+          application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": true, "oidc_team_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_config": {"issuer": "https://identity.example.com/v2", "client_id": "x7id0o42lklas0blidl2", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}}
         "400":
           application/problem+json: {"status": 661550, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_items", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}, {"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value 1>"], "source": "body"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>"], "source": "body"}]}
         "401":
@@ -14544,6 +14545,7 @@ examples:
           page[number]: 1
           labels: "key:value,existCheck"
           sort: "created_at desc"
+          filter: {"id": {"eq": "?filter[field_name_here][eq]=foo", "oeq": "?filter[field_name_here][oeq]=foo,bar"}, "name": {"eq": "?filter[field_name_here][eq]=foo", "contains": "?filter[field_name_here][contains]=foo", "neq": "?filter[field_name_here][neq]=bar"}, "cluster_type": {"eq": "?filter[field_name_here][eq]=foo", "neq": "?filter[field_name_here][neq]=bar"}}
       responses:
         "200":
           application/json: {"meta": {"page": {"number": 1, "size": 10, "total": 100}}, "data": []}

@@ -87,8 +87,8 @@ type Static struct {
 	// The entire `.values` map
 	Output *string `default:"null" json:"output"`
 	// Individual items from `.values`, referenced by key
-	Outputs map[string]any `json:"outputs,omitempty"`
-	type_   *string        `const:"static" json:"type,omitempty"`
+	Outputs map[string]string `json:"outputs,omitempty"`
+	type_   *string           `const:"static" json:"type,omitempty"`
 	// An object with string keys and freeform values
 	Values string `json:"values"`
 }
@@ -118,7 +118,7 @@ func (s *Static) GetOutput() *string {
 	return s.Output
 }
 
-func (s *Static) GetOutputs() map[string]any {
+func (s *Static) GetOutputs() map[string]string {
 	if s == nil {
 		return nil
 	}
@@ -236,7 +236,7 @@ type Jq struct {
 	// filter input(s)
 	Input *string `default:"null" json:"input"`
 	// filter input(s)
-	Inputs map[string]any `json:"inputs,omitempty"`
+	Inputs map[string]string `json:"inputs,omitempty"`
 	// The jq filter text. Refer to https://jqlang.org/manual/ for full documentation.
 	Jq string `json:"jq"`
 	// A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
@@ -264,7 +264,7 @@ func (j *Jq) GetInput() *string {
 	return j.Input
 }
 
-func (j *Jq) GetInputs() map[string]any {
+func (j *Jq) GetInputs() map[string]string {
 	if j == nil {
 		return nil
 	}
@@ -1455,7 +1455,7 @@ func (d *DatakitPluginCache) GetStrategy() *DatakitPluginStrategy {
 
 type Resources struct {
 	Cache *DatakitPluginCache `json:"cache"`
-	Vault map[string]any      `json:"vault,omitempty"`
+	Vault map[string]string   `json:"vault,omitempty"`
 }
 
 func (r *Resources) GetCache() *DatakitPluginCache {
@@ -1465,7 +1465,7 @@ func (r *Resources) GetCache() *DatakitPluginCache {
 	return r.Cache
 }
 
-func (r *Resources) GetVault() map[string]any {
+func (r *Resources) GetVault() map[string]string {
 	if r == nil {
 		return nil
 	}

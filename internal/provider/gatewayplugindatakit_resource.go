@@ -7,9 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -28,7 +26,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
@@ -91,7 +88,6 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 							},
 							Attributes: map[string]schema.Attribute{
 								"branch": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"else": schema.ListAttribute{
@@ -164,7 +160,6 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 									},
 								},
 								"cache": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"bypass_on_error": schema.BoolAttribute{
@@ -282,7 +277,6 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 									},
 								},
 								"call": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"input": schema.StringAttribute{
@@ -414,7 +408,6 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 									},
 								},
 								"exit": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"input": schema.StringAttribute{
@@ -482,7 +475,6 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 									},
 								},
 								"jq": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"input": schema.StringAttribute{
@@ -494,11 +486,8 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 										},
 										"inputs": schema.MapAttribute{
 											Optional:    true,
-											ElementType: jsontypes.NormalizedType{},
+											ElementType: types.StringType,
 											Description: `filter input(s)`,
-											Validators: []validator.Map{
-												mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-											},
 										},
 										"jq": schema.StringAttribute{
 											Computed:    true,
@@ -537,7 +526,6 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 									},
 								},
 								"property": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"content_type": schema.StringAttribute{
@@ -596,7 +584,6 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 									},
 								},
 								"static": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"name": schema.StringAttribute{
@@ -615,11 +602,8 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 										},
 										"outputs": schema.MapAttribute{
 											Optional:    true,
-											ElementType: jsontypes.NormalizedType{},
+											ElementType: types.StringType,
 											Description: `Individual items from ` + "`" + `.values` + "`" + `, referenced by key`,
-											Validators: []validator.Map{
-												mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-											},
 										},
 										"values": schema.StringAttribute{
 											Computed:    true,
@@ -699,7 +683,7 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 								},
 							},
 							"vault": types.MapType{
-								ElemType: jsontypes.NormalizedType{},
+								ElemType: types.StringType,
 							},
 						})),
 						Attributes: map[string]schema.Attribute{
@@ -1003,10 +987,7 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 							},
 							"vault": schema.MapAttribute{
 								Optional:    true,
-								ElementType: jsontypes.NormalizedType{},
-								Validators: []validator.Map{
-									mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-								},
+								ElementType: types.StringType,
 							},
 						},
 					},
@@ -1426,7 +1407,10 @@ func (r *GatewayPluginDatakitResource) Delete(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 204 {
+	switch res.StatusCode {
+	case 204, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

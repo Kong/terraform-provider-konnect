@@ -129,40 +129,47 @@ func (r *GatewayControlPlaneListDataSource) Schema(ctx context.Context, req data
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"eq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field exactly matches the provided value.`,
 							},
 							"neq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field does not match the provided value.`,
 							},
 						},
-						Description: `Filters on the given string field value by exact match inequality.`,
+						Description: `Filter using **one** of the following operators: ` + "`" + `eq` + "`" + `, ` + "`" + `neq` + "`" + ``,
 					},
 					"id": schema.SingleNestedAttribute{
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"eq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field exactly matches the provided value.`,
 							},
 							"oeq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field matches any of the provided values.`,
 							},
 						},
-						Description: `Returns entities that exact match any of the comma-delimited phrases in the filter string.`,
+						Description: `Filter using **one** of the following operators: ` + "`" + `eq` + "`" + `, ` + "`" + `oeq` + "`" + ``,
 					},
 					"name": schema.SingleNestedAttribute{
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"contains": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field contains the provided value.`,
 							},
 							"eq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field exactly matches the provided value.`,
 							},
 							"neq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field does not match the provided value.`,
 							},
 						},
-						Description: `Filters on the given string field value by exact match inequality.`,
+						Description: `Filter using **one** of the following operators: ` + "`" + `eq` + "`" + `, ` + "`" + `neq` + "`" + `, ` + "`" + `contains` + "`" + ``,
 					},
 				},
 				Description: `Filters a collection of control-planes.`,

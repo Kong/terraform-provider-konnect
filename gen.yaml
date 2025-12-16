@@ -19,13 +19,14 @@ generation:
     hoistGlobalSecurity: true
   schemas:
     allOfMergeStrategy: shallowMerge
+  requestBodyFieldName: ""
   tests:
     generateTests: true
     generateNewTests: false
     skipResponseBodyAssertions: false
   baseServerURL: ""
 terraform:
-  version: 3.4.2
+  version: 3.4.3
   additionalDataSources: []
   additionalDependencies: {}
   additionalEphemeralResources: []
@@ -39,6 +40,8 @@ terraform:
   author: kong
   baseErrorName: KonnectError
   defaultErrorName: SDKError
+  enableCustomCodeRegions: false
+  enableOperationSecurity: false
   enableOperationServers: false
   enableTypeDeduplication: true
   environmentVariables:
@@ -48,6 +51,7 @@ terraform:
       providerAttribute: system_account_access_token
     - env: KONNECT_SERVER_URL
       providerAttribute: server_url
+  excludeEmptyObjectSchemas: false
   imports:
     option: openapi
     paths:
@@ -57,5 +61,6 @@ terraform:
       shared: shared
       webhooks: webhooks
   includeEmptyObjects: false
+  inferUnionDiscriminators: false
   packageName: konnect
-  unionDeserializationStrategy: populated-fields
+  unionStrategy: populated-fields

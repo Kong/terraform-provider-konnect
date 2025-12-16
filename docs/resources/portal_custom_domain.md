@@ -38,7 +38,7 @@ resource "konnect_portal_custom_domain" "my_portalcustomdomain" {
 
 ### Read-Only
 
-- `cname_status` (String) must be one of ["verified", "pending"]
+- `cname_status` (String)
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
@@ -57,7 +57,7 @@ Read-Only:
 - `expires_at` (String) An ISO-8601 timestamp representation of the ssl certificate expiration date.
 - `uploaded_at` (String) An ISO-8601 timestamp representation of the ssl certificate upload date.
 - `validation_errors` (List of String)
-- `verification_status` (String) must be one of ["verified", "pending", "error"]
+- `verification_status` (String)
 
 ## Import
 

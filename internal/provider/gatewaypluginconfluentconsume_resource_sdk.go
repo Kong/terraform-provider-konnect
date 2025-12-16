@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -110,17 +108,15 @@ func (r *GatewayPluginConfluentConsumeResourceModel) RefreshFromSharedConfluentC
 						}
 						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint)
 						if resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders != nil {
-							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders = make(map[string]jsontypes.Normalized, len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders))
+							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders = make(map[string]types.String, len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders))
 							for key, value := range resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders {
-								result, _ := json.Marshal(value)
-								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders[key] = jsontypes.NewNormalizedValue(string(result))
+								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders[key] = types.StringValue(value)
 							}
 						}
 						if resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs != nil {
-							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs = make(map[string]jsontypes.Normalized, len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs))
+							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs = make(map[string]types.String, len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs))
 							for key1, value1 := range resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs {
-								result1, _ := json.Marshal(value1)
-								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs[key1] = jsontypes.NewNormalizedValue(string(result1))
+								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs[key1] = types.StringValue(value1)
 							}
 						}
 						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Username = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Username)
@@ -208,17 +204,15 @@ func (r *GatewayPluginConfluentConsumeResourceModel) RefreshFromSharedConfluentC
 							}
 							topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint = types.StringValue(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint)
 							if topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders != nil {
-								topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders = make(map[string]jsontypes.Normalized, len(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders))
+								topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders = make(map[string]types.String, len(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders))
 								for key2, value2 := range topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders {
-									result2, _ := json.Marshal(value2)
-									topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders[key2] = jsontypes.NewNormalizedValue(string(result2))
+									topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders[key2] = types.StringValue(value2)
 								}
 							}
 							if topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs != nil {
-								topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs = make(map[string]jsontypes.Normalized, len(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs))
+								topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs = make(map[string]types.String, len(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs))
 								for key3, value3 := range topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs {
-									result3, _ := json.Marshal(value3)
-									topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs[key3] = jsontypes.NewNormalizedValue(string(result3))
+									topics.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs[key3] = types.StringValue(value3)
 								}
 							}
 							topics.SchemaRegistry.Confluent.Authentication.Oauth2.Username = types.StringPointerValue(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.Username)
@@ -442,8 +436,8 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 		var after *shared.ConfluentConsumePluginAfter
 		if r.Ordering.After != nil {
 			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			for accessIndex := range r.Ordering.After.Access {
+				access = append(access, r.Ordering.After.Access[accessIndex].ValueString())
 			}
 			after = &shared.ConfluentConsumePluginAfter{
 				Access: access,
@@ -452,8 +446,8 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 		var before *shared.ConfluentConsumePluginBefore
 		if r.Ordering.Before != nil {
 			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			for accessIndex1 := range r.Ordering.Before.Access {
+				access1 = append(access1, r.Ordering.Before.Access[accessIndex1].ValueString())
 			}
 			before = &shared.ConfluentConsumePluginBefore{
 				Access: access1,
@@ -467,22 +461,22 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 	var partials []shared.ConfluentConsumePluginPartials
 	if r.Partials != nil {
 		partials = make([]shared.ConfluentConsumePluginPartials, 0, len(r.Partials))
-		for _, partialsItem := range r.Partials {
+		for partialsIndex := range r.Partials {
 			id1 := new(string)
-			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
-				*id1 = partialsItem.ID.ValueString()
+			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
+				*id1 = r.Partials[partialsIndex].ID.ValueString()
 			} else {
 				id1 = nil
 			}
 			name := new(string)
-			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
-				*name = partialsItem.Name.ValueString()
+			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
+				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
 			path := new(string)
-			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
-				*path = partialsItem.Path.ValueString()
+			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
+				*path = r.Partials[partialsIndex].Path.ValueString()
 			} else {
 				path = nil
 			}
@@ -496,8 +490,8 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 	var tags []string
 	if r.Tags != nil {
 		tags = make([]string, 0, len(r.Tags))
-		for _, tagsItem := range r.Tags {
-			tags = append(tags, tagsItem.ValueString())
+		for tagsIndex := range r.Tags {
+			tags = append(tags, r.Tags[tagsIndex].ValueString())
 		}
 	}
 	updatedAt := new(int64)
@@ -515,12 +509,12 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 	var bootstrapServers []shared.ConfluentConsumePluginBootstrapServers
 	if r.Config.BootstrapServers != nil {
 		bootstrapServers = make([]shared.ConfluentConsumePluginBootstrapServers, 0, len(r.Config.BootstrapServers))
-		for _, bootstrapServersItem := range r.Config.BootstrapServers {
+		for bootstrapServersIndex := range r.Config.BootstrapServers {
 			var host string
-			host = bootstrapServersItem.Host.ValueString()
+			host = r.Config.BootstrapServers[bootstrapServersIndex].Host.ValueString()
 
 			var port int64
-			port = bootstrapServersItem.Port.ValueInt64()
+			port = r.Config.BootstrapServers[bootstrapServersIndex].Port.ValueInt64()
 
 			bootstrapServers = append(bootstrapServers, shared.ConfluentConsumePluginBootstrapServers{
 				Host: host,
@@ -585,8 +579,8 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 	var messageByLuaFunctions []string
 	if r.Config.MessageByLuaFunctions != nil {
 		messageByLuaFunctions = make([]string, 0, len(r.Config.MessageByLuaFunctions))
-		for _, messageByLuaFunctionsItem := range r.Config.MessageByLuaFunctions {
-			messageByLuaFunctions = append(messageByLuaFunctions, messageByLuaFunctionsItem.ValueString())
+		for messageByLuaFunctionsIndex := range r.Config.MessageByLuaFunctions {
+			messageByLuaFunctions = append(messageByLuaFunctions, r.Config.MessageByLuaFunctions[messageByLuaFunctionsIndex].ValueString())
 		}
 	}
 	messageDeserializer := new(shared.MessageDeserializer)
@@ -629,8 +623,8 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 				var oauth2 *shared.ConfluentConsumePluginOauth2
 				if r.Config.SchemaRegistry.Confluent.Authentication.Oauth2 != nil {
 					audience := make([]string, 0, len(r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Audience))
-					for _, audienceItem := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Audience {
-						audience = append(audience, audienceItem.ValueString())
+					for audienceIndex := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Audience {
+						audience = append(audience, r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Audience[audienceIndex].ValueString())
 					}
 					clientID := new(string)
 					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.IsNull() {
@@ -657,27 +651,29 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 						password1 = nil
 					}
 					scopes := make([]string, 0, len(r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes))
-					for _, scopesItem := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes {
-						scopes = append(scopes, scopesItem.ValueString())
+					for scopesIndex := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes {
+						scopes = append(scopes, r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes[scopesIndex].ValueString())
 					}
 					var tokenEndpoint string
 					tokenEndpoint = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint.ValueString()
 
-					var tokenHeaders map[string]interface{}
+					var tokenHeaders map[string]string
 					if r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders != nil {
-						tokenHeaders = make(map[string]interface{})
-						for tokenHeadersKey, tokenHeadersValue := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders {
-							var tokenHeadersInst interface{}
-							_ = json.Unmarshal([]byte(tokenHeadersValue.ValueString()), &tokenHeadersInst)
+						tokenHeaders = make(map[string]string)
+						for tokenHeadersKey := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders {
+							var tokenHeadersInst string
+							tokenHeadersInst = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders[tokenHeadersKey].ValueString()
+
 							tokenHeaders[tokenHeadersKey] = tokenHeadersInst
 						}
 					}
-					var tokenPostArgs map[string]interface{}
+					var tokenPostArgs map[string]string
 					if r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs != nil {
-						tokenPostArgs = make(map[string]interface{})
-						for tokenPostArgsKey, tokenPostArgsValue := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs {
-							var tokenPostArgsInst interface{}
-							_ = json.Unmarshal([]byte(tokenPostArgsValue.ValueString()), &tokenPostArgsInst)
+						tokenPostArgs = make(map[string]string)
+						for tokenPostArgsKey := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs {
+							var tokenPostArgsInst string
+							tokenPostArgsInst = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs[tokenPostArgsKey].ValueString()
+
 							tokenPostArgs[tokenPostArgsKey] = tokenPostArgsInst
 						}
 					}
@@ -825,23 +821,23 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 		timeout1 = nil
 	}
 	topics := make([]shared.Topics, 0, len(r.Config.Topics))
-	for _, topicsItem := range r.Config.Topics {
+	for topicsIndex := range r.Config.Topics {
 		var name1 string
-		name1 = topicsItem.Name.ValueString()
+		name1 = r.Config.Topics[topicsIndex].Name.ValueString()
 
 		var schemaRegistry1 *shared.ConfluentConsumePluginConfigSchemaRegistry
-		if topicsItem.SchemaRegistry != nil {
+		if r.Config.Topics[topicsIndex].SchemaRegistry != nil {
 			var confluent1 *shared.ConfluentConsumePluginConfigConfluent
-			if topicsItem.SchemaRegistry.Confluent != nil {
+			if r.Config.Topics[topicsIndex].SchemaRegistry.Confluent != nil {
 				var authentication1 *shared.ConfluentConsumePluginConfigAuthentication
-				if topicsItem.SchemaRegistry.Confluent.Authentication != nil {
+				if r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication != nil {
 					var basic1 *shared.ConfluentConsumePluginConfigBasic
-					if topicsItem.SchemaRegistry.Confluent.Authentication.Basic != nil {
+					if r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Basic != nil {
 						var password2 string
-						password2 = topicsItem.SchemaRegistry.Confluent.Authentication.Basic.Password.ValueString()
+						password2 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Basic.Password.ValueString()
 
 						var username2 string
-						username2 = topicsItem.SchemaRegistry.Confluent.Authentication.Basic.Username.ValueString()
+						username2 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Basic.Username.ValueString()
 
 						basic1 = &shared.ConfluentConsumePluginConfigBasic{
 							Password: password2,
@@ -849,69 +845,71 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 						}
 					}
 					mode2 := new(shared.ConfluentConsumePluginConfigTopicsMode)
-					if !topicsItem.SchemaRegistry.Confluent.Authentication.Mode.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.Authentication.Mode.IsNull() {
-						*mode2 = shared.ConfluentConsumePluginConfigTopicsMode(topicsItem.SchemaRegistry.Confluent.Authentication.Mode.ValueString())
+					if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Mode.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Mode.IsNull() {
+						*mode2 = shared.ConfluentConsumePluginConfigTopicsMode(r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Mode.ValueString())
 					} else {
 						mode2 = nil
 					}
 					var oauth21 *shared.ConfluentConsumePluginConfigOauth2
-					if topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2 != nil {
-						audience1 := make([]string, 0, len(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.Audience))
-						for _, audienceItem1 := range topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.Audience {
-							audience1 = append(audience1, audienceItem1.ValueString())
+					if r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2 != nil {
+						audience1 := make([]string, 0, len(r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.Audience))
+						for audienceIndex1 := range r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.Audience {
+							audience1 = append(audience1, r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.Audience[audienceIndex1].ValueString())
 						}
 						clientId1 := new(string)
-						if !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.IsNull() {
-							*clientId1 = topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.ValueString()
+						if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.IsNull() {
+							*clientId1 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.ValueString()
 						} else {
 							clientId1 = nil
 						}
 						clientSecret1 := new(string)
-						if !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret.IsNull() {
-							*clientSecret1 = topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret.ValueString()
+						if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret.IsNull() {
+							*clientSecret1 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.ClientSecret.ValueString()
 						} else {
 							clientSecret1 = nil
 						}
 						grantType1 := new(shared.ConfluentConsumePluginConfigGrantType)
-						if !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.GrantType.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.GrantType.IsNull() {
-							*grantType1 = shared.ConfluentConsumePluginConfigGrantType(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.GrantType.ValueString())
+						if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.GrantType.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.GrantType.IsNull() {
+							*grantType1 = shared.ConfluentConsumePluginConfigGrantType(r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.GrantType.ValueString())
 						} else {
 							grantType1 = nil
 						}
 						password3 := new(string)
-						if !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.Password.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.Password.IsNull() {
-							*password3 = topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.Password.ValueString()
+						if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.Password.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.Password.IsNull() {
+							*password3 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.Password.ValueString()
 						} else {
 							password3 = nil
 						}
-						scopes1 := make([]string, 0, len(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes))
-						for _, scopesItem1 := range topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes {
-							scopes1 = append(scopes1, scopesItem1.ValueString())
+						scopes1 := make([]string, 0, len(r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.Scopes))
+						for scopesIndex1 := range r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.Scopes {
+							scopes1 = append(scopes1, r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.Scopes[scopesIndex1].ValueString())
 						}
 						var tokenEndpoint1 string
-						tokenEndpoint1 = topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint.ValueString()
+						tokenEndpoint1 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint.ValueString()
 
-						var tokenHeaders1 map[string]interface{}
-						if topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders != nil {
-							tokenHeaders1 = make(map[string]interface{})
-							for tokenHeadersKey1, tokenHeadersValue1 := range topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders {
-								var tokenHeadersInst1 interface{}
-								_ = json.Unmarshal([]byte(tokenHeadersValue1.ValueString()), &tokenHeadersInst1)
+						var tokenHeaders1 map[string]string
+						if r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders != nil {
+							tokenHeaders1 = make(map[string]string)
+							for tokenHeadersKey1 := range r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders {
+								var tokenHeadersInst1 string
+								tokenHeadersInst1 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders[tokenHeadersKey1].ValueString()
+
 								tokenHeaders1[tokenHeadersKey1] = tokenHeadersInst1
 							}
 						}
-						var tokenPostArgs1 map[string]interface{}
-						if topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs != nil {
-							tokenPostArgs1 = make(map[string]interface{})
-							for tokenPostArgsKey1, tokenPostArgsValue1 := range topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs {
-								var tokenPostArgsInst1 interface{}
-								_ = json.Unmarshal([]byte(tokenPostArgsValue1.ValueString()), &tokenPostArgsInst1)
+						var tokenPostArgs1 map[string]string
+						if r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs != nil {
+							tokenPostArgs1 = make(map[string]string)
+							for tokenPostArgsKey1 := range r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs {
+								var tokenPostArgsInst1 string
+								tokenPostArgsInst1 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs[tokenPostArgsKey1].ValueString()
+
 								tokenPostArgs1[tokenPostArgsKey1] = tokenPostArgsInst1
 							}
 						}
 						username3 := new(string)
-						if !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.Username.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.Username.IsNull() {
-							*username3 = topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2.Username.ValueString()
+						if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.Username.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.Username.IsNull() {
+							*username3 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2.Username.ValueString()
 						} else {
 							username3 = nil
 						}
@@ -929,70 +927,70 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 						}
 					}
 					var oauth2Client1 *shared.ConfluentConsumePluginConfigOauth2Client
-					if topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client != nil {
+					if r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client != nil {
 						authMethod1 := new(shared.ConfluentConsumePluginConfigAuthMethod)
-						if !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.AuthMethod.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.AuthMethod.IsNull() {
-							*authMethod1 = shared.ConfluentConsumePluginConfigAuthMethod(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.AuthMethod.ValueString())
+						if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.AuthMethod.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.AuthMethod.IsNull() {
+							*authMethod1 = shared.ConfluentConsumePluginConfigAuthMethod(r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.AuthMethod.ValueString())
 						} else {
 							authMethod1 = nil
 						}
 						clientSecretJwtAlg1 := new(shared.ConfluentConsumePluginConfigClientSecretJwtAlg)
-						if !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.ClientSecretJwtAlg.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.ClientSecretJwtAlg.IsNull() {
-							*clientSecretJwtAlg1 = shared.ConfluentConsumePluginConfigClientSecretJwtAlg(topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.ClientSecretJwtAlg.ValueString())
+						if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.ClientSecretJwtAlg.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.ClientSecretJwtAlg.IsNull() {
+							*clientSecretJwtAlg1 = shared.ConfluentConsumePluginConfigClientSecretJwtAlg(r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.ClientSecretJwtAlg.ValueString())
 						} else {
 							clientSecretJwtAlg1 = nil
 						}
 						httpProxy1 := new(string)
-						if !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPProxy.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPProxy.IsNull() {
-							*httpProxy1 = topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPProxy.ValueString()
+						if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPProxy.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPProxy.IsNull() {
+							*httpProxy1 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPProxy.ValueString()
 						} else {
 							httpProxy1 = nil
 						}
 						httpProxyAuthorization1 := new(string)
-						if !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPProxyAuthorization.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPProxyAuthorization.IsNull() {
-							*httpProxyAuthorization1 = topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPProxyAuthorization.ValueString()
+						if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPProxyAuthorization.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPProxyAuthorization.IsNull() {
+							*httpProxyAuthorization1 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPProxyAuthorization.ValueString()
 						} else {
 							httpProxyAuthorization1 = nil
 						}
 						httpVersion1 := new(float64)
-						if !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPVersion.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPVersion.IsNull() {
-							*httpVersion1 = topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPVersion.ValueFloat64()
+						if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPVersion.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPVersion.IsNull() {
+							*httpVersion1 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPVersion.ValueFloat64()
 						} else {
 							httpVersion1 = nil
 						}
 						httpsProxy1 := new(string)
-						if !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPSProxy.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPSProxy.IsNull() {
-							*httpsProxy1 = topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPSProxy.ValueString()
+						if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPSProxy.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPSProxy.IsNull() {
+							*httpsProxy1 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPSProxy.ValueString()
 						} else {
 							httpsProxy1 = nil
 						}
 						httpsProxyAuthorization1 := new(string)
-						if !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPSProxyAuthorization.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPSProxyAuthorization.IsNull() {
-							*httpsProxyAuthorization1 = topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPSProxyAuthorization.ValueString()
+						if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPSProxyAuthorization.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPSProxyAuthorization.IsNull() {
+							*httpsProxyAuthorization1 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.HTTPSProxyAuthorization.ValueString()
 						} else {
 							httpsProxyAuthorization1 = nil
 						}
 						keepAlive1 := new(bool)
-						if !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.KeepAlive.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.KeepAlive.IsNull() {
-							*keepAlive1 = topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.KeepAlive.ValueBool()
+						if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.KeepAlive.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.KeepAlive.IsNull() {
+							*keepAlive1 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.KeepAlive.ValueBool()
 						} else {
 							keepAlive1 = nil
 						}
 						noProxy1 := new(string)
-						if !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.NoProxy.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.NoProxy.IsNull() {
-							*noProxy1 = topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.NoProxy.ValueString()
+						if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.NoProxy.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.NoProxy.IsNull() {
+							*noProxy1 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.NoProxy.ValueString()
 						} else {
 							noProxy1 = nil
 						}
 						sslVerify2 := new(bool)
-						if !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.SslVerify.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.SslVerify.IsNull() {
-							*sslVerify2 = topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.SslVerify.ValueBool()
+						if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.SslVerify.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.SslVerify.IsNull() {
+							*sslVerify2 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.SslVerify.ValueBool()
 						} else {
 							sslVerify2 = nil
 						}
 						timeout2 := new(int64)
-						if !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.Timeout.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.Timeout.IsNull() {
-							*timeout2 = topicsItem.SchemaRegistry.Confluent.Authentication.Oauth2Client.Timeout.ValueInt64()
+						if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.Timeout.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.Timeout.IsNull() {
+							*timeout2 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.Timeout.ValueInt64()
 						} else {
 							timeout2 = nil
 						}
@@ -1018,20 +1016,20 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 					}
 				}
 				sslVerify3 := new(bool)
-				if !topicsItem.SchemaRegistry.Confluent.SslVerify.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.SslVerify.IsNull() {
-					*sslVerify3 = topicsItem.SchemaRegistry.Confluent.SslVerify.ValueBool()
+				if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.SslVerify.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.SslVerify.IsNull() {
+					*sslVerify3 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.SslVerify.ValueBool()
 				} else {
 					sslVerify3 = nil
 				}
 				ttl1 := new(float64)
-				if !topicsItem.SchemaRegistry.Confluent.TTL.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.TTL.IsNull() {
-					*ttl1 = topicsItem.SchemaRegistry.Confluent.TTL.ValueFloat64()
+				if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.TTL.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.TTL.IsNull() {
+					*ttl1 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.TTL.ValueFloat64()
 				} else {
 					ttl1 = nil
 				}
 				url1 := new(string)
-				if !topicsItem.SchemaRegistry.Confluent.URL.IsUnknown() && !topicsItem.SchemaRegistry.Confluent.URL.IsNull() {
-					*url1 = topicsItem.SchemaRegistry.Confluent.URL.ValueString()
+				if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.URL.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.URL.IsNull() {
+					*url1 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.URL.ValueString()
 				} else {
 					url1 = nil
 				}

@@ -123,15 +123,15 @@ func (r *GatewayControlPlaneResourceModel) ToSharedCreateControlPlaneRequest(ctx
 		cloudGateway = nil
 	}
 	proxyUrls := make([]shared.ProxyURL, 0, len(r.ProxyUrls))
-	for _, proxyUrlsItem := range r.ProxyUrls {
+	for proxyUrlsIndex := range r.ProxyUrls {
 		var host string
-		host = proxyUrlsItem.Host.ValueString()
+		host = r.ProxyUrls[proxyUrlsIndex].Host.ValueString()
 
 		var port int64
-		port = proxyUrlsItem.Port.ValueInt64()
+		port = r.ProxyUrls[proxyUrlsIndex].Port.ValueInt64()
 
 		var protocol string
-		protocol = proxyUrlsItem.Protocol.ValueString()
+		protocol = r.ProxyUrls[proxyUrlsIndex].Protocol.ValueString()
 
 		proxyUrls = append(proxyUrls, shared.ProxyURL{
 			Host:     host,
@@ -140,10 +140,10 @@ func (r *GatewayControlPlaneResourceModel) ToSharedCreateControlPlaneRequest(ctx
 		})
 	}
 	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
+	for labelsKey := range r.Labels {
 		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
 		} else {
 			labelsInst = nil
 		}
@@ -184,15 +184,15 @@ func (r *GatewayControlPlaneResourceModel) ToSharedUpdateControlPlaneRequest(ctx
 		authType = nil
 	}
 	proxyUrls := make([]shared.ProxyURL, 0, len(r.ProxyUrls))
-	for _, proxyUrlsItem := range r.ProxyUrls {
+	for proxyUrlsIndex := range r.ProxyUrls {
 		var host string
-		host = proxyUrlsItem.Host.ValueString()
+		host = r.ProxyUrls[proxyUrlsIndex].Host.ValueString()
 
 		var port int64
-		port = proxyUrlsItem.Port.ValueInt64()
+		port = r.ProxyUrls[proxyUrlsIndex].Port.ValueInt64()
 
 		var protocol string
-		protocol = proxyUrlsItem.Protocol.ValueString()
+		protocol = r.ProxyUrls[proxyUrlsIndex].Protocol.ValueString()
 
 		proxyUrls = append(proxyUrls, shared.ProxyURL{
 			Host:     host,
@@ -201,10 +201,10 @@ func (r *GatewayControlPlaneResourceModel) ToSharedUpdateControlPlaneRequest(ctx
 		})
 	}
 	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
+	for labelsKey := range r.Labels {
 		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
 		} else {
 			labelsInst = nil
 		}

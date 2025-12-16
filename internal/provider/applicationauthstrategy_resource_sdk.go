@@ -169,8 +169,8 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 		var keyNames []string
 		if r.KeyAuth.Configs.KeyAuth.KeyNames != nil {
 			keyNames = make([]string, 0, len(r.KeyAuth.Configs.KeyAuth.KeyNames))
-			for _, keyNamesItem := range r.KeyAuth.Configs.KeyAuth.KeyNames {
-				keyNames = append(keyNames, keyNamesItem.ValueString())
+			for keyNamesIndex := range r.KeyAuth.Configs.KeyAuth.KeyNames {
+				keyNames = append(keyNames, r.KeyAuth.Configs.KeyAuth.KeyNames[keyNamesIndex].ValueString())
 			}
 		}
 		keyAuth := shared.AppAuthStrategyConfigKeyAuth{
@@ -180,10 +180,10 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 			KeyAuth: keyAuth,
 		}
 		labels := make(map[string]*string)
-		for labelsKey, labelsValue := range r.KeyAuth.Labels {
+		for labelsKey := range r.KeyAuth.Labels {
 			labelsInst := new(string)
-			if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-				*labelsInst = labelsValue.ValueString()
+			if !r.KeyAuth.Labels[labelsKey].IsUnknown() && !r.KeyAuth.Labels[labelsKey].IsNull() {
+				*labelsInst = r.KeyAuth.Labels[labelsKey].ValueString()
 			} else {
 				labelsInst = nil
 			}
@@ -215,16 +215,16 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 		issuer = r.OpenidConnect.Configs.OpenidConnect.Issuer.ValueString()
 
 		credentialClaim := make([]string, 0, len(r.OpenidConnect.Configs.OpenidConnect.CredentialClaim))
-		for _, credentialClaimItem := range r.OpenidConnect.Configs.OpenidConnect.CredentialClaim {
-			credentialClaim = append(credentialClaim, credentialClaimItem.ValueString())
+		for credentialClaimIndex := range r.OpenidConnect.Configs.OpenidConnect.CredentialClaim {
+			credentialClaim = append(credentialClaim, r.OpenidConnect.Configs.OpenidConnect.CredentialClaim[credentialClaimIndex].ValueString())
 		}
 		scopes := make([]string, 0, len(r.OpenidConnect.Configs.OpenidConnect.Scopes))
-		for _, scopesItem := range r.OpenidConnect.Configs.OpenidConnect.Scopes {
-			scopes = append(scopes, scopesItem.ValueString())
+		for scopesIndex := range r.OpenidConnect.Configs.OpenidConnect.Scopes {
+			scopes = append(scopes, r.OpenidConnect.Configs.OpenidConnect.Scopes[scopesIndex].ValueString())
 		}
 		authMethods := make([]string, 0, len(r.OpenidConnect.Configs.OpenidConnect.AuthMethods))
-		for _, authMethodsItem := range r.OpenidConnect.Configs.OpenidConnect.AuthMethods {
-			authMethods = append(authMethods, authMethodsItem.ValueString())
+		for authMethodsIndex := range r.OpenidConnect.Configs.OpenidConnect.AuthMethods {
+			authMethods = append(authMethods, r.OpenidConnect.Configs.OpenidConnect.AuthMethods[authMethodsIndex].ValueString())
 		}
 		var additionalProperties interface{}
 		if !r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties.IsUnknown() && !r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties.IsNull() {
@@ -247,10 +247,10 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 			dcrProviderID = nil
 		}
 		labels1 := make(map[string]*string)
-		for labelsKey1, labelsValue1 := range r.OpenidConnect.Labels {
+		for labelsKey1 := range r.OpenidConnect.Labels {
 			labelsInst1 := new(string)
-			if !labelsValue1.IsUnknown() && !labelsValue1.IsNull() {
-				*labelsInst1 = labelsValue1.ValueString()
+			if !r.OpenidConnect.Labels[labelsKey1].IsUnknown() && !r.OpenidConnect.Labels[labelsKey1].IsNull() {
+				*labelsInst1 = r.OpenidConnect.Labels[labelsKey1].ValueString()
 			} else {
 				labelsInst1 = nil
 			}

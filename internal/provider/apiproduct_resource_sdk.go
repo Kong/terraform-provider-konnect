@@ -113,25 +113,25 @@ func (r *APIProductResourceModel) ToSharedCreateAPIProductDTO(ctx context.Contex
 		description = nil
 	}
 	labels := make(map[string]*string)
-	for labelsKey, labelsValue := range r.Labels {
+	for labelsKey := range r.Labels {
 		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
 		} else {
 			labelsInst = nil
 		}
 		labels[labelsKey] = labelsInst
 	}
 	publicLabels := make(map[string]string)
-	for publicLabelsKey, publicLabelsValue := range r.PublicLabels {
+	for publicLabelsKey := range r.PublicLabels {
 		var publicLabelsInst string
-		publicLabelsInst = publicLabelsValue.ValueString()
+		publicLabelsInst = r.PublicLabels[publicLabelsKey].ValueString()
 
 		publicLabels[publicLabelsKey] = publicLabelsInst
 	}
 	portalIds := make([]string, 0, len(r.PortalIds))
-	for _, portalIdsItem := range r.PortalIds {
-		portalIds = append(portalIds, portalIdsItem.ValueString())
+	for portalIdsIndex := range r.PortalIds {
+		portalIds = append(portalIds, r.PortalIds[portalIdsIndex].ValueString())
 	}
 	out := shared.CreateAPIProductDTO{
 		Name:         name,
@@ -162,10 +162,10 @@ func (r *APIProductResourceModel) ToSharedUpdateAPIProductDTO(ctx context.Contex
 	var labels map[string]*string
 	if r.Labels != nil {
 		labels = make(map[string]*string)
-		for labelsKey, labelsValue := range r.Labels {
+		for labelsKey := range r.Labels {
 			labelsInst := new(string)
-			if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-				*labelsInst = labelsValue.ValueString()
+			if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+				*labelsInst = r.Labels[labelsKey].ValueString()
 			} else {
 				labelsInst = nil
 			}
@@ -173,18 +173,18 @@ func (r *APIProductResourceModel) ToSharedUpdateAPIProductDTO(ctx context.Contex
 		}
 	}
 	publicLabels := make(map[string]*string)
-	for publicLabelsKey, publicLabelsValue := range r.PublicLabels {
+	for publicLabelsKey := range r.PublicLabels {
 		publicLabelsInst := new(string)
-		if !publicLabelsValue.IsUnknown() && !publicLabelsValue.IsNull() {
-			*publicLabelsInst = publicLabelsValue.ValueString()
+		if !r.PublicLabels[publicLabelsKey].IsUnknown() && !r.PublicLabels[publicLabelsKey].IsNull() {
+			*publicLabelsInst = r.PublicLabels[publicLabelsKey].ValueString()
 		} else {
 			publicLabelsInst = nil
 		}
 		publicLabels[publicLabelsKey] = publicLabelsInst
 	}
 	portalIds := make([]string, 0, len(r.PortalIds))
-	for _, portalIdsItem := range r.PortalIds {
-		portalIds = append(portalIds, portalIdsItem.ValueString())
+	for portalIdsIndex := range r.PortalIds {
+		portalIds = append(portalIds, r.PortalIds[portalIdsIndex].ValueString())
 	}
 	out := shared.UpdateAPIProductDTO{
 		Name:         name,

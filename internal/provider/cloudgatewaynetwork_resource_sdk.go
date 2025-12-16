@@ -102,8 +102,8 @@ func (r *CloudGatewayNetworkResourceModel) ToSharedCreateNetworkRequest(ctx cont
 	region = r.Region.ValueString()
 
 	availabilityZones := make([]string, 0, len(r.AvailabilityZones))
-	for _, availabilityZonesItem := range r.AvailabilityZones {
-		availabilityZones = append(availabilityZones, availabilityZonesItem.ValueString())
+	for availabilityZonesIndex := range r.AvailabilityZones {
+		availabilityZones = append(availabilityZones, r.AvailabilityZones[availabilityZonesIndex].ValueString())
 	}
 	var cidrBlock string
 	cidrBlock = r.CidrBlock.ValueString()

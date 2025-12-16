@@ -464,11 +464,11 @@ type JwtSignerPluginConfig struct {
 	// If you want to add or subtract (using a negative value) expiry time (in seconds) of the original access token, you can specify a value that is added to the original access token's `exp` claim.
 	AccessTokenUpstreamLeeway *float64 `default:"0" json:"access_token_upstream_leeway"`
 	// Add customized claims if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.
-	AddAccessTokenClaims map[string]any `json:"add_access_token_claims,omitempty"`
+	AddAccessTokenClaims map[string]string `json:"add_access_token_claims,omitempty"`
 	// Add customized claims if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.
-	AddChannelTokenClaims map[string]any `json:"add_channel_token_claims,omitempty"`
+	AddChannelTokenClaims map[string]string `json:"add_channel_token_claims,omitempty"`
 	// Add customized claims to both tokens if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.
-	AddClaims map[string]any `json:"add_claims,omitempty"`
+	AddClaims map[string]string `json:"add_claims,omitempty"`
 	// Whether to cache access token introspection results.
 	CacheAccessTokenIntrospection *bool `default:"true" json:"cache_access_token_introspection"`
 	// Whether to cache channel token introspection results.
@@ -598,11 +598,11 @@ type JwtSignerPluginConfig struct {
 	// remove claims. It should be an array, and each element is a claim key string.
 	RemoveChannelTokenClaims []string `json:"remove_channel_token_claims,omitempty"`
 	// Set customized claims. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.
-	SetAccessTokenClaims map[string]any `json:"set_access_token_claims,omitempty"`
+	SetAccessTokenClaims map[string]string `json:"set_access_token_claims,omitempty"`
 	// Set customized claims. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.
-	SetChannelTokenClaims map[string]any `json:"set_channel_token_claims,omitempty"`
+	SetChannelTokenClaims map[string]string `json:"set_channel_token_claims,omitempty"`
 	// Set customized claims to both tokens. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.
-	SetClaims map[string]any `json:"set_claims,omitempty"`
+	SetClaims map[string]string `json:"set_claims,omitempty"`
 	// Use this parameter to enable and disable further checks on a payload before the new token is signed. If you set this to `true`, the expiry or scopes are not checked on a payload.
 	TrustAccessTokenIntrospection *bool `default:"true" json:"trust_access_token_introspection"`
 	// Providing an opaque channel token for plugin introspection, and verifying expiry and scopes on introspection results may make further payload checks unnecessary before the plugin signs a new token. This also applies when using a JWT token with introspection JSON as per config.channel_token_introspection_jwt_claim. Use this parameter to manage additional payload checks before signing a new token. With true (default), payload's expiry or scopes aren't checked.
@@ -1042,21 +1042,21 @@ func (j *JwtSignerPluginConfig) GetAccessTokenUpstreamLeeway() *float64 {
 	return j.AccessTokenUpstreamLeeway
 }
 
-func (j *JwtSignerPluginConfig) GetAddAccessTokenClaims() map[string]any {
+func (j *JwtSignerPluginConfig) GetAddAccessTokenClaims() map[string]string {
 	if j == nil {
 		return nil
 	}
 	return j.AddAccessTokenClaims
 }
 
-func (j *JwtSignerPluginConfig) GetAddChannelTokenClaims() map[string]any {
+func (j *JwtSignerPluginConfig) GetAddChannelTokenClaims() map[string]string {
 	if j == nil {
 		return nil
 	}
 	return j.AddChannelTokenClaims
 }
 
-func (j *JwtSignerPluginConfig) GetAddClaims() map[string]any {
+func (j *JwtSignerPluginConfig) GetAddClaims() map[string]string {
 	if j == nil {
 		return nil
 	}
@@ -1511,21 +1511,21 @@ func (j *JwtSignerPluginConfig) GetRemoveChannelTokenClaims() []string {
 	return j.RemoveChannelTokenClaims
 }
 
-func (j *JwtSignerPluginConfig) GetSetAccessTokenClaims() map[string]any {
+func (j *JwtSignerPluginConfig) GetSetAccessTokenClaims() map[string]string {
 	if j == nil {
 		return nil
 	}
 	return j.SetAccessTokenClaims
 }
 
-func (j *JwtSignerPluginConfig) GetSetChannelTokenClaims() map[string]any {
+func (j *JwtSignerPluginConfig) GetSetChannelTokenClaims() map[string]string {
 	if j == nil {
 		return nil
 	}
 	return j.SetChannelTokenClaims
 }
 
-func (j *JwtSignerPluginConfig) GetSetClaims() map[string]any {
+func (j *JwtSignerPluginConfig) GetSetClaims() map[string]string {
 	if j == nil {
 		return nil
 	}

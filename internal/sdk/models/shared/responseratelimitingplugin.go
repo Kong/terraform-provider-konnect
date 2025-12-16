@@ -108,6 +108,68 @@ func (e *ResponseRatelimitingPluginLimitBy) UnmarshalJSON(data []byte) error {
 	}
 }
 
+type Limits struct {
+	Day    *float64 `default:"null" json:"day"`
+	Hour   *float64 `default:"null" json:"hour"`
+	Minute *float64 `default:"null" json:"minute"`
+	Month  *float64 `default:"null" json:"month"`
+	Second *float64 `default:"null" json:"second"`
+	Year   *float64 `default:"null" json:"year"`
+}
+
+func (l Limits) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *Limits) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (l *Limits) GetDay() *float64 {
+	if l == nil {
+		return nil
+	}
+	return l.Day
+}
+
+func (l *Limits) GetHour() *float64 {
+	if l == nil {
+		return nil
+	}
+	return l.Hour
+}
+
+func (l *Limits) GetMinute() *float64 {
+	if l == nil {
+		return nil
+	}
+	return l.Minute
+}
+
+func (l *Limits) GetMonth() *float64 {
+	if l == nil {
+		return nil
+	}
+	return l.Month
+}
+
+func (l *Limits) GetSecond() *float64 {
+	if l == nil {
+		return nil
+	}
+	return l.Second
+}
+
+func (l *Limits) GetYear() *float64 {
+	if l == nil {
+		return nil
+	}
+	return l.Year
+}
+
 // ResponseRatelimitingPluginPolicy - The rate-limiting policies to use for retrieving and incrementing the limits.
 type ResponseRatelimitingPluginPolicy string
 
@@ -246,7 +308,7 @@ type ResponseRatelimitingPluginConfig struct {
 	// The entity that will be used when aggregating the limits: `consumer`, `credential`, `ip`. If the `consumer` or the `credential` cannot be determined, the system will always fallback to `ip`.
 	LimitBy *ResponseRatelimitingPluginLimitBy `default:"consumer" json:"limit_by"`
 	// A map that defines rate limits for the plugin.
-	Limits map[string]any `json:"limits,omitempty"`
+	Limits map[string]Limits `json:"limits,omitempty"`
 	// The rate-limiting policies to use for retrieving and incrementing the limits.
 	Policy *ResponseRatelimitingPluginPolicy `default:"local" json:"policy"`
 	// Redis configuration
@@ -299,7 +361,7 @@ func (r *ResponseRatelimitingPluginConfig) GetLimitBy() *ResponseRatelimitingPlu
 	return r.LimitBy
 }
 
-func (r *ResponseRatelimitingPluginConfig) GetLimits() map[string]any {
+func (r *ResponseRatelimitingPluginConfig) GetLimits() map[string]Limits {
 	if r == nil {
 		return nil
 	}

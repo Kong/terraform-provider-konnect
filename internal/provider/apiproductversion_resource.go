@@ -21,7 +21,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -69,9 +68,6 @@ func (r *APIProductVersionResource) Schema(ctx context.Context, req resource.Sch
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"deprecated": schema.BoolAttribute{
 				Computed:           true,
@@ -162,14 +158,7 @@ func (r *APIProductVersionResource) Schema(ctx context.Context, req resource.Sch
 							Computed: true,
 						},
 						"publish_status": schema.StringAttribute{
-							Computed:    true,
-							Description: `must be one of ["published", "unpublished"]`,
-							Validators: []validator.String{
-								stringvalidator.OneOf(
-									"published",
-									"unpublished",
-								),
-							},
+							Computed: true,
 						},
 					},
 				},
@@ -181,9 +170,6 @@ func (r *APIProductVersionResource) Schema(ctx context.Context, req resource.Sch
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 		},
 	}
@@ -243,6 +229,13 @@ func (r *APIProductVersionResource) Create(ctx context.Context, req resource.Cre
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode == 409 {
+		resp.Diagnostics.AddError(
+			"Resource Already Exists",
+			"When creating this resource, the API indicated that this resource already exists. You can bring the existing resource under management using Terraform import functionality or retry with a unique configuration.",
+		)
 		return
 	}
 	if res.StatusCode != 201 {
@@ -456,7 +449,10 @@ func (r *APIProductVersionResource) Delete(ctx context.Context, req resource.Del
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 204 {
+	switch res.StatusCode {
+	case 204, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

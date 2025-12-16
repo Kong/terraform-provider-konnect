@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -112,17 +110,15 @@ func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(c
 						}
 						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint)
 						if resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders != nil {
-							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders = make(map[string]jsontypes.Normalized, len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders))
+							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders = make(map[string]types.String, len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders))
 							for key, value := range resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders {
-								result, _ := json.Marshal(value)
-								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders[key] = jsontypes.NewNormalizedValue(string(result))
+								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders[key] = types.StringValue(value)
 							}
 						}
 						if resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs != nil {
-							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs = make(map[string]jsontypes.Normalized, len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs))
+							r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs = make(map[string]types.String, len(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs))
 							for key1, value1 := range resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs {
-								result1, _ := json.Marshal(value1)
-								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs[key1] = jsontypes.NewNormalizedValue(string(result1))
+								r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs[key1] = types.StringValue(value1)
 							}
 						}
 						r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Username = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Username)
@@ -360,8 +356,8 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 		var after *shared.ConfluentPluginAfter
 		if r.Ordering.After != nil {
 			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			for accessIndex := range r.Ordering.After.Access {
+				access = append(access, r.Ordering.After.Access[accessIndex].ValueString())
 			}
 			after = &shared.ConfluentPluginAfter{
 				Access: access,
@@ -370,8 +366,8 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 		var before *shared.ConfluentPluginBefore
 		if r.Ordering.Before != nil {
 			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			for accessIndex1 := range r.Ordering.Before.Access {
+				access1 = append(access1, r.Ordering.Before.Access[accessIndex1].ValueString())
 			}
 			before = &shared.ConfluentPluginBefore{
 				Access: access1,
@@ -385,22 +381,22 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 	var partials []shared.ConfluentPluginPartials
 	if r.Partials != nil {
 		partials = make([]shared.ConfluentPluginPartials, 0, len(r.Partials))
-		for _, partialsItem := range r.Partials {
+		for partialsIndex := range r.Partials {
 			id1 := new(string)
-			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
-				*id1 = partialsItem.ID.ValueString()
+			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
+				*id1 = r.Partials[partialsIndex].ID.ValueString()
 			} else {
 				id1 = nil
 			}
 			name := new(string)
-			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
-				*name = partialsItem.Name.ValueString()
+			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
+				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
 			path := new(string)
-			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
-				*path = partialsItem.Path.ValueString()
+			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
+				*path = r.Partials[partialsIndex].Path.ValueString()
 			} else {
 				path = nil
 			}
@@ -414,8 +410,8 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 	var tags []string
 	if r.Tags != nil {
 		tags = make([]string, 0, len(r.Tags))
-		for _, tagsItem := range r.Tags {
-			tags = append(tags, tagsItem.ValueString())
+		for tagsIndex := range r.Tags {
+			tags = append(tags, r.Tags[tagsIndex].ValueString())
 		}
 	}
 	updatedAt := new(int64)
@@ -427,19 +423,19 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 	var allowedTopics []string
 	if r.Config.AllowedTopics != nil {
 		allowedTopics = make([]string, 0, len(r.Config.AllowedTopics))
-		for _, allowedTopicsItem := range r.Config.AllowedTopics {
-			allowedTopics = append(allowedTopics, allowedTopicsItem.ValueString())
+		for allowedTopicsIndex := range r.Config.AllowedTopics {
+			allowedTopics = append(allowedTopics, r.Config.AllowedTopics[allowedTopicsIndex].ValueString())
 		}
 	}
 	var bootstrapServers []shared.BootstrapServers
 	if r.Config.BootstrapServers != nil {
 		bootstrapServers = make([]shared.BootstrapServers, 0, len(r.Config.BootstrapServers))
-		for _, bootstrapServersItem := range r.Config.BootstrapServers {
+		for bootstrapServersIndex := range r.Config.BootstrapServers {
 			var host string
-			host = bootstrapServersItem.Host.ValueString()
+			host = r.Config.BootstrapServers[bootstrapServersIndex].Host.ValueString()
 
 			var port int64
-			port = bootstrapServersItem.Port.ValueInt64()
+			port = r.Config.BootstrapServers[bootstrapServersIndex].Port.ValueInt64()
 
 			bootstrapServers = append(bootstrapServers, shared.BootstrapServers{
 				Host: host,
@@ -516,8 +512,8 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 	var messageByLuaFunctions []string
 	if r.Config.MessageByLuaFunctions != nil {
 		messageByLuaFunctions = make([]string, 0, len(r.Config.MessageByLuaFunctions))
-		for _, messageByLuaFunctionsItem := range r.Config.MessageByLuaFunctions {
-			messageByLuaFunctions = append(messageByLuaFunctions, messageByLuaFunctionsItem.ValueString())
+		for messageByLuaFunctionsIndex := range r.Config.MessageByLuaFunctions {
+			messageByLuaFunctions = append(messageByLuaFunctions, r.Config.MessageByLuaFunctions[messageByLuaFunctionsIndex].ValueString())
 		}
 	}
 	producerAsync := new(bool)
@@ -602,8 +598,8 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 				var oauth2 *shared.Oauth2
 				if r.Config.SchemaRegistry.Confluent.Authentication.Oauth2 != nil {
 					audience := make([]string, 0, len(r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Audience))
-					for _, audienceItem := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Audience {
-						audience = append(audience, audienceItem.ValueString())
+					for audienceIndex := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Audience {
+						audience = append(audience, r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Audience[audienceIndex].ValueString())
 					}
 					clientID := new(string)
 					if !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.IsUnknown() && !r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.ClientID.IsNull() {
@@ -630,27 +626,29 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 						password1 = nil
 					}
 					scopes := make([]string, 0, len(r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes))
-					for _, scopesItem := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes {
-						scopes = append(scopes, scopesItem.ValueString())
+					for scopesIndex := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes {
+						scopes = append(scopes, r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.Scopes[scopesIndex].ValueString())
 					}
 					var tokenEndpoint string
 					tokenEndpoint = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenEndpoint.ValueString()
 
-					var tokenHeaders map[string]interface{}
+					var tokenHeaders map[string]string
 					if r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders != nil {
-						tokenHeaders = make(map[string]interface{})
-						for tokenHeadersKey, tokenHeadersValue := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders {
-							var tokenHeadersInst interface{}
-							_ = json.Unmarshal([]byte(tokenHeadersValue.ValueString()), &tokenHeadersInst)
+						tokenHeaders = make(map[string]string)
+						for tokenHeadersKey := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders {
+							var tokenHeadersInst string
+							tokenHeadersInst = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenHeaders[tokenHeadersKey].ValueString()
+
 							tokenHeaders[tokenHeadersKey] = tokenHeadersInst
 						}
 					}
-					var tokenPostArgs map[string]interface{}
+					var tokenPostArgs map[string]string
 					if r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs != nil {
-						tokenPostArgs = make(map[string]interface{})
-						for tokenPostArgsKey, tokenPostArgsValue := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs {
-							var tokenPostArgsInst interface{}
-							_ = json.Unmarshal([]byte(tokenPostArgsValue.ValueString()), &tokenPostArgsInst)
+						tokenPostArgs = make(map[string]string)
+						for tokenPostArgsKey := range r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs {
+							var tokenPostArgsInst string
+							tokenPostArgsInst = r.Config.SchemaRegistry.Confluent.Authentication.Oauth2.TokenPostArgs[tokenPostArgsKey].ValueString()
+
 							tokenPostArgs[tokenPostArgsKey] = tokenPostArgsInst
 						}
 					}

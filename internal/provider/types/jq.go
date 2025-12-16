@@ -3,14 +3,13 @@
 package types
 
 import (
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type Jq struct {
-	Input  types.String                    `tfsdk:"input"`
-	Inputs map[string]jsontypes.Normalized `tfsdk:"inputs"`
-	Jq     types.String                    `tfsdk:"jq"`
-	Name   types.String                    `tfsdk:"name"`
-	Output types.String                    `tfsdk:"output"`
+	Input  types.String            `tfsdk:"input"`
+	Inputs map[string]types.String `tfsdk:"inputs"`
+	Jq     types.String            `tfsdk:"jq"`
+	Name   types.String            `tfsdk:"name"`
+	Output types.String            `tfsdk:"output"`
 }

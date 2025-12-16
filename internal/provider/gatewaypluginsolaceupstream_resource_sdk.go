@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -78,10 +76,9 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) RefreshFromSharedSolaceUpstre
 		r.Config.Session.GenerateSequenceNumber = types.BoolPointerValue(resp.Config.Session.GenerateSequenceNumber)
 		r.Config.Session.Host = types.StringValue(resp.Config.Session.Host)
 		if resp.Config.Session.Properties != nil {
-			r.Config.Session.Properties = make(map[string]jsontypes.Normalized, len(resp.Config.Session.Properties))
+			r.Config.Session.Properties = make(map[string]types.String, len(resp.Config.Session.Properties))
 			for key, value := range resp.Config.Session.Properties {
-				result, _ := json.Marshal(value)
-				r.Config.Session.Properties[key] = jsontypes.NewNormalizedValue(string(result))
+				r.Config.Session.Properties[key] = types.StringValue(value)
 			}
 		}
 		r.Config.Session.SslValidateCertificate = types.BoolPointerValue(resp.Config.Session.SslValidateCertificate)
@@ -266,8 +263,8 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToSharedSolaceUpstreamPlugin(
 		var after *shared.SolaceUpstreamPluginAfter
 		if r.Ordering.After != nil {
 			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			for accessIndex := range r.Ordering.After.Access {
+				access = append(access, r.Ordering.After.Access[accessIndex].ValueString())
 			}
 			after = &shared.SolaceUpstreamPluginAfter{
 				Access: access,
@@ -276,8 +273,8 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToSharedSolaceUpstreamPlugin(
 		var before *shared.SolaceUpstreamPluginBefore
 		if r.Ordering.Before != nil {
 			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			for accessIndex1 := range r.Ordering.Before.Access {
+				access1 = append(access1, r.Ordering.Before.Access[accessIndex1].ValueString())
 			}
 			before = &shared.SolaceUpstreamPluginBefore{
 				Access: access1,
@@ -291,22 +288,22 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToSharedSolaceUpstreamPlugin(
 	var partials []shared.SolaceUpstreamPluginPartials
 	if r.Partials != nil {
 		partials = make([]shared.SolaceUpstreamPluginPartials, 0, len(r.Partials))
-		for _, partialsItem := range r.Partials {
+		for partialsIndex := range r.Partials {
 			id1 := new(string)
-			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
-				*id1 = partialsItem.ID.ValueString()
+			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
+				*id1 = r.Partials[partialsIndex].ID.ValueString()
 			} else {
 				id1 = nil
 			}
 			name := new(string)
-			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
-				*name = partialsItem.Name.ValueString()
+			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
+				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
 			path := new(string)
-			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
-				*path = partialsItem.Path.ValueString()
+			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
+				*path = r.Partials[partialsIndex].Path.ValueString()
 			} else {
 				path = nil
 			}
@@ -320,8 +317,8 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToSharedSolaceUpstreamPlugin(
 	var tags []string
 	if r.Tags != nil {
 		tags = make([]string, 0, len(r.Tags))
-		for _, tagsItem := range r.Tags {
-			tags = append(tags, tagsItem.ValueString())
+		for tagsIndex := range r.Tags {
+			tags = append(tags, r.Tags[tagsIndex].ValueString())
 		}
 	}
 	updatedAt := new(int64)
@@ -349,13 +346,13 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToSharedSolaceUpstreamPlugin(
 		deliveryMode = nil
 	}
 	destinations := make([]shared.SolaceUpstreamPluginDestinations, 0, len(r.Config.Message.Destinations))
-	for _, destinationsItem := range r.Config.Message.Destinations {
+	for destinationsIndex := range r.Config.Message.Destinations {
 		var name1 string
-		name1 = destinationsItem.Name.ValueString()
+		name1 = r.Config.Message.Destinations[destinationsIndex].Name.ValueString()
 
 		typeVar := new(shared.SolaceUpstreamPluginType)
-		if !destinationsItem.Type.IsUnknown() && !destinationsItem.Type.IsNull() {
-			*typeVar = shared.SolaceUpstreamPluginType(destinationsItem.Type.ValueString())
+		if !r.Config.Message.Destinations[destinationsIndex].Type.IsUnknown() && !r.Config.Message.Destinations[destinationsIndex].Type.IsNull() {
+			*typeVar = shared.SolaceUpstreamPluginType(r.Config.Message.Destinations[destinationsIndex].Type.ValueString())
 		} else {
 			typeVar = nil
 		}
@@ -397,8 +394,8 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToSharedSolaceUpstreamPlugin(
 	var functions []string
 	if r.Config.Message.Functions != nil {
 		functions = make([]string, 0, len(r.Config.Message.Functions))
-		for _, functionsItem := range r.Config.Message.Functions {
-			functions = append(functions, functionsItem.ValueString())
+		for functionsIndex := range r.Config.Message.Functions {
+			functions = append(functions, r.Config.Message.Functions[functionsIndex].ValueString())
 		}
 	}
 	priority := new(int64)
@@ -541,12 +538,13 @@ func (r *GatewayPluginSolaceUpstreamResourceModel) ToSharedSolaceUpstreamPlugin(
 	var host string
 	host = r.Config.Session.Host.ValueString()
 
-	var properties map[string]interface{}
+	var properties map[string]string
 	if r.Config.Session.Properties != nil {
-		properties = make(map[string]interface{})
-		for propertiesKey, propertiesValue := range r.Config.Session.Properties {
-			var propertiesInst interface{}
-			_ = json.Unmarshal([]byte(propertiesValue.ValueString()), &propertiesInst)
+		properties = make(map[string]string)
+		for propertiesKey := range r.Config.Session.Properties {
+			var propertiesInst string
+			propertiesInst = r.Config.Session.Properties[propertiesKey].ValueString()
+
 			properties[propertiesKey] = propertiesInst
 		}
 	}

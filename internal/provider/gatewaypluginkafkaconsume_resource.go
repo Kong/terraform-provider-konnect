@@ -7,10 +7,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/float64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -29,7 +27,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	speakeasy_int64validators "github.com/kong/terraform-provider-konnect/v3/internal/validators/int64validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
@@ -240,10 +237,10 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 													},
 													`token_endpoint`: types.StringType,
 													`token_headers`: types.MapType{
-														ElemType: jsontypes.NormalizedType{},
+														ElemType: types.StringType,
 													},
 													`token_post_args`: types.MapType{
-														ElemType: jsontypes.NormalizedType{},
+														ElemType: types.StringType,
 													},
 													`username`: types.StringType,
 												},
@@ -295,10 +292,10 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 													},
 													`token_endpoint`: types.StringType,
 													`token_headers`: types.MapType{
-														ElemType: jsontypes.NormalizedType{},
+														ElemType: types.StringType,
 													},
 													`token_post_args`: types.MapType{
-														ElemType: jsontypes.NormalizedType{},
+														ElemType: types.StringType,
 													},
 													`username`: types.StringType,
 												},
@@ -375,10 +372,10 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 													},
 													"token_endpoint": types.StringType,
 													"token_headers": types.MapType{
-														ElemType: jsontypes.NormalizedType{},
+														ElemType: types.StringType,
 													},
 													"token_post_args": types.MapType{
-														ElemType: jsontypes.NormalizedType{},
+														ElemType: types.StringType,
 													},
 													"username": types.StringType,
 												})),
@@ -431,19 +428,13 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 													},
 													"token_headers": schema.MapAttribute{
 														Optional:    true,
-														ElementType: jsontypes.NormalizedType{},
+														ElementType: types.StringType,
 														Description: `Extra headers to be passed in the token endpoint request.`,
-														Validators: []validator.Map{
-															mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-														},
 													},
 													"token_post_args": schema.MapAttribute{
 														Optional:    true,
-														ElementType: jsontypes.NormalizedType{},
+														ElementType: types.StringType,
 														Description: `Extra post arguments to be passed in the token endpoint request.`,
-														Validators: []validator.Map{
-															mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-														},
 													},
 													"username": schema.StringAttribute{
 														Optional:    true,
@@ -626,10 +617,10 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 																},
 																`token_endpoint`: types.StringType,
 																`token_headers`: types.MapType{
-																	ElemType: jsontypes.NormalizedType{},
+																	ElemType: types.StringType,
 																},
 																`token_post_args`: types.MapType{
-																	ElemType: jsontypes.NormalizedType{},
+																	ElemType: types.StringType,
 																},
 																`username`: types.StringType,
 															},
@@ -681,10 +672,10 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 																},
 																`token_endpoint`: types.StringType,
 																`token_headers`: types.MapType{
-																	ElemType: jsontypes.NormalizedType{},
+																	ElemType: types.StringType,
 																},
 																`token_post_args`: types.MapType{
-																	ElemType: jsontypes.NormalizedType{},
+																	ElemType: types.StringType,
 																},
 																`username`: types.StringType,
 															},
@@ -761,10 +752,10 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 																},
 																"token_endpoint": types.StringType,
 																"token_headers": types.MapType{
-																	ElemType: jsontypes.NormalizedType{},
+																	ElemType: types.StringType,
 																},
 																"token_post_args": types.MapType{
-																	ElemType: jsontypes.NormalizedType{},
+																	ElemType: types.StringType,
 																},
 																"username": types.StringType,
 															})),
@@ -817,19 +808,13 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 																},
 																"token_headers": schema.MapAttribute{
 																	Optional:    true,
-																	ElementType: jsontypes.NormalizedType{},
+																	ElementType: types.StringType,
 																	Description: `Extra headers to be passed in the token endpoint request.`,
-																	Validators: []validator.Map{
-																		mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-																	},
 																},
 																"token_post_args": schema.MapAttribute{
 																	Optional:    true,
-																	ElementType: jsontypes.NormalizedType{},
+																	ElementType: types.StringType,
 																	Description: `Extra post arguments to be passed in the token endpoint request.`,
-																	Validators: []validator.Map{
-																		mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-																	},
 																},
 																"username": schema.StringAttribute{
 																	Optional:    true,
@@ -1346,7 +1331,10 @@ func (r *GatewayPluginKafkaConsumeResource) Delete(ctx context.Context, req reso
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 204 {
+	switch res.StatusCode {
+	case 204, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

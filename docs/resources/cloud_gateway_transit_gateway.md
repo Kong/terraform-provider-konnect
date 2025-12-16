@@ -374,7 +374,6 @@ transit gateway.
 - `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
 - `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
 - `terminated` - The attachment has been fully deleted and is no longer available.
-must be one of ["created", "initializing", "pending-acceptance", "pending-user-action", "ready", "terminating", "terminated"]
 - `state_metadata` (Attributes) Metadata describing the backing state of the transit gateway and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--aws_resource_endpoint_gateway_response--state_metadata))
 - `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--aws_resource_endpoint_gateway_response--transit_gateway_attachment_config))
 - `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
@@ -403,7 +402,7 @@ Read-Only:
 
 Read-Only:
 
-- `kind` (String) must be "aws-resource-endpoint-attachment"
+- `kind` (String)
 - `ram_share_arn` (String) Resource Share ARN to verify request to create transit gateway attachment.
 - `resource_config` (Attributes List) List of unique resource config mapping for aws resource endpoint. (see [below for nested schema](#nestedatt--aws_resource_endpoint_gateway_response--transit_gateway_attachment_config--resource_config))
 
@@ -420,7 +419,6 @@ Read-Only:
 - `ready` - The config is fully operational and can route traffic as configured.
 - `error` - The config is in an error state, and is not operational.
 - `terminating` - The config is in the process of being deleted and is no longer accepting new traffic.
-must be one of ["initializing", "missing", "ready", "error", "terminating"]
 
 
 
@@ -447,7 +445,6 @@ transit gateway.
 - `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
 - `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
 - `terminated` - The attachment has been fully deleted and is no longer available.
-must be one of ["created", "initializing", "pending-acceptance", "pending-user-action", "ready", "terminating", "terminated"]
 - `state_metadata` (Attributes) Metadata describing the backing state of the transit gateway and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--aws_transit_gateway_response--state_metadata))
 - `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--aws_transit_gateway_response--transit_gateway_attachment_config))
 - `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
@@ -476,7 +473,7 @@ Read-Only:
 
 Read-Only:
 
-- `kind` (String) must be "aws-transit-gateway-attachment"
+- `kind` (String)
 - `ram_share_arn` (String) Resource Share ARN to verify request to create transit gateway attachment.
 - `transit_gateway_id` (String) AWS Transit Gateway ID to create attachment to.
 
@@ -504,7 +501,6 @@ transit gateway.
 - `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
 - `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
 - `terminated` - The attachment has been fully deleted and is no longer available.
-must be one of ["created", "initializing", "pending-acceptance", "pending-user-action", "ready", "terminating", "terminated"]
 - `state_metadata` (Attributes) Metadata describing the backing state of the transit gateway and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--aws_vpc_peering_gateway_response--state_metadata))
 - `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--aws_vpc_peering_gateway_response--transit_gateway_attachment_config))
 - `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
@@ -533,7 +529,7 @@ Read-Only:
 
 Read-Only:
 
-- `kind` (String) must be "aws-vpc-peering-attachment"
+- `kind` (String)
 - `peer_account_id` (String)
 - `peer_vpc_id` (String)
 - `peer_vpc_region` (String)
@@ -560,7 +556,6 @@ transit gateway.
 - `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
 - `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
 - `terminated` - The attachment has been fully deleted and is no longer available.
-must be one of ["created", "initializing", "pending-acceptance", "pending-user-action", "ready", "terminating", "terminated"]
 - `state_metadata` (Attributes) Metadata describing the backing state of the transit gateway and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--azure_transit_gateway_response--state_metadata))
 - `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--azure_transit_gateway_response--transit_gateway_attachment_config))
 - `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
@@ -589,7 +584,7 @@ Read-Only:
 
 Read-Only:
 
-- `kind` (String) must be "azure-vnet-peering-attachment"
+- `kind` (String)
 - `resource_group_name` (String) Resource Group Name for the Azure VNET Peering attachment.
 - `subscription_id` (String) Subscription ID for the Azure VNET Peering attachment.
 - `tenant_id` (String) Tenant ID for the Azure VNET Peering attachment.
@@ -617,7 +612,6 @@ transit gateway.
 - `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
 - `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
 - `terminated` - The attachment has been fully deleted and is no longer available.
-must be one of ["created", "initializing", "pending-acceptance", "pending-user-action", "ready", "terminating", "terminated"]
 - `state_metadata` (Attributes) Metadata describing the backing state of the transit gateway and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--gcpvpc_peering_gateway_response--state_metadata))
 - `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--gcpvpc_peering_gateway_response--transit_gateway_attachment_config))
 - `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
@@ -646,7 +640,7 @@ Read-Only:
 
 Read-Only:
 
-- `kind` (String) must be "gcp-vpc-peering-attachment"
+- `kind` (String)
 - `peer_project_id` (String) GCP Project ID of the peer account to create attachment to.
 - `peer_vpc_name` (String) GCP VPC Name of the peer account to create attachment to.
 

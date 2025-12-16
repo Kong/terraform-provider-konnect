@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -145,17 +143,15 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 		}
 		r.Config.Oauth.TokenEndpoint = types.StringValue(resp.Config.Oauth.TokenEndpoint)
 		if len(resp.Config.Oauth.TokenHeaders) > 0 {
-			r.Config.Oauth.TokenHeaders = make(map[string]jsontypes.Normalized, len(resp.Config.Oauth.TokenHeaders))
+			r.Config.Oauth.TokenHeaders = make(map[string]types.String, len(resp.Config.Oauth.TokenHeaders))
 			for key, value := range resp.Config.Oauth.TokenHeaders {
-				result, _ := json.Marshal(value)
-				r.Config.Oauth.TokenHeaders[key] = jsontypes.NewNormalizedValue(string(result))
+				r.Config.Oauth.TokenHeaders[key] = types.StringValue(value)
 			}
 		}
 		if len(resp.Config.Oauth.TokenPostArgs) > 0 {
-			r.Config.Oauth.TokenPostArgs = make(map[string]jsontypes.Normalized, len(resp.Config.Oauth.TokenPostArgs))
+			r.Config.Oauth.TokenPostArgs = make(map[string]types.String, len(resp.Config.Oauth.TokenPostArgs))
 			for key1, value1 := range resp.Config.Oauth.TokenPostArgs {
-				result1, _ := json.Marshal(value1)
-				r.Config.Oauth.TokenPostArgs[key1] = jsontypes.NewNormalizedValue(string(result1))
+				r.Config.Oauth.TokenPostArgs[key1] = types.StringValue(value1)
 			}
 		}
 		r.Config.Oauth.Username = types.StringPointerValue(resp.Config.Oauth.Username)
@@ -351,8 +347,8 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 		var after *shared.UpstreamOauthPluginAfter
 		if r.Ordering.After != nil {
 			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			for accessIndex := range r.Ordering.After.Access {
+				access = append(access, r.Ordering.After.Access[accessIndex].ValueString())
 			}
 			after = &shared.UpstreamOauthPluginAfter{
 				Access: access,
@@ -361,8 +357,8 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 		var before *shared.UpstreamOauthPluginBefore
 		if r.Ordering.Before != nil {
 			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			for accessIndex1 := range r.Ordering.Before.Access {
+				access1 = append(access1, r.Ordering.Before.Access[accessIndex1].ValueString())
 			}
 			before = &shared.UpstreamOauthPluginBefore{
 				Access: access1,
@@ -376,22 +372,22 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 	var partials []shared.UpstreamOauthPluginPartials
 	if r.Partials != nil {
 		partials = make([]shared.UpstreamOauthPluginPartials, 0, len(r.Partials))
-		for _, partialsItem := range r.Partials {
+		for partialsIndex := range r.Partials {
 			id1 := new(string)
-			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
-				*id1 = partialsItem.ID.ValueString()
+			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
+				*id1 = r.Partials[partialsIndex].ID.ValueString()
 			} else {
 				id1 = nil
 			}
 			name := new(string)
-			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
-				*name = partialsItem.Name.ValueString()
+			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
+				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
 			path := new(string)
-			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
-				*path = partialsItem.Path.ValueString()
+			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
+				*path = r.Partials[partialsIndex].Path.ValueString()
 			} else {
 				path = nil
 			}
@@ -405,8 +401,8 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 	var tags []string
 	if r.Tags != nil {
 		tags = make([]string, 0, len(r.Tags))
-		for _, tagsItem := range r.Tags {
-			tags = append(tags, tagsItem.ValueString())
+		for tagsIndex := range r.Tags {
+			tags = append(tags, r.Tags[tagsIndex].ValueString())
 		}
 	}
 	updatedAt := new(int64)
@@ -442,8 +438,8 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 			idpErrorResponseStatusCode = nil
 		}
 		purgeTokenOnUpstreamStatusCodes := make([]int64, 0, len(r.Config.Behavior.PurgeTokenOnUpstreamStatusCodes))
-		for _, purgeTokenOnUpstreamStatusCodesItem := range r.Config.Behavior.PurgeTokenOnUpstreamStatusCodes {
-			purgeTokenOnUpstreamStatusCodes = append(purgeTokenOnUpstreamStatusCodes, purgeTokenOnUpstreamStatusCodesItem.ValueInt64())
+		for purgeTokenOnUpstreamStatusCodesIndex := range r.Config.Behavior.PurgeTokenOnUpstreamStatusCodes {
+			purgeTokenOnUpstreamStatusCodes = append(purgeTokenOnUpstreamStatusCodes, r.Config.Behavior.PurgeTokenOnUpstreamStatusCodes[purgeTokenOnUpstreamStatusCodesIndex].ValueInt64())
 		}
 		upstreamAccessTokenHeaderName := new(string)
 		if !r.Config.Behavior.UpstreamAccessTokenHeaderName.IsUnknown() && !r.Config.Behavior.UpstreamAccessTokenHeaderName.IsNull() {
@@ -497,16 +493,16 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 			var clusterNodes []shared.UpstreamOauthPluginClusterNodes
 			if r.Config.Cache.Redis.ClusterNodes != nil {
 				clusterNodes = make([]shared.UpstreamOauthPluginClusterNodes, 0, len(r.Config.Cache.Redis.ClusterNodes))
-				for _, clusterNodesItem := range r.Config.Cache.Redis.ClusterNodes {
+				for clusterNodesIndex := range r.Config.Cache.Redis.ClusterNodes {
 					ip := new(string)
-					if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
-						*ip = clusterNodesItem.IP.ValueString()
+					if !r.Config.Cache.Redis.ClusterNodes[clusterNodesIndex].IP.IsUnknown() && !r.Config.Cache.Redis.ClusterNodes[clusterNodesIndex].IP.IsNull() {
+						*ip = r.Config.Cache.Redis.ClusterNodes[clusterNodesIndex].IP.ValueString()
 					} else {
 						ip = nil
 					}
 					port := new(int64)
-					if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
-						*port = clusterNodesItem.Port.ValueInt64()
+					if !r.Config.Cache.Redis.ClusterNodes[clusterNodesIndex].Port.IsUnknown() && !r.Config.Cache.Redis.ClusterNodes[clusterNodesIndex].Port.IsNull() {
+						*port = r.Config.Cache.Redis.ClusterNodes[clusterNodesIndex].Port.ValueInt64()
 					} else {
 						port = nil
 					}
@@ -585,16 +581,16 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 			var sentinelNodes []shared.UpstreamOauthPluginSentinelNodes
 			if r.Config.Cache.Redis.SentinelNodes != nil {
 				sentinelNodes = make([]shared.UpstreamOauthPluginSentinelNodes, 0, len(r.Config.Cache.Redis.SentinelNodes))
-				for _, sentinelNodesItem := range r.Config.Cache.Redis.SentinelNodes {
+				for sentinelNodesIndex := range r.Config.Cache.Redis.SentinelNodes {
 					host1 := new(string)
-					if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
-						*host1 = sentinelNodesItem.Host.ValueString()
+					if !r.Config.Cache.Redis.SentinelNodes[sentinelNodesIndex].Host.IsUnknown() && !r.Config.Cache.Redis.SentinelNodes[sentinelNodesIndex].Host.IsNull() {
+						*host1 = r.Config.Cache.Redis.SentinelNodes[sentinelNodesIndex].Host.ValueString()
 					} else {
 						host1 = nil
 					}
 					port2 := new(int64)
-					if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
-						*port2 = sentinelNodesItem.Port.ValueInt64()
+					if !r.Config.Cache.Redis.SentinelNodes[sentinelNodesIndex].Port.IsUnknown() && !r.Config.Cache.Redis.SentinelNodes[sentinelNodesIndex].Port.IsNull() {
+						*port2 = r.Config.Cache.Redis.SentinelNodes[sentinelNodesIndex].Port.ValueInt64()
 					} else {
 						port2 = nil
 					}
@@ -767,8 +763,8 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 		}
 	}
 	audience := make([]string, 0, len(r.Config.Oauth.Audience))
-	for _, audienceItem := range r.Config.Oauth.Audience {
-		audience = append(audience, audienceItem.ValueString())
+	for audienceIndex := range r.Config.Oauth.Audience {
+		audience = append(audience, r.Config.Oauth.Audience[audienceIndex].ValueString())
 	}
 	clientID := new(string)
 	if !r.Config.Oauth.ClientID.IsUnknown() && !r.Config.Oauth.ClientID.IsNull() {
@@ -797,23 +793,25 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 	var scopes []string
 	if r.Config.Oauth.Scopes != nil {
 		scopes = make([]string, 0, len(r.Config.Oauth.Scopes))
-		for _, scopesItem := range r.Config.Oauth.Scopes {
-			scopes = append(scopes, scopesItem.ValueString())
+		for scopesIndex := range r.Config.Oauth.Scopes {
+			scopes = append(scopes, r.Config.Oauth.Scopes[scopesIndex].ValueString())
 		}
 	}
 	var tokenEndpoint string
 	tokenEndpoint = r.Config.Oauth.TokenEndpoint.ValueString()
 
-	tokenHeaders := make(map[string]interface{})
-	for tokenHeadersKey, tokenHeadersValue := range r.Config.Oauth.TokenHeaders {
-		var tokenHeadersInst interface{}
-		_ = json.Unmarshal([]byte(tokenHeadersValue.ValueString()), &tokenHeadersInst)
+	tokenHeaders := make(map[string]string)
+	for tokenHeadersKey := range r.Config.Oauth.TokenHeaders {
+		var tokenHeadersInst string
+		tokenHeadersInst = r.Config.Oauth.TokenHeaders[tokenHeadersKey].ValueString()
+
 		tokenHeaders[tokenHeadersKey] = tokenHeadersInst
 	}
-	tokenPostArgs := make(map[string]interface{})
-	for tokenPostArgsKey, tokenPostArgsValue := range r.Config.Oauth.TokenPostArgs {
-		var tokenPostArgsInst interface{}
-		_ = json.Unmarshal([]byte(tokenPostArgsValue.ValueString()), &tokenPostArgsInst)
+	tokenPostArgs := make(map[string]string)
+	for tokenPostArgsKey := range r.Config.Oauth.TokenPostArgs {
+		var tokenPostArgsInst string
+		tokenPostArgsInst = r.Config.Oauth.TokenPostArgs[tokenPostArgsKey].ValueString()
+
 		tokenPostArgs[tokenPostArgsKey] = tokenPostArgsInst
 	}
 	username1 := new(string)

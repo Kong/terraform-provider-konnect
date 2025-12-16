@@ -224,8 +224,8 @@ func (r *GatewayPluginJwtResourceModel) ToSharedJwtPlugin(ctx context.Context) (
 		var after *shared.JwtPluginAfter
 		if r.Ordering.After != nil {
 			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			for accessIndex := range r.Ordering.After.Access {
+				access = append(access, r.Ordering.After.Access[accessIndex].ValueString())
 			}
 			after = &shared.JwtPluginAfter{
 				Access: access,
@@ -234,8 +234,8 @@ func (r *GatewayPluginJwtResourceModel) ToSharedJwtPlugin(ctx context.Context) (
 		var before *shared.JwtPluginBefore
 		if r.Ordering.Before != nil {
 			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			for accessIndex1 := range r.Ordering.Before.Access {
+				access1 = append(access1, r.Ordering.Before.Access[accessIndex1].ValueString())
 			}
 			before = &shared.JwtPluginBefore{
 				Access: access1,
@@ -249,22 +249,22 @@ func (r *GatewayPluginJwtResourceModel) ToSharedJwtPlugin(ctx context.Context) (
 	var partials []shared.JwtPluginPartials
 	if r.Partials != nil {
 		partials = make([]shared.JwtPluginPartials, 0, len(r.Partials))
-		for _, partialsItem := range r.Partials {
+		for partialsIndex := range r.Partials {
 			id1 := new(string)
-			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
-				*id1 = partialsItem.ID.ValueString()
+			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
+				*id1 = r.Partials[partialsIndex].ID.ValueString()
 			} else {
 				id1 = nil
 			}
 			name := new(string)
-			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
-				*name = partialsItem.Name.ValueString()
+			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
+				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
 			path := new(string)
-			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
-				*path = partialsItem.Path.ValueString()
+			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
+				*path = r.Partials[partialsIndex].Path.ValueString()
 			} else {
 				path = nil
 			}
@@ -278,8 +278,8 @@ func (r *GatewayPluginJwtResourceModel) ToSharedJwtPlugin(ctx context.Context) (
 	var tags []string
 	if r.Tags != nil {
 		tags = make([]string, 0, len(r.Tags))
-		for _, tagsItem := range r.Tags {
-			tags = append(tags, tagsItem.ValueString())
+		for tagsIndex := range r.Tags {
+			tags = append(tags, r.Tags[tagsIndex].ValueString())
 		}
 	}
 	updatedAt := new(int64)
@@ -304,12 +304,12 @@ func (r *GatewayPluginJwtResourceModel) ToSharedJwtPlugin(ctx context.Context) (
 			}
 		}
 		cookieNames := make([]string, 0, len(r.Config.CookieNames))
-		for _, cookieNamesItem := range r.Config.CookieNames {
-			cookieNames = append(cookieNames, cookieNamesItem.ValueString())
+		for cookieNamesIndex := range r.Config.CookieNames {
+			cookieNames = append(cookieNames, r.Config.CookieNames[cookieNamesIndex].ValueString())
 		}
 		headerNames := make([]string, 0, len(r.Config.HeaderNames))
-		for _, headerNamesItem := range r.Config.HeaderNames {
-			headerNames = append(headerNames, headerNamesItem.ValueString())
+		for headerNamesIndex := range r.Config.HeaderNames {
+			headerNames = append(headerNames, r.Config.HeaderNames[headerNamesIndex].ValueString())
 		}
 		keyClaimName := new(string)
 		if !r.Config.KeyClaimName.IsUnknown() && !r.Config.KeyClaimName.IsNull() {
@@ -342,8 +342,8 @@ func (r *GatewayPluginJwtResourceModel) ToSharedJwtPlugin(ctx context.Context) (
 			secretIsBase64 = nil
 		}
 		uriParamNames := make([]string, 0, len(r.Config.URIParamNames))
-		for _, uriParamNamesItem := range r.Config.URIParamNames {
-			uriParamNames = append(uriParamNames, uriParamNamesItem.ValueString())
+		for uriParamNamesIndex := range r.Config.URIParamNames {
+			uriParamNames = append(uriParamNames, r.Config.URIParamNames[uriParamNamesIndex].ValueString())
 		}
 		config = &shared.JwtPluginConfig{
 			Anonymous:         anonymous,

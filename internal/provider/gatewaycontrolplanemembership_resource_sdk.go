@@ -55,9 +55,9 @@ func (r *GatewayControlPlaneMembershipResourceModel) ToSharedGroupMembership(ctx
 	var diags diag.Diagnostics
 
 	members := make([]shared.Members, 0, len(r.Members))
-	for _, membersItem := range r.Members {
+	for membersIndex := range r.Members {
 		var id string
-		id = membersItem.ID.ValueString()
+		id = r.Members[membersIndex].ID.ValueString()
 
 		members = append(members, shared.Members{
 			ID: id,

@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -31,10 +29,17 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) RefreshFromSharedRespon
 				r.Config.LimitBy = types.StringNull()
 			}
 			if resp.Config.Limits != nil {
-				r.Config.Limits = make(map[string]jsontypes.Normalized, len(resp.Config.Limits))
-				for key, value := range resp.Config.Limits {
-					result, _ := json.Marshal(value)
-					r.Config.Limits[key] = jsontypes.NewNormalizedValue(string(result))
+				r.Config.Limits = make(map[string]tfTypes.Limits, len(resp.Config.Limits))
+				for limitsKey, limitsValue := range resp.Config.Limits {
+					var limitsResult tfTypes.Limits
+					limitsResult.Day = types.Float64PointerValue(limitsValue.Day)
+					limitsResult.Hour = types.Float64PointerValue(limitsValue.Hour)
+					limitsResult.Minute = types.Float64PointerValue(limitsValue.Minute)
+					limitsResult.Month = types.Float64PointerValue(limitsValue.Month)
+					limitsResult.Second = types.Float64PointerValue(limitsValue.Second)
+					limitsResult.Year = types.Float64PointerValue(limitsValue.Year)
+
+					r.Config.Limits[limitsKey] = limitsResult
 				}
 			}
 			if resp.Config.Policy != nil {
@@ -243,8 +248,8 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelim
 		var after *shared.ResponseRatelimitingPluginAfter
 		if r.Ordering.After != nil {
 			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			for accessIndex := range r.Ordering.After.Access {
+				access = append(access, r.Ordering.After.Access[accessIndex].ValueString())
 			}
 			after = &shared.ResponseRatelimitingPluginAfter{
 				Access: access,
@@ -253,8 +258,8 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelim
 		var before *shared.ResponseRatelimitingPluginBefore
 		if r.Ordering.Before != nil {
 			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			for accessIndex1 := range r.Ordering.Before.Access {
+				access1 = append(access1, r.Ordering.Before.Access[accessIndex1].ValueString())
 			}
 			before = &shared.ResponseRatelimitingPluginBefore{
 				Access: access1,
@@ -268,22 +273,22 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelim
 	var partials []shared.ResponseRatelimitingPluginPartials
 	if r.Partials != nil {
 		partials = make([]shared.ResponseRatelimitingPluginPartials, 0, len(r.Partials))
-		for _, partialsItem := range r.Partials {
+		for partialsIndex := range r.Partials {
 			id1 := new(string)
-			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
-				*id1 = partialsItem.ID.ValueString()
+			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
+				*id1 = r.Partials[partialsIndex].ID.ValueString()
 			} else {
 				id1 = nil
 			}
 			name := new(string)
-			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
-				*name = partialsItem.Name.ValueString()
+			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
+				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
 			path := new(string)
-			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
-				*path = partialsItem.Path.ValueString()
+			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
+				*path = r.Partials[partialsIndex].Path.ValueString()
 			} else {
 				path = nil
 			}
@@ -297,8 +302,8 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelim
 	var tags []string
 	if r.Tags != nil {
 		tags = make([]string, 0, len(r.Tags))
-		for _, tagsItem := range r.Tags {
-			tags = append(tags, tagsItem.ValueString())
+		for tagsIndex := range r.Tags {
+			tags = append(tags, r.Tags[tagsIndex].ValueString())
 		}
 	}
 	updatedAt := new(int64)
@@ -339,12 +344,54 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelim
 		} else {
 			limitBy = nil
 		}
-		var limits map[string]interface{}
+		var limits map[string]shared.Limits
 		if r.Config.Limits != nil {
-			limits = make(map[string]interface{})
-			for limitsKey, limitsValue := range r.Config.Limits {
-				var limitsInst interface{}
-				_ = json.Unmarshal([]byte(limitsValue.ValueString()), &limitsInst)
+			limits = make(map[string]shared.Limits)
+			for limitsKey := range r.Config.Limits {
+				day := new(float64)
+				if !r.Config.Limits[limitsKey].Day.IsUnknown() && !r.Config.Limits[limitsKey].Day.IsNull() {
+					*day = r.Config.Limits[limitsKey].Day.ValueFloat64()
+				} else {
+					day = nil
+				}
+				hour := new(float64)
+				if !r.Config.Limits[limitsKey].Hour.IsUnknown() && !r.Config.Limits[limitsKey].Hour.IsNull() {
+					*hour = r.Config.Limits[limitsKey].Hour.ValueFloat64()
+				} else {
+					hour = nil
+				}
+				minute := new(float64)
+				if !r.Config.Limits[limitsKey].Minute.IsUnknown() && !r.Config.Limits[limitsKey].Minute.IsNull() {
+					*minute = r.Config.Limits[limitsKey].Minute.ValueFloat64()
+				} else {
+					minute = nil
+				}
+				month := new(float64)
+				if !r.Config.Limits[limitsKey].Month.IsUnknown() && !r.Config.Limits[limitsKey].Month.IsNull() {
+					*month = r.Config.Limits[limitsKey].Month.ValueFloat64()
+				} else {
+					month = nil
+				}
+				second := new(float64)
+				if !r.Config.Limits[limitsKey].Second.IsUnknown() && !r.Config.Limits[limitsKey].Second.IsNull() {
+					*second = r.Config.Limits[limitsKey].Second.ValueFloat64()
+				} else {
+					second = nil
+				}
+				year := new(float64)
+				if !r.Config.Limits[limitsKey].Year.IsUnknown() && !r.Config.Limits[limitsKey].Year.IsNull() {
+					*year = r.Config.Limits[limitsKey].Year.ValueFloat64()
+				} else {
+					year = nil
+				}
+				limitsInst := shared.Limits{
+					Day:    day,
+					Hour:   hour,
+					Minute: minute,
+					Month:  month,
+					Second: second,
+					Year:   year,
+				}
 				limits[limitsKey] = limitsInst
 			}
 		}

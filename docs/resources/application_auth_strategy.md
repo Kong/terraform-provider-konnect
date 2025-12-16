@@ -96,7 +96,7 @@ Read-Only:
 - `display_name` (String) The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
 - `id` (String) Contains a unique identifier used for this resource.
 - `name` (String)
-- `provider_type` (String) The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. must be one of ["auth0", "azureAd", "curity", "okta", "http"]
+- `provider_type` (String) The type of DCR provider.
 
 
 
@@ -155,7 +155,7 @@ Read-Only:
 - `display_name` (String) The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
 - `id` (String) Contains a unique identifier used for this resource.
 - `name` (String)
-- `provider_type` (String) The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http. must be one of ["auth0", "azureAd", "curity", "okta", "http"]
+- `provider_type` (String) The type of DCR provider.
 
 ## Import
 

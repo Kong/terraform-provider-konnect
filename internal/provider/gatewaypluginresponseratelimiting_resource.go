@@ -7,9 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -27,7 +25,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 )
 
@@ -81,7 +78,16 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 					"hide_client_headers":      types.BoolType,
 					"limit_by":                 types.StringType,
 					"limits": types.MapType{
-						ElemType: jsontypes.NormalizedType{},
+						ElemType: types.ObjectType{
+							AttrTypes: map[string]attr.Type{
+								`day`:    types.Float64Type,
+								`hour`:   types.Float64Type,
+								`minute`: types.Float64Type,
+								`month`:  types.Float64Type,
+								`second`: types.Float64Type,
+								`year`:   types.Float64Type,
+							},
+						},
 					},
 					"policy": types.StringType,
 					"redis": types.ObjectType{
@@ -136,13 +142,34 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 							),
 						},
 					},
-					"limits": schema.MapAttribute{
-						Optional:    true,
-						ElementType: jsontypes.NormalizedType{},
-						Description: `A map that defines rate limits for the plugin.`,
-						Validators: []validator.Map{
-							mapvalidator.ValueStringsAre(validators.IsValidJSON()),
+					"limits": schema.MapNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"day": schema.Float64Attribute{
+									Optional: true,
+								},
+								"hour": schema.Float64Attribute{
+									Optional: true,
+								},
+								"minute": schema.Float64Attribute{
+									Optional: true,
+								},
+								"month": schema.Float64Attribute{
+									Optional: true,
+								},
+								"second": schema.Float64Attribute{
+									Optional: true,
+								},
+								"year": schema.Float64Attribute{
+									Optional: true,
+								},
+							},
 						},
+						Description: `A map that defines rate limits for the plugin.`,
 					},
 					"policy": schema.StringAttribute{
 						Computed:    true,
@@ -629,7 +656,10 @@ func (r *GatewayPluginResponseRatelimitingResource) Delete(ctx context.Context, 
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 204 {
+	switch res.StatusCode {
+	case 204, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

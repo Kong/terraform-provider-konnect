@@ -125,157 +125,193 @@ func (r *PortalDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"contains": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field contains the provided value.`,
 							},
 							"eq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field exactly matches the provided value.`,
 							},
 							"neq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field does not match the provided value.`,
 							},
 							"ocontains": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field contains any of the provided values.`,
 							},
 							"oeq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field matches any of the provided values.`,
 							},
 						},
-						Description: `Filters on the given string field value by exact match inequality.`,
+						Description: `Filter using **one** of the following operators: ` + "`" + `eq` + "`" + `, ` + "`" + `oeq` + "`" + `, ` + "`" + `neq` + "`" + `, ` + "`" + `contains` + "`" + `, ` + "`" + `ocontains` + "`" + ``,
 					},
 					"default_api_visibility": schema.SingleNestedAttribute{
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"contains": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field contains the provided value.`,
 							},
 							"eq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field exactly matches the provided value.`,
 							},
 							"neq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field does not match the provided value.`,
 							},
 							"ocontains": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field contains any of the provided values.`,
 							},
 							"oeq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field matches any of the provided values.`,
 							},
 						},
-						Description: `Filters on the given string field value by exact match inequality.`,
+						Description: `Filter using **one** of the following operators: ` + "`" + `eq` + "`" + `, ` + "`" + `oeq` + "`" + `, ` + "`" + `neq` + "`" + `, ` + "`" + `contains` + "`" + `, ` + "`" + `ocontains` + "`" + ``,
 					},
 					"default_application_auth_strategy_id": schema.SingleNestedAttribute{
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"eq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field exactly matches the provided value.`,
 							},
 							"neq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field does not match the provided value.`,
 							},
 							"oeq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field matches any of the provided values.`,
 							},
 						},
-						Description: `Filters on the given string field value by exact match inequality.`,
+						Description: `Filter using **one** of the following operators: ` + "`" + `eq` + "`" + `, ` + "`" + `oeq` + "`" + `, ` + "`" + `neq` + "`" + ``,
 					},
 					"default_domain": schema.SingleNestedAttribute{
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"contains": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field contains the provided value.`,
 							},
 							"eq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field exactly matches the provided value.`,
 							},
 							"neq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field does not match the provided value.`,
 							},
 							"ocontains": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field contains any of the provided values.`,
 							},
 							"oeq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field matches any of the provided values.`,
 							},
 						},
-						Description: `Filters on the given string field value by exact match inequality.`,
+						Description: `Filter using **one** of the following operators: ` + "`" + `eq` + "`" + `, ` + "`" + `oeq` + "`" + `, ` + "`" + `neq` + "`" + `, ` + "`" + `contains` + "`" + `, ` + "`" + `ocontains` + "`" + ``,
 					},
 					"default_page_visibility": schema.SingleNestedAttribute{
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"contains": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field contains the provided value.`,
 							},
 							"eq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field exactly matches the provided value.`,
 							},
 							"neq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field does not match the provided value.`,
 							},
 							"ocontains": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field contains any of the provided values.`,
 							},
 							"oeq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field matches any of the provided values.`,
 							},
 						},
-						Description: `Filters on the given string field value by exact match inequality.`,
+						Description: `Filter using **one** of the following operators: ` + "`" + `eq` + "`" + `, ` + "`" + `oeq` + "`" + `, ` + "`" + `neq` + "`" + `, ` + "`" + `contains` + "`" + `, ` + "`" + `ocontains` + "`" + ``,
 					},
 					"description": schema.SingleNestedAttribute{
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"contains": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field contains the provided value.`,
 							},
 							"eq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field exactly matches the provided value.`,
 							},
 							"neq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field does not match the provided value.`,
 							},
 							"ocontains": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field contains any of the provided values.`,
 							},
 							"oeq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field matches any of the provided values.`,
 							},
 						},
-						Description: `Filters on the given string field value by exact match inequality.`,
+						Description: `Filter using **one** of the following operators: ` + "`" + `eq` + "`" + `, ` + "`" + `oeq` + "`" + `, ` + "`" + `neq` + "`" + `, ` + "`" + `contains` + "`" + `, ` + "`" + `ocontains` + "`" + ``,
 					},
 					"id": schema.SingleNestedAttribute{
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"eq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field exactly matches the provided value.`,
 							},
 							"neq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field does not match the provided value.`,
 							},
 							"oeq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field matches any of the provided values.`,
 							},
 						},
-						Description: `Filters on the given string field value by exact match inequality.`,
+						Description: `Filter using **one** of the following operators: ` + "`" + `eq` + "`" + `, ` + "`" + `oeq` + "`" + `, ` + "`" + `neq` + "`" + ``,
 					},
 					"name": schema.SingleNestedAttribute{
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"contains": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field contains the provided value.`,
 							},
 							"eq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field exactly matches the provided value.`,
 							},
 							"neq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field does not match the provided value.`,
 							},
 							"ocontains": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field contains any of the provided values.`,
 							},
 							"oeq": schema.StringAttribute{
-								Optional: true,
+								Optional:    true,
+								Description: `The field matches any of the provided values.`,
 							},
 						},
-						Description: `Filters on the given string field value by exact match inequality.`,
+						Description: `Filter using **one** of the following operators: ` + "`" + `eq` + "`" + `, ` + "`" + `oeq` + "`" + `, ` + "`" + `neq` + "`" + `, ` + "`" + `contains` + "`" + `, ` + "`" + `ocontains` + "`" + ``,
 					},
 					"rbac_enabled": schema.BoolAttribute{
 						Optional:    true,

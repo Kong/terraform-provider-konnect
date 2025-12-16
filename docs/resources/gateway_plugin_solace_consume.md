@@ -28,7 +28,7 @@ resource "konnect_gateway_plugin_solace_consume" "my_gatewaypluginsolaceconsume"
       ]
       max_unacked_messages = 5
       properties = {
-        key = jsonencode("value")
+        key = "value"
       }
       selector     = "...my_selector..."
       wait_timeout = 2591
@@ -56,7 +56,7 @@ resource "konnect_gateway_plugin_solace_consume" "my_gatewaypluginsolaceconsume"
       generate_sequence_number = true
       host                     = "...my_host..."
       properties = {
-        key = jsonencode("value")
+        key = "value"
       }
       ssl_validate_certificate = true
       vpn_name                 = "...my_vpn_name..."

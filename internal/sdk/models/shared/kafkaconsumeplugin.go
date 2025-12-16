@@ -415,9 +415,9 @@ type KafkaConsumePluginOauth2 struct {
 	// The token endpoint URI.
 	TokenEndpoint string `json:"token_endpoint"`
 	// Extra headers to be passed in the token endpoint request.
-	TokenHeaders map[string]any `json:"token_headers,omitempty"`
+	TokenHeaders map[string]string `json:"token_headers,omitempty"`
 	// Extra post arguments to be passed in the token endpoint request.
-	TokenPostArgs map[string]any `json:"token_post_args,omitempty"`
+	TokenPostArgs map[string]string `json:"token_post_args,omitempty"`
 	// The username to use if `config.oauth.grant_type` is set to `password`.
 	Username *string `default:"null" json:"username"`
 }
@@ -482,14 +482,14 @@ func (k *KafkaConsumePluginOauth2) GetTokenEndpoint() string {
 	return k.TokenEndpoint
 }
 
-func (k *KafkaConsumePluginOauth2) GetTokenHeaders() map[string]any {
+func (k *KafkaConsumePluginOauth2) GetTokenHeaders() map[string]string {
 	if k == nil {
 		return nil
 	}
 	return k.TokenHeaders
 }
 
-func (k *KafkaConsumePluginOauth2) GetTokenPostArgs() map[string]any {
+func (k *KafkaConsumePluginOauth2) GetTokenPostArgs() map[string]string {
 	if k == nil {
 		return nil
 	}
@@ -908,9 +908,9 @@ type KafkaConsumePluginConfigOauth2 struct {
 	// The token endpoint URI.
 	TokenEndpoint string `json:"token_endpoint"`
 	// Extra headers to be passed in the token endpoint request.
-	TokenHeaders map[string]any `json:"token_headers,omitempty"`
+	TokenHeaders map[string]string `json:"token_headers,omitempty"`
 	// Extra post arguments to be passed in the token endpoint request.
-	TokenPostArgs map[string]any `json:"token_post_args,omitempty"`
+	TokenPostArgs map[string]string `json:"token_post_args,omitempty"`
 	// The username to use if `config.oauth.grant_type` is set to `password`.
 	Username *string `default:"null" json:"username"`
 }
@@ -975,14 +975,14 @@ func (k *KafkaConsumePluginConfigOauth2) GetTokenEndpoint() string {
 	return k.TokenEndpoint
 }
 
-func (k *KafkaConsumePluginConfigOauth2) GetTokenHeaders() map[string]any {
+func (k *KafkaConsumePluginConfigOauth2) GetTokenHeaders() map[string]string {
 	if k == nil {
 		return nil
 	}
 	return k.TokenHeaders
 }
 
-func (k *KafkaConsumePluginConfigOauth2) GetTokenPostArgs() map[string]any {
+func (k *KafkaConsumePluginConfigOauth2) GetTokenPostArgs() map[string]string {
 	if k == nil {
 		return nil
 	}

@@ -7,8 +7,8 @@ import (
 )
 
 type PortalOIDCConfig struct {
-	ClaimMappings *PortalClaimMappings `tfsdk:"claim_mappings"`
-	ClientID      types.String         `tfsdk:"client_id"`
-	Issuer        types.String         `tfsdk:"issuer"`
-	Scopes        []types.String       `tfsdk:"scopes"`
+	ClaimMappings *PortalAuthenticationSettingsUpdateRequestPortalClaimMappings `tfsdk:"claim_mappings"`
+	ClientID      types.String                                                  `tfsdk:"client_id"`
+	Issuer        types.String                                                  `tfsdk:"issuer"`
+	Scopes        []types.String                                                `tfsdk:"scopes"`
 }

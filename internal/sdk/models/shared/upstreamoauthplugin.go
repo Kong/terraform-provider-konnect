@@ -766,9 +766,9 @@ type Oauth struct {
 	// The token endpoint URI.
 	TokenEndpoint string `json:"token_endpoint"`
 	// Extra headers to be passed in the token endpoint request.
-	TokenHeaders map[string]any `json:"token_headers,omitempty"`
+	TokenHeaders map[string]string `json:"token_headers,omitempty"`
 	// Extra post arguments to be passed in the token endpoint request.
-	TokenPostArgs map[string]any `json:"token_post_args,omitempty"`
+	TokenPostArgs map[string]string `json:"token_post_args,omitempty"`
 	// The username to use if `config.oauth.grant_type` is set to `password`.
 	Username *string `default:"null" json:"username"`
 }
@@ -833,14 +833,14 @@ func (o *Oauth) GetTokenEndpoint() string {
 	return o.TokenEndpoint
 }
 
-func (o *Oauth) GetTokenHeaders() map[string]any {
+func (o *Oauth) GetTokenHeaders() map[string]string {
 	if o == nil {
 		return nil
 	}
 	return o.TokenHeaders
 }
 
-func (o *Oauth) GetTokenPostArgs() map[string]any {
+func (o *Oauth) GetTokenPostArgs() map[string]string {
 	if o == nil {
 		return nil
 	}

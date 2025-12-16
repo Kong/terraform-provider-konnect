@@ -49,7 +49,7 @@ Optional:
 
 Read-Only:
 
-- `type` (String) The type of specification being stored. This allows us to render the specification correctly. must be one of ["oas2", "oas3", "asyncapi"]
+- `type` (String) The type of specification being stored. This allows us to render the specification correctly.
 - `validation_messages` (Attributes List) The errors that occurred while parsing the API version spec. (see [below for nested schema](#nestedatt--spec--validation_messages))
 
 <a id="nestedatt--spec--validation_messages"></a>

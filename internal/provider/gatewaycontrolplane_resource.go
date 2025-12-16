@@ -97,13 +97,7 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 						PlanModifiers: []planmodifier.String{
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `The auth type value of the cluster associated with the Runtime Group. must be one of ["pinned_client_certs", "pki_client_certs"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"pinned_client_certs",
-								"pki_client_certs",
-							),
-						},
+						Description: `The auth type value of the cluster associated with the Runtime Group.`,
 					},
 					"cloud_gateway": schema.BoolAttribute{
 						Computed: true,
@@ -117,16 +111,7 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 						PlanModifiers: []planmodifier.String{
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `The ClusterType value of the cluster associated with the Control Plane. must be one of ["CLUSTER_TYPE_CONTROL_PLANE", "CLUSTER_TYPE_K8S_INGRESS_CONTROLLER", "CLUSTER_TYPE_CONTROL_PLANE_GROUP", "CLUSTER_TYPE_SERVERLESS", "CLUSTER_TYPE_HYBRID"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"CLUSTER_TYPE_CONTROL_PLANE",
-								"CLUSTER_TYPE_K8S_INGRESS_CONTROLLER",
-								"CLUSTER_TYPE_CONTROL_PLANE_GROUP",
-								"CLUSTER_TYPE_SERVERLESS",
-								"CLUSTER_TYPE_HYBRID",
-							),
-						},
+						Description: `The ClusterType value of the cluster associated with the Control Plane.`,
 					},
 					"control_plane_endpoint": schema.StringAttribute{
 						Computed: true,
@@ -267,6 +252,13 @@ func (r *GatewayControlPlaneResource) Create(ctx context.Context, req resource.C
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode == 409 {
+		resp.Diagnostics.AddError(
+			"Resource Already Exists",
+			"When creating this resource, the API indicated that this resource already exists. You can bring the existing resource under management using Terraform import functionality or retry with a unique configuration.",
+		)
 		return
 	}
 	if res.StatusCode != 201 {
@@ -517,7 +509,10 @@ func (r *GatewayControlPlaneResource) Delete(ctx context.Context, req resource.D
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 204 {
+	switch res.StatusCode {
+	case 204, 404:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

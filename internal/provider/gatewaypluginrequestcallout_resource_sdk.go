@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -107,10 +105,9 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			} else {
 				callouts.Request.Body = &tfTypes.RequestCalloutPluginConfigBody{}
 				if calloutsItem.Request.Body.Custom != nil {
-					callouts.Request.Body.Custom = make(map[string]jsontypes.Normalized, len(calloutsItem.Request.Body.Custom))
+					callouts.Request.Body.Custom = make(map[string]types.String, len(calloutsItem.Request.Body.Custom))
 					for key, value := range calloutsItem.Request.Body.Custom {
-						result, _ := json.Marshal(value)
-						callouts.Request.Body.Custom[key] = jsontypes.NewNormalizedValue(string(result))
+						callouts.Request.Body.Custom[key] = types.StringValue(value)
 					}
 				}
 				callouts.Request.Body.Decode = types.BoolPointerValue(calloutsItem.Request.Body.Decode)
@@ -141,10 +138,9 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			} else {
 				callouts.Request.Headers = &tfTypes.RequestCalloutPluginConfigCalloutsHeaders{}
 				if calloutsItem.Request.Headers.Custom != nil {
-					callouts.Request.Headers.Custom = make(map[string]jsontypes.Normalized, len(calloutsItem.Request.Headers.Custom))
+					callouts.Request.Headers.Custom = make(map[string]types.String, len(calloutsItem.Request.Headers.Custom))
 					for key1, value1 := range calloutsItem.Request.Headers.Custom {
-						result1, _ := json.Marshal(value1)
-						callouts.Request.Headers.Custom[key1] = jsontypes.NewNormalizedValue(string(result1))
+						callouts.Request.Headers.Custom[key1] = types.StringValue(value1)
 					}
 				}
 				callouts.Request.Headers.Forward = types.BoolPointerValue(calloutsItem.Request.Headers.Forward)
@@ -179,10 +175,9 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			} else {
 				callouts.Request.Query = &tfTypes.RequestCalloutPluginConfigCalloutsHeaders{}
 				if calloutsItem.Request.Query.Custom != nil {
-					callouts.Request.Query.Custom = make(map[string]jsontypes.Normalized, len(calloutsItem.Request.Query.Custom))
+					callouts.Request.Query.Custom = make(map[string]types.String, len(calloutsItem.Request.Query.Custom))
 					for key2, value2 := range calloutsItem.Request.Query.Custom {
-						result2, _ := json.Marshal(value2)
-						callouts.Request.Query.Custom[key2] = jsontypes.NewNormalizedValue(string(result2))
+						callouts.Request.Query.Custom[key2] = types.StringValue(value2)
 					}
 				}
 				callouts.Request.Query.Forward = types.BoolPointerValue(calloutsItem.Request.Query.Forward)
@@ -219,10 +214,9 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			} else {
 				r.Config.Upstream.Body = &tfTypes.RequestCalloutPluginConfigBody{}
 				if resp.Config.Upstream.Body.Custom != nil {
-					r.Config.Upstream.Body.Custom = make(map[string]jsontypes.Normalized, len(resp.Config.Upstream.Body.Custom))
+					r.Config.Upstream.Body.Custom = make(map[string]types.String, len(resp.Config.Upstream.Body.Custom))
 					for key3, value3 := range resp.Config.Upstream.Body.Custom {
-						result3, _ := json.Marshal(value3)
-						r.Config.Upstream.Body.Custom[key3] = jsontypes.NewNormalizedValue(string(result3))
+						r.Config.Upstream.Body.Custom[key3] = types.StringValue(value3)
 					}
 				}
 				r.Config.Upstream.Body.Decode = types.BoolPointerValue(resp.Config.Upstream.Body.Decode)
@@ -234,10 +228,9 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			} else {
 				r.Config.Upstream.Headers = &tfTypes.RequestCalloutPluginConfigCalloutsHeaders{}
 				if resp.Config.Upstream.Headers.Custom != nil {
-					r.Config.Upstream.Headers.Custom = make(map[string]jsontypes.Normalized, len(resp.Config.Upstream.Headers.Custom))
+					r.Config.Upstream.Headers.Custom = make(map[string]types.String, len(resp.Config.Upstream.Headers.Custom))
 					for key4, value4 := range resp.Config.Upstream.Headers.Custom {
-						result4, _ := json.Marshal(value4)
-						r.Config.Upstream.Headers.Custom[key4] = jsontypes.NewNormalizedValue(string(result4))
+						r.Config.Upstream.Headers.Custom[key4] = types.StringValue(value4)
 					}
 				}
 				r.Config.Upstream.Headers.Forward = types.BoolPointerValue(resp.Config.Upstream.Headers.Forward)
@@ -247,10 +240,9 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			} else {
 				r.Config.Upstream.Query = &tfTypes.RequestCalloutPluginConfigCalloutsHeaders{}
 				if resp.Config.Upstream.Query.Custom != nil {
-					r.Config.Upstream.Query.Custom = make(map[string]jsontypes.Normalized, len(resp.Config.Upstream.Query.Custom))
+					r.Config.Upstream.Query.Custom = make(map[string]types.String, len(resp.Config.Upstream.Query.Custom))
 					for key5, value5 := range resp.Config.Upstream.Query.Custom {
-						result5, _ := json.Marshal(value5)
-						r.Config.Upstream.Query.Custom[key5] = jsontypes.NewNormalizedValue(string(result5))
+						r.Config.Upstream.Query.Custom[key5] = types.StringValue(value5)
 					}
 				}
 				r.Config.Upstream.Query.Forward = types.BoolPointerValue(resp.Config.Upstream.Query.Forward)
@@ -448,8 +440,8 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 		var after *shared.RequestCalloutPluginAfter
 		if r.Ordering.After != nil {
 			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			for accessIndex := range r.Ordering.After.Access {
+				access = append(access, r.Ordering.After.Access[accessIndex].ValueString())
 			}
 			after = &shared.RequestCalloutPluginAfter{
 				Access: access,
@@ -458,8 +450,8 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 		var before *shared.RequestCalloutPluginBefore
 		if r.Ordering.Before != nil {
 			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			for accessIndex1 := range r.Ordering.Before.Access {
+				access1 = append(access1, r.Ordering.Before.Access[accessIndex1].ValueString())
 			}
 			before = &shared.RequestCalloutPluginBefore{
 				Access: access1,
@@ -473,22 +465,22 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 	var partials []shared.RequestCalloutPluginPartials
 	if r.Partials != nil {
 		partials = make([]shared.RequestCalloutPluginPartials, 0, len(r.Partials))
-		for _, partialsItem := range r.Partials {
+		for partialsIndex := range r.Partials {
 			id1 := new(string)
-			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
-				*id1 = partialsItem.ID.ValueString()
+			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
+				*id1 = r.Partials[partialsIndex].ID.ValueString()
 			} else {
 				id1 = nil
 			}
 			name := new(string)
-			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
-				*name = partialsItem.Name.ValueString()
+			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
+				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
 			path := new(string)
-			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
-				*path = partialsItem.Path.ValueString()
+			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
+				*path = r.Partials[partialsIndex].Path.ValueString()
 			} else {
 				path = nil
 			}
@@ -502,8 +494,8 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 	var tags []string
 	if r.Tags != nil {
 		tags = make([]string, 0, len(r.Tags))
-		for _, tagsItem := range r.Tags {
-			tags = append(tags, tagsItem.ValueString())
+		for tagsIndex := range r.Tags {
+			tags = append(tags, r.Tags[tagsIndex].ValueString())
 		}
 	}
 	updatedAt := new(int64)
@@ -543,16 +535,16 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 			var clusterNodes []shared.RequestCalloutPluginClusterNodes
 			if r.Config.Cache.Redis.ClusterNodes != nil {
 				clusterNodes = make([]shared.RequestCalloutPluginClusterNodes, 0, len(r.Config.Cache.Redis.ClusterNodes))
-				for _, clusterNodesItem := range r.Config.Cache.Redis.ClusterNodes {
+				for clusterNodesIndex := range r.Config.Cache.Redis.ClusterNodes {
 					ip := new(string)
-					if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
-						*ip = clusterNodesItem.IP.ValueString()
+					if !r.Config.Cache.Redis.ClusterNodes[clusterNodesIndex].IP.IsUnknown() && !r.Config.Cache.Redis.ClusterNodes[clusterNodesIndex].IP.IsNull() {
+						*ip = r.Config.Cache.Redis.ClusterNodes[clusterNodesIndex].IP.ValueString()
 					} else {
 						ip = nil
 					}
 					port := new(int64)
-					if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
-						*port = clusterNodesItem.Port.ValueInt64()
+					if !r.Config.Cache.Redis.ClusterNodes[clusterNodesIndex].Port.IsUnknown() && !r.Config.Cache.Redis.ClusterNodes[clusterNodesIndex].Port.IsNull() {
+						*port = r.Config.Cache.Redis.ClusterNodes[clusterNodesIndex].Port.ValueInt64()
 					} else {
 						port = nil
 					}
@@ -631,16 +623,16 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 			var sentinelNodes []shared.RequestCalloutPluginSentinelNodes
 			if r.Config.Cache.Redis.SentinelNodes != nil {
 				sentinelNodes = make([]shared.RequestCalloutPluginSentinelNodes, 0, len(r.Config.Cache.Redis.SentinelNodes))
-				for _, sentinelNodesItem := range r.Config.Cache.Redis.SentinelNodes {
+				for sentinelNodesIndex := range r.Config.Cache.Redis.SentinelNodes {
 					host1 := new(string)
-					if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
-						*host1 = sentinelNodesItem.Host.ValueString()
+					if !r.Config.Cache.Redis.SentinelNodes[sentinelNodesIndex].Host.IsUnknown() && !r.Config.Cache.Redis.SentinelNodes[sentinelNodesIndex].Host.IsNull() {
+						*host1 = r.Config.Cache.Redis.SentinelNodes[sentinelNodesIndex].Host.ValueString()
 					} else {
 						host1 = nil
 					}
 					port2 := new(int64)
-					if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
-						*port2 = sentinelNodesItem.Port.ValueInt64()
+					if !r.Config.Cache.Redis.SentinelNodes[sentinelNodesIndex].Port.IsUnknown() && !r.Config.Cache.Redis.SentinelNodes[sentinelNodesIndex].Port.IsNull() {
+						*port2 = r.Config.Cache.Redis.SentinelNodes[sentinelNodesIndex].Port.ValueInt64()
 					} else {
 						port2 = nil
 					}
@@ -730,12 +722,12 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 		}
 	}
 	callouts := make([]shared.Callouts, 0, len(r.Config.Callouts))
-	for _, calloutsItem := range r.Config.Callouts {
+	for calloutsIndex := range r.Config.Callouts {
 		var cache1 *shared.RequestCalloutPluginCache
-		if calloutsItem.Cache != nil {
+		if r.Config.Callouts[calloutsIndex].Cache != nil {
 			bypass := new(bool)
-			if !calloutsItem.Cache.Bypass.IsUnknown() && !calloutsItem.Cache.Bypass.IsNull() {
-				*bypass = calloutsItem.Cache.Bypass.ValueBool()
+			if !r.Config.Callouts[calloutsIndex].Cache.Bypass.IsUnknown() && !r.Config.Callouts[calloutsIndex].Cache.Bypass.IsNull() {
+				*bypass = r.Config.Callouts[calloutsIndex].Cache.Bypass.ValueBool()
 			} else {
 				bypass = nil
 			}
@@ -743,33 +735,34 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 				Bypass: bypass,
 			}
 		}
-		dependsOn := make([]string, 0, len(calloutsItem.DependsOn))
-		for _, dependsOnItem := range calloutsItem.DependsOn {
-			dependsOn = append(dependsOn, dependsOnItem.ValueString())
+		dependsOn := make([]string, 0, len(r.Config.Callouts[calloutsIndex].DependsOn))
+		for dependsOnIndex := range r.Config.Callouts[calloutsIndex].DependsOn {
+			dependsOn = append(dependsOn, r.Config.Callouts[calloutsIndex].DependsOn[dependsOnIndex].ValueString())
 		}
 		var name1 string
-		name1 = calloutsItem.Name.ValueString()
+		name1 = r.Config.Callouts[calloutsIndex].Name.ValueString()
 
 		var body *shared.RequestCalloutPluginConfigBody
-		if calloutsItem.Request.Body != nil {
-			var custom map[string]interface{}
-			if calloutsItem.Request.Body.Custom != nil {
-				custom = make(map[string]interface{})
-				for customKey, customValue := range calloutsItem.Request.Body.Custom {
-					var customInst interface{}
-					_ = json.Unmarshal([]byte(customValue.ValueString()), &customInst)
+		if r.Config.Callouts[calloutsIndex].Request.Body != nil {
+			var custom map[string]string
+			if r.Config.Callouts[calloutsIndex].Request.Body.Custom != nil {
+				custom = make(map[string]string)
+				for customKey := range r.Config.Callouts[calloutsIndex].Request.Body.Custom {
+					var customInst string
+					customInst = r.Config.Callouts[calloutsIndex].Request.Body.Custom[customKey].ValueString()
+
 					custom[customKey] = customInst
 				}
 			}
 			decode := new(bool)
-			if !calloutsItem.Request.Body.Decode.IsUnknown() && !calloutsItem.Request.Body.Decode.IsNull() {
-				*decode = calloutsItem.Request.Body.Decode.ValueBool()
+			if !r.Config.Callouts[calloutsIndex].Request.Body.Decode.IsUnknown() && !r.Config.Callouts[calloutsIndex].Request.Body.Decode.IsNull() {
+				*decode = r.Config.Callouts[calloutsIndex].Request.Body.Decode.ValueBool()
 			} else {
 				decode = nil
 			}
 			forward := new(bool)
-			if !calloutsItem.Request.Body.Forward.IsUnknown() && !calloutsItem.Request.Body.Forward.IsNull() {
-				*forward = calloutsItem.Request.Body.Forward.ValueBool()
+			if !r.Config.Callouts[calloutsIndex].Request.Body.Forward.IsUnknown() && !r.Config.Callouts[calloutsIndex].Request.Body.Forward.IsNull() {
+				*forward = r.Config.Callouts[calloutsIndex].Request.Body.Forward.ValueBool()
 			} else {
 				forward = nil
 			}
@@ -780,41 +773,41 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 			}
 		}
 		byLua := new(string)
-		if !calloutsItem.Request.ByLua.IsUnknown() && !calloutsItem.Request.ByLua.IsNull() {
-			*byLua = calloutsItem.Request.ByLua.ValueString()
+		if !r.Config.Callouts[calloutsIndex].Request.ByLua.IsUnknown() && !r.Config.Callouts[calloutsIndex].Request.ByLua.IsNull() {
+			*byLua = r.Config.Callouts[calloutsIndex].Request.ByLua.ValueString()
 		} else {
 			byLua = nil
 		}
 		var error *shared.Error
-		if calloutsItem.Request.Error != nil {
+		if r.Config.Callouts[calloutsIndex].Request.Error != nil {
 			errorResponseCode := new(int64)
-			if !calloutsItem.Request.Error.ErrorResponseCode.IsUnknown() && !calloutsItem.Request.Error.ErrorResponseCode.IsNull() {
-				*errorResponseCode = calloutsItem.Request.Error.ErrorResponseCode.ValueInt64()
+			if !r.Config.Callouts[calloutsIndex].Request.Error.ErrorResponseCode.IsUnknown() && !r.Config.Callouts[calloutsIndex].Request.Error.ErrorResponseCode.IsNull() {
+				*errorResponseCode = r.Config.Callouts[calloutsIndex].Request.Error.ErrorResponseCode.ValueInt64()
 			} else {
 				errorResponseCode = nil
 			}
 			errorResponseMsg := new(string)
-			if !calloutsItem.Request.Error.ErrorResponseMsg.IsUnknown() && !calloutsItem.Request.Error.ErrorResponseMsg.IsNull() {
-				*errorResponseMsg = calloutsItem.Request.Error.ErrorResponseMsg.ValueString()
+			if !r.Config.Callouts[calloutsIndex].Request.Error.ErrorResponseMsg.IsUnknown() && !r.Config.Callouts[calloutsIndex].Request.Error.ErrorResponseMsg.IsNull() {
+				*errorResponseMsg = r.Config.Callouts[calloutsIndex].Request.Error.ErrorResponseMsg.ValueString()
 			} else {
 				errorResponseMsg = nil
 			}
 			var httpStatuses []int64
-			if calloutsItem.Request.Error.HTTPStatuses != nil {
-				httpStatuses = make([]int64, 0, len(calloutsItem.Request.Error.HTTPStatuses))
-				for _, httpStatusesItem := range calloutsItem.Request.Error.HTTPStatuses {
-					httpStatuses = append(httpStatuses, httpStatusesItem.ValueInt64())
+			if r.Config.Callouts[calloutsIndex].Request.Error.HTTPStatuses != nil {
+				httpStatuses = make([]int64, 0, len(r.Config.Callouts[calloutsIndex].Request.Error.HTTPStatuses))
+				for httpStatusesIndex := range r.Config.Callouts[calloutsIndex].Request.Error.HTTPStatuses {
+					httpStatuses = append(httpStatuses, r.Config.Callouts[calloutsIndex].Request.Error.HTTPStatuses[httpStatusesIndex].ValueInt64())
 				}
 			}
 			onError := new(shared.OnError)
-			if !calloutsItem.Request.Error.OnError.IsUnknown() && !calloutsItem.Request.Error.OnError.IsNull() {
-				*onError = shared.OnError(calloutsItem.Request.Error.OnError.ValueString())
+			if !r.Config.Callouts[calloutsIndex].Request.Error.OnError.IsUnknown() && !r.Config.Callouts[calloutsIndex].Request.Error.OnError.IsNull() {
+				*onError = shared.OnError(r.Config.Callouts[calloutsIndex].Request.Error.OnError.ValueString())
 			} else {
 				onError = nil
 			}
 			retries := new(int64)
-			if !calloutsItem.Request.Error.Retries.IsUnknown() && !calloutsItem.Request.Error.Retries.IsNull() {
-				*retries = calloutsItem.Request.Error.Retries.ValueInt64()
+			if !r.Config.Callouts[calloutsIndex].Request.Error.Retries.IsUnknown() && !r.Config.Callouts[calloutsIndex].Request.Error.Retries.IsNull() {
+				*retries = r.Config.Callouts[calloutsIndex].Request.Error.Retries.ValueInt64()
 			} else {
 				retries = nil
 			}
@@ -827,19 +820,20 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 			}
 		}
 		var headers *shared.RequestCalloutPluginConfigCalloutsHeaders
-		if calloutsItem.Request.Headers != nil {
-			var custom1 map[string]interface{}
-			if calloutsItem.Request.Headers.Custom != nil {
-				custom1 = make(map[string]interface{})
-				for customKey1, customValue1 := range calloutsItem.Request.Headers.Custom {
-					var customInst1 interface{}
-					_ = json.Unmarshal([]byte(customValue1.ValueString()), &customInst1)
+		if r.Config.Callouts[calloutsIndex].Request.Headers != nil {
+			var custom1 map[string]string
+			if r.Config.Callouts[calloutsIndex].Request.Headers.Custom != nil {
+				custom1 = make(map[string]string)
+				for customKey1 := range r.Config.Callouts[calloutsIndex].Request.Headers.Custom {
+					var customInst1 string
+					customInst1 = r.Config.Callouts[calloutsIndex].Request.Headers.Custom[customKey1].ValueString()
+
 					custom1[customKey1] = customInst1
 				}
 			}
 			forward1 := new(bool)
-			if !calloutsItem.Request.Headers.Forward.IsUnknown() && !calloutsItem.Request.Headers.Forward.IsNull() {
-				*forward1 = calloutsItem.Request.Headers.Forward.ValueBool()
+			if !r.Config.Callouts[calloutsIndex].Request.Headers.Forward.IsUnknown() && !r.Config.Callouts[calloutsIndex].Request.Headers.Forward.IsNull() {
+				*forward1 = r.Config.Callouts[calloutsIndex].Request.Headers.Forward.ValueBool()
 			} else {
 				forward1 = nil
 			}
@@ -849,30 +843,30 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 			}
 		}
 		var httpOpts *shared.HTTPOpts
-		if calloutsItem.Request.HTTPOpts != nil {
+		if r.Config.Callouts[calloutsIndex].Request.HTTPOpts != nil {
 			var proxy *shared.Proxy
-			if calloutsItem.Request.HTTPOpts.Proxy != nil {
+			if r.Config.Callouts[calloutsIndex].Request.HTTPOpts.Proxy != nil {
 				authPassword := new(string)
-				if !calloutsItem.Request.HTTPOpts.Proxy.AuthPassword.IsUnknown() && !calloutsItem.Request.HTTPOpts.Proxy.AuthPassword.IsNull() {
-					*authPassword = calloutsItem.Request.HTTPOpts.Proxy.AuthPassword.ValueString()
+				if !r.Config.Callouts[calloutsIndex].Request.HTTPOpts.Proxy.AuthPassword.IsUnknown() && !r.Config.Callouts[calloutsIndex].Request.HTTPOpts.Proxy.AuthPassword.IsNull() {
+					*authPassword = r.Config.Callouts[calloutsIndex].Request.HTTPOpts.Proxy.AuthPassword.ValueString()
 				} else {
 					authPassword = nil
 				}
 				authUsername := new(string)
-				if !calloutsItem.Request.HTTPOpts.Proxy.AuthUsername.IsUnknown() && !calloutsItem.Request.HTTPOpts.Proxy.AuthUsername.IsNull() {
-					*authUsername = calloutsItem.Request.HTTPOpts.Proxy.AuthUsername.ValueString()
+				if !r.Config.Callouts[calloutsIndex].Request.HTTPOpts.Proxy.AuthUsername.IsUnknown() && !r.Config.Callouts[calloutsIndex].Request.HTTPOpts.Proxy.AuthUsername.IsNull() {
+					*authUsername = r.Config.Callouts[calloutsIndex].Request.HTTPOpts.Proxy.AuthUsername.ValueString()
 				} else {
 					authUsername = nil
 				}
 				httpProxy := new(string)
-				if !calloutsItem.Request.HTTPOpts.Proxy.HTTPProxy.IsUnknown() && !calloutsItem.Request.HTTPOpts.Proxy.HTTPProxy.IsNull() {
-					*httpProxy = calloutsItem.Request.HTTPOpts.Proxy.HTTPProxy.ValueString()
+				if !r.Config.Callouts[calloutsIndex].Request.HTTPOpts.Proxy.HTTPProxy.IsUnknown() && !r.Config.Callouts[calloutsIndex].Request.HTTPOpts.Proxy.HTTPProxy.IsNull() {
+					*httpProxy = r.Config.Callouts[calloutsIndex].Request.HTTPOpts.Proxy.HTTPProxy.ValueString()
 				} else {
 					httpProxy = nil
 				}
 				httpsProxy := new(string)
-				if !calloutsItem.Request.HTTPOpts.Proxy.HTTPSProxy.IsUnknown() && !calloutsItem.Request.HTTPOpts.Proxy.HTTPSProxy.IsNull() {
-					*httpsProxy = calloutsItem.Request.HTTPOpts.Proxy.HTTPSProxy.ValueString()
+				if !r.Config.Callouts[calloutsIndex].Request.HTTPOpts.Proxy.HTTPSProxy.IsUnknown() && !r.Config.Callouts[calloutsIndex].Request.HTTPOpts.Proxy.HTTPSProxy.IsNull() {
+					*httpsProxy = r.Config.Callouts[calloutsIndex].Request.HTTPOpts.Proxy.HTTPSProxy.ValueString()
 				} else {
 					httpsProxy = nil
 				}
@@ -884,34 +878,34 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 				}
 			}
 			sslServerName := new(string)
-			if !calloutsItem.Request.HTTPOpts.SslServerName.IsUnknown() && !calloutsItem.Request.HTTPOpts.SslServerName.IsNull() {
-				*sslServerName = calloutsItem.Request.HTTPOpts.SslServerName.ValueString()
+			if !r.Config.Callouts[calloutsIndex].Request.HTTPOpts.SslServerName.IsUnknown() && !r.Config.Callouts[calloutsIndex].Request.HTTPOpts.SslServerName.IsNull() {
+				*sslServerName = r.Config.Callouts[calloutsIndex].Request.HTTPOpts.SslServerName.ValueString()
 			} else {
 				sslServerName = nil
 			}
 			sslVerify1 := new(bool)
-			if !calloutsItem.Request.HTTPOpts.SslVerify.IsUnknown() && !calloutsItem.Request.HTTPOpts.SslVerify.IsNull() {
-				*sslVerify1 = calloutsItem.Request.HTTPOpts.SslVerify.ValueBool()
+			if !r.Config.Callouts[calloutsIndex].Request.HTTPOpts.SslVerify.IsUnknown() && !r.Config.Callouts[calloutsIndex].Request.HTTPOpts.SslVerify.IsNull() {
+				*sslVerify1 = r.Config.Callouts[calloutsIndex].Request.HTTPOpts.SslVerify.ValueBool()
 			} else {
 				sslVerify1 = nil
 			}
 			var timeouts *shared.Timeouts
-			if calloutsItem.Request.HTTPOpts.Timeouts != nil {
+			if r.Config.Callouts[calloutsIndex].Request.HTTPOpts.Timeouts != nil {
 				connect := new(int64)
-				if !calloutsItem.Request.HTTPOpts.Timeouts.Connect.IsUnknown() && !calloutsItem.Request.HTTPOpts.Timeouts.Connect.IsNull() {
-					*connect = calloutsItem.Request.HTTPOpts.Timeouts.Connect.ValueInt64()
+				if !r.Config.Callouts[calloutsIndex].Request.HTTPOpts.Timeouts.Connect.IsUnknown() && !r.Config.Callouts[calloutsIndex].Request.HTTPOpts.Timeouts.Connect.IsNull() {
+					*connect = r.Config.Callouts[calloutsIndex].Request.HTTPOpts.Timeouts.Connect.ValueInt64()
 				} else {
 					connect = nil
 				}
 				read := new(int64)
-				if !calloutsItem.Request.HTTPOpts.Timeouts.Read.IsUnknown() && !calloutsItem.Request.HTTPOpts.Timeouts.Read.IsNull() {
-					*read = calloutsItem.Request.HTTPOpts.Timeouts.Read.ValueInt64()
+				if !r.Config.Callouts[calloutsIndex].Request.HTTPOpts.Timeouts.Read.IsUnknown() && !r.Config.Callouts[calloutsIndex].Request.HTTPOpts.Timeouts.Read.IsNull() {
+					*read = r.Config.Callouts[calloutsIndex].Request.HTTPOpts.Timeouts.Read.ValueInt64()
 				} else {
 					read = nil
 				}
 				write := new(int64)
-				if !calloutsItem.Request.HTTPOpts.Timeouts.Write.IsUnknown() && !calloutsItem.Request.HTTPOpts.Timeouts.Write.IsNull() {
-					*write = calloutsItem.Request.HTTPOpts.Timeouts.Write.ValueInt64()
+				if !r.Config.Callouts[calloutsIndex].Request.HTTPOpts.Timeouts.Write.IsUnknown() && !r.Config.Callouts[calloutsIndex].Request.HTTPOpts.Timeouts.Write.IsNull() {
+					*write = r.Config.Callouts[calloutsIndex].Request.HTTPOpts.Timeouts.Write.ValueInt64()
 				} else {
 					write = nil
 				}
@@ -929,25 +923,26 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 			}
 		}
 		method := new(string)
-		if !calloutsItem.Request.Method.IsUnknown() && !calloutsItem.Request.Method.IsNull() {
-			*method = calloutsItem.Request.Method.ValueString()
+		if !r.Config.Callouts[calloutsIndex].Request.Method.IsUnknown() && !r.Config.Callouts[calloutsIndex].Request.Method.IsNull() {
+			*method = r.Config.Callouts[calloutsIndex].Request.Method.ValueString()
 		} else {
 			method = nil
 		}
 		var query *shared.RequestCalloutPluginQuery
-		if calloutsItem.Request.Query != nil {
-			var custom2 map[string]interface{}
-			if calloutsItem.Request.Query.Custom != nil {
-				custom2 = make(map[string]interface{})
-				for customKey2, customValue2 := range calloutsItem.Request.Query.Custom {
-					var customInst2 interface{}
-					_ = json.Unmarshal([]byte(customValue2.ValueString()), &customInst2)
+		if r.Config.Callouts[calloutsIndex].Request.Query != nil {
+			var custom2 map[string]string
+			if r.Config.Callouts[calloutsIndex].Request.Query.Custom != nil {
+				custom2 = make(map[string]string)
+				for customKey2 := range r.Config.Callouts[calloutsIndex].Request.Query.Custom {
+					var customInst2 string
+					customInst2 = r.Config.Callouts[calloutsIndex].Request.Query.Custom[customKey2].ValueString()
+
 					custom2[customKey2] = customInst2
 				}
 			}
 			forward2 := new(bool)
-			if !calloutsItem.Request.Query.Forward.IsUnknown() && !calloutsItem.Request.Query.Forward.IsNull() {
-				*forward2 = calloutsItem.Request.Query.Forward.ValueBool()
+			if !r.Config.Callouts[calloutsIndex].Request.Query.Forward.IsUnknown() && !r.Config.Callouts[calloutsIndex].Request.Query.Forward.IsNull() {
+				*forward2 = r.Config.Callouts[calloutsIndex].Request.Query.Forward.ValueBool()
 			} else {
 				forward2 = nil
 			}
@@ -957,7 +952,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 			}
 		}
 		var url string
-		url = calloutsItem.Request.URL.ValueString()
+		url = r.Config.Callouts[calloutsIndex].Request.URL.ValueString()
 
 		request := shared.Request{
 			Body:     body,
@@ -970,18 +965,18 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 			URL:      url,
 		}
 		var response *shared.Response
-		if calloutsItem.Response != nil {
+		if r.Config.Callouts[calloutsIndex].Response != nil {
 			var body1 *shared.RequestCalloutPluginBody
-			if calloutsItem.Response.Body != nil {
+			if r.Config.Callouts[calloutsIndex].Response.Body != nil {
 				decode1 := new(bool)
-				if !calloutsItem.Response.Body.Decode.IsUnknown() && !calloutsItem.Response.Body.Decode.IsNull() {
-					*decode1 = calloutsItem.Response.Body.Decode.ValueBool()
+				if !r.Config.Callouts[calloutsIndex].Response.Body.Decode.IsUnknown() && !r.Config.Callouts[calloutsIndex].Response.Body.Decode.IsNull() {
+					*decode1 = r.Config.Callouts[calloutsIndex].Response.Body.Decode.ValueBool()
 				} else {
 					decode1 = nil
 				}
 				store := new(bool)
-				if !calloutsItem.Response.Body.Store.IsUnknown() && !calloutsItem.Response.Body.Store.IsNull() {
-					*store = calloutsItem.Response.Body.Store.ValueBool()
+				if !r.Config.Callouts[calloutsIndex].Response.Body.Store.IsUnknown() && !r.Config.Callouts[calloutsIndex].Response.Body.Store.IsNull() {
+					*store = r.Config.Callouts[calloutsIndex].Response.Body.Store.ValueBool()
 				} else {
 					store = nil
 				}
@@ -991,16 +986,16 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 				}
 			}
 			byLua1 := new(string)
-			if !calloutsItem.Response.ByLua.IsUnknown() && !calloutsItem.Response.ByLua.IsNull() {
-				*byLua1 = calloutsItem.Response.ByLua.ValueString()
+			if !r.Config.Callouts[calloutsIndex].Response.ByLua.IsUnknown() && !r.Config.Callouts[calloutsIndex].Response.ByLua.IsNull() {
+				*byLua1 = r.Config.Callouts[calloutsIndex].Response.ByLua.ValueString()
 			} else {
 				byLua1 = nil
 			}
 			var headers1 *shared.RequestCalloutPluginConfigHeaders
-			if calloutsItem.Response.Headers != nil {
+			if r.Config.Callouts[calloutsIndex].Response.Headers != nil {
 				store1 := new(bool)
-				if !calloutsItem.Response.Headers.Store.IsUnknown() && !calloutsItem.Response.Headers.Store.IsNull() {
-					*store1 = calloutsItem.Response.Headers.Store.ValueBool()
+				if !r.Config.Callouts[calloutsIndex].Response.Headers.Store.IsUnknown() && !r.Config.Callouts[calloutsIndex].Response.Headers.Store.IsNull() {
+					*store1 = r.Config.Callouts[calloutsIndex].Response.Headers.Store.ValueBool()
 				} else {
 					store1 = nil
 				}
@@ -1026,12 +1021,13 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 	if r.Config.Upstream != nil {
 		var body2 *shared.Body
 		if r.Config.Upstream.Body != nil {
-			var custom3 map[string]interface{}
+			var custom3 map[string]string
 			if r.Config.Upstream.Body.Custom != nil {
-				custom3 = make(map[string]interface{})
-				for customKey3, customValue3 := range r.Config.Upstream.Body.Custom {
-					var customInst3 interface{}
-					_ = json.Unmarshal([]byte(customValue3.ValueString()), &customInst3)
+				custom3 = make(map[string]string)
+				for customKey3 := range r.Config.Upstream.Body.Custom {
+					var customInst3 string
+					customInst3 = r.Config.Upstream.Body.Custom[customKey3].ValueString()
+
 					custom3[customKey3] = customInst3
 				}
 			}
@@ -1061,12 +1057,13 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 		}
 		var headers2 *shared.RequestCalloutPluginHeaders
 		if r.Config.Upstream.Headers != nil {
-			var custom4 map[string]interface{}
+			var custom4 map[string]string
 			if r.Config.Upstream.Headers.Custom != nil {
-				custom4 = make(map[string]interface{})
-				for customKey4, customValue4 := range r.Config.Upstream.Headers.Custom {
-					var customInst4 interface{}
-					_ = json.Unmarshal([]byte(customValue4.ValueString()), &customInst4)
+				custom4 = make(map[string]string)
+				for customKey4 := range r.Config.Upstream.Headers.Custom {
+					var customInst4 string
+					customInst4 = r.Config.Upstream.Headers.Custom[customKey4].ValueString()
+
 					custom4[customKey4] = customInst4
 				}
 			}
@@ -1083,12 +1080,13 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 		}
 		var query1 *shared.Query
 		if r.Config.Upstream.Query != nil {
-			var custom5 map[string]interface{}
+			var custom5 map[string]string
 			if r.Config.Upstream.Query.Custom != nil {
-				custom5 = make(map[string]interface{})
-				for customKey5, customValue5 := range r.Config.Upstream.Query.Custom {
-					var customInst5 interface{}
-					_ = json.Unmarshal([]byte(customValue5.ValueString()), &customInst5)
+				custom5 = make(map[string]string)
+				for customKey5 := range r.Config.Upstream.Query.Custom {
+					var customInst5 string
+					customInst5 = r.Config.Upstream.Query.Custom[customKey5].ValueString()
+
 					custom5[customKey5] = customInst5
 				}
 			}

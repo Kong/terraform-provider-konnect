@@ -302,9 +302,9 @@ type ConfluentConsumePluginOauth2 struct {
 	// The token endpoint URI.
 	TokenEndpoint string `json:"token_endpoint"`
 	// Extra headers to be passed in the token endpoint request.
-	TokenHeaders map[string]any `json:"token_headers,omitempty"`
+	TokenHeaders map[string]string `json:"token_headers,omitempty"`
 	// Extra post arguments to be passed in the token endpoint request.
-	TokenPostArgs map[string]any `json:"token_post_args,omitempty"`
+	TokenPostArgs map[string]string `json:"token_post_args,omitempty"`
 	// The username to use if `config.oauth.grant_type` is set to `password`.
 	Username *string `default:"null" json:"username"`
 }
@@ -369,14 +369,14 @@ func (c *ConfluentConsumePluginOauth2) GetTokenEndpoint() string {
 	return c.TokenEndpoint
 }
 
-func (c *ConfluentConsumePluginOauth2) GetTokenHeaders() map[string]any {
+func (c *ConfluentConsumePluginOauth2) GetTokenHeaders() map[string]string {
 	if c == nil {
 		return nil
 	}
 	return c.TokenHeaders
 }
 
-func (c *ConfluentConsumePluginOauth2) GetTokenPostArgs() map[string]any {
+func (c *ConfluentConsumePluginOauth2) GetTokenPostArgs() map[string]string {
 	if c == nil {
 		return nil
 	}
@@ -763,9 +763,9 @@ type ConfluentConsumePluginConfigOauth2 struct {
 	// The token endpoint URI.
 	TokenEndpoint string `json:"token_endpoint"`
 	// Extra headers to be passed in the token endpoint request.
-	TokenHeaders map[string]any `json:"token_headers,omitempty"`
+	TokenHeaders map[string]string `json:"token_headers,omitempty"`
 	// Extra post arguments to be passed in the token endpoint request.
-	TokenPostArgs map[string]any `json:"token_post_args,omitempty"`
+	TokenPostArgs map[string]string `json:"token_post_args,omitempty"`
 	// The username to use if `config.oauth.grant_type` is set to `password`.
 	Username *string `default:"null" json:"username"`
 }
@@ -830,14 +830,14 @@ func (c *ConfluentConsumePluginConfigOauth2) GetTokenEndpoint() string {
 	return c.TokenEndpoint
 }
 
-func (c *ConfluentConsumePluginConfigOauth2) GetTokenHeaders() map[string]any {
+func (c *ConfluentConsumePluginConfigOauth2) GetTokenHeaders() map[string]string {
 	if c == nil {
 		return nil
 	}
 	return c.TokenHeaders
 }
 
-func (c *ConfluentConsumePluginConfigOauth2) GetTokenPostArgs() map[string]any {
+func (c *ConfluentConsumePluginConfigOauth2) GetTokenPostArgs() map[string]string {
 	if c == nil {
 		return nil
 	}

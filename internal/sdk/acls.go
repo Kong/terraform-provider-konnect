@@ -264,6 +264,7 @@ func (s *ACLs) DeleteACLWithConsumer(ctx context.Context, request operations.Del
 
 	switch {
 	case httpRes.StatusCode == 204:
+	case httpRes.StatusCode == 404:
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {

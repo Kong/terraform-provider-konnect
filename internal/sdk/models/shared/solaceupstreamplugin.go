@@ -439,7 +439,7 @@ type SolaceUpstreamPluginSession struct {
 	// The IPv4 or IPv6 address or host name to connect to (see: https://docs.solace.com/API-Developer-Online-Ref-Documentation/c/index.html#host-entry).
 	Host string `json:"host"`
 	// Additional Solace session properties (each setting needs to have `SESSION_` prefix).
-	Properties map[string]any `json:"properties,omitempty"`
+	Properties map[string]string `json:"properties,omitempty"`
 	// Indicates whether the API should validate server certificates with the trusted certificates.
 	SslValidateCertificate *bool `default:"false" json:"ssl_validate_certificate"`
 	// The name of the Message VPN to attempt to join when connecting to an event broker.
@@ -513,7 +513,7 @@ func (s *SolaceUpstreamPluginSession) GetHost() string {
 	return s.Host
 }
 
-func (s *SolaceUpstreamPluginSession) GetProperties() map[string]any {
+func (s *SolaceUpstreamPluginSession) GetProperties() map[string]string {
 	if s == nil {
 		return nil
 	}

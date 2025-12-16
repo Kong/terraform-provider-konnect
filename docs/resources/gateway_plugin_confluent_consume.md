@@ -58,10 +58,10 @@ resource "konnect_gateway_plugin_confluent_consume" "my_gatewaypluginconfluentco
             ]
             token_endpoint = "...my_token_endpoint..."
             token_headers = {
-              key = jsonencode("value")
+              key = "value"
             }
             token_post_args = {
-              key = jsonencode("value")
+              key = "value"
             }
             username = "...my_username..."
           }
@@ -109,10 +109,10 @@ resource "konnect_gateway_plugin_confluent_consume" "my_gatewaypluginconfluentco
                 ]
                 token_endpoint = "...my_token_endpoint..."
                 token_headers = {
-                  key = jsonencode("value")
+                  key = "value"
                 }
                 token_post_args = {
-                  key = jsonencode("value")
+                  key = "value"
                 }
                 username = "...my_username..."
               }

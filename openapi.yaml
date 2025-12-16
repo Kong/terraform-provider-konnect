@@ -3778,6 +3778,8 @@ paths:
       operationId: get-plugin
       summary: Get a Plugin
       description: Get a Plugin using ID.
+      parameters:
+        - $ref: '#/components/parameters/ExpandPartials'
       responses:
         '200':
           description: Successfully fetched Plugin
@@ -13535,6 +13537,7 @@ paths:
           $ref: '#/components/responses/GetPluginSchemaResponse'
       tags:
         - Plugins
+      x-keep-sdk: true
     parameters:
       - name: pluginName
         in: path
@@ -15288,7 +15291,7 @@ paths:
         **Pre-release Endpoint**
         This endpoint is currently in beta and is subject to change.
 
-        Updates the developer authentication configuration for a portal. Developers can be allowed to login using basic auth (email & password) or use Single-Sign-On (SSO) through an OIDC Identity Provider (IdP). Developers can be automatically assigned to teams by mapping claims from thier IdP account.
+        Updates the developer authentication configuration for a portal. Developers can be allowed to login using basic auth (email & password) or use Single-Sign-On through an Identity Provider. Developers can be automatically assigned to teams by mapping claims from their IdP account.
       requestBody:
         $ref: '#/components/requestBodies/UpdatePortalAuthenticationSettings'
       responses:
@@ -16578,6 +16581,14 @@ components:
       in: path
       required: true
       x-speakeasy-match: id
+    ExpandPartials:
+      description: Expand partials for the plugin.
+      example: true
+      in: query
+      name: expand_partials
+      schema:
+        type: boolean
+      x-speakeasy-terraform-ignore: true
     FilterByLabels:
       x-speakeasy-name-override: filter_labels
       name: labels
@@ -17150,33 +17161,40 @@ components:
       type: object
       properties:
         id:
-          description: Returns entities that exact match any of the comma-delimited phrases in the filter string.
+          description: 'Filter using **one** of the following operators: `eq`, `oeq`'
           type: object
           additionalProperties: false
           properties:
             eq:
+              description: The field exactly matches the provided value.
               type: string
             oeq:
+              description: The field matches any of the provided values.
               type: string
         name:
-          description: Filters on the given string field value by exact match inequality.
+          description: 'Filter using **one** of the following operators: `eq`, `neq`, `contains`'
           type: object
           additionalProperties: false
           properties:
             eq:
+              description: The field exactly matches the provided value.
               type: string
             contains:
+              description: The field contains the provided value.
               type: string
             neq:
+              description: The field does not match the provided value.
               type: string
         cluster_type:
-          description: Filters on the given string field value by exact match inequality.
+          description: 'Filter using **one** of the following operators: `eq`, `neq`'
           type: object
           additionalProperties: false
           properties:
             eq:
+              description: The field exactly matches the provided value.
               type: string
             neq:
+              description: The field does not match the provided value.
               type: string
         cloud_gateway:
           $ref: '#/components/schemas/BooleanFieldFilter'
@@ -20253,18 +20271,23 @@ components:
         - control_plane_id
       x-speakeasy-param-computed: false
     StringFieldFilter:
-      description: Filters on the given string field value by exact match inequality.
+      description: 'Filter using **one** of the following operators: `eq`, `oeq`, `neq`, `contains`, `ocontains`'
       type: object
       properties:
         eq:
+          description: The field exactly matches the provided value.
           type: string
         contains:
+          description: The field contains the provided value.
           type: string
         ocontains:
+          description: The field contains any of the provided values.
           type: string
         oeq:
+          description: The field matches any of the provided values.
           type: string
         neq:
+          description: The field does not match the provided value.
           type: string
       additionalProperties: false
     PublicLabels:
@@ -20345,27 +20368,19 @@ components:
         - unpublished
       x-speakeasy-unknown-values: allow
     UuidFieldFilter:
-      description: Filters on the given string field value by exact match inequality.
+      description: 'Filter using **one** of the following operators: `eq`, `oeq`, `neq`'
       type: object
       properties:
         eq:
+          description: The field exactly matches the provided value.
           type: string
         oeq:
+          description: The field matches any of the provided values.
           type: string
         neq:
+          description: The field does not match the provided value.
           type: string
       additionalProperties: false
-    DcrProviderType:
-      description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
-      type: string
-      enum:
-        - auth0
-        - azureAd
-        - curity
-        - okta
-        - http
-      title: DcrProviderType
-      x-speakeasy-unknown-values: allow
     AppAuthStrategyConfigKeyAuth:
       description: |
         The most basic mode to configure an Application Auth Strategy for an API Product Version. 
@@ -20536,7 +20551,15 @@ components:
             display_name:
               $ref: '#/components/schemas/DcrProviderDisplayName'
             provider_type:
-              $ref: '#/components/schemas/DcrProviderType'
+              description: The type of DCR provider.
+              type: string
+              enum:
+                - auth0
+                - azureAd
+                - curity
+                - okta
+                - http
+              x-speakeasy-unknown-values: allow
           readOnly: true
           required:
             - id
@@ -20638,7 +20661,15 @@ components:
             display_name:
               $ref: '#/components/schemas/DcrProviderDisplayName'
             provider_type:
-              $ref: '#/components/schemas/DcrProviderType'
+              description: The type of DCR provider.
+              type: string
+              enum:
+                - auth0
+                - azureAd
+                - curity
+                - okta
+                - http
+              x-speakeasy-unknown-values: allow
           readOnly: true
           required:
             - id
@@ -23670,46 +23701,29 @@ components:
       maxProperties: 3
       minProperties: 0
       title: PortalClaimMappings
-    PortalOIDCConfig:
-      description: Configuration properties for an OpenID Connect Identity Provider.
-      type: object
-      properties:
-        issuer:
-          type: string
-          example: 'https://identity.example.com/v2'
-        client_id:
-          type: string
-          example: x7id0o42lklas0blidl2
-        scopes:
-          type: array
-          items:
-            type: string
-            default: openid
-          example:
-            - email
-            - openid
-            - profile
-          default:
-            - email
-            - openid
-            - profile
-        claim_mappings:
-          $ref: '#/components/schemas/PortalClaimMappings'
-      example:
-        issuer: 'https://identity.example.com/v2'
-        client_id: x7id0o42lklas0blidl2
-        scopes:
-          - email
-          - openid
-          - profile
-        claim_mappings:
-          name: name
-          email: email
-          groups: custom-group-claim
-      required:
-        - issuer
-        - client_id
-      title: PortalOIDCConfig
+    OIDCAuthEnabled:
+      description: The portal has OIDC enabled or disabled.
+      type: boolean
+      example: false
+      deprecated: true
+      x-speakeasy-param-computed: true
+    SAMLAuthEnabled:
+      description: A Konnect Identity Admin assigns teams to a developer.
+      type: boolean
+      example: false
+      deprecated: true
+      x-speakeasy-param-computed: true
+    OIDCIdpMappingEnabled:
+      description: IdP groups determine the Portal Teams a developer has. Replaced by idp_mapping_enabled.
+      type: boolean
+      example: true
+      deprecated: true
+      x-speakeasy-param-computed: true
+    IDPMappingEnabled:
+      description: Whether IdP groups determine the Konnect Portal teams a developer has.
+      type: boolean
+      example: true
+      x-speakeasy-param-computed: true
     PortalAuthenticationSettingsResponse:
       x-speakeasy-entity: PortalAuth
       description: The developer authentication settings for a portal.
@@ -23720,33 +23734,61 @@ components:
           type: boolean
           example: true
         oidc_auth_enabled:
-          description: The portal has OIDC enabled or disabled.
-          type: boolean
-          example: false
+          $ref: '#/components/schemas/OIDCAuthEnabled'
         saml_auth_enabled:
-          description: The portal has SAML enabled or disabled.
-          type: boolean
-          example: false
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          $ref: '#/components/schemas/SAMLAuthEnabled'
         oidc_team_mapping_enabled:
-          description: IdP groups determine the Portal Teams a developer has.
-          type: boolean
-          example: true
+          $ref: '#/components/schemas/OIDCIdpMappingEnabled'
         idp_mapping_enabled:
-          description: IdP groups determine the Portal Teams a developer has. This will soon replace oidc_team_mapping_enabled.
-          type: boolean
-          example: true
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
+          $ref: '#/components/schemas/IDPMappingEnabled'
         konnect_mapping_enabled:
           description: A Konnect Identity Admin assigns teams to a developer.
           type: boolean
           example: false
         oidc_config:
-          $ref: '#/components/schemas/PortalOIDCConfig'
+          description: Configuration properties for an OpenID Connect Identity Provider.
+          type: object
+          example:
+            issuer: 'https://identity.example.com/v2'
+            client_id: x7id0o42lklas0blidl2
+            scopes:
+              - email
+              - openid
+              - profile
+            claim_mappings:
+              name: name
+              email: email
+              groups: custom-group-claim
+          default: null
+          deprecated: true
+          nullable: true
+          properties:
+            issuer:
+              type: string
+              example: 'https://identity.example.com/v2'
+            client_id:
+              type: string
+              example: x7id0o42lklas0blidl2
+            scopes:
+              type: array
+              items:
+                type: string
+                default: openid
+              example:
+                - email
+                - openid
+                - profile
+              default:
+                - email
+                - openid
+                - profile
+            claim_mappings:
+              $ref: '#/components/schemas/PortalClaimMappings'
+          required:
+            - issuer
+            - client_id
+          title: PortalOIDCConfig
+          x-speakeasy-param-computed: false
       example:
         basic_auth_enabled: true
         oidc_auth_enabled: true
@@ -23780,54 +23822,83 @@ components:
           example: true
           x-speakeasy-param-computed: true
         oidc_auth_enabled:
-          description: The organization has OIDC disabled.
+          description: 'Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.'
           type: boolean
           example: false
+          deprecated: true
           x-speakeasy-param-computed: true
         saml_auth_enabled:
-          description: The portal has SAML enabled or disabled.
+          description: 'Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.'
           type: boolean
           example: false
+          deprecated: true
           x-speakeasy-param-computed: true
         oidc_team_mapping_enabled:
-          description: Whether IdP groups determine the Konnect Portal teams a developer has.
-          type: boolean
-          example: true
-          x-speakeasy-param-computed: true
+          $ref: '#/components/schemas/OIDCIdpMappingEnabled'
         konnect_mapping_enabled:
           description: Whether a Konnect Identity Admin assigns teams to a developer.
           type: boolean
           example: false
           x-speakeasy-param-computed: true
         idp_mapping_enabled:
-          description: Whether IdP groups determine the Konnect Portal teams a developer has. This will soon replace oidc_team_mapping_enabled.
-          type: boolean
-          example: true
-          x-speakeasy-param-computed: true
+          $ref: '#/components/schemas/IDPMappingEnabled'
         oidc_issuer:
+          description: 'Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.'
           type: string
           default: null
+          deprecated: true
           nullable: true
           x-speakeasy-param-computed: false
         oidc_client_id:
+          description: 'Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.'
           type: string
           default: null
+          deprecated: true
           nullable: true
           x-speakeasy-param-computed: false
         oidc_client_secret:
+          description: 'Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.'
           type: string
           default: null
+          deprecated: true
           nullable: true
           x-speakeasy-param-computed: false
         oidc_scopes:
+          description: 'Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.'
           type: array
           items:
             type: string
           default: null
+          deprecated: true
           nullable: true
           x-speakeasy-param-computed: false
         oidc_claim_mappings:
-          $ref: '#/components/schemas/PortalClaimMappings'
+          description: 'Deprecated. Use the [Identity Provider API](https://developer.konghq.com/api/konnect/portal-management/v3/#/operations/update-portal-identity-provider) instead.'
+          type: object
+          example:
+            name: name
+            email: email
+            groups: custom-group-claim
+          default: null
+          deprecated: true
+          maxProperties: 3
+          minProperties: 0
+          nullable: true
+          properties:
+            name:
+              type: string
+              example: name
+              default: name
+            email:
+              type: string
+              example: email
+              default: email
+            groups:
+              type: string
+              example: custom-group-claim
+              default: groups
+          title: PortalClaimMappings
+          x-speakeasy-param-computed: false
       example:
         basic_auth_enabled: true
         oidc_auth_enabled: true
@@ -26319,7 +26390,8 @@ components:
               description: Additional arguments to send in the POST body.
               type: object
               default: null
-              additionalProperties: true
+              additionalProperties:
+                type: string
               nullable: true
               x-speakeasy-param-computed: false
             authorization_servers:
@@ -26404,7 +26476,8 @@ components:
               description: Additional headers for the introspection request.
               type: object
               default: null
-              additionalProperties: true
+              additionalProperties:
+                type: string
               nullable: true
               x-speakeasy-param-computed: false
             http_proxy:
@@ -26659,7 +26732,10 @@ components:
                     description: 'The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.'
                     type: object
                     default: null
-                    additionalProperties: true
+                    additionalProperties:
+                      items:
+                        type: string
+                      type: array
                     nullable: true
                     x-speakeasy-param-computed: false
                   host:
@@ -26707,7 +26783,10 @@ components:
                     description: 'The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.'
                     type: object
                     default: null
-                    additionalProperties: true
+                    additionalProperties:
+                      items:
+                        type: string
+                      type: array
                     nullable: true
                     x-speakeasy-param-computed: false
                   request_body:
@@ -34010,14 +34089,18 @@ components:
                               description: Extra headers to be passed in the token endpoint request.
                               type: object
                               default: null
-                              additionalProperties: true
+                              additionalProperties:
+                                type: string
+                                x-referenceable: true
                               nullable: true
                               x-speakeasy-param-computed: false
                             token_post_args:
                               description: Extra post arguments to be passed in the token endpoint request.
                               type: object
                               default: null
-                              additionalProperties: true
+                              additionalProperties:
+                                type: string
+                                x-referenceable: true
                               nullable: true
                               x-speakeasy-param-computed: false
                             username:
@@ -34234,14 +34317,18 @@ components:
                                     description: Extra headers to be passed in the token endpoint request.
                                     type: object
                                     default: null
-                                    additionalProperties: true
+                                    additionalProperties:
+                                      type: string
+                                      x-referenceable: true
                                     nullable: true
                                     x-speakeasy-param-computed: false
                                   token_post_args:
                                     description: Extra post arguments to be passed in the token endpoint request.
                                     type: object
                                     default: null
-                                    additionalProperties: true
+                                    additionalProperties:
+                                      type: string
+                                      x-referenceable: true
                                     nullable: true
                                     x-speakeasy-param-computed: false
                                   username:
@@ -34654,14 +34741,18 @@ components:
                               description: Extra headers to be passed in the token endpoint request.
                               type: object
                               default: null
-                              additionalProperties: true
+                              additionalProperties:
+                                type: string
+                                x-referenceable: true
                               nullable: true
                               x-speakeasy-param-computed: false
                             token_post_args:
                               description: Extra post arguments to be passed in the token endpoint request.
                               type: object
                               default: null
-                              additionalProperties: true
+                              additionalProperties:
+                                type: string
+                                x-referenceable: true
                               nullable: true
                               x-speakeasy-param-computed: false
                             username:
@@ -35821,7 +35912,10 @@ components:
                         description: filter input(s)
                         type: object
                         default: null
-                        additionalProperties: true
+                        additionalProperties:
+                          maxLength: 255
+                          minLength: 1
+                          type: string
                         nullable: true
                         x-speakeasy-param-computed: false
                       jq:
@@ -35923,7 +36017,10 @@ components:
                         description: 'Individual items from `.values`, referenced by key'
                         type: object
                         default: null
-                        additionalProperties: true
+                        additionalProperties:
+                          maxLength: 255
+                          minLength: 1
+                          type: string
                         nullable: true
                         x-speakeasy-param-computed: false
                       type:
@@ -36127,7 +36224,12 @@ components:
                 vault:
                   type: object
                   default: null
-                  additionalProperties: true
+                  additionalProperties:
+                    maxLength: 4095
+                    minLength: 1
+                    type: string
+                    x-lua-required: true
+                    x-referenceable: true
                   maxLength: 64
                   minLength: 1
                   nullable: true
@@ -39008,21 +39110,24 @@ components:
               description: 'Add customized claims if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim''s value.'
               type: object
               default: null
-              additionalProperties: true
+              additionalProperties:
+                type: string
               nullable: true
               x-speakeasy-param-computed: false
             add_channel_token_claims:
               description: 'Add customized claims if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim''s value.'
               type: object
               default: null
-              additionalProperties: true
+              additionalProperties:
+                type: string
               nullable: true
               x-speakeasy-param-computed: false
             add_claims:
               description: 'Add customized claims to both tokens if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim''s value.'
               type: object
               default: null
-              additionalProperties: true
+              additionalProperties:
+                type: string
               nullable: true
               x-speakeasy-param-computed: false
             cache_access_token_introspection:
@@ -39473,21 +39578,24 @@ components:
               description: 'Set customized claims. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim''s value.'
               type: object
               default: null
-              additionalProperties: true
+              additionalProperties:
+                type: string
               nullable: true
               x-speakeasy-param-computed: false
             set_channel_token_claims:
               description: 'Set customized claims. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim''s value.'
               type: object
               default: null
-              additionalProperties: true
+              additionalProperties:
+                type: string
               nullable: true
               x-speakeasy-param-computed: false
             set_claims:
               description: 'Set customized claims to both tokens. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim''s value.'
               type: object
               default: null
-              additionalProperties: true
+              additionalProperties:
+                type: string
               nullable: true
               x-speakeasy-param-computed: false
             trust_access_token_introspection:
@@ -39863,14 +39971,18 @@ components:
                               description: Extra headers to be passed in the token endpoint request.
                               type: object
                               default: null
-                              additionalProperties: true
+                              additionalProperties:
+                                type: string
+                                x-referenceable: true
                               nullable: true
                               x-speakeasy-param-computed: false
                             token_post_args:
                               description: Extra post arguments to be passed in the token endpoint request.
                               type: object
                               default: null
-                              additionalProperties: true
+                              additionalProperties:
+                                type: string
+                                x-referenceable: true
                               nullable: true
                               x-speakeasy-param-computed: false
                             username:
@@ -40097,14 +40209,18 @@ components:
                                     description: Extra headers to be passed in the token endpoint request.
                                     type: object
                                     default: null
-                                    additionalProperties: true
+                                    additionalProperties:
+                                      type: string
+                                      x-referenceable: true
                                     nullable: true
                                     x-speakeasy-param-computed: false
                                   token_post_args:
                                     description: Extra post arguments to be passed in the token endpoint request.
                                     type: object
                                     default: null
-                                    additionalProperties: true
+                                    additionalProperties:
+                                      type: string
+                                      x-referenceable: true
                                     nullable: true
                                     x-speakeasy-param-computed: false
                                   username:
@@ -40500,14 +40616,18 @@ components:
                               description: Extra headers to be passed in the token endpoint request.
                               type: object
                               default: null
-                              additionalProperties: true
+                              additionalProperties:
+                                type: string
+                                x-referenceable: true
                               nullable: true
                               x-speakeasy-param-computed: false
                             token_post_args:
                               description: Extra post arguments to be passed in the token endpoint request.
                               type: object
                               default: null
-                              additionalProperties: true
+                              additionalProperties:
+                                type: string
+                                x-referenceable: true
                               nullable: true
                               x-speakeasy-param-computed: false
                             username:
@@ -40994,14 +41114,18 @@ components:
                               description: Extra headers to be passed in the token endpoint request.
                               type: object
                               default: null
-                              additionalProperties: true
+                              additionalProperties:
+                                type: string
+                                x-referenceable: true
                               nullable: true
                               x-speakeasy-param-computed: false
                             token_post_args:
                               description: Extra post arguments to be passed in the token endpoint request.
                               type: object
                               default: null
-                              additionalProperties: true
+                              additionalProperties:
+                                type: string
+                                x-referenceable: true
                               nullable: true
                               x-speakeasy-param-computed: false
                             username:
@@ -42522,7 +42646,8 @@ components:
               description: A list of custom headers to be added in the introspection request.
               type: object
               default: null
-              additionalProperties: true
+              additionalProperties:
+                type: string
               nullable: true
               x-speakeasy-param-computed: false
             hide_credentials:
@@ -44983,7 +45108,9 @@ components:
               minimum: 0
             resource_attributes:
               type: object
-              additionalProperties: true
+              additionalProperties:
+                type: string
+                x-lua-required: true
               x-speakeasy-param-computed: true
             sampling_rate:
               description: 'Tracing sampling rate for configuring the probability-based sampler. When set, this value supersedes the global `tracing_sampling_rate` setting from kong.conf.'
@@ -47375,7 +47502,9 @@ components:
                             description: The custom body fields to be added to the callout HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
                             type: object
                             default: null
-                            additionalProperties: true
+                            additionalProperties:
+                              type: string
+                              x-referenceable: true
                             nullable: true
                             x-speakeasy-param-computed: false
                           decode:
@@ -47440,7 +47569,9 @@ components:
                             description: The custom headers to be added in the callout HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
                             type: object
                             default: null
-                            additionalProperties: true
+                            additionalProperties:
+                              type: string
+                              x-referenceable: true
                             nullable: true
                             x-speakeasy-param-computed: false
                           forward:
@@ -47544,7 +47675,9 @@ components:
                             description: The custom query params to be added in the callout HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
                             type: object
                             default: null
-                            additionalProperties: true
+                            additionalProperties:
+                              type: string
+                              x-referenceable: true
                             nullable: true
                             x-speakeasy-param-computed: false
                           forward:
@@ -47612,7 +47745,9 @@ components:
                       description: The custom body fields to be added in the upstream request body. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
                       type: object
                       default: null
-                      additionalProperties: true
+                      additionalProperties:
+                        type: string
+                        x-referenceable: true
                       nullable: true
                       x-speakeasy-param-computed: false
                     decode:
@@ -47638,7 +47773,9 @@ components:
                       description: The custom headers to be added in the upstream HTTP request. Values can contain Lua expressions in the form $(some_lua_expression). The syntax is based on `request-transformer-advanced` templates.
                       type: object
                       default: null
-                      additionalProperties: true
+                      additionalProperties:
+                        type: string
+                        x-referenceable: true
                       nullable: true
                       x-speakeasy-param-computed: false
                     forward:
@@ -47654,7 +47791,9 @@ components:
                       description: The custom query params to be added in the upstream HTTP request. Values can contain Lua expressions in the form `$(some_lua_expression)`. The syntax is based on `request-transformer-advanced` templates.
                       type: object
                       default: null
-                      additionalProperties: true
+                      additionalProperties:
+                        type: string
+                        x-referenceable: true
                       nullable: true
                       x-speakeasy-param-computed: false
                     forward:
@@ -48518,7 +48657,39 @@ components:
               description: A map that defines rate limits for the plugin.
               type: object
               default: null
-              additionalProperties: true
+              additionalProperties:
+                properties:
+                  day:
+                    type: number
+                    default: null
+                    nullable: true
+                    x-speakeasy-param-computed: false
+                  hour:
+                    type: number
+                    default: null
+                    nullable: true
+                    x-speakeasy-param-computed: false
+                  minute:
+                    type: number
+                    default: null
+                    nullable: true
+                    x-speakeasy-param-computed: false
+                  month:
+                    type: number
+                    default: null
+                    nullable: true
+                    x-speakeasy-param-computed: false
+                  second:
+                    type: number
+                    default: null
+                    nullable: true
+                    x-speakeasy-param-computed: false
+                  year:
+                    type: number
+                    default: null
+                    nullable: true
+                    x-speakeasy-param-computed: false
+                type: object
               minLength: 1
               nullable: true
               x-speakeasy-param-computed: false
@@ -50786,7 +50957,10 @@ components:
                   description: Additional Solace flow properties (each setting needs to have `FLOW_` prefix).
                   type: object
                   default: null
-                  additionalProperties: true
+                  additionalProperties:
+                    type: string
+                    x-lua-required: true
+                    x-referenceable: true
                   nullable: true
                   x-speakeasy-param-computed: false
                 selector:
@@ -50928,7 +51102,10 @@ components:
                   description: Additional Solace session properties (each setting needs to have `SESSION_` prefix).
                   type: object
                   default: null
-                  additionalProperties: true
+                  additionalProperties:
+                    type: string
+                    x-lua-required: true
+                    x-referenceable: true
                   nullable: true
                   x-speakeasy-param-computed: false
                 ssl_validate_certificate:
@@ -51191,7 +51368,10 @@ components:
                   description: Additional Solace session properties (each setting needs to have `SESSION_` prefix).
                   type: object
                   default: null
-                  additionalProperties: true
+                  additionalProperties:
+                    type: string
+                    x-lua-required: true
+                    x-referenceable: true
                   nullable: true
                   x-speakeasy-param-computed: false
                 ssl_validate_certificate:
@@ -51461,7 +51641,10 @@ components:
                   description: Additional Solace session properties (each setting needs to have `SESSION_` prefix).
                   type: object
                   default: null
-                  additionalProperties: true
+                  additionalProperties:
+                    type: string
+                    x-lua-required: true
+                    x-referenceable: true
                   nullable: true
                   x-speakeasy-param-computed: false
                 ssl_validate_certificate:
@@ -53668,12 +53851,16 @@ components:
                 token_headers:
                   description: Extra headers to be passed in the token endpoint request.
                   type: object
-                  additionalProperties: true
+                  additionalProperties:
+                    type: string
+                    x-referenceable: true
                   x-speakeasy-param-computed: true
                 token_post_args:
                   description: Extra post arguments to be passed in the token endpoint request.
                   type: object
-                  additionalProperties: true
+                  additionalProperties:
+                    type: string
+                    x-referenceable: true
                   x-speakeasy-param-computed: true
                 username:
                   description: The username to use if `config.oauth.grant_type` is set to `password`.

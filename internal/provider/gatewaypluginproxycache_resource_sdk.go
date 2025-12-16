@@ -250,8 +250,8 @@ func (r *GatewayPluginProxyCacheResourceModel) ToSharedProxyCachePlugin(ctx cont
 		var after *shared.ProxyCachePluginAfter
 		if r.Ordering.After != nil {
 			access := make([]string, 0, len(r.Ordering.After.Access))
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
+			for accessIndex := range r.Ordering.After.Access {
+				access = append(access, r.Ordering.After.Access[accessIndex].ValueString())
 			}
 			after = &shared.ProxyCachePluginAfter{
 				Access: access,
@@ -260,8 +260,8 @@ func (r *GatewayPluginProxyCacheResourceModel) ToSharedProxyCachePlugin(ctx cont
 		var before *shared.ProxyCachePluginBefore
 		if r.Ordering.Before != nil {
 			access1 := make([]string, 0, len(r.Ordering.Before.Access))
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
+			for accessIndex1 := range r.Ordering.Before.Access {
+				access1 = append(access1, r.Ordering.Before.Access[accessIndex1].ValueString())
 			}
 			before = &shared.ProxyCachePluginBefore{
 				Access: access1,
@@ -275,22 +275,22 @@ func (r *GatewayPluginProxyCacheResourceModel) ToSharedProxyCachePlugin(ctx cont
 	var partials []shared.ProxyCachePluginPartials
 	if r.Partials != nil {
 		partials = make([]shared.ProxyCachePluginPartials, 0, len(r.Partials))
-		for _, partialsItem := range r.Partials {
+		for partialsIndex := range r.Partials {
 			id1 := new(string)
-			if !partialsItem.ID.IsUnknown() && !partialsItem.ID.IsNull() {
-				*id1 = partialsItem.ID.ValueString()
+			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
+				*id1 = r.Partials[partialsIndex].ID.ValueString()
 			} else {
 				id1 = nil
 			}
 			name := new(string)
-			if !partialsItem.Name.IsUnknown() && !partialsItem.Name.IsNull() {
-				*name = partialsItem.Name.ValueString()
+			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
+				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
 			path := new(string)
-			if !partialsItem.Path.IsUnknown() && !partialsItem.Path.IsNull() {
-				*path = partialsItem.Path.ValueString()
+			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
+				*path = r.Partials[partialsIndex].Path.ValueString()
 			} else {
 				path = nil
 			}
@@ -304,8 +304,8 @@ func (r *GatewayPluginProxyCacheResourceModel) ToSharedProxyCachePlugin(ctx cont
 	var tags []string
 	if r.Tags != nil {
 		tags = make([]string, 0, len(r.Tags))
-		for _, tagsItem := range r.Tags {
-			tags = append(tags, tagsItem.ValueString())
+		for tagsIndex := range r.Tags {
+			tags = append(tags, r.Tags[tagsIndex].ValueString())
 		}
 	}
 	updatedAt := new(int64)
@@ -327,8 +327,8 @@ func (r *GatewayPluginProxyCacheResourceModel) ToSharedProxyCachePlugin(ctx cont
 		cacheTTL = nil
 	}
 	contentType := make([]string, 0, len(r.Config.ContentType))
-	for _, contentTypeItem := range r.Config.ContentType {
-		contentType = append(contentType, contentTypeItem.ValueString())
+	for contentTypeIndex := range r.Config.ContentType {
+		contentType = append(contentType, r.Config.ContentType[contentTypeIndex].ValueString())
 	}
 	ignoreURICase := new(bool)
 	if !r.Config.IgnoreURICase.IsUnknown() && !r.Config.IgnoreURICase.IsNull() {
@@ -353,8 +353,8 @@ func (r *GatewayPluginProxyCacheResourceModel) ToSharedProxyCachePlugin(ctx cont
 		requestMethod = append(requestMethod, shared.RequestMethod(requestMethodItem.ValueString()))
 	}
 	responseCode := make([]int64, 0, len(r.Config.ResponseCode))
-	for _, responseCodeItem := range r.Config.ResponseCode {
-		responseCode = append(responseCode, responseCodeItem.ValueInt64())
+	for responseCodeIndex := range r.Config.ResponseCode {
+		responseCode = append(responseCode, r.Config.ResponseCode[responseCodeIndex].ValueInt64())
 	}
 	var responseHeaders *shared.ResponseHeaders
 	if r.Config.ResponseHeaders != nil {
@@ -392,15 +392,15 @@ func (r *GatewayPluginProxyCacheResourceModel) ToSharedProxyCachePlugin(ctx cont
 	var varyHeaders []string
 	if r.Config.VaryHeaders != nil {
 		varyHeaders = make([]string, 0, len(r.Config.VaryHeaders))
-		for _, varyHeadersItem := range r.Config.VaryHeaders {
-			varyHeaders = append(varyHeaders, varyHeadersItem.ValueString())
+		for varyHeadersIndex := range r.Config.VaryHeaders {
+			varyHeaders = append(varyHeaders, r.Config.VaryHeaders[varyHeadersIndex].ValueString())
 		}
 	}
 	var varyQueryParams []string
 	if r.Config.VaryQueryParams != nil {
 		varyQueryParams = make([]string, 0, len(r.Config.VaryQueryParams))
-		for _, varyQueryParamsItem := range r.Config.VaryQueryParams {
-			varyQueryParams = append(varyQueryParams, varyQueryParamsItem.ValueString())
+		for varyQueryParamsIndex := range r.Config.VaryQueryParams {
+			varyQueryParams = append(varyQueryParams, r.Config.VaryQueryParams[varyQueryParamsIndex].ValueString())
 		}
 	}
 	config := shared.ProxyCachePluginConfig{
