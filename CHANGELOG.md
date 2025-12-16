@@ -1,10 +1,7 @@
 # Changelog
 
-## 3.5.0
-> Released on 2025/12/??
-
-### Features
-* 
+## 3.4.3
+> Released on 2025/12/16
 
 ### Bug Fixes
 * Properties related to IDP, SAML and OIDC are deprecated in `konnect_portal_auth` resource
