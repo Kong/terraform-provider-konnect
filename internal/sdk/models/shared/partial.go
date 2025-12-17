@@ -553,8 +553,8 @@ const (
 )
 
 type Partial struct {
-	PartialRedisCe *PartialRedisCe `queryParam:"inline,name=Partial"`
-	PartialRedisEe *PartialRedisEe `queryParam:"inline,name=Partial"`
+	PartialRedisCe *PartialRedisCe `queryParam:"inline,name=Partial" union:"member"`
+	PartialRedisEe *PartialRedisEe `queryParam:"inline,name=Partial" union:"member"`
 
 	Type PartialType
 }

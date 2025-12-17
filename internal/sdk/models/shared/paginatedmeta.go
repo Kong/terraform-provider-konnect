@@ -2,10 +2,25 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // PaginatedMeta - returns the pagination information
 type PaginatedMeta struct {
 	// Contains pagination query parameters and the total number of objects returned.
 	Page PageMeta `json:"page"`
+}
+
+func (p PaginatedMeta) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PaginatedMeta) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"page"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PaginatedMeta) GetPage() PageMeta {

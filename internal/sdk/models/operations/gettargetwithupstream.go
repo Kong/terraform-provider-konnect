@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -14,6 +15,17 @@ type GetTargetWithUpstreamRequest struct {
 	UpstreamID string `pathParam:"style=simple,explode=false,name=UpstreamIdForTarget"`
 	// ID of the Target to lookup
 	TargetID string `pathParam:"style=simple,explode=false,name=TargetId"`
+}
+
+func (g GetTargetWithUpstreamRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetTargetWithUpstreamRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"controlPlaneId", "UpstreamIdForTarget", "TargetId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetTargetWithUpstreamRequest) GetControlPlaneID() string {
@@ -46,6 +58,17 @@ type GetTargetWithUpstreamResponse struct {
 	RawResponse *http.Response
 	// Successfully fetched Target
 	Target *shared.Target
+}
+
+func (g GetTargetWithUpstreamResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetTargetWithUpstreamResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetTargetWithUpstreamResponse) GetContentType() string {

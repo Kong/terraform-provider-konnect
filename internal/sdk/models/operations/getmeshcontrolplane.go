@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -10,6 +11,17 @@ import (
 type GetMeshControlPlaneRequest struct {
 	// Id of the Konnect resource
 	CpID string `pathParam:"style=simple,explode=false,name=cpId"`
+}
+
+func (g GetMeshControlPlaneRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetMeshControlPlaneRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"cpId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetMeshControlPlaneRequest) GetCpID() string {
@@ -34,6 +46,17 @@ type GetMeshControlPlaneResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not found
 	NotFoundError *shared.NotFoundError
+}
+
+func (g GetMeshControlPlaneResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetMeshControlPlaneResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetMeshControlPlaneResponse) GetContentType() string {

@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateIntegrationInstanceAuthCredentialRequest struct {
 	// The `id` of the integration instance.
 	IntegrationInstanceID                   string                                         `pathParam:"style=simple,explode=false,name=integrationInstanceId"`
 	CreateIntegrationInstanceAuthCredential shared.CreateIntegrationInstanceAuthCredential `request:"mediaType=application/json"`
+}
+
+func (c CreateIntegrationInstanceAuthCredentialRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateIntegrationInstanceAuthCredentialRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"integrationInstanceId", "CreateIntegrationInstanceAuthCredential"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateIntegrationInstanceAuthCredentialRequest) GetIntegrationInstanceID() string {
@@ -46,6 +58,17 @@ type CreateIntegrationInstanceAuthCredentialResponse struct {
 	NotFoundError *shared.NotFoundError
 	// Conflict
 	ConflictError *shared.ConflictError
+}
+
+func (c CreateIntegrationInstanceAuthCredentialResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateIntegrationInstanceAuthCredentialResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateIntegrationInstanceAuthCredentialResponse) GetContentType() string {

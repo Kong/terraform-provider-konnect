@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -16,6 +17,17 @@ type AddUserToTeamRequest struct {
 	TeamID string `pathParam:"style=simple,explode=false,name=teamId"`
 	// The request schema for adding a user to a team.
 	AddUserToTeam *shared.AddUserToTeam `request:"mediaType=application/json"`
+}
+
+func (a AddUserToTeamRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AddUserToTeamRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"teamId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AddUserToTeamRequest) GetTeamID() string {
@@ -45,6 +57,17 @@ type AddUserToTeamResponse struct {
 	NotFoundError *shared.NotFoundError
 	// Conflict
 	ConflictError *shared.ConflictError
+}
+
+func (a AddUserToTeamResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AddUserToTeamResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AddUserToTeamResponse) GetContentType() string {

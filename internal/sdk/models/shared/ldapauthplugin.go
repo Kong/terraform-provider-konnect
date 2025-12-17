@@ -12,6 +12,17 @@ type LdapAuthPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (l LdapAuthPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *LdapAuthPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (l *LdapAuthPluginAfter) GetAccess() []string {
 	if l == nil {
 		return nil
@@ -21,6 +32,17 @@ func (l *LdapAuthPluginAfter) GetAccess() []string {
 
 type LdapAuthPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (l LdapAuthPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *LdapAuthPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (l *LdapAuthPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (l *LdapAuthPluginBefore) GetAccess() []string {
 type LdapAuthPluginOrdering struct {
 	After  *LdapAuthPluginAfter  `json:"after,omitempty"`
 	Before *LdapAuthPluginBefore `json:"before,omitempty"`
+}
+
+func (l LdapAuthPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *LdapAuthPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (l *LdapAuthPluginOrdering) GetAfter() *LdapAuthPluginAfter {
@@ -55,6 +88,17 @@ type LdapAuthPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (l LdapAuthPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *LdapAuthPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (l *LdapAuthPluginPartials) GetID() *string {
@@ -261,6 +305,17 @@ type LdapAuthPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (l LdapAuthPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *LdapAuthPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (l *LdapAuthPluginRoute) GetID() *string {
 	if l == nil {
 		return nil
@@ -271,6 +326,17 @@ func (l *LdapAuthPluginRoute) GetID() *string {
 // LdapAuthPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type LdapAuthPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (l LdapAuthPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *LdapAuthPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (l *LdapAuthPluginService) GetID() *string {

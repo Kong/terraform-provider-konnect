@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreatePluginSchemasRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID      string                      `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	CreatePluginSchemas *shared.CreatePluginSchemas `request:"mediaType=application/json"`
+}
+
+func (c CreatePluginSchemasRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreatePluginSchemasRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreatePluginSchemasRequest) GetControlPlaneID() string {
@@ -44,6 +56,17 @@ type CreatePluginSchemasResponse struct {
 	KonnectCPLegacyForbiddenError *shared.KonnectCPLegacyForbiddenError
 	// Forbidden
 	KonnectCPLegacyConflictError *shared.KonnectCPLegacyConflictError
+}
+
+func (c CreatePluginSchemasResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreatePluginSchemasResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreatePluginSchemasResponse) GetContentType() string {

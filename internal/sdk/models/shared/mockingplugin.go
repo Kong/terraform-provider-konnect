@@ -12,6 +12,17 @@ type MockingPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (m MockingPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MockingPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (m *MockingPluginAfter) GetAccess() []string {
 	if m == nil {
 		return nil
@@ -21,6 +32,17 @@ func (m *MockingPluginAfter) GetAccess() []string {
 
 type MockingPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (m MockingPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MockingPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (m *MockingPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (m *MockingPluginBefore) GetAccess() []string {
 type MockingPluginOrdering struct {
 	After  *MockingPluginAfter  `json:"after,omitempty"`
 	Before *MockingPluginBefore `json:"before,omitempty"`
+}
+
+func (m MockingPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MockingPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (m *MockingPluginOrdering) GetAfter() *MockingPluginAfter {
@@ -55,6 +88,17 @@ type MockingPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (m MockingPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MockingPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (m *MockingPluginPartials) GetID() *string {
@@ -187,6 +231,17 @@ type MockingPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (m MockingPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MockingPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (m *MockingPluginConsumer) GetID() *string {
 	if m == nil {
 		return nil
@@ -231,6 +286,17 @@ type MockingPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (m MockingPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MockingPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (m *MockingPluginRoute) GetID() *string {
 	if m == nil {
 		return nil
@@ -241,6 +307,17 @@ func (m *MockingPluginRoute) GetID() *string {
 // MockingPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type MockingPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (m MockingPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MockingPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (m *MockingPluginService) GetID() *string {

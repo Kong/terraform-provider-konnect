@@ -12,6 +12,17 @@ type StandardWebhooksPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (s StandardWebhooksPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StandardWebhooksPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *StandardWebhooksPluginAfter) GetAccess() []string {
 	if s == nil {
 		return nil
@@ -21,6 +32,17 @@ func (s *StandardWebhooksPluginAfter) GetAccess() []string {
 
 type StandardWebhooksPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (s StandardWebhooksPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StandardWebhooksPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *StandardWebhooksPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (s *StandardWebhooksPluginBefore) GetAccess() []string {
 type StandardWebhooksPluginOrdering struct {
 	After  *StandardWebhooksPluginAfter  `json:"after,omitempty"`
 	Before *StandardWebhooksPluginBefore `json:"before,omitempty"`
+}
+
+func (s StandardWebhooksPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StandardWebhooksPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *StandardWebhooksPluginOrdering) GetAfter() *StandardWebhooksPluginAfter {
@@ -55,6 +88,17 @@ type StandardWebhooksPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (s StandardWebhooksPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StandardWebhooksPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *StandardWebhooksPluginPartials) GetID() *string {
@@ -115,6 +159,17 @@ type StandardWebhooksPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (s StandardWebhooksPluginConsumerGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StandardWebhooksPluginConsumerGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *StandardWebhooksPluginConsumerGroup) GetID() *string {
 	if s == nil {
 		return nil
@@ -159,6 +214,17 @@ type StandardWebhooksPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (s StandardWebhooksPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StandardWebhooksPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *StandardWebhooksPluginRoute) GetID() *string {
 	if s == nil {
 		return nil
@@ -169,6 +235,17 @@ func (s *StandardWebhooksPluginRoute) GetID() *string {
 // StandardWebhooksPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type StandardWebhooksPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (s StandardWebhooksPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StandardWebhooksPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *StandardWebhooksPluginService) GetID() *string {

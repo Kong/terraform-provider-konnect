@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // V2NullableAppearanceFonts - Font selections to render text in the portal user interface. Must set use_custom_fonts to true to enable using custom font values.
 type V2NullableAppearanceFonts struct {
 	// The name of the font to render in the browser.
@@ -10,6 +14,17 @@ type V2NullableAppearanceFonts struct {
 	Code V2AppearanceFontName `json:"code"`
 	// The name of the font to render in the browser.
 	Headings V2AppearanceFontName `json:"headings"`
+}
+
+func (v V2NullableAppearanceFonts) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *V2NullableAppearanceFonts) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"base", "code", "headings"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (v *V2NullableAppearanceFonts) GetBase() V2AppearanceFontName {

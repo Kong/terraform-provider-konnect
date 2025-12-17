@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 // Visibility - Whether a menu item is public or private. Private menu items are only accessible to authenticated users.
@@ -43,6 +44,17 @@ type PortalMenuItem struct {
 	Visibility Visibility `json:"visibility"`
 	// When clicked, open the link in a new window
 	External bool `json:"external"`
+}
+
+func (p PortalMenuItem) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PortalMenuItem) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"path", "title", "visibility", "external"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PortalMenuItem) GetPath() string {

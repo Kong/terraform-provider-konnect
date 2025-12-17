@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -13,6 +14,17 @@ type UpdatePrefunctionPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID    string                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	PreFunctionPlugin shared.PreFunctionPlugin `request:"mediaType=application/json"`
+}
+
+func (u UpdatePrefunctionPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdatePrefunctionPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "PreFunctionPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdatePrefunctionPluginRequest) GetPluginID() string {
@@ -47,6 +59,17 @@ type UpdatePrefunctionPluginResponse struct {
 	PreFunctionPlugin *shared.PreFunctionPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (u UpdatePrefunctionPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdatePrefunctionPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdatePrefunctionPluginResponse) GetContentType() string {

@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type FetchAPIDocumentRequest struct {
 	APIID string `pathParam:"style=simple,explode=false,name=apiId"`
 	// The document identifier related to the API
 	DocumentID string `pathParam:"style=simple,explode=false,name=documentId"`
+}
+
+func (f FetchAPIDocumentRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *FetchAPIDocumentRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"apiId", "documentId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (f *FetchAPIDocumentRequest) GetAPIID() string {
@@ -43,6 +55,17 @@ type FetchAPIDocumentResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (f FetchAPIDocumentResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *FetchAPIDocumentResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (f *FetchAPIDocumentResponse) GetContentType() string {

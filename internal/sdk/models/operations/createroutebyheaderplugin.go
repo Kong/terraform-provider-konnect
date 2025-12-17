@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateRoutebyheaderPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID      string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	RouteByHeaderPlugin shared.RouteByHeaderPlugin `request:"mediaType=application/json"`
+}
+
+func (c CreateRoutebyheaderPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateRoutebyheaderPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "RouteByHeaderPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateRoutebyheaderPluginRequest) GetControlPlaneID() string {
@@ -38,6 +50,17 @@ type CreateRoutebyheaderPluginResponse struct {
 	RouteByHeaderPlugin *shared.RouteByHeaderPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (c CreateRoutebyheaderPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateRoutebyheaderPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateRoutebyheaderPluginResponse) GetContentType() string {

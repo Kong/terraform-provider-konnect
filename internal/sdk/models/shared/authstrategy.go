@@ -18,8 +18,8 @@ const (
 )
 
 type AuthStrategy struct {
-	AuthStrategyKeyAuth           *AuthStrategyKeyAuth           `queryParam:"inline,name=AuthStrategy"`
-	AuthStrategyClientCredentials *AuthStrategyClientCredentials `queryParam:"inline,name=AuthStrategy"`
+	AuthStrategyKeyAuth           *AuthStrategyKeyAuth           `queryParam:"inline,name=AuthStrategy" union:"member"`
+	AuthStrategyClientCredentials *AuthStrategyClientCredentials `queryParam:"inline,name=AuthStrategy" union:"member"`
 
 	Type AuthStrategyType
 }

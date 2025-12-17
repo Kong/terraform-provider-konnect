@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type UpdateControlPlaneRequest struct {
 	// The control plane ID
 	ID                        string                           `pathParam:"style=simple,explode=false,name=id"`
 	UpdateControlPlaneRequest shared.UpdateControlPlaneRequest `request:"mediaType=application/json"`
+}
+
+func (u UpdateControlPlaneRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateControlPlaneRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"id", "UpdateControlPlaneRequest"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateControlPlaneRequest) GetID() string {
@@ -48,6 +60,17 @@ type UpdateControlPlaneResponse struct {
 	InternalServerError *shared.InternalServerError
 	// Service Unavailable
 	ServiceUnavailable *shared.ServiceUnavailable
+}
+
+func (u UpdateControlPlaneResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateControlPlaneResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateControlPlaneResponse) GetContentType() string {

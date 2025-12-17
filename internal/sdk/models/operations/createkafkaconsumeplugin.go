@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateKafkaconsumePluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID     string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	KafkaConsumePlugin shared.KafkaConsumePlugin `request:"mediaType=application/json"`
+}
+
+func (c CreateKafkaconsumePluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateKafkaconsumePluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "KafkaConsumePlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateKafkaconsumePluginRequest) GetControlPlaneID() string {
@@ -38,6 +50,17 @@ type CreateKafkaconsumePluginResponse struct {
 	KafkaConsumePlugin *shared.KafkaConsumePlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (c CreateKafkaconsumePluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateKafkaconsumePluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateKafkaconsumePluginResponse) GetContentType() string {

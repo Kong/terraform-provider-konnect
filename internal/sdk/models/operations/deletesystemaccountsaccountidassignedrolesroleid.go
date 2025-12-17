@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -16,6 +17,17 @@ type DeleteSystemAccountsAccountIDAssignedRolesRoleIDRequest struct {
 	AccountID string `pathParam:"style=simple,explode=false,name=accountId"`
 	// ID of the role.
 	RoleID string `pathParam:"style=simple,explode=false,name=roleId"`
+}
+
+func (d DeleteSystemAccountsAccountIDAssignedRolesRoleIDRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteSystemAccountsAccountIDAssignedRolesRoleIDRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"accountId", "roleId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteSystemAccountsAccountIDAssignedRolesRoleIDRequest) GetAccountID() string {
@@ -43,6 +55,17 @@ type DeleteSystemAccountsAccountIDAssignedRolesRoleIDResponse struct {
 	UnauthorizedError *shared.UnauthorizedError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (d DeleteSystemAccountsAccountIDAssignedRolesRoleIDResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteSystemAccountsAccountIDAssignedRolesRoleIDResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteSystemAccountsAccountIDAssignedRolesRoleIDResponse) GetContentType() string {

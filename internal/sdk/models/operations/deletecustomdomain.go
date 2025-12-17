@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -14,6 +15,17 @@ var DeleteCustomDomainServerList = []string{
 type DeleteCustomDomainRequest struct {
 	// ID of the custom domain to operate on.
 	CustomDomainID string `pathParam:"style=simple,explode=false,name=customDomainId"`
+}
+
+func (d DeleteCustomDomainRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteCustomDomainRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"customDomainId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteCustomDomainRequest) GetCustomDomainID() string {
@@ -38,6 +50,17 @@ type DeleteCustomDomainResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (d DeleteCustomDomainResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteCustomDomainResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteCustomDomainResponse) GetContentType() string {

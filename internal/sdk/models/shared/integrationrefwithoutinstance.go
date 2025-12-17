@@ -2,10 +2,25 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // IntegrationRefWithoutInstance - Short-hand descriptor of an integration that omits instance metadata.
 type IntegrationRefWithoutInstance struct {
 	Name        string `json:"name"`
 	DisplayName string `json:"display_name"`
+}
+
+func (i IntegrationRefWithoutInstance) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *IntegrationRefWithoutInstance) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, []string{"name", "display_name"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (i *IntegrationRefWithoutInstance) GetName() string {

@@ -12,6 +12,17 @@ type CanaryPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (c CanaryPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CanaryPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (c *CanaryPluginAfter) GetAccess() []string {
 	if c == nil {
 		return nil
@@ -21,6 +32,17 @@ func (c *CanaryPluginAfter) GetAccess() []string {
 
 type CanaryPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (c CanaryPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CanaryPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CanaryPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (c *CanaryPluginBefore) GetAccess() []string {
 type CanaryPluginOrdering struct {
 	After  *CanaryPluginAfter  `json:"after,omitempty"`
 	Before *CanaryPluginBefore `json:"before,omitempty"`
+}
+
+func (c CanaryPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CanaryPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CanaryPluginOrdering) GetAfter() *CanaryPluginAfter {
@@ -55,6 +88,17 @@ type CanaryPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (c CanaryPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CanaryPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CanaryPluginPartials) GetID() *string {
@@ -290,6 +334,17 @@ type CanaryPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (c CanaryPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CanaryPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (c *CanaryPluginRoute) GetID() *string {
 	if c == nil {
 		return nil
@@ -300,6 +355,17 @@ func (c *CanaryPluginRoute) GetID() *string {
 // CanaryPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type CanaryPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (c CanaryPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CanaryPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CanaryPluginService) GetID() *string {

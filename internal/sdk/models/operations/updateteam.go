@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -16,6 +17,17 @@ type UpdateTeamRequest struct {
 	TeamID string `pathParam:"style=simple,explode=false,name=teamId"`
 	// The request schema for the update team request.
 	UpdateTeam *shared.UpdateTeam `request:"mediaType=application/json"`
+}
+
+func (u UpdateTeamRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateTeamRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"teamId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateTeamRequest) GetTeamID() string {
@@ -45,6 +57,17 @@ type UpdateTeamResponse struct {
 	BadRequestError *shared.BadRequestError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (u UpdateTeamResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateTeamResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateTeamResponse) GetContentType() string {

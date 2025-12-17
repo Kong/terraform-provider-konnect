@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -10,6 +11,17 @@ import (
 type DeleteIntegrationInstanceAuthConfigRequest struct {
 	// The `id` of the integration instance.
 	IntegrationInstanceID string `pathParam:"style=simple,explode=false,name=integrationInstanceId"`
+}
+
+func (d DeleteIntegrationInstanceAuthConfigRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteIntegrationInstanceAuthConfigRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"integrationInstanceId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteIntegrationInstanceAuthConfigRequest) GetIntegrationInstanceID() string {
@@ -32,6 +44,17 @@ type DeleteIntegrationInstanceAuthConfigResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (d DeleteIntegrationInstanceAuthConfigResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteIntegrationInstanceAuthConfigResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteIntegrationInstanceAuthConfigResponse) GetContentType() string {

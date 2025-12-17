@@ -2,10 +2,25 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type PortalFooterMenuSection struct {
 	// The footer menu section title
 	Title string           `json:"title"`
 	Items []PortalMenuItem `json:"items"`
+}
+
+func (p PortalFooterMenuSection) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PortalFooterMenuSection) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"title", "items"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PortalFooterMenuSection) GetTitle() string {

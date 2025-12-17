@@ -2,8 +2,23 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type MeshControlPlaneFeatureHostnameGenerationCreation struct {
 	Enabled bool `json:"enabled"`
+}
+
+func (m MeshControlPlaneFeatureHostnameGenerationCreation) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshControlPlaneFeatureHostnameGenerationCreation) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"enabled"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (m *MeshControlPlaneFeatureHostnameGenerationCreation) GetEnabled() bool {

@@ -115,6 +115,17 @@ type AuthStrategySyncError struct {
 	Info       *Info   `json:"info,omitempty"`
 }
 
+func (a AuthStrategySyncError) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AuthStrategySyncError) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"message"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AuthStrategySyncError) GetPluginName() *string {
 	if a == nil {
 		return nil

@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // BaseError - standard error
 type BaseError struct {
 	// The HTTP status code of the error. Useful when passing the response
@@ -26,6 +30,17 @@ type BaseError struct {
 	// provided as "Sentence case" for direct use in the UI.
 	//
 	Detail string `json:"detail"`
+}
+
+func (b BaseError) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BaseError) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"status", "title", "instance", "detail"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (b *BaseError) GetStatus() int64 {

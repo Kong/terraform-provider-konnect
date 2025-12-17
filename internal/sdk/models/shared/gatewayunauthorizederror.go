@@ -2,10 +2,25 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // GatewayUnauthorizedError - Unauthorized
 type GatewayUnauthorizedError struct {
 	Message string `json:"message"`
 	Status  int64  `json:"status"`
+}
+
+func (g GatewayUnauthorizedError) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GatewayUnauthorizedError) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"message", "status"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GatewayUnauthorizedError) GetMessage() string {

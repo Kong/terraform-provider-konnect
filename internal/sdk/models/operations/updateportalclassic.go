@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type UpdatePortalClassicRequest struct {
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 	// Update a portal's settings.
 	V2UpdatePortalRequest shared.V2UpdatePortalRequest `request:"mediaType=application/json"`
+}
+
+func (u UpdatePortalClassicRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdatePortalClassicRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"portalId", "V2UpdatePortalRequest"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdatePortalClassicRequest) GetPortalID() string {
@@ -47,6 +59,17 @@ type UpdatePortalClassicResponse struct {
 	NotFoundError *shared.NotFoundError
 	// Conflict
 	ConflictError *shared.ConflictError
+}
+
+func (u UpdatePortalClassicResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdatePortalClassicResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdatePortalClassicResponse) GetContentType() string {

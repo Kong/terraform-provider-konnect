@@ -12,6 +12,17 @@ type ExitTransformerPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (e ExitTransformerPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *ExitTransformerPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (e *ExitTransformerPluginAfter) GetAccess() []string {
 	if e == nil {
 		return nil
@@ -21,6 +32,17 @@ func (e *ExitTransformerPluginAfter) GetAccess() []string {
 
 type ExitTransformerPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (e ExitTransformerPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *ExitTransformerPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (e *ExitTransformerPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (e *ExitTransformerPluginBefore) GetAccess() []string {
 type ExitTransformerPluginOrdering struct {
 	After  *ExitTransformerPluginAfter  `json:"after,omitempty"`
 	Before *ExitTransformerPluginBefore `json:"before,omitempty"`
+}
+
+func (e ExitTransformerPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *ExitTransformerPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (e *ExitTransformerPluginOrdering) GetAfter() *ExitTransformerPluginAfter {
@@ -55,6 +88,17 @@ type ExitTransformerPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (e ExitTransformerPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *ExitTransformerPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (e *ExitTransformerPluginPartials) GetID() *string {
@@ -123,6 +167,17 @@ type ExitTransformerPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (e ExitTransformerPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *ExitTransformerPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (e *ExitTransformerPluginConsumer) GetID() *string {
 	if e == nil {
 		return nil
@@ -167,6 +222,17 @@ type ExitTransformerPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (e ExitTransformerPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *ExitTransformerPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (e *ExitTransformerPluginRoute) GetID() *string {
 	if e == nil {
 		return nil
@@ -177,6 +243,17 @@ func (e *ExitTransformerPluginRoute) GetID() *string {
 // ExitTransformerPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type ExitTransformerPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (e ExitTransformerPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *ExitTransformerPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (e *ExitTransformerPluginService) GetID() *string {

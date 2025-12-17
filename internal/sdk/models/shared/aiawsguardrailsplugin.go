@@ -12,6 +12,17 @@ type AiAwsGuardrailsPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (a AiAwsGuardrailsPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiAwsGuardrailsPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiAwsGuardrailsPluginAfter) GetAccess() []string {
 	if a == nil {
 		return nil
@@ -21,6 +32,17 @@ func (a *AiAwsGuardrailsPluginAfter) GetAccess() []string {
 
 type AiAwsGuardrailsPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (a AiAwsGuardrailsPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiAwsGuardrailsPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiAwsGuardrailsPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (a *AiAwsGuardrailsPluginBefore) GetAccess() []string {
 type AiAwsGuardrailsPluginOrdering struct {
 	After  *AiAwsGuardrailsPluginAfter  `json:"after,omitempty"`
 	Before *AiAwsGuardrailsPluginBefore `json:"before,omitempty"`
+}
+
+func (a AiAwsGuardrailsPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiAwsGuardrailsPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiAwsGuardrailsPluginOrdering) GetAfter() *AiAwsGuardrailsPluginAfter {
@@ -55,6 +88,17 @@ type AiAwsGuardrailsPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (a AiAwsGuardrailsPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiAwsGuardrailsPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiAwsGuardrailsPluginPartials) GetID() *string {
@@ -271,6 +315,17 @@ type AiAwsGuardrailsPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiAwsGuardrailsPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiAwsGuardrailsPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiAwsGuardrailsPluginConsumer) GetID() *string {
 	if a == nil {
 		return nil
@@ -281,6 +336,17 @@ func (a *AiAwsGuardrailsPluginConsumer) GetID() *string {
 // AiAwsGuardrailsPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type AiAwsGuardrailsPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiAwsGuardrailsPluginConsumerGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiAwsGuardrailsPluginConsumerGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiAwsGuardrailsPluginConsumerGroup) GetID() *string {
@@ -327,6 +393,17 @@ type AiAwsGuardrailsPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiAwsGuardrailsPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiAwsGuardrailsPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiAwsGuardrailsPluginRoute) GetID() *string {
 	if a == nil {
 		return nil
@@ -337,6 +414,17 @@ func (a *AiAwsGuardrailsPluginRoute) GetID() *string {
 // AiAwsGuardrailsPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type AiAwsGuardrailsPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiAwsGuardrailsPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiAwsGuardrailsPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiAwsGuardrailsPluginService) GetID() *string {

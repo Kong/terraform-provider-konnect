@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // ConflictError - standard error
 type ConflictError struct {
 	Status   any `json:"status"`
@@ -9,6 +13,17 @@ type ConflictError struct {
 	Type     any `json:"type,omitempty"`
 	Instance any `json:"instance"`
 	Detail   any `json:"detail"`
+}
+
+func (c ConflictError) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ConflictError) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"status", "title", "instance", "detail"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *ConflictError) GetStatus() any {

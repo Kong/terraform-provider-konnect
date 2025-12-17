@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // UnauthorizedError - standard error
 type UnauthorizedError struct {
 	Status   any `json:"status"`
@@ -9,6 +13,17 @@ type UnauthorizedError struct {
 	Type     any `json:"type,omitempty"`
 	Instance any `json:"instance"`
 	Detail   any `json:"detail"`
+}
+
+func (u UnauthorizedError) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UnauthorizedError) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"status", "title", "instance", "detail"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UnauthorizedError) GetStatus() any {

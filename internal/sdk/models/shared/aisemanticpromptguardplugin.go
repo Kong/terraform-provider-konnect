@@ -12,6 +12,17 @@ type AiSemanticPromptGuardPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (a AiSemanticPromptGuardPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticPromptGuardPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiSemanticPromptGuardPluginAfter) GetAccess() []string {
 	if a == nil {
 		return nil
@@ -21,6 +32,17 @@ func (a *AiSemanticPromptGuardPluginAfter) GetAccess() []string {
 
 type AiSemanticPromptGuardPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (a AiSemanticPromptGuardPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticPromptGuardPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiSemanticPromptGuardPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (a *AiSemanticPromptGuardPluginBefore) GetAccess() []string {
 type AiSemanticPromptGuardPluginOrdering struct {
 	After  *AiSemanticPromptGuardPluginAfter  `json:"after,omitempty"`
 	Before *AiSemanticPromptGuardPluginBefore `json:"before,omitempty"`
+}
+
+func (a AiSemanticPromptGuardPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticPromptGuardPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiSemanticPromptGuardPluginOrdering) GetAfter() *AiSemanticPromptGuardPluginAfter {
@@ -55,6 +88,17 @@ type AiSemanticPromptGuardPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (a AiSemanticPromptGuardPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticPromptGuardPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiSemanticPromptGuardPluginPartials) GetID() *string {
@@ -531,6 +575,17 @@ type AiSemanticPromptGuardPluginModel struct {
 	Provider AiSemanticPromptGuardPluginProvider `json:"provider"`
 }
 
+func (a AiSemanticPromptGuardPluginModel) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticPromptGuardPluginModel) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "provider"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiSemanticPromptGuardPluginModel) GetName() string {
 	if a == nil {
 		return ""
@@ -555,6 +610,17 @@ func (a *AiSemanticPromptGuardPluginModel) GetProvider() AiSemanticPromptGuardPl
 type AiSemanticPromptGuardPluginEmbeddings struct {
 	Auth  *AiSemanticPromptGuardPluginAuth `json:"auth"`
 	Model AiSemanticPromptGuardPluginModel `json:"model"`
+}
+
+func (a AiSemanticPromptGuardPluginEmbeddings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticPromptGuardPluginEmbeddings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"model"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiSemanticPromptGuardPluginEmbeddings) GetAuth() *AiSemanticPromptGuardPluginAuth {
@@ -708,6 +774,17 @@ func (r *Rules) GetMaxRequestBodySize() *int64 {
 type Search struct {
 	// Threshold for the similarity score to be considered a match.
 	Threshold *float64 `json:"threshold,omitempty"`
+}
+
+func (s Search) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *Search) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *Search) GetThreshold() *float64 {
@@ -1233,6 +1310,17 @@ type AiSemanticPromptGuardPluginVectordb struct {
 	Threshold float64 `json:"threshold"`
 }
 
+func (a AiSemanticPromptGuardPluginVectordb) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticPromptGuardPluginVectordb) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"dimensions", "distance_metric", "strategy", "threshold"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiSemanticPromptGuardPluginVectordb) GetDimensions() int64 {
 	if a == nil {
 		return 0
@@ -1344,6 +1432,17 @@ type AiSemanticPromptGuardPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiSemanticPromptGuardPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticPromptGuardPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiSemanticPromptGuardPluginConsumer) GetID() *string {
 	if a == nil {
 		return nil
@@ -1354,6 +1453,17 @@ func (a *AiSemanticPromptGuardPluginConsumer) GetID() *string {
 // AiSemanticPromptGuardPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type AiSemanticPromptGuardPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiSemanticPromptGuardPluginConsumerGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticPromptGuardPluginConsumerGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiSemanticPromptGuardPluginConsumerGroup) GetID() *string {
@@ -1400,6 +1510,17 @@ type AiSemanticPromptGuardPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiSemanticPromptGuardPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticPromptGuardPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiSemanticPromptGuardPluginRoute) GetID() *string {
 	if a == nil {
 		return nil
@@ -1410,6 +1531,17 @@ func (a *AiSemanticPromptGuardPluginRoute) GetID() *string {
 // AiSemanticPromptGuardPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type AiSemanticPromptGuardPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiSemanticPromptGuardPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticPromptGuardPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiSemanticPromptGuardPluginService) GetID() *string {

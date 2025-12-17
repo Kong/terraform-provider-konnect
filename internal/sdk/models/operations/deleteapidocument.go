@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type DeleteAPIDocumentRequest struct {
 	APIID string `pathParam:"style=simple,explode=false,name=apiId"`
 	// The document identifier related to the API
 	DocumentID string `pathParam:"style=simple,explode=false,name=documentId"`
+}
+
+func (d DeleteAPIDocumentRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteAPIDocumentRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"apiId", "documentId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteAPIDocumentRequest) GetAPIID() string {
@@ -41,6 +53,17 @@ type DeleteAPIDocumentResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (d DeleteAPIDocumentResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteAPIDocumentResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteAPIDocumentResponse) GetContentType() string {

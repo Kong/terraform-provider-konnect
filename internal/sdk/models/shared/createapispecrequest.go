@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 // CreateAPISpecRequestAPISpecType - The type of specification being stored. This allows us to render the specification correctly.
@@ -44,6 +45,17 @@ type CreateAPISpecRequest struct {
 	// The type of specification being stored. This allows us to render the specification correctly.
 	//
 	Type *CreateAPISpecRequestAPISpecType `json:"type,omitempty"`
+}
+
+func (c CreateAPISpecRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAPISpecRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"content"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateAPISpecRequest) GetContent() string {

@@ -2,9 +2,24 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // V2NullableAppearanceThemeVariables - Groups of variables for configuring visual details of the portal user interface. Set theme_name to 'custom' to use custom values for theme variables.
 type V2NullableAppearanceThemeVariables struct {
 	Colors V2AppearanceThemeColorVariables `json:"colors"`
+}
+
+func (v V2NullableAppearanceThemeVariables) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *V2NullableAppearanceThemeVariables) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"colors"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (v *V2NullableAppearanceThemeVariables) GetColors() V2AppearanceThemeColorVariables {

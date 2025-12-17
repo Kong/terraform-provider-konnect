@@ -12,6 +12,17 @@ type AcePluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (a AcePluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AcePluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AcePluginAfter) GetAccess() []string {
 	if a == nil {
 		return nil
@@ -21,6 +32,17 @@ func (a *AcePluginAfter) GetAccess() []string {
 
 type AcePluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (a AcePluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AcePluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AcePluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (a *AcePluginBefore) GetAccess() []string {
 type AcePluginOrdering struct {
 	After  *AcePluginAfter  `json:"after,omitempty"`
 	Before *AcePluginBefore `json:"before,omitempty"`
+}
+
+func (a AcePluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AcePluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AcePluginOrdering) GetAfter() *AcePluginAfter {
@@ -55,6 +88,17 @@ type Partials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (p Partials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *Partials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *Partials) GetID() *string {
@@ -506,6 +550,17 @@ type AcePluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AcePluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AcePluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AcePluginRoute) GetID() *string {
 	if a == nil {
 		return nil
@@ -516,6 +571,17 @@ func (a *AcePluginRoute) GetID() *string {
 // AcePluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type AcePluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AcePluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AcePluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AcePluginService) GetID() *string {

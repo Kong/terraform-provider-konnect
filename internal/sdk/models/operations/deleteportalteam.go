@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type DeletePortalTeamRequest struct {
 	TeamID string `pathParam:"style=simple,explode=false,name=teamId"`
 	// The Portal identifier
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
+}
+
+func (d DeletePortalTeamRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeletePortalTeamRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"teamId", "portalId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeletePortalTeamRequest) GetTeamID() string {
@@ -41,6 +53,17 @@ type DeletePortalTeamResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (d DeletePortalTeamResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeletePortalTeamResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeletePortalTeamResponse) GetContentType() string {

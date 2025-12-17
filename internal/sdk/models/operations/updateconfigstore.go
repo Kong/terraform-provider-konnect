@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -13,6 +14,17 @@ type UpdateConfigStoreRequest struct {
 	// Config Store identifier
 	ConfigStoreID     string                   `pathParam:"style=simple,explode=false,name=configStoreId"`
 	UpdateConfigStore shared.UpdateConfigStore `request:"mediaType=application/json"`
+}
+
+func (u UpdateConfigStoreRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateConfigStoreRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"controlPlaneId", "configStoreId", "UpdateConfigStore"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateConfigStoreRequest) GetControlPlaneID() string {
@@ -55,6 +67,17 @@ type UpdateConfigStoreResponse struct {
 	NotFoundError *shared.NotFoundError
 	// Unsupported Media Type
 	UnsupportedMediaTypeError *shared.UnsupportedMediaTypeError
+}
+
+func (u UpdateConfigStoreResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateConfigStoreResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateConfigStoreResponse) GetContentType() string {

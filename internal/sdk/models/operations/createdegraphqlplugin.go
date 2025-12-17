@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateDegraphqlPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID  string                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	DegraphqlPlugin shared.DegraphqlPlugin `request:"mediaType=application/json"`
+}
+
+func (c CreateDegraphqlPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateDegraphqlPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "DegraphqlPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateDegraphqlPluginRequest) GetControlPlaneID() string {
@@ -38,6 +50,17 @@ type CreateDegraphqlPluginResponse struct {
 	DegraphqlPlugin *shared.DegraphqlPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (c CreateDegraphqlPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateDegraphqlPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateDegraphqlPluginResponse) GetContentType() string {

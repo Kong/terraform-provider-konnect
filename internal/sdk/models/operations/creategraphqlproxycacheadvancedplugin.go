@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateGraphqlproxycacheadvancedPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID                  string                                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	GraphqlProxyCacheAdvancedPlugin shared.GraphqlProxyCacheAdvancedPlugin `request:"mediaType=application/json"`
+}
+
+func (c CreateGraphqlproxycacheadvancedPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateGraphqlproxycacheadvancedPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "GraphqlProxyCacheAdvancedPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateGraphqlproxycacheadvancedPluginRequest) GetControlPlaneID() string {
@@ -38,6 +50,17 @@ type CreateGraphqlproxycacheadvancedPluginResponse struct {
 	GraphqlProxyCacheAdvancedPlugin *shared.GraphqlProxyCacheAdvancedPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (c CreateGraphqlproxycacheadvancedPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateGraphqlproxycacheadvancedPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateGraphqlproxycacheadvancedPluginResponse) GetContentType() string {

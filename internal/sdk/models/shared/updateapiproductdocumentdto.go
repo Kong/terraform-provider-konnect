@@ -9,6 +9,17 @@ import (
 type UpdateAPIProductDocumentDTOMetadata struct {
 }
 
+func (u UpdateAPIProductDocumentDTOMetadata) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateAPIProductDocumentDTOMetadata) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 // UpdateAPIProductDocumentDTO - a document payload
 type UpdateAPIProductDocumentDTO struct {
 	// Parent document Id. If this value is explicitly set to null, the

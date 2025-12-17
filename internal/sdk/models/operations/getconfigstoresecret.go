@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -14,6 +15,17 @@ type GetConfigStoreSecretRequest struct {
 	ConfigStoreID string `pathParam:"style=simple,explode=false,name=configStoreId"`
 	// Config Store Secret key
 	Key string `pathParam:"style=simple,explode=false,name=key"`
+}
+
+func (g GetConfigStoreSecretRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetConfigStoreSecretRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"controlPlaneId", "configStoreId", "key"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetConfigStoreSecretRequest) GetControlPlaneID() string {
@@ -52,6 +64,17 @@ type GetConfigStoreSecretResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (g GetConfigStoreSecretResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetConfigStoreSecretResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetConfigStoreSecretResponse) GetContentType() string {

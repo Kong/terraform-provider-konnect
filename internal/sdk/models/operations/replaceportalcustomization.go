@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type ReplacePortalCustomizationRequest struct {
 	// The Portal identifier
 	PortalID            string                      `pathParam:"style=simple,explode=false,name=portalId"`
 	PortalCustomization *shared.PortalCustomization `request:"mediaType=application/json"`
+}
+
+func (r ReplacePortalCustomizationRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ReplacePortalCustomizationRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"portalId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *ReplacePortalCustomizationRequest) GetPortalID() string {
@@ -44,6 +56,17 @@ type ReplacePortalCustomizationResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (r ReplacePortalCustomizationResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ReplacePortalCustomizationResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *ReplacePortalCustomizationResponse) GetContentType() string {

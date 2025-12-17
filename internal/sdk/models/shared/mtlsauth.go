@@ -2,8 +2,23 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type MTLSAuthCaCertificate struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (m MTLSAuthCaCertificate) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MTLSAuthCaCertificate) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (m *MTLSAuthCaCertificate) GetID() *string {
@@ -15,6 +30,17 @@ func (m *MTLSAuthCaCertificate) GetID() *string {
 
 type MTLSAuthConsumer struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (m MTLSAuthConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MTLSAuthConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (m *MTLSAuthConsumer) GetID() *string {
@@ -34,6 +60,17 @@ type MTLSAuth struct {
 	SubjectName string  `json:"subject_name"`
 	// A set of strings representing tags.
 	Tags []string `json:"tags"`
+}
+
+func (m MTLSAuth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MTLSAuth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"subject_name"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (m *MTLSAuth) GetCaCertificate() *MTLSAuthCaCertificate {

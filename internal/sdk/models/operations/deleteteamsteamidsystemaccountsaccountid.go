@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -16,6 +17,17 @@ type DeleteTeamsTeamIDSystemAccountsAccountIDRequest struct {
 	TeamID string `pathParam:"style=simple,explode=false,name=teamId"`
 	// ID of the system account.
 	AccountID string `pathParam:"style=simple,explode=false,name=accountId"`
+}
+
+func (d DeleteTeamsTeamIDSystemAccountsAccountIDRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteTeamsTeamIDSystemAccountsAccountIDRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"teamId", "accountId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteTeamsTeamIDSystemAccountsAccountIDRequest) GetTeamID() string {
@@ -43,6 +55,17 @@ type DeleteTeamsTeamIDSystemAccountsAccountIDResponse struct {
 	UnauthorizedError *shared.UnauthorizedError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (d DeleteTeamsTeamIDSystemAccountsAccountIDResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteTeamsTeamIDSystemAccountsAccountIDResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteTeamsTeamIDSystemAccountsAccountIDResponse) GetContentType() string {

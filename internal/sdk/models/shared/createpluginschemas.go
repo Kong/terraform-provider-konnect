@@ -2,10 +2,25 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type CreatePluginSchemas struct {
 	// The custom plugin schema; `jq -Rs '.' schema.lua`.
 	//
 	LuaSchema string `json:"lua_schema"`
+}
+
+func (c CreatePluginSchemas) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreatePluginSchemas) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"lua_schema"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreatePluginSchemas) GetLuaSchema() string {

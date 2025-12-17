@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type PostControlPlanesIDGroupMembershipsAddRequest struct {
 	ID string `pathParam:"style=simple,explode=false,name=id"`
 	// Request body for adding a list of child control planes to a control plane group membership.
 	GroupMembership *shared.GroupMembership `request:"mediaType=application/json"`
+}
+
+func (p PostControlPlanesIDGroupMembershipsAddRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PostControlPlanesIDGroupMembershipsAddRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"id"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PostControlPlanesIDGroupMembershipsAddRequest) GetID() string {
@@ -47,6 +59,17 @@ type PostControlPlanesIDGroupMembershipsAddResponse struct {
 	BaseError *shared.BaseError
 	// Service Unavailable
 	ServiceUnavailable *shared.ServiceUnavailable
+}
+
+func (p PostControlPlanesIDGroupMembershipsAddResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PostControlPlanesIDGroupMembershipsAddResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PostControlPlanesIDGroupMembershipsAddResponse) GetContentType() string {

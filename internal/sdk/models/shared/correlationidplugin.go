@@ -12,6 +12,17 @@ type CorrelationIDPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (c CorrelationIDPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CorrelationIDPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (c *CorrelationIDPluginAfter) GetAccess() []string {
 	if c == nil {
 		return nil
@@ -21,6 +32,17 @@ func (c *CorrelationIDPluginAfter) GetAccess() []string {
 
 type CorrelationIDPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (c CorrelationIDPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CorrelationIDPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CorrelationIDPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (c *CorrelationIDPluginBefore) GetAccess() []string {
 type CorrelationIDPluginOrdering struct {
 	After  *CorrelationIDPluginAfter  `json:"after,omitempty"`
 	Before *CorrelationIDPluginBefore `json:"before,omitempty"`
+}
+
+func (c CorrelationIDPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CorrelationIDPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CorrelationIDPluginOrdering) GetAfter() *CorrelationIDPluginAfter {
@@ -55,6 +88,17 @@ type CorrelationIDPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (c CorrelationIDPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CorrelationIDPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CorrelationIDPluginPartials) GetID() *string {
@@ -154,6 +198,17 @@ type CorrelationIDPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (c CorrelationIDPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CorrelationIDPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (c *CorrelationIDPluginConsumer) GetID() *string {
 	if c == nil {
 		return nil
@@ -198,6 +253,17 @@ type CorrelationIDPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (c CorrelationIDPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CorrelationIDPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (c *CorrelationIDPluginRoute) GetID() *string {
 	if c == nil {
 		return nil
@@ -208,6 +274,17 @@ func (c *CorrelationIDPluginRoute) GetID() *string {
 // CorrelationIDPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type CorrelationIDPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (c CorrelationIDPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CorrelationIDPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CorrelationIDPluginService) GetID() *string {

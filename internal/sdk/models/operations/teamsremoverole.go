@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -16,6 +17,17 @@ type TeamsRemoveRoleRequest struct {
 	TeamID string `pathParam:"style=simple,explode=false,name=teamId"`
 	// The role ID.
 	RoleID string `pathParam:"style=simple,explode=false,name=roleId"`
+}
+
+func (t TeamsRemoveRoleRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TeamsRemoveRoleRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"teamId", "roleId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (t *TeamsRemoveRoleRequest) GetTeamID() string {
@@ -47,6 +59,17 @@ type TeamsRemoveRoleResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (t TeamsRemoveRoleResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TeamsRemoveRoleResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (t *TeamsRemoveRoleResponse) GetContentType() string {

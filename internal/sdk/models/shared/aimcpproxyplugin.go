@@ -12,6 +12,17 @@ type AiMcpProxyPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (a AiMcpProxyPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiMcpProxyPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiMcpProxyPluginAfter) GetAccess() []string {
 	if a == nil {
 		return nil
@@ -21,6 +32,17 @@ func (a *AiMcpProxyPluginAfter) GetAccess() []string {
 
 type AiMcpProxyPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (a AiMcpProxyPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiMcpProxyPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiMcpProxyPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (a *AiMcpProxyPluginBefore) GetAccess() []string {
 type AiMcpProxyPluginOrdering struct {
 	After  *AiMcpProxyPluginAfter  `json:"after,omitempty"`
 	Before *AiMcpProxyPluginBefore `json:"before,omitempty"`
+}
+
+func (a AiMcpProxyPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiMcpProxyPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiMcpProxyPluginOrdering) GetAfter() *AiMcpProxyPluginAfter {
@@ -55,6 +88,17 @@ type AiMcpProxyPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (a AiMcpProxyPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiMcpProxyPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiMcpProxyPluginPartials) GetID() *string {
@@ -283,6 +327,17 @@ type Schema struct {
 	Type *string `json:"type,omitempty"`
 }
 
+func (s Schema) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *Schema) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *Schema) GetType() *string {
 	if s == nil {
 		return nil
@@ -296,6 +351,17 @@ type Parameters struct {
 	Required    *bool   `json:"required,omitempty"`
 	Schema      *Schema `json:"schema,omitempty"`
 	Description *string `json:"description,omitempty"`
+}
+
+func (p Parameters) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *Parameters) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *Parameters) GetName() *string {
@@ -556,6 +622,17 @@ type AiMcpProxyPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiMcpProxyPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiMcpProxyPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiMcpProxyPluginRoute) GetID() *string {
 	if a == nil {
 		return nil
@@ -566,6 +643,17 @@ func (a *AiMcpProxyPluginRoute) GetID() *string {
 // AiMcpProxyPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type AiMcpProxyPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiMcpProxyPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiMcpProxyPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiMcpProxyPluginService) GetID() *string {

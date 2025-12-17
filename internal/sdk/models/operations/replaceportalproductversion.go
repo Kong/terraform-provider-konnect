@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -13,6 +14,17 @@ type ReplacePortalProductVersionRequest struct {
 	// The Portal identifier
 	PortalID                             string                                      `pathParam:"style=simple,explode=false,name=portalId"`
 	V2ReplacePortalProductVersionPayload shared.V2ReplacePortalProductVersionPayload `request:"mediaType=application/json"`
+}
+
+func (r ReplacePortalProductVersionRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ReplacePortalProductVersionRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"productVersionId", "portalId", "V2ReplacePortalProductVersionPayload"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *ReplacePortalProductVersionRequest) GetProductVersionID() string {
@@ -53,6 +65,17 @@ type ReplacePortalProductVersionResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (r ReplacePortalProductVersionResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ReplacePortalProductVersionResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *ReplacePortalProductVersionResponse) GetContentType() string {

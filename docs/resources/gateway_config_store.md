@@ -28,7 +28,7 @@ resource "konnect_gateway_config_store" "my_gatewayconfigstore" {
 
 ### Optional
 
-- `name` (String)
+- `name` (String) The name of the Config Store
 
 ### Read-Only
 

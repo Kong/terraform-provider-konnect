@@ -57,6 +57,17 @@ type PutCmekResponse struct {
 	ForbiddenError *shared.ForbiddenError
 }
 
+func (p PutCmekResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PutCmekResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (p *PutCmekResponse) GetContentType() string {
 	if p == nil {
 		return ""

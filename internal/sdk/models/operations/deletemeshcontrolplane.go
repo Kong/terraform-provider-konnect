@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -10,6 +11,17 @@ import (
 type DeleteMeshControlPlaneRequest struct {
 	// Id of the Konnect resource
 	CpID string `pathParam:"style=simple,explode=false,name=cpId"`
+}
+
+func (d DeleteMeshControlPlaneRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteMeshControlPlaneRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"cpId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteMeshControlPlaneRequest) GetCpID() string {
@@ -34,6 +46,17 @@ type DeleteMeshControlPlaneResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not found
 	NotFoundError *shared.NotFoundError
+}
+
+func (d DeleteMeshControlPlaneResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteMeshControlPlaneResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteMeshControlPlaneResponse) GetContentType() string {

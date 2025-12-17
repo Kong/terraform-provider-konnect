@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateAigcpmodelarmorPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID        string                       `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	AiGcpModelArmorPlugin shared.AiGcpModelArmorPlugin `request:"mediaType=application/json"`
+}
+
+func (c CreateAigcpmodelarmorPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAigcpmodelarmorPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "AiGcpModelArmorPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateAigcpmodelarmorPluginRequest) GetControlPlaneID() string {
@@ -38,6 +50,17 @@ type CreateAigcpmodelarmorPluginResponse struct {
 	AiGcpModelArmorPlugin *shared.AiGcpModelArmorPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (c CreateAigcpmodelarmorPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAigcpmodelarmorPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateAigcpmodelarmorPluginResponse) GetContentType() string {

@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // PutMeshControlPlaneRequest - a payload to update the whole control plane
 type PutMeshControlPlaneRequest struct {
 	// The name of the control plane.
@@ -9,6 +13,17 @@ type PutMeshControlPlaneRequest struct {
 	Description *string `json:"description,omitempty"`
 	// Labels to facilitate tagged search on control planes. Keys must be of length 1-63 characters.
 	Labels map[string]string `json:"labels,omitempty"`
+}
+
+func (p PutMeshControlPlaneRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PutMeshControlPlaneRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"name"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PutMeshControlPlaneRequest) GetName() string {

@@ -12,6 +12,17 @@ type InjectionProtectionPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (i InjectionProtectionPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *InjectionProtectionPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (i *InjectionProtectionPluginAfter) GetAccess() []string {
 	if i == nil {
 		return nil
@@ -21,6 +32,17 @@ func (i *InjectionProtectionPluginAfter) GetAccess() []string {
 
 type InjectionProtectionPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (i InjectionProtectionPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *InjectionProtectionPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (i *InjectionProtectionPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (i *InjectionProtectionPluginBefore) GetAccess() []string {
 type InjectionProtectionPluginOrdering struct {
 	After  *InjectionProtectionPluginAfter  `json:"after,omitempty"`
 	Before *InjectionProtectionPluginBefore `json:"before,omitempty"`
+}
+
+func (i InjectionProtectionPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *InjectionProtectionPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (i *InjectionProtectionPluginOrdering) GetAfter() *InjectionProtectionPluginAfter {
@@ -55,6 +88,17 @@ type InjectionProtectionPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (i InjectionProtectionPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *InjectionProtectionPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (i *InjectionProtectionPluginPartials) GetID() *string {
@@ -83,6 +127,17 @@ type CustomInjections struct {
 	Name string `json:"name"`
 	// The regex to match against.
 	Regex string `json:"regex"`
+}
+
+func (c CustomInjections) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CustomInjections) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "regex"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CustomInjections) GetName() string {
@@ -304,6 +359,17 @@ type InjectionProtectionPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (i InjectionProtectionPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *InjectionProtectionPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (i *InjectionProtectionPluginRoute) GetID() *string {
 	if i == nil {
 		return nil
@@ -314,6 +380,17 @@ func (i *InjectionProtectionPluginRoute) GetID() *string {
 // InjectionProtectionPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type InjectionProtectionPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (i InjectionProtectionPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *InjectionProtectionPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (i *InjectionProtectionPluginService) GetID() *string {

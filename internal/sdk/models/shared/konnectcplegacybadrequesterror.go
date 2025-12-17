@@ -2,9 +2,24 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // KonnectCPLegacyBadRequestError - standard error
 type KonnectCPLegacyBadRequestError struct {
 	Message any `json:"message,omitempty"`
+}
+
+func (k KonnectCPLegacyBadRequestError) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KonnectCPLegacyBadRequestError) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (k *KonnectCPLegacyBadRequestError) GetMessage() any {

@@ -53,7 +53,7 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 ### Read-Only
 
 - `config` (Attributes) CP configuration object for related access endpoints. (see [below for nested schema](#nestedatt--config))
-- `id` (String) The control plane ID.
+- `id` (String) The control plane ID
 
 <a id="nestedatt--proxy_urls"></a>
 ### Nested Schema for `proxy_urls`

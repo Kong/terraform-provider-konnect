@@ -2,9 +2,24 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // KonnectCPLegacyNotFoundError - standard error
 type KonnectCPLegacyNotFoundError struct {
 	Message any `json:"message,omitempty"`
+}
+
+func (k KonnectCPLegacyNotFoundError) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KonnectCPLegacyNotFoundError) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (k *KonnectCPLegacyNotFoundError) GetMessage() any {

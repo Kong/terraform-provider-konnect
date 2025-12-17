@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -10,6 +11,17 @@ import (
 type DeletePortalCustomDomainRequest struct {
 	// The Portal identifier
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
+}
+
+func (d DeletePortalCustomDomainRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeletePortalCustomDomainRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"portalId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeletePortalCustomDomainRequest) GetPortalID() string {
@@ -28,6 +40,17 @@ type DeletePortalCustomDomainResponse struct {
 	RawResponse *http.Response
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (d DeletePortalCustomDomainResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeletePortalCustomDomainResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeletePortalCustomDomainResponse) GetContentType() string {

@@ -2,11 +2,26 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // ListProviderAccountsResponse - A paginated list for a collection of provider accounts.
 type ListProviderAccountsResponse struct {
 	// returns the pagination information
 	Meta PaginatedMeta     `json:"meta"`
 	Data []ProviderAccount `json:"data"`
+}
+
+func (l ListProviderAccountsResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *ListProviderAccountsResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"meta", "data"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (l *ListProviderAccountsResponse) GetMeta() PaginatedMeta {

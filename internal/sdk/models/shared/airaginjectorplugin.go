@@ -12,6 +12,17 @@ type AiRagInjectorPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (a AiRagInjectorPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRagInjectorPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiRagInjectorPluginAfter) GetAccess() []string {
 	if a == nil {
 		return nil
@@ -21,6 +32,17 @@ func (a *AiRagInjectorPluginAfter) GetAccess() []string {
 
 type AiRagInjectorPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (a AiRagInjectorPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRagInjectorPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiRagInjectorPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (a *AiRagInjectorPluginBefore) GetAccess() []string {
 type AiRagInjectorPluginOrdering struct {
 	After  *AiRagInjectorPluginAfter  `json:"after,omitempty"`
 	Before *AiRagInjectorPluginBefore `json:"before,omitempty"`
+}
+
+func (a AiRagInjectorPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRagInjectorPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiRagInjectorPluginOrdering) GetAfter() *AiRagInjectorPluginAfter {
@@ -55,6 +88,17 @@ type AiRagInjectorPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (a AiRagInjectorPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRagInjectorPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiRagInjectorPluginPartials) GetID() *string {
@@ -531,6 +575,17 @@ type AiRagInjectorPluginModel struct {
 	Provider AiRagInjectorPluginProvider `json:"provider"`
 }
 
+func (a AiRagInjectorPluginModel) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRagInjectorPluginModel) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "provider"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiRagInjectorPluginModel) GetName() string {
 	if a == nil {
 		return ""
@@ -555,6 +610,17 @@ func (a *AiRagInjectorPluginModel) GetProvider() AiRagInjectorPluginProvider {
 type AiRagInjectorPluginEmbeddings struct {
 	Auth  *AiRagInjectorPluginAuth `json:"auth"`
 	Model AiRagInjectorPluginModel `json:"model"`
+}
+
+func (a AiRagInjectorPluginEmbeddings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRagInjectorPluginEmbeddings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"model"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiRagInjectorPluginEmbeddings) GetAuth() *AiRagInjectorPluginAuth {
@@ -1114,6 +1180,17 @@ type AiRagInjectorPluginVectordb struct {
 	Strategy AiRagInjectorPluginStrategy `json:"strategy"`
 }
 
+func (a AiRagInjectorPluginVectordb) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRagInjectorPluginVectordb) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"dimensions", "distance_metric", "strategy"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiRagInjectorPluginVectordb) GetDimensions() int64 {
 	if a == nil {
 		return 0
@@ -1227,6 +1304,17 @@ type AiRagInjectorPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiRagInjectorPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRagInjectorPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiRagInjectorPluginConsumer) GetID() *string {
 	if a == nil {
 		return nil
@@ -1237,6 +1325,17 @@ func (a *AiRagInjectorPluginConsumer) GetID() *string {
 // AiRagInjectorPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type AiRagInjectorPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiRagInjectorPluginConsumerGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRagInjectorPluginConsumerGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiRagInjectorPluginConsumerGroup) GetID() *string {
@@ -1283,6 +1382,17 @@ type AiRagInjectorPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiRagInjectorPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRagInjectorPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiRagInjectorPluginRoute) GetID() *string {
 	if a == nil {
 		return nil
@@ -1293,6 +1403,17 @@ func (a *AiRagInjectorPluginRoute) GetID() *string {
 // AiRagInjectorPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type AiRagInjectorPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiRagInjectorPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRagInjectorPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiRagInjectorPluginService) GetID() *string {

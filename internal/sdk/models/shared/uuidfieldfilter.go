@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // UUIDFieldFilter - Filter using **one** of the following operators: `eq`, `oeq`, `neq`
 type UUIDFieldFilter struct {
 	// The field exactly matches the provided value.
@@ -10,6 +14,17 @@ type UUIDFieldFilter struct {
 	Oeq *string `queryParam:"name=oeq"`
 	// The field does not match the provided value.
 	Neq *string `queryParam:"name=neq"`
+}
+
+func (u UUIDFieldFilter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UUIDFieldFilter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UUIDFieldFilter) GetEq() *string {

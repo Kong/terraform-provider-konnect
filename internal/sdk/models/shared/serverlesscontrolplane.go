@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type ServerlessControlPlane struct {
 	// ID of the serverless cloud gateway CP.
 	ID string `json:"id"`
@@ -9,6 +13,17 @@ type ServerlessControlPlane struct {
 	Prefix string `json:"prefix"`
 	// The control plane region.
 	Region CpRegion `json:"region"`
+}
+
+func (s ServerlessControlPlane) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *ServerlessControlPlane) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"id", "prefix", "region"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *ServerlessControlPlane) GetID() string {

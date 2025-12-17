@@ -12,6 +12,17 @@ type FileLogPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (f FileLogPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *FileLogPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (f *FileLogPluginAfter) GetAccess() []string {
 	if f == nil {
 		return nil
@@ -21,6 +32,17 @@ func (f *FileLogPluginAfter) GetAccess() []string {
 
 type FileLogPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (f FileLogPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *FileLogPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (f *FileLogPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (f *FileLogPluginBefore) GetAccess() []string {
 type FileLogPluginOrdering struct {
 	After  *FileLogPluginAfter  `json:"after,omitempty"`
 	Before *FileLogPluginBefore `json:"before,omitempty"`
+}
+
+func (f FileLogPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *FileLogPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (f *FileLogPluginOrdering) GetAfter() *FileLogPluginAfter {
@@ -55,6 +88,17 @@ type FileLogPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (f FileLogPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *FileLogPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (f *FileLogPluginPartials) GetID() *string {
@@ -124,6 +168,17 @@ type FileLogPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (f FileLogPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *FileLogPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (f *FileLogPluginConsumer) GetID() *string {
 	if f == nil {
 		return nil
@@ -187,6 +242,17 @@ type FileLogPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (f FileLogPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *FileLogPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (f *FileLogPluginRoute) GetID() *string {
 	if f == nil {
 		return nil
@@ -197,6 +263,17 @@ func (f *FileLogPluginRoute) GetID() *string {
 // FileLogPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type FileLogPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (f FileLogPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *FileLogPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (f *FileLogPluginService) GetID() *string {

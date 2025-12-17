@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -16,6 +17,17 @@ type GetPrivateDNSRequest struct {
 	NetworkID string `pathParam:"style=simple,explode=false,name=networkId"`
 	// The ID of the Private DNS to operate on.
 	PrivateDNSID string `pathParam:"style=simple,explode=false,name=privateDnsId"`
+}
+
+func (g GetPrivateDNSRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetPrivateDNSRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"networkId", "privateDnsId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetPrivateDNSRequest) GetNetworkID() string {
@@ -47,6 +59,17 @@ type GetPrivateDNSResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (g GetPrivateDNSResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetPrivateDNSResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetPrivateDNSResponse) GetContentType() string {

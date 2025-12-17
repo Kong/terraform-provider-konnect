@@ -12,6 +12,17 @@ type DegraphqlPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (d DegraphqlPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DegraphqlPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (d *DegraphqlPluginAfter) GetAccess() []string {
 	if d == nil {
 		return nil
@@ -21,6 +32,17 @@ func (d *DegraphqlPluginAfter) GetAccess() []string {
 
 type DegraphqlPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (d DegraphqlPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DegraphqlPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DegraphqlPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (d *DegraphqlPluginBefore) GetAccess() []string {
 type DegraphqlPluginOrdering struct {
 	After  *DegraphqlPluginAfter  `json:"after,omitempty"`
 	Before *DegraphqlPluginBefore `json:"before,omitempty"`
+}
+
+func (d DegraphqlPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DegraphqlPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DegraphqlPluginOrdering) GetAfter() *DegraphqlPluginAfter {
@@ -55,6 +88,17 @@ type DegraphqlPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (d DegraphqlPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DegraphqlPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DegraphqlPluginPartials) GetID() *string {
@@ -138,6 +182,17 @@ type DegraphqlPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (d DegraphqlPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DegraphqlPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (d *DegraphqlPluginRoute) GetID() *string {
 	if d == nil {
 		return nil
@@ -148,6 +203,17 @@ func (d *DegraphqlPluginRoute) GetID() *string {
 // DegraphqlPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type DegraphqlPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (d DegraphqlPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DegraphqlPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DegraphqlPluginService) GetID() *string {

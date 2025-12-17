@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateAPIImplementationRequest struct {
 	// The UUID API identifier
 	APIID             string                   `pathParam:"style=simple,explode=false,name=apiId"`
 	APIImplementation shared.APIImplementation `request:"mediaType=application/json"`
+}
+
+func (c CreateAPIImplementationRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAPIImplementationRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"apiId", "ApiImplementation"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateAPIImplementationRequest) GetAPIID() string {
@@ -46,6 +58,17 @@ type CreateAPIImplementationResponse struct {
 	NotFoundError *shared.NotFoundError
 	// Conflict - A gateway service can only be linked to a single API
 	ConflictError *shared.ConflictError
+}
+
+func (c CreateAPIImplementationResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAPIImplementationResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateAPIImplementationResponse) GetContentType() string {

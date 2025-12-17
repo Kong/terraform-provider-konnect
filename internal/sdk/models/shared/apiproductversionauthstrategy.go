@@ -2,9 +2,24 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type APIProductVersionAuthStrategy struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
+}
+
+func (a APIProductVersionAuthStrategy) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *APIProductVersionAuthStrategy) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "name"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *APIProductVersionAuthStrategy) GetID() string {

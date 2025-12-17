@@ -2,8 +2,23 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type ACLConsumer struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a ACLConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *ACLConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *ACLConsumer) GetID() *string {
@@ -22,6 +37,17 @@ type ACL struct {
 	ID *string `json:"id,omitempty"`
 	// A set of strings representing tags.
 	Tags []string `json:"tags"`
+}
+
+func (a ACL) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *ACL) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"group"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *ACL) GetConsumer() *ACLConsumer {

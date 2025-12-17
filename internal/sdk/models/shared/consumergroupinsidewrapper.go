@@ -2,8 +2,23 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type ConsumerGroupInsideWrapper struct {
 	ConsumerGroup *ConsumerGroup `json:"consumer_group,omitempty"`
+}
+
+func (c ConsumerGroupInsideWrapper) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ConsumerGroupInsideWrapper) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *ConsumerGroupInsideWrapper) GetConsumerGroup() *ConsumerGroup {

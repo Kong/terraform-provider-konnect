@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateAPISpecRequest struct {
 	// The UUID API identifier
 	APIID                string                      `pathParam:"style=simple,explode=false,name=apiId"`
 	CreateAPISpecRequest shared.CreateAPISpecRequest `request:"mediaType=application/json"`
+}
+
+func (c CreateAPISpecRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAPISpecRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"apiId", "CreateApiSpecRequest"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateAPISpecRequest) GetAPIID() string {
@@ -48,6 +60,17 @@ type CreateAPISpecResponse struct {
 	ConflictError *shared.ConflictError
 	// Unsupported Media Type
 	UnsupportedMediaTypeError *shared.UnsupportedMediaTypeError
+}
+
+func (c CreateAPISpecResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAPISpecResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateAPISpecResponse) GetContentType() string {

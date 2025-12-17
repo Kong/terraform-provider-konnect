@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // CreateCustomDomainRequest - Request schema for creating a custom domain in the global API.
 type CreateCustomDomainRequest struct {
 	ControlPlaneID string `json:"control_plane_id"`
@@ -9,6 +13,17 @@ type CreateCustomDomainRequest struct {
 	ControlPlaneGeo ControlPlaneGeo `json:"control_plane_geo"`
 	// Domain name of the custom domain.
 	Domain string `json:"domain"`
+}
+
+func (c CreateCustomDomainRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateCustomDomainRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"control_plane_id", "control_plane_geo", "domain"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateCustomDomainRequest) GetControlPlaneID() string {

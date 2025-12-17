@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -13,6 +14,17 @@ type UpdateHeadercertauthPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID       string                      `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	HeaderCertAuthPlugin shared.HeaderCertAuthPlugin `request:"mediaType=application/json"`
+}
+
+func (u UpdateHeadercertauthPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateHeadercertauthPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "HeaderCertAuthPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateHeadercertauthPluginRequest) GetPluginID() string {
@@ -47,6 +59,17 @@ type UpdateHeadercertauthPluginResponse struct {
 	HeaderCertAuthPlugin *shared.HeaderCertAuthPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (u UpdateHeadercertauthPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateHeadercertauthPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateHeadercertauthPluginResponse) GetContentType() string {

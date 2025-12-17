@@ -12,6 +12,17 @@ type UpstreamTimeoutPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (u UpstreamTimeoutPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamTimeoutPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (u *UpstreamTimeoutPluginAfter) GetAccess() []string {
 	if u == nil {
 		return nil
@@ -21,6 +32,17 @@ func (u *UpstreamTimeoutPluginAfter) GetAccess() []string {
 
 type UpstreamTimeoutPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (u UpstreamTimeoutPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamTimeoutPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpstreamTimeoutPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (u *UpstreamTimeoutPluginBefore) GetAccess() []string {
 type UpstreamTimeoutPluginOrdering struct {
 	After  *UpstreamTimeoutPluginAfter  `json:"after,omitempty"`
 	Before *UpstreamTimeoutPluginBefore `json:"before,omitempty"`
+}
+
+func (u UpstreamTimeoutPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamTimeoutPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpstreamTimeoutPluginOrdering) GetAfter() *UpstreamTimeoutPluginAfter {
@@ -55,6 +88,17 @@ type UpstreamTimeoutPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (u UpstreamTimeoutPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamTimeoutPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpstreamTimeoutPluginPartials) GetID() *string {
@@ -124,6 +168,17 @@ type UpstreamTimeoutPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (u UpstreamTimeoutPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamTimeoutPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (u *UpstreamTimeoutPluginConsumer) GetID() *string {
 	if u == nil {
 		return nil
@@ -168,6 +223,17 @@ type UpstreamTimeoutPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (u UpstreamTimeoutPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamTimeoutPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (u *UpstreamTimeoutPluginRoute) GetID() *string {
 	if u == nil {
 		return nil
@@ -178,6 +244,17 @@ func (u *UpstreamTimeoutPluginRoute) GetID() *string {
 // UpstreamTimeoutPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type UpstreamTimeoutPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (u UpstreamTimeoutPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamTimeoutPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpstreamTimeoutPluginService) GetID() *string {

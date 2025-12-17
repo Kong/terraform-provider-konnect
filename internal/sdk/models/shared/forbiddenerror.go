@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // ForbiddenError - standard error
 type ForbiddenError struct {
 	Status   any `json:"status"`
@@ -9,6 +13,17 @@ type ForbiddenError struct {
 	Type     any `json:"type,omitempty"`
 	Instance any `json:"instance"`
 	Detail   any `json:"detail"`
+}
+
+func (f ForbiddenError) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *ForbiddenError) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"status", "title", "instance", "detail"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (f *ForbiddenError) GetStatus() any {

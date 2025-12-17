@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -16,6 +17,17 @@ type ListControlPlanesSingleResourceRequest struct {
 	//   - created_at
 	//
 	Sort *string `queryParam:"style=form,explode=true,name=sort"`
+}
+
+func (l ListControlPlanesSingleResourceRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *ListControlPlanesSingleResourceRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (l *ListControlPlanesSingleResourceRequest) GetFilter() *shared.ControlPlaneFilterParameters {
@@ -58,6 +70,17 @@ type ListControlPlanesSingleResourceResponse struct {
 	BaseError *shared.BaseError
 	// Service Unavailable
 	ServiceUnavailable *shared.ServiceUnavailable
+}
+
+func (l ListControlPlanesSingleResourceResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *ListControlPlanesSingleResourceResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (l *ListControlPlanesSingleResourceResponse) GetContentType() string {

@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // ProxyURL - Proxy URL associated with reaching the data-planes connected to a control-plane.
 type ProxyURL struct {
 	// Hostname of the proxy URL.
@@ -10,6 +14,17 @@ type ProxyURL struct {
 	Port int64 `json:"port"`
 	// Protocol of the proxy URL.
 	Protocol string `json:"protocol"`
+}
+
+func (p ProxyURL) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *ProxyURL) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"host", "port", "protocol"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *ProxyURL) GetHost() string {

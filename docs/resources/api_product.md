@@ -33,7 +33,7 @@ resource "konnect_api_product" "my_apiproduct" {
 ### Required
 
 - `name` (String) The name of the API product.
-- `portal_ids` (List of String) The list of portal identifiers which this API product should be published to
+- `portal_ids` (List of String, Deprecated) The list of portal identifiers which this API product should be published to
 
 ### Optional
 
@@ -50,7 +50,7 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 ### Read-Only
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `id` (String) The API product ID.
+- `id` (String) API product identifier
 - `portals` (Attributes List) The list of portals which this API product is published to (see [below for nested schema](#nestedatt--portals))
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 - `version_count` (Number) The number of product versions attached to this API product

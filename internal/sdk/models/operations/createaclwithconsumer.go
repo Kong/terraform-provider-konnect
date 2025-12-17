@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -14,6 +15,17 @@ type CreateACLWithConsumerRequest struct {
 	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
 	// Description of new ACL for creation
 	ACLWithoutParents shared.ACLWithoutParents `request:"mediaType=application/json"`
+}
+
+func (c CreateACLWithConsumerRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateACLWithConsumerRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "ACLWithoutParents"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateACLWithConsumerRequest) GetControlPlaneID() string {
@@ -46,6 +58,17 @@ type CreateACLWithConsumerResponse struct {
 	RawResponse *http.Response
 	// Successfully created ACL
 	ACL *shared.ACL
+}
+
+func (c CreateACLWithConsumerResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateACLWithConsumerResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateACLWithConsumerResponse) GetContentType() string {

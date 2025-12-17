@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateConsumerInRealmRequest struct {
 	// ID of the realm
 	RealmID               string                       `pathParam:"style=simple,explode=false,name=realmId"`
 	ConsumerCreateRequest shared.ConsumerCreateRequest `request:"mediaType=application/json"`
+}
+
+func (c CreateConsumerInRealmRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateConsumerInRealmRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"realmId", "ConsumerCreateRequest"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateConsumerInRealmRequest) GetRealmID() string {
@@ -40,6 +52,17 @@ type CreateConsumerInRealmResponse struct {
 	BadRequestError *shared.BadRequestError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (c CreateConsumerInRealmResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateConsumerInRealmResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateConsumerInRealmResponse) GetContentType() string {

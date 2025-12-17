@@ -2,8 +2,23 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type HMACAuthWithoutParentsConsumer struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (h HMACAuthWithoutParentsConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HMACAuthWithoutParentsConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (h *HMACAuthWithoutParentsConsumer) GetID() *string {
@@ -23,6 +38,17 @@ type HMACAuthWithoutParents struct {
 	// A set of strings representing tags.
 	Tags     []string `json:"tags"`
 	Username string   `json:"username"`
+}
+
+func (h HMACAuthWithoutParents) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HMACAuthWithoutParents) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, []string{"username"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (h *HMACAuthWithoutParents) GetConsumer() *HMACAuthWithoutParentsConsumer {

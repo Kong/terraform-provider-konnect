@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type CreatePortalTeamRequest struct {
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 	// Create a team in a portal.
 	PortalCreateTeamRequest *shared.PortalCreateTeamRequest `request:"mediaType=application/json"`
+}
+
+func (c CreatePortalTeamRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreatePortalTeamRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"portalId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreatePortalTeamRequest) GetPortalID() string {
@@ -45,6 +57,17 @@ type CreatePortalTeamResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (c CreatePortalTeamResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreatePortalTeamResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreatePortalTeamResponse) GetContentType() string {

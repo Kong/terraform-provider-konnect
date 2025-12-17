@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -16,6 +17,17 @@ type RemoveUserFromTeamRequest struct {
 	UserID string `pathParam:"style=simple,explode=false,name=userId"`
 	// Team ID.
 	TeamID string `pathParam:"style=simple,explode=false,name=teamId"`
+}
+
+func (r RemoveUserFromTeamRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RemoveUserFromTeamRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"userId", "teamId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RemoveUserFromTeamRequest) GetUserID() string {
@@ -43,6 +55,17 @@ type RemoveUserFromTeamResponse struct {
 	BadRequestError *shared.BadRequestError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (r RemoveUserFromTeamResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RemoveUserFromTeamResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RemoveUserFromTeamResponse) GetContentType() string {

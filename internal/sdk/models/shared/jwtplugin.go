@@ -12,6 +12,17 @@ type JwtPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (j JwtPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JwtPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (j *JwtPluginAfter) GetAccess() []string {
 	if j == nil {
 		return nil
@@ -21,6 +32,17 @@ func (j *JwtPluginAfter) GetAccess() []string {
 
 type JwtPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (j JwtPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JwtPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (j *JwtPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (j *JwtPluginBefore) GetAccess() []string {
 type JwtPluginOrdering struct {
 	After  *JwtPluginAfter  `json:"after,omitempty"`
 	Before *JwtPluginBefore `json:"before,omitempty"`
+}
+
+func (j JwtPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JwtPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (j *JwtPluginOrdering) GetAfter() *JwtPluginAfter {
@@ -55,6 +88,17 @@ type JwtPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (j JwtPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JwtPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (j *JwtPluginPartials) GetID() *string {
@@ -245,6 +289,17 @@ type JwtPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (j JwtPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JwtPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (j *JwtPluginRoute) GetID() *string {
 	if j == nil {
 		return nil
@@ -255,6 +310,17 @@ func (j *JwtPluginRoute) GetID() *string {
 // JwtPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type JwtPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (j JwtPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JwtPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (j *JwtPluginService) GetID() *string {

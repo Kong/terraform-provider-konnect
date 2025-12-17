@@ -43,6 +43,17 @@ type APIVersionResponseValidationMessages struct {
 	Message string `json:"message"`
 }
 
+func (a APIVersionResponseValidationMessages) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *APIVersionResponseValidationMessages) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"message"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *APIVersionResponseValidationMessages) GetMessage() string {
 	if a == nil {
 		return ""

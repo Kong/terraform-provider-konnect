@@ -2,11 +2,26 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // V2ListPortalsResponse - A paginated list of portals in the current region in the organization.
 type V2ListPortalsResponse struct {
 	// returns the pagination information
 	Meta PaginatedMeta `json:"meta"`
 	Data []V2Portal    `json:"data"`
+}
+
+func (v V2ListPortalsResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *V2ListPortalsResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"meta", "data"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (v *V2ListPortalsResponse) GetMeta() PaginatedMeta {

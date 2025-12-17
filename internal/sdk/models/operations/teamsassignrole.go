@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -16,6 +17,17 @@ type TeamsAssignRoleRequest struct {
 	TeamID string `pathParam:"style=simple,explode=false,name=teamId"`
 	// The request schema for assigning a role.
 	AssignRole *shared.AssignRole `request:"mediaType=application/json"`
+}
+
+func (t TeamsAssignRoleRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TeamsAssignRoleRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"teamId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (t *TeamsAssignRoleRequest) GetTeamID() string {
@@ -51,6 +63,17 @@ type TeamsAssignRoleResponse struct {
 	NotFoundError *shared.NotFoundError
 	// Conflict
 	ConflictError *shared.ConflictError
+}
+
+func (t TeamsAssignRoleResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TeamsAssignRoleResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (t *TeamsAssignRoleResponse) GetContentType() string {

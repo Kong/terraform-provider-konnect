@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -13,6 +14,17 @@ type UpdateRequestvalidatorPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID         string                        `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	RequestValidatorPlugin shared.RequestValidatorPlugin `request:"mediaType=application/json"`
+}
+
+func (u UpdateRequestvalidatorPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateRequestvalidatorPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "RequestValidatorPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateRequestvalidatorPluginRequest) GetPluginID() string {
@@ -47,6 +59,17 @@ type UpdateRequestvalidatorPluginResponse struct {
 	RequestValidatorPlugin *shared.RequestValidatorPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (u UpdateRequestvalidatorPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateRequestvalidatorPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateRequestvalidatorPluginResponse) GetContentType() string {

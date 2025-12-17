@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type Type string
@@ -38,6 +39,17 @@ type MeshControlPlaneFeature struct {
 	Type                      Type                                               `json:"type"`
 	HostnameGeneratorCreation *MeshControlPlaneFeatureHostnameGenerationCreation `json:"hostnameGeneratorCreation,omitempty"`
 	MeshCreation              *MeshControlPlaneFeatureMeshCreation               `json:"meshCreation,omitempty"`
+}
+
+func (m MeshControlPlaneFeature) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshControlPlaneFeature) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (m *MeshControlPlaneFeature) GetType() Type {

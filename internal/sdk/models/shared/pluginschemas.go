@@ -61,6 +61,17 @@ type PluginSchemas struct {
 	Item *Item `json:"item"`
 }
 
+func (p PluginSchemas) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PluginSchemas) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (p *PluginSchemas) GetItem() *Item {
 	if p == nil {
 		return nil

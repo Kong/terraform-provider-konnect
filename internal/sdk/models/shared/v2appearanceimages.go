@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // V2AppearanceImages - A collection of binary image data to customize images in the portal
 type V2AppearanceImages struct {
 	// The image data to upload, along with an optional filename. Images must be a data URL with binary image data in base 64 format. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.
@@ -10,6 +14,17 @@ type V2AppearanceImages struct {
 	Favicon *V2AppearanceImage `json:"favicon,omitempty"`
 	// The image data to upload, along with an optional filename. Images must be a data URL with binary image data in base 64 format. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.
 	CatalogCover *V2AppearanceImage `json:"catalog_cover,omitempty"`
+}
+
+func (v V2AppearanceImages) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *V2AppearanceImages) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (v *V2AppearanceImages) GetLogo() *V2AppearanceImage {

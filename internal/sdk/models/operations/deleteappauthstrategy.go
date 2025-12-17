@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -10,6 +11,17 @@ import (
 type DeleteAppAuthStrategyRequest struct {
 	// Application auth strategy identifier
 	AuthStrategyID string `pathParam:"style=simple,explode=false,name=authStrategyId"`
+}
+
+func (d DeleteAppAuthStrategyRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteAppAuthStrategyRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"authStrategyId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteAppAuthStrategyRequest) GetAuthStrategyID() string {
@@ -34,6 +46,17 @@ type DeleteAppAuthStrategyResponse struct {
 	NotFoundError *shared.NotFoundError
 	// Conflict
 	ConflictError *shared.ConflictError
+}
+
+func (d DeleteAppAuthStrategyResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteAppAuthStrategyResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteAppAuthStrategyResponse) GetContentType() string {

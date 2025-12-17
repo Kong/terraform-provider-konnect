@@ -2,9 +2,24 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // DataPlaneClientCertificateResponse - Response body for retrieving a dp-client-certificate.
 type DataPlaneClientCertificateResponse struct {
 	Item *DataPlaneClientCertificate `json:"item,omitempty"`
+}
+
+func (d DataPlaneClientCertificateResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DataPlaneClientCertificateResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DataPlaneClientCertificateResponse) GetItem() *DataPlaneClientCertificate {

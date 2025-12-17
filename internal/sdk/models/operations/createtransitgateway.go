@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -15,6 +16,17 @@ type CreateTransitGatewayRequest struct {
 	// The network to operate on.
 	NetworkID                   string                             `pathParam:"style=simple,explode=false,name=networkId"`
 	CreateTransitGatewayRequest shared.CreateTransitGatewayRequest `request:"mediaType=application/json"`
+}
+
+func (c CreateTransitGatewayRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateTransitGatewayRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"networkId", "CreateTransitGatewayRequest"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateTransitGatewayRequest) GetNetworkID() string {
@@ -50,6 +62,17 @@ type CreateTransitGatewayResponse struct {
 	NotFoundError *shared.NotFoundError
 	// Conflict
 	ConflictError *shared.ConflictError
+}
+
+func (c CreateTransitGatewayResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateTransitGatewayResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateTransitGatewayResponse) GetContentType() string {

@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type FetchPluginSchemaRequest struct {
 	PluginName string `pathParam:"style=simple,explode=false,name=pluginName"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+}
+
+func (f FetchPluginSchemaRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *FetchPluginSchemaRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"pluginName", "controlPlaneId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (f *FetchPluginSchemaRequest) GetPluginName() string {
@@ -37,6 +49,17 @@ type FetchPluginSchemaResponse struct {
 	RawResponse *http.Response
 	// The schema for the plugin
 	GetPluginSchemaResponse *shared.GetPluginSchemaResponse
+}
+
+func (f FetchPluginSchemaResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *FetchPluginSchemaResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (f *FetchPluginSchemaResponse) GetContentType() string {

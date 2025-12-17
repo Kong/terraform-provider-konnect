@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"net/http"
 )
 
@@ -12,6 +13,17 @@ type RemoveConsumerFromGroupRequest struct {
 	ConsumerID      string `pathParam:"style=simple,explode=false,name=ConsumerId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+}
+
+func (r RemoveConsumerFromGroupRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RemoveConsumerFromGroupRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"ConsumerGroupId", "ConsumerId", "controlPlaneId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RemoveConsumerFromGroupRequest) GetConsumerGroupID() string {
@@ -42,6 +54,17 @@ type RemoveConsumerFromGroupResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+}
+
+func (r RemoveConsumerFromGroupResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RemoveConsumerFromGroupResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RemoveConsumerFromGroupResponse) GetContentType() string {

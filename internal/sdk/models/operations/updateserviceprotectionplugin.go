@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -13,6 +14,17 @@ type UpdateServiceprotectionPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID          string                         `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	ServiceProtectionPlugin shared.ServiceProtectionPlugin `request:"mediaType=application/json"`
+}
+
+func (u UpdateServiceprotectionPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateServiceprotectionPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "ServiceProtectionPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateServiceprotectionPluginRequest) GetPluginID() string {
@@ -47,6 +59,17 @@ type UpdateServiceprotectionPluginResponse struct {
 	ServiceProtectionPlugin *shared.ServiceProtectionPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (u UpdateServiceprotectionPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateServiceprotectionPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateServiceprotectionPluginResponse) GetContentType() string {

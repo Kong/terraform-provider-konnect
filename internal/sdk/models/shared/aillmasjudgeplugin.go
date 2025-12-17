@@ -12,6 +12,17 @@ type AiLlmAsJudgePluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (a AiLlmAsJudgePluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiLlmAsJudgePluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiLlmAsJudgePluginAfter) GetAccess() []string {
 	if a == nil {
 		return nil
@@ -21,6 +32,17 @@ func (a *AiLlmAsJudgePluginAfter) GetAccess() []string {
 
 type AiLlmAsJudgePluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (a AiLlmAsJudgePluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiLlmAsJudgePluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiLlmAsJudgePluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (a *AiLlmAsJudgePluginBefore) GetAccess() []string {
 type AiLlmAsJudgePluginOrdering struct {
 	After  *AiLlmAsJudgePluginAfter  `json:"after,omitempty"`
 	Before *AiLlmAsJudgePluginBefore `json:"before,omitempty"`
+}
+
+func (a AiLlmAsJudgePluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiLlmAsJudgePluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiLlmAsJudgePluginOrdering) GetAfter() *AiLlmAsJudgePluginAfter {
@@ -55,6 +88,17 @@ type AiLlmAsJudgePluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (a AiLlmAsJudgePluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiLlmAsJudgePluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiLlmAsJudgePluginPartials) GetID() *string {
@@ -894,6 +938,17 @@ type Llm struct {
 	RouteType AiLlmAsJudgePluginRouteType `json:"route_type"`
 }
 
+func (l Llm) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *Llm) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"model", "route_type"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (l *Llm) GetAuth() *AiLlmAsJudgePluginAuth {
 	if l == nil {
 		return nil
@@ -1057,6 +1112,17 @@ type AiLlmAsJudgePluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiLlmAsJudgePluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiLlmAsJudgePluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiLlmAsJudgePluginConsumer) GetID() *string {
 	if a == nil {
 		return nil
@@ -1067,6 +1133,17 @@ func (a *AiLlmAsJudgePluginConsumer) GetID() *string {
 // AiLlmAsJudgePluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type AiLlmAsJudgePluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiLlmAsJudgePluginConsumerGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiLlmAsJudgePluginConsumerGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiLlmAsJudgePluginConsumerGroup) GetID() *string {
@@ -1113,6 +1190,17 @@ type AiLlmAsJudgePluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiLlmAsJudgePluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiLlmAsJudgePluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiLlmAsJudgePluginRoute) GetID() *string {
 	if a == nil {
 		return nil
@@ -1123,6 +1211,17 @@ func (a *AiLlmAsJudgePluginRoute) GetID() *string {
 // AiLlmAsJudgePluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type AiLlmAsJudgePluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiLlmAsJudgePluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiLlmAsJudgePluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiLlmAsJudgePluginService) GetID() *string {

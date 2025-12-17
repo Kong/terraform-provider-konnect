@@ -255,8 +255,8 @@ const (
 
 // CreateAppAuthStrategyRequest - Request body for creating an Application Auth Strategy
 type CreateAppAuthStrategyRequest struct {
-	AppAuthStrategyKeyAuthRequest       *AppAuthStrategyKeyAuthRequest       `queryParam:"inline,name=CreateAppAuthStrategyRequest"`
-	AppAuthStrategyOpenIDConnectRequest *AppAuthStrategyOpenIDConnectRequest `queryParam:"inline,name=CreateAppAuthStrategyRequest"`
+	AppAuthStrategyKeyAuthRequest       *AppAuthStrategyKeyAuthRequest       `queryParam:"inline,name=CreateAppAuthStrategyRequest" union:"member"`
+	AppAuthStrategyOpenIDConnectRequest *AppAuthStrategyOpenIDConnectRequest `queryParam:"inline,name=CreateAppAuthStrategyRequest" union:"member"`
 
 	Type CreateAppAuthStrategyRequestType
 }

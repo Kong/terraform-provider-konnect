@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type V2UpdatePortalAppearanceResponse struct {
 	// Select a pre-existing default theme or specify 'custom' to use custom_theme variables.
 	ThemeName V2PortalTheme `json:"theme_name"`
@@ -15,6 +19,17 @@ type V2UpdatePortalAppearanceResponse struct {
 	Text *V2NullableAppearanceTextVariables `json:"text"`
 	// A collection of binary image data to customize images in the portal
 	Images *V2AppearanceImages `json:"images"`
+}
+
+func (v V2UpdatePortalAppearanceResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *V2UpdatePortalAppearanceResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"theme_name", "use_custom_fonts"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (v *V2UpdatePortalAppearanceResponse) GetThemeName() V2PortalTheme {

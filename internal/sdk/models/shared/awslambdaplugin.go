@@ -12,6 +12,17 @@ type AwsLambdaPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (a AwsLambdaPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AwsLambdaPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AwsLambdaPluginAfter) GetAccess() []string {
 	if a == nil {
 		return nil
@@ -21,6 +32,17 @@ func (a *AwsLambdaPluginAfter) GetAccess() []string {
 
 type AwsLambdaPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (a AwsLambdaPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AwsLambdaPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AwsLambdaPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (a *AwsLambdaPluginBefore) GetAccess() []string {
 type AwsLambdaPluginOrdering struct {
 	After  *AwsLambdaPluginAfter  `json:"after,omitempty"`
 	Before *AwsLambdaPluginBefore `json:"before,omitempty"`
+}
+
+func (a AwsLambdaPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AwsLambdaPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AwsLambdaPluginOrdering) GetAfter() *AwsLambdaPluginAfter {
@@ -55,6 +88,17 @@ type AwsLambdaPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (a AwsLambdaPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AwsLambdaPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AwsLambdaPluginPartials) GetID() *string {
@@ -486,6 +530,17 @@ type AwsLambdaPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AwsLambdaPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AwsLambdaPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AwsLambdaPluginConsumer) GetID() *string {
 	if a == nil {
 		return nil
@@ -530,6 +585,17 @@ type AwsLambdaPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AwsLambdaPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AwsLambdaPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AwsLambdaPluginRoute) GetID() *string {
 	if a == nil {
 		return nil
@@ -540,6 +606,17 @@ func (a *AwsLambdaPluginRoute) GetID() *string {
 // AwsLambdaPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type AwsLambdaPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AwsLambdaPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AwsLambdaPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AwsLambdaPluginService) GetID() *string {
