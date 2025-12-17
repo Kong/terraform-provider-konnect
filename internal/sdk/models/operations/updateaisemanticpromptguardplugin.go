@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -13,6 +14,17 @@ type UpdateAisemanticpromptguardPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID              string                             `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	AiSemanticPromptGuardPlugin shared.AiSemanticPromptGuardPlugin `request:"mediaType=application/json"`
+}
+
+func (u UpdateAisemanticpromptguardPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateAisemanticpromptguardPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "AiSemanticPromptGuardPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateAisemanticpromptguardPluginRequest) GetPluginID() string {
@@ -47,6 +59,17 @@ type UpdateAisemanticpromptguardPluginResponse struct {
 	AiSemanticPromptGuardPlugin *shared.AiSemanticPromptGuardPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (u UpdateAisemanticpromptguardPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateAisemanticpromptguardPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateAisemanticpromptguardPluginResponse) GetContentType() string {

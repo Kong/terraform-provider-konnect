@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type FetchAPIImplementationRequest struct {
 	APIID string `pathParam:"style=simple,explode=false,name=apiId"`
 	// The Portal identifier
 	ImplementationID string `pathParam:"style=simple,explode=false,name=implementationId"`
+}
+
+func (f FetchAPIImplementationRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *FetchAPIImplementationRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"apiId", "implementationId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (f *FetchAPIImplementationRequest) GetAPIID() string {
@@ -43,6 +55,17 @@ type FetchAPIImplementationResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (f FetchAPIImplementationResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *FetchAPIImplementationResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (f *FetchAPIImplementationResponse) GetContentType() string {

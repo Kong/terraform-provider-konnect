@@ -105,7 +105,7 @@ func (r *APIProductVersionResource) Schema(ctx context.Context, req resource.Sch
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `The API product version identifier.`,
+				Description: `The API product version identifier`,
 			},
 			"labels": schema.MapAttribute{
 				Computed:    true,

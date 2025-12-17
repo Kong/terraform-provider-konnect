@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -14,6 +15,17 @@ type DeleteConfigStoreSecretRequest struct {
 	ConfigStoreID string `pathParam:"style=simple,explode=false,name=configStoreId"`
 	// Config Store Secret key
 	Key string `pathParam:"style=simple,explode=false,name=key"`
+}
+
+func (d DeleteConfigStoreSecretRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteConfigStoreSecretRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "configStoreId", "key"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteConfigStoreSecretRequest) GetControlPlaneID() string {
@@ -50,6 +62,17 @@ type DeleteConfigStoreSecretResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (d DeleteConfigStoreSecretResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteConfigStoreSecretResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteConfigStoreSecretResponse) GetContentType() string {

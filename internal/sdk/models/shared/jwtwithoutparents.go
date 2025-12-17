@@ -101,6 +101,17 @@ type JWTWithoutParentsConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (j JWTWithoutParentsConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JWTWithoutParentsConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (j *JWTWithoutParentsConsumer) GetID() *string {
 	if j == nil {
 		return nil

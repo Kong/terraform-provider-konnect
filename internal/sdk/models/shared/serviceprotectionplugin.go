@@ -12,6 +12,17 @@ type ServiceProtectionPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (s ServiceProtectionPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *ServiceProtectionPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *ServiceProtectionPluginAfter) GetAccess() []string {
 	if s == nil {
 		return nil
@@ -21,6 +32,17 @@ func (s *ServiceProtectionPluginAfter) GetAccess() []string {
 
 type ServiceProtectionPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (s ServiceProtectionPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *ServiceProtectionPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *ServiceProtectionPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (s *ServiceProtectionPluginBefore) GetAccess() []string {
 type ServiceProtectionPluginOrdering struct {
 	After  *ServiceProtectionPluginAfter  `json:"after,omitempty"`
 	Before *ServiceProtectionPluginBefore `json:"before,omitempty"`
+}
+
+func (s ServiceProtectionPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *ServiceProtectionPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *ServiceProtectionPluginOrdering) GetAfter() *ServiceProtectionPluginAfter {
@@ -55,6 +88,17 @@ type ServiceProtectionPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (s ServiceProtectionPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *ServiceProtectionPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *ServiceProtectionPluginPartials) GetID() *string {
@@ -606,6 +650,17 @@ func (e *ServiceProtectionPluginProtocols) UnmarshalJSON(data []byte) error {
 // ServiceProtectionPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type ServiceProtectionPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (s ServiceProtectionPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *ServiceProtectionPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *ServiceProtectionPluginService) GetID() *string {

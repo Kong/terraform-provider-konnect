@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -14,6 +15,17 @@ type CreateBasicAuthWithConsumerRequest struct {
 	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
 	// Description of new Basic-auth credential for creation
 	BasicAuthWithoutParents shared.BasicAuthWithoutParents `request:"mediaType=application/json"`
+}
+
+func (c CreateBasicAuthWithConsumerRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateBasicAuthWithConsumerRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "BasicAuthWithoutParents"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateBasicAuthWithConsumerRequest) GetControlPlaneID() string {
@@ -46,6 +58,17 @@ type CreateBasicAuthWithConsumerResponse struct {
 	RawResponse *http.Response
 	// Successfully created Basic-auth credential
 	BasicAuth *shared.BasicAuth
+}
+
+func (c CreateBasicAuthWithConsumerResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateBasicAuthWithConsumerResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateBasicAuthWithConsumerResponse) GetContentType() string {

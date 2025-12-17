@@ -160,7 +160,7 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `The control plane ID.`,
+				Description: `The control plane ID`,
 			},
 			"labels": schema.MapAttribute{
 				Computed:    true,

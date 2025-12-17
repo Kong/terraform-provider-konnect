@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -16,6 +17,17 @@ type PostTeamsTeamIDSystemAccountsRequest struct {
 	TeamID string `pathParam:"style=simple,explode=false,name=teamId"`
 	// The request schema for adding a system account to a team.
 	AddSystemAccountToTeam *shared.AddSystemAccountToTeam `request:"mediaType=application/json"`
+}
+
+func (p PostTeamsTeamIDSystemAccountsRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PostTeamsTeamIDSystemAccountsRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"teamId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PostTeamsTeamIDSystemAccountsRequest) GetTeamID() string {
@@ -45,6 +57,17 @@ type PostTeamsTeamIDSystemAccountsResponse struct {
 	NotFoundError *shared.NotFoundError
 	// Conflict
 	ConflictError *shared.ConflictError
+}
+
+func (p PostTeamsTeamIDSystemAccountsResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PostTeamsTeamIDSystemAccountsResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PostTeamsTeamIDSystemAccountsResponse) GetContentType() string {

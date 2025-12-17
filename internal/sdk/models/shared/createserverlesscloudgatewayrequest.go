@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // CreateServerlessCloudGatewayRequest - Schema to create a serverless cloud gateway.
 type CreateServerlessCloudGatewayRequest struct {
 	ControlPlane ServerlessControlPlane `json:"control_plane"`
@@ -11,6 +15,17 @@ type CreateServerlessCloudGatewayRequest struct {
 	ClusterCertKey string `json:"cluster_cert_key"`
 	// Labels to facilitate tagged search on serverless cloud gateways. Keys must be of length 1-63 characters, and cannot start with 'kong', 'konnect', 'mesh', 'kic', or '_'.
 	Labels map[string]string `json:"labels,omitempty"`
+}
+
+func (c CreateServerlessCloudGatewayRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateServerlessCloudGatewayRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"control_plane", "cluster_cert", "cluster_cert_key"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateServerlessCloudGatewayRequest) GetControlPlane() ServerlessControlPlane {

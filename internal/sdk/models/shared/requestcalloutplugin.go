@@ -12,6 +12,17 @@ type RequestCalloutPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (r RequestCalloutPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestCalloutPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RequestCalloutPluginAfter) GetAccess() []string {
 	if r == nil {
 		return nil
@@ -21,6 +32,17 @@ func (r *RequestCalloutPluginAfter) GetAccess() []string {
 
 type RequestCalloutPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (r RequestCalloutPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestCalloutPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RequestCalloutPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (r *RequestCalloutPluginBefore) GetAccess() []string {
 type RequestCalloutPluginOrdering struct {
 	After  *RequestCalloutPluginAfter  `json:"after,omitempty"`
 	Before *RequestCalloutPluginBefore `json:"before,omitempty"`
+}
+
+func (r RequestCalloutPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestCalloutPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RequestCalloutPluginOrdering) GetAfter() *RequestCalloutPluginAfter {
@@ -55,6 +88,17 @@ type RequestCalloutPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (r RequestCalloutPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestCalloutPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RequestCalloutPluginPartials) GetID() *string {
@@ -1038,6 +1082,17 @@ type Callouts struct {
 	Response *Response `json:"response"`
 }
 
+func (c Callouts) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *Callouts) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "request"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (c *Callouts) GetCache() *RequestCalloutPluginCache {
 	if c == nil {
 		return nil
@@ -1241,6 +1296,17 @@ type RequestCalloutPluginConfig struct {
 	Upstream *RequestCalloutPluginUpstream `json:"upstream,omitempty"`
 }
 
+func (r RequestCalloutPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestCalloutPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"callouts"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RequestCalloutPluginConfig) GetCache() *Cache {
 	if r == nil {
 		return nil
@@ -1267,6 +1333,17 @@ type RequestCalloutPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (r RequestCalloutPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestCalloutPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RequestCalloutPluginConsumer) GetID() *string {
 	if r == nil {
 		return nil
@@ -1277,6 +1354,17 @@ func (r *RequestCalloutPluginConsumer) GetID() *string {
 // RequestCalloutPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type RequestCalloutPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (r RequestCalloutPluginConsumerGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestCalloutPluginConsumerGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RequestCalloutPluginConsumerGroup) GetID() *string {
@@ -1323,6 +1411,17 @@ type RequestCalloutPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (r RequestCalloutPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestCalloutPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RequestCalloutPluginRoute) GetID() *string {
 	if r == nil {
 		return nil
@@ -1333,6 +1432,17 @@ func (r *RequestCalloutPluginRoute) GetID() *string {
 // RequestCalloutPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type RequestCalloutPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (r RequestCalloutPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestCalloutPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RequestCalloutPluginService) GetID() *string {

@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // BadRequestError - standard error
 type BadRequestError struct {
 	// The HTTP status code of the error. Useful when passing the response
@@ -28,6 +32,17 @@ type BadRequestError struct {
 	Detail string `json:"detail"`
 	// invalid parameters
 	InvalidParameters []InvalidParameters `json:"invalid_parameters"`
+}
+
+func (b BadRequestError) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BadRequestError) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"status", "title", "instance", "detail", "invalid_parameters"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (b *BadRequestError) GetStatus() int64 {

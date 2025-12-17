@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -14,6 +15,17 @@ var GetCustomDomainServerList = []string{
 type GetCustomDomainRequest struct {
 	// ID of the custom domain to operate on.
 	CustomDomainID string `pathParam:"style=simple,explode=false,name=customDomainId"`
+}
+
+func (g GetCustomDomainRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetCustomDomainRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"customDomainId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetCustomDomainRequest) GetCustomDomainID() string {
@@ -38,6 +50,17 @@ type GetCustomDomainResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (g GetCustomDomainResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetCustomDomainResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetCustomDomainResponse) GetContentType() string {

@@ -12,6 +12,17 @@ type MtlsAuthPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (m MtlsAuthPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MtlsAuthPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (m *MtlsAuthPluginAfter) GetAccess() []string {
 	if m == nil {
 		return nil
@@ -21,6 +32,17 @@ func (m *MtlsAuthPluginAfter) GetAccess() []string {
 
 type MtlsAuthPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (m MtlsAuthPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MtlsAuthPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (m *MtlsAuthPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (m *MtlsAuthPluginBefore) GetAccess() []string {
 type MtlsAuthPluginOrdering struct {
 	After  *MtlsAuthPluginAfter  `json:"after,omitempty"`
 	Before *MtlsAuthPluginBefore `json:"before,omitempty"`
+}
+
+func (m MtlsAuthPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MtlsAuthPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (m *MtlsAuthPluginOrdering) GetAfter() *MtlsAuthPluginAfter {
@@ -55,6 +88,17 @@ type MtlsAuthPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (m MtlsAuthPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MtlsAuthPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (m *MtlsAuthPluginPartials) GetID() *string {
@@ -356,6 +400,17 @@ type MtlsAuthPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (m MtlsAuthPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MtlsAuthPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (m *MtlsAuthPluginRoute) GetID() *string {
 	if m == nil {
 		return nil
@@ -366,6 +421,17 @@ func (m *MtlsAuthPluginRoute) GetID() *string {
 // MtlsAuthPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type MtlsAuthPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (m MtlsAuthPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MtlsAuthPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (m *MtlsAuthPluginService) GetID() *string {

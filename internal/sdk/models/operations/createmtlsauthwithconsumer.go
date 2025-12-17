@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -14,6 +15,17 @@ type CreateMtlsAuthWithConsumerRequest struct {
 	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
 	// Description of new MTLS-auth credential for creation
 	MTLSAuthWithoutParents shared.MTLSAuthWithoutParents `request:"mediaType=application/json"`
+}
+
+func (c CreateMtlsAuthWithConsumerRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateMtlsAuthWithConsumerRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "MTLSAuthWithoutParents"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateMtlsAuthWithConsumerRequest) GetControlPlaneID() string {
@@ -46,6 +58,17 @@ type CreateMtlsAuthWithConsumerResponse struct {
 	RawResponse *http.Response
 	// Successfully created MTLS-auth credential
 	MTLSAuth *shared.MTLSAuth
+}
+
+func (c CreateMtlsAuthWithConsumerResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateMtlsAuthWithConsumerResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateMtlsAuthWithConsumerResponse) GetContentType() string {

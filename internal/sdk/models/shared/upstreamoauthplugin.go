@@ -12,6 +12,17 @@ type UpstreamOauthPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (u UpstreamOauthPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamOauthPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (u *UpstreamOauthPluginAfter) GetAccess() []string {
 	if u == nil {
 		return nil
@@ -21,6 +32,17 @@ func (u *UpstreamOauthPluginAfter) GetAccess() []string {
 
 type UpstreamOauthPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (u UpstreamOauthPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamOauthPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpstreamOauthPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (u *UpstreamOauthPluginBefore) GetAccess() []string {
 type UpstreamOauthPluginOrdering struct {
 	After  *UpstreamOauthPluginAfter  `json:"after,omitempty"`
 	Before *UpstreamOauthPluginBefore `json:"before,omitempty"`
+}
+
+func (u UpstreamOauthPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamOauthPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpstreamOauthPluginOrdering) GetAfter() *UpstreamOauthPluginAfter {
@@ -55,6 +88,17 @@ type UpstreamOauthPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (u UpstreamOauthPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamOauthPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpstreamOauthPluginPartials) GetID() *string {
@@ -861,6 +905,17 @@ type UpstreamOauthPluginConfig struct {
 	Oauth    Oauth                     `json:"oauth"`
 }
 
+func (u UpstreamOauthPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamOauthPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"oauth"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (u *UpstreamOauthPluginConfig) GetBehavior() *Behavior {
 	if u == nil {
 		return nil
@@ -894,6 +949,17 @@ type UpstreamOauthPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (u UpstreamOauthPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamOauthPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (u *UpstreamOauthPluginConsumer) GetID() *string {
 	if u == nil {
 		return nil
@@ -904,6 +970,17 @@ func (u *UpstreamOauthPluginConsumer) GetID() *string {
 // UpstreamOauthPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type UpstreamOauthPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (u UpstreamOauthPluginConsumerGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamOauthPluginConsumerGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpstreamOauthPluginConsumerGroup) GetID() *string {
@@ -950,6 +1027,17 @@ type UpstreamOauthPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (u UpstreamOauthPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamOauthPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (u *UpstreamOauthPluginRoute) GetID() *string {
 	if u == nil {
 		return nil
@@ -960,6 +1048,17 @@ func (u *UpstreamOauthPluginRoute) GetID() *string {
 // UpstreamOauthPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type UpstreamOauthPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (u UpstreamOauthPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamOauthPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpstreamOauthPluginService) GetID() *string {

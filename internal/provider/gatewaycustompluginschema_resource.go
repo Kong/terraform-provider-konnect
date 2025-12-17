@@ -65,7 +65,7 @@ func (r *GatewayCustomPluginSchemaResource) Schema(ctx context.Context, req reso
 			},
 			"name": schema.StringAttribute{
 				Computed:    true,
-				Description: `The custom plugin name determined by the custom plugin schema.`,
+				Description: `The custom plugin name`,
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,

@@ -12,6 +12,17 @@ type SamlPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (s SamlPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SamlPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *SamlPluginAfter) GetAccess() []string {
 	if s == nil {
 		return nil
@@ -21,6 +32,17 @@ func (s *SamlPluginAfter) GetAccess() []string {
 
 type SamlPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (s SamlPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SamlPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *SamlPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (s *SamlPluginBefore) GetAccess() []string {
 type SamlPluginOrdering struct {
 	After  *SamlPluginAfter  `json:"after,omitempty"`
 	Before *SamlPluginBefore `json:"before,omitempty"`
+}
+
+func (s SamlPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SamlPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *SamlPluginOrdering) GetAfter() *SamlPluginAfter {
@@ -55,6 +88,17 @@ type SamlPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (s SamlPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SamlPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *SamlPluginPartials) GetID() *string {
@@ -1105,6 +1149,17 @@ type SamlPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (s SamlPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SamlPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *SamlPluginRoute) GetID() *string {
 	if s == nil {
 		return nil
@@ -1115,6 +1170,17 @@ func (s *SamlPluginRoute) GetID() *string {
 // SamlPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type SamlPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (s SamlPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SamlPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *SamlPluginService) GetID() *string {

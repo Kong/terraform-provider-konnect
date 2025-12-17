@@ -12,6 +12,17 @@ type OasValidationPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (o OasValidationPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OasValidationPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (o *OasValidationPluginAfter) GetAccess() []string {
 	if o == nil {
 		return nil
@@ -21,6 +32,17 @@ func (o *OasValidationPluginAfter) GetAccess() []string {
 
 type OasValidationPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (o OasValidationPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OasValidationPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *OasValidationPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (o *OasValidationPluginBefore) GetAccess() []string {
 type OasValidationPluginOrdering struct {
 	After  *OasValidationPluginAfter  `json:"after,omitempty"`
 	Before *OasValidationPluginBefore `json:"before,omitempty"`
+}
+
+func (o OasValidationPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OasValidationPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *OasValidationPluginOrdering) GetAfter() *OasValidationPluginAfter {
@@ -55,6 +88,17 @@ type OasValidationPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (o OasValidationPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OasValidationPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *OasValidationPluginPartials) GetID() *string {
@@ -232,6 +276,17 @@ type OasValidationPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (o OasValidationPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OasValidationPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (o *OasValidationPluginConsumer) GetID() *string {
 	if o == nil {
 		return nil
@@ -276,6 +331,17 @@ type OasValidationPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (o OasValidationPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OasValidationPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (o *OasValidationPluginRoute) GetID() *string {
 	if o == nil {
 		return nil
@@ -286,6 +352,17 @@ func (o *OasValidationPluginRoute) GetID() *string {
 // OasValidationPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type OasValidationPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (o OasValidationPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OasValidationPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *OasValidationPluginService) GetID() *string {

@@ -12,6 +12,17 @@ type AiPromptDecoratorPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (a AiPromptDecoratorPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptDecoratorPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiPromptDecoratorPluginAfter) GetAccess() []string {
 	if a == nil {
 		return nil
@@ -21,6 +32,17 @@ func (a *AiPromptDecoratorPluginAfter) GetAccess() []string {
 
 type AiPromptDecoratorPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (a AiPromptDecoratorPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptDecoratorPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiPromptDecoratorPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (a *AiPromptDecoratorPluginBefore) GetAccess() []string {
 type AiPromptDecoratorPluginOrdering struct {
 	After  *AiPromptDecoratorPluginAfter  `json:"after,omitempty"`
 	Before *AiPromptDecoratorPluginBefore `json:"before,omitempty"`
+}
+
+func (a AiPromptDecoratorPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptDecoratorPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiPromptDecoratorPluginOrdering) GetAfter() *AiPromptDecoratorPluginAfter {
@@ -55,6 +88,17 @@ type AiPromptDecoratorPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (a AiPromptDecoratorPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptDecoratorPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiPromptDecoratorPluginPartials) GetID() *string {
@@ -239,6 +283,17 @@ type Prompts struct {
 	Prepend []Prepend `json:"prepend"`
 }
 
+func (p Prompts) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *Prompts) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (p *Prompts) GetAppend() []AiPromptDecoratorPluginAppend {
 	if p == nil {
 		return nil
@@ -298,6 +353,17 @@ type AiPromptDecoratorPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiPromptDecoratorPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptDecoratorPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiPromptDecoratorPluginConsumer) GetID() *string {
 	if a == nil {
 		return nil
@@ -308,6 +374,17 @@ func (a *AiPromptDecoratorPluginConsumer) GetID() *string {
 // AiPromptDecoratorPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type AiPromptDecoratorPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiPromptDecoratorPluginConsumerGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptDecoratorPluginConsumerGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiPromptDecoratorPluginConsumerGroup) GetID() *string {
@@ -354,6 +431,17 @@ type AiPromptDecoratorPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiPromptDecoratorPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptDecoratorPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiPromptDecoratorPluginRoute) GetID() *string {
 	if a == nil {
 		return nil
@@ -364,6 +452,17 @@ func (a *AiPromptDecoratorPluginRoute) GetID() *string {
 // AiPromptDecoratorPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type AiPromptDecoratorPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiPromptDecoratorPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptDecoratorPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiPromptDecoratorPluginService) GetID() *string {

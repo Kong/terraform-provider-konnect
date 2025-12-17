@@ -89,6 +89,17 @@ type DeletePortalResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
+func (d DeletePortalResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeletePortalResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (d *DeletePortalResponse) GetContentType() string {
 	if d == nil {
 		return ""

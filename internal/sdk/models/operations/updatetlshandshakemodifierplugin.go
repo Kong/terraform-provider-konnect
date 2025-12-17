@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -13,6 +14,17 @@ type UpdateTlshandshakemodifierPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID             string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	TLSHandshakeModifierPlugin shared.TLSHandshakeModifierPlugin `request:"mediaType=application/json"`
+}
+
+func (u UpdateTlshandshakemodifierPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateTlshandshakemodifierPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "TlsHandshakeModifierPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateTlshandshakemodifierPluginRequest) GetPluginID() string {
@@ -47,6 +59,17 @@ type UpdateTlshandshakemodifierPluginResponse struct {
 	TLSHandshakeModifierPlugin *shared.TLSHandshakeModifierPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (u UpdateTlshandshakemodifierPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateTlshandshakemodifierPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateTlshandshakemodifierPluginResponse) GetContentType() string {

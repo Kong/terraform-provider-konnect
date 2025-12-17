@@ -73,7 +73,7 @@ func (r *SystemAccountAccessTokenResource) Schema(ctx context.Context, req resou
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `Requires replacement if changed.`,
+				Description: `Timestamp of when the system account access token will expire. Requires replacement if changed.`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
 				},
@@ -93,7 +93,8 @@ func (r *SystemAccountAccessTokenResource) Schema(ctx context.Context, req resou
 				Description: `Timestamp of when the system account access token was last used.`,
 			},
 			"name": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `Name of the system account access token.`,
 			},
 			"token": schema.StringAttribute{
 				Computed:  true,

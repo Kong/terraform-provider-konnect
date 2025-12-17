@@ -12,6 +12,17 @@ type HmacAuthPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (h HmacAuthPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HmacAuthPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (h *HmacAuthPluginAfter) GetAccess() []string {
 	if h == nil {
 		return nil
@@ -21,6 +32,17 @@ func (h *HmacAuthPluginAfter) GetAccess() []string {
 
 type HmacAuthPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (h HmacAuthPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HmacAuthPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (h *HmacAuthPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (h *HmacAuthPluginBefore) GetAccess() []string {
 type HmacAuthPluginOrdering struct {
 	After  *HmacAuthPluginAfter  `json:"after,omitempty"`
 	Before *HmacAuthPluginBefore `json:"before,omitempty"`
+}
+
+func (h HmacAuthPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HmacAuthPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (h *HmacAuthPluginOrdering) GetAfter() *HmacAuthPluginAfter {
@@ -55,6 +88,17 @@ type HmacAuthPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (h HmacAuthPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HmacAuthPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (h *HmacAuthPluginPartials) GetID() *string {
@@ -230,6 +274,17 @@ type HmacAuthPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (h HmacAuthPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HmacAuthPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (h *HmacAuthPluginRoute) GetID() *string {
 	if h == nil {
 		return nil
@@ -240,6 +295,17 @@ func (h *HmacAuthPluginRoute) GetID() *string {
 // HmacAuthPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type HmacAuthPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (h HmacAuthPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HmacAuthPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (h *HmacAuthPluginService) GetID() *string {

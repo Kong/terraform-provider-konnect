@@ -12,6 +12,17 @@ type KafkaLogPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (k KafkaLogPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaLogPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (k *KafkaLogPluginAfter) GetAccess() []string {
 	if k == nil {
 		return nil
@@ -21,6 +32,17 @@ func (k *KafkaLogPluginAfter) GetAccess() []string {
 
 type KafkaLogPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (k KafkaLogPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaLogPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (k *KafkaLogPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (k *KafkaLogPluginBefore) GetAccess() []string {
 type KafkaLogPluginOrdering struct {
 	After  *KafkaLogPluginAfter  `json:"after,omitempty"`
 	Before *KafkaLogPluginBefore `json:"before,omitempty"`
+}
+
+func (k KafkaLogPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaLogPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (k *KafkaLogPluginOrdering) GetAfter() *KafkaLogPluginAfter {
@@ -55,6 +88,17 @@ type KafkaLogPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (k KafkaLogPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaLogPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (k *KafkaLogPluginPartials) GetID() *string {
@@ -198,6 +242,17 @@ type KafkaLogPluginBootstrapServers struct {
 	Port int64 `json:"port"`
 }
 
+func (k KafkaLogPluginBootstrapServers) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaLogPluginBootstrapServers) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"host", "port"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (k *KafkaLogPluginBootstrapServers) GetHost() string {
 	if k == nil {
 		return ""
@@ -245,6 +300,17 @@ func (e *KafkaLogPluginProducerRequestAcks) UnmarshalJSON(data []byte) error {
 type KafkaLogPluginBasic struct {
 	Password string `json:"password"`
 	Username string `json:"username"`
+}
+
+func (k KafkaLogPluginBasic) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaLogPluginBasic) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"password", "username"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (k *KafkaLogPluginBasic) GetPassword() string {
@@ -776,6 +842,17 @@ type KafkaLogPluginSchemaRegistry struct {
 	Confluent *KafkaLogPluginConfluent `json:"confluent"`
 }
 
+func (k KafkaLogPluginSchemaRegistry) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaLogPluginSchemaRegistry) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (k *KafkaLogPluginSchemaRegistry) GetConfluent() *KafkaLogPluginConfluent {
 	if k == nil {
 		return nil
@@ -1010,6 +1087,17 @@ type KafkaLogPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (k KafkaLogPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaLogPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (k *KafkaLogPluginConsumer) GetID() *string {
 	if k == nil {
 		return nil
@@ -1060,6 +1148,17 @@ type KafkaLogPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (k KafkaLogPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaLogPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (k *KafkaLogPluginRoute) GetID() *string {
 	if k == nil {
 		return nil
@@ -1070,6 +1169,17 @@ func (k *KafkaLogPluginRoute) GetID() *string {
 // KafkaLogPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type KafkaLogPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (k KafkaLogPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaLogPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (k *KafkaLogPluginService) GetID() *string {

@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // PortalOIDCConfig - Configuration properties for an OpenID Connect Identity Provider.
 //
 // Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
@@ -11,6 +15,17 @@ type PortalOIDCConfig struct {
 	Scopes   []string `json:"scopes,omitempty"`
 	// Mappings from a portal developer atribute to an Identity Provider claim.
 	ClaimMappings *PortalClaimMappings `json:"claim_mappings,omitempty"`
+}
+
+func (p PortalOIDCConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PortalOIDCConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"issuer", "client_id"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PortalOIDCConfig) GetIssuer() string {
@@ -65,6 +80,17 @@ type PortalAuthenticationSettingsResponse struct {
 	//
 	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	OidcConfig *PortalOIDCConfig `json:"oidc_config"`
+}
+
+func (p PortalAuthenticationSettingsResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PortalAuthenticationSettingsResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"basic_auth_enabled", "oidc_auth_enabled", "oidc_team_mapping_enabled", "konnect_mapping_enabled"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PortalAuthenticationSettingsResponse) GetBasicAuthEnabled() bool {

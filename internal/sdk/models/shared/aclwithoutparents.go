@@ -2,8 +2,23 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type ACLWithoutParentsConsumer struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a ACLWithoutParentsConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *ACLWithoutParentsConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *ACLWithoutParentsConsumer) GetID() *string {
@@ -22,6 +37,17 @@ type ACLWithoutParents struct {
 	ID *string `json:"id,omitempty"`
 	// A set of strings representing tags.
 	Tags []string `json:"tags"`
+}
+
+func (a ACLWithoutParents) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *ACLWithoutParents) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"group"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *ACLWithoutParents) GetConsumer() *ACLWithoutParentsConsumer {

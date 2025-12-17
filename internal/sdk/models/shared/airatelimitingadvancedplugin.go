@@ -12,6 +12,17 @@ type AiRateLimitingAdvancedPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (a AiRateLimitingAdvancedPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRateLimitingAdvancedPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiRateLimitingAdvancedPluginAfter) GetAccess() []string {
 	if a == nil {
 		return nil
@@ -21,6 +32,17 @@ func (a *AiRateLimitingAdvancedPluginAfter) GetAccess() []string {
 
 type AiRateLimitingAdvancedPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (a AiRateLimitingAdvancedPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRateLimitingAdvancedPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiRateLimitingAdvancedPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (a *AiRateLimitingAdvancedPluginBefore) GetAccess() []string {
 type AiRateLimitingAdvancedPluginOrdering struct {
 	After  *AiRateLimitingAdvancedPluginAfter  `json:"after,omitempty"`
 	Before *AiRateLimitingAdvancedPluginBefore `json:"before,omitempty"`
+}
+
+func (a AiRateLimitingAdvancedPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRateLimitingAdvancedPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiRateLimitingAdvancedPluginOrdering) GetAfter() *AiRateLimitingAdvancedPluginAfter {
@@ -55,6 +88,17 @@ type AiRateLimitingAdvancedPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (a AiRateLimitingAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRateLimitingAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiRateLimitingAdvancedPluginPartials) GetID() *string {
@@ -214,6 +258,17 @@ type LlmProviders struct {
 	Name AiRateLimitingAdvancedPluginName `json:"name"`
 	// One or more window sizes to apply a limit to (defined in seconds). There must be a matching number of window limits and sizes specified.
 	WindowSize []float64 `json:"window_size"`
+}
+
+func (l LlmProviders) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *LlmProviders) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"limit", "name", "window_size"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (l *LlmProviders) GetLimit() []float64 {
@@ -813,6 +868,17 @@ type AiRateLimitingAdvancedPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiRateLimitingAdvancedPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRateLimitingAdvancedPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiRateLimitingAdvancedPluginConsumer) GetID() *string {
 	if a == nil {
 		return nil
@@ -823,6 +889,17 @@ func (a *AiRateLimitingAdvancedPluginConsumer) GetID() *string {
 // AiRateLimitingAdvancedPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type AiRateLimitingAdvancedPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiRateLimitingAdvancedPluginConsumerGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRateLimitingAdvancedPluginConsumerGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiRateLimitingAdvancedPluginConsumerGroup) GetID() *string {
@@ -869,6 +946,17 @@ type AiRateLimitingAdvancedPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiRateLimitingAdvancedPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRateLimitingAdvancedPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiRateLimitingAdvancedPluginRoute) GetID() *string {
 	if a == nil {
 		return nil
@@ -879,6 +967,17 @@ func (a *AiRateLimitingAdvancedPluginRoute) GetID() *string {
 // AiRateLimitingAdvancedPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type AiRateLimitingAdvancedPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiRateLimitingAdvancedPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRateLimitingAdvancedPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiRateLimitingAdvancedPluginService) GetID() *string {

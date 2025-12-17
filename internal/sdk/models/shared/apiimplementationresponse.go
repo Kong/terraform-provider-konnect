@@ -68,7 +68,7 @@ const (
 
 // APIImplementationResponse - An entity that implements an API
 type APIImplementationResponse struct {
-	APIImplementationResponseServiceReference *APIImplementationResponseServiceReference `queryParam:"inline,name=ApiImplementationResponse"`
+	APIImplementationResponseServiceReference *APIImplementationResponseServiceReference `queryParam:"inline,name=ApiImplementationResponse" union:"member"`
 
 	Type APIImplementationResponseType
 }
@@ -100,7 +100,7 @@ func (u *APIImplementationResponse) UnmarshalJSON(data []byte) error {
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for APIImplementationResponse", string(data))
 	}

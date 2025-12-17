@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // CreateConfigurationDataPlaneGroup - Object that describes where to deploy a data-plane group, along with how many instances.
 type CreateConfigurationDataPlaneGroup struct {
 	// Name of cloud provider.
@@ -12,6 +16,17 @@ type CreateConfigurationDataPlaneGroup struct {
 	Autoscale             ConfigurationDataPlaneGroupAutoscale `json:"autoscale"`
 	// Array of environment variables to set for a data-plane group.
 	Environment []ConfigurationDataPlaneGroupEnvironmentField `json:"environment,omitempty"`
+}
+
+func (c CreateConfigurationDataPlaneGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateConfigurationDataPlaneGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"provider", "region", "cloud_gateway_network_id", "autoscale"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateConfigurationDataPlaneGroup) GetProvider() ProviderName {
