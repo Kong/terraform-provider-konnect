@@ -4,7 +4,7 @@
 > Released on 2025/12/??
 
 ### Features
-* 
+* Support PATCH update for certain properties in `aws_transit_gateway` and `aws_resource_endpoint_gateway` within `konnect_cloud_gateway_transit_gateway` resource without replacement 
 
 ### Bug Fixes
 * 
