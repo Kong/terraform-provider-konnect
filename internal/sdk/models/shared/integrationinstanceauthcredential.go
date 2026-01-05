@@ -16,7 +16,7 @@ const (
 
 // IntegrationInstanceAuthCredential - Object containing metadata for an integration instance auth credential.
 type IntegrationInstanceAuthCredential struct {
-	MultiKeyAuthCredential *MultiKeyAuthCredential `queryParam:"inline,name=IntegrationInstanceAuthCredential"`
+	MultiKeyAuthCredential *MultiKeyAuthCredential `queryParam:"inline,name=IntegrationInstanceAuthCredential" union:"member"`
 
 	Type IntegrationInstanceAuthCredentialType
 }
@@ -48,7 +48,7 @@ func (u *IntegrationInstanceAuthCredential) UnmarshalJSON(data []byte) error {
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for IntegrationInstanceAuthCredential", string(data))
 	}

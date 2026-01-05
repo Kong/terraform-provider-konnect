@@ -18,7 +18,7 @@ func (d DeleteCmekRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeleteCmekRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"cmekId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
 		return err
 	}
 	return nil

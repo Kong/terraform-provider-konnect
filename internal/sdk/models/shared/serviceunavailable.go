@@ -49,7 +49,7 @@ func (s ServiceUnavailable) MarshalJSON() ([]byte, error) {
 }
 
 func (s *ServiceUnavailable) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"status", "title", "instance"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil

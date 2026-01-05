@@ -20,6 +20,7 @@ generation:
   schemas:
     allOfMergeStrategy: shallowMerge
   requestBodyFieldName: ""
+  persistentEdits: {}
   tests:
     generateTests: true
     generateNewTests: false
@@ -40,6 +41,7 @@ terraform:
   allowUnknownFieldsInWeakUnions: false
   author: kong
   baseErrorName: KonnectError
+  debugLogging: {}
   defaultErrorName: SDKError
   enableCustomCodeRegions: false
   enableOperationSecurity: false
@@ -64,4 +66,5 @@ terraform:
   includeEmptyObjects: false
   inferUnionDiscriminators: false
   packageName: konnect
+  respectRequiredFields: false
   unionStrategy: populated-fields

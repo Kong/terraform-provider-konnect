@@ -775,7 +775,7 @@ func (s SamlPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SamlPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"assertion_consumer_path", "idp_sso_url", "issuer", "session_secret"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1156,7 +1156,7 @@ func (s SamlPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SamlPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil

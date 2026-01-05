@@ -467,7 +467,7 @@ func (s ServiceProtectionPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (s *ServiceProtectionPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"limit", "window_size"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -645,7 +645,7 @@ func (s ServiceProtectionPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (s *ServiceProtectionPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil

@@ -50,7 +50,7 @@ func (a AuthStrategyClientCredentials) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AuthStrategyClientCredentials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "credential_type", "auth_methods"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

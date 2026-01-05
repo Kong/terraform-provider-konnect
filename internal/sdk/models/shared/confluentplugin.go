@@ -233,7 +233,7 @@ func (o Oauth2) MarshalJSON() ([]byte, error) {
 }
 
 func (o *Oauth2) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"token_endpoint"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -658,16 +658,16 @@ func (c *Confluent) GetValueSchema() *ValueSchema {
 	return c.ValueSchema
 }
 
-// SchemaRegistry - The plugin-global schema registry configuration. This can be overwritten by the topic configuration.
-type SchemaRegistry struct {
+// ConfluentPluginSchemaRegistry - The plugin-global schema registry configuration. This can be overwritten by the topic configuration.
+type ConfluentPluginSchemaRegistry struct {
 	Confluent *Confluent `json:"confluent"`
 }
 
-func (s *SchemaRegistry) GetConfluent() *Confluent {
-	if s == nil {
+func (c *ConfluentPluginSchemaRegistry) GetConfluent() *Confluent {
+	if c == nil {
 		return nil
 	}
-	return s.Confluent
+	return c.Confluent
 }
 
 type ConfluentPluginConfig struct {
@@ -719,7 +719,7 @@ type ConfluentPluginConfig struct {
 	// Time to wait for a Produce response in milliseconds.
 	ProducerRequestTimeout *int64 `default:"2000" json:"producer_request_timeout"`
 	// The plugin-global schema registry configuration. This can be overwritten by the topic configuration.
-	SchemaRegistry *SchemaRegistry `json:"schema_registry,omitempty"`
+	SchemaRegistry *ConfluentPluginSchemaRegistry `json:"schema_registry,omitempty"`
 	// Socket timeout in milliseconds.
 	Timeout *int64 `default:"10000" json:"timeout"`
 	// The default Kafka topic to publish to if the query parameter defined in the `topics_query_arg` does not exist in the request
@@ -733,7 +733,7 @@ func (c ConfluentPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfluentPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"cluster_api_key", "cluster_api_secret", "topic"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -907,7 +907,7 @@ func (c *ConfluentPluginConfig) GetProducerRequestTimeout() *int64 {
 	return c.ProducerRequestTimeout
 }
 
-func (c *ConfluentPluginConfig) GetSchemaRegistry() *SchemaRegistry {
+func (c *ConfluentPluginConfig) GetSchemaRegistry() *ConfluentPluginSchemaRegistry {
 	if c == nil {
 		return nil
 	}
@@ -1037,7 +1037,7 @@ func (c ConfluentPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfluentPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil

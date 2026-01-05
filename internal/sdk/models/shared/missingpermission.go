@@ -19,7 +19,7 @@ func (m MissingPermission) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MissingPermission) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"scopes", "message"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil

@@ -1193,7 +1193,7 @@ func (a AiSemanticCachePluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticCachePluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"embeddings", "vectordb"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1392,7 +1392,7 @@ func (a AiSemanticCachePlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticCachePlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

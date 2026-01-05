@@ -25,7 +25,7 @@ func (p ProviderAccount) MarshalJSON() ([]byte, error) {
 }
 
 func (p *ProviderAccount) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"id", "provider", "provider_account_id", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil

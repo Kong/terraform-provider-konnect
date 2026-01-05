@@ -67,7 +67,7 @@ func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(c
 		if resp.Config.SchemaRegistry == nil {
 			r.Config.SchemaRegistry = nil
 		} else {
-			r.Config.SchemaRegistry = &tfTypes.SchemaRegistry{}
+			r.Config.SchemaRegistry = &tfTypes.ConfluentPluginSchemaRegistry{}
 			if resp.Config.SchemaRegistry.Confluent == nil {
 				r.Config.SchemaRegistry.Confluent = nil
 			} else {
@@ -79,7 +79,7 @@ func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(c
 					if resp.Config.SchemaRegistry.Confluent.Authentication.Basic == nil {
 						r.Config.SchemaRegistry.Confluent.Authentication.Basic = nil
 					} else {
-						r.Config.SchemaRegistry.Confluent.Authentication.Basic = &tfTypes.Basic{}
+						r.Config.SchemaRegistry.Confluent.Authentication.Basic = &tfTypes.BackendClusterAuthenticationSaslPlain{}
 						r.Config.SchemaRegistry.Confluent.Authentication.Basic.Password = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Password)
 						r.Config.SchemaRegistry.Confluent.Authentication.Basic.Username = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Username)
 					}
@@ -570,7 +570,7 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 	} else {
 		producerRequestTimeout = nil
 	}
-	var schemaRegistry *shared.SchemaRegistry
+	var schemaRegistry *shared.ConfluentPluginSchemaRegistry
 	if r.Config.SchemaRegistry != nil {
 		var confluent *shared.Confluent
 		if r.Config.SchemaRegistry.Confluent != nil {
@@ -825,7 +825,7 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 				ValueSchema:    valueSchema,
 			}
 		}
-		schemaRegistry = &shared.SchemaRegistry{
+		schemaRegistry = &shared.ConfluentPluginSchemaRegistry{
 			Confluent: confluent,
 		}
 	}

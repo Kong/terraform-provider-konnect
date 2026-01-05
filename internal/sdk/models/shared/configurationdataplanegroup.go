@@ -113,7 +113,7 @@ func (c ConfigurationDataPlaneGroup) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfigurationDataPlaneGroup) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "provider", "region", "autoscale", "cloud_gateway_network_id", "state", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil

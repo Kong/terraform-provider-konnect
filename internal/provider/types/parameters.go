@@ -7,9 +7,9 @@ import (
 )
 
 type Parameters struct {
-	Description types.String `tfsdk:"description"`
-	In          types.String `tfsdk:"in"`
-	Name        types.String `tfsdk:"name"`
-	Required    types.Bool   `tfsdk:"required"`
-	Schema      *Schema      `tfsdk:"schema"`
+	Description types.String      `tfsdk:"description"`
+	In          types.String      `tfsdk:"in"`
+	Name        types.String      `tfsdk:"name"`
+	Required    types.Bool        `tfsdk:"required"`
+	Schema      *BrokerHostFormat `tfsdk:"schema"`
 }

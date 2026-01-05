@@ -231,7 +231,7 @@ func (t TLSMetadataHeadersPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TLSMetadataHeadersPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil

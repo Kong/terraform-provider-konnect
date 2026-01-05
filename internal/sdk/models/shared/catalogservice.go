@@ -37,7 +37,7 @@ func (c CatalogService) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CatalogService) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "name", "display_name", "custom_fields", "labels", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil

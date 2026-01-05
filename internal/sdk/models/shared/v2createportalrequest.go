@@ -40,7 +40,7 @@ func (v V2CreatePortalRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (v *V2CreatePortalRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
 		return err
 	}
 	return nil

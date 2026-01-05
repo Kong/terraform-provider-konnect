@@ -480,7 +480,7 @@ func (a AiSanitizerPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSanitizerPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

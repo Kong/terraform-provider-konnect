@@ -30,7 +30,7 @@ func (c CreateAPIDocumentRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateAPIDocumentRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"content"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil

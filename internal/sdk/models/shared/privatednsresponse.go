@@ -18,9 +18,9 @@ const (
 
 // PrivateDNSResponse - Response format for creating a Private DNS.
 type PrivateDNSResponse struct {
-	AwsPrivateHostedZoneResponse  *AwsPrivateHostedZoneResponse  `queryParam:"inline,name=PrivateDnsResponse"`
-	AwsPrivateDNSResolverResponse *AwsPrivateDNSResolverResponse `queryParam:"inline,name=PrivateDnsResponse"`
-	GcpPrivateHostedZoneResponse  *GcpPrivateHostedZoneResponse  `queryParam:"inline,name=PrivateDnsResponse"`
+	AwsPrivateHostedZoneResponse  *AwsPrivateHostedZoneResponse  `queryParam:"inline,name=PrivateDnsResponse" union:"member"`
+	AwsPrivateDNSResolverResponse *AwsPrivateDNSResolverResponse `queryParam:"inline,name=PrivateDnsResponse" union:"member"`
+	GcpPrivateHostedZoneResponse  *GcpPrivateHostedZoneResponse  `queryParam:"inline,name=PrivateDnsResponse" union:"member"`
 
 	Type PrivateDNSResponseType
 }
@@ -86,7 +86,7 @@ func (u *PrivateDNSResponse) UnmarshalJSON(data []byte) error {
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for PrivateDNSResponse", string(data))
 	}

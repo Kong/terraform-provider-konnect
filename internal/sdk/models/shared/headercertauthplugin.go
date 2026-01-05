@@ -232,7 +232,7 @@ func (h HeaderCertAuthPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (h *HeaderCertAuthPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &h, "", false, []string{"ca_certificates", "certificate_header_format", "certificate_header_name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -452,7 +452,7 @@ func (h HeaderCertAuthPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (h *HeaderCertAuthPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &h, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
 		return err
 	}
 	return nil

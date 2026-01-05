@@ -68,9 +68,6 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 		Attributes: map[string]schema.Attribute{
 			"aws_resource_endpoint_gateway": schema.SingleNestedAttribute{
 				Optional: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-				},
 				Attributes: map[string]schema.Attribute{
 					"dns_config": schema.ListNestedAttribute{
 						Optional: true,
@@ -115,16 +112,10 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 					},
 					"transit_gateway_attachment_config": schema.SingleNestedAttribute{
 						Required: true,
-						PlanModifiers: []planmodifier.Object{
-							objectplanmodifier.RequiresReplaceIfConfigured(),
-						},
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
-								Required: true,
-								PlanModifiers: []planmodifier.String{
-									stringplanmodifier.RequiresReplaceIfConfigured(),
-								},
-								Description: `must be "aws-resource-endpoint-attachment"; Requires replacement if changed.`,
+								Required:    true,
+								Description: `must be "aws-resource-endpoint-attachment"`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
 										"aws-resource-endpoint-attachment",
@@ -140,37 +131,24 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 							},
 							"resource_config": schema.ListNestedAttribute{
 								Optional: true,
-								PlanModifiers: []planmodifier.List{
-									listplanmodifier.RequiresReplaceIfConfigured(),
-								},
 								NestedObject: schema.NestedAttributeObject{
-									PlanModifiers: []planmodifier.Object{
-										objectplanmodifier.RequiresReplaceIfConfigured(),
-									},
 									Attributes: map[string]schema.Attribute{
 										"domain_name": schema.StringAttribute{
-											Required: true,
-											PlanModifiers: []planmodifier.String{
-												stringplanmodifier.RequiresReplaceIfConfigured(),
-											},
-											Description: `Domain Name to uniquely identify a resource configuration. Requires replacement if changed.`,
+											Required:    true,
+											Description: `Domain Name to uniquely identify a resource configuration.`,
 										},
 										"resource_config_id": schema.StringAttribute{
-											Required: true,
-											PlanModifiers: []planmodifier.String{
-												stringplanmodifier.RequiresReplaceIfConfigured(),
-											},
-											Description: `Resource Config ID to uniquely identify a resource configuration. Requires replacement if changed.`,
+											Required:    true,
+											Description: `Resource Config ID to uniquely identify a resource configuration.`,
 										},
 									},
 								},
-								Description: `List of unique resource config mapping for aws resource endpoint. Requires replacement if changed.`,
+								Description: `List of unique resource config mapping for aws resource endpoint.`,
 							},
 						},
-						Description: `Requires replacement if changed.`,
 					},
 				},
-				Description: `Requires replacement if changed.`,
+				Description: `Request schema for updating AWS Resource Endpoint.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway_response"),
@@ -245,7 +223,8 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 							`- ` + "`" + `pending-user-action` + "`" + ` The attachment request is awaiting user action in customer VPC.` + "\n" +
 							`- ` + "`" + `ready` + "`" + ` - The transit gateway attachment is fully operational and can route traffic as configured.` + "\n" +
 							`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted and is no longer accepting new traffic.` + "\n" +
-							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.`,
+							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.` + "\n" +
+							`- ` + "`" + `error` + "`" + ` - The attachment is in an error state.`,
 					},
 					"state_metadata": schema.SingleNestedAttribute{
 						Computed: true,
@@ -315,19 +294,12 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 			},
 			"aws_transit_gateway": schema.SingleNestedAttribute{
 				Optional: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-				},
 				Attributes: map[string]schema.Attribute{
 					"cidr_blocks": schema.ListAttribute{
-						Required: true,
-						PlanModifiers: []planmodifier.List{
-							listplanmodifier.RequiresReplaceIfConfigured(),
-						},
+						Required:    true,
 						ElementType: types.StringType,
 						MarkdownDescription: `CIDR blocks for constructing a route table for the transit gateway, when attaching to the owning` + "\n" +
-							`network.` + "\n" +
-							`Requires replacement if changed.`,
+							`network.`,
 					},
 					"dns_config": schema.ListNestedAttribute{
 						Optional: true,
@@ -406,7 +378,7 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 						Description: `Requires replacement if changed.`,
 					},
 				},
-				Description: `Requires replacement if changed.`,
+				Description: `Request schema for updating AWS Transit Gateway`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway"),
@@ -487,7 +459,8 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 							`- ` + "`" + `pending-user-action` + "`" + ` The attachment request is awaiting user action in customer VPC.` + "\n" +
 							`- ` + "`" + `ready` + "`" + ` - The transit gateway attachment is fully operational and can route traffic as configured.` + "\n" +
 							`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted and is no longer accepting new traffic.` + "\n" +
-							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.`,
+							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.` + "\n" +
+							`- ` + "`" + `error` + "`" + ` - The attachment is in an error state.`,
 					},
 					"state_metadata": schema.SingleNestedAttribute{
 						Computed: true,
@@ -712,7 +685,8 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 							`- ` + "`" + `pending-user-action` + "`" + ` The attachment request is awaiting user action in customer VPC.` + "\n" +
 							`- ` + "`" + `ready` + "`" + ` - The transit gateway attachment is fully operational and can route traffic as configured.` + "\n" +
 							`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted and is no longer accepting new traffic.` + "\n" +
-							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.`,
+							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.` + "\n" +
+							`- ` + "`" + `error` + "`" + ` - The attachment is in an error state.`,
 					},
 					"state_metadata": schema.SingleNestedAttribute{
 						Computed: true,
@@ -929,7 +903,8 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 							`- ` + "`" + `pending-user-action` + "`" + ` The attachment request is awaiting user action in customer VPC.` + "\n" +
 							`- ` + "`" + `ready` + "`" + ` - The transit gateway attachment is fully operational and can route traffic as configured.` + "\n" +
 							`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted and is no longer accepting new traffic.` + "\n" +
-							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.`,
+							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.` + "\n" +
+							`- ` + "`" + `error` + "`" + ` - The attachment is in an error state.`,
 					},
 					"state_metadata": schema.SingleNestedAttribute{
 						Computed: true,
@@ -1147,7 +1122,8 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 							`- ` + "`" + `pending-user-action` + "`" + ` The attachment request is awaiting user action in customer VPC.` + "\n" +
 							`- ` + "`" + `ready` + "`" + ` - The transit gateway attachment is fully operational and can route traffic as configured.` + "\n" +
 							`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted and is no longer accepting new traffic.` + "\n" +
-							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.`,
+							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.` + "\n" +
+							`- ` + "`" + `error` + "`" + ` - The attachment is in an error state.`,
 					},
 					"state_metadata": schema.SingleNestedAttribute{
 						Computed: true,
@@ -1371,7 +1347,43 @@ func (r *CloudGatewayTransitGatewayResource) Update(ctx context.Context, req res
 		return
 	}
 
-	// Not Implemented; all attributes marked as RequiresReplace
+	request, requestDiags := data.ToOperationsUpdateTransitGatewayRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res, err := r.client.CloudGateways.UpdateTransitGateway(ctx, *request)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
+		return
+	}
+	if res == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		return
+	}
+	if !(res.PatchTransitGatewayResponse != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromSharedPatchTransitGatewayResponse(ctx, res.PatchTransitGatewayResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

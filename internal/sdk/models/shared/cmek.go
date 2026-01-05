@@ -26,7 +26,7 @@ func (c Cmek) MarshalJSON() ([]byte, error) {
 }
 
 func (c *Cmek) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"key_arn", "name", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil

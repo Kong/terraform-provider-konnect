@@ -42,7 +42,7 @@ func (p PortalPageResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PortalPageResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"id", "slug", "title", "content", "visibility", "status", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil

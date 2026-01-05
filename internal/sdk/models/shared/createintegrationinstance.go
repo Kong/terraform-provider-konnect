@@ -27,7 +27,7 @@ func (c CreateIntegrationInstance) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateIntegrationInstance) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"integration_name", "name", "display_name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil

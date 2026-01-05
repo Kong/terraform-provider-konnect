@@ -796,7 +796,7 @@ func (a AiLlmAsJudgePluginModel) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiLlmAsJudgePluginModel) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"provider"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -955,7 +955,7 @@ func (a AiLlmAsJudgePluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiLlmAsJudgePluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"llm"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1168,7 +1168,7 @@ func (a AiLlmAsJudgePlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiLlmAsJudgePlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

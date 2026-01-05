@@ -37,7 +37,7 @@ func (c ConfigurationManifest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfigurationManifest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "version", "dataplane_group_config", "dataplane_groups", "entity_version", "created_at", "updated_at", "control_plane_id", "control_plane_geo"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil

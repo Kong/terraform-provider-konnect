@@ -20,7 +20,7 @@ func (p PutCmekRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PutCmekRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"cmekId", "ReplaceCMEK"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil

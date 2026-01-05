@@ -20,7 +20,7 @@ func (t TransitGatewayDNSConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransitGatewayDNSConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"remote_dns_server_ip_addresses", "domain_proxy_list"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil

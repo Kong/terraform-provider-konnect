@@ -879,7 +879,7 @@ func (z ZipkinPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (z *ZipkinPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &z, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &z, "", false, nil); err != nil {
 		return err
 	}
 	return nil
