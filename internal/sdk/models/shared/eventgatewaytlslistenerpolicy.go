@@ -18,13 +18,13 @@ type EventGatewayTLSListenerPolicy struct {
 	// A human-readable description of the policy.
 	Description *string `json:"description,omitempty"`
 	// Whether the policy is enabled.
-	Enabled *bool                               `default:"true" json:"enabled"`
-	Config  EventGatewayTLSListenerPolicyConfig `json:"config"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels map[string]*string                  `json:"labels,omitempty"`
+	Config EventGatewayTLSListenerPolicyConfig `json:"config"`
 }
 
 func (e EventGatewayTLSListenerPolicy) MarshalJSON() ([]byte, error) {
@@ -63,16 +63,16 @@ func (e *EventGatewayTLSListenerPolicy) GetEnabled() *bool {
 	return e.Enabled
 }
 
-func (e *EventGatewayTLSListenerPolicy) GetConfig() EventGatewayTLSListenerPolicyConfig {
-	if e == nil {
-		return EventGatewayTLSListenerPolicyConfig{}
-	}
-	return e.Config
-}
-
 func (e *EventGatewayTLSListenerPolicy) GetLabels() map[string]*string {
 	if e == nil {
 		return nil
 	}
 	return e.Labels
+}
+
+func (e *EventGatewayTLSListenerPolicy) GetConfig() EventGatewayTLSListenerPolicyConfig {
+	if e == nil {
+		return EventGatewayTLSListenerPolicyConfig{}
+	}
+	return e.Config
 }

@@ -16,15 +16,15 @@ type EventGatewayProduceSchemaValidationPolicy struct {
 	Description *string `json:"description,omitempty"`
 	// Whether the policy is enabled.
 	Enabled *bool `default:"true" json:"enabled"`
-	// A string containing the boolean expression that determines whether the policy is applied.
-	Condition *string `json:"condition,omitempty"`
-	// The configuration of the produce schema validation policy.
-	Config EventGatewayProduceSchemaValidationPolicyConfig `json:"config"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
+	// The configuration of the produce schema validation policy.
+	Config EventGatewayProduceSchemaValidationPolicyConfig `json:"config"`
+	// A string containing the boolean expression that determines whether the policy is applied.
+	Condition *string `default:"null" json:"condition"`
 }
 
 func (e EventGatewayProduceSchemaValidationPolicy) MarshalJSON() ([]byte, error) {
@@ -63,11 +63,11 @@ func (e *EventGatewayProduceSchemaValidationPolicy) GetEnabled() *bool {
 	return e.Enabled
 }
 
-func (e *EventGatewayProduceSchemaValidationPolicy) GetCondition() *string {
+func (e *EventGatewayProduceSchemaValidationPolicy) GetLabels() map[string]*string {
 	if e == nil {
 		return nil
 	}
-	return e.Condition
+	return e.Labels
 }
 
 func (e *EventGatewayProduceSchemaValidationPolicy) GetConfig() EventGatewayProduceSchemaValidationPolicyConfig {
@@ -85,9 +85,9 @@ func (e *EventGatewayProduceSchemaValidationPolicy) GetConfigJSON() *EventGatewa
 	return e.GetConfig().EventGatewayProduceSchemaValidationPolicyJSONConfig
 }
 
-func (e *EventGatewayProduceSchemaValidationPolicy) GetLabels() map[string]*string {
+func (e *EventGatewayProduceSchemaValidationPolicy) GetCondition() *string {
 	if e == nil {
 		return nil
 	}
-	return e.Labels
+	return e.Condition
 }

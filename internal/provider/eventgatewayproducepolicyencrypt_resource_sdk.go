@@ -16,10 +16,12 @@ func (r *EventGatewayProducePolicyEncryptResourceModel) RefreshFromSharedEventGa
 
 	if resp != nil {
 		r.Condition = types.StringPointerValue(resp.Condition)
-		configPriorData := r.Config
-		r.Config.EncryptionKey = configPriorData.EncryptionKey
-		r.Config.FailureMode = configPriorData.FailureMode
-		r.Config.PartOfRecord = configPriorData.PartOfRecord
+		if resp.Config != nil {
+			configPriorData := r.Config
+			r.Config.EncryptionKey = configPriorData.EncryptionKey
+			r.Config.FailureMode = configPriorData.FailureMode
+			r.Config.PartOfRecord = configPriorData.PartOfRecord
+		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -155,11 +157,15 @@ func (r *EventGatewayProducePolicyEncryptResourceModel) ToSharedEventGatewayEncr
 	} else {
 		enabled = nil
 	}
-	condition := new(string)
-	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
-		*condition = r.Condition.ValueString()
-	} else {
-		condition = nil
+	labels := make(map[string]*string)
+	for labelsKey := range r.Labels {
+		labelsInst := new(string)
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
+		} else {
+			labelsInst = nil
+		}
+		labels[labelsKey] = labelsInst
 	}
 	failureMode := shared.EncryptionFailureMode(r.Config.FailureMode.ValueString())
 	partOfRecord := make([]shared.EncryptionRecordPart, 0, len(r.Config.PartOfRecord))
@@ -226,23 +232,19 @@ func (r *EventGatewayProducePolicyEncryptResourceModel) ToSharedEventGatewayEncr
 		PartOfRecord:  partOfRecord,
 		EncryptionKey: encryptionKey,
 	}
-	labels := make(map[string]*string)
-	for labelsKey := range r.Labels {
-		labelsInst := new(string)
-		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
-			*labelsInst = r.Labels[labelsKey].ValueString()
-		} else {
-			labelsInst = nil
-		}
-		labels[labelsKey] = labelsInst
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
 	}
 	out := shared.EventGatewayEncryptPolicy{
 		Name:        name,
 		Description: description,
 		Enabled:     enabled,
-		Condition:   condition,
-		Config:      config,
 		Labels:      labels,
+		Config:      config,
+		Condition:   condition,
 	}
 
 	return &out, diags

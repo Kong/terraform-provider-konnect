@@ -18,13 +18,13 @@ type EventGatewayTLSListenerSensitiveDataAwarePolicy struct {
 	// A human-readable description of the policy.
 	Description *string `json:"description,omitempty"`
 	// Whether the policy is enabled.
-	Enabled *bool                                                 `default:"true" json:"enabled"`
-	Config  EventGatewayTLSListenerPolicyConfigSensitiveDataAware `json:"config"`
+	Enabled *bool `default:"true" json:"enabled"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels map[string]*string                                    `json:"labels,omitempty"`
+	Config EventGatewayTLSListenerPolicyConfigSensitiveDataAware `json:"config"`
 }
 
 func (e EventGatewayTLSListenerSensitiveDataAwarePolicy) MarshalJSON() ([]byte, error) {
@@ -63,16 +63,16 @@ func (e *EventGatewayTLSListenerSensitiveDataAwarePolicy) GetEnabled() *bool {
 	return e.Enabled
 }
 
-func (e *EventGatewayTLSListenerSensitiveDataAwarePolicy) GetConfig() EventGatewayTLSListenerPolicyConfigSensitiveDataAware {
-	if e == nil {
-		return EventGatewayTLSListenerPolicyConfigSensitiveDataAware{}
-	}
-	return e.Config
-}
-
 func (e *EventGatewayTLSListenerSensitiveDataAwarePolicy) GetLabels() map[string]*string {
 	if e == nil {
 		return nil
 	}
 	return e.Labels
+}
+
+func (e *EventGatewayTLSListenerSensitiveDataAwarePolicy) GetConfig() EventGatewayTLSListenerPolicyConfigSensitiveDataAware {
+	if e == nil {
+		return EventGatewayTLSListenerPolicyConfigSensitiveDataAware{}
+	}
+	return e.Config
 }

@@ -14,7 +14,7 @@ EventGatewayProducePolicyEncrypt Resource
 
 ```terraform
 resource "konnect_event_gateway_produce_policy_encrypt" "my_eventgatewayproducepolicyencrypt" {
-  condition = "context.topic.name.endsWith('my_suffix')"
+  condition = "context.topic.name.endsWith(\"my_suffix\") && records.headers[\"x-flag\"] == \"a-value\""
   config = {
     encryption_key = {
       static = {

@@ -21,10 +21,6 @@ type EventGatewayPolicy struct {
 	Description *string `json:"description,omitempty"`
 	// Whether the policy is enabled.
 	Enabled *bool `default:"true" json:"enabled"`
-	// A string containing the boolean expression that determines whether the policy is applied.
-	Condition *string `json:"condition,omitempty"`
-	// The configuration of the policy.
-	Config EventGatewayPolicyConfig `json:"config"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -32,12 +28,16 @@ type EventGatewayPolicy struct {
 	Labels map[string]*string `json:"labels,omitempty"`
 	// The unique identifier of the policy.
 	ID string `json:"id"`
+	// The configuration of the policy.
+	Config *EventGatewayPolicyConfig `json:"config,omitempty"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// The unique identifier of the parent policy, if any.
 	ParentPolicyID *string `default:"null" json:"parent_policy_id"`
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
+	// A string containing the boolean expression that determines whether the policy is applied.
+	Condition *string `default:"null" json:"condition"`
 }
 
 func (e EventGatewayPolicy) MarshalJSON() ([]byte, error) {
@@ -79,20 +79,6 @@ func (e *EventGatewayPolicy) GetEnabled() *bool {
 	return e.Enabled
 }
 
-func (e *EventGatewayPolicy) GetCondition() *string {
-	if e == nil {
-		return nil
-	}
-	return e.Condition
-}
-
-func (e *EventGatewayPolicy) GetConfig() EventGatewayPolicyConfig {
-	if e == nil {
-		return EventGatewayPolicyConfig{}
-	}
-	return e.Config
-}
-
 func (e *EventGatewayPolicy) GetLabels() map[string]*string {
 	if e == nil {
 		return nil
@@ -105,6 +91,13 @@ func (e *EventGatewayPolicy) GetID() string {
 		return ""
 	}
 	return e.ID
+}
+
+func (e *EventGatewayPolicy) GetConfig() *EventGatewayPolicyConfig {
+	if e == nil {
+		return nil
+	}
+	return e.Config
 }
 
 func (e *EventGatewayPolicy) GetCreatedAt() time.Time {
@@ -126,4 +119,11 @@ func (e *EventGatewayPolicy) GetUpdatedAt() time.Time {
 		return time.Time{}
 	}
 	return e.UpdatedAt
+}
+
+func (e *EventGatewayPolicy) GetCondition() *string {
+	if e == nil {
+		return nil
+	}
+	return e.Condition
 }

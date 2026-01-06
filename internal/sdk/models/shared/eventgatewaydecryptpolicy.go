@@ -6,7 +6,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-// EventGatewayDecryptPolicy - Decrypts portions of Kafka records using AES_128_GCM. Keys are therefore 128 bits long.
+// EventGatewayDecryptPolicy - Decrypts Kafka records or keys using AES_256_GCM. Keys are therefore 256 bits long.
 type EventGatewayDecryptPolicy struct {
 	// The type name of the policy.
 	type_ string `const:"decrypt" json:"type"`
@@ -16,15 +16,15 @@ type EventGatewayDecryptPolicy struct {
 	Description *string `json:"description,omitempty"`
 	// Whether the policy is enabled.
 	Enabled *bool `default:"true" json:"enabled"`
-	// A string containing the boolean expression that determines whether the policy is applied.
-	Condition *string `json:"condition,omitempty"`
-	// The configuration of the decrypt policy.
-	Config EventGatewayDecryptPolicyConfig `json:"config"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
+	// The configuration of the decrypt policy.
+	Config EventGatewayDecryptPolicyConfig `json:"config"`
+	// A string containing the boolean expression that determines whether the policy is applied.
+	Condition *string `default:"null" json:"condition"`
 }
 
 func (e EventGatewayDecryptPolicy) MarshalJSON() ([]byte, error) {
@@ -63,11 +63,11 @@ func (e *EventGatewayDecryptPolicy) GetEnabled() *bool {
 	return e.Enabled
 }
 
-func (e *EventGatewayDecryptPolicy) GetCondition() *string {
+func (e *EventGatewayDecryptPolicy) GetLabels() map[string]*string {
 	if e == nil {
 		return nil
 	}
-	return e.Condition
+	return e.Labels
 }
 
 func (e *EventGatewayDecryptPolicy) GetConfig() EventGatewayDecryptPolicyConfig {
@@ -77,9 +77,9 @@ func (e *EventGatewayDecryptPolicy) GetConfig() EventGatewayDecryptPolicyConfig 
 	return e.Config
 }
 
-func (e *EventGatewayDecryptPolicy) GetLabels() map[string]*string {
+func (e *EventGatewayDecryptPolicy) GetCondition() *string {
 	if e == nil {
 		return nil
 	}
-	return e.Labels
+	return e.Condition
 }

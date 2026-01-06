@@ -11,7 +11,7 @@ import (
 type Config struct {
 }
 
-// EventGatewayListenerPolicy - A listener policy associated with an Event Gateway.
+// EventGatewayListenerPolicy - A policy associated with an Event Gateway.
 type EventGatewayListenerPolicy struct {
 	// The type name of the policy.
 	Type string `json:"type"`
@@ -21,8 +21,6 @@ type EventGatewayListenerPolicy struct {
 	Description *string `json:"description,omitempty"`
 	// Whether the policy is enabled.
 	Enabled *bool `default:"true" json:"enabled"`
-	// The configuration of the policy.
-	Config Config `json:"config"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -30,6 +28,8 @@ type EventGatewayListenerPolicy struct {
 	Labels map[string]*string `json:"labels,omitempty"`
 	// The unique identifier of the policy.
 	ID string `json:"id"`
+	// The configuration of the policy.
+	Config *Config `json:"config,omitempty"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// The unique identifier of the parent policy, if any.
@@ -77,13 +77,6 @@ func (e *EventGatewayListenerPolicy) GetEnabled() *bool {
 	return e.Enabled
 }
 
-func (e *EventGatewayListenerPolicy) GetConfig() Config {
-	if e == nil {
-		return Config{}
-	}
-	return e.Config
-}
-
 func (e *EventGatewayListenerPolicy) GetLabels() map[string]*string {
 	if e == nil {
 		return nil
@@ -96,6 +89,13 @@ func (e *EventGatewayListenerPolicy) GetID() string {
 		return ""
 	}
 	return e.ID
+}
+
+func (e *EventGatewayListenerPolicy) GetConfig() *Config {
+	if e == nil {
+		return nil
+	}
+	return e.Config
 }
 
 func (e *EventGatewayListenerPolicy) GetCreatedAt() time.Time {

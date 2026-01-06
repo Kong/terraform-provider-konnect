@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
@@ -16,6 +17,11 @@ func (r *EventGatewayConsumePolicySkipRecordResourceModel) RefreshFromSharedEven
 
 	if resp != nil {
 		r.Condition = types.StringPointerValue(resp.Condition)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.Metadata{}
+		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -151,12 +157,6 @@ func (r *EventGatewayConsumePolicySkipRecordResourceModel) ToSharedEventGatewayS
 	} else {
 		enabled = nil
 	}
-	condition := new(string)
-	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
-		*condition = r.Condition.ValueString()
-	} else {
-		condition = nil
-	}
 	labels := make(map[string]*string)
 	for labelsKey := range r.Labels {
 		labelsInst := new(string)
@@ -167,12 +167,18 @@ func (r *EventGatewayConsumePolicySkipRecordResourceModel) ToSharedEventGatewayS
 		}
 		labels[labelsKey] = labelsInst
 	}
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	out := shared.EventGatewaySkipRecordPolicy{
 		Name:        name,
 		Description: description,
 		Enabled:     enabled,
-		Condition:   condition,
 		Labels:      labels,
+		Condition:   condition,
 	}
 
 	return &out, diags
@@ -199,12 +205,6 @@ func (r *EventGatewayConsumePolicySkipRecordResourceModel) ToSharedEventGatewayS
 	} else {
 		enabled = nil
 	}
-	condition := new(string)
-	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
-		*condition = r.Condition.ValueString()
-	} else {
-		condition = nil
-	}
 	labels := make(map[string]*string)
 	for labelsKey := range r.Labels {
 		labelsInst := new(string)
@@ -214,6 +214,12 @@ func (r *EventGatewayConsumePolicySkipRecordResourceModel) ToSharedEventGatewayS
 			labelsInst = nil
 		}
 		labels[labelsKey] = labelsInst
+	}
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
 	}
 	parentPolicyID := new(string)
 	if !r.ParentPolicyID.IsUnknown() && !r.ParentPolicyID.IsNull() {
@@ -225,8 +231,8 @@ func (r *EventGatewayConsumePolicySkipRecordResourceModel) ToSharedEventGatewayS
 		Name:           name,
 		Description:    description,
 		Enabled:        enabled,
-		Condition:      condition,
 		Labels:         labels,
+		Condition:      condition,
 		ParentPolicyID: parentPolicyID,
 	}
 

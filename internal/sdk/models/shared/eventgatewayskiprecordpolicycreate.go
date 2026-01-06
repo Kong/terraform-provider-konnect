@@ -8,6 +8,7 @@ import (
 
 // EventGatewaySkipRecordPolicyCreate - A policy that skips processing of a record.
 type EventGatewaySkipRecordPolicyCreate struct {
+	// The type name of the policy.
 	type_ string `const:"skip_record" json:"type"`
 	// A unique user-defined name of the policy.
 	Name *string `default:"null" json:"name"`
@@ -15,17 +16,17 @@ type EventGatewaySkipRecordPolicyCreate struct {
 	Description *string `json:"description,omitempty"`
 	// Whether the policy is enabled.
 	Enabled *bool `default:"true" json:"enabled"`
-	// A string containing the boolean expression that determines whether the policy is applied.
-	//
-	// When the policy is applied as a child policy of schema_validation, the expression can also reference
-	// `record.value` fields.
-	//
-	Condition *string `json:"condition,omitempty"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
+	// A string containing the boolean expression that determines whether the policy is applied.
+	//
+	// When the policy is applied as a child policy of schema_validation, the expression can also reference
+	// `record.value` fields.
+	//
+	Condition *string `default:"null" json:"condition"`
 	// The unique identifier of the parent schema validation policy, if any.
 	ParentPolicyID *string `json:"parent_policy_id,omitempty"`
 }
@@ -66,18 +67,18 @@ func (e *EventGatewaySkipRecordPolicyCreate) GetEnabled() *bool {
 	return e.Enabled
 }
 
-func (e *EventGatewaySkipRecordPolicyCreate) GetCondition() *string {
-	if e == nil {
-		return nil
-	}
-	return e.Condition
-}
-
 func (e *EventGatewaySkipRecordPolicyCreate) GetLabels() map[string]*string {
 	if e == nil {
 		return nil
 	}
 	return e.Labels
+}
+
+func (e *EventGatewaySkipRecordPolicyCreate) GetCondition() *string {
+	if e == nil {
+		return nil
+	}
+	return e.Condition
 }
 
 func (e *EventGatewaySkipRecordPolicyCreate) GetParentPolicyID() *string {

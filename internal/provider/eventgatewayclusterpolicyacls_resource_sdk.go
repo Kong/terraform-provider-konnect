@@ -16,8 +16,10 @@ func (r *EventGatewayClusterPolicyAclsResourceModel) RefreshFromSharedEventGatew
 
 	if resp != nil {
 		r.Condition = types.StringPointerValue(resp.Condition)
-		configPriorData := r.Config
-		r.Config.Rules = configPriorData.Rules
+		if resp.Config != nil {
+			configPriorData := r.Config
+			r.Config.Rules = configPriorData.Rules
+		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -153,11 +155,15 @@ func (r *EventGatewayClusterPolicyAclsResourceModel) ToSharedEventGatewayACLsPol
 	} else {
 		enabled = nil
 	}
-	condition := new(string)
-	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
-		*condition = r.Condition.ValueString()
-	} else {
-		condition = nil
+	labels := make(map[string]*string)
+	for labelsKey := range r.Labels {
+		labelsInst := new(string)
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
+		} else {
+			labelsInst = nil
+		}
+		labels[labelsKey] = labelsInst
 	}
 	rules := make([]shared.EventGatewayACLRule, 0, len(r.Config.Rules))
 	for rulesIndex := range r.Config.Rules {
@@ -189,23 +195,19 @@ func (r *EventGatewayClusterPolicyAclsResourceModel) ToSharedEventGatewayACLsPol
 	config := shared.EventGatewayACLPolicyConfig{
 		Rules: rules,
 	}
-	labels := make(map[string]*string)
-	for labelsKey := range r.Labels {
-		labelsInst := new(string)
-		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
-			*labelsInst = r.Labels[labelsKey].ValueString()
-		} else {
-			labelsInst = nil
-		}
-		labels[labelsKey] = labelsInst
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
 	}
 	out := shared.EventGatewayACLsPolicy{
 		Name:        name,
 		Description: description,
 		Enabled:     enabled,
-		Condition:   condition,
-		Config:      config,
 		Labels:      labels,
+		Config:      config,
+		Condition:   condition,
 	}
 
 	return &out, diags

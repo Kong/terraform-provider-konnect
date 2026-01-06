@@ -16,11 +16,13 @@ func (r *EventGatewayConsumePolicySchemaValidationResourceModel) RefreshFromShar
 
 	if resp != nil {
 		r.Condition = types.StringPointerValue(resp.Condition)
-		configPriorData := r.Config
-		r.Config.KeyValidationAction = configPriorData.KeyValidationAction
-		r.Config.SchemaRegistry = configPriorData.SchemaRegistry
-		r.Config.Type = configPriorData.Type
-		r.Config.ValueValidationAction = configPriorData.ValueValidationAction
+		if resp.Config != nil {
+			configPriorData := r.Config
+			r.Config.KeyValidationAction = configPriorData.KeyValidationAction
+			r.Config.SchemaRegistry = configPriorData.SchemaRegistry
+			r.Config.Type = configPriorData.Type
+			r.Config.ValueValidationAction = configPriorData.ValueValidationAction
+		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -156,11 +158,15 @@ func (r *EventGatewayConsumePolicySchemaValidationResourceModel) ToSharedEventGa
 	} else {
 		enabled = nil
 	}
-	condition := new(string)
-	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
-		*condition = r.Condition.ValueString()
-	} else {
-		condition = nil
+	labels := make(map[string]*string)
+	for labelsKey := range r.Labels {
+		labelsInst := new(string)
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
+		} else {
+			labelsInst = nil
+		}
+		labels[labelsKey] = labelsInst
 	}
 	typeVar := shared.SchemaValidationType(r.Config.Type.ValueString())
 	var schemaRegistry *shared.SchemaRegistryReference
@@ -212,23 +218,19 @@ func (r *EventGatewayConsumePolicySchemaValidationResourceModel) ToSharedEventGa
 		KeyValidationAction:   keyValidationAction,
 		ValueValidationAction: valueValidationAction,
 	}
-	labels := make(map[string]*string)
-	for labelsKey := range r.Labels {
-		labelsInst := new(string)
-		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
-			*labelsInst = r.Labels[labelsKey].ValueString()
-		} else {
-			labelsInst = nil
-		}
-		labels[labelsKey] = labelsInst
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
 	}
 	out := shared.EventGatewayConsumeSchemaValidationPolicy{
 		Name:        name,
 		Description: description,
 		Enabled:     enabled,
-		Condition:   condition,
-		Config:      config,
 		Labels:      labels,
+		Config:      config,
+		Condition:   condition,
 	}
 
 	return &out, diags

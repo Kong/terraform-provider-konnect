@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
@@ -15,6 +16,9 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResourceModel) Refresh
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if resp.Config != nil {
+			r.Config = tfTypes.ForwardToVirtualClusterPolicyConfig{}
+		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -150,6 +154,16 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResourceModel) ToShare
 	} else {
 		enabled = nil
 	}
+	labels := make(map[string]*string)
+	for labelsKey := range r.Labels {
+		labelsInst := new(string)
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
+		} else {
+			labelsInst = nil
+		}
+		labels[labelsKey] = labelsInst
+	}
 	var config shared.ForwardToVirtualClusterPolicyConfig
 	var forwardToClusterBySNIConfig *shared.ForwardToClusterBySNIConfig
 	if r.Config.Sni != nil {
@@ -246,22 +260,12 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResourceModel) ToShare
 			ForwardToClusterByPortMappingConfig: forwardToClusterByPortMappingConfig,
 		}
 	}
-	labels := make(map[string]*string)
-	for labelsKey := range r.Labels {
-		labelsInst := new(string)
-		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
-			*labelsInst = r.Labels[labelsKey].ValueString()
-		} else {
-			labelsInst = nil
-		}
-		labels[labelsKey] = labelsInst
-	}
 	out := shared.ForwardToVirtualClusterPolicy{
 		Name:        name,
 		Description: description,
 		Enabled:     enabled,
-		Config:      config,
 		Labels:      labels,
+		Config:      config,
 	}
 
 	return &out, diags

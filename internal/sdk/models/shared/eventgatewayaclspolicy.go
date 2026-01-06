@@ -16,15 +16,15 @@ type EventGatewayACLsPolicy struct {
 	Description *string `json:"description,omitempty"`
 	// Whether the policy is enabled.
 	Enabled *bool `default:"true" json:"enabled"`
-	// A string containing the boolean expression that determines whether the policy is applied.
-	Condition *string `json:"condition,omitempty"`
-	// Apply ACLs to virtual cluster traffic.
-	Config EventGatewayACLPolicyConfig `json:"config"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
+	// Apply ACLs to virtual cluster traffic.
+	Config EventGatewayACLPolicyConfig `json:"config"`
+	// A string containing the boolean expression that determines whether the policy is applied.
+	Condition *string `default:"null" json:"condition"`
 }
 
 func (e EventGatewayACLsPolicy) MarshalJSON() ([]byte, error) {
@@ -63,11 +63,11 @@ func (e *EventGatewayACLsPolicy) GetEnabled() *bool {
 	return e.Enabled
 }
 
-func (e *EventGatewayACLsPolicy) GetCondition() *string {
+func (e *EventGatewayACLsPolicy) GetLabels() map[string]*string {
 	if e == nil {
 		return nil
 	}
-	return e.Condition
+	return e.Labels
 }
 
 func (e *EventGatewayACLsPolicy) GetConfig() EventGatewayACLPolicyConfig {
@@ -77,9 +77,9 @@ func (e *EventGatewayACLsPolicy) GetConfig() EventGatewayACLPolicyConfig {
 	return e.Config
 }
 
-func (e *EventGatewayACLsPolicy) GetLabels() map[string]*string {
+func (e *EventGatewayACLsPolicy) GetCondition() *string {
 	if e == nil {
 		return nil
 	}
-	return e.Labels
+	return e.Condition
 }

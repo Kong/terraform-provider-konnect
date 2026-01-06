@@ -14,7 +14,7 @@ EventGatewayConsumePolicySchemaValidation Resource
 
 ```terraform
 resource "konnect_event_gateway_consume_policy_schema_validation" "my_eventgatewayconsumepolicyschemavalidation" {
-  condition = "context.topic.name.endsWith('my_suffix')"
+  condition = "context.topic.name.endsWith(\"my_suffix\") && records.headers[\"x-flag\"] == \"a-value\""
   config = {
     key_validation_action = "mark"
     schema_registry = {

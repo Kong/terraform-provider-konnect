@@ -14,7 +14,7 @@ EventGatewayConsumePolicySkipRecord Resource
 
 ```terraform
 resource "konnect_event_gateway_consume_policy_skip_record" "my_eventgatewayconsumepolicyskiprecord" {
-  condition   = "context.topic.name.endsWith('my_suffix')"
+  condition   = "record.value.content.foo.bar == \"a-value\""
   description = "...my_description..."
   enabled     = true
   gateway_id  = "9524ec7d-36d9-465d-a8c5-83a3c9390458"

@@ -16,8 +16,10 @@ func (r *EventGatewayConsumePolicyModifyHeadersResourceModel) RefreshFromSharedE
 
 	if resp != nil {
 		r.Condition = types.StringPointerValue(resp.Condition)
-		configPriorData := r.Config
-		r.Config.Actions = configPriorData.Actions
+		if resp.Config != nil {
+			configPriorData := r.Config
+			r.Config.Actions = configPriorData.Actions
+		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -153,11 +155,15 @@ func (r *EventGatewayConsumePolicyModifyHeadersResourceModel) ToSharedEventGatew
 	} else {
 		enabled = nil
 	}
-	condition := new(string)
-	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
-		*condition = r.Condition.ValueString()
-	} else {
-		condition = nil
+	labels := make(map[string]*string)
+	for labelsKey := range r.Labels {
+		labelsInst := new(string)
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
+		} else {
+			labelsInst = nil
+		}
+		labels[labelsKey] = labelsInst
 	}
 	var actions []shared.EventGatewayModifyHeaderAction
 	if r.Config.Actions != nil {
@@ -194,23 +200,19 @@ func (r *EventGatewayConsumePolicyModifyHeadersResourceModel) ToSharedEventGatew
 	config := shared.EventGatewayModifyHeadersPolicyConfig{
 		Actions: actions,
 	}
-	labels := make(map[string]*string)
-	for labelsKey := range r.Labels {
-		labelsInst := new(string)
-		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
-			*labelsInst = r.Labels[labelsKey].ValueString()
-		} else {
-			labelsInst = nil
-		}
-		labels[labelsKey] = labelsInst
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
 	}
 	out := shared.EventGatewayModifyHeadersPolicy{
 		Name:        name,
 		Description: description,
 		Enabled:     enabled,
-		Condition:   condition,
-		Config:      config,
 		Labels:      labels,
+		Config:      config,
+		Condition:   condition,
 	}
 
 	return &out, diags
@@ -237,11 +239,15 @@ func (r *EventGatewayConsumePolicyModifyHeadersResourceModel) ToSharedEventGatew
 	} else {
 		enabled = nil
 	}
-	condition := new(string)
-	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
-		*condition = r.Condition.ValueString()
-	} else {
-		condition = nil
+	labels := make(map[string]*string)
+	for labelsKey := range r.Labels {
+		labelsInst := new(string)
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
+		} else {
+			labelsInst = nil
+		}
+		labels[labelsKey] = labelsInst
 	}
 	var actions []shared.EventGatewayModifyHeaderAction
 	if r.Config.Actions != nil {
@@ -278,15 +284,11 @@ func (r *EventGatewayConsumePolicyModifyHeadersResourceModel) ToSharedEventGatew
 	config := shared.EventGatewayModifyHeadersPolicyCreateConfig{
 		Actions: actions,
 	}
-	labels := make(map[string]*string)
-	for labelsKey := range r.Labels {
-		labelsInst := new(string)
-		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
-			*labelsInst = r.Labels[labelsKey].ValueString()
-		} else {
-			labelsInst = nil
-		}
-		labels[labelsKey] = labelsInst
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
 	}
 	parentPolicyID := new(string)
 	if !r.ParentPolicyID.IsUnknown() && !r.ParentPolicyID.IsNull() {
@@ -298,9 +300,9 @@ func (r *EventGatewayConsumePolicyModifyHeadersResourceModel) ToSharedEventGatew
 		Name:           name,
 		Description:    description,
 		Enabled:        enabled,
-		Condition:      condition,
-		Config:         config,
 		Labels:         labels,
+		Config:         config,
+		Condition:      condition,
 		ParentPolicyID: parentPolicyID,
 	}
 

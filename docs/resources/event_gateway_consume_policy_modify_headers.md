@@ -14,7 +14,7 @@ EventGatewayConsumePolicyModifyHeaders Resource
 
 ```terraform
 resource "konnect_event_gateway_consume_policy_modify_headers" "my_eventgatewayconsumepolicymodifyheaders" {
-  condition = "context.topic.name.endsWith('my_suffix')"
+  condition = "record.value.content.foo.bar == \"a-value\""
   config = {
     actions = [
       {

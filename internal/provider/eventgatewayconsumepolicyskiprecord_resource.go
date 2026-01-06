@@ -39,7 +39,7 @@ type EventGatewayConsumePolicySkipRecordResource struct {
 // EventGatewayConsumePolicySkipRecordResourceModel describes the resource data model.
 type EventGatewayConsumePolicySkipRecordResourceModel struct {
 	Condition        types.String            `tfsdk:"condition"`
-	Config           tfTypes.Metadata        `tfsdk:"config"`
+	Config           *tfTypes.Metadata       `tfsdk:"config"`
 	CreatedAt        types.String            `tfsdk:"created_at"`
 	Description      types.String            `tfsdk:"description"`
 	Enabled          types.Bool              `tfsdk:"enabled"`
