@@ -83,6 +83,7 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 					"access_token_consumer_claim": types.ListType{
 						ElemType: types.StringType,
 					},
+					"access_token_endpoints_ssl_verify": types.BoolType,
 					"access_token_expiry_claim": types.ListType{
 						ElemType: types.StringType,
 					},
@@ -221,6 +222,7 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 					"channel_token_consumer_claim": types.ListType{
 						ElemType: types.StringType,
 					},
+					"channel_token_endpoints_ssl_verify": types.BoolType,
 					"channel_token_expiry_claim": types.ListType{
 						ElemType: types.StringType,
 					},
@@ -408,12 +410,16 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 							types.StringValue("username"),
 						})),
 						ElementType: types.StringType,
-						Description: `When the plugin tries to apply an access token to a Kong consumer mapping, it tries to find a matching Kong consumer from properties defined using this configuration parameter. The parameter can take an array of alues. Valid values are ` + "`" + `id` + "`" + `, ` + "`" + `username` + "`" + `, and ` + "`" + `custom_id` + "`" + `. Default: ["custom_id","username"]`,
+						Description: `When the plugin tries to apply an access token to a Kong consumer mapping, it tries to find a matching Kong consumer from properties defined using this configuration parameter. The parameter can take an array of values. Valid values are ` + "`" + `id` + "`" + `, ` + "`" + `username` + "`" + `, and ` + "`" + `custom_id` + "`" + `. Default: ["custom_id","username"]`,
 					},
 					"access_token_consumer_claim": schema.ListAttribute{
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `When you set a value for this parameter, the plugin tries to map an arbitrary claim specified with this configuration parameter (for example, ` + "`" + `sub` + "`" + ` or ` + "`" + `username` + "`" + `) in an access token to Kong consumer entity.`,
+					},
+					"access_token_endpoints_ssl_verify": schema.BoolAttribute{
+						Optional:    true,
+						Description: `Whether to verify the TLS certificate if any of ` + "`" + `access_token_introspection_endpoint` + "`" + `, ` + "`" + `access_token_jwks_uri` + "`" + `, or ` + "`" + `access_token_keyset` + "`" + ` is an HTTPS URI.`,
 					},
 					"access_token_expiry_claim": schema.ListAttribute{
 						Computed:    true,
@@ -523,7 +529,7 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 						Optional:    true,
 						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("scope")})),
 						ElementType: types.StringType,
-						Description: `Specify the claim/property in access token introspection results (` + "`" + `JSON` + "`" + `) to be verified against values of ` + "`" + `config.access_token_introspection_scopes_required` + "`" + `. This supports nested claims. For example, with Keycloak you could use ` + "`" + `[ "realm_access", "roles" ]` + "`" + `, hich can be given as ` + "`" + `realm_access,roles` + "`" + ` (form post). If the claim is not found in access token introspection results, and you have specified ` + "`" + `config.access_token_introspection_scopes_required` + "`" + `, the plugin responds with ` + "`" + `403 Forbidden` + "`" + `. Default: ["scope"]`,
+						Description: `Specify the claim/property in access token introspection results (` + "`" + `JSON` + "`" + `) to be verified against values of ` + "`" + `config.access_token_introspection_scopes_required` + "`" + `. This supports nested claims. For example, with Keycloak you could use ` + "`" + `[ "realm_access", "roles" ]` + "`" + `, which can be given as ` + "`" + `realm_access,roles` + "`" + ` (form post). If the claim is not found in access token introspection results, and you have specified ` + "`" + `config.access_token_introspection_scopes_required` + "`" + `, the plugin responds with ` + "`" + `403 Forbidden` + "`" + `. Default: ["scope"]`,
 					},
 					"access_token_introspection_scopes_required": schema.ListAttribute{
 						Optional:    true,
@@ -734,16 +740,19 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 						Description: `If you want to add or subtract (using a negative value) expiry time (in seconds) of the original access token, you can specify a value that is added to the original access token's ` + "`" + `exp` + "`" + ` claim. Default: 0`,
 					},
 					"add_access_token_claims": schema.MapAttribute{
+						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `Add customized claims if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
 					},
 					"add_channel_token_claims": schema.MapAttribute{
+						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `Add customized claims if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
 					},
 					"add_claims": schema.MapAttribute{
+						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `Add customized claims to both tokens if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
@@ -786,6 +795,10 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `When you set a value for this parameter, the plugin tries to map an arbitrary claim specified with this configuration parameter. Kong consumers have an ` + "`" + `id` + "`" + `, a ` + "`" + `username` + "`" + `, and a ` + "`" + `custom_id` + "`" + `. If this parameter is enabled but the mapping fails, such as when there's a non-existent Kong consumer, the plugin responds with ` + "`" + `403 Forbidden` + "`" + `.`,
+					},
+					"channel_token_endpoints_ssl_verify": schema.BoolAttribute{
+						Optional:    true,
+						Description: `Whether to verify the TLS certificate if any of ` + "`" + `channel_token_introspection_endpoint` + "`" + `, ` + "`" + `channel_token_jwks_uri` + "`" + `, or ` + "`" + `channel_token_keyset` + "`" + ` is an HTTPS URI.`,
 					},
 					"channel_token_expiry_claim": schema.ListAttribute{
 						Computed:    true,
@@ -950,7 +963,7 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 								Optional: true,
 							},
 						},
-						Description: `The client certificate that will be used to authenticate Kong if ` + "`" + `access_token_jwks_uri` + "`" + ` is an https uri that requires mTLS Auth.`,
+						Description: `The client certificate that will be used to authenticate Kong if ` + "`" + `channel_token_jwks_uri` + "`" + ` is an https uri that requires mTLS Auth.`,
 					},
 					"channel_token_jwks_uri_client_password": schema.StringAttribute{
 						Optional:    true,
@@ -1133,7 +1146,7 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 					},
 					"realm": schema.StringAttribute{
 						Optional:    true,
-						Description: `When authentication or authorization fails, or there is an unexpected error, the plugin sends an ` + "`" + `WWW-Authenticate` + "`" + ` header with the ` + "`" + `realm` + "`" + ` attribute value.`,
+						Description: `When authentication or authorization fails, or there is an unexpected error, the plugin sends a ` + "`" + `WWW-Authenticate` + "`" + ` header with the ` + "`" + `realm` + "`" + ` attribute value.`,
 					},
 					"remove_access_token_claims": schema.ListAttribute{
 						Computed:    true,
@@ -1150,16 +1163,19 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 						Description: `remove claims. It should be an array, and each element is a claim key string. Default: []`,
 					},
 					"set_access_token_claims": schema.MapAttribute{
+						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `Set customized claims. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
 					},
 					"set_channel_token_claims": schema.MapAttribute{
+						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `Set customized claims. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,
 					},
 					"set_claims": schema.MapAttribute{
+						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `Set customized claims to both tokens. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.`,

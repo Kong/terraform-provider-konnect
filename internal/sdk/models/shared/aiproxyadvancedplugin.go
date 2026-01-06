@@ -83,6 +83,7 @@ type AiProxyAdvancedPluginAlgorithm string
 
 const (
 	AiProxyAdvancedPluginAlgorithmConsistentHashing AiProxyAdvancedPluginAlgorithm = "consistent-hashing"
+	AiProxyAdvancedPluginAlgorithmLeastConnections  AiProxyAdvancedPluginAlgorithm = "least-connections"
 	AiProxyAdvancedPluginAlgorithmLowestLatency     AiProxyAdvancedPluginAlgorithm = "lowest-latency"
 	AiProxyAdvancedPluginAlgorithmLowestUsage       AiProxyAdvancedPluginAlgorithm = "lowest-usage"
 	AiProxyAdvancedPluginAlgorithmPriority          AiProxyAdvancedPluginAlgorithm = "priority"
@@ -100,6 +101,8 @@ func (e *AiProxyAdvancedPluginAlgorithm) UnmarshalJSON(data []byte) error {
 	}
 	switch v {
 	case "consistent-hashing":
+		fallthrough
+	case "least-connections":
 		fallthrough
 	case "lowest-latency":
 		fallthrough
@@ -237,13 +240,17 @@ type Balancer struct {
 	// Which load balancing algorithm to use.
 	Algorithm      *AiProxyAdvancedPluginAlgorithm `default:"round-robin" json:"algorithm"`
 	ConnectTimeout *int64                          `default:"60000" json:"connect_timeout"`
+	// The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches `max_fails`.
+	FailTimeout *int64 `default:"10000" json:"fail_timeout"`
 	// Specifies in which cases an upstream response should be failover to the next target. Each option in the array is equivalent to the function of http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream
 	FailoverCriteria []FailoverCriteria `json:"failover_criteria,omitempty"`
 	// The header to use for consistent-hashing.
 	HashOnHeader *string `default:"X-Kong-LLM-Request-ID" json:"hash_on_header"`
 	// What metrics to use for latency. Available values are: `tpot` (time-per-output-token) and `e2e`.
 	LatencyStrategy *LatencyStrategy `default:"tpot" json:"latency_strategy"`
-	ReadTimeout     *int64           `default:"60000" json:"read_timeout"`
+	// Number of unsuccessful attempts to communicate with a target that should occur in the duration defined by `fail_timeout` before the target is considered unavailable. The zero value disables the circuit breaker. What is considered an unsuccessful attempt is defined by `failover_criteria`. Note the cases of `error`, `timeout` and `invalid_header` are always considered unsuccessful attempts, while the cases of `http_403` and `http_404` are never considered unsuccessful attempts.
+	MaxFails    *int64 `default:"0" json:"max_fails"`
+	ReadTimeout *int64 `default:"60000" json:"read_timeout"`
 	// The number of retries to execute upon failure to proxy.
 	Retries *int64 `default:"5" json:"retries"`
 	// The number of slots in the load balancer algorithm.
@@ -278,6 +285,13 @@ func (b *Balancer) GetConnectTimeout() *int64 {
 	return b.ConnectTimeout
 }
 
+func (b *Balancer) GetFailTimeout() *int64 {
+	if b == nil {
+		return nil
+	}
+	return b.FailTimeout
+}
+
 func (b *Balancer) GetFailoverCriteria() []FailoverCriteria {
 	if b == nil {
 		return nil
@@ -297,6 +311,13 @@ func (b *Balancer) GetLatencyStrategy() *LatencyStrategy {
 		return nil
 	}
 	return b.LatencyStrategy
+}
+
+func (b *Balancer) GetMaxFails() *int64 {
+	if b == nil {
+		return nil
+	}
+	return b.MaxFails
 }
 
 func (b *Balancer) GetReadTimeout() *int64 {
@@ -555,6 +576,8 @@ type AiProxyAdvancedPluginBedrock struct {
 	EmbeddingsNormalize *bool `default:"false" json:"embeddings_normalize"`
 	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
 	PerformanceConfigLatency *string `default:"null" json:"performance_config_latency"`
+	// S3 URI (s3://bucket/prefix) where Bedrock will store generated video files. Required for video generation.
+	VideoOutputS3URI *string `default:"null" json:"video_output_s3_uri"`
 }
 
 func (a AiProxyAdvancedPluginBedrock) MarshalJSON() ([]byte, error) {
@@ -608,6 +631,13 @@ func (a *AiProxyAdvancedPluginBedrock) GetPerformanceConfigLatency() *string {
 		return nil
 	}
 	return a.PerformanceConfigLatency
+}
+
+func (a *AiProxyAdvancedPluginBedrock) GetVideoOutputS3URI() *string {
+	if a == nil {
+		return nil
+	}
+	return a.VideoOutputS3URI
 }
 
 type AiProxyAdvancedPluginGemini struct {
@@ -870,6 +900,7 @@ func (e *AiProxyAdvancedPluginGenaiCategory) UnmarshalJSON(data []byte) error {
 type AiProxyAdvancedPluginLlmFormat string
 
 const (
+	AiProxyAdvancedPluginLlmFormatAnthropic   AiProxyAdvancedPluginLlmFormat = "anthropic"
 	AiProxyAdvancedPluginLlmFormatBedrock     AiProxyAdvancedPluginLlmFormat = "bedrock"
 	AiProxyAdvancedPluginLlmFormatCohere      AiProxyAdvancedPluginLlmFormat = "cohere"
 	AiProxyAdvancedPluginLlmFormatGemini      AiProxyAdvancedPluginLlmFormat = "gemini"
@@ -886,6 +917,8 @@ func (e *AiProxyAdvancedPluginLlmFormat) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "anthropic":
+		fallthrough
 	case "bedrock":
 		fallthrough
 	case "cohere":
@@ -1100,7 +1133,7 @@ func (a *AiProxyAdvancedPluginConfigAuth) GetParamValue() *string {
 }
 
 type AiProxyAdvancedPluginLogging struct {
-	// If enabled, will log the request and response body into the Kong log plugin(s) output.
+	// If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well.
 	LogPayloads *bool `default:"false" json:"log_payloads"`
 	// If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.
 	LogStatistics *bool `default:"false" json:"log_statistics"`
@@ -1144,6 +1177,8 @@ type AiProxyAdvancedPluginConfigBedrock struct {
 	EmbeddingsNormalize *bool `default:"false" json:"embeddings_normalize"`
 	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
 	PerformanceConfigLatency *string `default:"null" json:"performance_config_latency"`
+	// S3 URI (s3://bucket/prefix) where Bedrock will store generated video files. Required for video generation.
+	VideoOutputS3URI *string `default:"null" json:"video_output_s3_uri"`
 }
 
 func (a AiProxyAdvancedPluginConfigBedrock) MarshalJSON() ([]byte, error) {
@@ -1197,6 +1232,13 @@ func (a *AiProxyAdvancedPluginConfigBedrock) GetPerformanceConfigLatency() *stri
 		return nil
 	}
 	return a.PerformanceConfigLatency
+}
+
+func (a *AiProxyAdvancedPluginConfigBedrock) GetVideoOutputS3URI() *string {
+	if a == nil {
+		return nil
+	}
+	return a.VideoOutputS3URI
 }
 
 // AiProxyAdvancedPluginEmbeddingInputType - The purpose of the input text to calculate embedding vectors.
@@ -1265,6 +1307,32 @@ func (a *AiProxyAdvancedPluginCohere) GetWaitForModel() *bool {
 		return nil
 	}
 	return a.WaitForModel
+}
+
+type AiProxyAdvancedPluginDashscope struct {
+	//
+	//         Two Dashscope endpoints are available, and the international endpoint will be used when this is set to `true`.
+	//         It is recommended to set this to `true` when using international version of dashscope.
+	//
+	International *bool `default:"true" json:"international"`
+}
+
+func (a AiProxyAdvancedPluginDashscope) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginDashscope) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiProxyAdvancedPluginDashscope) GetInternational() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.International
 }
 
 type AiProxyAdvancedPluginConfigGemini struct {
@@ -1418,6 +1486,7 @@ type AiProxyAdvancedPluginConfigOptions struct {
 	AzureInstance *string                             `default:"null" json:"azure_instance"`
 	Bedrock       *AiProxyAdvancedPluginConfigBedrock `json:"bedrock"`
 	Cohere        *AiProxyAdvancedPluginCohere        `json:"cohere"`
+	Dashscope     *AiProxyAdvancedPluginDashscope     `json:"dashscope"`
 	// If using embeddings models, set the number of dimensions to generate.
 	EmbeddingsDimensions *int64                                  `default:"null" json:"embeddings_dimensions"`
 	Gemini               *AiProxyAdvancedPluginConfigGemini      `json:"gemini"`
@@ -1495,6 +1564,13 @@ func (a *AiProxyAdvancedPluginConfigOptions) GetCohere() *AiProxyAdvancedPluginC
 		return nil
 	}
 	return a.Cohere
+}
+
+func (a *AiProxyAdvancedPluginConfigOptions) GetDashscope() *AiProxyAdvancedPluginDashscope {
+	if a == nil {
+		return nil
+	}
+	return a.Dashscope
 }
 
 func (a *AiProxyAdvancedPluginConfigOptions) GetEmbeddingsDimensions() *int64 {
@@ -1595,12 +1671,15 @@ const (
 	AiProxyAdvancedPluginConfigProviderAnthropic   AiProxyAdvancedPluginConfigProvider = "anthropic"
 	AiProxyAdvancedPluginConfigProviderAzure       AiProxyAdvancedPluginConfigProvider = "azure"
 	AiProxyAdvancedPluginConfigProviderBedrock     AiProxyAdvancedPluginConfigProvider = "bedrock"
+	AiProxyAdvancedPluginConfigProviderCerebras    AiProxyAdvancedPluginConfigProvider = "cerebras"
 	AiProxyAdvancedPluginConfigProviderCohere      AiProxyAdvancedPluginConfigProvider = "cohere"
+	AiProxyAdvancedPluginConfigProviderDashscope   AiProxyAdvancedPluginConfigProvider = "dashscope"
 	AiProxyAdvancedPluginConfigProviderGemini      AiProxyAdvancedPluginConfigProvider = "gemini"
 	AiProxyAdvancedPluginConfigProviderHuggingface AiProxyAdvancedPluginConfigProvider = "huggingface"
 	AiProxyAdvancedPluginConfigProviderLlama2      AiProxyAdvancedPluginConfigProvider = "llama2"
 	AiProxyAdvancedPluginConfigProviderMistral     AiProxyAdvancedPluginConfigProvider = "mistral"
 	AiProxyAdvancedPluginConfigProviderOpenai      AiProxyAdvancedPluginConfigProvider = "openai"
+	AiProxyAdvancedPluginConfigProviderXai         AiProxyAdvancedPluginConfigProvider = "xai"
 )
 
 func (e AiProxyAdvancedPluginConfigProvider) ToPointer() *AiProxyAdvancedPluginConfigProvider {
@@ -1618,7 +1697,11 @@ func (e *AiProxyAdvancedPluginConfigProvider) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "bedrock":
 		fallthrough
+	case "cerebras":
+		fallthrough
 	case "cohere":
+		fallthrough
+	case "dashscope":
 		fallthrough
 	case "gemini":
 		fallthrough
@@ -1629,6 +1712,8 @@ func (e *AiProxyAdvancedPluginConfigProvider) UnmarshalJSON(data []byte) error {
 	case "mistral":
 		fallthrough
 	case "openai":
+		fallthrough
+	case "xai":
 		*e = AiProxyAdvancedPluginConfigProvider(v)
 		return nil
 	default:
@@ -1695,6 +1780,7 @@ const (
 	AiProxyAdvancedPluginRouteTypeLlmV1Responses             AiProxyAdvancedPluginRouteType = "llm/v1/responses"
 	AiProxyAdvancedPluginRouteTypePreserve                   AiProxyAdvancedPluginRouteType = "preserve"
 	AiProxyAdvancedPluginRouteTypeRealtimeV1Realtime         AiProxyAdvancedPluginRouteType = "realtime/v1/realtime"
+	AiProxyAdvancedPluginRouteTypeVideoV1VideosGenerations   AiProxyAdvancedPluginRouteType = "video/v1/videos/generations"
 )
 
 func (e AiProxyAdvancedPluginRouteType) ToPointer() *AiProxyAdvancedPluginRouteType {
@@ -1733,6 +1819,8 @@ func (e *AiProxyAdvancedPluginRouteType) UnmarshalJSON(data []byte) error {
 	case "preserve":
 		fallthrough
 	case "realtime/v1/realtime":
+		fallthrough
+	case "video/v1/videos/generations":
 		*e = AiProxyAdvancedPluginRouteType(v)
 		return nil
 	default:
@@ -1742,13 +1830,15 @@ func (e *AiProxyAdvancedPluginRouteType) UnmarshalJSON(data []byte) error {
 
 type Targets struct {
 	Auth *AiProxyAdvancedPluginConfigAuth `json:"auth"`
-	// The semantic description of the target, required if using semantic load balancing. Specially, setting this to 'CATCHALL' will indicate such target to be used when no other targets match the semantic threshold.
-	Description *string                          `default:"null" json:"description"`
-	Logging     *AiProxyAdvancedPluginLogging    `json:"logging"`
-	Model       AiProxyAdvancedPluginConfigModel `json:"model"`
+	// The semantic description of the target, required if using semantic load balancing. Specially, setting this to 'CATCHALL' will indicate such target to be used when no other targets match the semantic threshold. Only used by ai-proxy-advanced.
+	Description *string                       `default:"null" json:"description"`
+	Logging     *AiProxyAdvancedPluginLogging `json:"logging"`
+	// For internal use only.
+	Metadata map[string]any                   `json:"metadata,omitempty"`
+	Model    AiProxyAdvancedPluginConfigModel `json:"model"`
 	// The model's operation implementation, for this provider.
 	RouteType AiProxyAdvancedPluginRouteType `json:"route_type"`
-	// The weight this target gets within the upstream loadbalancer (1-65535).
+	// The weight this target gets within the upstream loadbalancer (1-65535). Only used by ai-proxy-advanced.
 	Weight *int64 `default:"100" json:"weight"`
 }
 
@@ -1782,6 +1872,13 @@ func (t *Targets) GetLogging() *AiProxyAdvancedPluginLogging {
 		return nil
 	}
 	return t.Logging
+}
+
+func (t *Targets) GetMetadata() map[string]any {
+	if t == nil {
+		return nil
+	}
+	return t.Metadata
 }
 
 func (t *Targets) GetModel() AiProxyAdvancedPluginConfigModel {
@@ -1984,6 +2081,159 @@ func (p *Pgvector) GetUser() *string {
 	return p.User
 }
 
+// AiProxyAdvancedPluginAuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+type AiProxyAdvancedPluginAuthProvider string
+
+const (
+	AiProxyAdvancedPluginAuthProviderAws   AiProxyAdvancedPluginAuthProvider = "aws"
+	AiProxyAdvancedPluginAuthProviderAzure AiProxyAdvancedPluginAuthProvider = "azure"
+	AiProxyAdvancedPluginAuthProviderGcp   AiProxyAdvancedPluginAuthProvider = "gcp"
+)
+
+func (e AiProxyAdvancedPluginAuthProvider) ToPointer() *AiProxyAdvancedPluginAuthProvider {
+	return &e
+}
+func (e *AiProxyAdvancedPluginAuthProvider) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "aws":
+		fallthrough
+	case "azure":
+		fallthrough
+	case "gcp":
+		*e = AiProxyAdvancedPluginAuthProvider(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AiProxyAdvancedPluginAuthProvider: %v", v)
+	}
+}
+
+// AiProxyAdvancedPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+type AiProxyAdvancedPluginCloudAuthentication struct {
+	// Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+	AuthProvider *AiProxyAdvancedPluginAuthProvider `json:"auth_provider,omitempty"`
+	// AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
+	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
+	// The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
+	// The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
+	AwsCacheName *string `default:"null" json:"aws_cache_name"`
+	// This flag specifies whether the cluster is serverless when auth_provider is set to `aws`.
+	AwsIsServerless *bool `default:"true" json:"aws_is_serverless"`
+	// The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
+	AwsRegion *string `default:"null" json:"aws_region"`
+	// The session name for the temporary credentials when assuming the IAM role.
+	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
+	// AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
+	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
+	// Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientID *string `default:"null" json:"azure_client_id"`
+	// Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
+	// Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
+	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+}
+
+func (a AiProxyAdvancedPluginCloudAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginCloudAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiProxyAdvancedPluginCloudAuthentication) GetAuthProvider() *AiProxyAdvancedPluginAuthProvider {
+	if a == nil {
+		return nil
+	}
+	return a.AuthProvider
+}
+
+func (a *AiProxyAdvancedPluginCloudAuthentication) GetAwsAccessKeyID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsAccessKeyID
+}
+
+func (a *AiProxyAdvancedPluginCloudAuthentication) GetAwsAssumeRoleArn() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsAssumeRoleArn
+}
+
+func (a *AiProxyAdvancedPluginCloudAuthentication) GetAwsCacheName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsCacheName
+}
+
+func (a *AiProxyAdvancedPluginCloudAuthentication) GetAwsIsServerless() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.AwsIsServerless
+}
+
+func (a *AiProxyAdvancedPluginCloudAuthentication) GetAwsRegion() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsRegion
+}
+
+func (a *AiProxyAdvancedPluginCloudAuthentication) GetAwsRoleSessionName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsRoleSessionName
+}
+
+func (a *AiProxyAdvancedPluginCloudAuthentication) GetAwsSecretAccessKey() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsSecretAccessKey
+}
+
+func (a *AiProxyAdvancedPluginCloudAuthentication) GetAzureClientID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AzureClientID
+}
+
+func (a *AiProxyAdvancedPluginCloudAuthentication) GetAzureClientSecret() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AzureClientSecret
+}
+
+func (a *AiProxyAdvancedPluginCloudAuthentication) GetAzureTenantID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AzureTenantID
+}
+
+func (a *AiProxyAdvancedPluginCloudAuthentication) GetGcpServiceAccountJSON() *string {
+	if a == nil {
+		return nil
+	}
+	return a.GcpServiceAccountJSON
+}
+
 type AiProxyAdvancedPluginClusterNodes struct {
 	// A string representing a host name, such as example.com.
 	IP *string `default:"127.0.0.1" json:"ip"`
@@ -2079,6 +2329,8 @@ func (e *AiProxyAdvancedPluginSentinelRole) UnmarshalJSON(data []byte) error {
 }
 
 type AiProxyAdvancedPluginRedis struct {
+	// Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+	CloudAuthentication *AiProxyAdvancedPluginCloudAuthentication `json:"cloud_authentication"`
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
@@ -2132,6 +2384,13 @@ func (a *AiProxyAdvancedPluginRedis) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AiProxyAdvancedPluginRedis) GetCloudAuthentication() *AiProxyAdvancedPluginCloudAuthentication {
+	if a == nil {
+		return nil
+	}
+	return a.CloudAuthentication
 }
 
 func (a *AiProxyAdvancedPluginRedis) GetClusterMaxRedirections() *int64 {
@@ -2318,7 +2577,18 @@ type Vectordb struct {
 	// which vector database driver to use
 	Strategy AiProxyAdvancedPluginStrategy `json:"strategy"`
 	// the default similarity threshold for accepting semantic search results (float)
-	Threshold float64 `json:"threshold"`
+	Threshold *float64 `default:"null" json:"threshold"`
+}
+
+func (v Vectordb) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *Vectordb) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"dimensions", "distance_metric", "strategy"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (v *Vectordb) GetDimensions() int64 {
@@ -2356,9 +2626,9 @@ func (v *Vectordb) GetStrategy() AiProxyAdvancedPluginStrategy {
 	return v.Strategy
 }
 
-func (v *Vectordb) GetThreshold() float64 {
+func (v *Vectordb) GetThreshold() *float64 {
 	if v == nil {
-		return 0.0
+		return nil
 	}
 	return v.Threshold
 }
@@ -2371,7 +2641,7 @@ type AiProxyAdvancedPluginConfig struct {
 	// LLM input and output format and schema to use
 	LlmFormat *AiProxyAdvancedPluginLlmFormat `default:"openai" json:"llm_format"`
 	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
-	MaxRequestBodySize *int64 `default:"8192" json:"max_request_body_size"`
+	MaxRequestBodySize *int64 `default:"1048576" json:"max_request_body_size"`
 	// Display the model name selected in the X-Kong-LLM-Model response header
 	ModelNameHeader *bool `default:"true" json:"model_name_header"`
 	// Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events.

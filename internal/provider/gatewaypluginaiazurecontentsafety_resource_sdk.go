@@ -53,6 +53,7 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) RefreshFromSharedAiAzur
 		}
 		r.Config.ResponseBufferSize = types.Float64PointerValue(resp.Config.ResponseBufferSize)
 		r.Config.RevealFailureReason = types.BoolPointerValue(resp.Config.RevealFailureReason)
+		r.Config.SslVerify = types.BoolPointerValue(resp.Config.SslVerify)
 		r.Config.StopOnError = types.BoolPointerValue(resp.Config.StopOnError)
 		if resp.Config.TextSource != nil {
 			r.Config.TextSource = types.StringValue(string(*resp.Config.TextSource))
@@ -395,6 +396,12 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentS
 	} else {
 		revealFailureReason = nil
 	}
+	sslVerify := new(bool)
+	if !r.Config.SslVerify.IsUnknown() && !r.Config.SslVerify.IsNull() {
+		*sslVerify = r.Config.SslVerify.ValueBool()
+	} else {
+		sslVerify = nil
+	}
 	stopOnError := new(bool)
 	if !r.Config.StopOnError.IsUnknown() && !r.Config.StopOnError.IsNull() {
 		*stopOnError = r.Config.StopOnError.ValueBool()
@@ -422,6 +429,7 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentS
 		OutputType:              outputType,
 		ResponseBufferSize:      responseBufferSize,
 		RevealFailureReason:     revealFailureReason,
+		SslVerify:               sslVerify,
 		StopOnError:             stopOnError,
 		TextSource:              textSource,
 	}

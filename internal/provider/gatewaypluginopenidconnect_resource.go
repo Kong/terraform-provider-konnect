@@ -386,6 +386,85 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"cloud_authentication": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"auth_provider":            types.StringType,
+									"aws_access_key_id":        types.StringType,
+									"aws_assume_role_arn":      types.StringType,
+									"aws_cache_name":           types.StringType,
+									"aws_is_serverless":        types.BoolType,
+									"aws_region":               types.StringType,
+									"aws_role_session_name":    types.StringType,
+									"aws_secret_access_key":    types.StringType,
+									"azure_client_id":          types.StringType,
+									"azure_client_secret":      types.StringType,
+									"azure_tenant_id":          types.StringType,
+									"gcp_service_account_json": types.StringType,
+								})),
+								Attributes: map[string]schema.Attribute{
+									"auth_provider": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
+										Validators: []validator.String{
+											stringvalidator.OneOf(
+												"aws",
+												"azure",
+												"gcp",
+											),
+										},
+									},
+									"aws_access_key_id": schema.StringAttribute{
+										Optional:    true,
+										Description: `AWS Access Key ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+									},
+									"aws_assume_role_arn": schema.StringAttribute{
+										Optional:    true,
+										Description: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.`,
+									},
+									"aws_cache_name": schema.StringAttribute{
+										Optional:    true,
+										Description: `The name of the AWS Elasticache cluster when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+									},
+									"aws_is_serverless": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(true),
+										Description: `This flag specifies whether the cluster is serverless when auth_provider is set to ` + "`" + `aws` + "`" + `. Default: true`,
+									},
+									"aws_region": schema.StringAttribute{
+										Optional:    true,
+										Description: `The region of the AWS ElastiCache cluster when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+									},
+									"aws_role_session_name": schema.StringAttribute{
+										Optional:    true,
+										Description: `The session name for the temporary credentials when assuming the IAM role.`,
+									},
+									"aws_secret_access_key": schema.StringAttribute{
+										Optional:    true,
+										Description: `AWS Secret Access Key to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+									},
+									"azure_client_id": schema.StringAttribute{
+										Optional:    true,
+										Description: `Azure Client ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+									},
+									"azure_client_secret": schema.StringAttribute{
+										Optional:    true,
+										Description: `Azure Client Secret to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+									},
+									"azure_tenant_id": schema.StringAttribute{
+										Optional:    true,
+										Description: `Azure Tenant ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+									},
+									"gcp_service_account_json": schema.StringAttribute{
+										Optional:    true,
+										Description: `GCP Service Account JSON to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `gcp` + "`" + `.`,
+									},
+								},
+								Description: `Cloud auth related configs for connecting to a Cloud Provider's Redis instance.`,
+							},
 							"cluster_max_redirections": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
@@ -1115,6 +1194,85 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"cloud_authentication": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"auth_provider":            types.StringType,
+									"aws_access_key_id":        types.StringType,
+									"aws_assume_role_arn":      types.StringType,
+									"aws_cache_name":           types.StringType,
+									"aws_is_serverless":        types.BoolType,
+									"aws_region":               types.StringType,
+									"aws_role_session_name":    types.StringType,
+									"aws_secret_access_key":    types.StringType,
+									"azure_client_id":          types.StringType,
+									"azure_client_secret":      types.StringType,
+									"azure_tenant_id":          types.StringType,
+									"gcp_service_account_json": types.StringType,
+								})),
+								Attributes: map[string]schema.Attribute{
+									"auth_provider": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
+										Validators: []validator.String{
+											stringvalidator.OneOf(
+												"aws",
+												"azure",
+												"gcp",
+											),
+										},
+									},
+									"aws_access_key_id": schema.StringAttribute{
+										Optional:    true,
+										Description: `AWS Access Key ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+									},
+									"aws_assume_role_arn": schema.StringAttribute{
+										Optional:    true,
+										Description: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.`,
+									},
+									"aws_cache_name": schema.StringAttribute{
+										Optional:    true,
+										Description: `The name of the AWS Elasticache cluster when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+									},
+									"aws_is_serverless": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(true),
+										Description: `This flag specifies whether the cluster is serverless when auth_provider is set to ` + "`" + `aws` + "`" + `. Default: true`,
+									},
+									"aws_region": schema.StringAttribute{
+										Optional:    true,
+										Description: `The region of the AWS ElastiCache cluster when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+									},
+									"aws_role_session_name": schema.StringAttribute{
+										Optional:    true,
+										Description: `The session name for the temporary credentials when assuming the IAM role.`,
+									},
+									"aws_secret_access_key": schema.StringAttribute{
+										Optional:    true,
+										Description: `AWS Secret Access Key to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+									},
+									"azure_client_id": schema.StringAttribute{
+										Optional:    true,
+										Description: `Azure Client ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+									},
+									"azure_client_secret": schema.StringAttribute{
+										Optional:    true,
+										Description: `Azure Client Secret to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+									},
+									"azure_tenant_id": schema.StringAttribute{
+										Optional:    true,
+										Description: `Azure Tenant ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+									},
+									"gcp_service_account_json": schema.StringAttribute{
+										Optional:    true,
+										Description: `GCP Service Account JSON to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `gcp` + "`" + `.`,
+									},
+								},
+								Description: `Cloud auth related configs for connecting to a Cloud Provider's Redis instance.`,
+							},
 							"cluster_max_redirections": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
@@ -1548,6 +1706,18 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"session_memcached_socket": schema.StringAttribute{
 						Optional:    true,
 						Description: `The memcached unix socket path.`,
+					},
+					"session_memcached_ssl": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `If set to true, uses SSL to connect to memcached. Default: false`,
+					},
+					"session_memcached_ssl_verify": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `If set to true, verifies the validity of the memcached server SSL certificate. Default: false`,
 					},
 					"session_remember": schema.BoolAttribute{
 						Computed:    true,

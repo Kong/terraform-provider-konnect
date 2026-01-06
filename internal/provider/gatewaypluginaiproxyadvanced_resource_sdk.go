@@ -4,6 +4,8 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -25,6 +27,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				r.Config.Balancer.Algorithm = types.StringNull()
 			}
 			r.Config.Balancer.ConnectTimeout = types.Int64PointerValue(resp.Config.Balancer.ConnectTimeout)
+			r.Config.Balancer.FailTimeout = types.Int64PointerValue(resp.Config.Balancer.FailTimeout)
 			r.Config.Balancer.FailoverCriteria = make([]types.String, 0, len(resp.Config.Balancer.FailoverCriteria))
 			for _, v := range resp.Config.Balancer.FailoverCriteria {
 				r.Config.Balancer.FailoverCriteria = append(r.Config.Balancer.FailoverCriteria, types.StringValue(string(v)))
@@ -35,6 +38,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 			} else {
 				r.Config.Balancer.LatencyStrategy = types.StringNull()
 			}
+			r.Config.Balancer.MaxFails = types.Int64PointerValue(resp.Config.Balancer.MaxFails)
 			r.Config.Balancer.ReadTimeout = types.Int64PointerValue(resp.Config.Balancer.ReadTimeout)
 			r.Config.Balancer.Retries = types.Int64PointerValue(resp.Config.Balancer.Retries)
 			r.Config.Balancer.Slots = types.Int64PointerValue(resp.Config.Balancer.Slots)
@@ -95,6 +99,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 					r.Config.Embeddings.Model.Options.Bedrock.AwsStsEndpointURL = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsStsEndpointURL)
 					r.Config.Embeddings.Model.Options.Bedrock.EmbeddingsNormalize = types.BoolPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.EmbeddingsNormalize)
 					r.Config.Embeddings.Model.Options.Bedrock.PerformanceConfigLatency = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.PerformanceConfigLatency)
+					r.Config.Embeddings.Model.Options.Bedrock.VideoOutputS3URI = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.VideoOutputS3URI)
 				}
 				if resp.Config.Embeddings.Model.Options.Gemini == nil {
 					r.Config.Embeddings.Model.Options.Gemini = nil
@@ -132,10 +137,10 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 		} else {
 			r.Config.ResponseStreaming = types.StringNull()
 		}
-		r.Config.Targets = []tfTypes.Targets{}
+		r.Config.Targets = []tfTypes.Llm{}
 
 		for _, targetsItem := range resp.Config.Targets {
-			var targets tfTypes.Targets
+			var targets tfTypes.Llm
 
 			if targetsItem.Auth == nil {
 				targets.Auth = nil
@@ -168,6 +173,13 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				targets.Logging.LogPayloads = types.BoolPointerValue(targetsItem.Logging.LogPayloads)
 				targets.Logging.LogStatistics = types.BoolPointerValue(targetsItem.Logging.LogStatistics)
 			}
+			if targetsItem.Metadata != nil {
+				targets.Metadata = make(map[string]jsontypes.Normalized, len(targetsItem.Metadata))
+				for key, value := range targetsItem.Metadata {
+					result, _ := json.Marshal(value)
+					targets.Metadata[key] = jsontypes.NewNormalizedValue(string(result))
+				}
+			}
 			targets.Model.Name = types.StringPointerValue(targetsItem.Model.Name)
 			if targetsItem.Model.Options == nil {
 				targets.Model.Options = nil
@@ -187,6 +199,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 					targets.Model.Options.Bedrock.AwsStsEndpointURL = types.StringPointerValue(targetsItem.Model.Options.Bedrock.AwsStsEndpointURL)
 					targets.Model.Options.Bedrock.EmbeddingsNormalize = types.BoolPointerValue(targetsItem.Model.Options.Bedrock.EmbeddingsNormalize)
 					targets.Model.Options.Bedrock.PerformanceConfigLatency = types.StringPointerValue(targetsItem.Model.Options.Bedrock.PerformanceConfigLatency)
+					targets.Model.Options.Bedrock.VideoOutputS3URI = types.StringPointerValue(targetsItem.Model.Options.Bedrock.VideoOutputS3URI)
 				}
 				if targetsItem.Model.Options.Cohere == nil {
 					targets.Model.Options.Cohere = nil
@@ -198,6 +211,12 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 						targets.Model.Options.Cohere.EmbeddingInputType = types.StringNull()
 					}
 					targets.Model.Options.Cohere.WaitForModel = types.BoolPointerValue(targetsItem.Model.Options.Cohere.WaitForModel)
+				}
+				if targetsItem.Model.Options.Dashscope == nil {
+					targets.Model.Options.Dashscope = nil
+				} else {
+					targets.Model.Options.Dashscope = &tfTypes.AiLlmAsJudgePluginDashscope{}
+					targets.Model.Options.Dashscope.International = types.BoolPointerValue(targetsItem.Model.Options.Dashscope.International)
 				}
 				targets.Model.Options.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Model.Options.EmbeddingsDimensions)
 				if targetsItem.Model.Options.Gemini == nil {
@@ -272,6 +291,27 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				r.Config.Vectordb.Redis = nil
 			} else {
 				r.Config.Vectordb.Redis = &tfTypes.AcePluginRedis{}
+				if resp.Config.Vectordb.Redis.CloudAuthentication == nil {
+					r.Config.Vectordb.Redis.CloudAuthentication = nil
+				} else {
+					r.Config.Vectordb.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+					if resp.Config.Vectordb.Redis.CloudAuthentication.AuthProvider != nil {
+						r.Config.Vectordb.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Vectordb.Redis.CloudAuthentication.AuthProvider))
+					} else {
+						r.Config.Vectordb.Redis.CloudAuthentication.AuthProvider = types.StringNull()
+					}
+					r.Config.Vectordb.Redis.CloudAuthentication.AwsAccessKeyID = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AwsAccessKeyID)
+					r.Config.Vectordb.Redis.CloudAuthentication.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AwsAssumeRoleArn)
+					r.Config.Vectordb.Redis.CloudAuthentication.AwsCacheName = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AwsCacheName)
+					r.Config.Vectordb.Redis.CloudAuthentication.AwsIsServerless = types.BoolPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AwsIsServerless)
+					r.Config.Vectordb.Redis.CloudAuthentication.AwsRegion = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AwsRegion)
+					r.Config.Vectordb.Redis.CloudAuthentication.AwsRoleSessionName = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AwsRoleSessionName)
+					r.Config.Vectordb.Redis.CloudAuthentication.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AwsSecretAccessKey)
+					r.Config.Vectordb.Redis.CloudAuthentication.AzureClientID = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AzureClientID)
+					r.Config.Vectordb.Redis.CloudAuthentication.AzureClientSecret = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AzureClientSecret)
+					r.Config.Vectordb.Redis.CloudAuthentication.AzureTenantID = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AzureTenantID)
+					r.Config.Vectordb.Redis.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.GcpServiceAccountJSON)
+				}
 				r.Config.Vectordb.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Vectordb.Redis.ClusterMaxRedirections)
 				if resp.Config.Vectordb.Redis.ClusterNodes != nil {
 					r.Config.Vectordb.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
@@ -321,7 +361,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				r.Config.Vectordb.Redis.Username = types.StringPointerValue(resp.Config.Vectordb.Redis.Username)
 			}
 			r.Config.Vectordb.Strategy = types.StringValue(string(resp.Config.Vectordb.Strategy))
-			r.Config.Vectordb.Threshold = types.Float64Value(resp.Config.Vectordb.Threshold)
+			r.Config.Vectordb.Threshold = types.Float64PointerValue(resp.Config.Vectordb.Threshold)
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -593,6 +633,12 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 		} else {
 			connectTimeout = nil
 		}
+		failTimeout := new(int64)
+		if !r.Config.Balancer.FailTimeout.IsUnknown() && !r.Config.Balancer.FailTimeout.IsNull() {
+			*failTimeout = r.Config.Balancer.FailTimeout.ValueInt64()
+		} else {
+			failTimeout = nil
+		}
 		failoverCriteria := make([]shared.FailoverCriteria, 0, len(r.Config.Balancer.FailoverCriteria))
 		for _, failoverCriteriaItem := range r.Config.Balancer.FailoverCriteria {
 			failoverCriteria = append(failoverCriteria, shared.FailoverCriteria(failoverCriteriaItem.ValueString()))
@@ -608,6 +654,12 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 			*latencyStrategy = shared.LatencyStrategy(r.Config.Balancer.LatencyStrategy.ValueString())
 		} else {
 			latencyStrategy = nil
+		}
+		maxFails := new(int64)
+		if !r.Config.Balancer.MaxFails.IsUnknown() && !r.Config.Balancer.MaxFails.IsNull() {
+			*maxFails = r.Config.Balancer.MaxFails.ValueInt64()
+		} else {
+			maxFails = nil
 		}
 		readTimeout := new(int64)
 		if !r.Config.Balancer.ReadTimeout.IsUnknown() && !r.Config.Balancer.ReadTimeout.IsNull() {
@@ -642,9 +694,11 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 		balancer = &shared.Balancer{
 			Algorithm:           algorithm,
 			ConnectTimeout:      connectTimeout,
+			FailTimeout:         failTimeout,
 			FailoverCriteria:    failoverCriteria,
 			HashOnHeader:        hashOnHeader,
 			LatencyStrategy:     latencyStrategy,
+			MaxFails:            maxFails,
 			ReadTimeout:         readTimeout,
 			Retries:             retries,
 			Slots:               slots,
@@ -826,6 +880,12 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 				} else {
 					performanceConfigLatency = nil
 				}
+				videoOutputS3URI := new(string)
+				if !r.Config.Embeddings.Model.Options.Bedrock.VideoOutputS3URI.IsUnknown() && !r.Config.Embeddings.Model.Options.Bedrock.VideoOutputS3URI.IsNull() {
+					*videoOutputS3URI = r.Config.Embeddings.Model.Options.Bedrock.VideoOutputS3URI.ValueString()
+				} else {
+					videoOutputS3URI = nil
+				}
 				bedrock = &shared.AiProxyAdvancedPluginBedrock{
 					AwsAssumeRoleArn:         awsAssumeRoleArn,
 					AwsRegion:                awsRegion,
@@ -833,6 +893,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 					AwsStsEndpointURL:        awsStsEndpointURL,
 					EmbeddingsNormalize:      embeddingsNormalize,
 					PerformanceConfigLatency: performanceConfigLatency,
+					VideoOutputS3URI:         videoOutputS3URI,
 				}
 			}
 			var gemini *shared.AiProxyAdvancedPluginGemini
@@ -1065,6 +1126,15 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 				LogStatistics: logStatistics,
 			}
 		}
+		var metadata map[string]interface{}
+		if r.Config.Targets[targetsIndex].Metadata != nil {
+			metadata = make(map[string]interface{})
+			for metadataKey := range r.Config.Targets[targetsIndex].Metadata {
+				var metadataInst interface{}
+				_ = json.Unmarshal([]byte(r.Config.Targets[targetsIndex].Metadata[metadataKey].ValueString()), &metadataInst)
+				metadata[metadataKey] = metadataInst
+			}
+		}
 		name2 := new(string)
 		if !r.Config.Targets[targetsIndex].Model.Name.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Name.IsNull() {
 			*name2 = r.Config.Targets[targetsIndex].Model.Name.ValueString()
@@ -1135,6 +1205,12 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 				} else {
 					performanceConfigLatency1 = nil
 				}
+				videoOutputS3Uri1 := new(string)
+				if !r.Config.Targets[targetsIndex].Model.Options.Bedrock.VideoOutputS3URI.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.Bedrock.VideoOutputS3URI.IsNull() {
+					*videoOutputS3Uri1 = r.Config.Targets[targetsIndex].Model.Options.Bedrock.VideoOutputS3URI.ValueString()
+				} else {
+					videoOutputS3Uri1 = nil
+				}
 				bedrock1 = &shared.AiProxyAdvancedPluginConfigBedrock{
 					AwsAssumeRoleArn:         awsAssumeRoleArn1,
 					AwsRegion:                awsRegion1,
@@ -1142,6 +1218,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 					AwsStsEndpointURL:        awsStsEndpointUrl1,
 					EmbeddingsNormalize:      embeddingsNormalize1,
 					PerformanceConfigLatency: performanceConfigLatency1,
+					VideoOutputS3URI:         videoOutputS3Uri1,
 				}
 			}
 			var cohere *shared.AiProxyAdvancedPluginCohere
@@ -1161,6 +1238,18 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 				cohere = &shared.AiProxyAdvancedPluginCohere{
 					EmbeddingInputType: embeddingInputType,
 					WaitForModel:       waitForModel1,
+				}
+			}
+			var dashscope *shared.AiProxyAdvancedPluginDashscope
+			if r.Config.Targets[targetsIndex].Model.Options.Dashscope != nil {
+				international := new(bool)
+				if !r.Config.Targets[targetsIndex].Model.Options.Dashscope.International.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.Dashscope.International.IsNull() {
+					*international = r.Config.Targets[targetsIndex].Model.Options.Dashscope.International.ValueBool()
+				} else {
+					international = nil
+				}
+				dashscope = &shared.AiProxyAdvancedPluginDashscope{
+					International: international,
 				}
 			}
 			embeddingsDimensions := new(int64)
@@ -1288,6 +1377,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 				AzureInstance:        azureInstance,
 				Bedrock:              bedrock1,
 				Cohere:               cohere,
+				Dashscope:            dashscope,
 				EmbeddingsDimensions: embeddingsDimensions,
 				Gemini:               gemini1,
 				Huggingface:          huggingface1,
@@ -1320,6 +1410,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 			Auth:        auth1,
 			Description: description,
 			Logging:     logging,
+			Metadata:    metadata,
 			Model:       model1,
 			RouteType:   routeType,
 			Weight:      weight,
@@ -1422,6 +1513,95 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 		}
 		var redis *shared.AiProxyAdvancedPluginRedis
 		if r.Config.Vectordb.Redis != nil {
+			var cloudAuthentication *shared.AiProxyAdvancedPluginCloudAuthentication
+			if r.Config.Vectordb.Redis.CloudAuthentication != nil {
+				authProvider := new(shared.AiProxyAdvancedPluginAuthProvider)
+				if !r.Config.Vectordb.Redis.CloudAuthentication.AuthProvider.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AuthProvider.IsNull() {
+					*authProvider = shared.AiProxyAdvancedPluginAuthProvider(r.Config.Vectordb.Redis.CloudAuthentication.AuthProvider.ValueString())
+				} else {
+					authProvider = nil
+				}
+				awsAccessKeyId2 := new(string)
+				if !r.Config.Vectordb.Redis.CloudAuthentication.AwsAccessKeyID.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AwsAccessKeyID.IsNull() {
+					*awsAccessKeyId2 = r.Config.Vectordb.Redis.CloudAuthentication.AwsAccessKeyID.ValueString()
+				} else {
+					awsAccessKeyId2 = nil
+				}
+				awsAssumeRoleArn2 := new(string)
+				if !r.Config.Vectordb.Redis.CloudAuthentication.AwsAssumeRoleArn.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AwsAssumeRoleArn.IsNull() {
+					*awsAssumeRoleArn2 = r.Config.Vectordb.Redis.CloudAuthentication.AwsAssumeRoleArn.ValueString()
+				} else {
+					awsAssumeRoleArn2 = nil
+				}
+				awsCacheName := new(string)
+				if !r.Config.Vectordb.Redis.CloudAuthentication.AwsCacheName.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AwsCacheName.IsNull() {
+					*awsCacheName = r.Config.Vectordb.Redis.CloudAuthentication.AwsCacheName.ValueString()
+				} else {
+					awsCacheName = nil
+				}
+				awsIsServerless := new(bool)
+				if !r.Config.Vectordb.Redis.CloudAuthentication.AwsIsServerless.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AwsIsServerless.IsNull() {
+					*awsIsServerless = r.Config.Vectordb.Redis.CloudAuthentication.AwsIsServerless.ValueBool()
+				} else {
+					awsIsServerless = nil
+				}
+				awsRegion2 := new(string)
+				if !r.Config.Vectordb.Redis.CloudAuthentication.AwsRegion.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AwsRegion.IsNull() {
+					*awsRegion2 = r.Config.Vectordb.Redis.CloudAuthentication.AwsRegion.ValueString()
+				} else {
+					awsRegion2 = nil
+				}
+				awsRoleSessionName2 := new(string)
+				if !r.Config.Vectordb.Redis.CloudAuthentication.AwsRoleSessionName.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AwsRoleSessionName.IsNull() {
+					*awsRoleSessionName2 = r.Config.Vectordb.Redis.CloudAuthentication.AwsRoleSessionName.ValueString()
+				} else {
+					awsRoleSessionName2 = nil
+				}
+				awsSecretAccessKey2 := new(string)
+				if !r.Config.Vectordb.Redis.CloudAuthentication.AwsSecretAccessKey.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AwsSecretAccessKey.IsNull() {
+					*awsSecretAccessKey2 = r.Config.Vectordb.Redis.CloudAuthentication.AwsSecretAccessKey.ValueString()
+				} else {
+					awsSecretAccessKey2 = nil
+				}
+				azureClientId2 := new(string)
+				if !r.Config.Vectordb.Redis.CloudAuthentication.AzureClientID.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AzureClientID.IsNull() {
+					*azureClientId2 = r.Config.Vectordb.Redis.CloudAuthentication.AzureClientID.ValueString()
+				} else {
+					azureClientId2 = nil
+				}
+				azureClientSecret2 := new(string)
+				if !r.Config.Vectordb.Redis.CloudAuthentication.AzureClientSecret.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AzureClientSecret.IsNull() {
+					*azureClientSecret2 = r.Config.Vectordb.Redis.CloudAuthentication.AzureClientSecret.ValueString()
+				} else {
+					azureClientSecret2 = nil
+				}
+				azureTenantId2 := new(string)
+				if !r.Config.Vectordb.Redis.CloudAuthentication.AzureTenantID.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AzureTenantID.IsNull() {
+					*azureTenantId2 = r.Config.Vectordb.Redis.CloudAuthentication.AzureTenantID.ValueString()
+				} else {
+					azureTenantId2 = nil
+				}
+				gcpServiceAccountJson2 := new(string)
+				if !r.Config.Vectordb.Redis.CloudAuthentication.GcpServiceAccountJSON.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.GcpServiceAccountJSON.IsNull() {
+					*gcpServiceAccountJson2 = r.Config.Vectordb.Redis.CloudAuthentication.GcpServiceAccountJSON.ValueString()
+				} else {
+					gcpServiceAccountJson2 = nil
+				}
+				cloudAuthentication = &shared.AiProxyAdvancedPluginCloudAuthentication{
+					AuthProvider:          authProvider,
+					AwsAccessKeyID:        awsAccessKeyId2,
+					AwsAssumeRoleArn:      awsAssumeRoleArn2,
+					AwsCacheName:          awsCacheName,
+					AwsIsServerless:       awsIsServerless,
+					AwsRegion:             awsRegion2,
+					AwsRoleSessionName:    awsRoleSessionName2,
+					AwsSecretAccessKey:    awsSecretAccessKey2,
+					AzureClientID:         azureClientId2,
+					AzureClientSecret:     azureClientSecret2,
+					AzureTenantID:         azureTenantId2,
+					GcpServiceAccountJSON: gcpServiceAccountJson2,
+				}
+			}
 			clusterMaxRedirections := new(int64)
 			if !r.Config.Vectordb.Redis.ClusterMaxRedirections.IsUnknown() && !r.Config.Vectordb.Redis.ClusterMaxRedirections.IsNull() {
 				*clusterMaxRedirections = r.Config.Vectordb.Redis.ClusterMaxRedirections.ValueInt64()
@@ -1581,6 +1761,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 				username = nil
 			}
 			redis = &shared.AiProxyAdvancedPluginRedis{
+				CloudAuthentication:    cloudAuthentication,
 				ClusterMaxRedirections: clusterMaxRedirections,
 				ClusterNodes:           clusterNodes,
 				ConnectTimeout:         connectTimeout1,
@@ -1605,9 +1786,12 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 			}
 		}
 		strategy := shared.AiProxyAdvancedPluginStrategy(r.Config.Vectordb.Strategy.ValueString())
-		var threshold float64
-		threshold = r.Config.Vectordb.Threshold.ValueFloat64()
-
+		threshold := new(float64)
+		if !r.Config.Vectordb.Threshold.IsUnknown() && !r.Config.Vectordb.Threshold.IsNull() {
+			*threshold = r.Config.Vectordb.Threshold.ValueFloat64()
+		} else {
+			threshold = nil
+		}
 		vectordb = &shared.Vectordb{
 			Dimensions:     dimensions,
 			DistanceMetric: distanceMetric,

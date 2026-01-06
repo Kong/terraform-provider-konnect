@@ -38,6 +38,7 @@ resource "konnect_gateway_plugin_http_log" "my_gatewaypluginhttplog" {
     }
     queue_size  = 3
     retry_count = 10
+    ssl_verify  = false
     timeout     = 6.49
   }
   consumer = {
@@ -124,6 +125,7 @@ Optional:
 - `queue` (Attributes) (see [below for nested schema](#nestedatt--config--queue))
 - `queue_size` (Number) Maximum number of log entries to be sent on each message to the upstream server.
 - `retry_count` (Number) Number of times to retry when sending data to the upstream server.
+- `ssl_verify` (Boolean) When using TLS, this option enables verification of the certificate presented by the server.
 - `timeout` (Number) An optional timeout in milliseconds when sending data to the upstream server. Default: 10000
 
 <a id="nestedatt--config--queue"></a>

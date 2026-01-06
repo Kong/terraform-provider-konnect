@@ -101,6 +101,7 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 						Description: `A list of custom claims to be forwarded from the introspection response to the upstream request. Claims are forwarded in headers with prefix ` + "`" + `X-Credential-{claim-name}` + "`" + `. Default: []`,
 					},
 					"custom_introspection_headers": schema.MapAttribute{
+						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `A list of custom headers to be added in the introspection request.`,

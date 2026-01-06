@@ -189,11 +189,11 @@ func (r *ResponseJqProgramOptions) GetSortKeys() *bool {
 type JqPluginConfig struct {
 	RequestIfMediaType       []string                  `json:"request_if_media_type,omitempty"`
 	RequestJqProgram         *string                   `default:"null" json:"request_jq_program"`
-	RequestJqProgramOptions  *RequestJqProgramOptions  `json:"request_jq_program_options"`
+	RequestJqProgramOptions  *RequestJqProgramOptions  `json:"request_jq_program_options,omitempty"`
 	ResponseIfMediaType      []string                  `json:"response_if_media_type,omitempty"`
 	ResponseIfStatusCode     []int64                   `json:"response_if_status_code,omitempty"`
 	ResponseJqProgram        *string                   `default:"null" json:"response_jq_program"`
-	ResponseJqProgramOptions *ResponseJqProgramOptions `json:"response_jq_program_options"`
+	ResponseJqProgramOptions *ResponseJqProgramOptions `json:"response_jq_program_options,omitempty"`
 }
 
 func (j JqPluginConfig) MarshalJSON() ([]byte, error) {

@@ -15,6 +15,7 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) RefreshFromSharedAiAwsGuardr
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config.AllowMasking = types.BoolPointerValue(resp.Config.AllowMasking)
 		r.Config.AwsAccessKeyID = types.StringPointerValue(resp.Config.AwsAccessKeyID)
 		r.Config.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.AwsAssumeRoleArn)
 		r.Config.AwsRegion = types.StringValue(resp.Config.AwsRegion)
@@ -29,6 +30,7 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) RefreshFromSharedAiAwsGuardr
 		r.Config.GuardrailsID = types.StringValue(resp.Config.GuardrailsID)
 		r.Config.GuardrailsVersion = types.StringValue(resp.Config.GuardrailsVersion)
 		r.Config.ResponseBufferSize = types.Float64PointerValue(resp.Config.ResponseBufferSize)
+		r.Config.SslVerify = types.BoolPointerValue(resp.Config.SslVerify)
 		r.Config.StopOnError = types.BoolPointerValue(resp.Config.StopOnError)
 		if resp.Config.TextSource != nil {
 			r.Config.TextSource = types.StringValue(string(*resp.Config.TextSource))
@@ -292,6 +294,12 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) ToSharedAiAwsGuardrailsPlugi
 	} else {
 		updatedAt = nil
 	}
+	allowMasking := new(bool)
+	if !r.Config.AllowMasking.IsUnknown() && !r.Config.AllowMasking.IsNull() {
+		*allowMasking = r.Config.AllowMasking.ValueBool()
+	} else {
+		allowMasking = nil
+	}
 	awsAccessKeyID := new(string)
 	if !r.Config.AwsAccessKeyID.IsUnknown() && !r.Config.AwsAccessKeyID.IsNull() {
 		*awsAccessKeyID = r.Config.AwsAccessKeyID.ValueString()
@@ -343,6 +351,12 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) ToSharedAiAwsGuardrailsPlugi
 	} else {
 		responseBufferSize = nil
 	}
+	sslVerify := new(bool)
+	if !r.Config.SslVerify.IsUnknown() && !r.Config.SslVerify.IsNull() {
+		*sslVerify = r.Config.SslVerify.ValueBool()
+	} else {
+		sslVerify = nil
+	}
 	stopOnError := new(bool)
 	if !r.Config.StopOnError.IsUnknown() && !r.Config.StopOnError.IsNull() {
 		*stopOnError = r.Config.StopOnError.ValueBool()
@@ -362,6 +376,7 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) ToSharedAiAwsGuardrailsPlugi
 		timeout = nil
 	}
 	config := shared.AiAwsGuardrailsPluginConfig{
+		AllowMasking:       allowMasking,
 		AwsAccessKeyID:     awsAccessKeyID,
 		AwsAssumeRoleArn:   awsAssumeRoleArn,
 		AwsRegion:          awsRegion,
@@ -372,6 +387,7 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) ToSharedAiAwsGuardrailsPlugi
 		GuardrailsID:       guardrailsID,
 		GuardrailsVersion:  guardrailsVersion,
 		ResponseBufferSize: responseBufferSize,
+		SslVerify:          sslVerify,
 		StopOnError:        stopOnError,
 		TextSource:         textSource,
 		Timeout:            timeout,

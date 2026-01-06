@@ -285,6 +285,7 @@ func (e *AiProxyPluginGenaiCategory) UnmarshalJSON(data []byte) error {
 type AiProxyPluginLlmFormat string
 
 const (
+	AiProxyPluginLlmFormatAnthropic   AiProxyPluginLlmFormat = "anthropic"
 	AiProxyPluginLlmFormatBedrock     AiProxyPluginLlmFormat = "bedrock"
 	AiProxyPluginLlmFormatCohere      AiProxyPluginLlmFormat = "cohere"
 	AiProxyPluginLlmFormatGemini      AiProxyPluginLlmFormat = "gemini"
@@ -301,6 +302,8 @@ func (e *AiProxyPluginLlmFormat) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "anthropic":
+		fallthrough
 	case "bedrock":
 		fallthrough
 	case "cohere":
@@ -318,7 +321,7 @@ func (e *AiProxyPluginLlmFormat) UnmarshalJSON(data []byte) error {
 }
 
 type AiProxyPluginLogging struct {
-	// If enabled, will log the request and response body into the Kong log plugin(s) output.
+	// If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well.
 	LogPayloads *bool `default:"false" json:"log_payloads"`
 	// If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.
 	LogStatistics *bool `default:"false" json:"log_statistics"`
@@ -362,6 +365,8 @@ type Bedrock struct {
 	EmbeddingsNormalize *bool `default:"false" json:"embeddings_normalize"`
 	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
 	PerformanceConfigLatency *string `default:"null" json:"performance_config_latency"`
+	// S3 URI (s3://bucket/prefix) where Bedrock will store generated video files. Required for video generation.
+	VideoOutputS3URI *string `default:"null" json:"video_output_s3_uri"`
 }
 
 func (b Bedrock) MarshalJSON() ([]byte, error) {
@@ -415,6 +420,13 @@ func (b *Bedrock) GetPerformanceConfigLatency() *string {
 		return nil
 	}
 	return b.PerformanceConfigLatency
+}
+
+func (b *Bedrock) GetVideoOutputS3URI() *string {
+	if b == nil {
+		return nil
+	}
+	return b.VideoOutputS3URI
 }
 
 // EmbeddingInputType - The purpose of the input text to calculate embedding vectors.
@@ -483,6 +495,32 @@ func (c *Cohere) GetWaitForModel() *bool {
 		return nil
 	}
 	return c.WaitForModel
+}
+
+type Dashscope struct {
+	//
+	//         Two Dashscope endpoints are available, and the international endpoint will be used when this is set to `true`.
+	//         It is recommended to set this to `true` when using international version of dashscope.
+	//
+	International *bool `default:"true" json:"international"`
+}
+
+func (d Dashscope) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *Dashscope) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *Dashscope) GetInternational() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.International
 }
 
 type Gemini struct {
@@ -633,9 +671,10 @@ type OptionsObj struct {
 	// Deployment ID for Azure OpenAI instances.
 	AzureDeploymentID *string `default:"null" json:"azure_deployment_id"`
 	// Instance name for Azure OpenAI hosted models.
-	AzureInstance *string  `default:"null" json:"azure_instance"`
-	Bedrock       *Bedrock `json:"bedrock"`
-	Cohere        *Cohere  `json:"cohere"`
+	AzureInstance *string    `default:"null" json:"azure_instance"`
+	Bedrock       *Bedrock   `json:"bedrock"`
+	Cohere        *Cohere    `json:"cohere"`
+	Dashscope     *Dashscope `json:"dashscope"`
 	// If using embeddings models, set the number of dimensions to generate.
 	EmbeddingsDimensions *int64       `default:"null" json:"embeddings_dimensions"`
 	Gemini               *Gemini      `json:"gemini"`
@@ -713,6 +752,13 @@ func (o *OptionsObj) GetCohere() *Cohere {
 		return nil
 	}
 	return o.Cohere
+}
+
+func (o *OptionsObj) GetDashscope() *Dashscope {
+	if o == nil {
+		return nil
+	}
+	return o.Dashscope
 }
 
 func (o *OptionsObj) GetEmbeddingsDimensions() *int64 {
@@ -813,12 +859,15 @@ const (
 	ProviderAnthropic   Provider = "anthropic"
 	ProviderAzure       Provider = "azure"
 	ProviderBedrock     Provider = "bedrock"
+	ProviderCerebras    Provider = "cerebras"
 	ProviderCohere      Provider = "cohere"
+	ProviderDashscope   Provider = "dashscope"
 	ProviderGemini      Provider = "gemini"
 	ProviderHuggingface Provider = "huggingface"
 	ProviderLlama2      Provider = "llama2"
 	ProviderMistral     Provider = "mistral"
 	ProviderOpenai      Provider = "openai"
+	ProviderXai         Provider = "xai"
 )
 
 func (e Provider) ToPointer() *Provider {
@@ -836,7 +885,11 @@ func (e *Provider) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "bedrock":
 		fallthrough
+	case "cerebras":
+		fallthrough
 	case "cohere":
+		fallthrough
+	case "dashscope":
 		fallthrough
 	case "gemini":
 		fallthrough
@@ -847,6 +900,8 @@ func (e *Provider) UnmarshalJSON(data []byte) error {
 	case "mistral":
 		fallthrough
 	case "openai":
+		fallthrough
+	case "xai":
 		*e = Provider(v)
 		return nil
 	default:
@@ -943,6 +998,7 @@ const (
 	RouteTypeLlmV1Responses             RouteType = "llm/v1/responses"
 	RouteTypePreserve                   RouteType = "preserve"
 	RouteTypeRealtimeV1Realtime         RouteType = "realtime/v1/realtime"
+	RouteTypeVideoV1VideosGenerations   RouteType = "video/v1/videos/generations"
 )
 
 func (e RouteType) ToPointer() *RouteType {
@@ -981,6 +1037,8 @@ func (e *RouteType) UnmarshalJSON(data []byte) error {
 	case "preserve":
 		fallthrough
 	case "realtime/v1/realtime":
+		fallthrough
+	case "video/v1/videos/generations":
 		*e = RouteType(v)
 		return nil
 	default:
@@ -996,7 +1054,7 @@ type AiProxyPluginConfig struct {
 	LlmFormat *AiProxyPluginLlmFormat `default:"openai" json:"llm_format"`
 	Logging   *AiProxyPluginLogging   `json:"logging"`
 	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
-	MaxRequestBodySize *int64 `default:"8192" json:"max_request_body_size"`
+	MaxRequestBodySize *int64 `default:"1048576" json:"max_request_body_size"`
 	Model              Model  `json:"model"`
 	// Display the model name selected in the X-Kong-LLM-Model response header
 	ModelNameHeader *bool `default:"true" json:"model_name_header"`

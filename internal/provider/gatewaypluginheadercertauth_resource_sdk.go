@@ -47,6 +47,7 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) RefreshFromSharedHeaderCertAu
 		}
 		r.Config.SecureSource = types.BoolPointerValue(resp.Config.SecureSource)
 		r.Config.SkipConsumerLookup = types.BoolPointerValue(resp.Config.SkipConsumerLookup)
+		r.Config.SslVerify = types.BoolPointerValue(resp.Config.SslVerify)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -387,6 +388,12 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToSharedHeaderCertAuthPlugin(
 	} else {
 		skipConsumerLookup = nil
 	}
+	sslVerify := new(bool)
+	if !r.Config.SslVerify.IsUnknown() && !r.Config.SslVerify.IsNull() {
+		*sslVerify = r.Config.SslVerify.ValueBool()
+	} else {
+		sslVerify = nil
+	}
 	config := shared.HeaderCertAuthPluginConfig{
 		AllowPartialChain:       allowPartialChain,
 		Anonymous:               anonymous,
@@ -406,6 +413,7 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToSharedHeaderCertAuthPlugin(
 		RevocationCheckMode:     revocationCheckMode,
 		SecureSource:            secureSource,
 		SkipConsumerLookup:      skipConsumerLookup,
+		SslVerify:               sslVerify,
 	}
 	protocols := make([]shared.HeaderCertAuthPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {

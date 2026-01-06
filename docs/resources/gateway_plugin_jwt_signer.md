@@ -27,6 +27,7 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     access_token_consumer_claim = [
       "..."
     ]
+    access_token_endpoints_ssl_verify = true
     access_token_expiry_claim = [
       "..."
     ]
@@ -161,6 +162,7 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     channel_token_consumer_claim = [
       "..."
     ]
+    channel_token_endpoints_ssl_verify = true
     channel_token_expiry_claim = [
       "..."
     ]
@@ -392,8 +394,9 @@ Optional:
 
 - `access_token_audience_claim` (List of String) Specify the claim in an access token to verify against values of `config.access_token_audiences_allowed`. Default: ["aud"]
 - `access_token_audiences_allowed` (List of String) The audiences allowed to be present in the access token claim specified by `config.access_token_audience_claim`.
-- `access_token_consumer_by` (List of String) When the plugin tries to apply an access token to a Kong consumer mapping, it tries to find a matching Kong consumer from properties defined using this configuration parameter. The parameter can take an array of alues. Valid values are `id`, `username`, and `custom_id`. Default: ["custom_id","username"]
+- `access_token_consumer_by` (List of String) When the plugin tries to apply an access token to a Kong consumer mapping, it tries to find a matching Kong consumer from properties defined using this configuration parameter. The parameter can take an array of values. Valid values are `id`, `username`, and `custom_id`. Default: ["custom_id","username"]
 - `access_token_consumer_claim` (List of String) When you set a value for this parameter, the plugin tries to map an arbitrary claim specified with this configuration parameter (for example, `sub` or `username`) in an access token to Kong consumer entity.
+- `access_token_endpoints_ssl_verify` (Boolean) Whether to verify the TLS certificate if any of `access_token_introspection_endpoint`, `access_token_jwks_uri`, or `access_token_keyset` is an HTTPS URI.
 - `access_token_expiry_claim` (List of String) Specify the expiry claim in an access token to verify if the default `exp` is not used. Default: ["exp"]
 - `access_token_introspection_audience_claim` (List of String) Specify the claim in an access token introspection to verify against values of `config.access_token_introspection_audiences_allowed`. Default: ["aud"]
 - `access_token_introspection_audiences_allowed` (List of String) The audiences allowed to be present in the access token introspection claim specified by `config.access_token_introspection_audience_claim`.
@@ -411,7 +414,7 @@ Optional:
 - `access_token_introspection_notbefore_claim` (List of String) Specify the notbefore claim in an access token introspection to verify if the default `nbf` is not used. Default: ["nbf"]
 - `access_token_introspection_optional_claims` (List of List of String) Specify the optional claims of the access token introspection result. These claims are only validated when they are present. Every claim is specified by an array. If the array has multiple elements, it means the claim is inside a nested object of the payload.
 - `access_token_introspection_required_claims` (List of List of String) Specify the required claims that must be present in the access token introspection result. Every claim is specified by an array. If the array has multiple elements, it means the claim is inside a nested object of the payload.
-- `access_token_introspection_scopes_claim` (List of String) Specify the claim/property in access token introspection results (`JSON`) to be verified against values of `config.access_token_introspection_scopes_required`. This supports nested claims. For example, with Keycloak you could use `[ "realm_access", "roles" ]`, hich can be given as `realm_access,roles` (form post). If the claim is not found in access token introspection results, and you have specified `config.access_token_introspection_scopes_required`, the plugin responds with `403 Forbidden`. Default: ["scope"]
+- `access_token_introspection_scopes_claim` (List of String) Specify the claim/property in access token introspection results (`JSON`) to be verified against values of `config.access_token_introspection_scopes_required`. This supports nested claims. For example, with Keycloak you could use `[ "realm_access", "roles" ]`, which can be given as `realm_access,roles` (form post). If the claim is not found in access token introspection results, and you have specified `config.access_token_introspection_scopes_required`, the plugin responds with `403 Forbidden`. Default: ["scope"]
 - `access_token_introspection_scopes_required` (List of String) Specify the required values (or scopes) that are checked by an introspection claim/property specified by `config.access_token_introspection_scopes_claim`.
 - `access_token_introspection_subject_claim` (List of String) Specify the claim in an access token introspection to verify against values of `config.access_token_introspection_subjects_allowed`. Default: ["sub"]
 - `access_token_introspection_subjects_allowed` (List of String) The subjects allowed to be present in the access token introspection claim specified by `config.access_token_introspection_subject_claim`.
@@ -452,6 +455,7 @@ Optional:
 - `channel_token_audiences_allowed` (List of String) The audiences allowed to be present in the channel token claim specified by `config.channel_token_audience_claim`.
 - `channel_token_consumer_by` (List of String) When the plugin tries to do channel token to Kong consumer mapping, it tries to find a matching Kong consumer from properties defined using this configuration parameter. The parameter can take an array of valid values: `id`, `username`, and `custom_id`. Default: ["custom_id","username"]
 - `channel_token_consumer_claim` (List of String) When you set a value for this parameter, the plugin tries to map an arbitrary claim specified with this configuration parameter. Kong consumers have an `id`, a `username`, and a `custom_id`. If this parameter is enabled but the mapping fails, such as when there's a non-existent Kong consumer, the plugin responds with `403 Forbidden`.
+- `channel_token_endpoints_ssl_verify` (Boolean) Whether to verify the TLS certificate if any of `channel_token_introspection_endpoint`, `channel_token_jwks_uri`, or `channel_token_keyset` is an HTTPS URI.
 - `channel_token_expiry_claim` (List of String) Specify the expiry claim in a channel token to verify if the default `exp` is not used. Default: ["exp"]
 - `channel_token_introspection_audience_claim` (List of String) Specify the claim in a channel token introspection to verify against values of `config.channel_token_introspection_audiences_allowed`. Default: ["aud"]
 - `channel_token_introspection_audiences_allowed` (List of String) The audiences allowed to be present in the channel token introspection claim specified by `config.channel_token_introspection_audience_claim`.
@@ -478,7 +482,7 @@ Optional:
 - `channel_token_issuer_claim` (List of String) Specify the claim in a channel token to verify against values of `config.channel_token_issuers_allowed`. Default: ["iss"]
 - `channel_token_issuers_allowed` (List of String) The issuers allowed to be present in the channel token claim specified by `config.channel_token_issuer_claim`.
 - `channel_token_jwks_uri` (String) If you want to use `config.verify_channel_token_signature`, you must specify the URI where the plugin can fetch the public keys (JWKS) to verify the signature of the channel token. If you don't specify a URI and you pass a JWT token to the plugin, then the plugin responds with `401 Unauthorized`.
-- `channel_token_jwks_uri_client_certificate` (Attributes) The client certificate that will be used to authenticate Kong if `access_token_jwks_uri` is an https uri that requires mTLS Auth. (see [below for nested schema](#nestedatt--config--channel_token_jwks_uri_client_certificate))
+- `channel_token_jwks_uri_client_certificate` (Attributes) The client certificate that will be used to authenticate Kong if `channel_token_jwks_uri` is an https uri that requires mTLS Auth. (see [below for nested schema](#nestedatt--config--channel_token_jwks_uri_client_certificate))
 - `channel_token_jwks_uri_client_password` (String) The client password that will be used to authenticate Kong if `channel_token_jwks_uri` is a uri that requires Basic Auth. Should be configured together with `channel_token_jwks_uri_client_username`
 - `channel_token_jwks_uri_client_username` (String) The client username that will be used to authenticate Kong if `channel_token_jwks_uri` is a uri that requires Basic Auth. Should be configured together with `channel_token_jwks_uri_client_password`
 - `channel_token_jwks_uri_rotate_period` (Number) Specify the period (in seconds) to auto-rotate the jwks for `channel_token_jwks_uri`. The default value 0 means no auto-rotation. Default: 0
@@ -507,7 +511,7 @@ Optional:
 - `enable_instrumentation` (Boolean) Writes log entries with some added information using `ngx.CRIT` (CRITICAL) level. Default: false
 - `original_access_token_upstream_header` (String) The HTTP header name used to store the original access token.
 - `original_channel_token_upstream_header` (String) The HTTP header name used to store the original channel token.
-- `realm` (String) When authentication or authorization fails, or there is an unexpected error, the plugin sends an `WWW-Authenticate` header with the `realm` attribute value.
+- `realm` (String) When authentication or authorization fails, or there is an unexpected error, the plugin sends a `WWW-Authenticate` header with the `realm` attribute value.
 - `remove_access_token_claims` (List of String) remove claims. It should be an array, and each element is a claim key string. Default: []
 - `remove_channel_token_claims` (List of String) remove claims. It should be an array, and each element is a claim key string. Default: []
 - `set_access_token_claims` (Map of String) Set customized claims. If a claim is already present, it will be overwritten. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.

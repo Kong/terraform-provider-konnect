@@ -4,6 +4,8 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -44,12 +46,20 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 			r.Config.Llm.Auth.ParamName = types.StringPointerValue(resp.Config.Llm.Auth.ParamName)
 			r.Config.Llm.Auth.ParamValue = types.StringPointerValue(resp.Config.Llm.Auth.ParamValue)
 		}
+		r.Config.Llm.Description = types.StringPointerValue(resp.Config.Llm.Description)
 		if resp.Config.Llm.Logging == nil {
 			r.Config.Llm.Logging = nil
 		} else {
 			r.Config.Llm.Logging = &tfTypes.AiLlmAsJudgePluginLogging{}
 			r.Config.Llm.Logging.LogPayloads = types.BoolPointerValue(resp.Config.Llm.Logging.LogPayloads)
 			r.Config.Llm.Logging.LogStatistics = types.BoolPointerValue(resp.Config.Llm.Logging.LogStatistics)
+		}
+		if resp.Config.Llm.Metadata != nil {
+			r.Config.Llm.Metadata = make(map[string]jsontypes.Normalized, len(resp.Config.Llm.Metadata))
+			for key, value := range resp.Config.Llm.Metadata {
+				result, _ := json.Marshal(value)
+				r.Config.Llm.Metadata[key] = jsontypes.NewNormalizedValue(string(result))
+			}
 		}
 		r.Config.Llm.Model.Name = types.StringPointerValue(resp.Config.Llm.Model.Name)
 		if resp.Config.Llm.Model.Options == nil {
@@ -70,6 +80,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 				r.Config.Llm.Model.Options.Bedrock.AwsStsEndpointURL = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.AwsStsEndpointURL)
 				r.Config.Llm.Model.Options.Bedrock.EmbeddingsNormalize = types.BoolPointerValue(resp.Config.Llm.Model.Options.Bedrock.EmbeddingsNormalize)
 				r.Config.Llm.Model.Options.Bedrock.PerformanceConfigLatency = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.PerformanceConfigLatency)
+				r.Config.Llm.Model.Options.Bedrock.VideoOutputS3URI = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.VideoOutputS3URI)
 			}
 			if resp.Config.Llm.Model.Options.Cohere == nil {
 				r.Config.Llm.Model.Options.Cohere = nil
@@ -81,6 +92,12 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 					r.Config.Llm.Model.Options.Cohere.EmbeddingInputType = types.StringNull()
 				}
 				r.Config.Llm.Model.Options.Cohere.WaitForModel = types.BoolPointerValue(resp.Config.Llm.Model.Options.Cohere.WaitForModel)
+			}
+			if resp.Config.Llm.Model.Options.Dashscope == nil {
+				r.Config.Llm.Model.Options.Dashscope = nil
+			} else {
+				r.Config.Llm.Model.Options.Dashscope = &tfTypes.AiLlmAsJudgePluginDashscope{}
+				r.Config.Llm.Model.Options.Dashscope.International = types.BoolPointerValue(resp.Config.Llm.Model.Options.Dashscope.International)
 			}
 			r.Config.Llm.Model.Options.EmbeddingsDimensions = types.Int64PointerValue(resp.Config.Llm.Model.Options.EmbeddingsDimensions)
 			if resp.Config.Llm.Model.Options.Gemini == nil {
@@ -120,6 +137,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 		}
 		r.Config.Llm.Model.Provider = types.StringValue(string(resp.Config.Llm.Model.Provider))
 		r.Config.Llm.RouteType = types.StringValue(string(resp.Config.Llm.RouteType))
+		r.Config.Llm.Weight = types.Int64PointerValue(resp.Config.Llm.Weight)
 		r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
 		r.Config.Prompt = types.StringValue(resp.Config.Prompt)
 		r.Config.TransformationExtractPattern = types.StringPointerValue(resp.Config.TransformationExtractPattern)
@@ -512,6 +530,12 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 			ParamValue:              paramValue,
 		}
 	}
+	description := new(string)
+	if !r.Config.Llm.Description.IsUnknown() && !r.Config.Llm.Description.IsNull() {
+		*description = r.Config.Llm.Description.ValueString()
+	} else {
+		description = nil
+	}
 	var logging *shared.AiRequestTransformerPluginLogging
 	if r.Config.Llm.Logging != nil {
 		logPayloads := new(bool)
@@ -529,6 +553,15 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 		logging = &shared.AiRequestTransformerPluginLogging{
 			LogPayloads:   logPayloads,
 			LogStatistics: logStatistics,
+		}
+	}
+	var metadata map[string]interface{}
+	if r.Config.Llm.Metadata != nil {
+		metadata = make(map[string]interface{})
+		for metadataKey := range r.Config.Llm.Metadata {
+			var metadataInst interface{}
+			_ = json.Unmarshal([]byte(r.Config.Llm.Metadata[metadataKey].ValueString()), &metadataInst)
+			metadata[metadataKey] = metadataInst
 		}
 	}
 	name1 := new(string)
@@ -601,6 +634,12 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 			} else {
 				performanceConfigLatency = nil
 			}
+			videoOutputS3URI := new(string)
+			if !r.Config.Llm.Model.Options.Bedrock.VideoOutputS3URI.IsUnknown() && !r.Config.Llm.Model.Options.Bedrock.VideoOutputS3URI.IsNull() {
+				*videoOutputS3URI = r.Config.Llm.Model.Options.Bedrock.VideoOutputS3URI.ValueString()
+			} else {
+				videoOutputS3URI = nil
+			}
 			bedrock = &shared.AiRequestTransformerPluginBedrock{
 				AwsAssumeRoleArn:         awsAssumeRoleArn,
 				AwsRegion:                awsRegion,
@@ -608,6 +647,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 				AwsStsEndpointURL:        awsStsEndpointURL,
 				EmbeddingsNormalize:      embeddingsNormalize,
 				PerformanceConfigLatency: performanceConfigLatency,
+				VideoOutputS3URI:         videoOutputS3URI,
 			}
 		}
 		var cohere *shared.AiRequestTransformerPluginCohere
@@ -627,6 +667,18 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 			cohere = &shared.AiRequestTransformerPluginCohere{
 				EmbeddingInputType: embeddingInputType,
 				WaitForModel:       waitForModel,
+			}
+		}
+		var dashscope *shared.AiRequestTransformerPluginDashscope
+		if r.Config.Llm.Model.Options.Dashscope != nil {
+			international := new(bool)
+			if !r.Config.Llm.Model.Options.Dashscope.International.IsUnknown() && !r.Config.Llm.Model.Options.Dashscope.International.IsNull() {
+				*international = r.Config.Llm.Model.Options.Dashscope.International.ValueBool()
+			} else {
+				international = nil
+			}
+			dashscope = &shared.AiRequestTransformerPluginDashscope{
+				International: international,
 			}
 		}
 		embeddingsDimensions := new(int64)
@@ -754,6 +806,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 			AzureInstance:        azureInstance,
 			Bedrock:              bedrock,
 			Cohere:               cohere,
+			Dashscope:            dashscope,
 			EmbeddingsDimensions: embeddingsDimensions,
 			Gemini:               gemini,
 			Huggingface:          huggingface,
@@ -776,11 +829,20 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 		Provider: provider,
 	}
 	routeType := shared.AiRequestTransformerPluginRouteType(r.Config.Llm.RouteType.ValueString())
+	weight := new(int64)
+	if !r.Config.Llm.Weight.IsUnknown() && !r.Config.Llm.Weight.IsNull() {
+		*weight = r.Config.Llm.Weight.ValueInt64()
+	} else {
+		weight = nil
+	}
 	llm := shared.AiRequestTransformerPluginLlm{
-		Auth:      auth,
-		Logging:   logging,
-		Model:     model,
-		RouteType: routeType,
+		Auth:        auth,
+		Description: description,
+		Logging:     logging,
+		Metadata:    metadata,
+		Model:       model,
+		RouteType:   routeType,
+		Weight:      weight,
 	}
 	maxRequestBodySize := new(int64)
 	if !r.Config.MaxRequestBodySize.IsUnknown() && !r.Config.MaxRequestBodySize.IsNull() {

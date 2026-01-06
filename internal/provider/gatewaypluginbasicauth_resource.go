@@ -7,12 +7,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
@@ -69,7 +71,41 @@ func (r *GatewayPluginBasicAuthResource) Schema(ctx context.Context, req resourc
 				Computed: true,
 				Optional: true,
 				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"anonymous":        types.StringType,
+					"anonymous": types.StringType,
+					"brute_force_protection": types.ObjectType{
+						AttrTypes: map[string]attr.Type{
+							`redis`: types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`cloud_authentication`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`auth_provider`:            types.StringType,
+											`aws_access_key_id`:        types.StringType,
+											`aws_assume_role_arn`:      types.StringType,
+											`aws_cache_name`:           types.StringType,
+											`aws_is_serverless`:        types.BoolType,
+											`aws_region`:               types.StringType,
+											`aws_role_session_name`:    types.StringType,
+											`aws_secret_access_key`:    types.StringType,
+											`azure_client_id`:          types.StringType,
+											`azure_client_secret`:      types.StringType,
+											`azure_tenant_id`:          types.StringType,
+											`gcp_service_account_json`: types.StringType,
+										},
+									},
+									`database`:    types.Int64Type,
+									`host`:        types.StringType,
+									`password`:    types.StringType,
+									`port`:        types.Int64Type,
+									`server_name`: types.StringType,
+									`ssl`:         types.BoolType,
+									`ssl_verify`:  types.BoolType,
+									`timeout`:     types.Int64Type,
+									`username`:    types.StringType,
+								},
+							},
+							`strategy`: types.StringType,
+						},
+					},
 					"hide_credentials": types.BoolType,
 					"realm":            types.StringType,
 				})),
@@ -77,6 +113,223 @@ func (r *GatewayPluginBasicAuthResource) Schema(ctx context.Context, req resourc
 					"anonymous": schema.StringAttribute{
 						Optional:    true,
 						Description: `An optional string (Consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure ` + "`" + `4xx` + "`" + `. Please note that this value must refer to the Consumer ` + "`" + `id` + "`" + ` or ` + "`" + `username` + "`" + ` attribute, and **not** its ` + "`" + `custom_id` + "`" + `.`,
+					},
+					"brute_force_protection": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"redis": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`cloud_authentication`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`auth_provider`:            types.StringType,
+											`aws_access_key_id`:        types.StringType,
+											`aws_assume_role_arn`:      types.StringType,
+											`aws_cache_name`:           types.StringType,
+											`aws_is_serverless`:        types.BoolType,
+											`aws_region`:               types.StringType,
+											`aws_role_session_name`:    types.StringType,
+											`aws_secret_access_key`:    types.StringType,
+											`azure_client_id`:          types.StringType,
+											`azure_client_secret`:      types.StringType,
+											`azure_tenant_id`:          types.StringType,
+											`gcp_service_account_json`: types.StringType,
+										},
+									},
+									`database`:    types.Int64Type,
+									`host`:        types.StringType,
+									`password`:    types.StringType,
+									`port`:        types.Int64Type,
+									`server_name`: types.StringType,
+									`ssl`:         types.BoolType,
+									`ssl_verify`:  types.BoolType,
+									`timeout`:     types.Int64Type,
+									`username`:    types.StringType,
+								},
+							},
+							"strategy": types.StringType,
+						})),
+						Attributes: map[string]schema.Attribute{
+							"redis": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"cloud_authentication": types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`auth_provider`:            types.StringType,
+											`aws_access_key_id`:        types.StringType,
+											`aws_assume_role_arn`:      types.StringType,
+											`aws_cache_name`:           types.StringType,
+											`aws_is_serverless`:        types.BoolType,
+											`aws_region`:               types.StringType,
+											`aws_role_session_name`:    types.StringType,
+											`aws_secret_access_key`:    types.StringType,
+											`azure_client_id`:          types.StringType,
+											`azure_client_secret`:      types.StringType,
+											`azure_tenant_id`:          types.StringType,
+											`gcp_service_account_json`: types.StringType,
+										},
+									},
+									"database":    types.Int64Type,
+									"host":        types.StringType,
+									"password":    types.StringType,
+									"port":        types.Int64Type,
+									"server_name": types.StringType,
+									"ssl":         types.BoolType,
+									"ssl_verify":  types.BoolType,
+									"timeout":     types.Int64Type,
+									"username":    types.StringType,
+								})),
+								Attributes: map[string]schema.Attribute{
+									"cloud_authentication": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+											"auth_provider":            types.StringType,
+											"aws_access_key_id":        types.StringType,
+											"aws_assume_role_arn":      types.StringType,
+											"aws_cache_name":           types.StringType,
+											"aws_is_serverless":        types.BoolType,
+											"aws_region":               types.StringType,
+											"aws_role_session_name":    types.StringType,
+											"aws_secret_access_key":    types.StringType,
+											"azure_client_id":          types.StringType,
+											"azure_client_secret":      types.StringType,
+											"azure_tenant_id":          types.StringType,
+											"gcp_service_account_json": types.StringType,
+										})),
+										Attributes: map[string]schema.Attribute{
+											"auth_provider": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
+												Validators: []validator.String{
+													stringvalidator.OneOf(
+														"aws",
+														"azure",
+														"gcp",
+													),
+												},
+											},
+											"aws_access_key_id": schema.StringAttribute{
+												Optional:    true,
+												Description: `AWS Access Key ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+											},
+											"aws_assume_role_arn": schema.StringAttribute{
+												Optional:    true,
+												Description: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.`,
+											},
+											"aws_cache_name": schema.StringAttribute{
+												Optional:    true,
+												Description: `The name of the AWS Elasticache cluster when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+											},
+											"aws_is_serverless": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `This flag specifies whether the cluster is serverless when auth_provider is set to ` + "`" + `aws` + "`" + `. Default: true`,
+											},
+											"aws_region": schema.StringAttribute{
+												Optional:    true,
+												Description: `The region of the AWS ElastiCache cluster when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+											},
+											"aws_role_session_name": schema.StringAttribute{
+												Optional:    true,
+												Description: `The session name for the temporary credentials when assuming the IAM role.`,
+											},
+											"aws_secret_access_key": schema.StringAttribute{
+												Optional:    true,
+												Description: `AWS Secret Access Key to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+											},
+											"azure_client_id": schema.StringAttribute{
+												Optional:    true,
+												Description: `Azure Client ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+											},
+											"azure_client_secret": schema.StringAttribute{
+												Optional:    true,
+												Description: `Azure Client Secret to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+											},
+											"azure_tenant_id": schema.StringAttribute{
+												Optional:    true,
+												Description: `Azure Tenant ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+											},
+											"gcp_service_account_json": schema.StringAttribute{
+												Optional:    true,
+												Description: `GCP Service Account JSON to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `gcp` + "`" + `.`,
+											},
+										},
+										Description: `Cloud auth related configs for connecting to a Cloud Provider's Redis instance.`,
+									},
+									"database": schema.Int64Attribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     int64default.StaticInt64(0),
+										Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+									},
+									"host": schema.StringAttribute{
+										Optional:    true,
+										Description: `A string representing a host name, such as example.com.`,
+									},
+									"password": schema.StringAttribute{
+										Optional:    true,
+										Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
+									},
+									"port": schema.Int64Attribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     int64default.StaticInt64(6379),
+										Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+										Validators: []validator.Int64{
+											int64validator.AtMost(65535),
+										},
+									},
+									"server_name": schema.StringAttribute{
+										Optional:    true,
+										Description: `A string representing an SNI (server name indication) value for TLS.`,
+									},
+									"ssl": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(false),
+										Description: `If set to true, uses SSL to connect to Redis. Default: false`,
+									},
+									"ssl_verify": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(false),
+										Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: false`,
+									},
+									"timeout": schema.Int64Attribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     int64default.StaticInt64(2000),
+										Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+										Validators: []validator.Int64{
+											int64validator.AtMost(2147483646),
+										},
+									},
+									"username": schema.StringAttribute{
+										Optional:    true,
+										Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
+									},
+								},
+								Description: `Redis configuration`,
+							},
+							"strategy": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`off`),
+								Description: `The brute force protection strategy to use for retrieving and incrementing the limits. Available values are: ` + "`" + `cluster` + "`" + `, ` + "`" + `redis` + "`" + `, ` + "`" + `memory` + "`" + `, and ` + "`" + `off` + "`" + `. Default: "off"; must be one of ["cluster", "memory", "off", "redis"]`,
+								Validators: []validator.String{
+									stringvalidator.OneOf(
+										"cluster",
+										"memory",
+										"off",
+										"redis",
+									),
+								},
+							},
+						},
 					},
 					"hide_credentials": schema.BoolAttribute{
 						Computed:    true,

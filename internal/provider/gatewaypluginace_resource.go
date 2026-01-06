@@ -78,6 +78,22 @@ func (r *GatewayPluginAceResource) Schema(ctx context.Context, req resource.Sche
 						AttrTypes: map[string]attr.Type{
 							`redis`: types.ObjectType{
 								AttrTypes: map[string]attr.Type{
+									`cloud_authentication`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`auth_provider`:            types.StringType,
+											`aws_access_key_id`:        types.StringType,
+											`aws_assume_role_arn`:      types.StringType,
+											`aws_cache_name`:           types.StringType,
+											`aws_is_serverless`:        types.BoolType,
+											`aws_region`:               types.StringType,
+											`aws_role_session_name`:    types.StringType,
+											`aws_secret_access_key`:    types.StringType,
+											`azure_client_id`:          types.StringType,
+											`azure_client_secret`:      types.StringType,
+											`azure_tenant_id`:          types.StringType,
+											`gcp_service_account_json`: types.StringType,
+										},
+									},
 									`cluster_max_redirections`: types.Int64Type,
 									`cluster_nodes`: types.ListType{
 										ElemType: types.ObjectType{
@@ -121,13 +137,14 @@ func (r *GatewayPluginAceResource) Schema(ctx context.Context, req resource.Sche
 				})),
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
-						Optional: true,
+						Optional:    true,
+						Description: `An optional string (consumer UUID or username) value to use as an ` + "`" + `anonymous` + "`" + ` consumer if authentication fails. If empty (default null), the request will fail with an authentication failure ` + "`" + `4xx` + "`" + `. When set, the plugin will skip ACE processing for requests that are already authenticated by other plugins with higher priority.`,
 					},
 					"match_policy": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`if_present`),
-						Description: `Default: "if_present"; must be one of ["if_present", "required"]`,
+						Description: `Determines how the ACE plugin will behave when a request doesn't match an existing operation from an API or API package in Dev Portal. The ` + "`" + `required` + "`" + ` setting requires every incoming request to match a defined operation. If a request doesn't match, ACE rejects the request outright with a 404. The ` + "`" + `if_present` + "`" + ` setting makes the ACE plugin only engage with a request when it matches an operation, allowing a request to still be processed by other plugins with a lower priority than ACE. Default: "if_present"; must be one of ["if_present", "required"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"if_present",
@@ -141,6 +158,22 @@ func (r *GatewayPluginAceResource) Schema(ctx context.Context, req resource.Sche
 						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
 							"redis": types.ObjectType{
 								AttrTypes: map[string]attr.Type{
+									`cloud_authentication`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`auth_provider`:            types.StringType,
+											`aws_access_key_id`:        types.StringType,
+											`aws_assume_role_arn`:      types.StringType,
+											`aws_cache_name`:           types.StringType,
+											`aws_is_serverless`:        types.BoolType,
+											`aws_region`:               types.StringType,
+											`aws_role_session_name`:    types.StringType,
+											`aws_secret_access_key`:    types.StringType,
+											`azure_client_id`:          types.StringType,
+											`azure_client_secret`:      types.StringType,
+											`azure_tenant_id`:          types.StringType,
+											`gcp_service_account_json`: types.StringType,
+										},
+									},
 									`cluster_max_redirections`: types.Int64Type,
 									`cluster_nodes`: types.ListType{
 										ElemType: types.ObjectType{
@@ -185,6 +218,22 @@ func (r *GatewayPluginAceResource) Schema(ctx context.Context, req resource.Sche
 								Computed: true,
 								Optional: true,
 								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"cloud_authentication": types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`auth_provider`:            types.StringType,
+											`aws_access_key_id`:        types.StringType,
+											`aws_assume_role_arn`:      types.StringType,
+											`aws_cache_name`:           types.StringType,
+											`aws_is_serverless`:        types.BoolType,
+											`aws_region`:               types.StringType,
+											`aws_role_session_name`:    types.StringType,
+											`aws_secret_access_key`:    types.StringType,
+											`azure_client_id`:          types.StringType,
+											`azure_client_secret`:      types.StringType,
+											`azure_tenant_id`:          types.StringType,
+											`gcp_service_account_json`: types.StringType,
+										},
+									},
 									"cluster_max_redirections": types.Int64Type,
 									"cluster_nodes": types.ListType{
 										ElemType: types.ObjectType{
@@ -222,6 +271,85 @@ func (r *GatewayPluginAceResource) Schema(ctx context.Context, req resource.Sche
 									"username":          types.StringType,
 								})),
 								Attributes: map[string]schema.Attribute{
+									"cloud_authentication": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+											"auth_provider":            types.StringType,
+											"aws_access_key_id":        types.StringType,
+											"aws_assume_role_arn":      types.StringType,
+											"aws_cache_name":           types.StringType,
+											"aws_is_serverless":        types.BoolType,
+											"aws_region":               types.StringType,
+											"aws_role_session_name":    types.StringType,
+											"aws_secret_access_key":    types.StringType,
+											"azure_client_id":          types.StringType,
+											"azure_client_secret":      types.StringType,
+											"azure_tenant_id":          types.StringType,
+											"gcp_service_account_json": types.StringType,
+										})),
+										Attributes: map[string]schema.Attribute{
+											"auth_provider": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
+												Validators: []validator.String{
+													stringvalidator.OneOf(
+														"aws",
+														"azure",
+														"gcp",
+													),
+												},
+											},
+											"aws_access_key_id": schema.StringAttribute{
+												Optional:    true,
+												Description: `AWS Access Key ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+											},
+											"aws_assume_role_arn": schema.StringAttribute{
+												Optional:    true,
+												Description: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.`,
+											},
+											"aws_cache_name": schema.StringAttribute{
+												Optional:    true,
+												Description: `The name of the AWS Elasticache cluster when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+											},
+											"aws_is_serverless": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `This flag specifies whether the cluster is serverless when auth_provider is set to ` + "`" + `aws` + "`" + `. Default: true`,
+											},
+											"aws_region": schema.StringAttribute{
+												Optional:    true,
+												Description: `The region of the AWS ElastiCache cluster when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+											},
+											"aws_role_session_name": schema.StringAttribute{
+												Optional:    true,
+												Description: `The session name for the temporary credentials when assuming the IAM role.`,
+											},
+											"aws_secret_access_key": schema.StringAttribute{
+												Optional:    true,
+												Description: `AWS Secret Access Key to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+											},
+											"azure_client_id": schema.StringAttribute{
+												Optional:    true,
+												Description: `Azure Client ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+											},
+											"azure_client_secret": schema.StringAttribute{
+												Optional:    true,
+												Description: `Azure Client Secret to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+											},
+											"azure_tenant_id": schema.StringAttribute{
+												Optional:    true,
+												Description: `Azure Tenant ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+											},
+											"gcp_service_account_json": schema.StringAttribute{
+												Optional:    true,
+												Description: `GCP Service Account JSON to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `gcp` + "`" + `.`,
+											},
+										},
+										Description: `Cloud auth related configs for connecting to a Cloud Provider's Redis instance.`,
+									},
 									"cluster_max_redirections": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
@@ -401,7 +529,8 @@ func (r *GatewayPluginAceResource) Schema(ctx context.Context, req resource.Sche
 								},
 							},
 							"sync_rate": schema.Float64Attribute{
-								Optional: true,
+								Optional:    true,
+								Description: `How often to sync counter data to the central data store. A value of 0 results in synchronous behavior (counter synchronization happens in each request's context and contributes directly to the latency of the request). A value greater than 0 results in asynchronous behavior and specifies the interval (in seconds) for synchronizing counters. The minimum allowed interval is 0.02 seconds (20ms). If omitted, the plugin ignores sync behavior entirely and only stores counters in node memory.`,
 								Validators: []validator.Float64{
 									float64validator.Between(0, 3600),
 								},

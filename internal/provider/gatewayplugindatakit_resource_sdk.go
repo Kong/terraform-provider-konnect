@@ -4,6 +4,8 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -80,7 +82,12 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 					nodes.Call.Inputs = &tfTypes.NodesInputs{}
 					nodes.Call.Inputs.Body = types.StringPointerValue(nodesItem.Call.Inputs.Body)
 					nodes.Call.Inputs.Headers = types.StringPointerValue(nodesItem.Call.Inputs.Headers)
+					nodes.Call.Inputs.HTTPProxy = types.StringPointerValue(nodesItem.Call.Inputs.HTTPProxy)
+					nodes.Call.Inputs.HTTPSProxy = types.StringPointerValue(nodesItem.Call.Inputs.HTTPSProxy)
+					nodes.Call.Inputs.ProxyAuthPassword = types.StringPointerValue(nodesItem.Call.Inputs.ProxyAuthPassword)
+					nodes.Call.Inputs.ProxyAuthUsername = types.StringPointerValue(nodesItem.Call.Inputs.ProxyAuthUsername)
 					nodes.Call.Inputs.Query = types.StringPointerValue(nodesItem.Call.Inputs.Query)
+					nodes.Call.Inputs.URL = types.StringPointerValue(nodesItem.Call.Inputs.URL)
 				}
 				nodes.Call.Method = types.StringPointerValue(nodesItem.Call.Method)
 				nodes.Call.Name = types.StringPointerValue(nodesItem.Call.Name)
@@ -94,8 +101,9 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 					nodes.Call.Outputs.Status = types.StringPointerValue(nodesItem.Call.Outputs.Status)
 				}
 				nodes.Call.SslServerName = types.StringPointerValue(nodesItem.Call.SslServerName)
+				nodes.Call.SslVerify = types.BoolPointerValue(nodesItem.Call.SslVerify)
 				nodes.Call.Timeout = types.Int64PointerValue(nodesItem.Call.Timeout)
-				nodes.Call.URL = types.StringValue(nodesItem.Call.URL)
+				nodes.Call.URL = types.StringPointerValue(nodesItem.Call.URL)
 			}
 			if nodesItem.Exit != nil {
 				nodes.Exit = &tfTypes.Exit{}
@@ -124,6 +132,22 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 				nodes.Jq.Name = types.StringPointerValue(nodesItem.Jq.Name)
 				nodes.Jq.Output = types.StringPointerValue(nodesItem.Jq.Output)
 			}
+			if nodesItem.JSONToXML != nil {
+				nodes.JSONToXML = &tfTypes.JSONToXML{}
+				nodes.JSONToXML.AttributesBlockName = types.StringPointerValue(nodesItem.JSONToXML.AttributesBlockName)
+				nodes.JSONToXML.AttributesNamePrefix = types.StringPointerValue(nodesItem.JSONToXML.AttributesNamePrefix)
+				nodes.JSONToXML.Input = types.StringPointerValue(nodesItem.JSONToXML.Input)
+				if nodesItem.JSONToXML.Inputs != nil {
+					nodes.JSONToXML.Inputs = make(map[string]types.String, len(nodesItem.JSONToXML.Inputs))
+					for key1, value1 := range nodesItem.JSONToXML.Inputs {
+						nodes.JSONToXML.Inputs[key1] = types.StringValue(value1)
+					}
+				}
+				nodes.JSONToXML.Name = types.StringPointerValue(nodesItem.JSONToXML.Name)
+				nodes.JSONToXML.Output = types.StringPointerValue(nodesItem.JSONToXML.Output)
+				nodes.JSONToXML.RootElementName = types.StringPointerValue(nodesItem.JSONToXML.RootElementName)
+				nodes.JSONToXML.TextBlockName = types.StringPointerValue(nodesItem.JSONToXML.TextBlockName)
+			}
 			if nodesItem.Property != nil {
 				nodes.Property = &tfTypes.Property{}
 				if nodesItem.Property.ContentType != nil {
@@ -142,11 +166,29 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 				nodes.Static.Output = types.StringPointerValue(nodesItem.Static.Output)
 				if nodesItem.Static.Outputs != nil {
 					nodes.Static.Outputs = make(map[string]types.String, len(nodesItem.Static.Outputs))
-					for key1, value1 := range nodesItem.Static.Outputs {
-						nodes.Static.Outputs[key1] = types.StringValue(value1)
+					for key2, value2 := range nodesItem.Static.Outputs {
+						nodes.Static.Outputs[key2] = types.StringValue(value2)
 					}
 				}
-				nodes.Static.Values = types.StringValue(nodesItem.Static.Values)
+				if nodesItem.Static.Values != nil {
+					nodes.Static.Values = make(map[string]jsontypes.Normalized, len(nodesItem.Static.Values))
+					for key3, value3 := range nodesItem.Static.Values {
+						result, _ := json.Marshal(value3)
+						nodes.Static.Values[key3] = jsontypes.NewNormalizedValue(string(result))
+					}
+				}
+			}
+			if nodesItem.XMLToJSON != nil {
+				nodes.XMLToJSON = &tfTypes.XMLToJSON{}
+				nodes.XMLToJSON.AttributesBlockName = types.StringPointerValue(nodesItem.XMLToJSON.AttributesBlockName)
+				nodes.XMLToJSON.AttributesNamePrefix = types.StringPointerValue(nodesItem.XMLToJSON.AttributesNamePrefix)
+				nodes.XMLToJSON.Input = types.StringPointerValue(nodesItem.XMLToJSON.Input)
+				nodes.XMLToJSON.Name = types.StringPointerValue(nodesItem.XMLToJSON.Name)
+				nodes.XMLToJSON.Output = types.StringPointerValue(nodesItem.XMLToJSON.Output)
+				nodes.XMLToJSON.RecognizeType = types.BoolPointerValue(nodesItem.XMLToJSON.RecognizeType)
+				nodes.XMLToJSON.TextAsProperty = types.BoolPointerValue(nodesItem.XMLToJSON.TextAsProperty)
+				nodes.XMLToJSON.TextBlockName = types.StringPointerValue(nodesItem.XMLToJSON.TextBlockName)
+				nodes.XMLToJSON.Xpath = types.StringPointerValue(nodesItem.XMLToJSON.Xpath)
 			}
 
 			r.Config.Nodes = append(r.Config.Nodes, nodes)
@@ -169,6 +211,27 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 					r.Config.Resources.Cache.Redis = nil
 				} else {
 					r.Config.Resources.Cache.Redis = &tfTypes.AcePluginRedis{}
+					if resp.Config.Resources.Cache.Redis.CloudAuthentication == nil {
+						r.Config.Resources.Cache.Redis.CloudAuthentication = nil
+					} else {
+						r.Config.Resources.Cache.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+						if resp.Config.Resources.Cache.Redis.CloudAuthentication.AuthProvider != nil {
+							r.Config.Resources.Cache.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Resources.Cache.Redis.CloudAuthentication.AuthProvider))
+						} else {
+							r.Config.Resources.Cache.Redis.CloudAuthentication.AuthProvider = types.StringNull()
+						}
+						r.Config.Resources.Cache.Redis.CloudAuthentication.AwsAccessKeyID = types.StringPointerValue(resp.Config.Resources.Cache.Redis.CloudAuthentication.AwsAccessKeyID)
+						r.Config.Resources.Cache.Redis.CloudAuthentication.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Resources.Cache.Redis.CloudAuthentication.AwsAssumeRoleArn)
+						r.Config.Resources.Cache.Redis.CloudAuthentication.AwsCacheName = types.StringPointerValue(resp.Config.Resources.Cache.Redis.CloudAuthentication.AwsCacheName)
+						r.Config.Resources.Cache.Redis.CloudAuthentication.AwsIsServerless = types.BoolPointerValue(resp.Config.Resources.Cache.Redis.CloudAuthentication.AwsIsServerless)
+						r.Config.Resources.Cache.Redis.CloudAuthentication.AwsRegion = types.StringPointerValue(resp.Config.Resources.Cache.Redis.CloudAuthentication.AwsRegion)
+						r.Config.Resources.Cache.Redis.CloudAuthentication.AwsRoleSessionName = types.StringPointerValue(resp.Config.Resources.Cache.Redis.CloudAuthentication.AwsRoleSessionName)
+						r.Config.Resources.Cache.Redis.CloudAuthentication.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Resources.Cache.Redis.CloudAuthentication.AwsSecretAccessKey)
+						r.Config.Resources.Cache.Redis.CloudAuthentication.AzureClientID = types.StringPointerValue(resp.Config.Resources.Cache.Redis.CloudAuthentication.AzureClientID)
+						r.Config.Resources.Cache.Redis.CloudAuthentication.AzureClientSecret = types.StringPointerValue(resp.Config.Resources.Cache.Redis.CloudAuthentication.AzureClientSecret)
+						r.Config.Resources.Cache.Redis.CloudAuthentication.AzureTenantID = types.StringPointerValue(resp.Config.Resources.Cache.Redis.CloudAuthentication.AzureTenantID)
+						r.Config.Resources.Cache.Redis.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.Resources.Cache.Redis.CloudAuthentication.GcpServiceAccountJSON)
+					}
 					r.Config.Resources.Cache.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Resources.Cache.Redis.ClusterMaxRedirections)
 					if resp.Config.Resources.Cache.Redis.ClusterNodes != nil {
 						r.Config.Resources.Cache.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
@@ -225,8 +288,8 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 			}
 			if resp.Config.Resources.Vault != nil {
 				r.Config.Resources.Vault = make(map[string]types.String, len(resp.Config.Resources.Vault))
-				for key2, value2 := range resp.Config.Resources.Vault {
-					r.Config.Resources.Vault[key2] = types.StringValue(value2)
+				for key4, value4 := range resp.Config.Resources.Vault {
+					r.Config.Resources.Vault[key4] = types.StringValue(value4)
 				}
 			}
 		}
@@ -682,16 +745,51 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 				} else {
 					headers = nil
 				}
+				httpProxy := new(string)
+				if !r.Config.Nodes[nodesItem].Call.Inputs.HTTPProxy.IsUnknown() && !r.Config.Nodes[nodesItem].Call.Inputs.HTTPProxy.IsNull() {
+					*httpProxy = r.Config.Nodes[nodesItem].Call.Inputs.HTTPProxy.ValueString()
+				} else {
+					httpProxy = nil
+				}
+				httpsProxy := new(string)
+				if !r.Config.Nodes[nodesItem].Call.Inputs.HTTPSProxy.IsUnknown() && !r.Config.Nodes[nodesItem].Call.Inputs.HTTPSProxy.IsNull() {
+					*httpsProxy = r.Config.Nodes[nodesItem].Call.Inputs.HTTPSProxy.ValueString()
+				} else {
+					httpsProxy = nil
+				}
+				proxyAuthPassword := new(string)
+				if !r.Config.Nodes[nodesItem].Call.Inputs.ProxyAuthPassword.IsUnknown() && !r.Config.Nodes[nodesItem].Call.Inputs.ProxyAuthPassword.IsNull() {
+					*proxyAuthPassword = r.Config.Nodes[nodesItem].Call.Inputs.ProxyAuthPassword.ValueString()
+				} else {
+					proxyAuthPassword = nil
+				}
+				proxyAuthUsername := new(string)
+				if !r.Config.Nodes[nodesItem].Call.Inputs.ProxyAuthUsername.IsUnknown() && !r.Config.Nodes[nodesItem].Call.Inputs.ProxyAuthUsername.IsNull() {
+					*proxyAuthUsername = r.Config.Nodes[nodesItem].Call.Inputs.ProxyAuthUsername.ValueString()
+				} else {
+					proxyAuthUsername = nil
+				}
 				query := new(string)
 				if !r.Config.Nodes[nodesItem].Call.Inputs.Query.IsUnknown() && !r.Config.Nodes[nodesItem].Call.Inputs.Query.IsNull() {
 					*query = r.Config.Nodes[nodesItem].Call.Inputs.Query.ValueString()
 				} else {
 					query = nil
 				}
+				url := new(string)
+				if !r.Config.Nodes[nodesItem].Call.Inputs.URL.IsUnknown() && !r.Config.Nodes[nodesItem].Call.Inputs.URL.IsNull() {
+					*url = r.Config.Nodes[nodesItem].Call.Inputs.URL.ValueString()
+				} else {
+					url = nil
+				}
 				inputs1 = &shared.NodesInputs{
-					Body:    body,
-					Headers: headers,
-					Query:   query,
+					Body:              body,
+					Headers:           headers,
+					HTTPProxy:         httpProxy,
+					HTTPSProxy:        httpsProxy,
+					ProxyAuthPassword: proxyAuthPassword,
+					ProxyAuthUsername: proxyAuthUsername,
+					Query:             query,
+					URL:               url,
 				}
 			}
 			method := new(string)
@@ -744,15 +842,24 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 			} else {
 				sslServerName = nil
 			}
+			sslVerify := new(bool)
+			if !r.Config.Nodes[nodesItem].Call.SslVerify.IsUnknown() && !r.Config.Nodes[nodesItem].Call.SslVerify.IsNull() {
+				*sslVerify = r.Config.Nodes[nodesItem].Call.SslVerify.ValueBool()
+			} else {
+				sslVerify = nil
+			}
 			timeout := new(int64)
 			if !r.Config.Nodes[nodesItem].Call.Timeout.IsUnknown() && !r.Config.Nodes[nodesItem].Call.Timeout.IsNull() {
 				*timeout = r.Config.Nodes[nodesItem].Call.Timeout.ValueInt64()
 			} else {
 				timeout = nil
 			}
-			var url string
-			url = r.Config.Nodes[nodesItem].Call.URL.ValueString()
-
+			url1 := new(string)
+			if !r.Config.Nodes[nodesItem].Call.URL.IsUnknown() && !r.Config.Nodes[nodesItem].Call.URL.IsNull() {
+				*url1 = r.Config.Nodes[nodesItem].Call.URL.ValueString()
+			} else {
+				url1 = nil
+			}
 			call := shared.Call{
 				Input:         input2,
 				Inputs:        inputs1,
@@ -761,8 +868,9 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 				Output:        output2,
 				Outputs:       outputs2,
 				SslServerName: sslServerName,
+				SslVerify:     sslVerify,
 				Timeout:       timeout,
-				URL:           url,
+				URL:           url1,
 			}
 			nodes = append(nodes, shared.Nodes{
 				Call: &call,
@@ -866,6 +974,73 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 				Jq: &jq,
 			})
 		}
+		if r.Config.Nodes[nodesItem].JSONToXML != nil {
+			attributesBlockName := new(string)
+			if !r.Config.Nodes[nodesItem].JSONToXML.AttributesBlockName.IsUnknown() && !r.Config.Nodes[nodesItem].JSONToXML.AttributesBlockName.IsNull() {
+				*attributesBlockName = r.Config.Nodes[nodesItem].JSONToXML.AttributesBlockName.ValueString()
+			} else {
+				attributesBlockName = nil
+			}
+			attributesNamePrefix := new(string)
+			if !r.Config.Nodes[nodesItem].JSONToXML.AttributesNamePrefix.IsUnknown() && !r.Config.Nodes[nodesItem].JSONToXML.AttributesNamePrefix.IsNull() {
+				*attributesNamePrefix = r.Config.Nodes[nodesItem].JSONToXML.AttributesNamePrefix.ValueString()
+			} else {
+				attributesNamePrefix = nil
+			}
+			input5 := new(string)
+			if !r.Config.Nodes[nodesItem].JSONToXML.Input.IsUnknown() && !r.Config.Nodes[nodesItem].JSONToXML.Input.IsNull() {
+				*input5 = r.Config.Nodes[nodesItem].JSONToXML.Input.ValueString()
+			} else {
+				input5 = nil
+			}
+			var inputs4 map[string]string
+			if r.Config.Nodes[nodesItem].JSONToXML.Inputs != nil {
+				inputs4 = make(map[string]string)
+				for inputsKey1 := range r.Config.Nodes[nodesItem].JSONToXML.Inputs {
+					var inputsInst1 string
+					inputsInst1 = r.Config.Nodes[nodesItem].JSONToXML.Inputs[inputsKey1].ValueString()
+
+					inputs4[inputsKey1] = inputsInst1
+				}
+			}
+			name6 := new(string)
+			if !r.Config.Nodes[nodesItem].JSONToXML.Name.IsUnknown() && !r.Config.Nodes[nodesItem].JSONToXML.Name.IsNull() {
+				*name6 = r.Config.Nodes[nodesItem].JSONToXML.Name.ValueString()
+			} else {
+				name6 = nil
+			}
+			output4 := new(string)
+			if !r.Config.Nodes[nodesItem].JSONToXML.Output.IsUnknown() && !r.Config.Nodes[nodesItem].JSONToXML.Output.IsNull() {
+				*output4 = r.Config.Nodes[nodesItem].JSONToXML.Output.ValueString()
+			} else {
+				output4 = nil
+			}
+			rootElementName := new(string)
+			if !r.Config.Nodes[nodesItem].JSONToXML.RootElementName.IsUnknown() && !r.Config.Nodes[nodesItem].JSONToXML.RootElementName.IsNull() {
+				*rootElementName = r.Config.Nodes[nodesItem].JSONToXML.RootElementName.ValueString()
+			} else {
+				rootElementName = nil
+			}
+			textBlockName := new(string)
+			if !r.Config.Nodes[nodesItem].JSONToXML.TextBlockName.IsUnknown() && !r.Config.Nodes[nodesItem].JSONToXML.TextBlockName.IsNull() {
+				*textBlockName = r.Config.Nodes[nodesItem].JSONToXML.TextBlockName.ValueString()
+			} else {
+				textBlockName = nil
+			}
+			jsonToXML := shared.JSONToXML{
+				AttributesBlockName:  attributesBlockName,
+				AttributesNamePrefix: attributesNamePrefix,
+				Input:                input5,
+				Inputs:               inputs4,
+				Name:                 name6,
+				Output:               output4,
+				RootElementName:      rootElementName,
+				TextBlockName:        textBlockName,
+			}
+			nodes = append(nodes, shared.Nodes{
+				JSONToXML: &jsonToXML,
+			})
+		}
 		if r.Config.Nodes[nodesItem].Property != nil {
 			contentType := new(shared.NodesContentType)
 			if !r.Config.Nodes[nodesItem].Property.ContentType.IsUnknown() && !r.Config.Nodes[nodesItem].Property.ContentType.IsNull() {
@@ -873,32 +1048,32 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 			} else {
 				contentType = nil
 			}
-			input5 := new(string)
+			input6 := new(string)
 			if !r.Config.Nodes[nodesItem].Property.Input.IsUnknown() && !r.Config.Nodes[nodesItem].Property.Input.IsNull() {
-				*input5 = r.Config.Nodes[nodesItem].Property.Input.ValueString()
+				*input6 = r.Config.Nodes[nodesItem].Property.Input.ValueString()
 			} else {
-				input5 = nil
+				input6 = nil
 			}
-			name6 := new(string)
+			name7 := new(string)
 			if !r.Config.Nodes[nodesItem].Property.Name.IsUnknown() && !r.Config.Nodes[nodesItem].Property.Name.IsNull() {
-				*name6 = r.Config.Nodes[nodesItem].Property.Name.ValueString()
+				*name7 = r.Config.Nodes[nodesItem].Property.Name.ValueString()
 			} else {
-				name6 = nil
+				name7 = nil
 			}
-			output4 := new(string)
+			output5 := new(string)
 			if !r.Config.Nodes[nodesItem].Property.Output.IsUnknown() && !r.Config.Nodes[nodesItem].Property.Output.IsNull() {
-				*output4 = r.Config.Nodes[nodesItem].Property.Output.ValueString()
+				*output5 = r.Config.Nodes[nodesItem].Property.Output.ValueString()
 			} else {
-				output4 = nil
+				output5 = nil
 			}
 			var property1 string
 			property1 = r.Config.Nodes[nodesItem].Property.Property.ValueString()
 
 			property := shared.Property{
 				ContentType: contentType,
-				Input:       input5,
-				Name:        name6,
-				Output:      output4,
+				Input:       input6,
+				Name:        name7,
+				Output:      output5,
 				Property:    property1,
 			}
 			nodes = append(nodes, shared.Nodes{
@@ -906,17 +1081,17 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 			})
 		}
 		if r.Config.Nodes[nodesItem].Static != nil {
-			name7 := new(string)
+			name8 := new(string)
 			if !r.Config.Nodes[nodesItem].Static.Name.IsUnknown() && !r.Config.Nodes[nodesItem].Static.Name.IsNull() {
-				*name7 = r.Config.Nodes[nodesItem].Static.Name.ValueString()
+				*name8 = r.Config.Nodes[nodesItem].Static.Name.ValueString()
 			} else {
-				name7 = nil
+				name8 = nil
 			}
-			output5 := new(string)
+			output6 := new(string)
 			if !r.Config.Nodes[nodesItem].Static.Output.IsUnknown() && !r.Config.Nodes[nodesItem].Static.Output.IsNull() {
-				*output5 = r.Config.Nodes[nodesItem].Static.Output.ValueString()
+				*output6 = r.Config.Nodes[nodesItem].Static.Output.ValueString()
 			} else {
-				output5 = nil
+				output6 = nil
 			}
 			var outputs3 map[string]string
 			if r.Config.Nodes[nodesItem].Static.Outputs != nil {
@@ -928,17 +1103,93 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 					outputs3[outputsKey] = outputsInst
 				}
 			}
-			var values string
-			values = r.Config.Nodes[nodesItem].Static.Values.ValueString()
-
+			var values map[string]interface{}
+			if r.Config.Nodes[nodesItem].Static.Values != nil {
+				values = make(map[string]interface{})
+				for valuesKey := range r.Config.Nodes[nodesItem].Static.Values {
+					var valuesInst interface{}
+					_ = json.Unmarshal([]byte(r.Config.Nodes[nodesItem].Static.Values[valuesKey].ValueString()), &valuesInst)
+					values[valuesKey] = valuesInst
+				}
+			}
 			static := shared.Static{
-				Name:    name7,
-				Output:  output5,
+				Name:    name8,
+				Output:  output6,
 				Outputs: outputs3,
 				Values:  values,
 			}
 			nodes = append(nodes, shared.Nodes{
 				Static: &static,
+			})
+		}
+		if r.Config.Nodes[nodesItem].XMLToJSON != nil {
+			attributesBlockName1 := new(string)
+			if !r.Config.Nodes[nodesItem].XMLToJSON.AttributesBlockName.IsUnknown() && !r.Config.Nodes[nodesItem].XMLToJSON.AttributesBlockName.IsNull() {
+				*attributesBlockName1 = r.Config.Nodes[nodesItem].XMLToJSON.AttributesBlockName.ValueString()
+			} else {
+				attributesBlockName1 = nil
+			}
+			attributesNamePrefix1 := new(string)
+			if !r.Config.Nodes[nodesItem].XMLToJSON.AttributesNamePrefix.IsUnknown() && !r.Config.Nodes[nodesItem].XMLToJSON.AttributesNamePrefix.IsNull() {
+				*attributesNamePrefix1 = r.Config.Nodes[nodesItem].XMLToJSON.AttributesNamePrefix.ValueString()
+			} else {
+				attributesNamePrefix1 = nil
+			}
+			input7 := new(string)
+			if !r.Config.Nodes[nodesItem].XMLToJSON.Input.IsUnknown() && !r.Config.Nodes[nodesItem].XMLToJSON.Input.IsNull() {
+				*input7 = r.Config.Nodes[nodesItem].XMLToJSON.Input.ValueString()
+			} else {
+				input7 = nil
+			}
+			name9 := new(string)
+			if !r.Config.Nodes[nodesItem].XMLToJSON.Name.IsUnknown() && !r.Config.Nodes[nodesItem].XMLToJSON.Name.IsNull() {
+				*name9 = r.Config.Nodes[nodesItem].XMLToJSON.Name.ValueString()
+			} else {
+				name9 = nil
+			}
+			output7 := new(string)
+			if !r.Config.Nodes[nodesItem].XMLToJSON.Output.IsUnknown() && !r.Config.Nodes[nodesItem].XMLToJSON.Output.IsNull() {
+				*output7 = r.Config.Nodes[nodesItem].XMLToJSON.Output.ValueString()
+			} else {
+				output7 = nil
+			}
+			recognizeType := new(bool)
+			if !r.Config.Nodes[nodesItem].XMLToJSON.RecognizeType.IsUnknown() && !r.Config.Nodes[nodesItem].XMLToJSON.RecognizeType.IsNull() {
+				*recognizeType = r.Config.Nodes[nodesItem].XMLToJSON.RecognizeType.ValueBool()
+			} else {
+				recognizeType = nil
+			}
+			textAsProperty := new(bool)
+			if !r.Config.Nodes[nodesItem].XMLToJSON.TextAsProperty.IsUnknown() && !r.Config.Nodes[nodesItem].XMLToJSON.TextAsProperty.IsNull() {
+				*textAsProperty = r.Config.Nodes[nodesItem].XMLToJSON.TextAsProperty.ValueBool()
+			} else {
+				textAsProperty = nil
+			}
+			textBlockName1 := new(string)
+			if !r.Config.Nodes[nodesItem].XMLToJSON.TextBlockName.IsUnknown() && !r.Config.Nodes[nodesItem].XMLToJSON.TextBlockName.IsNull() {
+				*textBlockName1 = r.Config.Nodes[nodesItem].XMLToJSON.TextBlockName.ValueString()
+			} else {
+				textBlockName1 = nil
+			}
+			xpath := new(string)
+			if !r.Config.Nodes[nodesItem].XMLToJSON.Xpath.IsUnknown() && !r.Config.Nodes[nodesItem].XMLToJSON.Xpath.IsNull() {
+				*xpath = r.Config.Nodes[nodesItem].XMLToJSON.Xpath.ValueString()
+			} else {
+				xpath = nil
+			}
+			xmlToJSON := shared.XMLToJSON{
+				AttributesBlockName:  attributesBlockName1,
+				AttributesNamePrefix: attributesNamePrefix1,
+				Input:                input7,
+				Name:                 name9,
+				Output:               output7,
+				RecognizeType:        recognizeType,
+				TextAsProperty:       textAsProperty,
+				TextBlockName:        textBlockName1,
+				Xpath:                xpath,
+			}
+			nodes = append(nodes, shared.Nodes{
+				XMLToJSON: &xmlToJSON,
 			})
 		}
 	}
@@ -960,6 +1211,95 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 			}
 			var redis *shared.DatakitPluginRedis
 			if r.Config.Resources.Cache.Redis != nil {
+				var cloudAuthentication *shared.DatakitPluginCloudAuthentication
+				if r.Config.Resources.Cache.Redis.CloudAuthentication != nil {
+					authProvider := new(shared.DatakitPluginAuthProvider)
+					if !r.Config.Resources.Cache.Redis.CloudAuthentication.AuthProvider.IsUnknown() && !r.Config.Resources.Cache.Redis.CloudAuthentication.AuthProvider.IsNull() {
+						*authProvider = shared.DatakitPluginAuthProvider(r.Config.Resources.Cache.Redis.CloudAuthentication.AuthProvider.ValueString())
+					} else {
+						authProvider = nil
+					}
+					awsAccessKeyID := new(string)
+					if !r.Config.Resources.Cache.Redis.CloudAuthentication.AwsAccessKeyID.IsUnknown() && !r.Config.Resources.Cache.Redis.CloudAuthentication.AwsAccessKeyID.IsNull() {
+						*awsAccessKeyID = r.Config.Resources.Cache.Redis.CloudAuthentication.AwsAccessKeyID.ValueString()
+					} else {
+						awsAccessKeyID = nil
+					}
+					awsAssumeRoleArn := new(string)
+					if !r.Config.Resources.Cache.Redis.CloudAuthentication.AwsAssumeRoleArn.IsUnknown() && !r.Config.Resources.Cache.Redis.CloudAuthentication.AwsAssumeRoleArn.IsNull() {
+						*awsAssumeRoleArn = r.Config.Resources.Cache.Redis.CloudAuthentication.AwsAssumeRoleArn.ValueString()
+					} else {
+						awsAssumeRoleArn = nil
+					}
+					awsCacheName := new(string)
+					if !r.Config.Resources.Cache.Redis.CloudAuthentication.AwsCacheName.IsUnknown() && !r.Config.Resources.Cache.Redis.CloudAuthentication.AwsCacheName.IsNull() {
+						*awsCacheName = r.Config.Resources.Cache.Redis.CloudAuthentication.AwsCacheName.ValueString()
+					} else {
+						awsCacheName = nil
+					}
+					awsIsServerless := new(bool)
+					if !r.Config.Resources.Cache.Redis.CloudAuthentication.AwsIsServerless.IsUnknown() && !r.Config.Resources.Cache.Redis.CloudAuthentication.AwsIsServerless.IsNull() {
+						*awsIsServerless = r.Config.Resources.Cache.Redis.CloudAuthentication.AwsIsServerless.ValueBool()
+					} else {
+						awsIsServerless = nil
+					}
+					awsRegion := new(string)
+					if !r.Config.Resources.Cache.Redis.CloudAuthentication.AwsRegion.IsUnknown() && !r.Config.Resources.Cache.Redis.CloudAuthentication.AwsRegion.IsNull() {
+						*awsRegion = r.Config.Resources.Cache.Redis.CloudAuthentication.AwsRegion.ValueString()
+					} else {
+						awsRegion = nil
+					}
+					awsRoleSessionName := new(string)
+					if !r.Config.Resources.Cache.Redis.CloudAuthentication.AwsRoleSessionName.IsUnknown() && !r.Config.Resources.Cache.Redis.CloudAuthentication.AwsRoleSessionName.IsNull() {
+						*awsRoleSessionName = r.Config.Resources.Cache.Redis.CloudAuthentication.AwsRoleSessionName.ValueString()
+					} else {
+						awsRoleSessionName = nil
+					}
+					awsSecretAccessKey := new(string)
+					if !r.Config.Resources.Cache.Redis.CloudAuthentication.AwsSecretAccessKey.IsUnknown() && !r.Config.Resources.Cache.Redis.CloudAuthentication.AwsSecretAccessKey.IsNull() {
+						*awsSecretAccessKey = r.Config.Resources.Cache.Redis.CloudAuthentication.AwsSecretAccessKey.ValueString()
+					} else {
+						awsSecretAccessKey = nil
+					}
+					azureClientID := new(string)
+					if !r.Config.Resources.Cache.Redis.CloudAuthentication.AzureClientID.IsUnknown() && !r.Config.Resources.Cache.Redis.CloudAuthentication.AzureClientID.IsNull() {
+						*azureClientID = r.Config.Resources.Cache.Redis.CloudAuthentication.AzureClientID.ValueString()
+					} else {
+						azureClientID = nil
+					}
+					azureClientSecret := new(string)
+					if !r.Config.Resources.Cache.Redis.CloudAuthentication.AzureClientSecret.IsUnknown() && !r.Config.Resources.Cache.Redis.CloudAuthentication.AzureClientSecret.IsNull() {
+						*azureClientSecret = r.Config.Resources.Cache.Redis.CloudAuthentication.AzureClientSecret.ValueString()
+					} else {
+						azureClientSecret = nil
+					}
+					azureTenantID := new(string)
+					if !r.Config.Resources.Cache.Redis.CloudAuthentication.AzureTenantID.IsUnknown() && !r.Config.Resources.Cache.Redis.CloudAuthentication.AzureTenantID.IsNull() {
+						*azureTenantID = r.Config.Resources.Cache.Redis.CloudAuthentication.AzureTenantID.ValueString()
+					} else {
+						azureTenantID = nil
+					}
+					gcpServiceAccountJSON := new(string)
+					if !r.Config.Resources.Cache.Redis.CloudAuthentication.GcpServiceAccountJSON.IsUnknown() && !r.Config.Resources.Cache.Redis.CloudAuthentication.GcpServiceAccountJSON.IsNull() {
+						*gcpServiceAccountJSON = r.Config.Resources.Cache.Redis.CloudAuthentication.GcpServiceAccountJSON.ValueString()
+					} else {
+						gcpServiceAccountJSON = nil
+					}
+					cloudAuthentication = &shared.DatakitPluginCloudAuthentication{
+						AuthProvider:          authProvider,
+						AwsAccessKeyID:        awsAccessKeyID,
+						AwsAssumeRoleArn:      awsAssumeRoleArn,
+						AwsCacheName:          awsCacheName,
+						AwsIsServerless:       awsIsServerless,
+						AwsRegion:             awsRegion,
+						AwsRoleSessionName:    awsRoleSessionName,
+						AwsSecretAccessKey:    awsSecretAccessKey,
+						AzureClientID:         azureClientID,
+						AzureClientSecret:     azureClientSecret,
+						AzureTenantID:         azureTenantID,
+						GcpServiceAccountJSON: gcpServiceAccountJSON,
+					}
+				}
 				clusterMaxRedirections := new(int64)
 				if !r.Config.Resources.Cache.Redis.ClusterMaxRedirections.IsUnknown() && !r.Config.Resources.Cache.Redis.ClusterMaxRedirections.IsNull() {
 					*clusterMaxRedirections = r.Config.Resources.Cache.Redis.ClusterMaxRedirections.ValueInt64()
@@ -1106,11 +1446,11 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 				} else {
 					ssl = nil
 				}
-				sslVerify := new(bool)
+				sslVerify1 := new(bool)
 				if !r.Config.Resources.Cache.Redis.SslVerify.IsUnknown() && !r.Config.Resources.Cache.Redis.SslVerify.IsNull() {
-					*sslVerify = r.Config.Resources.Cache.Redis.SslVerify.ValueBool()
+					*sslVerify1 = r.Config.Resources.Cache.Redis.SslVerify.ValueBool()
 				} else {
-					sslVerify = nil
+					sslVerify1 = nil
 				}
 				username := new(string)
 				if !r.Config.Resources.Cache.Redis.Username.IsUnknown() && !r.Config.Resources.Cache.Redis.Username.IsNull() {
@@ -1119,6 +1459,7 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 					username = nil
 				}
 				redis = &shared.DatakitPluginRedis{
+					CloudAuthentication:    cloudAuthentication,
 					ClusterMaxRedirections: clusterMaxRedirections,
 					ClusterNodes:           clusterNodes,
 					ConnectTimeout:         connectTimeout,
@@ -1138,7 +1479,7 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 					SentinelUsername:       sentinelUsername,
 					ServerName:             serverName,
 					Ssl:                    ssl,
-					SslVerify:              sslVerify,
+					SslVerify:              sslVerify1,
 					Username:               username,
 				}
 			}

@@ -135,8 +135,8 @@ resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway"
 
 ### Optional
 
-- `aws_resource_endpoint_gateway` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_resource_endpoint_gateway))
-- `aws_transit_gateway` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_transit_gateway))
+- `aws_resource_endpoint_gateway` (Attributes) Request schema for updating AWS Resource Endpoint. (see [below for nested schema](#nestedatt--aws_resource_endpoint_gateway))
+- `aws_transit_gateway` (Attributes) Request schema for updating AWS Transit Gateway (see [below for nested schema](#nestedatt--aws_transit_gateway))
 - `aws_vpc_peering_gateway` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_vpc_peering_gateway))
 - `azure_transit_gateway` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--azure_transit_gateway))
 - `gcp_vpc_peering_transit_gateway` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--gcp_vpc_peering_transit_gateway))
@@ -159,7 +159,7 @@ transit gateway.
 Required:
 
 - `name` (String) Human-readable name of the transit gateway. Requires replacement if changed.
-- `transit_gateway_attachment_config` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_resource_endpoint_gateway--transit_gateway_attachment_config))
+- `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--aws_resource_endpoint_gateway--transit_gateway_attachment_config))
 
 Optional:
 
@@ -172,20 +172,20 @@ Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_
 
 Required:
 
-- `kind` (String) must be "aws-resource-endpoint-attachment"; Requires replacement if changed.
+- `kind` (String) must be "aws-resource-endpoint-attachment"
 - `ram_share_arn` (String) Resource Share ARN to verify request to create transit gateway attachment. Requires replacement if changed.
 
 Optional:
 
-- `resource_config` (Attributes List) List of unique resource config mapping for aws resource endpoint. Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_resource_endpoint_gateway--transit_gateway_attachment_config--resource_config))
+- `resource_config` (Attributes List) List of unique resource config mapping for aws resource endpoint. (see [below for nested schema](#nestedatt--aws_resource_endpoint_gateway--transit_gateway_attachment_config--resource_config))
 
 <a id="nestedatt--aws_resource_endpoint_gateway--transit_gateway_attachment_config--resource_config"></a>
 ### Nested Schema for `aws_resource_endpoint_gateway.transit_gateway_attachment_config.resource_config`
 
 Required:
 
-- `domain_name` (String) Domain Name to uniquely identify a resource configuration. Requires replacement if changed.
-- `resource_config_id` (String) Resource Config ID to uniquely identify a resource configuration. Requires replacement if changed.
+- `domain_name` (String) Domain Name to uniquely identify a resource configuration.
+- `resource_config_id` (String) Resource Config ID to uniquely identify a resource configuration.
 
 
 
@@ -208,7 +208,6 @@ Required:
 
 - `cidr_blocks` (List of String) CIDR blocks for constructing a route table for the transit gateway, when attaching to the owning
 network.
-Requires replacement if changed.
 - `name` (String) Human-readable name of the transit gateway. Requires replacement if changed.
 - `transit_gateway_attachment_config` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_transit_gateway--transit_gateway_attachment_config))
 
@@ -374,6 +373,7 @@ transit gateway.
 - `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
 - `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
 - `terminated` - The attachment has been fully deleted and is no longer available.
+- `error` - The attachment is in an error state.
 - `state_metadata` (Attributes) Metadata describing the backing state of the transit gateway and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--aws_resource_endpoint_gateway_response--state_metadata))
 - `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--aws_resource_endpoint_gateway_response--transit_gateway_attachment_config))
 - `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
@@ -445,6 +445,7 @@ transit gateway.
 - `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
 - `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
 - `terminated` - The attachment has been fully deleted and is no longer available.
+- `error` - The attachment is in an error state.
 - `state_metadata` (Attributes) Metadata describing the backing state of the transit gateway and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--aws_transit_gateway_response--state_metadata))
 - `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--aws_transit_gateway_response--transit_gateway_attachment_config))
 - `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
@@ -501,6 +502,7 @@ transit gateway.
 - `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
 - `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
 - `terminated` - The attachment has been fully deleted and is no longer available.
+- `error` - The attachment is in an error state.
 - `state_metadata` (Attributes) Metadata describing the backing state of the transit gateway and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--aws_vpc_peering_gateway_response--state_metadata))
 - `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--aws_vpc_peering_gateway_response--transit_gateway_attachment_config))
 - `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
@@ -556,6 +558,7 @@ transit gateway.
 - `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
 - `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
 - `terminated` - The attachment has been fully deleted and is no longer available.
+- `error` - The attachment is in an error state.
 - `state_metadata` (Attributes) Metadata describing the backing state of the transit gateway and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--azure_transit_gateway_response--state_metadata))
 - `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--azure_transit_gateway_response--transit_gateway_attachment_config))
 - `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
@@ -612,6 +615,7 @@ transit gateway.
 - `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
 - `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
 - `terminated` - The attachment has been fully deleted and is no longer available.
+- `error` - The attachment is in an error state.
 - `state_metadata` (Attributes) Metadata describing the backing state of the transit gateway and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--gcpvpc_peering_gateway_response--state_metadata))
 - `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--gcpvpc_peering_gateway_response--transit_gateway_attachment_config))
 - `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.

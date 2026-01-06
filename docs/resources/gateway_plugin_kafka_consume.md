@@ -29,10 +29,11 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
         port = 27325
       }
     ]
-    cluster_name    = "...my_cluster_name..."
-    commit_strategy = "off"
-    dlq_topic       = "...my_dlq_topic..."
-    enable_dlq      = false
+    cluster_name                = "...my_cluster_name..."
+    commit_strategy             = "off"
+    dlq_topic                   = "...my_dlq_topic..."
+    enable_dlq                  = false
+    enforce_latest_offset_reset = false
     message_by_lua_functions = [
       "..."
     ]
@@ -88,6 +89,7 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
     security = {
       certificate_id = "...my_certificate_id..."
       ssl            = true
+      ssl_verify     = false
     }
     topics = [
       {
@@ -220,6 +222,7 @@ Optional:
 - `commit_strategy` (String) The strategy to use for committing offsets. Default: "auto"; must be one of ["auto", "off"]
 - `dlq_topic` (String) The topic to use for the Dead Letter Queue.
 - `enable_dlq` (Boolean) Enables Dead Letter Queue. When enabled, if the message doesn't conform to the schema (from Schema Registry) or there's an error in the `message_by_lua_functions`, it will be forwarded to `dlq_topic` that can be processed later.
+- `enforce_latest_offset_reset` (Boolean) When true, 'latest' offset reset behaves correctly (starts from end). When false (default), maintains backwards compatibility where 'latest' acts like 'earliest'. Default: false
 - `message_by_lua_functions` (List of String) The Lua functions that manipulates the message being sent to the client.
 - `message_deserializer` (String) The deserializer to use for the consumed messages. Default: "noop"; must be one of ["json", "noop"]
 - `mode` (String) The mode of operation for the plugin. Default: "http-get"; must be one of ["http-get", "server-sent-events", "websocket"]
@@ -411,6 +414,7 @@ Optional:
 
 - `certificate_id` (String) UUID of certificate entity for mTLS authentication.
 - `ssl` (Boolean) Enables TLS.
+- `ssl_verify` (Boolean) When using TLS, this option enables verification of the certificate presented by the server. Default: false
 
 
 

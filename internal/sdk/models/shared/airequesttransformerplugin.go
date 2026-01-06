@@ -246,7 +246,7 @@ func (a *AiRequestTransformerPluginAuth) GetParamValue() *string {
 }
 
 type AiRequestTransformerPluginLogging struct {
-	// If enabled, will log the request and response body into the Kong log plugin(s) output.
+	// If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well.
 	LogPayloads *bool `default:"false" json:"log_payloads"`
 	// If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.
 	LogStatistics *bool `default:"false" json:"log_statistics"`
@@ -290,6 +290,8 @@ type AiRequestTransformerPluginBedrock struct {
 	EmbeddingsNormalize *bool `default:"false" json:"embeddings_normalize"`
 	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
 	PerformanceConfigLatency *string `default:"null" json:"performance_config_latency"`
+	// S3 URI (s3://bucket/prefix) where Bedrock will store generated video files. Required for video generation.
+	VideoOutputS3URI *string `default:"null" json:"video_output_s3_uri"`
 }
 
 func (a AiRequestTransformerPluginBedrock) MarshalJSON() ([]byte, error) {
@@ -343,6 +345,13 @@ func (a *AiRequestTransformerPluginBedrock) GetPerformanceConfigLatency() *strin
 		return nil
 	}
 	return a.PerformanceConfigLatency
+}
+
+func (a *AiRequestTransformerPluginBedrock) GetVideoOutputS3URI() *string {
+	if a == nil {
+		return nil
+	}
+	return a.VideoOutputS3URI
 }
 
 // AiRequestTransformerPluginEmbeddingInputType - The purpose of the input text to calculate embedding vectors.
@@ -411,6 +420,32 @@ func (a *AiRequestTransformerPluginCohere) GetWaitForModel() *bool {
 		return nil
 	}
 	return a.WaitForModel
+}
+
+type AiRequestTransformerPluginDashscope struct {
+	//
+	//         Two Dashscope endpoints are available, and the international endpoint will be used when this is set to `true`.
+	//         It is recommended to set this to `true` when using international version of dashscope.
+	//
+	International *bool `default:"true" json:"international"`
+}
+
+func (a AiRequestTransformerPluginDashscope) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRequestTransformerPluginDashscope) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiRequestTransformerPluginDashscope) GetInternational() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.International
 }
 
 type AiRequestTransformerPluginGemini struct {
@@ -561,9 +596,10 @@ type AiRequestTransformerPluginOptions struct {
 	// Deployment ID for Azure OpenAI instances.
 	AzureDeploymentID *string `default:"null" json:"azure_deployment_id"`
 	// Instance name for Azure OpenAI hosted models.
-	AzureInstance *string                            `default:"null" json:"azure_instance"`
-	Bedrock       *AiRequestTransformerPluginBedrock `json:"bedrock"`
-	Cohere        *AiRequestTransformerPluginCohere  `json:"cohere"`
+	AzureInstance *string                              `default:"null" json:"azure_instance"`
+	Bedrock       *AiRequestTransformerPluginBedrock   `json:"bedrock"`
+	Cohere        *AiRequestTransformerPluginCohere    `json:"cohere"`
+	Dashscope     *AiRequestTransformerPluginDashscope `json:"dashscope"`
 	// If using embeddings models, set the number of dimensions to generate.
 	EmbeddingsDimensions *int64                                 `default:"null" json:"embeddings_dimensions"`
 	Gemini               *AiRequestTransformerPluginGemini      `json:"gemini"`
@@ -641,6 +677,13 @@ func (a *AiRequestTransformerPluginOptions) GetCohere() *AiRequestTransformerPlu
 		return nil
 	}
 	return a.Cohere
+}
+
+func (a *AiRequestTransformerPluginOptions) GetDashscope() *AiRequestTransformerPluginDashscope {
+	if a == nil {
+		return nil
+	}
+	return a.Dashscope
 }
 
 func (a *AiRequestTransformerPluginOptions) GetEmbeddingsDimensions() *int64 {
@@ -741,12 +784,15 @@ const (
 	AiRequestTransformerPluginProviderAnthropic   AiRequestTransformerPluginProvider = "anthropic"
 	AiRequestTransformerPluginProviderAzure       AiRequestTransformerPluginProvider = "azure"
 	AiRequestTransformerPluginProviderBedrock     AiRequestTransformerPluginProvider = "bedrock"
+	AiRequestTransformerPluginProviderCerebras    AiRequestTransformerPluginProvider = "cerebras"
 	AiRequestTransformerPluginProviderCohere      AiRequestTransformerPluginProvider = "cohere"
+	AiRequestTransformerPluginProviderDashscope   AiRequestTransformerPluginProvider = "dashscope"
 	AiRequestTransformerPluginProviderGemini      AiRequestTransformerPluginProvider = "gemini"
 	AiRequestTransformerPluginProviderHuggingface AiRequestTransformerPluginProvider = "huggingface"
 	AiRequestTransformerPluginProviderLlama2      AiRequestTransformerPluginProvider = "llama2"
 	AiRequestTransformerPluginProviderMistral     AiRequestTransformerPluginProvider = "mistral"
 	AiRequestTransformerPluginProviderOpenai      AiRequestTransformerPluginProvider = "openai"
+	AiRequestTransformerPluginProviderXai         AiRequestTransformerPluginProvider = "xai"
 )
 
 func (e AiRequestTransformerPluginProvider) ToPointer() *AiRequestTransformerPluginProvider {
@@ -764,7 +810,11 @@ func (e *AiRequestTransformerPluginProvider) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "bedrock":
 		fallthrough
+	case "cerebras":
+		fallthrough
 	case "cohere":
+		fallthrough
+	case "dashscope":
 		fallthrough
 	case "gemini":
 		fallthrough
@@ -775,6 +825,8 @@ func (e *AiRequestTransformerPluginProvider) UnmarshalJSON(data []byte) error {
 	case "mistral":
 		fallthrough
 	case "openai":
+		fallthrough
+	case "xai":
 		*e = AiRequestTransformerPluginProvider(v)
 		return nil
 	default:
@@ -841,6 +893,7 @@ const (
 	AiRequestTransformerPluginRouteTypeLlmV1Responses             AiRequestTransformerPluginRouteType = "llm/v1/responses"
 	AiRequestTransformerPluginRouteTypePreserve                   AiRequestTransformerPluginRouteType = "preserve"
 	AiRequestTransformerPluginRouteTypeRealtimeV1Realtime         AiRequestTransformerPluginRouteType = "realtime/v1/realtime"
+	AiRequestTransformerPluginRouteTypeVideoV1VideosGenerations   AiRequestTransformerPluginRouteType = "video/v1/videos/generations"
 )
 
 func (e AiRequestTransformerPluginRouteType) ToPointer() *AiRequestTransformerPluginRouteType {
@@ -879,6 +932,8 @@ func (e *AiRequestTransformerPluginRouteType) UnmarshalJSON(data []byte) error {
 	case "preserve":
 		fallthrough
 	case "realtime/v1/realtime":
+		fallthrough
+	case "video/v1/videos/generations":
 		*e = AiRequestTransformerPluginRouteType(v)
 		return nil
 	default:
@@ -887,11 +942,28 @@ func (e *AiRequestTransformerPluginRouteType) UnmarshalJSON(data []byte) error {
 }
 
 type AiRequestTransformerPluginLlm struct {
-	Auth    *AiRequestTransformerPluginAuth    `json:"auth"`
-	Logging *AiRequestTransformerPluginLogging `json:"logging"`
-	Model   AiRequestTransformerPluginModel    `json:"model"`
+	Auth *AiRequestTransformerPluginAuth `json:"auth"`
+	// The semantic description of the target, required if using semantic load balancing. Specially, setting this to 'CATCHALL' will indicate such target to be used when no other targets match the semantic threshold. Only used by ai-proxy-advanced.
+	Description *string                            `default:"null" json:"description"`
+	Logging     *AiRequestTransformerPluginLogging `json:"logging"`
+	// For internal use only.
+	Metadata map[string]any                  `json:"metadata,omitempty"`
+	Model    AiRequestTransformerPluginModel `json:"model"`
 	// The model's operation implementation, for this provider.
 	RouteType AiRequestTransformerPluginRouteType `json:"route_type"`
+	// The weight this target gets within the upstream loadbalancer (1-65535). Only used by ai-proxy-advanced.
+	Weight *int64 `default:"100" json:"weight"`
+}
+
+func (a AiRequestTransformerPluginLlm) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRequestTransformerPluginLlm) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"model", "route_type"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiRequestTransformerPluginLlm) GetAuth() *AiRequestTransformerPluginAuth {
@@ -901,11 +973,25 @@ func (a *AiRequestTransformerPluginLlm) GetAuth() *AiRequestTransformerPluginAut
 	return a.Auth
 }
 
+func (a *AiRequestTransformerPluginLlm) GetDescription() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Description
+}
+
 func (a *AiRequestTransformerPluginLlm) GetLogging() *AiRequestTransformerPluginLogging {
 	if a == nil {
 		return nil
 	}
 	return a.Logging
+}
+
+func (a *AiRequestTransformerPluginLlm) GetMetadata() map[string]any {
+	if a == nil {
+		return nil
+	}
+	return a.Metadata
 }
 
 func (a *AiRequestTransformerPluginLlm) GetModel() AiRequestTransformerPluginModel {
@@ -920,6 +1006,13 @@ func (a *AiRequestTransformerPluginLlm) GetRouteType() AiRequestTransformerPlugi
 		return AiRequestTransformerPluginRouteType("")
 	}
 	return a.RouteType
+}
+
+func (a *AiRequestTransformerPluginLlm) GetWeight() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.Weight
 }
 
 type AiRequestTransformerPluginConfig struct {
@@ -937,7 +1030,7 @@ type AiRequestTransformerPluginConfig struct {
 	HTTPSVerify *bool                         `default:"true" json:"https_verify"`
 	Llm         AiRequestTransformerPluginLlm `json:"llm"`
 	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
-	MaxRequestBodySize *int64 `default:"8192" json:"max_request_body_size"`
+	MaxRequestBodySize *int64 `default:"1048576" json:"max_request_body_size"`
 	// Use this prompt to tune the LLM system/assistant message for the incoming proxy request (from the client), and what you are expecting in return.
 	Prompt string `json:"prompt"`
 	// Defines the regular expression that must match to indicate a successful AI transformation at the request phase. The first match will be set as the outgoing body. If the AI service's response doesn't match this pattern, it is marked as a failure.

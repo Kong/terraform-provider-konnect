@@ -7,7 +7,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -26,6 +28,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
@@ -154,8 +157,10 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											path.MatchRelative().AtParent().AtName("call"),
 											path.MatchRelative().AtParent().AtName("exit"),
 											path.MatchRelative().AtParent().AtName("jq"),
+											path.MatchRelative().AtParent().AtName("json_to_xml"),
 											path.MatchRelative().AtParent().AtName("property"),
 											path.MatchRelative().AtParent().AtName("static"),
+											path.MatchRelative().AtParent().AtName("xml_to_json"),
 										}...),
 									},
 								},
@@ -271,8 +276,10 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											path.MatchRelative().AtParent().AtName("call"),
 											path.MatchRelative().AtParent().AtName("exit"),
 											path.MatchRelative().AtParent().AtName("jq"),
+											path.MatchRelative().AtParent().AtName("json_to_xml"),
 											path.MatchRelative().AtParent().AtName("property"),
 											path.MatchRelative().AtParent().AtName("static"),
+											path.MatchRelative().AtParent().AtName("xml_to_json"),
 										}...),
 									},
 								},
@@ -290,9 +297,14 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											Computed: true,
 											Optional: true,
 											Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-												"body":    types.StringType,
-												"headers": types.StringType,
-												"query":   types.StringType,
+												"body":                types.StringType,
+												"headers":             types.StringType,
+												"http_proxy":          types.StringType,
+												"https_proxy":         types.StringType,
+												"proxy_auth_password": types.StringType,
+												"proxy_auth_username": types.StringType,
+												"query":               types.StringType,
+												"url":                 types.StringType,
 											})),
 											Attributes: map[string]schema.Attribute{
 												"body": schema.StringAttribute{
@@ -309,9 +321,44 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 														stringvalidator.UTF8LengthBetween(1, 255),
 													},
 												},
+												"http_proxy": schema.StringAttribute{
+													Optional:    true,
+													Description: `The HTTP proxy URL. This proxy server will be used for HTTP requests.`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+												"https_proxy": schema.StringAttribute{
+													Optional:    true,
+													Description: `The HTTPS proxy URL. This proxy server will be used for HTTPS requests.`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+												"proxy_auth_password": schema.StringAttribute{
+													Optional:    true,
+													Description: `The password to authenticate with, if the forward proxy is protected by basic authentication.`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+												"proxy_auth_username": schema.StringAttribute{
+													Optional:    true,
+													Description: `The username to authenticate with, if the forward proxy is protected by basic authentication.`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
 												"query": schema.StringAttribute{
 													Optional:    true,
 													Description: `HTTP request query`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+												"url": schema.StringAttribute{
+													Optional:    true,
+													Description: `HTTP request URL`,
 													Validators: []validator.String{
 														stringvalidator.UTF8LengthBetween(1, 255),
 													},
@@ -379,6 +426,10 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											Optional:    true,
 											Description: `A string representing an SNI (server name indication) value for TLS.`,
 										},
+										"ssl_verify": schema.BoolAttribute{
+											Optional:    true,
+											Description: `Whether to verify the TLS certificate when making HTTPS requests.`,
+										},
 										"timeout": schema.Int64Attribute{
 											Optional:    true,
 											Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
@@ -387,12 +438,8 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											},
 										},
 										"url": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
-											Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search. Not Null`,
-											Validators: []validator.String{
-												speakeasy_stringvalidators.NotNull(),
-											},
+											Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search.`,
 										},
 									},
 									Description: `Make an external HTTP request`,
@@ -402,8 +449,10 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											path.MatchRelative().AtParent().AtName("cache"),
 											path.MatchRelative().AtParent().AtName("exit"),
 											path.MatchRelative().AtParent().AtName("jq"),
+											path.MatchRelative().AtParent().AtName("json_to_xml"),
 											path.MatchRelative().AtParent().AtName("property"),
 											path.MatchRelative().AtParent().AtName("static"),
+											path.MatchRelative().AtParent().AtName("xml_to_json"),
 										}...),
 									},
 								},
@@ -469,8 +518,10 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											path.MatchRelative().AtParent().AtName("cache"),
 											path.MatchRelative().AtParent().AtName("call"),
 											path.MatchRelative().AtParent().AtName("jq"),
+											path.MatchRelative().AtParent().AtName("json_to_xml"),
 											path.MatchRelative().AtParent().AtName("property"),
 											path.MatchRelative().AtParent().AtName("static"),
+											path.MatchRelative().AtParent().AtName("xml_to_json"),
 										}...),
 									},
 								},
@@ -520,8 +571,81 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											path.MatchRelative().AtParent().AtName("cache"),
 											path.MatchRelative().AtParent().AtName("call"),
 											path.MatchRelative().AtParent().AtName("exit"),
+											path.MatchRelative().AtParent().AtName("json_to_xml"),
 											path.MatchRelative().AtParent().AtName("property"),
 											path.MatchRelative().AtParent().AtName("static"),
+											path.MatchRelative().AtParent().AtName("xml_to_json"),
+										}...),
+									},
+								},
+								"json_to_xml": schema.SingleNestedAttribute{
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"attributes_block_name": schema.StringAttribute{
+											Optional: true,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 32),
+											},
+										},
+										"attributes_name_prefix": schema.StringAttribute{
+											Optional: true,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 32),
+											},
+										},
+										"input": schema.StringAttribute{
+											Optional:    true,
+											Description: `JSON string or table`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"inputs": schema.MapAttribute{
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `JSON string or table`,
+										},
+										"name": schema.StringAttribute{
+											Optional:    true,
+											Description: `A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid ` + "`" + `snake_case` + "`" + ` or ` + "`" + `kebab-case` + "`" + `.`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"output": schema.StringAttribute{
+											Optional:    true,
+											Description: `XML document converted from JSON`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"root_element_name": schema.StringAttribute{
+											Optional: true,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 64),
+											},
+										},
+										"text_block_name": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     stringdefault.StaticString(`#text`),
+											Description: `The name of the block to treat as XML text content. Default: "#text"`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 32),
+											},
+										},
+									},
+									Description: `transform JSON or lua table to XML`,
+									Validators: []validator.Object{
+										objectvalidator.ConflictsWith(path.Expressions{
+											path.MatchRelative().AtParent().AtName("branch"),
+											path.MatchRelative().AtParent().AtName("cache"),
+											path.MatchRelative().AtParent().AtName("call"),
+											path.MatchRelative().AtParent().AtName("exit"),
+											path.MatchRelative().AtParent().AtName("jq"),
+											path.MatchRelative().AtParent().AtName("property"),
+											path.MatchRelative().AtParent().AtName("static"),
+											path.MatchRelative().AtParent().AtName("xml_to_json"),
 										}...),
 									},
 								},
@@ -579,7 +703,9 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											path.MatchRelative().AtParent().AtName("call"),
 											path.MatchRelative().AtParent().AtName("exit"),
 											path.MatchRelative().AtParent().AtName("jq"),
+											path.MatchRelative().AtParent().AtName("json_to_xml"),
 											path.MatchRelative().AtParent().AtName("static"),
+											path.MatchRelative().AtParent().AtName("xml_to_json"),
 										}...),
 									},
 								},
@@ -605,12 +731,12 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											ElementType: types.StringType,
 											Description: `Individual items from ` + "`" + `.values` + "`" + `, referenced by key`,
 										},
-										"values": schema.StringAttribute{
-											Computed:    true,
+										"values": schema.MapAttribute{
 											Optional:    true,
-											Description: `An object with string keys and freeform values. Not Null`,
-											Validators: []validator.String{
-												speakeasy_stringvalidators.NotNull(),
+											ElementType: jsontypes.NormalizedType{},
+											Description: `An object with string keys and freeform values`,
+											Validators: []validator.Map{
+												mapvalidator.ValueStringsAre(validators.IsValidJSON()),
 											},
 										},
 									},
@@ -622,7 +748,87 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											path.MatchRelative().AtParent().AtName("call"),
 											path.MatchRelative().AtParent().AtName("exit"),
 											path.MatchRelative().AtParent().AtName("jq"),
+											path.MatchRelative().AtParent().AtName("json_to_xml"),
 											path.MatchRelative().AtParent().AtName("property"),
+											path.MatchRelative().AtParent().AtName("xml_to_json"),
+										}...),
+									},
+								},
+								"xml_to_json": schema.SingleNestedAttribute{
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"attributes_block_name": schema.StringAttribute{
+											Optional: true,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 32),
+											},
+										},
+										"attributes_name_prefix": schema.StringAttribute{
+											Optional: true,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 32),
+											},
+										},
+										"input": schema.StringAttribute{
+											Optional:    true,
+											Description: `XML document string`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"name": schema.StringAttribute{
+											Optional:    true,
+											Description: `A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid ` + "`" + `snake_case` + "`" + ` or ` + "`" + `kebab-case` + "`" + `.`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"output": schema.StringAttribute{
+											Optional:    true,
+											Description: `a map object converted from XML document. If connected to ` + "`" + `request.body` + "`" + ` or ` + "`" + `response.body` + "`" + `, the output will be a JSON object.`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"recognize_type": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     booldefault.StaticBool(true),
+											Description: `Default: true`,
+										},
+										"text_as_property": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     booldefault.StaticBool(false),
+											Description: `Default: false`,
+										},
+										"text_block_name": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     stringdefault.StaticString(`#text`),
+											Description: `Default: "#text"`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 32),
+											},
+										},
+										"xpath": schema.StringAttribute{
+											Optional: true,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 256),
+											},
+										},
+									},
+									Description: `convert XML to JSON`,
+									Validators: []validator.Object{
+										objectvalidator.ConflictsWith(path.Expressions{
+											path.MatchRelative().AtParent().AtName("branch"),
+											path.MatchRelative().AtParent().AtName("cache"),
+											path.MatchRelative().AtParent().AtName("call"),
+											path.MatchRelative().AtParent().AtName("exit"),
+											path.MatchRelative().AtParent().AtName("jq"),
+											path.MatchRelative().AtParent().AtName("json_to_xml"),
+											path.MatchRelative().AtParent().AtName("property"),
+											path.MatchRelative().AtParent().AtName("static"),
 										}...),
 									},
 								},
@@ -642,6 +848,22 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 									},
 									`redis`: types.ObjectType{
 										AttrTypes: map[string]attr.Type{
+											`cloud_authentication`: types.ObjectType{
+												AttrTypes: map[string]attr.Type{
+													`auth_provider`:            types.StringType,
+													`aws_access_key_id`:        types.StringType,
+													`aws_assume_role_arn`:      types.StringType,
+													`aws_cache_name`:           types.StringType,
+													`aws_is_serverless`:        types.BoolType,
+													`aws_region`:               types.StringType,
+													`aws_role_session_name`:    types.StringType,
+													`aws_secret_access_key`:    types.StringType,
+													`azure_client_id`:          types.StringType,
+													`azure_client_secret`:      types.StringType,
+													`azure_tenant_id`:          types.StringType,
+													`gcp_service_account_json`: types.StringType,
+												},
+											},
 											`cluster_max_redirections`: types.Int64Type,
 											`cluster_nodes`: types.ListType{
 												ElemType: types.ObjectType{
@@ -698,6 +920,22 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 									},
 									"redis": types.ObjectType{
 										AttrTypes: map[string]attr.Type{
+											`cloud_authentication`: types.ObjectType{
+												AttrTypes: map[string]attr.Type{
+													`auth_provider`:            types.StringType,
+													`aws_access_key_id`:        types.StringType,
+													`aws_assume_role_arn`:      types.StringType,
+													`aws_cache_name`:           types.StringType,
+													`aws_is_serverless`:        types.BoolType,
+													`aws_region`:               types.StringType,
+													`aws_role_session_name`:    types.StringType,
+													`aws_secret_access_key`:    types.StringType,
+													`azure_client_id`:          types.StringType,
+													`azure_client_secret`:      types.StringType,
+													`azure_tenant_id`:          types.StringType,
+													`gcp_service_account_json`: types.StringType,
+												},
+											},
 											`cluster_max_redirections`: types.Int64Type,
 											`cluster_nodes`: types.ListType{
 												ElemType: types.ObjectType{
@@ -757,6 +995,22 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 										Computed: true,
 										Optional: true,
 										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+											"cloud_authentication": types.ObjectType{
+												AttrTypes: map[string]attr.Type{
+													`auth_provider`:            types.StringType,
+													`aws_access_key_id`:        types.StringType,
+													`aws_assume_role_arn`:      types.StringType,
+													`aws_cache_name`:           types.StringType,
+													`aws_is_serverless`:        types.BoolType,
+													`aws_region`:               types.StringType,
+													`aws_role_session_name`:    types.StringType,
+													`aws_secret_access_key`:    types.StringType,
+													`azure_client_id`:          types.StringType,
+													`azure_client_secret`:      types.StringType,
+													`azure_tenant_id`:          types.StringType,
+													`gcp_service_account_json`: types.StringType,
+												},
+											},
 											"cluster_max_redirections": types.Int64Type,
 											"cluster_nodes": types.ListType{
 												ElemType: types.ObjectType{
@@ -794,6 +1048,85 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											"username":          types.StringType,
 										})),
 										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+													"auth_provider":            types.StringType,
+													"aws_access_key_id":        types.StringType,
+													"aws_assume_role_arn":      types.StringType,
+													"aws_cache_name":           types.StringType,
+													"aws_is_serverless":        types.BoolType,
+													"aws_region":               types.StringType,
+													"aws_role_session_name":    types.StringType,
+													"aws_secret_access_key":    types.StringType,
+													"azure_client_id":          types.StringType,
+													"azure_client_secret":      types.StringType,
+													"azure_tenant_id":          types.StringType,
+													"gcp_service_account_json": types.StringType,
+												})),
+												Attributes: map[string]schema.Attribute{
+													"auth_provider": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
+														Validators: []validator.String{
+															stringvalidator.OneOf(
+																"aws",
+																"azure",
+																"gcp",
+															),
+														},
+													},
+													"aws_access_key_id": schema.StringAttribute{
+														Optional:    true,
+														Description: `AWS Access Key ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+													},
+													"aws_assume_role_arn": schema.StringAttribute{
+														Optional:    true,
+														Description: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.`,
+													},
+													"aws_cache_name": schema.StringAttribute{
+														Optional:    true,
+														Description: `The name of the AWS Elasticache cluster when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+													},
+													"aws_is_serverless": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     booldefault.StaticBool(true),
+														Description: `This flag specifies whether the cluster is serverless when auth_provider is set to ` + "`" + `aws` + "`" + `. Default: true`,
+													},
+													"aws_region": schema.StringAttribute{
+														Optional:    true,
+														Description: `The region of the AWS ElastiCache cluster when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+													},
+													"aws_role_session_name": schema.StringAttribute{
+														Optional:    true,
+														Description: `The session name for the temporary credentials when assuming the IAM role.`,
+													},
+													"aws_secret_access_key": schema.StringAttribute{
+														Optional:    true,
+														Description: `AWS Secret Access Key to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+													},
+													"azure_client_id": schema.StringAttribute{
+														Optional:    true,
+														Description: `Azure Client ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+													},
+													"azure_client_secret": schema.StringAttribute{
+														Optional:    true,
+														Description: `Azure Client Secret to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+													},
+													"azure_tenant_id": schema.StringAttribute{
+														Optional:    true,
+														Description: `Azure Tenant ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+													},
+													"gcp_service_account_json": schema.StringAttribute{
+														Optional:    true,
+														Description: `GCP Service Account JSON to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `gcp` + "`" + `.`,
+													},
+												},
+												Description: `Cloud auth related configs for connecting to a Cloud Provider's Redis instance.`,
+											},
 											"cluster_max_redirections": schema.Int64Attribute{
 												Computed:    true,
 												Optional:    true,

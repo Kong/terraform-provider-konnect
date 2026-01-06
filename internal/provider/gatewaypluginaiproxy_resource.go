@@ -183,9 +183,10 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`openai`),
-						Description: `LLM input and output format and schema to use. Default: "openai"; must be one of ["bedrock", "cohere", "gemini", "huggingface", "openai"]`,
+						Description: `LLM input and output format and schema to use. Default: "openai"; must be one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
+								"anthropic",
 								"bedrock",
 								"cohere",
 								"gemini",
@@ -206,7 +207,7 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 								Computed:    true,
 								Optional:    true,
 								Default:     booldefault.StaticBool(false),
-								Description: `If enabled, will log the request and response body into the Kong log plugin(s) output. Default: false`,
+								Description: `If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well. Default: false`,
 							},
 							"log_statistics": schema.BoolAttribute{
 								Computed:    true,
@@ -219,8 +220,8 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 					"max_request_body_size": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     int64default.StaticInt64(8192),
-						Description: `max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 8192`,
+						Default:     int64default.StaticInt64(1048576),
+						Description: `max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 1048576`,
 					},
 					"model": schema.SingleNestedAttribute{
 						Required: true,
@@ -245,12 +246,18 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 											`aws_sts_endpoint_url`:       types.StringType,
 											`embeddings_normalize`:       types.BoolType,
 											`performance_config_latency`: types.StringType,
+											`video_output_s3_uri`:        types.StringType,
 										},
 									},
 									"cohere": types.ObjectType{
 										AttrTypes: map[string]attr.Type{
 											`embedding_input_type`: types.StringType,
 											`wait_for_model`:       types.BoolType,
+										},
+									},
+									"dashscope": types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`international`: types.BoolType,
 										},
 									},
 									"embeddings_dimensions": types.Int64Type,
@@ -308,6 +315,7 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 											"aws_sts_endpoint_url":       types.StringType,
 											"embeddings_normalize":       types.BoolType,
 											"performance_config_latency": types.StringType,
+											"video_output_s3_uri":        types.StringType,
 										})),
 										Attributes: map[string]schema.Attribute{
 											"aws_assume_role_arn": schema.StringAttribute{
@@ -335,6 +343,10 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 											"performance_config_latency": schema.StringAttribute{
 												Optional:    true,
 												Description: `Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.`,
+											},
+											"video_output_s3_uri": schema.StringAttribute{
+												Optional:    true,
+												Description: `S3 URI (s3://bucket/prefix) where Bedrock will store generated video files. Required for video generation.`,
 											},
 										},
 									},
@@ -364,6 +376,23 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 											"wait_for_model": schema.BoolAttribute{
 												Optional:    true,
 												Description: `Wait for the model if it is not ready`,
+											},
+										},
+									},
+									"dashscope": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+											"international": types.BoolType,
+										})),
+										Attributes: map[string]schema.Attribute{
+											"international": schema.BoolAttribute{
+												Computed: true,
+												Optional: true,
+												Default:  booldefault.StaticBool(true),
+												MarkdownDescription: `Two Dashscope endpoints are available, and the international endpoint will be used when this is set to ` + "`" + `true` + "`" + `.` + "\n" +
+													`        It is recommended to set this to ` + "`" + `true` + "`" + ` when using international version of dashscope.` + "\n" +
+													`Default: true`,
 											},
 										},
 									},
@@ -486,18 +515,21 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 							},
 							"provider": schema.StringAttribute{
 								Required:    true,
-								Description: `AI provider request format - Kong translates requests to and from the specified backend compatible formats. must be one of ["anthropic", "azure", "bedrock", "cohere", "gemini", "huggingface", "llama2", "mistral", "openai"]`,
+								Description: `AI provider request format - Kong translates requests to and from the specified backend compatible formats. must be one of ["anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "gemini", "huggingface", "llama2", "mistral", "openai", "xai"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
 										"anthropic",
 										"azure",
 										"bedrock",
+										"cerebras",
 										"cohere",
+										"dashscope",
 										"gemini",
 										"huggingface",
 										"llama2",
 										"mistral",
 										"openai",
+										"xai",
 									),
 								},
 							},
@@ -524,7 +556,7 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 					},
 					"route_type": schema.StringAttribute{
 						Required:    true,
-						Description: `The model's operation implementation, for this provider. must be one of ["audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime"]`,
+						Description: `The model's operation implementation, for this provider. must be one of ["audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime", "video/v1/videos/generations"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"audio/v1/audio/speech",
@@ -541,6 +573,7 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 								"llm/v1/responses",
 								"preserve",
 								"realtime/v1/realtime",
+								"video/v1/videos/generations",
 							),
 						},
 					},

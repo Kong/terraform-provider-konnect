@@ -246,7 +246,7 @@ func (a *AiResponseTransformerPluginAuth) GetParamValue() *string {
 }
 
 type AiResponseTransformerPluginLogging struct {
-	// If enabled, will log the request and response body into the Kong log plugin(s) output.
+	// If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well.
 	LogPayloads *bool `default:"false" json:"log_payloads"`
 	// If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.
 	LogStatistics *bool `default:"false" json:"log_statistics"`
@@ -290,6 +290,8 @@ type AiResponseTransformerPluginBedrock struct {
 	EmbeddingsNormalize *bool `default:"false" json:"embeddings_normalize"`
 	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
 	PerformanceConfigLatency *string `default:"null" json:"performance_config_latency"`
+	// S3 URI (s3://bucket/prefix) where Bedrock will store generated video files. Required for video generation.
+	VideoOutputS3URI *string `default:"null" json:"video_output_s3_uri"`
 }
 
 func (a AiResponseTransformerPluginBedrock) MarshalJSON() ([]byte, error) {
@@ -343,6 +345,13 @@ func (a *AiResponseTransformerPluginBedrock) GetPerformanceConfigLatency() *stri
 		return nil
 	}
 	return a.PerformanceConfigLatency
+}
+
+func (a *AiResponseTransformerPluginBedrock) GetVideoOutputS3URI() *string {
+	if a == nil {
+		return nil
+	}
+	return a.VideoOutputS3URI
 }
 
 // AiResponseTransformerPluginEmbeddingInputType - The purpose of the input text to calculate embedding vectors.
@@ -411,6 +420,32 @@ func (a *AiResponseTransformerPluginCohere) GetWaitForModel() *bool {
 		return nil
 	}
 	return a.WaitForModel
+}
+
+type AiResponseTransformerPluginDashscope struct {
+	//
+	//         Two Dashscope endpoints are available, and the international endpoint will be used when this is set to `true`.
+	//         It is recommended to set this to `true` when using international version of dashscope.
+	//
+	International *bool `default:"true" json:"international"`
+}
+
+func (a AiResponseTransformerPluginDashscope) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiResponseTransformerPluginDashscope) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiResponseTransformerPluginDashscope) GetInternational() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.International
 }
 
 type AiResponseTransformerPluginGemini struct {
@@ -561,9 +596,10 @@ type AiResponseTransformerPluginOptions struct {
 	// Deployment ID for Azure OpenAI instances.
 	AzureDeploymentID *string `default:"null" json:"azure_deployment_id"`
 	// Instance name for Azure OpenAI hosted models.
-	AzureInstance *string                             `default:"null" json:"azure_instance"`
-	Bedrock       *AiResponseTransformerPluginBedrock `json:"bedrock"`
-	Cohere        *AiResponseTransformerPluginCohere  `json:"cohere"`
+	AzureInstance *string                               `default:"null" json:"azure_instance"`
+	Bedrock       *AiResponseTransformerPluginBedrock   `json:"bedrock"`
+	Cohere        *AiResponseTransformerPluginCohere    `json:"cohere"`
+	Dashscope     *AiResponseTransformerPluginDashscope `json:"dashscope"`
 	// If using embeddings models, set the number of dimensions to generate.
 	EmbeddingsDimensions *int64                                  `default:"null" json:"embeddings_dimensions"`
 	Gemini               *AiResponseTransformerPluginGemini      `json:"gemini"`
@@ -641,6 +677,13 @@ func (a *AiResponseTransformerPluginOptions) GetCohere() *AiResponseTransformerP
 		return nil
 	}
 	return a.Cohere
+}
+
+func (a *AiResponseTransformerPluginOptions) GetDashscope() *AiResponseTransformerPluginDashscope {
+	if a == nil {
+		return nil
+	}
+	return a.Dashscope
 }
 
 func (a *AiResponseTransformerPluginOptions) GetEmbeddingsDimensions() *int64 {
@@ -741,12 +784,15 @@ const (
 	AiResponseTransformerPluginProviderAnthropic   AiResponseTransformerPluginProvider = "anthropic"
 	AiResponseTransformerPluginProviderAzure       AiResponseTransformerPluginProvider = "azure"
 	AiResponseTransformerPluginProviderBedrock     AiResponseTransformerPluginProvider = "bedrock"
+	AiResponseTransformerPluginProviderCerebras    AiResponseTransformerPluginProvider = "cerebras"
 	AiResponseTransformerPluginProviderCohere      AiResponseTransformerPluginProvider = "cohere"
+	AiResponseTransformerPluginProviderDashscope   AiResponseTransformerPluginProvider = "dashscope"
 	AiResponseTransformerPluginProviderGemini      AiResponseTransformerPluginProvider = "gemini"
 	AiResponseTransformerPluginProviderHuggingface AiResponseTransformerPluginProvider = "huggingface"
 	AiResponseTransformerPluginProviderLlama2      AiResponseTransformerPluginProvider = "llama2"
 	AiResponseTransformerPluginProviderMistral     AiResponseTransformerPluginProvider = "mistral"
 	AiResponseTransformerPluginProviderOpenai      AiResponseTransformerPluginProvider = "openai"
+	AiResponseTransformerPluginProviderXai         AiResponseTransformerPluginProvider = "xai"
 )
 
 func (e AiResponseTransformerPluginProvider) ToPointer() *AiResponseTransformerPluginProvider {
@@ -764,7 +810,11 @@ func (e *AiResponseTransformerPluginProvider) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "bedrock":
 		fallthrough
+	case "cerebras":
+		fallthrough
 	case "cohere":
+		fallthrough
+	case "dashscope":
 		fallthrough
 	case "gemini":
 		fallthrough
@@ -775,6 +825,8 @@ func (e *AiResponseTransformerPluginProvider) UnmarshalJSON(data []byte) error {
 	case "mistral":
 		fallthrough
 	case "openai":
+		fallthrough
+	case "xai":
 		*e = AiResponseTransformerPluginProvider(v)
 		return nil
 	default:
@@ -841,6 +893,7 @@ const (
 	AiResponseTransformerPluginRouteTypeLlmV1Responses             AiResponseTransformerPluginRouteType = "llm/v1/responses"
 	AiResponseTransformerPluginRouteTypePreserve                   AiResponseTransformerPluginRouteType = "preserve"
 	AiResponseTransformerPluginRouteTypeRealtimeV1Realtime         AiResponseTransformerPluginRouteType = "realtime/v1/realtime"
+	AiResponseTransformerPluginRouteTypeVideoV1VideosGenerations   AiResponseTransformerPluginRouteType = "video/v1/videos/generations"
 )
 
 func (e AiResponseTransformerPluginRouteType) ToPointer() *AiResponseTransformerPluginRouteType {
@@ -879,6 +932,8 @@ func (e *AiResponseTransformerPluginRouteType) UnmarshalJSON(data []byte) error 
 	case "preserve":
 		fallthrough
 	case "realtime/v1/realtime":
+		fallthrough
+	case "video/v1/videos/generations":
 		*e = AiResponseTransformerPluginRouteType(v)
 		return nil
 	default:
@@ -887,11 +942,28 @@ func (e *AiResponseTransformerPluginRouteType) UnmarshalJSON(data []byte) error 
 }
 
 type AiResponseTransformerPluginLlm struct {
-	Auth    *AiResponseTransformerPluginAuth    `json:"auth"`
-	Logging *AiResponseTransformerPluginLogging `json:"logging"`
-	Model   AiResponseTransformerPluginModel    `json:"model"`
+	Auth *AiResponseTransformerPluginAuth `json:"auth"`
+	// The semantic description of the target, required if using semantic load balancing. Specially, setting this to 'CATCHALL' will indicate such target to be used when no other targets match the semantic threshold. Only used by ai-proxy-advanced.
+	Description *string                             `default:"null" json:"description"`
+	Logging     *AiResponseTransformerPluginLogging `json:"logging"`
+	// For internal use only.
+	Metadata map[string]any                   `json:"metadata,omitempty"`
+	Model    AiResponseTransformerPluginModel `json:"model"`
 	// The model's operation implementation, for this provider.
 	RouteType AiResponseTransformerPluginRouteType `json:"route_type"`
+	// The weight this target gets within the upstream loadbalancer (1-65535). Only used by ai-proxy-advanced.
+	Weight *int64 `default:"100" json:"weight"`
+}
+
+func (a AiResponseTransformerPluginLlm) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiResponseTransformerPluginLlm) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"model", "route_type"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiResponseTransformerPluginLlm) GetAuth() *AiResponseTransformerPluginAuth {
@@ -901,11 +973,25 @@ func (a *AiResponseTransformerPluginLlm) GetAuth() *AiResponseTransformerPluginA
 	return a.Auth
 }
 
+func (a *AiResponseTransformerPluginLlm) GetDescription() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Description
+}
+
 func (a *AiResponseTransformerPluginLlm) GetLogging() *AiResponseTransformerPluginLogging {
 	if a == nil {
 		return nil
 	}
 	return a.Logging
+}
+
+func (a *AiResponseTransformerPluginLlm) GetMetadata() map[string]any {
+	if a == nil {
+		return nil
+	}
+	return a.Metadata
 }
 
 func (a *AiResponseTransformerPluginLlm) GetModel() AiResponseTransformerPluginModel {
@@ -920,6 +1006,13 @@ func (a *AiResponseTransformerPluginLlm) GetRouteType() AiResponseTransformerPlu
 		return AiResponseTransformerPluginRouteType("")
 	}
 	return a.RouteType
+}
+
+func (a *AiResponseTransformerPluginLlm) GetWeight() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.Weight
 }
 
 type AiResponseTransformerPluginConfig struct {
@@ -937,7 +1030,7 @@ type AiResponseTransformerPluginConfig struct {
 	HTTPSVerify *bool                          `default:"true" json:"https_verify"`
 	Llm         AiResponseTransformerPluginLlm `json:"llm"`
 	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
-	MaxRequestBodySize *int64 `default:"8192" json:"max_request_body_size"`
+	MaxRequestBodySize *int64 `default:"1048576" json:"max_request_body_size"`
 	// Set true to read specific response format from the LLM, and accordingly set the status code / body / headers that proxy back to the client. You need to engineer your LLM prompt to return the correct format, see plugin docs 'Overview' page for usage instructions.
 	ParseLlmResponseJSONInstructions *bool `default:"false" json:"parse_llm_response_json_instructions"`
 	// Use this prompt to tune the LLM system/assistant message for the returning proxy response (from the upstream), adn what response format you are expecting.

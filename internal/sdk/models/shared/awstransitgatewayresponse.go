@@ -62,6 +62,7 @@ type AwsTransitGatewayResponse struct {
 	// - `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
 	// - `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
 	// - `terminated` - The attachment has been fully deleted and is no longer available.
+	// - `error` - The attachment is in an error state.
 	//
 	State TransitGatewayState `json:"state"`
 	// Metadata describing the backing state of the transit gateway and why it may be in an erroneous state.

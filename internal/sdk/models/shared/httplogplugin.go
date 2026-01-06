@@ -268,6 +268,8 @@ type HTTPLogPluginConfig struct {
 	QueueSize *int64 `default:"null" json:"queue_size"`
 	// Number of times to retry when sending data to the upstream server.
 	RetryCount *int64 `default:"null" json:"retry_count"`
+	// When using TLS, this option enables verification of the certificate presented by the server.
+	SslVerify *bool `default:"null" json:"ssl_verify"`
 	// An optional timeout in milliseconds when sending data to the upstream server.
 	Timeout *float64 `default:"10000" json:"timeout"`
 }
@@ -351,6 +353,13 @@ func (h *HTTPLogPluginConfig) GetRetryCount() *int64 {
 		return nil
 	}
 	return h.RetryCount
+}
+
+func (h *HTTPLogPluginConfig) GetSslVerify() *bool {
+	if h == nil {
+		return nil
+	}
+	return h.SslVerify
 }
 
 func (h *HTTPLogPluginConfig) GetTimeout() *float64 {

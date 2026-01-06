@@ -41,9 +41,13 @@ resource "konnect_gateway_plugin_ai_llm_as_judge" "my_gatewaypluginaillmasjudge"
         param_name                 = "...my_param_name..."
         param_value                = "...my_param_value..."
       }
+      description = "...my_description..."
       logging = {
         log_payloads   = false
         log_statistics = false
+      }
+      metadata = {
+        key = jsonencode("value")
       }
       model = {
         name = "...my_name..."
@@ -59,10 +63,14 @@ resource "konnect_gateway_plugin_ai_llm_as_judge" "my_gatewaypluginaillmasjudge"
             aws_sts_endpoint_url       = "...my_aws_sts_endpoint_url..."
             embeddings_normalize       = false
             performance_config_latency = "...my_performance_config_latency..."
+            video_output_s3_uri        = "...my_video_output_s3_uri..."
           }
           cohere = {
             embedding_input_type = "search_document"
             wait_for_model       = false
+          }
+          dashscope = {
+            international = true
           }
           embeddings_dimensions = 3
           gemini = {
@@ -86,9 +94,10 @@ resource "konnect_gateway_plugin_ai_llm_as_judge" "my_gatewaypluginaillmasjudge"
           upstream_path  = "...my_upstream_path..."
           upstream_url   = "...my_upstream_url..."
         }
-        provider = "gemini"
+        provider = "dashscope"
       }
-      route_type = "llm/v1/completions"
+      route_type = "llm/v1/embeddings"
+      weight     = 28655
     }
     message_countback = 928.19
     prompt            = "...my_prompt..."
@@ -192,19 +201,22 @@ Optional:
 Required:
 
 - `model` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model))
-- `route_type` (String) The model's operation implementation, for this provider. must be one of ["audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime"]
+- `route_type` (String) The model's operation implementation, for this provider. must be one of ["audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime", "video/v1/videos/generations"]
 
 Optional:
 
 - `auth` (Attributes) (see [below for nested schema](#nestedatt--config--llm--auth))
+- `description` (String) The semantic description of the target, required if using semantic load balancing. Specially, setting this to 'CATCHALL' will indicate such target to be used when no other targets match the semantic threshold. Only used by ai-proxy-advanced.
 - `logging` (Attributes) (see [below for nested schema](#nestedatt--config--llm--logging))
+- `metadata` (Map of String) For internal use only.
+- `weight` (Number) The weight this target gets within the upstream loadbalancer (1-65535). Only used by ai-proxy-advanced. Default: 100
 
 <a id="nestedatt--config--llm--model"></a>
 ### Nested Schema for `config.llm.model`
 
 Required:
 
-- `provider` (String) AI provider request format - Kong translates requests to and from the specified backend compatible formats. must be one of ["anthropic", "azure", "bedrock", "cohere", "gemini", "huggingface", "llama2", "mistral", "openai"]
+- `provider` (String) AI provider request format - Kong translates requests to and from the specified backend compatible formats. must be one of ["anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "gemini", "huggingface", "llama2", "mistral", "openai", "xai"]
 
 Optional:
 
@@ -222,6 +234,7 @@ Optional:
 - `azure_instance` (String) Instance name for Azure OpenAI hosted models.
 - `bedrock` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model--options--bedrock))
 - `cohere` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model--options--cohere))
+- `dashscope` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model--options--dashscope))
 - `embeddings_dimensions` (Number) If using embeddings models, set the number of dimensions to generate.
 - `gemini` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model--options--gemini))
 - `huggingface` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model--options--huggingface))
@@ -247,6 +260,7 @@ Optional:
 - `aws_sts_endpoint_url` (String) If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 - `embeddings_normalize` (Boolean) If using AWS providers (Bedrock), set to true to normalize the embeddings. Default: false
 - `performance_config_latency` (String) Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
+- `video_output_s3_uri` (String) S3 URI (s3://bucket/prefix) where Bedrock will store generated video files. Required for video generation.
 
 
 <a id="nestedatt--config--llm--model--options--cohere"></a>
@@ -256,6 +270,16 @@ Optional:
 
 - `embedding_input_type` (String) The purpose of the input text to calculate embedding vectors. Default: "classification"; must be one of ["classification", "clustering", "image", "search_document", "search_query"]
 - `wait_for_model` (Boolean) Wait for the model if it is not ready
+
+
+<a id="nestedatt--config--llm--model--options--dashscope"></a>
+### Nested Schema for `config.llm.model.options.dashscope`
+
+Optional:
+
+- `international` (Boolean) Two Dashscope endpoints are available, and the international endpoint will be used when this is set to `true`.
+        It is recommended to set this to `true` when using international version of dashscope.
+Default: true
 
 
 <a id="nestedatt--config--llm--model--options--gemini"></a>
@@ -306,7 +330,7 @@ Optional:
 
 Optional:
 
-- `log_payloads` (Boolean) If enabled, will log the request and response body into the Kong log plugin(s) output. Default: false
+- `log_payloads` (Boolean) If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well. Default: false
 - `log_statistics` (Boolean) If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output. Default: false
 
 

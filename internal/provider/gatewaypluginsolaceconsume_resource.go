@@ -193,6 +193,7 @@ func (r *GatewayPluginSolaceConsumeResource) Schema(ctx context.Context, req res
 								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
 									"access_token":        types.StringType,
 									"access_token_header": types.StringType,
+									"basic_auth_header":   types.StringType,
 									"id_token":            types.StringType,
 									"id_token_header":     types.StringType,
 									"password":            types.StringType,
@@ -205,14 +206,20 @@ func (r *GatewayPluginSolaceConsumeResource) Schema(ctx context.Context, req res
 										Description: `The OAuth2 access token used with ` + "`" + `OAUTH2` + "`" + ` authentication scheme when connecting to an event broker.`,
 									},
 									"access_token_header": schema.StringAttribute{
-										Optional: true,
+										Optional:    true,
+										Description: `Specifies the header that contains access token for the ` + "`" + `OAUTH2` + "`" + ` authentication scheme when connecting to an event broker. This header takes precedence over the ` + "`" + `access_token` + "`" + ` field.`,
+									},
+									"basic_auth_header": schema.StringAttribute{
+										Optional:    true,
+										Description: `Specifies the header that contains Basic Authentication credentials for the ` + "`" + `BASIC` + "`" + ` authentication scheme when connecting to an event broker. This header takes precedence over the ` + "`" + `username` + "`" + ` and ` + "`" + `password` + "`" + ` fields.`,
 									},
 									"id_token": schema.StringAttribute{
 										Optional:    true,
 										Description: `The OpenID Connect ID token used with ` + "`" + `OAUTH2` + "`" + ` authentication scheme when connecting to an event broker.`,
 									},
 									"id_token_header": schema.StringAttribute{
-										Optional: true,
+										Optional:    true,
+										Description: `Specifies the header that contains id token for the ` + "`" + `OAUTH2` + "`" + ` authentication scheme when connecting to an event broker. This header takes precedence over the ` + "`" + `id_token` + "`" + ` field.`,
 									},
 									"password": schema.StringAttribute{
 										Optional:    true,

@@ -13,6 +13,7 @@ type AiLlmAsJudgePluginOptions struct {
 	AzureInstance        types.String                   `tfsdk:"azure_instance"`
 	Bedrock              *AiLlmAsJudgePluginBedrock     `tfsdk:"bedrock"`
 	Cohere               *AiLlmAsJudgePluginCohere      `tfsdk:"cohere"`
+	Dashscope            *AiLlmAsJudgePluginDashscope   `tfsdk:"dashscope"`
 	EmbeddingsDimensions types.Int64                    `tfsdk:"embeddings_dimensions"`
 	Gemini               *AiLlmAsJudgePluginGemini      `tfsdk:"gemini"`
 	Huggingface          *AiLlmAsJudgePluginHuggingface `tfsdk:"huggingface"`

@@ -85,6 +85,12 @@ func (r *GatewayPluginOasValidationResource) Schema(ctx context.Context, req res
 						Default:     booldefault.StaticBool(true),
 						Description: `Indicates whether the api_spec is URI-Encoded. Default: true`,
 					},
+					"collect_all_errors": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `If set to true, collects all validation errors instead of stopping at the first error. Note: Enabling this option with OpenAPI 3.0 will affect performance. Default: false`,
+					},
 					"custom_base_path": schema.StringAttribute{
 						Optional:    true,
 						Description: `The base path to be used for path match evaluation. This value is ignored if ` + "`" + `include_base_path` + "`" + ` is set to ` + "`" + `false` + "`" + `.`,

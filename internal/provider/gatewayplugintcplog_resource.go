@@ -92,6 +92,12 @@ func (r *GatewayPluginTCPLogResource) Schema(ctx context.Context, req resource.S
 							int64validator.AtMost(65535),
 						},
 					},
+					"ssl_verify": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `When using TLS, this option enables verification of the certificate presented by the server. Default: false`,
+					},
 					"timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,

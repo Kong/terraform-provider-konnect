@@ -13,4 +13,5 @@ type AiLlmAsJudgePluginBedrock struct {
 	AwsStsEndpointURL        types.String `tfsdk:"aws_sts_endpoint_url"`
 	EmbeddingsNormalize      types.Bool   `tfsdk:"embeddings_normalize"`
 	PerformanceConfigLatency types.String `tfsdk:"performance_config_latency"`
+	VideoOutputS3URI         types.String `tfsdk:"video_output_s3_uri"`
 }

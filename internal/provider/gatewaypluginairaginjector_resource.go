@@ -16,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
@@ -73,6 +74,45 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
+					"collection_acl_config": schema.MapNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"allow": schema.ListAttribute{
+									Computed:    true,
+									Optional:    true,
+									Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
+									ElementType: types.StringType,
+									Description: `Consumer identifiers allowed access to this collection. Default: []`,
+								},
+								"deny": schema.ListAttribute{
+									Computed:    true,
+									Optional:    true,
+									Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
+									ElementType: types.StringType,
+									Description: `Consumer identifiers denied access to this collection. Default: []`,
+								},
+							},
+						},
+						Description: `Per-collection ACL overrides`,
+					},
+					"consumer_identifier": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     stringdefault.StaticString(`consumer_group`),
+						Description: `The type of consumer identifier used for ACL checks. Default: "consumer_group"; must be one of ["consumer_group", "consumer_id", "custom_id", "username"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"consumer_group",
+								"consumer_id",
+								"custom_id",
+								"username",
+							),
+						},
+					},
 					"embeddings": schema.SingleNestedAttribute{
 						Required: true,
 						Attributes: map[string]schema.Attribute{
@@ -193,6 +233,7 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 													`aws_sts_endpoint_url`:       types.StringType,
 													`embeddings_normalize`:       types.BoolType,
 													`performance_config_latency`: types.StringType,
+													`video_output_s3_uri`:        types.StringType,
 												},
 											},
 											"gemini": types.ObjectType{
@@ -246,6 +287,7 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 													"aws_sts_endpoint_url":       types.StringType,
 													"embeddings_normalize":       types.BoolType,
 													"performance_config_latency": types.StringType,
+													"video_output_s3_uri":        types.StringType,
 												})),
 												Attributes: map[string]schema.Attribute{
 													"aws_assume_role_arn": schema.StringAttribute{
@@ -273,6 +315,10 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 													"performance_config_latency": schema.StringAttribute{
 														Optional:    true,
 														Description: `Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.`,
+													},
+													"video_output_s3_uri": schema.StringAttribute{
+														Optional:    true,
+														Description: `S3 URI (s3://bucket/prefix) where Bedrock will store generated video files. Required for video generation.`,
 													},
 												},
 											},
@@ -348,6 +394,47 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 						Default:     float64default.StaticFloat64(5),
 						Description: `The maximum number of chunks to fetch from vectordb. Default: 5`,
 					},
+					"filter_mode": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     stringdefault.StaticString(`compatible`),
+						Description: `Defines how the plugin behaves when a filter is invalid. Set to ` + "`" + `compatible` + "`" + ` to ignore invalid filters, or ` + "`" + `strict` + "`" + ` to raise an error. This can be overridden per request. Default: "compatible"; must be one of ["compatible", "strict"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"compatible",
+								"strict",
+							),
+						},
+					},
+					"global_acl_config": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"allow": types.ListType{
+								ElemType: types.StringType,
+							},
+							"deny": types.ListType{
+								ElemType: types.StringType,
+							},
+						})),
+						Attributes: map[string]schema.Attribute{
+							"allow": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
+								ElementType: types.StringType,
+								Description: `Consumer identifiers allowed access (groups, IDs, usernames, or custom IDs based on consumer_identifier setting). Default: []`,
+							},
+							"deny": schema.ListAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
+								ElementType: types.StringType,
+								Description: `Consumer identifiers denied access (groups, IDs, usernames, or custom IDs based on consumer_identifier setting). Default: []`,
+							},
+						},
+						Description: `Global ACL configuration for all RAG operations`,
+					},
 					"inject_as_role": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -368,11 +455,26 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 							`<PROMPT>`),
 						Description: `Default: "<CONTEXT>\n<PROMPT>"`,
 					},
+					"max_filter_clauses": schema.Int64Attribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     int64default.StaticInt64(100),
+						Description: `Maximum number of filter clauses allowed. Default: 100`,
+						Validators: []validator.Int64{
+							int64validator.Between(1, 1000),
+						},
+					},
 					"stop_on_failure": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     booldefault.StaticBool(false),
 						Description: `Halt the LLM request process in case of a vectordb or embeddings service failure. Default: false`,
+					},
+					"stop_on_filter_error": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `Default behavior when filter parsing fails (can be overridden per-request). Default: false`,
 					},
 					"vectordb": schema.SingleNestedAttribute{
 						Required: true,
@@ -488,6 +590,22 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 								Computed: true,
 								Optional: true,
 								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"cloud_authentication": types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`auth_provider`:            types.StringType,
+											`aws_access_key_id`:        types.StringType,
+											`aws_assume_role_arn`:      types.StringType,
+											`aws_cache_name`:           types.StringType,
+											`aws_is_serverless`:        types.BoolType,
+											`aws_region`:               types.StringType,
+											`aws_role_session_name`:    types.StringType,
+											`aws_secret_access_key`:    types.StringType,
+											`azure_client_id`:          types.StringType,
+											`azure_client_secret`:      types.StringType,
+											`azure_tenant_id`:          types.StringType,
+											`gcp_service_account_json`: types.StringType,
+										},
+									},
 									"cluster_max_redirections": types.Int64Type,
 									"cluster_nodes": types.ListType{
 										ElemType: types.ObjectType{
@@ -525,6 +643,85 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 									"username":          types.StringType,
 								})),
 								Attributes: map[string]schema.Attribute{
+									"cloud_authentication": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+											"auth_provider":            types.StringType,
+											"aws_access_key_id":        types.StringType,
+											"aws_assume_role_arn":      types.StringType,
+											"aws_cache_name":           types.StringType,
+											"aws_is_serverless":        types.BoolType,
+											"aws_region":               types.StringType,
+											"aws_role_session_name":    types.StringType,
+											"aws_secret_access_key":    types.StringType,
+											"azure_client_id":          types.StringType,
+											"azure_client_secret":      types.StringType,
+											"azure_tenant_id":          types.StringType,
+											"gcp_service_account_json": types.StringType,
+										})),
+										Attributes: map[string]schema.Attribute{
+											"auth_provider": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
+												Validators: []validator.String{
+													stringvalidator.OneOf(
+														"aws",
+														"azure",
+														"gcp",
+													),
+												},
+											},
+											"aws_access_key_id": schema.StringAttribute{
+												Optional:    true,
+												Description: `AWS Access Key ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+											},
+											"aws_assume_role_arn": schema.StringAttribute{
+												Optional:    true,
+												Description: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.`,
+											},
+											"aws_cache_name": schema.StringAttribute{
+												Optional:    true,
+												Description: `The name of the AWS Elasticache cluster when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+											},
+											"aws_is_serverless": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(true),
+												Description: `This flag specifies whether the cluster is serverless when auth_provider is set to ` + "`" + `aws` + "`" + `. Default: true`,
+											},
+											"aws_region": schema.StringAttribute{
+												Optional:    true,
+												Description: `The region of the AWS ElastiCache cluster when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+											},
+											"aws_role_session_name": schema.StringAttribute{
+												Optional:    true,
+												Description: `The session name for the temporary credentials when assuming the IAM role.`,
+											},
+											"aws_secret_access_key": schema.StringAttribute{
+												Optional:    true,
+												Description: `AWS Secret Access Key to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+											},
+											"azure_client_id": schema.StringAttribute{
+												Optional:    true,
+												Description: `Azure Client ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+											},
+											"azure_client_secret": schema.StringAttribute{
+												Optional:    true,
+												Description: `Azure Client Secret to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+											},
+											"azure_tenant_id": schema.StringAttribute{
+												Optional:    true,
+												Description: `Azure Tenant ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+											},
+											"gcp_service_account_json": schema.StringAttribute{
+												Optional:    true,
+												Description: `GCP Service Account JSON to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `gcp` + "`" + `.`,
+											},
+										},
+										Description: `Cloud auth related configs for connecting to a Cloud Provider's Redis instance.`,
+									},
 									"cluster_max_redirections": schema.Int64Attribute{
 										Computed:    true,
 										Optional:    true,
@@ -712,6 +909,10 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 										"redis",
 									),
 								},
+							},
+							"threshold": schema.Float64Attribute{
+								Optional:    true,
+								Description: `the default similarity threshold for accepting semantic search results (float)`,
 							},
 						},
 					},

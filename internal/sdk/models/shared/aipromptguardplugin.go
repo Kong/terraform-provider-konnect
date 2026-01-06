@@ -121,6 +121,7 @@ func (e *GenaiCategory) UnmarshalJSON(data []byte) error {
 type AiPromptGuardPluginLlmFormat string
 
 const (
+	AiPromptGuardPluginLlmFormatAnthropic   AiPromptGuardPluginLlmFormat = "anthropic"
 	AiPromptGuardPluginLlmFormatBedrock     AiPromptGuardPluginLlmFormat = "bedrock"
 	AiPromptGuardPluginLlmFormatCohere      AiPromptGuardPluginLlmFormat = "cohere"
 	AiPromptGuardPluginLlmFormatGemini      AiPromptGuardPluginLlmFormat = "gemini"
@@ -137,6 +138,8 @@ func (e *AiPromptGuardPluginLlmFormat) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "anthropic":
+		fallthrough
 	case "bedrock":
 		fallthrough
 	case "cohere":
@@ -167,7 +170,7 @@ type AiPromptGuardPluginConfig struct {
 	// If true, will match all roles in addition to 'user' role in conversation history.
 	MatchAllRoles *bool `default:"false" json:"match_all_roles"`
 	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
-	MaxRequestBodySize *int64 `default:"8192" json:"max_request_body_size"`
+	MaxRequestBodySize *int64 `default:"1048576" json:"max_request_body_size"`
 }
 
 func (a AiPromptGuardPluginConfig) MarshalJSON() ([]byte, error) {

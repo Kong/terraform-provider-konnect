@@ -43,6 +43,7 @@ resource "konnect_gateway_plugin_datadog" "my_gatewayplugindatadog" {
     }
     queue_size       = 10
     retry_count      = 2
+    route_name_tag   = "...my_route_name_tag..."
     service_name_tag = "...my_service_name_tag..."
     status_tag       = "...my_status_tag..."
   }
@@ -126,6 +127,7 @@ Optional:
 - `queue` (Attributes) (see [below for nested schema](#nestedatt--config--queue))
 - `queue_size` (Number) Maximum number of log entries to be sent on each message to the upstream server.
 - `retry_count` (Number) Number of times to retry when sending data to the upstream server.
+- `route_name_tag` (String) String to be attached as tag of the route name or ID.
 - `service_name_tag` (String) String to be attached as the name of the service. Default: "name"
 - `status_tag` (String) String to be attached as the tag of the HTTP status. Default: "status"
 

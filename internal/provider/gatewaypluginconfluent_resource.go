@@ -630,6 +630,21 @@ func (r *GatewayPluginConfluentResource) Schema(ctx context.Context, req resourc
 						},
 						Description: `The plugin-global schema registry configuration. This can be overwritten by the topic configuration.`,
 					},
+					"security": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"ssl_verify": types.BoolType,
+						})),
+						Attributes: map[string]schema.Attribute{
+							"ssl_verify": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Enables verification of the certificate presented by the server. Default: false`,
+							},
+						},
+					},
 					"timeout": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,

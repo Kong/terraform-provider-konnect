@@ -15,7 +15,21 @@ GatewayPluginAiMcpProxy Resource
 ```terraform
 resource "konnect_gateway_plugin_ai_mcp_proxy" "my_gatewaypluginaimcpproxy" {
   config = {
+    consumer_identifier = "custom_id"
+    default_acl = [
+      {
+        allow = [
+          "..."
+        ]
+        deny = [
+          "..."
+        ]
+        scope = "...my_scope..."
+      }
+    ]
+    include_consumer_groups = false
     logging = {
+      log_audits     = true
       log_payloads   = false
       log_statistics = true
     }
@@ -28,6 +42,14 @@ resource "konnect_gateway_plugin_ai_mcp_proxy" "my_gatewaypluginaimcpproxy" {
     }
     tools = [
       {
+        acl = {
+          allow = [
+            "..."
+          ]
+          deny = [
+            "..."
+          ]
+        }
         annotations = {
           destructive_hint = true
           idempotent_hint  = false
@@ -43,12 +65,14 @@ resource "konnect_gateway_plugin_ai_mcp_proxy" "my_gatewaypluginaimcpproxy" {
         }
         host   = "...my_host..."
         method = "GET"
+        name   = "...my_name..."
         parameters = [
           {
-            description = "...my_description..."
-            in          = "...my_in..."
-            name        = "...my_name..."
-            required    = true
+            additional_properties = "{ \"see\": \"documentation\" }"
+            description           = "...my_description..."
+            in                    = "...my_in..."
+            name                  = "...my_name..."
+            required              = true
             schema = {
               type = "...my_type..."
             }
@@ -60,8 +84,13 @@ resource "konnect_gateway_plugin_ai_mcp_proxy" "my_gatewaypluginaimcpproxy" {
             # ...
           ]
         }
-        request_body = "...my_request_body..."
-        scheme       = "https"
+        request_body = {
+          key = jsonencode("value")
+        }
+        responses = {
+          key = jsonencode("value")
+        }
+        scheme = "https"
       }
     ]
   }
@@ -136,16 +165,30 @@ Required:
 
 Optional:
 
+- `consumer_identifier` (String) Which subject type entries in ACL lists refer to for per-consumer matching. Default: "username"; must be one of ["consumer_id", "custom_id", "username"]
+- `default_acl` (Attributes List) Optional list of default ACL rules keyed by scope (for example: tools). (see [below for nested schema](#nestedatt--config--default_acl))
+- `include_consumer_groups` (Boolean) If enabled (true), allows Consumer Group names to be used in default and per-primitive ACL. Default: false
 - `logging` (Attributes) (see [below for nested schema](#nestedatt--config--logging))
-- `max_request_body_size` (Number) max allowed body size allowed to be handled as MCP request. Default: 8192
+- `max_request_body_size` (Number) max allowed body size allowed to be handled as MCP request. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 1048576
 - `server` (Attributes) (see [below for nested schema](#nestedatt--config--server))
 - `tools` (Attributes List) (see [below for nested schema](#nestedatt--config--tools))
+
+<a id="nestedatt--config--default_acl"></a>
+### Nested Schema for `config.default_acl`
+
+Optional:
+
+- `allow` (List of String) Subjects explicitly allowed to access this scope. If `include_consumer_groups` is true, Consumer Group names are allowed here.
+- `deny` (List of String) Subjects explicitly denied from this scope. `deny` takes precedence over `allow`. If `include_consumer_groups` is true, Consumer Group names are allowed here.
+- `scope` (String) Scope for this default ACL entry (for example: 'tools'). Defaults to 'tools'. Default: "tools"
+
 
 <a id="nestedatt--config--logging"></a>
 ### Nested Schema for `config.logging`
 
 Optional:
 
+- `log_audits` (Boolean) If true, emit audit logs for ACL evaluations. Default: false
 - `log_payloads` (Boolean) If enabled, will log the request and response body into the Kong log plugin(s) output. Default: false
 - `log_statistics` (Boolean) If enabled, will add mcp metrics into the Kong log plugin(s) output. Default: false
 
@@ -165,16 +208,28 @@ Optional:
 
 Optional:
 
+- `acl` (Attributes) Optional per-primitive ACL. `deny` has higher precedence than `allow`. (see [below for nested schema](#nestedatt--config--tools--acl))
 - `annotations` (Attributes) (see [below for nested schema](#nestedatt--config--tools--annotations))
 - `description` (String) The description of the MCP tool. This is used to provide information about the tool's functionality and usage. Not Null
 - `headers` (Map of List of String) The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.
 - `host` (String) The host of the exported API. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.
 - `method` (String) The method of the exported API. By default, Kong will extract the method from API configuration. If the configured method is not exactly matched, this field is required. must be one of ["DELETE", "GET", "PATCH", "POST", "PUT"]
+- `name` (String) Tool identifier. In passthrough-listener mode, used to match remote MCP Server tools for ACL enforcement. In other modes, it is also used as the tool name (overrides tools.annotations.title if present).
 - `parameters` (Attributes List) The API parameters specification defined in OpenAPI. For example, '[{"name": "city", "in": "query", "description": "Name of the city to get the weather for", "required": true, "schema": {"type": "string"}}]'.See https://swagger.io/docs/specification/v3_0/describing-parameters/ for more details. (see [below for nested schema](#nestedatt--config--tools--parameters))
 - `path` (String) The path of the exported API. By default, Kong will extract the path from API configuration. If the configured path is not exactly matched, this field is required. Paths not starting with '/' are treated as relative paths.
 - `query` (Map of List of String) The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.
-- `request_body` (String) The API requestBody specification defined in OpenAPI. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details.
+- `request_body` (Map of String) The API requestBody specification defined in OpenAPI. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details.
+- `responses` (Map of String) The API responses specification defined in OpenAPI. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details.Only one non-error (status code < 400) responses are supported.
 - `scheme` (String) The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it. must be one of ["http", "https"]
+
+<a id="nestedatt--config--tools--acl"></a>
+### Nested Schema for `config.tools.acl`
+
+Optional:
+
+- `allow` (List of String) Subjects explicitly allowed to use this primitive. If `include_consumer_groups` is true, Consumer Group names are allowed here.
+- `deny` (List of String) Subjects explicitly denied from using this primitive. `deny` takes precedence over `allow`. If `include_consumer_groups` is true, Consumer Group names are allowed here.
+
 
 <a id="nestedatt--config--tools--annotations"></a>
 ### Nested Schema for `config.tools.annotations`
@@ -193,6 +248,7 @@ Optional:
 
 Optional:
 
+- `additional_properties` (String) Parsed as JSON.
 - `description` (String)
 - `in` (String)
 - `name` (String)

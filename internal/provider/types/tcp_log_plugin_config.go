@@ -11,6 +11,7 @@ type TCPLogPluginConfig struct {
 	Host              types.String            `tfsdk:"host"`
 	Keepalive         types.Float64           `tfsdk:"keepalive"`
 	Port              types.Int64             `tfsdk:"port"`
+	SslVerify         types.Bool              `tfsdk:"ssl_verify"`
 	Timeout           types.Float64           `tfsdk:"timeout"`
 	TLS               types.Bool              `tfsdk:"tls"`
 	TLSSni            types.String            `tfsdk:"tls_sni"`

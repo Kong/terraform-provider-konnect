@@ -15,6 +15,27 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if resp.Config.CollectionACLConfig != nil {
+			r.Config.CollectionACLConfig = make(map[string]tfTypes.CollectionACLConfig, len(resp.Config.CollectionACLConfig))
+			for collectionACLConfigKey, collectionACLConfigValue := range resp.Config.CollectionACLConfig {
+				var collectionACLConfigResult tfTypes.CollectionACLConfig
+				collectionACLConfigResult.Allow = make([]types.String, 0, len(collectionACLConfigValue.Allow))
+				for _, v := range collectionACLConfigValue.Allow {
+					collectionACLConfigResult.Allow = append(collectionACLConfigResult.Allow, types.StringValue(v))
+				}
+				collectionACLConfigResult.Deny = make([]types.String, 0, len(collectionACLConfigValue.Deny))
+				for _, v := range collectionACLConfigValue.Deny {
+					collectionACLConfigResult.Deny = append(collectionACLConfigResult.Deny, types.StringValue(v))
+				}
+
+				r.Config.CollectionACLConfig[collectionACLConfigKey] = collectionACLConfigResult
+			}
+		}
+		if resp.Config.ConsumerIdentifier != nil {
+			r.Config.ConsumerIdentifier = types.StringValue(string(*resp.Config.ConsumerIdentifier))
+		} else {
+			r.Config.ConsumerIdentifier = types.StringNull()
+		}
 		if resp.Config.Embeddings.Auth == nil {
 			r.Config.Embeddings.Auth = nil
 		} else {
@@ -61,6 +82,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 				r.Config.Embeddings.Model.Options.Bedrock.AwsStsEndpointURL = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsStsEndpointURL)
 				r.Config.Embeddings.Model.Options.Bedrock.EmbeddingsNormalize = types.BoolPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.EmbeddingsNormalize)
 				r.Config.Embeddings.Model.Options.Bedrock.PerformanceConfigLatency = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.PerformanceConfigLatency)
+				r.Config.Embeddings.Model.Options.Bedrock.VideoOutputS3URI = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.VideoOutputS3URI)
 			}
 			if resp.Config.Embeddings.Model.Options.Gemini == nil {
 				r.Config.Embeddings.Model.Options.Gemini = nil
@@ -81,13 +103,33 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 		}
 		r.Config.Embeddings.Model.Provider = types.StringValue(string(resp.Config.Embeddings.Model.Provider))
 		r.Config.FetchChunksCount = types.Float64PointerValue(resp.Config.FetchChunksCount)
+		if resp.Config.FilterMode != nil {
+			r.Config.FilterMode = types.StringValue(string(*resp.Config.FilterMode))
+		} else {
+			r.Config.FilterMode = types.StringNull()
+		}
+		if resp.Config.GlobalACLConfig == nil {
+			r.Config.GlobalACLConfig = nil
+		} else {
+			r.Config.GlobalACLConfig = &tfTypes.CollectionACLConfig{}
+			r.Config.GlobalACLConfig.Allow = make([]types.String, 0, len(resp.Config.GlobalACLConfig.Allow))
+			for _, v := range resp.Config.GlobalACLConfig.Allow {
+				r.Config.GlobalACLConfig.Allow = append(r.Config.GlobalACLConfig.Allow, types.StringValue(v))
+			}
+			r.Config.GlobalACLConfig.Deny = make([]types.String, 0, len(resp.Config.GlobalACLConfig.Deny))
+			for _, v := range resp.Config.GlobalACLConfig.Deny {
+				r.Config.GlobalACLConfig.Deny = append(r.Config.GlobalACLConfig.Deny, types.StringValue(v))
+			}
+		}
 		if resp.Config.InjectAsRole != nil {
 			r.Config.InjectAsRole = types.StringValue(string(*resp.Config.InjectAsRole))
 		} else {
 			r.Config.InjectAsRole = types.StringNull()
 		}
 		r.Config.InjectTemplate = types.StringPointerValue(resp.Config.InjectTemplate)
+		r.Config.MaxFilterClauses = types.Int64PointerValue(resp.Config.MaxFilterClauses)
 		r.Config.StopOnFailure = types.BoolPointerValue(resp.Config.StopOnFailure)
+		r.Config.StopOnFilterError = types.BoolPointerValue(resp.Config.StopOnFilterError)
 		r.Config.Vectordb.Dimensions = types.Int64Value(resp.Config.Vectordb.Dimensions)
 		r.Config.Vectordb.DistanceMetric = types.StringValue(string(resp.Config.Vectordb.DistanceMetric))
 		if resp.Config.Vectordb.Pgvector == nil {
@@ -115,6 +157,27 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 			r.Config.Vectordb.Redis = nil
 		} else {
 			r.Config.Vectordb.Redis = &tfTypes.AcePluginRedis{}
+			if resp.Config.Vectordb.Redis.CloudAuthentication == nil {
+				r.Config.Vectordb.Redis.CloudAuthentication = nil
+			} else {
+				r.Config.Vectordb.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+				if resp.Config.Vectordb.Redis.CloudAuthentication.AuthProvider != nil {
+					r.Config.Vectordb.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Vectordb.Redis.CloudAuthentication.AuthProvider))
+				} else {
+					r.Config.Vectordb.Redis.CloudAuthentication.AuthProvider = types.StringNull()
+				}
+				r.Config.Vectordb.Redis.CloudAuthentication.AwsAccessKeyID = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AwsAccessKeyID)
+				r.Config.Vectordb.Redis.CloudAuthentication.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AwsAssumeRoleArn)
+				r.Config.Vectordb.Redis.CloudAuthentication.AwsCacheName = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AwsCacheName)
+				r.Config.Vectordb.Redis.CloudAuthentication.AwsIsServerless = types.BoolPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AwsIsServerless)
+				r.Config.Vectordb.Redis.CloudAuthentication.AwsRegion = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AwsRegion)
+				r.Config.Vectordb.Redis.CloudAuthentication.AwsRoleSessionName = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AwsRoleSessionName)
+				r.Config.Vectordb.Redis.CloudAuthentication.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AwsSecretAccessKey)
+				r.Config.Vectordb.Redis.CloudAuthentication.AzureClientID = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AzureClientID)
+				r.Config.Vectordb.Redis.CloudAuthentication.AzureClientSecret = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AzureClientSecret)
+				r.Config.Vectordb.Redis.CloudAuthentication.AzureTenantID = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AzureTenantID)
+				r.Config.Vectordb.Redis.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.GcpServiceAccountJSON)
+			}
 			r.Config.Vectordb.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Vectordb.Redis.ClusterMaxRedirections)
 			if resp.Config.Vectordb.Redis.ClusterNodes != nil {
 				r.Config.Vectordb.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
@@ -164,6 +227,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 			r.Config.Vectordb.Redis.Username = types.StringPointerValue(resp.Config.Vectordb.Redis.Username)
 		}
 		r.Config.Vectordb.Strategy = types.StringValue(string(resp.Config.Vectordb.Strategy))
+		r.Config.Vectordb.Threshold = types.Float64PointerValue(resp.Config.Vectordb.Threshold)
 		r.Config.VectordbNamespace = types.StringPointerValue(resp.Config.VectordbNamespace)
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -421,6 +485,31 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin(ct
 	} else {
 		updatedAt = nil
 	}
+	var collectionACLConfig map[string]shared.CollectionACLConfig
+	if r.Config.CollectionACLConfig != nil {
+		collectionACLConfig = make(map[string]shared.CollectionACLConfig)
+		for collectionACLConfigKey := range r.Config.CollectionACLConfig {
+			allow := make([]string, 0, len(r.Config.CollectionACLConfig[collectionACLConfigKey].Allow))
+			for allowIndex := range r.Config.CollectionACLConfig[collectionACLConfigKey].Allow {
+				allow = append(allow, r.Config.CollectionACLConfig[collectionACLConfigKey].Allow[allowIndex].ValueString())
+			}
+			deny := make([]string, 0, len(r.Config.CollectionACLConfig[collectionACLConfigKey].Deny))
+			for denyIndex := range r.Config.CollectionACLConfig[collectionACLConfigKey].Deny {
+				deny = append(deny, r.Config.CollectionACLConfig[collectionACLConfigKey].Deny[denyIndex].ValueString())
+			}
+			collectionACLConfigInst := shared.CollectionACLConfig{
+				Allow: allow,
+				Deny:  deny,
+			}
+			collectionACLConfig[collectionACLConfigKey] = collectionACLConfigInst
+		}
+	}
+	consumerIdentifier := new(shared.AiRagInjectorPluginConsumerIdentifier)
+	if !r.Config.ConsumerIdentifier.IsUnknown() && !r.Config.ConsumerIdentifier.IsNull() {
+		*consumerIdentifier = shared.AiRagInjectorPluginConsumerIdentifier(r.Config.ConsumerIdentifier.ValueString())
+	} else {
+		consumerIdentifier = nil
+	}
 	var auth *shared.AiRagInjectorPluginAuth
 	if r.Config.Embeddings.Auth != nil {
 		allowOverride := new(bool)
@@ -593,6 +682,12 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin(ct
 			} else {
 				performanceConfigLatency = nil
 			}
+			videoOutputS3URI := new(string)
+			if !r.Config.Embeddings.Model.Options.Bedrock.VideoOutputS3URI.IsUnknown() && !r.Config.Embeddings.Model.Options.Bedrock.VideoOutputS3URI.IsNull() {
+				*videoOutputS3URI = r.Config.Embeddings.Model.Options.Bedrock.VideoOutputS3URI.ValueString()
+			} else {
+				videoOutputS3URI = nil
+			}
 			bedrock = &shared.AiRagInjectorPluginBedrock{
 				AwsAssumeRoleArn:         awsAssumeRoleArn,
 				AwsRegion:                awsRegion,
@@ -600,6 +695,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin(ct
 				AwsStsEndpointURL:        awsStsEndpointURL,
 				EmbeddingsNormalize:      embeddingsNormalize,
 				PerformanceConfigLatency: performanceConfigLatency,
+				VideoOutputS3URI:         videoOutputS3URI,
 			}
 		}
 		var gemini *shared.AiRagInjectorPluginGemini
@@ -677,6 +773,27 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin(ct
 	} else {
 		fetchChunksCount = nil
 	}
+	filterMode := new(shared.FilterMode)
+	if !r.Config.FilterMode.IsUnknown() && !r.Config.FilterMode.IsNull() {
+		*filterMode = shared.FilterMode(r.Config.FilterMode.ValueString())
+	} else {
+		filterMode = nil
+	}
+	var globalACLConfig *shared.GlobalACLConfig
+	if r.Config.GlobalACLConfig != nil {
+		allow1 := make([]string, 0, len(r.Config.GlobalACLConfig.Allow))
+		for allowIndex1 := range r.Config.GlobalACLConfig.Allow {
+			allow1 = append(allow1, r.Config.GlobalACLConfig.Allow[allowIndex1].ValueString())
+		}
+		deny1 := make([]string, 0, len(r.Config.GlobalACLConfig.Deny))
+		for denyIndex1 := range r.Config.GlobalACLConfig.Deny {
+			deny1 = append(deny1, r.Config.GlobalACLConfig.Deny[denyIndex1].ValueString())
+		}
+		globalACLConfig = &shared.GlobalACLConfig{
+			Allow: allow1,
+			Deny:  deny1,
+		}
+	}
 	injectAsRole := new(shared.InjectAsRole)
 	if !r.Config.InjectAsRole.IsUnknown() && !r.Config.InjectAsRole.IsNull() {
 		*injectAsRole = shared.InjectAsRole(r.Config.InjectAsRole.ValueString())
@@ -689,11 +806,23 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin(ct
 	} else {
 		injectTemplate = nil
 	}
+	maxFilterClauses := new(int64)
+	if !r.Config.MaxFilterClauses.IsUnknown() && !r.Config.MaxFilterClauses.IsNull() {
+		*maxFilterClauses = r.Config.MaxFilterClauses.ValueInt64()
+	} else {
+		maxFilterClauses = nil
+	}
 	stopOnFailure := new(bool)
 	if !r.Config.StopOnFailure.IsUnknown() && !r.Config.StopOnFailure.IsNull() {
 		*stopOnFailure = r.Config.StopOnFailure.ValueBool()
 	} else {
 		stopOnFailure = nil
+	}
+	stopOnFilterError := new(bool)
+	if !r.Config.StopOnFilterError.IsUnknown() && !r.Config.StopOnFilterError.IsNull() {
+		*stopOnFilterError = r.Config.StopOnFilterError.ValueBool()
+	} else {
+		stopOnFilterError = nil
 	}
 	var dimensions int64
 	dimensions = r.Config.Vectordb.Dimensions.ValueInt64()
@@ -790,6 +919,95 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin(ct
 	}
 	var redis *shared.AiRagInjectorPluginRedis
 	if r.Config.Vectordb.Redis != nil {
+		var cloudAuthentication *shared.AiRagInjectorPluginCloudAuthentication
+		if r.Config.Vectordb.Redis.CloudAuthentication != nil {
+			authProvider := new(shared.AiRagInjectorPluginAuthProvider)
+			if !r.Config.Vectordb.Redis.CloudAuthentication.AuthProvider.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AuthProvider.IsNull() {
+				*authProvider = shared.AiRagInjectorPluginAuthProvider(r.Config.Vectordb.Redis.CloudAuthentication.AuthProvider.ValueString())
+			} else {
+				authProvider = nil
+			}
+			awsAccessKeyId1 := new(string)
+			if !r.Config.Vectordb.Redis.CloudAuthentication.AwsAccessKeyID.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AwsAccessKeyID.IsNull() {
+				*awsAccessKeyId1 = r.Config.Vectordb.Redis.CloudAuthentication.AwsAccessKeyID.ValueString()
+			} else {
+				awsAccessKeyId1 = nil
+			}
+			awsAssumeRoleArn1 := new(string)
+			if !r.Config.Vectordb.Redis.CloudAuthentication.AwsAssumeRoleArn.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AwsAssumeRoleArn.IsNull() {
+				*awsAssumeRoleArn1 = r.Config.Vectordb.Redis.CloudAuthentication.AwsAssumeRoleArn.ValueString()
+			} else {
+				awsAssumeRoleArn1 = nil
+			}
+			awsCacheName := new(string)
+			if !r.Config.Vectordb.Redis.CloudAuthentication.AwsCacheName.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AwsCacheName.IsNull() {
+				*awsCacheName = r.Config.Vectordb.Redis.CloudAuthentication.AwsCacheName.ValueString()
+			} else {
+				awsCacheName = nil
+			}
+			awsIsServerless := new(bool)
+			if !r.Config.Vectordb.Redis.CloudAuthentication.AwsIsServerless.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AwsIsServerless.IsNull() {
+				*awsIsServerless = r.Config.Vectordb.Redis.CloudAuthentication.AwsIsServerless.ValueBool()
+			} else {
+				awsIsServerless = nil
+			}
+			awsRegion1 := new(string)
+			if !r.Config.Vectordb.Redis.CloudAuthentication.AwsRegion.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AwsRegion.IsNull() {
+				*awsRegion1 = r.Config.Vectordb.Redis.CloudAuthentication.AwsRegion.ValueString()
+			} else {
+				awsRegion1 = nil
+			}
+			awsRoleSessionName1 := new(string)
+			if !r.Config.Vectordb.Redis.CloudAuthentication.AwsRoleSessionName.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AwsRoleSessionName.IsNull() {
+				*awsRoleSessionName1 = r.Config.Vectordb.Redis.CloudAuthentication.AwsRoleSessionName.ValueString()
+			} else {
+				awsRoleSessionName1 = nil
+			}
+			awsSecretAccessKey1 := new(string)
+			if !r.Config.Vectordb.Redis.CloudAuthentication.AwsSecretAccessKey.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AwsSecretAccessKey.IsNull() {
+				*awsSecretAccessKey1 = r.Config.Vectordb.Redis.CloudAuthentication.AwsSecretAccessKey.ValueString()
+			} else {
+				awsSecretAccessKey1 = nil
+			}
+			azureClientId1 := new(string)
+			if !r.Config.Vectordb.Redis.CloudAuthentication.AzureClientID.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AzureClientID.IsNull() {
+				*azureClientId1 = r.Config.Vectordb.Redis.CloudAuthentication.AzureClientID.ValueString()
+			} else {
+				azureClientId1 = nil
+			}
+			azureClientSecret1 := new(string)
+			if !r.Config.Vectordb.Redis.CloudAuthentication.AzureClientSecret.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AzureClientSecret.IsNull() {
+				*azureClientSecret1 = r.Config.Vectordb.Redis.CloudAuthentication.AzureClientSecret.ValueString()
+			} else {
+				azureClientSecret1 = nil
+			}
+			azureTenantId1 := new(string)
+			if !r.Config.Vectordb.Redis.CloudAuthentication.AzureTenantID.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AzureTenantID.IsNull() {
+				*azureTenantId1 = r.Config.Vectordb.Redis.CloudAuthentication.AzureTenantID.ValueString()
+			} else {
+				azureTenantId1 = nil
+			}
+			gcpServiceAccountJson1 := new(string)
+			if !r.Config.Vectordb.Redis.CloudAuthentication.GcpServiceAccountJSON.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.GcpServiceAccountJSON.IsNull() {
+				*gcpServiceAccountJson1 = r.Config.Vectordb.Redis.CloudAuthentication.GcpServiceAccountJSON.ValueString()
+			} else {
+				gcpServiceAccountJson1 = nil
+			}
+			cloudAuthentication = &shared.AiRagInjectorPluginCloudAuthentication{
+				AuthProvider:          authProvider,
+				AwsAccessKeyID:        awsAccessKeyId1,
+				AwsAssumeRoleArn:      awsAssumeRoleArn1,
+				AwsCacheName:          awsCacheName,
+				AwsIsServerless:       awsIsServerless,
+				AwsRegion:             awsRegion1,
+				AwsRoleSessionName:    awsRoleSessionName1,
+				AwsSecretAccessKey:    awsSecretAccessKey1,
+				AzureClientID:         azureClientId1,
+				AzureClientSecret:     azureClientSecret1,
+				AzureTenantID:         azureTenantId1,
+				GcpServiceAccountJSON: gcpServiceAccountJson1,
+			}
+		}
 		clusterMaxRedirections := new(int64)
 		if !r.Config.Vectordb.Redis.ClusterMaxRedirections.IsUnknown() && !r.Config.Vectordb.Redis.ClusterMaxRedirections.IsNull() {
 			*clusterMaxRedirections = r.Config.Vectordb.Redis.ClusterMaxRedirections.ValueInt64()
@@ -949,6 +1167,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin(ct
 			username = nil
 		}
 		redis = &shared.AiRagInjectorPluginRedis{
+			CloudAuthentication:    cloudAuthentication,
 			ClusterMaxRedirections: clusterMaxRedirections,
 			ClusterNodes:           clusterNodes,
 			ConnectTimeout:         connectTimeout,
@@ -973,12 +1192,19 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin(ct
 		}
 	}
 	strategy := shared.AiRagInjectorPluginStrategy(r.Config.Vectordb.Strategy.ValueString())
+	threshold := new(float64)
+	if !r.Config.Vectordb.Threshold.IsUnknown() && !r.Config.Vectordb.Threshold.IsNull() {
+		*threshold = r.Config.Vectordb.Threshold.ValueFloat64()
+	} else {
+		threshold = nil
+	}
 	vectordb := shared.AiRagInjectorPluginVectordb{
 		Dimensions:     dimensions,
 		DistanceMetric: distanceMetric,
 		Pgvector:       pgvector,
 		Redis:          redis,
 		Strategy:       strategy,
+		Threshold:      threshold,
 	}
 	vectordbNamespace := new(string)
 	if !r.Config.VectordbNamespace.IsUnknown() && !r.Config.VectordbNamespace.IsNull() {
@@ -987,13 +1213,19 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin(ct
 		vectordbNamespace = nil
 	}
 	config := shared.AiRagInjectorPluginConfig{
-		Embeddings:        embeddings,
-		FetchChunksCount:  fetchChunksCount,
-		InjectAsRole:      injectAsRole,
-		InjectTemplate:    injectTemplate,
-		StopOnFailure:     stopOnFailure,
-		Vectordb:          vectordb,
-		VectordbNamespace: vectordbNamespace,
+		CollectionACLConfig: collectionACLConfig,
+		ConsumerIdentifier:  consumerIdentifier,
+		Embeddings:          embeddings,
+		FetchChunksCount:    fetchChunksCount,
+		FilterMode:          filterMode,
+		GlobalACLConfig:     globalACLConfig,
+		InjectAsRole:        injectAsRole,
+		InjectTemplate:      injectTemplate,
+		MaxFilterClauses:    maxFilterClauses,
+		StopOnFailure:       stopOnFailure,
+		StopOnFilterError:   stopOnFilterError,
+		Vectordb:            vectordb,
+		VectordbNamespace:   vectordbNamespace,
 	}
 	var consumer *shared.AiRagInjectorPluginConsumer
 	if r.Consumer != nil {

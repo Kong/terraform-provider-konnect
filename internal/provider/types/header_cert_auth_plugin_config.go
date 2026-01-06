@@ -25,4 +25,5 @@ type HeaderCertAuthPluginConfig struct {
 	RevocationCheckMode     types.String   `tfsdk:"revocation_check_mode"`
 	SecureSource            types.Bool     `tfsdk:"secure_source"`
 	SkipConsumerLookup      types.Bool     `tfsdk:"skip_consumer_lookup"`
+	SslVerify               types.Bool     `tfsdk:"ssl_verify"`
 }

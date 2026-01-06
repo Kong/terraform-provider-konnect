@@ -209,6 +209,10 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 						Optional:    true,
 						Description: `Number of times to retry when sending data to the upstream server.`,
 					},
+					"ssl_verify": schema.BoolAttribute{
+						Optional:    true,
+						Description: `When using TLS, this option enables verification of the certificate presented by the server.`,
+					},
 					"timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,

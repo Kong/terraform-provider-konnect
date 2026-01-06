@@ -19,6 +19,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.OpentelemetryPluginConfig{}
+			r.Config.AccessLogsEndpoint = types.StringPointerValue(resp.Config.AccessLogsEndpoint)
 			r.Config.BatchFlushDelay = types.Int64PointerValue(resp.Config.BatchFlushDelay)
 			r.Config.BatchSpanCount = types.Int64PointerValue(resp.Config.BatchSpanCount)
 			r.Config.ConnectTimeout = types.Int64PointerValue(resp.Config.ConnectTimeout)
@@ -35,6 +36,18 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 			}
 			r.Config.HTTPResponseHeaderForTraceid = types.StringPointerValue(resp.Config.HTTPResponseHeaderForTraceid)
 			r.Config.LogsEndpoint = types.StringPointerValue(resp.Config.LogsEndpoint)
+			if resp.Config.Metrics == nil {
+				r.Config.Metrics = nil
+			} else {
+				r.Config.Metrics = &tfTypes.OpentelemetryPluginMetrics{}
+				r.Config.Metrics.EnableBandwidthMetrics = types.BoolPointerValue(resp.Config.Metrics.EnableBandwidthMetrics)
+				r.Config.Metrics.EnableConsumerAttribute = types.BoolPointerValue(resp.Config.Metrics.EnableConsumerAttribute)
+				r.Config.Metrics.EnableLatencyMetrics = types.BoolPointerValue(resp.Config.Metrics.EnableLatencyMetrics)
+				r.Config.Metrics.EnableRequestMetrics = types.BoolPointerValue(resp.Config.Metrics.EnableRequestMetrics)
+				r.Config.Metrics.EnableUpstreamHealthMetrics = types.BoolPointerValue(resp.Config.Metrics.EnableUpstreamHealthMetrics)
+				r.Config.Metrics.Endpoint = types.StringPointerValue(resp.Config.Metrics.Endpoint)
+				r.Config.Metrics.PushInterval = types.Float64PointerValue(resp.Config.Metrics.PushInterval)
+			}
 			if resp.Config.Propagation == nil {
 				r.Config.Propagation = nil
 			} else {
@@ -348,6 +361,12 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ct
 	}
 	var config *shared.OpentelemetryPluginConfig
 	if r.Config != nil {
+		accessLogsEndpoint := new(string)
+		if !r.Config.AccessLogsEndpoint.IsUnknown() && !r.Config.AccessLogsEndpoint.IsNull() {
+			*accessLogsEndpoint = r.Config.AccessLogsEndpoint.ValueString()
+		} else {
+			accessLogsEndpoint = nil
+		}
 		batchFlushDelay := new(int64)
 		if !r.Config.BatchFlushDelay.IsUnknown() && !r.Config.BatchFlushDelay.IsNull() {
 			*batchFlushDelay = r.Config.BatchFlushDelay.ValueInt64()
@@ -393,6 +412,60 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ct
 			*logsEndpoint = r.Config.LogsEndpoint.ValueString()
 		} else {
 			logsEndpoint = nil
+		}
+		var metrics *shared.OpentelemetryPluginMetrics
+		if r.Config.Metrics != nil {
+			enableBandwidthMetrics := new(bool)
+			if !r.Config.Metrics.EnableBandwidthMetrics.IsUnknown() && !r.Config.Metrics.EnableBandwidthMetrics.IsNull() {
+				*enableBandwidthMetrics = r.Config.Metrics.EnableBandwidthMetrics.ValueBool()
+			} else {
+				enableBandwidthMetrics = nil
+			}
+			enableConsumerAttribute := new(bool)
+			if !r.Config.Metrics.EnableConsumerAttribute.IsUnknown() && !r.Config.Metrics.EnableConsumerAttribute.IsNull() {
+				*enableConsumerAttribute = r.Config.Metrics.EnableConsumerAttribute.ValueBool()
+			} else {
+				enableConsumerAttribute = nil
+			}
+			enableLatencyMetrics := new(bool)
+			if !r.Config.Metrics.EnableLatencyMetrics.IsUnknown() && !r.Config.Metrics.EnableLatencyMetrics.IsNull() {
+				*enableLatencyMetrics = r.Config.Metrics.EnableLatencyMetrics.ValueBool()
+			} else {
+				enableLatencyMetrics = nil
+			}
+			enableRequestMetrics := new(bool)
+			if !r.Config.Metrics.EnableRequestMetrics.IsUnknown() && !r.Config.Metrics.EnableRequestMetrics.IsNull() {
+				*enableRequestMetrics = r.Config.Metrics.EnableRequestMetrics.ValueBool()
+			} else {
+				enableRequestMetrics = nil
+			}
+			enableUpstreamHealthMetrics := new(bool)
+			if !r.Config.Metrics.EnableUpstreamHealthMetrics.IsUnknown() && !r.Config.Metrics.EnableUpstreamHealthMetrics.IsNull() {
+				*enableUpstreamHealthMetrics = r.Config.Metrics.EnableUpstreamHealthMetrics.ValueBool()
+			} else {
+				enableUpstreamHealthMetrics = nil
+			}
+			endpoint := new(string)
+			if !r.Config.Metrics.Endpoint.IsUnknown() && !r.Config.Metrics.Endpoint.IsNull() {
+				*endpoint = r.Config.Metrics.Endpoint.ValueString()
+			} else {
+				endpoint = nil
+			}
+			pushInterval := new(float64)
+			if !r.Config.Metrics.PushInterval.IsUnknown() && !r.Config.Metrics.PushInterval.IsNull() {
+				*pushInterval = r.Config.Metrics.PushInterval.ValueFloat64()
+			} else {
+				pushInterval = nil
+			}
+			metrics = &shared.OpentelemetryPluginMetrics{
+				EnableBandwidthMetrics:      enableBandwidthMetrics,
+				EnableConsumerAttribute:     enableConsumerAttribute,
+				EnableLatencyMetrics:        enableLatencyMetrics,
+				EnableRequestMetrics:        enableRequestMetrics,
+				EnableUpstreamHealthMetrics: enableUpstreamHealthMetrics,
+				Endpoint:                    endpoint,
+				PushInterval:                pushInterval,
+			}
 		}
 		var propagation *shared.Propagation
 		if r.Config.Propagation != nil {
@@ -529,6 +602,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ct
 			tracesEndpoint = nil
 		}
 		config = &shared.OpentelemetryPluginConfig{
+			AccessLogsEndpoint:           accessLogsEndpoint,
 			BatchFlushDelay:              batchFlushDelay,
 			BatchSpanCount:               batchSpanCount,
 			ConnectTimeout:               connectTimeout,
@@ -536,6 +610,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ct
 			Headers:                      headers,
 			HTTPResponseHeaderForTraceid: httpResponseHeaderForTraceid,
 			LogsEndpoint:                 logsEndpoint,
+			Metrics:                      metrics,
 			Propagation:                  propagation,
 			Queue:                        queue,
 			ReadTimeout:                  readTimeout,
