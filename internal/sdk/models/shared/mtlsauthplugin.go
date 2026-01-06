@@ -201,7 +201,7 @@ func (m MtlsAuthPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MtlsAuthPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"ca_certificates"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -407,7 +407,7 @@ func (m MtlsAuthPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MtlsAuthPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil

@@ -26,7 +26,7 @@ func (c CreateNetworkRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateNetworkRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "cloud_gateway_provider_account_id", "region", "availability_zones", "cidr_block"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil

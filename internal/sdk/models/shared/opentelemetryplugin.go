@@ -709,7 +709,7 @@ func (o OpentelemetryPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OpentelemetryPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
 		return err
 	}
 	return nil

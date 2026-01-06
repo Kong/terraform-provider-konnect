@@ -170,7 +170,7 @@ func (p ParameterSchema) MarshalJSON() ([]byte, error) {
 }
 
 func (p *ParameterSchema) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"in", "name", "required"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -427,7 +427,7 @@ func (r RequestValidatorPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestValidatorPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil

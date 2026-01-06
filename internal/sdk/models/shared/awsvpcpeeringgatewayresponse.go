@@ -62,6 +62,7 @@ type AwsVpcPeeringGatewayResponse struct {
 	// - `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
 	// - `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
 	// - `terminated` - The attachment has been fully deleted and is no longer available.
+	// - `error` - The attachment is in an error state.
 	//
 	State TransitGatewayState `json:"state"`
 	// Metadata describing the backing state of the transit gateway and why it may be in an erroneous state.
@@ -82,7 +83,7 @@ func (a AwsVpcPeeringGatewayResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AwsVpcPeeringGatewayResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "dns_config", "cidr_blocks", "transit_gateway_attachment_config", "id", "state", "entity_version", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

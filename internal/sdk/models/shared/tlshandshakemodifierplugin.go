@@ -210,7 +210,7 @@ func (t TLSHandshakeModifierPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TLSHandshakeModifierPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil

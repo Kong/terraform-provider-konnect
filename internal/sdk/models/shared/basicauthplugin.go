@@ -213,7 +213,7 @@ func (b BasicAuthPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BasicAuthPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
 		return err
 	}
 	return nil

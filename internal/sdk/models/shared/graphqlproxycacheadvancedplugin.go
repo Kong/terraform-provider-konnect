@@ -593,7 +593,7 @@ func (g GraphqlProxyCacheAdvancedPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GraphqlProxyCacheAdvancedPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
 		return err
 	}
 	return nil

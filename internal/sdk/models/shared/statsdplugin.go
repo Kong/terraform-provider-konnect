@@ -322,7 +322,7 @@ func (s StatsdPluginMetrics) MarshalJSON() ([]byte, error) {
 }
 
 func (s *StatsdPluginMetrics) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"name", "stat_type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -841,7 +841,7 @@ func (s StatsdPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (s *StatsdPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil

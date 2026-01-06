@@ -240,7 +240,7 @@ func (g GrpcWebPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GrpcWebPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
 		return err
 	}
 	return nil

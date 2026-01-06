@@ -23,7 +23,7 @@ func (c CreateAPIKeyResult) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateAPIKeyResult) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "type", "secret", "created_at", "updated_at", "tags"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil

@@ -98,7 +98,7 @@ func (r *IntegrationInstanceResource) Schema(ctx context.Context, req resource.S
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `The integration instance ID.`,
+				Description: `The ` + "`" + `id` + "`" + ` of the integration instance.`,
 			},
 			"integration": schema.SingleNestedAttribute{
 				Computed: true,

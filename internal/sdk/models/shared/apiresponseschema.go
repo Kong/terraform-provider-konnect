@@ -78,7 +78,7 @@ func (a APIResponseSchema) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APIResponseSchema) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "name", "api_spec_ids", "portals", "labels", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

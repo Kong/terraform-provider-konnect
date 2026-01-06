@@ -91,7 +91,7 @@ func (e ExitTransformerPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (e *ExitTransformerPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"functions"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -220,7 +220,7 @@ func (e ExitTransformerPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (e *ExitTransformerPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
 		return err
 	}
 	return nil

@@ -184,7 +184,7 @@ func (p Plugin) MarshalJSON() ([]byte, error) {
 }
 
 func (p *Plugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil

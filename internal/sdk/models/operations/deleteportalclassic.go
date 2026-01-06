@@ -49,7 +49,7 @@ func (d DeletePortalClassicRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeletePortalClassicRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"portalId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
 		return err
 	}
 	return nil

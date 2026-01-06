@@ -45,7 +45,7 @@ func (a AwsResourceEndpointAttachmentConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AwsResourceEndpointAttachmentConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"kind", "ram_share_arn"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

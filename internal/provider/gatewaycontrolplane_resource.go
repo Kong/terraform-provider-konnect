@@ -37,15 +37,15 @@ type GatewayControlPlaneResource struct {
 
 // GatewayControlPlaneResourceModel describes the resource data model.
 type GatewayControlPlaneResourceModel struct {
-	AuthType     types.String            `tfsdk:"auth_type"`
-	CloudGateway types.Bool              `tfsdk:"cloud_gateway"`
-	ClusterType  types.String            `tfsdk:"cluster_type"`
-	Config       tfTypes.Config          `tfsdk:"config"`
-	Description  types.String            `tfsdk:"description"`
-	ID           types.String            `tfsdk:"id"`
-	Labels       map[string]types.String `tfsdk:"labels"`
-	Name         types.String            `tfsdk:"name"`
-	ProxyUrls    []tfTypes.ProxyURL      `tfsdk:"proxy_urls"`
+	AuthType     types.String               `tfsdk:"auth_type"`
+	CloudGateway types.Bool                 `tfsdk:"cloud_gateway"`
+	ClusterType  types.String               `tfsdk:"cluster_type"`
+	Config       tfTypes.ControlPlaneConfig `tfsdk:"config"`
+	Description  types.String               `tfsdk:"description"`
+	ID           types.String               `tfsdk:"id"`
+	Labels       map[string]types.String    `tfsdk:"labels"`
+	Name         types.String               `tfsdk:"name"`
+	ProxyUrls    []tfTypes.ProxyURL         `tfsdk:"proxy_urls"`
 }
 
 func (r *GatewayControlPlaneResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -160,7 +160,7 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `The control plane ID.`,
+				Description: `The control plane ID`,
 			},
 			"labels": schema.MapAttribute{
 				Computed:    true,

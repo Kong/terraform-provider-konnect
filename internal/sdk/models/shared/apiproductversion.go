@@ -25,7 +25,7 @@ func (g GatewayService) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GatewayService) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"control_plane_id"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -116,7 +116,7 @@ func (a APIProductVersion) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APIProductVersion) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "name", "publish_status", "deprecated", "labels", "portals", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

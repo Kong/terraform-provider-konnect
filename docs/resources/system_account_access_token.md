@@ -26,8 +26,8 @@ resource "konnect_system_account_access_token" "my_systemaccountaccesstoken" {
 ### Required
 
 - `account_id` (String) ID of the system account.
-- `expires_at` (String) Requires replacement if changed.
-- `name` (String)
+- `expires_at` (String) Timestamp of when the system account access token will expire. Requires replacement if changed.
+- `name` (String) Name of the system account access token.
 
 ### Read-Only
 

@@ -24,7 +24,7 @@ func (p PortalCustomDomain) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PortalCustomDomain) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"hostname", "enabled", "ssl", "cname_status", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil

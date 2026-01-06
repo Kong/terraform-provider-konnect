@@ -533,7 +533,7 @@ func (p ProxyCacheAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (p *ProxyCacheAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"strategy"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -753,7 +753,7 @@ func (p ProxyCacheAdvancedPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (p *ProxyCacheAdvancedPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil

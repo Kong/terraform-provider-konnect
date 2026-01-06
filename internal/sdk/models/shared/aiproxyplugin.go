@@ -868,7 +868,7 @@ func (m Model) MarshalJSON() ([]byte, error) {
 }
 
 func (m *Model) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"provider"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1011,7 +1011,7 @@ func (a AiProxyPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"model", "route_type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1202,7 +1202,7 @@ func (a AiProxyPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

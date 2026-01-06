@@ -98,7 +98,7 @@ func (s Static) MarshalJSON() ([]byte, error) {
 }
 
 func (s *Static) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"values"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -186,7 +186,7 @@ func (p Property) MarshalJSON() ([]byte, error) {
 }
 
 func (p *Property) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"property"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -251,7 +251,7 @@ func (j Jq) MarshalJSON() ([]byte, error) {
 }
 
 func (j *Jq) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &j, "", false, []string{"jq"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -505,7 +505,7 @@ func (c Call) MarshalJSON() ([]byte, error) {
 }
 
 func (c *Call) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"url"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -872,13 +872,13 @@ const (
 )
 
 type Nodes struct {
-	Branch     *Branch     `queryParam:"inline,name=nodes"`
-	NodesCache *NodesCache `queryParam:"inline,name=nodes"`
-	Call       *Call       `queryParam:"inline,name=nodes"`
-	Exit       *Exit       `queryParam:"inline,name=nodes"`
-	Jq         *Jq         `queryParam:"inline,name=nodes"`
-	Property   *Property   `queryParam:"inline,name=nodes"`
-	Static     *Static     `queryParam:"inline,name=nodes"`
+	Branch     *Branch     `queryParam:"inline,name=nodes" union:"member"`
+	NodesCache *NodesCache `queryParam:"inline,name=nodes" union:"member"`
+	Call       *Call       `queryParam:"inline,name=nodes" union:"member"`
+	Exit       *Exit       `queryParam:"inline,name=nodes" union:"member"`
+	Jq         *Jq         `queryParam:"inline,name=nodes" union:"member"`
+	Property   *Property   `queryParam:"inline,name=nodes" union:"member"`
+	Static     *Static     `queryParam:"inline,name=nodes" union:"member"`
 
 	Type NodesType
 }
@@ -959,19 +959,19 @@ func (u *Nodes) UnmarshalJSON(data []byte) error {
 		})
 	}
 
-	var call Call = Call{}
-	if err := utils.UnmarshalJSON(data, &call, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  NodesTypeCall,
-			Value: &call,
-		})
-	}
-
 	var nodesCache NodesCache = NodesCache{}
 	if err := utils.UnmarshalJSON(data, &nodesCache, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
 			Type:  NodesTypeNodesCache,
 			Value: &nodesCache,
+		})
+	}
+
+	var call Call = Call{}
+	if err := utils.UnmarshalJSON(data, &call, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  NodesTypeCall,
+			Value: &call,
 		})
 	}
 
@@ -1012,7 +1012,7 @@ func (u *Nodes) UnmarshalJSON(data []byte) error {
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Nodes", string(data))
 	}
@@ -1023,11 +1023,11 @@ func (u *Nodes) UnmarshalJSON(data []byte) error {
 	case NodesTypeBranch:
 		u.Branch = best.Value.(*Branch)
 		return nil
-	case NodesTypeCall:
-		u.Call = best.Value.(*Call)
-		return nil
 	case NodesTypeNodesCache:
 		u.NodesCache = best.Value.(*NodesCache)
+		return nil
+	case NodesTypeCall:
+		u.Call = best.Value.(*Call)
 		return nil
 	case NodesTypeExit:
 		u.Exit = best.Value.(*Exit)
@@ -1483,7 +1483,7 @@ func (d DatakitPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DatakitPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"nodes"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1626,7 +1626,7 @@ func (d DatakitPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DatakitPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
 		return err
 	}
 	return nil

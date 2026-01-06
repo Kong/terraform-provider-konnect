@@ -26,7 +26,7 @@ func (a APIProductVersionSpec) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APIProductVersionSpec) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "name", "content", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

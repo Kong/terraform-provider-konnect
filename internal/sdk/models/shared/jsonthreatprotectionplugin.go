@@ -297,7 +297,7 @@ func (j JSONThreatProtectionPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (j *JSONThreatProtectionPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &j, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
 		return err
 	}
 	return nil

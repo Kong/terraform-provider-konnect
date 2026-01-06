@@ -21,7 +21,7 @@ func (a AWSResourceEndpointGateway) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AWSResourceEndpointGateway) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "transit_gateway_attachment_config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

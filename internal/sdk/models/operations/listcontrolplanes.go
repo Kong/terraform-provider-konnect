@@ -28,7 +28,7 @@ func (l ListControlPlanesRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (l *ListControlPlanesRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"page[size]"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
 		return err
 	}
 	return nil

@@ -48,7 +48,7 @@ func (n Network) MarshalJSON() ([]byte, error) {
 }
 
 func (n *Network) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &n, "", false, []string{"id", "name", "default", "cloud_gateway_provider_account_id", "region", "availability_zones", "cidr_block", "state", "provider_metadata", "transit_gateway_count", "configuration_reference_count", "entity_version", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &n, "", false, nil); err != nil {
 		return err
 	}
 	return nil

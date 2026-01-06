@@ -12,6 +12,105 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
+func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedPatchTransitGatewayResponse(ctx context.Context, resp *shared.PatchTransitGatewayResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		if resp.AwsResourceEndpointGatewayResponse != nil {
+			r.AwsResourceEndpointGatewayResponse = &tfTypes.AwsResourceEndpointGatewayResponse{}
+			r.AwsResourceEndpointGatewayResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsResourceEndpointGatewayResponse.CreatedAt))
+			r.AwsResourceEndpointGatewayResponse.DNSConfig = []tfTypes.TransitGatewayDNSConfig{}
+
+			for _, dnsConfigItem := range resp.AwsResourceEndpointGatewayResponse.DNSConfig {
+				var dnsConfig tfTypes.TransitGatewayDNSConfig
+
+				dnsConfig.DomainProxyList = make([]types.String, 0, len(dnsConfigItem.DomainProxyList))
+				for _, v := range dnsConfigItem.DomainProxyList {
+					dnsConfig.DomainProxyList = append(dnsConfig.DomainProxyList, types.StringValue(v))
+				}
+				dnsConfig.RemoteDNSServerIPAddresses = make([]types.String, 0, len(dnsConfigItem.RemoteDNSServerIPAddresses))
+				for _, v := range dnsConfigItem.RemoteDNSServerIPAddresses {
+					dnsConfig.RemoteDNSServerIPAddresses = append(dnsConfig.RemoteDNSServerIPAddresses, types.StringValue(v))
+				}
+
+				r.AwsResourceEndpointGatewayResponse.DNSConfig = append(r.AwsResourceEndpointGatewayResponse.DNSConfig, dnsConfig)
+			}
+			r.AwsResourceEndpointGatewayResponse.EntityVersion = types.Int64Value(resp.AwsResourceEndpointGatewayResponse.EntityVersion)
+			r.EntityVersion = r.AwsResourceEndpointGatewayResponse.EntityVersion
+			r.AwsResourceEndpointGatewayResponse.ID = types.StringValue(resp.AwsResourceEndpointGatewayResponse.ID)
+			r.ID = r.AwsResourceEndpointGatewayResponse.ID
+			r.AwsResourceEndpointGatewayResponse.Name = types.StringValue(resp.AwsResourceEndpointGatewayResponse.Name)
+			r.Name = r.AwsResourceEndpointGatewayResponse.Name
+			r.AwsResourceEndpointGatewayResponse.State = types.StringValue(string(resp.AwsResourceEndpointGatewayResponse.State))
+			if resp.AwsResourceEndpointGatewayResponse.StateMetadata == nil {
+				r.AwsResourceEndpointGatewayResponse.StateMetadata = nil
+			} else {
+				r.AwsResourceEndpointGatewayResponse.StateMetadata = &tfTypes.CustomDomainStateMetadata{}
+				r.AwsResourceEndpointGatewayResponse.StateMetadata.Reason = types.StringPointerValue(resp.AwsResourceEndpointGatewayResponse.StateMetadata.Reason)
+				r.AwsResourceEndpointGatewayResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AwsResourceEndpointGatewayResponse.StateMetadata.ReportedStatus)
+			}
+			r.AwsResourceEndpointGatewayResponse.TransitGatewayAttachmentConfig.Kind = types.StringValue(string(resp.AwsResourceEndpointGatewayResponse.TransitGatewayAttachmentConfig.Kind))
+			r.AwsResourceEndpointGatewayResponse.TransitGatewayAttachmentConfig.RAMShareArn = types.StringValue(resp.AwsResourceEndpointGatewayResponse.TransitGatewayAttachmentConfig.RAMShareArn)
+			r.AwsResourceEndpointGatewayResponse.TransitGatewayAttachmentConfig.ResourceConfig = []tfTypes.AwsResourceEndpointConfigResponse{}
+
+			for _, resourceConfigItem := range resp.AwsResourceEndpointGatewayResponse.TransitGatewayAttachmentConfig.ResourceConfig {
+				var resourceConfig tfTypes.AwsResourceEndpointConfigResponse
+
+				resourceConfig.DomainName = types.StringValue(resourceConfigItem.DomainName)
+				resourceConfig.ResourceConfigID = types.StringValue(resourceConfigItem.ResourceConfigID)
+				resourceConfig.State = types.StringValue(string(resourceConfigItem.State))
+
+				r.AwsResourceEndpointGatewayResponse.TransitGatewayAttachmentConfig.ResourceConfig = append(r.AwsResourceEndpointGatewayResponse.TransitGatewayAttachmentConfig.ResourceConfig, resourceConfig)
+			}
+			r.AwsResourceEndpointGatewayResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsResourceEndpointGatewayResponse.UpdatedAt))
+		}
+		if resp.AwsTransitGatewayResponse != nil {
+			r.AwsTransitGatewayResponse = &tfTypes.AwsTransitGatewayResponse{}
+			r.AwsTransitGatewayResponse.CidrBlocks = make([]types.String, 0, len(resp.AwsTransitGatewayResponse.CidrBlocks))
+			for _, v := range resp.AwsTransitGatewayResponse.CidrBlocks {
+				r.AwsTransitGatewayResponse.CidrBlocks = append(r.AwsTransitGatewayResponse.CidrBlocks, types.StringValue(v))
+			}
+			r.AwsTransitGatewayResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsTransitGatewayResponse.CreatedAt))
+			r.AwsTransitGatewayResponse.DNSConfig = []tfTypes.TransitGatewayDNSConfig{}
+
+			for _, dnsConfigItem1 := range resp.AwsTransitGatewayResponse.DNSConfig {
+				var dnsConfig1 tfTypes.TransitGatewayDNSConfig
+
+				dnsConfig1.DomainProxyList = make([]types.String, 0, len(dnsConfigItem1.DomainProxyList))
+				for _, v := range dnsConfigItem1.DomainProxyList {
+					dnsConfig1.DomainProxyList = append(dnsConfig1.DomainProxyList, types.StringValue(v))
+				}
+				dnsConfig1.RemoteDNSServerIPAddresses = make([]types.String, 0, len(dnsConfigItem1.RemoteDNSServerIPAddresses))
+				for _, v := range dnsConfigItem1.RemoteDNSServerIPAddresses {
+					dnsConfig1.RemoteDNSServerIPAddresses = append(dnsConfig1.RemoteDNSServerIPAddresses, types.StringValue(v))
+				}
+
+				r.AwsTransitGatewayResponse.DNSConfig = append(r.AwsTransitGatewayResponse.DNSConfig, dnsConfig1)
+			}
+			r.AwsTransitGatewayResponse.EntityVersion = types.Int64Value(resp.AwsTransitGatewayResponse.EntityVersion)
+			r.EntityVersion = r.AwsTransitGatewayResponse.EntityVersion
+			r.AwsTransitGatewayResponse.ID = types.StringValue(resp.AwsTransitGatewayResponse.ID)
+			r.ID = r.AwsTransitGatewayResponse.ID
+			r.AwsTransitGatewayResponse.Name = types.StringValue(resp.AwsTransitGatewayResponse.Name)
+			r.Name = r.AwsTransitGatewayResponse.Name
+			r.AwsTransitGatewayResponse.State = types.StringValue(string(resp.AwsTransitGatewayResponse.State))
+			if resp.AwsTransitGatewayResponse.StateMetadata == nil {
+				r.AwsTransitGatewayResponse.StateMetadata = nil
+			} else {
+				r.AwsTransitGatewayResponse.StateMetadata = &tfTypes.CustomDomainStateMetadata{}
+				r.AwsTransitGatewayResponse.StateMetadata.Reason = types.StringPointerValue(resp.AwsTransitGatewayResponse.StateMetadata.Reason)
+				r.AwsTransitGatewayResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AwsTransitGatewayResponse.StateMetadata.ReportedStatus)
+			}
+			r.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.Kind = types.StringValue(string(resp.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.Kind))
+			r.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.RAMShareArn = types.StringValue(resp.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.RAMShareArn)
+			r.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.TransitGatewayID = types.StringValue(resp.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.TransitGatewayID)
+			r.AwsTransitGatewayResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsTransitGatewayResponse.UpdatedAt))
+		}
+	}
+
+	return diags
+}
+
 func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewayResponse(ctx context.Context, resp *shared.TransitGatewayResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -287,6 +386,31 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToOperationsGetTransitGatewayR
 	return &out, diags
 }
 
+func (r *CloudGatewayTransitGatewayResourceModel) ToOperationsUpdateTransitGatewayRequest(ctx context.Context) (*operations.UpdateTransitGatewayRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var networkID string
+	networkID = r.NetworkID.ValueString()
+
+	var transitGatewayID string
+	transitGatewayID = r.ID.ValueString()
+
+	patchTransitGatewayRequest, patchTransitGatewayRequestDiags := r.ToSharedPatchTransitGatewayRequest(ctx)
+	diags.Append(patchTransitGatewayRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateTransitGatewayRequest{
+		NetworkID:                  networkID,
+		TransitGatewayID:           transitGatewayID,
+		PatchTransitGatewayRequest: *patchTransitGatewayRequest,
+	}
+
+	return &out, diags
+}
+
 func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRequest(ctx context.Context) (*shared.CreateTransitGatewayRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -536,6 +660,58 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 	if gcpVpcPeeringTransitGateway != nil {
 		out = shared.CreateTransitGatewayRequest{
 			GcpVpcPeeringTransitGateway: gcpVpcPeeringTransitGateway,
+		}
+	}
+
+	return &out, diags
+}
+
+func (r *CloudGatewayTransitGatewayResourceModel) ToSharedPatchTransitGatewayRequest(ctx context.Context) (*shared.PatchTransitGatewayRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var out shared.PatchTransitGatewayRequest
+	var patchAWSResourceEndpointGatewayAWSResourceEndpointGateway *shared.PatchAWSResourceEndpointGatewayAWSResourceEndpointGateway
+	if r.AWSResourceEndpointGateway != nil {
+		kind := shared.PatchAWSResourceEndpointGatewayAWSResourceEndpointAttachmentType(r.AWSResourceEndpointGateway.TransitGatewayAttachmentConfig.Kind.ValueString())
+		resourceConfig := make([]shared.AwsResourceEndpointConfig, 0, len(r.AWSResourceEndpointGateway.TransitGatewayAttachmentConfig.ResourceConfig))
+		for resourceConfigIndex := range r.AWSResourceEndpointGateway.TransitGatewayAttachmentConfig.ResourceConfig {
+			var resourceConfigID string
+			resourceConfigID = r.AWSResourceEndpointGateway.TransitGatewayAttachmentConfig.ResourceConfig[resourceConfigIndex].ResourceConfigID.ValueString()
+
+			var domainName string
+			domainName = r.AWSResourceEndpointGateway.TransitGatewayAttachmentConfig.ResourceConfig[resourceConfigIndex].DomainName.ValueString()
+
+			resourceConfig = append(resourceConfig, shared.AwsResourceEndpointConfig{
+				ResourceConfigID: resourceConfigID,
+				DomainName:       domainName,
+			})
+		}
+		transitGatewayAttachmentConfig := shared.TransitGatewayAttachmentConfig{
+			Kind:           kind,
+			ResourceConfig: resourceConfig,
+		}
+		patchAWSResourceEndpointGatewayAWSResourceEndpointGateway = &shared.PatchAWSResourceEndpointGatewayAWSResourceEndpointGateway{
+			TransitGatewayAttachmentConfig: transitGatewayAttachmentConfig,
+		}
+	}
+	if patchAWSResourceEndpointGatewayAWSResourceEndpointGateway != nil {
+		out = shared.PatchTransitGatewayRequest{
+			PatchAWSResourceEndpointGatewayAWSResourceEndpointGateway: patchAWSResourceEndpointGatewayAWSResourceEndpointGateway,
+		}
+	}
+	var patchAWSTransitGatewayAWSTransitGateway *shared.PatchAWSTransitGatewayAWSTransitGateway
+	if r.AWSTransitGateway != nil {
+		cidrBlocks := make([]string, 0, len(r.AWSTransitGateway.CidrBlocks))
+		for cidrBlocksIndex := range r.AWSTransitGateway.CidrBlocks {
+			cidrBlocks = append(cidrBlocks, r.AWSTransitGateway.CidrBlocks[cidrBlocksIndex].ValueString())
+		}
+		patchAWSTransitGatewayAWSTransitGateway = &shared.PatchAWSTransitGatewayAWSTransitGateway{
+			CidrBlocks: cidrBlocks,
+		}
+	}
+	if patchAWSTransitGatewayAWSTransitGateway != nil {
+		out = shared.PatchTransitGatewayRequest{
+			PatchAWSTransitGatewayAWSTransitGateway: patchAWSTransitGatewayAWSTransitGateway,
 		}
 	}
 

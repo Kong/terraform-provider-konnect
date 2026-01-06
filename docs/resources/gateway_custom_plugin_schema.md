@@ -30,7 +30,7 @@ resource "konnect_gateway_custom_plugin_schema" "my_gatewaycustompluginschema" {
 ### Read-Only
 
 - `created_at` (Number) An ISO-8604 timestamp representation of custom plugin schema creation date.
-- `name` (String) The custom plugin name determined by the custom plugin schema.
+- `name` (String) The custom plugin name
 - `updated_at` (Number) An ISO-8604 timestamp representation of custom plugin schema update date.
 
 ## Import

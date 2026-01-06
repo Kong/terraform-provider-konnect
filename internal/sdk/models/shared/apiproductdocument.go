@@ -59,7 +59,7 @@ func (a APIProductDocument) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APIProductDocument) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "title", "slug", "status", "metadata", "content", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

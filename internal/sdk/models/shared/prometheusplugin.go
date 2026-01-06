@@ -275,7 +275,7 @@ func (p PrometheusPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PrometheusPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil

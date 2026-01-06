@@ -24,8 +24,8 @@ func (i *ID) GetOeq() *string {
 	return i.Oeq
 }
 
-// Name - Filter using **one** of the following operators: `eq`, `neq`, `contains`
-type Name struct {
+// ControlPlaneFilterParametersName - Filter using **one** of the following operators: `eq`, `neq`, `contains`
+type ControlPlaneFilterParametersName struct {
 	// The field exactly matches the provided value.
 	Eq *string `queryParam:"name=eq"`
 	// The field contains the provided value.
@@ -34,25 +34,25 @@ type Name struct {
 	Neq *string `queryParam:"name=neq"`
 }
 
-func (n *Name) GetEq() *string {
-	if n == nil {
+func (c *ControlPlaneFilterParametersName) GetEq() *string {
+	if c == nil {
 		return nil
 	}
-	return n.Eq
+	return c.Eq
 }
 
-func (n *Name) GetContains() *string {
-	if n == nil {
+func (c *ControlPlaneFilterParametersName) GetContains() *string {
+	if c == nil {
 		return nil
 	}
-	return n.Contains
+	return c.Contains
 }
 
-func (n *Name) GetNeq() *string {
-	if n == nil {
+func (c *ControlPlaneFilterParametersName) GetNeq() *string {
+	if c == nil {
 		return nil
 	}
-	return n.Neq
+	return c.Neq
 }
 
 // ClusterType - Filter using **one** of the following operators: `eq`, `neq`
@@ -81,7 +81,7 @@ type ControlPlaneFilterParameters struct {
 	// Filter using **one** of the following operators: `eq`, `oeq`
 	ID *ID `queryParam:"name=id"`
 	// Filter using **one** of the following operators: `eq`, `neq`, `contains`
-	Name *Name `queryParam:"name=name"`
+	Name *ControlPlaneFilterParametersName `queryParam:"name=name"`
 	// Filter using **one** of the following operators: `eq`, `neq`
 	ClusterType *ClusterType `queryParam:"name=cluster_type"`
 	// Filter by a boolean value (true/false).
@@ -95,7 +95,7 @@ func (c *ControlPlaneFilterParameters) GetID() *ID {
 	return c.ID
 }
 
-func (c *ControlPlaneFilterParameters) GetName() *Name {
+func (c *ControlPlaneFilterParameters) GetName() *ControlPlaneFilterParametersName {
 	if c == nil {
 		return nil
 	}

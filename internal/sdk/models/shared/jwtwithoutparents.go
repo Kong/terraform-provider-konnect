@@ -8,38 +8,38 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-type Algorithm string
+type JWTWithoutParentsAlgorithm string
 
 const (
-	AlgorithmEs256   Algorithm = "ES256"
-	AlgorithmEs256K  Algorithm = "ES256K"
-	AlgorithmEs384   Algorithm = "ES384"
-	AlgorithmEs512   Algorithm = "ES512"
-	AlgorithmEsb256  Algorithm = "ESB256"
-	AlgorithmEsb320  Algorithm = "ESB320"
-	AlgorithmEsb384  Algorithm = "ESB384"
-	AlgorithmEsb512  Algorithm = "ESB512"
-	AlgorithmEsp256  Algorithm = "ESP256"
-	AlgorithmEsp384  Algorithm = "ESP384"
-	AlgorithmEsp512  Algorithm = "ESP512"
-	AlgorithmEd25519 Algorithm = "Ed25519"
-	AlgorithmEd448   Algorithm = "Ed448"
-	AlgorithmEdDsa   Algorithm = "EdDSA"
-	AlgorithmHs256   Algorithm = "HS256"
-	AlgorithmHs384   Algorithm = "HS384"
-	AlgorithmHs512   Algorithm = "HS512"
-	AlgorithmPs256   Algorithm = "PS256"
-	AlgorithmPs384   Algorithm = "PS384"
-	AlgorithmPs512   Algorithm = "PS512"
-	AlgorithmRs256   Algorithm = "RS256"
-	AlgorithmRs384   Algorithm = "RS384"
-	AlgorithmRs512   Algorithm = "RS512"
+	JWTWithoutParentsAlgorithmEs256   JWTWithoutParentsAlgorithm = "ES256"
+	JWTWithoutParentsAlgorithmEs256K  JWTWithoutParentsAlgorithm = "ES256K"
+	JWTWithoutParentsAlgorithmEs384   JWTWithoutParentsAlgorithm = "ES384"
+	JWTWithoutParentsAlgorithmEs512   JWTWithoutParentsAlgorithm = "ES512"
+	JWTWithoutParentsAlgorithmEsb256  JWTWithoutParentsAlgorithm = "ESB256"
+	JWTWithoutParentsAlgorithmEsb320  JWTWithoutParentsAlgorithm = "ESB320"
+	JWTWithoutParentsAlgorithmEsb384  JWTWithoutParentsAlgorithm = "ESB384"
+	JWTWithoutParentsAlgorithmEsb512  JWTWithoutParentsAlgorithm = "ESB512"
+	JWTWithoutParentsAlgorithmEsp256  JWTWithoutParentsAlgorithm = "ESP256"
+	JWTWithoutParentsAlgorithmEsp384  JWTWithoutParentsAlgorithm = "ESP384"
+	JWTWithoutParentsAlgorithmEsp512  JWTWithoutParentsAlgorithm = "ESP512"
+	JWTWithoutParentsAlgorithmEd25519 JWTWithoutParentsAlgorithm = "Ed25519"
+	JWTWithoutParentsAlgorithmEd448   JWTWithoutParentsAlgorithm = "Ed448"
+	JWTWithoutParentsAlgorithmEdDsa   JWTWithoutParentsAlgorithm = "EdDSA"
+	JWTWithoutParentsAlgorithmHs256   JWTWithoutParentsAlgorithm = "HS256"
+	JWTWithoutParentsAlgorithmHs384   JWTWithoutParentsAlgorithm = "HS384"
+	JWTWithoutParentsAlgorithmHs512   JWTWithoutParentsAlgorithm = "HS512"
+	JWTWithoutParentsAlgorithmPs256   JWTWithoutParentsAlgorithm = "PS256"
+	JWTWithoutParentsAlgorithmPs384   JWTWithoutParentsAlgorithm = "PS384"
+	JWTWithoutParentsAlgorithmPs512   JWTWithoutParentsAlgorithm = "PS512"
+	JWTWithoutParentsAlgorithmRs256   JWTWithoutParentsAlgorithm = "RS256"
+	JWTWithoutParentsAlgorithmRs384   JWTWithoutParentsAlgorithm = "RS384"
+	JWTWithoutParentsAlgorithmRs512   JWTWithoutParentsAlgorithm = "RS512"
 )
 
-func (e Algorithm) ToPointer() *Algorithm {
+func (e JWTWithoutParentsAlgorithm) ToPointer() *JWTWithoutParentsAlgorithm {
 	return &e
 }
-func (e *Algorithm) UnmarshalJSON(data []byte) error {
+func (e *JWTWithoutParentsAlgorithm) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -90,10 +90,10 @@ func (e *Algorithm) UnmarshalJSON(data []byte) error {
 	case "RS384":
 		fallthrough
 	case "RS512":
-		*e = Algorithm(v)
+		*e = JWTWithoutParentsAlgorithm(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Algorithm: %v", v)
+		return fmt.Errorf("invalid value for JWTWithoutParentsAlgorithm: %v", v)
 	}
 }
 
@@ -109,8 +109,8 @@ func (j *JWTWithoutParentsConsumer) GetID() *string {
 }
 
 type JWTWithoutParents struct {
-	Algorithm *Algorithm                 `default:"HS256" json:"algorithm"`
-	Consumer  *JWTWithoutParentsConsumer `json:"consumer,omitempty"`
+	Algorithm *JWTWithoutParentsAlgorithm `default:"HS256" json:"algorithm"`
+	Consumer  *JWTWithoutParentsConsumer  `json:"consumer,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// A string representing a UUID (universally unique identifier).
@@ -133,7 +133,7 @@ func (j *JWTWithoutParents) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (j *JWTWithoutParents) GetAlgorithm() *Algorithm {
+func (j *JWTWithoutParents) GetAlgorithm() *JWTWithoutParentsAlgorithm {
 	if j == nil {
 		return nil
 	}

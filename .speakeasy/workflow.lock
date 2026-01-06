@@ -1,4 +1,4 @@
-speakeasyVersion: 1.665.0
+speakeasyVersion: 1.678.0
 sources:
     kong:
         sourceNamespace: kong
@@ -15,7 +15,7 @@ targets:
         sourceBlobDigest: sha256:fe7d9348a81627bd7708751e55cd5c4ef15b7c2b748c058ce7dd03298e8a92fa
 workflow:
     workflowVersion: 1.0.0
-    speakeasyVersion: 1.665.0
+    speakeasyVersion: 1.678.0
     sources:
         kong:
             inputs:

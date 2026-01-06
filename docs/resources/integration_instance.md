@@ -42,7 +42,7 @@ Parsed as JSON.
 
 - `authorized` (Boolean) Denotes whether the integration instance has been authorized within the catalog.
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `id` (String) The integration instance ID.
+- `id` (String) The `id` of the integration instance.
 - `integration` (Attributes) Short-hand descriptor of an integration that omits instance metadata. (see [below for nested schema](#nestedatt--integration))
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 

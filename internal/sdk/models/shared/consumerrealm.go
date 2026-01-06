@@ -44,7 +44,7 @@ func (c ConsumerRealm) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConsumerRealm) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "name", "consumer_groups", "allowed_control_planes", "allow_all_control_planes", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil

@@ -669,7 +669,7 @@ func (a AiRateLimitingAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiRateLimitingAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"llm_providers"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -924,7 +924,7 @@ func (a AiRateLimitingAdvancedPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiRateLimitingAdvancedPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

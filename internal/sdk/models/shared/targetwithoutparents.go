@@ -43,7 +43,7 @@ func (t TargetWithoutParents) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TargetWithoutParents) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"target"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil

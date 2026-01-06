@@ -73,7 +73,7 @@ func (a APISpecResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APISpecResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "content", "validation_messages", "type", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
