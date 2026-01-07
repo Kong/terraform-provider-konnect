@@ -633,9 +633,6 @@ func (r *GatewayPluginConfluentResource) Schema(ctx context.Context, req resourc
 					"security": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"ssl_verify": types.BoolType,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"ssl_verify": schema.BoolAttribute{
 								Computed:    true,

@@ -117,69 +117,10 @@ func (r *GatewayPluginBasicAuthResource) Schema(ctx context.Context, req resourc
 					"brute_force_protection": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"redis": types.ObjectType{
-								AttrTypes: map[string]attr.Type{
-									`cloud_authentication`: types.ObjectType{
-										AttrTypes: map[string]attr.Type{
-											`auth_provider`:            types.StringType,
-											`aws_access_key_id`:        types.StringType,
-											`aws_assume_role_arn`:      types.StringType,
-											`aws_cache_name`:           types.StringType,
-											`aws_is_serverless`:        types.BoolType,
-											`aws_region`:               types.StringType,
-											`aws_role_session_name`:    types.StringType,
-											`aws_secret_access_key`:    types.StringType,
-											`azure_client_id`:          types.StringType,
-											`azure_client_secret`:      types.StringType,
-											`azure_tenant_id`:          types.StringType,
-											`gcp_service_account_json`: types.StringType,
-										},
-									},
-									`database`:    types.Int64Type,
-									`host`:        types.StringType,
-									`password`:    types.StringType,
-									`port`:        types.Int64Type,
-									`server_name`: types.StringType,
-									`ssl`:         types.BoolType,
-									`ssl_verify`:  types.BoolType,
-									`timeout`:     types.Int64Type,
-									`username`:    types.StringType,
-								},
-							},
-							"strategy": types.StringType,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"redis": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"cloud_authentication": types.ObjectType{
-										AttrTypes: map[string]attr.Type{
-											`auth_provider`:            types.StringType,
-											`aws_access_key_id`:        types.StringType,
-											`aws_assume_role_arn`:      types.StringType,
-											`aws_cache_name`:           types.StringType,
-											`aws_is_serverless`:        types.BoolType,
-											`aws_region`:               types.StringType,
-											`aws_role_session_name`:    types.StringType,
-											`aws_secret_access_key`:    types.StringType,
-											`azure_client_id`:          types.StringType,
-											`azure_client_secret`:      types.StringType,
-											`azure_tenant_id`:          types.StringType,
-											`gcp_service_account_json`: types.StringType,
-										},
-									},
-									"database":    types.Int64Type,
-									"host":        types.StringType,
-									"password":    types.StringType,
-									"port":        types.Int64Type,
-									"server_name": types.StringType,
-									"ssl":         types.BoolType,
-									"ssl_verify":  types.BoolType,
-									"timeout":     types.Int64Type,
-									"username":    types.StringType,
-								})),
 								Attributes: map[string]schema.Attribute{
 									"cloud_authentication": schema.SingleNestedAttribute{
 										Computed: true,

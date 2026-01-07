@@ -131,15 +131,6 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 					"metrics": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"enable_bandwidth_metrics":       types.BoolType,
-							"enable_consumer_attribute":      types.BoolType,
-							"enable_latency_metrics":         types.BoolType,
-							"enable_request_metrics":         types.BoolType,
-							"enable_upstream_health_metrics": types.BoolType,
-							"endpoint":                       types.StringType,
-							"push_interval":                  types.Float64Type,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"enable_bandwidth_metrics": schema.BoolAttribute{
 								Computed:    true,

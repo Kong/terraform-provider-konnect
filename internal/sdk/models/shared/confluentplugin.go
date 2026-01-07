@@ -743,7 +743,7 @@ type ConfluentPluginConfig struct {
 	ProducerRequestTimeout *int64 `default:"2000" json:"producer_request_timeout"`
 	// The plugin-global schema registry configuration. This can be overwritten by the topic configuration.
 	SchemaRegistry *SchemaRegistry          `json:"schema_registry,omitempty"`
-	Security       *ConfluentPluginSecurity `json:"security"`
+	Security       *ConfluentPluginSecurity `json:"security,omitempty"`
 	// Socket timeout in milliseconds.
 	Timeout *int64 `default:"10000" json:"timeout"`
 	// The default Kafka topic to publish to if the query parameter defined in the `topics_query_arg` does not exist in the request

@@ -555,7 +555,7 @@ type OpentelemetryPluginConfig struct {
 	HTTPResponseHeaderForTraceid *string           `default:"null" json:"http_response_header_for_traceid"`
 	// An HTTP URL endpoint where internal logs are exported.
 	LogsEndpoint *string                     `default:"null" json:"logs_endpoint"`
-	Metrics      *OpentelemetryPluginMetrics `json:"metrics"`
+	Metrics      *OpentelemetryPluginMetrics `json:"metrics,omitempty"`
 	Propagation  *Propagation                `json:"propagation,omitempty"`
 	Queue        *OpentelemetryPluginQueue   `json:"queue,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.

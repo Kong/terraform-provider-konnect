@@ -371,7 +371,7 @@ func (e *BasicAuthPluginStrategy) UnmarshalJSON(data []byte) error {
 
 type BruteForceProtection struct {
 	// Redis configuration
-	Redis *BasicAuthPluginRedis `json:"redis"`
+	Redis *BasicAuthPluginRedis `json:"redis,omitempty"`
 	// The brute force protection strategy to use for retrieving and incrementing the limits. Available values are: `cluster`, `redis`, `memory`, and `off`.
 	Strategy *BasicAuthPluginStrategy `default:"off" json:"strategy"`
 }
@@ -404,7 +404,7 @@ func (b *BruteForceProtection) GetStrategy() *BasicAuthPluginStrategy {
 type BasicAuthPluginConfig struct {
 	// An optional string (Consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`. Please note that this value must refer to the Consumer `id` or `username` attribute, and **not** its `custom_id`.
 	Anonymous            *string               `default:"null" json:"anonymous"`
-	BruteForceProtection *BruteForceProtection `json:"brute_force_protection"`
+	BruteForceProtection *BruteForceProtection `json:"brute_force_protection,omitempty"`
 	// An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin will strip the credential from the request (i.e. the `Authorization` header) before proxying it.
 	HideCredentials *bool `default:"false" json:"hide_credentials"`
 	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
