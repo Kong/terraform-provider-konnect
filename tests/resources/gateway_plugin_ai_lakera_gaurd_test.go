@@ -9,7 +9,7 @@ import (
 
 func TestGatewayPluginAiLakeraGaurd(t *testing.T) {
 	t.Parallel()
-	t.Run("update-nullify-fields", func(t *testing.T) {
+	t.Run("CRUD", func(t *testing.T) {
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
