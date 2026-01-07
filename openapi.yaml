@@ -35005,14 +35005,10 @@ components:
               x-speakeasy-param-computed: false
             brute_force_protection:
               type: object
-              default: null
-              nullable: true
               properties:
                 redis:
                   description: Redis configuration
                   type: object
-                  default: null
-                  nullable: true
                   properties:
                     cloud_authentication:
                       description: Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -35163,7 +35159,7 @@ components:
                       nullable: true
                       x-referenceable: true
                       x-speakeasy-param-computed: false
-                  x-speakeasy-param-computed: false
+                  x-speakeasy-param-computed: true
                 strategy:
                   description: 'The brute force protection strategy to use for retrieving and incrementing the limits. Available values are: `cluster`, `redis`, `memory`, and `off`.'
                   type: string
@@ -35174,7 +35170,7 @@ components:
                     - 'off'
                     - redis
                   x-speakeasy-unknown-values: allow
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             hide_credentials:
               description: 'An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin will strip the credential from the request (i.e. the `Authorization` header) before proxying it.'
               type: boolean
@@ -36643,14 +36639,12 @@ components:
               x-speakeasy-param-computed: true
             security:
               type: object
-              default: null
-              nullable: true
               properties:
                 ssl_verify:
                   description: Enables verification of the certificate presented by the server.
                   type: boolean
                   default: false
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             timeout:
               description: Socket timeout in milliseconds.
               type: integer
@@ -47481,8 +47475,6 @@ components:
               x-speakeasy-param-computed: false
             metrics:
               type: object
-              default: null
-              nullable: true
               properties:
                 enable_bandwidth_metrics:
                   description: 'A boolean value that determines if bandwidth metrics should be collected. If enabled, `http.server.request.size` and `http.server.response.size` metrics will be exported.'
@@ -47515,7 +47507,7 @@ components:
                   description: The interval in seconds at which metrics are pushed to the OTLP server. This setting is only applicable when `endpoint` is set.
                   type: number
                   default: 60
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             propagation:
               type: object
               default:
