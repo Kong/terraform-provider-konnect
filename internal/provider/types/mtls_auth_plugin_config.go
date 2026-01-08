@@ -23,4 +23,5 @@ type MtlsAuthPluginConfig struct {
 	RevocationCheckMode  types.String   `tfsdk:"revocation_check_mode"`
 	SendCaDn             types.Bool     `tfsdk:"send_ca_dn"`
 	SkipConsumerLookup   types.Bool     `tfsdk:"skip_consumer_lookup"`
+	SslVerify            types.Bool     `tfsdk:"ssl_verify"`
 }

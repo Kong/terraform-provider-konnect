@@ -263,6 +263,8 @@ type AiSanitizerPluginConfig struct {
 	SanitizationMode *SanitizationMode `default:"INPUT" json:"sanitization_mode"`
 	// The protocol can be http and https
 	Scheme *string `default:"http" json:"scheme"`
+	// Whether to log sanitized items in the Kong log plugins. Turn it on if you want to hide sensitive data from logs.
+	SkipLoggingSanitizedItems *bool `default:"false" json:"skip_logging_sanitized_items"`
 	// Stop processing if an error occurs.
 	StopOnError *bool `default:"true" json:"stop_on_error"`
 	// Connection timeout with the sanitizer
@@ -348,6 +350,13 @@ func (a *AiSanitizerPluginConfig) GetScheme() *string {
 		return nil
 	}
 	return a.Scheme
+}
+
+func (a *AiSanitizerPluginConfig) GetSkipLoggingSanitizedItems() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.SkipLoggingSanitizedItems
 }
 
 func (a *AiSanitizerPluginConfig) GetStopOnError() *bool {

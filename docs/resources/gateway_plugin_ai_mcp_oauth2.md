@@ -104,11 +104,11 @@ resource "konnect_gateway_plugin_ai_mcp_oauth2" "my_gatewaypluginaimcpoauth2" {
 
 ### Required
 
+- `config` (Attributes) The configuration for MCP authorization in OAuth2. If this is enabled, make sure the configured metadata_endpoint is also covered by the same route so the authorization can be applied correctly. (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) The configuration for MCP authorization in OAuth2. If this is enabled, make sure the configured metadata_endpoint is also covered by the same route so the authorization can be applied correctly. (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
@@ -149,7 +149,7 @@ Optional:
 - `insecure_relaxed_audience_validation` (Boolean) If enabled, the plugin will not validate the audience of the access token. Disable it if the authorization server does not correctly set the audience claim according to RFC 8707 and MCP specification. Default: false
 - `introspection_format` (String) Controls introspection response format. must be one of ["base64", "base64url", "string"]
 - `keepalive` (Boolean) Enable HTTP keepalive for requests. Default: true
-- `max_request_body_size` (Number) max allowed body size allowed to be handled as MCP request. Default: 8192
+- `max_request_body_size` (Number) max allowed body size allowed to be handled as MCP request. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 1048576
 - `metadata_endpoint` (String) The path for OAuth 2.0 Protected Resource Metadata. Default to $resource/.well-known/oauth-protected-resource. For example, if the configured resource is https://api.example.com/mcp, the metadata endpoint is /mcp/.well-known/oauth-protected-resource.
 - `mtls_introspection_endpoint` (String) The mTLS alias for the introspection endpoint.
 - `no_proxy` (String) Comma-separated list of hosts to exclude from proxy.

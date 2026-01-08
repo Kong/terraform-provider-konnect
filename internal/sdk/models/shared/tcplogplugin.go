@@ -87,6 +87,8 @@ type TCPLogPluginConfig struct {
 	Keepalive *float64 `default:"60000" json:"keepalive"`
 	// The port to send data to on the upstream server.
 	Port int64 `json:"port"`
+	// When using TLS, this option enables verification of the certificate presented by the server.
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// An optional timeout in milliseconds when sending data to the upstream server.
 	Timeout *float64 `default:"10000" json:"timeout"`
 	// Indicates whether to perform a TLS handshake against the remote server.
@@ -132,6 +134,13 @@ func (t *TCPLogPluginConfig) GetPort() int64 {
 		return 0
 	}
 	return t.Port
+}
+
+func (t *TCPLogPluginConfig) GetSslVerify() *bool {
+	if t == nil {
+		return nil
+	}
+	return t.SslVerify
 }
 
 func (t *TCPLogPluginConfig) GetTimeout() *float64 {

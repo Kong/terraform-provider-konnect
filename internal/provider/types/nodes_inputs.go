@@ -7,7 +7,12 @@ import (
 )
 
 type NodesInputs struct {
-	Body    types.String `tfsdk:"body"`
-	Headers types.String `tfsdk:"headers"`
-	Query   types.String `tfsdk:"query"`
+	Body              types.String `tfsdk:"body"`
+	Headers           types.String `tfsdk:"headers"`
+	HTTPProxy         types.String `tfsdk:"http_proxy"`
+	HTTPSProxy        types.String `tfsdk:"https_proxy"`
+	ProxyAuthPassword types.String `tfsdk:"proxy_auth_password"`
+	ProxyAuthUsername types.String `tfsdk:"proxy_auth_username"`
+	Query             types.String `tfsdk:"query"`
+	URL               types.String `tfsdk:"url"`
 }

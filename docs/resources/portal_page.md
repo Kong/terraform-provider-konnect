@@ -32,9 +32,9 @@ resource "konnect_portal_page" "my_portalpage" {
 
 - `content` (String) The renderable markdown content of a page in a portal.
 - `portal_id` (String) The Portal identifier
-- `slug` (String) The slug of a page in a portal, used to compute its full URL path within the portal hierarchy. 
-When a page has a `parent_page_id`, its full path is built by joining the parent’s slug with its own. 
-For example, if a parent page has the slug `slug1` and this page’s slug is `slug2`, the resulting path will be `/slug1/slug2`. 
+- `slug` (String) The slug of a page in a portal, used to compute its full URL path within the portal hierarchy.
+When a page has a `parent_page_id`, its full path is built by joining the parent’s slug with its own.
+For example, if a parent page has the slug `slug1` and this page’s slug is `slug2`, the resulting path will be `/slug1/slug2`.
 This enables nested page structures like `/slug1/slug2/slug3`.
 
 ### Optional

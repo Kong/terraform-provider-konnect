@@ -17,5 +17,6 @@ type HTTPLogPluginConfig struct {
 	Queue             *Queue                  `tfsdk:"queue"`
 	QueueSize         types.Int64             `tfsdk:"queue_size"`
 	RetryCount        types.Int64             `tfsdk:"retry_count"`
+	SslVerify         types.Bool              `tfsdk:"ssl_verify"`
 	Timeout           types.Float64           `tfsdk:"timeout"`
 }

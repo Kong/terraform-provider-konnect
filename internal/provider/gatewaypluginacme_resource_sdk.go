@@ -80,6 +80,27 @@ func (r *GatewayPluginAcmeResourceModel) RefreshFromSharedAcmePlugin(ctx context
 				r.Config.StorageConfig.Redis = nil
 			} else {
 				r.Config.StorageConfig.Redis = &tfTypes.AcmePluginRedis{}
+				if resp.Config.StorageConfig.Redis.CloudAuthentication == nil {
+					r.Config.StorageConfig.Redis.CloudAuthentication = nil
+				} else {
+					r.Config.StorageConfig.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+					if resp.Config.StorageConfig.Redis.CloudAuthentication.AuthProvider != nil {
+						r.Config.StorageConfig.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.StorageConfig.Redis.CloudAuthentication.AuthProvider))
+					} else {
+						r.Config.StorageConfig.Redis.CloudAuthentication.AuthProvider = types.StringNull()
+					}
+					r.Config.StorageConfig.Redis.CloudAuthentication.AwsAccessKeyID = types.StringPointerValue(resp.Config.StorageConfig.Redis.CloudAuthentication.AwsAccessKeyID)
+					r.Config.StorageConfig.Redis.CloudAuthentication.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.StorageConfig.Redis.CloudAuthentication.AwsAssumeRoleArn)
+					r.Config.StorageConfig.Redis.CloudAuthentication.AwsCacheName = types.StringPointerValue(resp.Config.StorageConfig.Redis.CloudAuthentication.AwsCacheName)
+					r.Config.StorageConfig.Redis.CloudAuthentication.AwsIsServerless = types.BoolPointerValue(resp.Config.StorageConfig.Redis.CloudAuthentication.AwsIsServerless)
+					r.Config.StorageConfig.Redis.CloudAuthentication.AwsRegion = types.StringPointerValue(resp.Config.StorageConfig.Redis.CloudAuthentication.AwsRegion)
+					r.Config.StorageConfig.Redis.CloudAuthentication.AwsRoleSessionName = types.StringPointerValue(resp.Config.StorageConfig.Redis.CloudAuthentication.AwsRoleSessionName)
+					r.Config.StorageConfig.Redis.CloudAuthentication.AwsSecretAccessKey = types.StringPointerValue(resp.Config.StorageConfig.Redis.CloudAuthentication.AwsSecretAccessKey)
+					r.Config.StorageConfig.Redis.CloudAuthentication.AzureClientID = types.StringPointerValue(resp.Config.StorageConfig.Redis.CloudAuthentication.AzureClientID)
+					r.Config.StorageConfig.Redis.CloudAuthentication.AzureClientSecret = types.StringPointerValue(resp.Config.StorageConfig.Redis.CloudAuthentication.AzureClientSecret)
+					r.Config.StorageConfig.Redis.CloudAuthentication.AzureTenantID = types.StringPointerValue(resp.Config.StorageConfig.Redis.CloudAuthentication.AzureTenantID)
+					r.Config.StorageConfig.Redis.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.StorageConfig.Redis.CloudAuthentication.GcpServiceAccountJSON)
+				}
 				r.Config.StorageConfig.Redis.Database = types.Int64PointerValue(resp.Config.StorageConfig.Redis.Database)
 				if resp.Config.StorageConfig.Redis.ExtraOptions == nil {
 					r.Config.StorageConfig.Redis.ExtraOptions = nil
@@ -510,6 +531,95 @@ func (r *GatewayPluginAcmeResourceModel) ToSharedAcmePlugin(ctx context.Context)
 		}
 		var redis *shared.AcmePluginRedis
 		if r.Config.StorageConfig.Redis != nil {
+			var cloudAuthentication *shared.AcmePluginCloudAuthentication
+			if r.Config.StorageConfig.Redis.CloudAuthentication != nil {
+				authProvider := new(shared.AcmePluginAuthProvider)
+				if !r.Config.StorageConfig.Redis.CloudAuthentication.AuthProvider.IsUnknown() && !r.Config.StorageConfig.Redis.CloudAuthentication.AuthProvider.IsNull() {
+					*authProvider = shared.AcmePluginAuthProvider(r.Config.StorageConfig.Redis.CloudAuthentication.AuthProvider.ValueString())
+				} else {
+					authProvider = nil
+				}
+				awsAccessKeyID := new(string)
+				if !r.Config.StorageConfig.Redis.CloudAuthentication.AwsAccessKeyID.IsUnknown() && !r.Config.StorageConfig.Redis.CloudAuthentication.AwsAccessKeyID.IsNull() {
+					*awsAccessKeyID = r.Config.StorageConfig.Redis.CloudAuthentication.AwsAccessKeyID.ValueString()
+				} else {
+					awsAccessKeyID = nil
+				}
+				awsAssumeRoleArn := new(string)
+				if !r.Config.StorageConfig.Redis.CloudAuthentication.AwsAssumeRoleArn.IsUnknown() && !r.Config.StorageConfig.Redis.CloudAuthentication.AwsAssumeRoleArn.IsNull() {
+					*awsAssumeRoleArn = r.Config.StorageConfig.Redis.CloudAuthentication.AwsAssumeRoleArn.ValueString()
+				} else {
+					awsAssumeRoleArn = nil
+				}
+				awsCacheName := new(string)
+				if !r.Config.StorageConfig.Redis.CloudAuthentication.AwsCacheName.IsUnknown() && !r.Config.StorageConfig.Redis.CloudAuthentication.AwsCacheName.IsNull() {
+					*awsCacheName = r.Config.StorageConfig.Redis.CloudAuthentication.AwsCacheName.ValueString()
+				} else {
+					awsCacheName = nil
+				}
+				awsIsServerless := new(bool)
+				if !r.Config.StorageConfig.Redis.CloudAuthentication.AwsIsServerless.IsUnknown() && !r.Config.StorageConfig.Redis.CloudAuthentication.AwsIsServerless.IsNull() {
+					*awsIsServerless = r.Config.StorageConfig.Redis.CloudAuthentication.AwsIsServerless.ValueBool()
+				} else {
+					awsIsServerless = nil
+				}
+				awsRegion := new(string)
+				if !r.Config.StorageConfig.Redis.CloudAuthentication.AwsRegion.IsUnknown() && !r.Config.StorageConfig.Redis.CloudAuthentication.AwsRegion.IsNull() {
+					*awsRegion = r.Config.StorageConfig.Redis.CloudAuthentication.AwsRegion.ValueString()
+				} else {
+					awsRegion = nil
+				}
+				awsRoleSessionName := new(string)
+				if !r.Config.StorageConfig.Redis.CloudAuthentication.AwsRoleSessionName.IsUnknown() && !r.Config.StorageConfig.Redis.CloudAuthentication.AwsRoleSessionName.IsNull() {
+					*awsRoleSessionName = r.Config.StorageConfig.Redis.CloudAuthentication.AwsRoleSessionName.ValueString()
+				} else {
+					awsRoleSessionName = nil
+				}
+				awsSecretAccessKey := new(string)
+				if !r.Config.StorageConfig.Redis.CloudAuthentication.AwsSecretAccessKey.IsUnknown() && !r.Config.StorageConfig.Redis.CloudAuthentication.AwsSecretAccessKey.IsNull() {
+					*awsSecretAccessKey = r.Config.StorageConfig.Redis.CloudAuthentication.AwsSecretAccessKey.ValueString()
+				} else {
+					awsSecretAccessKey = nil
+				}
+				azureClientID := new(string)
+				if !r.Config.StorageConfig.Redis.CloudAuthentication.AzureClientID.IsUnknown() && !r.Config.StorageConfig.Redis.CloudAuthentication.AzureClientID.IsNull() {
+					*azureClientID = r.Config.StorageConfig.Redis.CloudAuthentication.AzureClientID.ValueString()
+				} else {
+					azureClientID = nil
+				}
+				azureClientSecret := new(string)
+				if !r.Config.StorageConfig.Redis.CloudAuthentication.AzureClientSecret.IsUnknown() && !r.Config.StorageConfig.Redis.CloudAuthentication.AzureClientSecret.IsNull() {
+					*azureClientSecret = r.Config.StorageConfig.Redis.CloudAuthentication.AzureClientSecret.ValueString()
+				} else {
+					azureClientSecret = nil
+				}
+				azureTenantID := new(string)
+				if !r.Config.StorageConfig.Redis.CloudAuthentication.AzureTenantID.IsUnknown() && !r.Config.StorageConfig.Redis.CloudAuthentication.AzureTenantID.IsNull() {
+					*azureTenantID = r.Config.StorageConfig.Redis.CloudAuthentication.AzureTenantID.ValueString()
+				} else {
+					azureTenantID = nil
+				}
+				gcpServiceAccountJSON := new(string)
+				if !r.Config.StorageConfig.Redis.CloudAuthentication.GcpServiceAccountJSON.IsUnknown() && !r.Config.StorageConfig.Redis.CloudAuthentication.GcpServiceAccountJSON.IsNull() {
+					*gcpServiceAccountJSON = r.Config.StorageConfig.Redis.CloudAuthentication.GcpServiceAccountJSON.ValueString()
+				} else {
+					gcpServiceAccountJSON = nil
+				}
+				cloudAuthentication = &shared.AcmePluginCloudAuthentication{
+					AuthProvider:          authProvider,
+					AwsAccessKeyID:        awsAccessKeyID,
+					AwsAssumeRoleArn:      awsAssumeRoleArn,
+					AwsCacheName:          awsCacheName,
+					AwsIsServerless:       awsIsServerless,
+					AwsRegion:             awsRegion,
+					AwsRoleSessionName:    awsRoleSessionName,
+					AwsSecretAccessKey:    awsSecretAccessKey,
+					AzureClientID:         azureClientID,
+					AzureClientSecret:     azureClientSecret,
+					AzureTenantID:         azureTenantID,
+					GcpServiceAccountJSON: gcpServiceAccountJSON,
+				}
+			}
 			database := new(int64)
 			if !r.Config.StorageConfig.Redis.Database.IsUnknown() && !r.Config.StorageConfig.Redis.Database.IsNull() {
 				*database = r.Config.StorageConfig.Redis.Database.ValueInt64()
@@ -584,16 +694,17 @@ func (r *GatewayPluginAcmeResourceModel) ToSharedAcmePlugin(ctx context.Context)
 				username = nil
 			}
 			redis = &shared.AcmePluginRedis{
-				Database:     database,
-				ExtraOptions: extraOptions,
-				Host:         host1,
-				Password:     password,
-				Port:         port1,
-				ServerName:   serverName,
-				Ssl:          ssl,
-				SslVerify:    sslVerify,
-				Timeout:      timeout1,
-				Username:     username,
+				CloudAuthentication: cloudAuthentication,
+				Database:            database,
+				ExtraOptions:        extraOptions,
+				Host:                host1,
+				Password:            password,
+				Port:                port1,
+				ServerName:          serverName,
+				Ssl:                 ssl,
+				SslVerify:           sslVerify,
+				Timeout:             timeout1,
+				Username:            username,
 			}
 		}
 		var shm *shared.Shm

@@ -15,7 +15,35 @@ GatewayPluginBasicAuth Resource
 ```terraform
 resource "konnect_gateway_plugin_basic_auth" "my_gatewaypluginbasicauth" {
   config = {
-    anonymous        = "...my_anonymous..."
+    anonymous = "...my_anonymous..."
+    brute_force_protection = {
+      redis = {
+        cloud_authentication = {
+          auth_provider            = "azure"
+          aws_access_key_id        = "...my_aws_access_key_id..."
+          aws_assume_role_arn      = "...my_aws_assume_role_arn..."
+          aws_cache_name           = "...my_aws_cache_name..."
+          aws_is_serverless        = true
+          aws_region               = "...my_aws_region..."
+          aws_role_session_name    = "...my_aws_role_session_name..."
+          aws_secret_access_key    = "...my_aws_secret_access_key..."
+          azure_client_id          = "...my_azure_client_id..."
+          azure_client_secret      = "...my_azure_client_secret..."
+          azure_tenant_id          = "...my_azure_tenant_id..."
+          gcp_service_account_json = "...my_gcp_service_account_json..."
+        }
+        database    = 2
+        host        = "...my_host..."
+        password    = "...my_password..."
+        port        = 18528
+        server_name = "...my_server_name..."
+        ssl         = true
+        ssl_verify  = true
+        timeout     = 1835674936
+        username    = "...my_username..."
+      }
+      strategy = "redis"
+    }
     hide_credentials = false
     realm            = "...my_realm..."
   }
@@ -87,8 +115,54 @@ resource "konnect_gateway_plugin_basic_auth" "my_gatewaypluginbasicauth" {
 Optional:
 
 - `anonymous` (String) An optional string (Consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`. Please note that this value must refer to the Consumer `id` or `username` attribute, and **not** its `custom_id`.
+- `brute_force_protection` (Attributes) (see [below for nested schema](#nestedatt--config--brute_force_protection))
 - `hide_credentials` (Boolean) An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin will strip the credential from the request (i.e. the `Authorization` header) before proxying it. Default: false
 - `realm` (String) When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value. Default: "service"
+
+<a id="nestedatt--config--brute_force_protection"></a>
+### Nested Schema for `config.brute_force_protection`
+
+Optional:
+
+- `redis` (Attributes) Redis configuration (see [below for nested schema](#nestedatt--config--brute_force_protection--redis))
+- `strategy` (String) The brute force protection strategy to use for retrieving and incrementing the limits. Available values are: `cluster`, `redis`, `memory`, and `off`. Default: "off"; must be one of ["cluster", "memory", "off", "redis"]
+
+<a id="nestedatt--config--brute_force_protection--redis"></a>
+### Nested Schema for `config.brute_force_protection.redis`
+
+Optional:
+
+- `cloud_authentication` (Attributes) Cloud auth related configs for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--config--brute_force_protection--redis--cloud_authentication))
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
+- `host` (String) A string representing a host name, such as example.com.
+- `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+- `server_name` (String) A string representing an SNI (server name indication) value for TLS.
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: false
+- `timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+
+<a id="nestedatt--config--brute_force_protection--redis--cloud_authentication"></a>
+### Nested Schema for `config.brute_force_protection.redis.cloud_authentication`
+
+Optional:
+
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]
+- `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
+- `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+- `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
+- `aws_is_serverless` (Boolean) This flag specifies whether the cluster is serverless when auth_provider is set to `aws`. Default: true
+- `aws_region` (String) The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
+- `aws_role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
+- `aws_secret_access_key` (String) AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
+- `azure_client_id` (String) Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
+- `azure_client_secret` (String) Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
+- `azure_tenant_id` (String) Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
+- `gcp_service_account_json` (String) GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+
+
+
 
 
 <a id="nestedatt--ordering"></a>

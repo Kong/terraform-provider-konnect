@@ -16,6 +16,7 @@ type DatadogPluginConfig struct {
 	Queue          *Queue        `tfsdk:"queue"`
 	QueueSize      types.Int64   `tfsdk:"queue_size"`
 	RetryCount     types.Int64   `tfsdk:"retry_count"`
+	RouteNameTag   types.String  `tfsdk:"route_name_tag"`
 	ServiceNameTag types.String  `tfsdk:"service_name_tag"`
 	StatusTag      types.String  `tfsdk:"status_tag"`
 }

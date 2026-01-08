@@ -50,7 +50,28 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) RefreshFromSharedRespon
 			if resp.Config.Redis == nil {
 				r.Config.Redis = nil
 			} else {
-				r.Config.Redis = &tfTypes.RateLimitingPluginRedis{}
+				r.Config.Redis = &tfTypes.BasicAuthPluginRedis{}
+				if resp.Config.Redis.CloudAuthentication == nil {
+					r.Config.Redis.CloudAuthentication = nil
+				} else {
+					r.Config.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+					if resp.Config.Redis.CloudAuthentication.AuthProvider != nil {
+						r.Config.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Redis.CloudAuthentication.AuthProvider))
+					} else {
+						r.Config.Redis.CloudAuthentication.AuthProvider = types.StringNull()
+					}
+					r.Config.Redis.CloudAuthentication.AwsAccessKeyID = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.AwsAccessKeyID)
+					r.Config.Redis.CloudAuthentication.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.AwsAssumeRoleArn)
+					r.Config.Redis.CloudAuthentication.AwsCacheName = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.AwsCacheName)
+					r.Config.Redis.CloudAuthentication.AwsIsServerless = types.BoolPointerValue(resp.Config.Redis.CloudAuthentication.AwsIsServerless)
+					r.Config.Redis.CloudAuthentication.AwsRegion = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.AwsRegion)
+					r.Config.Redis.CloudAuthentication.AwsRoleSessionName = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.AwsRoleSessionName)
+					r.Config.Redis.CloudAuthentication.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.AwsSecretAccessKey)
+					r.Config.Redis.CloudAuthentication.AzureClientID = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.AzureClientID)
+					r.Config.Redis.CloudAuthentication.AzureClientSecret = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.AzureClientSecret)
+					r.Config.Redis.CloudAuthentication.AzureTenantID = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.AzureTenantID)
+					r.Config.Redis.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.GcpServiceAccountJSON)
+				}
 				r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
 				r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
 				r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
@@ -403,6 +424,95 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelim
 		}
 		var redis *shared.ResponseRatelimitingPluginRedis
 		if r.Config.Redis != nil {
+			var cloudAuthentication *shared.ResponseRatelimitingPluginCloudAuthentication
+			if r.Config.Redis.CloudAuthentication != nil {
+				authProvider := new(shared.ResponseRatelimitingPluginAuthProvider)
+				if !r.Config.Redis.CloudAuthentication.AuthProvider.IsUnknown() && !r.Config.Redis.CloudAuthentication.AuthProvider.IsNull() {
+					*authProvider = shared.ResponseRatelimitingPluginAuthProvider(r.Config.Redis.CloudAuthentication.AuthProvider.ValueString())
+				} else {
+					authProvider = nil
+				}
+				awsAccessKeyID := new(string)
+				if !r.Config.Redis.CloudAuthentication.AwsAccessKeyID.IsUnknown() && !r.Config.Redis.CloudAuthentication.AwsAccessKeyID.IsNull() {
+					*awsAccessKeyID = r.Config.Redis.CloudAuthentication.AwsAccessKeyID.ValueString()
+				} else {
+					awsAccessKeyID = nil
+				}
+				awsAssumeRoleArn := new(string)
+				if !r.Config.Redis.CloudAuthentication.AwsAssumeRoleArn.IsUnknown() && !r.Config.Redis.CloudAuthentication.AwsAssumeRoleArn.IsNull() {
+					*awsAssumeRoleArn = r.Config.Redis.CloudAuthentication.AwsAssumeRoleArn.ValueString()
+				} else {
+					awsAssumeRoleArn = nil
+				}
+				awsCacheName := new(string)
+				if !r.Config.Redis.CloudAuthentication.AwsCacheName.IsUnknown() && !r.Config.Redis.CloudAuthentication.AwsCacheName.IsNull() {
+					*awsCacheName = r.Config.Redis.CloudAuthentication.AwsCacheName.ValueString()
+				} else {
+					awsCacheName = nil
+				}
+				awsIsServerless := new(bool)
+				if !r.Config.Redis.CloudAuthentication.AwsIsServerless.IsUnknown() && !r.Config.Redis.CloudAuthentication.AwsIsServerless.IsNull() {
+					*awsIsServerless = r.Config.Redis.CloudAuthentication.AwsIsServerless.ValueBool()
+				} else {
+					awsIsServerless = nil
+				}
+				awsRegion := new(string)
+				if !r.Config.Redis.CloudAuthentication.AwsRegion.IsUnknown() && !r.Config.Redis.CloudAuthentication.AwsRegion.IsNull() {
+					*awsRegion = r.Config.Redis.CloudAuthentication.AwsRegion.ValueString()
+				} else {
+					awsRegion = nil
+				}
+				awsRoleSessionName := new(string)
+				if !r.Config.Redis.CloudAuthentication.AwsRoleSessionName.IsUnknown() && !r.Config.Redis.CloudAuthentication.AwsRoleSessionName.IsNull() {
+					*awsRoleSessionName = r.Config.Redis.CloudAuthentication.AwsRoleSessionName.ValueString()
+				} else {
+					awsRoleSessionName = nil
+				}
+				awsSecretAccessKey := new(string)
+				if !r.Config.Redis.CloudAuthentication.AwsSecretAccessKey.IsUnknown() && !r.Config.Redis.CloudAuthentication.AwsSecretAccessKey.IsNull() {
+					*awsSecretAccessKey = r.Config.Redis.CloudAuthentication.AwsSecretAccessKey.ValueString()
+				} else {
+					awsSecretAccessKey = nil
+				}
+				azureClientID := new(string)
+				if !r.Config.Redis.CloudAuthentication.AzureClientID.IsUnknown() && !r.Config.Redis.CloudAuthentication.AzureClientID.IsNull() {
+					*azureClientID = r.Config.Redis.CloudAuthentication.AzureClientID.ValueString()
+				} else {
+					azureClientID = nil
+				}
+				azureClientSecret := new(string)
+				if !r.Config.Redis.CloudAuthentication.AzureClientSecret.IsUnknown() && !r.Config.Redis.CloudAuthentication.AzureClientSecret.IsNull() {
+					*azureClientSecret = r.Config.Redis.CloudAuthentication.AzureClientSecret.ValueString()
+				} else {
+					azureClientSecret = nil
+				}
+				azureTenantID := new(string)
+				if !r.Config.Redis.CloudAuthentication.AzureTenantID.IsUnknown() && !r.Config.Redis.CloudAuthentication.AzureTenantID.IsNull() {
+					*azureTenantID = r.Config.Redis.CloudAuthentication.AzureTenantID.ValueString()
+				} else {
+					azureTenantID = nil
+				}
+				gcpServiceAccountJSON := new(string)
+				if !r.Config.Redis.CloudAuthentication.GcpServiceAccountJSON.IsUnknown() && !r.Config.Redis.CloudAuthentication.GcpServiceAccountJSON.IsNull() {
+					*gcpServiceAccountJSON = r.Config.Redis.CloudAuthentication.GcpServiceAccountJSON.ValueString()
+				} else {
+					gcpServiceAccountJSON = nil
+				}
+				cloudAuthentication = &shared.ResponseRatelimitingPluginCloudAuthentication{
+					AuthProvider:          authProvider,
+					AwsAccessKeyID:        awsAccessKeyID,
+					AwsAssumeRoleArn:      awsAssumeRoleArn,
+					AwsCacheName:          awsCacheName,
+					AwsIsServerless:       awsIsServerless,
+					AwsRegion:             awsRegion,
+					AwsRoleSessionName:    awsRoleSessionName,
+					AwsSecretAccessKey:    awsSecretAccessKey,
+					AzureClientID:         azureClientID,
+					AzureClientSecret:     azureClientSecret,
+					AzureTenantID:         azureTenantID,
+					GcpServiceAccountJSON: gcpServiceAccountJSON,
+				}
+			}
 			database := new(int64)
 			if !r.Config.Redis.Database.IsUnknown() && !r.Config.Redis.Database.IsNull() {
 				*database = r.Config.Redis.Database.ValueInt64()
@@ -458,15 +568,16 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelim
 				username = nil
 			}
 			redis = &shared.ResponseRatelimitingPluginRedis{
-				Database:   database,
-				Host:       host,
-				Password:   password,
-				Port:       port,
-				ServerName: serverName,
-				Ssl:        ssl,
-				SslVerify:  sslVerify,
-				Timeout:    timeout,
-				Username:   username,
+				CloudAuthentication: cloudAuthentication,
+				Database:            database,
+				Host:                host,
+				Password:            password,
+				Port:                port,
+				ServerName:          serverName,
+				Ssl:                 ssl,
+				SslVerify:           sslVerify,
+				Timeout:             timeout,
+				Username:            username,
 			}
 		}
 		config = &shared.ResponseRatelimitingPluginConfig{

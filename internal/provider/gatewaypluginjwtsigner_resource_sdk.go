@@ -39,6 +39,7 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 					r.Config.AccessTokenConsumerClaim = append(r.Config.AccessTokenConsumerClaim, types.StringValue(v))
 				}
 			}
+			r.Config.AccessTokenEndpointsSslVerify = types.BoolPointerValue(resp.Config.AccessTokenEndpointsSslVerify)
 			r.Config.AccessTokenExpiryClaim = make([]types.String, 0, len(resp.Config.AccessTokenExpiryClaim))
 			for _, v := range resp.Config.AccessTokenExpiryClaim {
 				r.Config.AccessTokenExpiryClaim = append(r.Config.AccessTokenExpiryClaim, types.StringValue(v))
@@ -223,19 +224,19 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 			}
 			r.Config.AccessTokenUpstreamHeader = types.StringPointerValue(resp.Config.AccessTokenUpstreamHeader)
 			r.Config.AccessTokenUpstreamLeeway = types.Float64PointerValue(resp.Config.AccessTokenUpstreamLeeway)
-			if resp.Config.AddAccessTokenClaims != nil {
+			if len(resp.Config.AddAccessTokenClaims) > 0 {
 				r.Config.AddAccessTokenClaims = make(map[string]types.String, len(resp.Config.AddAccessTokenClaims))
 				for key, value := range resp.Config.AddAccessTokenClaims {
 					r.Config.AddAccessTokenClaims[key] = types.StringValue(value)
 				}
 			}
-			if resp.Config.AddChannelTokenClaims != nil {
+			if len(resp.Config.AddChannelTokenClaims) > 0 {
 				r.Config.AddChannelTokenClaims = make(map[string]types.String, len(resp.Config.AddChannelTokenClaims))
 				for key1, value1 := range resp.Config.AddChannelTokenClaims {
 					r.Config.AddChannelTokenClaims[key1] = types.StringValue(value1)
 				}
 			}
-			if resp.Config.AddClaims != nil {
+			if len(resp.Config.AddClaims) > 0 {
 				r.Config.AddClaims = make(map[string]types.String, len(resp.Config.AddClaims))
 				for key2, value2 := range resp.Config.AddClaims {
 					r.Config.AddClaims[key2] = types.StringValue(value2)
@@ -263,6 +264,7 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 					r.Config.ChannelTokenConsumerClaim = append(r.Config.ChannelTokenConsumerClaim, types.StringValue(v))
 				}
 			}
+			r.Config.ChannelTokenEndpointsSslVerify = types.BoolPointerValue(resp.Config.ChannelTokenEndpointsSslVerify)
 			r.Config.ChannelTokenExpiryClaim = make([]types.String, 0, len(resp.Config.ChannelTokenExpiryClaim))
 			for _, v := range resp.Config.ChannelTokenExpiryClaim {
 				r.Config.ChannelTokenExpiryClaim = append(r.Config.ChannelTokenExpiryClaim, types.StringValue(v))
@@ -462,19 +464,19 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(c
 			for _, v := range resp.Config.RemoveChannelTokenClaims {
 				r.Config.RemoveChannelTokenClaims = append(r.Config.RemoveChannelTokenClaims, types.StringValue(v))
 			}
-			if resp.Config.SetAccessTokenClaims != nil {
+			if len(resp.Config.SetAccessTokenClaims) > 0 {
 				r.Config.SetAccessTokenClaims = make(map[string]types.String, len(resp.Config.SetAccessTokenClaims))
 				for key3, value3 := range resp.Config.SetAccessTokenClaims {
 					r.Config.SetAccessTokenClaims[key3] = types.StringValue(value3)
 				}
 			}
-			if resp.Config.SetChannelTokenClaims != nil {
+			if len(resp.Config.SetChannelTokenClaims) > 0 {
 				r.Config.SetChannelTokenClaims = make(map[string]types.String, len(resp.Config.SetChannelTokenClaims))
 				for key4, value4 := range resp.Config.SetChannelTokenClaims {
 					r.Config.SetChannelTokenClaims[key4] = types.StringValue(value4)
 				}
 			}
-			if resp.Config.SetClaims != nil {
+			if len(resp.Config.SetClaims) > 0 {
 				r.Config.SetClaims = make(map[string]types.String, len(resp.Config.SetClaims))
 				for key5, value5 := range resp.Config.SetClaims {
 					r.Config.SetClaims[key5] = types.StringValue(value5)
@@ -776,6 +778,12 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 			for accessTokenConsumerClaimIndex := range r.Config.AccessTokenConsumerClaim {
 				accessTokenConsumerClaim = append(accessTokenConsumerClaim, r.Config.AccessTokenConsumerClaim[accessTokenConsumerClaimIndex].ValueString())
 			}
+		}
+		accessTokenEndpointsSslVerify := new(bool)
+		if !r.Config.AccessTokenEndpointsSslVerify.IsUnknown() && !r.Config.AccessTokenEndpointsSslVerify.IsNull() {
+			*accessTokenEndpointsSslVerify = r.Config.AccessTokenEndpointsSslVerify.ValueBool()
+		} else {
+			accessTokenEndpointsSslVerify = nil
 		}
 		accessTokenExpiryClaim := make([]string, 0, len(r.Config.AccessTokenExpiryClaim))
 		for accessTokenExpiryClaimIndex := range r.Config.AccessTokenExpiryClaim {
@@ -1088,35 +1096,26 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 		} else {
 			accessTokenUpstreamLeeway = nil
 		}
-		var addAccessTokenClaims map[string]string
-		if r.Config.AddAccessTokenClaims != nil {
-			addAccessTokenClaims = make(map[string]string)
-			for addAccessTokenClaimsKey := range r.Config.AddAccessTokenClaims {
-				var addAccessTokenClaimsInst string
-				addAccessTokenClaimsInst = r.Config.AddAccessTokenClaims[addAccessTokenClaimsKey].ValueString()
+		addAccessTokenClaims := make(map[string]string)
+		for addAccessTokenClaimsKey := range r.Config.AddAccessTokenClaims {
+			var addAccessTokenClaimsInst string
+			addAccessTokenClaimsInst = r.Config.AddAccessTokenClaims[addAccessTokenClaimsKey].ValueString()
 
-				addAccessTokenClaims[addAccessTokenClaimsKey] = addAccessTokenClaimsInst
-			}
+			addAccessTokenClaims[addAccessTokenClaimsKey] = addAccessTokenClaimsInst
 		}
-		var addChannelTokenClaims map[string]string
-		if r.Config.AddChannelTokenClaims != nil {
-			addChannelTokenClaims = make(map[string]string)
-			for addChannelTokenClaimsKey := range r.Config.AddChannelTokenClaims {
-				var addChannelTokenClaimsInst string
-				addChannelTokenClaimsInst = r.Config.AddChannelTokenClaims[addChannelTokenClaimsKey].ValueString()
+		addChannelTokenClaims := make(map[string]string)
+		for addChannelTokenClaimsKey := range r.Config.AddChannelTokenClaims {
+			var addChannelTokenClaimsInst string
+			addChannelTokenClaimsInst = r.Config.AddChannelTokenClaims[addChannelTokenClaimsKey].ValueString()
 
-				addChannelTokenClaims[addChannelTokenClaimsKey] = addChannelTokenClaimsInst
-			}
+			addChannelTokenClaims[addChannelTokenClaimsKey] = addChannelTokenClaimsInst
 		}
-		var addClaims map[string]string
-		if r.Config.AddClaims != nil {
-			addClaims = make(map[string]string)
-			for addClaimsKey := range r.Config.AddClaims {
-				var addClaimsInst string
-				addClaimsInst = r.Config.AddClaims[addClaimsKey].ValueString()
+		addClaims := make(map[string]string)
+		for addClaimsKey := range r.Config.AddClaims {
+			var addClaimsInst string
+			addClaimsInst = r.Config.AddClaims[addClaimsKey].ValueString()
 
-				addClaims[addClaimsKey] = addClaimsInst
-			}
+			addClaims[addClaimsKey] = addClaimsInst
 		}
 		cacheAccessTokenIntrospection := new(bool)
 		if !r.Config.CacheAccessTokenIntrospection.IsUnknown() && !r.Config.CacheAccessTokenIntrospection.IsNull() {
@@ -1151,6 +1150,12 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 			for channelTokenConsumerClaimIndex := range r.Config.ChannelTokenConsumerClaim {
 				channelTokenConsumerClaim = append(channelTokenConsumerClaim, r.Config.ChannelTokenConsumerClaim[channelTokenConsumerClaimIndex].ValueString())
 			}
+		}
+		channelTokenEndpointsSslVerify := new(bool)
+		if !r.Config.ChannelTokenEndpointsSslVerify.IsUnknown() && !r.Config.ChannelTokenEndpointsSslVerify.IsNull() {
+			*channelTokenEndpointsSslVerify = r.Config.ChannelTokenEndpointsSslVerify.ValueBool()
+		} else {
+			channelTokenEndpointsSslVerify = nil
 		}
 		channelTokenExpiryClaim := make([]string, 0, len(r.Config.ChannelTokenExpiryClaim))
 		for channelTokenExpiryClaimIndex := range r.Config.ChannelTokenExpiryClaim {
@@ -1513,35 +1518,26 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 		for removeChannelTokenClaimsIndex := range r.Config.RemoveChannelTokenClaims {
 			removeChannelTokenClaims = append(removeChannelTokenClaims, r.Config.RemoveChannelTokenClaims[removeChannelTokenClaimsIndex].ValueString())
 		}
-		var setAccessTokenClaims map[string]string
-		if r.Config.SetAccessTokenClaims != nil {
-			setAccessTokenClaims = make(map[string]string)
-			for setAccessTokenClaimsKey := range r.Config.SetAccessTokenClaims {
-				var setAccessTokenClaimsInst string
-				setAccessTokenClaimsInst = r.Config.SetAccessTokenClaims[setAccessTokenClaimsKey].ValueString()
+		setAccessTokenClaims := make(map[string]string)
+		for setAccessTokenClaimsKey := range r.Config.SetAccessTokenClaims {
+			var setAccessTokenClaimsInst string
+			setAccessTokenClaimsInst = r.Config.SetAccessTokenClaims[setAccessTokenClaimsKey].ValueString()
 
-				setAccessTokenClaims[setAccessTokenClaimsKey] = setAccessTokenClaimsInst
-			}
+			setAccessTokenClaims[setAccessTokenClaimsKey] = setAccessTokenClaimsInst
 		}
-		var setChannelTokenClaims map[string]string
-		if r.Config.SetChannelTokenClaims != nil {
-			setChannelTokenClaims = make(map[string]string)
-			for setChannelTokenClaimsKey := range r.Config.SetChannelTokenClaims {
-				var setChannelTokenClaimsInst string
-				setChannelTokenClaimsInst = r.Config.SetChannelTokenClaims[setChannelTokenClaimsKey].ValueString()
+		setChannelTokenClaims := make(map[string]string)
+		for setChannelTokenClaimsKey := range r.Config.SetChannelTokenClaims {
+			var setChannelTokenClaimsInst string
+			setChannelTokenClaimsInst = r.Config.SetChannelTokenClaims[setChannelTokenClaimsKey].ValueString()
 
-				setChannelTokenClaims[setChannelTokenClaimsKey] = setChannelTokenClaimsInst
-			}
+			setChannelTokenClaims[setChannelTokenClaimsKey] = setChannelTokenClaimsInst
 		}
-		var setClaims map[string]string
-		if r.Config.SetClaims != nil {
-			setClaims = make(map[string]string)
-			for setClaimsKey := range r.Config.SetClaims {
-				var setClaimsInst string
-				setClaimsInst = r.Config.SetClaims[setClaimsKey].ValueString()
+		setClaims := make(map[string]string)
+		for setClaimsKey := range r.Config.SetClaims {
+			var setClaimsInst string
+			setClaimsInst = r.Config.SetClaims[setClaimsKey].ValueString()
 
-				setClaims[setClaimsKey] = setClaimsInst
-			}
+			setClaims[setClaimsKey] = setClaimsInst
 		}
 		trustAccessTokenIntrospection := new(bool)
 		if !r.Config.TrustAccessTokenIntrospection.IsUnknown() && !r.Config.TrustAccessTokenIntrospection.IsNull() {
@@ -1716,6 +1712,7 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 			AccessTokenAudiencesAllowed:               accessTokenAudiencesAllowed,
 			AccessTokenConsumerBy:                     accessTokenConsumerBy,
 			AccessTokenConsumerClaim:                  accessTokenConsumerClaim,
+			AccessTokenEndpointsSslVerify:             accessTokenEndpointsSslVerify,
 			AccessTokenExpiryClaim:                    accessTokenExpiryClaim,
 			AccessTokenIntrospectionAudienceClaim:     accessTokenIntrospectionAudienceClaim,
 			AccessTokenIntrospectionAudiencesAllowed:  accessTokenIntrospectionAudiencesAllowed,
@@ -1774,6 +1771,7 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPlugin(ctx contex
 			ChannelTokenAudiencesAllowed:              channelTokenAudiencesAllowed,
 			ChannelTokenConsumerBy:                    channelTokenConsumerBy,
 			ChannelTokenConsumerClaim:                 channelTokenConsumerClaim,
+			ChannelTokenEndpointsSslVerify:            channelTokenEndpointsSslVerify,
 			ChannelTokenExpiryClaim:                   channelTokenExpiryClaim,
 			ChannelTokenIntrospectionAudienceClaim:    channelTokenIntrospectionAudienceClaim,
 			ChannelTokenIntrospectionAudiencesAllowed: channelTokenIntrospectionAudiencesAllowed,

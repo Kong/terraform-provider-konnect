@@ -14,6 +14,6 @@ type AiProxyAdvancedPluginConfig struct {
 	MaxRequestBodySize types.Int64  `tfsdk:"max_request_body_size"`
 	ModelNameHeader    types.Bool   `tfsdk:"model_name_header"`
 	ResponseStreaming  types.String `tfsdk:"response_streaming"`
-	Targets            []Targets    `tfsdk:"targets"`
+	Targets            []Llm        `tfsdk:"targets"`
 	Vectordb           *Vectordb    `tfsdk:"vectordb"`
 }

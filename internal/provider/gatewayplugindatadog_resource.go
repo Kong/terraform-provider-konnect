@@ -107,6 +107,7 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 					},
 					"queue_size":       types.Int64Type,
 					"retry_count":      types.Int64Type,
+					"route_name_tag":   types.StringType,
 					"service_name_tag": types.StringType,
 					"status_tag":       types.StringType,
 				})),
@@ -289,6 +290,10 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 					"retry_count": schema.Int64Attribute{
 						Optional:    true,
 						Description: `Number of times to retry when sending data to the upstream server.`,
+					},
+					"route_name_tag": schema.StringAttribute{
+						Optional:    true,
+						Description: `String to be attached as tag of the route name or ID.`,
 					},
 					"service_name_tag": schema.StringAttribute{
 						Computed:    true,

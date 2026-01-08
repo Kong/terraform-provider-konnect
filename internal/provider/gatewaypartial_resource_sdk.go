@@ -17,6 +17,27 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 	if resp != nil {
 		if resp.PartialRedisCe != nil {
 			r.RedisCe = &tfTypes.PartialRedisCe{}
+			if resp.PartialRedisCe.Config.CloudAuthentication == nil {
+				r.RedisCe.Config.CloudAuthentication = nil
+			} else {
+				r.RedisCe.Config.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+				if resp.PartialRedisCe.Config.CloudAuthentication.AuthProvider != nil {
+					r.RedisCe.Config.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.PartialRedisCe.Config.CloudAuthentication.AuthProvider))
+				} else {
+					r.RedisCe.Config.CloudAuthentication.AuthProvider = types.StringNull()
+				}
+				r.RedisCe.Config.CloudAuthentication.AwsAccessKeyID = types.StringPointerValue(resp.PartialRedisCe.Config.CloudAuthentication.AwsAccessKeyID)
+				r.RedisCe.Config.CloudAuthentication.AwsAssumeRoleArn = types.StringPointerValue(resp.PartialRedisCe.Config.CloudAuthentication.AwsAssumeRoleArn)
+				r.RedisCe.Config.CloudAuthentication.AwsCacheName = types.StringPointerValue(resp.PartialRedisCe.Config.CloudAuthentication.AwsCacheName)
+				r.RedisCe.Config.CloudAuthentication.AwsIsServerless = types.BoolPointerValue(resp.PartialRedisCe.Config.CloudAuthentication.AwsIsServerless)
+				r.RedisCe.Config.CloudAuthentication.AwsRegion = types.StringPointerValue(resp.PartialRedisCe.Config.CloudAuthentication.AwsRegion)
+				r.RedisCe.Config.CloudAuthentication.AwsRoleSessionName = types.StringPointerValue(resp.PartialRedisCe.Config.CloudAuthentication.AwsRoleSessionName)
+				r.RedisCe.Config.CloudAuthentication.AwsSecretAccessKey = types.StringPointerValue(resp.PartialRedisCe.Config.CloudAuthentication.AwsSecretAccessKey)
+				r.RedisCe.Config.CloudAuthentication.AzureClientID = types.StringPointerValue(resp.PartialRedisCe.Config.CloudAuthentication.AzureClientID)
+				r.RedisCe.Config.CloudAuthentication.AzureClientSecret = types.StringPointerValue(resp.PartialRedisCe.Config.CloudAuthentication.AzureClientSecret)
+				r.RedisCe.Config.CloudAuthentication.AzureTenantID = types.StringPointerValue(resp.PartialRedisCe.Config.CloudAuthentication.AzureTenantID)
+				r.RedisCe.Config.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.PartialRedisCe.Config.CloudAuthentication.GcpServiceAccountJSON)
+			}
 			r.RedisCe.Config.Database = types.Int64PointerValue(resp.PartialRedisCe.Config.Database)
 			r.RedisCe.Config.Host = types.StringPointerValue(resp.PartialRedisCe.Config.Host)
 			r.RedisCe.Config.Password = types.StringPointerValue(resp.PartialRedisCe.Config.Password)
@@ -43,6 +64,27 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 		}
 		if resp.PartialRedisEe != nil {
 			r.RedisEe = &tfTypes.PartialRedisEe{}
+			if resp.PartialRedisEe.Config.CloudAuthentication == nil {
+				r.RedisEe.Config.CloudAuthentication = nil
+			} else {
+				r.RedisEe.Config.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+				if resp.PartialRedisEe.Config.CloudAuthentication.AuthProvider != nil {
+					r.RedisEe.Config.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.PartialRedisEe.Config.CloudAuthentication.AuthProvider))
+				} else {
+					r.RedisEe.Config.CloudAuthentication.AuthProvider = types.StringNull()
+				}
+				r.RedisEe.Config.CloudAuthentication.AwsAccessKeyID = types.StringPointerValue(resp.PartialRedisEe.Config.CloudAuthentication.AwsAccessKeyID)
+				r.RedisEe.Config.CloudAuthentication.AwsAssumeRoleArn = types.StringPointerValue(resp.PartialRedisEe.Config.CloudAuthentication.AwsAssumeRoleArn)
+				r.RedisEe.Config.CloudAuthentication.AwsCacheName = types.StringPointerValue(resp.PartialRedisEe.Config.CloudAuthentication.AwsCacheName)
+				r.RedisEe.Config.CloudAuthentication.AwsIsServerless = types.BoolPointerValue(resp.PartialRedisEe.Config.CloudAuthentication.AwsIsServerless)
+				r.RedisEe.Config.CloudAuthentication.AwsRegion = types.StringPointerValue(resp.PartialRedisEe.Config.CloudAuthentication.AwsRegion)
+				r.RedisEe.Config.CloudAuthentication.AwsRoleSessionName = types.StringPointerValue(resp.PartialRedisEe.Config.CloudAuthentication.AwsRoleSessionName)
+				r.RedisEe.Config.CloudAuthentication.AwsSecretAccessKey = types.StringPointerValue(resp.PartialRedisEe.Config.CloudAuthentication.AwsSecretAccessKey)
+				r.RedisEe.Config.CloudAuthentication.AzureClientID = types.StringPointerValue(resp.PartialRedisEe.Config.CloudAuthentication.AzureClientID)
+				r.RedisEe.Config.CloudAuthentication.AzureClientSecret = types.StringPointerValue(resp.PartialRedisEe.Config.CloudAuthentication.AzureClientSecret)
+				r.RedisEe.Config.CloudAuthentication.AzureTenantID = types.StringPointerValue(resp.PartialRedisEe.Config.CloudAuthentication.AzureTenantID)
+				r.RedisEe.Config.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.PartialRedisEe.Config.CloudAuthentication.GcpServiceAccountJSON)
+			}
 			r.RedisEe.Config.ClusterMaxRedirections = types.Int64PointerValue(resp.PartialRedisEe.Config.ClusterMaxRedirections)
 			if resp.PartialRedisEe.Config.ClusterNodes != nil {
 				r.RedisEe.Config.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
@@ -196,6 +238,95 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 	var out shared.Partial
 	var partialRedisCe *shared.PartialRedisCe
 	if r.RedisCe != nil {
+		var cloudAuthentication *shared.PartialRedisCeCloudAuthentication
+		if r.RedisCe.Config.CloudAuthentication != nil {
+			authProvider := new(shared.PartialRedisCeAuthProvider)
+			if !r.RedisCe.Config.CloudAuthentication.AuthProvider.IsUnknown() && !r.RedisCe.Config.CloudAuthentication.AuthProvider.IsNull() {
+				*authProvider = shared.PartialRedisCeAuthProvider(r.RedisCe.Config.CloudAuthentication.AuthProvider.ValueString())
+			} else {
+				authProvider = nil
+			}
+			awsAccessKeyID := new(string)
+			if !r.RedisCe.Config.CloudAuthentication.AwsAccessKeyID.IsUnknown() && !r.RedisCe.Config.CloudAuthentication.AwsAccessKeyID.IsNull() {
+				*awsAccessKeyID = r.RedisCe.Config.CloudAuthentication.AwsAccessKeyID.ValueString()
+			} else {
+				awsAccessKeyID = nil
+			}
+			awsAssumeRoleArn := new(string)
+			if !r.RedisCe.Config.CloudAuthentication.AwsAssumeRoleArn.IsUnknown() && !r.RedisCe.Config.CloudAuthentication.AwsAssumeRoleArn.IsNull() {
+				*awsAssumeRoleArn = r.RedisCe.Config.CloudAuthentication.AwsAssumeRoleArn.ValueString()
+			} else {
+				awsAssumeRoleArn = nil
+			}
+			awsCacheName := new(string)
+			if !r.RedisCe.Config.CloudAuthentication.AwsCacheName.IsUnknown() && !r.RedisCe.Config.CloudAuthentication.AwsCacheName.IsNull() {
+				*awsCacheName = r.RedisCe.Config.CloudAuthentication.AwsCacheName.ValueString()
+			} else {
+				awsCacheName = nil
+			}
+			awsIsServerless := new(bool)
+			if !r.RedisCe.Config.CloudAuthentication.AwsIsServerless.IsUnknown() && !r.RedisCe.Config.CloudAuthentication.AwsIsServerless.IsNull() {
+				*awsIsServerless = r.RedisCe.Config.CloudAuthentication.AwsIsServerless.ValueBool()
+			} else {
+				awsIsServerless = nil
+			}
+			awsRegion := new(string)
+			if !r.RedisCe.Config.CloudAuthentication.AwsRegion.IsUnknown() && !r.RedisCe.Config.CloudAuthentication.AwsRegion.IsNull() {
+				*awsRegion = r.RedisCe.Config.CloudAuthentication.AwsRegion.ValueString()
+			} else {
+				awsRegion = nil
+			}
+			awsRoleSessionName := new(string)
+			if !r.RedisCe.Config.CloudAuthentication.AwsRoleSessionName.IsUnknown() && !r.RedisCe.Config.CloudAuthentication.AwsRoleSessionName.IsNull() {
+				*awsRoleSessionName = r.RedisCe.Config.CloudAuthentication.AwsRoleSessionName.ValueString()
+			} else {
+				awsRoleSessionName = nil
+			}
+			awsSecretAccessKey := new(string)
+			if !r.RedisCe.Config.CloudAuthentication.AwsSecretAccessKey.IsUnknown() && !r.RedisCe.Config.CloudAuthentication.AwsSecretAccessKey.IsNull() {
+				*awsSecretAccessKey = r.RedisCe.Config.CloudAuthentication.AwsSecretAccessKey.ValueString()
+			} else {
+				awsSecretAccessKey = nil
+			}
+			azureClientID := new(string)
+			if !r.RedisCe.Config.CloudAuthentication.AzureClientID.IsUnknown() && !r.RedisCe.Config.CloudAuthentication.AzureClientID.IsNull() {
+				*azureClientID = r.RedisCe.Config.CloudAuthentication.AzureClientID.ValueString()
+			} else {
+				azureClientID = nil
+			}
+			azureClientSecret := new(string)
+			if !r.RedisCe.Config.CloudAuthentication.AzureClientSecret.IsUnknown() && !r.RedisCe.Config.CloudAuthentication.AzureClientSecret.IsNull() {
+				*azureClientSecret = r.RedisCe.Config.CloudAuthentication.AzureClientSecret.ValueString()
+			} else {
+				azureClientSecret = nil
+			}
+			azureTenantID := new(string)
+			if !r.RedisCe.Config.CloudAuthentication.AzureTenantID.IsUnknown() && !r.RedisCe.Config.CloudAuthentication.AzureTenantID.IsNull() {
+				*azureTenantID = r.RedisCe.Config.CloudAuthentication.AzureTenantID.ValueString()
+			} else {
+				azureTenantID = nil
+			}
+			gcpServiceAccountJSON := new(string)
+			if !r.RedisCe.Config.CloudAuthentication.GcpServiceAccountJSON.IsUnknown() && !r.RedisCe.Config.CloudAuthentication.GcpServiceAccountJSON.IsNull() {
+				*gcpServiceAccountJSON = r.RedisCe.Config.CloudAuthentication.GcpServiceAccountJSON.ValueString()
+			} else {
+				gcpServiceAccountJSON = nil
+			}
+			cloudAuthentication = &shared.PartialRedisCeCloudAuthentication{
+				AuthProvider:          authProvider,
+				AwsAccessKeyID:        awsAccessKeyID,
+				AwsAssumeRoleArn:      awsAssumeRoleArn,
+				AwsCacheName:          awsCacheName,
+				AwsIsServerless:       awsIsServerless,
+				AwsRegion:             awsRegion,
+				AwsRoleSessionName:    awsRoleSessionName,
+				AwsSecretAccessKey:    awsSecretAccessKey,
+				AzureClientID:         azureClientID,
+				AzureClientSecret:     azureClientSecret,
+				AzureTenantID:         azureTenantID,
+				GcpServiceAccountJSON: gcpServiceAccountJSON,
+			}
+		}
 		database := new(int64)
 		if !r.RedisCe.Config.Database.IsUnknown() && !r.RedisCe.Config.Database.IsNull() {
 			*database = r.RedisCe.Config.Database.ValueInt64()
@@ -251,15 +382,16 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 			username = nil
 		}
 		config := shared.PartialRedisCeConfig{
-			Database:   database,
-			Host:       host,
-			Password:   password,
-			Port:       port,
-			ServerName: serverName,
-			Ssl:        ssl,
-			SslVerify:  sslVerify,
-			Timeout:    timeout,
-			Username:   username,
+			CloudAuthentication: cloudAuthentication,
+			Database:            database,
+			Host:                host,
+			Password:            password,
+			Port:                port,
+			ServerName:          serverName,
+			Ssl:                 ssl,
+			SslVerify:           sslVerify,
+			Timeout:             timeout,
+			Username:            username,
 		}
 		createdAt := new(int64)
 		if !r.RedisCe.CreatedAt.IsUnknown() && !r.RedisCe.CreatedAt.IsNull() {
@@ -308,6 +440,95 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 	}
 	var partialRedisEe *shared.PartialRedisEe
 	if r.RedisEe != nil {
+		var cloudAuthentication1 *shared.PartialRedisEeCloudAuthentication
+		if r.RedisEe.Config.CloudAuthentication != nil {
+			authProvider1 := new(shared.PartialRedisEeAuthProvider)
+			if !r.RedisEe.Config.CloudAuthentication.AuthProvider.IsUnknown() && !r.RedisEe.Config.CloudAuthentication.AuthProvider.IsNull() {
+				*authProvider1 = shared.PartialRedisEeAuthProvider(r.RedisEe.Config.CloudAuthentication.AuthProvider.ValueString())
+			} else {
+				authProvider1 = nil
+			}
+			awsAccessKeyId1 := new(string)
+			if !r.RedisEe.Config.CloudAuthentication.AwsAccessKeyID.IsUnknown() && !r.RedisEe.Config.CloudAuthentication.AwsAccessKeyID.IsNull() {
+				*awsAccessKeyId1 = r.RedisEe.Config.CloudAuthentication.AwsAccessKeyID.ValueString()
+			} else {
+				awsAccessKeyId1 = nil
+			}
+			awsAssumeRoleArn1 := new(string)
+			if !r.RedisEe.Config.CloudAuthentication.AwsAssumeRoleArn.IsUnknown() && !r.RedisEe.Config.CloudAuthentication.AwsAssumeRoleArn.IsNull() {
+				*awsAssumeRoleArn1 = r.RedisEe.Config.CloudAuthentication.AwsAssumeRoleArn.ValueString()
+			} else {
+				awsAssumeRoleArn1 = nil
+			}
+			awsCacheName1 := new(string)
+			if !r.RedisEe.Config.CloudAuthentication.AwsCacheName.IsUnknown() && !r.RedisEe.Config.CloudAuthentication.AwsCacheName.IsNull() {
+				*awsCacheName1 = r.RedisEe.Config.CloudAuthentication.AwsCacheName.ValueString()
+			} else {
+				awsCacheName1 = nil
+			}
+			awsIsServerless1 := new(bool)
+			if !r.RedisEe.Config.CloudAuthentication.AwsIsServerless.IsUnknown() && !r.RedisEe.Config.CloudAuthentication.AwsIsServerless.IsNull() {
+				*awsIsServerless1 = r.RedisEe.Config.CloudAuthentication.AwsIsServerless.ValueBool()
+			} else {
+				awsIsServerless1 = nil
+			}
+			awsRegion1 := new(string)
+			if !r.RedisEe.Config.CloudAuthentication.AwsRegion.IsUnknown() && !r.RedisEe.Config.CloudAuthentication.AwsRegion.IsNull() {
+				*awsRegion1 = r.RedisEe.Config.CloudAuthentication.AwsRegion.ValueString()
+			} else {
+				awsRegion1 = nil
+			}
+			awsRoleSessionName1 := new(string)
+			if !r.RedisEe.Config.CloudAuthentication.AwsRoleSessionName.IsUnknown() && !r.RedisEe.Config.CloudAuthentication.AwsRoleSessionName.IsNull() {
+				*awsRoleSessionName1 = r.RedisEe.Config.CloudAuthentication.AwsRoleSessionName.ValueString()
+			} else {
+				awsRoleSessionName1 = nil
+			}
+			awsSecretAccessKey1 := new(string)
+			if !r.RedisEe.Config.CloudAuthentication.AwsSecretAccessKey.IsUnknown() && !r.RedisEe.Config.CloudAuthentication.AwsSecretAccessKey.IsNull() {
+				*awsSecretAccessKey1 = r.RedisEe.Config.CloudAuthentication.AwsSecretAccessKey.ValueString()
+			} else {
+				awsSecretAccessKey1 = nil
+			}
+			azureClientId1 := new(string)
+			if !r.RedisEe.Config.CloudAuthentication.AzureClientID.IsUnknown() && !r.RedisEe.Config.CloudAuthentication.AzureClientID.IsNull() {
+				*azureClientId1 = r.RedisEe.Config.CloudAuthentication.AzureClientID.ValueString()
+			} else {
+				azureClientId1 = nil
+			}
+			azureClientSecret1 := new(string)
+			if !r.RedisEe.Config.CloudAuthentication.AzureClientSecret.IsUnknown() && !r.RedisEe.Config.CloudAuthentication.AzureClientSecret.IsNull() {
+				*azureClientSecret1 = r.RedisEe.Config.CloudAuthentication.AzureClientSecret.ValueString()
+			} else {
+				azureClientSecret1 = nil
+			}
+			azureTenantId1 := new(string)
+			if !r.RedisEe.Config.CloudAuthentication.AzureTenantID.IsUnknown() && !r.RedisEe.Config.CloudAuthentication.AzureTenantID.IsNull() {
+				*azureTenantId1 = r.RedisEe.Config.CloudAuthentication.AzureTenantID.ValueString()
+			} else {
+				azureTenantId1 = nil
+			}
+			gcpServiceAccountJson1 := new(string)
+			if !r.RedisEe.Config.CloudAuthentication.GcpServiceAccountJSON.IsUnknown() && !r.RedisEe.Config.CloudAuthentication.GcpServiceAccountJSON.IsNull() {
+				*gcpServiceAccountJson1 = r.RedisEe.Config.CloudAuthentication.GcpServiceAccountJSON.ValueString()
+			} else {
+				gcpServiceAccountJson1 = nil
+			}
+			cloudAuthentication1 = &shared.PartialRedisEeCloudAuthentication{
+				AuthProvider:          authProvider1,
+				AwsAccessKeyID:        awsAccessKeyId1,
+				AwsAssumeRoleArn:      awsAssumeRoleArn1,
+				AwsCacheName:          awsCacheName1,
+				AwsIsServerless:       awsIsServerless1,
+				AwsRegion:             awsRegion1,
+				AwsRoleSessionName:    awsRoleSessionName1,
+				AwsSecretAccessKey:    awsSecretAccessKey1,
+				AzureClientID:         azureClientId1,
+				AzureClientSecret:     azureClientSecret1,
+				AzureTenantID:         azureTenantId1,
+				GcpServiceAccountJSON: gcpServiceAccountJson1,
+			}
+		}
 		clusterMaxRedirections := new(int64)
 		if !r.RedisEe.Config.ClusterMaxRedirections.IsUnknown() && !r.RedisEe.Config.ClusterMaxRedirections.IsNull() {
 			*clusterMaxRedirections = r.RedisEe.Config.ClusterMaxRedirections.ValueInt64()
@@ -467,6 +688,7 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 			username1 = nil
 		}
 		config1 := shared.PartialRedisEeConfig{
+			CloudAuthentication:    cloudAuthentication1,
 			ClusterMaxRedirections: clusterMaxRedirections,
 			ClusterNodes:           clusterNodes,
 			ConnectTimeout:         connectTimeout,

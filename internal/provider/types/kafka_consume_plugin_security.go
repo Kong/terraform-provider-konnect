@@ -9,4 +9,5 @@ import (
 type KafkaConsumePluginSecurity struct {
 	CertificateID types.String `tfsdk:"certificate_id"`
 	Ssl           types.Bool   `tfsdk:"ssl"`
+	SslVerify     types.Bool   `tfsdk:"ssl_verify"`
 }

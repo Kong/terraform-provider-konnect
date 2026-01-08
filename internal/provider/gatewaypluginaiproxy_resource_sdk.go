@@ -75,6 +75,7 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 				r.Config.Model.Options.Bedrock.AwsStsEndpointURL = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsStsEndpointURL)
 				r.Config.Model.Options.Bedrock.EmbeddingsNormalize = types.BoolPointerValue(resp.Config.Model.Options.Bedrock.EmbeddingsNormalize)
 				r.Config.Model.Options.Bedrock.PerformanceConfigLatency = types.StringPointerValue(resp.Config.Model.Options.Bedrock.PerformanceConfigLatency)
+				r.Config.Model.Options.Bedrock.VideoOutputS3URI = types.StringPointerValue(resp.Config.Model.Options.Bedrock.VideoOutputS3URI)
 			}
 			if resp.Config.Model.Options.Cohere == nil {
 				r.Config.Model.Options.Cohere = nil
@@ -86,6 +87,12 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 					r.Config.Model.Options.Cohere.EmbeddingInputType = types.StringNull()
 				}
 				r.Config.Model.Options.Cohere.WaitForModel = types.BoolPointerValue(resp.Config.Model.Options.Cohere.WaitForModel)
+			}
+			if resp.Config.Model.Options.Dashscope == nil {
+				r.Config.Model.Options.Dashscope = nil
+			} else {
+				r.Config.Model.Options.Dashscope = &tfTypes.AiLlmAsJudgePluginDashscope{}
+				r.Config.Model.Options.Dashscope.International = types.BoolPointerValue(resp.Config.Model.Options.Dashscope.International)
 			}
 			r.Config.Model.Options.EmbeddingsDimensions = types.Int64PointerValue(resp.Config.Model.Options.EmbeddingsDimensions)
 			if resp.Config.Model.Options.Gemini == nil {
@@ -597,6 +604,12 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 			} else {
 				performanceConfigLatency = nil
 			}
+			videoOutputS3URI := new(string)
+			if !r.Config.Model.Options.Bedrock.VideoOutputS3URI.IsUnknown() && !r.Config.Model.Options.Bedrock.VideoOutputS3URI.IsNull() {
+				*videoOutputS3URI = r.Config.Model.Options.Bedrock.VideoOutputS3URI.ValueString()
+			} else {
+				videoOutputS3URI = nil
+			}
 			bedrock = &shared.Bedrock{
 				AwsAssumeRoleArn:         awsAssumeRoleArn,
 				AwsRegion:                awsRegion,
@@ -604,6 +617,7 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 				AwsStsEndpointURL:        awsStsEndpointURL,
 				EmbeddingsNormalize:      embeddingsNormalize,
 				PerformanceConfigLatency: performanceConfigLatency,
+				VideoOutputS3URI:         videoOutputS3URI,
 			}
 		}
 		var cohere *shared.Cohere
@@ -623,6 +637,18 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 			cohere = &shared.Cohere{
 				EmbeddingInputType: embeddingInputType,
 				WaitForModel:       waitForModel,
+			}
+		}
+		var dashscope *shared.Dashscope
+		if r.Config.Model.Options.Dashscope != nil {
+			international := new(bool)
+			if !r.Config.Model.Options.Dashscope.International.IsUnknown() && !r.Config.Model.Options.Dashscope.International.IsNull() {
+				*international = r.Config.Model.Options.Dashscope.International.ValueBool()
+			} else {
+				international = nil
+			}
+			dashscope = &shared.Dashscope{
+				International: international,
 			}
 		}
 		embeddingsDimensions := new(int64)
@@ -750,6 +776,7 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 			AzureInstance:        azureInstance,
 			Bedrock:              bedrock,
 			Cohere:               cohere,
+			Dashscope:            dashscope,
 			EmbeddingsDimensions: embeddingsDimensions,
 			Gemini:               gemini,
 			Huggingface:          huggingface,

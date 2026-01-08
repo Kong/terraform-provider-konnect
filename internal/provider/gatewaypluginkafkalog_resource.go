@@ -690,6 +690,7 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
 							"certificate_id": types.StringType,
 							"ssl":            types.BoolType,
+							"ssl_verify":     types.BoolType,
 						})),
 						Attributes: map[string]schema.Attribute{
 							"certificate_id": schema.StringAttribute{
@@ -699,6 +700,12 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 							"ssl": schema.BoolAttribute{
 								Optional:    true,
 								Description: `Enables TLS.`,
+							},
+							"ssl_verify": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `When using TLS, this option enables verification of the certificate presented by the server. Default: false`,
 							},
 						},
 					},

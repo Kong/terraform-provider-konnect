@@ -18,6 +18,7 @@ resource "konnect_gateway_plugin_oas_validation" "my_gatewaypluginoasvalidation"
     allowed_header_parameters                    = "...my_allowed_header_parameters..."
     api_spec                                     = "...my_api_spec..."
     api_spec_encoded                             = false
+    collect_all_errors                           = false
     custom_base_path                             = "...my_custom_base_path..."
     header_parameter_check                       = false
     include_base_path                            = true
@@ -108,6 +109,7 @@ Optional:
 
 - `allowed_header_parameters` (String) List of header parameters in the request that will be ignored when performing HTTP header validation. These are additional headers added to an API request beyond those defined in the API specification.  For example, you might include the HTTP header `User-Agent`, which lets servers and network peers identify the application, operating system, vendor, and/or version of the requesting user agent. Default: "Host,Content-Type,User-Agent,Accept,Content-Length"
 - `api_spec_encoded` (Boolean) Indicates whether the api_spec is URI-Encoded. Default: true
+- `collect_all_errors` (Boolean) If set to true, collects all validation errors instead of stopping at the first error. Note: Enabling this option with OpenAPI 3.0 will affect performance. Default: false
 - `custom_base_path` (String) The base path to be used for path match evaluation. This value is ignored if `include_base_path` is set to `false`.
 - `header_parameter_check` (Boolean) If set to true, checks if HTTP header parameters in the request exist in the API specification. Default: false
 - `include_base_path` (Boolean) Indicates whether to include the base path when performing path match evaluation. Default: false

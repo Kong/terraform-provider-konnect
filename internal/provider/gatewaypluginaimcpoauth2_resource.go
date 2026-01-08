@@ -44,19 +44,19 @@ type GatewayPluginAiMcpOauth2Resource struct {
 
 // GatewayPluginAiMcpOauth2ResourceModel describes the resource data model.
 type GatewayPluginAiMcpOauth2ResourceModel struct {
-	Config         *tfTypes.AiMcpOauth2PluginConfig `tfsdk:"config"`
-	ControlPlaneID types.String                     `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                      `tfsdk:"created_at"`
-	Enabled        types.Bool                       `tfsdk:"enabled"`
-	ID             types.String                     `tfsdk:"id"`
-	InstanceName   types.String                     `tfsdk:"instance_name"`
-	Ordering       *tfTypes.AcePluginOrdering       `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials               `tfsdk:"partials"`
-	Protocols      []types.String                   `tfsdk:"protocols"`
-	Route          *tfTypes.Set                     `tfsdk:"route"`
-	Service        *tfTypes.Set                     `tfsdk:"service"`
-	Tags           []types.String                   `tfsdk:"tags"`
-	UpdatedAt      types.Int64                      `tfsdk:"updated_at"`
+	Config         tfTypes.AiMcpOauth2PluginConfig `tfsdk:"config"`
+	ControlPlaneID types.String                    `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                     `tfsdk:"created_at"`
+	Enabled        types.Bool                      `tfsdk:"enabled"`
+	ID             types.String                    `tfsdk:"id"`
+	InstanceName   types.String                    `tfsdk:"instance_name"`
+	Ordering       *tfTypes.AcePluginOrdering      `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials              `tfsdk:"partials"`
+	Protocols      []types.String                  `tfsdk:"protocols"`
+	Route          *tfTypes.Set                    `tfsdk:"route"`
+	Service        *tfTypes.Set                    `tfsdk:"service"`
+	Tags           []types.String                  `tfsdk:"tags"`
+	UpdatedAt      types.Int64                     `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginAiMcpOauth2Resource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -68,55 +68,7 @@ func (r *GatewayPluginAiMcpOauth2Resource) Schema(ctx context.Context, req resou
 		MarkdownDescription: "GatewayPluginAiMcpOauth2 Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"args": types.MapType{
-						ElemType: types.StringType,
-					},
-					"authorization_servers": types.ListType{
-						ElemType: types.StringType,
-					},
-					"cache_introspection": types.BoolType,
-					"claim_to_header": types.ListType{
-						ElemType: types.ObjectType{
-							AttrTypes: map[string]attr.Type{
-								`claim`:  types.StringType,
-								`header`: types.StringType,
-							},
-						},
-					},
-					"client_alg":    types.StringType,
-					"client_auth":   types.StringType,
-					"client_id":     types.StringType,
-					"client_jwk":    types.StringType,
-					"client_secret": types.StringType,
-					"headers": types.MapType{
-						ElemType: types.StringType,
-					},
-					"http_proxy":                           types.StringType,
-					"http_proxy_authorization":             types.StringType,
-					"http_version":                         types.Float64Type,
-					"https_proxy":                          types.StringType,
-					"https_proxy_authorization":            types.StringType,
-					"insecure_relaxed_audience_validation": types.BoolType,
-					"introspection_endpoint":               types.StringType,
-					"introspection_format":                 types.StringType,
-					"keepalive":                            types.BoolType,
-					"max_request_body_size":                types.Int64Type,
-					"metadata_endpoint":                    types.StringType,
-					"mtls_introspection_endpoint":          types.StringType,
-					"no_proxy":                             types.StringType,
-					"resource":                             types.StringType,
-					"scopes_supported": types.ListType{
-						ElemType: types.StringType,
-					},
-					"ssl_verify":                 types.BoolType,
-					"timeout":                    types.Float64Type,
-					"tls_client_auth_cert":       types.StringType,
-					"tls_client_auth_key":        types.StringType,
-					"tls_client_auth_ssl_verify": types.BoolType,
-				})),
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"args": schema.MapAttribute{
 						Optional:    true,
@@ -266,8 +218,8 @@ func (r *GatewayPluginAiMcpOauth2Resource) Schema(ctx context.Context, req resou
 					"max_request_body_size": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     int64default.StaticInt64(8192),
-						Description: `max allowed body size allowed to be handled as MCP request. Default: 8192`,
+						Default:     int64default.StaticInt64(1048576),
+						Description: `max allowed body size allowed to be handled as MCP request. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 1048576`,
 					},
 					"metadata_endpoint": schema.StringAttribute{
 						Optional:    true,

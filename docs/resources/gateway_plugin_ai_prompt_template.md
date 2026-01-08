@@ -106,7 +106,7 @@ Optional:
 
 - `allow_untemplated_requests` (Boolean) Set true to allow requests that don't call or match any template. Default: true
 - `log_original_request` (Boolean) Set true to add the original request to the Kong log plugin(s) output. Default: false
-- `max_request_body_size` (Number) max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 8192
+- `max_request_body_size` (Number) max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 1048576
 
 <a id="nestedatt--config--templates"></a>
 ### Nested Schema for `config.templates`

@@ -85,6 +85,8 @@ type OasValidationPluginConfig struct {
 	APISpec string `json:"api_spec"`
 	// Indicates whether the api_spec is URI-Encoded.
 	APISpecEncoded *bool `default:"true" json:"api_spec_encoded"`
+	// If set to true, collects all validation errors instead of stopping at the first error. Note: Enabling this option with OpenAPI 3.0 will affect performance.
+	CollectAllErrors *bool `default:"false" json:"collect_all_errors"`
 	// The base path to be used for path match evaluation. This value is ignored if `include_base_path` is set to `false`.
 	CustomBasePath *string `default:"null" json:"custom_base_path"`
 	// If set to true, checks if HTTP header parameters in the request exist in the API specification.
@@ -141,6 +143,13 @@ func (o *OasValidationPluginConfig) GetAPISpecEncoded() *bool {
 		return nil
 	}
 	return o.APISpecEncoded
+}
+
+func (o *OasValidationPluginConfig) GetCollectAllErrors() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.CollectAllErrors
 }
 
 func (o *OasValidationPluginConfig) GetCustomBasePath() *string {

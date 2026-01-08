@@ -75,6 +75,16 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
+					"custom_cost_count_function": schema.StringAttribute{
+						Optional:    true,
+						Description: `If defined, it uses custom function to generate cost for the inference request`,
+					},
+					"decrease_by_fractions_in_redis": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `By default, Kong decreates the AI rate limiting counters by whole number in Redis. This setting allows to decrease the counters by float number. Default: false`,
+					},
 					"dictionary_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -136,9 +146,10 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`openai`),
-						Description: `LLM input and output format and schema to use. Default: "openai"; must be one of ["bedrock", "cohere", "gemini", "huggingface", "openai"]`,
+						Description: `LLM input and output format and schema to use. Default: "openai"; must be one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
+								"anthropic",
 								"bedrock",
 								"cohere",
 								"gemini",
@@ -166,7 +177,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 								"name": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The LLM provider to which the rate limit applies. Not Null; must be one of ["anthropic", "azure", "bedrock", "cohere", "gemini", "huggingface", "llama2", "mistral", "openai", "requestPrompt"]`,
+									Description: `The LLM provider to which the rate limit applies. Not Null; must be one of ["anthropic", "azure", "bedrock", "cohere", "customCost", "gemini", "huggingface", "llama2", "mistral", "openai", "requestPrompt"]`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
 										stringvalidator.OneOf(
@@ -174,6 +185,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 											"azure",
 											"bedrock",
 											"cohere",
+											"customCost",
 											"gemini",
 											"huggingface",
 											"llama2",
@@ -208,6 +220,22 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 						Computed: true,
 						Optional: true,
 						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"cloud_authentication": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`auth_provider`:            types.StringType,
+									`aws_access_key_id`:        types.StringType,
+									`aws_assume_role_arn`:      types.StringType,
+									`aws_cache_name`:           types.StringType,
+									`aws_is_serverless`:        types.BoolType,
+									`aws_region`:               types.StringType,
+									`aws_role_session_name`:    types.StringType,
+									`aws_secret_access_key`:    types.StringType,
+									`azure_client_id`:          types.StringType,
+									`azure_client_secret`:      types.StringType,
+									`azure_tenant_id`:          types.StringType,
+									`gcp_service_account_json`: types.StringType,
+								},
+							},
 							"cluster_max_redirections": types.Int64Type,
 							"cluster_nodes": types.ListType{
 								ElemType: types.ObjectType{
@@ -245,6 +273,85 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 							"username":          types.StringType,
 						})),
 						Attributes: map[string]schema.Attribute{
+							"cloud_authentication": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"auth_provider":            types.StringType,
+									"aws_access_key_id":        types.StringType,
+									"aws_assume_role_arn":      types.StringType,
+									"aws_cache_name":           types.StringType,
+									"aws_is_serverless":        types.BoolType,
+									"aws_region":               types.StringType,
+									"aws_role_session_name":    types.StringType,
+									"aws_secret_access_key":    types.StringType,
+									"azure_client_id":          types.StringType,
+									"azure_client_secret":      types.StringType,
+									"azure_tenant_id":          types.StringType,
+									"gcp_service_account_json": types.StringType,
+								})),
+								Attributes: map[string]schema.Attribute{
+									"auth_provider": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
+										Validators: []validator.String{
+											stringvalidator.OneOf(
+												"aws",
+												"azure",
+												"gcp",
+											),
+										},
+									},
+									"aws_access_key_id": schema.StringAttribute{
+										Optional:    true,
+										Description: `AWS Access Key ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+									},
+									"aws_assume_role_arn": schema.StringAttribute{
+										Optional:    true,
+										Description: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.`,
+									},
+									"aws_cache_name": schema.StringAttribute{
+										Optional:    true,
+										Description: `The name of the AWS Elasticache cluster when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+									},
+									"aws_is_serverless": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(true),
+										Description: `This flag specifies whether the cluster is serverless when auth_provider is set to ` + "`" + `aws` + "`" + `. Default: true`,
+									},
+									"aws_region": schema.StringAttribute{
+										Optional:    true,
+										Description: `The region of the AWS ElastiCache cluster when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+									},
+									"aws_role_session_name": schema.StringAttribute{
+										Optional:    true,
+										Description: `The session name for the temporary credentials when assuming the IAM role.`,
+									},
+									"aws_secret_access_key": schema.StringAttribute{
+										Optional:    true,
+										Description: `AWS Secret Access Key to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+									},
+									"azure_client_id": schema.StringAttribute{
+										Optional:    true,
+										Description: `Azure Client ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+									},
+									"azure_client_secret": schema.StringAttribute{
+										Optional:    true,
+										Description: `Azure Client Secret to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+									},
+									"azure_tenant_id": schema.StringAttribute{
+										Optional:    true,
+										Description: `Azure Tenant ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+									},
+									"gcp_service_account_json": schema.StringAttribute{
+										Optional:    true,
+										Description: `GCP Service Account JSON to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `gcp` + "`" + `.`,
+									},
+								},
+								Description: `Cloud auth related configs for connecting to a Cloud Provider's Redis instance.`,
+							},
 							"cluster_max_redirections": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
@@ -437,7 +544,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`local`),
-						Description: `The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: ` + "`" + `local` + "`" + ` and ` + "`" + `cluster` + "`" + `. Default: "local"; must be one of ["cluster", "local", "redis"]`,
+						Description: `The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: ` + "`" + `local` + "`" + `, ` + "`" + `redis` + "`" + ` and ` + "`" + `cluster` + "`" + `. Default: "local"; must be one of ["cluster", "local", "redis"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"cluster",

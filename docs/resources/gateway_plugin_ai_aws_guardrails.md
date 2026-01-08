@@ -15,6 +15,7 @@ GatewayPluginAiAwsGuardrails Resource
 ```terraform
 resource "konnect_gateway_plugin_ai_aws_guardrails" "my_gatewaypluginaiawsguardrails" {
   config = {
+    allow_masking         = true
     aws_access_key_id     = "...my_aws_access_key_id..."
     aws_assume_role_arn   = "...my_aws_assume_role_arn..."
     aws_region            = "...my_aws_region..."
@@ -25,6 +26,7 @@ resource "konnect_gateway_plugin_ai_aws_guardrails" "my_gatewaypluginaiawsguardr
     guardrails_id         = "...my_guardrails_id..."
     guardrails_version    = "...my_guardrails_version..."
     response_buffer_size  = 4.85
+    ssl_verify            = true
     stop_on_error         = false
     text_source           = "concatenate_all_content"
     timeout               = 4.59
@@ -105,11 +107,12 @@ resource "konnect_gateway_plugin_ai_aws_guardrails" "my_gatewaypluginaiawsguardr
 Required:
 
 - `aws_region` (String) The AWS region to use for the Bedrock API
-- `guardrails_id` (String) The guardrail identifier used in the request to apply the guardrail
-- `guardrails_version` (String) The guardrail version used in the request to apply the guardrail
+- `guardrails_id` (String) The guardrail identifier used in the request to apply the guardrail.
+- `guardrails_version` (String) The guardrail version used in the request to apply the guardrail. Note that the value of this field must match the pattern `(([1-9][0-9]{0,7})|(DRAFT))` according to the AWS documentation https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_ApplyGuardrail.html#API_runtime_ApplyGuardrail_RequestSyntax.
 
 Optional:
 
+- `allow_masking` (Boolean) Allow to masking the request/response instead of blocking it. Streaming will be disabled if this is enabled. Default: false
 - `aws_access_key_id` (String) The AWS access key ID to use for authentication
 - `aws_assume_role_arn` (String) The target AWS IAM role ARN used to access the guardrails service
 - `aws_role_session_name` (String) The identifier of the assumed role session
@@ -117,6 +120,7 @@ Optional:
 - `aws_sts_endpoint_url` (String) Override the STS endpoint URL when assuming a different role
 - `guarding_mode` (String) The guardrail mode to use for the request. Default: "INPUT"; must be one of ["BOTH", "INPUT", "OUTPUT"]
 - `response_buffer_size` (Number) The amount of bytes receiving from upstream to be buffered before sending to the guardrails service. This only applies to the response content guard. Default: 100
+- `ssl_verify` (Boolean) Verify TLS certificate when connecting to the bedrock service.
 - `stop_on_error` (Boolean) Stop processing if an error occurs. Default: true
 - `text_source` (String) Select where to pick the 'text' for the Content Guard Services request. Default: "concatenate_all_content"; must be one of ["concatenate_all_content", "concatenate_user_content"]
 - `timeout` (Number) Connection timeout with the bedrock service. Default: 10000

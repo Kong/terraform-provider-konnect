@@ -176,6 +176,12 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 						Optional:    true,
 						Description: `Enables Dead Letter Queue. When enabled, if the message doesn't conform to the schema (from Schema Registry) or there's an error in the ` + "`" + `message_by_lua_functions` + "`" + `, it will be forwarded to ` + "`" + `dlq_topic` + "`" + ` that can be processed later.`,
 					},
+					"enforce_latest_offset_reset": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `When true, 'latest' offset reset behaves correctly (starts from end). When false (default), maintains backwards compatibility where 'latest' acts like 'earliest'. Default: false`,
+					},
 					"message_by_lua_functions": schema.ListAttribute{
 						Optional:    true,
 						ElementType: types.StringType,
@@ -568,6 +574,12 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 							"ssl": schema.BoolAttribute{
 								Optional:    true,
 								Description: `Enables TLS.`,
+							},
+							"ssl_verify": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `When using TLS, this option enables verification of the certificate presented by the server. Default: false`,
 							},
 						},
 					},

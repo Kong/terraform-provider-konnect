@@ -26,7 +26,7 @@ func (r *GatewayPluginOauth2IntrospectionResourceModel) RefreshFromSharedOauth2I
 		for _, v := range resp.Config.CustomClaimsForward {
 			r.Config.CustomClaimsForward = append(r.Config.CustomClaimsForward, types.StringValue(v))
 		}
-		if resp.Config.CustomIntrospectionHeaders != nil {
+		if len(resp.Config.CustomIntrospectionHeaders) > 0 {
 			r.Config.CustomIntrospectionHeaders = make(map[string]types.String, len(resp.Config.CustomIntrospectionHeaders))
 			for key, value := range resp.Config.CustomIntrospectionHeaders {
 				r.Config.CustomIntrospectionHeaders[key] = types.StringValue(value)
@@ -303,15 +303,12 @@ func (r *GatewayPluginOauth2IntrospectionResourceModel) ToSharedOauth2Introspect
 	for customClaimsForwardIndex := range r.Config.CustomClaimsForward {
 		customClaimsForward = append(customClaimsForward, r.Config.CustomClaimsForward[customClaimsForwardIndex].ValueString())
 	}
-	var customIntrospectionHeaders map[string]string
-	if r.Config.CustomIntrospectionHeaders != nil {
-		customIntrospectionHeaders = make(map[string]string)
-		for customIntrospectionHeadersKey := range r.Config.CustomIntrospectionHeaders {
-			var customIntrospectionHeadersInst string
-			customIntrospectionHeadersInst = r.Config.CustomIntrospectionHeaders[customIntrospectionHeadersKey].ValueString()
+	customIntrospectionHeaders := make(map[string]string)
+	for customIntrospectionHeadersKey := range r.Config.CustomIntrospectionHeaders {
+		var customIntrospectionHeadersInst string
+		customIntrospectionHeadersInst = r.Config.CustomIntrospectionHeaders[customIntrospectionHeadersKey].ValueString()
 
-			customIntrospectionHeaders[customIntrospectionHeadersKey] = customIntrospectionHeadersInst
-		}
+		customIntrospectionHeaders[customIntrospectionHeadersKey] = customIntrospectionHeadersInst
 	}
 	hideCredentials := new(bool)
 	if !r.Config.HideCredentials.IsUnknown() && !r.Config.HideCredentials.IsNull() {

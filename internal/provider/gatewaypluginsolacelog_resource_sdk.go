@@ -53,6 +53,7 @@ func (r *GatewayPluginSolaceLogResourceModel) RefreshFromSharedSolaceLogPlugin(c
 			r.Config.Session.Authentication = &tfTypes.SolaceConsumePluginAuthentication{}
 			r.Config.Session.Authentication.AccessToken = types.StringPointerValue(resp.Config.Session.Authentication.AccessToken)
 			r.Config.Session.Authentication.AccessTokenHeader = types.StringPointerValue(resp.Config.Session.Authentication.AccessTokenHeader)
+			r.Config.Session.Authentication.BasicAuthHeader = types.StringPointerValue(resp.Config.Session.Authentication.BasicAuthHeader)
 			r.Config.Session.Authentication.IDToken = types.StringPointerValue(resp.Config.Session.Authentication.IDToken)
 			r.Config.Session.Authentication.IDTokenHeader = types.StringPointerValue(resp.Config.Session.Authentication.IDTokenHeader)
 			r.Config.Session.Authentication.Password = types.StringPointerValue(resp.Config.Session.Authentication.Password)
@@ -422,6 +423,12 @@ func (r *GatewayPluginSolaceLogResourceModel) ToSharedSolaceLogPlugin(ctx contex
 		} else {
 			accessTokenHeader = nil
 		}
+		basicAuthHeader := new(string)
+		if !r.Config.Session.Authentication.BasicAuthHeader.IsUnknown() && !r.Config.Session.Authentication.BasicAuthHeader.IsNull() {
+			*basicAuthHeader = r.Config.Session.Authentication.BasicAuthHeader.ValueString()
+		} else {
+			basicAuthHeader = nil
+		}
 		idToken := new(string)
 		if !r.Config.Session.Authentication.IDToken.IsUnknown() && !r.Config.Session.Authentication.IDToken.IsNull() {
 			*idToken = r.Config.Session.Authentication.IDToken.ValueString()
@@ -455,6 +462,7 @@ func (r *GatewayPluginSolaceLogResourceModel) ToSharedSolaceLogPlugin(ctx contex
 		authentication = &shared.SolaceLogPluginAuthentication{
 			AccessToken:       accessToken,
 			AccessTokenHeader: accessTokenHeader,
+			BasicAuthHeader:   basicAuthHeader,
 			IDToken:           idToken,
 			IDTokenHeader:     idTokenHeader,
 			Password:          password,

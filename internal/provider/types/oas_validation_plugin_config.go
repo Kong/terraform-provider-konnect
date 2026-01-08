@@ -10,6 +10,7 @@ type OasValidationPluginConfig struct {
 	AllowedHeaderParameters                 types.String `tfsdk:"allowed_header_parameters"`
 	APISpec                                 types.String `tfsdk:"api_spec"`
 	APISpecEncoded                          types.Bool   `tfsdk:"api_spec_encoded"`
+	CollectAllErrors                        types.Bool   `tfsdk:"collect_all_errors"`
 	CustomBasePath                          types.String `tfsdk:"custom_base_path"`
 	HeaderParameterCheck                    types.Bool   `tfsdk:"header_parameter_check"`
 	IncludeBasePath                         types.Bool   `tfsdk:"include_base_path"`

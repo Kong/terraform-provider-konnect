@@ -174,6 +174,10 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 						Default:     booldefault.StaticBool(false),
 						Description: `Skip consumer lookup once certificate is trusted against the configured CA list. Default: false`,
 					},
+					"ssl_verify": schema.BoolAttribute{
+						Optional:    true,
+						Description: `This option enables verification of the certificate presented by the server of the OCSP responder's URL and by the server of the CRL Distribution Point.`,
+					},
 				},
 			},
 			"control_plane_id": schema.StringAttribute{

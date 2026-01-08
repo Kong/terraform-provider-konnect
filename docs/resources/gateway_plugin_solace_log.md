@@ -38,6 +38,7 @@ resource "konnect_gateway_plugin_solace_log" "my_gatewaypluginsolacelog" {
       authentication = {
         access_token        = "...my_access_token..."
         access_token_header = "...my_access_token_header..."
+        basic_auth_header   = "...my_basic_auth_header..."
         id_token            = "...my_id_token..."
         id_token_header     = "...my_id_token_header..."
         password            = "...my_password..."
@@ -143,8 +144,8 @@ Optional:
 - `dmq_eligible` (Boolean) Sets the dead message queue (DMQ) eligible property on the log message. Default: false
 - `priority` (Number) Sets the log message priority. Default: 4
 - `sender_id` (String) Allows the application to set the sender identifier.
-- `tracing` (Boolean) Enable or disable the tracing. This is primarily used for distributed tracing and log message correlation, especially in debugging or tracking log message flows across multiple systems. Default: false
-- `tracing_sampled` (Boolean) Indicates whether the log message should be included in distributed tracing (i.e., if it should be "sampled" for the tracing). Default: false
+- `tracing` (Boolean) Enable or disable the tracing propagation. This is primarily used for distributed tracing and message correlation, especially in debugging or tracking message flows across multiple systems. Default: false
+- `tracing_sampled` (Boolean) Forcibly turn on the tracing on all the messages for distributed tracing (tracing needs to be enabled as well). Default: false
 - `ttl` (Number) Sets the time to live (TTL) in milliseconds for the log message. Setting the time to live to zero disables the TTL for the log message. Default: 0
 
 <a id="nestedatt--config--message--destinations"></a>
@@ -183,9 +184,10 @@ Optional:
 Optional:
 
 - `access_token` (String) The OAuth2 access token used with `OAUTH2` authentication scheme when connecting to an event broker.
-- `access_token_header` (String)
+- `access_token_header` (String) Specifies the header that contains access token for the `OAUTH2` authentication scheme when connecting to an event broker. This header takes precedence over the `access_token` field.
+- `basic_auth_header` (String) Specifies the header that contains Basic Authentication credentials for the `BASIC` authentication scheme when connecting to an event broker. This header takes precedence over the `username` and `password` fields.
 - `id_token` (String) The OpenID Connect ID token used with `OAUTH2` authentication scheme when connecting to an event broker.
-- `id_token_header` (String)
+- `id_token_header` (String) Specifies the header that contains id token for the `OAUTH2` authentication scheme when connecting to an event broker. This header takes precedence over the `id_token` field.
 - `password` (String) The password used with `BASIC` authentication scheme when connecting to an event broker.
 - `scheme` (String) The client authentication scheme used when connection to an event broker. Default: "BASIC"; must be one of ["BASIC", "NONE", "OAUTH2"]
 - `username` (String) The username used with `BASIC` authentication scheme when connecting to an event broker.

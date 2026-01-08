@@ -14,6 +14,7 @@ type Call struct {
 	Output        types.String               `tfsdk:"output"`
 	Outputs       *DatakitPluginNodesOutputs `tfsdk:"outputs"`
 	SslServerName types.String               `tfsdk:"ssl_server_name"`
+	SslVerify     types.Bool                 `tfsdk:"ssl_verify"`
 	Timeout       types.Int64                `tfsdk:"timeout"`
 	URL           types.String               `tfsdk:"url"`
 }

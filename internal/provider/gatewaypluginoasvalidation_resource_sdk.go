@@ -18,6 +18,7 @@ func (r *GatewayPluginOasValidationResourceModel) RefreshFromSharedOasValidation
 		r.Config.AllowedHeaderParameters = types.StringPointerValue(resp.Config.AllowedHeaderParameters)
 		r.Config.APISpec = types.StringValue(resp.Config.APISpec)
 		r.Config.APISpecEncoded = types.BoolPointerValue(resp.Config.APISpecEncoded)
+		r.Config.CollectAllErrors = types.BoolPointerValue(resp.Config.CollectAllErrors)
 		r.Config.CustomBasePath = types.StringPointerValue(resp.Config.CustomBasePath)
 		r.Config.HeaderParameterCheck = types.BoolPointerValue(resp.Config.HeaderParameterCheck)
 		r.Config.IncludeBasePath = types.BoolPointerValue(resp.Config.IncludeBasePath)
@@ -295,6 +296,12 @@ func (r *GatewayPluginOasValidationResourceModel) ToSharedOasValidationPlugin(ct
 	} else {
 		apiSpecEncoded = nil
 	}
+	collectAllErrors := new(bool)
+	if !r.Config.CollectAllErrors.IsUnknown() && !r.Config.CollectAllErrors.IsNull() {
+		*collectAllErrors = r.Config.CollectAllErrors.ValueBool()
+	} else {
+		collectAllErrors = nil
+	}
 	customBasePath := new(string)
 	if !r.Config.CustomBasePath.IsUnknown() && !r.Config.CustomBasePath.IsNull() {
 		*customBasePath = r.Config.CustomBasePath.ValueString()
@@ -371,6 +378,7 @@ func (r *GatewayPluginOasValidationResourceModel) ToSharedOasValidationPlugin(ct
 		AllowedHeaderParameters:                 allowedHeaderParameters,
 		APISpec:                                 apiSpec,
 		APISpecEncoded:                          apiSpecEncoded,
+		CollectAllErrors:                        collectAllErrors,
 		CustomBasePath:                          customBasePath,
 		HeaderParameterCheck:                    headerParameterCheck,
 		IncludeBasePath:                         includeBasePath,

@@ -7,6 +7,8 @@ import (
 )
 
 type AiRateLimitingAdvancedPluginConfig struct {
+	CustomCostCountFunction    types.String    `tfsdk:"custom_cost_count_function"`
+	DecreaseByFractionsInRedis types.Bool      `tfsdk:"decrease_by_fractions_in_redis"`
 	DictionaryName             types.String    `tfsdk:"dictionary_name"`
 	DisablePenalty             types.Bool      `tfsdk:"disable_penalty"`
 	ErrorCode                  types.Float64   `tfsdk:"error_code"`
