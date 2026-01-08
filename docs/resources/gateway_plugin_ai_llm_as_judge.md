@@ -278,7 +278,7 @@ Optional:
 Optional:
 
 - `international` (Boolean) Two Dashscope endpoints are available, and the international endpoint will be used when this is set to `true`.
-        It is recommended to set this to `true` when using international version of dashscope.
+It is recommended to set this to `true` when using international version of dashscope.
 Default: true
 
 

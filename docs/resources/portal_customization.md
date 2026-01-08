@@ -146,7 +146,7 @@ Optional:
 - `hide_internal` (Boolean) Manage visibility of internal endpoints and models. Default: false
 - `infinite_scroll` (Boolean) Display the full spec on a single, scrollable page. If disabled, documentation, endpoints, and schemas appear on separate pages. Default: true
 - `show_schemas` (Boolean) Control whether schemas are visible in your API specs. When enabled, schemas appear in the side navigation below the endpoints. Default: true
-- `try_it_insomnia` (Boolean) Enables users to open the API spec in Insomnia to explore and send requests with the native client. Default: true
+- `try_it_insomnia` (Boolean) Enables users to open API specifications in Insomnia to explore and send requests with the native client. Only public API specifications are supported. Default: true
 - `try_it_ui` (Boolean) Enable in-browser testing for your APIs. All linked gateways must have the CORS plugin configured. Default: true
 
 

@@ -405,7 +405,7 @@ func (r *GatewayPluginAiRequestTransformerResource) Schema(ctx context.Context, 
 														Optional: true,
 														Default:  booldefault.StaticBool(true),
 														MarkdownDescription: `Two Dashscope endpoints are available, and the international endpoint will be used when this is set to ` + "`" + `true` + "`" + `.` + "\n" +
-															`        It is recommended to set this to ` + "`" + `true` + "`" + ` when using international version of dashscope.` + "\n" +
+															`It is recommended to set this to ` + "`" + `true` + "`" + ` when using international version of dashscope.` + "\n" +
 															`Default: true`,
 													},
 												},

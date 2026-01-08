@@ -498,9 +498,8 @@ func (c *Cohere) GetWaitForModel() *bool {
 }
 
 type Dashscope struct {
-	//
-	//         Two Dashscope endpoints are available, and the international endpoint will be used when this is set to `true`.
-	//         It is recommended to set this to `true` when using international version of dashscope.
+	// Two Dashscope endpoints are available, and the international endpoint will be used when this is set to `true`.
+	// It is recommended to set this to `true` when using international version of dashscope.
 	//
 	International *bool `default:"true" json:"international"`
 }
