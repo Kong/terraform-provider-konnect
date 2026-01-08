@@ -7,7 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
-func TestGatewayPluginAiLakeraGaurd(t *testing.T) {
+func TestGatewayPluginAiLakeraGuard(t *testing.T) {
 	t.Parallel()
 	t.Run("CRUD", func(t *testing.T) {
 		resource.Test(t, resource.TestCase{
