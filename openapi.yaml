@@ -23399,7 +23399,7 @@ components:
               type: boolean
               default: true
             try_it_insomnia:
-              description: Enables users to open the API spec in Insomnia to explore and send requests with the native client.
+              description: Enables users to open API specifications in Insomnia to explore and send requests with the native client. Only public API specifications are supported.
               type: boolean
               default: true
             infinite_scroll:
@@ -23455,9 +23455,9 @@ components:
       x-speakeasy-param-computed: false
     PageSlug:
       description: |
-        The slug of a page in a portal, used to compute its full URL path within the portal hierarchy. 
-        When a page has a `parent_page_id`, its full path is built by joining the parent’s slug with its own. 
-        For example, if a parent page has the slug `slug1` and this page’s slug is `slug2`, the resulting path will be `/slug1/slug2`. 
+        The slug of a page in a portal, used to compute its full URL path within the portal hierarchy.
+        When a page has a `parent_page_id`, its full path is built by joining the parent’s slug with its own.
+        For example, if a parent page has the slug `slug1` and this page’s slug is `slug2`, the resulting path will be `/slug1/slug2`.
         This enables nested page structures like `/slug1/slug2/slug3`.
       type: string
       example: /my-page
@@ -26683,12 +26683,9 @@ components:
                           nullable: true
                           properties:
                             international:
-                              description: |2-
-
-
-                                        Two Dashscope endpoints are available, and the international endpoint will be used when this is set to `true`.
-                                        It is recommended to set this to `true` when using international version of dashscope.
-                                        
+                              description: |
+                                Two Dashscope endpoints are available, and the international endpoint will be used when this is set to `true`.
+                                It is recommended to set this to `true` when using international version of dashscope.
                               type: boolean
                               default: true
                           x-speakeasy-param-computed: false
@@ -28655,12 +28652,9 @@ components:
                             nullable: true
                             properties:
                               international:
-                                description: |2-
-
-
-                                          Two Dashscope endpoints are available, and the international endpoint will be used when this is set to `true`.
-                                          It is recommended to set this to `true` when using international version of dashscope.
-                                          
+                                description: |
+                                  Two Dashscope endpoints are available, and the international endpoint will be used when this is set to `true`.
+                                  It is recommended to set this to `true` when using international version of dashscope.
                                 type: boolean
                                 default: true
                             x-speakeasy-param-computed: false
@@ -29528,12 +29522,9 @@ components:
                       nullable: true
                       properties:
                         international:
-                          description: |2-
-
-
-                                    Two Dashscope endpoints are available, and the international endpoint will be used when this is set to `true`.
-                                    It is recommended to set this to `true` when using international version of dashscope.
-                                    
+                          description: |
+                            Two Dashscope endpoints are available, and the international endpoint will be used when this is set to `true`.
+                            It is recommended to set this to `true` when using international version of dashscope.
                           type: boolean
                           default: true
                       x-speakeasy-param-computed: false
@@ -31331,12 +31322,9 @@ components:
                           nullable: true
                           properties:
                             international:
-                              description: |2-
-
-
-                                        Two Dashscope endpoints are available, and the international endpoint will be used when this is set to `true`.
-                                        It is recommended to set this to `true` when using international version of dashscope.
-                                        
+                              description: |
+                                Two Dashscope endpoints are available, and the international endpoint will be used when this is set to `true`.
+                                It is recommended to set this to `true` when using international version of dashscope.
                               type: boolean
                               default: true
                           x-speakeasy-param-computed: false
@@ -31868,12 +31856,9 @@ components:
                           nullable: true
                           properties:
                             international:
-                              description: |2-
-
-
-                                        Two Dashscope endpoints are available, and the international endpoint will be used when this is set to `true`.
-                                        It is recommended to set this to `true` when using international version of dashscope.
-                                        
+                              description: |
+                                Two Dashscope endpoints are available, and the international endpoint will be used when this is set to `true`.
+                                It is recommended to set this to `true` when using international version of dashscope.
                               type: boolean
                               default: true
                           x-speakeasy-param-computed: false
