@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type BotDetectionPluginConfig struct {
-	Allow []types.String `tfsdk:"allow"`
-	Deny  []types.String `tfsdk:"deny"`
+type BruteForceProtection struct {
+	Redis    *BasicAuthPluginRedis `tfsdk:"redis"`
+	Strategy types.String          `tfsdk:"strategy"`
 }

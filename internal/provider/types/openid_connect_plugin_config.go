@@ -175,6 +175,8 @@ type OpenidConnectPluginConfig struct {
 	SessionMemcachedPort                         types.Int64               `tfsdk:"session_memcached_port"`
 	SessionMemcachedPrefix                       types.String              `tfsdk:"session_memcached_prefix"`
 	SessionMemcachedSocket                       types.String              `tfsdk:"session_memcached_socket"`
+	SessionMemcachedSsl                          types.Bool                `tfsdk:"session_memcached_ssl"`
+	SessionMemcachedSslVerify                    types.Bool                `tfsdk:"session_memcached_ssl_verify"`
 	SessionRemember                              types.Bool                `tfsdk:"session_remember"`
 	SessionRememberAbsoluteTimeout               types.Float64             `tfsdk:"session_remember_absolute_timeout"`
 	SessionRememberCookieName                    types.String              `tfsdk:"session_remember_cookie_name"`

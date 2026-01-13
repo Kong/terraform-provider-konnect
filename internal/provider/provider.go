@@ -194,6 +194,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewGatewayPluginAiAwsGuardrailsResource,
 		NewGatewayPluginAiAzureContentSafetyResource,
 		NewGatewayPluginAiGcpModelArmorResource,
+		NewGatewayPluginAiLakeraGuardResource,
 		NewGatewayPluginAiLlmAsJudgeResource,
 		NewGatewayPluginAiMcpOauth2Resource,
 		NewGatewayPluginAiMcpProxyResource,

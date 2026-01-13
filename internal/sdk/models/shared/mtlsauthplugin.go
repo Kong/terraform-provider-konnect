@@ -194,6 +194,8 @@ type MtlsAuthPluginConfig struct {
 	SendCaDn *bool `default:"false" json:"send_ca_dn"`
 	// Skip consumer lookup once certificate is trusted against the configured CA list.
 	SkipConsumerLookup *bool `default:"false" json:"skip_consumer_lookup"`
+	// This option enables verification of the certificate presented by the server of the OCSP responder's URL and by the server of the CRL Distribution Point.
+	SslVerify *bool `default:"null" json:"ssl_verify"`
 }
 
 func (m MtlsAuthPluginConfig) MarshalJSON() ([]byte, error) {
@@ -317,6 +319,13 @@ func (m *MtlsAuthPluginConfig) GetSkipConsumerLookup() *bool {
 		return nil
 	}
 	return m.SkipConsumerLookup
+}
+
+func (m *MtlsAuthPluginConfig) GetSslVerify() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.SslVerify
 }
 
 type MtlsAuthPluginProtocols string

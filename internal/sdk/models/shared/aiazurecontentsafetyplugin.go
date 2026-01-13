@@ -210,6 +210,8 @@ type AiAzureContentSafetyPluginConfig struct {
 	ResponseBufferSize *float64 `default:"100" json:"response_buffer_size"`
 	// Set true to tell the caller why their request was rejected, if so.
 	RevealFailureReason *bool `default:"true" json:"reveal_failure_reason"`
+	// Whether to verify the certificate presented by the Azure Content Safety service when using HTTPS.
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Stop processing if an error occurs
 	StopOnError *bool `default:"true" json:"stop_on_error"`
 	// Select where to pick the 'text' for the Azure Content Services request.
@@ -323,6 +325,13 @@ func (a *AiAzureContentSafetyPluginConfig) GetRevealFailureReason() *bool {
 		return nil
 	}
 	return a.RevealFailureReason
+}
+
+func (a *AiAzureContentSafetyPluginConfig) GetSslVerify() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.SslVerify
 }
 
 func (a *AiAzureContentSafetyPluginConfig) GetStopOnError() *bool {

@@ -26,15 +26,16 @@ resource "konnect_gateway_plugin_ai_sanitizer" "my_gatewaypluginaisanitizer" {
         score = 0.99
       }
     ]
-    host              = "...my_host..."
-    keepalive_timeout = 7.7
-    port              = 6.01
-    recover_redacted  = true
-    redact_type       = "placeholder"
-    sanitization_mode = "OUTPUT"
-    scheme            = "...my_scheme..."
-    stop_on_error     = false
-    timeout           = 1.92
+    host                         = "...my_host..."
+    keepalive_timeout            = 7.7
+    port                         = 6.01
+    recover_redacted             = true
+    redact_type                  = "placeholder"
+    sanitization_mode            = "OUTPUT"
+    scheme                       = "...my_scheme..."
+    skip_logging_sanitized_items = false
+    stop_on_error                = false
+    timeout                      = 1.92
   }
   consumer = {
     id = "...my_id..."
@@ -121,6 +122,7 @@ Optional:
 - `redact_type` (String) What value to be used to redacted to. Default: "placeholder"; must be one of ["placeholder", "synthetic"]
 - `sanitization_mode` (String) The sanitization mode to use for the request. Default: "INPUT"; must be one of ["BOTH", "INPUT", "OUTPUT"]
 - `scheme` (String) The protocol can be http and https. Default: "http"
+- `skip_logging_sanitized_items` (Boolean) Whether to log sanitized items in the Kong log plugins. Turn it on if you want to hide sensitive data from logs. Default: false
 - `stop_on_error` (Boolean) Stop processing if an error occurs. Default: true
 - `timeout` (Number) Connection timeout with the sanitizer. Default: 10000
 

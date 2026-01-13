@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.5.0
+> Released on 2025/01/12
+
+### Features
+* Support PATCH update for certain properties in `aws_transit_gateway` and `aws_resource_endpoint_gateway` within `konnect_cloud_gateway_transit_gateway` resource without replacement
+* Add support for new Gateway 3.13 plugin `konnect_gateway_plugin_ai_lakera_guard`
+
 ## 3.4.3
 > Released on 2025/12/16
 

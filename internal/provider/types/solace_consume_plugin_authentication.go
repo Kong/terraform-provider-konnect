@@ -9,6 +9,7 @@ import (
 type SolaceConsumePluginAuthentication struct {
 	AccessToken       types.String `tfsdk:"access_token"`
 	AccessTokenHeader types.String `tfsdk:"access_token_header"`
+	BasicAuthHeader   types.String `tfsdk:"basic_auth_header"`
 	IDToken           types.String `tfsdk:"id_token"`
 	IDTokenHeader     types.String `tfsdk:"id_token_header"`
 	Password          types.String `tfsdk:"password"`

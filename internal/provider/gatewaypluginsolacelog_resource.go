@@ -154,13 +154,13 @@ func (r *GatewayPluginSolaceLogResource) Schema(ctx context.Context, req resourc
 								Computed:    true,
 								Optional:    true,
 								Default:     booldefault.StaticBool(false),
-								Description: `Enable or disable the tracing. This is primarily used for distributed tracing and log message correlation, especially in debugging or tracking log message flows across multiple systems. Default: false`,
+								Description: `Enable or disable the tracing propagation. This is primarily used for distributed tracing and message correlation, especially in debugging or tracking message flows across multiple systems. Default: false`,
 							},
 							"tracing_sampled": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     booldefault.StaticBool(false),
-								Description: `Indicates whether the log message should be included in distributed tracing (i.e., if it should be "sampled" for the tracing). Default: false`,
+								Description: `Forcibly turn on the tracing on all the messages for distributed tracing (tracing needs to be enabled as well). Default: false`,
 							},
 							"ttl": schema.Int64Attribute{
 								Computed:    true,
@@ -180,6 +180,7 @@ func (r *GatewayPluginSolaceLogResource) Schema(ctx context.Context, req resourc
 								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
 									"access_token":        types.StringType,
 									"access_token_header": types.StringType,
+									"basic_auth_header":   types.StringType,
 									"id_token":            types.StringType,
 									"id_token_header":     types.StringType,
 									"password":            types.StringType,
@@ -192,14 +193,20 @@ func (r *GatewayPluginSolaceLogResource) Schema(ctx context.Context, req resourc
 										Description: `The OAuth2 access token used with ` + "`" + `OAUTH2` + "`" + ` authentication scheme when connecting to an event broker.`,
 									},
 									"access_token_header": schema.StringAttribute{
-										Optional: true,
+										Optional:    true,
+										Description: `Specifies the header that contains access token for the ` + "`" + `OAUTH2` + "`" + ` authentication scheme when connecting to an event broker. This header takes precedence over the ` + "`" + `access_token` + "`" + ` field.`,
+									},
+									"basic_auth_header": schema.StringAttribute{
+										Optional:    true,
+										Description: `Specifies the header that contains Basic Authentication credentials for the ` + "`" + `BASIC` + "`" + ` authentication scheme when connecting to an event broker. This header takes precedence over the ` + "`" + `username` + "`" + ` and ` + "`" + `password` + "`" + ` fields.`,
 									},
 									"id_token": schema.StringAttribute{
 										Optional:    true,
 										Description: `The OpenID Connect ID token used with ` + "`" + `OAUTH2` + "`" + ` authentication scheme when connecting to an event broker.`,
 									},
 									"id_token_header": schema.StringAttribute{
-										Optional: true,
+										Optional:    true,
+										Description: `Specifies the header that contains id token for the ` + "`" + `OAUTH2` + "`" + ` authentication scheme when connecting to an event broker. This header takes precedence over the ` + "`" + `id_token` + "`" + ` field.`,
 									},
 									"password": schema.StringAttribute{
 										Optional:    true,

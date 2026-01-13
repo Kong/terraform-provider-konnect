@@ -44,6 +44,7 @@ func (r *GatewayPluginConfluentConsumeResourceModel) RefreshFromSharedConfluentC
 		r.Config.ConfluentCloudAPISecret = types.StringPointerValue(resp.Config.ConfluentCloudAPISecret)
 		r.Config.DlqTopic = types.StringPointerValue(resp.Config.DlqTopic)
 		r.Config.EnableDlq = types.BoolPointerValue(resp.Config.EnableDlq)
+		r.Config.EnforceLatestOffsetReset = types.BoolPointerValue(resp.Config.EnforceLatestOffsetReset)
 		r.Config.Keepalive = types.Int64PointerValue(resp.Config.Keepalive)
 		r.Config.KeepaliveEnabled = types.BoolPointerValue(resp.Config.KeepaliveEnabled)
 		if resp.Config.MessageByLuaFunctions != nil {
@@ -150,6 +151,12 @@ func (r *GatewayPluginConfluentConsumeResourceModel) RefreshFromSharedConfluentC
 				r.Config.SchemaRegistry.Confluent.TTL = types.Float64PointerValue(resp.Config.SchemaRegistry.Confluent.TTL)
 				r.Config.SchemaRegistry.Confluent.URL = types.StringPointerValue(resp.Config.SchemaRegistry.Confluent.URL)
 			}
+		}
+		if resp.Config.Security == nil {
+			r.Config.Security = nil
+		} else {
+			r.Config.Security = &tfTypes.ConfluentPluginSecurity{}
+			r.Config.Security.SslVerify = types.BoolPointerValue(resp.Config.Security.SslVerify)
 		}
 		r.Config.Timeout = types.Int64PointerValue(resp.Config.Timeout)
 		r.Config.Topics = []tfTypes.Topics{}
@@ -564,6 +571,12 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 	} else {
 		enableDlq = nil
 	}
+	enforceLatestOffsetReset := new(bool)
+	if !r.Config.EnforceLatestOffsetReset.IsUnknown() && !r.Config.EnforceLatestOffsetReset.IsNull() {
+		*enforceLatestOffsetReset = r.Config.EnforceLatestOffsetReset.ValueBool()
+	} else {
+		enforceLatestOffsetReset = nil
+	}
 	keepalive := new(int64)
 	if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
 		*keepalive = r.Config.Keepalive.ValueInt64()
@@ -814,6 +827,18 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 			Confluent: confluent,
 		}
 	}
+	var security *shared.ConfluentConsumePluginSecurity
+	if r.Config.Security != nil {
+		sslVerify2 := new(bool)
+		if !r.Config.Security.SslVerify.IsUnknown() && !r.Config.Security.SslVerify.IsNull() {
+			*sslVerify2 = r.Config.Security.SslVerify.ValueBool()
+		} else {
+			sslVerify2 = nil
+		}
+		security = &shared.ConfluentConsumePluginSecurity{
+			SslVerify: sslVerify2,
+		}
+	}
 	timeout1 := new(int64)
 	if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
 		*timeout1 = r.Config.Timeout.ValueInt64()
@@ -982,11 +1007,11 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 						} else {
 							noProxy1 = nil
 						}
-						sslVerify2 := new(bool)
+						sslVerify3 := new(bool)
 						if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.SslVerify.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.SslVerify.IsNull() {
-							*sslVerify2 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.SslVerify.ValueBool()
+							*sslVerify3 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.SslVerify.ValueBool()
 						} else {
-							sslVerify2 = nil
+							sslVerify3 = nil
 						}
 						timeout2 := new(int64)
 						if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.Timeout.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.Timeout.IsNull() {
@@ -1004,7 +1029,7 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 							HTTPSProxyAuthorization: httpsProxyAuthorization1,
 							KeepAlive:               keepAlive1,
 							NoProxy:                 noProxy1,
-							SslVerify:               sslVerify2,
+							SslVerify:               sslVerify3,
 							Timeout:                 timeout2,
 						}
 					}
@@ -1015,11 +1040,11 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 						Oauth2Client: oauth2Client1,
 					}
 				}
-				sslVerify3 := new(bool)
+				sslVerify4 := new(bool)
 				if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.SslVerify.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.SslVerify.IsNull() {
-					*sslVerify3 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.SslVerify.ValueBool()
+					*sslVerify4 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.SslVerify.ValueBool()
 				} else {
-					sslVerify3 = nil
+					sslVerify4 = nil
 				}
 				ttl1 := new(float64)
 				if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.TTL.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.TTL.IsNull() {
@@ -1035,7 +1060,7 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 				}
 				confluent1 = &shared.ConfluentConsumePluginConfigConfluent{
 					Authentication: authentication1,
-					SslVerify:      sslVerify3,
+					SslVerify:      sslVerify4,
 					TTL:            ttl1,
 					URL:            url1,
 				}
@@ -1050,24 +1075,26 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 		})
 	}
 	config := shared.ConfluentConsumePluginConfig{
-		AutoOffsetReset:         autoOffsetReset,
-		BootstrapServers:        bootstrapServers,
-		ClusterAPIKey:           clusterAPIKey,
-		ClusterAPISecret:        clusterAPISecret,
-		ClusterName:             clusterName,
-		CommitStrategy:          commitStrategy,
-		ConfluentCloudAPIKey:    confluentCloudAPIKey,
-		ConfluentCloudAPISecret: confluentCloudAPISecret,
-		DlqTopic:                dlqTopic,
-		EnableDlq:               enableDlq,
-		Keepalive:               keepalive,
-		KeepaliveEnabled:        keepaliveEnabled,
-		MessageByLuaFunctions:   messageByLuaFunctions,
-		MessageDeserializer:     messageDeserializer,
-		Mode:                    mode,
-		SchemaRegistry:          schemaRegistry,
-		Timeout:                 timeout1,
-		Topics:                  topics,
+		AutoOffsetReset:          autoOffsetReset,
+		BootstrapServers:         bootstrapServers,
+		ClusterAPIKey:            clusterAPIKey,
+		ClusterAPISecret:         clusterAPISecret,
+		ClusterName:              clusterName,
+		CommitStrategy:           commitStrategy,
+		ConfluentCloudAPIKey:     confluentCloudAPIKey,
+		ConfluentCloudAPISecret:  confluentCloudAPISecret,
+		DlqTopic:                 dlqTopic,
+		EnableDlq:                enableDlq,
+		EnforceLatestOffsetReset: enforceLatestOffsetReset,
+		Keepalive:                keepalive,
+		KeepaliveEnabled:         keepaliveEnabled,
+		MessageByLuaFunctions:    messageByLuaFunctions,
+		MessageDeserializer:      messageDeserializer,
+		Mode:                     mode,
+		SchemaRegistry:           schemaRegistry,
+		Security:                 security,
+		Timeout:                  timeout1,
+		Topics:                   topics,
 	}
 	var consumer *shared.ConfluentConsumePluginConsumer
 	if r.Consumer != nil {

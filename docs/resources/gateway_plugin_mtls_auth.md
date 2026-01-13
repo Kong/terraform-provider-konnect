@@ -35,6 +35,7 @@ resource "konnect_gateway_plugin_mtls_auth" "my_gatewaypluginmtlsauth" {
     revocation_check_mode = "STRICT"
     send_ca_dn            = true
     skip_consumer_lookup  = true
+    ssl_verify            = false
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 8
@@ -122,6 +123,7 @@ Optional:
 - `revocation_check_mode` (String) Controls client certificate revocation check behavior. If set to `SKIP`, no revocation check is performed. If set to `IGNORE_CA_ERROR`, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to `STRICT`, the plugin only treats the certificate as valid when it's able to verify the revocation status. Default: "IGNORE_CA_ERROR"; must be one of ["IGNORE_CA_ERROR", "SKIP", "STRICT"]
 - `send_ca_dn` (Boolean) Sends the distinguished names (DN) of the configured CA list in the TLS handshake message. Default: false
 - `skip_consumer_lookup` (Boolean) Skip consumer lookup once certificate is trusted against the configured CA list. Default: false
+- `ssl_verify` (Boolean) This option enables verification of the certificate presented by the server of the OCSP responder's URL and by the server of the CRL Distribution Point.
 
 
 <a id="nestedatt--ordering"></a>

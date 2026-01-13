@@ -105,7 +105,7 @@ func (m *Menu) GetFooterBottom() []PortalMenuItem {
 type SpecRenderer struct {
 	// Enable in-browser testing for your APIs. All linked gateways must have the CORS plugin configured.
 	TryItUI *bool `default:"true" json:"try_it_ui"`
-	// Enables users to open the API spec in Insomnia to explore and send requests with the native client.
+	// Enables users to open API specifications in Insomnia to explore and send requests with the native client. Only public API specifications are supported.
 	TryItInsomnia *bool `default:"true" json:"try_it_insomnia"`
 	// Display the full spec on a single, scrollable page. If disabled, documentation, endpoints, and schemas appear on separate pages.
 	InfiniteScroll *bool `default:"true" json:"infinite_scroll"`

@@ -246,7 +246,7 @@ func (a *AiLlmAsJudgePluginAuth) GetParamValue() *string {
 }
 
 type AiLlmAsJudgePluginLogging struct {
-	// If enabled, will log the request and response body into the Kong log plugin(s) output.
+	// If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well.
 	LogPayloads *bool `default:"false" json:"log_payloads"`
 	// If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.
 	LogStatistics *bool `default:"false" json:"log_statistics"`
@@ -290,6 +290,8 @@ type AiLlmAsJudgePluginBedrock struct {
 	EmbeddingsNormalize *bool `default:"false" json:"embeddings_normalize"`
 	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
 	PerformanceConfigLatency *string `default:"null" json:"performance_config_latency"`
+	// S3 URI (s3://bucket/prefix) where Bedrock will store generated video files. Required for video generation.
+	VideoOutputS3URI *string `default:"null" json:"video_output_s3_uri"`
 }
 
 func (a AiLlmAsJudgePluginBedrock) MarshalJSON() ([]byte, error) {
@@ -343,6 +345,13 @@ func (a *AiLlmAsJudgePluginBedrock) GetPerformanceConfigLatency() *string {
 		return nil
 	}
 	return a.PerformanceConfigLatency
+}
+
+func (a *AiLlmAsJudgePluginBedrock) GetVideoOutputS3URI() *string {
+	if a == nil {
+		return nil
+	}
+	return a.VideoOutputS3URI
 }
 
 // AiLlmAsJudgePluginEmbeddingInputType - The purpose of the input text to calculate embedding vectors.
@@ -411,6 +420,31 @@ func (a *AiLlmAsJudgePluginCohere) GetWaitForModel() *bool {
 		return nil
 	}
 	return a.WaitForModel
+}
+
+type AiLlmAsJudgePluginDashscope struct {
+	// Two Dashscope endpoints are available, and the international endpoint will be used when this is set to `true`.
+	// It is recommended to set this to `true` when using international version of dashscope.
+	//
+	International *bool `default:"true" json:"international"`
+}
+
+func (a AiLlmAsJudgePluginDashscope) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiLlmAsJudgePluginDashscope) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiLlmAsJudgePluginDashscope) GetInternational() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.International
 }
 
 type AiLlmAsJudgePluginGemini struct {
@@ -561,9 +595,10 @@ type AiLlmAsJudgePluginOptions struct {
 	// Deployment ID for Azure OpenAI instances.
 	AzureDeploymentID *string `default:"null" json:"azure_deployment_id"`
 	// Instance name for Azure OpenAI hosted models.
-	AzureInstance *string                    `default:"null" json:"azure_instance"`
-	Bedrock       *AiLlmAsJudgePluginBedrock `json:"bedrock"`
-	Cohere        *AiLlmAsJudgePluginCohere  `json:"cohere"`
+	AzureInstance *string                      `default:"null" json:"azure_instance"`
+	Bedrock       *AiLlmAsJudgePluginBedrock   `json:"bedrock"`
+	Cohere        *AiLlmAsJudgePluginCohere    `json:"cohere"`
+	Dashscope     *AiLlmAsJudgePluginDashscope `json:"dashscope"`
 	// If using embeddings models, set the number of dimensions to generate.
 	EmbeddingsDimensions *int64                         `default:"null" json:"embeddings_dimensions"`
 	Gemini               *AiLlmAsJudgePluginGemini      `json:"gemini"`
@@ -641,6 +676,13 @@ func (a *AiLlmAsJudgePluginOptions) GetCohere() *AiLlmAsJudgePluginCohere {
 		return nil
 	}
 	return a.Cohere
+}
+
+func (a *AiLlmAsJudgePluginOptions) GetDashscope() *AiLlmAsJudgePluginDashscope {
+	if a == nil {
+		return nil
+	}
+	return a.Dashscope
 }
 
 func (a *AiLlmAsJudgePluginOptions) GetEmbeddingsDimensions() *int64 {
@@ -741,12 +783,15 @@ const (
 	AiLlmAsJudgePluginProviderAnthropic   AiLlmAsJudgePluginProvider = "anthropic"
 	AiLlmAsJudgePluginProviderAzure       AiLlmAsJudgePluginProvider = "azure"
 	AiLlmAsJudgePluginProviderBedrock     AiLlmAsJudgePluginProvider = "bedrock"
+	AiLlmAsJudgePluginProviderCerebras    AiLlmAsJudgePluginProvider = "cerebras"
 	AiLlmAsJudgePluginProviderCohere      AiLlmAsJudgePluginProvider = "cohere"
+	AiLlmAsJudgePluginProviderDashscope   AiLlmAsJudgePluginProvider = "dashscope"
 	AiLlmAsJudgePluginProviderGemini      AiLlmAsJudgePluginProvider = "gemini"
 	AiLlmAsJudgePluginProviderHuggingface AiLlmAsJudgePluginProvider = "huggingface"
 	AiLlmAsJudgePluginProviderLlama2      AiLlmAsJudgePluginProvider = "llama2"
 	AiLlmAsJudgePluginProviderMistral     AiLlmAsJudgePluginProvider = "mistral"
 	AiLlmAsJudgePluginProviderOpenai      AiLlmAsJudgePluginProvider = "openai"
+	AiLlmAsJudgePluginProviderXai         AiLlmAsJudgePluginProvider = "xai"
 )
 
 func (e AiLlmAsJudgePluginProvider) ToPointer() *AiLlmAsJudgePluginProvider {
@@ -764,7 +809,11 @@ func (e *AiLlmAsJudgePluginProvider) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "bedrock":
 		fallthrough
+	case "cerebras":
+		fallthrough
 	case "cohere":
+		fallthrough
+	case "dashscope":
 		fallthrough
 	case "gemini":
 		fallthrough
@@ -775,6 +824,8 @@ func (e *AiLlmAsJudgePluginProvider) UnmarshalJSON(data []byte) error {
 	case "mistral":
 		fallthrough
 	case "openai":
+		fallthrough
+	case "xai":
 		*e = AiLlmAsJudgePluginProvider(v)
 		return nil
 	default:
@@ -841,6 +892,7 @@ const (
 	AiLlmAsJudgePluginRouteTypeLlmV1Responses             AiLlmAsJudgePluginRouteType = "llm/v1/responses"
 	AiLlmAsJudgePluginRouteTypePreserve                   AiLlmAsJudgePluginRouteType = "preserve"
 	AiLlmAsJudgePluginRouteTypeRealtimeV1Realtime         AiLlmAsJudgePluginRouteType = "realtime/v1/realtime"
+	AiLlmAsJudgePluginRouteTypeVideoV1VideosGenerations   AiLlmAsJudgePluginRouteType = "video/v1/videos/generations"
 )
 
 func (e AiLlmAsJudgePluginRouteType) ToPointer() *AiLlmAsJudgePluginRouteType {
@@ -879,6 +931,8 @@ func (e *AiLlmAsJudgePluginRouteType) UnmarshalJSON(data []byte) error {
 	case "preserve":
 		fallthrough
 	case "realtime/v1/realtime":
+		fallthrough
+	case "video/v1/videos/generations":
 		*e = AiLlmAsJudgePluginRouteType(v)
 		return nil
 	default:
@@ -887,11 +941,28 @@ func (e *AiLlmAsJudgePluginRouteType) UnmarshalJSON(data []byte) error {
 }
 
 type Llm struct {
-	Auth    *AiLlmAsJudgePluginAuth    `json:"auth"`
-	Logging *AiLlmAsJudgePluginLogging `json:"logging"`
-	Model   AiLlmAsJudgePluginModel    `json:"model"`
+	Auth *AiLlmAsJudgePluginAuth `json:"auth"`
+	// The semantic description of the target, required if using semantic load balancing. Specially, setting this to 'CATCHALL' will indicate such target to be used when no other targets match the semantic threshold. Only used by ai-proxy-advanced.
+	Description *string                    `default:"null" json:"description"`
+	Logging     *AiLlmAsJudgePluginLogging `json:"logging"`
+	// For internal use only.
+	Metadata map[string]any          `json:"metadata,omitempty"`
+	Model    AiLlmAsJudgePluginModel `json:"model"`
 	// The model's operation implementation, for this provider.
 	RouteType AiLlmAsJudgePluginRouteType `json:"route_type"`
+	// The weight this target gets within the upstream loadbalancer (1-65535). Only used by ai-proxy-advanced.
+	Weight *int64 `default:"100" json:"weight"`
+}
+
+func (l Llm) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *Llm) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"model", "route_type"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (l *Llm) GetAuth() *AiLlmAsJudgePluginAuth {
@@ -901,11 +972,25 @@ func (l *Llm) GetAuth() *AiLlmAsJudgePluginAuth {
 	return l.Auth
 }
 
+func (l *Llm) GetDescription() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Description
+}
+
 func (l *Llm) GetLogging() *AiLlmAsJudgePluginLogging {
 	if l == nil {
 		return nil
 	}
 	return l.Logging
+}
+
+func (l *Llm) GetMetadata() map[string]any {
+	if l == nil {
+		return nil
+	}
+	return l.Metadata
 }
 
 func (l *Llm) GetModel() AiLlmAsJudgePluginModel {
@@ -920,6 +1005,13 @@ func (l *Llm) GetRouteType() AiLlmAsJudgePluginRouteType {
 		return AiLlmAsJudgePluginRouteType("")
 	}
 	return l.RouteType
+}
+
+func (l *Llm) GetWeight() *int64 {
+	if l == nil {
+		return nil
+	}
+	return l.Weight
 }
 
 type AiLlmAsJudgePluginConfig struct {

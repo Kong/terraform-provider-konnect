@@ -200,8 +200,163 @@ func (e *ResponseRatelimitingPluginPolicy) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// ResponseRatelimitingPluginAuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+type ResponseRatelimitingPluginAuthProvider string
+
+const (
+	ResponseRatelimitingPluginAuthProviderAws   ResponseRatelimitingPluginAuthProvider = "aws"
+	ResponseRatelimitingPluginAuthProviderAzure ResponseRatelimitingPluginAuthProvider = "azure"
+	ResponseRatelimitingPluginAuthProviderGcp   ResponseRatelimitingPluginAuthProvider = "gcp"
+)
+
+func (e ResponseRatelimitingPluginAuthProvider) ToPointer() *ResponseRatelimitingPluginAuthProvider {
+	return &e
+}
+func (e *ResponseRatelimitingPluginAuthProvider) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "aws":
+		fallthrough
+	case "azure":
+		fallthrough
+	case "gcp":
+		*e = ResponseRatelimitingPluginAuthProvider(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ResponseRatelimitingPluginAuthProvider: %v", v)
+	}
+}
+
+// ResponseRatelimitingPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+type ResponseRatelimitingPluginCloudAuthentication struct {
+	// Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+	AuthProvider *ResponseRatelimitingPluginAuthProvider `json:"auth_provider,omitempty"`
+	// AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
+	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
+	// The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
+	// The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
+	AwsCacheName *string `default:"null" json:"aws_cache_name"`
+	// This flag specifies whether the cluster is serverless when auth_provider is set to `aws`.
+	AwsIsServerless *bool `default:"true" json:"aws_is_serverless"`
+	// The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
+	AwsRegion *string `default:"null" json:"aws_region"`
+	// The session name for the temporary credentials when assuming the IAM role.
+	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
+	// AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
+	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
+	// Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientID *string `default:"null" json:"azure_client_id"`
+	// Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
+	// Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
+	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+}
+
+func (r ResponseRatelimitingPluginCloudAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseRatelimitingPluginCloudAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *ResponseRatelimitingPluginCloudAuthentication) GetAuthProvider() *ResponseRatelimitingPluginAuthProvider {
+	if r == nil {
+		return nil
+	}
+	return r.AuthProvider
+}
+
+func (r *ResponseRatelimitingPluginCloudAuthentication) GetAwsAccessKeyID() *string {
+	if r == nil {
+		return nil
+	}
+	return r.AwsAccessKeyID
+}
+
+func (r *ResponseRatelimitingPluginCloudAuthentication) GetAwsAssumeRoleArn() *string {
+	if r == nil {
+		return nil
+	}
+	return r.AwsAssumeRoleArn
+}
+
+func (r *ResponseRatelimitingPluginCloudAuthentication) GetAwsCacheName() *string {
+	if r == nil {
+		return nil
+	}
+	return r.AwsCacheName
+}
+
+func (r *ResponseRatelimitingPluginCloudAuthentication) GetAwsIsServerless() *bool {
+	if r == nil {
+		return nil
+	}
+	return r.AwsIsServerless
+}
+
+func (r *ResponseRatelimitingPluginCloudAuthentication) GetAwsRegion() *string {
+	if r == nil {
+		return nil
+	}
+	return r.AwsRegion
+}
+
+func (r *ResponseRatelimitingPluginCloudAuthentication) GetAwsRoleSessionName() *string {
+	if r == nil {
+		return nil
+	}
+	return r.AwsRoleSessionName
+}
+
+func (r *ResponseRatelimitingPluginCloudAuthentication) GetAwsSecretAccessKey() *string {
+	if r == nil {
+		return nil
+	}
+	return r.AwsSecretAccessKey
+}
+
+func (r *ResponseRatelimitingPluginCloudAuthentication) GetAzureClientID() *string {
+	if r == nil {
+		return nil
+	}
+	return r.AzureClientID
+}
+
+func (r *ResponseRatelimitingPluginCloudAuthentication) GetAzureClientSecret() *string {
+	if r == nil {
+		return nil
+	}
+	return r.AzureClientSecret
+}
+
+func (r *ResponseRatelimitingPluginCloudAuthentication) GetAzureTenantID() *string {
+	if r == nil {
+		return nil
+	}
+	return r.AzureTenantID
+}
+
+func (r *ResponseRatelimitingPluginCloudAuthentication) GetGcpServiceAccountJSON() *string {
+	if r == nil {
+		return nil
+	}
+	return r.GcpServiceAccountJSON
+}
+
 // ResponseRatelimitingPluginRedis - Redis configuration
 type ResponseRatelimitingPluginRedis struct {
+	// Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+	CloudAuthentication *ResponseRatelimitingPluginCloudAuthentication `json:"cloud_authentication"`
 	// Database to use for the Redis connection when using the `redis` strategy
 	Database *int64 `default:"0" json:"database"`
 	// A string representing a host name, such as example.com.
@@ -231,6 +386,13 @@ func (r *ResponseRatelimitingPluginRedis) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (r *ResponseRatelimitingPluginRedis) GetCloudAuthentication() *ResponseRatelimitingPluginCloudAuthentication {
+	if r == nil {
+		return nil
+	}
+	return r.CloudAuthentication
 }
 
 func (r *ResponseRatelimitingPluginRedis) GetDatabase() *int64 {

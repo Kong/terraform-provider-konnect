@@ -15,6 +15,8 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) RefreshFromSharedAiRa
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config.CustomCostCountFunction = types.StringPointerValue(resp.Config.CustomCostCountFunction)
+		r.Config.DecreaseByFractionsInRedis = types.BoolPointerValue(resp.Config.DecreaseByFractionsInRedis)
 		r.Config.DictionaryName = types.StringPointerValue(resp.Config.DictionaryName)
 		r.Config.DisablePenalty = types.BoolPointerValue(resp.Config.DisablePenalty)
 		r.Config.ErrorCode = types.Float64PointerValue(resp.Config.ErrorCode)
@@ -55,6 +57,27 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) RefreshFromSharedAiRa
 			r.Config.Redis = nil
 		} else {
 			r.Config.Redis = &tfTypes.AcePluginRedis{}
+			if resp.Config.Redis.CloudAuthentication == nil {
+				r.Config.Redis.CloudAuthentication = nil
+			} else {
+				r.Config.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+				if resp.Config.Redis.CloudAuthentication.AuthProvider != nil {
+					r.Config.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Redis.CloudAuthentication.AuthProvider))
+				} else {
+					r.Config.Redis.CloudAuthentication.AuthProvider = types.StringNull()
+				}
+				r.Config.Redis.CloudAuthentication.AwsAccessKeyID = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.AwsAccessKeyID)
+				r.Config.Redis.CloudAuthentication.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.AwsAssumeRoleArn)
+				r.Config.Redis.CloudAuthentication.AwsCacheName = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.AwsCacheName)
+				r.Config.Redis.CloudAuthentication.AwsIsServerless = types.BoolPointerValue(resp.Config.Redis.CloudAuthentication.AwsIsServerless)
+				r.Config.Redis.CloudAuthentication.AwsRegion = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.AwsRegion)
+				r.Config.Redis.CloudAuthentication.AwsRoleSessionName = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.AwsRoleSessionName)
+				r.Config.Redis.CloudAuthentication.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.AwsSecretAccessKey)
+				r.Config.Redis.CloudAuthentication.AzureClientID = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.AzureClientID)
+				r.Config.Redis.CloudAuthentication.AzureClientSecret = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.AzureClientSecret)
+				r.Config.Redis.CloudAuthentication.AzureTenantID = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.AzureTenantID)
+				r.Config.Redis.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.GcpServiceAccountJSON)
+			}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
 			if resp.Config.Redis.ClusterNodes != nil {
 				r.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
@@ -377,6 +400,18 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 	} else {
 		updatedAt = nil
 	}
+	customCostCountFunction := new(string)
+	if !r.Config.CustomCostCountFunction.IsUnknown() && !r.Config.CustomCostCountFunction.IsNull() {
+		*customCostCountFunction = r.Config.CustomCostCountFunction.ValueString()
+	} else {
+		customCostCountFunction = nil
+	}
+	decreaseByFractionsInRedis := new(bool)
+	if !r.Config.DecreaseByFractionsInRedis.IsUnknown() && !r.Config.DecreaseByFractionsInRedis.IsNull() {
+		*decreaseByFractionsInRedis = r.Config.DecreaseByFractionsInRedis.ValueBool()
+	} else {
+		decreaseByFractionsInRedis = nil
+	}
 	dictionaryName := new(string)
 	if !r.Config.DictionaryName.IsUnknown() && !r.Config.DictionaryName.IsNull() {
 		*dictionaryName = r.Config.DictionaryName.ValueString()
@@ -462,6 +497,95 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 	}
 	var redis *shared.Redis
 	if r.Config.Redis != nil {
+		var cloudAuthentication *shared.CloudAuthentication
+		if r.Config.Redis.CloudAuthentication != nil {
+			authProvider := new(shared.AuthProvider)
+			if !r.Config.Redis.CloudAuthentication.AuthProvider.IsUnknown() && !r.Config.Redis.CloudAuthentication.AuthProvider.IsNull() {
+				*authProvider = shared.AuthProvider(r.Config.Redis.CloudAuthentication.AuthProvider.ValueString())
+			} else {
+				authProvider = nil
+			}
+			awsAccessKeyID := new(string)
+			if !r.Config.Redis.CloudAuthentication.AwsAccessKeyID.IsUnknown() && !r.Config.Redis.CloudAuthentication.AwsAccessKeyID.IsNull() {
+				*awsAccessKeyID = r.Config.Redis.CloudAuthentication.AwsAccessKeyID.ValueString()
+			} else {
+				awsAccessKeyID = nil
+			}
+			awsAssumeRoleArn := new(string)
+			if !r.Config.Redis.CloudAuthentication.AwsAssumeRoleArn.IsUnknown() && !r.Config.Redis.CloudAuthentication.AwsAssumeRoleArn.IsNull() {
+				*awsAssumeRoleArn = r.Config.Redis.CloudAuthentication.AwsAssumeRoleArn.ValueString()
+			} else {
+				awsAssumeRoleArn = nil
+			}
+			awsCacheName := new(string)
+			if !r.Config.Redis.CloudAuthentication.AwsCacheName.IsUnknown() && !r.Config.Redis.CloudAuthentication.AwsCacheName.IsNull() {
+				*awsCacheName = r.Config.Redis.CloudAuthentication.AwsCacheName.ValueString()
+			} else {
+				awsCacheName = nil
+			}
+			awsIsServerless := new(bool)
+			if !r.Config.Redis.CloudAuthentication.AwsIsServerless.IsUnknown() && !r.Config.Redis.CloudAuthentication.AwsIsServerless.IsNull() {
+				*awsIsServerless = r.Config.Redis.CloudAuthentication.AwsIsServerless.ValueBool()
+			} else {
+				awsIsServerless = nil
+			}
+			awsRegion := new(string)
+			if !r.Config.Redis.CloudAuthentication.AwsRegion.IsUnknown() && !r.Config.Redis.CloudAuthentication.AwsRegion.IsNull() {
+				*awsRegion = r.Config.Redis.CloudAuthentication.AwsRegion.ValueString()
+			} else {
+				awsRegion = nil
+			}
+			awsRoleSessionName := new(string)
+			if !r.Config.Redis.CloudAuthentication.AwsRoleSessionName.IsUnknown() && !r.Config.Redis.CloudAuthentication.AwsRoleSessionName.IsNull() {
+				*awsRoleSessionName = r.Config.Redis.CloudAuthentication.AwsRoleSessionName.ValueString()
+			} else {
+				awsRoleSessionName = nil
+			}
+			awsSecretAccessKey := new(string)
+			if !r.Config.Redis.CloudAuthentication.AwsSecretAccessKey.IsUnknown() && !r.Config.Redis.CloudAuthentication.AwsSecretAccessKey.IsNull() {
+				*awsSecretAccessKey = r.Config.Redis.CloudAuthentication.AwsSecretAccessKey.ValueString()
+			} else {
+				awsSecretAccessKey = nil
+			}
+			azureClientID := new(string)
+			if !r.Config.Redis.CloudAuthentication.AzureClientID.IsUnknown() && !r.Config.Redis.CloudAuthentication.AzureClientID.IsNull() {
+				*azureClientID = r.Config.Redis.CloudAuthentication.AzureClientID.ValueString()
+			} else {
+				azureClientID = nil
+			}
+			azureClientSecret := new(string)
+			if !r.Config.Redis.CloudAuthentication.AzureClientSecret.IsUnknown() && !r.Config.Redis.CloudAuthentication.AzureClientSecret.IsNull() {
+				*azureClientSecret = r.Config.Redis.CloudAuthentication.AzureClientSecret.ValueString()
+			} else {
+				azureClientSecret = nil
+			}
+			azureTenantID := new(string)
+			if !r.Config.Redis.CloudAuthentication.AzureTenantID.IsUnknown() && !r.Config.Redis.CloudAuthentication.AzureTenantID.IsNull() {
+				*azureTenantID = r.Config.Redis.CloudAuthentication.AzureTenantID.ValueString()
+			} else {
+				azureTenantID = nil
+			}
+			gcpServiceAccountJSON := new(string)
+			if !r.Config.Redis.CloudAuthentication.GcpServiceAccountJSON.IsUnknown() && !r.Config.Redis.CloudAuthentication.GcpServiceAccountJSON.IsNull() {
+				*gcpServiceAccountJSON = r.Config.Redis.CloudAuthentication.GcpServiceAccountJSON.ValueString()
+			} else {
+				gcpServiceAccountJSON = nil
+			}
+			cloudAuthentication = &shared.CloudAuthentication{
+				AuthProvider:          authProvider,
+				AwsAccessKeyID:        awsAccessKeyID,
+				AwsAssumeRoleArn:      awsAssumeRoleArn,
+				AwsCacheName:          awsCacheName,
+				AwsIsServerless:       awsIsServerless,
+				AwsRegion:             awsRegion,
+				AwsRoleSessionName:    awsRoleSessionName,
+				AwsSecretAccessKey:    awsSecretAccessKey,
+				AzureClientID:         azureClientID,
+				AzureClientSecret:     azureClientSecret,
+				AzureTenantID:         azureTenantID,
+				GcpServiceAccountJSON: gcpServiceAccountJSON,
+			}
+		}
 		clusterMaxRedirections := new(int64)
 		if !r.Config.Redis.ClusterMaxRedirections.IsUnknown() && !r.Config.Redis.ClusterMaxRedirections.IsNull() {
 			*clusterMaxRedirections = r.Config.Redis.ClusterMaxRedirections.ValueInt64()
@@ -621,6 +745,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 			username = nil
 		}
 		redis = &shared.Redis{
+			CloudAuthentication:    cloudAuthentication,
 			ClusterMaxRedirections: clusterMaxRedirections,
 			ClusterNodes:           clusterNodes,
 			ConnectTimeout:         connectTimeout,
@@ -681,6 +806,8 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 		windowType = nil
 	}
 	config := shared.AiRateLimitingAdvancedPluginConfig{
+		CustomCostCountFunction:    customCostCountFunction,
+		DecreaseByFractionsInRedis: decreaseByFractionsInRedis,
 		DictionaryName:             dictionaryName,
 		DisablePenalty:             disablePenalty,
 		ErrorCode:                  errorCode,

@@ -20,6 +20,51 @@ func (r *GatewayPluginBasicAuthResourceModel) RefreshFromSharedBasicAuthPlugin(c
 		} else {
 			r.Config = &tfTypes.BasicAuthPluginConfig{}
 			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
+			if resp.Config.BruteForceProtection == nil {
+				r.Config.BruteForceProtection = nil
+			} else {
+				r.Config.BruteForceProtection = &tfTypes.BruteForceProtection{}
+				if resp.Config.BruteForceProtection.Redis == nil {
+					r.Config.BruteForceProtection.Redis = nil
+				} else {
+					r.Config.BruteForceProtection.Redis = &tfTypes.BasicAuthPluginRedis{}
+					if resp.Config.BruteForceProtection.Redis.CloudAuthentication == nil {
+						r.Config.BruteForceProtection.Redis.CloudAuthentication = nil
+					} else {
+						r.Config.BruteForceProtection.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+						if resp.Config.BruteForceProtection.Redis.CloudAuthentication.AuthProvider != nil {
+							r.Config.BruteForceProtection.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.BruteForceProtection.Redis.CloudAuthentication.AuthProvider))
+						} else {
+							r.Config.BruteForceProtection.Redis.CloudAuthentication.AuthProvider = types.StringNull()
+						}
+						r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsAccessKeyID = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.CloudAuthentication.AwsAccessKeyID)
+						r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.CloudAuthentication.AwsAssumeRoleArn)
+						r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsCacheName = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.CloudAuthentication.AwsCacheName)
+						r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsIsServerless = types.BoolPointerValue(resp.Config.BruteForceProtection.Redis.CloudAuthentication.AwsIsServerless)
+						r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsRegion = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.CloudAuthentication.AwsRegion)
+						r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsRoleSessionName = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.CloudAuthentication.AwsRoleSessionName)
+						r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsSecretAccessKey = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.CloudAuthentication.AwsSecretAccessKey)
+						r.Config.BruteForceProtection.Redis.CloudAuthentication.AzureClientID = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.CloudAuthentication.AzureClientID)
+						r.Config.BruteForceProtection.Redis.CloudAuthentication.AzureClientSecret = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.CloudAuthentication.AzureClientSecret)
+						r.Config.BruteForceProtection.Redis.CloudAuthentication.AzureTenantID = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.CloudAuthentication.AzureTenantID)
+						r.Config.BruteForceProtection.Redis.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.CloudAuthentication.GcpServiceAccountJSON)
+					}
+					r.Config.BruteForceProtection.Redis.Database = types.Int64PointerValue(resp.Config.BruteForceProtection.Redis.Database)
+					r.Config.BruteForceProtection.Redis.Host = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.Host)
+					r.Config.BruteForceProtection.Redis.Password = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.Password)
+					r.Config.BruteForceProtection.Redis.Port = types.Int64PointerValue(resp.Config.BruteForceProtection.Redis.Port)
+					r.Config.BruteForceProtection.Redis.ServerName = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.ServerName)
+					r.Config.BruteForceProtection.Redis.Ssl = types.BoolPointerValue(resp.Config.BruteForceProtection.Redis.Ssl)
+					r.Config.BruteForceProtection.Redis.SslVerify = types.BoolPointerValue(resp.Config.BruteForceProtection.Redis.SslVerify)
+					r.Config.BruteForceProtection.Redis.Timeout = types.Int64PointerValue(resp.Config.BruteForceProtection.Redis.Timeout)
+					r.Config.BruteForceProtection.Redis.Username = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.Username)
+				}
+				if resp.Config.BruteForceProtection.Strategy != nil {
+					r.Config.BruteForceProtection.Strategy = types.StringValue(string(*resp.Config.BruteForceProtection.Strategy))
+				} else {
+					r.Config.BruteForceProtection.Strategy = types.StringNull()
+				}
+			}
 			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
 			r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
 		}
@@ -275,6 +320,177 @@ func (r *GatewayPluginBasicAuthResourceModel) ToSharedBasicAuthPlugin(ctx contex
 		} else {
 			anonymous = nil
 		}
+		var bruteForceProtection *shared.BruteForceProtection
+		if r.Config.BruteForceProtection != nil {
+			var redis *shared.BasicAuthPluginRedis
+			if r.Config.BruteForceProtection.Redis != nil {
+				var cloudAuthentication *shared.BasicAuthPluginCloudAuthentication
+				if r.Config.BruteForceProtection.Redis.CloudAuthentication != nil {
+					authProvider := new(shared.BasicAuthPluginAuthProvider)
+					if !r.Config.BruteForceProtection.Redis.CloudAuthentication.AuthProvider.IsUnknown() && !r.Config.BruteForceProtection.Redis.CloudAuthentication.AuthProvider.IsNull() {
+						*authProvider = shared.BasicAuthPluginAuthProvider(r.Config.BruteForceProtection.Redis.CloudAuthentication.AuthProvider.ValueString())
+					} else {
+						authProvider = nil
+					}
+					awsAccessKeyID := new(string)
+					if !r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsAccessKeyID.IsUnknown() && !r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsAccessKeyID.IsNull() {
+						*awsAccessKeyID = r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsAccessKeyID.ValueString()
+					} else {
+						awsAccessKeyID = nil
+					}
+					awsAssumeRoleArn := new(string)
+					if !r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsAssumeRoleArn.IsUnknown() && !r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsAssumeRoleArn.IsNull() {
+						*awsAssumeRoleArn = r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsAssumeRoleArn.ValueString()
+					} else {
+						awsAssumeRoleArn = nil
+					}
+					awsCacheName := new(string)
+					if !r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsCacheName.IsUnknown() && !r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsCacheName.IsNull() {
+						*awsCacheName = r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsCacheName.ValueString()
+					} else {
+						awsCacheName = nil
+					}
+					awsIsServerless := new(bool)
+					if !r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsIsServerless.IsUnknown() && !r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsIsServerless.IsNull() {
+						*awsIsServerless = r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsIsServerless.ValueBool()
+					} else {
+						awsIsServerless = nil
+					}
+					awsRegion := new(string)
+					if !r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsRegion.IsUnknown() && !r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsRegion.IsNull() {
+						*awsRegion = r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsRegion.ValueString()
+					} else {
+						awsRegion = nil
+					}
+					awsRoleSessionName := new(string)
+					if !r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsRoleSessionName.IsUnknown() && !r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsRoleSessionName.IsNull() {
+						*awsRoleSessionName = r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsRoleSessionName.ValueString()
+					} else {
+						awsRoleSessionName = nil
+					}
+					awsSecretAccessKey := new(string)
+					if !r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsSecretAccessKey.IsUnknown() && !r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsSecretAccessKey.IsNull() {
+						*awsSecretAccessKey = r.Config.BruteForceProtection.Redis.CloudAuthentication.AwsSecretAccessKey.ValueString()
+					} else {
+						awsSecretAccessKey = nil
+					}
+					azureClientID := new(string)
+					if !r.Config.BruteForceProtection.Redis.CloudAuthentication.AzureClientID.IsUnknown() && !r.Config.BruteForceProtection.Redis.CloudAuthentication.AzureClientID.IsNull() {
+						*azureClientID = r.Config.BruteForceProtection.Redis.CloudAuthentication.AzureClientID.ValueString()
+					} else {
+						azureClientID = nil
+					}
+					azureClientSecret := new(string)
+					if !r.Config.BruteForceProtection.Redis.CloudAuthentication.AzureClientSecret.IsUnknown() && !r.Config.BruteForceProtection.Redis.CloudAuthentication.AzureClientSecret.IsNull() {
+						*azureClientSecret = r.Config.BruteForceProtection.Redis.CloudAuthentication.AzureClientSecret.ValueString()
+					} else {
+						azureClientSecret = nil
+					}
+					azureTenantID := new(string)
+					if !r.Config.BruteForceProtection.Redis.CloudAuthentication.AzureTenantID.IsUnknown() && !r.Config.BruteForceProtection.Redis.CloudAuthentication.AzureTenantID.IsNull() {
+						*azureTenantID = r.Config.BruteForceProtection.Redis.CloudAuthentication.AzureTenantID.ValueString()
+					} else {
+						azureTenantID = nil
+					}
+					gcpServiceAccountJSON := new(string)
+					if !r.Config.BruteForceProtection.Redis.CloudAuthentication.GcpServiceAccountJSON.IsUnknown() && !r.Config.BruteForceProtection.Redis.CloudAuthentication.GcpServiceAccountJSON.IsNull() {
+						*gcpServiceAccountJSON = r.Config.BruteForceProtection.Redis.CloudAuthentication.GcpServiceAccountJSON.ValueString()
+					} else {
+						gcpServiceAccountJSON = nil
+					}
+					cloudAuthentication = &shared.BasicAuthPluginCloudAuthentication{
+						AuthProvider:          authProvider,
+						AwsAccessKeyID:        awsAccessKeyID,
+						AwsAssumeRoleArn:      awsAssumeRoleArn,
+						AwsCacheName:          awsCacheName,
+						AwsIsServerless:       awsIsServerless,
+						AwsRegion:             awsRegion,
+						AwsRoleSessionName:    awsRoleSessionName,
+						AwsSecretAccessKey:    awsSecretAccessKey,
+						AzureClientID:         azureClientID,
+						AzureClientSecret:     azureClientSecret,
+						AzureTenantID:         azureTenantID,
+						GcpServiceAccountJSON: gcpServiceAccountJSON,
+					}
+				}
+				database := new(int64)
+				if !r.Config.BruteForceProtection.Redis.Database.IsUnknown() && !r.Config.BruteForceProtection.Redis.Database.IsNull() {
+					*database = r.Config.BruteForceProtection.Redis.Database.ValueInt64()
+				} else {
+					database = nil
+				}
+				host := new(string)
+				if !r.Config.BruteForceProtection.Redis.Host.IsUnknown() && !r.Config.BruteForceProtection.Redis.Host.IsNull() {
+					*host = r.Config.BruteForceProtection.Redis.Host.ValueString()
+				} else {
+					host = nil
+				}
+				password := new(string)
+				if !r.Config.BruteForceProtection.Redis.Password.IsUnknown() && !r.Config.BruteForceProtection.Redis.Password.IsNull() {
+					*password = r.Config.BruteForceProtection.Redis.Password.ValueString()
+				} else {
+					password = nil
+				}
+				port := new(int64)
+				if !r.Config.BruteForceProtection.Redis.Port.IsUnknown() && !r.Config.BruteForceProtection.Redis.Port.IsNull() {
+					*port = r.Config.BruteForceProtection.Redis.Port.ValueInt64()
+				} else {
+					port = nil
+				}
+				serverName := new(string)
+				if !r.Config.BruteForceProtection.Redis.ServerName.IsUnknown() && !r.Config.BruteForceProtection.Redis.ServerName.IsNull() {
+					*serverName = r.Config.BruteForceProtection.Redis.ServerName.ValueString()
+				} else {
+					serverName = nil
+				}
+				ssl := new(bool)
+				if !r.Config.BruteForceProtection.Redis.Ssl.IsUnknown() && !r.Config.BruteForceProtection.Redis.Ssl.IsNull() {
+					*ssl = r.Config.BruteForceProtection.Redis.Ssl.ValueBool()
+				} else {
+					ssl = nil
+				}
+				sslVerify := new(bool)
+				if !r.Config.BruteForceProtection.Redis.SslVerify.IsUnknown() && !r.Config.BruteForceProtection.Redis.SslVerify.IsNull() {
+					*sslVerify = r.Config.BruteForceProtection.Redis.SslVerify.ValueBool()
+				} else {
+					sslVerify = nil
+				}
+				timeout := new(int64)
+				if !r.Config.BruteForceProtection.Redis.Timeout.IsUnknown() && !r.Config.BruteForceProtection.Redis.Timeout.IsNull() {
+					*timeout = r.Config.BruteForceProtection.Redis.Timeout.ValueInt64()
+				} else {
+					timeout = nil
+				}
+				username := new(string)
+				if !r.Config.BruteForceProtection.Redis.Username.IsUnknown() && !r.Config.BruteForceProtection.Redis.Username.IsNull() {
+					*username = r.Config.BruteForceProtection.Redis.Username.ValueString()
+				} else {
+					username = nil
+				}
+				redis = &shared.BasicAuthPluginRedis{
+					CloudAuthentication: cloudAuthentication,
+					Database:            database,
+					Host:                host,
+					Password:            password,
+					Port:                port,
+					ServerName:          serverName,
+					Ssl:                 ssl,
+					SslVerify:           sslVerify,
+					Timeout:             timeout,
+					Username:            username,
+				}
+			}
+			strategy := new(shared.BasicAuthPluginStrategy)
+			if !r.Config.BruteForceProtection.Strategy.IsUnknown() && !r.Config.BruteForceProtection.Strategy.IsNull() {
+				*strategy = shared.BasicAuthPluginStrategy(r.Config.BruteForceProtection.Strategy.ValueString())
+			} else {
+				strategy = nil
+			}
+			bruteForceProtection = &shared.BruteForceProtection{
+				Redis:    redis,
+				Strategy: strategy,
+			}
+		}
 		hideCredentials := new(bool)
 		if !r.Config.HideCredentials.IsUnknown() && !r.Config.HideCredentials.IsNull() {
 			*hideCredentials = r.Config.HideCredentials.ValueBool()
@@ -288,9 +504,10 @@ func (r *GatewayPluginBasicAuthResourceModel) ToSharedBasicAuthPlugin(ctx contex
 			realm = nil
 		}
 		config = &shared.BasicAuthPluginConfig{
-			Anonymous:       anonymous,
-			HideCredentials: hideCredentials,
-			Realm:           realm,
+			Anonymous:            anonymous,
+			BruteForceProtection: bruteForceProtection,
+			HideCredentials:      hideCredentials,
+			Realm:                realm,
 		}
 	}
 	protocols := make([]shared.BasicAuthPluginProtocols, 0, len(r.Protocols))

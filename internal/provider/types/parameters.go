@@ -3,13 +3,15 @@
 package types
 
 import (
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type Parameters struct {
-	Description types.String `tfsdk:"description"`
-	In          types.String `tfsdk:"in"`
-	Name        types.String `tfsdk:"name"`
-	Required    types.Bool   `tfsdk:"required"`
-	Schema      *Schema      `tfsdk:"schema"`
+	AdditionalProperties jsontypes.Normalized `tfsdk:"additional_properties"`
+	Description          types.String         `tfsdk:"description"`
+	In                   types.String         `tfsdk:"in"`
+	Name                 types.String         `tfsdk:"name"`
+	Required             types.Bool           `tfsdk:"required"`
+	Schema               *Schema              `tfsdk:"schema"`
 }

@@ -103,6 +103,9 @@ resource "konnect_gateway_plugin_confluent" "my_gatewaypluginconfluent" {
         }
       }
     }
+    security = {
+      ssl_verify = true
+    }
     timeout          = 0
     topic            = "...my_topic..."
     topics_query_arg = "...my_topics_query_arg..."
@@ -207,6 +210,7 @@ Optional:
 - `producer_request_retries_max_attempts` (Number) Maximum number of retry attempts per single Produce request. Default: 10
 - `producer_request_timeout` (Number) Time to wait for a Produce response in milliseconds. Default: 2000
 - `schema_registry` (Attributes) The plugin-global schema registry configuration. This can be overwritten by the topic configuration. (see [below for nested schema](#nestedatt--config--schema_registry))
+- `security` (Attributes) (see [below for nested schema](#nestedatt--config--security))
 - `timeout` (Number) Socket timeout in milliseconds. Default: 10000
 - `topics_query_arg` (String) The request query parameter name that contains the topics to publish to
 
@@ -311,6 +315,14 @@ Optional:
 - `subject_name` (String) The name of the subject
 
 
+
+
+<a id="nestedatt--config--security"></a>
+### Nested Schema for `config.security`
+
+Optional:
+
+- `ssl_verify` (Boolean) Enables verification of the certificate presented by the server. Default: false
 
 
 

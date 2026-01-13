@@ -11,6 +11,7 @@ type JwtSignerPluginConfig struct {
 	AccessTokenAudiencesAllowed               []types.String          `tfsdk:"access_token_audiences_allowed"`
 	AccessTokenConsumerBy                     []types.String          `tfsdk:"access_token_consumer_by"`
 	AccessTokenConsumerClaim                  []types.String          `tfsdk:"access_token_consumer_claim"`
+	AccessTokenEndpointsSslVerify             types.Bool              `tfsdk:"access_token_endpoints_ssl_verify"`
 	AccessTokenExpiryClaim                    []types.String          `tfsdk:"access_token_expiry_claim"`
 	AccessTokenIntrospectionAudienceClaim     []types.String          `tfsdk:"access_token_introspection_audience_claim"`
 	AccessTokenIntrospectionAudiencesAllowed  []types.String          `tfsdk:"access_token_introspection_audiences_allowed"`
@@ -69,6 +70,7 @@ type JwtSignerPluginConfig struct {
 	ChannelTokenAudiencesAllowed              []types.String          `tfsdk:"channel_token_audiences_allowed"`
 	ChannelTokenConsumerBy                    []types.String          `tfsdk:"channel_token_consumer_by"`
 	ChannelTokenConsumerClaim                 []types.String          `tfsdk:"channel_token_consumer_claim"`
+	ChannelTokenEndpointsSslVerify            types.Bool              `tfsdk:"channel_token_endpoints_ssl_verify"`
 	ChannelTokenExpiryClaim                   []types.String          `tfsdk:"channel_token_expiry_claim"`
 	ChannelTokenIntrospectionAudienceClaim    []types.String          `tfsdk:"channel_token_introspection_audience_claim"`
 	ChannelTokenIntrospectionAudiencesAllowed []types.String          `tfsdk:"channel_token_introspection_audiences_allowed"`

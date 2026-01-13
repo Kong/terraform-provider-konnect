@@ -105,7 +105,7 @@ type AiPromptTemplatePluginConfig struct {
 	// Set true to add the original request to the Kong log plugin(s) output.
 	LogOriginalRequest *bool `default:"false" json:"log_original_request"`
 	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
-	MaxRequestBodySize *int64 `default:"8192" json:"max_request_body_size"`
+	MaxRequestBodySize *int64 `default:"1048576" json:"max_request_body_size"`
 	// Array of templates available to the request context.
 	Templates []Templates `json:"templates"`
 }

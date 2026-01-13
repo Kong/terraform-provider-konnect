@@ -114,13 +114,6 @@ func (r *GatewayPluginJqResource) Schema(ctx context.Context, req resource.Schem
 					"request_jq_program_options": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"ascii_output":   types.BoolType,
-							"compact_output": types.BoolType,
-							"join_output":    types.BoolType,
-							"raw_output":     types.BoolType,
-							"sort_keys":      types.BoolType,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"ascii_output": schema.BoolAttribute{
 								Computed:    true,
@@ -174,13 +167,6 @@ func (r *GatewayPluginJqResource) Schema(ctx context.Context, req resource.Schem
 					"response_jq_program_options": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"ascii_output":   types.BoolType,
-							"compact_output": types.BoolType,
-							"join_output":    types.BoolType,
-							"raw_output":     types.BoolType,
-							"sort_keys":      types.BoolType,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"ascii_output": schema.BoolAttribute{
 								Computed:    true,

@@ -109,6 +109,7 @@ resource "konnect_gateway_plugin_kafka_upstream" "my_gatewaypluginkafkaupstream"
     security = {
       certificate_id = "...my_certificate_id..."
       ssl            = false
+      ssl_verify     = true
     }
     timeout          = 0
     topic            = "...my_topic..."
@@ -340,6 +341,7 @@ Optional:
 
 - `certificate_id` (String) UUID of certificate entity for mTLS authentication.
 - `ssl` (Boolean) Enables TLS.
+- `ssl_verify` (Boolean) When using TLS, this option enables verification of the certificate presented by the server. Default: false
 
 
 

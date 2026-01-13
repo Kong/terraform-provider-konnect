@@ -7,10 +7,11 @@ import (
 )
 
 type AiSemanticPromptGuardPluginConfig struct {
-	Embeddings    Embeddings   `tfsdk:"embeddings"`
-	GenaiCategory types.String `tfsdk:"genai_category"`
-	LlmFormat     types.String `tfsdk:"llm_format"`
-	Rules         *Rules       `tfsdk:"rules"`
-	Search        *Search      `tfsdk:"search"`
-	Vectordb      Vectordb     `tfsdk:"vectordb"`
+	Embeddings         Embeddings   `tfsdk:"embeddings"`
+	GenaiCategory      types.String `tfsdk:"genai_category"`
+	LlmFormat          types.String `tfsdk:"llm_format"`
+	MaxRequestBodySize types.Int64  `tfsdk:"max_request_body_size"`
+	Rules              *Rules       `tfsdk:"rules"`
+	Search             *Search      `tfsdk:"search"`
+	Vectordb           Vectordb     `tfsdk:"vectordb"`
 }

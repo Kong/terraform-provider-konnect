@@ -9,6 +9,159 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
+// PartialRedisEeAuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+type PartialRedisEeAuthProvider string
+
+const (
+	PartialRedisEeAuthProviderAws   PartialRedisEeAuthProvider = "aws"
+	PartialRedisEeAuthProviderAzure PartialRedisEeAuthProvider = "azure"
+	PartialRedisEeAuthProviderGcp   PartialRedisEeAuthProvider = "gcp"
+)
+
+func (e PartialRedisEeAuthProvider) ToPointer() *PartialRedisEeAuthProvider {
+	return &e
+}
+func (e *PartialRedisEeAuthProvider) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "aws":
+		fallthrough
+	case "azure":
+		fallthrough
+	case "gcp":
+		*e = PartialRedisEeAuthProvider(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for PartialRedisEeAuthProvider: %v", v)
+	}
+}
+
+// PartialRedisEeCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+type PartialRedisEeCloudAuthentication struct {
+	// Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+	AuthProvider *PartialRedisEeAuthProvider `json:"auth_provider,omitempty"`
+	// AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
+	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
+	// The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
+	// The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
+	AwsCacheName *string `default:"null" json:"aws_cache_name"`
+	// This flag specifies whether the cluster is serverless when auth_provider is set to `aws`.
+	AwsIsServerless *bool `default:"true" json:"aws_is_serverless"`
+	// The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
+	AwsRegion *string `default:"null" json:"aws_region"`
+	// The session name for the temporary credentials when assuming the IAM role.
+	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
+	// AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
+	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
+	// Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientID *string `default:"null" json:"azure_client_id"`
+	// Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
+	// Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
+	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+}
+
+func (p PartialRedisEeCloudAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PartialRedisEeCloudAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *PartialRedisEeCloudAuthentication) GetAuthProvider() *PartialRedisEeAuthProvider {
+	if p == nil {
+		return nil
+	}
+	return p.AuthProvider
+}
+
+func (p *PartialRedisEeCloudAuthentication) GetAwsAccessKeyID() *string {
+	if p == nil {
+		return nil
+	}
+	return p.AwsAccessKeyID
+}
+
+func (p *PartialRedisEeCloudAuthentication) GetAwsAssumeRoleArn() *string {
+	if p == nil {
+		return nil
+	}
+	return p.AwsAssumeRoleArn
+}
+
+func (p *PartialRedisEeCloudAuthentication) GetAwsCacheName() *string {
+	if p == nil {
+		return nil
+	}
+	return p.AwsCacheName
+}
+
+func (p *PartialRedisEeCloudAuthentication) GetAwsIsServerless() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.AwsIsServerless
+}
+
+func (p *PartialRedisEeCloudAuthentication) GetAwsRegion() *string {
+	if p == nil {
+		return nil
+	}
+	return p.AwsRegion
+}
+
+func (p *PartialRedisEeCloudAuthentication) GetAwsRoleSessionName() *string {
+	if p == nil {
+		return nil
+	}
+	return p.AwsRoleSessionName
+}
+
+func (p *PartialRedisEeCloudAuthentication) GetAwsSecretAccessKey() *string {
+	if p == nil {
+		return nil
+	}
+	return p.AwsSecretAccessKey
+}
+
+func (p *PartialRedisEeCloudAuthentication) GetAzureClientID() *string {
+	if p == nil {
+		return nil
+	}
+	return p.AzureClientID
+}
+
+func (p *PartialRedisEeCloudAuthentication) GetAzureClientSecret() *string {
+	if p == nil {
+		return nil
+	}
+	return p.AzureClientSecret
+}
+
+func (p *PartialRedisEeCloudAuthentication) GetAzureTenantID() *string {
+	if p == nil {
+		return nil
+	}
+	return p.AzureTenantID
+}
+
+func (p *PartialRedisEeCloudAuthentication) GetGcpServiceAccountJSON() *string {
+	if p == nil {
+		return nil
+	}
+	return p.GcpServiceAccountJSON
+}
+
 type PartialRedisEeClusterNodes struct {
 	// A string representing a host name, such as example.com.
 	IP *string `default:"127.0.0.1" json:"ip"`
@@ -104,6 +257,8 @@ func (e *PartialRedisEeSentinelRole) UnmarshalJSON(data []byte) error {
 }
 
 type PartialRedisEeConfig struct {
+	// Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+	CloudAuthentication *PartialRedisEeCloudAuthentication `json:"cloud_authentication"`
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
@@ -157,6 +312,13 @@ func (p *PartialRedisEeConfig) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (p *PartialRedisEeConfig) GetCloudAuthentication() *PartialRedisEeCloudAuthentication {
+	if p == nil {
+		return nil
+	}
+	return p.CloudAuthentication
 }
 
 func (p *PartialRedisEeConfig) GetClusterMaxRedirections() *int64 {
@@ -378,7 +540,162 @@ func (p *PartialRedisEe) GetUpdatedAt() *int64 {
 	return p.UpdatedAt
 }
 
+// PartialRedisCeAuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+type PartialRedisCeAuthProvider string
+
+const (
+	PartialRedisCeAuthProviderAws   PartialRedisCeAuthProvider = "aws"
+	PartialRedisCeAuthProviderAzure PartialRedisCeAuthProvider = "azure"
+	PartialRedisCeAuthProviderGcp   PartialRedisCeAuthProvider = "gcp"
+)
+
+func (e PartialRedisCeAuthProvider) ToPointer() *PartialRedisCeAuthProvider {
+	return &e
+}
+func (e *PartialRedisCeAuthProvider) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "aws":
+		fallthrough
+	case "azure":
+		fallthrough
+	case "gcp":
+		*e = PartialRedisCeAuthProvider(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for PartialRedisCeAuthProvider: %v", v)
+	}
+}
+
+// PartialRedisCeCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+type PartialRedisCeCloudAuthentication struct {
+	// Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+	AuthProvider *PartialRedisCeAuthProvider `json:"auth_provider,omitempty"`
+	// AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
+	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
+	// The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
+	// The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
+	AwsCacheName *string `default:"null" json:"aws_cache_name"`
+	// This flag specifies whether the cluster is serverless when auth_provider is set to `aws`.
+	AwsIsServerless *bool `default:"true" json:"aws_is_serverless"`
+	// The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
+	AwsRegion *string `default:"null" json:"aws_region"`
+	// The session name for the temporary credentials when assuming the IAM role.
+	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
+	// AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
+	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
+	// Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientID *string `default:"null" json:"azure_client_id"`
+	// Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
+	// Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
+	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+}
+
+func (p PartialRedisCeCloudAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PartialRedisCeCloudAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *PartialRedisCeCloudAuthentication) GetAuthProvider() *PartialRedisCeAuthProvider {
+	if p == nil {
+		return nil
+	}
+	return p.AuthProvider
+}
+
+func (p *PartialRedisCeCloudAuthentication) GetAwsAccessKeyID() *string {
+	if p == nil {
+		return nil
+	}
+	return p.AwsAccessKeyID
+}
+
+func (p *PartialRedisCeCloudAuthentication) GetAwsAssumeRoleArn() *string {
+	if p == nil {
+		return nil
+	}
+	return p.AwsAssumeRoleArn
+}
+
+func (p *PartialRedisCeCloudAuthentication) GetAwsCacheName() *string {
+	if p == nil {
+		return nil
+	}
+	return p.AwsCacheName
+}
+
+func (p *PartialRedisCeCloudAuthentication) GetAwsIsServerless() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.AwsIsServerless
+}
+
+func (p *PartialRedisCeCloudAuthentication) GetAwsRegion() *string {
+	if p == nil {
+		return nil
+	}
+	return p.AwsRegion
+}
+
+func (p *PartialRedisCeCloudAuthentication) GetAwsRoleSessionName() *string {
+	if p == nil {
+		return nil
+	}
+	return p.AwsRoleSessionName
+}
+
+func (p *PartialRedisCeCloudAuthentication) GetAwsSecretAccessKey() *string {
+	if p == nil {
+		return nil
+	}
+	return p.AwsSecretAccessKey
+}
+
+func (p *PartialRedisCeCloudAuthentication) GetAzureClientID() *string {
+	if p == nil {
+		return nil
+	}
+	return p.AzureClientID
+}
+
+func (p *PartialRedisCeCloudAuthentication) GetAzureClientSecret() *string {
+	if p == nil {
+		return nil
+	}
+	return p.AzureClientSecret
+}
+
+func (p *PartialRedisCeCloudAuthentication) GetAzureTenantID() *string {
+	if p == nil {
+		return nil
+	}
+	return p.AzureTenantID
+}
+
+func (p *PartialRedisCeCloudAuthentication) GetGcpServiceAccountJSON() *string {
+	if p == nil {
+		return nil
+	}
+	return p.GcpServiceAccountJSON
+}
+
 type PartialRedisCeConfig struct {
+	// Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+	CloudAuthentication *PartialRedisCeCloudAuthentication `json:"cloud_authentication"`
 	// Database to use for the Redis connection when using the `redis` strategy
 	Database *int64 `default:"0" json:"database"`
 	// A string representing a host name, such as example.com.
@@ -408,6 +725,13 @@ func (p *PartialRedisCeConfig) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (p *PartialRedisCeConfig) GetCloudAuthentication() *PartialRedisCeCloudAuthentication {
+	if p == nil {
+		return nil
+	}
+	return p.CloudAuthentication
 }
 
 func (p *PartialRedisCeConfig) GetDatabase() *int64 {

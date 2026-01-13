@@ -78,19 +78,19 @@ func (d *DatadogPluginPartials) GetPath() *string {
 	return d.Path
 }
 
-// ConsumerIdentifier - Authenticated user detail
-type ConsumerIdentifier string
+// DatadogPluginConsumerIdentifier - Authenticated user detail
+type DatadogPluginConsumerIdentifier string
 
 const (
-	ConsumerIdentifierConsumerID ConsumerIdentifier = "consumer_id"
-	ConsumerIdentifierCustomID   ConsumerIdentifier = "custom_id"
-	ConsumerIdentifierUsername   ConsumerIdentifier = "username"
+	DatadogPluginConsumerIdentifierConsumerID DatadogPluginConsumerIdentifier = "consumer_id"
+	DatadogPluginConsumerIdentifierCustomID   DatadogPluginConsumerIdentifier = "custom_id"
+	DatadogPluginConsumerIdentifierUsername   DatadogPluginConsumerIdentifier = "username"
 )
 
-func (e ConsumerIdentifier) ToPointer() *ConsumerIdentifier {
+func (e DatadogPluginConsumerIdentifier) ToPointer() *DatadogPluginConsumerIdentifier {
 	return &e
 }
-func (e *ConsumerIdentifier) UnmarshalJSON(data []byte) error {
+func (e *DatadogPluginConsumerIdentifier) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -101,10 +101,10 @@ func (e *ConsumerIdentifier) UnmarshalJSON(data []byte) error {
 	case "custom_id":
 		fallthrough
 	case "username":
-		*e = ConsumerIdentifier(v)
+		*e = DatadogPluginConsumerIdentifier(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for ConsumerIdentifier: %v", v)
+		return fmt.Errorf("invalid value for DatadogPluginConsumerIdentifier: %v", v)
 	}
 }
 
@@ -191,7 +191,7 @@ func (e *StatType) UnmarshalJSON(data []byte) error {
 
 type Metrics struct {
 	// Authenticated user detail
-	ConsumerIdentifier *ConsumerIdentifier `json:"consumer_identifier,omitempty"`
+	ConsumerIdentifier *DatadogPluginConsumerIdentifier `json:"consumer_identifier,omitempty"`
 	// Datadog metric’s name
 	Name DatadogPluginName `json:"name"`
 	// Sampling rate
@@ -202,7 +202,7 @@ type Metrics struct {
 	Tags []string `json:"tags,omitempty"`
 }
 
-func (m *Metrics) GetConsumerIdentifier() *ConsumerIdentifier {
+func (m *Metrics) GetConsumerIdentifier() *DatadogPluginConsumerIdentifier {
 	if m == nil {
 		return nil
 	}
@@ -368,6 +368,8 @@ type DatadogPluginConfig struct {
 	QueueSize *int64 `default:"null" json:"queue_size"`
 	// Number of times to retry when sending data to the upstream server.
 	RetryCount *int64 `default:"null" json:"retry_count"`
+	// String to be attached as tag of the route name or ID.
+	RouteNameTag *string `default:"null" json:"route_name_tag"`
 	// String to be attached as the name of the service.
 	ServiceNameTag *string `default:"name" json:"service_name_tag"`
 	// String to be attached as the tag of the HTTP status.
@@ -446,6 +448,13 @@ func (d *DatadogPluginConfig) GetRetryCount() *int64 {
 		return nil
 	}
 	return d.RetryCount
+}
+
+func (d *DatadogPluginConfig) GetRouteNameTag() *string {
+	if d == nil {
+		return nil
+	}
+	return d.RouteNameTag
 }
 
 func (d *DatadogPluginConfig) GetServiceNameTag() *string {

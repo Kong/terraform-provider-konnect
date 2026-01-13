@@ -47,6 +47,20 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
         key = jsonencode("value")
       }
       redis = {
+        cloud_authentication = {
+          auth_provider            = "gcp"
+          aws_access_key_id        = "...my_aws_access_key_id..."
+          aws_assume_role_arn      = "...my_aws_assume_role_arn..."
+          aws_cache_name           = "...my_aws_cache_name..."
+          aws_is_serverless        = false
+          aws_region               = "...my_aws_region..."
+          aws_role_session_name    = "...my_aws_role_session_name..."
+          aws_secret_access_key    = "...my_aws_secret_access_key..."
+          azure_client_id          = "...my_azure_client_id..."
+          azure_client_secret      = "...my_azure_client_secret..."
+          azure_tenant_id          = "...my_azure_tenant_id..."
+          gcp_service_account_json = "...my_gcp_service_account_json..."
+        }
         database = 6
         extra_options = {
           namespace  = "...my_namespace..."
@@ -171,7 +185,7 @@ Required:
 
 Optional:
 
-- `key_set` (String) The ID of the key set to associate the Key ID with.
+- `key_set` (String) The name of the key set to associate the Key ID with.
 
 
 <a id="nestedatt--config--storage_config"></a>
@@ -203,6 +217,7 @@ Optional:
 
 Optional:
 
+- `cloud_authentication` (Attributes) Cloud auth related configs for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--config--storage_config--redis--cloud_authentication))
 - `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
 - `extra_options` (Attributes) Custom ACME Redis options (see [below for nested schema](#nestedatt--config--storage_config--redis--extra_options))
 - `host` (String) A string representing a host name, such as example.com.
@@ -213,6 +228,25 @@ Optional:
 - `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: false
 - `timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
 - `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+
+<a id="nestedatt--config--storage_config--redis--cloud_authentication"></a>
+### Nested Schema for `config.storage_config.redis.cloud_authentication`
+
+Optional:
+
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]
+- `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
+- `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+- `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
+- `aws_is_serverless` (Boolean) This flag specifies whether the cluster is serverless when auth_provider is set to `aws`. Default: true
+- `aws_region` (String) The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
+- `aws_role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
+- `aws_secret_access_key` (String) AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
+- `azure_client_id` (String) Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
+- `azure_client_secret` (String) Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
+- `azure_tenant_id` (String) Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
+- `gcp_service_account_json` (String) GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+
 
 <a id="nestedatt--config--storage_config--redis--extra_options"></a>
 ### Nested Schema for `config.storage_config.redis.extra_options`

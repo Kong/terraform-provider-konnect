@@ -15,6 +15,17 @@ GatewayPluginAiRagInjector Resource
 ```terraform
 resource "konnect_gateway_plugin_ai_rag_injector" "my_gatewaypluginairaginjector" {
   config = {
+    collection_acl_config = {
+      key = {
+        allow = [
+          "..."
+        ]
+        deny = [
+          "..."
+        ]
+      }
+    }
+    consumer_identifier = "custom_id"
     embeddings = {
       auth = {
         allow_override             = true
@@ -47,6 +58,7 @@ resource "konnect_gateway_plugin_ai_rag_injector" "my_gatewaypluginairaginjector
             aws_sts_endpoint_url       = "...my_aws_sts_endpoint_url..."
             embeddings_normalize       = false
             performance_config_latency = "...my_performance_config_latency..."
+            video_output_s3_uri        = "...my_video_output_s3_uri..."
           }
           gemini = {
             api_endpoint = "...my_api_endpoint..."
@@ -63,9 +75,20 @@ resource "konnect_gateway_plugin_ai_rag_injector" "my_gatewaypluginairaginjector
       }
     }
     fetch_chunks_count = 9.36
-    inject_as_role     = "user"
-    inject_template    = "...my_inject_template..."
-    stop_on_failure    = true
+    filter_mode        = "strict"
+    global_acl_config = {
+      allow = [
+        "..."
+      ]
+      deny = [
+        "..."
+      ]
+    }
+    inject_as_role       = "user"
+    inject_template      = "...my_inject_template..."
+    max_filter_clauses   = 287
+    stop_on_failure      = true
+    stop_on_filter_error = true
     vectordb = {
       dimensions      = 3
       distance_metric = "cosine"
@@ -84,6 +107,20 @@ resource "konnect_gateway_plugin_ai_rag_injector" "my_gatewaypluginairaginjector
         user         = "...my_user..."
       }
       redis = {
+        cloud_authentication = {
+          auth_provider            = "gcp"
+          aws_access_key_id        = "...my_aws_access_key_id..."
+          aws_assume_role_arn      = "...my_aws_assume_role_arn..."
+          aws_cache_name           = "...my_aws_cache_name..."
+          aws_is_serverless        = false
+          aws_region               = "...my_aws_region..."
+          aws_role_session_name    = "...my_aws_role_session_name..."
+          aws_secret_access_key    = "...my_aws_secret_access_key..."
+          azure_client_id          = "...my_azure_client_id..."
+          azure_client_secret      = "...my_azure_client_secret..."
+          azure_tenant_id          = "...my_azure_tenant_id..."
+          gcp_service_account_json = "...my_gcp_service_account_json..."
+        }
         cluster_max_redirections = 7
         cluster_nodes = [
           {
@@ -116,7 +153,8 @@ resource "konnect_gateway_plugin_ai_rag_injector" "my_gatewaypluginairaginjector
         ssl_verify        = true
         username          = "...my_username..."
       }
-      strategy = "redis"
+      strategy  = "redis"
+      threshold = 6.88
     }
     vectordb_namespace = "...my_vectordb_namespace..."
   }
@@ -200,10 +238,16 @@ Required:
 
 Optional:
 
+- `collection_acl_config` (Attributes Map) Per-collection ACL overrides (see [below for nested schema](#nestedatt--config--collection_acl_config))
+- `consumer_identifier` (String) The type of consumer identifier used for ACL checks. Default: "consumer_group"; must be one of ["consumer_group", "consumer_id", "custom_id", "username"]
 - `fetch_chunks_count` (Number) The maximum number of chunks to fetch from vectordb. Default: 5
+- `filter_mode` (String) Defines how the plugin behaves when a filter is invalid. Set to `compatible` to ignore invalid filters, or `strict` to raise an error. This can be overridden per request. Default: "compatible"; must be one of ["compatible", "strict"]
+- `global_acl_config` (Attributes) Global ACL configuration for all RAG operations (see [below for nested schema](#nestedatt--config--global_acl_config))
 - `inject_as_role` (String) Default: "user"; must be one of ["assistant", "system", "user"]
 - `inject_template` (String) Default: "<CONTEXT>\n<PROMPT>"
+- `max_filter_clauses` (Number) Maximum number of filter clauses allowed. Default: 100
 - `stop_on_failure` (Boolean) Halt the LLM request process in case of a vectordb or embeddings service failure. Default: false
+- `stop_on_filter_error` (Boolean) Default behavior when filter parsing fails (can be overridden per-request). Default: false
 - `vectordb_namespace` (String) The namespace of the vectordb to use for embeddings lookup. Default: "kong_rag_injector"
 
 <a id="nestedatt--config--embeddings"></a>
@@ -261,6 +305,7 @@ Optional:
 - `aws_sts_endpoint_url` (String) If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 - `embeddings_normalize` (Boolean) If using AWS providers (Bedrock), set to true to normalize the embeddings. Default: false
 - `performance_config_latency` (String) Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
+- `video_output_s3_uri` (String) S3 URI (s3://bucket/prefix) where Bedrock will store generated video files. Required for video generation.
 
 
 <a id="nestedatt--config--embeddings--model--options--gemini"></a>
@@ -319,6 +364,7 @@ Optional:
 
 - `pgvector` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb--pgvector))
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb--redis))
+- `threshold` (Number) the default similarity threshold for accepting semantic search results (float)
 
 <a id="nestedatt--config--vectordb--pgvector"></a>
 ### Nested Schema for `config.vectordb.pgvector`
@@ -344,6 +390,7 @@ Optional:
 
 Optional:
 
+- `cloud_authentication` (Attributes) Cloud auth related configs for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--config--vectordb--redis--cloud_authentication))
 - `cluster_max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
 - `cluster_nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--vectordb--redis--cluster_nodes))
 - `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
@@ -366,6 +413,25 @@ Optional:
 - `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: false
 - `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 
+<a id="nestedatt--config--vectordb--redis--cloud_authentication"></a>
+### Nested Schema for `config.vectordb.redis.cloud_authentication`
+
+Optional:
+
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]
+- `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
+- `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+- `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
+- `aws_is_serverless` (Boolean) This flag specifies whether the cluster is serverless when auth_provider is set to `aws`. Default: true
+- `aws_region` (String) The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
+- `aws_role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
+- `aws_secret_access_key` (String) AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
+- `azure_client_id` (String) Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
+- `azure_client_secret` (String) Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
+- `azure_tenant_id` (String) Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
+- `gcp_service_account_json` (String) GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+
+
 <a id="nestedatt--config--vectordb--redis--cluster_nodes"></a>
 ### Nested Schema for `config.vectordb.redis.cluster_nodes`
 
@@ -384,6 +450,24 @@ Optional:
 - `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
 
 
+
+
+<a id="nestedatt--config--collection_acl_config"></a>
+### Nested Schema for `config.collection_acl_config`
+
+Optional:
+
+- `allow` (List of String) Consumer identifiers allowed access to this collection. Default: []
+- `deny` (List of String) Consumer identifiers denied access to this collection. Default: []
+
+
+<a id="nestedatt--config--global_acl_config"></a>
+### Nested Schema for `config.global_acl_config`
+
+Optional:
+
+- `allow` (List of String) Consumer identifiers allowed access (groups, IDs, usernames, or custom IDs based on consumer_identifier setting). Default: []
+- `deny` (List of String) Consumer identifiers denied access (groups, IDs, usernames, or custom IDs based on consumer_identifier setting). Default: []
 
 
 

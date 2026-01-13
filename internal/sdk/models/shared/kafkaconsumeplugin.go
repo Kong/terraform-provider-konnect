@@ -789,6 +789,8 @@ type KafkaConsumePluginSecurity struct {
 	CertificateID *string `default:"null" json:"certificate_id"`
 	// Enables TLS.
 	Ssl *bool `default:"null" json:"ssl"`
+	// When using TLS, this option enables verification of the certificate presented by the server.
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 }
 
 func (k KafkaConsumePluginSecurity) MarshalJSON() ([]byte, error) {
@@ -814,6 +816,13 @@ func (k *KafkaConsumePluginSecurity) GetSsl() *bool {
 		return nil
 	}
 	return k.Ssl
+}
+
+func (k *KafkaConsumePluginSecurity) GetSslVerify() *bool {
+	if k == nil {
+		return nil
+	}
+	return k.SslVerify
 }
 
 type KafkaConsumePluginConfigBasic struct {
@@ -1311,6 +1320,8 @@ type KafkaConsumePluginConfig struct {
 	DlqTopic *string `default:"null" json:"dlq_topic"`
 	// Enables Dead Letter Queue. When enabled, if the message doesn't conform to the schema (from Schema Registry) or there's an error in the `message_by_lua_functions`, it will be forwarded to `dlq_topic` that can be processed later.
 	EnableDlq *bool `default:"null" json:"enable_dlq"`
+	// When true, 'latest' offset reset behaves correctly (starts from end). When false (default), maintains backwards compatibility where 'latest' acts like 'earliest'.
+	EnforceLatestOffsetReset *bool `default:"false" json:"enforce_latest_offset_reset"`
 	// The Lua functions that manipulates the message being sent to the client.
 	MessageByLuaFunctions []string `json:"message_by_lua_functions"`
 	// The deserializer to use for the consumed messages.
@@ -1382,6 +1393,13 @@ func (k *KafkaConsumePluginConfig) GetEnableDlq() *bool {
 		return nil
 	}
 	return k.EnableDlq
+}
+
+func (k *KafkaConsumePluginConfig) GetEnforceLatestOffsetReset() *bool {
+	if k == nil {
+		return nil
+	}
+	return k.EnforceLatestOffsetReset
 }
 
 func (k *KafkaConsumePluginConfig) GetMessageByLuaFunctions() []string {

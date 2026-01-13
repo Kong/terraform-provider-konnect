@@ -78,8 +78,8 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 					"auto_offset_reset": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString(`latest`),
-						Description: `The offset to start from when there is no initial offset in the consumer group. Default: "latest"; must be one of ["earliest", "latest"]`,
+						Default:     stringdefault.StaticString(`earliest`),
+						Description: `The offset to start from when there is no initial offset in the consumer group. Default: "earliest"; must be one of ["earliest", "latest"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"earliest",
@@ -154,6 +154,12 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 					"enable_dlq": schema.BoolAttribute{
 						Optional:    true,
 						Description: `Enables Dead Letter Queue. When enabled, if the message doesn't conform to the schema (from Schema Registry) or there's an error in the ` + "`" + `message_by_lua_functions` + "`" + `, it will be forwarded to ` + "`" + `dlq_topic` + "`" + ` that can be processed later.`,
+					},
+					"enforce_latest_offset_reset": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `When true, 'latest' offset reset behaves correctly (starts from end). When false (default), maintains backwards compatibility where 'latest' acts like 'earliest'. Default: false`,
 					},
 					"keepalive": schema.Int64Attribute{
 						Computed:    true,
@@ -590,6 +596,21 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 							},
 						},
 						Description: `The plugin-global schema registry configuration.`,
+					},
+					"security": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"ssl_verify": types.BoolType,
+						})),
+						Attributes: map[string]schema.Attribute{
+							"ssl_verify": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Enables verification of the certificate presented by the server. Default: false`,
+							},
+						},
 					},
 					"timeout": schema.Int64Attribute{
 						Computed:    true,

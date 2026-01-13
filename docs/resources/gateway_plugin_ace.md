@@ -19,6 +19,20 @@ resource "konnect_gateway_plugin_ace" "my_gatewaypluginace" {
     match_policy = "required"
     rate_limiting = {
       redis = {
+        cloud_authentication = {
+          auth_provider            = "azure"
+          aws_access_key_id        = "...my_aws_access_key_id..."
+          aws_assume_role_arn      = "...my_aws_assume_role_arn..."
+          aws_cache_name           = "...my_aws_cache_name..."
+          aws_is_serverless        = false
+          aws_region               = "...my_aws_region..."
+          aws_role_session_name    = "...my_aws_role_session_name..."
+          aws_secret_access_key    = "...my_aws_secret_access_key..."
+          azure_client_id          = "...my_azure_client_id..."
+          azure_client_secret      = "...my_azure_client_secret..."
+          azure_tenant_id          = "...my_azure_tenant_id..."
+          gcp_service_account_json = "...my_gcp_service_account_json..."
+        }
         cluster_max_redirections = 10
         cluster_nodes = [
           {
@@ -121,8 +135,8 @@ resource "konnect_gateway_plugin_ace" "my_gatewaypluginace" {
 
 Optional:
 
-- `anonymous` (String)
-- `match_policy` (String) Default: "if_present"; must be one of ["if_present", "required"]
+- `anonymous` (String) An optional string (consumer UUID or username) value to use as an `anonymous` consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`. When set, the plugin will skip ACE processing for requests that are already authenticated by other plugins with higher priority.
+- `match_policy` (String) Determines how the ACE plugin will behave when a request doesn't match an existing operation from an API or API package in Dev Portal. The `required` setting requires every incoming request to match a defined operation. If a request doesn't match, ACE rejects the request outright with a 404. The `if_present` setting makes the ACE plugin only engage with a request when it matches an operation, allowing a request to still be processed by other plugins with a lower priority than ACE. Default: "if_present"; must be one of ["if_present", "required"]
 - `rate_limiting` (Attributes) (see [below for nested schema](#nestedatt--config--rate_limiting))
 
 <a id="nestedatt--config--rate_limiting"></a>
@@ -131,13 +145,14 @@ Optional:
 Optional:
 
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--rate_limiting--redis))
-- `sync_rate` (Number)
+- `sync_rate` (Number) How often to sync counter data to the central data store. A value of 0 results in synchronous behavior (counter synchronization happens in each request's context and contributes directly to the latency of the request). A value greater than 0 results in asynchronous behavior and specifies the interval (in seconds) for synchronizing counters. The minimum allowed interval is 0.02 seconds (20ms). If omitted, the plugin ignores sync behavior entirely and only stores counters in node memory.
 
 <a id="nestedatt--config--rate_limiting--redis"></a>
 ### Nested Schema for `config.rate_limiting.redis`
 
 Optional:
 
+- `cloud_authentication` (Attributes) Cloud auth related configs for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--config--rate_limiting--redis--cloud_authentication))
 - `cluster_max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
 - `cluster_nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--rate_limiting--redis--cluster_nodes))
 - `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
@@ -159,6 +174,25 @@ Optional:
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
 - `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: false
 - `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+
+<a id="nestedatt--config--rate_limiting--redis--cloud_authentication"></a>
+### Nested Schema for `config.rate_limiting.redis.cloud_authentication`
+
+Optional:
+
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]
+- `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
+- `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+- `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
+- `aws_is_serverless` (Boolean) This flag specifies whether the cluster is serverless when auth_provider is set to `aws`. Default: true
+- `aws_region` (String) The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
+- `aws_role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
+- `aws_secret_access_key` (String) AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
+- `azure_client_id` (String) Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
+- `azure_client_secret` (String) Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
+- `azure_tenant_id` (String) Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
+- `gcp_service_account_json` (String) GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+
 
 <a id="nestedatt--config--rate_limiting--redis--cluster_nodes"></a>
 ### Nested Schema for `config.rate_limiting.redis.cluster_nodes`

@@ -169,6 +169,159 @@ func (u *UpstreamOauthPluginMemory) GetDictionaryName() *string {
 	return u.DictionaryName
 }
 
+// UpstreamOauthPluginAuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+type UpstreamOauthPluginAuthProvider string
+
+const (
+	UpstreamOauthPluginAuthProviderAws   UpstreamOauthPluginAuthProvider = "aws"
+	UpstreamOauthPluginAuthProviderAzure UpstreamOauthPluginAuthProvider = "azure"
+	UpstreamOauthPluginAuthProviderGcp   UpstreamOauthPluginAuthProvider = "gcp"
+)
+
+func (e UpstreamOauthPluginAuthProvider) ToPointer() *UpstreamOauthPluginAuthProvider {
+	return &e
+}
+func (e *UpstreamOauthPluginAuthProvider) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "aws":
+		fallthrough
+	case "azure":
+		fallthrough
+	case "gcp":
+		*e = UpstreamOauthPluginAuthProvider(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for UpstreamOauthPluginAuthProvider: %v", v)
+	}
+}
+
+// UpstreamOauthPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+type UpstreamOauthPluginCloudAuthentication struct {
+	// Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+	AuthProvider *UpstreamOauthPluginAuthProvider `json:"auth_provider,omitempty"`
+	// AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
+	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
+	// The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
+	// The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
+	AwsCacheName *string `default:"null" json:"aws_cache_name"`
+	// This flag specifies whether the cluster is serverless when auth_provider is set to `aws`.
+	AwsIsServerless *bool `default:"true" json:"aws_is_serverless"`
+	// The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
+	AwsRegion *string `default:"null" json:"aws_region"`
+	// The session name for the temporary credentials when assuming the IAM role.
+	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
+	// AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
+	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
+	// Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientID *string `default:"null" json:"azure_client_id"`
+	// Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
+	// Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
+	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+}
+
+func (u UpstreamOauthPluginCloudAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamOauthPluginCloudAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (u *UpstreamOauthPluginCloudAuthentication) GetAuthProvider() *UpstreamOauthPluginAuthProvider {
+	if u == nil {
+		return nil
+	}
+	return u.AuthProvider
+}
+
+func (u *UpstreamOauthPluginCloudAuthentication) GetAwsAccessKeyID() *string {
+	if u == nil {
+		return nil
+	}
+	return u.AwsAccessKeyID
+}
+
+func (u *UpstreamOauthPluginCloudAuthentication) GetAwsAssumeRoleArn() *string {
+	if u == nil {
+		return nil
+	}
+	return u.AwsAssumeRoleArn
+}
+
+func (u *UpstreamOauthPluginCloudAuthentication) GetAwsCacheName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.AwsCacheName
+}
+
+func (u *UpstreamOauthPluginCloudAuthentication) GetAwsIsServerless() *bool {
+	if u == nil {
+		return nil
+	}
+	return u.AwsIsServerless
+}
+
+func (u *UpstreamOauthPluginCloudAuthentication) GetAwsRegion() *string {
+	if u == nil {
+		return nil
+	}
+	return u.AwsRegion
+}
+
+func (u *UpstreamOauthPluginCloudAuthentication) GetAwsRoleSessionName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.AwsRoleSessionName
+}
+
+func (u *UpstreamOauthPluginCloudAuthentication) GetAwsSecretAccessKey() *string {
+	if u == nil {
+		return nil
+	}
+	return u.AwsSecretAccessKey
+}
+
+func (u *UpstreamOauthPluginCloudAuthentication) GetAzureClientID() *string {
+	if u == nil {
+		return nil
+	}
+	return u.AzureClientID
+}
+
+func (u *UpstreamOauthPluginCloudAuthentication) GetAzureClientSecret() *string {
+	if u == nil {
+		return nil
+	}
+	return u.AzureClientSecret
+}
+
+func (u *UpstreamOauthPluginCloudAuthentication) GetAzureTenantID() *string {
+	if u == nil {
+		return nil
+	}
+	return u.AzureTenantID
+}
+
+func (u *UpstreamOauthPluginCloudAuthentication) GetGcpServiceAccountJSON() *string {
+	if u == nil {
+		return nil
+	}
+	return u.GcpServiceAccountJSON
+}
+
 type UpstreamOauthPluginClusterNodes struct {
 	// A string representing a host name, such as example.com.
 	IP *string `default:"127.0.0.1" json:"ip"`
@@ -264,6 +417,8 @@ func (e *UpstreamOauthPluginSentinelRole) UnmarshalJSON(data []byte) error {
 }
 
 type UpstreamOauthPluginRedis struct {
+	// Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+	CloudAuthentication *UpstreamOauthPluginCloudAuthentication `json:"cloud_authentication"`
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
@@ -317,6 +472,13 @@ func (u *UpstreamOauthPluginRedis) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (u *UpstreamOauthPluginRedis) GetCloudAuthentication() *UpstreamOauthPluginCloudAuthentication {
+	if u == nil {
+		return nil
+	}
+	return u.CloudAuthentication
 }
 
 func (u *UpstreamOauthPluginRedis) GetClusterMaxRedirections() *int64 {

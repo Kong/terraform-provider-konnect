@@ -78,7 +78,81 @@ func (a *AiMcpProxyPluginPartials) GetPath() *string {
 	return a.Path
 }
 
+// ConsumerIdentifier - Which subject type entries in ACL lists refer to for per-consumer matching.
+type ConsumerIdentifier string
+
+const (
+	ConsumerIdentifierConsumerID ConsumerIdentifier = "consumer_id"
+	ConsumerIdentifierCustomID   ConsumerIdentifier = "custom_id"
+	ConsumerIdentifierUsername   ConsumerIdentifier = "username"
+)
+
+func (e ConsumerIdentifier) ToPointer() *ConsumerIdentifier {
+	return &e
+}
+func (e *ConsumerIdentifier) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "consumer_id":
+		fallthrough
+	case "custom_id":
+		fallthrough
+	case "username":
+		*e = ConsumerIdentifier(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ConsumerIdentifier: %v", v)
+	}
+}
+
+// DefaultACL - Default ACL entry for the given scope. `deny` has higher precedence than `allow`.
+type DefaultACL struct {
+	// Subjects explicitly allowed to access this scope. If `include_consumer_groups` is true, Consumer Group names are allowed here.
+	Allow []string `json:"allow"`
+	// Subjects explicitly denied from this scope. `deny` takes precedence over `allow`. If `include_consumer_groups` is true, Consumer Group names are allowed here.
+	Deny []string `json:"deny"`
+	// Scope for this default ACL entry (for example: 'tools'). Defaults to 'tools'.
+	Scope *string `default:"tools" json:"scope"`
+}
+
+func (d DefaultACL) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DefaultACL) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *DefaultACL) GetAllow() []string {
+	if d == nil {
+		return nil
+	}
+	return d.Allow
+}
+
+func (d *DefaultACL) GetDeny() []string {
+	if d == nil {
+		return nil
+	}
+	return d.Deny
+}
+
+func (d *DefaultACL) GetScope() *string {
+	if d == nil {
+		return nil
+	}
+	return d.Scope
+}
+
 type Logging struct {
+	// If true, emit audit logs for ACL evaluations.
+	LogAudits *bool `default:"false" json:"log_audits"`
 	// If enabled, will log the request and response body into the Kong log plugin(s) output.
 	LogPayloads *bool `default:"false" json:"log_payloads"`
 	// If enabled, will add mcp metrics into the Kong log plugin(s) output.
@@ -94,6 +168,13 @@ func (l *Logging) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (l *Logging) GetLogAudits() *bool {
+	if l == nil {
+		return nil
+	}
+	return l.LogAudits
 }
 
 func (l *Logging) GetLogPayloads() *bool {
@@ -182,6 +263,28 @@ func (s *Server) GetTimeout() *float64 {
 		return nil
 	}
 	return s.Timeout
+}
+
+// AiMcpProxyPluginACL - Optional per-primitive ACL. `deny` has higher precedence than `allow`.
+type AiMcpProxyPluginACL struct {
+	// Subjects explicitly allowed to use this primitive. If `include_consumer_groups` is true, Consumer Group names are allowed here.
+	Allow []string `json:"allow"`
+	// Subjects explicitly denied from using this primitive. `deny` takes precedence over `allow`. If `include_consumer_groups` is true, Consumer Group names are allowed here.
+	Deny []string `json:"deny"`
+}
+
+func (a *AiMcpProxyPluginACL) GetAllow() []string {
+	if a == nil {
+		return nil
+	}
+	return a.Allow
+}
+
+func (a *AiMcpProxyPluginACL) GetDeny() []string {
+	if a == nil {
+		return nil
+	}
+	return a.Deny
 }
 
 type Annotations struct {
@@ -291,11 +394,23 @@ func (s *Schema) GetType() *string {
 }
 
 type Parameters struct {
-	Name        *string `json:"name,omitempty"`
-	In          *string `json:"in,omitempty"`
-	Required    *bool   `json:"required,omitempty"`
-	Schema      *Schema `json:"schema,omitempty"`
-	Description *string `json:"description,omitempty"`
+	Name                 *string `json:"name,omitempty"`
+	In                   *string `json:"in,omitempty"`
+	Required             *bool   `json:"required,omitempty"`
+	Schema               *Schema `json:"schema,omitempty"`
+	Description          *string `json:"description,omitempty"`
+	AdditionalProperties any     `additionalProperties:"true" json:"-"`
+}
+
+func (p Parameters) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *Parameters) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *Parameters) GetName() *string {
@@ -333,6 +448,13 @@ func (p *Parameters) GetDescription() *string {
 	return p.Description
 }
 
+func (p *Parameters) GetAdditionalProperties() any {
+	if p == nil {
+		return nil
+	}
+	return p.AdditionalProperties
+}
+
 // Scheme - The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it.
 type Scheme string
 
@@ -361,7 +483,9 @@ func (e *Scheme) UnmarshalJSON(data []byte) error {
 }
 
 type Tools struct {
-	Annotations *Annotations `json:"annotations"`
+	// Optional per-primitive ACL. `deny` has higher precedence than `allow`.
+	ACL         *AiMcpProxyPluginACL `json:"acl"`
+	Annotations *Annotations         `json:"annotations"`
 	// The description of the MCP tool. This is used to provide information about the tool's functionality and usage.
 	Description string `json:"description"`
 	// The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.
@@ -370,6 +494,8 @@ type Tools struct {
 	Host *string `default:"null" json:"host"`
 	// The method of the exported API. By default, Kong will extract the method from API configuration. If the configured method is not exactly matched, this field is required.
 	Method *AiMcpProxyPluginMethod `json:"method,omitempty"`
+	// Tool identifier. In passthrough-listener mode, used to match remote MCP Server tools for ACL enforcement. In other modes, it is also used as the tool name (overrides tools.annotations.title if present).
+	Name *string `default:"null" json:"name"`
 	// The API parameters specification defined in OpenAPI. For example, '[{"name": "city", "in": "query", "description": "Name of the city to get the weather for", "required": true, "schema": {"type": "string"}}]'.See https://swagger.io/docs/specification/v3_0/describing-parameters/ for more details.
 	Parameters []Parameters `json:"parameters,omitempty"`
 	// The path of the exported API. By default, Kong will extract the path from API configuration. If the configured path is not exactly matched, this field is required. Paths not starting with '/' are treated as relative paths.
@@ -377,7 +503,9 @@ type Tools struct {
 	// The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.
 	Query map[string][]string `json:"query,omitempty"`
 	// The API requestBody specification defined in OpenAPI. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details.
-	RequestBody *string `default:"null" json:"request_body"`
+	RequestBody map[string]any `json:"request_body,omitempty"`
+	// The API responses specification defined in OpenAPI. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details.Only one non-error (status code < 400) responses are supported.
+	Responses map[string]any `json:"responses,omitempty"`
 	// The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it.
 	Scheme *Scheme `json:"scheme,omitempty"`
 }
@@ -391,6 +519,13 @@ func (t *Tools) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (t *Tools) GetACL() *AiMcpProxyPluginACL {
+	if t == nil {
+		return nil
+	}
+	return t.ACL
 }
 
 func (t *Tools) GetAnnotations() *Annotations {
@@ -428,6 +563,13 @@ func (t *Tools) GetMethod() *AiMcpProxyPluginMethod {
 	return t.Method
 }
 
+func (t *Tools) GetName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Name
+}
+
 func (t *Tools) GetParameters() []Parameters {
 	if t == nil {
 		return nil
@@ -449,11 +591,18 @@ func (t *Tools) GetQuery() map[string][]string {
 	return t.Query
 }
 
-func (t *Tools) GetRequestBody() *string {
+func (t *Tools) GetRequestBody() map[string]any {
 	if t == nil {
 		return nil
 	}
 	return t.RequestBody
+}
+
+func (t *Tools) GetResponses() map[string]any {
+	if t == nil {
+		return nil
+	}
+	return t.Responses
 }
 
 func (t *Tools) GetScheme() *Scheme {
@@ -464,9 +613,15 @@ func (t *Tools) GetScheme() *Scheme {
 }
 
 type AiMcpProxyPluginConfig struct {
-	Logging *Logging `json:"logging,omitempty"`
-	// max allowed body size allowed to be handled as MCP request.
-	MaxRequestBodySize *int64 `default:"8192" json:"max_request_body_size"`
+	// Which subject type entries in ACL lists refer to for per-consumer matching.
+	ConsumerIdentifier *ConsumerIdentifier `default:"username" json:"consumer_identifier"`
+	// Optional list of default ACL rules keyed by scope (for example: tools).
+	DefaultACL []DefaultACL `json:"default_acl"`
+	// If enabled (true), allows Consumer Group names to be used in default and per-primitive ACL.
+	IncludeConsumerGroups *bool    `default:"false" json:"include_consumer_groups"`
+	Logging               *Logging `json:"logging,omitempty"`
+	// max allowed body size allowed to be handled as MCP request. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
+	MaxRequestBodySize *int64 `default:"1048576" json:"max_request_body_size"`
 	// The mode of the MCP proxy. Possible values are: 'passthrough-listener', 'conversion-listener', 'conversion-only', 'listener'.
 	Mode   Mode    `json:"mode"`
 	Server *Server `json:"server"`
@@ -482,6 +637,27 @@ func (a *AiMcpProxyPluginConfig) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AiMcpProxyPluginConfig) GetConsumerIdentifier() *ConsumerIdentifier {
+	if a == nil {
+		return nil
+	}
+	return a.ConsumerIdentifier
+}
+
+func (a *AiMcpProxyPluginConfig) GetDefaultACL() []DefaultACL {
+	if a == nil {
+		return nil
+	}
+	return a.DefaultACL
+}
+
+func (a *AiMcpProxyPluginConfig) GetIncludeConsumerGroups() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.IncludeConsumerGroups
 }
 
 func (a *AiMcpProxyPluginConfig) GetLogging() *Logging {

@@ -7,22 +7,24 @@ import (
 )
 
 type ConfluentConsumePluginConfig struct {
-	AutoOffsetReset         types.String                          `tfsdk:"auto_offset_reset"`
-	BootstrapServers        []BootstrapServers                    `tfsdk:"bootstrap_servers"`
-	ClusterAPIKey           types.String                          `tfsdk:"cluster_api_key"`
-	ClusterAPISecret        types.String                          `tfsdk:"cluster_api_secret"`
-	ClusterName             types.String                          `tfsdk:"cluster_name"`
-	CommitStrategy          types.String                          `tfsdk:"commit_strategy"`
-	ConfluentCloudAPIKey    types.String                          `tfsdk:"confluent_cloud_api_key"`
-	ConfluentCloudAPISecret types.String                          `tfsdk:"confluent_cloud_api_secret"`
-	DlqTopic                types.String                          `tfsdk:"dlq_topic"`
-	EnableDlq               types.Bool                            `tfsdk:"enable_dlq"`
-	Keepalive               types.Int64                           `tfsdk:"keepalive"`
-	KeepaliveEnabled        types.Bool                            `tfsdk:"keepalive_enabled"`
-	MessageByLuaFunctions   []types.String                        `tfsdk:"message_by_lua_functions"`
-	MessageDeserializer     types.String                          `tfsdk:"message_deserializer"`
-	Mode                    types.String                          `tfsdk:"mode"`
-	SchemaRegistry          *ConfluentConsumePluginSchemaRegistry `tfsdk:"schema_registry"`
-	Timeout                 types.Int64                           `tfsdk:"timeout"`
-	Topics                  []Topics                              `tfsdk:"topics"`
+	AutoOffsetReset          types.String                          `tfsdk:"auto_offset_reset"`
+	BootstrapServers         []BootstrapServers                    `tfsdk:"bootstrap_servers"`
+	ClusterAPIKey            types.String                          `tfsdk:"cluster_api_key"`
+	ClusterAPISecret         types.String                          `tfsdk:"cluster_api_secret"`
+	ClusterName              types.String                          `tfsdk:"cluster_name"`
+	CommitStrategy           types.String                          `tfsdk:"commit_strategy"`
+	ConfluentCloudAPIKey     types.String                          `tfsdk:"confluent_cloud_api_key"`
+	ConfluentCloudAPISecret  types.String                          `tfsdk:"confluent_cloud_api_secret"`
+	DlqTopic                 types.String                          `tfsdk:"dlq_topic"`
+	EnableDlq                types.Bool                            `tfsdk:"enable_dlq"`
+	EnforceLatestOffsetReset types.Bool                            `tfsdk:"enforce_latest_offset_reset"`
+	Keepalive                types.Int64                           `tfsdk:"keepalive"`
+	KeepaliveEnabled         types.Bool                            `tfsdk:"keepalive_enabled"`
+	MessageByLuaFunctions    []types.String                        `tfsdk:"message_by_lua_functions"`
+	MessageDeserializer      types.String                          `tfsdk:"message_deserializer"`
+	Mode                     types.String                          `tfsdk:"mode"`
+	SchemaRegistry           *ConfluentConsumePluginSchemaRegistry `tfsdk:"schema_registry"`
+	Security                 *ConfluentPluginSecurity              `tfsdk:"security"`
+	Timeout                  types.Int64                           `tfsdk:"timeout"`
+	Topics                   []Topics                              `tfsdk:"topics"`
 }

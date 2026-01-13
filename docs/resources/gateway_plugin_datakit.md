@@ -18,14 +18,16 @@ resource "konnect_gateway_plugin_datakit" "my_gatewayplugindatakit" {
     debug = false
     nodes = [
       {
-        jq = {
-          input = "...my_input..."
-          inputs = {
-            key = "value"
-          }
-          jq     = "...my_jq..."
-          name   = "...my_name..."
-          output = "...my_output..."
+        xml_to_json = {
+          attributes_block_name  = "...my_attributes_block_name..."
+          attributes_name_prefix = "...my_attributes_name_prefix..."
+          input                  = "...my_input..."
+          name                   = "...my_name..."
+          output                 = "...my_output..."
+          recognize_type         = true
+          text_as_property       = true
+          text_block_name        = "...my_text_block_name..."
+          xpath                  = "...my_xpath..."
         }
       }
     ]
@@ -35,6 +37,20 @@ resource "konnect_gateway_plugin_datakit" "my_gatewayplugindatakit" {
           dictionary_name = "...my_dictionary_name..."
         }
         redis = {
+          cloud_authentication = {
+            auth_provider            = "gcp"
+            aws_access_key_id        = "...my_aws_access_key_id..."
+            aws_assume_role_arn      = "...my_aws_assume_role_arn..."
+            aws_cache_name           = "...my_aws_cache_name..."
+            aws_is_serverless        = false
+            aws_region               = "...my_aws_region..."
+            aws_role_session_name    = "...my_aws_role_session_name..."
+            aws_secret_access_key    = "...my_aws_secret_access_key..."
+            azure_client_id          = "...my_azure_client_id..."
+            azure_client_secret      = "...my_azure_client_secret..."
+            azure_tenant_id          = "...my_azure_tenant_id..."
+            gcp_service_account_json = "...my_gcp_service_account_json..."
+          }
           cluster_max_redirections = 10
           cluster_nodes = [
             {
@@ -166,8 +182,10 @@ Optional:
 - `call` (Attributes) Make an external HTTP request (see [below for nested schema](#nestedatt--config--nodes--call))
 - `exit` (Attributes) Terminate the request and send a response to the client (see [below for nested schema](#nestedatt--config--nodes--exit))
 - `jq` (Attributes) Process data using `jq` syntax (see [below for nested schema](#nestedatt--config--nodes--jq))
+- `json_to_xml` (Attributes) transform JSON or lua table to XML (see [below for nested schema](#nestedatt--config--nodes--json_to_xml))
 - `property` (Attributes) Get or set a property (see [below for nested schema](#nestedatt--config--nodes--property))
 - `static` (Attributes) Produce reusable outputs from statically-configured values (see [below for nested schema](#nestedatt--config--nodes--static))
+- `xml_to_json` (Attributes) convert XML to JSON (see [below for nested schema](#nestedatt--config--nodes--xml_to_json))
 
 <a id="nestedatt--config--nodes--branch"></a>
 ### Nested Schema for `config.nodes.branch`
@@ -238,8 +256,9 @@ Optional:
 - `output` (String) call node output
 - `outputs` (Attributes) call node outputs (see [below for nested schema](#nestedatt--config--nodes--call--outputs))
 - `ssl_server_name` (String) A string representing an SNI (server name indication) value for TLS.
+- `ssl_verify` (Boolean) Whether to verify the TLS certificate when making HTTPS requests.
 - `timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-- `url` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search. Not Null
+- `url` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
 
 <a id="nestedatt--config--nodes--call--inputs"></a>
 ### Nested Schema for `config.nodes.call.inputs`
@@ -248,7 +267,12 @@ Optional:
 
 - `body` (String) HTTP request body
 - `headers` (String) HTTP request headers
+- `http_proxy` (String) The HTTP proxy URL. This proxy server will be used for HTTP requests.
+- `https_proxy` (String) The HTTPS proxy URL. This proxy server will be used for HTTPS requests.
+- `proxy_auth_password` (String) The password to authenticate with, if the forward proxy is protected by basic authentication.
+- `proxy_auth_username` (String) The username to authenticate with, if the forward proxy is protected by basic authentication.
 - `query` (String) HTTP request query
+- `url` (String) HTTP request URL
 
 
 <a id="nestedatt--config--nodes--call--outputs"></a>
@@ -295,6 +319,21 @@ Optional:
 - `output` (String) filter output(s)
 
 
+<a id="nestedatt--config--nodes--json_to_xml"></a>
+### Nested Schema for `config.nodes.json_to_xml`
+
+Optional:
+
+- `attributes_block_name` (String)
+- `attributes_name_prefix` (String)
+- `input` (String) JSON string or table
+- `inputs` (Map of String) JSON string or table
+- `name` (String) A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+- `output` (String) XML document converted from JSON
+- `root_element_name` (String)
+- `text_block_name` (String) The name of the block to treat as XML text content. Default: "#text"
+
+
 <a id="nestedatt--config--nodes--property"></a>
 ### Nested Schema for `config.nodes.property`
 
@@ -315,7 +354,23 @@ Optional:
 - `name` (String) A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
 - `output` (String) The entire `.values` map
 - `outputs` (Map of String) Individual items from `.values`, referenced by key
-- `values` (String) An object with string keys and freeform values. Not Null
+- `values` (Map of String) An object with string keys and freeform values
+
+
+<a id="nestedatt--config--nodes--xml_to_json"></a>
+### Nested Schema for `config.nodes.xml_to_json`
+
+Optional:
+
+- `attributes_block_name` (String)
+- `attributes_name_prefix` (String)
+- `input` (String) XML document string
+- `name` (String) A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+- `output` (String) a map object converted from XML document. If connected to `request.body` or `response.body`, the output will be a JSON object.
+- `recognize_type` (Boolean) Default: true
+- `text_as_property` (Boolean) Default: false
+- `text_block_name` (String) Default: "#text"
+- `xpath` (String)
 
 
 
@@ -349,6 +404,7 @@ Optional:
 
 Optional:
 
+- `cloud_authentication` (Attributes) Cloud auth related configs for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--config--resources--cache--redis--cloud_authentication))
 - `cluster_max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
 - `cluster_nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--resources--cache--redis--cluster_nodes))
 - `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
@@ -370,6 +426,25 @@ Optional:
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
 - `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: false
 - `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+
+<a id="nestedatt--config--resources--cache--redis--cloud_authentication"></a>
+### Nested Schema for `config.resources.cache.redis.cloud_authentication`
+
+Optional:
+
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]
+- `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
+- `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+- `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
+- `aws_is_serverless` (Boolean) This flag specifies whether the cluster is serverless when auth_provider is set to `aws`. Default: true
+- `aws_region` (String) The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
+- `aws_role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
+- `aws_secret_access_key` (String) AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
+- `azure_client_id` (String) Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
+- `azure_client_secret` (String) Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
+- `azure_tenant_id` (String) Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
+- `gcp_service_account_json` (String) GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+
 
 <a id="nestedatt--config--resources--cache--redis--cluster_nodes"></a>
 ### Nested Schema for `config.resources.cache.redis.cluster_nodes`

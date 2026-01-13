@@ -21,6 +21,7 @@ type AiAzureContentSafetyPluginConfig struct {
 	OutputType              types.String   `tfsdk:"output_type"`
 	ResponseBufferSize      types.Float64  `tfsdk:"response_buffer_size"`
 	RevealFailureReason     types.Bool     `tfsdk:"reveal_failure_reason"`
+	SslVerify               types.Bool     `tfsdk:"ssl_verify"`
 	StopOnError             types.Bool     `tfsdk:"stop_on_error"`
 	TextSource              types.String   `tfsdk:"text_source"`
 }
