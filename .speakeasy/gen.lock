@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 39b462319aef9cfb46c164f265d7ef6d
+  docChecksum: c2112bf8a6e955cc06c3b64a0b7b924e
   docVersion: 2.0.0
   speakeasyVersion: 1.665.0
   generationVersion: 2.767.2
@@ -13795,7 +13795,7 @@ examples:
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"data": "data:image/png;base64,YW5faW1hZ2VfZmlsZQ=="}
+          application/json: {"data": "data:image/png,YW5faW1hZ2VfZmlsZQ=="}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -13809,7 +13809,7 @@ examples:
         application/json: {"data": "data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU="}
       responses:
         "200":
-          application/json: {"data": "data:image/png;base64,YW5faW1hZ2VfZmlsZQ=="}
+          application/json: {"data": "data:image/png,YW5faW1hZ2VfZmlsZQ=="}
         "400":
           application/problem+json: {"status": 62395, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": [], "source": "body"}]}
         "401":
@@ -13823,7 +13823,7 @@ examples:
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"data": "data:image/png;base64,YW5faW1hZ2VfZmlsZQ=="}
+          application/json: {"data": "data:image/png,YW5faW1hZ2VfZmlsZQ=="}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -13837,7 +13837,7 @@ examples:
         application/json: {"data": "data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU="}
       responses:
         "200":
-          application/json: {"data": "data:image/png;base64,YW5faW1hZ2VfZmlsZQ=="}
+          application/json: {"data": "data:image/png,YW5faW1hZ2VfZmlsZQ=="}
         "400":
           application/problem+json: {"status": 514959, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":

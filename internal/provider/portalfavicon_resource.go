@@ -45,10 +45,9 @@ func (r *PortalFaviconResource) Schema(ctx context.Context, req resource.SchemaR
 		MarkdownDescription: "PortalFavicon Resource",
 		Attributes: map[string]schema.Attribute{
 			"data": schema.StringAttribute{
-				Required:    true,
-				Description: `must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>`,
+				Required: true,
 				Validators: []validator.String{
-					stringvalidator.RegexMatches(regexp.MustCompile(`^data:image/(png|jpeg|svg\+xml|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$`), "must match pattern "+regexp.MustCompile(`^data:image/(png|jpeg|svg\+xml|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$`).String()),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^data:image/png(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$`), "must match pattern "+regexp.MustCompile(`^data:image/png(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$`).String()),
 				},
 			},
 			"portal_id": schema.StringAttribute{

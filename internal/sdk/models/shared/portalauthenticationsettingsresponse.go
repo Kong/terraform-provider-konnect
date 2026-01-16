@@ -64,7 +64,7 @@ type PortalAuthenticationSettingsResponse struct {
 	// Configuration properties for an OpenID Connect Identity Provider.
 	//
 	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
-	OidcConfig *PortalOIDCConfig `json:"oidc_config"`
+	OidcConfig *PortalOIDCConfig `json:"oidc_config,omitempty"`
 }
 
 func (p *PortalAuthenticationSettingsResponse) GetBasicAuthEnabled() bool {

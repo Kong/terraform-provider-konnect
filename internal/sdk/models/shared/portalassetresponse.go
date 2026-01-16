@@ -4,7 +4,6 @@ package shared
 
 // PortalAssetResponse - Image asset for the portal. Can be either png, jpeg or svg
 type PortalAssetResponse struct {
-	// must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>
 	Data string `json:"data"`
 }
 
