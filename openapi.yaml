@@ -15862,6 +15862,44 @@ paths:
       tags:
         - Portal Teams
   /v3/system-accounts:
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource:
+          - SystemAccount#read
+          - SystemAccountList#read
+      operationId: get-system-accounts
+      summary: List System Accounts
+      description: Returns an array of system accounts (SA) in the organization. Returns 400 if any filter parameters are invalid.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - name: filter
+          in: query
+          description: Filter system accounts returned in the response.
+          required: false
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/LegacyStringFieldFilter'
+              description:
+                $ref: '#/components/schemas/LegacyStringFieldFilter'
+              konnect_managed:
+                $ref: '#/components/schemas/BooleanFieldFilter'
+          style: deepObject
+      responses:
+        '200':
+          $ref: '#/components/responses/SystemAccountCollection'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - System Accounts
     post:
       x-speakeasy-entity-operation:
         terraform-resource: SystemAccount#create
@@ -16136,6 +16174,38 @@ paths:
       tags:
         - System Accounts - Roles
   /v3/teams:
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource:
+          - Team#read
+          - TeamList#read
+      operationId: list-teams
+      summary: List Teams
+      description: Returns an array of team objects containing information about the Konnect Teams.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - name: filter
+          in: query
+          description: Filter teams returned in the response.
+          required: false
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/LegacyStringFieldFilter'
+          style: deepObject
+      responses:
+        '200':
+          $ref: '#/components/responses/TeamCollection'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Teams
     post:
       x-speakeasy-entity-operation:
         terraform-resource: Team#create
@@ -16826,6 +16896,7 @@ components:
       schema:
         type: integer
         example: 1
+      x-speakeasy-terraform-ignore: true
     PageSize:
       name: 'page[size]'
       description: The maximum number of items to include per page. The last page of a collection may include fewer items.
@@ -16835,6 +16906,7 @@ components:
       schema:
         type: integer
         example: 100
+      x-speakeasy-terraform-ignore: true
     PartialId:
       description: ID of the Partial to lookup
       example: ''
@@ -21334,6 +21406,17 @@ components:
         expires_at: '2022-12-31T12:52:23Z'
         last_used_at: '2022-10-24T13:05:42Z'
       title: System Account Access Token
+    LegacyStringFieldFilter:
+      description: 'Filter using **one** of the following operators: `eq`, `contains`'
+      type: object
+      properties:
+        eq:
+          description: The field exactly matches the provided value.
+          type: string
+        contains:
+          description: The field contains the provided value.
+          type: string
+      additionalProperties: false
     ServerlessCloudGateway:
       x-speakeasy-entity: ServerlessCloudGateway
       description: A serverless cloud gateway
@@ -60369,6 +60452,23 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Team'
+    TeamCollection:
+      description: A paginated list response for a collection of users.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Team'
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+            title: Team Collection Response
     AssignedRoleSingle:
       description: A get action response of a single assigned role.
       content:
@@ -60405,6 +60505,23 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/NotFoundError'
+    SystemAccountCollection:
+      description: A paginated list response for a collection of system accounts.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SystemAccount'
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+            title: System Account Collection Response
     SystemAccountSingle:
       description: A response including a single system account.
       content:
