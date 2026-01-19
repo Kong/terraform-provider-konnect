@@ -29,10 +29,8 @@ type PortalClassicListDataSource struct {
 
 // PortalClassicListDataSourceModel describes the data model.
 type PortalClassicListDataSourceModel struct {
-	Data       []tfTypes.V2Portal `tfsdk:"data"`
-	PageNumber types.Int64        `queryParam:"style=form,explode=true,name=page[number]" tfsdk:"page_number"`
-	PageSize   types.Int64        `queryParam:"style=form,explode=true,name=page[size]" tfsdk:"page_size"`
-	Sort       types.String       `queryParam:"style=form,explode=true,name=sort" tfsdk:"sort"`
+	Data []tfTypes.V2Portal `tfsdk:"data"`
+	Sort types.String       `queryParam:"style=form,explode=true,name=sort" tfsdk:"sort"`
 }
 
 // Metadata returns the data source type name.
@@ -127,14 +125,6 @@ func (r *PortalClassicListDataSource) Schema(ctx context.Context, req datasource
 						},
 					},
 				},
-			},
-			"page_number": schema.Int64Attribute{
-				Optional:    true,
-				Description: `Determines which page of the entities to retrieve.`,
-			},
-			"page_size": schema.Int64Attribute{
-				Optional:    true,
-				Description: `The maximum number of items to include per page. The last page of a collection may include fewer items.`,
 			},
 			"sort": schema.StringAttribute{
 				Optional: true,

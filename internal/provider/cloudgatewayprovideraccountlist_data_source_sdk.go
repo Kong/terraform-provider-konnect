@@ -37,22 +37,7 @@ func (r *CloudGatewayProviderAccountListDataSourceModel) RefreshFromSharedListPr
 func (r *CloudGatewayProviderAccountListDataSourceModel) ToOperationsListProviderAccountsRequest(ctx context.Context) (*operations.ListProviderAccountsRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	pageSize := new(int64)
-	if !r.PageSize.IsUnknown() && !r.PageSize.IsNull() {
-		*pageSize = r.PageSize.ValueInt64()
-	} else {
-		pageSize = nil
-	}
-	pageNumber := new(int64)
-	if !r.PageNumber.IsUnknown() && !r.PageNumber.IsNull() {
-		*pageNumber = r.PageNumber.ValueInt64()
-	} else {
-		pageNumber = nil
-	}
-	out := operations.ListProviderAccountsRequest{
-		PageSize:   pageSize,
-		PageNumber: pageNumber,
-	}
+	out := operations.ListProviderAccountsRequest{}
 
 	return &out, diags
 }

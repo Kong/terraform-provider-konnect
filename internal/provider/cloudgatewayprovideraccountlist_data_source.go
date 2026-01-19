@@ -29,9 +29,7 @@ type CloudGatewayProviderAccountListDataSource struct {
 
 // CloudGatewayProviderAccountListDataSourceModel describes the data model.
 type CloudGatewayProviderAccountListDataSourceModel struct {
-	Data       []tfTypes.ProviderAccount `tfsdk:"data"`
-	PageNumber types.Int64               `queryParam:"style=form,explode=true,name=page[number]" tfsdk:"page_number"`
-	PageSize   types.Int64               `queryParam:"style=form,explode=true,name=page[size]" tfsdk:"page_size"`
+	Data []tfTypes.ProviderAccount `tfsdk:"data"`
 }
 
 // Metadata returns the data source type name.
@@ -70,14 +68,6 @@ func (r *CloudGatewayProviderAccountListDataSource) Schema(ctx context.Context, 
 						},
 					},
 				},
-			},
-			"page_number": schema.Int64Attribute{
-				Optional:    true,
-				Description: `Determines which page of the entities to retrieve.`,
-			},
-			"page_size": schema.Int64Attribute{
-				Optional:    true,
-				Description: `The maximum number of items to include per page. The last page of a collection may include fewer items.`,
 			},
 		},
 	}

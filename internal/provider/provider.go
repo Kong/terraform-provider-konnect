@@ -341,6 +341,10 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 		NewPlatformIPAddressesDataSource,
 		NewPortalDataSource,
 		NewPortalClassicListDataSource,
+		NewSystemAccountDataSource,
+		NewSystemAccountListDataSource,
+		NewTeamDataSource,
+		NewTeamListDataSource,
 	}
 }
 
