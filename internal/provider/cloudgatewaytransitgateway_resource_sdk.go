@@ -288,12 +288,12 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 			r.AzureTransitGatewayResponse.TransitGatewayAttachmentConfig.VnetName = types.StringValue(resp.AzureTransitGatewayResponse.TransitGatewayAttachmentConfig.VnetName)
 			r.AzureTransitGatewayResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AzureTransitGatewayResponse.UpdatedAt))
 		}
-		if resp.GCPVPCPeeringGatewayResponse != nil {
-			r.GCPVPCPeeringGatewayResponse = &tfTypes.GCPVPCPeeringGatewayResponse{}
-			r.GCPVPCPeeringGatewayResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.GCPVPCPeeringGatewayResponse.CreatedAt))
-			r.GCPVPCPeeringGatewayResponse.DNSConfig = []tfTypes.TransitGatewayDNSConfig{}
+		if resp.AzureVHubPeeringGatewayResponse != nil {
+			r.AzureVHubPeeringGatewayResponse = &tfTypes.AzureVHubPeeringGatewayResponse{}
+			r.AzureVHubPeeringGatewayResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AzureVHubPeeringGatewayResponse.CreatedAt))
+			r.AzureVHubPeeringGatewayResponse.DNSConfig = []tfTypes.TransitGatewayDNSConfig{}
 
-			for _, dnsConfigItem4 := range resp.GCPVPCPeeringGatewayResponse.DNSConfig {
+			for _, dnsConfigItem4 := range resp.AzureVHubPeeringGatewayResponse.DNSConfig {
 				var dnsConfig4 tfTypes.TransitGatewayDNSConfig
 
 				dnsConfig4.DomainProxyList = make([]types.String, 0, len(dnsConfigItem4.DomainProxyList))
@@ -305,7 +305,42 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 					dnsConfig4.RemoteDNSServerIPAddresses = append(dnsConfig4.RemoteDNSServerIPAddresses, types.StringValue(v))
 				}
 
-				r.GCPVPCPeeringGatewayResponse.DNSConfig = append(r.GCPVPCPeeringGatewayResponse.DNSConfig, dnsConfig4)
+				r.AzureVHubPeeringGatewayResponse.DNSConfig = append(r.AzureVHubPeeringGatewayResponse.DNSConfig, dnsConfig4)
+			}
+			r.AzureVHubPeeringGatewayResponse.EntityVersion = types.Int64Value(resp.AzureVHubPeeringGatewayResponse.EntityVersion)
+			r.EntityVersion = r.AzureVHubPeeringGatewayResponse.EntityVersion
+			r.AzureVHubPeeringGatewayResponse.ID = types.StringValue(resp.AzureVHubPeeringGatewayResponse.ID)
+			r.ID = r.AzureVHubPeeringGatewayResponse.ID
+			r.AzureVHubPeeringGatewayResponse.Name = types.StringValue(resp.AzureVHubPeeringGatewayResponse.Name)
+			r.Name = r.AzureVHubPeeringGatewayResponse.Name
+			r.AzureVHubPeeringGatewayResponse.State = types.StringValue(string(resp.AzureVHubPeeringGatewayResponse.State))
+			if resp.AzureVHubPeeringGatewayResponse.StateMetadata == nil {
+				r.AzureVHubPeeringGatewayResponse.StateMetadata = nil
+			} else {
+				r.AzureVHubPeeringGatewayResponse.StateMetadata = &tfTypes.CustomDomainStateMetadata{}
+				r.AzureVHubPeeringGatewayResponse.StateMetadata.Reason = types.StringPointerValue(resp.AzureVHubPeeringGatewayResponse.StateMetadata.Reason)
+				r.AzureVHubPeeringGatewayResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AzureVHubPeeringGatewayResponse.StateMetadata.ReportedStatus)
+			}
+			r.AzureVHubPeeringGatewayResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AzureVHubPeeringGatewayResponse.UpdatedAt))
+		}
+		if resp.GCPVPCPeeringGatewayResponse != nil {
+			r.GCPVPCPeeringGatewayResponse = &tfTypes.GCPVPCPeeringGatewayResponse{}
+			r.GCPVPCPeeringGatewayResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.GCPVPCPeeringGatewayResponse.CreatedAt))
+			r.GCPVPCPeeringGatewayResponse.DNSConfig = []tfTypes.TransitGatewayDNSConfig{}
+
+			for _, dnsConfigItem5 := range resp.GCPVPCPeeringGatewayResponse.DNSConfig {
+				var dnsConfig5 tfTypes.TransitGatewayDNSConfig
+
+				dnsConfig5.DomainProxyList = make([]types.String, 0, len(dnsConfigItem5.DomainProxyList))
+				for _, v := range dnsConfigItem5.DomainProxyList {
+					dnsConfig5.DomainProxyList = append(dnsConfig5.DomainProxyList, types.StringValue(v))
+				}
+				dnsConfig5.RemoteDNSServerIPAddresses = make([]types.String, 0, len(dnsConfigItem5.RemoteDNSServerIPAddresses))
+				for _, v := range dnsConfigItem5.RemoteDNSServerIPAddresses {
+					dnsConfig5.RemoteDNSServerIPAddresses = append(dnsConfig5.RemoteDNSServerIPAddresses, types.StringValue(v))
+				}
+
+				r.GCPVPCPeeringGatewayResponse.DNSConfig = append(r.GCPVPCPeeringGatewayResponse.DNSConfig, dnsConfig5)
 			}
 			r.GCPVPCPeeringGatewayResponse.EntityVersion = types.Int64Value(resp.GCPVPCPeeringGatewayResponse.EntityVersion)
 			r.EntityVersion = r.GCPVPCPeeringGatewayResponse.EntityVersion
@@ -619,24 +654,54 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 			AzureTransitGateway: azureTransitGateway,
 		}
 	}
-	var gcpVpcPeeringTransitGateway *shared.GcpVpcPeeringTransitGateway
-	if r.GcpVpcPeeringTransitGateway != nil {
+	var azureVHubPeeringGateway *shared.AzureVHubPeeringGateway
+	if r.AzureVHubPeeringGateway != nil {
 		var name4 string
-		name4 = r.GcpVpcPeeringTransitGateway.Name.ValueString()
+		name4 = r.AzureVHubPeeringGateway.Name.ValueString()
 
-		dnsConfig4 := make([]shared.TransitGatewayDNSConfig, 0, len(r.GcpVpcPeeringTransitGateway.DNSConfig))
-		for dnsConfigIndex4 := range r.GcpVpcPeeringTransitGateway.DNSConfig {
-			remoteDNSServerIPAddresses4 := make([]string, 0, len(r.GcpVpcPeeringTransitGateway.DNSConfig[dnsConfigIndex4].RemoteDNSServerIPAddresses))
-			for remoteDNSServerIPAddressesIndex4 := range r.GcpVpcPeeringTransitGateway.DNSConfig[dnsConfigIndex4].RemoteDNSServerIPAddresses {
-				remoteDNSServerIPAddresses4 = append(remoteDNSServerIPAddresses4, r.GcpVpcPeeringTransitGateway.DNSConfig[dnsConfigIndex4].RemoteDNSServerIPAddresses[remoteDNSServerIPAddressesIndex4].ValueString())
+		dnsConfig4 := make([]shared.TransitGatewayDNSConfig, 0, len(r.AzureVHubPeeringGateway.DNSConfig))
+		for dnsConfigIndex4 := range r.AzureVHubPeeringGateway.DNSConfig {
+			remoteDNSServerIPAddresses4 := make([]string, 0, len(r.AzureVHubPeeringGateway.DNSConfig[dnsConfigIndex4].RemoteDNSServerIPAddresses))
+			for remoteDNSServerIPAddressesIndex4 := range r.AzureVHubPeeringGateway.DNSConfig[dnsConfigIndex4].RemoteDNSServerIPAddresses {
+				remoteDNSServerIPAddresses4 = append(remoteDNSServerIPAddresses4, r.AzureVHubPeeringGateway.DNSConfig[dnsConfigIndex4].RemoteDNSServerIPAddresses[remoteDNSServerIPAddressesIndex4].ValueString())
 			}
-			domainProxyList4 := make([]string, 0, len(r.GcpVpcPeeringTransitGateway.DNSConfig[dnsConfigIndex4].DomainProxyList))
-			for domainProxyListIndex4 := range r.GcpVpcPeeringTransitGateway.DNSConfig[dnsConfigIndex4].DomainProxyList {
-				domainProxyList4 = append(domainProxyList4, r.GcpVpcPeeringTransitGateway.DNSConfig[dnsConfigIndex4].DomainProxyList[domainProxyListIndex4].ValueString())
+			domainProxyList4 := make([]string, 0, len(r.AzureVHubPeeringGateway.DNSConfig[dnsConfigIndex4].DomainProxyList))
+			for domainProxyListIndex4 := range r.AzureVHubPeeringGateway.DNSConfig[dnsConfigIndex4].DomainProxyList {
+				domainProxyList4 = append(domainProxyList4, r.AzureVHubPeeringGateway.DNSConfig[dnsConfigIndex4].DomainProxyList[domainProxyListIndex4].ValueString())
 			}
 			dnsConfig4 = append(dnsConfig4, shared.TransitGatewayDNSConfig{
 				RemoteDNSServerIPAddresses: remoteDNSServerIPAddresses4,
 				DomainProxyList:            domainProxyList4,
+			})
+		}
+		azureVHubPeeringGateway = &shared.AzureVHubPeeringGateway{
+			Name:      name4,
+			DNSConfig: dnsConfig4,
+		}
+	}
+	if azureVHubPeeringGateway != nil {
+		out = shared.CreateTransitGatewayRequest{
+			AzureVHubPeeringGateway: azureVHubPeeringGateway,
+		}
+	}
+	var gcpVpcPeeringTransitGateway *shared.GcpVpcPeeringTransitGateway
+	if r.GcpVpcPeeringTransitGateway != nil {
+		var name5 string
+		name5 = r.GcpVpcPeeringTransitGateway.Name.ValueString()
+
+		dnsConfig5 := make([]shared.TransitGatewayDNSConfig, 0, len(r.GcpVpcPeeringTransitGateway.DNSConfig))
+		for dnsConfigIndex5 := range r.GcpVpcPeeringTransitGateway.DNSConfig {
+			remoteDNSServerIPAddresses5 := make([]string, 0, len(r.GcpVpcPeeringTransitGateway.DNSConfig[dnsConfigIndex5].RemoteDNSServerIPAddresses))
+			for remoteDNSServerIPAddressesIndex5 := range r.GcpVpcPeeringTransitGateway.DNSConfig[dnsConfigIndex5].RemoteDNSServerIPAddresses {
+				remoteDNSServerIPAddresses5 = append(remoteDNSServerIPAddresses5, r.GcpVpcPeeringTransitGateway.DNSConfig[dnsConfigIndex5].RemoteDNSServerIPAddresses[remoteDNSServerIPAddressesIndex5].ValueString())
+			}
+			domainProxyList5 := make([]string, 0, len(r.GcpVpcPeeringTransitGateway.DNSConfig[dnsConfigIndex5].DomainProxyList))
+			for domainProxyListIndex5 := range r.GcpVpcPeeringTransitGateway.DNSConfig[dnsConfigIndex5].DomainProxyList {
+				domainProxyList5 = append(domainProxyList5, r.GcpVpcPeeringTransitGateway.DNSConfig[dnsConfigIndex5].DomainProxyList[domainProxyListIndex5].ValueString())
+			}
+			dnsConfig5 = append(dnsConfig5, shared.TransitGatewayDNSConfig{
+				RemoteDNSServerIPAddresses: remoteDNSServerIPAddresses5,
+				DomainProxyList:            domainProxyList5,
 			})
 		}
 		kind4 := shared.GCPVPCPeeringAttachmentType(r.GcpVpcPeeringTransitGateway.TransitGatewayAttachmentConfig.Kind.ValueString())
@@ -652,8 +717,8 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 			PeerVpcName:   peerVpcName,
 		}
 		gcpVpcPeeringTransitGateway = &shared.GcpVpcPeeringTransitGateway{
-			Name:                           name4,
-			DNSConfig:                      dnsConfig4,
+			Name:                           name5,
+			DNSConfig:                      dnsConfig5,
 			TransitGatewayAttachmentConfig: transitGatewayAttachmentConfig4,
 		}
 	}

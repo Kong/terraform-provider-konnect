@@ -423,7 +423,7 @@ Optional:
 
 Optional:
 
-- `data` (String) must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>. Not Null
+- `data` (String) Not Null
 - `filename` (String)
 
 
@@ -432,7 +432,7 @@ Optional:
 
 Optional:
 
-- `data` (String) must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>. Not Null
+- `data` (String) Not Null
 - `filename` (String)
 
 
@@ -441,7 +441,7 @@ Optional:
 
 Optional:
 
-- `data` (String) must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>. Not Null
+- `data` (String) Not Null
 - `filename` (String)
 
 

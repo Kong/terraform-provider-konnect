@@ -17759,6 +17759,7 @@ components:
       readOnly: true
       x-speakeasy-param-suppress-computed-diff: true
     NetworkId:
+      description: 'The network ID to operate on. For serverless.v1 kind of cloud gateways, this field should be omitted.'
       type: string
       format: uuid
       example: 36ae63d3-efd1-4bec-b246-62aa5d3f5695
@@ -17792,7 +17793,7 @@ components:
       title: Control-Plane Geo
       x-speakeasy-unknown-values: allow
     GatewayVersion:
-      description: Supported gateway version.
+      description: 'Supported gateway version. For serverless.v1 kind of cloud gateways, this field should be omitted.'
       type: string
       example: '3.2'
       title: Gateway Version
@@ -17833,7 +17834,7 @@ components:
         - $ref: '#/components/schemas/ConfigurationDataPlaneGroupAutoscaleStatic'
         - $ref: '#/components/schemas/ConfigurationDataPlaneGroupAutoscaleAutopilot'
     ConfigurationDataPlaneGroupAutoscaleStatic:
-      description: Object that describes the static autoscaling strategy. Deprecated in favor of the autopilot autoscaling strategy. Static autoscaling will be removed in a future version.
+      description: 'Object that describes the static autoscaling strategy. Deprecated in favor of the autopilot autoscaling strategy. Static autoscaling will be removed in a future version. For serverless.v1 kind of cloud gateways, this field should be omitted.'
       type: object
       properties:
         kind:
@@ -17854,7 +17855,7 @@ components:
         - requested_instances
       title: Configuration Autoscale Static
     ConfigurationDataPlaneGroupAutoscaleAutopilot:
-      description: Object that describes the autopilot autoscaling strategy.
+      description: 'Object that describes the autopilot autoscaling strategy. For serverless.v1 kind of cloud gateways, this field should be omitted.'
       type: object
       properties:
         kind:
@@ -17920,10 +17921,8 @@ components:
           $ref: '#/components/schemas/ConfigurationDataPlaneGroupEnvironment'
       additionalProperties: false
       required:
-        - autoscale
         - provider
         - region
-        - cloud_gateway_network_id
       title: Configuration Data-Plane Group Config Item
     ConfigurationDataPlaneGroup:
       description: Object that describes the set of data-plane groups currently pointed to this configuration.
@@ -18018,12 +18017,24 @@ components:
         - id
         - provider
         - region
-        - autoscale
-        - cloud_gateway_network_id
         - state
         - created_at
         - updated_at
       title: Cloud Gateway Configuration Data-Plane Group
+    ConfigurationKind:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Kind of the Cloud Gateway deployment. If serverless.v1 is specified, the following fields
+        should be omitted (will be ignored if provided): autoscale, cloud_gateway_network_id, version.
+      type: string
+      default: dedicated.v0
+      enum:
+        - dedicated.v0
+        - serverless.v1
+      title: ConfigurationKind
+      x-speakeasy-unknown-values: allow
     ConfigurationManifest:
       x-speakeasy-entity: CloudGatewayConfiguration
       description: Object containing information about a control-plane's cloud-gateways configuration.
@@ -18050,6 +18061,8 @@ components:
           items:
             $ref: '#/components/schemas/ConfigurationDataPlaneGroup'
           format: set
+        kind:
+          $ref: '#/components/schemas/ConfigurationKind'
         entity_version:
           description: |
             Positive, monotonically increasing version integer, to serialize configuration changes.
@@ -18079,7 +18092,6 @@ components:
         - id
         - control_plane_id
         - control_plane_geo
-        - version
         - dataplane_group_config
         - dataplane_groups
         - entity_version
@@ -18102,10 +18114,8 @@ components:
           $ref: '#/components/schemas/ConfigurationDataPlaneGroupEnvironment'
       additionalProperties: false
       required:
-        - autoscale
         - provider
         - region
-        - cloud_gateway_network_id
       title: CreateConfigurationDataPlaneGroup
     ProviderAccount:
       description: Object containing mapping for organization and cloud provider to account ID.
@@ -18614,6 +18624,7 @@ components:
         - $ref: '#/components/schemas/AwsPrivateHostedZoneResponse'
         - $ref: '#/components/schemas/AwsPrivateDnsResolverResponse'
         - $ref: '#/components/schemas/GcpPrivateHostedZoneResponse'
+        - $ref: '#/components/schemas/AzurePrivateDnsResolverResponse'
     AwsPrivateHostedZoneResponse:
       type: object
       properties:
@@ -18851,6 +18862,68 @@ components:
         - updated_at
         - name
         - private_dns_attachment_config
+    AzurePrivateDnsResolverResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/PrivateDnsId'
+        state:
+          $ref: '#/components/schemas/PrivateDnsState'
+        state_metadata:
+          description: |
+            Metadata describing the backing state of the Private Dns and why it may be in an erroneous state.
+          type: object
+          additionalProperties: false
+          properties:
+            reported_status:
+              description: Reported status of the Private Dns from backing infrastructure.
+              type: string
+              example: ERROR
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            reason:
+              description: |
+                Reason why the Private Dns may be in an erroneous state, reported from backing infrastructure.
+              type: string
+              example: |
+                Failed to create Private Dns due to invalid Cloud Provider configuration.
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+          title: PrivateDnsStateMetadata
+        entity_version:
+          description: |
+            Monotonically-increasing version count of the Private DNS, to indicate the order of updates to the
+            Private DNS.
+          type: integer
+          example: 1
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        created_at:
+          description: An RFC-3339 timestamp representation of Private DNS creation date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        updated_at:
+          description: An RFC-3339 timestamp representation of Private DNS update date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        name:
+          $ref: '#/components/schemas/PrivateDnsName'
+      required:
+        - id
+        - state
+        - state_metadata
+        - entity_version
+        - created_at
+        - updated_at
+        - name
     AwsPrivateDnsResolverAttachmentConfig:
       type: object
       properties:
@@ -19213,6 +19286,73 @@ components:
         - created_at
         - updated_at
       title: Azure Transit Gateway
+    AzureVHubPeeringGatewayResponse:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TransitGatewayName'
+        dns_config:
+          $ref: '#/components/schemas/TransitGatewayDnsConfig'
+        id:
+          $ref: '#/components/schemas/TransitGatewayId'
+        state:
+          $ref: '#/components/schemas/TransitGatewayState'
+        state_metadata:
+          description: |
+            Metadata describing the backing state of the transit gateway and why it may be in an erroneous state.
+          type: object
+          additionalProperties: false
+          properties:
+            reported_status:
+              description: Reported status of the transit gateway from backing infrastructure.
+              type: string
+              example: ERROR
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            reason:
+              description: |
+                Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.
+              type: string
+              example: |
+                Transit Gateway Attachment configuration could not find a resource with the provided ram share arn.
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+          readOnly: true
+          title: TransitGatewayStateMetadata
+          x-speakeasy-param-suppress-computed-diff: true
+        entity_version:
+          description: |
+            Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the
+            transit gateway.
+          type: integer
+          example: 1
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        created_at:
+          description: An RFC-3339 timestamp representation of transit gateway creation date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        updated_at:
+          description: An RFC-3339 timestamp representation of transit gateway update date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      required:
+        - name
+        - id
+        - dns_config
+        - state
+        - entity_version
+        - created_at
+        - updated_at
+      title: Azure Virtual Hub Peering Gateway
     GCPVPCPeeringGatewayResponse:
       type: object
       properties:
@@ -19288,6 +19428,7 @@ components:
         - $ref: '#/components/schemas/AwsTransitGatewayResponse'
         - $ref: '#/components/schemas/AwsVpcPeeringGatewayResponse'
         - $ref: '#/components/schemas/AzureTransitGatewayResponse'
+        - $ref: '#/components/schemas/AzureVHubPeeringGatewayResponse'
         - $ref: '#/components/schemas/GCPVPCPeeringGatewayResponse'
         - $ref: '#/components/schemas/AwsResourceEndpointGatewayResponse'
     CreateAwsTransitGateway:
@@ -19352,6 +19493,17 @@ components:
         - transit_gateway_attachment_config
       title: Azure Transit Gateway
       x-speakeasy-name-override: AzureTransitGateway
+    CreateAzureVHubPeeringGateway:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TransitGatewayName'
+        dns_config:
+          $ref: '#/components/schemas/TransitGatewayDnsConfig'
+      required:
+        - name
+      title: Azure Virtual Hub Peering Gateway
+      x-speakeasy-name-override: AzureVHubPeeringGateway
     CreateGCPVPCPeeringTransitGateway:
       type: object
       properties:
@@ -19374,6 +19526,7 @@ components:
         - $ref: '#/components/schemas/CreateAwsVpcPeeringGateway'
         - $ref: '#/components/schemas/CreateAwsResourceEndpointGateway'
         - $ref: '#/components/schemas/CreateAzureTransitGateway'
+        - $ref: '#/components/schemas/CreateAzureVHubPeeringGateway'
         - $ref: '#/components/schemas/CreateGCPVPCPeeringTransitGateway'
       title: CreateTransitGatewayRequest
     PatchAwsResourceEndpointGateway:
@@ -19543,13 +19696,14 @@ components:
           items:
             $ref: '#/components/schemas/CreateConfigurationDataPlaneGroup'
           format: set
+        kind:
+          $ref: '#/components/schemas/ConfigurationKind'
         api_access:
           $ref: '#/components/schemas/ApiAccess'
       additionalProperties: false
       required:
         - control_plane_id
         - control_plane_geo
-        - version
         - dataplane_groups
       title: CreateConfigurationRequest
     CreateCustomDomainRequest:
@@ -23013,7 +23167,11 @@ components:
       type: object
       properties:
         data:
-          $ref: '#/components/schemas/ImageDataUri'
+          oneOf:
+            - $ref: '#/components/schemas/ImagePNGDataUri'
+            - $ref: '#/components/schemas/ImageJPGDataUri'
+            - $ref: '#/components/schemas/ImageGIFDataUri'
+            - $ref: '#/components/schemas/ImageICODataUri'
         filename:
           type: string
           default: null
@@ -23269,14 +23427,38 @@ components:
       oneOf:
         - $ref: '#/components/schemas/AuthStrategyKeyAuth'
         - $ref: '#/components/schemas/AuthStrategyClientCredentials'
-    ImageDataUri:
-      description: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
+    ImagePNGDataUri:
+      description: 'must be a data URL with base64 PNG image data, e.g., data:image/png;base64,<BASE64_IMAGE_DATA>'
       type: string
       format: uri
       example: 'data:image/png,YW5faW1hZ2VfZmlsZQ=='
-      pattern: '^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
-      title: ImageDataUri
-      x-validation-message: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
+      pattern: '^data:image/png(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
+      title: ImagePNGDataUri
+      x-validation-message: 'must be a data URL with base64 PNG image data, e.g., data:image/png;base64,<BASE64_IMAGE_DATA>'
+    ImageJPGDataUri:
+      description: 'must be a data URL with base64 JPEG image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
+      type: string
+      format: uri
+      example: 'data:image/jpeg,YW5faW1hZ2VfZmlsZQ=='
+      pattern: '^data:image/jpeg(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
+      title: ImageJPGDataUri
+      x-validation-message: 'must be a data URL with base64 JPEG image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
+    ImageGIFDataUri:
+      description: 'must be a data URL with base64 GIF image data, e.g., data:image/gif;base64,<BASE64_IMAGE_DATA>'
+      type: string
+      format: uri
+      example: 'data:image/gif,YW5faW1hZ2VfZmlsZQ=='
+      pattern: '^data:image/gif(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
+      title: ImageGIFDataUri
+      x-validation-message: 'must be a data URL with base64 GIF image data, e.g., data:image/gif;base64,<BASE64_IMAGE_DATA>'
+    ImageICODataUri:
+      description: 'must be a data URL with base64 ICO image data, e.g., data:image/ico;base64,<BASE64_IMAGE_DATA>'
+      type: string
+      format: uri
+      example: 'data:image/ico,YW5faW1hZ2VfZmlsZQ=='
+      pattern: '^data:image/(x-icon|ico|icon|vnd.microsoft.icon)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
+      title: ImageICODataUri
+      x-validation-message: 'must be a data URL with base64 ICO image data, e.g., data:image/ico;base64,<BASE64_IMAGE_DATA>'
     PortalMenuItem:
       type: object
       properties:
@@ -23435,9 +23617,8 @@ components:
       type: string
       format: uri
       example: 'data:image/png;base64,YW5faW1hZ2VfZmlsZQ=='
-      pattern: '^data:image/(png|jpeg|svg\+xml|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
+      pattern: '^data:image/(png|jpe?g|gif|svg+xml|x-icon|ico|icon|vnd.microsoft.icon)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
       title: PortalImageDataUri
-      x-validation-message: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
     ReplacePortalImageAsset:
       description: 'The image data to upload. Images must be a data URL with binary image data in base 64 format. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.'
       type: object

@@ -589,10 +589,10 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 							"data": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>. Not Null`,
+								Description: `Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
-									stringvalidator.RegexMatches(regexp.MustCompile(`^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$`), "must match pattern "+regexp.MustCompile(`^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$`).String()),
+									stringvalidator.RegexMatches(regexp.MustCompile(`^data:image/png(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$`), "must match pattern "+regexp.MustCompile(`^data:image/png(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$`).String()),
 								},
 							},
 							"filename": schema.StringAttribute{
@@ -610,10 +610,10 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 							"data": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>. Not Null`,
+								Description: `Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
-									stringvalidator.RegexMatches(regexp.MustCompile(`^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$`), "must match pattern "+regexp.MustCompile(`^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$`).String()),
+									stringvalidator.RegexMatches(regexp.MustCompile(`^data:image/png(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$`), "must match pattern "+regexp.MustCompile(`^data:image/png(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$`).String()),
 								},
 							},
 							"filename": schema.StringAttribute{
@@ -636,10 +636,10 @@ func (r *PortalAppearanceResource) Schema(ctx context.Context, req resource.Sche
 							"data": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>. Not Null`,
+								Description: `Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
-									stringvalidator.RegexMatches(regexp.MustCompile(`^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$`), "must match pattern "+regexp.MustCompile(`^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$`).String()),
+									stringvalidator.RegexMatches(regexp.MustCompile(`^data:image/png(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$`), "must match pattern "+regexp.MustCompile(`^data:image/png(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$`).String()),
 								},
 							},
 							"filename": schema.StringAttribute{
