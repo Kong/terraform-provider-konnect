@@ -120,6 +120,7 @@ func (r *CloudGatewayNetworkResource) Schema(ctx context.Context, req resource.S
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
+				Description: `The network ID to operate on. For serverless.v1 kind of cloud gateways, this field should be omitted.`,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,

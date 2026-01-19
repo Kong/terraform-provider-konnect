@@ -47,6 +47,7 @@ type CloudGatewayConfigurationResourceModel struct {
 	DataplaneGroups []tfTypes.ConfigurationDataPlaneGroup `tfsdk:"dataplane_groups"`
 	EntityVersion   types.Float64                         `tfsdk:"entity_version"`
 	ID              types.String                          `tfsdk:"id"`
+	Kind            types.String                          `tfsdk:"kind"`
 	UpdatedAt       types.String                          `tfsdk:"updated_at"`
 	Version         types.String                          `tfsdk:"version"`
 }
@@ -136,7 +137,7 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 											Description:        `Max number of requests per second that the deployment target should support. If not set, this defaults to 10x base_rps. This field is deprecated and shouldn't be used in new configurations as it will be removed in a future version. max_rps is now calculated as 10x base_rps.`,
 										},
 									},
-									Description: `Object that describes the autopilot autoscaling strategy.`,
+									Description: `Object that describes the autopilot autoscaling strategy. For serverless.v1 kind of cloud gateways, this field should be omitted.`,
 									Validators: []validator.Object{
 										objectvalidator.ConflictsWith(path.Expressions{
 											path.MatchRelative().AtParent().AtName("configuration_data_plane_group_autoscale_static"),
@@ -178,17 +179,13 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 										},
 									},
 									DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
-									Description:        `Object that describes the static autoscaling strategy. Deprecated in favor of the autopilot autoscaling strategy. Static autoscaling will be removed in a future version.`,
+									Description:        `Object that describes the static autoscaling strategy. Deprecated in favor of the autopilot autoscaling strategy. Static autoscaling will be removed in a future version. For serverless.v1 kind of cloud gateways, this field should be omitted.`,
 									Validators: []validator.Object{
 										objectvalidator.ConflictsWith(path.Expressions{
 											path.MatchRelative().AtParent().AtName("configuration_data_plane_group_autoscale_autopilot"),
 										}...),
 									},
 								},
-							},
-							Description: `Not Null`,
-							Validators: []validator.Object{
-								speakeasy_objectvalidators.NotNull(),
 							},
 						},
 						"cloud_gateway_network_id": schema.StringAttribute{
@@ -197,10 +194,7 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 							PlanModifiers: []planmodifier.String{
 								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 							},
-							Description: `Not Null`,
-							Validators: []validator.String{
-								speakeasy_stringvalidators.NotNull(),
-							},
+							Description: `The network ID to operate on. For serverless.v1 kind of cloud gateways, this field should be omitted.`,
 						},
 						"created_at": schema.StringAttribute{
 							Computed: true,
@@ -304,6 +298,23 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 			},
+			"kind": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`dedicated.v0`),
+				MarkdownDescription: `**Pre-release Feature**` + "\n" +
+					`This feature is currently in beta and is subject to change.` + "\n" +
+					`` + "\n" +
+					`Kind of the Cloud Gateway deployment. If serverless.v1 is specified, the following fields` + "\n" +
+					`should be omitted (will be ignored if provided): autoscale, cloud_gateway_network_id, version.` + "\n" +
+					`Default: "dedicated.v0"; must be one of ["dedicated.v0", "serverless.v1"]`,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"dedicated.v0",
+						"serverless.v1",
+					),
+				},
+			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
@@ -312,8 +323,9 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 				Description: `An RFC-3339 timestamp representation of configuration update date.`,
 			},
 			"version": schema.StringAttribute{
-				Required:    true,
-				Description: `Supported gateway version.`,
+				Computed:    true,
+				Optional:    true,
+				Description: `Supported gateway version. For serverless.v1 kind of cloud gateways, this field should be omitted.`,
 			},
 		},
 	}

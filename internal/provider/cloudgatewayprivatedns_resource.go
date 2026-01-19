@@ -42,14 +42,15 @@ type CloudGatewayPrivateDNSResource struct {
 
 // CloudGatewayPrivateDNSResourceModel describes the resource data model.
 type CloudGatewayPrivateDNSResourceModel struct {
-	AwsPrivateDNSResolverResponse *tfTypes.AwsPrivateDNSResolverResponse `queryParam:"inline" tfsdk:"aws_private_dns_resolver_response" tfPlanOnly:"true"`
-	AwsPrivateHostedZoneResponse  *tfTypes.AwsPrivateHostedZoneResponse  `queryParam:"inline" tfsdk:"aws_private_hosted_zone_response" tfPlanOnly:"true"`
-	EntityVersion                 types.Int64                            `tfsdk:"entity_version"`
-	GcpPrivateHostedZoneResponse  *tfTypes.GcpPrivateHostedZoneResponse  `queryParam:"inline" tfsdk:"gcp_private_hosted_zone_response" tfPlanOnly:"true"`
-	ID                            types.String                           `tfsdk:"id"`
-	Name                          types.String                           `tfsdk:"name"`
-	NetworkID                     types.String                           `tfsdk:"network_id"`
-	PrivateDNSAttachmentConfig    *tfTypes.PrivateDNSAttachmentConfig    `tfsdk:"private_dns_attachment_config"`
+	AwsPrivateDNSResolverResponse   *tfTypes.AwsPrivateDNSResolverResponse   `queryParam:"inline" tfsdk:"aws_private_dns_resolver_response" tfPlanOnly:"true"`
+	AwsPrivateHostedZoneResponse    *tfTypes.AwsPrivateHostedZoneResponse    `queryParam:"inline" tfsdk:"aws_private_hosted_zone_response" tfPlanOnly:"true"`
+	AzurePrivateDNSResolverResponse *tfTypes.AzurePrivateDNSResolverResponse `queryParam:"inline" tfsdk:"azure_private_dns_resolver_response" tfPlanOnly:"true"`
+	EntityVersion                   types.Int64                              `tfsdk:"entity_version"`
+	GcpPrivateHostedZoneResponse    *tfTypes.GcpPrivateHostedZoneResponse    `queryParam:"inline" tfsdk:"gcp_private_hosted_zone_response" tfPlanOnly:"true"`
+	ID                              types.String                             `tfsdk:"id"`
+	Name                            types.String                             `tfsdk:"name"`
+	NetworkID                       types.String                             `tfsdk:"network_id"`
+	PrivateDNSAttachmentConfig      *tfTypes.PrivateDNSAttachmentConfig      `tfsdk:"private_dns_attachment_config"`
 }
 
 func (r *CloudGatewayPrivateDNSResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -182,6 +183,68 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 								Computed: true,
 							},
 						},
+					},
+					"state": schema.StringAttribute{
+						Computed: true,
+						MarkdownDescription: `The current state of the Private DNS attachment. Possible values:` + "\n" +
+							`- ` + "`" + `created` + "`" + ` - The attachment has been created but is not attached to Private DNS.` + "\n" +
+							`- ` + "`" + `initializing` + "`" + ` - The attachment is in the process of being initialized and is setting up necessary resources.` + "\n" +
+							`- ` + "`" + `pending-association` + "`" + ` The attachment request is awaiting association to the cloud provider infrastructure in order for provisioning to proceed.` + "\n" +
+							`- ` + "`" + `ready` + "`" + ` - The attachment is fully operational and can route traffic as configured.` + "\n" +
+							`- ` + "`" + `error` + "`" + ` - The attachment is in an error state, and is not operational.` + "\n" +
+							`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted.` + "\n" +
+							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.`,
+					},
+					"state_metadata": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"reason": schema.StringAttribute{
+								Computed:    true,
+								Description: `Reason why the Private Dns may be in an erroneous state, reported from backing infrastructure.`,
+							},
+							"reported_status": schema.StringAttribute{
+								Computed:    true,
+								Description: `Reported status of the Private Dns from backing infrastructure.`,
+							},
+						},
+						Description: `Metadata describing the backing state of the Private Dns and why it may be in an erroneous state.`,
+					},
+					"updated_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An RFC-3339 timestamp representation of Private DNS update date.`,
+					},
+				},
+			},
+			"azure_private_dns_resolver_response": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"created_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An RFC-3339 timestamp representation of Private DNS creation date.`,
+					},
+					"entity_version": schema.Int64Attribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.Int64{
+							speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
+						},
+						MarkdownDescription: `Monotonically-increasing version count of the Private DNS, to indicate the order of updates to the` + "\n" +
+							`Private DNS.`,
+					},
+					"id": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+					},
+					"name": schema.StringAttribute{
+						Computed:    true,
+						Description: `Human-readable name of the Private DNS.`,
 					},
 					"state": schema.StringAttribute{
 						Computed: true,
