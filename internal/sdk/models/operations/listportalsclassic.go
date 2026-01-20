@@ -64,6 +64,8 @@ type ListPortalsClassicResponse struct {
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
 	ForbiddenError *shared.ForbiddenError
+
+	Next func() (*ListPortalsClassicResponse, error)
 }
 
 func (l *ListPortalsClassicResponse) GetContentType() string {

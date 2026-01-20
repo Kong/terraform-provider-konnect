@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 7d220988dcbfaa4b69d488a9d5aaa47e
+  docChecksum: db3aa2ac213ceb7bdd37026974eff9c8
   docVersion: 2.0.0
   speakeasyVersion: 1.665.0
   generationVersion: 2.767.2
@@ -38,6 +38,10 @@ generatedFiles:
   - examples/data-sources/konnect_platform_ip_addresses/data-source.tf
   - examples/data-sources/konnect_portal/data-source.tf
   - examples/data-sources/konnect_portal_classic_list/data-source.tf
+  - examples/data-sources/konnect_system_account/data-source.tf
+  - examples/data-sources/konnect_system_account_list/data-source.tf
+  - examples/data-sources/konnect_team/data-source.tf
+  - examples/data-sources/konnect_team_list/data-source.tf
   - examples/provider/provider.tf
   - examples/resources/konnect_api/import-by-string-id.tf
   - examples/resources/konnect_api/import.sh
@@ -969,16 +973,24 @@ generatedFiles:
   - internal/provider/reflect/struct.go
   - internal/provider/serverlesscloudgateway_resource.go
   - internal/provider/serverlesscloudgateway_resource_sdk.go
+  - internal/provider/systemaccount_data_source.go
+  - internal/provider/systemaccount_data_source_sdk.go
   - internal/provider/systemaccount_resource.go
   - internal/provider/systemaccount_resource_sdk.go
   - internal/provider/systemaccountaccesstoken_resource.go
   - internal/provider/systemaccountaccesstoken_resource_sdk.go
+  - internal/provider/systemaccountlist_data_source.go
+  - internal/provider/systemaccountlist_data_source_sdk.go
   - internal/provider/systemaccountrole_resource.go
   - internal/provider/systemaccountrole_resource_sdk.go
   - internal/provider/systemaccountteam_resource.go
   - internal/provider/systemaccountteam_resource_sdk.go
+  - internal/provider/team_data_source.go
+  - internal/provider/team_data_source_sdk.go
   - internal/provider/team_resource.go
   - internal/provider/team_resource_sdk.go
+  - internal/provider/teamlist_data_source.go
+  - internal/provider/teamlist_data_source_sdk.go
   - internal/provider/teamrole_resource.go
   - internal/provider/teamrole_resource_sdk.go
   - internal/provider/teamuser_resource.go
@@ -1138,6 +1150,7 @@ generatedFiles:
   - internal/provider/types/exit_transformer_plugin_config.go
   - internal/provider/types/extra_options.go
   - internal/provider/types/file_log_plugin_config.go
+  - internal/provider/types/filter.go
   - internal/provider/types/flow.go
   - internal/provider/types/forward_proxy_plugin_config.go
   - internal/provider/types/gateway_service_payload.go
@@ -1179,6 +1192,7 @@ generatedFiles:
   - internal/provider/types/key_schema.go
   - internal/provider/types/ldap_auth_advanced_plugin_config.go
   - internal/provider/types/ldap_auth_plugin_config.go
+  - internal/provider/types/legacy_string_field_filter.go
   - internal/provider/types/limits.go
   - internal/provider/types/llm.go
   - internal/provider/types/llm_providers.go
@@ -1248,6 +1262,7 @@ generatedFiles:
   - internal/provider/types/proxy_cache_advanced_plugin_config.go
   - internal/provider/types/proxy_cache_plugin_config.go
   - internal/provider/types/proxy_url.go
+  - internal/provider/types/query_param_filter.go
   - internal/provider/types/queue.go
   - internal/provider/types/rate_limiting.go
   - internal/provider/types/rate_limiting_advanced_plugin_config.go
@@ -1315,7 +1330,9 @@ generatedFiles:
   - internal/provider/types/storage_config.go
   - internal/provider/types/string_field_filter.go
   - internal/provider/types/syslog_plugin_config.go
+  - internal/provider/types/system_account.go
   - internal/provider/types/tcp_log_plugin_config.go
+  - internal/provider/types/team.go
   - internal/provider/types/templates.go
   - internal/provider/types/text.go
   - internal/provider/types/theme.go
@@ -1915,6 +1932,7 @@ generatedFiles:
   - internal/sdk/models/operations/getstatsdadvancedplugin.go
   - internal/sdk/models/operations/getstatsdplugin.go
   - internal/sdk/models/operations/getsyslogplugin.go
+  - internal/sdk/models/operations/getsystemaccounts.go
   - internal/sdk/models/operations/getsystemaccountsid.go
   - internal/sdk/models/operations/getsystemaccountsidaccesstokensid.go
   - internal/sdk/models/operations/gettargetwithupstream.go
@@ -1940,6 +1958,7 @@ generatedFiles:
   - internal/sdk/models/operations/listportals.go
   - internal/sdk/models/operations/listportalsclassic.go
   - internal/sdk/models/operations/listprovideraccounts.go
+  - internal/sdk/models/operations/listteams.go
   - internal/sdk/models/operations/options.go
   - internal/sdk/models/operations/patchsystemaccountsid.go
   - internal/sdk/models/operations/patchsystemaccountsidaccesstokensid.go
@@ -2354,6 +2373,7 @@ generatedFiles:
   - internal/sdk/models/shared/konnectcplegacyunauthorizederror.go
   - internal/sdk/models/shared/ldapauthadvancedplugin.go
   - internal/sdk/models/shared/ldapauthplugin.go
+  - internal/sdk/models/shared/legacystringfieldfilter.go
   - internal/sdk/models/shared/listcontrolplanesresponse.go
   - internal/sdk/models/shared/listmeshcontrolplanesresponse.go
   - internal/sdk/models/shared/listportalsresponse.go
@@ -2468,10 +2488,12 @@ generatedFiles:
   - internal/sdk/models/shared/systemaccount.go
   - internal/sdk/models/shared/systemaccountaccesstoken.go
   - internal/sdk/models/shared/systemaccountaccesstokencreated.go
+  - internal/sdk/models/shared/systemaccountcollection.go
   - internal/sdk/models/shared/target.go
   - internal/sdk/models/shared/targetwithoutparents.go
   - internal/sdk/models/shared/tcplogplugin.go
   - internal/sdk/models/shared/team.go
+  - internal/sdk/models/shared/teamcollection.go
   - internal/sdk/models/shared/tlshandshakemodifierplugin.go
   - internal/sdk/models/shared/tlsmetadataheadersplugin.go
   - internal/sdk/models/shared/transitgatewaydnsconfig.go
@@ -15038,5 +15060,31 @@ examples:
           application/json: {"enabled": true, "instance_name": null, "name": "ai-lakera-guard", "ordering": null, "partials": null, "tags": null, "config": null, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 180313}
+  get-system-accounts:
+    speakeasy-default-get-system-accounts:
+      parameters:
+        query:
+          page[size]: 100
+          page[number]: 1
+      responses:
+        "200":
+          application/json: {"meta": {"page": {"number": 1, "size": 10, "total": 100}}, "data": null}
+        "400":
+          application/problem+json: {"status": 764828, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+  list-teams:
+    speakeasy-default-list-teams:
+      parameters:
+        query:
+          page[size]: 100
+          page[number]: 1
+      responses:
+        "200":
+          application/json: {"meta": {"page": {"number": 1, "size": 10, "total": 100}}, "data": null}
+        "400":
+          application/problem+json: {"status": 947905, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
 examplesVersion: 1.0.2
 generatedTests: {}

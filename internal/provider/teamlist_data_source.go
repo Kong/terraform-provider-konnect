@@ -14,33 +14,34 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ datasource.DataSource = &MeshControlPlanesDataSource{}
-var _ datasource.DataSourceWithConfigure = &MeshControlPlanesDataSource{}
+var _ datasource.DataSource = &TeamListDataSource{}
+var _ datasource.DataSourceWithConfigure = &TeamListDataSource{}
 
-func NewMeshControlPlanesDataSource() datasource.DataSource {
-	return &MeshControlPlanesDataSource{}
+func NewTeamListDataSource() datasource.DataSource {
+	return &TeamListDataSource{}
 }
 
-// MeshControlPlanesDataSource is the data source implementation.
-type MeshControlPlanesDataSource struct {
+// TeamListDataSource is the data source implementation.
+type TeamListDataSource struct {
 	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 
-// MeshControlPlanesDataSourceModel describes the data model.
-type MeshControlPlanesDataSourceModel struct {
-	Data []tfTypes.MeshControlPlane `tfsdk:"data"`
+// TeamListDataSourceModel describes the data model.
+type TeamListDataSourceModel struct {
+	Data   []tfTypes.Team            `tfsdk:"data"`
+	Filter *tfTypes.QueryParamFilter `queryParam:"style=deepObject,explode=true,name=filter" tfsdk:"filter"`
 }
 
 // Metadata returns the data source type name.
-func (r *MeshControlPlanesDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_mesh_control_planes"
+func (r *TeamListDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_team_list"
 }
 
 // Schema defines the schema for the data source.
-func (r *MeshControlPlanesDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (r *TeamListDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "MeshControlPlanes DataSource",
+		MarkdownDescription: "TeamList DataSource",
 
 		Attributes: map[string]schema.Attribute{
 			"data": schema.ListNestedAttribute{
@@ -48,61 +49,64 @@ func (r *MeshControlPlanesDataSource) Schema(ctx context.Context, req datasource
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"created_at": schema.StringAttribute{
-							Computed: true,
+							Computed:    true,
+							Description: `A Unix timestamp representation of team creation.`,
 						},
 						"description": schema.StringAttribute{
-							Computed: true,
-						},
-						"features": schema.ListNestedAttribute{
-							Computed: true,
-							NestedObject: schema.NestedAttributeObject{
-								Attributes: map[string]schema.Attribute{
-									"hostname_generator_creation": schema.SingleNestedAttribute{
-										Computed: true,
-										Attributes: map[string]schema.Attribute{
-											"enabled": schema.BoolAttribute{
-												Computed: true,
-											},
-										},
-									},
-									"mesh_creation": schema.SingleNestedAttribute{
-										Computed: true,
-										Attributes: map[string]schema.Attribute{
-											"enabled": schema.BoolAttribute{
-												Computed: true,
-											},
-										},
-									},
-									"type": schema.StringAttribute{
-										Computed: true,
-									},
-								},
-							},
+							Computed:    true,
+							Description: `The team description in Konnect.`,
 						},
 						"id": schema.StringAttribute{
 							Computed:    true,
-							Description: `ID of the control plane.`,
+							Description: `The team ID.`,
 						},
 						"labels": schema.MapAttribute{
 							Computed:    true,
 							ElementType: types.StringType,
-							Description: `Labels to facilitate tagged search on control planes. Keys must be of length 1-63 characters.`,
+							MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
+								`` + "\n" +
+								`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 						},
 						"name": schema.StringAttribute{
 							Computed:    true,
-							Description: `The name of the control plane.`,
+							Description: `The name of the team.`,
+						},
+						"system_team": schema.BoolAttribute{
+							Computed:    true,
+							Description: `Returns True if a user belongs to a ` + "`" + `system_team` + "`" + `. System teams are teams that can manage Konnect objects, like "Organization Admin", or "Service"`,
 						},
 						"updated_at": schema.StringAttribute{
-							Computed: true,
+							Computed:    true,
+							Description: `A Unix timestamp representation of the most recent change to the team object in Konnect.`,
 						},
 					},
 				},
+			},
+			"filter": schema.SingleNestedAttribute{
+				Optional: true,
+				Attributes: map[string]schema.Attribute{
+					"name": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"contains": schema.StringAttribute{
+								Optional:    true,
+								Description: `The field contains the provided value.`,
+							},
+							"eq": schema.StringAttribute{
+								Optional:    true,
+								Description: `The field exactly matches the provided value.`,
+							},
+						},
+						Description: `Filter using **one** of the following operators: ` + "`" + `eq` + "`" + `, ` + "`" + `contains` + "`" + ``,
+					},
+				},
+				Description: `Filter teams returned in the response.`,
 			},
 		},
 	}
 }
 
-func (r *MeshControlPlanesDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (r *TeamListDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -122,8 +126,8 @@ func (r *MeshControlPlanesDataSource) Configure(ctx context.Context, req datasou
 	r.client = client
 }
 
-func (r *MeshControlPlanesDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var data *MeshControlPlanesDataSourceModel
+func (r *TeamListDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var data *TeamListDataSourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &item)...)
@@ -140,13 +144,13 @@ func (r *MeshControlPlanesDataSource) Read(ctx context.Context, req datasource.R
 		return
 	}
 
-	request, requestDiags := data.ToOperationsListMeshControlPlanesRequest(ctx)
+	request, requestDiags := data.ToOperationsListTeamsRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Mesh.ListMeshControlPlanes(ctx, *request)
+	res, err := r.client.Teams.ListTeams(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -162,12 +166,12 @@ func (r *MeshControlPlanesDataSource) Read(ctx context.Context, req datasource.R
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.ListMeshControlPlanesResponse != nil) {
+	if !(res.TeamCollection != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
 	data.Data = nil
-	resp.Diagnostics.Append(data.RefreshFromSharedListMeshControlPlanesResponse(ctx, res.ListMeshControlPlanesResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedTeamCollection(ctx, res.TeamCollection)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -186,7 +190,7 @@ func (r *MeshControlPlanesDataSource) Read(ctx context.Context, req datasource.R
 			break
 		}
 
-		resp.Diagnostics.Append(data.RefreshFromSharedListMeshControlPlanesResponse(ctx, res.ListMeshControlPlanesResponse)...)
+		resp.Diagnostics.Append(data.RefreshFromSharedTeamCollection(ctx, res.TeamCollection)...)
 
 		if resp.Diagnostics.HasError() {
 			return
