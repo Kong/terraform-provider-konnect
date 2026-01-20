@@ -507,6 +507,18 @@ paths:
           $ref: '#/components/responses/MeshControlPlaneForbiddenError'
       tags:
         - Mesh
+      x-speakeasy-pagination:
+        type: offsetLimit
+        inputs:
+          - name: 'page[number]'
+            in: parameters
+            type: page
+          - name: 'page[size]'
+            in: parameters
+            type: limit
+        outputs:
+          results: $.data
+          numPages: $.meta.page.total
     post:
       x-speakeasy-entity-operation:
         terraform-resource: MeshControlPlane#create
@@ -2189,6 +2201,18 @@ paths:
       tags:
         - Provider Accounts
       x-speakeasy-group: CloudGateways
+      x-speakeasy-pagination:
+        type: offsetLimit
+        inputs:
+          - name: 'page[number]'
+            in: parameters
+            type: page
+          - name: 'page[size]'
+            in: parameters
+            type: limit
+        outputs:
+          results: $.data
+          numPages: $.meta.page.total
   /v2/control-planes:
     get:
       x-speakeasy-entity-operation:
@@ -14563,6 +14587,18 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Portals
+      x-speakeasy-pagination:
+        type: offsetLimit
+        inputs:
+          - name: 'page[number]'
+            in: parameters
+            type: page
+          - name: 'page[size]'
+            in: parameters
+            type: limit
+        outputs:
+          results: $.data
+          numPages: $.meta.page.total
     post:
       x-speakeasy-entity-operation:
         terraform-resource: PortalClassic#create
@@ -15900,6 +15936,18 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - System Accounts
+      x-speakeasy-pagination:
+        type: offsetLimit
+        inputs:
+          - name: 'page[number]'
+            in: parameters
+            type: page
+          - name: 'page[size]'
+            in: parameters
+            type: limit
+        outputs:
+          results: $.data
+          numPages: $.meta.page.total
     post:
       x-speakeasy-entity-operation:
         terraform-resource: SystemAccount#create
@@ -16206,6 +16254,18 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Teams
+      x-speakeasy-pagination:
+        type: offsetLimit
+        inputs:
+          - name: 'page[number]'
+            in: parameters
+            type: page
+          - name: 'page[size]'
+            in: parameters
+            type: limit
+        outputs:
+          results: $.data
+          numPages: $.meta.page.total
     post:
       x-speakeasy-entity-operation:
         terraform-resource: Team#create
