@@ -47,6 +47,8 @@ type ListProviderAccountsResponse struct {
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
 	ForbiddenError *shared.ForbiddenError
+
+	Next func() (*ListProviderAccountsResponse, error)
 }
 
 func (l *ListProviderAccountsResponse) GetContentType() string {

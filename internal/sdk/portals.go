@@ -12,6 +12,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/errors"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
+	"github.com/spyzhov/ajson"
 	"net/http"
 	"net/url"
 )
@@ -780,6 +781,69 @@ func (s *Portals) ListPortalsClassic(ctx context.Context, request operations.Lis
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,
+	}
+	res.Next = func() (*operations.ListPortalsClassicResponse, error) {
+		rawBody, err := utils.ConsumeRawBody(httpRes)
+		if err != nil {
+			return nil, err
+		}
+
+		b, err := ajson.Unmarshal(rawBody)
+		if err != nil {
+			return nil, err
+		}
+		var p int64 = 1
+		if request.PageNumber != nil {
+			p = *request.PageNumber
+		}
+		nP := int64(p + 1)
+		nPs, err := ajson.Eval(b, "$.meta.page.total")
+		if err != nil {
+			return nil, err
+		}
+		if !nPs.IsNumeric() {
+			return nil, nil
+		}
+
+		nPsVal, err := nPs.GetNumeric()
+		if err != nil {
+			return nil, err
+		}
+		// GetNumeric returns as float64
+		if int(nPsVal) <= int(p) {
+			return nil, nil
+		}
+		r, err := ajson.Eval(b, "$.data")
+		if err != nil {
+			return nil, err
+		}
+		if !r.IsArray() {
+			return nil, nil
+		}
+		arr, err := r.GetArray()
+		if err != nil {
+			return nil, err
+		}
+		if len(arr) == 0 {
+			return nil, nil
+		}
+
+		l := 0
+		if request.PageSize != nil {
+			l = int(*request.PageSize)
+		}
+		if len(arr) < l {
+			return nil, nil
+		}
+
+		return s.ListPortalsClassic(
+			ctx,
+			operations.ListPortalsClassicRequest{
+				PageSize:   request.PageSize,
+				PageNumber: &nP,
+				Sort:       request.Sort,
+			},
+		)
 	}
 
 	switch {

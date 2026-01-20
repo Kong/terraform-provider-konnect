@@ -16,14 +16,18 @@ func (r *MeshControlPlanesDataSourceModel) RefreshFromSharedListMeshControlPlane
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		r.Data = []tfTypes.MeshControlPlane{}
+		if r.Data == nil {
+			r.Data = []tfTypes.MeshControlPlane{}
+		}
 
 		for _, dataItem := range resp.Data {
 			var data tfTypes.MeshControlPlane
 
 			data.CreatedAt = types.StringValue(typeconvert.TimeToString(dataItem.CreatedAt))
 			data.Description = types.StringPointerValue(dataItem.Description)
-			data.Features = []tfTypes.MeshControlPlaneFeature{}
+			if data.Features == nil {
+				data.Features = []tfTypes.MeshControlPlaneFeature{}
+			}
 
 			for _, featuresItem := range dataItem.Features {
 				var features tfTypes.MeshControlPlaneFeature

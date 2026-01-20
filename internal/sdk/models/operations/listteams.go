@@ -67,6 +67,8 @@ type ListTeamsResponse struct {
 	BadRequestError *shared.BadRequestError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+
+	Next func() (*ListTeamsResponse, error)
 }
 
 func (l *ListTeamsResponse) GetContentType() string {

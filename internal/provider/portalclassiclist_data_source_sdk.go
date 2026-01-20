@@ -16,7 +16,9 @@ func (r *PortalClassicListDataSourceModel) RefreshFromSharedV2ListPortalsRespons
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		r.Data = []tfTypes.V2Portal{}
+		if r.Data == nil {
+			r.Data = []tfTypes.V2Portal{}
+		}
 
 		for _, dataItem := range resp.Data {
 			var data tfTypes.V2Portal

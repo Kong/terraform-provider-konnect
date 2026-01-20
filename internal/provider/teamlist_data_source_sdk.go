@@ -17,7 +17,9 @@ func (r *TeamListDataSourceModel) RefreshFromSharedTeamCollection(ctx context.Co
 
 	if resp != nil {
 		if resp.Data != nil {
-			r.Data = []tfTypes.Team{}
+			if r.Data == nil {
+				r.Data = []tfTypes.Team{}
+			}
 
 			for _, dataItem := range resp.Data {
 				var data tfTypes.Team

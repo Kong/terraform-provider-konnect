@@ -170,10 +170,31 @@ func (r *TeamListDataSource) Read(ctx context.Context, req datasource.ReadReques
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
+	data.Data = nil
 	resp.Diagnostics.Append(data.RefreshFromSharedTeamCollection(ctx, res.TeamCollection)...)
 
 	if resp.Diagnostics.HasError() {
 		return
+	}
+	for {
+		var err error
+
+		res, err = res.Next()
+
+		if err != nil {
+			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
+			return
+		}
+
+		if res == nil {
+			break
+		}
+
+		resp.Diagnostics.Append(data.RefreshFromSharedTeamCollection(ctx, res.TeamCollection)...)
+
+		if resp.Diagnostics.HasError() {
+			return
+		}
 	}
 
 	// Save updated data into Terraform state

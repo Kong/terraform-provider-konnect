@@ -17,7 +17,9 @@ func (r *SystemAccountListDataSourceModel) RefreshFromSharedSystemAccountCollect
 
 	if resp != nil {
 		if resp.Data != nil {
-			r.Data = []tfTypes.SystemAccount{}
+			if r.Data == nil {
+				r.Data = []tfTypes.SystemAccount{}
+			}
 
 			for _, dataItem := range resp.Data {
 				var data tfTypes.SystemAccount

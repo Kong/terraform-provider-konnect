@@ -85,6 +85,8 @@ type GetSystemAccountsResponse struct {
 	BadRequestError *shared.BadRequestError
 	// Unauthenticated
 	UnauthorizedError *shared.UnauthorizedError
+
+	Next func() (*GetSystemAccountsResponse, error)
 }
 
 func (g *GetSystemAccountsResponse) GetContentType() string {

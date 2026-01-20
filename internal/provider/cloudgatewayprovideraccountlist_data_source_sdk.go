@@ -16,7 +16,9 @@ func (r *CloudGatewayProviderAccountListDataSourceModel) RefreshFromSharedListPr
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		r.Data = []tfTypes.ProviderAccount{}
+		if r.Data == nil {
+			r.Data = []tfTypes.ProviderAccount{}
+		}
 
 		for _, dataItem := range resp.Data {
 			var data tfTypes.ProviderAccount
