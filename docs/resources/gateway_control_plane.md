@@ -43,7 +43,7 @@ resource "konnect_gateway_control_plane" "my_gatewaycontrolplane" {
 
 - `auth_type` (String) The auth type value of the cluster associated with the Runtime Group. must be one of ["pinned_client_certs", "pki_client_certs"]
 - `cloud_gateway` (Boolean) Whether this control-plane can be used for cloud-gateways. Requires replacement if changed.
-- `cluster_type` (String) The ClusterType value of the cluster associated with the Control Plane. must be one of ["CLUSTER_TYPE_CONTROL_PLANE", "CLUSTER_TYPE_K8S_INGRESS_CONTROLLER", "CLUSTER_TYPE_CONTROL_PLANE_GROUP", "CLUSTER_TYPE_SERVERLESS", "CLUSTER_TYPE_HYBRID"]; Requires replacement if changed.
+- `cluster_type` (String) The ClusterType value of the cluster associated with the Control Plane. must be one of ["CLUSTER_TYPE_CONTROL_PLANE", "CLUSTER_TYPE_K8S_INGRESS_CONTROLLER", "CLUSTER_TYPE_CONTROL_PLANE_GROUP", "CLUSTER_TYPE_SERVERLESS", "CLUSTER_TYPE_HYBRID", "CLUSTER_TYPE_CLOUD_API_GATEWAY"]; Requires replacement if changed.
 - `description` (String) The description of the control plane in Konnect.
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 

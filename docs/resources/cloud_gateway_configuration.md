@@ -53,7 +53,7 @@ resource "konnect_cloud_gateway_configuration" "my_cloudgatewayconfiguration" {
 
 ### Optional
 
-- `api_access` (String) Type of API access data-plane groups will support for a configuration. Default: "private+public"; must be one of ["private", "public", "private+public"]
+- `api_access` (String) Type of API access data-plane groups will support for a configuration. must be one of ["private", "public", "private+public"]
 - `kind` (String) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 

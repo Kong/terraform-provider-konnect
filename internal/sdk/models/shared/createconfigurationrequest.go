@@ -22,7 +22,7 @@ type CreateConfigurationRequest struct {
 	// should be omitted (will be ignored if provided): autoscale, cloud_gateway_network_id, version.
 	Kind *ConfigurationKind `default:"dedicated.v0" json:"kind"`
 	// Type of API access data-plane groups will support for a configuration.
-	APIAccess *APIAccess `default:"private+public" json:"api_access"`
+	APIAccess *APIAccess `json:"api_access,omitempty"`
 }
 
 func (c CreateConfigurationRequest) MarshalJSON() ([]byte, error) {

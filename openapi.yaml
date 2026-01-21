@@ -17214,6 +17214,7 @@ components:
             - CLUSTER_TYPE_CONTROL_PLANE_GROUP
             - CLUSTER_TYPE_SERVERLESS
             - CLUSTER_TYPE_HYBRID
+            - CLUSTER_TYPE_CLOUD_API_GATEWAY
           x-speakeasy-unknown-values: allow
         auth_type:
           description: The auth type value of the cluster associated with the Runtime Group.
@@ -17318,6 +17319,7 @@ components:
                 - CLUSTER_TYPE_CONTROL_PLANE_GROUP
                 - CLUSTER_TYPE_SERVERLESS
                 - CLUSTER_TYPE_HYBRID
+                - CLUSTER_TYPE_CLOUD_API_GATEWAY
               readOnly: true
               x-speakeasy-param-suppress-computed-diff: true
               x-speakeasy-unknown-values: allow
@@ -17941,7 +17943,6 @@ components:
       description: Type of API access data-plane groups will support for a configuration.
       type: string
       example: private+public
-      default: private+public
       enum:
         - private
         - public
