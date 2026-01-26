@@ -44,7 +44,7 @@ resource "konnect_cloud_gateway_network" "my_cloudgatewaynetwork" {
 - `default` (Boolean) Whether the network is a default network or not. Default networks are Networks that are created
 automatically by Konnect when an organization is linked to a provider account.
 - `entity_version` (Number) Monotonically-increasing version count of the network, to indicate the order of updates to the network.
-- `id` (String) The ID of this resource.
+- `id` (String) The network ID to operate on. For serverless.v1 kind of cloud gateways, this field should be omitted.
 - `provider_metadata` (Attributes) Metadata describing attributes returned by cloud-provider for the network. (see [below for nested schema](#nestedatt--provider_metadata))
 - `transit_gateway_count` (Number) The number of transit gateways attached to this network.
 - `updated_at` (String) An RFC-3339 timestamp representation of network update date.

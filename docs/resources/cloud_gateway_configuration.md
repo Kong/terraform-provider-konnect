@@ -37,6 +37,7 @@ resource "konnect_cloud_gateway_configuration" "my_cloudgatewayconfiguration" {
       region   = "us-east-2"
     }
   ]
+  kind    = "serverless.v1"
   version = "3.2"
 }
 ```
@@ -49,11 +50,17 @@ resource "konnect_cloud_gateway_configuration" "my_cloudgatewayconfiguration" {
 - `control_plane_geo` (String) Set of control-plane geos supported for deploying cloud-gateways configurations. must be one of ["us", "eu", "au", "me", "in", "sg"]
 - `control_plane_id` (String)
 - `dataplane_groups` (Attributes Set) List of data-plane groups that describe where to deploy instances, along with how many instances. (see [below for nested schema](#nestedatt--dataplane_groups))
-- `version` (String) Supported gateway version.
 
 ### Optional
 
 - `api_access` (String) Type of API access data-plane groups will support for a configuration. Default: "private+public"; must be one of ["private", "public", "private+public"]
+- `kind` (String) **Pre-release Feature**
+This feature is currently in beta and is subject to change.
+
+Kind of the Cloud Gateway deployment. If serverless.v1 is specified, the following fields
+should be omitted (will be ignored if provided): autoscale, cloud_gateway_network_id, version.
+Default: "dedicated.v0"; must be one of ["dedicated.v0", "serverless.v1"]
+- `version` (String) Supported gateway version. For serverless.v1 kind of cloud gateways, this field should be omitted.
 
 ### Read-Only
 
@@ -67,8 +74,8 @@ resource "konnect_cloud_gateway_configuration" "my_cloudgatewayconfiguration" {
 
 Optional:
 
-- `autoscale` (Attributes) Not Null (see [below for nested schema](#nestedatt--dataplane_groups--autoscale))
-- `cloud_gateway_network_id` (String) Not Null
+- `autoscale` (Attributes) (see [below for nested schema](#nestedatt--dataplane_groups--autoscale))
+- `cloud_gateway_network_id` (String) The network ID to operate on. For serverless.v1 kind of cloud gateways, this field should be omitted.
 - `environment` (Attributes List) Array of environment variables to set for a data-plane group. (see [below for nested schema](#nestedatt--dataplane_groups--environment))
 - `provider` (String) Name of cloud provider. Not Null; must be one of ["aws", "azure"]
 - `region` (String) Region ID for cloud provider region. Not Null
@@ -87,8 +94,8 @@ Read-Only:
 
 Optional:
 
-- `configuration_data_plane_group_autoscale_autopilot` (Attributes) Object that describes the autopilot autoscaling strategy. (see [below for nested schema](#nestedatt--dataplane_groups--autoscale--configuration_data_plane_group_autoscale_autopilot))
-- `configuration_data_plane_group_autoscale_static` (Attributes, Deprecated) Object that describes the static autoscaling strategy. Deprecated in favor of the autopilot autoscaling strategy. Static autoscaling will be removed in a future version. (see [below for nested schema](#nestedatt--dataplane_groups--autoscale--configuration_data_plane_group_autoscale_static))
+- `configuration_data_plane_group_autoscale_autopilot` (Attributes) Object that describes the autopilot autoscaling strategy. For serverless.v1 kind of cloud gateways, this field should be omitted. (see [below for nested schema](#nestedatt--dataplane_groups--autoscale--configuration_data_plane_group_autoscale_autopilot))
+- `configuration_data_plane_group_autoscale_static` (Attributes, Deprecated) Object that describes the static autoscaling strategy. Deprecated in favor of the autopilot autoscaling strategy. Static autoscaling will be removed in a future version. For serverless.v1 kind of cloud gateways, this field should be omitted. (see [below for nested schema](#nestedatt--dataplane_groups--autoscale--configuration_data_plane_group_autoscale_static))
 
 <a id="nestedatt--dataplane_groups--autoscale--configuration_data_plane_group_autoscale_autopilot"></a>
 ### Nested Schema for `dataplane_groups.autoscale.configuration_data_plane_group_autoscale_autopilot`

@@ -72,9 +72,7 @@ data "konnect_portal" "my_portal" {
     }
     rbac_enabled = true
   }
-  page_number = 1
-  page_size   = 100
-  sort        = "...my_sort..."
+  sort = "...my_sort..."
 }
 ```
 
@@ -84,8 +82,6 @@ data "konnect_portal" "my_portal" {
 ### Optional
 
 - `filter` (Attributes) Filter portals returned in the response. (see [below for nested schema](#nestedatt--filter))
-- `page_number` (Number) Determines which page of the entities to retrieve.
-- `page_size` (Number) The maximum number of items to include per page. The last page of a collection may include fewer items.
 - `sort` (String) Sorts a collection of portals. Supported sort attributes are:
   - name
   - description

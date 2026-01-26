@@ -41,6 +41,8 @@ type ListMeshControlPlanesResponse struct {
 	UnauthorizedError *shared.UnauthorizedError
 	// Permission denied
 	ForbiddenError *shared.ForbiddenError
+
+	Next func() (*ListMeshControlPlanesResponse, error)
 }
 
 func (l *ListMeshControlPlanesResponse) GetContentType() string {

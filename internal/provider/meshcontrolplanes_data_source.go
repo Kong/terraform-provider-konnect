@@ -29,9 +29,7 @@ type MeshControlPlanesDataSource struct {
 
 // MeshControlPlanesDataSourceModel describes the data model.
 type MeshControlPlanesDataSourceModel struct {
-	Data       []tfTypes.MeshControlPlane `tfsdk:"data"`
-	PageNumber types.Int64                `queryParam:"style=form,explode=true,name=page[number]" tfsdk:"page_number"`
-	PageSize   types.Int64                `queryParam:"style=form,explode=true,name=page[size]" tfsdk:"page_size"`
+	Data []tfTypes.MeshControlPlane `tfsdk:"data"`
 }
 
 // Metadata returns the data source type name.
@@ -99,14 +97,6 @@ func (r *MeshControlPlanesDataSource) Schema(ctx context.Context, req datasource
 						},
 					},
 				},
-			},
-			"page_number": schema.Int64Attribute{
-				Optional:    true,
-				Description: `Determines which page of the entities to retrieve.`,
-			},
-			"page_size": schema.Int64Attribute{
-				Optional:    true,
-				Description: `The maximum number of items to include per page. The last page of a collection may include fewer items.`,
 			},
 		},
 	}
@@ -176,10 +166,31 @@ func (r *MeshControlPlanesDataSource) Read(ctx context.Context, req datasource.R
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
+	data.Data = nil
 	resp.Diagnostics.Append(data.RefreshFromSharedListMeshControlPlanesResponse(ctx, res.ListMeshControlPlanesResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
+	}
+	for {
+		var err error
+
+		res, err = res.Next()
+
+		if err != nil {
+			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
+			return
+		}
+
+		if res == nil {
+			break
+		}
+
+		resp.Diagnostics.Append(data.RefreshFromSharedListMeshControlPlanesResponse(ctx, res.ListMeshControlPlanesResponse)...)
+
+		if resp.Diagnostics.HasError() {
+			return
+		}
 	}
 
 	// Save updated data into Terraform state

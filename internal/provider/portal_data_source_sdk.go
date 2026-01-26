@@ -62,18 +62,6 @@ func (r *PortalDataSourceModel) RefreshFromSharedPortal(ctx context.Context, res
 func (r *PortalDataSourceModel) ToOperationsListPortalsRequest(ctx context.Context) (*operations.ListPortalsRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	pageSize := new(int64)
-	if !r.PageSize.IsUnknown() && !r.PageSize.IsNull() {
-		*pageSize = r.PageSize.ValueInt64()
-	} else {
-		pageSize = nil
-	}
-	pageNumber := new(int64)
-	if !r.PageNumber.IsUnknown() && !r.PageNumber.IsNull() {
-		*pageNumber = r.PageNumber.ValueInt64()
-	} else {
-		pageNumber = nil
-	}
 	sort := new(string)
 	if !r.Sort.IsUnknown() && !r.Sort.IsNull() {
 		*sort = r.Sort.ValueString()
@@ -414,10 +402,8 @@ func (r *PortalDataSourceModel) ToOperationsListPortalsRequest(ctx context.Conte
 		}
 	}
 	out := operations.ListPortalsRequest{
-		PageSize:   pageSize,
-		PageNumber: pageNumber,
-		Sort:       sort,
-		Filter:     filter,
+		Sort:   sort,
+		Filter: filter,
 	}
 
 	return &out, diags

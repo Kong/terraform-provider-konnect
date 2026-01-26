@@ -16,14 +16,18 @@ func (r *MeshControlPlanesDataSourceModel) RefreshFromSharedListMeshControlPlane
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		r.Data = []tfTypes.MeshControlPlane{}
+		if r.Data == nil {
+			r.Data = []tfTypes.MeshControlPlane{}
+		}
 
 		for _, dataItem := range resp.Data {
 			var data tfTypes.MeshControlPlane
 
 			data.CreatedAt = types.StringValue(typeconvert.TimeToString(dataItem.CreatedAt))
 			data.Description = types.StringPointerValue(dataItem.Description)
-			data.Features = []tfTypes.MeshControlPlaneFeature{}
+			if data.Features == nil {
+				data.Features = []tfTypes.MeshControlPlaneFeature{}
+			}
 
 			for _, featuresItem := range dataItem.Features {
 				var features tfTypes.MeshControlPlaneFeature
@@ -64,22 +68,7 @@ func (r *MeshControlPlanesDataSourceModel) RefreshFromSharedListMeshControlPlane
 func (r *MeshControlPlanesDataSourceModel) ToOperationsListMeshControlPlanesRequest(ctx context.Context) (*operations.ListMeshControlPlanesRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	pageSize := new(int64)
-	if !r.PageSize.IsUnknown() && !r.PageSize.IsNull() {
-		*pageSize = r.PageSize.ValueInt64()
-	} else {
-		pageSize = nil
-	}
-	pageNumber := new(int64)
-	if !r.PageNumber.IsUnknown() && !r.PageNumber.IsNull() {
-		*pageNumber = r.PageNumber.ValueInt64()
-	} else {
-		pageNumber = nil
-	}
-	out := operations.ListMeshControlPlanesRequest{
-		PageSize:   pageSize,
-		PageNumber: pageNumber,
-	}
+	out := operations.ListMeshControlPlanesRequest{}
 
 	return &out, diags
 }

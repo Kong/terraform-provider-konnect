@@ -31,7 +31,7 @@ func (e *ConfigurationDataPlaneGroupAutoscaleAutopilotKind) UnmarshalJSON(data [
 	}
 }
 
-// ConfigurationDataPlaneGroupAutoscaleAutopilot - Object that describes the autopilot autoscaling strategy.
+// ConfigurationDataPlaneGroupAutoscaleAutopilot - Object that describes the autopilot autoscaling strategy. For serverless.v1 kind of cloud gateways, this field should be omitted.
 type ConfigurationDataPlaneGroupAutoscaleAutopilot struct {
 	Kind ConfigurationDataPlaneGroupAutoscaleAutopilotKind `json:"kind"`
 	// Base number of requests per second that the deployment target should support.

@@ -158,6 +158,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewApplicationAuthStrategyResource,
 		NewAuditLogResource,
 		NewAuditLogDestinationResource,
+		NewAuthenticationSettingsResource,
 		NewCatalogServiceResource,
 		NewCentralizedConsumerResource,
 		NewCentralizedConsumerKeyResource,
@@ -303,6 +304,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewGatewayTargetResource,
 		NewGatewayUpstreamResource,
 		NewGatewayVaultResource,
+		NewIdentityProviderResource,
 		NewIntegrationInstanceResource,
 		NewIntegrationInstanceAuthConfigResource,
 		NewIntegrationInstanceAuthCredentialResource,
@@ -341,6 +343,10 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 		NewPlatformIPAddressesDataSource,
 		NewPortalDataSource,
 		NewPortalClassicListDataSource,
+		NewSystemAccountDataSource,
+		NewSystemAccountListDataSource,
+		NewTeamDataSource,
+		NewTeamListDataSource,
 	}
 }
 
