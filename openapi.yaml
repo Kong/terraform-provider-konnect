@@ -14688,6 +14688,19 @@ paths:
       operationId: update-api
       summary: Update API
       description: Updates an API.
+      parameters:
+        - name: force
+          in: query
+          description: |
+            If true, allows operations to be removed from the current version when using access control enforcement.
+            If false, operations removal will be rejected with a 409 error.
+            Omitting the value means true.
+          schema:
+            type: string
+            default: 'false'
+            enum:
+              - 'true'
+              - 'false'
       requestBody:
         $ref: '#/components/requestBodies/UpdateApiRequest'
       responses:
@@ -14846,7 +14859,11 @@ paths:
       summary: Create API Implementation
       description: |
         Creates an implementation for an API.
-        An API can be implemented by a single Gateway Service.
+        If all operations in an API are implemented by a single gateway service and the service
+        has no routes that are not part of the API, then the API can be linked to the service.
+        For cases where an API is implemented by multiple gateway services, only a subset of
+        routes in one or more gateway services, or API operations need to be made available for API packages,
+        then the API should be linked to the control plane that defines the routes that overlap with the API.
       requestBody:
         $ref: '#/components/requestBodies/CreateApiImplementationRequest'
       responses:
@@ -15151,6 +15168,19 @@ paths:
       operationId: update-api-version
       summary: Update API Version
       description: Updates the version (OpenAPI or AsyncAPI) of an API.
+      parameters:
+        - name: force
+          in: query
+          description: |
+            If true, allows operations to be removed from the current version when using access control enforcement.
+            If false, operations removal will be rejected with a 409 error.
+            Omitting the value (i.e., setting `?force`) means true.
+          schema:
+            type: string
+            default: 'false'
+            enum:
+              - 'true'
+              - 'false'
       requestBody:
         $ref: '#/components/requestBodies/UpdateApiVersionRequest'
       responses:
@@ -17214,6 +17244,7 @@ components:
             - CLUSTER_TYPE_CONTROL_PLANE_GROUP
             - CLUSTER_TYPE_SERVERLESS
             - CLUSTER_TYPE_HYBRID
+            - CLUSTER_TYPE_CLOUD_API_GATEWAY
           x-speakeasy-unknown-values: allow
         auth_type:
           description: The auth type value of the cluster associated with the Runtime Group.
@@ -17318,6 +17349,7 @@ components:
                 - CLUSTER_TYPE_CONTROL_PLANE_GROUP
                 - CLUSTER_TYPE_SERVERLESS
                 - CLUSTER_TYPE_HYBRID
+                - CLUSTER_TYPE_CLOUD_API_GATEWAY
               readOnly: true
               x-speakeasy-param-suppress-computed-diff: true
               x-speakeasy-unknown-values: allow
@@ -17937,16 +17969,6 @@ components:
         - medium
         - large
       x-speakeasy-unknown-values: allow
-    ApiAccess:
-      description: Type of API access data-plane groups will support for a configuration.
-      type: string
-      example: private+public
-      default: private+public
-      enum:
-        - private
-        - public
-        - private+public
-      x-speakeasy-unknown-values: allow
     ProviderRegionId:
       description: Region ID for cloud provider region.
       type: string
@@ -18003,7 +18025,9 @@ components:
           type: integer
           example: 1000
           deprecated: true
+          readOnly: true
           x-speakeasy-param-computed: true
+          x-speakeasy-param-suppress-computed-diff: true
       additionalProperties: false
       required:
         - kind
@@ -18177,7 +18201,15 @@ components:
         version:
           $ref: '#/components/schemas/GatewayVersion'
         api_access:
-          $ref: '#/components/schemas/ApiAccess'
+          description: Type of API access data-plane groups will support for a configuration.
+          type: string
+          example: private+public
+          enum:
+            - private
+            - public
+            - private+public
+          x-speakeasy-param-computed: true
+          x-speakeasy-unknown-values: allow
         dataplane_group_config:
           description: 'Object that describes where data-planes will be deployed to, along with how many instances.'
           type: array
@@ -19832,7 +19864,15 @@ components:
         kind:
           $ref: '#/components/schemas/ConfigurationKind'
         api_access:
-          $ref: '#/components/schemas/ApiAccess'
+          description: Type of API access data-plane groups will support for a configuration.
+          type: string
+          example: private+public
+          enum:
+            - private
+            - public
+            - private+public
+          x-speakeasy-param-computed: true
+          x-speakeasy-unknown-values: allow
       additionalProperties: false
       required:
         - control_plane_id
