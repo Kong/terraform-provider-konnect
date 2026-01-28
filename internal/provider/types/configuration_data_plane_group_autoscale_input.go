@@ -2,7 +2,7 @@
 
 package types
 
-type ConfigurationDataPlaneGroupAutoscale struct {
+type ConfigurationDataPlaneGroupAutoscaleInput struct {
 	ConfigurationDataPlaneGroupAutoscaleAutopilot *ConfigurationDataPlaneGroupAutoscaleAutopilot `queryParam:"inline" tfsdk:"configuration_data_plane_group_autoscale_autopilot" tfPlanOnly:"true"`
 	ConfigurationDataPlaneGroupAutoscaleStatic    *ConfigurationDataPlaneGroupAutoscaleStatic    `queryParam:"inline" tfsdk:"configuration_data_plane_group_autoscale_static" tfPlanOnly:"true"`
 }

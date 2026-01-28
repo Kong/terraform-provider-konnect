@@ -16,6 +16,7 @@ const (
 	CreateControlPlaneRequestClusterTypeClusterTypeControlPlaneGroup    CreateControlPlaneRequestClusterType = "CLUSTER_TYPE_CONTROL_PLANE_GROUP"
 	CreateControlPlaneRequestClusterTypeClusterTypeServerless           CreateControlPlaneRequestClusterType = "CLUSTER_TYPE_SERVERLESS"
 	CreateControlPlaneRequestClusterTypeClusterTypeHybrid               CreateControlPlaneRequestClusterType = "CLUSTER_TYPE_HYBRID"
+	CreateControlPlaneRequestClusterTypeClusterTypeCloudAPIGateway      CreateControlPlaneRequestClusterType = "CLUSTER_TYPE_CLOUD_API_GATEWAY"
 )
 
 func (e CreateControlPlaneRequestClusterType) ToPointer() *CreateControlPlaneRequestClusterType {
@@ -36,6 +37,8 @@ func (e *CreateControlPlaneRequestClusterType) UnmarshalJSON(data []byte) error 
 	case "CLUSTER_TYPE_SERVERLESS":
 		fallthrough
 	case "CLUSTER_TYPE_HYBRID":
+		fallthrough
+	case "CLUSTER_TYPE_CLOUD_API_GATEWAY":
 		*e = CreateControlPlaneRequestClusterType(v)
 		return nil
 	default:

@@ -3,9 +3,41 @@
 package shared
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
+
+// ConfigurationManifestAPIAccess - Type of API access data-plane groups will support for a configuration.
+type ConfigurationManifestAPIAccess string
+
+const (
+	ConfigurationManifestAPIAccessPrivate           ConfigurationManifestAPIAccess = "private"
+	ConfigurationManifestAPIAccessPublic            ConfigurationManifestAPIAccess = "public"
+	ConfigurationManifestAPIAccessPrivatePlusPublic ConfigurationManifestAPIAccess = "private+public"
+)
+
+func (e ConfigurationManifestAPIAccess) ToPointer() *ConfigurationManifestAPIAccess {
+	return &e
+}
+func (e *ConfigurationManifestAPIAccess) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "private":
+		fallthrough
+	case "public":
+		fallthrough
+	case "private+public":
+		*e = ConfigurationManifestAPIAccess(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for ConfigurationManifestAPIAccess: %v", v)
+	}
+}
 
 // ConfigurationManifest - Object containing information about a control-plane's cloud-gateways configuration.
 type ConfigurationManifest struct {
@@ -13,7 +45,7 @@ type ConfigurationManifest struct {
 	// Supported gateway version. For serverless.v1 kind of cloud gateways, this field should be omitted.
 	Version *string `json:"version,omitempty"`
 	// Type of API access data-plane groups will support for a configuration.
-	APIAccess *APIAccess `default:"private+public" json:"api_access"`
+	APIAccess *ConfigurationManifestAPIAccess `json:"api_access,omitempty"`
 	// Object that describes where data-planes will be deployed to, along with how many instances.
 	DataplaneGroupConfig []ConfigurationDataPlaneGroupConfig `json:"dataplane_group_config"`
 	// List of data-plane groups that describe where data-planes will be deployed to, along with how many
@@ -63,7 +95,7 @@ func (c *ConfigurationManifest) GetVersion() *string {
 	return c.Version
 }
 
-func (c *ConfigurationManifest) GetAPIAccess() *APIAccess {
+func (c *ConfigurationManifest) GetAPIAccess() *ConfigurationManifestAPIAccess {
 	if c == nil {
 		return nil
 	}

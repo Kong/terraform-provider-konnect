@@ -53,7 +53,7 @@ resource "konnect_cloud_gateway_configuration" "my_cloudgatewayconfiguration" {
 
 ### Optional
 
-- `api_access` (String) Type of API access data-plane groups will support for a configuration. Default: "private+public"; must be one of ["private", "public", "private+public"]
+- `api_access` (String) Type of API access data-plane groups will support for a configuration. must be one of ["private", "public", "private+public"]
 - `kind` (String) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
@@ -104,6 +104,9 @@ Optional:
 
 - `base_rps` (Number) Base number of requests per second that the deployment target should support. Not Null
 - `kind` (String) Not Null; must be "autopilot"
+
+Read-Only:
+
 - `max_rps` (Number, Deprecated) Max number of requests per second that the deployment target should support. If not set, this defaults to 10x base_rps. This field is deprecated and shouldn't be used in new configurations as it will be removed in a future version. max_rps is now calculated as 10x base_rps.
 
 

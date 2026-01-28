@@ -9,8 +9,8 @@ type CreateConfigurationDataPlaneGroup struct {
 	// Region ID for cloud provider region.
 	Region string `json:"region"`
 	// The network ID to operate on. For serverless.v1 kind of cloud gateways, this field should be omitted.
-	CloudGatewayNetworkID *string                               `json:"cloud_gateway_network_id,omitempty"`
-	Autoscale             *ConfigurationDataPlaneGroupAutoscale `json:"autoscale,omitempty"`
+	CloudGatewayNetworkID *string                                    `json:"cloud_gateway_network_id,omitempty"`
+	Autoscale             *ConfigurationDataPlaneGroupAutoscaleInput `json:"autoscale,omitempty"`
 	// Array of environment variables to set for a data-plane group.
 	Environment []ConfigurationDataPlaneGroupEnvironmentField `json:"environment,omitempty"`
 }
@@ -36,7 +36,7 @@ func (c *CreateConfigurationDataPlaneGroup) GetCloudGatewayNetworkID() *string {
 	return c.CloudGatewayNetworkID
 }
 
-func (c *CreateConfigurationDataPlaneGroup) GetAutoscale() *ConfigurationDataPlaneGroupAutoscale {
+func (c *CreateConfigurationDataPlaneGroup) GetAutoscale() *ConfigurationDataPlaneGroupAutoscaleInput {
 	if c == nil {
 		return nil
 	}

@@ -3,8 +3,40 @@
 package shared
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
+
+// APIAccess - Type of API access data-plane groups will support for a configuration.
+type APIAccess string
+
+const (
+	APIAccessPrivate           APIAccess = "private"
+	APIAccessPublic            APIAccess = "public"
+	APIAccessPrivatePlusPublic APIAccess = "private+public"
+)
+
+func (e APIAccess) ToPointer() *APIAccess {
+	return &e
+}
+func (e *APIAccess) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "private":
+		fallthrough
+	case "public":
+		fallthrough
+	case "private+public":
+		*e = APIAccess(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for APIAccess: %v", v)
+	}
+}
 
 // CreateConfigurationRequest - Request schema for creating a configuration.
 type CreateConfigurationRequest struct {
@@ -22,7 +54,7 @@ type CreateConfigurationRequest struct {
 	// should be omitted (will be ignored if provided): autoscale, cloud_gateway_network_id, version.
 	Kind *ConfigurationKind `default:"dedicated.v0" json:"kind"`
 	// Type of API access data-plane groups will support for a configuration.
-	APIAccess *APIAccess `default:"private+public" json:"api_access"`
+	APIAccess *APIAccess `json:"api_access,omitempty"`
 }
 
 func (c CreateConfigurationRequest) MarshalJSON() ([]byte, error) {

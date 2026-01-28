@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: db3aa2ac213ceb7bdd37026974eff9c8
+  docChecksum: 66534d860566270237be0ed5b10a5d3c
   docVersion: 2.0.0
   speakeasyVersion: 1.665.0
   generationVersion: 2.767.2
@@ -1112,8 +1112,8 @@ generatedFiles:
   - internal/provider/types/compression_ranges.go
   - internal/provider/types/config.go
   - internal/provider/types/configuration_data_plane_group.go
-  - internal/provider/types/configuration_data_plane_group_autoscale.go
   - internal/provider/types/configuration_data_plane_group_autoscale_autopilot.go
+  - internal/provider/types/configuration_data_plane_group_autoscale_input.go
   - internal/provider/types/configuration_data_plane_group_autoscale_static.go
   - internal/provider/types/configuration_data_plane_group_environment_field.go
   - internal/provider/types/confluent.go
@@ -2161,7 +2161,6 @@ generatedFiles:
   - internal/sdk/models/shared/aisemanticcacheplugin.go
   - internal/sdk/models/shared/aisemanticpromptguardplugin.go
   - internal/sdk/models/shared/aisemanticresponseguardplugin.go
-  - internal/sdk/models/shared/apiaccess.go
   - internal/sdk/models/shared/apidocument.go
   - internal/sdk/models/shared/apidocumentresponse.go
   - internal/sdk/models/shared/apidocumentstatus.go
@@ -2244,6 +2243,7 @@ generatedFiles:
   - internal/sdk/models/shared/configurationdataplanegroup.go
   - internal/sdk/models/shared/configurationdataplanegroupautoscale.go
   - internal/sdk/models/shared/configurationdataplanegroupautoscaleautopilot.go
+  - internal/sdk/models/shared/configurationdataplanegroupautoscaleinput.go
   - internal/sdk/models/shared/configurationdataplanegroupautoscalestatic.go
   - internal/sdk/models/shared/configurationdataplanegroupconfig.go
   - internal/sdk/models/shared/configurationdataplanegroupenvironmentfield.go
@@ -3214,7 +3214,7 @@ examples:
   create-configuration:
     speakeasy-default-create-configuration:
       requestBody:
-        application/json: {"control_plane_id": "0949471e-b759-45ba-87ab-ee63fb781388", "control_plane_geo": "in", "version": "3.2", "dataplane_groups": [{"provider": "aws", "region": "us-east-2", "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "autoscale": {"kind": "autopilot", "base_rps": 1, "max_rps": 1000}, "environment": [{"name": "KONG_LOG_LEVEL", "value": "INFO"}, {"name": "KONG_LOG_LEVEL", "value": "INFO"}]}, {"provider": "aws", "region": "us-east-2", "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "autoscale": {"kind": "autopilot", "base_rps": 1, "max_rps": 1000}, "environment": [{"name": "KONG_LOG_LEVEL", "value": "INFO"}, {"name": "KONG_LOG_LEVEL", "value": "INFO"}]}], "kind": "dedicated.v0", "api_access": "private+public"}
+        application/json: {"control_plane_id": "0949471e-b759-45ba-87ab-ee63fb781388", "control_plane_geo": "in", "version": "3.2", "dataplane_groups": [{"provider": "aws", "region": "us-east-2", "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "autoscale": {"kind": "autopilot", "base_rps": 1}, "environment": [{"name": "KONG_LOG_LEVEL", "value": "INFO"}, {"name": "KONG_LOG_LEVEL", "value": "INFO"}]}, {"provider": "aws", "region": "us-east-2", "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "autoscale": {"kind": "autopilot", "base_rps": 1}, "environment": [{"name": "KONG_LOG_LEVEL", "value": "INFO"}, {"name": "KONG_LOG_LEVEL", "value": "INFO"}]}], "kind": "dedicated.v0", "api_access": "private+public"}
       responses:
         "200":
           application/json: {"id": "edaf40f9-9fb0-4ffe-bb74-4e763a6bd471", "version": "3.2", "api_access": "private+public", "dataplane_group_config": [{"provider": "aws", "region": "us-east-2", "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "autoscale": {"kind": "static", "instance_type": "large", "requested_instances": 3}, "environment": [{"name": "KONG_LOG_LEVEL", "value": "INFO"}, {"name": "KONG_LOG_LEVEL", "value": "INFO"}, {"name": "KONG_LOG_LEVEL", "value": "INFO"}]}, {"provider": "aws", "region": "us-east-2", "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "autoscale": {"kind": "static", "instance_type": "large", "requested_instances": 3}, "environment": [{"name": "KONG_LOG_LEVEL", "value": "INFO"}, {"name": "KONG_LOG_LEVEL", "value": "INFO"}, {"name": "KONG_LOG_LEVEL", "value": "INFO"}]}], "dataplane_groups": [{"id": "cbb8872a-1f83-4806-bf69-fdf0b4783c7e", "provider": "aws", "region": "us-east-2", "autoscale": {"kind": "autopilot", "base_rps": 1, "max_rps": 1000}, "environment": [{"name": "KONG_LOG_LEVEL", "value": "INFO"}, {"name": "KONG_LOG_LEVEL", "value": "INFO"}], "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "state": "ready", "state_metadata": {"reported_status": "ERROR", "reason": "Dataplane group could not be deployed due to insufficient cloud provider compute instances.\n"}, "private_ip_addresses": ["192.168.248.132", "192.168.66.81", "192.168.137.135"], "egress_ip_addresses": ["71.78.149.75", "91.149.112.244", "51.235.15.121"], "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}, {"id": "cbb8872a-1f83-4806-bf69-fdf0b4783c7e", "provider": "aws", "region": "us-east-2", "autoscale": {"kind": "autopilot", "base_rps": 1, "max_rps": 1000}, "environment": [{"name": "KONG_LOG_LEVEL", "value": "INFO"}, {"name": "KONG_LOG_LEVEL", "value": "INFO"}], "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "state": "ready", "state_metadata": {"reported_status": "ERROR", "reason": "Dataplane group could not be deployed due to insufficient cloud provider compute instances.\n"}, "private_ip_addresses": ["192.168.248.132", "192.168.66.81", "192.168.137.135"], "egress_ip_addresses": ["71.78.149.75", "91.149.112.244", "51.235.15.121"], "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}, {"id": "cbb8872a-1f83-4806-bf69-fdf0b4783c7e", "provider": "aws", "region": "us-east-2", "autoscale": {"kind": "autopilot", "base_rps": 1, "max_rps": 1000}, "environment": [{"name": "KONG_LOG_LEVEL", "value": "INFO"}, {"name": "KONG_LOG_LEVEL", "value": "INFO"}], "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "state": "ready", "state_metadata": {"reported_status": "ERROR", "reason": "Dataplane group could not be deployed due to insufficient cloud provider compute instances.\n"}, "private_ip_addresses": ["192.168.248.132", "192.168.66.81", "192.168.137.135"], "egress_ip_addresses": ["71.78.149.75", "91.149.112.244", "51.235.15.121"], "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}], "kind": "dedicated.v0", "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "control_plane_id": "0949471e-b759-45ba-87ab-ee63fb781388", "control_plane_geo": "me"}
@@ -14125,6 +14125,8 @@ examples:
       parameters:
         path:
           apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+        query:
+          force: "false"
       requestBody:
         application/json: {"name": "MyAPI", "description": null, "slug": "my-api-v1", "labels": {"env": "test"}}
       responses:
@@ -14438,6 +14440,8 @@ examples:
         path:
           apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
           versionId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+        query:
+          force: "false"
       requestBody:
         application/json: {"version": "1.0.0", "spec": null}
       responses:
