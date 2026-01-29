@@ -11,9 +11,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/listplanmodifier"
+	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/objectplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 )
@@ -121,37 +125,38 @@ func (r *PortalAuthResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"oidc_config": schema.SingleNestedAttribute{
 				Computed: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"claim_mappings": types.ObjectType{
-						AttrTypes: map[string]attr.Type{
-							`email`:  types.StringType,
-							`groups`: types.StringType,
-							`name`:   types.StringType,
-						},
-					},
-					"client_id": types.StringType,
-					"issuer":    types.StringType,
-					"scopes": types.ListType{
-						ElemType: types.StringType,
-					},
-				})),
+				PlanModifiers: []planmodifier.Object{
+					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+				},
 				Attributes: map[string]schema.Attribute{
 					"claim_mappings": schema.SingleNestedAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.Object{
+							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+						},
 						Attributes: map[string]schema.Attribute{
 							"email": schema.StringAttribute{
-								Computed:    true,
-								Default:     stringdefault.StaticString(`email`),
+								Computed: true,
+								Default:  stringdefault.StaticString(`email`),
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+								},
 								Description: `Default: "email"`,
 							},
 							"groups": schema.StringAttribute{
-								Computed:    true,
-								Default:     stringdefault.StaticString(`groups`),
+								Computed: true,
+								Default:  stringdefault.StaticString(`groups`),
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+								},
 								Description: `Default: "groups"`,
 							},
 							"name": schema.StringAttribute{
-								Computed:    true,
-								Default:     stringdefault.StaticString(`name`),
+								Computed: true,
+								Default:  stringdefault.StaticString(`name`),
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+								},
 								Description: `Default: "name"`,
 							},
 						},
@@ -159,9 +164,15 @@ func (r *PortalAuthResource) Schema(ctx context.Context, req resource.SchemaRequ
 					},
 					"client_id": schema.StringAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 					},
 					"issuer": schema.StringAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 					},
 					"scopes": schema.ListAttribute{
 						Computed: true,
@@ -170,6 +181,9 @@ func (r *PortalAuthResource) Schema(ctx context.Context, req resource.SchemaRequ
 							types.StringValue("openid"),
 							types.StringValue("profile"),
 						})),
+						PlanModifiers: []planmodifier.List{
+							speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+						},
 						ElementType: types.StringType,
 						Description: `Default: ["email","openid","profile"]`,
 					},

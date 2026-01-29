@@ -19,6 +19,15 @@ func (r *PortalAuthResourceModel) RefreshFromSharedPortalAuthenticationSettingsR
 		r.IdpMappingEnabled = types.BoolPointerValue(resp.IdpMappingEnabled)
 		r.KonnectMappingEnabled = types.BoolValue(resp.KonnectMappingEnabled)
 		r.OidcAuthEnabled = types.BoolValue(resp.OidcAuthEnabled)
+		if resp.OidcClaimMappings == nil {
+			r.OidcClaimMappings = nil
+		} else {
+			r.OidcClaimMappings = &tfTypes.PortalAuthenticationSettingsUpdateRequestPortalClaimMappings{}
+			r.OidcClaimMappings.Email = types.StringPointerValue(resp.OidcClaimMappings.Email)
+			r.OidcClaimMappings.Groups = types.StringPointerValue(resp.OidcClaimMappings.Groups)
+			r.OidcClaimMappings.Name = types.StringPointerValue(resp.OidcClaimMappings.Name)
+		}
+		r.OidcClientID = types.StringPointerValue(resp.OidcClientID)
 		if resp.OidcConfig == nil {
 			r.OidcConfig = nil
 		} else {
@@ -36,6 +45,13 @@ func (r *PortalAuthResourceModel) RefreshFromSharedPortalAuthenticationSettingsR
 			r.OidcConfig.Scopes = make([]types.String, 0, len(resp.OidcConfig.Scopes))
 			for _, v := range resp.OidcConfig.Scopes {
 				r.OidcConfig.Scopes = append(r.OidcConfig.Scopes, types.StringValue(v))
+			}
+		}
+		r.OidcIssuer = types.StringPointerValue(resp.OidcIssuer)
+		if resp.OidcScopes != nil {
+			r.OidcScopes = make([]types.String, 0, len(resp.OidcScopes))
+			for _, v := range resp.OidcScopes {
+				r.OidcScopes = append(r.OidcScopes, types.StringValue(v))
 			}
 		}
 		r.OidcTeamMappingEnabled = types.BoolValue(resp.OidcTeamMappingEnabled)
