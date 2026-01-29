@@ -24247,9 +24247,7 @@ components:
               name: name
               email: email
               groups: custom-group-claim
-          default: null
           deprecated: true
-          nullable: true
           properties:
             issuer:
               type: string
@@ -24272,10 +24270,60 @@ components:
                 - profile
             claim_mappings:
               $ref: '#/components/schemas/PortalClaimMappings'
+          readOnly: true
           required:
             - issuer
             - client_id
           title: PortalOIDCConfig
+          x-speakeasy-param-suppress-computed-diff: true
+        oidc_issuer:
+          type: string
+          example: 'https://identity.example.com/v2'
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        oidc_client_id:
+          type: string
+          example: x7id0o42lklas0blidl2
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        oidc_scopes:
+          type: array
+          items:
+            type: string
+          example:
+            - email
+            - openid
+            - profile
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        oidc_claim_mappings:
+          description: Mappings from a portal developer atribute to an Identity Provider claim.
+          type: object
+          example:
+            name: name
+            email: email
+            groups: custom-group-claim
+          default: null
+          maxProperties: 3
+          minProperties: 0
+          nullable: true
+          properties:
+            name:
+              type: string
+              example: name
+              default: name
+            email:
+              type: string
+              example: email
+              default: email
+            groups:
+              type: string
+              example: custom-group-claim
+              default: groups
+          title: PortalClaimMappings
           x-speakeasy-param-computed: false
       example:
         basic_auth_enabled: true
@@ -24299,6 +24347,15 @@ components:
         - oidc_auth_enabled
         - oidc_team_mapping_enabled
       title: PortalAuthenticationSettingsResponse
+      x-speakeasy-transform-from-api:
+        jq: |
+          . + {
+            oidc_issuer: .oidc_config.issuer,
+            oidc_client_id: .oidc_config.client_id,
+            oidc_claim_mappings: .oidc_config.claim_mappings,
+            oidc_scopes: .oidc_config.scopes
+          }
+          | del(.oidc_config)
     PortalAuthenticationSettingsUpdateRequest:
       x-speakeasy-entity: PortalAuth
       description: Properties to update a portal's developer auth settings.

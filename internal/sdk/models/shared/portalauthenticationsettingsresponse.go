@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // PortalOIDCConfig - Configuration properties for an OpenID Connect Identity Provider.
 //
 // Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
@@ -41,6 +45,45 @@ func (p *PortalOIDCConfig) GetClaimMappings() *PortalClaimMappings {
 	return p.ClaimMappings
 }
 
+// PortalAuthenticationSettingsResponsePortalClaimMappings - Mappings from a portal developer atribute to an Identity Provider claim.
+type PortalAuthenticationSettingsResponsePortalClaimMappings struct {
+	Name   *string `default:"name" json:"name"`
+	Email  *string `default:"email" json:"email"`
+	Groups *string `default:"groups" json:"groups"`
+}
+
+func (p PortalAuthenticationSettingsResponsePortalClaimMappings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PortalAuthenticationSettingsResponsePortalClaimMappings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *PortalAuthenticationSettingsResponsePortalClaimMappings) GetName() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Name
+}
+
+func (p *PortalAuthenticationSettingsResponsePortalClaimMappings) GetEmail() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Email
+}
+
+func (p *PortalAuthenticationSettingsResponsePortalClaimMappings) GetGroups() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Groups
+}
+
 // PortalAuthenticationSettingsResponse - The developer authentication settings for a portal.
 type PortalAuthenticationSettingsResponse struct {
 	// The portal has basic auth enabled or disabled.
@@ -64,7 +107,28 @@ type PortalAuthenticationSettingsResponse struct {
 	// Configuration properties for an OpenID Connect Identity Provider.
 	//
 	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
-	OidcConfig *PortalOIDCConfig `json:"oidc_config"`
+	OidcConfig   *PortalOIDCConfig `json:"oidc_config,omitempty"`
+	OidcIssuer   *string           `default:"null" json:"oidc_issuer"`
+	OidcClientID *string           `default:"null" json:"oidc_client_id"`
+	OidcScopes   []string          `json:"oidc_scopes"`
+	// Mappings from a portal developer atribute to an Identity Provider claim.
+	OidcClaimMappings *PortalAuthenticationSettingsResponsePortalClaimMappings `json:"oidc_claim_mappings"`
+}
+
+func (p PortalAuthenticationSettingsResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PortalAuthenticationSettingsResponse) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ". + { oidc_issuer: .oidc_config.issuer, oidc_client_id: .oidc_config.client_id, oidc_claim_mappings: .oidc_config.claim_mappings, oidc_scopes: .oidc_config.scopes } | del(.oidc_config)"); err != nil {
+		return err
+	} else {
+		data = out
+	}
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"basic_auth_enabled", "oidc_auth_enabled", "oidc_team_mapping_enabled", "konnect_mapping_enabled"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PortalAuthenticationSettingsResponse) GetBasicAuthEnabled() bool {
@@ -114,4 +178,32 @@ func (p *PortalAuthenticationSettingsResponse) GetOidcConfig() *PortalOIDCConfig
 		return nil
 	}
 	return p.OidcConfig
+}
+
+func (p *PortalAuthenticationSettingsResponse) GetOidcIssuer() *string {
+	if p == nil {
+		return nil
+	}
+	return p.OidcIssuer
+}
+
+func (p *PortalAuthenticationSettingsResponse) GetOidcClientID() *string {
+	if p == nil {
+		return nil
+	}
+	return p.OidcClientID
+}
+
+func (p *PortalAuthenticationSettingsResponse) GetOidcScopes() []string {
+	if p == nil {
+		return nil
+	}
+	return p.OidcScopes
+}
+
+func (p *PortalAuthenticationSettingsResponse) GetOidcClaimMappings() *PortalAuthenticationSettingsResponsePortalClaimMappings {
+	if p == nil {
+		return nil
+	}
+	return p.OidcClaimMappings
 }

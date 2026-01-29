@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: c0e7f5ab3821950d50b949594bc5b1a2
+  docChecksum: 20f760a9d2063d238c87cca2d7fffede
   docVersion: 2.0.0
   speakeasyVersion: 1.665.0
   generationVersion: 2.767.2
@@ -26,6 +26,7 @@ features:
     pagination: 2.83.5
     retries: 2.81.4
     sets: 0.1.2
+    transformJq: 0.0.1
     typeOverrides: 2.81.1
     unions: 2.82.5
 generatedFiles:
@@ -1416,6 +1417,7 @@ generatedFiles:
   - internal/sdk/internal/utils/env.go
   - internal/sdk/internal/utils/form.go
   - internal/sdk/internal/utils/headers.go
+  - internal/sdk/internal/utils/jq.go
   - internal/sdk/internal/utils/json.go
   - internal/sdk/internal/utils/pathparams.go
   - internal/sdk/internal/utils/queryparams.go
@@ -12643,7 +12645,7 @@ examples:
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": true, "oidc_team_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_config": {"issuer": "https://identity.example.com/v2", "client_id": "x7id0o42lklas0blidl2", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}}
+          application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": true, "oidc_team_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_config": {"issuer": "https://identity.example.com/v2", "client_id": "x7id0o42lklas0blidl2", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}, "oidc_issuer": "https://identity.example.com/v2", "oidc_client_id": "x7id0o42lklas0blidl2", "oidc_scopes": ["email", "openid", "profile"], "oidc_claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
   update-portal-authentication-settings:
@@ -12655,7 +12657,7 @@ examples:
         application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": true, "oidc_team_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_issuer": "https://identity.example.com/v2", "oidc_client_id": "x7id0o42lklas0blidl2", "oidc_client_secret": null, "oidc_scopes": ["email", "openid", "profile"], "oidc_claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}
       responses:
         "200":
-          application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": true, "oidc_team_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_config": {"issuer": "https://identity.example.com/v2", "client_id": "x7id0o42lklas0blidl2", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}}
+          application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": true, "oidc_team_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_config": {"issuer": "https://identity.example.com/v2", "client_id": "x7id0o42lklas0blidl2", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}, "oidc_issuer": "https://identity.example.com/v2", "oidc_client_id": "x7id0o42lklas0blidl2", "oidc_scopes": ["email", "openid", "profile"], "oidc_claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}
         "400":
           application/problem+json: {"status": 661550, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_items", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}, {"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value 1>"], "source": "body"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>"], "source": "body"}]}
         "401":
