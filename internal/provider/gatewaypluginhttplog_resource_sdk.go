@@ -59,6 +59,7 @@ func (r *GatewayPluginHTTPLogResourceModel) RefreshFromSharedHTTPLogPlugin(ctx c
 		}
 		r.Config.QueueSize = types.Int64PointerValue(resp.Config.QueueSize)
 		r.Config.RetryCount = types.Int64PointerValue(resp.Config.RetryCount)
+		r.Config.SslVerify = types.BoolPointerValue(resp.Config.SslVerify)
 		r.Config.Timeout = types.Float64PointerValue(resp.Config.Timeout)
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -430,6 +431,12 @@ func (r *GatewayPluginHTTPLogResourceModel) ToSharedHTTPLogPlugin(ctx context.Co
 	} else {
 		retryCount = nil
 	}
+	sslVerify := new(bool)
+	if !r.Config.SslVerify.IsUnknown() && !r.Config.SslVerify.IsNull() {
+		*sslVerify = r.Config.SslVerify.ValueBool()
+	} else {
+		sslVerify = nil
+	}
 	timeout := new(float64)
 	if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
 		*timeout = r.Config.Timeout.ValueFloat64()
@@ -447,6 +454,7 @@ func (r *GatewayPluginHTTPLogResourceModel) ToSharedHTTPLogPlugin(ctx context.Co
 		Queue:             queue,
 		QueueSize:         queueSize,
 		RetryCount:        retryCount,
+		SslVerify:         sslVerify,
 		Timeout:           timeout,
 	}
 	var consumer *shared.HTTPLogPluginConsumer

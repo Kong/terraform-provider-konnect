@@ -16,9 +16,9 @@ type EventGatewayListenerPolicy struct {
 	// The type name of the policy.
 	Type string `json:"type"`
 	// A unique user-defined name of the policy.
-	Name *string `default:"null" json:"name"`
+	Name *string `json:"name,omitempty"`
 	// A human-readable description of the policy.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"" json:"description"`
 	// Whether the policy is enabled.
 	Enabled *bool `default:"true" json:"enabled"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
@@ -29,7 +29,7 @@ type EventGatewayListenerPolicy struct {
 	// The unique identifier of the policy.
 	ID string `json:"id"`
 	// The configuration of the policy.
-	Config *Config `json:"config,omitempty"`
+	Config Config `json:"config"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// The unique identifier of the parent policy, if any.
@@ -91,9 +91,9 @@ func (e *EventGatewayListenerPolicy) GetID() string {
 	return e.ID
 }
 
-func (e *EventGatewayListenerPolicy) GetConfig() *Config {
+func (e *EventGatewayListenerPolicy) GetConfig() Config {
 	if e == nil {
-		return nil
+		return Config{}
 	}
 	return e.Config
 }

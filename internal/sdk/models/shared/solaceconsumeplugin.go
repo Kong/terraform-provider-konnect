@@ -337,10 +337,14 @@ func (e *SolaceConsumePluginScheme) UnmarshalJSON(data []byte) error {
 // SolaceConsumePluginAuthentication - Session authentication related configuration.
 type SolaceConsumePluginAuthentication struct {
 	// The OAuth2 access token used with `OAUTH2` authentication scheme when connecting to an event broker.
-	AccessToken       *string `default:"null" json:"access_token"`
+	AccessToken *string `default:"null" json:"access_token"`
+	// Specifies the header that contains access token for the `OAUTH2` authentication scheme when connecting to an event broker. This header takes precedence over the `access_token` field.
 	AccessTokenHeader *string `default:"null" json:"access_token_header"`
+	// Specifies the header that contains Basic Authentication credentials for the `BASIC` authentication scheme when connecting to an event broker. This header takes precedence over the `username` and `password` fields.
+	BasicAuthHeader *string `default:"null" json:"basic_auth_header"`
 	// The OpenID Connect ID token used with `OAUTH2` authentication scheme when connecting to an event broker.
-	IDToken       *string `default:"null" json:"id_token"`
+	IDToken *string `default:"null" json:"id_token"`
+	// Specifies the header that contains id token for the `OAUTH2` authentication scheme when connecting to an event broker. This header takes precedence over the `id_token` field.
 	IDTokenHeader *string `default:"null" json:"id_token_header"`
 	// The password used with `BASIC` authentication scheme when connecting to an event broker.
 	Password *string `default:"null" json:"password"`
@@ -373,6 +377,13 @@ func (s *SolaceConsumePluginAuthentication) GetAccessTokenHeader() *string {
 		return nil
 	}
 	return s.AccessTokenHeader
+}
+
+func (s *SolaceConsumePluginAuthentication) GetBasicAuthHeader() *string {
+	if s == nil {
+		return nil
+	}
+	return s.BasicAuthHeader
 }
 
 func (s *SolaceConsumePluginAuthentication) GetIDToken() *string {

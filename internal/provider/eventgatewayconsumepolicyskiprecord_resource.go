@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -38,6 +39,8 @@ type EventGatewayConsumePolicySkipRecordResource struct {
 
 // EventGatewayConsumePolicySkipRecordResourceModel describes the resource data model.
 type EventGatewayConsumePolicySkipRecordResourceModel struct {
+	After            types.String            `queryParam:"style=form,explode=true,name=after" tfsdk:"after"`
+	Before           types.String            `queryParam:"style=form,explode=true,name=before" tfsdk:"before"`
 	Condition        types.String            `tfsdk:"condition"`
 	Config           *tfTypes.Metadata       `tfsdk:"config"`
 	CreatedAt        types.String            `tfsdk:"created_at"`
@@ -60,14 +63,31 @@ func (r *EventGatewayConsumePolicySkipRecordResource) Schema(ctx context.Context
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "EventGatewayConsumePolicySkipRecord Resource",
 		Attributes: map[string]schema.Attribute{
-			"condition": schema.StringAttribute{
+			"after": schema.StringAttribute{
 				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `Determines the id of the existing policy the new policy should be inserted after. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.`,
+			},
+			"before": schema.StringAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `Determines the id of the existing policy the new policy should be inserted before. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.`,
+			},
+			"condition": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(``),
 				MarkdownDescription: `A string containing the boolean expression that determines whether the policy is applied.` + "\n" +
 					`` + "\n" +
 					`When the policy is applied as a child policy of schema_validation, the expression can also reference` + "\n" +
-					`` + "`" + `record.value` + "`" + ` fields.`,
+					`` + "`" + `record.value` + "`" + ` fields.` + "\n" +
+					`Default: ""`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 1000),
+					stringvalidator.UTF8LengthAtMost(1000),
 				},
 			},
 			"config": schema.SingleNestedAttribute{
@@ -82,8 +102,10 @@ func (r *EventGatewayConsumePolicySkipRecordResource) Schema(ctx context.Context
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
 			"description": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
-				Description: `A human-readable description of the policy.`,
+				Default:     stringdefault.StaticString(``),
+				Description: `A human-readable description of the policy. Default: ""`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(512),
 				},
@@ -111,10 +133,11 @@ func (r *EventGatewayConsumePolicySkipRecordResource) Schema(ctx context.Context
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"name": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
 				Description: `A unique user-defined name of the policy.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 255),
+					stringvalidator.UTF8LengthAtMost(255),
 				},
 			},
 			"parent_policy_id": schema.StringAttribute{
@@ -204,6 +227,43 @@ func (r *EventGatewayConsumePolicySkipRecordResource) Create(ctx context.Context
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res.EventGatewayPolicy)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	request1, request1Diags := data.ToOperationsGetEventGatewayVirtualClusterConsumePolicySkipRecordRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res1, err := r.client.EventGatewayVirtualClusterConsumePolicies.GetEventGatewayVirtualClusterConsumePolicySkipRecord(ctx, *request1)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res1 != nil && res1.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+		}
+		return
+	}
+	if res1 == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
+		return
+	}
+	if res1.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		return
+	}
+	if !(res1.EventGatewayPolicy != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayPolicy(ctx, res1.EventGatewayPolicy)...)
 
 	if resp.Diagnostics.HasError() {
 		return

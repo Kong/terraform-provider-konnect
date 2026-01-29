@@ -299,6 +299,8 @@ type AiSemanticResponseGuardPluginBedrock struct {
 	EmbeddingsNormalize *bool `default:"false" json:"embeddings_normalize"`
 	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
 	PerformanceConfigLatency *string `default:"null" json:"performance_config_latency"`
+	// S3 URI (s3://bucket/prefix) where Bedrock will store generated video files. Required for video generation.
+	VideoOutputS3URI *string `default:"null" json:"video_output_s3_uri"`
 }
 
 func (a AiSemanticResponseGuardPluginBedrock) MarshalJSON() ([]byte, error) {
@@ -352,6 +354,13 @@ func (a *AiSemanticResponseGuardPluginBedrock) GetPerformanceConfigLatency() *st
 		return nil
 	}
 	return a.PerformanceConfigLatency
+}
+
+func (a *AiSemanticResponseGuardPluginBedrock) GetVideoOutputS3URI() *string {
+	if a == nil {
+		return nil
+	}
+	return a.VideoOutputS3URI
 }
 
 type AiSemanticResponseGuardPluginGemini struct {
@@ -614,6 +623,7 @@ func (e *AiSemanticResponseGuardPluginGenaiCategory) UnmarshalJSON(data []byte) 
 type AiSemanticResponseGuardPluginLlmFormat string
 
 const (
+	AiSemanticResponseGuardPluginLlmFormatAnthropic   AiSemanticResponseGuardPluginLlmFormat = "anthropic"
 	AiSemanticResponseGuardPluginLlmFormatBedrock     AiSemanticResponseGuardPluginLlmFormat = "bedrock"
 	AiSemanticResponseGuardPluginLlmFormatCohere      AiSemanticResponseGuardPluginLlmFormat = "cohere"
 	AiSemanticResponseGuardPluginLlmFormatGemini      AiSemanticResponseGuardPluginLlmFormat = "gemini"
@@ -630,6 +640,8 @@ func (e *AiSemanticResponseGuardPluginLlmFormat) UnmarshalJSON(data []byte) erro
 		return err
 	}
 	switch v {
+	case "anthropic":
+		fallthrough
 	case "bedrock":
 		fallthrough
 	case "cohere":
@@ -878,6 +890,159 @@ func (a *AiSemanticResponseGuardPluginPgvector) GetUser() *string {
 	return a.User
 }
 
+// AiSemanticResponseGuardPluginAuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+type AiSemanticResponseGuardPluginAuthProvider string
+
+const (
+	AiSemanticResponseGuardPluginAuthProviderAws   AiSemanticResponseGuardPluginAuthProvider = "aws"
+	AiSemanticResponseGuardPluginAuthProviderAzure AiSemanticResponseGuardPluginAuthProvider = "azure"
+	AiSemanticResponseGuardPluginAuthProviderGcp   AiSemanticResponseGuardPluginAuthProvider = "gcp"
+)
+
+func (e AiSemanticResponseGuardPluginAuthProvider) ToPointer() *AiSemanticResponseGuardPluginAuthProvider {
+	return &e
+}
+func (e *AiSemanticResponseGuardPluginAuthProvider) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "aws":
+		fallthrough
+	case "azure":
+		fallthrough
+	case "gcp":
+		*e = AiSemanticResponseGuardPluginAuthProvider(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AiSemanticResponseGuardPluginAuthProvider: %v", v)
+	}
+}
+
+// AiSemanticResponseGuardPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+type AiSemanticResponseGuardPluginCloudAuthentication struct {
+	// Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+	AuthProvider *AiSemanticResponseGuardPluginAuthProvider `json:"auth_provider,omitempty"`
+	// AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
+	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
+	// The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
+	// The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
+	AwsCacheName *string `default:"null" json:"aws_cache_name"`
+	// This flag specifies whether the cluster is serverless when auth_provider is set to `aws`.
+	AwsIsServerless *bool `default:"true" json:"aws_is_serverless"`
+	// The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
+	AwsRegion *string `default:"null" json:"aws_region"`
+	// The session name for the temporary credentials when assuming the IAM role.
+	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
+	// AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
+	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
+	// Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientID *string `default:"null" json:"azure_client_id"`
+	// Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
+	// Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
+	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+}
+
+func (a AiSemanticResponseGuardPluginCloudAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticResponseGuardPluginCloudAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiSemanticResponseGuardPluginCloudAuthentication) GetAuthProvider() *AiSemanticResponseGuardPluginAuthProvider {
+	if a == nil {
+		return nil
+	}
+	return a.AuthProvider
+}
+
+func (a *AiSemanticResponseGuardPluginCloudAuthentication) GetAwsAccessKeyID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsAccessKeyID
+}
+
+func (a *AiSemanticResponseGuardPluginCloudAuthentication) GetAwsAssumeRoleArn() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsAssumeRoleArn
+}
+
+func (a *AiSemanticResponseGuardPluginCloudAuthentication) GetAwsCacheName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsCacheName
+}
+
+func (a *AiSemanticResponseGuardPluginCloudAuthentication) GetAwsIsServerless() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.AwsIsServerless
+}
+
+func (a *AiSemanticResponseGuardPluginCloudAuthentication) GetAwsRegion() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsRegion
+}
+
+func (a *AiSemanticResponseGuardPluginCloudAuthentication) GetAwsRoleSessionName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsRoleSessionName
+}
+
+func (a *AiSemanticResponseGuardPluginCloudAuthentication) GetAwsSecretAccessKey() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsSecretAccessKey
+}
+
+func (a *AiSemanticResponseGuardPluginCloudAuthentication) GetAzureClientID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AzureClientID
+}
+
+func (a *AiSemanticResponseGuardPluginCloudAuthentication) GetAzureClientSecret() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AzureClientSecret
+}
+
+func (a *AiSemanticResponseGuardPluginCloudAuthentication) GetAzureTenantID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AzureTenantID
+}
+
+func (a *AiSemanticResponseGuardPluginCloudAuthentication) GetGcpServiceAccountJSON() *string {
+	if a == nil {
+		return nil
+	}
+	return a.GcpServiceAccountJSON
+}
+
 type AiSemanticResponseGuardPluginClusterNodes struct {
 	// A string representing a host name, such as example.com.
 	IP *string `default:"127.0.0.1" json:"ip"`
@@ -973,6 +1138,8 @@ func (e *AiSemanticResponseGuardPluginSentinelRole) UnmarshalJSON(data []byte) e
 }
 
 type AiSemanticResponseGuardPluginRedis struct {
+	// Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+	CloudAuthentication *AiSemanticResponseGuardPluginCloudAuthentication `json:"cloud_authentication"`
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
@@ -1026,6 +1193,13 @@ func (a *AiSemanticResponseGuardPluginRedis) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AiSemanticResponseGuardPluginRedis) GetCloudAuthentication() *AiSemanticResponseGuardPluginCloudAuthentication {
+	if a == nil {
+		return nil
+	}
+	return a.CloudAuthentication
 }
 
 func (a *AiSemanticResponseGuardPluginRedis) GetClusterMaxRedirections() *int64 {
@@ -1212,7 +1386,18 @@ type AiSemanticResponseGuardPluginVectordb struct {
 	// which vector database driver to use
 	Strategy AiSemanticResponseGuardPluginStrategy `json:"strategy"`
 	// the default similarity threshold for accepting semantic search results (float)
-	Threshold float64 `json:"threshold"`
+	Threshold *float64 `default:"null" json:"threshold"`
+}
+
+func (a AiSemanticResponseGuardPluginVectordb) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticResponseGuardPluginVectordb) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiSemanticResponseGuardPluginVectordb) GetDimensions() int64 {
@@ -1250,9 +1435,9 @@ func (a *AiSemanticResponseGuardPluginVectordb) GetStrategy() AiSemanticResponse
 	return a.Strategy
 }
 
-func (a *AiSemanticResponseGuardPluginVectordb) GetThreshold() float64 {
+func (a *AiSemanticResponseGuardPluginVectordb) GetThreshold() *float64 {
 	if a == nil {
-		return 0.0
+		return nil
 	}
 	return a.Threshold
 }

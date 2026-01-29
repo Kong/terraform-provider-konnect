@@ -74,6 +74,10 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
+					"access_logs_endpoint": schema.StringAttribute{
+						Optional:    true,
+						Description: `An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.`,
+					},
 					"batch_flush_delay": schema.Int64Attribute{
 						Optional:    true,
 						Description: `The delay, in seconds, between two consecutive batches.`,
@@ -122,7 +126,53 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 					},
 					"logs_endpoint": schema.StringAttribute{
 						Optional:    true,
-						Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search.`,
+						Description: `An HTTP URL endpoint where internal logs are exported.`,
+					},
+					"metrics": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"enable_bandwidth_metrics": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `A boolean value that determines if bandwidth metrics should be collected. If enabled, ` + "`" + `http.server.request.size` + "`" + ` and ` + "`" + `http.server.response.size` + "`" + ` metrics will be exported. Default: false`,
+							},
+							"enable_consumer_attribute": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `A boolean value that determines if ` + "`" + `http.server.request.count` + "`" + `, ` + "`" + `http.server.request.size` + "`" + ` and ` + "`" + `http.server.response.size` + "`" + ` metrics should fill in the consumer attribute when available. Default: false`,
+							},
+							"enable_latency_metrics": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `A boolean value that determines if latency metrics should be collected. If enabled, ` + "`" + `kong.latency.total` + "`" + `, ` + "`" + `kong.latency.internal` + "`" + ` and ` + "`" + `kong.latency.upstream` + "`" + ` metrics will be exported. Default: false`,
+							},
+							"enable_request_metrics": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `A boolean value that determines if request count metrics should be collected. If enabled, ` + "`" + `http.server.request.count` + "`" + ` metrics will be exported. Default: false`,
+							},
+							"enable_upstream_health_metrics": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `A boolean value that determines if upstream health metrics should be collected. If enabled, ` + "`" + `kong.upstream.target.status` + "`" + ` metrics will be exported. Default: false`,
+							},
+							"endpoint": schema.StringAttribute{
+								Optional:    true,
+								Description: `An HTTP URL endpoint where metrics are exported.`,
+							},
+							"push_interval": schema.Float64Attribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     float64default.StaticFloat64(60),
+								Description: `The interval in seconds at which metrics are pushed to the OTLP server. This setting is only applicable when ` + "`" + `endpoint` + "`" + ` is set. Default: 60`,
+							},
+						},
 					},
 					"propagation": schema.SingleNestedAttribute{
 						Computed: true,
@@ -407,7 +457,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 					types.StringValue("https"),
 				})),
 				ElementType: types.StringType,
-				Description: `A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]`,
+				Description: `A set of strings representing protocols. Default: ["grpc","grpcs","http","https"]`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,

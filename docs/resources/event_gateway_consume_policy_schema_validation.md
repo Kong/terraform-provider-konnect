@@ -14,12 +14,14 @@ EventGatewayConsumePolicySchemaValidation Resource
 
 ```terraform
 resource "konnect_event_gateway_consume_policy_schema_validation" "my_eventgatewayconsumepolicyschemavalidation" {
+  after     = "63b07eeb-5d16-47f3-8a3f-64ce5a290390"
+  before    = "02e1d1c9-4972-464e-9353-af2f4ada694d"
   condition = "context.topic.name.endsWith(\"my_suffix\") && records.headers[\"x-flag\"] == \"a-value\""
   config = {
     key_validation_action = "mark"
     schema_registry = {
-      schema_registry_reference_by_name = {
-        name = "...my_name..."
+      schema_registry_reference_by_id = {
+        id = "9649e4b2-c556-41be-af12-004d585b36b9"
       }
     }
     type                    = "json"
@@ -47,8 +49,10 @@ resource "konnect_event_gateway_consume_policy_schema_validation" "my_eventgatew
 
 ### Optional
 
-- `condition` (String) A string containing the boolean expression that determines whether the policy is applied.
-- `description` (String) A human-readable description of the policy.
+- `after` (String) Determines the id of the existing policy the new policy should be inserted after. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.
+- `before` (String) Determines the id of the existing policy the new policy should be inserted before. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.
+- `condition` (String) A string containing the boolean expression that determines whether the policy is applied. Default: ""
+- `description` (String) A human-readable description of the policy. Default: ""
 - `enabled` (Boolean) Whether the policy is enabled. Default: true
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
@@ -92,7 +96,6 @@ must be one of ["mark", "skip"]
 Optional:
 
 - `schema_registry_reference_by_id` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--schema_registry_reference_by_id))
-- `schema_registry_reference_by_name` (Attributes) Reference a schema registry by its unique name. (see [below for nested schema](#nestedatt--config--schema_registry--schema_registry_reference_by_name))
 
 <a id="nestedatt--config--schema_registry--schema_registry_reference_by_id"></a>
 ### Nested Schema for `config.schema_registry.schema_registry_reference_by_id`
@@ -100,14 +103,6 @@ Optional:
 Required:
 
 - `id` (String) The unique identifier of the schema registry.
-
-
-<a id="nestedatt--config--schema_registry--schema_registry_reference_by_name"></a>
-### Nested Schema for `config.schema_registry.schema_registry_reference_by_name`
-
-Required:
-
-- `name` (String) The unique name of the schema registry.
 
 ## Import
 

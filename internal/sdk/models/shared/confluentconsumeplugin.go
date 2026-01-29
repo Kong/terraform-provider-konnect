@@ -671,6 +671,29 @@ func (c *ConfluentConsumePluginSchemaRegistry) GetConfluent() *ConfluentConsumeP
 	return c.Confluent
 }
 
+type ConfluentConsumePluginSecurity struct {
+	// Enables verification of the certificate presented by the server.
+	SslVerify *bool `default:"false" json:"ssl_verify"`
+}
+
+func (c ConfluentConsumePluginSecurity) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ConfluentConsumePluginSecurity) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *ConfluentConsumePluginSecurity) GetSslVerify() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.SslVerify
+}
+
 type ConfluentConsumePluginConfigBasic struct {
 	Password string `json:"password"`
 	Username string `json:"username"`
@@ -1154,7 +1177,7 @@ func (t *Topics) GetSchemaRegistry() *ConfluentConsumePluginConfigSchemaRegistry
 
 type ConfluentConsumePluginConfig struct {
 	// The offset to start from when there is no initial offset in the consumer group.
-	AutoOffsetReset *AutoOffsetReset `default:"latest" json:"auto_offset_reset"`
+	AutoOffsetReset *AutoOffsetReset `default:"earliest" json:"auto_offset_reset"`
 	// Set of bootstrap brokers in a `{host: host, port: port}` list format.
 	BootstrapServers []ConfluentConsumePluginBootstrapServers `json:"bootstrap_servers"`
 	// Username/Apikey for SASL authentication.
@@ -1173,6 +1196,8 @@ type ConfluentConsumePluginConfig struct {
 	DlqTopic *string `default:"null" json:"dlq_topic"`
 	// Enables Dead Letter Queue. When enabled, if the message doesn't conform to the schema (from Schema Registry) or there's an error in the `message_by_lua_functions`, it will be forwarded to `dlq_topic` that can be processed later.
 	EnableDlq *bool `default:"null" json:"enable_dlq"`
+	// When true, 'latest' offset reset behaves correctly (starts from end). When false (default), maintains backwards compatibility where 'latest' acts like 'earliest'.
+	EnforceLatestOffsetReset *bool `default:"false" json:"enforce_latest_offset_reset"`
 	// Keepalive timeout in milliseconds.
 	Keepalive        *int64 `default:"60000" json:"keepalive"`
 	KeepaliveEnabled *bool  `default:"false" json:"keepalive_enabled"`
@@ -1184,6 +1209,7 @@ type ConfluentConsumePluginConfig struct {
 	Mode *ConfluentConsumePluginMode `default:"http-get" json:"mode"`
 	// The plugin-global schema registry configuration.
 	SchemaRegistry *ConfluentConsumePluginSchemaRegistry `json:"schema_registry"`
+	Security       *ConfluentConsumePluginSecurity       `json:"security"`
 	// Socket timeout in milliseconds.
 	Timeout *int64 `default:"10000" json:"timeout"`
 	// The Kafka topics and their configuration you want to consume from.
@@ -1271,6 +1297,13 @@ func (c *ConfluentConsumePluginConfig) GetEnableDlq() *bool {
 	return c.EnableDlq
 }
 
+func (c *ConfluentConsumePluginConfig) GetEnforceLatestOffsetReset() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.EnforceLatestOffsetReset
+}
+
 func (c *ConfluentConsumePluginConfig) GetKeepalive() *int64 {
 	if c == nil {
 		return nil
@@ -1311,6 +1344,13 @@ func (c *ConfluentConsumePluginConfig) GetSchemaRegistry() *ConfluentConsumePlug
 		return nil
 	}
 	return c.SchemaRegistry
+}
+
+func (c *ConfluentConsumePluginConfig) GetSecurity() *ConfluentConsumePluginSecurity {
+	if c == nil {
+		return nil
+	}
+	return c.Security
 }
 
 func (c *ConfluentConsumePluginConfig) GetTimeout() *int64 {

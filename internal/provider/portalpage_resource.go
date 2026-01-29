@@ -96,9 +96,9 @@ func (r *PortalPageResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"slug": schema.StringAttribute{
 				Required: true,
-				MarkdownDescription: `The slug of a page in a portal, used to compute its full URL path within the portal hierarchy. ` + "\n" +
-					`When a page has a ` + "`" + `parent_page_id` + "`" + `, its full path is built by joining the parent’s slug with its own. ` + "\n" +
-					`For example, if a parent page has the slug ` + "`" + `slug1` + "`" + ` and this page’s slug is ` + "`" + `slug2` + "`" + `, the resulting path will be ` + "`" + `/slug1/slug2` + "`" + `. ` + "\n" +
+				MarkdownDescription: `The slug of a page in a portal, used to compute its full URL path within the portal hierarchy.` + "\n" +
+					`When a page has a ` + "`" + `parent_page_id` + "`" + `, its full path is built by joining the parent’s slug with its own.` + "\n" +
+					`For example, if a parent page has the slug ` + "`" + `slug1` + "`" + ` and this page’s slug is ` + "`" + `slug2` + "`" + `, the resulting path will be ` + "`" + `/slug1/slug2` + "`" + `.` + "\n" +
 					`This enables nested page structures like ` + "`" + `/slug1/slug2/slug3` + "`" + `.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(512),

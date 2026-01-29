@@ -670,6 +670,29 @@ func (c *ConfluentPluginSchemaRegistry) GetConfluent() *Confluent {
 	return c.Confluent
 }
 
+type ConfluentPluginSecurity struct {
+	// Enables verification of the certificate presented by the server.
+	SslVerify *bool `default:"false" json:"ssl_verify"`
+}
+
+func (c ConfluentPluginSecurity) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ConfluentPluginSecurity) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *ConfluentPluginSecurity) GetSslVerify() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.SslVerify
+}
+
 type ConfluentPluginConfig struct {
 	// The list of allowed topic names to which messages can be sent. The default topic configured in the `topic` field is always allowed, regardless of its inclusion in `allowed_topics`.
 	AllowedTopics []string `json:"allowed_topics"`
@@ -720,6 +743,7 @@ type ConfluentPluginConfig struct {
 	ProducerRequestTimeout *int64 `default:"2000" json:"producer_request_timeout"`
 	// The plugin-global schema registry configuration. This can be overwritten by the topic configuration.
 	SchemaRegistry *ConfluentPluginSchemaRegistry `json:"schema_registry,omitempty"`
+	Security       *ConfluentPluginSecurity       `json:"security,omitempty"`
 	// Socket timeout in milliseconds.
 	Timeout *int64 `default:"10000" json:"timeout"`
 	// The default Kafka topic to publish to if the query parameter defined in the `topics_query_arg` does not exist in the request
@@ -912,6 +936,13 @@ func (c *ConfluentPluginConfig) GetSchemaRegistry() *ConfluentPluginSchemaRegist
 		return nil
 	}
 	return c.SchemaRegistry
+}
+
+func (c *ConfluentPluginConfig) GetSecurity() *ConfluentPluginSecurity {
+	if c == nil {
+		return nil
+	}
+	return c.Security
 }
 
 func (c *ConfluentPluginConfig) GetTimeout() *int64 {

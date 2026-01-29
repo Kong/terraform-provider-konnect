@@ -56,6 +56,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) RefreshFromSharedKafkaConsumePl
 		}
 		r.Config.DlqTopic = types.StringPointerValue(resp.Config.DlqTopic)
 		r.Config.EnableDlq = types.BoolPointerValue(resp.Config.EnableDlq)
+		r.Config.EnforceLatestOffsetReset = types.BoolPointerValue(resp.Config.EnforceLatestOffsetReset)
 		if resp.Config.MessageByLuaFunctions != nil {
 			r.Config.MessageByLuaFunctions = make([]types.String, 0, len(resp.Config.MessageByLuaFunctions))
 			for _, v := range resp.Config.MessageByLuaFunctions {
@@ -167,6 +168,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) RefreshFromSharedKafkaConsumePl
 			r.Config.Security = &tfTypes.KafkaConsumePluginSecurity{}
 			r.Config.Security.CertificateID = types.StringPointerValue(resp.Config.Security.CertificateID)
 			r.Config.Security.Ssl = types.BoolPointerValue(resp.Config.Security.Ssl)
+			r.Config.Security.SslVerify = types.BoolPointerValue(resp.Config.Security.SslVerify)
 		}
 		r.Config.Topics = []tfTypes.KafkaConsumePluginTopics{}
 
@@ -593,6 +595,12 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 	} else {
 		enableDlq = nil
 	}
+	enforceLatestOffsetReset := new(bool)
+	if !r.Config.EnforceLatestOffsetReset.IsUnknown() && !r.Config.EnforceLatestOffsetReset.IsNull() {
+		*enforceLatestOffsetReset = r.Config.EnforceLatestOffsetReset.ValueBool()
+	} else {
+		enforceLatestOffsetReset = nil
+	}
 	var messageByLuaFunctions []string
 	if r.Config.MessageByLuaFunctions != nil {
 		messageByLuaFunctions = make([]string, 0, len(r.Config.MessageByLuaFunctions))
@@ -845,9 +853,16 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 		} else {
 			ssl = nil
 		}
+		sslVerify2 := new(bool)
+		if !r.Config.Security.SslVerify.IsUnknown() && !r.Config.Security.SslVerify.IsNull() {
+			*sslVerify2 = r.Config.Security.SslVerify.ValueBool()
+		} else {
+			sslVerify2 = nil
+		}
 		security = &shared.KafkaConsumePluginSecurity{
 			CertificateID: certificateID,
 			Ssl:           ssl,
+			SslVerify:     sslVerify2,
 		}
 	}
 	topics := make([]shared.KafkaConsumePluginTopics, 0, len(r.Config.Topics))
@@ -1012,11 +1027,11 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 						} else {
 							noProxy1 = nil
 						}
-						sslVerify2 := new(bool)
+						sslVerify3 := new(bool)
 						if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.SslVerify.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.SslVerify.IsNull() {
-							*sslVerify2 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.SslVerify.ValueBool()
+							*sslVerify3 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.SslVerify.ValueBool()
 						} else {
-							sslVerify2 = nil
+							sslVerify3 = nil
 						}
 						timeout1 := new(int64)
 						if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.Timeout.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.Authentication.Oauth2Client.Timeout.IsNull() {
@@ -1034,7 +1049,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 							HTTPSProxyAuthorization: httpsProxyAuthorization1,
 							KeepAlive:               keepAlive1,
 							NoProxy:                 noProxy1,
-							SslVerify:               sslVerify2,
+							SslVerify:               sslVerify3,
 							Timeout:                 timeout1,
 						}
 					}
@@ -1045,11 +1060,11 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 						Oauth2Client: oauth2Client1,
 					}
 				}
-				sslVerify3 := new(bool)
+				sslVerify4 := new(bool)
 				if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.SslVerify.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.SslVerify.IsNull() {
-					*sslVerify3 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.SslVerify.ValueBool()
+					*sslVerify4 = r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.SslVerify.ValueBool()
 				} else {
-					sslVerify3 = nil
+					sslVerify4 = nil
 				}
 				ttl1 := new(float64)
 				if !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.TTL.IsUnknown() && !r.Config.Topics[topicsIndex].SchemaRegistry.Confluent.TTL.IsNull() {
@@ -1065,7 +1080,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 				}
 				confluent1 = &shared.KafkaConsumePluginConfigConfluent{
 					Authentication: authentication2,
-					SslVerify:      sslVerify3,
+					SslVerify:      sslVerify4,
 					TTL:            ttl1,
 					URL:            url1,
 				}
@@ -1080,19 +1095,20 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 		})
 	}
 	config := shared.KafkaConsumePluginConfig{
-		Authentication:        authentication,
-		AutoOffsetReset:       autoOffsetReset,
-		BootstrapServers:      bootstrapServers,
-		ClusterName:           clusterName,
-		CommitStrategy:        commitStrategy,
-		DlqTopic:              dlqTopic,
-		EnableDlq:             enableDlq,
-		MessageByLuaFunctions: messageByLuaFunctions,
-		MessageDeserializer:   messageDeserializer,
-		Mode:                  mode,
-		SchemaRegistry:        schemaRegistry,
-		Security:              security,
-		Topics:                topics,
+		Authentication:           authentication,
+		AutoOffsetReset:          autoOffsetReset,
+		BootstrapServers:         bootstrapServers,
+		ClusterName:              clusterName,
+		CommitStrategy:           commitStrategy,
+		DlqTopic:                 dlqTopic,
+		EnableDlq:                enableDlq,
+		EnforceLatestOffsetReset: enforceLatestOffsetReset,
+		MessageByLuaFunctions:    messageByLuaFunctions,
+		MessageDeserializer:      messageDeserializer,
+		Mode:                     mode,
+		SchemaRegistry:           schemaRegistry,
+		Security:                 security,
+		Topics:                   topics,
 	}
 	var consumer *shared.KafkaConsumePluginConsumer
 	if r.Consumer != nil {

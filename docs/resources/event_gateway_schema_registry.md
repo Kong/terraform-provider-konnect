@@ -51,7 +51,7 @@ resource "konnect_event_gateway_schema_registry" "my_eventgatewayschemaregistry"
 
 - `config` (Attributes) The configuration of the schema registry. (see [below for nested schema](#nestedatt--config))
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `description` (String) A human-readable description of the virtual cluster.
+- `description` (String) A human-readable description.
 - `id` (String) The unique identifier of the schema registry.
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
@@ -70,7 +70,7 @@ Required:
 
 Optional:
 
-- `description` (String) A human-readable description of the virtual cluster.
+- `description` (String) A human-readable description.
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".

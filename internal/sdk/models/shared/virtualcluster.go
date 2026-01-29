@@ -12,7 +12,7 @@ type VirtualCluster struct {
 	// The unique identifier of the virtual cluster.
 	ID string `json:"id"`
 	// A human-readable description of the virtual cluster.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"" json:"description"`
 	// The backend cluster associated with the virtual cluster.
 	Destination BackendClusterReference `json:"destination"`
 	// How to handle authentication from clients.

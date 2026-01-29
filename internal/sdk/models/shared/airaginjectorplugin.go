@@ -78,6 +78,60 @@ func (a *AiRagInjectorPluginPartials) GetPath() *string {
 	return a.Path
 }
 
+type CollectionACLConfig struct {
+	// Consumer identifiers allowed access to this collection
+	Allow []string `json:"allow,omitempty"`
+	// Consumer identifiers denied access to this collection
+	Deny []string `json:"deny,omitempty"`
+}
+
+func (c *CollectionACLConfig) GetAllow() []string {
+	if c == nil {
+		return nil
+	}
+	return c.Allow
+}
+
+func (c *CollectionACLConfig) GetDeny() []string {
+	if c == nil {
+		return nil
+	}
+	return c.Deny
+}
+
+// AiRagInjectorPluginConsumerIdentifier - The type of consumer identifier used for ACL checks
+type AiRagInjectorPluginConsumerIdentifier string
+
+const (
+	AiRagInjectorPluginConsumerIdentifierConsumerGroup AiRagInjectorPluginConsumerIdentifier = "consumer_group"
+	AiRagInjectorPluginConsumerIdentifierConsumerID    AiRagInjectorPluginConsumerIdentifier = "consumer_id"
+	AiRagInjectorPluginConsumerIdentifierCustomID      AiRagInjectorPluginConsumerIdentifier = "custom_id"
+	AiRagInjectorPluginConsumerIdentifierUsername      AiRagInjectorPluginConsumerIdentifier = "username"
+)
+
+func (e AiRagInjectorPluginConsumerIdentifier) ToPointer() *AiRagInjectorPluginConsumerIdentifier {
+	return &e
+}
+func (e *AiRagInjectorPluginConsumerIdentifier) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "consumer_group":
+		fallthrough
+	case "consumer_id":
+		fallthrough
+	case "custom_id":
+		fallthrough
+	case "username":
+		*e = AiRagInjectorPluginConsumerIdentifier(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AiRagInjectorPluginConsumerIdentifier: %v", v)
+	}
+}
+
 // AiRagInjectorPluginParamLocation - Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
 type AiRagInjectorPluginParamLocation string
 
@@ -299,6 +353,8 @@ type AiRagInjectorPluginBedrock struct {
 	EmbeddingsNormalize *bool `default:"false" json:"embeddings_normalize"`
 	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
 	PerformanceConfigLatency *string `default:"null" json:"performance_config_latency"`
+	// S3 URI (s3://bucket/prefix) where Bedrock will store generated video files. Required for video generation.
+	VideoOutputS3URI *string `default:"null" json:"video_output_s3_uri"`
 }
 
 func (a AiRagInjectorPluginBedrock) MarshalJSON() ([]byte, error) {
@@ -352,6 +408,13 @@ func (a *AiRagInjectorPluginBedrock) GetPerformanceConfigLatency() *string {
 		return nil
 	}
 	return a.PerformanceConfigLatency
+}
+
+func (a *AiRagInjectorPluginBedrock) GetVideoOutputS3URI() *string {
+	if a == nil {
+		return nil
+	}
+	return a.VideoOutputS3URI
 }
 
 type AiRagInjectorPluginGemini struct {
@@ -571,6 +634,55 @@ func (a *AiRagInjectorPluginEmbeddings) GetModel() AiRagInjectorPluginModel {
 	return a.Model
 }
 
+// FilterMode - Defines how the plugin behaves when a filter is invalid. Set to `compatible` to ignore invalid filters, or `strict` to raise an error. This can be overridden per request.
+type FilterMode string
+
+const (
+	FilterModeCompatible FilterMode = "compatible"
+	FilterModeStrict     FilterMode = "strict"
+)
+
+func (e FilterMode) ToPointer() *FilterMode {
+	return &e
+}
+func (e *FilterMode) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "compatible":
+		fallthrough
+	case "strict":
+		*e = FilterMode(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for FilterMode: %v", v)
+	}
+}
+
+// GlobalACLConfig - Global ACL configuration for all RAG operations
+type GlobalACLConfig struct {
+	// Consumer identifiers allowed access (groups, IDs, usernames, or custom IDs based on consumer_identifier setting)
+	Allow []string `json:"allow,omitempty"`
+	// Consumer identifiers denied access (groups, IDs, usernames, or custom IDs based on consumer_identifier setting)
+	Deny []string `json:"deny,omitempty"`
+}
+
+func (g *GlobalACLConfig) GetAllow() []string {
+	if g == nil {
+		return nil
+	}
+	return g.Allow
+}
+
+func (g *GlobalACLConfig) GetDeny() []string {
+	if g == nil {
+		return nil
+	}
+	return g.Deny
+}
+
 type InjectAsRole string
 
 const (
@@ -779,6 +891,159 @@ func (a *AiRagInjectorPluginPgvector) GetUser() *string {
 	return a.User
 }
 
+// AiRagInjectorPluginAuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+type AiRagInjectorPluginAuthProvider string
+
+const (
+	AiRagInjectorPluginAuthProviderAws   AiRagInjectorPluginAuthProvider = "aws"
+	AiRagInjectorPluginAuthProviderAzure AiRagInjectorPluginAuthProvider = "azure"
+	AiRagInjectorPluginAuthProviderGcp   AiRagInjectorPluginAuthProvider = "gcp"
+)
+
+func (e AiRagInjectorPluginAuthProvider) ToPointer() *AiRagInjectorPluginAuthProvider {
+	return &e
+}
+func (e *AiRagInjectorPluginAuthProvider) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "aws":
+		fallthrough
+	case "azure":
+		fallthrough
+	case "gcp":
+		*e = AiRagInjectorPluginAuthProvider(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AiRagInjectorPluginAuthProvider: %v", v)
+	}
+}
+
+// AiRagInjectorPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+type AiRagInjectorPluginCloudAuthentication struct {
+	// Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+	AuthProvider *AiRagInjectorPluginAuthProvider `json:"auth_provider,omitempty"`
+	// AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
+	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
+	// The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
+	// The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
+	AwsCacheName *string `default:"null" json:"aws_cache_name"`
+	// This flag specifies whether the cluster is serverless when auth_provider is set to `aws`.
+	AwsIsServerless *bool `default:"true" json:"aws_is_serverless"`
+	// The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
+	AwsRegion *string `default:"null" json:"aws_region"`
+	// The session name for the temporary credentials when assuming the IAM role.
+	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
+	// AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
+	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
+	// Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientID *string `default:"null" json:"azure_client_id"`
+	// Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
+	// Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
+	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+}
+
+func (a AiRagInjectorPluginCloudAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRagInjectorPluginCloudAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiRagInjectorPluginCloudAuthentication) GetAuthProvider() *AiRagInjectorPluginAuthProvider {
+	if a == nil {
+		return nil
+	}
+	return a.AuthProvider
+}
+
+func (a *AiRagInjectorPluginCloudAuthentication) GetAwsAccessKeyID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsAccessKeyID
+}
+
+func (a *AiRagInjectorPluginCloudAuthentication) GetAwsAssumeRoleArn() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsAssumeRoleArn
+}
+
+func (a *AiRagInjectorPluginCloudAuthentication) GetAwsCacheName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsCacheName
+}
+
+func (a *AiRagInjectorPluginCloudAuthentication) GetAwsIsServerless() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.AwsIsServerless
+}
+
+func (a *AiRagInjectorPluginCloudAuthentication) GetAwsRegion() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsRegion
+}
+
+func (a *AiRagInjectorPluginCloudAuthentication) GetAwsRoleSessionName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsRoleSessionName
+}
+
+func (a *AiRagInjectorPluginCloudAuthentication) GetAwsSecretAccessKey() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsSecretAccessKey
+}
+
+func (a *AiRagInjectorPluginCloudAuthentication) GetAzureClientID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AzureClientID
+}
+
+func (a *AiRagInjectorPluginCloudAuthentication) GetAzureClientSecret() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AzureClientSecret
+}
+
+func (a *AiRagInjectorPluginCloudAuthentication) GetAzureTenantID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AzureTenantID
+}
+
+func (a *AiRagInjectorPluginCloudAuthentication) GetGcpServiceAccountJSON() *string {
+	if a == nil {
+		return nil
+	}
+	return a.GcpServiceAccountJSON
+}
+
 type AiRagInjectorPluginClusterNodes struct {
 	// A string representing a host name, such as example.com.
 	IP *string `default:"127.0.0.1" json:"ip"`
@@ -874,6 +1139,8 @@ func (e *AiRagInjectorPluginSentinelRole) UnmarshalJSON(data []byte) error {
 }
 
 type AiRagInjectorPluginRedis struct {
+	// Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+	CloudAuthentication *AiRagInjectorPluginCloudAuthentication `json:"cloud_authentication"`
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
@@ -927,6 +1194,13 @@ func (a *AiRagInjectorPluginRedis) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AiRagInjectorPluginRedis) GetCloudAuthentication() *AiRagInjectorPluginCloudAuthentication {
+	if a == nil {
+		return nil
+	}
+	return a.CloudAuthentication
 }
 
 func (a *AiRagInjectorPluginRedis) GetClusterMaxRedirections() *int64 {
@@ -1112,6 +1386,19 @@ type AiRagInjectorPluginVectordb struct {
 	Redis          *AiRagInjectorPluginRedis         `json:"redis"`
 	// which vector database driver to use
 	Strategy AiRagInjectorPluginStrategy `json:"strategy"`
+	// the default similarity threshold for accepting semantic search results (float)
+	Threshold *float64 `default:"null" json:"threshold"`
+}
+
+func (a AiRagInjectorPluginVectordb) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRagInjectorPluginVectordb) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiRagInjectorPluginVectordb) GetDimensions() int64 {
@@ -1149,15 +1436,34 @@ func (a *AiRagInjectorPluginVectordb) GetStrategy() AiRagInjectorPluginStrategy 
 	return a.Strategy
 }
 
+func (a *AiRagInjectorPluginVectordb) GetThreshold() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.Threshold
+}
+
 type AiRagInjectorPluginConfig struct {
-	Embeddings AiRagInjectorPluginEmbeddings `json:"embeddings"`
+	// Per-collection ACL overrides
+	CollectionACLConfig map[string]CollectionACLConfig `json:"collection_acl_config,omitempty"`
+	// The type of consumer identifier used for ACL checks
+	ConsumerIdentifier *AiRagInjectorPluginConsumerIdentifier `default:"consumer_group" json:"consumer_identifier"`
+	Embeddings         AiRagInjectorPluginEmbeddings          `json:"embeddings"`
 	// The maximum number of chunks to fetch from vectordb
-	FetchChunksCount *float64      `default:"5" json:"fetch_chunks_count"`
-	InjectAsRole     *InjectAsRole `default:"user" json:"inject_as_role"`
-	InjectTemplate   *string       `default:"<CONTEXT>\n<PROMPT>" json:"inject_template"`
+	FetchChunksCount *float64 `default:"5" json:"fetch_chunks_count"`
+	// Defines how the plugin behaves when a filter is invalid. Set to `compatible` to ignore invalid filters, or `strict` to raise an error. This can be overridden per request.
+	FilterMode *FilterMode `default:"compatible" json:"filter_mode"`
+	// Global ACL configuration for all RAG operations
+	GlobalACLConfig *GlobalACLConfig `json:"global_acl_config"`
+	InjectAsRole    *InjectAsRole    `default:"user" json:"inject_as_role"`
+	InjectTemplate  *string          `default:"<CONTEXT>\n<PROMPT>" json:"inject_template"`
+	// Maximum number of filter clauses allowed
+	MaxFilterClauses *int64 `default:"100" json:"max_filter_clauses"`
 	// Halt the LLM request process in case of a vectordb or embeddings service failure
-	StopOnFailure *bool                       `default:"false" json:"stop_on_failure"`
-	Vectordb      AiRagInjectorPluginVectordb `json:"vectordb"`
+	StopOnFailure *bool `default:"false" json:"stop_on_failure"`
+	// Default behavior when filter parsing fails (can be overridden per-request)
+	StopOnFilterError *bool                       `default:"false" json:"stop_on_filter_error"`
+	Vectordb          AiRagInjectorPluginVectordb `json:"vectordb"`
 	// The namespace of the vectordb to use for embeddings lookup
 	VectordbNamespace *string `default:"kong_rag_injector" json:"vectordb_namespace"`
 }
@@ -1171,6 +1477,20 @@ func (a *AiRagInjectorPluginConfig) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AiRagInjectorPluginConfig) GetCollectionACLConfig() map[string]CollectionACLConfig {
+	if a == nil {
+		return nil
+	}
+	return a.CollectionACLConfig
+}
+
+func (a *AiRagInjectorPluginConfig) GetConsumerIdentifier() *AiRagInjectorPluginConsumerIdentifier {
+	if a == nil {
+		return nil
+	}
+	return a.ConsumerIdentifier
 }
 
 func (a *AiRagInjectorPluginConfig) GetEmbeddings() AiRagInjectorPluginEmbeddings {
@@ -1187,6 +1507,20 @@ func (a *AiRagInjectorPluginConfig) GetFetchChunksCount() *float64 {
 	return a.FetchChunksCount
 }
 
+func (a *AiRagInjectorPluginConfig) GetFilterMode() *FilterMode {
+	if a == nil {
+		return nil
+	}
+	return a.FilterMode
+}
+
+func (a *AiRagInjectorPluginConfig) GetGlobalACLConfig() *GlobalACLConfig {
+	if a == nil {
+		return nil
+	}
+	return a.GlobalACLConfig
+}
+
 func (a *AiRagInjectorPluginConfig) GetInjectAsRole() *InjectAsRole {
 	if a == nil {
 		return nil
@@ -1201,11 +1535,25 @@ func (a *AiRagInjectorPluginConfig) GetInjectTemplate() *string {
 	return a.InjectTemplate
 }
 
+func (a *AiRagInjectorPluginConfig) GetMaxFilterClauses() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.MaxFilterClauses
+}
+
 func (a *AiRagInjectorPluginConfig) GetStopOnFailure() *bool {
 	if a == nil {
 		return nil
 	}
 	return a.StopOnFailure
+}
+
+func (a *AiRagInjectorPluginConfig) GetStopOnFilterError() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.StopOnFilterError
 }
 
 func (a *AiRagInjectorPluginConfig) GetVectordb() AiRagInjectorPluginVectordb {

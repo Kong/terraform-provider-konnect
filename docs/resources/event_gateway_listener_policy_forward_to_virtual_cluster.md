@@ -14,6 +14,8 @@ EventGatewayListenerPolicyForwardToVirtualCluster Resource
 
 ```terraform
 resource "konnect_event_gateway_listener_policy_forward_to_virtual_cluster" "my_eventgatewaylistenerpolicyforwardtovirtualcluster" {
+  after  = "5cdefdab-5308-4634-9a15-44d91bca4c50"
+  before = "9911945e-114e-447e-a62a-21750214dc32"
   config = {
     sni = {
       advertised_port = 61579
@@ -23,14 +25,14 @@ resource "konnect_event_gateway_listener_policy_forward_to_virtual_cluster" "my_
       sni_suffix = ".example.com"
     }
   }
-  description               = "...my_description..."
-  enabled                   = false
-  event_gateway_listener_id = "6feda708-3b1b-4415-b1db-cf2694f34b09"
-  gateway_id                = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  description = "...my_description..."
+  enabled     = false
+  gateway_id  = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   labels = {
     key = "value"
   }
-  name = "...my_name..."
+  listener_id = "bdaf2651-42bc-48ec-b29f-f4890f7f07fc"
+  name        = "...my_name..."
 }
 ```
 
@@ -40,12 +42,14 @@ resource "konnect_event_gateway_listener_policy_forward_to_virtual_cluster" "my_
 ### Required
 
 - `config` (Attributes) The configuration of the policy. (see [below for nested schema](#nestedatt--config))
-- `event_gateway_listener_id` (String) The ID of the Event Gateway Listener.
 - `gateway_id` (String) The UUID of your Gateway.
+- `listener_id` (String) The ID of the Event Gateway Listener.
 
 ### Optional
 
-- `description` (String) A human-readable description of the policy.
+- `after` (String) Determines the id of the existing policy the new policy should be inserted after. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.
+- `before` (String) Determines the id of the existing policy the new policy should be inserted before. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.
+- `description` (String) A human-readable description of the policy. Default: ""
 - `enabled` (Boolean) Whether the policy is enabled. Default: true
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
@@ -170,9 +174,9 @@ In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.
 import {
   to = konnect_event_gateway_listener_policy_forward_to_virtual_cluster.my_konnect_event_gateway_listener_policy_forward_to_virtual_cluster
   id = jsonencode({
-    event_gateway_listener_id = "..."
     gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    listener_id = "..."
   })
 }
 ```
@@ -180,5 +184,5 @@ import {
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_event_gateway_listener_policy_forward_to_virtual_cluster.my_konnect_event_gateway_listener_policy_forward_to_virtual_cluster '{"event_gateway_listener_id": "...", "gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}'
+terraform import konnect_event_gateway_listener_policy_forward_to_virtual_cluster.my_konnect_event_gateway_listener_policy_forward_to_virtual_cluster '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "listener_id": "..."}'
 ```

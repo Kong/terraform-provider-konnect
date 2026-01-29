@@ -136,6 +136,8 @@ func (e *TextSource) UnmarshalJSON(data []byte) error {
 }
 
 type AiAwsGuardrailsPluginConfig struct {
+	// Allow to masking the request/response instead of blocking it. Streaming will be disabled if this is enabled.
+	AllowMasking *bool `default:"false" json:"allow_masking"`
 	// The AWS access key ID to use for authentication
 	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
 	// The target AWS IAM role ARN used to access the guardrails service
@@ -150,12 +152,14 @@ type AiAwsGuardrailsPluginConfig struct {
 	AwsStsEndpointURL *string `default:"null" json:"aws_sts_endpoint_url"`
 	// The guardrail mode to use for the request
 	GuardingMode *GuardingMode `default:"INPUT" json:"guarding_mode"`
-	// The guardrail identifier used in the request to apply the guardrail
+	// The guardrail identifier used in the request to apply the guardrail.
 	GuardrailsID string `json:"guardrails_id"`
-	// The guardrail version used in the request to apply the guardrail
+	// The guardrail version used in the request to apply the guardrail. Note that the value of this field must match the pattern `(([1-9][0-9]{0,7})|(DRAFT))` according to the AWS documentation https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_ApplyGuardrail.html#API_runtime_ApplyGuardrail_RequestSyntax.
 	GuardrailsVersion string `json:"guardrails_version"`
 	// The amount of bytes receiving from upstream to be buffered before sending to the guardrails service. This only applies to the response content guard.
 	ResponseBufferSize *float64 `default:"100" json:"response_buffer_size"`
+	// Verify TLS certificate when connecting to the bedrock service.
+	SslVerify *bool `default:"null" json:"ssl_verify"`
 	// Stop processing if an error occurs
 	StopOnError *bool `default:"true" json:"stop_on_error"`
 	// Select where to pick the 'text' for the Content Guard Services request.
@@ -173,6 +177,13 @@ func (a *AiAwsGuardrailsPluginConfig) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AiAwsGuardrailsPluginConfig) GetAllowMasking() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.AllowMasking
 }
 
 func (a *AiAwsGuardrailsPluginConfig) GetAwsAccessKeyID() *string {
@@ -243,6 +254,13 @@ func (a *AiAwsGuardrailsPluginConfig) GetResponseBufferSize() *float64 {
 		return nil
 	}
 	return a.ResponseBufferSize
+}
+
+func (a *AiAwsGuardrailsPluginConfig) GetSslVerify() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.SslVerify
 }
 
 func (a *AiAwsGuardrailsPluginConfig) GetStopOnError() *bool {

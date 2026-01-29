@@ -275,7 +275,7 @@ func (e *ChannelTokenIntrospectionConsumerBy) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// ChannelTokenJwksURIClientCertificate - The client certificate that will be used to authenticate Kong if `access_token_jwks_uri` is an https uri that requires mTLS Auth.
+// ChannelTokenJwksURIClientCertificate - The client certificate that will be used to authenticate Kong if `channel_token_jwks_uri` is an https uri that requires mTLS Auth.
 type ChannelTokenJwksURIClientCertificate struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -361,10 +361,12 @@ type JwtSignerPluginConfig struct {
 	AccessTokenAudienceClaim []string `json:"access_token_audience_claim,omitempty"`
 	// The audiences allowed to be present in the access token claim specified by `config.access_token_audience_claim`.
 	AccessTokenAudiencesAllowed []string `json:"access_token_audiences_allowed"`
-	// When the plugin tries to apply an access token to a Kong consumer mapping, it tries to find a matching Kong consumer from properties defined using this configuration parameter. The parameter can take an array of alues. Valid values are `id`, `username`, and `custom_id`.
+	// When the plugin tries to apply an access token to a Kong consumer mapping, it tries to find a matching Kong consumer from properties defined using this configuration parameter. The parameter can take an array of values. Valid values are `id`, `username`, and `custom_id`.
 	AccessTokenConsumerBy []AccessTokenConsumerBy `json:"access_token_consumer_by,omitempty"`
 	// When you set a value for this parameter, the plugin tries to map an arbitrary claim specified with this configuration parameter (for example, `sub` or `username`) in an access token to Kong consumer entity.
 	AccessTokenConsumerClaim []string `json:"access_token_consumer_claim"`
+	// Whether to verify the TLS certificate if any of `access_token_introspection_endpoint`, `access_token_jwks_uri`, or `access_token_keyset` is an HTTPS URI.
+	AccessTokenEndpointsSslVerify *bool `default:"null" json:"access_token_endpoints_ssl_verify"`
 	// Specify the expiry claim in an access token to verify if the default `exp` is not used.
 	AccessTokenExpiryClaim []string `json:"access_token_expiry_claim,omitempty"`
 	// Specify the claim in an access token introspection to verify against values of `config.access_token_introspection_audiences_allowed`.
@@ -399,7 +401,7 @@ type JwtSignerPluginConfig struct {
 	AccessTokenIntrospectionOptionalClaims [][]string `json:"access_token_introspection_optional_claims"`
 	// Specify the required claims that must be present in the access token introspection result. Every claim is specified by an array. If the array has multiple elements, it means the claim is inside a nested object of the payload.
 	AccessTokenIntrospectionRequiredClaims [][]string `json:"access_token_introspection_required_claims"`
-	// Specify the claim/property in access token introspection results (`JSON`) to be verified against values of `config.access_token_introspection_scopes_required`. This supports nested claims. For example, with Keycloak you could use `[ "realm_access", "roles" ]`, hich can be given as `realm_access,roles` (form post). If the claim is not found in access token introspection results, and you have specified `config.access_token_introspection_scopes_required`, the plugin responds with `403 Forbidden`.
+	// Specify the claim/property in access token introspection results (`JSON`) to be verified against values of `config.access_token_introspection_scopes_required`. This supports nested claims. For example, with Keycloak you could use `[ "realm_access", "roles" ]`, which can be given as `realm_access,roles` (form post). If the claim is not found in access token introspection results, and you have specified `config.access_token_introspection_scopes_required`, the plugin responds with `403 Forbidden`.
 	AccessTokenIntrospectionScopesClaim []string `json:"access_token_introspection_scopes_claim,omitempty"`
 	// Specify the required values (or scopes) that are checked by an introspection claim/property specified by `config.access_token_introspection_scopes_claim`.
 	AccessTokenIntrospectionScopesRequired []string `json:"access_token_introspection_scopes_required"`
@@ -481,6 +483,8 @@ type JwtSignerPluginConfig struct {
 	ChannelTokenConsumerBy []ChannelTokenConsumerBy `json:"channel_token_consumer_by,omitempty"`
 	// When you set a value for this parameter, the plugin tries to map an arbitrary claim specified with this configuration parameter. Kong consumers have an `id`, a `username`, and a `custom_id`. If this parameter is enabled but the mapping fails, such as when there's a non-existent Kong consumer, the plugin responds with `403 Forbidden`.
 	ChannelTokenConsumerClaim []string `json:"channel_token_consumer_claim"`
+	// Whether to verify the TLS certificate if any of `channel_token_introspection_endpoint`, `channel_token_jwks_uri`, or `channel_token_keyset` is an HTTPS URI.
+	ChannelTokenEndpointsSslVerify *bool `default:"null" json:"channel_token_endpoints_ssl_verify"`
 	// Specify the expiry claim in a channel token to verify if the default `exp` is not used.
 	ChannelTokenExpiryClaim []string `json:"channel_token_expiry_claim,omitempty"`
 	// Specify the claim in a channel token introspection to verify against values of `config.channel_token_introspection_audiences_allowed`.
@@ -533,7 +537,7 @@ type JwtSignerPluginConfig struct {
 	ChannelTokenIssuersAllowed []string `json:"channel_token_issuers_allowed"`
 	// If you want to use `config.verify_channel_token_signature`, you must specify the URI where the plugin can fetch the public keys (JWKS) to verify the signature of the channel token. If you don't specify a URI and you pass a JWT token to the plugin, then the plugin responds with `401 Unauthorized`.
 	ChannelTokenJwksURI *string `default:"null" json:"channel_token_jwks_uri"`
-	// The client certificate that will be used to authenticate Kong if `access_token_jwks_uri` is an https uri that requires mTLS Auth.
+	// The client certificate that will be used to authenticate Kong if `channel_token_jwks_uri` is an https uri that requires mTLS Auth.
 	ChannelTokenJwksURIClientCertificate *ChannelTokenJwksURIClientCertificate `json:"channel_token_jwks_uri_client_certificate"`
 	// The client password that will be used to authenticate Kong if `channel_token_jwks_uri` is a uri that requires Basic Auth. Should be configured together with `channel_token_jwks_uri_client_username`
 	ChannelTokenJwksURIClientPassword *string `default:"null" json:"channel_token_jwks_uri_client_password"`
@@ -591,7 +595,7 @@ type JwtSignerPluginConfig struct {
 	OriginalAccessTokenUpstreamHeader *string `default:"null" json:"original_access_token_upstream_header"`
 	// The HTTP header name used to store the original channel token.
 	OriginalChannelTokenUpstreamHeader *string `default:"null" json:"original_channel_token_upstream_header"`
-	// When authentication or authorization fails, or there is an unexpected error, the plugin sends an `WWW-Authenticate` header with the `realm` attribute value.
+	// When authentication or authorization fails, or there is an unexpected error, the plugin sends a `WWW-Authenticate` header with the `realm` attribute value.
 	Realm *string `default:"null" json:"realm"`
 	// remove claims. It should be an array, and each element is a claim key string.
 	RemoveAccessTokenClaims []string `json:"remove_access_token_claims,omitempty"`
@@ -697,6 +701,13 @@ func (j *JwtSignerPluginConfig) GetAccessTokenConsumerClaim() []string {
 		return nil
 	}
 	return j.AccessTokenConsumerClaim
+}
+
+func (j *JwtSignerPluginConfig) GetAccessTokenEndpointsSslVerify() *bool {
+	if j == nil {
+		return nil
+	}
+	return j.AccessTokenEndpointsSslVerify
 }
 
 func (j *JwtSignerPluginConfig) GetAccessTokenExpiryClaim() []string {
@@ -1103,6 +1114,13 @@ func (j *JwtSignerPluginConfig) GetChannelTokenConsumerClaim() []string {
 		return nil
 	}
 	return j.ChannelTokenConsumerClaim
+}
+
+func (j *JwtSignerPluginConfig) GetChannelTokenEndpointsSslVerify() *bool {
+	if j == nil {
+		return nil
+	}
+	return j.ChannelTokenEndpointsSslVerify
 }
 
 func (j *JwtSignerPluginConfig) GetChannelTokenExpiryClaim() []string {

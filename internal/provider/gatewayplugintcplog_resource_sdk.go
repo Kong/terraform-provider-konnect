@@ -24,6 +24,7 @@ func (r *GatewayPluginTCPLogResourceModel) RefreshFromSharedTCPLogPlugin(ctx con
 		r.Config.Host = types.StringValue(resp.Config.Host)
 		r.Config.Keepalive = types.Float64PointerValue(resp.Config.Keepalive)
 		r.Config.Port = types.Int64Value(resp.Config.Port)
+		r.Config.SslVerify = types.BoolPointerValue(resp.Config.SslVerify)
 		r.Config.Timeout = types.Float64PointerValue(resp.Config.Timeout)
 		r.Config.TLS = types.BoolPointerValue(resp.Config.TLS)
 		r.Config.TLSSni = types.StringPointerValue(resp.Config.TLSSni)
@@ -299,6 +300,12 @@ func (r *GatewayPluginTCPLogResourceModel) ToSharedTCPLogPlugin(ctx context.Cont
 	var port int64
 	port = r.Config.Port.ValueInt64()
 
+	sslVerify := new(bool)
+	if !r.Config.SslVerify.IsUnknown() && !r.Config.SslVerify.IsNull() {
+		*sslVerify = r.Config.SslVerify.ValueBool()
+	} else {
+		sslVerify = nil
+	}
 	timeout := new(float64)
 	if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
 		*timeout = r.Config.Timeout.ValueFloat64()
@@ -322,6 +329,7 @@ func (r *GatewayPluginTCPLogResourceModel) ToSharedTCPLogPlugin(ctx context.Cont
 		Host:              host,
 		Keepalive:         keepalive,
 		Port:              port,
+		SslVerify:         sslVerify,
 		Timeout:           timeout,
 		TLS:               tls,
 		TLSSni:            tlsSni,

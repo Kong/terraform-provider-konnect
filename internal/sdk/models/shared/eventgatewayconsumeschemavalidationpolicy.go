@@ -62,9 +62,9 @@ type EventGatewayConsumeSchemaValidationPolicy struct {
 	// The type name of the policy.
 	type_ string `const:"schema_validation" json:"type"`
 	// A unique user-defined name of the policy.
-	Name *string `default:"null" json:"name"`
+	Name *string `json:"name,omitempty"`
 	// A human-readable description of the policy.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"" json:"description"`
 	// Whether the policy is enabled.
 	Enabled *bool `default:"true" json:"enabled"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
@@ -75,7 +75,7 @@ type EventGatewayConsumeSchemaValidationPolicy struct {
 	// The configuration of the schema validation policy.
 	Config EventGatewayConsumeSchemaValidationPolicyConfig `json:"config"`
 	// A string containing the boolean expression that determines whether the policy is applied.
-	Condition *string `default:"null" json:"condition"`
+	Condition *string `default:"" json:"condition"`
 }
 
 func (e EventGatewayConsumeSchemaValidationPolicy) MarshalJSON() ([]byte, error) {

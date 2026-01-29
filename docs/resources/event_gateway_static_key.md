@@ -38,7 +38,7 @@ Requires replacement if changed.
 
 ### Optional
 
-- `description` (String) A human-readable description of the static key. Requires replacement if changed.
+- `description` (String) A human-readable description of the static key. Default: ""; Requires replacement if changed.
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".

@@ -127,8 +127,9 @@ func (r *EventGatewaySchemaRegistryResource) Schema(ctx context.Context, req res
 						Description: `The configuration of [Confluent Schema Registry](https://github.com/confluentinc/schema-registry)`,
 					},
 					"description": schema.StringAttribute{
+						Computed:    true,
 						Optional:    true,
-						Description: `A human-readable description of the virtual cluster.`,
+						Description: `A human-readable description.`,
 						Validators: []validator.String{
 							stringvalidator.UTF8LengthAtMost(512),
 						},
@@ -159,7 +160,7 @@ func (r *EventGatewaySchemaRegistryResource) Schema(ctx context.Context, req res
 			},
 			"description": schema.StringAttribute{
 				Computed:    true,
-				Description: `A human-readable description of the virtual cluster.`,
+				Description: `A human-readable description.`,
 			},
 			"gateway_id": schema.StringAttribute{
 				Required:    true,

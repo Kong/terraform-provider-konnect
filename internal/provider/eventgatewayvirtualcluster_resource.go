@@ -325,8 +325,10 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
 			"description": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
-				Description: `A human-readable description of the virtual cluster.`,
+				Default:     stringdefault.StaticString(``),
+				Description: `A human-readable description of the virtual cluster. Default: ""`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(512),
 				},

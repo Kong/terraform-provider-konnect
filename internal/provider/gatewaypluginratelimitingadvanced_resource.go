@@ -128,7 +128,7 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`consumer`),
-						Description: `The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be ` + "`" + `ip` + "`" + `, ` + "`" + `credential` + "`" + `, ` + "`" + `consumer` + "`" + `, ` + "`" + `service` + "`" + `, ` + "`" + `header` + "`" + `, ` + "`" + `path` + "`" + ` or ` + "`" + `consumer-group` + "`" + `. Note if ` + "`" + `identifier` + "`" + ` is ` + "`" + `consumer-group` + "`" + `, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate. Default: "consumer"; must be one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "service"]`,
+						Description: `The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Note if ` + "`" + `identifier` + "`" + ` is ` + "`" + `consumer-group` + "`" + `, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate. Default: "consumer"; must be one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "route", "service"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"consumer",
@@ -137,6 +137,7 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 								"header",
 								"ip",
 								"path",
+								"route",
 								"service",
 							),
 						},
@@ -154,7 +155,7 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 					},
 					"namespace": schema.StringAttribute{
 						Optional:    true,
-						Description: `The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. ` + "`" + `strategy` + "`" + `, ` + "`" + `redis` + "`" + `, ` + "`" + `sync_rate` + "`" + `, ` + "`" + `dictionary_name` + "`" + `, need to be the same.`,
+						Description: `Specifies the rate-limiting namespace for this plugin instance. A namespace acts as a logical grouping for configuration and counter data used by the rate-limiting algorithm. Namespaces define how and where counter data is stored and synchronized. When multiple plugin instances share the same namespace, they also share the same rate-limiting counters and synchronization configuration. Conversely, using different namespaces ensures that each plugin instance maintains its own independent counters.`,
 					},
 					"path": schema.StringAttribute{
 						Optional:    true,
@@ -164,6 +165,85 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"cloud_authentication": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"auth_provider":            types.StringType,
+									"aws_access_key_id":        types.StringType,
+									"aws_assume_role_arn":      types.StringType,
+									"aws_cache_name":           types.StringType,
+									"aws_is_serverless":        types.BoolType,
+									"aws_region":               types.StringType,
+									"aws_role_session_name":    types.StringType,
+									"aws_secret_access_key":    types.StringType,
+									"azure_client_id":          types.StringType,
+									"azure_client_secret":      types.StringType,
+									"azure_tenant_id":          types.StringType,
+									"gcp_service_account_json": types.StringType,
+								})),
+								Attributes: map[string]schema.Attribute{
+									"auth_provider": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
+										Validators: []validator.String{
+											stringvalidator.OneOf(
+												"aws",
+												"azure",
+												"gcp",
+											),
+										},
+									},
+									"aws_access_key_id": schema.StringAttribute{
+										Optional:    true,
+										Description: `AWS Access Key ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+									},
+									"aws_assume_role_arn": schema.StringAttribute{
+										Optional:    true,
+										Description: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.`,
+									},
+									"aws_cache_name": schema.StringAttribute{
+										Optional:    true,
+										Description: `The name of the AWS Elasticache cluster when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+									},
+									"aws_is_serverless": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(true),
+										Description: `This flag specifies whether the cluster is serverless when auth_provider is set to ` + "`" + `aws` + "`" + `. Default: true`,
+									},
+									"aws_region": schema.StringAttribute{
+										Optional:    true,
+										Description: `The region of the AWS ElastiCache cluster when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+									},
+									"aws_role_session_name": schema.StringAttribute{
+										Optional:    true,
+										Description: `The session name for the temporary credentials when assuming the IAM role.`,
+									},
+									"aws_secret_access_key": schema.StringAttribute{
+										Optional:    true,
+										Description: `AWS Secret Access Key to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+									},
+									"azure_client_id": schema.StringAttribute{
+										Optional:    true,
+										Description: `Azure Client ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+									},
+									"azure_client_secret": schema.StringAttribute{
+										Optional:    true,
+										Description: `Azure Client Secret to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+									},
+									"azure_tenant_id": schema.StringAttribute{
+										Optional:    true,
+										Description: `Azure Tenant ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+									},
+									"gcp_service_account_json": schema.StringAttribute{
+										Optional:    true,
+										Description: `GCP Service Account JSON to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `gcp` + "`" + `.`,
+									},
+								},
+								Description: `Cloud auth related configs for connecting to a Cloud Provider's Redis instance.`,
+							},
 							"cluster_max_redirections": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
@@ -362,7 +442,7 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`local`),
-						Description: `The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: ` + "`" + `local` + "`" + ` and ` + "`" + `cluster` + "`" + `. Default: "local"; must be one of ["cluster", "local", "redis"]`,
+						Description: `The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: ` + "`" + `local` + "`" + `, ` + "`" + `redis` + "`" + ` and ` + "`" + `cluster` + "`" + `. Default: "local"; must be one of ["cluster", "local", "redis"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"cluster",

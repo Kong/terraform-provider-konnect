@@ -9,6 +9,7 @@ import (
 
 // Network - Object containing information about a network to be used in configurations.
 type Network struct {
+	// The network ID to operate on. For serverless.v1 kind of cloud gateways, this field should be omitted.
 	ID string `json:"id"`
 	// Human-readable name of the network.
 	Name string `json:"name"`

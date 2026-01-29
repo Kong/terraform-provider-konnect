@@ -47,6 +47,18 @@ func (r *EventGatewayConsumePolicyModifyHeadersResourceModel) ToOperationsCreate
 	var virtualClusterID string
 	virtualClusterID = r.VirtualClusterID.ValueString()
 
+	before := new(string)
+	if !r.Before.IsUnknown() && !r.Before.IsNull() {
+		*before = r.Before.ValueString()
+	} else {
+		before = nil
+	}
+	after := new(string)
+	if !r.After.IsUnknown() && !r.After.IsNull() {
+		*after = r.After.ValueString()
+	} else {
+		after = nil
+	}
 	eventGatewayModifyHeadersPolicyCreate, eventGatewayModifyHeadersPolicyCreateDiags := r.ToSharedEventGatewayModifyHeadersPolicyCreate(ctx)
 	diags.Append(eventGatewayModifyHeadersPolicyCreateDiags...)
 
@@ -57,6 +69,8 @@ func (r *EventGatewayConsumePolicyModifyHeadersResourceModel) ToOperationsCreate
 	out := operations.CreateEventGatewayVirtualClusterConsumePolicyModifyHeadersRequest{
 		GatewayID:                             gatewayID,
 		VirtualClusterID:                      virtualClusterID,
+		Before:                                before,
+		After:                                 after,
 		EventGatewayModifyHeadersPolicyCreate: eventGatewayModifyHeadersPolicyCreate,
 	}
 

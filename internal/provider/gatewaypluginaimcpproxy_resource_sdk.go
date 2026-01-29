@@ -4,6 +4,8 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -15,10 +17,40 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		if resp.Config.ConsumerIdentifier != nil {
+			r.Config.ConsumerIdentifier = types.StringValue(string(*resp.Config.ConsumerIdentifier))
+		} else {
+			r.Config.ConsumerIdentifier = types.StringNull()
+		}
+		if resp.Config.DefaultACL != nil {
+			r.Config.DefaultACL = []tfTypes.DefaultACL{}
+
+			for _, defaultACLItem := range resp.Config.DefaultACL {
+				var defaultACL tfTypes.DefaultACL
+
+				if defaultACLItem.Allow != nil {
+					defaultACL.Allow = make([]types.String, 0, len(defaultACLItem.Allow))
+					for _, v := range defaultACLItem.Allow {
+						defaultACL.Allow = append(defaultACL.Allow, types.StringValue(v))
+					}
+				}
+				if defaultACLItem.Deny != nil {
+					defaultACL.Deny = make([]types.String, 0, len(defaultACLItem.Deny))
+					for _, v := range defaultACLItem.Deny {
+						defaultACL.Deny = append(defaultACL.Deny, types.StringValue(v))
+					}
+				}
+				defaultACL.Scope = types.StringPointerValue(defaultACLItem.Scope)
+
+				r.Config.DefaultACL = append(r.Config.DefaultACL, defaultACL)
+			}
+		}
+		r.Config.IncludeConsumerGroups = types.BoolPointerValue(resp.Config.IncludeConsumerGroups)
 		if resp.Config.Logging == nil {
 			r.Config.Logging = nil
 		} else {
-			r.Config.Logging = &tfTypes.AiLlmAsJudgePluginLogging{}
+			r.Config.Logging = &tfTypes.Logging{}
+			r.Config.Logging.LogAudits = types.BoolPointerValue(resp.Config.Logging.LogAudits)
 			r.Config.Logging.LogPayloads = types.BoolPointerValue(resp.Config.Logging.LogPayloads)
 			r.Config.Logging.LogStatistics = types.BoolPointerValue(resp.Config.Logging.LogStatistics)
 		}
@@ -38,6 +70,23 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 			for _, toolsItem := range resp.Config.Tools {
 				var tools tfTypes.Tools
 
+				if toolsItem.ACL == nil {
+					tools.ACL = nil
+				} else {
+					tools.ACL = &tfTypes.AiMcpProxyPluginACL{}
+					if toolsItem.ACL.Allow != nil {
+						tools.ACL.Allow = make([]types.String, 0, len(toolsItem.ACL.Allow))
+						for _, v := range toolsItem.ACL.Allow {
+							tools.ACL.Allow = append(tools.ACL.Allow, types.StringValue(v))
+						}
+					}
+					if toolsItem.ACL.Deny != nil {
+						tools.ACL.Deny = make([]types.String, 0, len(toolsItem.ACL.Deny))
+						for _, v := range toolsItem.ACL.Deny {
+							tools.ACL.Deny = append(tools.ACL.Deny, types.StringValue(v))
+						}
+					}
+				}
 				if toolsItem.Annotations == nil {
 					tools.Annotations = nil
 				} else {
@@ -67,23 +116,32 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 				} else {
 					tools.Method = types.StringNull()
 				}
-				tools.Parameters = []tfTypes.Parameters{}
+				tools.Name = types.StringPointerValue(toolsItem.Name)
+				if toolsItem.Parameters != nil {
+					tools.Parameters = []tfTypes.Parameters{}
 
-				for _, parametersItem := range toolsItem.Parameters {
-					var parameters tfTypes.Parameters
+					for _, parametersItem := range toolsItem.Parameters {
+						var parameters tfTypes.Parameters
 
-					parameters.Description = types.StringPointerValue(parametersItem.Description)
-					parameters.In = types.StringPointerValue(parametersItem.In)
-					parameters.Name = types.StringPointerValue(parametersItem.Name)
-					parameters.Required = types.BoolPointerValue(parametersItem.Required)
-					if parametersItem.Schema == nil {
-						parameters.Schema = nil
-					} else {
-						parameters.Schema = &tfTypes.BrokerHostFormat{}
-						parameters.Schema.Type = types.StringPointerValue(parametersItem.Schema.Type)
+						if parametersItem.AdditionalProperties == nil {
+							parameters.AdditionalProperties = jsontypes.NewNormalizedNull()
+						} else {
+							additionalPropertiesResult, _ := json.Marshal(parametersItem.AdditionalProperties)
+							parameters.AdditionalProperties = jsontypes.NewNormalizedValue(string(additionalPropertiesResult))
+						}
+						parameters.Description = types.StringPointerValue(parametersItem.Description)
+						parameters.In = types.StringPointerValue(parametersItem.In)
+						parameters.Name = types.StringPointerValue(parametersItem.Name)
+						parameters.Required = types.BoolPointerValue(parametersItem.Required)
+						if parametersItem.Schema == nil {
+							parameters.Schema = nil
+						} else {
+							parameters.Schema = &tfTypes.BrokerHostFormat{}
+							parameters.Schema.Type = types.StringPointerValue(parametersItem.Schema.Type)
+						}
+
+						tools.Parameters = append(tools.Parameters, parameters)
 					}
-
-					tools.Parameters = append(tools.Parameters, parameters)
 				}
 				tools.Path = types.StringPointerValue(toolsItem.Path)
 				if toolsItem.Query != nil {
@@ -98,7 +156,20 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 						tools.Query[queryKey] = queryResult
 					}
 				}
-				tools.RequestBody = types.StringPointerValue(toolsItem.RequestBody)
+				if toolsItem.RequestBody != nil {
+					tools.RequestBody = make(map[string]jsontypes.Normalized, len(toolsItem.RequestBody))
+					for key, value := range toolsItem.RequestBody {
+						result, _ := json.Marshal(value)
+						tools.RequestBody[key] = jsontypes.NewNormalizedValue(string(result))
+					}
+				}
+				if toolsItem.Responses != nil {
+					tools.Responses = make(map[string]jsontypes.Normalized, len(toolsItem.Responses))
+					for key1, value1 := range toolsItem.Responses {
+						result1, _ := json.Marshal(value1)
+						tools.Responses[key1] = jsontypes.NewNormalizedValue(string(result1))
+					}
+				}
 				if toolsItem.Scheme != nil {
 					tools.Scheme = types.StringValue(string(*toolsItem.Scheme))
 				} else {
@@ -352,8 +423,57 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 	} else {
 		updatedAt = nil
 	}
+	consumerIdentifier := new(shared.ConsumerIdentifier)
+	if !r.Config.ConsumerIdentifier.IsUnknown() && !r.Config.ConsumerIdentifier.IsNull() {
+		*consumerIdentifier = shared.ConsumerIdentifier(r.Config.ConsumerIdentifier.ValueString())
+	} else {
+		consumerIdentifier = nil
+	}
+	var defaultACL []shared.DefaultACL
+	if r.Config.DefaultACL != nil {
+		defaultACL = make([]shared.DefaultACL, 0, len(r.Config.DefaultACL))
+		for defaultACLIndex := range r.Config.DefaultACL {
+			var allow []string
+			if r.Config.DefaultACL[defaultACLIndex].Allow != nil {
+				allow = make([]string, 0, len(r.Config.DefaultACL[defaultACLIndex].Allow))
+				for allowIndex := range r.Config.DefaultACL[defaultACLIndex].Allow {
+					allow = append(allow, r.Config.DefaultACL[defaultACLIndex].Allow[allowIndex].ValueString())
+				}
+			}
+			var deny []string
+			if r.Config.DefaultACL[defaultACLIndex].Deny != nil {
+				deny = make([]string, 0, len(r.Config.DefaultACL[defaultACLIndex].Deny))
+				for denyIndex := range r.Config.DefaultACL[defaultACLIndex].Deny {
+					deny = append(deny, r.Config.DefaultACL[defaultACLIndex].Deny[denyIndex].ValueString())
+				}
+			}
+			scope := new(string)
+			if !r.Config.DefaultACL[defaultACLIndex].Scope.IsUnknown() && !r.Config.DefaultACL[defaultACLIndex].Scope.IsNull() {
+				*scope = r.Config.DefaultACL[defaultACLIndex].Scope.ValueString()
+			} else {
+				scope = nil
+			}
+			defaultACL = append(defaultACL, shared.DefaultACL{
+				Allow: allow,
+				Deny:  deny,
+				Scope: scope,
+			})
+		}
+	}
+	includeConsumerGroups := new(bool)
+	if !r.Config.IncludeConsumerGroups.IsUnknown() && !r.Config.IncludeConsumerGroups.IsNull() {
+		*includeConsumerGroups = r.Config.IncludeConsumerGroups.ValueBool()
+	} else {
+		includeConsumerGroups = nil
+	}
 	var logging *shared.Logging
 	if r.Config.Logging != nil {
+		logAudits := new(bool)
+		if !r.Config.Logging.LogAudits.IsUnknown() && !r.Config.Logging.LogAudits.IsNull() {
+			*logAudits = r.Config.Logging.LogAudits.ValueBool()
+		} else {
+			logAudits = nil
+		}
 		logPayloads := new(bool)
 		if !r.Config.Logging.LogPayloads.IsUnknown() && !r.Config.Logging.LogPayloads.IsNull() {
 			*logPayloads = r.Config.Logging.LogPayloads.ValueBool()
@@ -367,6 +487,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 			logStatistics = nil
 		}
 		logging = &shared.Logging{
+			LogAudits:     logAudits,
 			LogPayloads:   logPayloads,
 			LogStatistics: logStatistics,
 		}
@@ -408,6 +529,27 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 	if r.Config.Tools != nil {
 		tools = make([]shared.Tools, 0, len(r.Config.Tools))
 		for toolsIndex := range r.Config.Tools {
+			var acl *shared.AiMcpProxyPluginACL
+			if r.Config.Tools[toolsIndex].ACL != nil {
+				var allow1 []string
+				if r.Config.Tools[toolsIndex].ACL.Allow != nil {
+					allow1 = make([]string, 0, len(r.Config.Tools[toolsIndex].ACL.Allow))
+					for allowIndex1 := range r.Config.Tools[toolsIndex].ACL.Allow {
+						allow1 = append(allow1, r.Config.Tools[toolsIndex].ACL.Allow[allowIndex1].ValueString())
+					}
+				}
+				var deny1 []string
+				if r.Config.Tools[toolsIndex].ACL.Deny != nil {
+					deny1 = make([]string, 0, len(r.Config.Tools[toolsIndex].ACL.Deny))
+					for denyIndex1 := range r.Config.Tools[toolsIndex].ACL.Deny {
+						deny1 = append(deny1, r.Config.Tools[toolsIndex].ACL.Deny[denyIndex1].ValueString())
+					}
+				}
+				acl = &shared.AiMcpProxyPluginACL{
+					Allow: allow1,
+					Deny:  deny1,
+				}
+			}
 			var annotations *shared.Annotations
 			if r.Config.Tools[toolsIndex].Annotations != nil {
 				destructiveHint := new(bool)
@@ -474,51 +616,65 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 			} else {
 				method = nil
 			}
-			parameters := make([]shared.Parameters, 0, len(r.Config.Tools[toolsIndex].Parameters))
-			for parametersIndex := range r.Config.Tools[toolsIndex].Parameters {
-				name1 := new(string)
-				if !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Name.IsUnknown() && !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Name.IsNull() {
-					*name1 = r.Config.Tools[toolsIndex].Parameters[parametersIndex].Name.ValueString()
-				} else {
-					name1 = nil
-				}
-				in := new(string)
-				if !r.Config.Tools[toolsIndex].Parameters[parametersIndex].In.IsUnknown() && !r.Config.Tools[toolsIndex].Parameters[parametersIndex].In.IsNull() {
-					*in = r.Config.Tools[toolsIndex].Parameters[parametersIndex].In.ValueString()
-				} else {
-					in = nil
-				}
-				required := new(bool)
-				if !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Required.IsUnknown() && !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Required.IsNull() {
-					*required = r.Config.Tools[toolsIndex].Parameters[parametersIndex].Required.ValueBool()
-				} else {
-					required = nil
-				}
-				var schema *shared.Schema
-				if r.Config.Tools[toolsIndex].Parameters[parametersIndex].Schema != nil {
-					typeVar := new(string)
-					if !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Schema.Type.IsUnknown() && !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Schema.Type.IsNull() {
-						*typeVar = r.Config.Tools[toolsIndex].Parameters[parametersIndex].Schema.Type.ValueString()
+			name1 := new(string)
+			if !r.Config.Tools[toolsIndex].Name.IsUnknown() && !r.Config.Tools[toolsIndex].Name.IsNull() {
+				*name1 = r.Config.Tools[toolsIndex].Name.ValueString()
+			} else {
+				name1 = nil
+			}
+			var parameters []shared.Parameters
+			if r.Config.Tools[toolsIndex].Parameters != nil {
+				parameters = make([]shared.Parameters, 0, len(r.Config.Tools[toolsIndex].Parameters))
+				for parametersIndex := range r.Config.Tools[toolsIndex].Parameters {
+					name2 := new(string)
+					if !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Name.IsUnknown() && !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Name.IsNull() {
+						*name2 = r.Config.Tools[toolsIndex].Parameters[parametersIndex].Name.ValueString()
 					} else {
-						typeVar = nil
+						name2 = nil
 					}
-					schema = &shared.Schema{
-						Type: typeVar,
+					in := new(string)
+					if !r.Config.Tools[toolsIndex].Parameters[parametersIndex].In.IsUnknown() && !r.Config.Tools[toolsIndex].Parameters[parametersIndex].In.IsNull() {
+						*in = r.Config.Tools[toolsIndex].Parameters[parametersIndex].In.ValueString()
+					} else {
+						in = nil
 					}
+					required := new(bool)
+					if !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Required.IsUnknown() && !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Required.IsNull() {
+						*required = r.Config.Tools[toolsIndex].Parameters[parametersIndex].Required.ValueBool()
+					} else {
+						required = nil
+					}
+					var schema *shared.Schema
+					if r.Config.Tools[toolsIndex].Parameters[parametersIndex].Schema != nil {
+						typeVar := new(string)
+						if !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Schema.Type.IsUnknown() && !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Schema.Type.IsNull() {
+							*typeVar = r.Config.Tools[toolsIndex].Parameters[parametersIndex].Schema.Type.ValueString()
+						} else {
+							typeVar = nil
+						}
+						schema = &shared.Schema{
+							Type: typeVar,
+						}
+					}
+					description1 := new(string)
+					if !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Description.IsUnknown() && !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Description.IsNull() {
+						*description1 = r.Config.Tools[toolsIndex].Parameters[parametersIndex].Description.ValueString()
+					} else {
+						description1 = nil
+					}
+					var additionalProperties interface{}
+					if !r.Config.Tools[toolsIndex].Parameters[parametersIndex].AdditionalProperties.IsUnknown() && !r.Config.Tools[toolsIndex].Parameters[parametersIndex].AdditionalProperties.IsNull() {
+						_ = json.Unmarshal([]byte(r.Config.Tools[toolsIndex].Parameters[parametersIndex].AdditionalProperties.ValueString()), &additionalProperties)
+					}
+					parameters = append(parameters, shared.Parameters{
+						Name:                 name2,
+						In:                   in,
+						Required:             required,
+						Schema:               schema,
+						Description:          description1,
+						AdditionalProperties: additionalProperties,
+					})
 				}
-				description1 := new(string)
-				if !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Description.IsUnknown() && !r.Config.Tools[toolsIndex].Parameters[parametersIndex].Description.IsNull() {
-					*description1 = r.Config.Tools[toolsIndex].Parameters[parametersIndex].Description.ValueString()
-				} else {
-					description1 = nil
-				}
-				parameters = append(parameters, shared.Parameters{
-					Name:        name1,
-					In:          in,
-					Required:    required,
-					Schema:      schema,
-					Description: description1,
-				})
 			}
 			path1 := new(string)
 			if !r.Config.Tools[toolsIndex].Path.IsUnknown() && !r.Config.Tools[toolsIndex].Path.IsNull() {
@@ -537,11 +693,23 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 					query[queryKey] = queryInst
 				}
 			}
-			requestBody := new(string)
-			if !r.Config.Tools[toolsIndex].RequestBody.IsUnknown() && !r.Config.Tools[toolsIndex].RequestBody.IsNull() {
-				*requestBody = r.Config.Tools[toolsIndex].RequestBody.ValueString()
-			} else {
-				requestBody = nil
+			var requestBody map[string]interface{}
+			if r.Config.Tools[toolsIndex].RequestBody != nil {
+				requestBody = make(map[string]interface{})
+				for requestBodyKey := range r.Config.Tools[toolsIndex].RequestBody {
+					var requestBodyInst interface{}
+					_ = json.Unmarshal([]byte(r.Config.Tools[toolsIndex].RequestBody[requestBodyKey].ValueString()), &requestBodyInst)
+					requestBody[requestBodyKey] = requestBodyInst
+				}
+			}
+			var responses map[string]interface{}
+			if r.Config.Tools[toolsIndex].Responses != nil {
+				responses = make(map[string]interface{})
+				for responsesKey := range r.Config.Tools[toolsIndex].Responses {
+					var responsesInst interface{}
+					_ = json.Unmarshal([]byte(r.Config.Tools[toolsIndex].Responses[responsesKey].ValueString()), &responsesInst)
+					responses[responsesKey] = responsesInst
+				}
 			}
 			scheme := new(shared.Scheme)
 			if !r.Config.Tools[toolsIndex].Scheme.IsUnknown() && !r.Config.Tools[toolsIndex].Scheme.IsNull() {
@@ -550,25 +718,31 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 				scheme = nil
 			}
 			tools = append(tools, shared.Tools{
+				ACL:         acl,
 				Annotations: annotations,
 				Description: description,
 				Headers:     headers,
 				Host:        host,
 				Method:      method,
+				Name:        name1,
 				Parameters:  parameters,
 				Path:        path1,
 				Query:       query,
 				RequestBody: requestBody,
+				Responses:   responses,
 				Scheme:      scheme,
 			})
 		}
 	}
 	config := shared.AiMcpProxyPluginConfig{
-		Logging:            logging,
-		MaxRequestBodySize: maxRequestBodySize,
-		Mode:               mode,
-		Server:             server,
-		Tools:              tools,
+		ConsumerIdentifier:    consumerIdentifier,
+		DefaultACL:            defaultACL,
+		IncludeConsumerGroups: includeConsumerGroups,
+		Logging:               logging,
+		MaxRequestBodySize:    maxRequestBodySize,
+		Mode:                  mode,
+		Server:                server,
+		Tools:                 tools,
 	}
 	protocols := make([]shared.AiMcpProxyPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {

@@ -788,6 +788,8 @@ type KafkaUpstreamPluginSecurity struct {
 	CertificateID *string `default:"null" json:"certificate_id"`
 	// Enables TLS.
 	Ssl *bool `default:"null" json:"ssl"`
+	// When using TLS, this option enables verification of the certificate presented by the server.
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 }
 
 func (k KafkaUpstreamPluginSecurity) MarshalJSON() ([]byte, error) {
@@ -813,6 +815,13 @@ func (k *KafkaUpstreamPluginSecurity) GetSsl() *bool {
 		return nil
 	}
 	return k.Ssl
+}
+
+func (k *KafkaUpstreamPluginSecurity) GetSslVerify() *bool {
+	if k == nil {
+		return nil
+	}
+	return k.SslVerify
 }
 
 type KafkaUpstreamPluginConfig struct {

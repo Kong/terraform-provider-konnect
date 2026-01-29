@@ -269,8 +269,8 @@ type AiMcpOauth2PluginConfig struct {
 	IntrospectionFormat *IntrospectionFormat `json:"introspection_format,omitempty"`
 	// Enable HTTP keepalive for requests.
 	Keepalive *bool `default:"true" json:"keepalive"`
-	// max allowed body size allowed to be handled as MCP request.
-	MaxRequestBodySize *int64 `default:"8192" json:"max_request_body_size"`
+	// max allowed body size allowed to be handled as MCP request. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
+	MaxRequestBodySize *int64 `default:"1048576" json:"max_request_body_size"`
 	// The path for OAuth 2.0 Protected Resource Metadata. Default to $resource/.well-known/oauth-protected-resource. For example, if the configured resource is https://api.example.com/mcp, the metadata endpoint is /mcp/.well-known/oauth-protected-resource.
 	MetadataEndpoint *string `default:"null" json:"metadata_endpoint"`
 	// The mTLS alias for the introspection endpoint.
@@ -588,7 +588,7 @@ type AiMcpOauth2Plugin struct {
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
 	// The configuration for MCP authorization in OAuth2. If this is enabled, make sure the configured metadata_endpoint is also covered by the same route so the authorization can be applied correctly.
-	Config *AiMcpOauth2PluginConfig `json:"config"`
+	Config AiMcpOauth2PluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
 	Protocols []AiMcpOauth2PluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -668,9 +668,9 @@ func (a *AiMcpOauth2Plugin) GetUpdatedAt() *int64 {
 	return a.UpdatedAt
 }
 
-func (a *AiMcpOauth2Plugin) GetConfig() *AiMcpOauth2PluginConfig {
+func (a *AiMcpOauth2Plugin) GetConfig() AiMcpOauth2PluginConfig {
 	if a == nil {
-		return nil
+		return AiMcpOauth2PluginConfig{}
 	}
 	return a.Config
 }

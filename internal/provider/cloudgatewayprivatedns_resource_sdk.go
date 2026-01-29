@@ -59,6 +59,20 @@ func (r *CloudGatewayPrivateDNSResourceModel) RefreshFromSharedPrivateDNSRespons
 			r.AwsPrivateHostedZoneResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AwsPrivateHostedZoneResponse.StateMetadata.ReportedStatus)
 			r.AwsPrivateHostedZoneResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsPrivateHostedZoneResponse.UpdatedAt))
 		}
+		if resp.AzurePrivateDNSResolverResponse != nil {
+			r.AzurePrivateDNSResolverResponse = &tfTypes.AzurePrivateDNSResolverResponse{}
+			r.AzurePrivateDNSResolverResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AzurePrivateDNSResolverResponse.CreatedAt))
+			r.AzurePrivateDNSResolverResponse.EntityVersion = types.Int64Value(resp.AzurePrivateDNSResolverResponse.EntityVersion)
+			r.EntityVersion = r.AzurePrivateDNSResolverResponse.EntityVersion
+			r.AzurePrivateDNSResolverResponse.ID = types.StringValue(resp.AzurePrivateDNSResolverResponse.ID)
+			r.ID = r.AzurePrivateDNSResolverResponse.ID
+			r.AzurePrivateDNSResolverResponse.Name = types.StringValue(resp.AzurePrivateDNSResolverResponse.Name)
+			r.Name = r.AzurePrivateDNSResolverResponse.Name
+			r.AzurePrivateDNSResolverResponse.State = types.StringValue(string(resp.AzurePrivateDNSResolverResponse.State))
+			r.AzurePrivateDNSResolverResponse.StateMetadata.Reason = types.StringPointerValue(resp.AzurePrivateDNSResolverResponse.StateMetadata.Reason)
+			r.AzurePrivateDNSResolverResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AzurePrivateDNSResolverResponse.StateMetadata.ReportedStatus)
+			r.AzurePrivateDNSResolverResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AzurePrivateDNSResolverResponse.UpdatedAt))
+		}
 		if resp.GcpPrivateHostedZoneResponse != nil {
 			r.GcpPrivateHostedZoneResponse = &tfTypes.GcpPrivateHostedZoneResponse{}
 			r.GcpPrivateHostedZoneResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.GcpPrivateHostedZoneResponse.CreatedAt))

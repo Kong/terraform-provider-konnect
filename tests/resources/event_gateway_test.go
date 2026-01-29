@@ -890,7 +890,7 @@ EOF
 		require.NoError(t, err)
 
 		listenerPolicy.AddAttribute(
-			"event_gateway_listener_id",
+			"listener_id",
 			egwListener.ResourcePath()+".id",
 		)
 		listenerPolicy.AddAttribute(
@@ -962,8 +962,8 @@ EOF
 					allow_plaintext = false
 					certificates = [
 						{
-							certificate = "-----BEGIN CERTIFICATE-----\nMIIC7jCCAd agAwIBAgIUWcN6i/K3PaY5E9O+V1YQUAECE4YwDQYJKoZIhvcNAQEL\nBQAwEzERMA8GA1UEAwwIdGVzdC1jZXJ0MB4XDTI0MDEwMTAwMDAwMFoXDTM0MDEw\nMTAwMDAwMFowEzERMA8GA1UEAwwIdGVzdC1jZXJ0MIIBIjANBgkqhkiG9w0BAQEF\nAAOCAQ8AMIIBCgKCAQEAyL2kR4u5nE5+9Z0qQKpZ9l+XKZcE8GmU5lZ5vCjYV+Zp\nY5dQy3FZ5Qqz1zv7F0s8g5mC3Y8d+RZy5P8FJ1h3oN6m8F+9y5HqYxKp5nJq9yR\np6Zy1x3Z5yq7H8x5p0Z9YkJ1+2p5ZK3ZJr9X5yH8E8R5Y8ZK8y5+Z9QIDAQAB\no1MwUTAdBgNVHQ4EFgQUy0v7uG7Nn6Jw+uXxvR4g6Y7K6H4wHwYDVR0jBBgwFoAU\ny0v7uG7Nn6Jw+uXxvR4g6Y7K6H4wDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0B\nAQsFAAOCAQEAQq9x5X8E7Z5Y+Jp5+qZ8x5ZK9Y8Z5+Z9x5Y8E7Z5Y+Jp5+qZ8x5\nZK9Y8Z5+Z9x5Y8E7Z5Y+Jp5+qZ8x5ZK9Y8Z5+Z9x5Y8E7Z5Y+Jp5+qZ8x5ZK9Y8\nZ5+Z9x5Y8E7Z5Y+Jp5+qZ8x5ZK9Y8Z5+Z9x5Y8E7Z5Y+Jp5+qZ8x5ZK9Y8Z5+Z\n9x5Y8E7Z5Y+Jp5+qZ8x5ZK9Y8Z5+Z9x5Y8E7Z5Y+Jp5+qZ8x5ZK9Y8Z5+Z9x5\nY8E7Z5Y+Jp5+qZ8x5ZK9Y8Z5+Z9x5Y8E7Z5Y+Jp5+qZ8x5ZK9Y8Z5+Z9x5Y8=\n-----END CERTIFICATE-----"
-							key = "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDIvaRHi7mcTn71\nnSpAqln2X5cplwTwaZTmVnm8KNhX5mljl1DLcVnlCrPXO/sXSzyDmYLdjx35FnLk\n/wUnWHeg3qbwX73HkepjEqnmcmr3JGnpnLXHdnnKrsfzHmnRn1iQnX7anlkrdk\nm/1fnIdwTxHljxkrzLn5n1D1AgMBAAECggEBAKzZ5c8V9PX8e7Z5Y+Jp5+qZ8x\n5ZK9Y8Z5+Z9x5Y8E7Z5Y+Jp5+qZ8x5ZK9Y8Z5+Z9x5Y8E7Z5Y+Jp5+qZ8x5ZK\n9Y8Z5+Z9x5Y8E7Z5Y+Jp5+qZ8x5ZK9Y8Z5+Z9x5Y8E7Z5Y+Jp5+qZ8x5ZK9Y8\nZ5+Z9x5Y8E7Z5Y+Jp5+qZ8x5ZK9Y8Z5+Z9x5Y8E7Z5Y+Jp5+qZ8x5ZK9Y8Z5\n+Z9x5Y8E7Z5Y+Jp5+qZ8x5ZK9Y8Z5+Z9x5Y8E7Z5Y+Jp5+qZ8x5ZK9Y8Z5+Z\n9x5Y8E7Z5Y+Jp5+qZ8x5ZK9Y8Z5+Z9x5Y8E7Z5Y+Jp5+qZ8x5ZK9Y8Z5+Z9x5\nY8ECgYEA6L2mR4u5nE5+9Z0qQKpZ9l+XKZcE8GmU5lZ5vCjYV+ZpY5dQy3FZ5Qq\nz1zv7F0s8g5mC3Y8d+RZy5P8FJ1h3oN6m8F+9y5HqYxKp5nJq9yRp6Zy1x3Z5y\nq7H8x5p0Z9YkJ1+2p5ZK3ZJr9X5yH8E8R5Y8ZK8y5+Z9QIDAQAB\n-----END PRIVATE KEY-----"
+							certificate = "-----BEGIN CERTIFICATE-----\nMIIBxjCCAUygAwIBAgIUX9TaLbWF76yQc8IGR+YRbeiDlHkwCgYIKoZIzj0EAwIwGjEYMBYGA1UEAwwPa29uZ19jbHVzdGVyaW5nMB4XDTI0MDMwMTE0MzkxNloXDTI3MDMwMTE0MzkxNlowGjEYMBYGA1UEAwwPa29uZ19jbHVzdGVyaW5nMHYwEAYHKoZIzj0CAQYFK4EEACIDYgAEcMndCotXzeZ9vGAMfDfZ7UxUuP5bcIrwwUOI8YlpMdvB12HvjtS7O0/ONr3fBeCWagRuitPEqd4b3EJuD8kuFUMt+2A09N6KY1YDJWgKHei7rzKgrefzVt11XgBiDsUBo1MwUTAdBgNVHQ4EFgQUIrdAC8p02h60GZW0Jlh2Vcg/WeMwHwYDVR0jBBgwFoAUIrdAC8p02h60GZW0Jlh2Vcg/WeMwDwYDVR0TAQH/BAUwAwEB/zAKBggqhkjOPQQDAgNoADBlAjBYb+yQf33sItlmsONLc41Agtx73FMEN7LfWA85OtlkMie1N1x0mj08pzS/Xc1VONwCMQDN9sBn3Kody0gse+EXYSuPPj1oo9jmFB9/xrpz35YpDATvuyhH8xwSJ4xMuxQiduc=\n-----END CERTIFICATE-----"
+							key = "-----BEGIN PRIVATE KEY-----\nMIG2AgEAMBAGByqGSM49AgEGBSuBBAAiBIGeMIGbAgEBBDDLuRX+uzSbstvLWsQrWwuGK4AdjLU/tN9A/fn03gxNvppKw++SBtnLyB+9YZ29YA+hZANiAARwyd0Ki1fN5n28YAx8N9ntTFS4/ltwivDBQ4jxiWkx28HXYe+O1Ls7T842vd8F4JZqBG6K08Sp3hvcQm4PyS4VQy37YDT03opjVgMlaAod6LuvMqCt5/NW3XVeAGIOxQE=\n-----END PRIVATE KEY-----"
 						}
 					]
 					versions = {
@@ -971,12 +971,14 @@ EOF
 						max = "TLSv1.3"
 					}
 				}
-			}
+			  }
 		`)
 		require.NoError(t, err)
 
+		require.NoError(t, err)
+
 		tlsServerPolicy.AddAttribute(
-			"event_gateway_listener_id",
+			"listener_id",
 			egwListener.ResourcePath()+".id",
 		)
 		tlsServerPolicy.AddAttribute(
@@ -1476,8 +1478,8 @@ EOF
 				  value_validation_action = "reject"
 
 				  schema_registry = {
-					schema_registry_reference_by_name = {
-					  name = "my-schema-registry"
+					schema_registry_reference_by_id = {
+					  id = konnect_event_gateway_schema_registry.tf_test_schema_registry.id
 					}
 				  }
 				}

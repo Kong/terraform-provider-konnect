@@ -180,9 +180,9 @@ type Message struct {
 	Priority *int64 `default:"4" json:"priority"`
 	// Allows the application to set the sender identifier.
 	SenderID *string `default:"null" json:"sender_id"`
-	// Enable or disable the tracing. This is primarily used for distributed tracing and log message correlation, especially in debugging or tracking log message flows across multiple systems.
+	// Enable or disable the tracing propagation. This is primarily used for distributed tracing and message correlation, especially in debugging or tracking message flows across multiple systems.
 	Tracing *bool `default:"false" json:"tracing"`
-	// Indicates whether the log message should be included in distributed tracing (i.e., if it should be "sampled" for the tracing).
+	// Forcibly turn on the tracing on all the messages for distributed tracing (tracing needs to be enabled as well).
 	TracingSampled *bool `default:"false" json:"tracing_sampled"`
 	// Sets the time to live (TTL) in milliseconds for the log message. Setting the time to live to zero disables the TTL for the log message.
 	TTL *int64 `default:"0" json:"ttl"`
@@ -302,10 +302,14 @@ func (e *SolaceLogPluginScheme) UnmarshalJSON(data []byte) error {
 // SolaceLogPluginAuthentication - Session authentication related configuration.
 type SolaceLogPluginAuthentication struct {
 	// The OAuth2 access token used with `OAUTH2` authentication scheme when connecting to an event broker.
-	AccessToken       *string `default:"null" json:"access_token"`
+	AccessToken *string `default:"null" json:"access_token"`
+	// Specifies the header that contains access token for the `OAUTH2` authentication scheme when connecting to an event broker. This header takes precedence over the `access_token` field.
 	AccessTokenHeader *string `default:"null" json:"access_token_header"`
+	// Specifies the header that contains Basic Authentication credentials for the `BASIC` authentication scheme when connecting to an event broker. This header takes precedence over the `username` and `password` fields.
+	BasicAuthHeader *string `default:"null" json:"basic_auth_header"`
 	// The OpenID Connect ID token used with `OAUTH2` authentication scheme when connecting to an event broker.
-	IDToken       *string `default:"null" json:"id_token"`
+	IDToken *string `default:"null" json:"id_token"`
+	// Specifies the header that contains id token for the `OAUTH2` authentication scheme when connecting to an event broker. This header takes precedence over the `id_token` field.
 	IDTokenHeader *string `default:"null" json:"id_token_header"`
 	// The password used with `BASIC` authentication scheme when connecting to an event broker.
 	Password *string `default:"null" json:"password"`
@@ -338,6 +342,13 @@ func (s *SolaceLogPluginAuthentication) GetAccessTokenHeader() *string {
 		return nil
 	}
 	return s.AccessTokenHeader
+}
+
+func (s *SolaceLogPluginAuthentication) GetBasicAuthHeader() *string {
+	if s == nil {
+		return nil
+	}
+	return s.BasicAuthHeader
 }
 
 func (s *SolaceLogPluginAuthentication) GetIDToken() *string {

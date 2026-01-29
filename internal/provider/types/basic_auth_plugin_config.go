@@ -7,7 +7,8 @@ import (
 )
 
 type BasicAuthPluginConfig struct {
-	Anonymous       types.String `tfsdk:"anonymous"`
-	HideCredentials types.Bool   `tfsdk:"hide_credentials"`
-	Realm           types.String `tfsdk:"realm"`
+	Anonymous            types.String          `tfsdk:"anonymous"`
+	BruteForceProtection *BruteForceProtection `tfsdk:"brute_force_protection"`
+	HideCredentials      types.Bool            `tfsdk:"hide_credentials"`
+	Realm                types.String          `tfsdk:"realm"`
 }

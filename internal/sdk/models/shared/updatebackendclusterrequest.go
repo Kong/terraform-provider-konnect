@@ -11,7 +11,7 @@ type UpdateBackendClusterRequest struct {
 	// The unique name of the backend cluster.
 	Name string `json:"name"`
 	// A human-readable description of the virtual cluster.
-	Description    *string                                              `json:"description,omitempty"`
+	Description    *string                                              `default:"" json:"description"`
 	Authentication BackendClusterAuthenticationSensitiveDataAwareScheme `json:"authentication"`
 	// If true, virtual clusters can have allow anonymous authentication and use this backend cluster.
 	// This setting is not recommended for production use as it may create privilege escalation vulnerabilities.

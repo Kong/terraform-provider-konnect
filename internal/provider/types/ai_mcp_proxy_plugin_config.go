@@ -7,9 +7,12 @@ import (
 )
 
 type AiMcpProxyPluginConfig struct {
-	Logging            *AiLlmAsJudgePluginLogging `tfsdk:"logging"`
-	MaxRequestBodySize types.Int64                `tfsdk:"max_request_body_size"`
-	Mode               types.String               `tfsdk:"mode"`
-	Server             *Server                    `tfsdk:"server"`
-	Tools              []Tools                    `tfsdk:"tools"`
+	ConsumerIdentifier    types.String `tfsdk:"consumer_identifier"`
+	DefaultACL            []DefaultACL `tfsdk:"default_acl"`
+	IncludeConsumerGroups types.Bool   `tfsdk:"include_consumer_groups"`
+	Logging               *Logging     `tfsdk:"logging"`
+	MaxRequestBodySize    types.Int64  `tfsdk:"max_request_body_size"`
+	Mode                  types.String `tfsdk:"mode"`
+	Server                *Server      `tfsdk:"server"`
+	Tools                 []Tools      `tfsdk:"tools"`
 }

@@ -7,13 +7,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -38,6 +39,8 @@ type EventGatewayConsumePolicySchemaValidationResource struct {
 
 // EventGatewayConsumePolicySchemaValidationResourceModel describes the resource data model.
 type EventGatewayConsumePolicySchemaValidationResourceModel struct {
+	After            types.String                                            `queryParam:"style=form,explode=true,name=after" tfsdk:"after"`
+	Before           types.String                                            `queryParam:"style=form,explode=true,name=before" tfsdk:"before"`
 	Condition        types.String                                            `tfsdk:"condition"`
 	Config           tfTypes.EventGatewayConsumeSchemaValidationPolicyConfig `tfsdk:"config"`
 	CreatedAt        types.String                                            `tfsdk:"created_at"`
@@ -60,11 +63,27 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "EventGatewayConsumePolicySchemaValidation Resource",
 		Attributes: map[string]schema.Attribute{
+			"after": schema.StringAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `Determines the id of the existing policy the new policy should be inserted after. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.`,
+			},
+			"before": schema.StringAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `Determines the id of the existing policy the new policy should be inserted before. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.`,
+			},
 			"condition": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
-				Description: `A string containing the boolean expression that determines whether the policy is applied.`,
+				Default:     stringdefault.StaticString(``),
+				Description: `A string containing the boolean expression that determines whether the policy is applied. Default: ""`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 1000),
+					stringvalidator.UTF8LengthAtMost(1000),
 				},
 			},
 			"config": schema.SingleNestedAttribute{
@@ -97,29 +116,6 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
-								},
-								Validators: []validator.Object{
-									objectvalidator.ConflictsWith(path.Expressions{
-										path.MatchRelative().AtParent().AtName("schema_registry_reference_by_name"),
-									}...),
-								},
-							},
-							"schema_registry_reference_by_name": schema.SingleNestedAttribute{
-								Optional: true,
-								Attributes: map[string]schema.Attribute{
-									"name": schema.StringAttribute{
-										Required:    true,
-										Description: `The unique name of the schema registry.`,
-										Validators: []validator.String{
-											stringvalidator.UTF8LengthBetween(1, 255),
-										},
-									},
-								},
-								Description: `Reference a schema registry by its unique name.`,
-								Validators: []validator.Object{
-									objectvalidator.ConflictsWith(path.Expressions{
-										path.MatchRelative().AtParent().AtName("schema_registry_reference_by_id"),
-									}...),
 								},
 							},
 						},
@@ -163,8 +159,10 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
 			"description": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
-				Description: `A human-readable description of the policy.`,
+				Default:     stringdefault.StaticString(``),
+				Description: `A human-readable description of the policy. Default: ""`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(512),
 				},
@@ -192,10 +190,11 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"name": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
 				Description: `A unique user-defined name of the policy.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 255),
+					stringvalidator.UTF8LengthAtMost(255),
 				},
 			},
 			"parent_policy_id": schema.StringAttribute{

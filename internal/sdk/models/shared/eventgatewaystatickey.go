@@ -12,7 +12,7 @@ type EventGatewayStaticKey struct {
 	// The unique name of the static key.
 	Name string `json:"name"`
 	// A human-readable description of the static key.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"" json:"description"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".

@@ -14,6 +14,8 @@ EventGatewayListenerPolicyTLSServer Resource
 
 ```terraform
 resource "konnect_event_gateway_listener_policy_tls_server" "my_eventgatewaylistenerpolicytlsserver" {
+  after  = "2616a68d-afd0-4921-8e37-9ec062d78d86"
+  before = "892198ba-6589-4d64-8e1f-020d69ef34a1"
   config = {
     allow_plaintext = true
     certificates = [
@@ -27,14 +29,14 @@ resource "konnect_event_gateway_listener_policy_tls_server" "my_eventgatewaylist
       min = "TLSv1.3"
     }
   }
-  description               = "...my_description..."
-  enabled                   = true
-  event_gateway_listener_id = "34102bf1-bf41-4c00-a62f-6fca747cb8f8"
-  gateway_id                = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  description = "...my_description..."
+  enabled     = true
+  gateway_id  = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   labels = {
     key = "value"
   }
-  name = "...my_name..."
+  listener_id = "f7d7b9be-5608-44c3-8f6a-46e055797c31"
+  name        = "...my_name..."
 }
 ```
 
@@ -44,12 +46,14 @@ resource "konnect_event_gateway_listener_policy_tls_server" "my_eventgatewaylist
 ### Required
 
 - `config` (Attributes) The configuration of the policy. (see [below for nested schema](#nestedatt--config))
-- `event_gateway_listener_id` (String) The ID of the Event Gateway Listener.
 - `gateway_id` (String) The UUID of your Gateway.
+- `listener_id` (String) The ID of the Event Gateway Listener.
 
 ### Optional
 
-- `description` (String) A human-readable description of the policy.
+- `after` (String) Determines the id of the existing policy the new policy should be inserted after. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.
+- `before` (String) Determines the id of the existing policy the new policy should be inserted before. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.
+- `description` (String) A human-readable description of the policy. Default: ""
 - `enabled` (Boolean) Whether the policy is enabled. Default: true
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
@@ -105,9 +109,9 @@ In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.
 import {
   to = konnect_event_gateway_listener_policy_tls_server.my_konnect_event_gateway_listener_policy_tls_server
   id = jsonencode({
-    event_gateway_listener_id = "..."
     gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    listener_id = "..."
   })
 }
 ```
@@ -115,5 +119,5 @@ import {
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_event_gateway_listener_policy_tls_server.my_konnect_event_gateway_listener_policy_tls_server '{"event_gateway_listener_id": "...", "gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}'
+terraform import konnect_event_gateway_listener_policy_tls_server.my_konnect_event_gateway_listener_policy_tls_server '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "listener_id": "..."}'
 ```

@@ -45,6 +45,7 @@ func (r *GatewayPluginMtlsAuthResourceModel) RefreshFromSharedMtlsAuthPlugin(ctx
 		}
 		r.Config.SendCaDn = types.BoolPointerValue(resp.Config.SendCaDn)
 		r.Config.SkipConsumerLookup = types.BoolPointerValue(resp.Config.SkipConsumerLookup)
+		r.Config.SslVerify = types.BoolPointerValue(resp.Config.SslVerify)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -381,6 +382,12 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToSharedMtlsAuthPlugin(ctx context.
 	} else {
 		skipConsumerLookup = nil
 	}
+	sslVerify := new(bool)
+	if !r.Config.SslVerify.IsUnknown() && !r.Config.SslVerify.IsNull() {
+		*sslVerify = r.Config.SslVerify.ValueBool()
+	} else {
+		sslVerify = nil
+	}
 	config := shared.MtlsAuthPluginConfig{
 		AllowPartialChain:    allowPartialChain,
 		Anonymous:            anonymous,
@@ -398,6 +405,7 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToSharedMtlsAuthPlugin(ctx context.
 		RevocationCheckMode:  revocationCheckMode,
 		SendCaDn:             sendCaDn,
 		SkipConsumerLookup:   skipConsumerLookup,
+		SslVerify:            sslVerify,
 	}
 	protocols := make([]shared.MtlsAuthPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {

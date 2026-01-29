@@ -2,12 +2,16 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // UpdateEventGatewayListenerRequest - The request schema for updating a listener.
 type UpdateEventGatewayListenerRequest struct {
 	// The unique name of the listener.
 	Name string `json:"name"`
 	// A human-readable description of the virtual cluster.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"" json:"description"`
 	// Which address or addresses to listen on.
 	// `0.0.0.0` means all addresses on the host.
 	// `::` means all addresses on the host in IPv6.
@@ -31,6 +35,17 @@ type UpdateEventGatewayListenerRequest struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
+}
+
+func (u UpdateEventGatewayListenerRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateEventGatewayListenerRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateEventGatewayListenerRequest) GetName() string {

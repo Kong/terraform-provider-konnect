@@ -15,7 +15,7 @@ GatewayPluginAiPromptDecorator Resource
 ```terraform
 resource "konnect_gateway_plugin_ai_prompt_decorator" "my_gatewaypluginaipromptdecorator" {
   config = {
-    llm_format            = "bedrock"
+    llm_format            = "anthropic"
     max_request_body_size = 3
     prompts = {
       append = [
@@ -107,8 +107,8 @@ resource "konnect_gateway_plugin_ai_prompt_decorator" "my_gatewaypluginaipromptd
 
 Optional:
 
-- `llm_format` (String) LLM input and output format and schema to use. Default: "openai"; must be one of ["bedrock", "cohere", "gemini", "huggingface", "openai"]
-- `max_request_body_size` (Number) max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 8192
+- `llm_format` (String) LLM input and output format and schema to use. Default: "openai"; must be one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]
+- `max_request_body_size` (Number) max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 1048576
 - `prompts` (Attributes) (see [below for nested schema](#nestedatt--config--prompts))
 
 <a id="nestedatt--config--prompts"></a>

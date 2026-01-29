@@ -7,19 +7,15 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
-	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
-func (r *EventGatewayProducePolicySchemaValidationResourceModel) RefreshFromSharedEventGatewayPolicy(ctx context.Context, resp *shared.EventGatewayPolicy) diag.Diagnostics {
+func (r *EventGatewayProducePolicySchemaValidationResourceModel) RefreshFromSharedEventGatewayProducePolicySchemaValidationTFOnly(ctx context.Context, resp *shared.EventGatewayProducePolicySchemaValidationTFOnly) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
 		r.Condition = types.StringPointerValue(resp.Condition)
-		if resp.Config != nil {
-			r.Config = tfTypes.EventGatewayProduceSchemaValidationPolicyConfig{}
-		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -47,6 +43,18 @@ func (r *EventGatewayProducePolicySchemaValidationResourceModel) ToOperationsCre
 	var virtualClusterID string
 	virtualClusterID = r.VirtualClusterID.ValueString()
 
+	before := new(string)
+	if !r.Before.IsUnknown() && !r.Before.IsNull() {
+		*before = r.Before.ValueString()
+	} else {
+		before = nil
+	}
+	after := new(string)
+	if !r.After.IsUnknown() && !r.After.IsNull() {
+		*after = r.After.ValueString()
+	} else {
+		after = nil
+	}
 	eventGatewayProduceSchemaValidationPolicy, eventGatewayProduceSchemaValidationPolicyDiags := r.ToSharedEventGatewayProduceSchemaValidationPolicy(ctx)
 	diags.Append(eventGatewayProduceSchemaValidationPolicyDiags...)
 
@@ -57,6 +65,8 @@ func (r *EventGatewayProducePolicySchemaValidationResourceModel) ToOperationsCre
 	out := operations.CreateEventGatewayVirtualClusterProducePolicySchemaValidationRequest{
 		GatewayID:        gatewayID,
 		VirtualClusterID: virtualClusterID,
+		Before:           before,
+		After:            after,
 		EventGatewayProduceSchemaValidationPolicy: eventGatewayProduceSchemaValidationPolicy,
 	}
 
@@ -184,20 +194,6 @@ func (r *EventGatewayProducePolicySchemaValidationResourceModel) ToSharedEventGa
 					SchemaRegistryReferenceByID: schemaRegistryReferenceByID,
 				}
 			}
-			var schemaRegistryReferenceByName *shared.SchemaRegistryReferenceByName
-			if r.Config.ConfluentSchemaRegistry.SchemaRegistry.SchemaRegistryReferenceByName != nil {
-				var name1 string
-				name1 = r.Config.ConfluentSchemaRegistry.SchemaRegistry.SchemaRegistryReferenceByName.Name.ValueString()
-
-				schemaRegistryReferenceByName = &shared.SchemaRegistryReferenceByName{
-					Name: name1,
-				}
-			}
-			if schemaRegistryReferenceByName != nil {
-				schemaRegistry = &shared.SchemaRegistryReference{
-					SchemaRegistryReferenceByName: schemaRegistryReferenceByName,
-				}
-			}
 		}
 		keyValidationAction := new(shared.ProduceKeyValidationAction)
 		if !r.Config.ConfluentSchemaRegistry.KeyValidationAction.IsUnknown() && !r.Config.ConfluentSchemaRegistry.KeyValidationAction.IsNull() {
@@ -238,20 +234,6 @@ func (r *EventGatewayProducePolicySchemaValidationResourceModel) ToSharedEventGa
 			if schemaRegistryReferenceById1 != nil {
 				schemaRegistry1 = &shared.SchemaRegistryReference{
 					SchemaRegistryReferenceByID: schemaRegistryReferenceById1,
-				}
-			}
-			var schemaRegistryReferenceByName1 *shared.SchemaRegistryReferenceByName
-			if r.Config.JSON.SchemaRegistry.SchemaRegistryReferenceByName != nil {
-				var name2 string
-				name2 = r.Config.JSON.SchemaRegistry.SchemaRegistryReferenceByName.Name.ValueString()
-
-				schemaRegistryReferenceByName1 = &shared.SchemaRegistryReferenceByName{
-					Name: name2,
-				}
-			}
-			if schemaRegistryReferenceByName1 != nil {
-				schemaRegistry1 = &shared.SchemaRegistryReference{
-					SchemaRegistryReferenceByName: schemaRegistryReferenceByName1,
 				}
 			}
 		}

@@ -14,6 +14,8 @@ EventGatewayProducePolicyEncrypt Resource
 
 ```terraform
 resource "konnect_event_gateway_produce_policy_encrypt" "my_eventgatewayproducepolicyencrypt" {
+  after     = "d1a1f544-1000-46f0-a1bb-269199a83d36"
+  before    = "f9fae4ab-cdb7-42dd-b88b-b4283f75e0c5"
   condition = "context.topic.name.endsWith(\"my_suffix\") && records.headers[\"x-flag\"] == \"a-value\""
   config = {
     encryption_key = {
@@ -52,8 +54,10 @@ resource "konnect_event_gateway_produce_policy_encrypt" "my_eventgatewayproducep
 
 ### Optional
 
-- `condition` (String) A string containing the boolean expression that determines whether the policy is applied.
-- `description` (String) A human-readable description of the policy.
+- `after` (String) Determines the id of the existing policy the new policy should be inserted after. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.
+- `before` (String) Determines the id of the existing policy the new policy should be inserted before. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.
+- `condition` (String) A string containing the boolean expression that determines whether the policy is applied. Default: ""
+- `description` (String) A human-readable description of the policy. Default: ""
 - `enabled` (Boolean) Whether the policy is enabled. Default: true
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 

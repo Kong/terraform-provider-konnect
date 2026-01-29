@@ -52,6 +52,7 @@ func (r *GatewayPluginAiSanitizerResourceModel) RefreshFromSharedAiSanitizerPlug
 				r.Config.SanitizationMode = types.StringNull()
 			}
 			r.Config.Scheme = types.StringPointerValue(resp.Config.Scheme)
+			r.Config.SkipLoggingSanitizedItems = types.BoolPointerValue(resp.Config.SkipLoggingSanitizedItems)
 			r.Config.StopOnError = types.BoolPointerValue(resp.Config.StopOnError)
 			r.Config.Timeout = types.Float64PointerValue(resp.Config.Timeout)
 		}
@@ -388,6 +389,12 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToSharedAiSanitizerPlugin(ctx co
 		} else {
 			scheme = nil
 		}
+		skipLoggingSanitizedItems := new(bool)
+		if !r.Config.SkipLoggingSanitizedItems.IsUnknown() && !r.Config.SkipLoggingSanitizedItems.IsNull() {
+			*skipLoggingSanitizedItems = r.Config.SkipLoggingSanitizedItems.ValueBool()
+		} else {
+			skipLoggingSanitizedItems = nil
+		}
 		stopOnError := new(bool)
 		if !r.Config.StopOnError.IsUnknown() && !r.Config.StopOnError.IsNull() {
 			*stopOnError = r.Config.StopOnError.ValueBool()
@@ -401,18 +408,19 @@ func (r *GatewayPluginAiSanitizerResourceModel) ToSharedAiSanitizerPlugin(ctx co
 			timeout = nil
 		}
 		config = &shared.AiSanitizerPluginConfig{
-			Anonymize:        anonymize,
-			BlockIfDetected:  blockIfDetected,
-			CustomPatterns:   customPatterns,
-			Host:             host,
-			KeepaliveTimeout: keepaliveTimeout,
-			Port:             port,
-			RecoverRedacted:  recoverRedacted,
-			RedactType:       redactType,
-			SanitizationMode: sanitizationMode,
-			Scheme:           scheme,
-			StopOnError:      stopOnError,
-			Timeout:          timeout,
+			Anonymize:                 anonymize,
+			BlockIfDetected:           blockIfDetected,
+			CustomPatterns:            customPatterns,
+			Host:                      host,
+			KeepaliveTimeout:          keepaliveTimeout,
+			Port:                      port,
+			RecoverRedacted:           recoverRedacted,
+			RedactType:                redactType,
+			SanitizationMode:          sanitizationMode,
+			Scheme:                    scheme,
+			SkipLoggingSanitizedItems: skipLoggingSanitizedItems,
+			StopOnError:               stopOnError,
+			Timeout:                   timeout,
 		}
 	}
 	var consumer *shared.AiSanitizerPluginConsumer

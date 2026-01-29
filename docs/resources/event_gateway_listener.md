@@ -53,7 +53,7 @@ It's possible to combine both, e.g. [9092, "9093-9095", 9096].
 
 ### Optional
 
-- `description` (String) A human-readable description of the virtual cluster.
+- `description` (String) A human-readable description of the virtual cluster. Default: ""
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".

@@ -15,15 +15,25 @@ GatewayPluginOpentelemetry Resource
 ```terraform
 resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" {
   config = {
-    batch_flush_delay = 7
-    batch_span_count  = 5
-    connect_timeout   = 1207240418
-    header_type       = "gcp"
+    access_logs_endpoint = "...my_access_logs_endpoint..."
+    batch_flush_delay    = 7
+    batch_span_count     = 5
+    connect_timeout      = 1207240418
+    header_type          = "gcp"
     headers = {
       key = "value"
     }
     http_response_header_for_traceid = "...my_http_response_header_for_traceid..."
     logs_endpoint                    = "...my_logs_endpoint..."
+    metrics = {
+      enable_bandwidth_metrics       = true
+      enable_consumer_attribute      = false
+      enable_latency_metrics         = false
+      enable_request_metrics         = true
+      enable_upstream_health_metrics = false
+      endpoint                       = "...my_endpoint..."
+      push_interval                  = 0.85
+    }
     propagation = {
       clear = [
         "..."
@@ -83,7 +93,7 @@ resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" 
     }
   ]
   protocols = [
-    "http"
+    "tls_passthrough"
   ]
   route = {
     id = "...my_id..."
@@ -115,7 +125,7 @@ resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" 
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
-- `protocols` (Set of String) A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]
+- `protocols` (Set of String) A set of strings representing protocols. Default: ["grpc","grpcs","http","https"]
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
@@ -126,13 +136,15 @@ resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" 
 
 Optional:
 
+- `access_logs_endpoint` (String) An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.
 - `batch_flush_delay` (Number) The delay, in seconds, between two consecutive batches.
 - `batch_span_count` (Number) The number of spans to be sent in a single batch.
 - `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 1000
 - `header_type` (String) Default: "preserve"; must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "ignore", "instana", "jaeger", "ot", "preserve", "w3c"]
 - `headers` (Map of String) The custom headers to be added in the HTTP request sent to the OTLP server. This setting is useful for adding the authentication headers (token) for the APM backend.
 - `http_response_header_for_traceid` (String)
-- `logs_endpoint` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
+- `logs_endpoint` (String) An HTTP URL endpoint where internal logs are exported.
+- `metrics` (Attributes) (see [below for nested schema](#nestedatt--config--metrics))
 - `propagation` (Attributes) (see [below for nested schema](#nestedatt--config--propagation))
 - `queue` (Attributes) (see [below for nested schema](#nestedatt--config--queue))
 - `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 5000
@@ -141,6 +153,20 @@ Optional:
 - `sampling_strategy` (String) The sampling strategy to use for OTLP `traces`. Set `parent_drop_probability_fallback` if you want parent-based sampling when the parent span contains a `false` sampled flag, and fallback to probability-based sampling otherwise. Set `parent_probability_fallback` if you want parent-based sampling when the parent span contains a valid sampled flag (`true` or `false`), and fallback to probability-based sampling otherwise. Default: "parent_drop_probability_fallback"; must be one of ["parent_drop_probability_fallback", "parent_probability_fallback"]
 - `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 5000
 - `traces_endpoint` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
+
+<a id="nestedatt--config--metrics"></a>
+### Nested Schema for `config.metrics`
+
+Optional:
+
+- `enable_bandwidth_metrics` (Boolean) A boolean value that determines if bandwidth metrics should be collected. If enabled, `http.server.request.size` and `http.server.response.size` metrics will be exported. Default: false
+- `enable_consumer_attribute` (Boolean) A boolean value that determines if `http.server.request.count`, `http.server.request.size` and `http.server.response.size` metrics should fill in the consumer attribute when available. Default: false
+- `enable_latency_metrics` (Boolean) A boolean value that determines if latency metrics should be collected. If enabled, `kong.latency.total`, `kong.latency.internal` and `kong.latency.upstream` metrics will be exported. Default: false
+- `enable_request_metrics` (Boolean) A boolean value that determines if request count metrics should be collected. If enabled, `http.server.request.count` metrics will be exported. Default: false
+- `enable_upstream_health_metrics` (Boolean) A boolean value that determines if upstream health metrics should be collected. If enabled, `kong.upstream.target.status` metrics will be exported. Default: false
+- `endpoint` (String) An HTTP URL endpoint where metrics are exported.
+- `push_interval` (Number) The interval in seconds at which metrics are pushed to the OTLP server. This setting is only applicable when `endpoint` is set. Default: 60
+
 
 <a id="nestedatt--config--propagation"></a>
 ### Nested Schema for `config.propagation`

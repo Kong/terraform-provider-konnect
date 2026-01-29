@@ -11,9 +11,9 @@ type EventGatewaySkipRecordPolicy struct {
 	// The type name of the policy.
 	type_ string `const:"skip_record" json:"type"`
 	// A unique user-defined name of the policy.
-	Name *string `default:"null" json:"name"`
+	Name *string `json:"name,omitempty"`
 	// A human-readable description of the policy.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"" json:"description"`
 	// Whether the policy is enabled.
 	Enabled *bool `default:"true" json:"enabled"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
@@ -26,7 +26,7 @@ type EventGatewaySkipRecordPolicy struct {
 	// When the policy is applied as a child policy of schema_validation, the expression can also reference
 	// `record.value` fields.
 	//
-	Condition *string `default:"null" json:"condition"`
+	Condition *string `default:"" json:"condition"`
 }
 
 func (e EventGatewaySkipRecordPolicy) MarshalJSON() ([]byte, error) {

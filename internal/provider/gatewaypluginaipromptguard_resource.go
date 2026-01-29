@@ -121,9 +121,10 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`openai`),
-						Description: `LLM input and output format and schema to use. Default: "openai"; must be one of ["bedrock", "cohere", "gemini", "huggingface", "openai"]`,
+						Description: `LLM input and output format and schema to use. Default: "openai"; must be one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
+								"anthropic",
 								"bedrock",
 								"cohere",
 								"gemini",
@@ -141,8 +142,8 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 					"max_request_body_size": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     int64default.StaticInt64(8192),
-						Description: `max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 8192`,
+						Default:     int64default.StaticInt64(1048576),
+						Description: `max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 1048576`,
 					},
 				},
 			},

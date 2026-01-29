@@ -56,7 +56,7 @@ resource "konnect_event_gateway_backend_cluster" "my_eventgatewaybackendcluster"
 
 ### Optional
 
-- `description` (String) A human-readable description of the virtual cluster.
+- `description` (String) A human-readable description of the virtual cluster. Default: ""
 - `insecure_allow_anonymous_virtual_cluster_auth` (Boolean) If true, virtual clusters can have allow anonymous authentication and use this backend cluster.
 This setting is not recommended for production use as it may create privilege escalation vulnerabilities.
 Default: false

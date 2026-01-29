@@ -275,7 +275,7 @@ func (r *PortalCustomizationResource) Schema(ctx context.Context, req resource.S
 						Computed:    true,
 						Optional:    true,
 						Default:     booldefault.StaticBool(true),
-						Description: `Enables users to open the API spec in Insomnia to explore and send requests with the native client. Default: true`,
+						Description: `Enables users to open API specifications in Insomnia to explore and send requests with the native client. Only public API specifications are supported. Default: true`,
 					},
 					"try_it_ui": schema.BoolAttribute{
 						Computed:    true,

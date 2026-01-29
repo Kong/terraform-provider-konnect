@@ -14,6 +14,8 @@ EventGatewayConsumePolicySkipRecord Resource
 
 ```terraform
 resource "konnect_event_gateway_consume_policy_skip_record" "my_eventgatewayconsumepolicyskiprecord" {
+  after       = "1fd29e98-9453-4db0-9ed3-3ce3c0e4b58b"
+  before      = "75496408-24ab-49a9-af05-2c893ba297be"
   condition   = "record.value.content.foo.bar == \"a-value\""
   description = "...my_description..."
   enabled     = true
@@ -37,11 +39,14 @@ resource "konnect_event_gateway_consume_policy_skip_record" "my_eventgatewaycons
 
 ### Optional
 
+- `after` (String) Determines the id of the existing policy the new policy should be inserted after. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.
+- `before` (String) Determines the id of the existing policy the new policy should be inserted before. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.
 - `condition` (String) A string containing the boolean expression that determines whether the policy is applied.
 
 When the policy is applied as a child policy of schema_validation, the expression can also reference
 `record.value` fields.
-- `description` (String) A human-readable description of the policy.
+Default: ""
+- `description` (String) A human-readable description of the policy. Default: ""
 - `enabled` (Boolean) Whether the policy is enabled. Default: true
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 

@@ -533,6 +533,159 @@ func (c *ClientJwk) GetY() *string {
 	return c.Y
 }
 
+// OpenidConnectPluginAuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+type OpenidConnectPluginAuthProvider string
+
+const (
+	OpenidConnectPluginAuthProviderAws   OpenidConnectPluginAuthProvider = "aws"
+	OpenidConnectPluginAuthProviderAzure OpenidConnectPluginAuthProvider = "azure"
+	OpenidConnectPluginAuthProviderGcp   OpenidConnectPluginAuthProvider = "gcp"
+)
+
+func (e OpenidConnectPluginAuthProvider) ToPointer() *OpenidConnectPluginAuthProvider {
+	return &e
+}
+func (e *OpenidConnectPluginAuthProvider) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "aws":
+		fallthrough
+	case "azure":
+		fallthrough
+	case "gcp":
+		*e = OpenidConnectPluginAuthProvider(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for OpenidConnectPluginAuthProvider: %v", v)
+	}
+}
+
+// OpenidConnectPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+type OpenidConnectPluginCloudAuthentication struct {
+	// Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+	AuthProvider *OpenidConnectPluginAuthProvider `json:"auth_provider,omitempty"`
+	// AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
+	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
+	// The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
+	// The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
+	AwsCacheName *string `default:"null" json:"aws_cache_name"`
+	// This flag specifies whether the cluster is serverless when auth_provider is set to `aws`.
+	AwsIsServerless *bool `default:"true" json:"aws_is_serverless"`
+	// The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
+	AwsRegion *string `default:"null" json:"aws_region"`
+	// The session name for the temporary credentials when assuming the IAM role.
+	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
+	// AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
+	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
+	// Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientID *string `default:"null" json:"azure_client_id"`
+	// Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
+	// Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
+	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+}
+
+func (o OpenidConnectPluginCloudAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpenidConnectPluginCloudAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OpenidConnectPluginCloudAuthentication) GetAuthProvider() *OpenidConnectPluginAuthProvider {
+	if o == nil {
+		return nil
+	}
+	return o.AuthProvider
+}
+
+func (o *OpenidConnectPluginCloudAuthentication) GetAwsAccessKeyID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAccessKeyID
+}
+
+func (o *OpenidConnectPluginCloudAuthentication) GetAwsAssumeRoleArn() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAssumeRoleArn
+}
+
+func (o *OpenidConnectPluginCloudAuthentication) GetAwsCacheName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsCacheName
+}
+
+func (o *OpenidConnectPluginCloudAuthentication) GetAwsIsServerless() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AwsIsServerless
+}
+
+func (o *OpenidConnectPluginCloudAuthentication) GetAwsRegion() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsRegion
+}
+
+func (o *OpenidConnectPluginCloudAuthentication) GetAwsRoleSessionName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsRoleSessionName
+}
+
+func (o *OpenidConnectPluginCloudAuthentication) GetAwsSecretAccessKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsSecretAccessKey
+}
+
+func (o *OpenidConnectPluginCloudAuthentication) GetAzureClientID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AzureClientID
+}
+
+func (o *OpenidConnectPluginCloudAuthentication) GetAzureClientSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AzureClientSecret
+}
+
+func (o *OpenidConnectPluginCloudAuthentication) GetAzureTenantID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AzureTenantID
+}
+
+func (o *OpenidConnectPluginCloudAuthentication) GetGcpServiceAccountJSON() *string {
+	if o == nil {
+		return nil
+	}
+	return o.GcpServiceAccountJSON
+}
+
 type OpenidConnectPluginClusterNodes struct {
 	// A string representing a host name, such as example.com.
 	IP *string `default:"127.0.0.1" json:"ip"`
@@ -628,6 +781,8 @@ func (e *OpenidConnectPluginSentinelRole) UnmarshalJSON(data []byte) error {
 }
 
 type ClusterCacheRedis struct {
+	// Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+	CloudAuthentication *OpenidConnectPluginCloudAuthentication `json:"cloud_authentication"`
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
@@ -681,6 +836,13 @@ func (c *ClusterCacheRedis) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (c *ClusterCacheRedis) GetCloudAuthentication() *OpenidConnectPluginCloudAuthentication {
+	if c == nil {
+		return nil
+	}
+	return c.CloudAuthentication
 }
 
 func (c *ClusterCacheRedis) GetClusterMaxRedirections() *int64 {
@@ -1374,6 +1536,159 @@ func (e *PushedAuthorizationRequestEndpointAuthMethod) UnmarshalJSON(data []byte
 	}
 }
 
+// OpenidConnectPluginConfigAuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+type OpenidConnectPluginConfigAuthProvider string
+
+const (
+	OpenidConnectPluginConfigAuthProviderAws   OpenidConnectPluginConfigAuthProvider = "aws"
+	OpenidConnectPluginConfigAuthProviderAzure OpenidConnectPluginConfigAuthProvider = "azure"
+	OpenidConnectPluginConfigAuthProviderGcp   OpenidConnectPluginConfigAuthProvider = "gcp"
+)
+
+func (e OpenidConnectPluginConfigAuthProvider) ToPointer() *OpenidConnectPluginConfigAuthProvider {
+	return &e
+}
+func (e *OpenidConnectPluginConfigAuthProvider) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "aws":
+		fallthrough
+	case "azure":
+		fallthrough
+	case "gcp":
+		*e = OpenidConnectPluginConfigAuthProvider(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for OpenidConnectPluginConfigAuthProvider: %v", v)
+	}
+}
+
+// OpenidConnectPluginConfigCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+type OpenidConnectPluginConfigCloudAuthentication struct {
+	// Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+	AuthProvider *OpenidConnectPluginConfigAuthProvider `json:"auth_provider,omitempty"`
+	// AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
+	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
+	// The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
+	// The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
+	AwsCacheName *string `default:"null" json:"aws_cache_name"`
+	// This flag specifies whether the cluster is serverless when auth_provider is set to `aws`.
+	AwsIsServerless *bool `default:"true" json:"aws_is_serverless"`
+	// The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
+	AwsRegion *string `default:"null" json:"aws_region"`
+	// The session name for the temporary credentials when assuming the IAM role.
+	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
+	// AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
+	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
+	// Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientID *string `default:"null" json:"azure_client_id"`
+	// Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
+	// Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
+	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+}
+
+func (o OpenidConnectPluginConfigCloudAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpenidConnectPluginConfigCloudAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OpenidConnectPluginConfigCloudAuthentication) GetAuthProvider() *OpenidConnectPluginConfigAuthProvider {
+	if o == nil {
+		return nil
+	}
+	return o.AuthProvider
+}
+
+func (o *OpenidConnectPluginConfigCloudAuthentication) GetAwsAccessKeyID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAccessKeyID
+}
+
+func (o *OpenidConnectPluginConfigCloudAuthentication) GetAwsAssumeRoleArn() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAssumeRoleArn
+}
+
+func (o *OpenidConnectPluginConfigCloudAuthentication) GetAwsCacheName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsCacheName
+}
+
+func (o *OpenidConnectPluginConfigCloudAuthentication) GetAwsIsServerless() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AwsIsServerless
+}
+
+func (o *OpenidConnectPluginConfigCloudAuthentication) GetAwsRegion() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsRegion
+}
+
+func (o *OpenidConnectPluginConfigCloudAuthentication) GetAwsRoleSessionName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsRoleSessionName
+}
+
+func (o *OpenidConnectPluginConfigCloudAuthentication) GetAwsSecretAccessKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsSecretAccessKey
+}
+
+func (o *OpenidConnectPluginConfigCloudAuthentication) GetAzureClientID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AzureClientID
+}
+
+func (o *OpenidConnectPluginConfigCloudAuthentication) GetAzureClientSecret() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AzureClientSecret
+}
+
+func (o *OpenidConnectPluginConfigCloudAuthentication) GetAzureTenantID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AzureTenantID
+}
+
+func (o *OpenidConnectPluginConfigCloudAuthentication) GetGcpServiceAccountJSON() *string {
+	if o == nil {
+		return nil
+	}
+	return o.GcpServiceAccountJSON
+}
+
 type OpenidConnectPluginConfigClusterNodes struct {
 	// A string representing a host name, such as example.com.
 	IP *string `default:"127.0.0.1" json:"ip"`
@@ -1469,6 +1784,8 @@ func (e *OpenidConnectPluginConfigSentinelRole) UnmarshalJSON(data []byte) error
 }
 
 type OpenidConnectPluginRedis struct {
+	// Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+	CloudAuthentication *OpenidConnectPluginConfigCloudAuthentication `json:"cloud_authentication"`
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
@@ -1526,6 +1843,13 @@ func (o *OpenidConnectPluginRedis) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (o *OpenidConnectPluginRedis) GetCloudAuthentication() *OpenidConnectPluginConfigCloudAuthentication {
+	if o == nil {
+		return nil
+	}
+	return o.CloudAuthentication
 }
 
 func (o *OpenidConnectPluginRedis) GetClusterMaxRedirections() *int64 {
@@ -2417,6 +2741,10 @@ type OpenidConnectPluginConfig struct {
 	SessionMemcachedPrefix *string `default:"null" json:"session_memcached_prefix"`
 	// The memcached unix socket path.
 	SessionMemcachedSocket *string `default:"null" json:"session_memcached_socket"`
+	// If set to true, uses SSL to connect to memcached
+	SessionMemcachedSsl *bool `default:"false" json:"session_memcached_ssl"`
+	// If set to true, verifies the validity of the memcached server SSL certificate
+	SessionMemcachedSslVerify *bool `default:"false" json:"session_memcached_ssl_verify"`
 	// Enables or disables persistent sessions.
 	SessionRemember *bool `default:"false" json:"session_remember"`
 	// Limits how long the persistent session can be renewed in seconds, until re-authentication is required. 0 disables the checks.
@@ -3716,6 +4044,20 @@ func (o *OpenidConnectPluginConfig) GetSessionMemcachedSocket() *string {
 		return nil
 	}
 	return o.SessionMemcachedSocket
+}
+
+func (o *OpenidConnectPluginConfig) GetSessionMemcachedSsl() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SessionMemcachedSsl
+}
+
+func (o *OpenidConnectPluginConfig) GetSessionMemcachedSslVerify() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SessionMemcachedSslVerify
 }
 
 func (o *OpenidConnectPluginConfig) GetSessionRemember() *bool {

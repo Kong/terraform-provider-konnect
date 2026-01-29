@@ -111,6 +111,159 @@ func (e *NameidFormat) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// SamlPluginAuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+type SamlPluginAuthProvider string
+
+const (
+	SamlPluginAuthProviderAws   SamlPluginAuthProvider = "aws"
+	SamlPluginAuthProviderAzure SamlPluginAuthProvider = "azure"
+	SamlPluginAuthProviderGcp   SamlPluginAuthProvider = "gcp"
+)
+
+func (e SamlPluginAuthProvider) ToPointer() *SamlPluginAuthProvider {
+	return &e
+}
+func (e *SamlPluginAuthProvider) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "aws":
+		fallthrough
+	case "azure":
+		fallthrough
+	case "gcp":
+		*e = SamlPluginAuthProvider(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for SamlPluginAuthProvider: %v", v)
+	}
+}
+
+// SamlPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+type SamlPluginCloudAuthentication struct {
+	// Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+	AuthProvider *SamlPluginAuthProvider `json:"auth_provider,omitempty"`
+	// AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
+	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
+	// The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
+	// The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
+	AwsCacheName *string `default:"null" json:"aws_cache_name"`
+	// This flag specifies whether the cluster is serverless when auth_provider is set to `aws`.
+	AwsIsServerless *bool `default:"true" json:"aws_is_serverless"`
+	// The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
+	AwsRegion *string `default:"null" json:"aws_region"`
+	// The session name for the temporary credentials when assuming the IAM role.
+	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
+	// AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
+	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
+	// Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientID *string `default:"null" json:"azure_client_id"`
+	// Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
+	// Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
+	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+}
+
+func (s SamlPluginCloudAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SamlPluginCloudAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *SamlPluginCloudAuthentication) GetAuthProvider() *SamlPluginAuthProvider {
+	if s == nil {
+		return nil
+	}
+	return s.AuthProvider
+}
+
+func (s *SamlPluginCloudAuthentication) GetAwsAccessKeyID() *string {
+	if s == nil {
+		return nil
+	}
+	return s.AwsAccessKeyID
+}
+
+func (s *SamlPluginCloudAuthentication) GetAwsAssumeRoleArn() *string {
+	if s == nil {
+		return nil
+	}
+	return s.AwsAssumeRoleArn
+}
+
+func (s *SamlPluginCloudAuthentication) GetAwsCacheName() *string {
+	if s == nil {
+		return nil
+	}
+	return s.AwsCacheName
+}
+
+func (s *SamlPluginCloudAuthentication) GetAwsIsServerless() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.AwsIsServerless
+}
+
+func (s *SamlPluginCloudAuthentication) GetAwsRegion() *string {
+	if s == nil {
+		return nil
+	}
+	return s.AwsRegion
+}
+
+func (s *SamlPluginCloudAuthentication) GetAwsRoleSessionName() *string {
+	if s == nil {
+		return nil
+	}
+	return s.AwsRoleSessionName
+}
+
+func (s *SamlPluginCloudAuthentication) GetAwsSecretAccessKey() *string {
+	if s == nil {
+		return nil
+	}
+	return s.AwsSecretAccessKey
+}
+
+func (s *SamlPluginCloudAuthentication) GetAzureClientID() *string {
+	if s == nil {
+		return nil
+	}
+	return s.AzureClientID
+}
+
+func (s *SamlPluginCloudAuthentication) GetAzureClientSecret() *string {
+	if s == nil {
+		return nil
+	}
+	return s.AzureClientSecret
+}
+
+func (s *SamlPluginCloudAuthentication) GetAzureTenantID() *string {
+	if s == nil {
+		return nil
+	}
+	return s.AzureTenantID
+}
+
+func (s *SamlPluginCloudAuthentication) GetGcpServiceAccountJSON() *string {
+	if s == nil {
+		return nil
+	}
+	return s.GcpServiceAccountJSON
+}
+
 type SamlPluginClusterNodes struct {
 	// A string representing a host name, such as example.com.
 	IP *string `default:"127.0.0.1" json:"ip"`
@@ -206,6 +359,8 @@ func (e *SamlPluginSentinelRole) UnmarshalJSON(data []byte) error {
 }
 
 type SamlPluginRedis struct {
+	// Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+	CloudAuthentication *SamlPluginCloudAuthentication `json:"cloud_authentication"`
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
@@ -263,6 +418,13 @@ func (s *SamlPluginRedis) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (s *SamlPluginRedis) GetCloudAuthentication() *SamlPluginCloudAuthentication {
+	if s == nil {
+		return nil
+	}
+	return s.CloudAuthentication
 }
 
 func (s *SamlPluginRedis) GetClusterMaxRedirections() *int64 {

@@ -80,6 +80,101 @@ func (d *DatakitPluginPartials) GetPath() *string {
 	return d.Path
 }
 
+// XMLToJSON - convert XML to JSON
+type XMLToJSON struct {
+	AttributesBlockName  *string `default:"null" json:"attributes_block_name"`
+	AttributesNamePrefix *string `default:"null" json:"attributes_name_prefix"`
+	// XML document string
+	Input *string `default:"null" json:"input"`
+	// A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+	Name *string `default:"null" json:"name"`
+	// a map object converted from XML document. If connected to `request.body` or `response.body`, the output will be a JSON object.
+	Output         *string `default:"null" json:"output"`
+	RecognizeType  *bool   `default:"true" json:"recognize_type"`
+	TextAsProperty *bool   `default:"false" json:"text_as_property"`
+	TextBlockName  *string `default:"#text" json:"text_block_name"`
+	type_          *string `const:"xml_to_json" json:"type,omitempty"`
+	Xpath          *string `default:"null" json:"xpath"`
+}
+
+func (x XMLToJSON) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(x, "", false)
+}
+
+func (x *XMLToJSON) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &x, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (x *XMLToJSON) GetAttributesBlockName() *string {
+	if x == nil {
+		return nil
+	}
+	return x.AttributesBlockName
+}
+
+func (x *XMLToJSON) GetAttributesNamePrefix() *string {
+	if x == nil {
+		return nil
+	}
+	return x.AttributesNamePrefix
+}
+
+func (x *XMLToJSON) GetInput() *string {
+	if x == nil {
+		return nil
+	}
+	return x.Input
+}
+
+func (x *XMLToJSON) GetName() *string {
+	if x == nil {
+		return nil
+	}
+	return x.Name
+}
+
+func (x *XMLToJSON) GetOutput() *string {
+	if x == nil {
+		return nil
+	}
+	return x.Output
+}
+
+func (x *XMLToJSON) GetRecognizeType() *bool {
+	if x == nil {
+		return nil
+	}
+	return x.RecognizeType
+}
+
+func (x *XMLToJSON) GetTextAsProperty() *bool {
+	if x == nil {
+		return nil
+	}
+	return x.TextAsProperty
+}
+
+func (x *XMLToJSON) GetTextBlockName() *string {
+	if x == nil {
+		return nil
+	}
+	return x.TextBlockName
+}
+
+func (x *XMLToJSON) GetType() *string {
+	return types.Pointer("xml_to_json")
+}
+
+func (x *XMLToJSON) GetXpath() *string {
+	if x == nil {
+		return nil
+	}
+	return x.Xpath
+}
+
 // Static - Produce reusable outputs from statically-configured values
 type Static struct {
 	// A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
@@ -90,7 +185,7 @@ type Static struct {
 	Outputs map[string]string `json:"outputs,omitempty"`
 	type_   *string           `const:"static" json:"type,omitempty"`
 	// An object with string keys and freeform values
-	Values string `json:"values"`
+	Values map[string]any `json:"values,omitempty"`
 }
 
 func (s Static) MarshalJSON() ([]byte, error) {
@@ -129,9 +224,9 @@ func (s *Static) GetType() *string {
 	return types.Pointer("static")
 }
 
-func (s *Static) GetValues() string {
+func (s *Static) GetValues() map[string]any {
 	if s == nil {
-		return ""
+		return nil
 	}
 	return s.Values
 }
@@ -229,6 +324,95 @@ func (p *Property) GetProperty() string {
 
 func (p *Property) GetType() *string {
 	return types.Pointer("property")
+}
+
+// JSONToXML - transform JSON or lua table to XML
+type JSONToXML struct {
+	AttributesBlockName  *string `default:"null" json:"attributes_block_name"`
+	AttributesNamePrefix *string `default:"null" json:"attributes_name_prefix"`
+	// JSON string or table
+	Input *string `default:"null" json:"input"`
+	// JSON string or table
+	Inputs map[string]string `json:"inputs,omitempty"`
+	// A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+	Name *string `default:"null" json:"name"`
+	// XML document converted from JSON
+	Output          *string `default:"null" json:"output"`
+	RootElementName *string `default:"null" json:"root_element_name"`
+	// The name of the block to treat as XML text content.
+	TextBlockName *string `default:"#text" json:"text_block_name"`
+	type_         *string `const:"json_to_xml" json:"type,omitempty"`
+}
+
+func (j JSONToXML) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JSONToXML) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (j *JSONToXML) GetAttributesBlockName() *string {
+	if j == nil {
+		return nil
+	}
+	return j.AttributesBlockName
+}
+
+func (j *JSONToXML) GetAttributesNamePrefix() *string {
+	if j == nil {
+		return nil
+	}
+	return j.AttributesNamePrefix
+}
+
+func (j *JSONToXML) GetInput() *string {
+	if j == nil {
+		return nil
+	}
+	return j.Input
+}
+
+func (j *JSONToXML) GetInputs() map[string]string {
+	if j == nil {
+		return nil
+	}
+	return j.Inputs
+}
+
+func (j *JSONToXML) GetName() *string {
+	if j == nil {
+		return nil
+	}
+	return j.Name
+}
+
+func (j *JSONToXML) GetOutput() *string {
+	if j == nil {
+		return nil
+	}
+	return j.Output
+}
+
+func (j *JSONToXML) GetRootElementName() *string {
+	if j == nil {
+		return nil
+	}
+	return j.RootElementName
+}
+
+func (j *JSONToXML) GetTextBlockName() *string {
+	if j == nil {
+		return nil
+	}
+	return j.TextBlockName
+}
+
+func (j *JSONToXML) GetType() *string {
+	return types.Pointer("json_to_xml")
 }
 
 // Jq - Process data using `jq` syntax
@@ -399,8 +583,18 @@ type NodesInputs struct {
 	Body *string `default:"null" json:"body"`
 	// HTTP request headers
 	Headers *string `default:"null" json:"headers"`
+	// The HTTP proxy URL. This proxy server will be used for HTTP requests.
+	HTTPProxy *string `default:"null" json:"http_proxy"`
+	// The HTTPS proxy URL. This proxy server will be used for HTTPS requests.
+	HTTPSProxy *string `default:"null" json:"https_proxy"`
+	// The password to authenticate with, if the forward proxy is protected by basic authentication.
+	ProxyAuthPassword *string `default:"null" json:"proxy_auth_password"`
+	// The username to authenticate with, if the forward proxy is protected by basic authentication.
+	ProxyAuthUsername *string `default:"null" json:"proxy_auth_username"`
 	// HTTP request query
 	Query *string `default:"null" json:"query"`
+	// HTTP request URL
+	URL *string `default:"null" json:"url"`
 }
 
 func (n NodesInputs) MarshalJSON() ([]byte, error) {
@@ -428,11 +622,46 @@ func (n *NodesInputs) GetHeaders() *string {
 	return n.Headers
 }
 
+func (n *NodesInputs) GetHTTPProxy() *string {
+	if n == nil {
+		return nil
+	}
+	return n.HTTPProxy
+}
+
+func (n *NodesInputs) GetHTTPSProxy() *string {
+	if n == nil {
+		return nil
+	}
+	return n.HTTPSProxy
+}
+
+func (n *NodesInputs) GetProxyAuthPassword() *string {
+	if n == nil {
+		return nil
+	}
+	return n.ProxyAuthPassword
+}
+
+func (n *NodesInputs) GetProxyAuthUsername() *string {
+	if n == nil {
+		return nil
+	}
+	return n.ProxyAuthUsername
+}
+
 func (n *NodesInputs) GetQuery() *string {
 	if n == nil {
 		return nil
 	}
 	return n.Query
+}
+
+func (n *NodesInputs) GetURL() *string {
+	if n == nil {
+		return nil
+	}
+	return n.URL
 }
 
 // DatakitPluginNodesOutputs - call node outputs
@@ -493,11 +722,13 @@ type Call struct {
 	Outputs *DatakitPluginNodesOutputs `json:"outputs"`
 	// A string representing an SNI (server name indication) value for TLS.
 	SslServerName *string `default:"null" json:"ssl_server_name"`
+	// Whether to verify the TLS certificate when making HTTPS requests.
+	SslVerify *bool `default:"null" json:"ssl_verify"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	Timeout *int64  `default:"null" json:"timeout"`
 	type_   *string `const:"call" json:"type,omitempty"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
-	URL string `json:"url"`
+	URL *string `default:"null" json:"url"`
 }
 
 func (c Call) MarshalJSON() ([]byte, error) {
@@ -560,6 +791,13 @@ func (c *Call) GetSslServerName() *string {
 	return c.SslServerName
 }
 
+func (c *Call) GetSslVerify() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.SslVerify
+}
+
 func (c *Call) GetTimeout() *int64 {
 	if c == nil {
 		return nil
@@ -571,9 +809,9 @@ func (c *Call) GetType() *string {
 	return types.Pointer("call")
 }
 
-func (c *Call) GetURL() string {
+func (c *Call) GetURL() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.URL
 }
@@ -867,8 +1105,10 @@ const (
 	NodesTypeCall       NodesType = "call"
 	NodesTypeExit       NodesType = "exit"
 	NodesTypeJq         NodesType = "jq"
+	NodesTypeJSONToXML  NodesType = "json_to_xml"
 	NodesTypeProperty   NodesType = "property"
 	NodesTypeStatic     NodesType = "static"
+	NodesTypeXMLToJSON  NodesType = "xml_to_json"
 )
 
 type Nodes struct {
@@ -877,8 +1117,10 @@ type Nodes struct {
 	Call       *Call       `queryParam:"inline,name=nodes" union:"member"`
 	Exit       *Exit       `queryParam:"inline,name=nodes" union:"member"`
 	Jq         *Jq         `queryParam:"inline,name=nodes" union:"member"`
+	JSONToXML  *JSONToXML  `queryParam:"inline,name=nodes" union:"member"`
 	Property   *Property   `queryParam:"inline,name=nodes" union:"member"`
 	Static     *Static     `queryParam:"inline,name=nodes" union:"member"`
+	XMLToJSON  *XMLToJSON  `queryParam:"inline,name=nodes" union:"member"`
 
 	Type NodesType
 }
@@ -928,6 +1170,15 @@ func CreateNodesJq(jq Jq) Nodes {
 	}
 }
 
+func CreateNodesJSONToXML(jsonToXML JSONToXML) Nodes {
+	typ := NodesTypeJSONToXML
+
+	return Nodes{
+		JSONToXML: &jsonToXML,
+		Type:      typ,
+	}
+}
+
 func CreateNodesProperty(property Property) Nodes {
 	typ := NodesTypeProperty
 
@@ -943,6 +1194,15 @@ func CreateNodesStatic(static Static) Nodes {
 	return Nodes{
 		Static: &static,
 		Type:   typ,
+	}
+}
+
+func CreateNodesXMLToJSON(xmlToJSON XMLToJSON) Nodes {
+	typ := NodesTypeXMLToJSON
+
+	return Nodes{
+		XMLToJSON: &xmlToJSON,
+		Type:      typ,
 	}
 }
 
@@ -991,6 +1251,14 @@ func (u *Nodes) UnmarshalJSON(data []byte) error {
 		})
 	}
 
+	var jsonToXML JSONToXML = JSONToXML{}
+	if err := utils.UnmarshalJSON(data, &jsonToXML, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  NodesTypeJSONToXML,
+			Value: &jsonToXML,
+		})
+	}
+
 	var property Property = Property{}
 	if err := utils.UnmarshalJSON(data, &property, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
@@ -1004,6 +1272,14 @@ func (u *Nodes) UnmarshalJSON(data []byte) error {
 		candidates = append(candidates, utils.UnionCandidate{
 			Type:  NodesTypeStatic,
 			Value: &static,
+		})
+	}
+
+	var xmlToJSON XMLToJSON = XMLToJSON{}
+	if err := utils.UnmarshalJSON(data, &xmlToJSON, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  NodesTypeXMLToJSON,
+			Value: &xmlToJSON,
 		})
 	}
 
@@ -1035,11 +1311,17 @@ func (u *Nodes) UnmarshalJSON(data []byte) error {
 	case NodesTypeJq:
 		u.Jq = best.Value.(*Jq)
 		return nil
+	case NodesTypeJSONToXML:
+		u.JSONToXML = best.Value.(*JSONToXML)
+		return nil
 	case NodesTypeProperty:
 		u.Property = best.Value.(*Property)
 		return nil
 	case NodesTypeStatic:
 		u.Static = best.Value.(*Static)
+		return nil
+	case NodesTypeXMLToJSON:
+		u.XMLToJSON = best.Value.(*XMLToJSON)
 		return nil
 	}
 
@@ -1067,12 +1349,20 @@ func (u Nodes) MarshalJSON() ([]byte, error) {
 		return utils.MarshalJSON(u.Jq, "", true)
 	}
 
+	if u.JSONToXML != nil {
+		return utils.MarshalJSON(u.JSONToXML, "", true)
+	}
+
 	if u.Property != nil {
 		return utils.MarshalJSON(u.Property, "", true)
 	}
 
 	if u.Static != nil {
 		return utils.MarshalJSON(u.Static, "", true)
+	}
+
+	if u.XMLToJSON != nil {
+		return utils.MarshalJSON(u.XMLToJSON, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type Nodes: all fields are null")
@@ -1099,6 +1389,159 @@ func (d *DatakitPluginMemory) GetDictionaryName() *string {
 		return nil
 	}
 	return d.DictionaryName
+}
+
+// DatakitPluginAuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+type DatakitPluginAuthProvider string
+
+const (
+	DatakitPluginAuthProviderAws   DatakitPluginAuthProvider = "aws"
+	DatakitPluginAuthProviderAzure DatakitPluginAuthProvider = "azure"
+	DatakitPluginAuthProviderGcp   DatakitPluginAuthProvider = "gcp"
+)
+
+func (e DatakitPluginAuthProvider) ToPointer() *DatakitPluginAuthProvider {
+	return &e
+}
+func (e *DatakitPluginAuthProvider) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "aws":
+		fallthrough
+	case "azure":
+		fallthrough
+	case "gcp":
+		*e = DatakitPluginAuthProvider(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for DatakitPluginAuthProvider: %v", v)
+	}
+}
+
+// DatakitPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+type DatakitPluginCloudAuthentication struct {
+	// Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+	AuthProvider *DatakitPluginAuthProvider `json:"auth_provider,omitempty"`
+	// AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
+	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
+	// The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
+	// The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
+	AwsCacheName *string `default:"null" json:"aws_cache_name"`
+	// This flag specifies whether the cluster is serverless when auth_provider is set to `aws`.
+	AwsIsServerless *bool `default:"true" json:"aws_is_serverless"`
+	// The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
+	AwsRegion *string `default:"null" json:"aws_region"`
+	// The session name for the temporary credentials when assuming the IAM role.
+	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
+	// AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
+	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
+	// Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientID *string `default:"null" json:"azure_client_id"`
+	// Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
+	// Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
+	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+}
+
+func (d DatakitPluginCloudAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatakitPluginCloudAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *DatakitPluginCloudAuthentication) GetAuthProvider() *DatakitPluginAuthProvider {
+	if d == nil {
+		return nil
+	}
+	return d.AuthProvider
+}
+
+func (d *DatakitPluginCloudAuthentication) GetAwsAccessKeyID() *string {
+	if d == nil {
+		return nil
+	}
+	return d.AwsAccessKeyID
+}
+
+func (d *DatakitPluginCloudAuthentication) GetAwsAssumeRoleArn() *string {
+	if d == nil {
+		return nil
+	}
+	return d.AwsAssumeRoleArn
+}
+
+func (d *DatakitPluginCloudAuthentication) GetAwsCacheName() *string {
+	if d == nil {
+		return nil
+	}
+	return d.AwsCacheName
+}
+
+func (d *DatakitPluginCloudAuthentication) GetAwsIsServerless() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.AwsIsServerless
+}
+
+func (d *DatakitPluginCloudAuthentication) GetAwsRegion() *string {
+	if d == nil {
+		return nil
+	}
+	return d.AwsRegion
+}
+
+func (d *DatakitPluginCloudAuthentication) GetAwsRoleSessionName() *string {
+	if d == nil {
+		return nil
+	}
+	return d.AwsRoleSessionName
+}
+
+func (d *DatakitPluginCloudAuthentication) GetAwsSecretAccessKey() *string {
+	if d == nil {
+		return nil
+	}
+	return d.AwsSecretAccessKey
+}
+
+func (d *DatakitPluginCloudAuthentication) GetAzureClientID() *string {
+	if d == nil {
+		return nil
+	}
+	return d.AzureClientID
+}
+
+func (d *DatakitPluginCloudAuthentication) GetAzureClientSecret() *string {
+	if d == nil {
+		return nil
+	}
+	return d.AzureClientSecret
+}
+
+func (d *DatakitPluginCloudAuthentication) GetAzureTenantID() *string {
+	if d == nil {
+		return nil
+	}
+	return d.AzureTenantID
+}
+
+func (d *DatakitPluginCloudAuthentication) GetGcpServiceAccountJSON() *string {
+	if d == nil {
+		return nil
+	}
+	return d.GcpServiceAccountJSON
 }
 
 type DatakitPluginClusterNodes struct {
@@ -1196,6 +1639,8 @@ func (e *DatakitPluginSentinelRole) UnmarshalJSON(data []byte) error {
 }
 
 type DatakitPluginRedis struct {
+	// Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+	CloudAuthentication *DatakitPluginCloudAuthentication `json:"cloud_authentication"`
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
@@ -1249,6 +1694,13 @@ func (d *DatakitPluginRedis) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (d *DatakitPluginRedis) GetCloudAuthentication() *DatakitPluginCloudAuthentication {
+	if d == nil {
+		return nil
+	}
+	return d.CloudAuthentication
 }
 
 func (d *DatakitPluginRedis) GetClusterMaxRedirections() *int64 {

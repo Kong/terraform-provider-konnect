@@ -124,6 +124,7 @@ func (e *Identifier) UnmarshalJSON(data []byte) error {
 type AiRateLimitingAdvancedPluginLlmFormat string
 
 const (
+	AiRateLimitingAdvancedPluginLlmFormatAnthropic   AiRateLimitingAdvancedPluginLlmFormat = "anthropic"
 	AiRateLimitingAdvancedPluginLlmFormatBedrock     AiRateLimitingAdvancedPluginLlmFormat = "bedrock"
 	AiRateLimitingAdvancedPluginLlmFormatCohere      AiRateLimitingAdvancedPluginLlmFormat = "cohere"
 	AiRateLimitingAdvancedPluginLlmFormatGemini      AiRateLimitingAdvancedPluginLlmFormat = "gemini"
@@ -140,6 +141,8 @@ func (e *AiRateLimitingAdvancedPluginLlmFormat) UnmarshalJSON(data []byte) error
 		return err
 	}
 	switch v {
+	case "anthropic":
+		fallthrough
 	case "bedrock":
 		fallthrough
 	case "cohere":
@@ -164,6 +167,7 @@ const (
 	AiRateLimitingAdvancedPluginNameAzure         AiRateLimitingAdvancedPluginName = "azure"
 	AiRateLimitingAdvancedPluginNameBedrock       AiRateLimitingAdvancedPluginName = "bedrock"
 	AiRateLimitingAdvancedPluginNameCohere        AiRateLimitingAdvancedPluginName = "cohere"
+	AiRateLimitingAdvancedPluginNameCustomCost    AiRateLimitingAdvancedPluginName = "customCost"
 	AiRateLimitingAdvancedPluginNameGemini        AiRateLimitingAdvancedPluginName = "gemini"
 	AiRateLimitingAdvancedPluginNameHuggingface   AiRateLimitingAdvancedPluginName = "huggingface"
 	AiRateLimitingAdvancedPluginNameLlama2        AiRateLimitingAdvancedPluginName = "llama2"
@@ -188,6 +192,8 @@ func (e *AiRateLimitingAdvancedPluginName) UnmarshalJSON(data []byte) error {
 	case "bedrock":
 		fallthrough
 	case "cohere":
+		fallthrough
+	case "customCost":
 		fallthrough
 	case "gemini":
 		fallthrough
@@ -235,6 +241,159 @@ func (l *LlmProviders) GetWindowSize() []float64 {
 		return []float64{}
 	}
 	return l.WindowSize
+}
+
+// AuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+type AuthProvider string
+
+const (
+	AuthProviderAws   AuthProvider = "aws"
+	AuthProviderAzure AuthProvider = "azure"
+	AuthProviderGcp   AuthProvider = "gcp"
+)
+
+func (e AuthProvider) ToPointer() *AuthProvider {
+	return &e
+}
+func (e *AuthProvider) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "aws":
+		fallthrough
+	case "azure":
+		fallthrough
+	case "gcp":
+		*e = AuthProvider(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AuthProvider: %v", v)
+	}
+}
+
+// CloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+type CloudAuthentication struct {
+	// Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+	AuthProvider *AuthProvider `json:"auth_provider,omitempty"`
+	// AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
+	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
+	// The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
+	// The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
+	AwsCacheName *string `default:"null" json:"aws_cache_name"`
+	// This flag specifies whether the cluster is serverless when auth_provider is set to `aws`.
+	AwsIsServerless *bool `default:"true" json:"aws_is_serverless"`
+	// The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
+	AwsRegion *string `default:"null" json:"aws_region"`
+	// The session name for the temporary credentials when assuming the IAM role.
+	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
+	// AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
+	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
+	// Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientID *string `default:"null" json:"azure_client_id"`
+	// Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
+	// Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
+	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+}
+
+func (c CloudAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CloudAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *CloudAuthentication) GetAuthProvider() *AuthProvider {
+	if c == nil {
+		return nil
+	}
+	return c.AuthProvider
+}
+
+func (c *CloudAuthentication) GetAwsAccessKeyID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.AwsAccessKeyID
+}
+
+func (c *CloudAuthentication) GetAwsAssumeRoleArn() *string {
+	if c == nil {
+		return nil
+	}
+	return c.AwsAssumeRoleArn
+}
+
+func (c *CloudAuthentication) GetAwsCacheName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.AwsCacheName
+}
+
+func (c *CloudAuthentication) GetAwsIsServerless() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.AwsIsServerless
+}
+
+func (c *CloudAuthentication) GetAwsRegion() *string {
+	if c == nil {
+		return nil
+	}
+	return c.AwsRegion
+}
+
+func (c *CloudAuthentication) GetAwsRoleSessionName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.AwsRoleSessionName
+}
+
+func (c *CloudAuthentication) GetAwsSecretAccessKey() *string {
+	if c == nil {
+		return nil
+	}
+	return c.AwsSecretAccessKey
+}
+
+func (c *CloudAuthentication) GetAzureClientID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.AzureClientID
+}
+
+func (c *CloudAuthentication) GetAzureClientSecret() *string {
+	if c == nil {
+		return nil
+	}
+	return c.AzureClientSecret
+}
+
+func (c *CloudAuthentication) GetAzureTenantID() *string {
+	if c == nil {
+		return nil
+	}
+	return c.AzureTenantID
+}
+
+func (c *CloudAuthentication) GetGcpServiceAccountJSON() *string {
+	if c == nil {
+		return nil
+	}
+	return c.GcpServiceAccountJSON
 }
 
 type ClusterNodes struct {
@@ -332,6 +491,8 @@ func (e *SentinelRole) UnmarshalJSON(data []byte) error {
 }
 
 type Redis struct {
+	// Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+	CloudAuthentication *CloudAuthentication `json:"cloud_authentication"`
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
@@ -385,6 +546,13 @@ func (r *Redis) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (r *Redis) GetCloudAuthentication() *CloudAuthentication {
+	if r == nil {
+		return nil
+	}
+	return r.CloudAuthentication
 }
 
 func (r *Redis) GetClusterMaxRedirections() *int64 {
@@ -534,7 +702,7 @@ func (r *Redis) GetUsername() *string {
 	return r.Username
 }
 
-// Strategy - The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local` and `cluster`.
+// Strategy - The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local`, `redis` and `cluster`.
 type Strategy string
 
 const (
@@ -625,6 +793,10 @@ func (e *WindowType) UnmarshalJSON(data []byte) error {
 }
 
 type AiRateLimitingAdvancedPluginConfig struct {
+	// If defined, it uses custom function to generate cost for the inference request
+	CustomCostCountFunction *string `default:"null" json:"custom_cost_count_function"`
+	// By default, Kong decreates the AI rate limiting counters by whole number in Redis. This setting allows to decrease the counters by float number.
+	DecreaseByFractionsInRedis *bool `default:"false" json:"decrease_by_fractions_in_redis"`
 	// The shared dictionary where counters are stored. When the plugin is configured to synchronize counter data externally (that is `config.strategy` is `cluster` or `redis` and `config.sync_rate` isn't `-1`), this dictionary serves as a buffer to populate counters in the data store on each synchronization cycle.
 	DictionaryName *string `default:"kong_rate_limiting_counters" json:"dictionary_name"`
 	// If set to `true`, this doesn't count denied requests (status = `429`). If set to `false`, all requests, including denied ones, are counted. This parameter only affects the `sliding` window_type and the request prompt provider.
@@ -654,7 +826,7 @@ type AiRateLimitingAdvancedPluginConfig struct {
 	RequestPromptCountFunction *string `default:"null" json:"request_prompt_count_function"`
 	// The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header.
 	RetryAfterJitterMax *float64 `default:"0" json:"retry_after_jitter_max"`
-	// The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local` and `cluster`.
+	// The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local`, `redis` and `cluster`.
 	Strategy *Strategy `default:"local" json:"strategy"`
 	// How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 will sync the counters in the specified number of seconds. The minimum allowed interval is 0.02 seconds (20ms).
 	SyncRate *float64 `default:"null" json:"sync_rate"`
@@ -673,6 +845,20 @@ func (a *AiRateLimitingAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AiRateLimitingAdvancedPluginConfig) GetCustomCostCountFunction() *string {
+	if a == nil {
+		return nil
+	}
+	return a.CustomCostCountFunction
+}
+
+func (a *AiRateLimitingAdvancedPluginConfig) GetDecreaseByFractionsInRedis() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.DecreaseByFractionsInRedis
 }
 
 func (a *AiRateLimitingAdvancedPluginConfig) GetDictionaryName() *string {

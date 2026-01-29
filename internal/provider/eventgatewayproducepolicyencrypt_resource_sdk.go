@@ -49,6 +49,18 @@ func (r *EventGatewayProducePolicyEncryptResourceModel) ToOperationsCreateEventG
 	var virtualClusterID string
 	virtualClusterID = r.VirtualClusterID.ValueString()
 
+	before := new(string)
+	if !r.Before.IsUnknown() && !r.Before.IsNull() {
+		*before = r.Before.ValueString()
+	} else {
+		before = nil
+	}
+	after := new(string)
+	if !r.After.IsUnknown() && !r.After.IsNull() {
+		*after = r.After.ValueString()
+	} else {
+		after = nil
+	}
 	eventGatewayEncryptPolicy, eventGatewayEncryptPolicyDiags := r.ToSharedEventGatewayEncryptPolicy(ctx)
 	diags.Append(eventGatewayEncryptPolicyDiags...)
 
@@ -59,6 +71,8 @@ func (r *EventGatewayProducePolicyEncryptResourceModel) ToOperationsCreateEventG
 	out := operations.CreateEventGatewayVirtualClusterProducePolicyEncryptRequest{
 		GatewayID:                 gatewayID,
 		VirtualClusterID:          virtualClusterID,
+		Before:                    before,
+		After:                     after,
 		EventGatewayEncryptPolicy: eventGatewayEncryptPolicy,
 	}
 

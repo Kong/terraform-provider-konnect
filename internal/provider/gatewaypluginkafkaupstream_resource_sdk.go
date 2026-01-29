@@ -187,6 +187,7 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) RefreshFromSharedKafkaUpstream
 			r.Config.Security = &tfTypes.KafkaConsumePluginSecurity{}
 			r.Config.Security.CertificateID = types.StringPointerValue(resp.Config.Security.CertificateID)
 			r.Config.Security.Ssl = types.BoolPointerValue(resp.Config.Security.Ssl)
+			r.Config.Security.SslVerify = types.BoolPointerValue(resp.Config.Security.SslVerify)
 		}
 		r.Config.Timeout = types.Int64PointerValue(resp.Config.Timeout)
 		r.Config.Topic = types.StringValue(resp.Config.Topic)
@@ -886,9 +887,16 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToSharedKafkaUpstreamPlugin(ct
 		} else {
 			ssl = nil
 		}
+		sslVerify2 := new(bool)
+		if !r.Config.Security.SslVerify.IsUnknown() && !r.Config.Security.SslVerify.IsNull() {
+			*sslVerify2 = r.Config.Security.SslVerify.ValueBool()
+		} else {
+			sslVerify2 = nil
+		}
 		security = &shared.KafkaUpstreamPluginSecurity{
 			CertificateID: certificateID,
 			Ssl:           ssl,
+			SslVerify:     sslVerify2,
 		}
 	}
 	timeout1 := new(int64)

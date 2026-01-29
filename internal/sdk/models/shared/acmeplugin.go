@@ -82,7 +82,7 @@ func (a *AcmePluginPartials) GetPath() *string {
 type AccountKey struct {
 	// The Key ID.
 	KeyID string `json:"key_id"`
-	// The ID of the key set to associate the Key ID with.
+	// The name of the key set to associate the Key ID with.
 	KeySet *string `default:"null" json:"key_set"`
 }
 
@@ -272,6 +272,159 @@ func (c *Consul) GetToken() *string {
 	return c.Token
 }
 
+// AcmePluginAuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+type AcmePluginAuthProvider string
+
+const (
+	AcmePluginAuthProviderAws   AcmePluginAuthProvider = "aws"
+	AcmePluginAuthProviderAzure AcmePluginAuthProvider = "azure"
+	AcmePluginAuthProviderGcp   AcmePluginAuthProvider = "gcp"
+)
+
+func (e AcmePluginAuthProvider) ToPointer() *AcmePluginAuthProvider {
+	return &e
+}
+func (e *AcmePluginAuthProvider) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "aws":
+		fallthrough
+	case "azure":
+		fallthrough
+	case "gcp":
+		*e = AcmePluginAuthProvider(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AcmePluginAuthProvider: %v", v)
+	}
+}
+
+// AcmePluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+type AcmePluginCloudAuthentication struct {
+	// Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+	AuthProvider *AcmePluginAuthProvider `json:"auth_provider,omitempty"`
+	// AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
+	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
+	// The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
+	// The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
+	AwsCacheName *string `default:"null" json:"aws_cache_name"`
+	// This flag specifies whether the cluster is serverless when auth_provider is set to `aws`.
+	AwsIsServerless *bool `default:"true" json:"aws_is_serverless"`
+	// The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
+	AwsRegion *string `default:"null" json:"aws_region"`
+	// The session name for the temporary credentials when assuming the IAM role.
+	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
+	// AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
+	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
+	// Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientID *string `default:"null" json:"azure_client_id"`
+	// Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
+	// Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
+	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+}
+
+func (a AcmePluginCloudAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AcmePluginCloudAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AcmePluginCloudAuthentication) GetAuthProvider() *AcmePluginAuthProvider {
+	if a == nil {
+		return nil
+	}
+	return a.AuthProvider
+}
+
+func (a *AcmePluginCloudAuthentication) GetAwsAccessKeyID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsAccessKeyID
+}
+
+func (a *AcmePluginCloudAuthentication) GetAwsAssumeRoleArn() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsAssumeRoleArn
+}
+
+func (a *AcmePluginCloudAuthentication) GetAwsCacheName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsCacheName
+}
+
+func (a *AcmePluginCloudAuthentication) GetAwsIsServerless() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.AwsIsServerless
+}
+
+func (a *AcmePluginCloudAuthentication) GetAwsRegion() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsRegion
+}
+
+func (a *AcmePluginCloudAuthentication) GetAwsRoleSessionName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsRoleSessionName
+}
+
+func (a *AcmePluginCloudAuthentication) GetAwsSecretAccessKey() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsSecretAccessKey
+}
+
+func (a *AcmePluginCloudAuthentication) GetAzureClientID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AzureClientID
+}
+
+func (a *AcmePluginCloudAuthentication) GetAzureClientSecret() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AzureClientSecret
+}
+
+func (a *AcmePluginCloudAuthentication) GetAzureTenantID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AzureTenantID
+}
+
+func (a *AcmePluginCloudAuthentication) GetGcpServiceAccountJSON() *string {
+	if a == nil {
+		return nil
+	}
+	return a.GcpServiceAccountJSON
+}
+
 // ExtraOptions - Custom ACME Redis options
 type ExtraOptions struct {
 	// A namespace to prepend to all keys stored in Redis.
@@ -306,6 +459,8 @@ func (e *ExtraOptions) GetScanCount() *float64 {
 }
 
 type AcmePluginRedis struct {
+	// Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+	CloudAuthentication *AcmePluginCloudAuthentication `json:"cloud_authentication"`
 	// Database to use for the Redis connection when using the `redis` strategy
 	Database *int64 `default:"0" json:"database"`
 	// Custom ACME Redis options
@@ -337,6 +492,13 @@ func (a *AcmePluginRedis) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AcmePluginRedis) GetCloudAuthentication() *AcmePluginCloudAuthentication {
+	if a == nil {
+		return nil
+	}
+	return a.CloudAuthentication
 }
 
 func (a *AcmePluginRedis) GetDatabase() *int64 {

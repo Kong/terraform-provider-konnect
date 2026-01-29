@@ -11,14 +11,12 @@ import (
 type SchemaRegistryReferenceType string
 
 const (
-	SchemaRegistryReferenceTypeSchemaRegistryReferenceByID   SchemaRegistryReferenceType = "SchemaRegistryReferenceById"
-	SchemaRegistryReferenceTypeSchemaRegistryReferenceByName SchemaRegistryReferenceType = "SchemaRegistryReferenceByName"
+	SchemaRegistryReferenceTypeSchemaRegistryReferenceByID SchemaRegistryReferenceType = "SchemaRegistryReferenceById"
 )
 
 // SchemaRegistryReference - A reference to a schema Registry.
 type SchemaRegistryReference struct {
-	SchemaRegistryReferenceByID   *SchemaRegistryReferenceByID   `queryParam:"inline,name=SchemaRegistryReference" union:"member"`
-	SchemaRegistryReferenceByName *SchemaRegistryReferenceByName `queryParam:"inline,name=SchemaRegistryReference" union:"member"`
+	SchemaRegistryReferenceByID *SchemaRegistryReferenceByID `queryParam:"inline,name=SchemaRegistryReference" union:"member"`
 
 	Type SchemaRegistryReferenceType
 }
@@ -32,15 +30,6 @@ func CreateSchemaRegistryReferenceSchemaRegistryReferenceByID(schemaRegistryRefe
 	}
 }
 
-func CreateSchemaRegistryReferenceSchemaRegistryReferenceByName(schemaRegistryReferenceByName SchemaRegistryReferenceByName) SchemaRegistryReference {
-	typ := SchemaRegistryReferenceTypeSchemaRegistryReferenceByName
-
-	return SchemaRegistryReference{
-		SchemaRegistryReferenceByName: &schemaRegistryReferenceByName,
-		Type:                          typ,
-	}
-}
-
 func (u *SchemaRegistryReference) UnmarshalJSON(data []byte) error {
 
 	var candidates []utils.UnionCandidate
@@ -51,14 +40,6 @@ func (u *SchemaRegistryReference) UnmarshalJSON(data []byte) error {
 		candidates = append(candidates, utils.UnionCandidate{
 			Type:  SchemaRegistryReferenceTypeSchemaRegistryReferenceByID,
 			Value: &schemaRegistryReferenceByID,
-		})
-	}
-
-	var schemaRegistryReferenceByName SchemaRegistryReferenceByName = SchemaRegistryReferenceByName{}
-	if err := utils.UnmarshalJSON(data, &schemaRegistryReferenceByName, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  SchemaRegistryReferenceTypeSchemaRegistryReferenceByName,
-			Value: &schemaRegistryReferenceByName,
 		})
 	}
 
@@ -78,9 +59,6 @@ func (u *SchemaRegistryReference) UnmarshalJSON(data []byte) error {
 	case SchemaRegistryReferenceTypeSchemaRegistryReferenceByID:
 		u.SchemaRegistryReferenceByID = best.Value.(*SchemaRegistryReferenceByID)
 		return nil
-	case SchemaRegistryReferenceTypeSchemaRegistryReferenceByName:
-		u.SchemaRegistryReferenceByName = best.Value.(*SchemaRegistryReferenceByName)
-		return nil
 	}
 
 	return fmt.Errorf("could not unmarshal `%s` into any supported union types for SchemaRegistryReference", string(data))
@@ -89,10 +67,6 @@ func (u *SchemaRegistryReference) UnmarshalJSON(data []byte) error {
 func (u SchemaRegistryReference) MarshalJSON() ([]byte, error) {
 	if u.SchemaRegistryReferenceByID != nil {
 		return utils.MarshalJSON(u.SchemaRegistryReferenceByID, "", true)
-	}
-
-	if u.SchemaRegistryReferenceByName != nil {
-		return utils.MarshalJSON(u.SchemaRegistryReferenceByName, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type SchemaRegistryReference: all fields are null")

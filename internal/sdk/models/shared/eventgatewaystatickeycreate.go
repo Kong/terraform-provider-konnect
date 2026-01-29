@@ -2,12 +2,16 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // EventGatewayStaticKeyCreate - A symmetric key with its secret value for creation.
 type EventGatewayStaticKeyCreate struct {
 	// The unique name of the static key.
 	Name string `json:"name"`
 	// A human-readable description of the static key.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"" json:"description"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
@@ -18,6 +22,17 @@ type EventGatewayStaticKeyCreate struct {
 	// If provided as an expression, the expression itself is stored and returned by the API.
 	//
 	Value string `json:"value"`
+}
+
+func (e EventGatewayStaticKeyCreate) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *EventGatewayStaticKeyCreate) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (e *EventGatewayStaticKeyCreate) GetName() string {

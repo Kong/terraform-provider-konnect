@@ -10,7 +10,7 @@ import (
 type SchemaRegistryConfluent struct {
 	// The unique name of the schema registry.
 	Name string `json:"name"`
-	// A human-readable description of the virtual cluster.
+	// A human-readable description.
 	Description *string `json:"description,omitempty"`
 	// The type of the schema registry.
 	type_ string `const:"confluent" json:"type"`

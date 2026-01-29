@@ -15,12 +15,10 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) RefreshFromSharedEven
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.Config != nil {
-			configPriorData := r.Config
-			r.Config.AllowPlaintext = configPriorData.AllowPlaintext
-			r.Config.Certificates = configPriorData.Certificates
-			r.Config.Versions = configPriorData.Versions
-		}
+		configPriorData := r.Config
+		r.Config.AllowPlaintext = configPriorData.AllowPlaintext
+		r.Config.Certificates = configPriorData.Certificates
+		r.Config.Versions = configPriorData.Versions
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -45,9 +43,21 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToOperationsCreateEve
 	var gatewayID string
 	gatewayID = r.GatewayID.ValueString()
 
-	var eventGatewayListenerID string
-	eventGatewayListenerID = r.EventGatewayListenerID.ValueString()
+	var listenerID string
+	listenerID = r.ListenerID.ValueString()
 
+	before := new(string)
+	if !r.Before.IsUnknown() && !r.Before.IsNull() {
+		*before = r.Before.ValueString()
+	} else {
+		before = nil
+	}
+	after := new(string)
+	if !r.After.IsUnknown() && !r.After.IsNull() {
+		*after = r.After.ValueString()
+	} else {
+		after = nil
+	}
 	eventGatewayTLSListenerPolicy, eventGatewayTLSListenerPolicyDiags := r.ToSharedEventGatewayTLSListenerPolicy(ctx)
 	diags.Append(eventGatewayTLSListenerPolicyDiags...)
 
@@ -57,7 +67,9 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToOperationsCreateEve
 
 	out := operations.CreateEventGatewayListenerPolicyTLSServerRequest{
 		GatewayID:                     gatewayID,
-		EventGatewayListenerID:        eventGatewayListenerID,
+		ListenerID:                    listenerID,
+		Before:                        before,
+		After:                         after,
 		EventGatewayTLSListenerPolicy: eventGatewayTLSListenerPolicy,
 	}
 
@@ -70,16 +82,16 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToOperationsDeleteEve
 	var gatewayID string
 	gatewayID = r.GatewayID.ValueString()
 
-	var eventGatewayListenerID string
-	eventGatewayListenerID = r.EventGatewayListenerID.ValueString()
+	var listenerID string
+	listenerID = r.ListenerID.ValueString()
 
 	var policyID string
 	policyID = r.ID.ValueString()
 
 	out := operations.DeleteEventGatewayListenerPolicyTLSServerRequest{
-		GatewayID:              gatewayID,
-		EventGatewayListenerID: eventGatewayListenerID,
-		PolicyID:               policyID,
+		GatewayID:  gatewayID,
+		ListenerID: listenerID,
+		PolicyID:   policyID,
 	}
 
 	return &out, diags
@@ -91,16 +103,16 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToOperationsGetEventG
 	var gatewayID string
 	gatewayID = r.GatewayID.ValueString()
 
-	var eventGatewayListenerID string
-	eventGatewayListenerID = r.EventGatewayListenerID.ValueString()
+	var listenerID string
+	listenerID = r.ListenerID.ValueString()
 
 	var policyID string
 	policyID = r.ID.ValueString()
 
 	out := operations.GetEventGatewayListenerPolicyTLSServerRequest{
-		GatewayID:              gatewayID,
-		EventGatewayListenerID: eventGatewayListenerID,
-		PolicyID:               policyID,
+		GatewayID:  gatewayID,
+		ListenerID: listenerID,
+		PolicyID:   policyID,
 	}
 
 	return &out, diags
@@ -112,8 +124,8 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToOperationsUpdateEve
 	var gatewayID string
 	gatewayID = r.GatewayID.ValueString()
 
-	var eventGatewayListenerID string
-	eventGatewayListenerID = r.EventGatewayListenerID.ValueString()
+	var listenerID string
+	listenerID = r.ListenerID.ValueString()
 
 	var policyID string
 	policyID = r.ID.ValueString()
@@ -126,9 +138,9 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToOperationsUpdateEve
 	}
 
 	out := operations.UpdateEventGatewayListenerPolicyTLSServerRequest{
-		GatewayID:              gatewayID,
-		EventGatewayListenerID: eventGatewayListenerID,
-		PolicyID:               policyID,
+		GatewayID:  gatewayID,
+		ListenerID: listenerID,
+		PolicyID:   policyID,
 		EventGatewayTLSListenerSensitiveDataAwarePolicy: eventGatewayTLSListenerSensitiveDataAwarePolicy,
 	}
 

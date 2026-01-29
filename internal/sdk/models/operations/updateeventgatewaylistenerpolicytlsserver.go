@@ -11,7 +11,7 @@ type UpdateEventGatewayListenerPolicyTLSServerRequest struct {
 	// The UUID of your Gateway.
 	GatewayID string `pathParam:"style=simple,explode=false,name=gatewayId"`
 	// The ID of the Event Gateway Listener.
-	EventGatewayListenerID string `pathParam:"style=simple,explode=false,name=eventGatewayListenerId"`
+	ListenerID string `pathParam:"style=simple,explode=false,name=eventGatewayListenerId"`
 	// The UUID of the policy.
 	PolicyID                                        string                                                  `pathParam:"style=simple,explode=false,name=policyId"`
 	EventGatewayTLSListenerSensitiveDataAwarePolicy *shared.EventGatewayTLSListenerSensitiveDataAwarePolicy `request:"mediaType=application/json"`
@@ -24,11 +24,11 @@ func (u *UpdateEventGatewayListenerPolicyTLSServerRequest) GetGatewayID() string
 	return u.GatewayID
 }
 
-func (u *UpdateEventGatewayListenerPolicyTLSServerRequest) GetEventGatewayListenerID() string {
+func (u *UpdateEventGatewayListenerPolicyTLSServerRequest) GetListenerID() string {
 	if u == nil {
 		return ""
 	}
-	return u.EventGatewayListenerID
+	return u.ListenerID
 }
 
 func (u *UpdateEventGatewayListenerPolicyTLSServerRequest) GetPolicyID() string {

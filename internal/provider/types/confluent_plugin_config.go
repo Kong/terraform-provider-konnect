@@ -32,6 +32,7 @@ type ConfluentPluginConfig struct {
 	ProducerRequestRetriesMaxAttempts            types.Int64                    `tfsdk:"producer_request_retries_max_attempts"`
 	ProducerRequestTimeout                       types.Int64                    `tfsdk:"producer_request_timeout"`
 	SchemaRegistry                               *ConfluentPluginSchemaRegistry `tfsdk:"schema_registry"`
+	Security                                     *ConfluentPluginSecurity       `tfsdk:"security"`
 	Timeout                                      types.Int64                    `tfsdk:"timeout"`
 	Topic                                        types.String                   `tfsdk:"topic"`
 	TopicsQueryArg                               types.String                   `tfsdk:"topics_query_arg"`

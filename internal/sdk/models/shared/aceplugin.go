@@ -78,6 +78,7 @@ func (p *Partials) GetPath() *string {
 	return p.Path
 }
 
+// MatchPolicy - Determines how the ACE plugin will behave when a request doesn't match an existing operation from an API or API package in Dev Portal. The `required` setting requires every incoming request to match a defined operation. If a request doesn't match, ACE rejects the request outright with a 404. The `if_present` setting makes the ACE plugin only engage with a request when it matches an operation, allowing a request to still be processed by other plugins with a lower priority than ACE.
 type MatchPolicy string
 
 const (
@@ -102,6 +103,159 @@ func (e *MatchPolicy) UnmarshalJSON(data []byte) error {
 	default:
 		return fmt.Errorf("invalid value for MatchPolicy: %v", v)
 	}
+}
+
+// AcePluginAuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+type AcePluginAuthProvider string
+
+const (
+	AcePluginAuthProviderAws   AcePluginAuthProvider = "aws"
+	AcePluginAuthProviderAzure AcePluginAuthProvider = "azure"
+	AcePluginAuthProviderGcp   AcePluginAuthProvider = "gcp"
+)
+
+func (e AcePluginAuthProvider) ToPointer() *AcePluginAuthProvider {
+	return &e
+}
+func (e *AcePluginAuthProvider) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "aws":
+		fallthrough
+	case "azure":
+		fallthrough
+	case "gcp":
+		*e = AcePluginAuthProvider(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AcePluginAuthProvider: %v", v)
+	}
+}
+
+// AcePluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+type AcePluginCloudAuthentication struct {
+	// Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+	AuthProvider *AcePluginAuthProvider `json:"auth_provider,omitempty"`
+	// AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
+	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
+	// The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
+	// The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
+	AwsCacheName *string `default:"null" json:"aws_cache_name"`
+	// This flag specifies whether the cluster is serverless when auth_provider is set to `aws`.
+	AwsIsServerless *bool `default:"true" json:"aws_is_serverless"`
+	// The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
+	AwsRegion *string `default:"null" json:"aws_region"`
+	// The session name for the temporary credentials when assuming the IAM role.
+	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
+	// AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
+	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
+	// Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientID *string `default:"null" json:"azure_client_id"`
+	// Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
+	// Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
+	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+}
+
+func (a AcePluginCloudAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AcePluginCloudAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AcePluginCloudAuthentication) GetAuthProvider() *AcePluginAuthProvider {
+	if a == nil {
+		return nil
+	}
+	return a.AuthProvider
+}
+
+func (a *AcePluginCloudAuthentication) GetAwsAccessKeyID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsAccessKeyID
+}
+
+func (a *AcePluginCloudAuthentication) GetAwsAssumeRoleArn() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsAssumeRoleArn
+}
+
+func (a *AcePluginCloudAuthentication) GetAwsCacheName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsCacheName
+}
+
+func (a *AcePluginCloudAuthentication) GetAwsIsServerless() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.AwsIsServerless
+}
+
+func (a *AcePluginCloudAuthentication) GetAwsRegion() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsRegion
+}
+
+func (a *AcePluginCloudAuthentication) GetAwsRoleSessionName() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsRoleSessionName
+}
+
+func (a *AcePluginCloudAuthentication) GetAwsSecretAccessKey() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AwsSecretAccessKey
+}
+
+func (a *AcePluginCloudAuthentication) GetAzureClientID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AzureClientID
+}
+
+func (a *AcePluginCloudAuthentication) GetAzureClientSecret() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AzureClientSecret
+}
+
+func (a *AcePluginCloudAuthentication) GetAzureTenantID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.AzureTenantID
+}
+
+func (a *AcePluginCloudAuthentication) GetGcpServiceAccountJSON() *string {
+	if a == nil {
+		return nil
+	}
+	return a.GcpServiceAccountJSON
 }
 
 type AcePluginClusterNodes struct {
@@ -199,6 +353,8 @@ func (e *AcePluginSentinelRole) UnmarshalJSON(data []byte) error {
 }
 
 type AcePluginRedis struct {
+	// Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+	CloudAuthentication *AcePluginCloudAuthentication `json:"cloud_authentication"`
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
@@ -252,6 +408,13 @@ func (a *AcePluginRedis) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AcePluginRedis) GetCloudAuthentication() *AcePluginCloudAuthentication {
+	if a == nil {
+		return nil
+	}
+	return a.CloudAuthentication
 }
 
 func (a *AcePluginRedis) GetClusterMaxRedirections() *int64 {
@@ -402,8 +565,9 @@ func (a *AcePluginRedis) GetUsername() *string {
 }
 
 type RateLimiting struct {
-	Redis    *AcePluginRedis `json:"redis"`
-	SyncRate *float64        `default:"null" json:"sync_rate"`
+	Redis *AcePluginRedis `json:"redis"`
+	// How often to sync counter data to the central data store. A value of 0 results in synchronous behavior (counter synchronization happens in each request's context and contributes directly to the latency of the request). A value greater than 0 results in asynchronous behavior and specifies the interval (in seconds) for synchronizing counters. The minimum allowed interval is 0.02 seconds (20ms). If omitted, the plugin ignores sync behavior entirely and only stores counters in node memory.
+	SyncRate *float64 `default:"null" json:"sync_rate"`
 }
 
 func (r RateLimiting) MarshalJSON() ([]byte, error) {
@@ -432,7 +596,9 @@ func (r *RateLimiting) GetSyncRate() *float64 {
 }
 
 type AcePluginConfig struct {
-	Anonymous    *string       `default:"null" json:"anonymous"`
+	// An optional string (consumer UUID or username) value to use as an `anonymous` consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`. When set, the plugin will skip ACE processing for requests that are already authenticated by other plugins with higher priority.
+	Anonymous *string `default:"null" json:"anonymous"`
+	// Determines how the ACE plugin will behave when a request doesn't match an existing operation from an API or API package in Dev Portal. The `required` setting requires every incoming request to match a defined operation. If a request doesn't match, ACE rejects the request outright with a 404. The `if_present` setting makes the ACE plugin only engage with a request when it matches an operation, allowing a request to still be processed by other plugins with a lower priority than ACE.
 	MatchPolicy  *MatchPolicy  `default:"if_present" json:"match_policy"`
 	RateLimiting *RateLimiting `json:"rate_limiting"`
 }

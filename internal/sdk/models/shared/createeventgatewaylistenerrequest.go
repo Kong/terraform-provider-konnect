@@ -2,12 +2,16 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // CreateEventGatewayListenerRequest - The request schema for creating a listener.
 type CreateEventGatewayListenerRequest struct {
 	// The unique name of the listener.
 	Name string `json:"name"`
 	// A human-readable description of the virtual cluster.
-	Description *string `json:"description,omitempty"`
+	Description *string `default:"" json:"description"`
 	// Which address or addresses to listen on.
 	// `0.0.0.0` means all addresses on the host.
 	// `::` means all addresses on the host in IPv6.
@@ -31,6 +35,17 @@ type CreateEventGatewayListenerRequest struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
+}
+
+func (c CreateEventGatewayListenerRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateEventGatewayListenerRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateEventGatewayListenerRequest) GetName() string {

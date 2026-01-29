@@ -71,6 +71,12 @@ func (r *GatewayPluginAiAwsGuardrailsResource) Schema(ctx context.Context, req r
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
+					"allow_masking": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `Allow to masking the request/response instead of blocking it. Streaming will be disabled if this is enabled. Default: false`,
+					},
 					"aws_access_key_id": schema.StringAttribute{
 						Optional:    true,
 						Description: `The AWS access key ID to use for authentication`,
@@ -110,17 +116,21 @@ func (r *GatewayPluginAiAwsGuardrailsResource) Schema(ctx context.Context, req r
 					},
 					"guardrails_id": schema.StringAttribute{
 						Required:    true,
-						Description: `The guardrail identifier used in the request to apply the guardrail`,
+						Description: `The guardrail identifier used in the request to apply the guardrail.`,
 					},
 					"guardrails_version": schema.StringAttribute{
 						Required:    true,
-						Description: `The guardrail version used in the request to apply the guardrail`,
+						Description: `The guardrail version used in the request to apply the guardrail. Note that the value of this field must match the pattern ` + "`" + `(([1-9][0-9]{0,7})|(DRAFT))` + "`" + ` according to the AWS documentation https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_ApplyGuardrail.html#API_runtime_ApplyGuardrail_RequestSyntax.`,
 					},
 					"response_buffer_size": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     float64default.StaticFloat64(100),
 						Description: `The amount of bytes receiving from upstream to be buffered before sending to the guardrails service. This only applies to the response content guard. Default: 100`,
+					},
+					"ssl_verify": schema.BoolAttribute{
+						Optional:    true,
+						Description: `Verify TLS certificate when connecting to the bedrock service.`,
 					},
 					"stop_on_error": schema.BoolAttribute{
 						Computed:    true,

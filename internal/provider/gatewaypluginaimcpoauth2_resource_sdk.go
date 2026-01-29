@@ -15,82 +15,77 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) RefreshFromSharedAiMcpOauth2Plug
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.AiMcpOauth2PluginConfig{}
-			if resp.Config.Args != nil {
-				r.Config.Args = make(map[string]types.String, len(resp.Config.Args))
-				for key, value := range resp.Config.Args {
-					r.Config.Args[key] = types.StringValue(value)
-				}
+		if resp.Config.Args != nil {
+			r.Config.Args = make(map[string]types.String, len(resp.Config.Args))
+			for key, value := range resp.Config.Args {
+				r.Config.Args[key] = types.StringValue(value)
 			}
-			r.Config.AuthorizationServers = make([]types.String, 0, len(resp.Config.AuthorizationServers))
-			for _, v := range resp.Config.AuthorizationServers {
-				r.Config.AuthorizationServers = append(r.Config.AuthorizationServers, types.StringValue(v))
-			}
-			r.Config.CacheIntrospection = types.BoolPointerValue(resp.Config.CacheIntrospection)
-			if resp.Config.ClaimToHeader != nil {
-				r.Config.ClaimToHeader = []tfTypes.ClaimToHeader{}
-
-				for _, claimToHeaderItem := range resp.Config.ClaimToHeader {
-					var claimToHeader tfTypes.ClaimToHeader
-
-					claimToHeader.Claim = types.StringValue(claimToHeaderItem.Claim)
-					claimToHeader.Header = types.StringValue(claimToHeaderItem.Header)
-
-					r.Config.ClaimToHeader = append(r.Config.ClaimToHeader, claimToHeader)
-				}
-			}
-			if resp.Config.ClientAlg != nil {
-				r.Config.ClientAlg = types.StringValue(string(*resp.Config.ClientAlg))
-			} else {
-				r.Config.ClientAlg = types.StringNull()
-			}
-			if resp.Config.ClientAuth != nil {
-				r.Config.ClientAuth = types.StringValue(string(*resp.Config.ClientAuth))
-			} else {
-				r.Config.ClientAuth = types.StringNull()
-			}
-			r.Config.ClientID = types.StringValue(resp.Config.ClientID)
-			r.Config.ClientJwk = types.StringPointerValue(resp.Config.ClientJwk)
-			r.Config.ClientSecret = types.StringPointerValue(resp.Config.ClientSecret)
-			if resp.Config.Headers != nil {
-				r.Config.Headers = make(map[string]types.String, len(resp.Config.Headers))
-				for key1, value1 := range resp.Config.Headers {
-					r.Config.Headers[key1] = types.StringValue(value1)
-				}
-			}
-			r.Config.HTTPProxy = types.StringPointerValue(resp.Config.HTTPProxy)
-			r.Config.HTTPProxyAuthorization = types.StringPointerValue(resp.Config.HTTPProxyAuthorization)
-			r.Config.HTTPVersion = types.Float64PointerValue(resp.Config.HTTPVersion)
-			r.Config.HTTPSProxy = types.StringPointerValue(resp.Config.HTTPSProxy)
-			r.Config.HTTPSProxyAuthorization = types.StringPointerValue(resp.Config.HTTPSProxyAuthorization)
-			r.Config.InsecureRelaxedAudienceValidation = types.BoolPointerValue(resp.Config.InsecureRelaxedAudienceValidation)
-			r.Config.IntrospectionEndpoint = types.StringValue(resp.Config.IntrospectionEndpoint)
-			if resp.Config.IntrospectionFormat != nil {
-				r.Config.IntrospectionFormat = types.StringValue(string(*resp.Config.IntrospectionFormat))
-			} else {
-				r.Config.IntrospectionFormat = types.StringNull()
-			}
-			r.Config.Keepalive = types.BoolPointerValue(resp.Config.Keepalive)
-			r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
-			r.Config.MetadataEndpoint = types.StringPointerValue(resp.Config.MetadataEndpoint)
-			r.Config.MtlsIntrospectionEndpoint = types.StringPointerValue(resp.Config.MtlsIntrospectionEndpoint)
-			r.Config.NoProxy = types.StringPointerValue(resp.Config.NoProxy)
-			r.Config.Resource = types.StringValue(resp.Config.Resource)
-			if resp.Config.ScopesSupported != nil {
-				r.Config.ScopesSupported = make([]types.String, 0, len(resp.Config.ScopesSupported))
-				for _, v := range resp.Config.ScopesSupported {
-					r.Config.ScopesSupported = append(r.Config.ScopesSupported, types.StringValue(v))
-				}
-			}
-			r.Config.SslVerify = types.BoolPointerValue(resp.Config.SslVerify)
-			r.Config.Timeout = types.Float64PointerValue(resp.Config.Timeout)
-			r.Config.TLSClientAuthCert = types.StringPointerValue(resp.Config.TLSClientAuthCert)
-			r.Config.TLSClientAuthKey = types.StringPointerValue(resp.Config.TLSClientAuthKey)
-			r.Config.TLSClientAuthSslVerify = types.BoolPointerValue(resp.Config.TLSClientAuthSslVerify)
 		}
+		r.Config.AuthorizationServers = make([]types.String, 0, len(resp.Config.AuthorizationServers))
+		for _, v := range resp.Config.AuthorizationServers {
+			r.Config.AuthorizationServers = append(r.Config.AuthorizationServers, types.StringValue(v))
+		}
+		r.Config.CacheIntrospection = types.BoolPointerValue(resp.Config.CacheIntrospection)
+		if resp.Config.ClaimToHeader != nil {
+			r.Config.ClaimToHeader = []tfTypes.ClaimToHeader{}
+
+			for _, claimToHeaderItem := range resp.Config.ClaimToHeader {
+				var claimToHeader tfTypes.ClaimToHeader
+
+				claimToHeader.Claim = types.StringValue(claimToHeaderItem.Claim)
+				claimToHeader.Header = types.StringValue(claimToHeaderItem.Header)
+
+				r.Config.ClaimToHeader = append(r.Config.ClaimToHeader, claimToHeader)
+			}
+		}
+		if resp.Config.ClientAlg != nil {
+			r.Config.ClientAlg = types.StringValue(string(*resp.Config.ClientAlg))
+		} else {
+			r.Config.ClientAlg = types.StringNull()
+		}
+		if resp.Config.ClientAuth != nil {
+			r.Config.ClientAuth = types.StringValue(string(*resp.Config.ClientAuth))
+		} else {
+			r.Config.ClientAuth = types.StringNull()
+		}
+		r.Config.ClientID = types.StringValue(resp.Config.ClientID)
+		r.Config.ClientJwk = types.StringPointerValue(resp.Config.ClientJwk)
+		r.Config.ClientSecret = types.StringPointerValue(resp.Config.ClientSecret)
+		if resp.Config.Headers != nil {
+			r.Config.Headers = make(map[string]types.String, len(resp.Config.Headers))
+			for key1, value1 := range resp.Config.Headers {
+				r.Config.Headers[key1] = types.StringValue(value1)
+			}
+		}
+		r.Config.HTTPProxy = types.StringPointerValue(resp.Config.HTTPProxy)
+		r.Config.HTTPProxyAuthorization = types.StringPointerValue(resp.Config.HTTPProxyAuthorization)
+		r.Config.HTTPVersion = types.Float64PointerValue(resp.Config.HTTPVersion)
+		r.Config.HTTPSProxy = types.StringPointerValue(resp.Config.HTTPSProxy)
+		r.Config.HTTPSProxyAuthorization = types.StringPointerValue(resp.Config.HTTPSProxyAuthorization)
+		r.Config.InsecureRelaxedAudienceValidation = types.BoolPointerValue(resp.Config.InsecureRelaxedAudienceValidation)
+		r.Config.IntrospectionEndpoint = types.StringValue(resp.Config.IntrospectionEndpoint)
+		if resp.Config.IntrospectionFormat != nil {
+			r.Config.IntrospectionFormat = types.StringValue(string(*resp.Config.IntrospectionFormat))
+		} else {
+			r.Config.IntrospectionFormat = types.StringNull()
+		}
+		r.Config.Keepalive = types.BoolPointerValue(resp.Config.Keepalive)
+		r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
+		r.Config.MetadataEndpoint = types.StringPointerValue(resp.Config.MetadataEndpoint)
+		r.Config.MtlsIntrospectionEndpoint = types.StringPointerValue(resp.Config.MtlsIntrospectionEndpoint)
+		r.Config.NoProxy = types.StringPointerValue(resp.Config.NoProxy)
+		r.Config.Resource = types.StringValue(resp.Config.Resource)
+		if resp.Config.ScopesSupported != nil {
+			r.Config.ScopesSupported = make([]types.String, 0, len(resp.Config.ScopesSupported))
+			for _, v := range resp.Config.ScopesSupported {
+				r.Config.ScopesSupported = append(r.Config.ScopesSupported, types.StringValue(v))
+			}
+		}
+		r.Config.SslVerify = types.BoolPointerValue(resp.Config.SslVerify)
+		r.Config.Timeout = types.Float64PointerValue(resp.Config.Timeout)
+		r.Config.TLSClientAuthCert = types.StringPointerValue(resp.Config.TLSClientAuthCert)
+		r.Config.TLSClientAuthKey = types.StringPointerValue(resp.Config.TLSClientAuthKey)
+		r.Config.TLSClientAuthSslVerify = types.BoolPointerValue(resp.Config.TLSClientAuthSslVerify)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -335,228 +330,225 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 	} else {
 		updatedAt = nil
 	}
-	var config *shared.AiMcpOauth2PluginConfig
-	if r.Config != nil {
-		var args map[string]string
-		if r.Config.Args != nil {
-			args = make(map[string]string)
-			for argsKey := range r.Config.Args {
-				var argsInst string
-				argsInst = r.Config.Args[argsKey].ValueString()
+	var args map[string]string
+	if r.Config.Args != nil {
+		args = make(map[string]string)
+		for argsKey := range r.Config.Args {
+			var argsInst string
+			argsInst = r.Config.Args[argsKey].ValueString()
 
-				args[argsKey] = argsInst
-			}
+			args[argsKey] = argsInst
 		}
-		authorizationServers := make([]string, 0, len(r.Config.AuthorizationServers))
-		for authorizationServersIndex := range r.Config.AuthorizationServers {
-			authorizationServers = append(authorizationServers, r.Config.AuthorizationServers[authorizationServersIndex].ValueString())
-		}
-		cacheIntrospection := new(bool)
-		if !r.Config.CacheIntrospection.IsUnknown() && !r.Config.CacheIntrospection.IsNull() {
-			*cacheIntrospection = r.Config.CacheIntrospection.ValueBool()
-		} else {
-			cacheIntrospection = nil
-		}
-		var claimToHeader []shared.ClaimToHeader
-		if r.Config.ClaimToHeader != nil {
-			claimToHeader = make([]shared.ClaimToHeader, 0, len(r.Config.ClaimToHeader))
-			for claimToHeaderIndex := range r.Config.ClaimToHeader {
-				var claim string
-				claim = r.Config.ClaimToHeader[claimToHeaderIndex].Claim.ValueString()
+	}
+	authorizationServers := make([]string, 0, len(r.Config.AuthorizationServers))
+	for authorizationServersIndex := range r.Config.AuthorizationServers {
+		authorizationServers = append(authorizationServers, r.Config.AuthorizationServers[authorizationServersIndex].ValueString())
+	}
+	cacheIntrospection := new(bool)
+	if !r.Config.CacheIntrospection.IsUnknown() && !r.Config.CacheIntrospection.IsNull() {
+		*cacheIntrospection = r.Config.CacheIntrospection.ValueBool()
+	} else {
+		cacheIntrospection = nil
+	}
+	var claimToHeader []shared.ClaimToHeader
+	if r.Config.ClaimToHeader != nil {
+		claimToHeader = make([]shared.ClaimToHeader, 0, len(r.Config.ClaimToHeader))
+		for claimToHeaderIndex := range r.Config.ClaimToHeader {
+			var claim string
+			claim = r.Config.ClaimToHeader[claimToHeaderIndex].Claim.ValueString()
 
-				var header string
-				header = r.Config.ClaimToHeader[claimToHeaderIndex].Header.ValueString()
+			var header string
+			header = r.Config.ClaimToHeader[claimToHeaderIndex].Header.ValueString()
 
-				claimToHeader = append(claimToHeader, shared.ClaimToHeader{
-					Claim:  claim,
-					Header: header,
-				})
-			}
+			claimToHeader = append(claimToHeader, shared.ClaimToHeader{
+				Claim:  claim,
+				Header: header,
+			})
 		}
-		clientAlg := new(shared.ClientAlg)
-		if !r.Config.ClientAlg.IsUnknown() && !r.Config.ClientAlg.IsNull() {
-			*clientAlg = shared.ClientAlg(r.Config.ClientAlg.ValueString())
-		} else {
-			clientAlg = nil
-		}
-		clientAuth := new(shared.ClientAuth)
-		if !r.Config.ClientAuth.IsUnknown() && !r.Config.ClientAuth.IsNull() {
-			*clientAuth = shared.ClientAuth(r.Config.ClientAuth.ValueString())
-		} else {
-			clientAuth = nil
-		}
-		var clientID string
-		clientID = r.Config.ClientID.ValueString()
+	}
+	clientAlg := new(shared.ClientAlg)
+	if !r.Config.ClientAlg.IsUnknown() && !r.Config.ClientAlg.IsNull() {
+		*clientAlg = shared.ClientAlg(r.Config.ClientAlg.ValueString())
+	} else {
+		clientAlg = nil
+	}
+	clientAuth := new(shared.ClientAuth)
+	if !r.Config.ClientAuth.IsUnknown() && !r.Config.ClientAuth.IsNull() {
+		*clientAuth = shared.ClientAuth(r.Config.ClientAuth.ValueString())
+	} else {
+		clientAuth = nil
+	}
+	var clientID string
+	clientID = r.Config.ClientID.ValueString()
 
-		clientJwk := new(string)
-		if !r.Config.ClientJwk.IsUnknown() && !r.Config.ClientJwk.IsNull() {
-			*clientJwk = r.Config.ClientJwk.ValueString()
-		} else {
-			clientJwk = nil
-		}
-		clientSecret := new(string)
-		if !r.Config.ClientSecret.IsUnknown() && !r.Config.ClientSecret.IsNull() {
-			*clientSecret = r.Config.ClientSecret.ValueString()
-		} else {
-			clientSecret = nil
-		}
-		var headers map[string]string
-		if r.Config.Headers != nil {
-			headers = make(map[string]string)
-			for headersKey := range r.Config.Headers {
-				var headersInst string
-				headersInst = r.Config.Headers[headersKey].ValueString()
+	clientJwk := new(string)
+	if !r.Config.ClientJwk.IsUnknown() && !r.Config.ClientJwk.IsNull() {
+		*clientJwk = r.Config.ClientJwk.ValueString()
+	} else {
+		clientJwk = nil
+	}
+	clientSecret := new(string)
+	if !r.Config.ClientSecret.IsUnknown() && !r.Config.ClientSecret.IsNull() {
+		*clientSecret = r.Config.ClientSecret.ValueString()
+	} else {
+		clientSecret = nil
+	}
+	var headers map[string]string
+	if r.Config.Headers != nil {
+		headers = make(map[string]string)
+		for headersKey := range r.Config.Headers {
+			var headersInst string
+			headersInst = r.Config.Headers[headersKey].ValueString()
 
-				headers[headersKey] = headersInst
-			}
+			headers[headersKey] = headersInst
 		}
-		httpProxy := new(string)
-		if !r.Config.HTTPProxy.IsUnknown() && !r.Config.HTTPProxy.IsNull() {
-			*httpProxy = r.Config.HTTPProxy.ValueString()
-		} else {
-			httpProxy = nil
-		}
-		httpProxyAuthorization := new(string)
-		if !r.Config.HTTPProxyAuthorization.IsUnknown() && !r.Config.HTTPProxyAuthorization.IsNull() {
-			*httpProxyAuthorization = r.Config.HTTPProxyAuthorization.ValueString()
-		} else {
-			httpProxyAuthorization = nil
-		}
-		httpVersion := new(float64)
-		if !r.Config.HTTPVersion.IsUnknown() && !r.Config.HTTPVersion.IsNull() {
-			*httpVersion = r.Config.HTTPVersion.ValueFloat64()
-		} else {
-			httpVersion = nil
-		}
-		httpsProxy := new(string)
-		if !r.Config.HTTPSProxy.IsUnknown() && !r.Config.HTTPSProxy.IsNull() {
-			*httpsProxy = r.Config.HTTPSProxy.ValueString()
-		} else {
-			httpsProxy = nil
-		}
-		httpsProxyAuthorization := new(string)
-		if !r.Config.HTTPSProxyAuthorization.IsUnknown() && !r.Config.HTTPSProxyAuthorization.IsNull() {
-			*httpsProxyAuthorization = r.Config.HTTPSProxyAuthorization.ValueString()
-		} else {
-			httpsProxyAuthorization = nil
-		}
-		insecureRelaxedAudienceValidation := new(bool)
-		if !r.Config.InsecureRelaxedAudienceValidation.IsUnknown() && !r.Config.InsecureRelaxedAudienceValidation.IsNull() {
-			*insecureRelaxedAudienceValidation = r.Config.InsecureRelaxedAudienceValidation.ValueBool()
-		} else {
-			insecureRelaxedAudienceValidation = nil
-		}
-		var introspectionEndpoint string
-		introspectionEndpoint = r.Config.IntrospectionEndpoint.ValueString()
+	}
+	httpProxy := new(string)
+	if !r.Config.HTTPProxy.IsUnknown() && !r.Config.HTTPProxy.IsNull() {
+		*httpProxy = r.Config.HTTPProxy.ValueString()
+	} else {
+		httpProxy = nil
+	}
+	httpProxyAuthorization := new(string)
+	if !r.Config.HTTPProxyAuthorization.IsUnknown() && !r.Config.HTTPProxyAuthorization.IsNull() {
+		*httpProxyAuthorization = r.Config.HTTPProxyAuthorization.ValueString()
+	} else {
+		httpProxyAuthorization = nil
+	}
+	httpVersion := new(float64)
+	if !r.Config.HTTPVersion.IsUnknown() && !r.Config.HTTPVersion.IsNull() {
+		*httpVersion = r.Config.HTTPVersion.ValueFloat64()
+	} else {
+		httpVersion = nil
+	}
+	httpsProxy := new(string)
+	if !r.Config.HTTPSProxy.IsUnknown() && !r.Config.HTTPSProxy.IsNull() {
+		*httpsProxy = r.Config.HTTPSProxy.ValueString()
+	} else {
+		httpsProxy = nil
+	}
+	httpsProxyAuthorization := new(string)
+	if !r.Config.HTTPSProxyAuthorization.IsUnknown() && !r.Config.HTTPSProxyAuthorization.IsNull() {
+		*httpsProxyAuthorization = r.Config.HTTPSProxyAuthorization.ValueString()
+	} else {
+		httpsProxyAuthorization = nil
+	}
+	insecureRelaxedAudienceValidation := new(bool)
+	if !r.Config.InsecureRelaxedAudienceValidation.IsUnknown() && !r.Config.InsecureRelaxedAudienceValidation.IsNull() {
+		*insecureRelaxedAudienceValidation = r.Config.InsecureRelaxedAudienceValidation.ValueBool()
+	} else {
+		insecureRelaxedAudienceValidation = nil
+	}
+	var introspectionEndpoint string
+	introspectionEndpoint = r.Config.IntrospectionEndpoint.ValueString()
 
-		introspectionFormat := new(shared.IntrospectionFormat)
-		if !r.Config.IntrospectionFormat.IsUnknown() && !r.Config.IntrospectionFormat.IsNull() {
-			*introspectionFormat = shared.IntrospectionFormat(r.Config.IntrospectionFormat.ValueString())
-		} else {
-			introspectionFormat = nil
-		}
-		keepalive := new(bool)
-		if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
-			*keepalive = r.Config.Keepalive.ValueBool()
-		} else {
-			keepalive = nil
-		}
-		maxRequestBodySize := new(int64)
-		if !r.Config.MaxRequestBodySize.IsUnknown() && !r.Config.MaxRequestBodySize.IsNull() {
-			*maxRequestBodySize = r.Config.MaxRequestBodySize.ValueInt64()
-		} else {
-			maxRequestBodySize = nil
-		}
-		metadataEndpoint := new(string)
-		if !r.Config.MetadataEndpoint.IsUnknown() && !r.Config.MetadataEndpoint.IsNull() {
-			*metadataEndpoint = r.Config.MetadataEndpoint.ValueString()
-		} else {
-			metadataEndpoint = nil
-		}
-		mtlsIntrospectionEndpoint := new(string)
-		if !r.Config.MtlsIntrospectionEndpoint.IsUnknown() && !r.Config.MtlsIntrospectionEndpoint.IsNull() {
-			*mtlsIntrospectionEndpoint = r.Config.MtlsIntrospectionEndpoint.ValueString()
-		} else {
-			mtlsIntrospectionEndpoint = nil
-		}
-		noProxy := new(string)
-		if !r.Config.NoProxy.IsUnknown() && !r.Config.NoProxy.IsNull() {
-			*noProxy = r.Config.NoProxy.ValueString()
-		} else {
-			noProxy = nil
-		}
-		var resource string
-		resource = r.Config.Resource.ValueString()
+	introspectionFormat := new(shared.IntrospectionFormat)
+	if !r.Config.IntrospectionFormat.IsUnknown() && !r.Config.IntrospectionFormat.IsNull() {
+		*introspectionFormat = shared.IntrospectionFormat(r.Config.IntrospectionFormat.ValueString())
+	} else {
+		introspectionFormat = nil
+	}
+	keepalive := new(bool)
+	if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
+		*keepalive = r.Config.Keepalive.ValueBool()
+	} else {
+		keepalive = nil
+	}
+	maxRequestBodySize := new(int64)
+	if !r.Config.MaxRequestBodySize.IsUnknown() && !r.Config.MaxRequestBodySize.IsNull() {
+		*maxRequestBodySize = r.Config.MaxRequestBodySize.ValueInt64()
+	} else {
+		maxRequestBodySize = nil
+	}
+	metadataEndpoint := new(string)
+	if !r.Config.MetadataEndpoint.IsUnknown() && !r.Config.MetadataEndpoint.IsNull() {
+		*metadataEndpoint = r.Config.MetadataEndpoint.ValueString()
+	} else {
+		metadataEndpoint = nil
+	}
+	mtlsIntrospectionEndpoint := new(string)
+	if !r.Config.MtlsIntrospectionEndpoint.IsUnknown() && !r.Config.MtlsIntrospectionEndpoint.IsNull() {
+		*mtlsIntrospectionEndpoint = r.Config.MtlsIntrospectionEndpoint.ValueString()
+	} else {
+		mtlsIntrospectionEndpoint = nil
+	}
+	noProxy := new(string)
+	if !r.Config.NoProxy.IsUnknown() && !r.Config.NoProxy.IsNull() {
+		*noProxy = r.Config.NoProxy.ValueString()
+	} else {
+		noProxy = nil
+	}
+	var resource string
+	resource = r.Config.Resource.ValueString()
 
-		var scopesSupported []string
-		if r.Config.ScopesSupported != nil {
-			scopesSupported = make([]string, 0, len(r.Config.ScopesSupported))
-			for scopesSupportedIndex := range r.Config.ScopesSupported {
-				scopesSupported = append(scopesSupported, r.Config.ScopesSupported[scopesSupportedIndex].ValueString())
-			}
+	var scopesSupported []string
+	if r.Config.ScopesSupported != nil {
+		scopesSupported = make([]string, 0, len(r.Config.ScopesSupported))
+		for scopesSupportedIndex := range r.Config.ScopesSupported {
+			scopesSupported = append(scopesSupported, r.Config.ScopesSupported[scopesSupportedIndex].ValueString())
 		}
-		sslVerify := new(bool)
-		if !r.Config.SslVerify.IsUnknown() && !r.Config.SslVerify.IsNull() {
-			*sslVerify = r.Config.SslVerify.ValueBool()
-		} else {
-			sslVerify = nil
-		}
-		timeout := new(float64)
-		if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
-			*timeout = r.Config.Timeout.ValueFloat64()
-		} else {
-			timeout = nil
-		}
-		tlsClientAuthCert := new(string)
-		if !r.Config.TLSClientAuthCert.IsUnknown() && !r.Config.TLSClientAuthCert.IsNull() {
-			*tlsClientAuthCert = r.Config.TLSClientAuthCert.ValueString()
-		} else {
-			tlsClientAuthCert = nil
-		}
-		tlsClientAuthKey := new(string)
-		if !r.Config.TLSClientAuthKey.IsUnknown() && !r.Config.TLSClientAuthKey.IsNull() {
-			*tlsClientAuthKey = r.Config.TLSClientAuthKey.ValueString()
-		} else {
-			tlsClientAuthKey = nil
-		}
-		tlsClientAuthSslVerify := new(bool)
-		if !r.Config.TLSClientAuthSslVerify.IsUnknown() && !r.Config.TLSClientAuthSslVerify.IsNull() {
-			*tlsClientAuthSslVerify = r.Config.TLSClientAuthSslVerify.ValueBool()
-		} else {
-			tlsClientAuthSslVerify = nil
-		}
-		config = &shared.AiMcpOauth2PluginConfig{
-			Args:                              args,
-			AuthorizationServers:              authorizationServers,
-			CacheIntrospection:                cacheIntrospection,
-			ClaimToHeader:                     claimToHeader,
-			ClientAlg:                         clientAlg,
-			ClientAuth:                        clientAuth,
-			ClientID:                          clientID,
-			ClientJwk:                         clientJwk,
-			ClientSecret:                      clientSecret,
-			Headers:                           headers,
-			HTTPProxy:                         httpProxy,
-			HTTPProxyAuthorization:            httpProxyAuthorization,
-			HTTPVersion:                       httpVersion,
-			HTTPSProxy:                        httpsProxy,
-			HTTPSProxyAuthorization:           httpsProxyAuthorization,
-			InsecureRelaxedAudienceValidation: insecureRelaxedAudienceValidation,
-			IntrospectionEndpoint:             introspectionEndpoint,
-			IntrospectionFormat:               introspectionFormat,
-			Keepalive:                         keepalive,
-			MaxRequestBodySize:                maxRequestBodySize,
-			MetadataEndpoint:                  metadataEndpoint,
-			MtlsIntrospectionEndpoint:         mtlsIntrospectionEndpoint,
-			NoProxy:                           noProxy,
-			Resource:                          resource,
-			ScopesSupported:                   scopesSupported,
-			SslVerify:                         sslVerify,
-			Timeout:                           timeout,
-			TLSClientAuthCert:                 tlsClientAuthCert,
-			TLSClientAuthKey:                  tlsClientAuthKey,
-			TLSClientAuthSslVerify:            tlsClientAuthSslVerify,
-		}
+	}
+	sslVerify := new(bool)
+	if !r.Config.SslVerify.IsUnknown() && !r.Config.SslVerify.IsNull() {
+		*sslVerify = r.Config.SslVerify.ValueBool()
+	} else {
+		sslVerify = nil
+	}
+	timeout := new(float64)
+	if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
+		*timeout = r.Config.Timeout.ValueFloat64()
+	} else {
+		timeout = nil
+	}
+	tlsClientAuthCert := new(string)
+	if !r.Config.TLSClientAuthCert.IsUnknown() && !r.Config.TLSClientAuthCert.IsNull() {
+		*tlsClientAuthCert = r.Config.TLSClientAuthCert.ValueString()
+	} else {
+		tlsClientAuthCert = nil
+	}
+	tlsClientAuthKey := new(string)
+	if !r.Config.TLSClientAuthKey.IsUnknown() && !r.Config.TLSClientAuthKey.IsNull() {
+		*tlsClientAuthKey = r.Config.TLSClientAuthKey.ValueString()
+	} else {
+		tlsClientAuthKey = nil
+	}
+	tlsClientAuthSslVerify := new(bool)
+	if !r.Config.TLSClientAuthSslVerify.IsUnknown() && !r.Config.TLSClientAuthSslVerify.IsNull() {
+		*tlsClientAuthSslVerify = r.Config.TLSClientAuthSslVerify.ValueBool()
+	} else {
+		tlsClientAuthSslVerify = nil
+	}
+	config := shared.AiMcpOauth2PluginConfig{
+		Args:                              args,
+		AuthorizationServers:              authorizationServers,
+		CacheIntrospection:                cacheIntrospection,
+		ClaimToHeader:                     claimToHeader,
+		ClientAlg:                         clientAlg,
+		ClientAuth:                        clientAuth,
+		ClientID:                          clientID,
+		ClientJwk:                         clientJwk,
+		ClientSecret:                      clientSecret,
+		Headers:                           headers,
+		HTTPProxy:                         httpProxy,
+		HTTPProxyAuthorization:            httpProxyAuthorization,
+		HTTPVersion:                       httpVersion,
+		HTTPSProxy:                        httpsProxy,
+		HTTPSProxyAuthorization:           httpsProxyAuthorization,
+		InsecureRelaxedAudienceValidation: insecureRelaxedAudienceValidation,
+		IntrospectionEndpoint:             introspectionEndpoint,
+		IntrospectionFormat:               introspectionFormat,
+		Keepalive:                         keepalive,
+		MaxRequestBodySize:                maxRequestBodySize,
+		MetadataEndpoint:                  metadataEndpoint,
+		MtlsIntrospectionEndpoint:         mtlsIntrospectionEndpoint,
+		NoProxy:                           noProxy,
+		Resource:                          resource,
+		ScopesSupported:                   scopesSupported,
+		SslVerify:                         sslVerify,
+		Timeout:                           timeout,
+		TLSClientAuthCert:                 tlsClientAuthCert,
+		TLSClientAuthKey:                  tlsClientAuthKey,
+		TLSClientAuthSslVerify:            tlsClientAuthSslVerify,
 	}
 	protocols := make([]shared.AiMcpOauth2PluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {

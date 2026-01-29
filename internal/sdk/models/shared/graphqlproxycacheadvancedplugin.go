@@ -101,6 +101,159 @@ func (m *Memory) GetDictionaryName() *string {
 	return m.DictionaryName
 }
 
+// GraphqlProxyCacheAdvancedPluginAuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+type GraphqlProxyCacheAdvancedPluginAuthProvider string
+
+const (
+	GraphqlProxyCacheAdvancedPluginAuthProviderAws   GraphqlProxyCacheAdvancedPluginAuthProvider = "aws"
+	GraphqlProxyCacheAdvancedPluginAuthProviderAzure GraphqlProxyCacheAdvancedPluginAuthProvider = "azure"
+	GraphqlProxyCacheAdvancedPluginAuthProviderGcp   GraphqlProxyCacheAdvancedPluginAuthProvider = "gcp"
+)
+
+func (e GraphqlProxyCacheAdvancedPluginAuthProvider) ToPointer() *GraphqlProxyCacheAdvancedPluginAuthProvider {
+	return &e
+}
+func (e *GraphqlProxyCacheAdvancedPluginAuthProvider) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "aws":
+		fallthrough
+	case "azure":
+		fallthrough
+	case "gcp":
+		*e = GraphqlProxyCacheAdvancedPluginAuthProvider(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for GraphqlProxyCacheAdvancedPluginAuthProvider: %v", v)
+	}
+}
+
+// GraphqlProxyCacheAdvancedPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+type GraphqlProxyCacheAdvancedPluginCloudAuthentication struct {
+	// Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
+	AuthProvider *GraphqlProxyCacheAdvancedPluginAuthProvider `json:"auth_provider,omitempty"`
+	// AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
+	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
+	// The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
+	// The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
+	AwsCacheName *string `default:"null" json:"aws_cache_name"`
+	// This flag specifies whether the cluster is serverless when auth_provider is set to `aws`.
+	AwsIsServerless *bool `default:"true" json:"aws_is_serverless"`
+	// The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
+	AwsRegion *string `default:"null" json:"aws_region"`
+	// The session name for the temporary credentials when assuming the IAM role.
+	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
+	// AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
+	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
+	// Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientID *string `default:"null" json:"azure_client_id"`
+	// Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
+	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
+	// Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
+	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
+	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+}
+
+func (g GraphqlProxyCacheAdvancedPluginCloudAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginCloudAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginCloudAuthentication) GetAuthProvider() *GraphqlProxyCacheAdvancedPluginAuthProvider {
+	if g == nil {
+		return nil
+	}
+	return g.AuthProvider
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginCloudAuthentication) GetAwsAccessKeyID() *string {
+	if g == nil {
+		return nil
+	}
+	return g.AwsAccessKeyID
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginCloudAuthentication) GetAwsAssumeRoleArn() *string {
+	if g == nil {
+		return nil
+	}
+	return g.AwsAssumeRoleArn
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginCloudAuthentication) GetAwsCacheName() *string {
+	if g == nil {
+		return nil
+	}
+	return g.AwsCacheName
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginCloudAuthentication) GetAwsIsServerless() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.AwsIsServerless
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginCloudAuthentication) GetAwsRegion() *string {
+	if g == nil {
+		return nil
+	}
+	return g.AwsRegion
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginCloudAuthentication) GetAwsRoleSessionName() *string {
+	if g == nil {
+		return nil
+	}
+	return g.AwsRoleSessionName
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginCloudAuthentication) GetAwsSecretAccessKey() *string {
+	if g == nil {
+		return nil
+	}
+	return g.AwsSecretAccessKey
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginCloudAuthentication) GetAzureClientID() *string {
+	if g == nil {
+		return nil
+	}
+	return g.AzureClientID
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginCloudAuthentication) GetAzureClientSecret() *string {
+	if g == nil {
+		return nil
+	}
+	return g.AzureClientSecret
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginCloudAuthentication) GetAzureTenantID() *string {
+	if g == nil {
+		return nil
+	}
+	return g.AzureTenantID
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginCloudAuthentication) GetGcpServiceAccountJSON() *string {
+	if g == nil {
+		return nil
+	}
+	return g.GcpServiceAccountJSON
+}
+
 type GraphqlProxyCacheAdvancedPluginClusterNodes struct {
 	// A string representing a host name, such as example.com.
 	IP *string `default:"127.0.0.1" json:"ip"`
@@ -196,6 +349,8 @@ func (e *GraphqlProxyCacheAdvancedPluginSentinelRole) UnmarshalJSON(data []byte)
 }
 
 type GraphqlProxyCacheAdvancedPluginRedis struct {
+	// Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+	CloudAuthentication *GraphqlProxyCacheAdvancedPluginCloudAuthentication `json:"cloud_authentication"`
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
@@ -249,6 +404,13 @@ func (g *GraphqlProxyCacheAdvancedPluginRedis) UnmarshalJSON(data []byte) error 
 		return err
 	}
 	return nil
+}
+
+func (g *GraphqlProxyCacheAdvancedPluginRedis) GetCloudAuthentication() *GraphqlProxyCacheAdvancedPluginCloudAuthentication {
+	if g == nil {
+		return nil
+	}
+	return g.CloudAuthentication
 }
 
 func (g *GraphqlProxyCacheAdvancedPluginRedis) GetClusterMaxRedirections() *int64 {

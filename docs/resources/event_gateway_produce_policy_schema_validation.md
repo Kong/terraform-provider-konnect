@@ -14,13 +14,15 @@ EventGatewayProducePolicySchemaValidation Resource
 
 ```terraform
 resource "konnect_event_gateway_produce_policy_schema_validation" "my_eventgatewayproducepolicyschemavalidation" {
+  after     = "5c201a5b-4913-4356-a781-2cadb6632757"
+  before    = "b3d20470-a7ed-49f3-a345-a2d5aafdc44d"
   condition = "context.topic.name.endsWith(\"my_suffix\") && records.headers[\"x-flag\"] == \"a-value\""
   config = {
     confluent_schema_registry = {
       key_validation_action = "reject"
       schema_registry = {
-        schema_registry_reference_by_name = {
-          name = "...my_name..."
+        schema_registry_reference_by_id = {
+          id = "ed697e18-0f43-4f7c-b34c-11649822e02e"
         }
       }
       value_validation_action = "reject"
@@ -28,8 +30,8 @@ resource "konnect_event_gateway_produce_policy_schema_validation" "my_eventgatew
     json = {
       key_validation_action = "mark"
       schema_registry = {
-        schema_registry_reference_by_name = {
-          name = "...my_name..."
+        schema_registry_reference_by_id = {
+          id = "c903c782-d61b-46d2-84b3-f3f67b38c8ef"
         }
       }
       value_validation_action = "reject"
@@ -57,8 +59,10 @@ resource "konnect_event_gateway_produce_policy_schema_validation" "my_eventgatew
 
 ### Optional
 
-- `condition` (String) A string containing the boolean expression that determines whether the policy is applied.
-- `description` (String) A human-readable description of the policy.
+- `after` (String) Determines the id of the existing policy the new policy should be inserted after. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.
+- `before` (String) Determines the id of the existing policy the new policy should be inserted before. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.
+- `condition` (String) A string containing the boolean expression that determines whether the policy is applied. Default: ""
+- `description` (String) A human-readable description of the policy. Default: ""
 - `enabled` (Boolean) Whether the policy is enabled. Default: true
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
@@ -105,7 +109,6 @@ must be one of ["reject", "mark"]
 Optional:
 
 - `schema_registry_reference_by_id` (Attributes) (see [below for nested schema](#nestedatt--config--confluent_schema_registry--schema_registry--schema_registry_reference_by_id))
-- `schema_registry_reference_by_name` (Attributes) Reference a schema registry by its unique name. (see [below for nested schema](#nestedatt--config--confluent_schema_registry--schema_registry--schema_registry_reference_by_name))
 
 <a id="nestedatt--config--confluent_schema_registry--schema_registry--schema_registry_reference_by_id"></a>
 ### Nested Schema for `config.confluent_schema_registry.schema_registry.schema_registry_reference_by_id`
@@ -113,14 +116,6 @@ Optional:
 Required:
 
 - `id` (String) The unique identifier of the schema registry.
-
-
-<a id="nestedatt--config--confluent_schema_registry--schema_registry--schema_registry_reference_by_name"></a>
-### Nested Schema for `config.confluent_schema_registry.schema_registry.schema_registry_reference_by_name`
-
-Required:
-
-- `name` (String) The unique name of the schema registry.
 
 
 
@@ -150,7 +145,6 @@ must be one of ["reject", "mark"]
 Optional:
 
 - `schema_registry_reference_by_id` (Attributes) (see [below for nested schema](#nestedatt--config--json--schema_registry--schema_registry_reference_by_id))
-- `schema_registry_reference_by_name` (Attributes) Reference a schema registry by its unique name. (see [below for nested schema](#nestedatt--config--json--schema_registry--schema_registry_reference_by_name))
 
 <a id="nestedatt--config--json--schema_registry--schema_registry_reference_by_id"></a>
 ### Nested Schema for `config.json.schema_registry.schema_registry_reference_by_id`
@@ -158,14 +152,6 @@ Optional:
 Required:
 
 - `id` (String) The unique identifier of the schema registry.
-
-
-<a id="nestedatt--config--json--schema_registry--schema_registry_reference_by_name"></a>
-### Nested Schema for `config.json.schema_registry.schema_registry_reference_by_name`
-
-Required:
-
-- `name` (String) The unique name of the schema registry.
 
 ## Import
 

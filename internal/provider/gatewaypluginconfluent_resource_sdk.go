@@ -167,6 +167,12 @@ func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(c
 				}
 			}
 		}
+		if resp.Config.Security == nil {
+			r.Config.Security = nil
+		} else {
+			r.Config.Security = &tfTypes.ConfluentPluginSecurity{}
+			r.Config.Security.SslVerify = types.BoolPointerValue(resp.Config.Security.SslVerify)
+		}
 		r.Config.Timeout = types.Int64PointerValue(resp.Config.Timeout)
 		r.Config.Topic = types.StringValue(resp.Config.Topic)
 		r.Config.TopicsQueryArg = types.StringPointerValue(resp.Config.TopicsQueryArg)
@@ -829,6 +835,18 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 			Confluent: confluent,
 		}
 	}
+	var security *shared.ConfluentPluginSecurity
+	if r.Config.Security != nil {
+		sslVerify2 := new(bool)
+		if !r.Config.Security.SslVerify.IsUnknown() && !r.Config.Security.SslVerify.IsNull() {
+			*sslVerify2 = r.Config.Security.SslVerify.ValueBool()
+		} else {
+			sslVerify2 = nil
+		}
+		security = &shared.ConfluentPluginSecurity{
+			SslVerify: sslVerify2,
+		}
+	}
 	timeout1 := new(int64)
 	if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
 		*timeout1 = r.Config.Timeout.ValueInt64()
@@ -870,6 +888,7 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 		ProducerRequestRetriesMaxAttempts:            producerRequestRetriesMaxAttempts,
 		ProducerRequestTimeout:                       producerRequestTimeout,
 		SchemaRegistry:                               schemaRegistry,
+		Security:                                     security,
 		Timeout:                                      timeout1,
 		Topic:                                        topic,
 		TopicsQueryArg:                               topicsQueryArg,

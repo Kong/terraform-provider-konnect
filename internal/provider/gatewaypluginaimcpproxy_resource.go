@@ -7,6 +7,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -18,12 +20,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
@@ -70,10 +74,62 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
+					"consumer_identifier": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     stringdefault.StaticString(`username`),
+						Description: `Which subject type entries in ACL lists refer to for per-consumer matching. Default: "username"; must be one of ["consumer_id", "custom_id", "username"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"consumer_id",
+								"custom_id",
+								"username",
+							),
+						},
+					},
+					"default_acl": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"allow": schema.ListAttribute{
+									Optional:    true,
+									ElementType: types.StringType,
+									Description: `Subjects explicitly allowed to access this scope. If ` + "`" + `include_consumer_groups` + "`" + ` is true, Consumer Group names are allowed here.`,
+								},
+								"deny": schema.ListAttribute{
+									Optional:    true,
+									ElementType: types.StringType,
+									Description: `Subjects explicitly denied from this scope. ` + "`" + `deny` + "`" + ` takes precedence over ` + "`" + `allow` + "`" + `. If ` + "`" + `include_consumer_groups` + "`" + ` is true, Consumer Group names are allowed here.`,
+								},
+								"scope": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Default:     stringdefault.StaticString(`tools`),
+									Description: `Scope for this default ACL entry (for example: 'tools'). Defaults to 'tools'. Default: "tools"`,
+								},
+							},
+						},
+						Description: `Optional list of default ACL rules keyed by scope (for example: tools).`,
+					},
+					"include_consumer_groups": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `If enabled (true), allows Consumer Group names to be used in default and per-primitive ACL. Default: false`,
+					},
 					"logging": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"log_audits": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `If true, emit audit logs for ACL evaluations. Default: false`,
+							},
 							"log_payloads": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
@@ -91,8 +147,8 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 					"max_request_body_size": schema.Int64Attribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     int64default.StaticInt64(8192),
-						Description: `max allowed body size allowed to be handled as MCP request. Default: 8192`,
+						Default:     int64default.StaticInt64(1048576),
+						Description: `max allowed body size allowed to be handled as MCP request. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 1048576`,
 					},
 					"mode": schema.StringAttribute{
 						Required:    true,
@@ -140,6 +196,31 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 								speakeasy_objectvalidators.NotNull(),
 							},
 							Attributes: map[string]schema.Attribute{
+								"acl": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+										"allow": types.ListType{
+											ElemType: types.StringType,
+										},
+										"deny": types.ListType{
+											ElemType: types.StringType,
+										},
+									})),
+									Attributes: map[string]schema.Attribute{
+										"allow": schema.ListAttribute{
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `Subjects explicitly allowed to use this primitive. If ` + "`" + `include_consumer_groups` + "`" + ` is true, Consumer Group names are allowed here.`,
+										},
+										"deny": schema.ListAttribute{
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `Subjects explicitly denied from using this primitive. ` + "`" + `deny` + "`" + ` takes precedence over ` + "`" + `allow` + "`" + `. If ` + "`" + `include_consumer_groups` + "`" + ` is true, Consumer Group names are allowed here.`,
+										},
+									},
+									Description: `Optional per-primitive ACL. ` + "`" + `deny` + "`" + ` has higher precedence than ` + "`" + `allow` + "`" + `.`,
+								},
 								"annotations": schema.SingleNestedAttribute{
 									Computed: true,
 									Optional: true,
@@ -206,6 +287,10 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 										),
 									},
 								},
+								"name": schema.StringAttribute{
+									Optional:    true,
+									Description: `Tool identifier. In passthrough-listener mode, used to match remote MCP Server tools for ACL enforcement. In other modes, it is also used as the tool name (overrides tools.annotations.title if present).`,
+								},
 								"parameters": schema.ListNestedAttribute{
 									Computed: true,
 									Optional: true,
@@ -214,6 +299,12 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 											speakeasy_objectvalidators.NotNull(),
 										},
 										Attributes: map[string]schema.Attribute{
+											"additional_properties": schema.StringAttribute{
+												CustomType:  jsontypes.NormalizedType{},
+												Computed:    true,
+												Optional:    true,
+												Description: `Parsed as JSON.`,
+											},
 											"description": schema.StringAttribute{
 												Computed: true,
 												Optional: true,
@@ -255,9 +346,21 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 									},
 									Description: `The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.`,
 								},
-								"request_body": schema.StringAttribute{
+								"request_body": schema.MapAttribute{
 									Optional:    true,
+									ElementType: jsontypes.NormalizedType{},
 									Description: `The API requestBody specification defined in OpenAPI. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details.`,
+									Validators: []validator.Map{
+										mapvalidator.ValueStringsAre(validators.IsValidJSON()),
+									},
+								},
+								"responses": schema.MapAttribute{
+									Optional:    true,
+									ElementType: jsontypes.NormalizedType{},
+									Description: `The API responses specification defined in OpenAPI. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details.Only one non-error (status code < 400) responses are supported.`,
+									Validators: []validator.Map{
+										mapvalidator.ValueStringsAre(validators.IsValidJSON()),
+									},
 								},
 								"scheme": schema.StringAttribute{
 									Computed:    true,

@@ -34,6 +34,7 @@ type EventGatewayResource struct {
 
 // EventGatewayResourceModel describes the resource data model.
 type EventGatewayResourceModel struct {
+	Description          types.String            `tfsdk:"description"`
 	ID                   types.String            `tfsdk:"id"`
 	Labels               map[string]types.String `tfsdk:"labels"`
 	MinRuntimeVersion    types.String            `tfsdk:"min_runtime_version"`
@@ -51,6 +52,14 @@ func (r *EventGatewayResource) Schema(ctx context.Context, req resource.SchemaRe
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "EventGateway Resource",
 		Attributes: map[string]schema.Attribute{
+			"description": schema.StringAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `A human-readable description of the Gateway.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(512),
+				},
+			},
 			"id": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{

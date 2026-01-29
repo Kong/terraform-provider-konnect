@@ -61,6 +61,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) RefreshFromSharedAiS
 				r.Config.Embeddings.Model.Options.Bedrock.AwsStsEndpointURL = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsStsEndpointURL)
 				r.Config.Embeddings.Model.Options.Bedrock.EmbeddingsNormalize = types.BoolPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.EmbeddingsNormalize)
 				r.Config.Embeddings.Model.Options.Bedrock.PerformanceConfigLatency = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.PerformanceConfigLatency)
+				r.Config.Embeddings.Model.Options.Bedrock.VideoOutputS3URI = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.VideoOutputS3URI)
 			}
 			if resp.Config.Embeddings.Model.Options.Gemini == nil {
 				r.Config.Embeddings.Model.Options.Gemini = nil
@@ -141,6 +142,27 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) RefreshFromSharedAiS
 			r.Config.Vectordb.Redis = nil
 		} else {
 			r.Config.Vectordb.Redis = &tfTypes.AcePluginRedis{}
+			if resp.Config.Vectordb.Redis.CloudAuthentication == nil {
+				r.Config.Vectordb.Redis.CloudAuthentication = nil
+			} else {
+				r.Config.Vectordb.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+				if resp.Config.Vectordb.Redis.CloudAuthentication.AuthProvider != nil {
+					r.Config.Vectordb.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Vectordb.Redis.CloudAuthentication.AuthProvider))
+				} else {
+					r.Config.Vectordb.Redis.CloudAuthentication.AuthProvider = types.StringNull()
+				}
+				r.Config.Vectordb.Redis.CloudAuthentication.AwsAccessKeyID = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AwsAccessKeyID)
+				r.Config.Vectordb.Redis.CloudAuthentication.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AwsAssumeRoleArn)
+				r.Config.Vectordb.Redis.CloudAuthentication.AwsCacheName = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AwsCacheName)
+				r.Config.Vectordb.Redis.CloudAuthentication.AwsIsServerless = types.BoolPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AwsIsServerless)
+				r.Config.Vectordb.Redis.CloudAuthentication.AwsRegion = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AwsRegion)
+				r.Config.Vectordb.Redis.CloudAuthentication.AwsRoleSessionName = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AwsRoleSessionName)
+				r.Config.Vectordb.Redis.CloudAuthentication.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AwsSecretAccessKey)
+				r.Config.Vectordb.Redis.CloudAuthentication.AzureClientID = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AzureClientID)
+				r.Config.Vectordb.Redis.CloudAuthentication.AzureClientSecret = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AzureClientSecret)
+				r.Config.Vectordb.Redis.CloudAuthentication.AzureTenantID = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.AzureTenantID)
+				r.Config.Vectordb.Redis.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.GcpServiceAccountJSON)
+			}
 			r.Config.Vectordb.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Vectordb.Redis.ClusterMaxRedirections)
 			if resp.Config.Vectordb.Redis.ClusterNodes != nil {
 				r.Config.Vectordb.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
@@ -190,7 +212,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) RefreshFromSharedAiS
 			r.Config.Vectordb.Redis.Username = types.StringPointerValue(resp.Config.Vectordb.Redis.Username)
 		}
 		r.Config.Vectordb.Strategy = types.StringValue(string(resp.Config.Vectordb.Strategy))
-		r.Config.Vectordb.Threshold = types.Float64Value(resp.Config.Vectordb.Threshold)
+		r.Config.Vectordb.Threshold = types.Float64PointerValue(resp.Config.Vectordb.Threshold)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -619,6 +641,12 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToSharedAiSemanticRe
 			} else {
 				performanceConfigLatency = nil
 			}
+			videoOutputS3URI := new(string)
+			if !r.Config.Embeddings.Model.Options.Bedrock.VideoOutputS3URI.IsUnknown() && !r.Config.Embeddings.Model.Options.Bedrock.VideoOutputS3URI.IsNull() {
+				*videoOutputS3URI = r.Config.Embeddings.Model.Options.Bedrock.VideoOutputS3URI.ValueString()
+			} else {
+				videoOutputS3URI = nil
+			}
 			bedrock = &shared.AiSemanticResponseGuardPluginBedrock{
 				AwsAssumeRoleArn:         awsAssumeRoleArn,
 				AwsRegion:                awsRegion,
@@ -626,6 +654,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToSharedAiSemanticRe
 				AwsStsEndpointURL:        awsStsEndpointURL,
 				EmbeddingsNormalize:      embeddingsNormalize,
 				PerformanceConfigLatency: performanceConfigLatency,
+				VideoOutputS3URI:         videoOutputS3URI,
 			}
 		}
 		var gemini *shared.AiSemanticResponseGuardPluginGemini
@@ -844,6 +873,95 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToSharedAiSemanticRe
 	}
 	var redis *shared.AiSemanticResponseGuardPluginRedis
 	if r.Config.Vectordb.Redis != nil {
+		var cloudAuthentication *shared.AiSemanticResponseGuardPluginCloudAuthentication
+		if r.Config.Vectordb.Redis.CloudAuthentication != nil {
+			authProvider := new(shared.AiSemanticResponseGuardPluginAuthProvider)
+			if !r.Config.Vectordb.Redis.CloudAuthentication.AuthProvider.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AuthProvider.IsNull() {
+				*authProvider = shared.AiSemanticResponseGuardPluginAuthProvider(r.Config.Vectordb.Redis.CloudAuthentication.AuthProvider.ValueString())
+			} else {
+				authProvider = nil
+			}
+			awsAccessKeyId1 := new(string)
+			if !r.Config.Vectordb.Redis.CloudAuthentication.AwsAccessKeyID.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AwsAccessKeyID.IsNull() {
+				*awsAccessKeyId1 = r.Config.Vectordb.Redis.CloudAuthentication.AwsAccessKeyID.ValueString()
+			} else {
+				awsAccessKeyId1 = nil
+			}
+			awsAssumeRoleArn1 := new(string)
+			if !r.Config.Vectordb.Redis.CloudAuthentication.AwsAssumeRoleArn.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AwsAssumeRoleArn.IsNull() {
+				*awsAssumeRoleArn1 = r.Config.Vectordb.Redis.CloudAuthentication.AwsAssumeRoleArn.ValueString()
+			} else {
+				awsAssumeRoleArn1 = nil
+			}
+			awsCacheName := new(string)
+			if !r.Config.Vectordb.Redis.CloudAuthentication.AwsCacheName.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AwsCacheName.IsNull() {
+				*awsCacheName = r.Config.Vectordb.Redis.CloudAuthentication.AwsCacheName.ValueString()
+			} else {
+				awsCacheName = nil
+			}
+			awsIsServerless := new(bool)
+			if !r.Config.Vectordb.Redis.CloudAuthentication.AwsIsServerless.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AwsIsServerless.IsNull() {
+				*awsIsServerless = r.Config.Vectordb.Redis.CloudAuthentication.AwsIsServerless.ValueBool()
+			} else {
+				awsIsServerless = nil
+			}
+			awsRegion1 := new(string)
+			if !r.Config.Vectordb.Redis.CloudAuthentication.AwsRegion.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AwsRegion.IsNull() {
+				*awsRegion1 = r.Config.Vectordb.Redis.CloudAuthentication.AwsRegion.ValueString()
+			} else {
+				awsRegion1 = nil
+			}
+			awsRoleSessionName1 := new(string)
+			if !r.Config.Vectordb.Redis.CloudAuthentication.AwsRoleSessionName.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AwsRoleSessionName.IsNull() {
+				*awsRoleSessionName1 = r.Config.Vectordb.Redis.CloudAuthentication.AwsRoleSessionName.ValueString()
+			} else {
+				awsRoleSessionName1 = nil
+			}
+			awsSecretAccessKey1 := new(string)
+			if !r.Config.Vectordb.Redis.CloudAuthentication.AwsSecretAccessKey.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AwsSecretAccessKey.IsNull() {
+				*awsSecretAccessKey1 = r.Config.Vectordb.Redis.CloudAuthentication.AwsSecretAccessKey.ValueString()
+			} else {
+				awsSecretAccessKey1 = nil
+			}
+			azureClientId1 := new(string)
+			if !r.Config.Vectordb.Redis.CloudAuthentication.AzureClientID.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AzureClientID.IsNull() {
+				*azureClientId1 = r.Config.Vectordb.Redis.CloudAuthentication.AzureClientID.ValueString()
+			} else {
+				azureClientId1 = nil
+			}
+			azureClientSecret1 := new(string)
+			if !r.Config.Vectordb.Redis.CloudAuthentication.AzureClientSecret.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AzureClientSecret.IsNull() {
+				*azureClientSecret1 = r.Config.Vectordb.Redis.CloudAuthentication.AzureClientSecret.ValueString()
+			} else {
+				azureClientSecret1 = nil
+			}
+			azureTenantId1 := new(string)
+			if !r.Config.Vectordb.Redis.CloudAuthentication.AzureTenantID.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.AzureTenantID.IsNull() {
+				*azureTenantId1 = r.Config.Vectordb.Redis.CloudAuthentication.AzureTenantID.ValueString()
+			} else {
+				azureTenantId1 = nil
+			}
+			gcpServiceAccountJson1 := new(string)
+			if !r.Config.Vectordb.Redis.CloudAuthentication.GcpServiceAccountJSON.IsUnknown() && !r.Config.Vectordb.Redis.CloudAuthentication.GcpServiceAccountJSON.IsNull() {
+				*gcpServiceAccountJson1 = r.Config.Vectordb.Redis.CloudAuthentication.GcpServiceAccountJSON.ValueString()
+			} else {
+				gcpServiceAccountJson1 = nil
+			}
+			cloudAuthentication = &shared.AiSemanticResponseGuardPluginCloudAuthentication{
+				AuthProvider:          authProvider,
+				AwsAccessKeyID:        awsAccessKeyId1,
+				AwsAssumeRoleArn:      awsAssumeRoleArn1,
+				AwsCacheName:          awsCacheName,
+				AwsIsServerless:       awsIsServerless,
+				AwsRegion:             awsRegion1,
+				AwsRoleSessionName:    awsRoleSessionName1,
+				AwsSecretAccessKey:    awsSecretAccessKey1,
+				AzureClientID:         azureClientId1,
+				AzureClientSecret:     azureClientSecret1,
+				AzureTenantID:         azureTenantId1,
+				GcpServiceAccountJSON: gcpServiceAccountJson1,
+			}
+		}
 		clusterMaxRedirections := new(int64)
 		if !r.Config.Vectordb.Redis.ClusterMaxRedirections.IsUnknown() && !r.Config.Vectordb.Redis.ClusterMaxRedirections.IsNull() {
 			*clusterMaxRedirections = r.Config.Vectordb.Redis.ClusterMaxRedirections.ValueInt64()
@@ -1003,6 +1121,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToSharedAiSemanticRe
 			username = nil
 		}
 		redis = &shared.AiSemanticResponseGuardPluginRedis{
+			CloudAuthentication:    cloudAuthentication,
 			ClusterMaxRedirections: clusterMaxRedirections,
 			ClusterNodes:           clusterNodes,
 			ConnectTimeout:         connectTimeout,
@@ -1027,9 +1146,12 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToSharedAiSemanticRe
 		}
 	}
 	strategy := shared.AiSemanticResponseGuardPluginStrategy(r.Config.Vectordb.Strategy.ValueString())
-	var threshold1 float64
-	threshold1 = r.Config.Vectordb.Threshold.ValueFloat64()
-
+	threshold1 := new(float64)
+	if !r.Config.Vectordb.Threshold.IsUnknown() && !r.Config.Vectordb.Threshold.IsNull() {
+		*threshold1 = r.Config.Vectordb.Threshold.ValueFloat64()
+	} else {
+		threshold1 = nil
+	}
 	vectordb := shared.AiSemanticResponseGuardPluginVectordb{
 		Dimensions:     dimensions,
 		DistanceMetric: distanceMetric,

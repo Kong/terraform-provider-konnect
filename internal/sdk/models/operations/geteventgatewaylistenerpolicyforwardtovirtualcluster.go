@@ -11,7 +11,7 @@ type GetEventGatewayListenerPolicyForwardToVirtualClusterRequest struct {
 	// The UUID of your Gateway.
 	GatewayID string `pathParam:"style=simple,explode=false,name=gatewayId"`
 	// The ID of the Event Gateway Listener.
-	EventGatewayListenerID string `pathParam:"style=simple,explode=false,name=eventGatewayListenerId"`
+	ListenerID string `pathParam:"style=simple,explode=false,name=eventGatewayListenerId"`
 	// The UUID of the policy.
 	PolicyID string `pathParam:"style=simple,explode=false,name=policyId"`
 }
@@ -23,11 +23,11 @@ func (g *GetEventGatewayListenerPolicyForwardToVirtualClusterRequest) GetGateway
 	return g.GatewayID
 }
 
-func (g *GetEventGatewayListenerPolicyForwardToVirtualClusterRequest) GetEventGatewayListenerID() string {
+func (g *GetEventGatewayListenerPolicyForwardToVirtualClusterRequest) GetListenerID() string {
 	if g == nil {
 		return ""
 	}
-	return g.EventGatewayListenerID
+	return g.ListenerID
 }
 
 func (g *GetEventGatewayListenerPolicyForwardToVirtualClusterRequest) GetPolicyID() string {

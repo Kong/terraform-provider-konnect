@@ -7,7 +7,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
-	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
@@ -16,9 +15,6 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResourceModel) Refresh
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		if resp.Config != nil {
-			r.Config = tfTypes.ForwardToVirtualClusterPolicyConfig{}
-		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -43,9 +39,21 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResourceModel) ToOpera
 	var gatewayID string
 	gatewayID = r.GatewayID.ValueString()
 
-	var eventGatewayListenerID string
-	eventGatewayListenerID = r.EventGatewayListenerID.ValueString()
+	var listenerID string
+	listenerID = r.ListenerID.ValueString()
 
+	before := new(string)
+	if !r.Before.IsUnknown() && !r.Before.IsNull() {
+		*before = r.Before.ValueString()
+	} else {
+		before = nil
+	}
+	after := new(string)
+	if !r.After.IsUnknown() && !r.After.IsNull() {
+		*after = r.After.ValueString()
+	} else {
+		after = nil
+	}
 	forwardToVirtualClusterPolicy, forwardToVirtualClusterPolicyDiags := r.ToSharedForwardToVirtualClusterPolicy(ctx)
 	diags.Append(forwardToVirtualClusterPolicyDiags...)
 
@@ -55,7 +63,9 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResourceModel) ToOpera
 
 	out := operations.CreateEventGatewayListenerPolicyForwardToVirtualClusterRequest{
 		GatewayID:                     gatewayID,
-		EventGatewayListenerID:        eventGatewayListenerID,
+		ListenerID:                    listenerID,
+		Before:                        before,
+		After:                         after,
 		ForwardToVirtualClusterPolicy: forwardToVirtualClusterPolicy,
 	}
 
@@ -68,16 +78,16 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResourceModel) ToOpera
 	var gatewayID string
 	gatewayID = r.GatewayID.ValueString()
 
-	var eventGatewayListenerID string
-	eventGatewayListenerID = r.EventGatewayListenerID.ValueString()
+	var listenerID string
+	listenerID = r.ListenerID.ValueString()
 
 	var policyID string
 	policyID = r.ID.ValueString()
 
 	out := operations.DeleteEventGatewayListenerPolicyForwardToVirtualClusterRequest{
-		GatewayID:              gatewayID,
-		EventGatewayListenerID: eventGatewayListenerID,
-		PolicyID:               policyID,
+		GatewayID:  gatewayID,
+		ListenerID: listenerID,
+		PolicyID:   policyID,
 	}
 
 	return &out, diags
@@ -89,16 +99,16 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResourceModel) ToOpera
 	var gatewayID string
 	gatewayID = r.GatewayID.ValueString()
 
-	var eventGatewayListenerID string
-	eventGatewayListenerID = r.EventGatewayListenerID.ValueString()
+	var listenerID string
+	listenerID = r.ListenerID.ValueString()
 
 	var policyID string
 	policyID = r.ID.ValueString()
 
 	out := operations.GetEventGatewayListenerPolicyForwardToVirtualClusterRequest{
-		GatewayID:              gatewayID,
-		EventGatewayListenerID: eventGatewayListenerID,
-		PolicyID:               policyID,
+		GatewayID:  gatewayID,
+		ListenerID: listenerID,
+		PolicyID:   policyID,
 	}
 
 	return &out, diags
@@ -110,8 +120,8 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResourceModel) ToOpera
 	var gatewayID string
 	gatewayID = r.GatewayID.ValueString()
 
-	var eventGatewayListenerID string
-	eventGatewayListenerID = r.EventGatewayListenerID.ValueString()
+	var listenerID string
+	listenerID = r.ListenerID.ValueString()
 
 	var policyID string
 	policyID = r.ID.ValueString()
@@ -125,7 +135,7 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResourceModel) ToOpera
 
 	out := operations.UpdateEventGatewayListenerPolicyForwardToVirtualClusterRequest{
 		GatewayID:                     gatewayID,
-		EventGatewayListenerID:        eventGatewayListenerID,
+		ListenerID:                    listenerID,
 		PolicyID:                      policyID,
 		ForwardToVirtualClusterPolicy: forwardToVirtualClusterPolicy,
 	}

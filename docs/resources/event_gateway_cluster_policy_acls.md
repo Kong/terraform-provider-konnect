@@ -14,6 +14,8 @@ EventGatewayClusterPolicyAcls Resource
 
 ```terraform
 resource "konnect_event_gateway_cluster_policy_acls" "my_eventgatewayclusterpolicyacls" {
+  after     = "159866b6-a274-4624-aede-51da961f82cc"
+  before    = "116541a4-d532-4f25-8c70-caf7874ea092"
   condition = "context.auth.principal.name == \"this-user\""
   config = {
     rules = [
@@ -55,8 +57,10 @@ resource "konnect_event_gateway_cluster_policy_acls" "my_eventgatewayclusterpoli
 
 ### Optional
 
-- `condition` (String) A string containing the boolean expression that determines whether the policy is applied.
-- `description` (String) A human-readable description of the policy.
+- `after` (String) Determines the id of the existing policy the new policy should be inserted after. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.
+- `before` (String) Determines the id of the existing policy the new policy should be inserted before. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.
+- `condition` (String) A string containing the boolean expression that determines whether the policy is applied. Default: ""
+- `description` (String) A human-readable description of the policy. Default: ""
 - `enabled` (Boolean) Whether the policy is enabled. Default: true
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 

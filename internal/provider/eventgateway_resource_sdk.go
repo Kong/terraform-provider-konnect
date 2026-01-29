@@ -14,6 +14,7 @@ func (r *EventGatewayResourceModel) RefreshFromSharedEventGatewayInfo(ctx contex
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringValue(resp.ID)
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
@@ -84,6 +85,12 @@ func (r *EventGatewayResourceModel) ToSharedCreateGatewayRequest(ctx context.Con
 	var name string
 	name = r.Name.ValueString()
 
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
+	}
 	minRuntimeVersion := new(string)
 	if !r.MinRuntimeVersion.IsUnknown() && !r.MinRuntimeVersion.IsNull() {
 		*minRuntimeVersion = r.MinRuntimeVersion.ValueString()
@@ -102,6 +109,7 @@ func (r *EventGatewayResourceModel) ToSharedCreateGatewayRequest(ctx context.Con
 	}
 	out := shared.CreateGatewayRequest{
 		Name:              name,
+		Description:       description,
 		MinRuntimeVersion: minRuntimeVersion,
 		Labels:            labels,
 	}
@@ -117,6 +125,12 @@ func (r *EventGatewayResourceModel) ToSharedUpdateGatewayRequest(ctx context.Con
 		*name = r.Name.ValueString()
 	} else {
 		name = nil
+	}
+	description := new(string)
+	if !r.Description.IsUnknown() && !r.Description.IsNull() {
+		*description = r.Description.ValueString()
+	} else {
+		description = nil
 	}
 	minRuntimeVersion := new(string)
 	if !r.MinRuntimeVersion.IsUnknown() && !r.MinRuntimeVersion.IsNull() {
@@ -136,6 +150,7 @@ func (r *EventGatewayResourceModel) ToSharedUpdateGatewayRequest(ctx context.Con
 	}
 	out := shared.UpdateGatewayRequest{
 		Name:              name,
+		Description:       description,
 		MinRuntimeVersion: minRuntimeVersion,
 		Labels:            labels,
 	}

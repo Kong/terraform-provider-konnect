@@ -15,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -39,17 +40,19 @@ type EventGatewayListenerPolicyTLSServerResource struct {
 
 // EventGatewayListenerPolicyTLSServerResourceModel describes the resource data model.
 type EventGatewayListenerPolicyTLSServerResourceModel struct {
-	Config                 tfTypes.EventGatewayTLSListenerPolicyConfig `tfsdk:"config"`
-	CreatedAt              types.String                                `tfsdk:"created_at"`
-	Description            types.String                                `tfsdk:"description"`
-	Enabled                types.Bool                                  `tfsdk:"enabled"`
-	EventGatewayListenerID types.String                                `tfsdk:"event_gateway_listener_id"`
-	GatewayID              types.String                                `tfsdk:"gateway_id"`
-	ID                     types.String                                `tfsdk:"id"`
-	Labels                 map[string]types.String                     `tfsdk:"labels"`
-	Name                   types.String                                `tfsdk:"name"`
-	ParentPolicyID         types.String                                `tfsdk:"parent_policy_id"`
-	UpdatedAt              types.String                                `tfsdk:"updated_at"`
+	After          types.String                                `queryParam:"style=form,explode=true,name=after" tfsdk:"after"`
+	Before         types.String                                `queryParam:"style=form,explode=true,name=before" tfsdk:"before"`
+	Config         tfTypes.EventGatewayTLSListenerPolicyConfig `tfsdk:"config"`
+	CreatedAt      types.String                                `tfsdk:"created_at"`
+	Description    types.String                                `tfsdk:"description"`
+	Enabled        types.Bool                                  `tfsdk:"enabled"`
+	GatewayID      types.String                                `tfsdk:"gateway_id"`
+	ID             types.String                                `tfsdk:"id"`
+	Labels         map[string]types.String                     `tfsdk:"labels"`
+	ListenerID     types.String                                `tfsdk:"listener_id"`
+	Name           types.String                                `tfsdk:"name"`
+	ParentPolicyID types.String                                `tfsdk:"parent_policy_id"`
+	UpdatedAt      types.String                                `tfsdk:"updated_at"`
 }
 
 func (r *EventGatewayListenerPolicyTLSServerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -60,6 +63,20 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Schema(ctx context.Context
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "EventGatewayListenerPolicyTLSServer Resource",
 		Attributes: map[string]schema.Attribute{
+			"after": schema.StringAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `Determines the id of the existing policy the new policy should be inserted after. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.`,
+			},
+			"before": schema.StringAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `Determines the id of the existing policy the new policy should be inserted before. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.`,
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -138,8 +155,10 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Schema(ctx context.Context
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
 			"description": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
-				Description: `A human-readable description of the policy.`,
+				Default:     stringdefault.StaticString(``),
+				Description: `A human-readable description of the policy. Default: ""`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(512),
 				},
@@ -149,10 +168,6 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Schema(ctx context.Context
 				Optional:    true,
 				Default:     booldefault.StaticBool(true),
 				Description: `Whether the policy is enabled. Default: true`,
-			},
-			"event_gateway_listener_id": schema.StringAttribute{
-				Required:    true,
-				Description: `The ID of the Event Gateway Listener.`,
 			},
 			"gateway_id": schema.StringAttribute{
 				Required:    true,
@@ -170,11 +185,16 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Schema(ctx context.Context
 					`` + "\n" +
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
+			"listener_id": schema.StringAttribute{
+				Required:    true,
+				Description: `The ID of the Event Gateway Listener.`,
+			},
 			"name": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
 				Description: `A unique user-defined name of the policy.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 255),
+					stringvalidator.UTF8LengthAtMost(255),
 				},
 			},
 			"parent_policy_id": schema.StringAttribute{
@@ -510,26 +530,26 @@ func (r *EventGatewayListenerPolicyTLSServerResource) ImportState(ctx context.Co
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		EventGatewayListenerID string `json:"event_gateway_listener_id"`
-		GatewayID              string `json:"gateway_id"`
-		ID                     string `json:"id"`
+		GatewayID  string `json:"gateway_id"`
+		ListenerID string `json:"listener_id"`
+		ID         string `json:"id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"event_gateway_listener_id": "...", "gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"gateway_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "listener_id": "..."}': `+err.Error())
 		return
 	}
 
-	if len(data.EventGatewayListenerID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field event_gateway_listener_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
-		return
-	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("event_gateway_listener_id"), data.EventGatewayListenerID)...)
 	if len(data.GatewayID) == 0 {
 		resp.Diagnostics.AddError("Missing required field", `The field gateway_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("gateway_id"), data.GatewayID)...)
+	if len(data.ListenerID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field listener_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("listener_id"), data.ListenerID)...)
 	if len(data.ID) == 0 {
 		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"`)
 		return

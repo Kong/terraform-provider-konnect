@@ -15,6 +15,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -40,6 +42,8 @@ type EventGatewayProducePolicyEncryptResource struct {
 
 // EventGatewayProducePolicyEncryptResourceModel describes the resource data model.
 type EventGatewayProducePolicyEncryptResourceModel struct {
+	After            types.String                      `queryParam:"style=form,explode=true,name=after" tfsdk:"after"`
+	Before           types.String                      `queryParam:"style=form,explode=true,name=before" tfsdk:"before"`
 	Condition        types.String                      `tfsdk:"condition"`
 	Config           tfTypes.EventGatewayEncryptConfig `tfsdk:"config"`
 	CreatedAt        types.String                      `tfsdk:"created_at"`
@@ -62,11 +66,27 @@ func (r *EventGatewayProducePolicyEncryptResource) Schema(ctx context.Context, r
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "EventGatewayProducePolicyEncrypt Resource",
 		Attributes: map[string]schema.Attribute{
+			"after": schema.StringAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `Determines the id of the existing policy the new policy should be inserted after. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.`,
+			},
+			"before": schema.StringAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `Determines the id of the existing policy the new policy should be inserted before. Either 'before' or 'after' can be provided, when both are omitted the new policy is added to the end of the chain. When both are provided, the request fails with a 400 Bad Request. Requires replacement if changed.`,
+			},
 			"condition": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
-				Description: `A string containing the boolean expression that determines whether the policy is applied.`,
+				Default:     stringdefault.StaticString(``),
+				Description: `A string containing the boolean expression that determines whether the policy is applied. Default: ""`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 1000),
+					stringvalidator.UTF8LengthAtMost(1000),
 				},
 			},
 			"config": schema.SingleNestedAttribute{
@@ -182,8 +202,10 @@ func (r *EventGatewayProducePolicyEncryptResource) Schema(ctx context.Context, r
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
 			"description": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
-				Description: `A human-readable description of the policy.`,
+				Default:     stringdefault.StaticString(``),
+				Description: `A human-readable description of the policy. Default: ""`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(512),
 				},
@@ -211,10 +233,11 @@ func (r *EventGatewayProducePolicyEncryptResource) Schema(ctx context.Context, r
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"name": schema.StringAttribute{
+				Computed:    true,
 				Optional:    true,
 				Description: `A unique user-defined name of the policy.`,
 				Validators: []validator.String{
-					stringvalidator.UTF8LengthBetween(1, 255),
+					stringvalidator.UTF8LengthAtMost(255),
 				},
 			},
 			"parent_policy_id": schema.StringAttribute{

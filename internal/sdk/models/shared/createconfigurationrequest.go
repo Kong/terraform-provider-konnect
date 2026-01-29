@@ -11,10 +11,16 @@ type CreateConfigurationRequest struct {
 	ControlPlaneID string `json:"control_plane_id"`
 	// Set of control-plane geos supported for deploying cloud-gateways configurations.
 	ControlPlaneGeo ControlPlaneGeo `json:"control_plane_geo"`
-	// Supported gateway version.
-	Version string `json:"version"`
+	// Supported gateway version. For serverless.v1 kind of cloud gateways, this field should be omitted.
+	Version *string `json:"version,omitempty"`
 	// List of data-plane groups that describe where to deploy instances, along with how many instances.
 	DataplaneGroups []CreateConfigurationDataPlaneGroup `json:"dataplane_groups"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// Kind of the Cloud Gateway deployment. If serverless.v1 is specified, the following fields
+	// should be omitted (will be ignored if provided): autoscale, cloud_gateway_network_id, version.
+	Kind *ConfigurationKind `default:"dedicated.v0" json:"kind"`
 	// Type of API access data-plane groups will support for a configuration.
 	APIAccess *APIAccess `default:"private+public" json:"api_access"`
 }
@@ -44,9 +50,9 @@ func (c *CreateConfigurationRequest) GetControlPlaneGeo() ControlPlaneGeo {
 	return c.ControlPlaneGeo
 }
 
-func (c *CreateConfigurationRequest) GetVersion() string {
+func (c *CreateConfigurationRequest) GetVersion() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.Version
 }
@@ -56,6 +62,13 @@ func (c *CreateConfigurationRequest) GetDataplaneGroups() []CreateConfigurationD
 		return []CreateConfigurationDataPlaneGroup{}
 	}
 	return c.DataplaneGroups
+}
+
+func (c *CreateConfigurationRequest) GetKind() *ConfigurationKind {
+	if c == nil {
+		return nil
+	}
+	return c.Kind
 }
 
 func (c *CreateConfigurationRequest) GetAPIAccess() *APIAccess {

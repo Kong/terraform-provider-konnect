@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type BotDetectionPluginConfig struct {
-	Allow []types.String `tfsdk:"allow"`
-	Deny  []types.String `tfsdk:"deny"`
+type AzureVhubPeeringGateway struct {
+	DNSConfig []TransitGatewayDNSConfig `tfsdk:"dns_config"`
+	Name      types.String              `tfsdk:"name"`
 }

@@ -788,6 +788,8 @@ type KafkaLogPluginSecurity struct {
 	CertificateID *string `default:"null" json:"certificate_id"`
 	// Enables TLS.
 	Ssl *bool `default:"null" json:"ssl"`
+	// When using TLS, this option enables verification of the certificate presented by the server.
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 }
 
 func (k KafkaLogPluginSecurity) MarshalJSON() ([]byte, error) {
@@ -813,6 +815,13 @@ func (k *KafkaLogPluginSecurity) GetSsl() *bool {
 		return nil
 	}
 	return k.Ssl
+}
+
+func (k *KafkaLogPluginSecurity) GetSslVerify() *bool {
+	if k == nil {
+		return nil
+	}
+	return k.SslVerify
 }
 
 type KafkaLogPluginConfig struct {

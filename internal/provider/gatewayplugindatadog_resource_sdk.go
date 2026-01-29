@@ -63,6 +63,7 @@ func (r *GatewayPluginDatadogResourceModel) RefreshFromSharedDatadogPlugin(ctx c
 			}
 			r.Config.QueueSize = types.Int64PointerValue(resp.Config.QueueSize)
 			r.Config.RetryCount = types.Int64PointerValue(resp.Config.RetryCount)
+			r.Config.RouteNameTag = types.StringPointerValue(resp.Config.RouteNameTag)
 			r.Config.ServiceNameTag = types.StringPointerValue(resp.Config.ServiceNameTag)
 			r.Config.StatusTag = types.StringPointerValue(resp.Config.StatusTag)
 		}
@@ -338,9 +339,9 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin(ctx context.Co
 		}
 		metrics := make([]shared.Metrics, 0, len(r.Config.Metrics))
 		for metricsIndex := range r.Config.Metrics {
-			consumerIdentifier := new(shared.ConsumerIdentifier)
+			consumerIdentifier := new(shared.DatadogPluginConsumerIdentifier)
 			if !r.Config.Metrics[metricsIndex].ConsumerIdentifier.IsUnknown() && !r.Config.Metrics[metricsIndex].ConsumerIdentifier.IsNull() {
-				*consumerIdentifier = shared.ConsumerIdentifier(r.Config.Metrics[metricsIndex].ConsumerIdentifier.ValueString())
+				*consumerIdentifier = shared.DatadogPluginConsumerIdentifier(r.Config.Metrics[metricsIndex].ConsumerIdentifier.ValueString())
 			} else {
 				consumerIdentifier = nil
 			}
@@ -449,6 +450,12 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin(ctx context.Co
 		} else {
 			retryCount = nil
 		}
+		routeNameTag := new(string)
+		if !r.Config.RouteNameTag.IsUnknown() && !r.Config.RouteNameTag.IsNull() {
+			*routeNameTag = r.Config.RouteNameTag.ValueString()
+		} else {
+			routeNameTag = nil
+		}
 		serviceNameTag := new(string)
 		if !r.Config.ServiceNameTag.IsUnknown() && !r.Config.ServiceNameTag.IsNull() {
 			*serviceNameTag = r.Config.ServiceNameTag.ValueString()
@@ -471,6 +478,7 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin(ctx context.Co
 			Queue:          queue,
 			QueueSize:      queueSize,
 			RetryCount:     retryCount,
+			RouteNameTag:   routeNameTag,
 			ServiceNameTag: serviceNameTag,
 			StatusTag:      statusTag,
 		}
