@@ -30,7 +30,7 @@ func (r *CloudGatewayConfigurationResourceModel) RefreshFromSharedConfigurationM
 			var dataplaneGroups tfTypes.ConfigurationDataPlaneGroup
 
 			if dataplaneGroupsItem.Autoscale != nil {
-				dataplaneGroups.Autoscale = &tfTypes.ConfigurationDataPlaneGroupAutoscale{}
+				dataplaneGroups.Autoscale = &tfTypes.ConfigurationDataPlaneGroupAutoscaleInput{}
 				if dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot != nil {
 					dataplaneGroups.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot = &tfTypes.ConfigurationDataPlaneGroupAutoscaleAutopilot{}
 					dataplaneGroups.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.BaseRps = types.Int64Value(dataplaneGroupsItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.BaseRps)
@@ -128,7 +128,7 @@ func (r *CloudGatewayConfigurationResourceModel) ToSharedCreateConfigurationRequ
 		} else {
 			cloudGatewayNetworkID = nil
 		}
-		var autoscale *shared.ConfigurationDataPlaneGroupAutoscale
+		var autoscale *shared.ConfigurationDataPlaneGroupAutoscaleInput
 		if r.DataplaneGroups[dataplaneGroupsIndex].Autoscale != nil {
 			var configurationDataPlaneGroupAutoscaleStatic *shared.ConfigurationDataPlaneGroupAutoscaleStatic
 			if r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic != nil {
@@ -144,31 +144,24 @@ func (r *CloudGatewayConfigurationResourceModel) ToSharedCreateConfigurationRequ
 				}
 			}
 			if configurationDataPlaneGroupAutoscaleStatic != nil {
-				autoscale = &shared.ConfigurationDataPlaneGroupAutoscale{
+				autoscale = &shared.ConfigurationDataPlaneGroupAutoscaleInput{
 					ConfigurationDataPlaneGroupAutoscaleStatic: configurationDataPlaneGroupAutoscaleStatic,
 				}
 			}
-			var configurationDataPlaneGroupAutoscaleAutopilot *shared.ConfigurationDataPlaneGroupAutoscaleAutopilot
+			var configurationDataPlaneGroupAutoscaleAutopilotInput *shared.ConfigurationDataPlaneGroupAutoscaleAutopilotInput
 			if r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot != nil {
 				kind1 := shared.ConfigurationDataPlaneGroupAutoscaleAutopilotKind(r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.Kind.ValueString())
 				var baseRps int64
 				baseRps = r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.BaseRps.ValueInt64()
 
-				maxRps := new(int64)
-				if !r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.MaxRps.IsUnknown() && !r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.MaxRps.IsNull() {
-					*maxRps = r.DataplaneGroups[dataplaneGroupsIndex].Autoscale.ConfigurationDataPlaneGroupAutoscaleAutopilot.MaxRps.ValueInt64()
-				} else {
-					maxRps = nil
-				}
-				configurationDataPlaneGroupAutoscaleAutopilot = &shared.ConfigurationDataPlaneGroupAutoscaleAutopilot{
+				configurationDataPlaneGroupAutoscaleAutopilotInput = &shared.ConfigurationDataPlaneGroupAutoscaleAutopilotInput{
 					Kind:    kind1,
 					BaseRps: baseRps,
-					MaxRps:  maxRps,
 				}
 			}
-			if configurationDataPlaneGroupAutoscaleAutopilot != nil {
-				autoscale = &shared.ConfigurationDataPlaneGroupAutoscale{
-					ConfigurationDataPlaneGroupAutoscaleAutopilot: configurationDataPlaneGroupAutoscaleAutopilot,
+			if configurationDataPlaneGroupAutoscaleAutopilotInput != nil {
+				autoscale = &shared.ConfigurationDataPlaneGroupAutoscaleInput{
+					ConfigurationDataPlaneGroupAutoscaleAutopilotInput: configurationDataPlaneGroupAutoscaleAutopilotInput,
 				}
 			}
 		}

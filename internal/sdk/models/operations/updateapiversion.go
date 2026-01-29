@@ -3,16 +3,64 @@
 package operations
 
 import (
+	"encoding/json"
+	"fmt"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
+
+// UpdateAPIVersionQueryParamForce - If true, allows operations to be removed from the current version when using access control enforcement.
+// If false, operations removal will be rejected with a 409 error.
+// Omitting the value (i.e., setting `?force`) means true.
+type UpdateAPIVersionQueryParamForce string
+
+const (
+	UpdateAPIVersionQueryParamForceTrue  UpdateAPIVersionQueryParamForce = "true"
+	UpdateAPIVersionQueryParamForceFalse UpdateAPIVersionQueryParamForce = "false"
+)
+
+func (e UpdateAPIVersionQueryParamForce) ToPointer() *UpdateAPIVersionQueryParamForce {
+	return &e
+}
+func (e *UpdateAPIVersionQueryParamForce) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "true":
+		fallthrough
+	case "false":
+		*e = UpdateAPIVersionQueryParamForce(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for UpdateAPIVersionQueryParamForce: %v", v)
+	}
+}
 
 type UpdateAPIVersionRequest struct {
 	// The UUID API identifier
 	APIID string `pathParam:"style=simple,explode=false,name=apiId"`
 	// The API version identifier
-	VersionID  string            `pathParam:"style=simple,explode=false,name=versionId"`
-	APIVersion shared.APIVersion `request:"mediaType=application/json"`
+	VersionID string `pathParam:"style=simple,explode=false,name=versionId"`
+	// If true, allows operations to be removed from the current version when using access control enforcement.
+	// If false, operations removal will be rejected with a 409 error.
+	// Omitting the value (i.e., setting `?force`) means true.
+	//
+	Force      *UpdateAPIVersionQueryParamForce `default:"false" queryParam:"style=form,explode=true,name=force"`
+	APIVersion shared.APIVersion                `request:"mediaType=application/json"`
+}
+
+func (u UpdateAPIVersionRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateAPIVersionRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"apiId", "versionId", "ApiVersion"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateAPIVersionRequest) GetAPIID() string {
@@ -27,6 +75,13 @@ func (u *UpdateAPIVersionRequest) GetVersionID() string {
 		return ""
 	}
 	return u.VersionID
+}
+
+func (u *UpdateAPIVersionRequest) GetForce() *UpdateAPIVersionQueryParamForce {
+	if u == nil {
+		return nil
+	}
+	return u.Force
 }
 
 func (u *UpdateAPIVersionRequest) GetAPIVersion() shared.APIVersion {

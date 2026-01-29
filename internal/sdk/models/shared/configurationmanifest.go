@@ -13,7 +13,7 @@ type ConfigurationManifest struct {
 	// Supported gateway version. For serverless.v1 kind of cloud gateways, this field should be omitted.
 	Version *string `json:"version,omitempty"`
 	// Type of API access data-plane groups will support for a configuration.
-	APIAccess *APIAccess `default:"private+public" json:"api_access"`
+	APIAccess *APIAccess `json:"api_access,omitempty"`
 	// Object that describes where data-planes will be deployed to, along with how many instances.
 	DataplaneGroupConfig []ConfigurationDataPlaneGroupConfig `json:"dataplane_group_config"`
 	// List of data-plane groups that describe where data-planes will be deployed to, along with how many

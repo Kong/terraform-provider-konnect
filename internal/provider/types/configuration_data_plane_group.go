@@ -7,7 +7,7 @@ import (
 )
 
 type ConfigurationDataPlaneGroup struct {
-	Autoscale             *ConfigurationDataPlaneGroupAutoscale         `tfsdk:"autoscale"`
+	Autoscale             *ConfigurationDataPlaneGroupAutoscaleInput    `tfsdk:"autoscale"`
 	CloudGatewayNetworkID types.String                                  `tfsdk:"cloud_gateway_network_id"`
 	CreatedAt             types.String                                  `tfsdk:"created_at"`
 	EgressIPAddresses     []types.String                                `tfsdk:"egress_ip_addresses"`

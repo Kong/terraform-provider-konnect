@@ -18,6 +18,7 @@ const (
 	ControlPlaneClusterTypeClusterTypeControlPlaneGroup    ControlPlaneClusterType = "CLUSTER_TYPE_CONTROL_PLANE_GROUP"
 	ControlPlaneClusterTypeClusterTypeServerless           ControlPlaneClusterType = "CLUSTER_TYPE_SERVERLESS"
 	ControlPlaneClusterTypeClusterTypeHybrid               ControlPlaneClusterType = "CLUSTER_TYPE_HYBRID"
+	ControlPlaneClusterTypeClusterTypeCloudAPIGateway      ControlPlaneClusterType = "CLUSTER_TYPE_CLOUD_API_GATEWAY"
 )
 
 func (e ControlPlaneClusterType) ToPointer() *ControlPlaneClusterType {
@@ -38,6 +39,8 @@ func (e *ControlPlaneClusterType) UnmarshalJSON(data []byte) error {
 	case "CLUSTER_TYPE_SERVERLESS":
 		fallthrough
 	case "CLUSTER_TYPE_HYBRID":
+		fallthrough
+	case "CLUSTER_TYPE_CLOUD_API_GATEWAY":
 		*e = ControlPlaneClusterType(v)
 		return nil
 	default:
