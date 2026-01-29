@@ -11,6 +11,7 @@
 ### Bug Fixes
 * Fix pagination in data sources
 * Treat `max_rps` as read only property to fix updates in `konnect_cloud_gateway_configuration` resource
+* Fix drift detection in `konnect_portal_auth` resource
 
 ## 3.5.0
 > Released on 2026/01/12
