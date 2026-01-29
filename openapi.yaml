@@ -17969,6 +17969,16 @@ components:
         - medium
         - large
       x-speakeasy-unknown-values: allow
+    ApiAccess:
+      description: Type of API access data-plane groups will support for a configuration.
+      type: string
+      example: private+public
+      enum:
+        - private
+        - public
+        - private+public
+      x-speakeasy-param-computed: true
+      x-speakeasy-unknown-values: allow
     ProviderRegionId:
       description: Region ID for cloud provider region.
       type: string
@@ -18201,15 +18211,7 @@ components:
         version:
           $ref: '#/components/schemas/GatewayVersion'
         api_access:
-          description: Type of API access data-plane groups will support for a configuration.
-          type: string
-          example: private+public
-          enum:
-            - private
-            - public
-            - private+public
-          x-speakeasy-param-computed: true
-          x-speakeasy-unknown-values: allow
+          $ref: '#/components/schemas/ApiAccess'
         dataplane_group_config:
           description: 'Object that describes where data-planes will be deployed to, along with how many instances.'
           type: array
@@ -19864,15 +19866,7 @@ components:
         kind:
           $ref: '#/components/schemas/ConfigurationKind'
         api_access:
-          description: Type of API access data-plane groups will support for a configuration.
-          type: string
-          example: private+public
-          enum:
-            - private
-            - public
-            - private+public
-          x-speakeasy-param-computed: true
-          x-speakeasy-unknown-values: allow
+          $ref: '#/components/schemas/ApiAccess'
       additionalProperties: false
       required:
         - control_plane_id
