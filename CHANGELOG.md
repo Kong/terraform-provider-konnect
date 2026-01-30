@@ -1,7 +1,21 @@
 # Changelog
 
+## 3.6.0
+> Released 2026/01/30
+
+### Features
+* Early access support for Serverless in Cloud Gateways using `cloud_gateway_configuration`
+* Support for `azure_private_dns_resolver` in `cloud_gateway_network`
+* Add support for `team`, `team_list`, `system_account` and `system_account_list` data sources
+
+### Bug Fixes
+* Fix pagination in data sources
+* Treat `max_rps` as read only property to fix updates in `konnect_cloud_gateway_configuration` resource
+* Fix drift detection in `konnect_portal_auth` resource
+* Fix drift detection in `konnect_cloud_gateway_configuration` resource
+
 ## 3.5.0
-> Released on 2025/01/12
+> Released on 2026/01/12
 
 ### Features
 * Support PATCH update for certain properties in `aws_transit_gateway` and `aws_resource_endpoint_gateway` within `konnect_cloud_gateway_transit_gateway` resource without replacement

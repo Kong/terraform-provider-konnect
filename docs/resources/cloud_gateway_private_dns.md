@@ -41,6 +41,7 @@ resource "konnect_cloud_gateway_private_dns" "my_cloudgatewayprivatedns" {
 
 - `aws_private_dns_resolver_response` (Attributes) (see [below for nested schema](#nestedatt--aws_private_dns_resolver_response))
 - `aws_private_hosted_zone_response` (Attributes) (see [below for nested schema](#nestedatt--aws_private_hosted_zone_response))
+- `azure_private_dns_resolver_response` (Attributes) (see [below for nested schema](#nestedatt--azure_private_dns_resolver_response))
 - `entity_version` (Number) Monotonically-increasing version count of the Private DNS, to indicate the order of updates to the
 Private DNS.
 - `gcp_private_hosted_zone_response` (Attributes) (see [below for nested schema](#nestedatt--gcp_private_hosted_zone_response))
@@ -175,6 +176,37 @@ Read-Only:
 
 <a id="nestedatt--aws_private_hosted_zone_response--state_metadata"></a>
 ### Nested Schema for `aws_private_hosted_zone_response.state_metadata`
+
+Read-Only:
+
+- `reason` (String) Reason why the Private Dns may be in an erroneous state, reported from backing infrastructure.
+- `reported_status` (String) Reported status of the Private Dns from backing infrastructure.
+
+
+
+<a id="nestedatt--azure_private_dns_resolver_response"></a>
+### Nested Schema for `azure_private_dns_resolver_response`
+
+Read-Only:
+
+- `created_at` (String) An RFC-3339 timestamp representation of Private DNS creation date.
+- `entity_version` (Number) Monotonically-increasing version count of the Private DNS, to indicate the order of updates to the
+Private DNS.
+- `id` (String)
+- `name` (String) Human-readable name of the Private DNS.
+- `state` (String) The current state of the Private DNS attachment. Possible values:
+- `created` - The attachment has been created but is not attached to Private DNS.
+- `initializing` - The attachment is in the process of being initialized and is setting up necessary resources.
+- `pending-association` The attachment request is awaiting association to the cloud provider infrastructure in order for provisioning to proceed.
+- `ready` - The attachment is fully operational and can route traffic as configured.
+- `error` - The attachment is in an error state, and is not operational.
+- `terminating` - The attachment is in the process of being deleted.
+- `terminated` - The attachment has been fully deleted and is no longer available.
+- `state_metadata` (Attributes) Metadata describing the backing state of the Private Dns and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--azure_private_dns_resolver_response--state_metadata))
+- `updated_at` (String) An RFC-3339 timestamp representation of Private DNS update date.
+
+<a id="nestedatt--azure_private_dns_resolver_response--state_metadata"></a>
+### Nested Schema for `azure_private_dns_resolver_response.state_metadata`
 
 Read-Only:
 

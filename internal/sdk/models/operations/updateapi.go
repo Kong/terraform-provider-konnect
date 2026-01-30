@@ -3,14 +3,62 @@
 package operations
 
 import (
+	"encoding/json"
+	"fmt"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
 
+// UpdateAPIQueryParamForce - If true, allows operations to be removed from the current version when using access control enforcement.
+// If false, operations removal will be rejected with a 409 error.
+// Omitting the value means true.
+type UpdateAPIQueryParamForce string
+
+const (
+	UpdateAPIQueryParamForceTrue  UpdateAPIQueryParamForce = "true"
+	UpdateAPIQueryParamForceFalse UpdateAPIQueryParamForce = "false"
+)
+
+func (e UpdateAPIQueryParamForce) ToPointer() *UpdateAPIQueryParamForce {
+	return &e
+}
+func (e *UpdateAPIQueryParamForce) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "true":
+		fallthrough
+	case "false":
+		*e = UpdateAPIQueryParamForce(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for UpdateAPIQueryParamForce: %v", v)
+	}
+}
+
 type UpdateAPIRequest struct {
 	// The UUID API identifier
-	APIID            string                  `pathParam:"style=simple,explode=false,name=apiId"`
-	UpdateAPIRequest shared.UpdateAPIRequest `request:"mediaType=application/json"`
+	APIID string `pathParam:"style=simple,explode=false,name=apiId"`
+	// If true, allows operations to be removed from the current version when using access control enforcement.
+	// If false, operations removal will be rejected with a 409 error.
+	// Omitting the value means true.
+	//
+	Force            *UpdateAPIQueryParamForce `default:"false" queryParam:"style=form,explode=true,name=force"`
+	UpdateAPIRequest shared.UpdateAPIRequest   `request:"mediaType=application/json"`
+}
+
+func (u UpdateAPIRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateAPIRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"apiId", "UpdateApiRequest"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateAPIRequest) GetAPIID() string {
@@ -18,6 +66,13 @@ func (u *UpdateAPIRequest) GetAPIID() string {
 		return ""
 	}
 	return u.APIID
+}
+
+func (u *UpdateAPIRequest) GetForce() *UpdateAPIQueryParamForce {
+	if u == nil {
+		return nil
+	}
+	return u.Force
 }
 
 func (u *UpdateAPIRequest) GetUpdateAPIRequest() shared.UpdateAPIRequest {

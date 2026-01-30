@@ -507,6 +507,18 @@ paths:
           $ref: '#/components/responses/MeshControlPlaneForbiddenError'
       tags:
         - Mesh
+      x-speakeasy-pagination:
+        type: offsetLimit
+        inputs:
+          - name: 'page[number]'
+            in: parameters
+            type: page
+          - name: 'page[size]'
+            in: parameters
+            type: limit
+        outputs:
+          results: $.data
+          numPages: $.meta.page.total
     post:
       x-speakeasy-entity-operation:
         terraform-resource: MeshControlPlane#create
@@ -2189,6 +2201,18 @@ paths:
       tags:
         - Provider Accounts
       x-speakeasy-group: CloudGateways
+      x-speakeasy-pagination:
+        type: offsetLimit
+        inputs:
+          - name: 'page[number]'
+            in: parameters
+            type: page
+          - name: 'page[size]'
+            in: parameters
+            type: limit
+        outputs:
+          results: $.data
+          numPages: $.meta.page.total
   /v2/control-planes:
     get:
       x-speakeasy-entity-operation:
@@ -14563,6 +14587,18 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Portals
+      x-speakeasy-pagination:
+        type: offsetLimit
+        inputs:
+          - name: 'page[number]'
+            in: parameters
+            type: page
+          - name: 'page[size]'
+            in: parameters
+            type: limit
+        outputs:
+          results: $.data
+          numPages: $.meta.page.total
     post:
       x-speakeasy-entity-operation:
         terraform-resource: PortalClassic#create
@@ -14652,6 +14688,19 @@ paths:
       operationId: update-api
       summary: Update API
       description: Updates an API.
+      parameters:
+        - name: force
+          in: query
+          description: |
+            If true, allows operations to be removed from the current version when using access control enforcement.
+            If false, operations removal will be rejected with a 409 error.
+            Omitting the value means true.
+          schema:
+            type: string
+            default: 'false'
+            enum:
+              - 'true'
+              - 'false'
       requestBody:
         $ref: '#/components/requestBodies/UpdateApiRequest'
       responses:
@@ -14810,7 +14859,11 @@ paths:
       summary: Create API Implementation
       description: |
         Creates an implementation for an API.
-        An API can be implemented by a single Gateway Service.
+        If all operations in an API are implemented by a single gateway service and the service
+        has no routes that are not part of the API, then the API can be linked to the service.
+        For cases where an API is implemented by multiple gateway services, only a subset of
+        routes in one or more gateway services, or API operations need to be made available for API packages,
+        then the API should be linked to the control plane that defines the routes that overlap with the API.
       requestBody:
         $ref: '#/components/requestBodies/CreateApiImplementationRequest'
       responses:
@@ -15115,6 +15168,19 @@ paths:
       operationId: update-api-version
       summary: Update API Version
       description: Updates the version (OpenAPI or AsyncAPI) of an API.
+      parameters:
+        - name: force
+          in: query
+          description: |
+            If true, allows operations to be removed from the current version when using access control enforcement.
+            If false, operations removal will be rejected with a 409 error.
+            Omitting the value (i.e., setting `?force`) means true.
+          schema:
+            type: string
+            default: 'false'
+            enum:
+              - 'true'
+              - 'false'
       requestBody:
         $ref: '#/components/requestBodies/UpdateApiVersionRequest'
       responses:
@@ -15862,6 +15928,56 @@ paths:
       tags:
         - Portal Teams
   /v3/system-accounts:
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource:
+          - SystemAccount#read
+          - SystemAccountList#read
+      operationId: get-system-accounts
+      summary: List System Accounts
+      description: Returns an array of system accounts (SA) in the organization. Returns 400 if any filter parameters are invalid.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - name: filter
+          in: query
+          description: Filter system accounts returned in the response.
+          required: false
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/LegacyStringFieldFilter'
+              description:
+                $ref: '#/components/schemas/LegacyStringFieldFilter'
+              konnect_managed:
+                $ref: '#/components/schemas/BooleanFieldFilter'
+          style: deepObject
+      responses:
+        '200':
+          $ref: '#/components/responses/SystemAccountCollection'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - System Accounts
+      x-speakeasy-pagination:
+        type: offsetLimit
+        inputs:
+          - name: 'page[number]'
+            in: parameters
+            type: page
+          - name: 'page[size]'
+            in: parameters
+            type: limit
+        outputs:
+          results: $.data
+          numPages: $.meta.page.total
     post:
       x-speakeasy-entity-operation:
         terraform-resource: SystemAccount#create
@@ -16136,6 +16252,50 @@ paths:
       tags:
         - System Accounts - Roles
   /v3/teams:
+    get:
+      x-speakeasy-entity-operation:
+        terraform-datasource:
+          - Team#read
+          - TeamList#read
+      operationId: list-teams
+      summary: List Teams
+      description: Returns an array of team objects containing information about the Konnect Teams.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - name: filter
+          in: query
+          description: Filter teams returned in the response.
+          required: false
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/LegacyStringFieldFilter'
+          style: deepObject
+      responses:
+        '200':
+          $ref: '#/components/responses/TeamCollection'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Teams
+      x-speakeasy-pagination:
+        type: offsetLimit
+        inputs:
+          - name: 'page[number]'
+            in: parameters
+            type: page
+          - name: 'page[size]'
+            in: parameters
+            type: limit
+        outputs:
+          results: $.data
+          numPages: $.meta.page.total
     post:
       x-speakeasy-entity-operation:
         terraform-resource: Team#create
@@ -16826,6 +16986,7 @@ components:
       schema:
         type: integer
         example: 1
+      x-speakeasy-terraform-ignore: true
     PageSize:
       name: 'page[size]'
       description: The maximum number of items to include per page. The last page of a collection may include fewer items.
@@ -16835,6 +16996,7 @@ components:
       schema:
         type: integer
         example: 100
+      x-speakeasy-terraform-ignore: true
     PartialId:
       description: ID of the Partial to lookup
       example: ''
@@ -17082,6 +17244,7 @@ components:
             - CLUSTER_TYPE_CONTROL_PLANE_GROUP
             - CLUSTER_TYPE_SERVERLESS
             - CLUSTER_TYPE_HYBRID
+            - CLUSTER_TYPE_CLOUD_API_GATEWAY
           x-speakeasy-unknown-values: allow
         auth_type:
           description: The auth type value of the cluster associated with the Runtime Group.
@@ -17186,6 +17349,7 @@ components:
                 - CLUSTER_TYPE_CONTROL_PLANE_GROUP
                 - CLUSTER_TYPE_SERVERLESS
                 - CLUSTER_TYPE_HYBRID
+                - CLUSTER_TYPE_CLOUD_API_GATEWAY
               readOnly: true
               x-speakeasy-param-suppress-computed-diff: true
               x-speakeasy-unknown-values: allow
@@ -17743,8 +17907,6 @@ components:
       type: string
       format: uuid
       example: edaf40f9-9fb0-4ffe-bb74-4e763a6bd471
-      readOnly: true
-      x-speakeasy-param-suppress-computed-diff: true
     DataPlaneGroupId:
       description: ID of the data-plane group that represents a deployment target for a set of data-planes.
       type: string
@@ -17759,6 +17921,7 @@ components:
       readOnly: true
       x-speakeasy-param-suppress-computed-diff: true
     NetworkId:
+      description: 'The network ID to operate on. For serverless.v1 kind of cloud gateways, this field should be omitted.'
       type: string
       format: uuid
       example: 36ae63d3-efd1-4bec-b246-62aa5d3f5695
@@ -17792,7 +17955,7 @@ components:
       title: Control-Plane Geo
       x-speakeasy-unknown-values: allow
     GatewayVersion:
-      description: Supported gateway version.
+      description: 'Supported gateway version. For serverless.v1 kind of cloud gateways, this field should be omitted.'
       type: string
       example: '3.2'
       title: Gateway Version
@@ -17808,11 +17971,11 @@ components:
       description: Type of API access data-plane groups will support for a configuration.
       type: string
       example: private+public
-      default: private+public
       enum:
         - private
         - public
         - private+public
+      x-speakeasy-param-computed: true
       x-speakeasy-unknown-values: allow
     ProviderRegionId:
       description: Region ID for cloud provider region.
@@ -17833,7 +17996,7 @@ components:
         - $ref: '#/components/schemas/ConfigurationDataPlaneGroupAutoscaleStatic'
         - $ref: '#/components/schemas/ConfigurationDataPlaneGroupAutoscaleAutopilot'
     ConfigurationDataPlaneGroupAutoscaleStatic:
-      description: Object that describes the static autoscaling strategy. Deprecated in favor of the autopilot autoscaling strategy. Static autoscaling will be removed in a future version.
+      description: 'Object that describes the static autoscaling strategy. Deprecated in favor of the autopilot autoscaling strategy. Static autoscaling will be removed in a future version. For serverless.v1 kind of cloud gateways, this field should be omitted.'
       type: object
       properties:
         kind:
@@ -17854,7 +18017,7 @@ components:
         - requested_instances
       title: Configuration Autoscale Static
     ConfigurationDataPlaneGroupAutoscaleAutopilot:
-      description: Object that describes the autopilot autoscaling strategy.
+      description: 'Object that describes the autopilot autoscaling strategy. For serverless.v1 kind of cloud gateways, this field should be omitted.'
       type: object
       properties:
         kind:
@@ -17870,7 +18033,9 @@ components:
           type: integer
           example: 1000
           deprecated: true
+          readOnly: true
           x-speakeasy-param-computed: true
+          x-speakeasy-param-suppress-computed-diff: true
       additionalProperties: false
       required:
         - kind
@@ -17920,10 +18085,8 @@ components:
           $ref: '#/components/schemas/ConfigurationDataPlaneGroupEnvironment'
       additionalProperties: false
       required:
-        - autoscale
         - provider
         - region
-        - cloud_gateway_network_id
       title: Configuration Data-Plane Group Config Item
     ConfigurationDataPlaneGroup:
       description: Object that describes the set of data-plane groups currently pointed to this configuration.
@@ -18018,12 +18181,24 @@ components:
         - id
         - provider
         - region
-        - autoscale
-        - cloud_gateway_network_id
         - state
         - created_at
         - updated_at
       title: Cloud Gateway Configuration Data-Plane Group
+    ConfigurationKind:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Kind of the Cloud Gateway deployment. If serverless.v1 is specified, the following fields
+        should be omitted (will be ignored if provided): autoscale, cloud_gateway_network_id, version.
+      type: string
+      default: dedicated.v0
+      enum:
+        - dedicated.v0
+        - serverless.v1
+      title: ConfigurationKind
+      x-speakeasy-unknown-values: allow
     ConfigurationManifest:
       x-speakeasy-entity: CloudGatewayConfiguration
       description: Object containing information about a control-plane's cloud-gateways configuration.
@@ -18050,6 +18225,8 @@ components:
           items:
             $ref: '#/components/schemas/ConfigurationDataPlaneGroup'
           format: set
+        kind:
+          $ref: '#/components/schemas/ConfigurationKind'
         entity_version:
           description: |
             Positive, monotonically increasing version integer, to serialize configuration changes.
@@ -18079,7 +18256,6 @@ components:
         - id
         - control_plane_id
         - control_plane_geo
-        - version
         - dataplane_group_config
         - dataplane_groups
         - entity_version
@@ -18102,10 +18278,8 @@ components:
           $ref: '#/components/schemas/ConfigurationDataPlaneGroupEnvironment'
       additionalProperties: false
       required:
-        - autoscale
         - provider
         - region
-        - cloud_gateway_network_id
       title: CreateConfigurationDataPlaneGroup
     ProviderAccount:
       description: Object containing mapping for organization and cloud provider to account ID.
@@ -18614,6 +18788,7 @@ components:
         - $ref: '#/components/schemas/AwsPrivateHostedZoneResponse'
         - $ref: '#/components/schemas/AwsPrivateDnsResolverResponse'
         - $ref: '#/components/schemas/GcpPrivateHostedZoneResponse'
+        - $ref: '#/components/schemas/AzurePrivateDnsResolverResponse'
     AwsPrivateHostedZoneResponse:
       type: object
       properties:
@@ -18851,6 +19026,68 @@ components:
         - updated_at
         - name
         - private_dns_attachment_config
+    AzurePrivateDnsResolverResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/PrivateDnsId'
+        state:
+          $ref: '#/components/schemas/PrivateDnsState'
+        state_metadata:
+          description: |
+            Metadata describing the backing state of the Private Dns and why it may be in an erroneous state.
+          type: object
+          additionalProperties: false
+          properties:
+            reported_status:
+              description: Reported status of the Private Dns from backing infrastructure.
+              type: string
+              example: ERROR
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            reason:
+              description: |
+                Reason why the Private Dns may be in an erroneous state, reported from backing infrastructure.
+              type: string
+              example: |
+                Failed to create Private Dns due to invalid Cloud Provider configuration.
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+          title: PrivateDnsStateMetadata
+        entity_version:
+          description: |
+            Monotonically-increasing version count of the Private DNS, to indicate the order of updates to the
+            Private DNS.
+          type: integer
+          example: 1
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        created_at:
+          description: An RFC-3339 timestamp representation of Private DNS creation date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        updated_at:
+          description: An RFC-3339 timestamp representation of Private DNS update date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        name:
+          $ref: '#/components/schemas/PrivateDnsName'
+      required:
+        - id
+        - state
+        - state_metadata
+        - entity_version
+        - created_at
+        - updated_at
+        - name
     AwsPrivateDnsResolverAttachmentConfig:
       type: object
       properties:
@@ -19213,6 +19450,74 @@ components:
         - created_at
         - updated_at
       title: Azure Transit Gateway
+    AzureVHubPeeringGatewayResponse:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TransitGatewayName'
+        dns_config:
+          $ref: '#/components/schemas/TransitGatewayDnsConfig'
+        id:
+          $ref: '#/components/schemas/TransitGatewayId'
+        state:
+          $ref: '#/components/schemas/TransitGatewayState'
+        state_metadata:
+          description: |
+            Metadata describing the backing state of the transit gateway and why it may be in an erroneous state.
+          type: object
+          additionalProperties: false
+          properties:
+            reported_status:
+              description: Reported status of the transit gateway from backing infrastructure.
+              type: string
+              example: ERROR
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            reason:
+              description: |
+                Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.
+              type: string
+              example: |
+                Transit Gateway Attachment configuration could not find a resource with the provided ram share arn.
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+          readOnly: true
+          title: TransitGatewayStateMetadata
+          x-speakeasy-param-suppress-computed-diff: true
+        entity_version:
+          description: |
+            Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the
+            transit gateway.
+          type: integer
+          example: 1
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        created_at:
+          description: An RFC-3339 timestamp representation of transit gateway creation date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        updated_at:
+          description: An RFC-3339 timestamp representation of transit gateway update date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      required:
+        - name
+        - id
+        - dns_config
+        - state
+        - entity_version
+        - created_at
+        - updated_at
+      title: Azure Virtual Hub Peering Gateway
+      x-speakeasy-name-override: AzureVhubPeeringGatewayResponse
     GCPVPCPeeringGatewayResponse:
       type: object
       properties:
@@ -19288,6 +19593,7 @@ components:
         - $ref: '#/components/schemas/AwsTransitGatewayResponse'
         - $ref: '#/components/schemas/AwsVpcPeeringGatewayResponse'
         - $ref: '#/components/schemas/AzureTransitGatewayResponse'
+        - $ref: '#/components/schemas/AzureVHubPeeringGatewayResponse'
         - $ref: '#/components/schemas/GCPVPCPeeringGatewayResponse'
         - $ref: '#/components/schemas/AwsResourceEndpointGatewayResponse'
     CreateAwsTransitGateway:
@@ -19352,6 +19658,17 @@ components:
         - transit_gateway_attachment_config
       title: Azure Transit Gateway
       x-speakeasy-name-override: AzureTransitGateway
+    CreateAzureVHubPeeringGateway:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TransitGatewayName'
+        dns_config:
+          $ref: '#/components/schemas/TransitGatewayDnsConfig'
+      required:
+        - name
+      title: Azure Virtual Hub Peering Gateway
+      x-speakeasy-name-override: AzureVhubPeeringGateway
     CreateGCPVPCPeeringTransitGateway:
       type: object
       properties:
@@ -19374,6 +19691,7 @@ components:
         - $ref: '#/components/schemas/CreateAwsVpcPeeringGateway'
         - $ref: '#/components/schemas/CreateAwsResourceEndpointGateway'
         - $ref: '#/components/schemas/CreateAzureTransitGateway'
+        - $ref: '#/components/schemas/CreateAzureVHubPeeringGateway'
         - $ref: '#/components/schemas/CreateGCPVPCPeeringTransitGateway'
       title: CreateTransitGatewayRequest
     PatchAwsResourceEndpointGateway:
@@ -19543,13 +19861,14 @@ components:
           items:
             $ref: '#/components/schemas/CreateConfigurationDataPlaneGroup'
           format: set
+        kind:
+          $ref: '#/components/schemas/ConfigurationKind'
         api_access:
           $ref: '#/components/schemas/ApiAccess'
       additionalProperties: false
       required:
         - control_plane_id
         - control_plane_geo
-        - version
         - dataplane_groups
       title: CreateConfigurationRequest
     CreateCustomDomainRequest:
@@ -21179,6 +21498,17 @@ components:
         expires_at: '2022-12-31T12:52:23Z'
         last_used_at: '2022-10-24T13:05:42Z'
       title: System Account Access Token
+    LegacyStringFieldFilter:
+      description: 'Filter using **one** of the following operators: `eq`, `contains`'
+      type: object
+      properties:
+        eq:
+          description: The field exactly matches the provided value.
+          type: string
+        contains:
+          description: The field contains the provided value.
+          type: string
+      additionalProperties: false
     ServerlessCloudGateway:
       x-speakeasy-entity: ServerlessCloudGateway
       description: A serverless cloud gateway
@@ -23269,14 +23599,6 @@ components:
       oneOf:
         - $ref: '#/components/schemas/AuthStrategyKeyAuth'
         - $ref: '#/components/schemas/AuthStrategyClientCredentials'
-    ImageDataUri:
-      description: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
-      type: string
-      format: uri
-      example: 'data:image/png,YW5faW1hZ2VfZmlsZQ=='
-      pattern: '^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
-      title: ImageDataUri
-      x-validation-message: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
     PortalMenuItem:
       type: object
       properties:
@@ -23435,9 +23757,8 @@ components:
       type: string
       format: uri
       example: 'data:image/png;base64,YW5faW1hZ2VfZmlsZQ=='
-      pattern: '^data:image/(png|jpeg|svg\+xml|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
+      pattern: '^data:image/(png|jpe?g|gif|svg+xml|x-icon|ico|icon|vnd.microsoft.icon)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
       title: PortalImageDataUri
-      x-validation-message: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
     ReplacePortalImageAsset:
       description: 'The image data to upload. Images must be a data URL with binary image data in base 64 format. See https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.'
       type: object
@@ -23924,9 +24245,7 @@ components:
               name: name
               email: email
               groups: custom-group-claim
-          default: null
           deprecated: true
-          nullable: true
           properties:
             issuer:
               type: string
@@ -23949,10 +24268,60 @@ components:
                 - profile
             claim_mappings:
               $ref: '#/components/schemas/PortalClaimMappings'
+          readOnly: true
           required:
             - issuer
             - client_id
           title: PortalOIDCConfig
+          x-speakeasy-param-suppress-computed-diff: true
+        oidc_issuer:
+          type: string
+          example: 'https://identity.example.com/v2'
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        oidc_client_id:
+          type: string
+          example: x7id0o42lklas0blidl2
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        oidc_scopes:
+          type: array
+          items:
+            type: string
+          example:
+            - email
+            - openid
+            - profile
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        oidc_claim_mappings:
+          description: Mappings from a portal developer atribute to an Identity Provider claim.
+          type: object
+          example:
+            name: name
+            email: email
+            groups: custom-group-claim
+          default: null
+          maxProperties: 3
+          minProperties: 0
+          nullable: true
+          properties:
+            name:
+              type: string
+              example: name
+              default: name
+            email:
+              type: string
+              example: email
+              default: email
+            groups:
+              type: string
+              example: custom-group-claim
+              default: groups
+          title: PortalClaimMappings
           x-speakeasy-param-computed: false
       example:
         basic_auth_enabled: true
@@ -23976,6 +24345,15 @@ components:
         - oidc_auth_enabled
         - oidc_team_mapping_enabled
       title: PortalAuthenticationSettingsResponse
+      x-speakeasy-transform-from-api:
+        jq: |
+          . + {
+            oidc_issuer: .oidc_config.issuer,
+            oidc_client_id: .oidc_config.client_id,
+            oidc_claim_mappings: .oidc_config.claim_mappings,
+            oidc_scopes: .oidc_config.scopes
+          }
+          | del(.oidc_config)
     PortalAuthenticationSettingsUpdateRequest:
       x-speakeasy-entity: PortalAuth
       description: Properties to update a portal's developer auth settings.
@@ -58473,6 +58851,14 @@ components:
           type: boolean
           nullable: false
       additionalProperties: false
+    ImageDataUri:
+      description: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
+      type: string
+      format: uri
+      example: 'data:image/png,YW5faW1hZ2VfZmlsZQ=='
+      pattern: '^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
+      title: ImageDataUri
+      x-validation-message: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
     CreateApiKeyPayload:
       type: object
       properties:
@@ -60215,6 +60601,23 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Team'
+    TeamCollection:
+      description: A paginated list response for a collection of users.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Team'
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+            title: Team Collection Response
     AssignedRoleSingle:
       description: A get action response of a single assigned role.
       content:
@@ -60251,6 +60654,23 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/NotFoundError'
+    SystemAccountCollection:
+      description: A paginated list response for a collection of system accounts.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SystemAccount'
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+            title: System Account Collection Response
     SystemAccountSingle:
       description: A response including a single system account.
       content:

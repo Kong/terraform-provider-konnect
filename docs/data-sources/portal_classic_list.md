@@ -14,9 +14,7 @@ PortalClassicList DataSource
 
 ```terraform
 data "konnect_portal_classic_list" "my_portalclassiclist" {
-  page_number = 1
-  page_size   = 100
-  sort        = "...my_sort..."
+  sort = "...my_sort..."
 }
 ```
 
@@ -25,8 +23,6 @@ data "konnect_portal_classic_list" "my_portalclassiclist" {
 
 ### Optional
 
-- `page_number` (Number) Determines which page of the entities to retrieve.
-- `page_size` (Number) The maximum number of items to include per page. The last page of a collection may include fewer items.
 - `sort` (String) Sorts a collection of portals. Supported sort attributes are:
   - name
   - description

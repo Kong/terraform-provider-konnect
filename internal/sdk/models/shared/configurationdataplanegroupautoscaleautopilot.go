@@ -31,7 +31,7 @@ func (e *ConfigurationDataPlaneGroupAutoscaleAutopilotKind) UnmarshalJSON(data [
 	}
 }
 
-// ConfigurationDataPlaneGroupAutoscaleAutopilot - Object that describes the autopilot autoscaling strategy.
+// ConfigurationDataPlaneGroupAutoscaleAutopilot - Object that describes the autopilot autoscaling strategy. For serverless.v1 kind of cloud gateways, this field should be omitted.
 type ConfigurationDataPlaneGroupAutoscaleAutopilot struct {
 	Kind ConfigurationDataPlaneGroupAutoscaleAutopilotKind `json:"kind"`
 	// Base number of requests per second that the deployment target should support.
@@ -72,4 +72,36 @@ func (c *ConfigurationDataPlaneGroupAutoscaleAutopilot) GetMaxRps() *int64 {
 		return nil
 	}
 	return c.MaxRps
+}
+
+// ConfigurationDataPlaneGroupAutoscaleAutopilotInput - Object that describes the autopilot autoscaling strategy. For serverless.v1 kind of cloud gateways, this field should be omitted.
+type ConfigurationDataPlaneGroupAutoscaleAutopilotInput struct {
+	Kind ConfigurationDataPlaneGroupAutoscaleAutopilotKind `json:"kind"`
+	// Base number of requests per second that the deployment target should support.
+	BaseRps int64 `json:"base_rps"`
+}
+
+func (c ConfigurationDataPlaneGroupAutoscaleAutopilotInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ConfigurationDataPlaneGroupAutoscaleAutopilotInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"kind", "base_rps"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *ConfigurationDataPlaneGroupAutoscaleAutopilotInput) GetKind() ConfigurationDataPlaneGroupAutoscaleAutopilotKind {
+	if c == nil {
+		return ConfigurationDataPlaneGroupAutoscaleAutopilotKind("")
+	}
+	return c.Kind
+}
+
+func (c *ConfigurationDataPlaneGroupAutoscaleAutopilotInput) GetBaseRps() int64 {
+	if c == nil {
+		return 0
+	}
+	return c.BaseRps
 }
