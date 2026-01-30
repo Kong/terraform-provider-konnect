@@ -296,9 +296,6 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
 			},
 			"kind": schema.StringAttribute{
 				Computed: true,
