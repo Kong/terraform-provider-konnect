@@ -1,7 +1,7 @@
 # Changelog
 
 ## 3.6.0
-> Released 2026/??/??
+> Released 2026/01/30
 
 ### Features
 * Early access support for Serverless in Cloud Gateways using `cloud_gateway_configuration`
