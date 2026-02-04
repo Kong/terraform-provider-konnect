@@ -867,6 +867,7 @@ const (
 	AiProxyAdvancedPluginGenaiCategoryRealtimeGeneration AiProxyAdvancedPluginGenaiCategory = "realtime/generation"
 	AiProxyAdvancedPluginGenaiCategoryTextEmbeddings     AiProxyAdvancedPluginGenaiCategory = "text/embeddings"
 	AiProxyAdvancedPluginGenaiCategoryTextGeneration     AiProxyAdvancedPluginGenaiCategory = "text/generation"
+	AiProxyAdvancedPluginGenaiCategoryVideoGeneration    AiProxyAdvancedPluginGenaiCategory = "video/generation"
 )
 
 func (e AiProxyAdvancedPluginGenaiCategory) ToPointer() *AiProxyAdvancedPluginGenaiCategory {
@@ -889,6 +890,8 @@ func (e *AiProxyAdvancedPluginGenaiCategory) UnmarshalJSON(data []byte) error {
 	case "text/embeddings":
 		fallthrough
 	case "text/generation":
+		fallthrough
+	case "video/generation":
 		*e = AiProxyAdvancedPluginGenaiCategory(v)
 		return nil
 	default:

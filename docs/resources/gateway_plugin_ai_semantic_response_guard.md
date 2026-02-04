@@ -63,7 +63,7 @@ resource "konnect_gateway_plugin_ai_semantic_response_guard" "my_gatewaypluginai
         provider = "azure"
       }
     }
-    genai_category = "text/generation"
+    genai_category = "video/generation"
     llm_format     = "anthropic"
     rules = {
       allow_responses = [
@@ -225,7 +225,7 @@ Required:
 
 Optional:
 
-- `genai_category` (String) Generative AI category of the request. Default: "text/generation"; must be one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation"]
+- `genai_category` (String) Generative AI category of the request. Default: "text/generation"; must be one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation"]
 - `llm_format` (String) LLM input and output format and schema to use. Default: "openai"; must be one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]
 - `rules` (Attributes) (see [below for nested schema](#nestedatt--config--rules))
 - `search` (Attributes) (see [below for nested schema](#nestedatt--config--search))

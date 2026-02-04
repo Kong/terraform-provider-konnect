@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type AppAuthStrategyConfigKeyAuth struct {
-	KeyNames []types.String `tfsdk:"key_names"`
-	TTL      *TTL           `tfsdk:"ttl"`
+type TTL struct {
+	Unit  types.String `tfsdk:"unit"`
+	Value types.Int64  `tfsdk:"value"`
 }
