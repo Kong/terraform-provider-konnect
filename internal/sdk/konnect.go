@@ -79,6 +79,51 @@ type Konnect struct {
 	CatalogServices *CatalogServices
 	// Customer Managed Encryption Keys (CMEK) are used to encrypt and decrypt sensitive data in Konnect. They allow you to manage your own encryption keys using AWS Key Management Service (KMS). CMEKs provide an additional layer of security and compliance for your Konnect deployments, ensuring that your data is encrypted with keys that you control. Avoid revoking or deleting a KMS key and CMEK that is actively used by Konnect, as this can lead to data loss or service disruptions.
 	Cmek *Cmek
+	// Create an Event Gateway Control Plane, used to store Event Gateway configuration
+	//
+	EventGateways *EventGateways
+	// A backend cluster is an abstraction of a real Kafka cluster. It stores the connection and configuration details required for Kong Event Gateway to proxy traffic to Kafka.
+	//
+	// Multiple Kafka clusters can be proxied through a single Kong Event Gateway.
+	//
+	EventGatewayBackendClusters *EventGatewayBackendClusters
+	// DataPlane certificates control how your running Event Gateway instances connect to the Control Plane
+	//
+	EventGatewayDataPlaneCertificates *EventGatewayDataPlaneCertificates
+	// A listener represents hostname-port or IP-port combinations that connect to TCP sockets. Listeners need at least as many ports as backend brokers if you use port mapping in a Forward to Virtual Cluster policy. For SNI routing, you can route all brokers using a listener with only one port. Ports can be expressed as a single port or range. Addresses can be IPv4, IPv6, or hostnames.
+	//
+	// A listener can have policies that enforce TLS certificates and perform SNI routing. The listener runs at Layer 4 of the network stack. In Kong Event Gateway, listeners first take in the connection and then route the TCP connection to a virtual cluster based on conditions defined in listener policies.
+	//
+	EventGatewayListeners *EventGatewayListeners
+	// Policies control how Kafka protocol traffic is modified between the client and the backend cluster.
+	//
+	// Listener policies are routing policies that pass traffic to the virtual cluster.
+	//
+	EventGatewayListenerPolicies *EventGatewayListenerPolicies
+	// Configure a schema registry that can be used to validate payloads when producing/consuming messages
+	//
+	EventGatewaySchemaRegistries *EventGatewaySchemaRegistries
+	// Static Keys are used by the Encrypt and Decrypt policies to encrypt data at rest
+	//
+	EventGatewayStaticKeys *EventGatewayStaticKeys
+	// Virtual clusters are the primary way clients interact with the Event Gateway proxy. They allow you to isolate clients from each other when connecting to the same backend cluster, and provide each client with modified view while still appearing as a standard Kafka cluster.
+	//
+	EventGatewayVirtualClusters *EventGatewayVirtualClusters
+	// Policies control how Kafka protocol traffic is modified between the client and the backend cluster.
+	//
+	// Cluster policies are transformation and validation policies that can be applied to Kafka messages.
+	//
+	EventGatewayVirtualClusterPolicies *EventGatewayVirtualClusterPolicies
+	// Consume policies operate on Kafka messages as they are read from a Kafka cluster.
+	//
+	// Transformations may be applied at consume time, but they are applied once per Consumer. Where possible, transofmrations should be applied as a Produce policy
+	//
+	EventGatewayVirtualClusterConsumePolicies *EventGatewayVirtualClusterConsumePolicies
+	// Produce policies operate on Kafka messages before they are written to the Kafka cluster.
+	//
+	// Where possible, apply transformations to the data using produce policies rather than consume policies for maximum efficiency.
+	//
+	EventGatewayVirtualClusterProducePolicies *EventGatewayVirtualClusterProducePolicies
 	// An integration instance represents a specific account of the integration which contains the resources used to manage and support your services.
 	// Some integrations provide configuration options to customize how it should behave once authorized (see the integration's manifest for details).
 	// Konnect-internal integrations are built-in and do not need to be installed.
@@ -369,6 +414,17 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.ServerlessCloudGateways = newServerlessCloudGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.CatalogServices = newCatalogServices(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Cmek = newCmek(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.EventGateways = newEventGateways(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.EventGatewayBackendClusters = newEventGatewayBackendClusters(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.EventGatewayDataPlaneCertificates = newEventGatewayDataPlaneCertificates(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.EventGatewayListeners = newEventGatewayListeners(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.EventGatewayListenerPolicies = newEventGatewayListenerPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.EventGatewaySchemaRegistries = newEventGatewaySchemaRegistries(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.EventGatewayStaticKeys = newEventGatewayStaticKeys(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.EventGatewayVirtualClusters = newEventGatewayVirtualClusters(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.EventGatewayVirtualClusterPolicies = newEventGatewayVirtualClusterPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.EventGatewayVirtualClusterConsumePolicies = newEventGatewayVirtualClusterConsumePolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.EventGatewayVirtualClusterProducePolicies = newEventGatewayVirtualClusterProducePolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.IntegrationInstances = newIntegrationInstances(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.IntegrationInstanceAuthConfig = newIntegrationInstanceAuthConfig(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.IntegrationInstanceAuthCredentials = newIntegrationInstanceAuthCredentials(sdk, sdk.sdkConfiguration, sdk.hooks)

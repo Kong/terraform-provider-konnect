@@ -87,7 +87,7 @@ func (r *GatewayControlPlaneDataSourceModel) ToOperationsListControlPlanesSingle
 				Oeq: oeq,
 			}
 		}
-		var name *shared.Name
+		var name *shared.ControlPlaneFilterParametersName
 		if r.Filter.Name != nil {
 			eq1 := new(string)
 			if !r.Filter.Name.Eq.IsUnknown() && !r.Filter.Name.Eq.IsNull() {
@@ -107,7 +107,7 @@ func (r *GatewayControlPlaneDataSourceModel) ToOperationsListControlPlanesSingle
 			} else {
 				neq = nil
 			}
-			name = &shared.Name{
+			name = &shared.ControlPlaneFilterParametersName{
 				Eq:       eq1,
 				Contains: contains,
 				Neq:      neq,
