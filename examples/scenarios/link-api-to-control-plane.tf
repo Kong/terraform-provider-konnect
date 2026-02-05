@@ -15,7 +15,6 @@ resource "konnect_gateway_plugin_ace" "my_plugin" {
   control_plane_id = konnect_gateway_control_plane.my_konnect_cp.id
 }
 
-
 resource "konnect_api" "api" {
   name = "my api"
   version = "1.0"
