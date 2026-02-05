@@ -2,10 +2,9 @@ module github.com/kong/terraform-provider-konnect/v3
 
 go 1.24.0
 
-toolchain go1.24.3
-
 require (
 	github.com/Kong/shared-speakeasy/customtypes v0.3.0
+	github.com/Kong/shared-speakeasy/hclbuilder v0.0.1
 	github.com/hashicorp/go-uuid v1.0.3
 	github.com/hashicorp/terraform-plugin-docs v0.22.0
 	github.com/hashicorp/terraform-plugin-framework v1.15.1

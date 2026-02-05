@@ -13,5 +13,5 @@ type Parameters struct {
 	In                   types.String         `tfsdk:"in"`
 	Name                 types.String         `tfsdk:"name"`
 	Required             types.Bool           `tfsdk:"required"`
-	Schema               *Schema              `tfsdk:"schema"`
+	Schema               *BrokerHostFormat    `tfsdk:"schema"`
 }

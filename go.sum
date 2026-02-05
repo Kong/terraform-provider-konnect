@@ -4,6 +4,8 @@ github.com/BurntSushi/toml v1.2.1 h1:9F2/+DoOYIOksmaJFPw1tGFy1eDnIJXg+UHjuD8lTak
 github.com/BurntSushi/toml v1.2.1/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=
 github.com/Kong/shared-speakeasy/customtypes v0.3.0 h1:3wHKa0mvv/UTCnIrV+s0RqjRVsSNMU6RIee0kDOylbs=
 github.com/Kong/shared-speakeasy/customtypes v0.3.0/go.mod h1:JNv+ygEk9Dw3MyZLNxHSJS3Wo7HMexOSP2qH6kfaZhI=
+github.com/Kong/shared-speakeasy/hclbuilder v0.0.1 h1:4qGdHFEd4f7fK+zQi7xBHaqXkY3yh6WuKjp33Ha6JGs=
+github.com/Kong/shared-speakeasy/hclbuilder v0.0.1/go.mod h1:g7/r/ksRwKhskqr9Hga47H8PH6wjh6LcXBhFAAomIgA=
 github.com/Kunde21/markdownfmt/v3 v3.1.0 h1:KiZu9LKs+wFFBQKhrZJrFZwtLnCCWJahL+S+E/3VnM0=
 github.com/Kunde21/markdownfmt/v3 v3.1.0/go.mod h1:tPXN1RTyOzJwhfHoon9wUr4HGYmWgVxSQN6VBJDkrVc=
 github.com/Masterminds/goutils v1.1.1 h1:5nUrii3FMTL5diU80unEVvNevw1nH4+ZV4DSLVJLSYI=

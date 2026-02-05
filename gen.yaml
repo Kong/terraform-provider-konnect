@@ -28,7 +28,8 @@ generation:
 terraform:
   version: 3.6.0
   additionalDataSources: []
-  additionalDependencies: {}
+  additionalDependencies:
+    github.com/Kong/shared-speakeasy/hclbuilder: v0.0.1
   additionalEphemeralResources: []
   additionalProviderAttributes:
     httpHeaders: ""

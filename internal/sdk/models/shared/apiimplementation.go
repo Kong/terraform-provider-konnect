@@ -11,14 +11,12 @@ import (
 type APIImplementationType string
 
 const (
-	APIImplementationTypeServiceReference      APIImplementationType = "Service Reference"
-	APIImplementationTypeControlPlaneReference APIImplementationType = "Control Plane Reference"
+	APIImplementationTypeServiceReference APIImplementationType = "Service Reference"
 )
 
 // APIImplementation - An entity that implements an API
 type APIImplementation struct {
-	ServiceReference      *ServiceReference      `queryParam:"inline,name=ApiImplementation"`
-	ControlPlaneReference *ControlPlaneReference `queryParam:"inline,name=ApiImplementation"`
+	ServiceReference *ServiceReference `queryParam:"inline,name=ApiImplementation"`
 
 	Type APIImplementationType
 }
@@ -32,15 +30,6 @@ func CreateAPIImplementationServiceReference(serviceReference ServiceReference) 
 	}
 }
 
-func CreateAPIImplementationControlPlaneReference(controlPlaneReference ControlPlaneReference) APIImplementation {
-	typ := APIImplementationTypeControlPlaneReference
-
-	return APIImplementation{
-		ControlPlaneReference: &controlPlaneReference,
-		Type:                  typ,
-	}
-}
-
 func (u *APIImplementation) UnmarshalJSON(data []byte) error {
 
 	var candidates []utils.UnionCandidate
@@ -51,14 +40,6 @@ func (u *APIImplementation) UnmarshalJSON(data []byte) error {
 		candidates = append(candidates, utils.UnionCandidate{
 			Type:  APIImplementationTypeServiceReference,
 			Value: &serviceReference,
-		})
-	}
-
-	var controlPlaneReference ControlPlaneReference = ControlPlaneReference{}
-	if err := utils.UnmarshalJSON(data, &controlPlaneReference, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  APIImplementationTypeControlPlaneReference,
-			Value: &controlPlaneReference,
 		})
 	}
 
@@ -78,9 +59,6 @@ func (u *APIImplementation) UnmarshalJSON(data []byte) error {
 	case APIImplementationTypeServiceReference:
 		u.ServiceReference = best.Value.(*ServiceReference)
 		return nil
-	case APIImplementationTypeControlPlaneReference:
-		u.ControlPlaneReference = best.Value.(*ControlPlaneReference)
-		return nil
 	}
 
 	return fmt.Errorf("could not unmarshal `%s` into any supported union types for APIImplementation", string(data))
@@ -89,10 +67,6 @@ func (u *APIImplementation) UnmarshalJSON(data []byte) error {
 func (u APIImplementation) MarshalJSON() ([]byte, error) {
 	if u.ServiceReference != nil {
 		return utils.MarshalJSON(u.ServiceReference, "", true)
-	}
-
-	if u.ControlPlaneReference != nil {
-		return utils.MarshalJSON(u.ControlPlaneReference, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type APIImplementation: all fields are null")
