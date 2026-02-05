@@ -1,0 +1,1 @@
+terraform import konnect_integration_instance_auth_credential.my_konnect_integration_instance_auth_credential "3f51fa25-310a-421d-bd1a-007f859021a3"

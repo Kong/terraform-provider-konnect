@@ -1,0 +1,7 @@
+import {
+  to = konnect_cloud_gateway_transit_gateway.my_konnect_cloud_gateway_transit_gateway
+  id = jsonencode({
+    id = "0850820b-d153-4a2a-b9be-7d2204779139"
+    network_id = "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
+  })
+}

@@ -1,0 +1,1 @@
+terraform import konnect_integration_instance.my_konnect_integration_instance "3f51fa25-310a-421d-bd1a-007f859021a3"
