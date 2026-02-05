@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.7.0
+> Released 2026/02/??
+
+### Features
+* Support linking APIs to Control Planes using `konnect_api_implementation` resource
+
 ## 3.6.0
 > Released 2026/01/30
 

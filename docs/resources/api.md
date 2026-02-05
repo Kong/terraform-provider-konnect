@@ -51,6 +51,7 @@ Defaults to `slugify(name + version)`
 - `api_spec_ids` (List of String, Deprecated) The list of API specification ids for the API.
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) The API identifier.
+- `implementation_mode` (String) the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement
 - `portals` (Attributes List) The list of portals which this API is published to. (see [below for nested schema](#nestedatt--portals))
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 

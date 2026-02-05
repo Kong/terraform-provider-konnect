@@ -79,6 +79,15 @@ Read-Only:
 - `id` (String) The Application Auth Strategy ID.
 - `key_names` (List of String)
 - `name` (String) Default: "name"
+- `ttl` (Attributes) Default maximum Time-To-Live for keys created under this strategy. (see [below for nested schema](#nestedatt--auth_strategies--key_auth--ttl))
+
+<a id="nestedatt--auth_strategies--key_auth--ttl"></a>
+### Nested Schema for `auth_strategies.key_auth.ttl`
+
+Read-Only:
+
+- `unit` (String)
+- `value` (Number)
 
 ## Import
 

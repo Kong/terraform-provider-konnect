@@ -46,6 +46,7 @@ type IntegrationInstanceResourceModel struct {
 	ID              types.String                          `tfsdk:"id"`
 	Integration     tfTypes.IntegrationRefWithoutInstance `tfsdk:"integration"`
 	IntegrationName types.String                          `tfsdk:"integration_name"`
+	Labels          map[string]types.String               `tfsdk:"labels"`
 	Name            types.String                          `tfsdk:"name"`
 	UpdatedAt       types.String                          `tfsdk:"updated_at"`
 }
@@ -122,6 +123,14 @@ func (r *IntegrationInstanceResource) Schema(ctx context.Context, req resource.S
 					stringvalidator.UTF8LengthBetween(1, 120),
 					stringvalidator.RegexMatches(regexp.MustCompile(`^[0-9a-z.-]+$`), "must match pattern "+regexp.MustCompile(`^[0-9a-z.-]+$`).String()),
 				},
+			},
+			"labels": schema.MapAttribute{
+				Computed:    true,
+				Optional:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
+					`` + "\n" +
+					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,

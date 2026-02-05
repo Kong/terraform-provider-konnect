@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -13,6 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
@@ -25,6 +27,7 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	speakeasy_int64validators "github.com/kong/terraform-provider-konnect/v3/internal/validators/int64validators"
 	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/listvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
@@ -112,6 +115,48 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 											listvalidator.SizeAtLeast(1),
 											listvalidator.SizeAtMost(10),
 										},
+									},
+									"ttl": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+											"unit":  types.StringType,
+											"value": types.Int64Type,
+										})),
+										PlanModifiers: []planmodifier.Object{
+											objectplanmodifier.RequiresReplaceIfConfigured(),
+										},
+										Attributes: map[string]schema.Attribute{
+											"unit": schema.StringAttribute{
+												Computed: true,
+												Optional: true,
+												PlanModifiers: []planmodifier.String{
+													stringplanmodifier.RequiresReplaceIfConfigured(),
+												},
+												Description: `Not Null; must be one of ["days", "weeks", "years"]; Requires replacement if changed.`,
+												Validators: []validator.String{
+													speakeasy_stringvalidators.NotNull(),
+													stringvalidator.OneOf(
+														"days",
+														"weeks",
+														"years",
+													),
+												},
+											},
+											"value": schema.Int64Attribute{
+												Computed: true,
+												Optional: true,
+												PlanModifiers: []planmodifier.Int64{
+													int64planmodifier.RequiresReplaceIfConfigured(),
+												},
+												Description: `Not Null; Requires replacement if changed.`,
+												Validators: []validator.Int64{
+													speakeasy_int64validators.NotNull(),
+													int64validator.AtLeast(1),
+												},
+											},
+										},
+										Description: `Default maximum Time-To-Live for keys created under this strategy. Requires replacement if changed.`,
 									},
 								},
 								MarkdownDescription: `The most basic mode to configure an Application Auth Strategy for an API Product Version. ` + "\n" +

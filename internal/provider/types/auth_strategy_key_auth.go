@@ -11,4 +11,5 @@ type AuthStrategyKeyAuth struct {
 	ID             types.String   `tfsdk:"id"`
 	KeyNames       []types.String `tfsdk:"key_names"`
 	Name           types.String   `tfsdk:"name"`
+	TTL            *TTL           `tfsdk:"ttl"`
 }

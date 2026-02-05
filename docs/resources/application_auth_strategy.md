@@ -20,6 +20,10 @@ resource "konnect_application_auth_strategy" "my_applicationauthstrategy" {
         key_names = [
           "..."
         ]
+        ttl = {
+          unit  = "years"
+          value = 11
+        }
       }
     }
     display_name = "...my_display_name..."
@@ -85,6 +89,16 @@ Not Null; Requires replacement if changed. (see [below for nested schema](#neste
 Optional:
 
 - `key_names` (List of String) The names of the headers containing the API key. You can specify multiple header names. Requires replacement if changed.
+- `ttl` (Attributes) Default maximum Time-To-Live for keys created under this strategy. Requires replacement if changed. (see [below for nested schema](#nestedatt--key_auth--configs--key_auth--ttl))
+
+<a id="nestedatt--key_auth--configs--key_auth--ttl"></a>
+### Nested Schema for `key_auth.configs.key_auth.ttl`
+
+Optional:
+
+- `unit` (String) Not Null; must be one of ["days", "weeks", "years"]; Requires replacement if changed.
+- `value` (Number) Not Null; Requires replacement if changed.
+
 
 
 

@@ -88,6 +88,7 @@ const (
 	GenaiCategoryRealtimeGeneration GenaiCategory = "realtime/generation"
 	GenaiCategoryTextEmbeddings     GenaiCategory = "text/embeddings"
 	GenaiCategoryTextGeneration     GenaiCategory = "text/generation"
+	GenaiCategoryVideoGeneration    GenaiCategory = "video/generation"
 )
 
 func (e GenaiCategory) ToPointer() *GenaiCategory {
@@ -110,6 +111,8 @@ func (e *GenaiCategory) UnmarshalJSON(data []byte) error {
 	case "text/embeddings":
 		fallthrough
 	case "text/generation":
+		fallthrough
+	case "video/generation":
 		*e = GenaiCategory(v)
 		return nil
 	default:

@@ -9,9 +9,11 @@ import (
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -119,6 +121,22 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 									Computed:    true,
 									Default:     stringdefault.StaticString(`name`),
 									Description: `Default: "name"`,
+								},
+								"ttl": schema.SingleNestedAttribute{
+									Computed: true,
+									Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+										"unit":  types.StringType,
+										"value": types.Int64Type,
+									})),
+									Attributes: map[string]schema.Attribute{
+										"unit": schema.StringAttribute{
+											Computed: true,
+										},
+										"value": schema.Int64Attribute{
+											Computed: true,
+										},
+									},
+									Description: `Default maximum Time-To-Live for keys created under this strategy.`,
 								},
 							},
 							Description: `KeyAuth Auth strategy that the application uses.`,

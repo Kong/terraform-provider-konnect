@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 6e62db8bd43bfbbe7f69a43d0ef1bd9a
+  docChecksum: 2f5e3d7842251d2995ec7f4161ccbd49
   docVersion: 2.0.0
   speakeasyVersion: 1.665.0
   generationVersion: 2.767.2
@@ -1049,6 +1049,7 @@ generatedFiles:
   - internal/provider/types/ai_semantic_response_guard_plugin_vectordb.go
   - internal/provider/types/allow.go
   - internal/provider/types/annotations.go
+  - internal/provider/types/api_implementation_control_plane.go
   - internal/provider/types/api_implementation_service.go
   - internal/provider/types/api_product_portal.go
   - internal/provider/types/api_product_version_auth_strategy.go
@@ -1127,6 +1128,7 @@ generatedFiles:
   - internal/provider/types/consul.go
   - internal/provider/types/control_plane.go
   - internal/provider/types/control_plane_filter_parameters.go
+  - internal/provider/types/control_plane_reference.go
   - internal/provider/types/correlation_id_plugin_config.go
   - internal/provider/types/cors_plugin_config.go
   - internal/provider/types/create_api_version_request_spec.go
@@ -1346,6 +1348,7 @@ generatedFiles:
   - internal/provider/types/topics.go
   - internal/provider/types/transform.go
   - internal/provider/types/transit_gateway_dns_config.go
+  - internal/provider/types/ttl.go
   - internal/provider/types/udp_log_plugin_config.go
   - internal/provider/types/unhealthy.go
   - internal/provider/types/upstream_healthy.go
@@ -2168,6 +2171,8 @@ generatedFiles:
   - internal/sdk/models/shared/apidocumentresponse.go
   - internal/sdk/models/shared/apidocumentstatus.go
   - internal/sdk/models/shared/apiimplementation.go
+  - internal/sdk/models/shared/apiimplementationcontrolplane.go
+  - internal/sdk/models/shared/apiimplementationcontrolplaneinput.go
   - internal/sdk/models/shared/apiimplementationresponse.go
   - internal/sdk/models/shared/apiimplementationservice.go
   - internal/sdk/models/shared/apikey.go
@@ -2266,6 +2271,7 @@ generatedFiles:
   - internal/sdk/models/shared/controlplane.go
   - internal/sdk/models/shared/controlplanefilterparameters.go
   - internal/sdk/models/shared/controlplanegeo.go
+  - internal/sdk/models/shared/controlplanereference.go
   - internal/sdk/models/shared/correlationidplugin.go
   - internal/sdk/models/shared/corsplugin.go
   - internal/sdk/models/shared/cpregion.go
@@ -3066,10 +3072,10 @@ examples:
   create-app-auth-strategy:
     speakeasy-default-create-app-auth-strategy:
       requestBody:
-        application/json: {"name": "<value>", "display_name": "Theo_Boyer", "strategy_type": "key_auth", "configs": {"key-auth": {"key_names": null}}}
+        application/json: {"name": "<value>", "display_name": "Theo_Boyer", "strategy_type": "key_auth", "configs": {"key-auth": {"key_names": null, "ttl": null}}}
       responses:
         "201":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "display_name": "Joana.Mann", "strategy_type": "key_auth", "configs": {"key-auth": {"key_names": null}}, "active": true, "dcr_provider": {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "provider_type": "http"}, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "display_name": "Joana.Mann", "strategy_type": "key_auth", "configs": {"key-auth": {"key_names": null, "ttl": null}}, "active": true, "dcr_provider": {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "provider_type": "http"}, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 927156, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
         "401":
@@ -3083,7 +3089,7 @@ examples:
           authStrategyId: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
       responses:
         "200":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "display_name": "Abdiel_Pacocha", "strategy_type": "key_auth", "configs": {"key-auth": {"key_names": null}}, "active": true, "dcr_provider": {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "provider_type": "curity"}, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "display_name": "Abdiel_Pacocha", "strategy_type": "key_auth", "configs": {"key-auth": {"key_names": null, "ttl": null}}, "active": true, "dcr_provider": {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "provider_type": "curity"}, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -3099,7 +3105,7 @@ examples:
         application/json: {"labels": {"env": "test"}, "dcr_provider_id": null}
       responses:
         "200":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "display_name": "Ora_MacGyver-Waelchi", "strategy_type": "key_auth", "configs": {"key-auth": {"key_names": null}}, "active": false, "dcr_provider": {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "provider_type": "azureAd"}, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "display_name": "Ora_MacGyver-Waelchi", "strategy_type": "key_auth", "configs": {"key-auth": {"key_names": null, "ttl": null}}, "active": false, "dcr_provider": {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "provider_type": "azureAd"}, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 360314, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": null, "source": "body"}]}
         "401":
@@ -12672,7 +12678,7 @@ examples:
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "publish_status": "unpublished", "product_version_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "auth_strategies": [{"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "name", "credential_type": "self_managed_client_credentials", "auth_methods": ["bearer"]}, {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "name", "credential_type": "client_credentials", "auth_methods": ["bearer"]}, {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "name", "credential_type": "key_auth", "key_names": []}], "application_registration_enabled": false, "auto_approve_registration": false, "deprecated": true}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "publish_status": "unpublished", "product_version_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "auth_strategies": [{"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "name", "credential_type": "self_managed_client_credentials", "auth_methods": ["bearer"]}, {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "name", "credential_type": "client_credentials", "auth_methods": ["bearer"]}, {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "name", "credential_type": "key_auth", "key_names": [], "ttl": null}], "application_registration_enabled": false, "auto_approve_registration": false, "deprecated": true}
         "400":
           application/problem+json: {"status": 773848, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_length", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>"], "source": "body"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>"], "source": "body"}]}
         "401":
@@ -12691,7 +12697,7 @@ examples:
         application/json: {"publish_status": "unpublished", "auth_strategy_ids": ["5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"], "application_registration_enabled": true, "auto_approve_registration": false, "deprecated": false}
       responses:
         "200":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "publish_status": "published", "product_version_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "auth_strategies": [{"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "name", "credential_type": "key_auth", "key_names": ["<value 1>"]}, {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "name", "credential_type": "key_auth", "key_names": ["<value 1>"]}], "application_registration_enabled": true, "auto_approve_registration": true, "deprecated": true}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "publish_status": "published", "product_version_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "auth_strategies": [{"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "name", "credential_type": "key_auth", "key_names": ["<value 1>"], "ttl": null}, {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "name", "credential_type": "key_auth", "key_names": ["<value 1>"], "ttl": null}], "application_registration_enabled": true, "auto_approve_registration": true, "deprecated": true}
         "400":
           application/problem+json: {"status": 850070, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}, {"field": "name", "rule": "min_lowercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -13524,10 +13530,10 @@ examples:
   create-integration-instance:
     speakeasy-default-create-integration-instance:
       requestBody:
-        application/json: {"integration_name": "aws-lambda", "name": "aws-lambda-prod", "display_name": "AWS (prod)", "description": null, "config": {"account_region": "eu"}}
+        application/json: {"integration_name": "aws-lambda", "name": "aws-lambda-prod", "display_name": "AWS (prod)", "description": null, "labels": {"env": "test"}, "config": {"account_region": "eu"}}
       responses:
         "201":
-          application/json: {"id": "3f51fa25-310a-421d-bd1a-007f859021a3", "name": "aws-lambda-prod", "display_name": "AWS (prod)", "description": null, "integration": {"name": "gateway-manager", "display_name": "gateway-manager"}, "authorized": true, "config": {"account_region": "eu"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "3f51fa25-310a-421d-bd1a-007f859021a3", "name": "aws-lambda-prod", "display_name": "AWS (prod)", "description": null, "integration": {"name": "gateway-manager", "display_name": "gateway-manager"}, "authorized": true, "labels": {"env": "test"}, "config": {"account_region": "eu"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 92752, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": [], "source": "body"}]}
         "401":
@@ -13541,7 +13547,7 @@ examples:
           id: "3f51fa25-310a-421d-bd1a-007f859021a3"
       responses:
         "200":
-          application/json: {"id": "3f51fa25-310a-421d-bd1a-007f859021a3", "name": "aws-lambda-prod", "display_name": "AWS (prod)", "description": null, "integration": {"name": "gateway-manager", "display_name": "gateway-manager"}, "authorized": true, "config": {"account_region": "eu"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "3f51fa25-310a-421d-bd1a-007f859021a3", "name": "aws-lambda-prod", "display_name": "AWS (prod)", "description": null, "integration": {"name": "gateway-manager", "display_name": "gateway-manager"}, "authorized": true, "labels": {"env": "test"}, "config": {"account_region": "eu"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -13554,10 +13560,10 @@ examples:
         path:
           id: "3f51fa25-310a-421d-bd1a-007f859021a3"
       requestBody:
-        application/json: {"name": "aws-lambda-prod", "display_name": "AWS (prod)", "description": null}
+        application/json: {"name": "aws-lambda-prod", "display_name": "AWS (prod)", "description": null, "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"id": "3f51fa25-310a-421d-bd1a-007f859021a3", "name": "aws-lambda-prod", "display_name": "AWS (prod)", "description": null, "integration": {"name": "gateway-manager", "display_name": "gateway-manager"}, "authorized": true, "config": {"account_region": "eu"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "3f51fa25-310a-421d-bd1a-007f859021a3", "name": "aws-lambda-prod", "display_name": "AWS (prod)", "description": null, "integration": {"name": "gateway-manager", "display_name": "gateway-manager"}, "authorized": true, "labels": {"env": "test"}, "config": {"account_region": "eu"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 915697, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>"], "source": "body"}]}
         "401":
@@ -14098,7 +14104,7 @@ examples:
         application/json: {"name": "MyAPI", "description": null, "slug": "my-api-v1", "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "description": null, "version": null, "current_version_summary": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "description": null, "version": null, "current_version_summary": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [], "labels": {"env": "test"}, "implementation_mode": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 138119, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -14116,7 +14122,7 @@ examples:
           apiId: "9f5061ce-78f6-4452-9108-ad7c02821fd5"
       responses:
         "200":
-          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "description": null, "version": null, "current_version_summary": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "description": null, "version": null, "current_version_summary": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [{"id": "25a2624c-49fc-4764-99e1-224ed819f200", "name": "My Portal", "display_name": "My Portal"}], "labels": {"env": "test"}, "implementation_mode": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -14134,7 +14140,7 @@ examples:
         application/json: {"name": "MyAPI", "description": null, "slug": "my-api-v1", "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "description": null, "version": null, "current_version_summary": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [], "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "name": "MyAPI", "description": null, "version": null, "current_version_summary": null, "slug": "my-api-v1", "api_spec_ids": ["123e4567-e89b-12d3-a456-426614174000"], "portals": [], "labels": {"env": "test"}, "implementation_mode": null, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 426278, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":

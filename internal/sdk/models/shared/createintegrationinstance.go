@@ -16,6 +16,11 @@ type CreateIntegrationInstance struct {
 	DisplayName string `json:"display_name"`
 	// Optionally provide a description of the integration instance.
 	Description *string `default:"null" json:"description"`
+	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]*string `json:"labels,omitempty"`
 	// JSON object representing configuration specific to the integration instance.
 	// The expected schema depends on the integration type and is dynamically registered at runtime.
 	//
@@ -59,6 +64,13 @@ func (c *CreateIntegrationInstance) GetDescription() *string {
 		return nil
 	}
 	return c.Description
+}
+
+func (c *CreateIntegrationInstance) GetLabels() map[string]*string {
+	if c == nil {
+		return nil
+	}
+	return c.Labels
 }
 
 func (c *CreateIntegrationInstance) GetConfig() any {

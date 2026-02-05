@@ -3,8 +3,70 @@
 package shared
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
+
+type Unit string
+
+const (
+	UnitDays  Unit = "days"
+	UnitWeeks Unit = "weeks"
+	UnitYears Unit = "years"
+)
+
+func (e Unit) ToPointer() *Unit {
+	return &e
+}
+func (e *Unit) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "days":
+		fallthrough
+	case "weeks":
+		fallthrough
+	case "years":
+		*e = Unit(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for Unit: %v", v)
+	}
+}
+
+// TTL - Default maximum Time-To-Live for keys created under this strategy.
+type TTL struct {
+	Value int64 `json:"value"`
+	Unit  Unit  `json:"unit"`
+}
+
+func (t TTL) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TTL) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"value", "unit"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (t *TTL) GetValue() int64 {
+	if t == nil {
+		return 0
+	}
+	return t.Value
+}
+
+func (t *TTL) GetUnit() Unit {
+	if t == nil {
+		return Unit("")
+	}
+	return t.Unit
+}
 
 // AppAuthStrategyConfigKeyAuth - The most basic mode to configure an Application Auth Strategy for an API Product Version.
 // Using this mode will allow developers to generate API keys that will authenticate their application requests.
@@ -12,6 +74,8 @@ import (
 type AppAuthStrategyConfigKeyAuth struct {
 	// The names of the headers containing the API key. You can specify multiple header names.
 	KeyNames []string `json:"key_names"`
+	// Default maximum Time-To-Live for keys created under this strategy.
+	TTL *TTL `json:"ttl"`
 }
 
 func (a AppAuthStrategyConfigKeyAuth) MarshalJSON() ([]byte, error) {
@@ -30,4 +94,11 @@ func (a *AppAuthStrategyConfigKeyAuth) GetKeyNames() []string {
 		return nil
 	}
 	return a.KeyNames
+}
+
+func (a *AppAuthStrategyConfigKeyAuth) GetTTL() *TTL {
+	if a == nil {
+		return nil
+	}
+	return a.TTL
 }

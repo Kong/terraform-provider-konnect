@@ -18,7 +18,10 @@ resource "konnect_integration_instance" "my_integrationinstance" {
   description      = "...my_description..."
   display_name     = "AWS (prod)"
   integration_name = "aws-lambda"
-  name             = "aws-lambda-prod"
+  labels = {
+    key = "value"
+  }
+  name = "aws-lambda-prod"
 }
 ```
 
@@ -37,6 +40,9 @@ Parsed as JSON.
 ### Optional
 
 - `description` (String) Optionally provide a description of the integration instance.
+- `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
+
+Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 
 ### Read-Only
 
