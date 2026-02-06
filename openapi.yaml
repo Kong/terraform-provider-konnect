@@ -26596,6 +26596,14 @@ components:
           x-speakeasy-param-suppress-computed-diff: true
         labels:
           $ref: '#/components/schemas/Labels'
+        implementation_mode:
+          description: the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement
+          type: string
+          default: null
+          nullable: true
+          readOnly: true
+          x-speakeasy-param-computed: false
+          x-speakeasy-param-suppress-computed-diff: true
         attributes:
           $ref: '#/components/schemas/ApiAttributes'
         created_at:
@@ -26940,11 +26948,30 @@ components:
         - control_plane_id
         - id
       title: API Implementation Service
+    ApiImplementationControlPlane:
+      description: A Control plane that implements an API
+      type: object
+      properties:
+        access_control_enforcement_enabled:
+          description: Indicates if the access control enforcement plugin is installed globally in the target control plane
+          type: boolean
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        control_plane_id:
+          type: string
+          format: uuid
+          example: 7710d5c4-d902-410b-992f-18b814155b53
+          x-speakeasy-name-override: id
+      additionalProperties: false
+      required:
+        - control_plane_id
+      title: API Implementation Control Plane
     ApiImplementation:
       description: An entity that implements an API
       type: object
       oneOf:
         - $ref: '#/components/schemas/ApiImplementationGatewayServiceEntity'
+        - $ref: '#/components/schemas/ApiImplementationControlPlaneEntity'
       title: API Implementation
     ApiImplementationGatewayServiceEntity:
       description: A gateway service that implements an API
@@ -26961,6 +26988,21 @@ components:
       additionalProperties: false
       title: ApiImplementationGatewayServiceEntity
       x-speakeasy-name-override: Service Reference
+    ApiImplementationControlPlaneEntity:
+      description: A control plane that implements an API
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        control_plane:
+          $ref: '#/components/schemas/ApiImplementationControlPlane'
+      additionalProperties: false
+      title: ApiImplementationControlPlaneEntity
+      x-speakeasy-name-override: Control Plane Reference
     ApiAttributes:
       description: A set of attributes that describe the API
       type: object
@@ -63757,6 +63799,7 @@ components:
                   - Deployer
                   - Discovery Admin
                   - Discovery Viewer
+                  - Editor
                   - Gateway Service Admin
                   - Integration Admin
                   - Integration Viewer
@@ -63804,6 +63847,7 @@ components:
                   - Mesh Control Planes
                   - Networks
                   - Portals
+                  - Reports
                   - Service Hub
                 x-speakeasy-unknown-values: allow
               entity_region:
@@ -64471,6 +64515,14 @@ components:
                 x-speakeasy-param-suppress-computed-diff: true
               labels:
                 $ref: '#/components/schemas/Labels'
+              implementation_mode:
+                description: the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement
+                type: string
+                default: null
+                nullable: true
+                readOnly: true
+                x-speakeasy-param-computed: false
+                x-speakeasy-param-suppress-computed-diff: true
               attributes:
                 $ref: '#/components/schemas/ApiAttributes'
               created_at:
@@ -64721,6 +64773,14 @@ components:
                 x-speakeasy-param-suppress-computed-diff: true
               labels:
                 $ref: '#/components/schemas/LabelsUpdate'
+              implementation_mode:
+                description: the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement
+                type: string
+                default: null
+                nullable: true
+                readOnly: true
+                x-speakeasy-param-computed: false
+                x-speakeasy-param-suppress-computed-diff: true
               attributes:
                 $ref: '#/components/schemas/ApiAttributes'
               created_at:
@@ -66388,6 +66448,7 @@ components:
             type: object
             oneOf:
               - $ref: '#/components/schemas/ApiImplementationGatewayServiceEntity'
+              - $ref: '#/components/schemas/ApiImplementationControlPlaneEntity'
             required:
               - id
               - created_at
