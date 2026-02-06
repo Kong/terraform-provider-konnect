@@ -136,7 +136,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 						if parametersItem.Schema == nil {
 							parameters.Schema = nil
 						} else {
-							parameters.Schema = &tfTypes.Schema{}
+							parameters.Schema = &tfTypes.BrokerHostFormat{}
 							parameters.Schema.Type = types.StringPointerValue(parametersItem.Schema.Type)
 						}
 
@@ -498,7 +498,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 	} else {
 		maxRequestBodySize = nil
 	}
-	mode := shared.Mode(r.Config.Mode.ValueString())
+	mode := shared.AiMcpProxyPluginMode(r.Config.Mode.ValueString())
 	var server *shared.Server
 	if r.Config.Server != nil {
 		forwardClientHeaders := new(bool)

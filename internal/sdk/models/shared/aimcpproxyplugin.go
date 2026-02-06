@@ -191,20 +191,20 @@ func (l *Logging) GetLogStatistics() *bool {
 	return l.LogStatistics
 }
 
-// Mode - The mode of the MCP proxy. Possible values are: 'passthrough-listener', 'conversion-listener', 'conversion-only', 'listener'.
-type Mode string
+// AiMcpProxyPluginMode - The mode of the MCP proxy. Possible values are: 'passthrough-listener', 'conversion-listener', 'conversion-only', 'listener'.
+type AiMcpProxyPluginMode string
 
 const (
-	ModeConversionListener  Mode = "conversion-listener"
-	ModeConversionOnly      Mode = "conversion-only"
-	ModeListener            Mode = "listener"
-	ModePassthroughListener Mode = "passthrough-listener"
+	AiMcpProxyPluginModeConversionListener  AiMcpProxyPluginMode = "conversion-listener"
+	AiMcpProxyPluginModeConversionOnly      AiMcpProxyPluginMode = "conversion-only"
+	AiMcpProxyPluginModeListener            AiMcpProxyPluginMode = "listener"
+	AiMcpProxyPluginModePassthroughListener AiMcpProxyPluginMode = "passthrough-listener"
 )
 
-func (e Mode) ToPointer() *Mode {
+func (e AiMcpProxyPluginMode) ToPointer() *AiMcpProxyPluginMode {
 	return &e
 }
-func (e *Mode) UnmarshalJSON(data []byte) error {
+func (e *AiMcpProxyPluginMode) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -217,10 +217,10 @@ func (e *Mode) UnmarshalJSON(data []byte) error {
 	case "listener":
 		fallthrough
 	case "passthrough-listener":
-		*e = Mode(v)
+		*e = AiMcpProxyPluginMode(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Mode: %v", v)
+		return fmt.Errorf("invalid value for AiMcpProxyPluginMode: %v", v)
 	}
 }
 
@@ -623,9 +623,9 @@ type AiMcpProxyPluginConfig struct {
 	// max allowed body size allowed to be handled as MCP request. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
 	MaxRequestBodySize *int64 `default:"1048576" json:"max_request_body_size"`
 	// The mode of the MCP proxy. Possible values are: 'passthrough-listener', 'conversion-listener', 'conversion-only', 'listener'.
-	Mode   Mode    `json:"mode"`
-	Server *Server `json:"server"`
-	Tools  []Tools `json:"tools"`
+	Mode   AiMcpProxyPluginMode `json:"mode"`
+	Server *Server              `json:"server"`
+	Tools  []Tools              `json:"tools"`
 }
 
 func (a AiMcpProxyPluginConfig) MarshalJSON() ([]byte, error) {
@@ -674,9 +674,9 @@ func (a *AiMcpProxyPluginConfig) GetMaxRequestBodySize() *int64 {
 	return a.MaxRequestBodySize
 }
 
-func (a *AiMcpProxyPluginConfig) GetMode() Mode {
+func (a *AiMcpProxyPluginConfig) GetMode() AiMcpProxyPluginMode {
 	if a == nil {
-		return Mode("")
+		return AiMcpProxyPluginMode("")
 	}
 	return a.Mode
 }

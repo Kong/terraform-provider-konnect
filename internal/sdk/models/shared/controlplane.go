@@ -75,8 +75,8 @@ func (e *ControlPlaneAuthType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// Config - CP configuration object for related access endpoints.
-type Config struct {
+// ControlPlaneConfig - CP configuration object for related access endpoints.
+type ControlPlaneConfig struct {
 	// Control Plane Endpoint.
 	ControlPlaneEndpoint string `json:"control_plane_endpoint"`
 	// Telemetry Endpoint.
@@ -91,42 +91,42 @@ type Config struct {
 	ProxyUrls []ProxyURL `json:"proxy_urls,omitempty"`
 }
 
-func (c *Config) GetControlPlaneEndpoint() string {
+func (c *ControlPlaneConfig) GetControlPlaneEndpoint() string {
 	if c == nil {
 		return ""
 	}
 	return c.ControlPlaneEndpoint
 }
 
-func (c *Config) GetTelemetryEndpoint() string {
+func (c *ControlPlaneConfig) GetTelemetryEndpoint() string {
 	if c == nil {
 		return ""
 	}
 	return c.TelemetryEndpoint
 }
 
-func (c *Config) GetClusterType() ControlPlaneClusterType {
+func (c *ControlPlaneConfig) GetClusterType() ControlPlaneClusterType {
 	if c == nil {
 		return ControlPlaneClusterType("")
 	}
 	return c.ClusterType
 }
 
-func (c *Config) GetAuthType() ControlPlaneAuthType {
+func (c *ControlPlaneConfig) GetAuthType() ControlPlaneAuthType {
 	if c == nil {
 		return ControlPlaneAuthType("")
 	}
 	return c.AuthType
 }
 
-func (c *Config) GetCloudGateway() bool {
+func (c *ControlPlaneConfig) GetCloudGateway() bool {
 	if c == nil {
 		return false
 	}
 	return c.CloudGateway
 }
 
-func (c *Config) GetProxyUrls() []ProxyURL {
+func (c *ControlPlaneConfig) GetProxyUrls() []ProxyURL {
 	if c == nil {
 		return nil
 	}
@@ -147,7 +147,7 @@ type ControlPlane struct {
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
 	// CP configuration object for related access endpoints.
-	Config Config `json:"config"`
+	Config ControlPlaneConfig `json:"config"`
 	// An ISO-8604 timestamp representation of control plane creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8604 timestamp representation of control plane update date.
@@ -193,9 +193,9 @@ func (c *ControlPlane) GetLabels() map[string]*string {
 	return c.Labels
 }
 
-func (c *ControlPlane) GetConfig() Config {
+func (c *ControlPlane) GetConfig() ControlPlaneConfig {
 	if c == nil {
-		return Config{}
+		return ControlPlaneConfig{}
 	}
 	return c.Config
 }
