@@ -73,7 +73,7 @@ type BackendClusterTLS struct {
 	// List of supported TLS versions.
 	TLSVersions []TLSVersions `json:"tls_versions,omitempty"`
 	// Client mTLS configuration.
-	ClientIdentity *ClientIdentity `json:"client_identity"`
+	ClientIdentity *ClientIdentity `json:"client_identity,omitempty"`
 }
 
 func (b BackendClusterTLS) MarshalJSON() ([]byte, error) {

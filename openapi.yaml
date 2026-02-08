@@ -27669,8 +27669,7 @@ components:
         client_identity:
           description: Client mTLS configuration.
           type: object
-          default: null
-          nullable: true
+          nullable: false
           properties:
             certificate:
               $ref: '#/components/schemas/GatewaySecretReferenceOrLiteral'
@@ -27680,7 +27679,6 @@ components:
             - certificate
             - key
           x-min-runtime-version: '1.1'
-          x-speakeasy-param-computed: false
       required:
         - enabled
     BackendMetadataUpdateIntervalSeconds:
