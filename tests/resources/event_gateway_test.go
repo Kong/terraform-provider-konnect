@@ -879,9 +879,7 @@ EOF
 						bootstrap_port  = "at_start"
 						min_broker_id   = 0
 						destination = {
-							virtual_cluster_reference_by_name = {
-								name = konnect_event_gateway_virtual_cluster.my_event_gateway_virtual_cluster.name
-							}
+							id = konnect_event_gateway_virtual_cluster.my_event_gateway_virtual_cluster.id
 						}
 					}
 				}
@@ -1067,13 +1065,11 @@ EOF
 				config = {
 					failure_mode = "error"
 					encryption_key = {
-						static = {
-							key = {
-								reference_by_name = {
-									name = konnect_event_gateway_static_key.test_encryption_key.name
-								}
-							}
+					  static = {
+						reference_by_id = {
+						  id = konnect_event_gateway_static_key.test_encryption_key.id
 						}
+					  }
 					}
 					part_of_record = ["value"]
 				}
