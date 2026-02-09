@@ -10,7 +10,6 @@ info:
   x-extensions-note: |
     This API uses the `x-expression` vendor extension to indicate that a string property is a DSL expression.
     Supported types:
-
       - `boolean`: An expression evaluates to boolean. For example, `context.topic.name == 'my-topic'`
       - `string`: A template string expression that evaluates to a string or a literal string value. For example,
         `${context.topic.name.substring(0, context.topic.name.length-4)}` or `my-literal-value`
@@ -27471,13 +27470,10 @@ components:
           description: |
             Methods to mediate authentication:
             * passthrough - pass authentication from the client through proxy to the backend cluster without any kind of
-
               validation
             * validate_forward - pass authentication from the client through proxy to the backend cluster.
-
               Proxy does the validation before forwarding it to the client.
             * terminate - terminate authentication at the proxy level and originate authentication to the backend cluster
-
               using the configuration defined at BackendCluster's authentication.
               SASL auth is not originated if authentication on the backend_cluster is not configured.
           type: string
@@ -27537,7 +27533,6 @@ components:
       description: |
         Configures whether or not ACL policies are enforced on the gateway.
         - `enforce_on_gateway` means the gateway enforces its own ACL policies for this virtual cluster
-
           and does not forward ACL-related commands to the backend cluster.
           Note that if there are no ACL policies configured, all access is denied.
         - `passthrough` tells the gateway to forward all ACL-related commands.
@@ -27659,7 +27654,6 @@ components:
         client_identity:
           description: Client mTLS configuration.
           type: object
-          nullable: false
           properties:
             certificate:
               $ref: '#/components/schemas/GatewaySecretReferenceOrLiteral'
@@ -27669,6 +27663,7 @@ components:
             - certificate
             - key
           x-min-runtime-version: '1.1'
+          x-speakeasy-param-computed: false
       required:
         - enabled
     BackendMetadataUpdateIntervalSeconds:
@@ -29289,7 +29284,6 @@ components:
         Defines a behavior when record key is not valid.
         * reject - rejects a batch for topic partition. Only available for produce.
         * mark - marks a record with kong/server header and client ID value
-
           to help to identify the clients violating schema.
       type: string
       enum:
@@ -29301,7 +29295,6 @@ components:
         Defines a behavior when record value is not valid.
         * reject - rejects a batch for topic partition. Only available for produce.
         * mark - marks a record with kong/server header and client ID value
-
           to help to identify the clients violating schema.
       type: string
       enum:
@@ -29432,10 +29425,8 @@ components:
         mode:
           description: |
             * hide_prefix - the configured prefix is hidden from clients for topics and IDs when reading.
-
               Created resources are written with the prefix on the backend cluster.
             * enforce_prefix - the configured prefix remains visible to clients.
-
               Created resources must include the prefix or the request will fail.
           type: string
           enum:
@@ -66684,7 +66675,6 @@ tags:
     description: |
       Portal Product Versions hold metadata that describes how a Product Version is configured for a specific portal.
 
-
         They contain:
         - Lifecyle and deprecation statuses
         - Application registration settings like auto approve or whether application registration is enabled
@@ -66822,7 +66812,6 @@ tags:
       - `grpcs`: At least one of `hosts`, `headers`, `paths`, or `snis`
       - `ws`: At least one of `hosts`, `headers`, or `paths`
       - `wss`: At least one of `hosts`, `headers`, `paths`, or `snis`
-
         <br>
         A route can't have both `tls` and `tls_passthrough` protocols at same time.
         <br><br>
