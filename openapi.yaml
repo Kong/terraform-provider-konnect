@@ -27264,9 +27264,7 @@ components:
       x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
     VirtualClusterReference:
       description: A reference to a virtual cluster.
-      anyOf:
-        - $ref: '#/components/schemas/VirtualClusterReferenceById'
-        - $ref: '#/components/schemas/VirtualClusterReferenceByName'
+      $ref: '#/components/schemas/VirtualClusterReferenceById'
     VirtualClusterReferenceById:
       description: Reference a virtual cluster by its unique identifier.
       type: object
@@ -27278,14 +27276,6 @@ components:
           minLength: 1
       required:
         - id
-    VirtualClusterReferenceByName:
-      description: Reference a virtual cluster by its unique name.
-      type: object
-      properties:
-        name:
-          $ref: '#/components/schemas/VirtualClusterName'
-      required:
-        - name
     VirtualClusterAuthenticationSensitiveDataAwareSchemes:
       description: |
         How to handle authentication from clients.
@@ -29259,9 +29249,7 @@ components:
     EncryptionKeyStaticReference:
       description: |
         A static encryption key reference, either by ID or by value.
-      anyOf:
-        - $ref: '#/components/schemas/EncryptionKeyStaticReferenceById'
-        - $ref: '#/components/schemas/EncryptionKeyStaticReferenceByName'
+      $ref: '#/components/schemas/EncryptionKeyStaticReferenceById'
     EncryptionKeyStaticReferenceById:
       description: A static encryption key reference by ID.
       type: object
@@ -29274,18 +29262,6 @@ components:
       required:
         - id
       x-speakeasy-name-override: ReferenceByID
-    EncryptionKeyStaticReferenceByName:
-      description: A static encryption key reference by name.
-      type: object
-      properties:
-        name:
-          description: The name of the static key defined in the key source.
-          type: string
-          maxLength: 255
-          minLength: 1
-      required:
-        - name
-      x-speakeasy-name-override: ReferenceByName
     ConsumeKeyValidationAction:
       description: |
         Defines a behavior when record key is not valid.
@@ -64830,7 +64806,7 @@ components:
                 maxLength: 255
                 minLength: 1
               description:
-                description: A human-readable description of the virtual cluster.
+                description: A human-readable description of the event gateway listener.
                 type: string
                 default: ''
                 maxLength: 512
@@ -64858,7 +64834,7 @@ components:
                 maxLength: 255
                 minLength: 1
               description:
-                description: A human-readable description of the virtual cluster.
+                description: A human-readable description of the event gateway listener.
                 type: string
                 default: ''
                 maxLength: 512
@@ -64949,7 +64925,7 @@ components:
               name:
                 $ref: '#/components/schemas/BackendClusterName'
               description:
-                description: A human-readable description of the virtual cluster.
+                description: A human-readable description of the backend cluster.
                 type: string
                 default: ''
                 maxLength: 512
@@ -64985,7 +64961,7 @@ components:
               name:
                 $ref: '#/components/schemas/BackendClusterName'
               description:
-                description: A human-readable description of the virtual cluster.
+                description: A human-readable description of the backend cluster.
                 type: string
                 default: ''
                 maxLength: 512

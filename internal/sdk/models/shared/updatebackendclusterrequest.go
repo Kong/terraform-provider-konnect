@@ -10,7 +10,7 @@ import (
 type UpdateBackendClusterRequest struct {
 	// The unique name of the backend cluster.
 	Name string `json:"name"`
-	// A human-readable description of the virtual cluster.
+	// A human-readable description of the backend cluster.
 	Description    *string                                              `default:"" json:"description"`
 	Authentication BackendClusterAuthenticationSensitiveDataAwareScheme `json:"authentication"`
 	// If true, virtual clusters can have allow anonymous authentication and use this backend cluster.

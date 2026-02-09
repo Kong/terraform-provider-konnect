@@ -82,7 +82,7 @@ func (r *EventGatewayListenerResource) Schema(ctx context.Context, req resource.
 				Computed:    true,
 				Optional:    true,
 				Default:     stringdefault.StaticString(``),
-				Description: `A human-readable description of the virtual cluster. Default: ""`,
+				Description: `A human-readable description of the event gateway listener. Default: ""`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(512),
 				},

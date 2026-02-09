@@ -88,7 +88,7 @@ It is strongly discouraged to use port mapping in production. (see [below for ne
 Required:
 
 - `advertised_host` (String) Virtual brokers are advertised to clients using this host. Any kind of host supported by kafka can be used. If not defined, it's listen_address. If listen_address is `0.0.0.0` it's the destination IP of the TCP connection.
-- `destination` (Attributes) A reference to a virtual cluster. (see [below for nested schema](#nestedatt--config--port_mapping--destination))
+- `destination` (Attributes) Reference a virtual cluster by its unique identifier. (see [below for nested schema](#nestedatt--config--port_mapping--destination))
 
 Optional:
 
@@ -105,26 +105,9 @@ Default: "at_start"; must be one of ["none", "at_start"]
 <a id="nestedatt--config--port_mapping--destination"></a>
 ### Nested Schema for `config.port_mapping.destination`
 
-Optional:
-
-- `virtual_cluster_reference_by_id` (Attributes) Reference a virtual cluster by its unique identifier. (see [below for nested schema](#nestedatt--config--port_mapping--destination--virtual_cluster_reference_by_id))
-- `virtual_cluster_reference_by_name` (Attributes) Reference a virtual cluster by its unique name. (see [below for nested schema](#nestedatt--config--port_mapping--destination--virtual_cluster_reference_by_name))
-
-<a id="nestedatt--config--port_mapping--destination--virtual_cluster_reference_by_id"></a>
-### Nested Schema for `config.port_mapping.destination.virtual_cluster_reference_by_id`
-
 Required:
 
 - `id` (String) The unique identifier of the virtual cluster.
-
-
-<a id="nestedatt--config--port_mapping--destination--virtual_cluster_reference_by_name"></a>
-### Nested Schema for `config.port_mapping.destination.virtual_cluster_reference_by_name`
-
-Required:
-
-- `name` (String) The name of the virtual cluster.
-
 
 
 

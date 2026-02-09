@@ -9,9 +9,8 @@ import (
 // EncryptionKeyStatic - A static encryption key.
 type EncryptionKeyStatic struct {
 	type_ string `const:"static" json:"type"`
-	// A static encryption key reference, either by ID or by value.
-	//
-	Key EncryptionKeyStaticReference `json:"key"`
+	// A static encryption key reference by ID.
+	ReferenceByID ReferenceByID `json:"key"`
 }
 
 func (e EncryptionKeyStatic) MarshalJSON() ([]byte, error) {
@@ -29,9 +28,9 @@ func (e *EncryptionKeyStatic) GetType() string {
 	return "static"
 }
 
-func (e *EncryptionKeyStatic) GetKey() EncryptionKeyStaticReference {
+func (e *EncryptionKeyStatic) GetReferenceByID() ReferenceByID {
 	if e == nil {
-		return EncryptionKeyStaticReference{}
+		return ReferenceByID{}
 	}
-	return e.Key
+	return e.ReferenceByID
 }

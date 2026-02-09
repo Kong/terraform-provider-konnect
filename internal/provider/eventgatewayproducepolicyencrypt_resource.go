@@ -100,47 +100,18 @@ func (r *EventGatewayProducePolicyEncryptResource) Schema(ctx context.Context, r
 							"static": schema.SingleNestedAttribute{
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
-									"key": schema.SingleNestedAttribute{
+									"reference_by_id": schema.SingleNestedAttribute{
 										Required: true,
 										Attributes: map[string]schema.Attribute{
-											"reference_by_id": schema.SingleNestedAttribute{
-												Optional: true,
-												Attributes: map[string]schema.Attribute{
-													"id": schema.StringAttribute{
-														Required:    true,
-														Description: `The ID of the static key defined in the key source.`,
-														Validators: []validator.String{
-															stringvalidator.UTF8LengthAtLeast(1),
-														},
-													},
-												},
-												Description: `A static encryption key reference by ID.`,
-												Validators: []validator.Object{
-													objectvalidator.ConflictsWith(path.Expressions{
-														path.MatchRelative().AtParent().AtName("reference_by_name"),
-													}...),
-												},
-											},
-											"reference_by_name": schema.SingleNestedAttribute{
-												Optional: true,
-												Attributes: map[string]schema.Attribute{
-													"name": schema.StringAttribute{
-														Required:    true,
-														Description: `The name of the static key defined in the key source.`,
-														Validators: []validator.String{
-															stringvalidator.UTF8LengthBetween(1, 255),
-														},
-													},
-												},
-												Description: `A static encryption key reference by name.`,
-												Validators: []validator.Object{
-													objectvalidator.ConflictsWith(path.Expressions{
-														path.MatchRelative().AtParent().AtName("reference_by_id"),
-													}...),
+											"id": schema.StringAttribute{
+												Required:    true,
+												Description: `The ID of the static key defined in the key source.`,
+												Validators: []validator.String{
+													stringvalidator.UTF8LengthAtLeast(1),
 												},
 											},
 										},
-										Description: `A static encryption key reference, either by ID or by value.`,
+										Description: `A static encryption key reference by ID.`,
 									},
 								},
 								Description: `A static encryption key.`,

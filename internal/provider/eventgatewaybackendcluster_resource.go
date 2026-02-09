@@ -183,7 +183,7 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 				Computed:    true,
 				Optional:    true,
 				Default:     stringdefault.StaticString(``),
-				Description: `A human-readable description of the virtual cluster. Default: ""`,
+				Description: `A human-readable description of the backend cluster. Default: ""`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(512),
 				},

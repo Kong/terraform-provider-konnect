@@ -59,7 +59,7 @@ func (e *BootstrapPort) UnmarshalJSON(data []byte) error {
 // It is strongly discouraged to use port mapping in production.
 type ForwardToClusterByPortMappingConfig struct {
 	type_ string `const:"port_mapping" json:"type"`
-	// A reference to a virtual cluster.
+	// Reference a virtual cluster by its unique identifier.
 	Destination VirtualClusterReference `json:"destination"`
 	// Virtual brokers are advertised to clients using this host. Any kind of host supported by kafka can be used. If not defined, it's listen_address. If listen_address is `0.0.0.0` it's the destination IP of the TCP connection.
 	AdvertisedHost string `json:"advertised_host"`

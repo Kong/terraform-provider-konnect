@@ -100,44 +100,15 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Schema(ctx c
 							"destination": schema.SingleNestedAttribute{
 								Required: true,
 								Attributes: map[string]schema.Attribute{
-									"virtual_cluster_reference_by_id": schema.SingleNestedAttribute{
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"id": schema.StringAttribute{
-												Required:    true,
-												Description: `The unique identifier of the virtual cluster.`,
-												Validators: []validator.String{
-													stringvalidator.UTF8LengthAtLeast(1),
-												},
-											},
-										},
-										Description: `Reference a virtual cluster by its unique identifier.`,
-										Validators: []validator.Object{
-											objectvalidator.ConflictsWith(path.Expressions{
-												path.MatchRelative().AtParent().AtName("virtual_cluster_reference_by_name"),
-											}...),
-										},
-									},
-									"virtual_cluster_reference_by_name": schema.SingleNestedAttribute{
-										Optional: true,
-										Attributes: map[string]schema.Attribute{
-											"name": schema.StringAttribute{
-												Required:    true,
-												Description: `The name of the virtual cluster.`,
-												Validators: []validator.String{
-													stringvalidator.UTF8LengthBetween(1, 255),
-												},
-											},
-										},
-										Description: `Reference a virtual cluster by its unique name.`,
-										Validators: []validator.Object{
-											objectvalidator.ConflictsWith(path.Expressions{
-												path.MatchRelative().AtParent().AtName("virtual_cluster_reference_by_id"),
-											}...),
+									"id": schema.StringAttribute{
+										Required:    true,
+										Description: `The unique identifier of the virtual cluster.`,
+										Validators: []validator.String{
+											stringvalidator.UTF8LengthAtLeast(1),
 										},
 									},
 								},
-								Description: `A reference to a virtual cluster.`,
+								Description: `Reference a virtual cluster by its unique identifier.`,
 							},
 							"min_broker_id": schema.Int64Attribute{
 								Computed:    true,

@@ -200,34 +200,11 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResourceModel) ToShare
 	}
 	var forwardToClusterByPortMappingConfig *shared.ForwardToClusterByPortMappingConfig
 	if r.Config.PortMapping != nil {
-		var destination shared.VirtualClusterReference
-		var virtualClusterReferenceByID *shared.VirtualClusterReferenceByID
-		if r.Config.PortMapping.Destination.VirtualClusterReferenceByID != nil {
-			var id string
-			id = r.Config.PortMapping.Destination.VirtualClusterReferenceByID.ID.ValueString()
+		var id string
+		id = r.Config.PortMapping.Destination.ID.ValueString()
 
-			virtualClusterReferenceByID = &shared.VirtualClusterReferenceByID{
-				ID: id,
-			}
-		}
-		if virtualClusterReferenceByID != nil {
-			destination = shared.VirtualClusterReference{
-				VirtualClusterReferenceByID: virtualClusterReferenceByID,
-			}
-		}
-		var virtualClusterReferenceByName *shared.VirtualClusterReferenceByName
-		if r.Config.PortMapping.Destination.VirtualClusterReferenceByName != nil {
-			var name1 string
-			name1 = r.Config.PortMapping.Destination.VirtualClusterReferenceByName.Name.ValueString()
-
-			virtualClusterReferenceByName = &shared.VirtualClusterReferenceByName{
-				Name: name1,
-			}
-		}
-		if virtualClusterReferenceByName != nil {
-			destination = shared.VirtualClusterReference{
-				VirtualClusterReferenceByName: virtualClusterReferenceByName,
-			}
+		destination := shared.VirtualClusterReference{
+			ID: id,
 		}
 		var advertisedHost string
 		advertisedHost = r.Config.PortMapping.AdvertisedHost.ValueString()

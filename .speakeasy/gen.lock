@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: bb28a1aa0c562fcd7f44e3ebe48df56d
+  docChecksum: 51e0c865ef3fa87682b78ffcc3295449
   docVersion: 2.0.0
   speakeasyVersion: 1.665.0
   generationVersion: 2.767.2
@@ -1245,7 +1245,6 @@ generatedFiles:
   - internal/provider/types/encryption_key.go
   - internal/provider/types/encryption_key_aws.go
   - internal/provider/types/encryption_key_static.go
-  - internal/provider/types/encryption_key_static_reference.go
   - internal/provider/types/error.go
   - internal/provider/types/event_gateway_acl_operation.go
   - internal/provider/types/event_gateway_acl_policy_config.go
@@ -1502,7 +1501,6 @@ generatedFiles:
   - internal/provider/types/virtual_cluster_namespace_topic_selector.go
   - internal/provider/types/virtual_cluster_namespace_topic_selector_exact_list.go
   - internal/provider/types/virtual_cluster_namespace_topic_selector_glob.go
-  - internal/provider/types/virtual_cluster_reference.go
   - internal/provider/types/websocket.go
   - internal/provider/types/websocket_size_limit_plugin_config.go
   - internal/provider/types/websocket_validator_plugin_client.go
@@ -2557,7 +2555,6 @@ generatedFiles:
   - internal/sdk/models/shared/encryptionkey.go
   - internal/sdk/models/shared/encryptionkeyaws.go
   - internal/sdk/models/shared/encryptionkeystatic.go
-  - internal/sdk/models/shared/encryptionkeystaticreference.go
   - internal/sdk/models/shared/encryptionrecordpart.go
   - internal/sdk/models/shared/eventgatewayacloperation.go
   - internal/sdk/models/shared/eventgatewayaclpolicyconfig.go
@@ -2741,7 +2738,6 @@ generatedFiles:
   - internal/sdk/models/shared/ratelimitingplugin.go
   - internal/sdk/models/shared/redirectplugin.go
   - internal/sdk/models/shared/referencebyid.go
-  - internal/sdk/models/shared/referencebyname.go
   - internal/sdk/models/shared/replacecmek.go
   - internal/sdk/models/shared/replaceportalimageasset.go
   - internal/sdk/models/shared/requestcalloutplugin.go
@@ -2889,8 +2885,6 @@ generatedFiles:
   - internal/sdk/models/shared/virtualclusternamespacetopicselectorexactlist.go
   - internal/sdk/models/shared/virtualclusternamespacetopicselectorglob.go
   - internal/sdk/models/shared/virtualclusterreference.go
-  - internal/sdk/models/shared/virtualclusterreferencebyid.go
-  - internal/sdk/models/shared/virtualclusterreferencebyname.go
   - internal/sdk/models/shared/visibilitystatus.go
   - internal/sdk/models/shared/websocketsizelimitplugin.go
   - internal/sdk/models/shared/websocketvalidatorplugin.go
