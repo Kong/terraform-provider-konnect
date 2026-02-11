@@ -10,7 +10,7 @@ import (
 type UpdateEventGatewayListenerRequest struct {
 	// The unique name of the listener.
 	Name string `json:"name"`
-	// A human-readable description of the event gateway listener.
+	// A human-readable description of the listener.
 	Description *string `default:"" json:"description"`
 	// Which address or addresses to listen on.
 	// `0.0.0.0` means all addresses on the host.

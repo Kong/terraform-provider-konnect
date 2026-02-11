@@ -68,7 +68,6 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 				Required: true,
 				MarkdownDescription: `Configures whether or not ACL policies are enforced on the gateway.` + "\n" +
 					`- ` + "`" + `enforce_on_gateway` + "`" + ` means the gateway enforces its own ACL policies for this virtual cluster` + "\n" +
-					`` + "\n" +
 					`  and does not forward ACL-related commands to the backend cluster.` + "\n" +
 					`  Note that if there are no ACL policies configured, all access is denied.` + "\n" +
 					`- ` + "`" + `passthrough` + "`" + ` tells the gateway to forward all ACL-related commands.` + "\n" +
@@ -154,13 +153,10 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 									Optional: true,
 									MarkdownDescription: `Methods to mediate authentication:` + "\n" +
 										`* passthrough - pass authentication from the client through proxy to the backend cluster without any kind of` + "\n" +
-										`` + "\n" +
 										`  validation` + "\n" +
 										`* validate_forward - pass authentication from the client through proxy to the backend cluster.` + "\n" +
-										`` + "\n" +
 										`  Proxy does the validation before forwarding it to the client.` + "\n" +
 										`* terminate - terminate authentication at the proxy level and originate authentication to the backend cluster` + "\n" +
-										`` + "\n" +
 										`  using the configuration defined at BackendCluster's authentication.` + "\n" +
 										`  SASL auth is not originated if authentication on the backend_cluster is not configured.` + "\n" +
 										`Not Null; must be one of ["passthrough", "validate_forward", "terminate"]`,
@@ -558,10 +554,8 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 					"mode": schema.StringAttribute{
 						Required: true,
 						MarkdownDescription: `* hide_prefix - the configured prefix is hidden from clients for topics and IDs when reading.` + "\n" +
-							`` + "\n" +
 							`  Created resources are written with the prefix on the backend cluster.` + "\n" +
 							`* enforce_prefix - the configured prefix remains visible to clients.` + "\n" +
-							`` + "\n" +
 							`  Created resources must include the prefix or the request will fail.` + "\n" +
 							`must be one of ["hide_prefix", "enforce_prefix"]`,
 						Validators: []validator.String{

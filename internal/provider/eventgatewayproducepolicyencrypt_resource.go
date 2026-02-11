@@ -100,7 +100,7 @@ func (r *EventGatewayProducePolicyEncryptResource) Schema(ctx context.Context, r
 							"static": schema.SingleNestedAttribute{
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
-									"reference_by_id": schema.SingleNestedAttribute{
+									"key": schema.SingleNestedAttribute{
 										Required: true,
 										Attributes: map[string]schema.Attribute{
 											"id": schema.StringAttribute{
@@ -187,7 +187,6 @@ func (r *EventGatewayProducePolicyEncryptResource) Schema(ctx context.Context, r
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique user-defined name of the policy.`,
 				Validators: []validator.String{

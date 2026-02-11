@@ -11,7 +11,7 @@ type EventGatewayProduceSchemaValidationPolicy struct {
 	// The type name of the policy.
 	type_ string `const:"schema_validation" json:"type"`
 	// A unique user-defined name of the policy.
-	Name *string `json:"name,omitempty"`
+	Name *string `default:"null" json:"name"`
 	// A human-readable description of the policy.
 	Description *string `default:"" json:"description"`
 	// Whether the policy is enabled.

@@ -3,5 +3,5 @@
 package types
 
 type EncryptionKeyStatic struct {
-	ReferenceByID SchemaRegistryReference `tfsdk:"reference_by_id"`
+	Key SchemaRegistryReference `tfsdk:"key"`
 }

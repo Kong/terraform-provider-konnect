@@ -166,7 +166,6 @@ func (r *EventGatewayConsumePolicyModifyHeadersResource) Schema(ctx context.Cont
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique user-defined name of the policy.`,
 				Validators: []validator.String{

@@ -28034,8 +28034,10 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
+          default: null
           maxLength: 255
-          nullable: false
+          nullable: true
+          x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -28094,8 +28096,10 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
+          default: null
           maxLength: 255
-          nullable: false
+          nullable: true
+          x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -28149,8 +28153,10 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
+          default: null
           maxLength: 255
-          nullable: false
+          nullable: true
+          x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -28187,8 +28193,10 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
+          default: null
           maxLength: 255
-          nullable: false
+          nullable: true
+          x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -28310,8 +28318,10 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
+          default: null
           maxLength: 255
-          nullable: false
+          nullable: true
+          x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -28464,8 +28474,10 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
+          default: null
           maxLength: 255
-          nullable: false
+          nullable: true
+          x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -28530,8 +28542,10 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
+          default: null
           maxLength: 255
-          nullable: false
+          nullable: true
+          x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -28600,8 +28614,10 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
+          default: null
           maxLength: 255
-          nullable: false
+          nullable: true
+          x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -28663,8 +28679,10 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
+          default: null
           maxLength: 255
-          nullable: false
+          nullable: true
+          x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -28731,8 +28749,10 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
+          default: null
           maxLength: 255
-          nullable: false
+          nullable: true
+          x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -28779,8 +28799,10 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
+          default: null
           maxLength: 255
-          nullable: false
+          nullable: true
+          x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -28873,8 +28895,10 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
+          default: null
           maxLength: 255
-          nullable: false
+          nullable: true
+          x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -28931,8 +28955,10 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
+          default: null
           maxLength: 255
-          nullable: false
+          nullable: true
+          x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -29019,8 +29045,10 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
+          default: null
           maxLength: 255
-          nullable: false
+          nullable: true
+          x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -29256,7 +29284,6 @@ components:
           minLength: 1
       required:
         - id
-      x-speakeasy-name-override: ReferenceByID
     ConsumeKeyValidationAction:
       description: |
         Defines a behavior when record key is not valid.
@@ -63545,8 +63572,10 @@ components:
         name:
           description: A unique user-defined name of the policy.
           type: string
+          default: null
           maxLength: 255
-          nullable: false
+          nullable: true
+          x-speakeasy-param-computed: false
           x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
         description:
           description: A human-readable description of the policy.
@@ -64797,7 +64826,7 @@ components:
                 maxLength: 255
                 minLength: 1
               description:
-                description: A human-readable description of the event gateway listener.
+                description: A human-readable description of the listener.
                 type: string
                 default: ''
                 maxLength: 512
@@ -64825,7 +64854,7 @@ components:
                 maxLength: 255
                 minLength: 1
               description:
-                description: A human-readable description of the event gateway listener.
+                description: A human-readable description of the listener.
                 type: string
                 default: ''
                 maxLength: 512

@@ -18,8 +18,8 @@ resource "konnect_event_gateway_produce_policy_encrypt" "my_eventgatewayproducep
   config = {
     encryption_key = {
       static = {
-        reference_by_id = {
-          id = "d23890d4-7472-452f-a393-8826d339d0bc"
+        key = {
+          id = "6e8740c2-fb76-4269-aeef-660d701c6ea1"
         }
       }
     }
@@ -98,10 +98,10 @@ Required:
 
 Required:
 
-- `reference_by_id` (Attributes) A static encryption key reference by ID. (see [below for nested schema](#nestedatt--config--encryption_key--static--reference_by_id))
+- `key` (Attributes) A static encryption key reference by ID. (see [below for nested schema](#nestedatt--config--encryption_key--static--key))
 
-<a id="nestedatt--config--encryption_key--static--reference_by_id"></a>
-### Nested Schema for `config.encryption_key.static.reference_by_id`
+<a id="nestedatt--config--encryption_key--static--key"></a>
+### Nested Schema for `config.encryption_key.static.key`
 
 Required:
 

@@ -81,7 +81,6 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 								MarkdownDescription: `Defines a behavior when record key is not valid.` + "\n" +
 									`* reject - rejects a batch for topic partition. Only available for produce.` + "\n" +
 									`* mark - marks a record with kong/server header and client ID value` + "\n" +
-									`` + "\n" +
 									`  to help to identify the clients violating schema.` + "\n" +
 									`must be one of ["reject", "mark"]`,
 								Validators: []validator.String{
@@ -108,7 +107,6 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 								MarkdownDescription: `Defines a behavior when record value is not valid.` + "\n" +
 									`* reject - rejects a batch for topic partition. Only available for produce.` + "\n" +
 									`* mark - marks a record with kong/server header and client ID value` + "\n" +
-									`` + "\n" +
 									`  to help to identify the clients violating schema.` + "\n" +
 									`must be one of ["reject", "mark"]`,
 								Validators: []validator.String{
@@ -134,7 +132,6 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 								MarkdownDescription: `Defines a behavior when record key is not valid.` + "\n" +
 									`* reject - rejects a batch for topic partition. Only available for produce.` + "\n" +
 									`* mark - marks a record with kong/server header and client ID value` + "\n" +
-									`` + "\n" +
 									`  to help to identify the clients violating schema.` + "\n" +
 									`must be one of ["reject", "mark"]`,
 								Validators: []validator.String{
@@ -161,7 +158,6 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 								MarkdownDescription: `Defines a behavior when record value is not valid.` + "\n" +
 									`* reject - rejects a batch for topic partition. Only available for produce.` + "\n" +
 									`* mark - marks a record with kong/server header and client ID value` + "\n" +
-									`` + "\n" +
 									`  to help to identify the clients violating schema.` + "\n" +
 									`must be one of ["reject", "mark"]`,
 								Validators: []validator.String{
@@ -221,7 +217,6 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique user-defined name of the policy.`,
 				Validators: []validator.String{

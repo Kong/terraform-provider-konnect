@@ -73,7 +73,6 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
 
 - `acl_mode` (String) Configures whether or not ACL policies are enforced on the gateway.
 - `enforce_on_gateway` means the gateway enforces its own ACL policies for this virtual cluster
-
   and does not forward ACL-related commands to the backend cluster.
   Note that if there are no ACL policies configured, all access is denied.
 - `passthrough` tells the gateway to forward all ACL-related commands.
@@ -129,13 +128,10 @@ Optional:
 - `jwks` (Attributes) JSON Web Key Set configuration for verifying token signatures. (see [below for nested schema](#nestedatt--authentication--oauth_bearer--jwks))
 - `mediation` (String) Methods to mediate authentication:
 * passthrough - pass authentication from the client through proxy to the backend cluster without any kind of
-
   validation
 * validate_forward - pass authentication from the client through proxy to the backend cluster.
-
   Proxy does the validation before forwarding it to the client.
 * terminate - terminate authentication at the proxy level and originate authentication to the backend cluster
-
   using the configuration defined at BackendCluster's authentication.
   SASL auth is not originated if authentication on the backend_cluster is not configured.
 Not Null; must be one of ["passthrough", "validate_forward", "terminate"]
@@ -228,10 +224,8 @@ Read-Only:
 Required:
 
 - `mode` (String) * hide_prefix - the configured prefix is hidden from clients for topics and IDs when reading.
-
   Created resources are written with the prefix on the backend cluster.
 * enforce_prefix - the configured prefix remains visible to clients.
-
   Created resources must include the prefix or the request will fail.
 must be one of ["hide_prefix", "enforce_prefix"]
 - `prefix` (String) The namespace is differentiated by this chosen prefix.

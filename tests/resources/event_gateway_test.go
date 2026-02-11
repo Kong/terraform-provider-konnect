@@ -1066,7 +1066,7 @@ EOF
 					failure_mode = "error"
 					encryption_key = {
 					  static = {
-						reference_by_id = {
+						key = {
 						  id = konnect_event_gateway_static_key.test_encryption_key.id
 						}
 					  }

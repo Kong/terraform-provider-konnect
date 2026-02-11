@@ -173,7 +173,6 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Schema(ctx context.Context
 				Description: `The ID of the Event Gateway Listener.`,
 			},
 			"name": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `A unique user-defined name of the policy.`,
 				Validators: []validator.String{

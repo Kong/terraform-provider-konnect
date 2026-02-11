@@ -136,15 +136,13 @@ The value is stored and returned by the API as-is, not treated as sensitive info
 <a id="nestedatt--tls--client_identity"></a>
 ### Nested Schema for `tls.client_identity`
 
-Optional:
+Required:
 
 - `certificate` (String) A literal value or a reference to an existing secret as a template string expression.
 The value is stored and returned by the API as-is, not treated as sensitive information.
-Not Null
 - `key` (String) A sensitive value containing the secret or a reference to a secret as a template string expression.
 If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
 If provided as an expression, the expression itself is stored and returned by the API.
-Not Null
 
 ## Import
 

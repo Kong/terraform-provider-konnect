@@ -190,13 +190,13 @@ func (r *EventGatewayProducePolicyEncryptResourceModel) ToSharedEventGatewayEncr
 	var encryptionKeyStatic *shared.EncryptionKeyStatic
 	if r.Config.EncryptionKey.Static != nil {
 		var id string
-		id = r.Config.EncryptionKey.Static.ReferenceByID.ID.ValueString()
+		id = r.Config.EncryptionKey.Static.Key.ID.ValueString()
 
-		referenceByID := shared.ReferenceByID{
+		key := shared.EncryptionKeyStaticReference{
 			ID: id,
 		}
 		encryptionKeyStatic = &shared.EncryptionKeyStatic{
-			ReferenceByID: referenceByID,
+			Key: key,
 		}
 	}
 	if encryptionKeyStatic != nil {

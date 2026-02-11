@@ -244,29 +244,22 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 						},
 					},
 					"client_identity": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"certificate": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
+								Required: true,
 								MarkdownDescription: `A literal value or a reference to an existing secret as a template string expression.` + "\n" +
-									`The value is stored and returned by the API as-is, not treated as sensitive information.` + "\n" +
-									`Not Null`,
+									`The value is stored and returned by the API as-is, not treated as sensitive information.`,
 								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
 									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
 							"key": schema.StringAttribute{
-								Computed: true,
-								Optional: true,
+								Required: true,
 								MarkdownDescription: `A sensitive value containing the secret or a reference to a secret as a template string expression.` + "\n" +
 									`If the value is provided as plain text, it is encrypted at rest and omitted from API responses.` + "\n" +
-									`If provided as an expression, the expression itself is stored and returned by the API.` + "\n" +
-									`Not Null`,
+									`If provided as an expression, the expression itself is stored and returned by the API.`,
 								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
 									stringvalidator.UTF8LengthAtLeast(1),
 								},
 							},
