@@ -9,7 +9,7 @@ terraform {
 
 provider "konnect" {
   server_url            = "https://us.api.konghq.com"
-  konnect_access_token = "kpat_2Ff0dzm7IiIqmJpW7IkuJrVX4XQRKCMLuTt7wp2uF32QoK5IS"// your token
+  konnect_access_token = "$$TOKEN"// your token
 }
 
 
