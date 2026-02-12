@@ -5,16 +5,15 @@ resource "konnect_event_gateway_consume_policy_decrypt" "decrypt" {
   config = {
     failure_mode   = "passthrough"
     part_of_record = ["key"]
-    key_sources    = [
+    key_sources = [
       {
-        static =
-          {
-            key =
-            {
-              id = konnect_event_gateway_static_key.statickey.id
-            }
+        static = {
+          key = {
+            id = konnect_event_gateway_static_key.statickey.id
           }
+        }
       }
     ]
   }
 }
+

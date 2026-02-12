@@ -6,7 +6,7 @@ resource "konnect_event_gateway_virtual_cluster" "vc" {
 
   authentication = [
     {
-      sasl_plain = { mediation = "passthrough" }
+      anonymous = { }
     }
   ]
 

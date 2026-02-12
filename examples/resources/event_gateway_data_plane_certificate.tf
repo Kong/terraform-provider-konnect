@@ -1,4 +1,6 @@
 resource "konnect_event_gateway_data_plane_certificate" "cert" {
+  name = "cert-1"
+  description = "initial certificate"
   certificate = <<EOF
 -----BEGIN CERTIFICATE-----
 MIIB4TCCAYugAwIBAgIUAenxUyPjkSLCe2BQXoBMBacqgLowDQYJKoZIhvcNAQEL
@@ -15,5 +17,5 @@ qKjBs0k=
 -----END CERTIFICATE-----
 EOF
 
-  gateway_id  = konnect_event_gateway.demo.id
+  gateway_id = konnect_event_gateway.demo.id
 }
