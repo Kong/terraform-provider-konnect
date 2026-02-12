@@ -22,22 +22,20 @@ import (
 // Depending on the protocol, one of the following attributes must be set:
 // <br>
 //
-// - `http`: At least one of `methods`, `hosts`, `headers`, or `paths`
-// - `https`: At least one of `methods`, `hosts`, `headers`, `paths`, or `snis`
-// - `tcp`: At least one of `sources` or `destinations`
-// - `tls`: at least one of `sources`, `destinations`, or `snis`
-// - `tls_passthrough`: set `snis`
-// - `grpc`: At least one of `hosts`, `headers`, or `paths`
-// - `grpcs`: At least one of `hosts`, `headers`, `paths`, or `snis`
-// - `ws`: At least one of `hosts`, `headers`, or `paths`
-// - `wss`: At least one of `hosts`, `headers`, `paths`, or `snis`
-//
-//	<br>
-//	A route can't have both `tls` and `tls_passthrough` protocols at same time.
-//	<br><br>
-//	Learn more about the router:
-//
-// - [Configure routes using expressions](https://developer.konghq.com/gateway/routing/expressions/)
+//   - `http`: At least one of `methods`, `hosts`, `headers`, or `paths`
+//   - `https`: At least one of `methods`, `hosts`, `headers`, `paths`, or `snis`
+//   - `tcp`: At least one of `sources` or `destinations`
+//   - `tls`: at least one of `sources`, `destinations`, or `snis`
+//   - `tls_passthrough`: set `snis`
+//   - `grpc`: At least one of `hosts`, `headers`, or `paths`
+//   - `grpcs`: At least one of `hosts`, `headers`, `paths`, or `snis`
+//   - `ws`: At least one of `hosts`, `headers`, or `paths`
+//   - `wss`: At least one of `hosts`, `headers`, `paths`, or `snis`
+//     <br>
+//     A route can't have both `tls` and `tls_passthrough` protocols at same time.
+//     <br><br>
+//     Learn more about the router:
+//   - [Configure routes using expressions](https://developer.konghq.com/gateway/routing/expressions/)
 type Routes struct {
 	rootSDK          *Konnect
 	sdkConfiguration config.SDKConfiguration
