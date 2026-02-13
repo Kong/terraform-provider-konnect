@@ -1,11 +1,11 @@
 # Changelog
 
 ## 3.7.0
-> Released 2026/02/12
+> Released 2026/02/13
 
 ### Features
 * Support linking APIs to Control Planes using `konnect_api_implementation` resource
-* Add support for `event_gateway` resources.
+* Add support for Event Gateway resources.
   * `konnect_event_gateway`
   * `konnect_event_gateway_backend_cluster`
   * `konnect_event_gateway_virtual_cluster`
