@@ -281,7 +281,7 @@ func (p Property) MarshalJSON() ([]byte, error) {
 }
 
 func (p *Property) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"property"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -435,7 +435,7 @@ func (j Jq) MarshalJSON() ([]byte, error) {
 }
 
 func (j *Jq) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &j, "", false, []string{"jq"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1112,15 +1112,15 @@ const (
 )
 
 type Nodes struct {
-	Branch     *Branch     `queryParam:"inline,name=nodes"`
-	NodesCache *NodesCache `queryParam:"inline,name=nodes"`
-	Call       *Call       `queryParam:"inline,name=nodes"`
-	Exit       *Exit       `queryParam:"inline,name=nodes"`
-	Jq         *Jq         `queryParam:"inline,name=nodes"`
-	JSONToXML  *JSONToXML  `queryParam:"inline,name=nodes"`
-	Property   *Property   `queryParam:"inline,name=nodes"`
-	Static     *Static     `queryParam:"inline,name=nodes"`
-	XMLToJSON  *XMLToJSON  `queryParam:"inline,name=nodes"`
+	Branch     *Branch     `queryParam:"inline" union:"member"`
+	NodesCache *NodesCache `queryParam:"inline" union:"member"`
+	Call       *Call       `queryParam:"inline" union:"member"`
+	Exit       *Exit       `queryParam:"inline" union:"member"`
+	Jq         *Jq         `queryParam:"inline" union:"member"`
+	JSONToXML  *JSONToXML  `queryParam:"inline" union:"member"`
+	Property   *Property   `queryParam:"inline" union:"member"`
+	Static     *Static     `queryParam:"inline" union:"member"`
+	XMLToJSON  *XMLToJSON  `queryParam:"inline" union:"member"`
 
 	Type NodesType
 }
@@ -1251,19 +1251,19 @@ func (u *Nodes) UnmarshalJSON(data []byte) error {
 		})
 	}
 
-	var property Property = Property{}
-	if err := utils.UnmarshalJSON(data, &property, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  NodesTypeProperty,
-			Value: &property,
-		})
-	}
-
 	var jsonToXML JSONToXML = JSONToXML{}
 	if err := utils.UnmarshalJSON(data, &jsonToXML, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
 			Type:  NodesTypeJSONToXML,
 			Value: &jsonToXML,
+		})
+	}
+
+	var property Property = Property{}
+	if err := utils.UnmarshalJSON(data, &property, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  NodesTypeProperty,
+			Value: &property,
 		})
 	}
 
@@ -1288,7 +1288,7 @@ func (u *Nodes) UnmarshalJSON(data []byte) error {
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Nodes", string(data))
 	}
@@ -1311,11 +1311,11 @@ func (u *Nodes) UnmarshalJSON(data []byte) error {
 	case NodesTypeJq:
 		u.Jq = best.Value.(*Jq)
 		return nil
-	case NodesTypeProperty:
-		u.Property = best.Value.(*Property)
-		return nil
 	case NodesTypeJSONToXML:
 		u.JSONToXML = best.Value.(*JSONToXML)
+		return nil
+	case NodesTypeProperty:
+		u.Property = best.Value.(*Property)
 		return nil
 	case NodesTypeStatic:
 		u.Static = best.Value.(*Static)
@@ -1935,7 +1935,7 @@ func (d DatakitPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DatakitPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"nodes"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -2078,7 +2078,7 @@ func (d DatakitPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DatakitPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
 		return err
 	}
 	return nil

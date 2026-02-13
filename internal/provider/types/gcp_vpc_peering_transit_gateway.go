@@ -7,7 +7,7 @@ import (
 )
 
 type GcpVpcPeeringTransitGateway struct {
-	DNSConfig                      []TransitGatewayDNSConfig     `tfsdk:"dns_config"`
-	Name                           types.String                  `tfsdk:"name"`
-	TransitGatewayAttachmentConfig GCPVPCPeeringAttachmentConfig `tfsdk:"transit_gateway_attachment_config"`
+	DNSConfig                      []TransitGatewayDNSConfig      `tfsdk:"dns_config"`
+	Name                           types.String                   `tfsdk:"name"`
+	TransitGatewayAttachmentConfig *GCPVPCPeeringAttachmentConfig `tfsdk:"transit_gateway_attachment_config"`
 }

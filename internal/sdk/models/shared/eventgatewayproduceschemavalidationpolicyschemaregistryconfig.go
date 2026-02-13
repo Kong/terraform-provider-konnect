@@ -29,7 +29,7 @@ func (e EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig) MarshalJS
 }
 
 func (e *EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
 		return err
 	}
 	return nil

@@ -24,6 +24,7 @@ func (r *IntegrationInstanceAuthCredentialResourceModel) RefreshFromSharedIntegr
 			r.ExpiresAt = r.MultiKeyAuthCredential.ExpiresAt
 			r.MultiKeyAuthCredential.ID = types.StringValue(resp.MultiKeyAuthCredential.ID)
 			r.ID = r.MultiKeyAuthCredential.ID
+			r.MultiKeyAuthCredential.IntegrationInstance = &tfTypes.Portals{}
 			r.MultiKeyAuthCredential.IntegrationInstance.DisplayName = types.StringValue(resp.MultiKeyAuthCredential.IntegrationInstance.DisplayName)
 			r.MultiKeyAuthCredential.IntegrationInstance.ID = types.StringValue(resp.MultiKeyAuthCredential.IntegrationInstance.ID)
 			r.MultiKeyAuthCredential.IntegrationInstance.Name = types.StringValue(resp.MultiKeyAuthCredential.IntegrationInstance.Name)

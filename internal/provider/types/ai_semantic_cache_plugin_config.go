@@ -9,7 +9,7 @@ import (
 type AiSemanticCachePluginConfig struct {
 	CacheControl           types.Bool    `tfsdk:"cache_control"`
 	CacheTTL               types.Int64   `tfsdk:"cache_ttl"`
-	Embeddings             Embeddings    `tfsdk:"embeddings"`
+	Embeddings             *Embeddings   `tfsdk:"embeddings"`
 	ExactCaching           types.Bool    `tfsdk:"exact_caching"`
 	IgnoreAssistantPrompts types.Bool    `tfsdk:"ignore_assistant_prompts"`
 	IgnoreSystemPrompts    types.Bool    `tfsdk:"ignore_system_prompts"`
@@ -17,5 +17,5 @@ type AiSemanticCachePluginConfig struct {
 	LlmFormat              types.String  `tfsdk:"llm_format"`
 	MessageCountback       types.Float64 `tfsdk:"message_countback"`
 	StopOnFailure          types.Bool    `tfsdk:"stop_on_failure"`
-	Vectordb               Vectordb      `tfsdk:"vectordb"`
+	Vectordb               *Vectordb     `tfsdk:"vectordb"`
 }

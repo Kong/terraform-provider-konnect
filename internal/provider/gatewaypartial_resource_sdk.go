@@ -16,7 +16,7 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 
 	if resp != nil {
 		if resp.PartialRedisCe != nil {
-			r.RedisCe = &tfTypes.PartialRedisCe{}
+			r.RedisCe.Config = &tfTypes.PartialRedisCeConfig{}
 			if resp.PartialRedisCe.Config.CloudAuthentication == nil {
 				r.RedisCe.Config.CloudAuthentication = nil
 			} else {
@@ -58,12 +58,14 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 				for _, v := range resp.PartialRedisCe.Tags {
 					r.RedisCe.Tags = append(r.RedisCe.Tags, types.StringValue(v))
 				}
+			} else {
+				r.RedisCe.Tags = nil
 			}
 			r.RedisCe.UpdatedAt = types.Int64PointerValue(resp.PartialRedisCe.UpdatedAt)
 			r.UpdatedAt = r.RedisCe.UpdatedAt
 		}
 		if resp.PartialRedisEe != nil {
-			r.RedisEe = &tfTypes.PartialRedisEe{}
+			r.RedisEe.Config = &tfTypes.PartialRedisEeConfig{}
 			if resp.PartialRedisEe.Config.CloudAuthentication == nil {
 				r.RedisEe.Config.CloudAuthentication = nil
 			} else {
@@ -97,6 +99,8 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 
 					r.RedisEe.Config.ClusterNodes = append(r.RedisEe.Config.ClusterNodes, clusterNodes)
 				}
+			} else {
+				r.RedisEe.Config.ClusterNodes = nil
 			}
 			r.RedisEe.Config.ConnectTimeout = types.Int64PointerValue(resp.PartialRedisEe.Config.ConnectTimeout)
 			r.RedisEe.Config.ConnectionIsProxied = types.BoolPointerValue(resp.PartialRedisEe.Config.ConnectionIsProxied)
@@ -120,6 +124,8 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 
 					r.RedisEe.Config.SentinelNodes = append(r.RedisEe.Config.SentinelNodes, sentinelNodes)
 				}
+			} else {
+				r.RedisEe.Config.SentinelNodes = nil
 			}
 			r.RedisEe.Config.SentinelPassword = types.StringPointerValue(resp.PartialRedisEe.Config.SentinelPassword)
 			if resp.PartialRedisEe.Config.SentinelRole != nil {
@@ -143,6 +149,8 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 				for _, v := range resp.PartialRedisEe.Tags {
 					r.RedisEe.Tags = append(r.RedisEe.Tags, types.StringValue(v))
 				}
+			} else {
+				r.RedisEe.Tags = nil
 			}
 			r.RedisEe.UpdatedAt = types.Int64PointerValue(resp.PartialRedisEe.UpdatedAt)
 			r.UpdatedAt = r.RedisEe.UpdatedAt

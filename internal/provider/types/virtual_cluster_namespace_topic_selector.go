@@ -3,6 +3,6 @@
 package types
 
 type VirtualClusterNamespaceTopicSelector struct {
-	ExactList *VirtualClusterNamespaceTopicSelectorExactList `queryParam:"inline" tfsdk:"exact_list" tfPlanOnly:"true"`
-	Glob      *VirtualClusterNamespaceTopicSelectorGlob      `queryParam:"inline" tfsdk:"glob" tfPlanOnly:"true"`
+	ExactList *VirtualClusterNamespaceTopicSelectorExactList `queryParam:"inline" tfsdk:"exact_list"`
+	Glob      *VirtualClusterNamespaceTopicSelectorGlob      `queryParam:"inline" tfsdk:"glob"`
 }

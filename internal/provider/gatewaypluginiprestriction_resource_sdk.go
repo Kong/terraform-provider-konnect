@@ -24,12 +24,16 @@ func (r *GatewayPluginIPRestrictionResourceModel) RefreshFromSharedIPRestriction
 				for _, v := range resp.Config.Allow {
 					r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
 				}
+			} else {
+				r.Config.Allow = nil
 			}
 			if resp.Config.Deny != nil {
 				r.Config.Deny = make([]types.String, 0, len(resp.Config.Deny))
 				for _, v := range resp.Config.Deny {
 					r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
 				}
+			} else {
+				r.Config.Deny = nil
 			}
 			r.Config.Message = types.StringPointerValue(resp.Config.Message)
 			r.Config.Status = types.Float64PointerValue(resp.Config.Status)
@@ -85,6 +89,8 @@ func (r *GatewayPluginIPRestrictionResourceModel) RefreshFromSharedIPRestriction
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -107,6 +113,8 @@ func (r *GatewayPluginIPRestrictionResourceModel) RefreshFromSharedIPRestriction
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

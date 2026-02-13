@@ -52,7 +52,7 @@ func (i InvalidParameterMaximumLength) MarshalJSON() ([]byte, error) {
 }
 
 func (i *InvalidParameterMaximumLength) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, []string{"field", "rule", "maximum", "reason"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
 		return err
 	}
 	return nil

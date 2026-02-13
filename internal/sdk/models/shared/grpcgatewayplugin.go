@@ -222,7 +222,7 @@ func (g GrpcGatewayPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GrpcGatewayPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
 		return err
 	}
 	return nil

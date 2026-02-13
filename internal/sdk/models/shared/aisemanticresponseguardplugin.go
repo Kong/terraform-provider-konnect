@@ -1397,7 +1397,7 @@ func (a AiSemanticResponseGuardPluginVectordb) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticResponseGuardPluginVectordb) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"dimensions", "distance_metric", "strategy"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1461,7 +1461,7 @@ func (a AiSemanticResponseGuardPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticResponseGuardPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"embeddings", "vectordb"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1625,7 +1625,7 @@ func (a AiSemanticResponseGuardPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticResponseGuardPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

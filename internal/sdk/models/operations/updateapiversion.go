@@ -57,7 +57,7 @@ func (u UpdateAPIVersionRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateAPIVersionRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"apiId", "versionId", "ApiVersion"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
 		return err
 	}
 	return nil

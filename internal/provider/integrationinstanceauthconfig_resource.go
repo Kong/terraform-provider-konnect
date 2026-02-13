@@ -9,9 +9,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
+	speakeasy_planmodifierutils "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/utils"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 )
@@ -35,8 +38,8 @@ type IntegrationInstanceAuthConfigResourceModel struct {
 	AuthorizationEndpoint types.String             `tfsdk:"authorization_endpoint"`
 	ClientID              types.String             `tfsdk:"client_id"`
 	IntegrationInstanceID types.String             `tfsdk:"integration_instance_id"`
-	OauthAuthConfig       *tfTypes.OauthAuthConfig `queryParam:"inline" tfsdk:"oauth_auth_config" tfPlanOnly:"true"`
-	OauthConfig           *tfTypes.OauthConfig     `queryParam:"inline" tfsdk:"oauth_config" tfPlanOnly:"true"`
+	OauthAuthConfig       *tfTypes.OauthAuthConfig `queryParam:"inline" tfsdk:"oauth_auth_config"`
+	OauthConfig           *tfTypes.OauthConfig     `queryParam:"inline" tfsdk:"oauth_config"`
 	TokenEndpoint         types.String             `tfsdk:"token_endpoint"`
 }
 
@@ -49,11 +52,17 @@ func (r *IntegrationInstanceAuthConfigResource) Schema(ctx context.Context, req 
 		MarkdownDescription: "IntegrationInstanceAuthConfig Resource",
 		Attributes: map[string]schema.Attribute{
 			"authorization_endpoint": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("oauth_auth_config"), FieldPath: path.Root("oauth_auth_config").AtName("authorization_endpoint")}}),
+				},
 				Description: `The URL where users are redirected to authorize access.`,
 			},
 			"client_id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("oauth_auth_config"), FieldPath: path.Root("oauth_auth_config").AtName("client_id")}}),
+				},
 				Description: `The OAuth client identifier.`,
 			},
 			"integration_instance_id": schema.StringAttribute{
@@ -104,7 +113,10 @@ func (r *IntegrationInstanceAuthConfigResource) Schema(ctx context.Context, req 
 				},
 			},
 			"token_endpoint": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("oauth_auth_config"), FieldPath: path.Root("oauth_auth_config").AtName("token_endpoint")}}),
+				},
 				Description: `The URL used to retrieve access tokens.`,
 			},
 		},

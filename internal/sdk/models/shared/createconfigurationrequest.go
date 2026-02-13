@@ -30,7 +30,7 @@ func (c CreateConfigurationRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateConfigurationRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"control_plane_id", "control_plane_geo", "dataplane_groups"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil

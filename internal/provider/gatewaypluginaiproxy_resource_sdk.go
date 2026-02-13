@@ -15,6 +15,7 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.AiProxyPluginConfig{}
 		if resp.Config.Auth == nil {
 			r.Config.Auth = nil
 		} else {
@@ -56,6 +57,7 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 			r.Config.Logging.LogStatistics = types.BoolPointerValue(resp.Config.Logging.LogStatistics)
 		}
 		r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
+		r.Config.Model = &tfTypes.AiLlmAsJudgePluginModel{}
 		r.Config.Model.Name = types.StringPointerValue(resp.Config.Model.Name)
 		if resp.Config.Model.Options == nil {
 			r.Config.Model.Options = nil
@@ -189,6 +191,8 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -211,6 +215,8 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

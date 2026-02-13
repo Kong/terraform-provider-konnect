@@ -37,7 +37,7 @@ func (c CreatePortalPageRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreatePortalPageRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"slug", "content"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil

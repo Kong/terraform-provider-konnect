@@ -383,12 +383,12 @@ func (r *APIDocumentResource) ImportState(ctx context.Context, req resource.Impo
 	}
 
 	if len(data.APIID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field api_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9f5061ce-78f6-4452-9108-ad7c02821fd5"`)
+		resp.Diagnostics.AddError("Missing required field", `The field api_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9f5061ce-78f6-4452-9108-ad7c02821fd5"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("api_id"), data.APIID)...)
 	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"de5c9818-be5c-42e6-b514-e3d4bc30ddeb"`)
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"de5c9818-be5c-42e6-b514-e3d4bc30ddeb"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)

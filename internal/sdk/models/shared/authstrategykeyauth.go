@@ -71,7 +71,7 @@ func (a AuthStrategyKeyAuthTTL) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AuthStrategyKeyAuthTTL) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"value", "unit"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -107,7 +107,7 @@ func (a AuthStrategyKeyAuth) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AuthStrategyKeyAuth) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "credential_type", "key_names"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

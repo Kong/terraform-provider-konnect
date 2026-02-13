@@ -847,7 +847,7 @@ func (a AiResponseTransformerPluginModel) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiResponseTransformerPluginModel) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"provider"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -959,7 +959,7 @@ func (a AiResponseTransformerPluginLlm) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiResponseTransformerPluginLlm) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"model", "route_type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1043,7 +1043,7 @@ func (a AiResponseTransformerPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiResponseTransformerPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"llm", "prompt"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1242,7 +1242,7 @@ func (a AiResponseTransformerPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiResponseTransformerPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

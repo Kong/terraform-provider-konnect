@@ -32,7 +32,7 @@ func (m MultiKeyAuthCredential) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MultiKeyAuthCredential) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"id", "integration_instance", "missing_permissions", "tainted", "created_at", "type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil

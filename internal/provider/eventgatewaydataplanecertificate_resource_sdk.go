@@ -29,12 +29,16 @@ func (r *EventGatewayDataPlaneCertificateResourceModel) RefreshFromSharedEventGa
 				for _, v := range resp.Metadata.DNSNames {
 					r.Metadata.DNSNames = append(r.Metadata.DNSNames, types.StringValue(v))
 				}
+			} else {
+				r.Metadata.DNSNames = nil
 			}
 			if resp.Metadata.EmailAddresses != nil {
 				r.Metadata.EmailAddresses = make([]types.String, 0, len(resp.Metadata.EmailAddresses))
 				for _, v := range resp.Metadata.EmailAddresses {
 					r.Metadata.EmailAddresses = append(r.Metadata.EmailAddresses, types.StringValue(v))
 				}
+			} else {
+				r.Metadata.EmailAddresses = nil
 			}
 			r.Metadata.Expiry = types.Int64PointerValue(resp.Metadata.Expiry)
 			if resp.Metadata.IPAddresses != nil {
@@ -42,6 +46,8 @@ func (r *EventGatewayDataPlaneCertificateResourceModel) RefreshFromSharedEventGa
 				for _, v := range resp.Metadata.IPAddresses {
 					r.Metadata.IPAddresses = append(r.Metadata.IPAddresses, types.StringValue(v))
 				}
+			} else {
+				r.Metadata.IPAddresses = nil
 			}
 			r.Metadata.Issuer = types.StringPointerValue(resp.Metadata.Issuer)
 			if resp.Metadata.KeyUsages != nil {
@@ -49,12 +55,16 @@ func (r *EventGatewayDataPlaneCertificateResourceModel) RefreshFromSharedEventGa
 				for _, v := range resp.Metadata.KeyUsages {
 					r.Metadata.KeyUsages = append(r.Metadata.KeyUsages, types.StringValue(v))
 				}
+			} else {
+				r.Metadata.KeyUsages = nil
 			}
 			if resp.Metadata.SanNames != nil {
 				r.Metadata.SanNames = make([]types.String, 0, len(resp.Metadata.SanNames))
 				for _, v := range resp.Metadata.SanNames {
 					r.Metadata.SanNames = append(r.Metadata.SanNames, types.StringValue(v))
 				}
+			} else {
+				r.Metadata.SanNames = nil
 			}
 			r.Metadata.Sha256Fingerprint = types.StringPointerValue(resp.Metadata.Sha256Fingerprint)
 			r.Metadata.Subject = types.StringPointerValue(resp.Metadata.Subject)
@@ -63,6 +73,8 @@ func (r *EventGatewayDataPlaneCertificateResourceModel) RefreshFromSharedEventGa
 				for _, v := range resp.Metadata.Uris {
 					r.Metadata.Uris = append(r.Metadata.Uris, types.StringValue(v))
 				}
+			} else {
+				r.Metadata.Uris = nil
 			}
 		}
 		r.Name = types.StringPointerValue(resp.Name)

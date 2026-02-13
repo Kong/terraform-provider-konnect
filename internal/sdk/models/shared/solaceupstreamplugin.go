@@ -144,7 +144,7 @@ func (s SolaceUpstreamPluginDestinations) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SolaceUpstreamPluginDestinations) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -203,7 +203,7 @@ func (s SolaceUpstreamPluginMessage) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SolaceUpstreamPluginMessage) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"destinations"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -462,7 +462,7 @@ func (s SolaceUpstreamPluginSession) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SolaceUpstreamPluginSession) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"host"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -654,7 +654,7 @@ func (s SolaceUpstreamPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SolaceUpstreamPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil

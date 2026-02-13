@@ -7,9 +7,9 @@ import (
 )
 
 type SolaceConsumePluginConfig struct {
-	Flow      Flow         `tfsdk:"flow"`
+	Flow      *Flow        `tfsdk:"flow"`
 	Mode      types.String `tfsdk:"mode"`
 	Polling   *Polling     `tfsdk:"polling"`
-	Session   Session      `tfsdk:"session"`
+	Session   *Session     `tfsdk:"session"`
 	Websocket *Websocket   `tfsdk:"websocket"`
 }

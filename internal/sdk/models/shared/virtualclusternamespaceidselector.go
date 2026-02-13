@@ -17,8 +17,8 @@ const (
 )
 
 type VirtualClusterNamespaceIDSelector struct {
-	VirtualClusterNamespaceIDSelectorGlob      *VirtualClusterNamespaceIDSelectorGlob      `queryParam:"inline,name=VirtualClusterNamespaceIdSelector"`
-	VirtualClusterNamespaceIDSelectorExactList *VirtualClusterNamespaceIDSelectorExactList `queryParam:"inline,name=VirtualClusterNamespaceIdSelector"`
+	VirtualClusterNamespaceIDSelectorGlob      *VirtualClusterNamespaceIDSelectorGlob      `queryParam:"inline" union:"member"`
+	VirtualClusterNamespaceIDSelectorExactList *VirtualClusterNamespaceIDSelectorExactList `queryParam:"inline" union:"member"`
 
 	Type VirtualClusterNamespaceIDSelectorType
 }

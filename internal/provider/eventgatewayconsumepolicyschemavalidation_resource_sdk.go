@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
@@ -18,6 +19,7 @@ func (r *EventGatewayConsumePolicySchemaValidationResourceModel) RefreshFromShar
 		r.Condition = types.StringPointerValue(resp.Condition)
 		if resp.Config != nil {
 			configPriorData := r.Config
+			r.Config = &tfTypes.EventGatewayConsumeSchemaValidationPolicyConfig{}
 			r.Config.KeyValidationAction = configPriorData.KeyValidationAction
 			r.Config.SchemaRegistry = configPriorData.SchemaRegistry
 			r.Config.Type = configPriorData.Type

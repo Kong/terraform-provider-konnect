@@ -167,6 +167,15 @@ transit gateway.
 - `gcpvpc_peering_gateway_response` (Attributes) (see [below for nested schema](#nestedatt--gcpvpc_peering_gateway_response))
 - `id` (String) The ID of this resource.
 - `name` (String) Human-readable name of the transit gateway.
+- `state` (String) The current state of the Transit Gateway. Possible values:
+- `created` - The attachment has been created but is not attached to transit gateway.
+- `initializing` - The attachment is in the process of being initialized and is setting up necessary resources.
+- `pending-acceptance` The attachment request is awaiting acceptance in customer VPC.
+- `pending-user-action` The attachment request is awaiting user action in customer VPC.
+- `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
+- `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
+- `terminated` - The attachment has been fully deleted and is no longer available.
+- `error` - The attachment is in an error state.
 
 <a id="nestedatt--aws_resource_endpoint_gateway"></a>
 ### Nested Schema for `aws_resource_endpoint_gateway`

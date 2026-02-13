@@ -23,7 +23,7 @@ func (a AppAuthStrategyConfigOpenIDConnect) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AppAuthStrategyConfigOpenIDConnect) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"issuer", "credential_claim", "scopes", "auth_methods"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

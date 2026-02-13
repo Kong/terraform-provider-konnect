@@ -15,6 +15,8 @@ func (r *GatewayPluginSolaceLogResourceModel) RefreshFromSharedSolaceLogPlugin(c
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.SolaceLogPluginConfig{}
+		r.Config.Message = &tfTypes.Message{}
 		r.Config.Message.AckTimeout = types.Int64PointerValue(resp.Config.Message.AckTimeout)
 		if resp.Config.Message.CustomFieldsByLua != nil {
 			r.Config.Message.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.Message.CustomFieldsByLua))
@@ -47,6 +49,7 @@ func (r *GatewayPluginSolaceLogResourceModel) RefreshFromSharedSolaceLogPlugin(c
 		r.Config.Message.Tracing = types.BoolPointerValue(resp.Config.Message.Tracing)
 		r.Config.Message.TracingSampled = types.BoolPointerValue(resp.Config.Message.TracingSampled)
 		r.Config.Message.TTL = types.Int64PointerValue(resp.Config.Message.TTL)
+		r.Config.Session = &tfTypes.Session{}
 		if resp.Config.Session.Authentication == nil {
 			r.Config.Session.Authentication = nil
 		} else {
@@ -118,6 +121,8 @@ func (r *GatewayPluginSolaceLogResourceModel) RefreshFromSharedSolaceLogPlugin(c
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -140,6 +145,8 @@ func (r *GatewayPluginSolaceLogResourceModel) RefreshFromSharedSolaceLogPlugin(c
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

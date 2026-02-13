@@ -15,6 +15,8 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) RefreshFromSharedAiS
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.AiSemanticResponseGuardPluginConfig{}
+		r.Config.Embeddings = &tfTypes.Embeddings{}
 		if resp.Config.Embeddings.Auth == nil {
 			r.Config.Embeddings.Auth = nil
 		} else {
@@ -38,6 +40,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) RefreshFromSharedAiS
 			r.Config.Embeddings.Auth.ParamName = types.StringPointerValue(resp.Config.Embeddings.Auth.ParamName)
 			r.Config.Embeddings.Auth.ParamValue = types.StringPointerValue(resp.Config.Embeddings.Auth.ParamValue)
 		}
+		r.Config.Embeddings.Model = &tfTypes.AiProxyAdvancedPluginModel{}
 		r.Config.Embeddings.Model.Name = types.StringValue(resp.Config.Embeddings.Model.Name)
 		if resp.Config.Embeddings.Model.Options == nil {
 			r.Config.Embeddings.Model.Options = nil
@@ -100,12 +103,16 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) RefreshFromSharedAiS
 				for _, v := range resp.Config.Rules.AllowResponses {
 					r.Config.Rules.AllowResponses = append(r.Config.Rules.AllowResponses, types.StringValue(v))
 				}
+			} else {
+				r.Config.Rules.AllowResponses = nil
 			}
 			if resp.Config.Rules.DenyResponses != nil {
 				r.Config.Rules.DenyResponses = make([]types.String, 0, len(resp.Config.Rules.DenyResponses))
 				for _, v := range resp.Config.Rules.DenyResponses {
 					r.Config.Rules.DenyResponses = append(r.Config.Rules.DenyResponses, types.StringValue(v))
 				}
+			} else {
+				r.Config.Rules.DenyResponses = nil
 			}
 			r.Config.Rules.MaxResponseBodySize = types.Int64PointerValue(resp.Config.Rules.MaxResponseBodySize)
 		}
@@ -115,6 +122,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) RefreshFromSharedAiS
 			r.Config.Search = &tfTypes.Search{}
 			r.Config.Search.Threshold = types.Float64PointerValue(resp.Config.Search.Threshold)
 		}
+		r.Config.Vectordb = &tfTypes.AiSemanticResponseGuardPluginVectordb{}
 		r.Config.Vectordb.Dimensions = types.Int64Value(resp.Config.Vectordb.Dimensions)
 		r.Config.Vectordb.DistanceMetric = types.StringValue(string(resp.Config.Vectordb.DistanceMetric))
 		if resp.Config.Vectordb.Pgvector == nil {
@@ -175,6 +183,8 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) RefreshFromSharedAiS
 
 					r.Config.Vectordb.Redis.ClusterNodes = append(r.Config.Vectordb.Redis.ClusterNodes, clusterNodes)
 				}
+			} else {
+				r.Config.Vectordb.Redis.ClusterNodes = nil
 			}
 			r.Config.Vectordb.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.ConnectTimeout)
 			r.Config.Vectordb.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Vectordb.Redis.ConnectionIsProxied)
@@ -198,6 +208,8 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) RefreshFromSharedAiS
 
 					r.Config.Vectordb.Redis.SentinelNodes = append(r.Config.Vectordb.Redis.SentinelNodes, sentinelNodes)
 				}
+			} else {
+				r.Config.Vectordb.Redis.SentinelNodes = nil
 			}
 			r.Config.Vectordb.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Vectordb.Redis.SentinelPassword)
 			if resp.Config.Vectordb.Redis.SentinelRole != nil {
@@ -264,6 +276,8 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) RefreshFromSharedAiS
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -286,6 +300,8 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) RefreshFromSharedAiS
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

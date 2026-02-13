@@ -3,7 +3,7 @@
 package types
 
 type PrivateDNSAttachmentConfig struct {
-	AwsPrivateDNSResolverAttachmentConfig *AwsPrivateDNSResolverAttachmentConfig `queryParam:"inline" tfsdk:"aws_private_dns_resolver_attachment_config" tfPlanOnly:"true"`
-	AwsPrivateHostedZoneAttachmentConfig  *AwsPrivateHostedZoneAttachmentConfig  `queryParam:"inline" tfsdk:"aws_private_hosted_zone_attachment_config" tfPlanOnly:"true"`
-	GcpPrivateHostedZoneAttachmentConfig  *GcpPrivateHostedZoneAttachmentConfig  `queryParam:"inline" tfsdk:"gcp_private_hosted_zone_attachment_config" tfPlanOnly:"true"`
+	AwsPrivateDNSResolverAttachmentConfig *AwsPrivateDNSResolverAttachmentConfig `queryParam:"inline" tfsdk:"aws_private_dns_resolver_attachment_config"`
+	AwsPrivateHostedZoneAttachmentConfig  *AwsPrivateHostedZoneAttachmentConfig  `queryParam:"inline" tfsdk:"aws_private_hosted_zone_attachment_config"`
+	GcpPrivateHostedZoneAttachmentConfig  *GcpPrivateHostedZoneAttachmentConfig  `queryParam:"inline" tfsdk:"gcp_private_hosted_zone_attachment_config"`
 }

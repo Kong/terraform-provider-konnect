@@ -16,7 +16,7 @@ func (s SchemaRegistryReference) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SchemaRegistryReference) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"id"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil

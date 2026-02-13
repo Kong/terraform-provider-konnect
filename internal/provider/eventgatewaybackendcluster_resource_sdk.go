@@ -46,6 +46,7 @@ func (r *EventGatewayBackendClusterResourceModel) RefreshFromSharedBackendCluste
 		}
 		r.MetadataUpdateIntervalSeconds = types.Int64PointerValue(resp.MetadataUpdateIntervalSeconds)
 		r.Name = types.StringValue(resp.Name)
+		r.TLS = &tfTypes.BackendClusterTLS{}
 		r.TLS.CaBundle = types.StringPointerValue(resp.TLS.CaBundle)
 		if resp.TLS.ClientIdentity == nil {
 			r.TLS.ClientIdentity = nil

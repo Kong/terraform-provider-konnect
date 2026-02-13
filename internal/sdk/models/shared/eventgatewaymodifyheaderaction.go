@@ -18,8 +18,8 @@ const (
 
 // EventGatewayModifyHeaderAction - An action that modifies a header.
 type EventGatewayModifyHeaderAction struct {
-	EventGatewayModifyHeaderRemoveAction *EventGatewayModifyHeaderRemoveAction `queryParam:"inline,name=EventGatewayModifyHeaderAction"`
-	EventGatewayModifyHeaderSetAction    *EventGatewayModifyHeaderSetAction    `queryParam:"inline,name=EventGatewayModifyHeaderAction"`
+	EventGatewayModifyHeaderRemoveAction *EventGatewayModifyHeaderRemoveAction `queryParam:"inline" union:"member"`
+	EventGatewayModifyHeaderSetAction    *EventGatewayModifyHeaderSetAction    `queryParam:"inline" union:"member"`
 
 	Type EventGatewayModifyHeaderActionType
 }

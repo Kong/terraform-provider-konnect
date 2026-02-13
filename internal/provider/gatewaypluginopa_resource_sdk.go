@@ -15,6 +15,7 @@ func (r *GatewayPluginOpaResourceModel) RefreshFromSharedOpaPlugin(ctx context.C
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.OpaPluginConfig{}
 		r.Config.IncludeBodyInOpaInput = types.BoolPointerValue(resp.Config.IncludeBodyInOpaInput)
 		r.Config.IncludeConsumerInOpaInput = types.BoolPointerValue(resp.Config.IncludeConsumerInOpaInput)
 		r.Config.IncludeParsedJSONBodyInOpaInput = types.BoolPointerValue(resp.Config.IncludeParsedJSONBodyInOpaInput)
@@ -69,6 +70,8 @@ func (r *GatewayPluginOpaResourceModel) RefreshFromSharedOpaPlugin(ctx context.C
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -91,6 +94,8 @@ func (r *GatewayPluginOpaResourceModel) RefreshFromSharedOpaPlugin(ctx context.C
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

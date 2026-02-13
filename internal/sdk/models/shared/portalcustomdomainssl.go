@@ -25,7 +25,7 @@ func (p PortalCustomDomainSSL) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PortalCustomDomainSSL) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"domain_verification_method", "verification_status"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil

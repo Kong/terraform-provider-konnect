@@ -20,6 +20,8 @@ func (r *GatewayServiceResourceModel) RefreshFromSharedService(ctx context.Conte
 			for _, v := range resp.CaCertificates {
 				r.CaCertificates = append(r.CaCertificates, types.StringValue(v))
 			}
+		} else {
+			r.CaCertificates = nil
 		}
 		if resp.ClientCertificate == nil {
 			r.ClientCertificate = nil
@@ -47,6 +49,8 @@ func (r *GatewayServiceResourceModel) RefreshFromSharedService(ctx context.Conte
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		if resp.TLSSans == nil {
 			r.TLSSans = nil
@@ -57,12 +61,16 @@ func (r *GatewayServiceResourceModel) RefreshFromSharedService(ctx context.Conte
 				for _, v := range resp.TLSSans.Dnsnames {
 					r.TLSSans.Dnsnames = append(r.TLSSans.Dnsnames, types.StringValue(v))
 				}
+			} else {
+				r.TLSSans.Dnsnames = nil
 			}
 			if resp.TLSSans.Uris != nil {
 				r.TLSSans.Uris = make([]types.String, 0, len(resp.TLSSans.Uris))
 				for _, v := range resp.TLSSans.Uris {
 					r.TLSSans.Uris = append(r.TLSSans.Uris, types.StringValue(v))
 				}
+			} else {
+				r.TLSSans.Uris = nil
 			}
 		}
 		r.TLSVerify = types.BoolPointerValue(resp.TLSVerify)

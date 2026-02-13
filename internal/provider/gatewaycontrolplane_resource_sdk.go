@@ -15,6 +15,7 @@ func (r *GatewayControlPlaneResourceModel) RefreshFromSharedControlPlane(ctx con
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.ControlPlaneConfig{}
 		r.Config.AuthType = types.StringValue(string(resp.Config.AuthType))
 		r.Config.CloudGateway = types.BoolValue(resp.Config.CloudGateway)
 		r.Config.ClusterType = types.StringValue(string(resp.Config.ClusterType))

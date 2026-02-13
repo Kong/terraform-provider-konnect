@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
@@ -27,11 +28,14 @@ func (r *CloudGatewayNetworkResourceModel) RefreshFromSharedNetwork(ctx context.
 		r.EntityVersion = types.Int64Value(resp.EntityVersion)
 		r.ID = types.StringValue(resp.ID)
 		r.Name = types.StringValue(resp.Name)
+		r.ProviderMetadata = &tfTypes.NetworkProviderMetadata{}
 		if resp.ProviderMetadata.SubnetIds != nil {
 			r.ProviderMetadata.SubnetIds = make([]types.String, 0, len(resp.ProviderMetadata.SubnetIds))
 			for _, v := range resp.ProviderMetadata.SubnetIds {
 				r.ProviderMetadata.SubnetIds = append(r.ProviderMetadata.SubnetIds, types.StringValue(v))
 			}
+		} else {
+			r.ProviderMetadata.SubnetIds = nil
 		}
 		r.ProviderMetadata.VpcID = types.StringPointerValue(resp.ProviderMetadata.VpcID)
 		r.Region = types.StringValue(resp.Region)

@@ -156,7 +156,7 @@ func (a AiPromptDecoratorPluginAppend) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiPromptDecoratorPluginAppend) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"content"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -215,7 +215,7 @@ func (p Prepend) MarshalJSON() ([]byte, error) {
 }
 
 func (p *Prepend) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"content"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -412,7 +412,7 @@ func (a AiPromptDecoratorPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiPromptDecoratorPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

@@ -26,7 +26,7 @@ func (a APIImplementationResponseControlPlaneReference) MarshalJSON() ([]byte, e
 }
 
 func (a *APIImplementationResponseControlPlaneReference) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -77,7 +77,7 @@ func (a APIImplementationResponseServiceReference) MarshalJSON() ([]byte, error)
 }
 
 func (a *APIImplementationResponseServiceReference) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -120,8 +120,8 @@ const (
 
 // APIImplementationResponse - An entity that implements an API
 type APIImplementationResponse struct {
-	APIImplementationResponseServiceReference      *APIImplementationResponseServiceReference      `queryParam:"inline,name=ApiImplementationResponse"`
-	APIImplementationResponseControlPlaneReference *APIImplementationResponseControlPlaneReference `queryParam:"inline,name=ApiImplementationResponse"`
+	APIImplementationResponseServiceReference      *APIImplementationResponseServiceReference      `queryParam:"inline" union:"member"`
+	APIImplementationResponseControlPlaneReference *APIImplementationResponseControlPlaneReference `queryParam:"inline" union:"member"`
 
 	Type APIImplementationResponseType
 }
@@ -170,7 +170,7 @@ func (u *APIImplementationResponse) UnmarshalJSON(data []byte) error {
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for APIImplementationResponse", string(data))
 	}

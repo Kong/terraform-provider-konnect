@@ -114,7 +114,7 @@ func (l LdapAuthPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (l *LdapAuthPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"attribute", "base_dn", "ldap_host"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -312,7 +312,7 @@ func (l LdapAuthPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (l *LdapAuthPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
 		return err
 	}
 	return nil

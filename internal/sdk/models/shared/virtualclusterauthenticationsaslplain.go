@@ -49,7 +49,7 @@ func (v VirtualClusterAuthenticationSaslPlain) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VirtualClusterAuthenticationSaslPlain) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"type", "mediation"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
 		return err
 	}
 	return nil

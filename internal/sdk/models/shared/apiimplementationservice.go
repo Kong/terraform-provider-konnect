@@ -17,7 +17,7 @@ func (a APIImplementationService) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APIImplementationService) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"control_plane_id", "id"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

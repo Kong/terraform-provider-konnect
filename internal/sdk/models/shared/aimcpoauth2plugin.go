@@ -297,7 +297,7 @@ func (a AiMcpOauth2PluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiMcpOauth2PluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"authorization_servers", "client_id", "introspection_endpoint", "resource"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -602,7 +602,7 @@ func (a AiMcpOauth2Plugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiMcpOauth2Plugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

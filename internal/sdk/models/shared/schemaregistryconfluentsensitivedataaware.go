@@ -29,7 +29,7 @@ func (s SchemaRegistryConfluentSensitiveDataAware) MarshalJSON() ([]byte, error)
 }
 
 func (s *SchemaRegistryConfluentSensitiveDataAware) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"name", "type", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil

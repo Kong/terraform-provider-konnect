@@ -515,7 +515,7 @@ func (t Tools) MarshalJSON() ([]byte, error) {
 }
 
 func (t *Tools) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"description"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -633,7 +633,7 @@ func (a AiMcpProxyPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiMcpProxyPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"mode"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -783,7 +783,7 @@ func (a AiMcpProxyPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiMcpProxyPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

@@ -3,5 +3,5 @@
 package types
 
 type SchemaRegistryAuthenticationScheme struct {
-	Basic *BackendClusterAuthenticationSaslPlain `queryParam:"inline" tfsdk:"basic" tfPlanOnly:"true"`
+	Basic *BackendClusterAuthenticationSaslPlain `queryParam:"inline" tfsdk:"basic"`
 }

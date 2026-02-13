@@ -592,7 +592,7 @@ func (d DatadogPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DatadogPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
 		return err
 	}
 	return nil

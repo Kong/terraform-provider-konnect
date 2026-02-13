@@ -36,6 +36,8 @@ func (r *GatewayRouteExpressionResourceModel) RefreshFromSharedRouteExpression(c
 			for _, v := range resp.Protocols {
 				r.Protocols = append(r.Protocols, types.StringValue(string(v)))
 			}
+		} else {
+			r.Protocols = nil
 		}
 		r.RequestBuffering = types.BoolPointerValue(resp.RequestBuffering)
 		r.ResponseBuffering = types.BoolPointerValue(resp.ResponseBuffering)
@@ -51,6 +53,8 @@ func (r *GatewayRouteExpressionResourceModel) RefreshFromSharedRouteExpression(c
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

@@ -22,7 +22,7 @@ func (i IntegrationInstanceRef) MarshalJSON() ([]byte, error) {
 }
 
 func (i *IntegrationInstanceRef) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, []string{"id", "name", "display_name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
 		return err
 	}
 	return nil

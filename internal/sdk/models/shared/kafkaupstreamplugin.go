@@ -346,7 +346,7 @@ func (k KafkaUpstreamPluginOauth2) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaUpstreamPluginOauth2) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"token_endpoint"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -881,7 +881,7 @@ func (k KafkaUpstreamPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaUpstreamPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"topic"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1171,7 +1171,7 @@ func (k KafkaUpstreamPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaUpstreamPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
 		return err
 	}
 	return nil

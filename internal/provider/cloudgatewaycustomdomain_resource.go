@@ -37,17 +37,17 @@ type CloudGatewayCustomDomainResource struct {
 
 // CloudGatewayCustomDomainResourceModel describes the resource data model.
 type CloudGatewayCustomDomainResourceModel struct {
-	CertificateID   types.String                      `tfsdk:"certificate_id"`
-	ControlPlaneGeo types.String                      `tfsdk:"control_plane_geo"`
-	ControlPlaneID  types.String                      `tfsdk:"control_plane_id"`
-	CreatedAt       types.String                      `tfsdk:"created_at"`
-	Domain          types.String                      `tfsdk:"domain"`
-	EntityVersion   types.Int64                       `tfsdk:"entity_version"`
-	ID              types.String                      `tfsdk:"id"`
-	SniID           types.String                      `tfsdk:"sni_id"`
-	State           types.String                      `tfsdk:"state"`
-	StateMetadata   tfTypes.CustomDomainStateMetadata `tfsdk:"state_metadata"`
-	UpdatedAt       types.String                      `tfsdk:"updated_at"`
+	CertificateID   types.String                       `tfsdk:"certificate_id"`
+	ControlPlaneGeo types.String                       `tfsdk:"control_plane_geo"`
+	ControlPlaneID  types.String                       `tfsdk:"control_plane_id"`
+	CreatedAt       types.String                       `tfsdk:"created_at"`
+	Domain          types.String                       `tfsdk:"domain"`
+	EntityVersion   types.Int64                        `tfsdk:"entity_version"`
+	ID              types.String                       `tfsdk:"id"`
+	SniID           types.String                       `tfsdk:"sni_id"`
+	State           types.String                       `tfsdk:"state"`
+	StateMetadata   *tfTypes.CustomDomainStateMetadata `tfsdk:"state_metadata"`
+	UpdatedAt       types.String                       `tfsdk:"updated_at"`
 }
 
 func (r *CloudGatewayCustomDomainResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

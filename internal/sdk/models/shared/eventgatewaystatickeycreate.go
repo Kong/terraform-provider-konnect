@@ -29,7 +29,7 @@ func (e EventGatewayStaticKeyCreate) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayStaticKeyCreate) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"name", "value"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
 		return err
 	}
 	return nil

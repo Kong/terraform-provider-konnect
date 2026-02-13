@@ -4,8 +4,11 @@ package provider
 
 import (
 	"context"
+	"github.com/hashicorp/terraform-plugin-framework/action"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/ephemeral"
+	"github.com/hashicorp/terraform-plugin-framework/function"
+	"github.com/hashicorp/terraform-plugin-framework/list"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -18,7 +21,9 @@ import (
 )
 
 var _ provider.Provider = (*KonnectProvider)(nil)
+var _ provider.ProviderWithActions = (*KonnectProvider)(nil)
 var _ provider.ProviderWithEphemeralResources = (*KonnectProvider)(nil)
+var _ provider.ProviderWithFunctions = (*KonnectProvider)(nil)
 
 type KonnectProvider struct {
 	// version is set to the provider version on release, "dev" when the
@@ -138,9 +143,19 @@ func (p *KonnectProvider) Configure(ctx context.Context, req provider.ConfigureR
 	}
 
 	client := sdk.New(opts...)
+	resp.ActionData = client
 	resp.DataSourceData = client
 	resp.EphemeralResourceData = client
+	resp.ListResourceData = client
 	resp.ResourceData = client
+}
+
+func (p *KonnectProvider) Functions(_ context.Context) []func() function.Function {
+	return []func() function.Function{}
+}
+
+func (p *KonnectProvider) Actions(_ context.Context) []func() action.Action {
+	return []func() action.Action{}
 }
 
 func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resource {
@@ -367,6 +382,10 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 
 func (p *KonnectProvider) EphemeralResources(ctx context.Context) []func() ephemeral.EphemeralResource {
 	return []func() ephemeral.EphemeralResource{}
+}
+
+func (p *KonnectProvider) ListResources(ctx context.Context) []func() list.ListResource {
+	return []func() list.ListResource{}
 }
 
 func New(version string) func() provider.Provider {

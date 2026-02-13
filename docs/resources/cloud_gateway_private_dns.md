@@ -46,6 +46,14 @@ resource "konnect_cloud_gateway_private_dns" "my_cloudgatewayprivatedns" {
 Private DNS.
 - `gcp_private_hosted_zone_response` (Attributes) (see [below for nested schema](#nestedatt--gcp_private_hosted_zone_response))
 - `id` (String) The ID of this resource.
+- `state` (String) The current state of the Private DNS attachment. Possible values:
+- `created` - The attachment has been created but is not attached to Private DNS.
+- `initializing` - The attachment is in the process of being initialized and is setting up necessary resources.
+- `pending-association` The attachment request is awaiting association to the cloud provider infrastructure in order for provisioning to proceed.
+- `ready` - The attachment is fully operational and can route traffic as configured.
+- `error` - The attachment is in an error state, and is not operational.
+- `terminating` - The attachment is in the process of being deleted.
+- `terminated` - The attachment has been fully deleted and is no longer available.
 
 <a id="nestedatt--private_dns_attachment_config"></a>
 ### Nested Schema for `private_dns_attachment_config`

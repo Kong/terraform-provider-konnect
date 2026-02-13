@@ -24,7 +24,7 @@ func (s SchemaRegistryAuthenticationBasicSensitiveDataAware) MarshalJSON() ([]by
 }
 
 func (s *SchemaRegistryAuthenticationBasicSensitiveDataAware) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"type", "username"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil

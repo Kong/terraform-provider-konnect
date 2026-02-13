@@ -814,7 +814,7 @@ func (r RateLimitingAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RateLimitingAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"limit", "window_size"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1083,7 +1083,7 @@ func (r RateLimitingAdvancedPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RateLimitingAdvancedPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil

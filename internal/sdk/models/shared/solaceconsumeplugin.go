@@ -141,7 +141,7 @@ func (b Binds) MarshalJSON() ([]byte, error) {
 }
 
 func (b *Binds) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -185,7 +185,7 @@ func (f Flow) MarshalJSON() ([]byte, error) {
 }
 
 func (f *Flow) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"binds"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -452,7 +452,7 @@ func (s Session) MarshalJSON() ([]byte, error) {
 }
 
 func (s *Session) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"host"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -595,7 +595,7 @@ func (s SolaceConsumePluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SolaceConsumePluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"flow", "session"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -724,7 +724,7 @@ func (s SolaceConsumePlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SolaceConsumePlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
 	return nil

@@ -91,7 +91,7 @@ func (a AccountKey) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AccountKey) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"key_id"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -826,7 +826,7 @@ func (a AcmePluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AcmePluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"account_email"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1004,7 +1004,7 @@ func (a AcmePlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AcmePlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

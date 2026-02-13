@@ -30,7 +30,7 @@ func (e EventGatewayDataPlaneCertificate) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayDataPlaneCertificate) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"id", "certificate", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
 		return err
 	}
 	return nil
