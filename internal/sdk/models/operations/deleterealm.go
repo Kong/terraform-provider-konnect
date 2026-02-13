@@ -54,7 +54,7 @@ func (d DeleteRealmRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeleteRealmRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"realmId"}); err != nil {
 		return err
 	}
 	return nil
@@ -85,6 +85,17 @@ type DeleteRealmResponse struct {
 	BadRequestError *shared.BadRequestError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (d DeleteRealmResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteRealmResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteRealmResponse) GetContentType() string {

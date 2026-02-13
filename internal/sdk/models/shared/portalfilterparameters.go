@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type PortalFilterParameters struct {
 	// Filter using **one** of the following operators: `eq`, `oeq`, `neq`
 	ID *UUIDFieldFilter `queryParam:"name=id"`
@@ -27,6 +31,17 @@ type PortalFilterParameters struct {
 	DefaultDomain *StringFieldFilter `queryParam:"name=default_domain"`
 	// Filter using **one** of the following operators: `eq`, `oeq`, `neq`, `contains`, `ocontains`
 	CanonicalDomain *StringFieldFilter `queryParam:"name=canonical_domain"`
+}
+
+func (p PortalFilterParameters) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PortalFilterParameters) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PortalFilterParameters) GetID() *UUIDFieldFilter {

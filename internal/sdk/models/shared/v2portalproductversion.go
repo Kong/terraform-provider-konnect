@@ -39,7 +39,7 @@ func (v V2PortalProductVersion) MarshalJSON() ([]byte, error) {
 }
 
 func (v *V2PortalProductVersion) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"id", "publish_status", "product_version_id", "created_at", "updated_at", "auth_strategies", "application_registration_enabled", "auto_approve_registration", "deprecated"}); err != nil {
 		return err
 	}
 	return nil

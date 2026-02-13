@@ -48,7 +48,7 @@ func (a AppAuthStrategyOpenIDConnectResponseConfigs) MarshalJSON() ([]byte, erro
 }
 
 func (a *AppAuthStrategyOpenIDConnectResponseConfigs) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"openid-connect"}); err != nil {
 		return err
 	}
 	return nil
@@ -113,7 +113,7 @@ func (a AppAuthStrategyOpenIDConnectResponseDcrProvider) MarshalJSON() ([]byte, 
 }
 
 func (a *AppAuthStrategyOpenIDConnectResponseDcrProvider) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "name", "provider_type"}); err != nil {
 		return err
 	}
 	return nil
@@ -179,7 +179,7 @@ func (a AppAuthStrategyOpenIDConnectResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AppAuthStrategyOpenIDConnectResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "name", "display_name", "strategy_type", "configs", "active", "labels", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
@@ -292,7 +292,7 @@ func (a AppAuthStrategyKeyAuthResponseConfigs) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AppAuthStrategyKeyAuthResponseConfigs) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"key-auth"}); err != nil {
 		return err
 	}
 	return nil
@@ -357,7 +357,7 @@ func (d DcrProvider) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DcrProvider) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"id", "name", "provider_type"}); err != nil {
 		return err
 	}
 	return nil
@@ -423,7 +423,7 @@ func (a AppAuthStrategyKeyAuthResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AppAuthStrategyKeyAuthResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "name", "display_name", "strategy_type", "configs", "active", "labels", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil

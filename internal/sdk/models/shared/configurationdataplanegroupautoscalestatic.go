@@ -47,7 +47,7 @@ func (c ConfigurationDataPlaneGroupAutoscaleStatic) MarshalJSON() ([]byte, error
 }
 
 func (c *ConfigurationDataPlaneGroupAutoscaleStatic) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"kind", "instance_type", "requested_instances"}); err != nil {
 		return err
 	}
 	return nil

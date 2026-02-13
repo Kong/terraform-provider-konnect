@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -15,6 +16,17 @@ type UpdateEventGatewayVirtualClusterProducePolicySchemaValidationRequest struct
 	// The UUID of the policy.
 	PolicyID                                  string                                            `pathParam:"style=simple,explode=false,name=policyId"`
 	EventGatewayProduceSchemaValidationPolicy *shared.EventGatewayProduceSchemaValidationPolicy `request:"mediaType=application/json"`
+}
+
+func (u UpdateEventGatewayVirtualClusterProducePolicySchemaValidationRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateEventGatewayVirtualClusterProducePolicySchemaValidationRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"gatewayId", "virtualClusterId", "policyId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateEventGatewayVirtualClusterProducePolicySchemaValidationRequest) GetGatewayID() string {
@@ -60,6 +72,17 @@ type UpdateEventGatewayVirtualClusterProducePolicySchemaValidationResponse struc
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
 	ForbiddenError *shared.ForbiddenError
+}
+
+func (u UpdateEventGatewayVirtualClusterProducePolicySchemaValidationResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateEventGatewayVirtualClusterProducePolicySchemaValidationResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateEventGatewayVirtualClusterProducePolicySchemaValidationResponse) GetContentType() string {

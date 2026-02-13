@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -13,6 +14,17 @@ type UpdateWebsocketvalidatorPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID           string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	WebsocketValidatorPlugin shared.WebsocketValidatorPlugin `request:"mediaType=application/json"`
+}
+
+func (u UpdateWebsocketvalidatorPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateWebsocketvalidatorPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "WebsocketValidatorPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateWebsocketvalidatorPluginRequest) GetPluginID() string {
@@ -47,6 +59,17 @@ type UpdateWebsocketvalidatorPluginResponse struct {
 	WebsocketValidatorPlugin *shared.WebsocketValidatorPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (u UpdateWebsocketvalidatorPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateWebsocketvalidatorPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateWebsocketvalidatorPluginResponse) GetContentType() string {

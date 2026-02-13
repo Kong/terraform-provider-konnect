@@ -2,12 +2,27 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // LegacyStringFieldFilter - Filter using **one** of the following operators: `eq`, `contains`
 type LegacyStringFieldFilter struct {
 	// The field exactly matches the provided value.
 	Eq *string `queryParam:"name=eq"`
 	// The field contains the provided value.
 	Contains *string `queryParam:"name=contains"`
+}
+
+func (l LegacyStringFieldFilter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *LegacyStringFieldFilter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (l *LegacyStringFieldFilter) GetEq() *string {

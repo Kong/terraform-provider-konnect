@@ -12,6 +12,17 @@ type OpaPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (o OpaPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpaPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (o *OpaPluginAfter) GetAccess() []string {
 	if o == nil {
 		return nil
@@ -21,6 +32,17 @@ func (o *OpaPluginAfter) GetAccess() []string {
 
 type OpaPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (o OpaPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpaPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *OpaPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (o *OpaPluginBefore) GetAccess() []string {
 type OpaPluginOrdering struct {
 	After  *OpaPluginAfter  `json:"after,omitempty"`
 	Before *OpaPluginBefore `json:"before,omitempty"`
+}
+
+func (o OpaPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpaPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *OpaPluginOrdering) GetAfter() *OpaPluginAfter {
@@ -55,6 +88,17 @@ type OpaPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (o OpaPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpaPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *OpaPluginPartials) GetID() *string {
@@ -134,7 +178,7 @@ func (o OpaPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OpaPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"opa_path"}); err != nil {
 		return err
 	}
 	return nil
@@ -254,6 +298,17 @@ type OpaPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (o OpaPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpaPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (o *OpaPluginRoute) GetID() *string {
 	if o == nil {
 		return nil
@@ -264,6 +319,17 @@ func (o *OpaPluginRoute) GetID() *string {
 // OpaPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type OpaPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (o OpaPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpaPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *OpaPluginService) GetID() *string {
@@ -305,7 +371,7 @@ func (o OpaPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OpaPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil

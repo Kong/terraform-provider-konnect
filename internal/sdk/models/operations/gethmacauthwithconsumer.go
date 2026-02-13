@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -14,6 +15,17 @@ type GetHmacAuthWithConsumerRequest struct {
 	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
 	// ID of the HMAC-auth credential to lookup
 	HMACAuthID string `pathParam:"style=simple,explode=false,name=HMACAuthId"`
+}
+
+func (g GetHmacAuthWithConsumerRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetHmacAuthWithConsumerRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "HMACAuthId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetHmacAuthWithConsumerRequest) GetControlPlaneID() string {
@@ -46,6 +58,17 @@ type GetHmacAuthWithConsumerResponse struct {
 	RawResponse *http.Response
 	// Successfully fetched HMAC-auth credential
 	HMACAuth *shared.HMACAuth
+}
+
+func (g GetHmacAuthWithConsumerResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetHmacAuthWithConsumerResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetHmacAuthWithConsumerResponse) GetContentType() string {

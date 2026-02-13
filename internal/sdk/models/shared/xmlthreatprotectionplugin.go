@@ -12,6 +12,17 @@ type XMLThreatProtectionPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (x XMLThreatProtectionPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(x, "", false)
+}
+
+func (x *XMLThreatProtectionPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &x, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (x *XMLThreatProtectionPluginAfter) GetAccess() []string {
 	if x == nil {
 		return nil
@@ -21,6 +32,17 @@ func (x *XMLThreatProtectionPluginAfter) GetAccess() []string {
 
 type XMLThreatProtectionPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (x XMLThreatProtectionPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(x, "", false)
+}
+
+func (x *XMLThreatProtectionPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &x, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (x *XMLThreatProtectionPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (x *XMLThreatProtectionPluginBefore) GetAccess() []string {
 type XMLThreatProtectionPluginOrdering struct {
 	After  *XMLThreatProtectionPluginAfter  `json:"after,omitempty"`
 	Before *XMLThreatProtectionPluginBefore `json:"before,omitempty"`
+}
+
+func (x XMLThreatProtectionPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(x, "", false)
+}
+
+func (x *XMLThreatProtectionPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &x, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (x *XMLThreatProtectionPluginOrdering) GetAfter() *XMLThreatProtectionPluginAfter {
@@ -55,6 +88,17 @@ type XMLThreatProtectionPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (x XMLThreatProtectionPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(x, "", false)
+}
+
+func (x *XMLThreatProtectionPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &x, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (x *XMLThreatProtectionPluginPartials) GetID() *string {
@@ -304,6 +348,17 @@ type XMLThreatProtectionPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (x XMLThreatProtectionPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(x, "", false)
+}
+
+func (x *XMLThreatProtectionPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &x, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (x *XMLThreatProtectionPluginConsumer) GetID() *string {
 	if x == nil {
 		return nil
@@ -348,6 +403,17 @@ type XMLThreatProtectionPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (x XMLThreatProtectionPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(x, "", false)
+}
+
+func (x *XMLThreatProtectionPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &x, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (x *XMLThreatProtectionPluginRoute) GetID() *string {
 	if x == nil {
 		return nil
@@ -358,6 +424,17 @@ func (x *XMLThreatProtectionPluginRoute) GetID() *string {
 // XMLThreatProtectionPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type XMLThreatProtectionPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (x XMLThreatProtectionPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(x, "", false)
+}
+
+func (x *XMLThreatProtectionPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &x, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (x *XMLThreatProtectionPluginService) GetID() *string {
@@ -401,7 +478,7 @@ func (x XMLThreatProtectionPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (x *XMLThreatProtectionPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &x, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &x, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil

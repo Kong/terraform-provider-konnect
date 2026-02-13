@@ -12,6 +12,17 @@ type BasicAuthPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (b BasicAuthPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BasicAuthPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (b *BasicAuthPluginAfter) GetAccess() []string {
 	if b == nil {
 		return nil
@@ -21,6 +32,17 @@ func (b *BasicAuthPluginAfter) GetAccess() []string {
 
 type BasicAuthPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (b BasicAuthPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BasicAuthPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (b *BasicAuthPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (b *BasicAuthPluginBefore) GetAccess() []string {
 type BasicAuthPluginOrdering struct {
 	After  *BasicAuthPluginAfter  `json:"after,omitempty"`
 	Before *BasicAuthPluginBefore `json:"before,omitempty"`
+}
+
+func (b BasicAuthPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BasicAuthPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (b *BasicAuthPluginOrdering) GetAfter() *BasicAuthPluginAfter {
@@ -55,6 +88,17 @@ type BasicAuthPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (b BasicAuthPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BasicAuthPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (b *BasicAuthPluginPartials) GetID() *string {
@@ -493,6 +537,17 @@ type BasicAuthPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (b BasicAuthPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BasicAuthPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (b *BasicAuthPluginRoute) GetID() *string {
 	if b == nil {
 		return nil
@@ -503,6 +558,17 @@ func (b *BasicAuthPluginRoute) GetID() *string {
 // BasicAuthPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type BasicAuthPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (b BasicAuthPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BasicAuthPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (b *BasicAuthPluginService) GetID() *string {
@@ -544,7 +610,7 @@ func (b BasicAuthPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BasicAuthPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil

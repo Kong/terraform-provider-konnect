@@ -19,7 +19,7 @@ func (u UpdateAppAuthStrategyRequestKeyAuth) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateAppAuthStrategyRequestKeyAuth) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"key-auth"}); err != nil {
 		return err
 	}
 	return nil

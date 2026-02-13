@@ -12,6 +12,17 @@ type ProxyCachePluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (p ProxyCachePluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *ProxyCachePluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (p *ProxyCachePluginAfter) GetAccess() []string {
 	if p == nil {
 		return nil
@@ -21,6 +32,17 @@ func (p *ProxyCachePluginAfter) GetAccess() []string {
 
 type ProxyCachePluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (p ProxyCachePluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *ProxyCachePluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *ProxyCachePluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (p *ProxyCachePluginBefore) GetAccess() []string {
 type ProxyCachePluginOrdering struct {
 	After  *ProxyCachePluginAfter  `json:"after,omitempty"`
 	Before *ProxyCachePluginBefore `json:"before,omitempty"`
+}
+
+func (p ProxyCachePluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *ProxyCachePluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *ProxyCachePluginOrdering) GetAfter() *ProxyCachePluginAfter {
@@ -55,6 +88,17 @@ type ProxyCachePluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (p ProxyCachePluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *ProxyCachePluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *ProxyCachePluginPartials) GetID() *string {
@@ -229,7 +273,7 @@ func (p ProxyCachePluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (p *ProxyCachePluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"strategy"}); err != nil {
 		return err
 	}
 	return nil
@@ -324,6 +368,17 @@ type ProxyCachePluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (p ProxyCachePluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *ProxyCachePluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (p *ProxyCachePluginConsumer) GetID() *string {
 	if p == nil {
 		return nil
@@ -334,6 +389,17 @@ func (p *ProxyCachePluginConsumer) GetID() *string {
 // ProxyCachePluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type ProxyCachePluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (p ProxyCachePluginConsumerGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *ProxyCachePluginConsumerGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *ProxyCachePluginConsumerGroup) GetID() *string {
@@ -399,6 +465,17 @@ type ProxyCachePluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (p ProxyCachePluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *ProxyCachePluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (p *ProxyCachePluginRoute) GetID() *string {
 	if p == nil {
 		return nil
@@ -409,6 +486,17 @@ func (p *ProxyCachePluginRoute) GetID() *string {
 // ProxyCachePluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type ProxyCachePluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (p ProxyCachePluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *ProxyCachePluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *ProxyCachePluginService) GetID() *string {
@@ -454,7 +542,7 @@ func (p ProxyCachePlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (p *ProxyCachePlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil

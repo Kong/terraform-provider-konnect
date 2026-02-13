@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // CreatePortalSnippetRequest - Create a snippet in a portal.
 type CreatePortalSnippetRequest struct {
 	// The unique name of a snippet in a portal.
@@ -17,6 +21,17 @@ type CreatePortalSnippetRequest struct {
 	// Whether the resource is visible on a given portal. Defaults to unpublished.
 	Status      *PublishedStatus `json:"status,omitempty"`
 	Description *string          `json:"description,omitempty"`
+}
+
+func (c CreatePortalSnippetRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreatePortalSnippetRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "content"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreatePortalSnippetRequest) GetName() string {

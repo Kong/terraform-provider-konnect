@@ -19,7 +19,7 @@ func (a APISlugConflict) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APISlugConflict) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"status", "title", "instance"}); err != nil {
 		return err
 	}
 	return nil

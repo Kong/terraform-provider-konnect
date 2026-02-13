@@ -57,7 +57,7 @@ func (u UpdateAPIVersionRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateAPIVersionRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"apiId", "versionId", "ApiVersion"}); err != nil {
 		return err
 	}
 	return nil
@@ -112,6 +112,17 @@ type UpdateAPIVersionResponse struct {
 	ConflictError *shared.ConflictError
 	// Unsupported Media Type
 	UnsupportedMediaTypeError *shared.UnsupportedMediaTypeError
+}
+
+func (u UpdateAPIVersionResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateAPIVersionResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateAPIVersionResponse) GetContentType() string {

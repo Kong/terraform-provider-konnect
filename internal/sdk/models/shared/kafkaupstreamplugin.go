@@ -12,6 +12,17 @@ type KafkaUpstreamPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (k KafkaUpstreamPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (k *KafkaUpstreamPluginAfter) GetAccess() []string {
 	if k == nil {
 		return nil
@@ -21,6 +32,17 @@ func (k *KafkaUpstreamPluginAfter) GetAccess() []string {
 
 type KafkaUpstreamPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (k KafkaUpstreamPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (k *KafkaUpstreamPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (k *KafkaUpstreamPluginBefore) GetAccess() []string {
 type KafkaUpstreamPluginOrdering struct {
 	After  *KafkaUpstreamPluginAfter  `json:"after,omitempty"`
 	Before *KafkaUpstreamPluginBefore `json:"before,omitempty"`
+}
+
+func (k KafkaUpstreamPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (k *KafkaUpstreamPluginOrdering) GetAfter() *KafkaUpstreamPluginAfter {
@@ -55,6 +88,17 @@ type KafkaUpstreamPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (k KafkaUpstreamPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (k *KafkaUpstreamPluginPartials) GetID() *string {
@@ -198,6 +242,17 @@ type KafkaUpstreamPluginBootstrapServers struct {
 	Port int64 `json:"port"`
 }
 
+func (k KafkaUpstreamPluginBootstrapServers) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginBootstrapServers) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"host", "port"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (k *KafkaUpstreamPluginBootstrapServers) GetHost() string {
 	if k == nil {
 		return ""
@@ -245,6 +300,17 @@ func (e *KafkaUpstreamPluginProducerRequestAcks) UnmarshalJSON(data []byte) erro
 type KafkaUpstreamPluginBasic struct {
 	Password string `json:"password"`
 	Username string `json:"username"`
+}
+
+func (k KafkaUpstreamPluginBasic) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginBasic) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"password", "username"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (k *KafkaUpstreamPluginBasic) GetPassword() string {
@@ -346,7 +412,7 @@ func (k KafkaUpstreamPluginOauth2) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaUpstreamPluginOauth2) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"token_endpoint"}); err != nil {
 		return err
 	}
 	return nil
@@ -776,6 +842,17 @@ type KafkaUpstreamPluginSchemaRegistry struct {
 	Confluent *KafkaUpstreamPluginConfluent `json:"confluent"`
 }
 
+func (k KafkaUpstreamPluginSchemaRegistry) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginSchemaRegistry) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (k *KafkaUpstreamPluginSchemaRegistry) GetConfluent() *KafkaUpstreamPluginConfluent {
 	if k == nil {
 		return nil
@@ -881,7 +958,7 @@ func (k KafkaUpstreamPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaUpstreamPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"topic"}); err != nil {
 		return err
 	}
 	return nil
@@ -1074,6 +1151,17 @@ type KafkaUpstreamPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (k KafkaUpstreamPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (k *KafkaUpstreamPluginConsumer) GetID() *string {
 	if k == nil {
 		return nil
@@ -1118,6 +1206,17 @@ type KafkaUpstreamPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (k KafkaUpstreamPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (k *KafkaUpstreamPluginRoute) GetID() *string {
 	if k == nil {
 		return nil
@@ -1128,6 +1227,17 @@ func (k *KafkaUpstreamPluginRoute) GetID() *string {
 // KafkaUpstreamPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type KafkaUpstreamPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (k KafkaUpstreamPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (k *KafkaUpstreamPluginService) GetID() *string {
@@ -1171,7 +1281,7 @@ func (k KafkaUpstreamPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaUpstreamPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil

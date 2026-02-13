@@ -12,6 +12,17 @@ type AiAzureContentSafetyPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (a AiAzureContentSafetyPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiAzureContentSafetyPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiAzureContentSafetyPluginAfter) GetAccess() []string {
 	if a == nil {
 		return nil
@@ -21,6 +32,17 @@ func (a *AiAzureContentSafetyPluginAfter) GetAccess() []string {
 
 type AiAzureContentSafetyPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (a AiAzureContentSafetyPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiAzureContentSafetyPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiAzureContentSafetyPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (a *AiAzureContentSafetyPluginBefore) GetAccess() []string {
 type AiAzureContentSafetyPluginOrdering struct {
 	After  *AiAzureContentSafetyPluginAfter  `json:"after,omitempty"`
 	Before *AiAzureContentSafetyPluginBefore `json:"before,omitempty"`
+}
+
+func (a AiAzureContentSafetyPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiAzureContentSafetyPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiAzureContentSafetyPluginOrdering) GetAfter() *AiAzureContentSafetyPluginAfter {
@@ -55,6 +88,17 @@ type AiAzureContentSafetyPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (a AiAzureContentSafetyPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiAzureContentSafetyPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiAzureContentSafetyPluginPartials) GetID() *string {
@@ -81,6 +125,17 @@ func (a *AiAzureContentSafetyPluginPartials) GetPath() *string {
 type Categories struct {
 	Name           string `json:"name"`
 	RejectionLevel int64  `json:"rejection_level"`
+}
+
+func (c Categories) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *Categories) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "rejection_level"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *Categories) GetName() string {
@@ -223,7 +278,7 @@ func (a AiAzureContentSafetyPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiAzureContentSafetyPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"content_safety_url"}); err != nil {
 		return err
 	}
 	return nil
@@ -385,6 +440,17 @@ type AiAzureContentSafetyPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiAzureContentSafetyPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiAzureContentSafetyPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiAzureContentSafetyPluginRoute) GetID() *string {
 	if a == nil {
 		return nil
@@ -395,6 +461,17 @@ func (a *AiAzureContentSafetyPluginRoute) GetID() *string {
 // AiAzureContentSafetyPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type AiAzureContentSafetyPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiAzureContentSafetyPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiAzureContentSafetyPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiAzureContentSafetyPluginService) GetID() *string {
@@ -436,7 +513,7 @@ func (a AiAzureContentSafetyPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiAzureContentSafetyPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil

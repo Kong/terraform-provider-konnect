@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -13,6 +14,17 @@ type PublishAPIToPortalRequest struct {
 	// The Portal identifier
 	PortalID       string                `pathParam:"style=simple,explode=false,name=portalId"`
 	APIPublication shared.APIPublication `request:"mediaType=application/json"`
+}
+
+func (p PublishAPIToPortalRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PublishAPIToPortalRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"apiId", "portalId", "ApiPublication"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PublishAPIToPortalRequest) GetAPIID() string {
@@ -53,6 +65,17 @@ type PublishAPIToPortalResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (p PublishAPIToPortalResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PublishAPIToPortalResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PublishAPIToPortalResponse) GetContentType() string {

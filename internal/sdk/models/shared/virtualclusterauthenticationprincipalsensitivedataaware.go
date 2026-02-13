@@ -24,7 +24,7 @@ func (v VirtualClusterAuthenticationPrincipalSensitiveDataAware) MarshalJSON() (
 }
 
 func (v *VirtualClusterAuthenticationPrincipalSensitiveDataAware) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"username"}); err != nil {
 		return err
 	}
 	return nil

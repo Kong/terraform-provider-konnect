@@ -12,6 +12,17 @@ type RouteByHeaderPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (r RouteByHeaderPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RouteByHeaderPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RouteByHeaderPluginAfter) GetAccess() []string {
 	if r == nil {
 		return nil
@@ -21,6 +32,17 @@ func (r *RouteByHeaderPluginAfter) GetAccess() []string {
 
 type RouteByHeaderPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (r RouteByHeaderPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RouteByHeaderPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RouteByHeaderPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (r *RouteByHeaderPluginBefore) GetAccess() []string {
 type RouteByHeaderPluginOrdering struct {
 	After  *RouteByHeaderPluginAfter  `json:"after,omitempty"`
 	Before *RouteByHeaderPluginBefore `json:"before,omitempty"`
+}
+
+func (r RouteByHeaderPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RouteByHeaderPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RouteByHeaderPluginOrdering) GetAfter() *RouteByHeaderPluginAfter {
@@ -55,6 +88,17 @@ type RouteByHeaderPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (r RouteByHeaderPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RouteByHeaderPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RouteByHeaderPluginPartials) GetID() *string {
@@ -83,6 +127,17 @@ type RouteByHeaderPluginRules struct {
 	UpstreamName string            `json:"upstream_name"`
 }
 
+func (r RouteByHeaderPluginRules) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RouteByHeaderPluginRules) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"upstream_name"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RouteByHeaderPluginRules) GetCondition() map[string]string {
 	if r == nil {
 		return nil
@@ -102,6 +157,17 @@ type RouteByHeaderPluginConfig struct {
 	Rules []RouteByHeaderPluginRules `json:"rules,omitempty"`
 }
 
+func (r RouteByHeaderPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RouteByHeaderPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RouteByHeaderPluginConfig) GetRules() []RouteByHeaderPluginRules {
 	if r == nil {
 		return nil
@@ -112,6 +178,17 @@ func (r *RouteByHeaderPluginConfig) GetRules() []RouteByHeaderPluginRules {
 // RouteByHeaderPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 type RouteByHeaderPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (r RouteByHeaderPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RouteByHeaderPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RouteByHeaderPluginConsumer) GetID() *string {
@@ -158,6 +235,17 @@ type RouteByHeaderPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (r RouteByHeaderPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RouteByHeaderPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RouteByHeaderPluginRoute) GetID() *string {
 	if r == nil {
 		return nil
@@ -168,6 +256,17 @@ func (r *RouteByHeaderPluginRoute) GetID() *string {
 // RouteByHeaderPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type RouteByHeaderPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (r RouteByHeaderPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RouteByHeaderPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RouteByHeaderPluginService) GetID() *string {
@@ -211,7 +310,7 @@ func (r RouteByHeaderPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RouteByHeaderPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil

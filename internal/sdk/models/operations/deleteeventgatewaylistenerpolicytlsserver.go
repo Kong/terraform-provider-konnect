@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -14,6 +15,17 @@ type DeleteEventGatewayListenerPolicyTLSServerRequest struct {
 	ListenerID string `pathParam:"style=simple,explode=false,name=eventGatewayListenerId"`
 	// The UUID of the policy.
 	PolicyID string `pathParam:"style=simple,explode=false,name=policyId"`
+}
+
+func (d DeleteEventGatewayListenerPolicyTLSServerRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteEventGatewayListenerPolicyTLSServerRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"gatewayId", "eventGatewayListenerId", "policyId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteEventGatewayListenerPolicyTLSServerRequest) GetGatewayID() string {
@@ -50,6 +62,17 @@ type DeleteEventGatewayListenerPolicyTLSServerResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (d DeleteEventGatewayListenerPolicyTLSServerResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteEventGatewayListenerPolicyTLSServerResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteEventGatewayListenerPolicyTLSServerResponse) GetContentType() string {

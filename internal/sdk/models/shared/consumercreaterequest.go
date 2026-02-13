@@ -26,7 +26,7 @@ func (c ConsumerCreateRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConsumerCreateRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"username"}); err != nil {
 		return err
 	}
 	return nil

@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateAisemanticcachePluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID        string                       `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	AiSemanticCachePlugin shared.AiSemanticCachePlugin `request:"mediaType=application/json"`
+}
+
+func (c CreateAisemanticcachePluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAisemanticcachePluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "AiSemanticCachePlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateAisemanticcachePluginRequest) GetControlPlaneID() string {
@@ -38,6 +50,17 @@ type CreateAisemanticcachePluginResponse struct {
 	AiSemanticCachePlugin *shared.AiSemanticCachePlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (c CreateAisemanticcachePluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAisemanticcachePluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateAisemanticcachePluginResponse) GetContentType() string {

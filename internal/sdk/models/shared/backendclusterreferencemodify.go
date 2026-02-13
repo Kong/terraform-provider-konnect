@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // BackendClusterReferenceModify - The backend cluster associated with the virtual cluster.
 //
 // Either `id` or `name` must be provided. Following changes to the backend cluster name won't affect the
@@ -9,6 +13,17 @@ package shared
 type BackendClusterReferenceModify struct {
 	// The unique identifier of the backend cluster.
 	ID *string `json:"id,omitempty"`
+}
+
+func (b BackendClusterReferenceModify) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BackendClusterReferenceModify) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (b *BackendClusterReferenceModify) GetID() *string {

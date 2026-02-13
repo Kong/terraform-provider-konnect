@@ -64,7 +64,7 @@ func (i InvalidParameterMinimumLength) MarshalJSON() ([]byte, error) {
 }
 
 func (i *InvalidParameterMinimumLength) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &i, "", false, []string{"field", "rule", "minimum", "reason"}); err != nil {
 		return err
 	}
 	return nil

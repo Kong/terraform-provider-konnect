@@ -43,7 +43,7 @@ func (a AwsVpcPeeringGatewayAttachmentConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AwsVpcPeeringGatewayAttachmentConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"kind", "peer_account_id", "peer_vpc_id", "peer_vpc_region"}); err != nil {
 		return err
 	}
 	return nil

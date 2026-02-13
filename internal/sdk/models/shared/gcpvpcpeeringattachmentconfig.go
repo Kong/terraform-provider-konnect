@@ -44,7 +44,7 @@ func (g GCPVPCPeeringAttachmentConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GCPVPCPeeringAttachmentConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"kind", "peer_project_id", "peer_vpc_name"}); err != nil {
 		return err
 	}
 	return nil

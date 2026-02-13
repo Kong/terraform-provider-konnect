@@ -18,7 +18,7 @@ func (e EncryptionKeyStatic) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EncryptionKeyStatic) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type", "key"}); err != nil {
 		return err
 	}
 	return nil

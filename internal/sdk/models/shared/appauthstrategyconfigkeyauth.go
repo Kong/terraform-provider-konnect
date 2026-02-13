@@ -48,7 +48,7 @@ func (t TTL) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TTL) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"value", "unit"}); err != nil {
 		return err
 	}
 	return nil

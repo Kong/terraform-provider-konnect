@@ -15,7 +15,7 @@ func (n NamespaceExactAllowListItem) MarshalJSON() ([]byte, error) {
 }
 
 func (n *NamespaceExactAllowListItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &n, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &n, "", false, []string{"backend"}); err != nil {
 		return err
 	}
 	return nil

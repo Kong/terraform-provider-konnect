@@ -12,6 +12,17 @@ type JweDecryptPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (j JweDecryptPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JweDecryptPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (j *JweDecryptPluginAfter) GetAccess() []string {
 	if j == nil {
 		return nil
@@ -21,6 +32,17 @@ func (j *JweDecryptPluginAfter) GetAccess() []string {
 
 type JweDecryptPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (j JweDecryptPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JweDecryptPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (j *JweDecryptPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (j *JweDecryptPluginBefore) GetAccess() []string {
 type JweDecryptPluginOrdering struct {
 	After  *JweDecryptPluginAfter  `json:"after,omitempty"`
 	Before *JweDecryptPluginBefore `json:"before,omitempty"`
+}
+
+func (j JweDecryptPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JweDecryptPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (j *JweDecryptPluginOrdering) GetAfter() *JweDecryptPluginAfter {
@@ -55,6 +88,17 @@ type JweDecryptPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (j JweDecryptPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JweDecryptPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (j *JweDecryptPluginPartials) GetID() *string {
@@ -94,7 +138,7 @@ func (j JweDecryptPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (j *JweDecryptPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &j, "", false, []string{"key_sets"}); err != nil {
 		return err
 	}
 	return nil
@@ -165,6 +209,17 @@ type JweDecryptPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (j JweDecryptPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JweDecryptPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (j *JweDecryptPluginRoute) GetID() *string {
 	if j == nil {
 		return nil
@@ -175,6 +230,17 @@ func (j *JweDecryptPluginRoute) GetID() *string {
 // JweDecryptPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type JweDecryptPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (j JweDecryptPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JweDecryptPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (j *JweDecryptPluginService) GetID() *string {
@@ -216,7 +282,7 @@ func (j JweDecryptPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (j *JweDecryptPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &j, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil

@@ -53,7 +53,7 @@ func (v VirtualClusterNamespaceTopicSelectorGlob) MarshalJSON() ([]byte, error) 
 }
 
 func (v *VirtualClusterNamespaceTopicSelectorGlob) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"type", "glob"}); err != nil {
 		return err
 	}
 	return nil

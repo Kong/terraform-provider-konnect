@@ -46,7 +46,7 @@ func (g GcpPrivateHostedZoneAttachmentConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GcpPrivateHostedZoneAttachmentConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"kind", "domain_name", "peer_project_id", "peer_vpc_name"}); err != nil {
 		return err
 	}
 	return nil

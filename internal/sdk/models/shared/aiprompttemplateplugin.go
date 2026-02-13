@@ -12,6 +12,17 @@ type AiPromptTemplatePluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (a AiPromptTemplatePluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptTemplatePluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiPromptTemplatePluginAfter) GetAccess() []string {
 	if a == nil {
 		return nil
@@ -21,6 +32,17 @@ func (a *AiPromptTemplatePluginAfter) GetAccess() []string {
 
 type AiPromptTemplatePluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (a AiPromptTemplatePluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptTemplatePluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiPromptTemplatePluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (a *AiPromptTemplatePluginBefore) GetAccess() []string {
 type AiPromptTemplatePluginOrdering struct {
 	After  *AiPromptTemplatePluginAfter  `json:"after,omitempty"`
 	Before *AiPromptTemplatePluginBefore `json:"before,omitempty"`
+}
+
+func (a AiPromptTemplatePluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptTemplatePluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiPromptTemplatePluginOrdering) GetAfter() *AiPromptTemplatePluginAfter {
@@ -55,6 +88,17 @@ type AiPromptTemplatePluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (a AiPromptTemplatePluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptTemplatePluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiPromptTemplatePluginPartials) GetID() *string {
@@ -83,6 +127,17 @@ type Templates struct {
 	Name string `json:"name"`
 	// Template string for this request, supports mustache-style `{{placeholders}}`
 	Template string `json:"template"`
+}
+
+func (t Templates) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *Templates) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"name", "template"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (t *Templates) GetName() string {
@@ -115,7 +170,7 @@ func (a AiPromptTemplatePluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiPromptTemplatePluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"templates"}); err != nil {
 		return err
 	}
 	return nil
@@ -154,6 +209,17 @@ type AiPromptTemplatePluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiPromptTemplatePluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptTemplatePluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiPromptTemplatePluginConsumer) GetID() *string {
 	if a == nil {
 		return nil
@@ -164,6 +230,17 @@ func (a *AiPromptTemplatePluginConsumer) GetID() *string {
 // AiPromptTemplatePluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type AiPromptTemplatePluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiPromptTemplatePluginConsumerGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptTemplatePluginConsumerGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiPromptTemplatePluginConsumerGroup) GetID() *string {
@@ -210,6 +287,17 @@ type AiPromptTemplatePluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiPromptTemplatePluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptTemplatePluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiPromptTemplatePluginRoute) GetID() *string {
 	if a == nil {
 		return nil
@@ -220,6 +308,17 @@ func (a *AiPromptTemplatePluginRoute) GetID() *string {
 // AiPromptTemplatePluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type AiPromptTemplatePluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiPromptTemplatePluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptTemplatePluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiPromptTemplatePluginService) GetID() *string {
@@ -265,7 +364,7 @@ func (a AiPromptTemplatePlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiPromptTemplatePlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil

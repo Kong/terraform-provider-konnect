@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -13,6 +14,17 @@ type UpdateAipromptcompressorPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID           string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	AiPromptCompressorPlugin shared.AiPromptCompressorPlugin `request:"mediaType=application/json"`
+}
+
+func (u UpdateAipromptcompressorPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateAipromptcompressorPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "AiPromptCompressorPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateAipromptcompressorPluginRequest) GetPluginID() string {
@@ -47,6 +59,17 @@ type UpdateAipromptcompressorPluginResponse struct {
 	AiPromptCompressorPlugin *shared.AiPromptCompressorPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (u UpdateAipromptcompressorPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateAipromptcompressorPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateAipromptcompressorPluginResponse) GetContentType() string {

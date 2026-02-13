@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -14,6 +15,17 @@ type DeleteAPIProductVersionSpecRequest struct {
 	APIProductVersionID string `pathParam:"style=simple,explode=false,name=apiProductVersionId"`
 	// The API product version specification identifier
 	SpecificationID string `pathParam:"style=simple,explode=false,name=specificationId"`
+}
+
+func (d DeleteAPIProductVersionSpecRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteAPIProductVersionSpecRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"apiProductId", "apiProductVersionId", "specificationId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteAPIProductVersionSpecRequest) GetAPIProductID() string {
@@ -50,6 +62,17 @@ type DeleteAPIProductVersionSpecResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (d DeleteAPIProductVersionSpecResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteAPIProductVersionSpecResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteAPIProductVersionSpecResponse) GetContentType() string {

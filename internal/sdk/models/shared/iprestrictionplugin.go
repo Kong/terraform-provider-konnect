@@ -12,6 +12,17 @@ type IPRestrictionPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (i IPRestrictionPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *IPRestrictionPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (i *IPRestrictionPluginAfter) GetAccess() []string {
 	if i == nil {
 		return nil
@@ -21,6 +32,17 @@ func (i *IPRestrictionPluginAfter) GetAccess() []string {
 
 type IPRestrictionPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (i IPRestrictionPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *IPRestrictionPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (i *IPRestrictionPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (i *IPRestrictionPluginBefore) GetAccess() []string {
 type IPRestrictionPluginOrdering struct {
 	After  *IPRestrictionPluginAfter  `json:"after,omitempty"`
 	Before *IPRestrictionPluginBefore `json:"before,omitempty"`
+}
+
+func (i IPRestrictionPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *IPRestrictionPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (i *IPRestrictionPluginOrdering) GetAfter() *IPRestrictionPluginAfter {
@@ -55,6 +88,17 @@ type IPRestrictionPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (i IPRestrictionPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *IPRestrictionPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (i *IPRestrictionPluginPartials) GetID() *string {
@@ -133,6 +177,17 @@ type IPRestrictionPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (i IPRestrictionPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *IPRestrictionPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (i *IPRestrictionPluginConsumer) GetID() *string {
 	if i == nil {
 		return nil
@@ -143,6 +198,17 @@ func (i *IPRestrictionPluginConsumer) GetID() *string {
 // IPRestrictionPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type IPRestrictionPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (i IPRestrictionPluginConsumerGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *IPRestrictionPluginConsumerGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (i *IPRestrictionPluginConsumerGroup) GetID() *string {
@@ -208,6 +274,17 @@ type IPRestrictionPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (i IPRestrictionPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *IPRestrictionPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (i *IPRestrictionPluginRoute) GetID() *string {
 	if i == nil {
 		return nil
@@ -218,6 +295,17 @@ func (i *IPRestrictionPluginRoute) GetID() *string {
 // IPRestrictionPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type IPRestrictionPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (i IPRestrictionPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *IPRestrictionPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (i *IPRestrictionPluginService) GetID() *string {
@@ -263,7 +351,7 @@ func (i IPRestrictionPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (i *IPRestrictionPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &i, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil

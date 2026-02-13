@@ -2,11 +2,26 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // PageMeta - Contains pagination query parameters and the total number of objects returned.
 type PageMeta struct {
 	Number float64 `json:"number"`
 	Size   float64 `json:"size"`
 	Total  float64 `json:"total"`
+}
+
+func (p PageMeta) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PageMeta) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"number", "size", "total"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PageMeta) GetNumber() float64 {

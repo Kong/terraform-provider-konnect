@@ -46,7 +46,7 @@ func (i InvalidParameterChoiceItem) MarshalJSON() ([]byte, error) {
 }
 
 func (i *InvalidParameterChoiceItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &i, "", false, []string{"field", "rule", "reason", "choices"}); err != nil {
 		return err
 	}
 	return nil

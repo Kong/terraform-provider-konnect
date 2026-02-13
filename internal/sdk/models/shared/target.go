@@ -11,6 +11,17 @@ type TargetUpstream struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (t TargetUpstream) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TargetUpstream) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (t *TargetUpstream) GetID() *string {
 	if t == nil {
 		return nil
@@ -43,7 +54,7 @@ func (t Target) MarshalJSON() ([]byte, error) {
 }
 
 func (t *Target) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"target"}); err != nil {
 		return err
 	}
 	return nil

@@ -47,7 +47,7 @@ func (a AppAuthStrategyOpenIDConnectRequestConfigs) MarshalJSON() ([]byte, error
 }
 
 func (a *AppAuthStrategyOpenIDConnectRequestConfigs) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"openid-connect"}); err != nil {
 		return err
 	}
 	return nil
@@ -84,7 +84,7 @@ func (a AppAuthStrategyOpenIDConnectRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AppAuthStrategyOpenIDConnectRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "display_name", "strategy_type", "configs"}); err != nil {
 		return err
 	}
 	return nil
@@ -169,7 +169,7 @@ func (a AppAuthStrategyKeyAuthRequestConfigs) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AppAuthStrategyKeyAuthRequestConfigs) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"key-auth"}); err != nil {
 		return err
 	}
 	return nil
@@ -205,7 +205,7 @@ func (a AppAuthStrategyKeyAuthRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AppAuthStrategyKeyAuthRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "display_name", "strategy_type", "configs"}); err != nil {
 		return err
 	}
 	return nil

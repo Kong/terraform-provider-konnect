@@ -25,7 +25,7 @@ func (b BackendClusterAuthenticationSaslPlain) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BackendClusterAuthenticationSaslPlain) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"type", "username", "password"}); err != nil {
 		return err
 	}
 	return nil

@@ -31,7 +31,7 @@ func (v Vault) MarshalJSON() ([]byte, error) {
 }
 
 func (v *Vault) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"name", "prefix"}); err != nil {
 		return err
 	}
 	return nil

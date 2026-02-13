@@ -22,7 +22,7 @@ func (p PatchAWSTransitGatewayAWSTransitGateway) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PatchAWSTransitGatewayAWSTransitGateway) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"cidr_blocks"}); err != nil {
 		return err
 	}
 	return nil
@@ -70,7 +70,7 @@ func (t TransitGatewayAttachmentConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransitGatewayAttachmentConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"kind", "resource_config"}); err != nil {
 		return err
 	}
 	return nil
@@ -100,7 +100,7 @@ func (p PatchAWSResourceEndpointGatewayAWSResourceEndpointGateway) MarshalJSON()
 }
 
 func (p *PatchAWSResourceEndpointGatewayAWSResourceEndpointGateway) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"transit_gateway_attachment_config"}); err != nil {
 		return err
 	}
 	return nil

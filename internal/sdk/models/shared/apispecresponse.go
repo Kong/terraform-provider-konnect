@@ -13,6 +13,17 @@ type ValidationMessages struct {
 	Message string `json:"message"`
 }
 
+func (v ValidationMessages) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *ValidationMessages) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"message"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (v *ValidationMessages) GetMessage() string {
 	if v == nil {
 		return ""
@@ -73,7 +84,7 @@ func (a APISpecResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APISpecResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "content", "validation_messages", "type", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil

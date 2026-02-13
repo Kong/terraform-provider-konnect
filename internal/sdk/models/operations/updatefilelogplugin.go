@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -13,6 +14,17 @@ type UpdateFilelogPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	FileLogPlugin  shared.FileLogPlugin `request:"mediaType=application/json"`
+}
+
+func (u UpdateFilelogPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateFilelogPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "FileLogPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateFilelogPluginRequest) GetPluginID() string {
@@ -47,6 +59,17 @@ type UpdateFilelogPluginResponse struct {
 	FileLogPlugin *shared.FileLogPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (u UpdateFilelogPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateFilelogPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateFilelogPluginResponse) GetContentType() string {

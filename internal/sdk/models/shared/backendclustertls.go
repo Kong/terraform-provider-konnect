@@ -47,6 +47,17 @@ type ClientIdentity struct {
 	Key string `json:"key"`
 }
 
+func (c ClientIdentity) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ClientIdentity) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"certificate", "key"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (c *ClientIdentity) GetCertificate() string {
 	if c == nil {
 		return ""
@@ -81,7 +92,7 @@ func (b BackendClusterTLS) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BackendClusterTLS) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"enabled"}); err != nil {
 		return err
 	}
 	return nil

@@ -159,6 +159,17 @@ type RouteJSONService struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (r RouteJSONService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RouteJSONService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RouteJSONService) GetID() *string {
 	if r == nil {
 		return nil

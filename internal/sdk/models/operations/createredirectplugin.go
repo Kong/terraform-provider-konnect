@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateRedirectPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string                `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	RedirectPlugin shared.RedirectPlugin `request:"mediaType=application/json"`
+}
+
+func (c CreateRedirectPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateRedirectPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "RedirectPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateRedirectPluginRequest) GetControlPlaneID() string {
@@ -38,6 +50,17 @@ type CreateRedirectPluginResponse struct {
 	RedirectPlugin *shared.RedirectPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (c CreateRedirectPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateRedirectPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateRedirectPluginResponse) GetContentType() string {

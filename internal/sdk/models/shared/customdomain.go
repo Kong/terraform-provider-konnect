@@ -77,7 +77,7 @@ func (c CustomDomain) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CustomDomain) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "control_plane_id", "control_plane_geo", "domain", "state", "state_metadata", "entity_version", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil

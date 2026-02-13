@@ -32,7 +32,7 @@ func (e EventGatewayACLsPolicy) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayACLsPolicy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type", "config"}); err != nil {
 		return err
 	}
 	return nil

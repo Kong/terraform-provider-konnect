@@ -12,6 +12,17 @@ type AzureFunctionsPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (a AzureFunctionsPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AzureFunctionsPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AzureFunctionsPluginAfter) GetAccess() []string {
 	if a == nil {
 		return nil
@@ -21,6 +32,17 @@ func (a *AzureFunctionsPluginAfter) GetAccess() []string {
 
 type AzureFunctionsPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (a AzureFunctionsPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AzureFunctionsPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AzureFunctionsPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (a *AzureFunctionsPluginBefore) GetAccess() []string {
 type AzureFunctionsPluginOrdering struct {
 	After  *AzureFunctionsPluginAfter  `json:"after,omitempty"`
 	Before *AzureFunctionsPluginBefore `json:"before,omitempty"`
+}
+
+func (a AzureFunctionsPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AzureFunctionsPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AzureFunctionsPluginOrdering) GetAfter() *AzureFunctionsPluginAfter {
@@ -55,6 +88,17 @@ type AzureFunctionsPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (a AzureFunctionsPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AzureFunctionsPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AzureFunctionsPluginPartials) GetID() *string {
@@ -106,7 +150,7 @@ func (a AzureFunctionsPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AzureFunctionsPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"appname", "functionname"}); err != nil {
 		return err
 	}
 	return nil
@@ -187,6 +231,17 @@ type AzureFunctionsPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AzureFunctionsPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AzureFunctionsPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AzureFunctionsPluginConsumer) GetID() *string {
 	if a == nil {
 		return nil
@@ -250,6 +305,17 @@ type AzureFunctionsPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AzureFunctionsPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AzureFunctionsPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AzureFunctionsPluginRoute) GetID() *string {
 	if a == nil {
 		return nil
@@ -260,6 +326,17 @@ func (a *AzureFunctionsPluginRoute) GetID() *string {
 // AzureFunctionsPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type AzureFunctionsPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AzureFunctionsPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AzureFunctionsPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AzureFunctionsPluginService) GetID() *string {
@@ -303,7 +380,7 @@ func (a AzureFunctionsPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AzureFunctionsPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil

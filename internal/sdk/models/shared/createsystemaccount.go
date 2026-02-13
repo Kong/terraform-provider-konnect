@@ -21,7 +21,7 @@ func (c CreateSystemAccount) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateSystemAccount) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "description"}); err != nil {
 		return err
 	}
 	return nil

@@ -74,7 +74,7 @@ func (a AwsPrivateDNSResolverResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AwsPrivateDNSResolverResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "state", "state_metadata", "entity_version", "created_at", "updated_at", "name", "private_dns_attachment_config"}); err != nil {
 		return err
 	}
 	return nil

@@ -44,7 +44,7 @@ func (a AwsTransitGatewayAttachmentConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AwsTransitGatewayAttachmentConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"kind", "transit_gateway_id", "ram_share_arn"}); err != nil {
 		return err
 	}
 	return nil

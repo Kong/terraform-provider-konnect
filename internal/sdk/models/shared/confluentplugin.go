@@ -12,6 +12,17 @@ type ConfluentPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (c ConfluentPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ConfluentPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (c *ConfluentPluginAfter) GetAccess() []string {
 	if c == nil {
 		return nil
@@ -21,6 +32,17 @@ func (c *ConfluentPluginAfter) GetAccess() []string {
 
 type ConfluentPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (c ConfluentPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ConfluentPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *ConfluentPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (c *ConfluentPluginBefore) GetAccess() []string {
 type ConfluentPluginOrdering struct {
 	After  *ConfluentPluginAfter  `json:"after,omitempty"`
 	Before *ConfluentPluginBefore `json:"before,omitempty"`
+}
+
+func (c ConfluentPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ConfluentPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *ConfluentPluginOrdering) GetAfter() *ConfluentPluginAfter {
@@ -55,6 +88,17 @@ type ConfluentPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (c ConfluentPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ConfluentPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *ConfluentPluginPartials) GetID() *string {
@@ -83,6 +127,17 @@ type BootstrapServers struct {
 	Host string `json:"host"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port int64 `json:"port"`
+}
+
+func (b BootstrapServers) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BootstrapServers) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"host", "port"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (b *BootstrapServers) GetHost() string {
@@ -132,6 +187,17 @@ func (e *ProducerRequestAcks) UnmarshalJSON(data []byte) error {
 type Basic struct {
 	Password string `json:"password"`
 	Username string `json:"username"`
+}
+
+func (b Basic) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *Basic) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"password", "username"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (b *Basic) GetPassword() string {
@@ -233,7 +299,7 @@ func (o Oauth2) MarshalJSON() ([]byte, error) {
 }
 
 func (o *Oauth2) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"token_endpoint"}); err != nil {
 		return err
 	}
 	return nil
@@ -663,6 +729,17 @@ type ConfluentPluginSchemaRegistry struct {
 	Confluent *Confluent `json:"confluent"`
 }
 
+func (c ConfluentPluginSchemaRegistry) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ConfluentPluginSchemaRegistry) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (c *ConfluentPluginSchemaRegistry) GetConfluent() *Confluent {
 	if c == nil {
 		return nil
@@ -757,7 +834,7 @@ func (c ConfluentPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfluentPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"cluster_api_key", "cluster_api_secret", "topic"}); err != nil {
 		return err
 	}
 	return nil
@@ -971,6 +1048,17 @@ type ConfluentPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (c ConfluentPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ConfluentPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (c *ConfluentPluginConsumer) GetID() *string {
 	if c == nil {
 		return nil
@@ -1015,6 +1103,17 @@ type ConfluentPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (c ConfluentPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ConfluentPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (c *ConfluentPluginRoute) GetID() *string {
 	if c == nil {
 		return nil
@@ -1025,6 +1124,17 @@ func (c *ConfluentPluginRoute) GetID() *string {
 // ConfluentPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type ConfluentPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (c ConfluentPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ConfluentPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *ConfluentPluginService) GetID() *string {
@@ -1068,7 +1178,7 @@ func (c ConfluentPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfluentPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil

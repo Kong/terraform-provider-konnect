@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type CreatePortalCustomDomainRequest struct {
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 	// Create a portal custom domain.
 	CreatePortalCustomDomainRequest shared.CreatePortalCustomDomainRequest `request:"mediaType=application/json"`
+}
+
+func (c CreatePortalCustomDomainRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreatePortalCustomDomainRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"portalId", "CreatePortalCustomDomainRequest"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreatePortalCustomDomainRequest) GetPortalID() string {
@@ -45,6 +57,17 @@ type CreatePortalCustomDomainResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (c CreatePortalCustomDomainResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreatePortalCustomDomainResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreatePortalCustomDomainResponse) GetContentType() string {

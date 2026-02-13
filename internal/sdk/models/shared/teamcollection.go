@@ -2,11 +2,26 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // TeamCollection - A paginated list response for a collection of users.
 type TeamCollection struct {
 	// returns the pagination information
 	Meta *PaginatedMeta `json:"meta,omitempty"`
 	Data []Team         `json:"data"`
+}
+
+func (t TeamCollection) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TeamCollection) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (t *TeamCollection) GetMeta() *PaginatedMeta {

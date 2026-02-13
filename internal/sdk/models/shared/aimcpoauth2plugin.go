@@ -12,6 +12,17 @@ type AiMcpOauth2PluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (a AiMcpOauth2PluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiMcpOauth2PluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiMcpOauth2PluginAfter) GetAccess() []string {
 	if a == nil {
 		return nil
@@ -21,6 +32,17 @@ func (a *AiMcpOauth2PluginAfter) GetAccess() []string {
 
 type AiMcpOauth2PluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (a AiMcpOauth2PluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiMcpOauth2PluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiMcpOauth2PluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (a *AiMcpOauth2PluginBefore) GetAccess() []string {
 type AiMcpOauth2PluginOrdering struct {
 	After  *AiMcpOauth2PluginAfter  `json:"after,omitempty"`
 	Before *AiMcpOauth2PluginBefore `json:"before,omitempty"`
+}
+
+func (a AiMcpOauth2PluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiMcpOauth2PluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiMcpOauth2PluginOrdering) GetAfter() *AiMcpOauth2PluginAfter {
@@ -55,6 +88,17 @@ type AiMcpOauth2PluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (a AiMcpOauth2PluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiMcpOauth2PluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiMcpOauth2PluginPartials) GetID() *string {
@@ -83,6 +127,17 @@ type ClaimToHeader struct {
 	Claim string `json:"claim"`
 	// The HTTP header name to be used for forwarding the claim value to the upstream.
 	Header string `json:"header"`
+}
+
+func (c ClaimToHeader) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ClaimToHeader) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"claim", "header"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *ClaimToHeader) GetClaim() string {
@@ -297,7 +352,7 @@ func (a AiMcpOauth2PluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiMcpOauth2PluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"authorization_servers", "client_id", "introspection_endpoint", "resource"}); err != nil {
 		return err
 	}
 	return nil
@@ -550,6 +605,17 @@ type AiMcpOauth2PluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiMcpOauth2PluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiMcpOauth2PluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiMcpOauth2PluginRoute) GetID() *string {
 	if a == nil {
 		return nil
@@ -560,6 +626,17 @@ func (a *AiMcpOauth2PluginRoute) GetID() *string {
 // AiMcpOauth2PluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type AiMcpOauth2PluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiMcpOauth2PluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiMcpOauth2PluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiMcpOauth2PluginService) GetID() *string {
@@ -602,7 +679,7 @@ func (a AiMcpOauth2Plugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiMcpOauth2Plugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil

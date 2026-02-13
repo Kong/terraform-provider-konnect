@@ -18,7 +18,7 @@ func (d DeleteCmekRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeleteCmekRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"cmekId"}); err != nil {
 		return err
 	}
 	return nil
@@ -44,6 +44,17 @@ type DeleteCmekResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (d DeleteCmekResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteCmekResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteCmekResponse) GetContentType() string {

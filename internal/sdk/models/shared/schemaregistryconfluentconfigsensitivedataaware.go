@@ -53,7 +53,7 @@ func (s SchemaRegistryConfluentConfigSensitiveDataAware) MarshalJSON() ([]byte, 
 }
 
 func (s *SchemaRegistryConfluentConfigSensitiveDataAware) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"schema_type", "endpoint"}); err != nil {
 		return err
 	}
 	return nil

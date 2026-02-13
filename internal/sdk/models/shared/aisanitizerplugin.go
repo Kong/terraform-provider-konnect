@@ -12,6 +12,17 @@ type AiSanitizerPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (a AiSanitizerPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSanitizerPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiSanitizerPluginAfter) GetAccess() []string {
 	if a == nil {
 		return nil
@@ -21,6 +32,17 @@ func (a *AiSanitizerPluginAfter) GetAccess() []string {
 
 type AiSanitizerPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (a AiSanitizerPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSanitizerPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiSanitizerPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (a *AiSanitizerPluginBefore) GetAccess() []string {
 type AiSanitizerPluginOrdering struct {
 	After  *AiSanitizerPluginAfter  `json:"after,omitempty"`
 	Before *AiSanitizerPluginBefore `json:"before,omitempty"`
+}
+
+func (a AiSanitizerPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSanitizerPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiSanitizerPluginOrdering) GetAfter() *AiSanitizerPluginAfter {
@@ -55,6 +88,17 @@ type AiSanitizerPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (a AiSanitizerPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSanitizerPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiSanitizerPluginPartials) GetID() *string {
@@ -162,6 +206,17 @@ type CustomPatterns struct {
 	Name  string   `json:"name"`
 	Regex string   `json:"regex"`
 	Score *float64 `json:"score,omitempty"`
+}
+
+func (c CustomPatterns) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CustomPatterns) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "regex"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CustomPatterns) GetName() string {
@@ -378,6 +433,17 @@ type AiSanitizerPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiSanitizerPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSanitizerPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiSanitizerPluginConsumer) GetID() *string {
 	if a == nil {
 		return nil
@@ -388,6 +454,17 @@ func (a *AiSanitizerPluginConsumer) GetID() *string {
 // AiSanitizerPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type AiSanitizerPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiSanitizerPluginConsumerGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSanitizerPluginConsumerGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiSanitizerPluginConsumerGroup) GetID() *string {
@@ -434,6 +511,17 @@ type AiSanitizerPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiSanitizerPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSanitizerPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiSanitizerPluginRoute) GetID() *string {
 	if a == nil {
 		return nil
@@ -444,6 +532,17 @@ func (a *AiSanitizerPluginRoute) GetID() *string {
 // AiSanitizerPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type AiSanitizerPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiSanitizerPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSanitizerPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiSanitizerPluginService) GetID() *string {
@@ -489,7 +588,7 @@ func (a AiSanitizerPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSanitizerPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil

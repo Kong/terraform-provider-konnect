@@ -12,6 +12,17 @@ type RequestValidatorPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (r RequestValidatorPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestValidatorPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RequestValidatorPluginAfter) GetAccess() []string {
 	if r == nil {
 		return nil
@@ -21,6 +32,17 @@ func (r *RequestValidatorPluginAfter) GetAccess() []string {
 
 type RequestValidatorPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (r RequestValidatorPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestValidatorPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RequestValidatorPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (r *RequestValidatorPluginBefore) GetAccess() []string {
 type RequestValidatorPluginOrdering struct {
 	After  *RequestValidatorPluginAfter  `json:"after,omitempty"`
 	Before *RequestValidatorPluginBefore `json:"before,omitempty"`
+}
+
+func (r RequestValidatorPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestValidatorPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RequestValidatorPluginOrdering) GetAfter() *RequestValidatorPluginAfter {
@@ -55,6 +88,17 @@ type RequestValidatorPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (r RequestValidatorPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestValidatorPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RequestValidatorPluginPartials) GetID() *string {
@@ -170,7 +214,7 @@ func (p ParameterSchema) MarshalJSON() ([]byte, error) {
 }
 
 func (p *ParameterSchema) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"in", "name", "required"}); err != nil {
 		return err
 	}
 	return nil
@@ -330,6 +374,17 @@ type RequestValidatorPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (r RequestValidatorPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestValidatorPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RequestValidatorPluginConsumer) GetID() *string {
 	if r == nil {
 		return nil
@@ -374,6 +429,17 @@ type RequestValidatorPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (r RequestValidatorPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestValidatorPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RequestValidatorPluginRoute) GetID() *string {
 	if r == nil {
 		return nil
@@ -384,6 +450,17 @@ func (r *RequestValidatorPluginRoute) GetID() *string {
 // RequestValidatorPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type RequestValidatorPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (r RequestValidatorPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestValidatorPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RequestValidatorPluginService) GetID() *string {
@@ -427,7 +504,7 @@ func (r RequestValidatorPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestValidatorPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil

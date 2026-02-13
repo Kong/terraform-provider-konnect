@@ -43,7 +43,7 @@ func (a AwsPrivateDNSResolverAttachmentConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AwsPrivateDNSResolverAttachmentConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"kind", "dns_config"}); err != nil {
 		return err
 	}
 	return nil

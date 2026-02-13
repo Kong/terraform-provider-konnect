@@ -11,6 +11,17 @@ import (
 type EventGatewayPolicyConfig struct {
 }
 
+func (e EventGatewayPolicyConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *EventGatewayPolicyConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 // EventGatewayPolicy - A policy associated with an Event Gateway.
 type EventGatewayPolicy struct {
 	// The type name of the policy.
@@ -45,7 +56,7 @@ func (e EventGatewayPolicy) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayPolicy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type", "id", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil

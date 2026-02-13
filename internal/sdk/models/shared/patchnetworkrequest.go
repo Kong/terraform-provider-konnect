@@ -2,10 +2,25 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // PatchNetworkRequest - Request schema for updating a network.
 type PatchNetworkRequest struct {
 	// Human-readable name of the network.
 	Name *string `json:"name,omitempty"`
+}
+
+func (p PatchNetworkRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PatchNetworkRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PatchNetworkRequest) GetName() *string {

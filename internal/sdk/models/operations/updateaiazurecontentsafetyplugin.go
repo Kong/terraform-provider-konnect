@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -13,6 +14,17 @@ type UpdateAiazurecontentsafetyPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID             string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	AiAzureContentSafetyPlugin shared.AiAzureContentSafetyPlugin `request:"mediaType=application/json"`
+}
+
+func (u UpdateAiazurecontentsafetyPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateAiazurecontentsafetyPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "AiAzureContentSafetyPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateAiazurecontentsafetyPluginRequest) GetPluginID() string {
@@ -47,6 +59,17 @@ type UpdateAiazurecontentsafetyPluginResponse struct {
 	AiAzureContentSafetyPlugin *shared.AiAzureContentSafetyPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (u UpdateAiazurecontentsafetyPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateAiazurecontentsafetyPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateAiazurecontentsafetyPluginResponse) GetContentType() string {

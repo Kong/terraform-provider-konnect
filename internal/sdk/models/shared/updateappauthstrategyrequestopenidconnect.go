@@ -20,7 +20,7 @@ func (u UpdateAppAuthStrategyRequestOpenIDConnect) MarshalJSON() ([]byte, error)
 }
 
 func (u *UpdateAppAuthStrategyRequestOpenIDConnect) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"openid-connect"}); err != nil {
 		return err
 	}
 	return nil

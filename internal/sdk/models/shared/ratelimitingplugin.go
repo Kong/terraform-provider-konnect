@@ -12,6 +12,17 @@ type RateLimitingPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (r RateLimitingPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RateLimitingPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RateLimitingPluginAfter) GetAccess() []string {
 	if r == nil {
 		return nil
@@ -21,6 +32,17 @@ func (r *RateLimitingPluginAfter) GetAccess() []string {
 
 type RateLimitingPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (r RateLimitingPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RateLimitingPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RateLimitingPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (r *RateLimitingPluginBefore) GetAccess() []string {
 type RateLimitingPluginOrdering struct {
 	After  *RateLimitingPluginAfter  `json:"after,omitempty"`
 	Before *RateLimitingPluginBefore `json:"before,omitempty"`
+}
+
+func (r RateLimitingPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RateLimitingPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RateLimitingPluginOrdering) GetAfter() *RateLimitingPluginAfter {
@@ -55,6 +88,17 @@ type RateLimitingPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (r RateLimitingPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RateLimitingPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RateLimitingPluginPartials) GetID() *string {
@@ -571,6 +615,17 @@ type RateLimitingPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (r RateLimitingPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RateLimitingPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RateLimitingPluginConsumer) GetID() *string {
 	if r == nil {
 		return nil
@@ -581,6 +636,17 @@ func (r *RateLimitingPluginConsumer) GetID() *string {
 // RateLimitingPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type RateLimitingPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (r RateLimitingPluginConsumerGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RateLimitingPluginConsumerGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RateLimitingPluginConsumerGroup) GetID() *string {
@@ -627,6 +693,17 @@ type RateLimitingPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (r RateLimitingPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RateLimitingPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RateLimitingPluginRoute) GetID() *string {
 	if r == nil {
 		return nil
@@ -637,6 +714,17 @@ func (r *RateLimitingPluginRoute) GetID() *string {
 // RateLimitingPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type RateLimitingPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (r RateLimitingPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RateLimitingPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RateLimitingPluginService) GetID() *string {
@@ -682,7 +770,7 @@ func (r RateLimitingPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RateLimitingPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil

@@ -12,6 +12,17 @@ type AiProxyAdvancedPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (a AiProxyAdvancedPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiProxyAdvancedPluginAfter) GetAccess() []string {
 	if a == nil {
 		return nil
@@ -21,6 +32,17 @@ func (a *AiProxyAdvancedPluginAfter) GetAccess() []string {
 
 type AiProxyAdvancedPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (a AiProxyAdvancedPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiProxyAdvancedPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (a *AiProxyAdvancedPluginBefore) GetAccess() []string {
 type AiProxyAdvancedPluginOrdering struct {
 	After  *AiProxyAdvancedPluginAfter  `json:"after,omitempty"`
 	Before *AiProxyAdvancedPluginBefore `json:"before,omitempty"`
+}
+
+func (a AiProxyAdvancedPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiProxyAdvancedPluginOrdering) GetAfter() *AiProxyAdvancedPluginAfter {
@@ -55,6 +88,17 @@ type AiProxyAdvancedPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (a AiProxyAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiProxyAdvancedPluginPartials) GetID() *string {
@@ -817,6 +861,17 @@ type AiProxyAdvancedPluginModel struct {
 	Provider AiProxyAdvancedPluginProvider `json:"provider"`
 }
 
+func (a AiProxyAdvancedPluginModel) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginModel) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "provider"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiProxyAdvancedPluginModel) GetName() string {
 	if a == nil {
 		return ""
@@ -841,6 +896,17 @@ func (a *AiProxyAdvancedPluginModel) GetProvider() AiProxyAdvancedPluginProvider
 type Embeddings struct {
 	Auth  *AiProxyAdvancedPluginAuth `json:"auth"`
 	Model AiProxyAdvancedPluginModel `json:"model"`
+}
+
+func (e Embeddings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *Embeddings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"model"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (e *Embeddings) GetAuth() *AiProxyAdvancedPluginAuth {
@@ -1737,7 +1803,7 @@ func (a AiProxyAdvancedPluginConfigModel) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyAdvancedPluginConfigModel) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"provider"}); err != nil {
 		return err
 	}
 	return nil
@@ -1849,7 +1915,7 @@ func (t Targets) MarshalJSON() ([]byte, error) {
 }
 
 func (t *Targets) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"model", "route_type"}); err != nil {
 		return err
 	}
 	return nil
@@ -2587,7 +2653,7 @@ func (v Vectordb) MarshalJSON() ([]byte, error) {
 }
 
 func (v *Vectordb) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"dimensions", "distance_metric", "strategy"}); err != nil {
 		return err
 	}
 	return nil
@@ -2657,7 +2723,7 @@ func (a AiProxyAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"targets"}); err != nil {
 		return err
 	}
 	return nil
@@ -2731,6 +2797,17 @@ type AiProxyAdvancedPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiProxyAdvancedPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiProxyAdvancedPluginConsumer) GetID() *string {
 	if a == nil {
 		return nil
@@ -2741,6 +2818,17 @@ func (a *AiProxyAdvancedPluginConsumer) GetID() *string {
 // AiProxyAdvancedPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type AiProxyAdvancedPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiProxyAdvancedPluginConsumerGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginConsumerGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiProxyAdvancedPluginConsumerGroup) GetID() *string {
@@ -2793,6 +2881,17 @@ type AiProxyAdvancedPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiProxyAdvancedPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiProxyAdvancedPluginRoute) GetID() *string {
 	if a == nil {
 		return nil
@@ -2803,6 +2902,17 @@ func (a *AiProxyAdvancedPluginRoute) GetID() *string {
 // AiProxyAdvancedPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type AiProxyAdvancedPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiProxyAdvancedPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiProxyAdvancedPluginService) GetID() *string {
@@ -2848,7 +2958,7 @@ func (a AiProxyAdvancedPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyAdvancedPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil

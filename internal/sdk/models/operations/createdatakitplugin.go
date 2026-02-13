@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateDatakitPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	DatakitPlugin  shared.DatakitPlugin `request:"mediaType=application/json"`
+}
+
+func (c CreateDatakitPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateDatakitPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "DatakitPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateDatakitPluginRequest) GetControlPlaneID() string {
@@ -38,6 +50,17 @@ type CreateDatakitPluginResponse struct {
 	DatakitPlugin *shared.DatakitPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (c CreateDatakitPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateDatakitPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateDatakitPluginResponse) GetContentType() string {

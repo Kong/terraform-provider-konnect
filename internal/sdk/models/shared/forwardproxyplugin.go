@@ -12,6 +12,17 @@ type ForwardProxyPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (f ForwardProxyPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *ForwardProxyPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (f *ForwardProxyPluginAfter) GetAccess() []string {
 	if f == nil {
 		return nil
@@ -21,6 +32,17 @@ func (f *ForwardProxyPluginAfter) GetAccess() []string {
 
 type ForwardProxyPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (f ForwardProxyPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *ForwardProxyPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (f *ForwardProxyPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (f *ForwardProxyPluginBefore) GetAccess() []string {
 type ForwardProxyPluginOrdering struct {
 	After  *ForwardProxyPluginAfter  `json:"after,omitempty"`
 	Before *ForwardProxyPluginBefore `json:"before,omitempty"`
+}
+
+func (f ForwardProxyPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *ForwardProxyPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (f *ForwardProxyPluginOrdering) GetAfter() *ForwardProxyPluginAfter {
@@ -55,6 +88,17 @@ type ForwardProxyPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (f ForwardProxyPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *ForwardProxyPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (f *ForwardProxyPluginPartials) GetID() *string {
@@ -234,6 +278,17 @@ type ForwardProxyPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (f ForwardProxyPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *ForwardProxyPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (f *ForwardProxyPluginConsumer) GetID() *string {
 	if f == nil {
 		return nil
@@ -278,6 +333,17 @@ type ForwardProxyPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (f ForwardProxyPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *ForwardProxyPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (f *ForwardProxyPluginRoute) GetID() *string {
 	if f == nil {
 		return nil
@@ -288,6 +354,17 @@ func (f *ForwardProxyPluginRoute) GetID() *string {
 // ForwardProxyPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type ForwardProxyPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (f ForwardProxyPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *ForwardProxyPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (f *ForwardProxyPluginService) GetID() *string {
@@ -331,7 +408,7 @@ func (f ForwardProxyPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (f *ForwardProxyPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil

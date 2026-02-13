@@ -12,6 +12,17 @@ type VaultAuthPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (v VaultAuthPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *VaultAuthPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (v *VaultAuthPluginAfter) GetAccess() []string {
 	if v == nil {
 		return nil
@@ -21,6 +32,17 @@ func (v *VaultAuthPluginAfter) GetAccess() []string {
 
 type VaultAuthPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (v VaultAuthPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *VaultAuthPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (v *VaultAuthPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (v *VaultAuthPluginBefore) GetAccess() []string {
 type VaultAuthPluginOrdering struct {
 	After  *VaultAuthPluginAfter  `json:"after,omitempty"`
 	Before *VaultAuthPluginBefore `json:"before,omitempty"`
+}
+
+func (v VaultAuthPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *VaultAuthPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (v *VaultAuthPluginOrdering) GetAfter() *VaultAuthPluginAfter {
@@ -55,6 +88,17 @@ type VaultAuthPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (v VaultAuthPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *VaultAuthPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (v *VaultAuthPluginPartials) GetID() *string {
@@ -81,6 +125,17 @@ func (v *VaultAuthPluginPartials) GetPath() *string {
 // VaultAuthPluginVault - A reference to an existing `vault` object within the database. `vault` entities define the connection and authentication parameters used to connect to a Vault HTTP(S) API.
 type VaultAuthPluginVault struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (v VaultAuthPluginVault) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *VaultAuthPluginVault) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (v *VaultAuthPluginVault) GetID() *string {
@@ -204,6 +259,17 @@ type VaultAuthPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (v VaultAuthPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *VaultAuthPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (v *VaultAuthPluginRoute) GetID() *string {
 	if v == nil {
 		return nil
@@ -214,6 +280,17 @@ func (v *VaultAuthPluginRoute) GetID() *string {
 // VaultAuthPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type VaultAuthPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (v VaultAuthPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *VaultAuthPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (v *VaultAuthPluginService) GetID() *string {
@@ -255,7 +332,7 @@ func (v VaultAuthPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VaultAuthPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil

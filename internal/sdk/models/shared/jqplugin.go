@@ -12,6 +12,17 @@ type JqPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (j JqPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JqPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (j *JqPluginAfter) GetAccess() []string {
 	if j == nil {
 		return nil
@@ -21,6 +32,17 @@ func (j *JqPluginAfter) GetAccess() []string {
 
 type JqPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (j JqPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JqPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (j *JqPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (j *JqPluginBefore) GetAccess() []string {
 type JqPluginOrdering struct {
 	After  *JqPluginAfter  `json:"after,omitempty"`
 	Before *JqPluginBefore `json:"before,omitempty"`
+}
+
+func (j JqPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JqPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (j *JqPluginOrdering) GetAfter() *JqPluginAfter {
@@ -55,6 +88,17 @@ type JqPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (j JqPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JqPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (j *JqPluginPartials) GetID() *string {
@@ -261,6 +305,17 @@ type JqPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (j JqPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JqPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (j *JqPluginConsumer) GetID() *string {
 	if j == nil {
 		return nil
@@ -305,6 +360,17 @@ type JqPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (j JqPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JqPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (j *JqPluginRoute) GetID() *string {
 	if j == nil {
 		return nil
@@ -315,6 +381,17 @@ func (j *JqPluginRoute) GetID() *string {
 // JqPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type JqPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (j JqPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JqPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (j *JqPluginService) GetID() *string {
@@ -358,7 +435,7 @@ func (j JqPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (j *JqPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &j, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil

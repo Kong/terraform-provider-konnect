@@ -12,6 +12,17 @@ type AcmePluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (a AcmePluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AcmePluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AcmePluginAfter) GetAccess() []string {
 	if a == nil {
 		return nil
@@ -21,6 +32,17 @@ func (a *AcmePluginAfter) GetAccess() []string {
 
 type AcmePluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (a AcmePluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AcmePluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AcmePluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (a *AcmePluginBefore) GetAccess() []string {
 type AcmePluginOrdering struct {
 	After  *AcmePluginAfter  `json:"after,omitempty"`
 	Before *AcmePluginBefore `json:"before,omitempty"`
+}
+
+func (a AcmePluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AcmePluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AcmePluginOrdering) GetAfter() *AcmePluginAfter {
@@ -55,6 +88,17 @@ type AcmePluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (a AcmePluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AcmePluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AcmePluginPartials) GetID() *string {
@@ -91,7 +135,7 @@ func (a AccountKey) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AccountKey) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"key_id"}); err != nil {
 		return err
 	}
 	return nil
@@ -751,6 +795,17 @@ type StorageConfig struct {
 	Vault  *AcmePluginVault `json:"vault"`
 }
 
+func (s StorageConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StorageConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *StorageConfig) GetConsul() *Consul {
 	if s == nil {
 		return nil
@@ -826,7 +881,7 @@ func (a AcmePluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AcmePluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"account_email"}); err != nil {
 		return err
 	}
 	return nil
@@ -1004,7 +1059,7 @@ func (a AcmePlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AcmePlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil

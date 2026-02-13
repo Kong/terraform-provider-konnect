@@ -50,7 +50,7 @@ func (c CreateVirtualClusterRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateVirtualClusterRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "destination", "authentication", "acl_mode", "dns_label"}); err != nil {
 		return err
 	}
 	return nil

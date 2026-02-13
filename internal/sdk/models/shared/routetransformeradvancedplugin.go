@@ -12,6 +12,17 @@ type RouteTransformerAdvancedPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (r RouteTransformerAdvancedPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RouteTransformerAdvancedPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RouteTransformerAdvancedPluginAfter) GetAccess() []string {
 	if r == nil {
 		return nil
@@ -21,6 +32,17 @@ func (r *RouteTransformerAdvancedPluginAfter) GetAccess() []string {
 
 type RouteTransformerAdvancedPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (r RouteTransformerAdvancedPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RouteTransformerAdvancedPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RouteTransformerAdvancedPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (r *RouteTransformerAdvancedPluginBefore) GetAccess() []string {
 type RouteTransformerAdvancedPluginOrdering struct {
 	After  *RouteTransformerAdvancedPluginAfter  `json:"after,omitempty"`
 	Before *RouteTransformerAdvancedPluginBefore `json:"before,omitempty"`
+}
+
+func (r RouteTransformerAdvancedPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RouteTransformerAdvancedPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RouteTransformerAdvancedPluginOrdering) GetAfter() *RouteTransformerAdvancedPluginAfter {
@@ -55,6 +88,17 @@ type RouteTransformerAdvancedPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (r RouteTransformerAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RouteTransformerAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RouteTransformerAdvancedPluginPartials) GetID() *string {
@@ -129,6 +173,17 @@ type RouteTransformerAdvancedPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (r RouteTransformerAdvancedPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RouteTransformerAdvancedPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RouteTransformerAdvancedPluginConsumer) GetID() *string {
 	if r == nil {
 		return nil
@@ -173,6 +228,17 @@ type RouteTransformerAdvancedPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (r RouteTransformerAdvancedPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RouteTransformerAdvancedPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RouteTransformerAdvancedPluginRoute) GetID() *string {
 	if r == nil {
 		return nil
@@ -183,6 +249,17 @@ func (r *RouteTransformerAdvancedPluginRoute) GetID() *string {
 // RouteTransformerAdvancedPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type RouteTransformerAdvancedPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (r RouteTransformerAdvancedPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RouteTransformerAdvancedPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RouteTransformerAdvancedPluginService) GetID() *string {
@@ -226,7 +303,7 @@ func (r RouteTransformerAdvancedPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RouteTransformerAdvancedPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil

@@ -12,6 +12,17 @@ type RequestSizeLimitingPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (r RequestSizeLimitingPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestSizeLimitingPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RequestSizeLimitingPluginAfter) GetAccess() []string {
 	if r == nil {
 		return nil
@@ -21,6 +32,17 @@ func (r *RequestSizeLimitingPluginAfter) GetAccess() []string {
 
 type RequestSizeLimitingPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (r RequestSizeLimitingPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestSizeLimitingPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RequestSizeLimitingPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (r *RequestSizeLimitingPluginBefore) GetAccess() []string {
 type RequestSizeLimitingPluginOrdering struct {
 	After  *RequestSizeLimitingPluginAfter  `json:"after,omitempty"`
 	Before *RequestSizeLimitingPluginBefore `json:"before,omitempty"`
+}
+
+func (r RequestSizeLimitingPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestSizeLimitingPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RequestSizeLimitingPluginOrdering) GetAfter() *RequestSizeLimitingPluginAfter {
@@ -55,6 +88,17 @@ type RequestSizeLimitingPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (r RequestSizeLimitingPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestSizeLimitingPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RequestSizeLimitingPluginPartials) GetID() *string {
@@ -154,6 +198,17 @@ type RequestSizeLimitingPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (r RequestSizeLimitingPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestSizeLimitingPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RequestSizeLimitingPluginConsumer) GetID() *string {
 	if r == nil {
 		return nil
@@ -198,6 +253,17 @@ type RequestSizeLimitingPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (r RequestSizeLimitingPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestSizeLimitingPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RequestSizeLimitingPluginRoute) GetID() *string {
 	if r == nil {
 		return nil
@@ -208,6 +274,17 @@ func (r *RequestSizeLimitingPluginRoute) GetID() *string {
 // RequestSizeLimitingPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type RequestSizeLimitingPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (r RequestSizeLimitingPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestSizeLimitingPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RequestSizeLimitingPluginService) GetID() *string {
@@ -251,7 +328,7 @@ func (r RequestSizeLimitingPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestSizeLimitingPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil

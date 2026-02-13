@@ -16,7 +16,7 @@ func (v V2AppearanceColorVariable) MarshalJSON() ([]byte, error) {
 }
 
 func (v *V2AppearanceColorVariable) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"value"}); err != nil {
 		return err
 	}
 	return nil

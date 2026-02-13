@@ -16,7 +16,7 @@ func (a APIImplementationControlPlaneInput) MarshalJSON() ([]byte, error) {
 }
 
 func (a *APIImplementationControlPlaneInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"control_plane_id"}); err != nil {
 		return err
 	}
 	return nil

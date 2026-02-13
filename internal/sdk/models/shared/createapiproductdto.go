@@ -33,7 +33,7 @@ func (c CreateAPIProductDTO) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateAPIProductDTO) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "portal_ids"}); err != nil {
 		return err
 	}
 	return nil

@@ -12,6 +12,17 @@ type AiPromptCompressorPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (a AiPromptCompressorPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptCompressorPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiPromptCompressorPluginAfter) GetAccess() []string {
 	if a == nil {
 		return nil
@@ -21,6 +32,17 @@ func (a *AiPromptCompressorPluginAfter) GetAccess() []string {
 
 type AiPromptCompressorPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (a AiPromptCompressorPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptCompressorPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiPromptCompressorPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (a *AiPromptCompressorPluginBefore) GetAccess() []string {
 type AiPromptCompressorPluginOrdering struct {
 	After  *AiPromptCompressorPluginAfter  `json:"after,omitempty"`
 	Before *AiPromptCompressorPluginBefore `json:"before,omitempty"`
+}
+
+func (a AiPromptCompressorPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptCompressorPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiPromptCompressorPluginOrdering) GetAfter() *AiPromptCompressorPluginAfter {
@@ -55,6 +88,17 @@ type AiPromptCompressorPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (a AiPromptCompressorPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptCompressorPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiPromptCompressorPluginPartials) GetID() *string {
@@ -82,6 +126,17 @@ type CompressionRanges struct {
 	MaxTokens int64   `json:"max_tokens"`
 	MinTokens int64   `json:"min_tokens"`
 	Value     float64 `json:"value"`
+}
+
+func (c CompressionRanges) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CompressionRanges) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"max_tokens", "min_tokens", "value"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CompressionRanges) GetMaxTokens() int64 {
@@ -184,7 +239,7 @@ func (a AiPromptCompressorPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiPromptCompressorPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"compression_ranges"}); err != nil {
 		return err
 	}
 	return nil
@@ -251,6 +306,17 @@ type AiPromptCompressorPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiPromptCompressorPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptCompressorPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiPromptCompressorPluginConsumer) GetID() *string {
 	if a == nil {
 		return nil
@@ -261,6 +327,17 @@ func (a *AiPromptCompressorPluginConsumer) GetID() *string {
 // AiPromptCompressorPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type AiPromptCompressorPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiPromptCompressorPluginConsumerGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptCompressorPluginConsumerGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiPromptCompressorPluginConsumerGroup) GetID() *string {
@@ -307,6 +384,17 @@ type AiPromptCompressorPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiPromptCompressorPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptCompressorPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiPromptCompressorPluginRoute) GetID() *string {
 	if a == nil {
 		return nil
@@ -317,6 +405,17 @@ func (a *AiPromptCompressorPluginRoute) GetID() *string {
 // AiPromptCompressorPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type AiPromptCompressorPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiPromptCompressorPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptCompressorPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiPromptCompressorPluginService) GetID() *string {
@@ -362,7 +461,7 @@ func (a AiPromptCompressorPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiPromptCompressorPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil

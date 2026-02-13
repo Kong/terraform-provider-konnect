@@ -49,7 +49,7 @@ func (d DeletePortalClassicRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeletePortalClassicRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"portalId"}); err != nil {
 		return err
 	}
 	return nil
@@ -84,6 +84,17 @@ type DeletePortalClassicResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (d DeletePortalClassicResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeletePortalClassicResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeletePortalClassicResponse) GetContentType() string {

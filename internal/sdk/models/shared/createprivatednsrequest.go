@@ -130,6 +130,17 @@ type CreatePrivateDNSRequest struct {
 	PrivateDNSAttachmentConfig *PrivateDNSAttachmentConfig `json:"private_dns_attachment_config,omitempty"`
 }
 
+func (c CreatePrivateDNSRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreatePrivateDNSRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (c *CreatePrivateDNSRequest) GetName() *string {
 	if c == nil {
 		return nil

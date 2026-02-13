@@ -14,6 +14,17 @@ type DatakitPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (d DatakitPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatakitPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (d *DatakitPluginAfter) GetAccess() []string {
 	if d == nil {
 		return nil
@@ -23,6 +34,17 @@ func (d *DatakitPluginAfter) GetAccess() []string {
 
 type DatakitPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (d DatakitPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatakitPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DatakitPluginBefore) GetAccess() []string {
@@ -35,6 +57,17 @@ func (d *DatakitPluginBefore) GetAccess() []string {
 type DatakitPluginOrdering struct {
 	After  *DatakitPluginAfter  `json:"after,omitempty"`
 	Before *DatakitPluginBefore `json:"before,omitempty"`
+}
+
+func (d DatakitPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatakitPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DatakitPluginOrdering) GetAfter() *DatakitPluginAfter {
@@ -57,6 +90,17 @@ type DatakitPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (d DatakitPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatakitPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DatakitPluginPartials) GetID() *string {
@@ -281,7 +325,7 @@ func (p Property) MarshalJSON() ([]byte, error) {
 }
 
 func (p *Property) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"property"}); err != nil {
 		return err
 	}
 	return nil
@@ -435,7 +479,7 @@ func (j Jq) MarshalJSON() ([]byte, error) {
 }
 
 func (j *Jq) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &j, "", false, []string{"jq"}); err != nil {
 		return err
 	}
 	return nil
@@ -1884,6 +1928,17 @@ type DatakitPluginCache struct {
 	Strategy *DatakitPluginStrategy `json:"strategy,omitempty"`
 }
 
+func (d DatakitPluginCache) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatakitPluginCache) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (d *DatakitPluginCache) GetMemory() *DatakitPluginMemory {
 	if d == nil {
 		return nil
@@ -1908,6 +1963,17 @@ func (d *DatakitPluginCache) GetStrategy() *DatakitPluginStrategy {
 type Resources struct {
 	Cache *DatakitPluginCache `json:"cache"`
 	Vault map[string]string   `json:"vault,omitempty"`
+}
+
+func (r Resources) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *Resources) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *Resources) GetCache() *DatakitPluginCache {
@@ -1935,7 +2001,7 @@ func (d DatakitPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DatakitPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"nodes"}); err != nil {
 		return err
 	}
 	return nil
@@ -1967,6 +2033,17 @@ type DatakitPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (d DatakitPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatakitPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (d *DatakitPluginConsumer) GetID() *string {
 	if d == nil {
 		return nil
@@ -1977,6 +2054,17 @@ func (d *DatakitPluginConsumer) GetID() *string {
 // DatakitPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type DatakitPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (d DatakitPluginConsumerGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatakitPluginConsumerGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DatakitPluginConsumerGroup) GetID() *string {
@@ -2023,6 +2111,17 @@ type DatakitPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (d DatakitPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatakitPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (d *DatakitPluginRoute) GetID() *string {
 	if d == nil {
 		return nil
@@ -2033,6 +2132,17 @@ func (d *DatakitPluginRoute) GetID() *string {
 // DatakitPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type DatakitPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (d DatakitPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatakitPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DatakitPluginService) GetID() *string {
@@ -2078,7 +2188,7 @@ func (d DatakitPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DatakitPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil

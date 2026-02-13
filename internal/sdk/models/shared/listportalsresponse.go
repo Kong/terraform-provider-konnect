@@ -106,7 +106,7 @@ func (p Portal) MarshalJSON() ([]byte, error) {
 }
 
 func (p *Portal) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"id", "created_at", "updated_at", "name", "display_name", "default_api_visibility", "default_page_visibility", "default_domain", "canonical_domain"}); err != nil {
 		return err
 	}
 	return nil
@@ -229,6 +229,17 @@ type ListPortalsResponse struct {
 	Data []Portal `json:"data"`
 	// returns the pagination information
 	Meta PaginatedMeta `json:"meta"`
+}
+
+func (l ListPortalsResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *ListPortalsResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"data", "meta"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (l *ListPortalsResponse) GetData() []Portal {

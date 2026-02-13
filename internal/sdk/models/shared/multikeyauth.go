@@ -18,7 +18,7 @@ func (h Headers) MarshalJSON() ([]byte, error) {
 }
 
 func (h *Headers) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &h, "", false, []string{"name", "key"}); err != nil {
 		return err
 	}
 	return nil
@@ -50,7 +50,7 @@ func (c CreateMultiKeyAuthCredentialConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateMultiKeyAuthCredentialConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"headers"}); err != nil {
 		return err
 	}
 	return nil
@@ -74,7 +74,7 @@ func (m MultiKeyAuth) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MultiKeyAuth) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type", "config"}); err != nil {
 		return err
 	}
 	return nil

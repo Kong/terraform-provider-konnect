@@ -48,7 +48,7 @@ func (a AzureVNETPeeringAttachmentConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AzureVNETPeeringAttachmentConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"kind", "tenant_id", "subscription_id", "resource_group_name", "vnet_name"}); err != nil {
 		return err
 	}
 	return nil

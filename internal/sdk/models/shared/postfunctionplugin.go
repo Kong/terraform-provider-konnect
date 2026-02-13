@@ -12,6 +12,17 @@ type PostFunctionPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (p PostFunctionPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PostFunctionPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (p *PostFunctionPluginAfter) GetAccess() []string {
 	if p == nil {
 		return nil
@@ -21,6 +32,17 @@ func (p *PostFunctionPluginAfter) GetAccess() []string {
 
 type PostFunctionPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (p PostFunctionPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PostFunctionPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PostFunctionPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (p *PostFunctionPluginBefore) GetAccess() []string {
 type PostFunctionPluginOrdering struct {
 	After  *PostFunctionPluginAfter  `json:"after,omitempty"`
 	Before *PostFunctionPluginBefore `json:"before,omitempty"`
+}
+
+func (p PostFunctionPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PostFunctionPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PostFunctionPluginOrdering) GetAfter() *PostFunctionPluginAfter {
@@ -55,6 +88,17 @@ type PostFunctionPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (p PostFunctionPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PostFunctionPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PostFunctionPluginPartials) GetID() *string {
@@ -89,6 +133,17 @@ type PostFunctionPluginConfig struct {
 	WsClose         []string `json:"ws_close,omitempty"`
 	WsHandshake     []string `json:"ws_handshake,omitempty"`
 	WsUpstreamFrame []string `json:"ws_upstream_frame,omitempty"`
+}
+
+func (p PostFunctionPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PostFunctionPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PostFunctionPluginConfig) GetAccess() []string {
@@ -217,6 +272,17 @@ type PostFunctionPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (p PostFunctionPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PostFunctionPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (p *PostFunctionPluginRoute) GetID() *string {
 	if p == nil {
 		return nil
@@ -227,6 +293,17 @@ func (p *PostFunctionPluginRoute) GetID() *string {
 // PostFunctionPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type PostFunctionPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (p PostFunctionPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PostFunctionPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PostFunctionPluginService) GetID() *string {
@@ -268,7 +345,7 @@ func (p PostFunctionPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PostFunctionPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil

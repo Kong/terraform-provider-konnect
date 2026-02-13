@@ -13,6 +13,17 @@ type ClientCertificate struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (c ClientCertificate) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ClientCertificate) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (c *ClientCertificate) GetID() *string {
 	if c == nil {
 		return nil
@@ -79,6 +90,17 @@ type TLSSans struct {
 	Uris []string `json:"uris"`
 }
 
+func (t TLSSans) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TLSSans) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (t *TLSSans) GetDnsnames() []string {
 	if t == nil {
 		return nil
@@ -140,7 +162,7 @@ func (s Service) MarshalJSON() ([]byte, error) {
 }
 
 func (s *Service) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"host"}); err != nil {
 		return err
 	}
 	return nil

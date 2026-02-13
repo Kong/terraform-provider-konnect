@@ -12,6 +12,17 @@ type JwtSignerPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (j JwtSignerPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JwtSignerPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (j *JwtSignerPluginAfter) GetAccess() []string {
 	if j == nil {
 		return nil
@@ -21,6 +32,17 @@ func (j *JwtSignerPluginAfter) GetAccess() []string {
 
 type JwtSignerPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (j JwtSignerPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JwtSignerPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (j *JwtSignerPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (j *JwtSignerPluginBefore) GetAccess() []string {
 type JwtSignerPluginOrdering struct {
 	After  *JwtSignerPluginAfter  `json:"after,omitempty"`
 	Before *JwtSignerPluginBefore `json:"before,omitempty"`
+}
+
+func (j JwtSignerPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JwtSignerPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (j *JwtSignerPluginOrdering) GetAfter() *JwtSignerPluginAfter {
@@ -55,6 +88,17 @@ type JwtSignerPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (j JwtSignerPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JwtSignerPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (j *JwtSignerPluginPartials) GetID() *string {
@@ -141,6 +185,17 @@ type AccessTokenJwksURIClientCertificate struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AccessTokenJwksURIClientCertificate) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AccessTokenJwksURIClientCertificate) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AccessTokenJwksURIClientCertificate) GetID() *string {
 	if a == nil {
 		return nil
@@ -151,6 +206,17 @@ func (a *AccessTokenJwksURIClientCertificate) GetID() *string {
 // AccessTokenKeysetClientCertificate - The client certificate that will be used to authenticate Kong if `access_token_keyset` is an https uri that requires mTLS Auth.
 type AccessTokenKeysetClientCertificate struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AccessTokenKeysetClientCertificate) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AccessTokenKeysetClientCertificate) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AccessTokenKeysetClientCertificate) GetID() *string {
@@ -280,6 +346,17 @@ type ChannelTokenJwksURIClientCertificate struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (c ChannelTokenJwksURIClientCertificate) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ChannelTokenJwksURIClientCertificate) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (c *ChannelTokenJwksURIClientCertificate) GetID() *string {
 	if c == nil {
 		return nil
@@ -290,6 +367,17 @@ func (c *ChannelTokenJwksURIClientCertificate) GetID() *string {
 // ChannelTokenKeysetClientCertificate - The client certificate that will be used to authenticate Kong if `channel_token_keyset` is an https uri that requires mTLS Auth.
 type ChannelTokenKeysetClientCertificate struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (c ChannelTokenKeysetClientCertificate) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ChannelTokenKeysetClientCertificate) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *ChannelTokenKeysetClientCertificate) GetID() *string {
@@ -1783,6 +1871,17 @@ type JwtSignerPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (j JwtSignerPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JwtSignerPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (j *JwtSignerPluginRoute) GetID() *string {
 	if j == nil {
 		return nil
@@ -1793,6 +1892,17 @@ func (j *JwtSignerPluginRoute) GetID() *string {
 // JwtSignerPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type JwtSignerPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (j JwtSignerPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JwtSignerPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (j *JwtSignerPluginService) GetID() *string {
@@ -1834,7 +1944,7 @@ func (j JwtSignerPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (j *JwtSignerPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &j, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil

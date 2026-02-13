@@ -42,7 +42,7 @@ func (a AwsPrivateHostedZoneAttachmentConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AwsPrivateHostedZoneAttachmentConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"kind", "hosted_zone_id"}); err != nil {
 		return err
 	}
 	return nil

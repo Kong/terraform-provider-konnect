@@ -42,6 +42,17 @@ type Set struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (s Set) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *Set) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *Set) GetID() *string {
 	if s == nil {
 		return nil
@@ -78,7 +89,7 @@ func (k Key) MarshalJSON() ([]byte, error) {
 }
 
 func (k *Key) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"kid"}); err != nil {
 		return err
 	}
 	return nil

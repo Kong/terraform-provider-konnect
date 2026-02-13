@@ -10,6 +10,17 @@ import (
 type Metadata struct {
 }
 
+func (m Metadata) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *Metadata) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 // CreateAPIProductDocumentDTO - a document payload
 type CreateAPIProductDocumentDTO struct {
 	// parent document id
@@ -30,7 +41,7 @@ func (c CreateAPIProductDocumentDTO) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateAPIProductDocumentDTO) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"slug", "status", "title"}); err != nil {
 		return err
 	}
 	return nil

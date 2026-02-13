@@ -12,6 +12,17 @@ type StatsdAdvancedPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (s StatsdAdvancedPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StatsdAdvancedPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *StatsdAdvancedPluginAfter) GetAccess() []string {
 	if s == nil {
 		return nil
@@ -21,6 +32,17 @@ func (s *StatsdAdvancedPluginAfter) GetAccess() []string {
 
 type StatsdAdvancedPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (s StatsdAdvancedPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StatsdAdvancedPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *StatsdAdvancedPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (s *StatsdAdvancedPluginBefore) GetAccess() []string {
 type StatsdAdvancedPluginOrdering struct {
 	After  *StatsdAdvancedPluginAfter  `json:"after,omitempty"`
 	Before *StatsdAdvancedPluginBefore `json:"before,omitempty"`
+}
+
+func (s StatsdAdvancedPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StatsdAdvancedPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *StatsdAdvancedPluginOrdering) GetAfter() *StatsdAdvancedPluginAfter {
@@ -55,6 +88,17 @@ type StatsdAdvancedPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (s StatsdAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StatsdAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *StatsdAdvancedPluginPartials) GetID() *string {
@@ -312,7 +356,7 @@ func (s StatsdAdvancedPluginMetrics) MarshalJSON() ([]byte, error) {
 }
 
 func (s *StatsdAdvancedPluginMetrics) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"name", "stat_type"}); err != nil {
 		return err
 	}
 	return nil
@@ -659,6 +703,17 @@ type StatsdAdvancedPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (s StatsdAdvancedPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StatsdAdvancedPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *StatsdAdvancedPluginConsumer) GetID() *string {
 	if s == nil {
 		return nil
@@ -722,6 +777,17 @@ type StatsdAdvancedPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (s StatsdAdvancedPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StatsdAdvancedPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *StatsdAdvancedPluginRoute) GetID() *string {
 	if s == nil {
 		return nil
@@ -732,6 +798,17 @@ func (s *StatsdAdvancedPluginRoute) GetID() *string {
 // StatsdAdvancedPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type StatsdAdvancedPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (s StatsdAdvancedPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StatsdAdvancedPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *StatsdAdvancedPluginService) GetID() *string {
@@ -775,7 +852,7 @@ func (s StatsdAdvancedPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (s *StatsdAdvancedPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil

@@ -12,6 +12,17 @@ type ResponseTransformerAdvancedPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (r ResponseTransformerAdvancedPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseTransformerAdvancedPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *ResponseTransformerAdvancedPluginAfter) GetAccess() []string {
 	if r == nil {
 		return nil
@@ -21,6 +32,17 @@ func (r *ResponseTransformerAdvancedPluginAfter) GetAccess() []string {
 
 type ResponseTransformerAdvancedPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (r ResponseTransformerAdvancedPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseTransformerAdvancedPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *ResponseTransformerAdvancedPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (r *ResponseTransformerAdvancedPluginBefore) GetAccess() []string {
 type ResponseTransformerAdvancedPluginOrdering struct {
 	After  *ResponseTransformerAdvancedPluginAfter  `json:"after,omitempty"`
 	Before *ResponseTransformerAdvancedPluginBefore `json:"before,omitempty"`
+}
+
+func (r ResponseTransformerAdvancedPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseTransformerAdvancedPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *ResponseTransformerAdvancedPluginOrdering) GetAfter() *ResponseTransformerAdvancedPluginAfter {
@@ -55,6 +88,17 @@ type ResponseTransformerAdvancedPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (r ResponseTransformerAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseTransformerAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *ResponseTransformerAdvancedPluginPartials) GetID() *string {
@@ -114,6 +158,17 @@ type ResponseTransformerAdvancedPluginAdd struct {
 	JSONTypes []ResponseTransformerAdvancedPluginJSONTypes `json:"json_types,omitempty"`
 }
 
+func (r ResponseTransformerAdvancedPluginAdd) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseTransformerAdvancedPluginAdd) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *ResponseTransformerAdvancedPluginAdd) GetHeaders() []string {
 	if r == nil {
 		return nil
@@ -144,6 +199,17 @@ func (r *ResponseTransformerAdvancedPluginAdd) GetJSONTypes() []ResponseTransfor
 
 type ResponseTransformerAdvancedPluginAllow struct {
 	JSON []string `json:"json"`
+}
+
+func (r ResponseTransformerAdvancedPluginAllow) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseTransformerAdvancedPluginAllow) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *ResponseTransformerAdvancedPluginAllow) GetJSON() []string {
@@ -189,6 +255,17 @@ type ResponseTransformerAdvancedPluginAppend struct {
 	JSONTypes []ResponseTransformerAdvancedPluginConfigJSONTypes `json:"json_types,omitempty"`
 }
 
+func (r ResponseTransformerAdvancedPluginAppend) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseTransformerAdvancedPluginAppend) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *ResponseTransformerAdvancedPluginAppend) GetHeaders() []string {
 	if r == nil {
 		return nil
@@ -223,6 +300,17 @@ type ResponseTransformerAdvancedPluginRemove struct {
 	JSON     []string `json:"json,omitempty"`
 }
 
+func (r ResponseTransformerAdvancedPluginRemove) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseTransformerAdvancedPluginRemove) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *ResponseTransformerAdvancedPluginRemove) GetHeaders() []string {
 	if r == nil {
 		return nil
@@ -247,6 +335,17 @@ func (r *ResponseTransformerAdvancedPluginRemove) GetJSON() []string {
 type ResponseTransformerAdvancedPluginRename struct {
 	Headers  []string `json:"headers,omitempty"`
 	IfStatus []string `json:"if_status,omitempty"`
+}
+
+func (r ResponseTransformerAdvancedPluginRename) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseTransformerAdvancedPluginRename) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *ResponseTransformerAdvancedPluginRename) GetHeaders() []string {
@@ -351,6 +450,17 @@ type Transform struct {
 	Functions []string `json:"functions,omitempty"`
 	IfStatus  []string `json:"if_status,omitempty"`
 	JSON      []string `json:"json,omitempty"`
+}
+
+func (t Transform) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *Transform) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (t *Transform) GetFunctions() []string {
@@ -458,6 +568,17 @@ type ResponseTransformerAdvancedPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (r ResponseTransformerAdvancedPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseTransformerAdvancedPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *ResponseTransformerAdvancedPluginConsumer) GetID() *string {
 	if r == nil {
 		return nil
@@ -468,6 +589,17 @@ func (r *ResponseTransformerAdvancedPluginConsumer) GetID() *string {
 // ResponseTransformerAdvancedPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type ResponseTransformerAdvancedPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (r ResponseTransformerAdvancedPluginConsumerGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseTransformerAdvancedPluginConsumerGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *ResponseTransformerAdvancedPluginConsumerGroup) GetID() *string {
@@ -514,6 +646,17 @@ type ResponseTransformerAdvancedPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (r ResponseTransformerAdvancedPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseTransformerAdvancedPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *ResponseTransformerAdvancedPluginRoute) GetID() *string {
 	if r == nil {
 		return nil
@@ -524,6 +667,17 @@ func (r *ResponseTransformerAdvancedPluginRoute) GetID() *string {
 // ResponseTransformerAdvancedPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type ResponseTransformerAdvancedPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (r ResponseTransformerAdvancedPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseTransformerAdvancedPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *ResponseTransformerAdvancedPluginService) GetID() *string {
@@ -569,7 +723,7 @@ func (r ResponseTransformerAdvancedPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (r *ResponseTransformerAdvancedPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil

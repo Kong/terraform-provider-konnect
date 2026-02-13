@@ -17,6 +17,17 @@ type PortalOIDCConfig struct {
 	ClaimMappings *PortalClaimMappings `json:"claim_mappings,omitempty"`
 }
 
+func (p PortalOIDCConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PortalOIDCConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"issuer", "client_id"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (p *PortalOIDCConfig) GetIssuer() string {
 	if p == nil {
 		return ""
@@ -125,7 +136,7 @@ func (p *PortalAuthenticationSettingsResponse) UnmarshalJSON(data []byte) error 
 	} else {
 		data = out
 	}
-	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"basic_auth_enabled", "oidc_auth_enabled", "oidc_team_mapping_enabled", "konnect_mapping_enabled"}); err != nil {
 		return err
 	}
 	return nil

@@ -31,7 +31,7 @@ func (c CertificateInput) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CertificateInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"cert", "key"}); err != nil {
 		return err
 	}
 	return nil

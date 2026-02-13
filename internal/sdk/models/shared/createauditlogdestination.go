@@ -27,7 +27,7 @@ func (c CreateAuditLogDestination) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateAuditLogDestination) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "endpoint"}); err != nil {
 		return err
 	}
 	return nil

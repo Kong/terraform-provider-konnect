@@ -12,6 +12,17 @@ type SolaceConsumePluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (s SolaceConsumePluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SolaceConsumePluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *SolaceConsumePluginAfter) GetAccess() []string {
 	if s == nil {
 		return nil
@@ -21,6 +32,17 @@ func (s *SolaceConsumePluginAfter) GetAccess() []string {
 
 type SolaceConsumePluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (s SolaceConsumePluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SolaceConsumePluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *SolaceConsumePluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (s *SolaceConsumePluginBefore) GetAccess() []string {
 type SolaceConsumePluginOrdering struct {
 	After  *SolaceConsumePluginAfter  `json:"after,omitempty"`
 	Before *SolaceConsumePluginBefore `json:"before,omitempty"`
+}
+
+func (s SolaceConsumePluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SolaceConsumePluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *SolaceConsumePluginOrdering) GetAfter() *SolaceConsumePluginAfter {
@@ -55,6 +88,17 @@ type SolaceConsumePluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (s SolaceConsumePluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SolaceConsumePluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *SolaceConsumePluginPartials) GetID() *string {
@@ -141,7 +185,7 @@ func (b Binds) MarshalJSON() ([]byte, error) {
 }
 
 func (b *Binds) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil
@@ -185,7 +229,7 @@ func (f Flow) MarshalJSON() ([]byte, error) {
 }
 
 func (f *Flow) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"binds"}); err != nil {
 		return err
 	}
 	return nil
@@ -452,7 +496,7 @@ func (s Session) MarshalJSON() ([]byte, error) {
 }
 
 func (s *Session) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"host"}); err != nil {
 		return err
 	}
 	return nil
@@ -595,7 +639,7 @@ func (s SolaceConsumePluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SolaceConsumePluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"flow", "session"}); err != nil {
 		return err
 	}
 	return nil
@@ -673,6 +717,17 @@ type SolaceConsumePluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (s SolaceConsumePluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SolaceConsumePluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *SolaceConsumePluginRoute) GetID() *string {
 	if s == nil {
 		return nil
@@ -683,6 +738,17 @@ func (s *SolaceConsumePluginRoute) GetID() *string {
 // SolaceConsumePluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type SolaceConsumePluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (s SolaceConsumePluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SolaceConsumePluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *SolaceConsumePluginService) GetID() *string {
@@ -724,7 +790,7 @@ func (s SolaceConsumePlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SolaceConsumePlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil

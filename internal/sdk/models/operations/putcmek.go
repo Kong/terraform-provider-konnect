@@ -20,7 +20,7 @@ func (p PutCmekRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PutCmekRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"cmekId", "ReplaceCMEK"}); err != nil {
 		return err
 	}
 	return nil
@@ -55,6 +55,17 @@ type PutCmekResponse struct {
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
 	ForbiddenError *shared.ForbiddenError
+}
+
+func (p PutCmekResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PutCmekResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PutCmekResponse) GetContentType() string {

@@ -12,6 +12,17 @@ type JSONThreatProtectionPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (j JSONThreatProtectionPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JSONThreatProtectionPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (j *JSONThreatProtectionPluginAfter) GetAccess() []string {
 	if j == nil {
 		return nil
@@ -21,6 +32,17 @@ func (j *JSONThreatProtectionPluginAfter) GetAccess() []string {
 
 type JSONThreatProtectionPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (j JSONThreatProtectionPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JSONThreatProtectionPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (j *JSONThreatProtectionPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (j *JSONThreatProtectionPluginBefore) GetAccess() []string {
 type JSONThreatProtectionPluginOrdering struct {
 	After  *JSONThreatProtectionPluginAfter  `json:"after,omitempty"`
 	Before *JSONThreatProtectionPluginBefore `json:"before,omitempty"`
+}
+
+func (j JSONThreatProtectionPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JSONThreatProtectionPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (j *JSONThreatProtectionPluginOrdering) GetAfter() *JSONThreatProtectionPluginAfter {
@@ -55,6 +88,17 @@ type JSONThreatProtectionPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (j JSONThreatProtectionPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JSONThreatProtectionPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (j *JSONThreatProtectionPluginPartials) GetID() *string {
@@ -246,6 +290,17 @@ type JSONThreatProtectionPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (j JSONThreatProtectionPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JSONThreatProtectionPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (j *JSONThreatProtectionPluginRoute) GetID() *string {
 	if j == nil {
 		return nil
@@ -256,6 +311,17 @@ func (j *JSONThreatProtectionPluginRoute) GetID() *string {
 // JSONThreatProtectionPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type JSONThreatProtectionPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (j JSONThreatProtectionPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(j, "", false)
+}
+
+func (j *JSONThreatProtectionPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (j *JSONThreatProtectionPluginService) GetID() *string {
@@ -297,7 +363,7 @@ func (j JSONThreatProtectionPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (j *JSONThreatProtectionPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &j, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil

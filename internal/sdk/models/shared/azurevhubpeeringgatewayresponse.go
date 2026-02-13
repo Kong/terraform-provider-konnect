@@ -78,7 +78,7 @@ func (a AzureVhubPeeringGatewayResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AzureVhubPeeringGatewayResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "dns_config", "id", "state", "entity_version", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil

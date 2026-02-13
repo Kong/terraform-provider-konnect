@@ -83,7 +83,7 @@ func (a AwsTransitGatewayResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AwsTransitGatewayResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "dns_config", "cidr_blocks", "transit_gateway_attachment_config", "id", "state", "entity_version", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil

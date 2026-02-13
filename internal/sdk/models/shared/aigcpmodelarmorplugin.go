@@ -12,6 +12,17 @@ type AiGcpModelArmorPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (a AiGcpModelArmorPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiGcpModelArmorPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiGcpModelArmorPluginAfter) GetAccess() []string {
 	if a == nil {
 		return nil
@@ -21,6 +32,17 @@ func (a *AiGcpModelArmorPluginAfter) GetAccess() []string {
 
 type AiGcpModelArmorPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (a AiGcpModelArmorPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiGcpModelArmorPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiGcpModelArmorPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (a *AiGcpModelArmorPluginBefore) GetAccess() []string {
 type AiGcpModelArmorPluginOrdering struct {
 	After  *AiGcpModelArmorPluginAfter  `json:"after,omitempty"`
 	Before *AiGcpModelArmorPluginBefore `json:"before,omitempty"`
+}
+
+func (a AiGcpModelArmorPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiGcpModelArmorPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiGcpModelArmorPluginOrdering) GetAfter() *AiGcpModelArmorPluginAfter {
@@ -55,6 +88,17 @@ type AiGcpModelArmorPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (a AiGcpModelArmorPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiGcpModelArmorPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiGcpModelArmorPluginPartials) GetID() *string {
@@ -176,7 +220,7 @@ func (a AiGcpModelArmorPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiGcpModelArmorPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"location_id", "project_id", "template_id"}); err != nil {
 		return err
 	}
 	return nil
@@ -292,6 +336,17 @@ type AiGcpModelArmorPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiGcpModelArmorPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiGcpModelArmorPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiGcpModelArmorPluginConsumer) GetID() *string {
 	if a == nil {
 		return nil
@@ -302,6 +357,17 @@ func (a *AiGcpModelArmorPluginConsumer) GetID() *string {
 // AiGcpModelArmorPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type AiGcpModelArmorPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiGcpModelArmorPluginConsumerGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiGcpModelArmorPluginConsumerGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiGcpModelArmorPluginConsumerGroup) GetID() *string {
@@ -348,6 +414,17 @@ type AiGcpModelArmorPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiGcpModelArmorPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiGcpModelArmorPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiGcpModelArmorPluginRoute) GetID() *string {
 	if a == nil {
 		return nil
@@ -358,6 +435,17 @@ func (a *AiGcpModelArmorPluginRoute) GetID() *string {
 // AiGcpModelArmorPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type AiGcpModelArmorPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiGcpModelArmorPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiGcpModelArmorPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiGcpModelArmorPluginService) GetID() *string {
@@ -403,7 +491,7 @@ func (a AiGcpModelArmorPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiGcpModelArmorPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil

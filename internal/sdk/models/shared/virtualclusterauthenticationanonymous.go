@@ -15,7 +15,7 @@ func (v VirtualClusterAuthenticationAnonymous) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VirtualClusterAuthenticationAnonymous) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"type"}); err != nil {
 		return err
 	}
 	return nil

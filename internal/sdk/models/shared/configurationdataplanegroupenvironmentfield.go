@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // ConfigurationDataPlaneGroupEnvironmentField - Environment variable name and value to set for a data-plane group.
 type ConfigurationDataPlaneGroupEnvironmentField struct {
 	// Name of the environment variable field to set for the data-plane group. Must be prefixed by KONG_.
@@ -9,6 +13,17 @@ type ConfigurationDataPlaneGroupEnvironmentField struct {
 	Name string `json:"name"`
 	// Value assigned to the environment variable field for the data-plane group.
 	Value string `json:"value"`
+}
+
+func (c ConfigurationDataPlaneGroupEnvironmentField) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ConfigurationDataPlaneGroupEnvironmentField) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "value"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *ConfigurationDataPlaneGroupEnvironmentField) GetName() string {

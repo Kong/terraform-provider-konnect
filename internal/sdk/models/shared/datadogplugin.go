@@ -12,6 +12,17 @@ type DatadogPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (d DatadogPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatadogPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (d *DatadogPluginAfter) GetAccess() []string {
 	if d == nil {
 		return nil
@@ -21,6 +32,17 @@ func (d *DatadogPluginAfter) GetAccess() []string {
 
 type DatadogPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (d DatadogPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatadogPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DatadogPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (d *DatadogPluginBefore) GetAccess() []string {
 type DatadogPluginOrdering struct {
 	After  *DatadogPluginAfter  `json:"after,omitempty"`
 	Before *DatadogPluginBefore `json:"before,omitempty"`
+}
+
+func (d DatadogPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatadogPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DatadogPluginOrdering) GetAfter() *DatadogPluginAfter {
@@ -55,6 +88,17 @@ type DatadogPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (d DatadogPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatadogPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DatadogPluginPartials) GetID() *string {
@@ -200,6 +244,17 @@ type Metrics struct {
 	StatType StatType `json:"stat_type"`
 	// List of tags
 	Tags []string `json:"tags,omitempty"`
+}
+
+func (m Metrics) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *Metrics) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"name", "stat_type"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (m *Metrics) GetConsumerIdentifier() *DatadogPluginConsumerIdentifier {
@@ -476,6 +531,17 @@ type DatadogPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (d DatadogPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatadogPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (d *DatadogPluginConsumer) GetID() *string {
 	if d == nil {
 		return nil
@@ -539,6 +605,17 @@ type DatadogPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (d DatadogPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatadogPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (d *DatadogPluginRoute) GetID() *string {
 	if d == nil {
 		return nil
@@ -549,6 +626,17 @@ func (d *DatadogPluginRoute) GetID() *string {
 // DatadogPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type DatadogPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (d DatadogPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatadogPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DatadogPluginService) GetID() *string {
@@ -592,7 +680,7 @@ func (d DatadogPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DatadogPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil

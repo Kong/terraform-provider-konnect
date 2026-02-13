@@ -22,7 +22,7 @@ func (d DeleteConfigStoreRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeleteConfigStoreRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "configStoreId", "force"}); err != nil {
 		return err
 	}
 	return nil
@@ -59,6 +59,17 @@ type DeleteConfigStoreResponse struct {
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
 	ForbiddenError *shared.ForbiddenError
+}
+
+func (d DeleteConfigStoreResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteConfigStoreResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteConfigStoreResponse) GetContentType() string {

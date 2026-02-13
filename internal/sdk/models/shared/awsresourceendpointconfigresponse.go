@@ -26,7 +26,7 @@ func (a AwsResourceEndpointConfigResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AwsResourceEndpointConfigResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"resource_config_id", "domain_name", "state"}); err != nil {
 		return err
 	}
 	return nil

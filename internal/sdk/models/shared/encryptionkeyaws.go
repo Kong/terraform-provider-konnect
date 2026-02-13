@@ -18,7 +18,7 @@ func (e EncryptionKeyAWS) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EncryptionKeyAWS) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type", "arn"}); err != nil {
 		return err
 	}
 	return nil

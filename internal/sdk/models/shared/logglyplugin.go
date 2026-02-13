@@ -12,6 +12,17 @@ type LogglyPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (l LogglyPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *LogglyPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (l *LogglyPluginAfter) GetAccess() []string {
 	if l == nil {
 		return nil
@@ -21,6 +32,17 @@ func (l *LogglyPluginAfter) GetAccess() []string {
 
 type LogglyPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (l LogglyPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *LogglyPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (l *LogglyPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (l *LogglyPluginBefore) GetAccess() []string {
 type LogglyPluginOrdering struct {
 	After  *LogglyPluginAfter  `json:"after,omitempty"`
 	Before *LogglyPluginBefore `json:"before,omitempty"`
+}
+
+func (l LogglyPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *LogglyPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (l *LogglyPluginOrdering) GetAfter() *LogglyPluginAfter {
@@ -55,6 +88,17 @@ type LogglyPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (l LogglyPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *LogglyPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (l *LogglyPluginPartials) GetID() *string {
@@ -275,7 +319,7 @@ func (l LogglyPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (l *LogglyPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"key"}); err != nil {
 		return err
 	}
 	return nil
@@ -356,6 +400,17 @@ type LogglyPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (l LogglyPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *LogglyPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (l *LogglyPluginConsumer) GetID() *string {
 	if l == nil {
 		return nil
@@ -419,6 +474,17 @@ type LogglyPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (l LogglyPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *LogglyPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (l *LogglyPluginRoute) GetID() *string {
 	if l == nil {
 		return nil
@@ -429,6 +495,17 @@ func (l *LogglyPluginRoute) GetID() *string {
 // LogglyPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type LogglyPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (l LogglyPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *LogglyPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (l *LogglyPluginService) GetID() *string {
@@ -472,7 +549,7 @@ func (l LogglyPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (l *LogglyPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil

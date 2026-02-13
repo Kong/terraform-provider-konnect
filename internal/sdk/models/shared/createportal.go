@@ -98,7 +98,7 @@ func (c CreatePortal) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreatePortal) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil

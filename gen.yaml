@@ -71,6 +71,6 @@ terraform:
   includeEmptyObjects: false
   inferUnionDiscriminators: false
   packageName: konnect
-  respectRequiredFields: false
+  respectRequiredFields: true
   respectTitlesForPrimitiveUnionMembers: false
   unionStrategy: populated-fields

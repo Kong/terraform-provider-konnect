@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateSyslogPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string              `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	SyslogPlugin   shared.SyslogPlugin `request:"mediaType=application/json"`
+}
+
+func (c CreateSyslogPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateSyslogPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "SyslogPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateSyslogPluginRequest) GetControlPlaneID() string {
@@ -38,6 +50,17 @@ type CreateSyslogPluginResponse struct {
 	SyslogPlugin *shared.SyslogPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (c CreateSyslogPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateSyslogPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateSyslogPluginResponse) GetContentType() string {

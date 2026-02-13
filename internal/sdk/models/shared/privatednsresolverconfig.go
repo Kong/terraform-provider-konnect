@@ -16,7 +16,7 @@ func (p PrivateDNSResolverConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PrivateDNSResolverConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"remote_dns_server_ip_addresses"}); err != nil {
 		return err
 	}
 	return nil

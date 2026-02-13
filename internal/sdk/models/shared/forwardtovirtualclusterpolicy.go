@@ -120,7 +120,7 @@ func (f ForwardToVirtualClusterPolicy) MarshalJSON() ([]byte, error) {
 }
 
 func (f *ForwardToVirtualClusterPolicy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"type", "config"}); err != nil {
 		return err
 	}
 	return nil

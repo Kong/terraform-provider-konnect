@@ -19,7 +19,7 @@ func (i InvalidParameterStandard) MarshalJSON() ([]byte, error) {
 }
 
 func (i *InvalidParameterStandard) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &i, "", false, []string{"field", "reason"}); err != nil {
 		return err
 	}
 	return nil

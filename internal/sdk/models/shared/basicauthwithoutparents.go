@@ -2,8 +2,23 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type BasicAuthWithoutParentsConsumer struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (b BasicAuthWithoutParentsConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BasicAuthWithoutParentsConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (b *BasicAuthWithoutParentsConsumer) GetID() *string {
@@ -23,6 +38,17 @@ type BasicAuthWithoutParents struct {
 	// A set of strings representing tags.
 	Tags     []string `json:"tags"`
 	Username string   `json:"username"`
+}
+
+func (b BasicAuthWithoutParents) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BasicAuthWithoutParents) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"password", "username"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (b *BasicAuthWithoutParents) GetConsumer() *BasicAuthWithoutParentsConsumer {

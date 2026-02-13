@@ -12,6 +12,17 @@ type RequestTerminationPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (r RequestTerminationPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestTerminationPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RequestTerminationPluginAfter) GetAccess() []string {
 	if r == nil {
 		return nil
@@ -21,6 +32,17 @@ func (r *RequestTerminationPluginAfter) GetAccess() []string {
 
 type RequestTerminationPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (r RequestTerminationPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestTerminationPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RequestTerminationPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (r *RequestTerminationPluginBefore) GetAccess() []string {
 type RequestTerminationPluginOrdering struct {
 	After  *RequestTerminationPluginAfter  `json:"after,omitempty"`
 	Before *RequestTerminationPluginBefore `json:"before,omitempty"`
+}
+
+func (r RequestTerminationPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestTerminationPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RequestTerminationPluginOrdering) GetAfter() *RequestTerminationPluginAfter {
@@ -55,6 +88,17 @@ type RequestTerminationPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (r RequestTerminationPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestTerminationPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RequestTerminationPluginPartials) GetID() *string {
@@ -151,6 +195,17 @@ type RequestTerminationPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (r RequestTerminationPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestTerminationPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RequestTerminationPluginConsumer) GetID() *string {
 	if r == nil {
 		return nil
@@ -161,6 +216,17 @@ func (r *RequestTerminationPluginConsumer) GetID() *string {
 // RequestTerminationPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type RequestTerminationPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (r RequestTerminationPluginConsumerGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestTerminationPluginConsumerGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RequestTerminationPluginConsumerGroup) GetID() *string {
@@ -207,6 +273,17 @@ type RequestTerminationPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (r RequestTerminationPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestTerminationPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RequestTerminationPluginRoute) GetID() *string {
 	if r == nil {
 		return nil
@@ -217,6 +294,17 @@ func (r *RequestTerminationPluginRoute) GetID() *string {
 // RequestTerminationPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type RequestTerminationPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (r RequestTerminationPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestTerminationPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RequestTerminationPluginService) GetID() *string {
@@ -262,7 +350,7 @@ func (r RequestTerminationPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestTerminationPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil

@@ -26,7 +26,7 @@ func (a APIImplementationResponseControlPlaneReference) MarshalJSON() ([]byte, e
 }
 
 func (a *APIImplementationResponseControlPlaneReference) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
@@ -77,7 +77,7 @@ func (a APIImplementationResponseServiceReference) MarshalJSON() ([]byte, error)
 }
 
 func (a *APIImplementationResponseServiceReference) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil

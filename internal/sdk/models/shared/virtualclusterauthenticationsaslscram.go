@@ -47,7 +47,7 @@ func (v VirtualClusterAuthenticationSaslScram) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VirtualClusterAuthenticationSaslScram) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"type", "algorithm"}); err != nil {
 		return err
 	}
 	return nil

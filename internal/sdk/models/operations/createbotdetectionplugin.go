@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateBotdetectionPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID     string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	BotDetectionPlugin shared.BotDetectionPlugin `request:"mediaType=application/json"`
+}
+
+func (c CreateBotdetectionPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateBotdetectionPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "BotDetectionPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateBotdetectionPluginRequest) GetControlPlaneID() string {
@@ -38,6 +50,17 @@ type CreateBotdetectionPluginResponse struct {
 	BotDetectionPlugin *shared.BotDetectionPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (c CreateBotdetectionPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateBotdetectionPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateBotdetectionPluginResponse) GetContentType() string {

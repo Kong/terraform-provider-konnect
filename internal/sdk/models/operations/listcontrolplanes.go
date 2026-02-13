@@ -28,7 +28,7 @@ func (l ListControlPlanesRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (l *ListControlPlanesRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"page[size]"}); err != nil {
 		return err
 	}
 	return nil
@@ -87,6 +87,17 @@ type ListControlPlanesResponse struct {
 	ServiceUnavailable *shared.ServiceUnavailable
 
 	Next func() (*ListControlPlanesResponse, error)
+}
+
+func (l ListControlPlanesResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *ListControlPlanesResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (l *ListControlPlanesResponse) GetContentType() string {

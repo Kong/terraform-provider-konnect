@@ -2,12 +2,27 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // ID - Filter using **one** of the following operators: `eq`, `oeq`
 type ID struct {
 	// The field exactly matches the provided value.
 	Eq *string `queryParam:"name=eq"`
 	// The field matches any of the provided values.
 	Oeq *string `queryParam:"name=oeq"`
+}
+
+func (i ID) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *ID) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (i *ID) GetEq() *string {
@@ -32,6 +47,17 @@ type ControlPlaneFilterParametersName struct {
 	Contains *string `queryParam:"name=contains"`
 	// The field does not match the provided value.
 	Neq *string `queryParam:"name=neq"`
+}
+
+func (c ControlPlaneFilterParametersName) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ControlPlaneFilterParametersName) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *ControlPlaneFilterParametersName) GetEq() *string {
@@ -63,6 +89,17 @@ type ClusterType struct {
 	Neq *string `queryParam:"name=neq"`
 }
 
+func (c ClusterType) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ClusterType) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (c *ClusterType) GetEq() *string {
 	if c == nil {
 		return nil
@@ -86,6 +123,17 @@ type ControlPlaneFilterParameters struct {
 	ClusterType *ClusterType `queryParam:"name=cluster_type"`
 	// Filter by a boolean value (true/false).
 	CloudGateway *bool `queryParam:"name=cloud_gateway"`
+}
+
+func (c ControlPlaneFilterParameters) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ControlPlaneFilterParameters) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *ControlPlaneFilterParameters) GetID() *ID {

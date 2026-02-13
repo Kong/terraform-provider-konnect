@@ -12,6 +12,17 @@ type Oauth2IntrospectionPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (o Oauth2IntrospectionPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *Oauth2IntrospectionPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (o *Oauth2IntrospectionPluginAfter) GetAccess() []string {
 	if o == nil {
 		return nil
@@ -21,6 +32,17 @@ func (o *Oauth2IntrospectionPluginAfter) GetAccess() []string {
 
 type Oauth2IntrospectionPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (o Oauth2IntrospectionPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *Oauth2IntrospectionPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Oauth2IntrospectionPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (o *Oauth2IntrospectionPluginBefore) GetAccess() []string {
 type Oauth2IntrospectionPluginOrdering struct {
 	After  *Oauth2IntrospectionPluginAfter  `json:"after,omitempty"`
 	Before *Oauth2IntrospectionPluginBefore `json:"before,omitempty"`
+}
+
+func (o Oauth2IntrospectionPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *Oauth2IntrospectionPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Oauth2IntrospectionPluginOrdering) GetAfter() *Oauth2IntrospectionPluginAfter {
@@ -55,6 +88,17 @@ type Oauth2IntrospectionPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (o Oauth2IntrospectionPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *Oauth2IntrospectionPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Oauth2IntrospectionPluginPartials) GetID() *string {
@@ -139,7 +183,7 @@ func (o Oauth2IntrospectionPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (o *Oauth2IntrospectionPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"authorization_value", "introspection_url"}); err != nil {
 		return err
 	}
 	return nil
@@ -273,6 +317,17 @@ type Oauth2IntrospectionPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (o Oauth2IntrospectionPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *Oauth2IntrospectionPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (o *Oauth2IntrospectionPluginRoute) GetID() *string {
 	if o == nil {
 		return nil
@@ -283,6 +338,17 @@ func (o *Oauth2IntrospectionPluginRoute) GetID() *string {
 // Oauth2IntrospectionPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type Oauth2IntrospectionPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (o Oauth2IntrospectionPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *Oauth2IntrospectionPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Oauth2IntrospectionPluginService) GetID() *string {
@@ -324,7 +390,7 @@ func (o Oauth2IntrospectionPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (o *Oauth2IntrospectionPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"name", "config"}); err != nil {
 		return err
 	}
 	return nil

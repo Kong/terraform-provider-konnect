@@ -91,6 +91,17 @@ type ControlPlaneConfig struct {
 	ProxyUrls []ProxyURL `json:"proxy_urls,omitempty"`
 }
 
+func (c ControlPlaneConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *ControlPlaneConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"control_plane_endpoint", "telemetry_endpoint", "cluster_type", "auth_type", "cloud_gateway"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (c *ControlPlaneConfig) GetControlPlaneEndpoint() string {
 	if c == nil {
 		return ""
@@ -159,7 +170,7 @@ func (c ControlPlane) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ControlPlane) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "name", "config", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil

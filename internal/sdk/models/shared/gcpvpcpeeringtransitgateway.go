@@ -21,7 +21,7 @@ func (g GcpVpcPeeringTransitGateway) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GcpVpcPeeringTransitGateway) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"name", "transit_gateway_attachment_config"}); err != nil {
 		return err
 	}
 	return nil

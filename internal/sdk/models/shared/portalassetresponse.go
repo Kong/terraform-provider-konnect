@@ -2,10 +2,25 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // PortalAssetResponse - Image asset for the portal. Can be either png, jpeg or svg
 type PortalAssetResponse struct {
 	// must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>
 	Data string `json:"data"`
+}
+
+func (p PortalAssetResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PortalAssetResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"data"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PortalAssetResponse) GetData() string {

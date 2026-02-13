@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateAisemanticresponseguardPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID                string                               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	AiSemanticResponseGuardPlugin shared.AiSemanticResponseGuardPlugin `request:"mediaType=application/json"`
+}
+
+func (c CreateAisemanticresponseguardPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAisemanticresponseguardPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "AiSemanticResponseGuardPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateAisemanticresponseguardPluginRequest) GetControlPlaneID() string {
@@ -38,6 +50,17 @@ type CreateAisemanticresponseguardPluginResponse struct {
 	AiSemanticResponseGuardPlugin *shared.AiSemanticResponseGuardPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (c CreateAisemanticresponseguardPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAisemanticresponseguardPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateAisemanticresponseguardPluginResponse) GetContentType() string {
