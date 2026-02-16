@@ -26,9 +26,10 @@ generation:
     skipResponseBodyAssertions: false
   baseServerURL: ""
 terraform:
-  version: 3.6.0
+  version: 3.7.0
   additionalDataSources: []
-  additionalDependencies: {}
+  additionalDependencies:
+    github.com/Kong/shared-speakeasy/hclbuilder: v0.0.1
   additionalEphemeralResources: []
   additionalProviderAttributes:
     httpHeaders: ""

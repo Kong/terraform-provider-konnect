@@ -31,6 +31,7 @@ func (r *APIResourceModel) RefreshFromSharedAPIResponseSchema(ctx context.Contex
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringValue(resp.ID)
+		r.ImplementationMode = types.StringPointerValue(resp.ImplementationMode)
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {

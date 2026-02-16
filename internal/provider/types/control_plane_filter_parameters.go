@@ -7,8 +7,8 @@ import (
 )
 
 type ControlPlaneFilterParameters struct {
-	CloudGateway types.Bool   `queryParam:"name=cloud_gateway" tfsdk:"cloud_gateway"`
-	ClusterType  *ClusterType `queryParam:"name=cluster_type" tfsdk:"cluster_type"`
-	ID           *ID          `queryParam:"name=id" tfsdk:"id"`
-	Name         *Name        `queryParam:"name=name" tfsdk:"name"`
+	CloudGateway types.Bool                        `queryParam:"name=cloud_gateway" tfsdk:"cloud_gateway"`
+	ClusterType  *ClusterType                      `queryParam:"name=cluster_type" tfsdk:"cluster_type"`
+	ID           *ID                               `queryParam:"name=id" tfsdk:"id"`
+	Name         *ControlPlaneFilterParametersName `queryParam:"name=name" tfsdk:"name"`
 }

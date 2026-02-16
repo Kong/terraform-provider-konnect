@@ -8,4 +8,5 @@ import (
 
 type AppAuthStrategyConfigKeyAuth struct {
 	KeyNames []types.String `tfsdk:"key_names"`
+	TTL      *TTL           `tfsdk:"ttl"`
 }

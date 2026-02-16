@@ -22,6 +22,11 @@ type IntegrationInstance struct {
 	Integration IntegrationRefWithoutInstance `json:"integration"`
 	// Denotes whether the integration instance has been authorized within the catalog.
 	Authorized bool `json:"authorized"`
+	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]*string `json:"labels,omitempty"`
 	// JSON object representing configuration specific to the integration instance.
 	// The expected schema depends on the integration type and is dynamically registered at runtime.
 	//
@@ -83,6 +88,13 @@ func (i *IntegrationInstance) GetAuthorized() bool {
 		return false
 	}
 	return i.Authorized
+}
+
+func (i *IntegrationInstance) GetLabels() map[string]*string {
+	if i == nil {
+		return nil
+	}
+	return i.Labels
 }
 
 func (i *IntegrationInstance) GetConfig() any {

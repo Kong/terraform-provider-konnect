@@ -590,6 +590,7 @@ const (
 	AiSemanticPromptGuardPluginGenaiCategoryRealtimeGeneration AiSemanticPromptGuardPluginGenaiCategory = "realtime/generation"
 	AiSemanticPromptGuardPluginGenaiCategoryTextEmbeddings     AiSemanticPromptGuardPluginGenaiCategory = "text/embeddings"
 	AiSemanticPromptGuardPluginGenaiCategoryTextGeneration     AiSemanticPromptGuardPluginGenaiCategory = "text/generation"
+	AiSemanticPromptGuardPluginGenaiCategoryVideoGeneration    AiSemanticPromptGuardPluginGenaiCategory = "video/generation"
 )
 
 func (e AiSemanticPromptGuardPluginGenaiCategory) ToPointer() *AiSemanticPromptGuardPluginGenaiCategory {
@@ -612,6 +613,8 @@ func (e *AiSemanticPromptGuardPluginGenaiCategory) UnmarshalJSON(data []byte) er
 	case "text/embeddings":
 		fallthrough
 	case "text/generation":
+		fallthrough
+	case "video/generation":
 		*e = AiSemanticPromptGuardPluginGenaiCategory(v)
 		return nil
 	default:

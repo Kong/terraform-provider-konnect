@@ -79,7 +79,7 @@ resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadva
         provider = "gemini"
       }
     }
-    genai_category        = "image/generation"
+    genai_category        = "realtime/generation"
     llm_format            = "huggingface"
     max_request_body_size = 5
     model_name_header     = true
@@ -310,7 +310,7 @@ Optional:
 
 - `balancer` (Attributes) (see [below for nested schema](#nestedatt--config--balancer))
 - `embeddings` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings))
-- `genai_category` (String) Generative AI category of the request. Default: "text/generation"; must be one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation"]
+- `genai_category` (String) Generative AI category of the request. Default: "text/generation"; must be one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation"]
 - `llm_format` (String) LLM input and output format and schema to use. Default: "openai"; must be one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]
 - `max_request_body_size` (Number) max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 1048576
 - `model_name_header` (Boolean) Display the model name selected in the X-Kong-LLM-Model response header. Default: true

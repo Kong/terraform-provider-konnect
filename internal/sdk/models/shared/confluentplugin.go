@@ -658,16 +658,16 @@ func (c *Confluent) GetValueSchema() *ValueSchema {
 	return c.ValueSchema
 }
 
-// SchemaRegistry - The plugin-global schema registry configuration. This can be overwritten by the topic configuration.
-type SchemaRegistry struct {
+// ConfluentPluginSchemaRegistry - The plugin-global schema registry configuration. This can be overwritten by the topic configuration.
+type ConfluentPluginSchemaRegistry struct {
 	Confluent *Confluent `json:"confluent"`
 }
 
-func (s *SchemaRegistry) GetConfluent() *Confluent {
-	if s == nil {
+func (c *ConfluentPluginSchemaRegistry) GetConfluent() *Confluent {
+	if c == nil {
 		return nil
 	}
-	return s.Confluent
+	return c.Confluent
 }
 
 type ConfluentPluginSecurity struct {
@@ -742,8 +742,8 @@ type ConfluentPluginConfig struct {
 	// Time to wait for a Produce response in milliseconds.
 	ProducerRequestTimeout *int64 `default:"2000" json:"producer_request_timeout"`
 	// The plugin-global schema registry configuration. This can be overwritten by the topic configuration.
-	SchemaRegistry *SchemaRegistry          `json:"schema_registry,omitempty"`
-	Security       *ConfluentPluginSecurity `json:"security,omitempty"`
+	SchemaRegistry *ConfluentPluginSchemaRegistry `json:"schema_registry,omitempty"`
+	Security       *ConfluentPluginSecurity       `json:"security,omitempty"`
 	// Socket timeout in milliseconds.
 	Timeout *int64 `default:"10000" json:"timeout"`
 	// The default Kafka topic to publish to if the query parameter defined in the `topics_query_arg` does not exist in the request
@@ -931,7 +931,7 @@ func (c *ConfluentPluginConfig) GetProducerRequestTimeout() *int64 {
 	return c.ProducerRequestTimeout
 }
 
-func (c *ConfluentPluginConfig) GetSchemaRegistry() *SchemaRegistry {
+func (c *ConfluentPluginConfig) GetSchemaRegistry() *ConfluentPluginSchemaRegistry {
 	if c == nil {
 		return nil
 	}

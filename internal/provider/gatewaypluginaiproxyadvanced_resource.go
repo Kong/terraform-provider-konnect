@@ -566,7 +566,7 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`text/generation`),
-						Description: `Generative AI category of the request. Default: "text/generation"; must be one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation"]`,
+						Description: `Generative AI category of the request. Default: "text/generation"; must be one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"audio/speech",
@@ -575,6 +575,7 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 								"realtime/generation",
 								"text/embeddings",
 								"text/generation",
+								"video/generation",
 							),
 						},
 					},

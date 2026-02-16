@@ -39,18 +39,19 @@ type APIResource struct {
 
 // APIResourceModel describes the resource data model.
 type APIResourceModel struct {
-	APISpecIds  []types.String          `tfsdk:"api_spec_ids"`
-	Attributes  jsontypes.Normalized    `tfsdk:"attributes"`
-	CreatedAt   types.String            `tfsdk:"created_at"`
-	Description types.String            `tfsdk:"description"`
-	ID          types.String            `tfsdk:"id"`
-	Labels      map[string]types.String `tfsdk:"labels"`
-	Name        types.String            `tfsdk:"name"`
-	Portals     []tfTypes.Portals       `tfsdk:"portals"`
-	Slug        types.String            `tfsdk:"slug"`
-	SpecContent types.String            `tfsdk:"spec_content"`
-	UpdatedAt   types.String            `tfsdk:"updated_at"`
-	Version     types.String            `tfsdk:"version"`
+	APISpecIds         []types.String          `tfsdk:"api_spec_ids"`
+	Attributes         jsontypes.Normalized    `tfsdk:"attributes"`
+	CreatedAt          types.String            `tfsdk:"created_at"`
+	Description        types.String            `tfsdk:"description"`
+	ID                 types.String            `tfsdk:"id"`
+	ImplementationMode types.String            `tfsdk:"implementation_mode"`
+	Labels             map[string]types.String `tfsdk:"labels"`
+	Name               types.String            `tfsdk:"name"`
+	Portals            []tfTypes.Portals       `tfsdk:"portals"`
+	Slug               types.String            `tfsdk:"slug"`
+	SpecContent        types.String            `tfsdk:"spec_content"`
+	UpdatedAt          types.String            `tfsdk:"updated_at"`
+	Version            types.String            `tfsdk:"version"`
 }
 
 func (r *APIResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -93,6 +94,10 @@ func (r *APIResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `The API identifier.`,
+			},
+			"implementation_mode": schema.StringAttribute{
+				Computed:    true,
+				Description: `the implementations that are associated with this api either gateway_entity_binding or access_control_enforcement`,
 			},
 			"labels": schema.MapAttribute{
 				Computed:    true,

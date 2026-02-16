@@ -1,5 +1,29 @@
 # Changelog
 
+## 3.7.0
+> Released 2026/02/16
+
+### Features
+* Support linking APIs to Control Planes using `konnect_api_implementation` resource
+* Add support for Event Gateway resources.
+  * `konnect_event_gateway`
+  * `konnect_event_gateway_backend_cluster`
+  * `konnect_event_gateway_virtual_cluster`
+  * `konnect_event_gateway_consume_policy_decrypt`
+  * `konnect_event_gateway_static_key`
+  * `konnect_event_gateway_consume_policy_modify_headers`
+  * `konnect_event_gateway_consume_policy_schema_validation`
+  * `konnect_event_gateway_consume_policy_skip_record`
+  * `konnect_event_gateway_data_plane_certificate`
+  * `konnect_event_gateway_listener`
+  * `konnect_event_gateway_listener_policy_forward_to_virtual_cluster`
+  * `konnect_event_gateway_listener_policy_tls_server`
+  * `konnect_event_gateway_produce_policy_encrypt`
+  * `konnect_event_gateway_produce_policy_modify_headers`
+  * `konnect_event_gateway_produce_policy_schema_validation`
+  * `konnect_event_gateway_cluster_policy_acls`
+  * `konnect_event_gateway_schema_registry`
+
 ## 3.6.0
 > Released 2026/01/30
 

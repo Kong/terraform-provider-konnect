@@ -28,6 +28,13 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 					r.KeyAuth.Configs.KeyAuth.KeyNames = append(r.KeyAuth.Configs.KeyAuth.KeyNames, types.StringValue(v))
 				}
 			}
+			if resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.TTL == nil {
+				r.KeyAuth.Configs.KeyAuth.TTL = nil
+			} else {
+				r.KeyAuth.Configs.KeyAuth.TTL = &tfTypes.TTL{}
+				r.KeyAuth.Configs.KeyAuth.TTL.Unit = types.StringValue(string(resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.TTL.Unit))
+				r.KeyAuth.Configs.KeyAuth.TTL.Value = types.Int64Value(resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.TTL.Value)
+			}
 			r.KeyAuth.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AppAuthStrategyKeyAuthResponse.CreatedAt))
 			if resp.AppAuthStrategyKeyAuthResponse.DcrProvider == nil {
 				r.KeyAuth.DcrProvider = nil
@@ -173,8 +180,20 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 				keyNames = append(keyNames, r.KeyAuth.Configs.KeyAuth.KeyNames[keyNamesIndex].ValueString())
 			}
 		}
+		var ttl *shared.TTL
+		if r.KeyAuth.Configs.KeyAuth.TTL != nil {
+			var value int64
+			value = r.KeyAuth.Configs.KeyAuth.TTL.Value.ValueInt64()
+
+			unit := shared.Unit(r.KeyAuth.Configs.KeyAuth.TTL.Unit.ValueString())
+			ttl = &shared.TTL{
+				Value: value,
+				Unit:  unit,
+			}
+		}
 		keyAuth := shared.AppAuthStrategyConfigKeyAuth{
 			KeyNames: keyNames,
+			TTL:      ttl,
 		}
 		configs := shared.AppAuthStrategyKeyAuthRequestConfigs{
 			KeyAuth: keyAuth,

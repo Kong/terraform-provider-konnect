@@ -26,6 +26,12 @@ func (r *IntegrationInstanceResourceModel) RefreshFromSharedIntegrationInstance(
 		r.ID = types.StringValue(resp.ID)
 		r.Integration.DisplayName = types.StringValue(resp.Integration.DisplayName)
 		r.Integration.Name = types.StringValue(resp.Integration.Name)
+		if len(resp.Labels) > 0 {
+			r.Labels = make(map[string]types.String, len(resp.Labels))
+			for key, value := range resp.Labels {
+				r.Labels[key] = types.StringPointerValue(value)
+			}
+		}
 		r.Name = types.StringValue(resp.Name)
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
@@ -98,6 +104,16 @@ func (r *IntegrationInstanceResourceModel) ToSharedCreateIntegrationInstance(ctx
 	} else {
 		description = nil
 	}
+	labels := make(map[string]*string)
+	for labelsKey := range r.Labels {
+		labelsInst := new(string)
+		if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+			*labelsInst = r.Labels[labelsKey].ValueString()
+		} else {
+			labelsInst = nil
+		}
+		labels[labelsKey] = labelsInst
+	}
 	var config interface{}
 	_ = json.Unmarshal([]byte(r.Config.ValueString()), &config)
 	out := shared.CreateIntegrationInstance{
@@ -105,6 +121,7 @@ func (r *IntegrationInstanceResourceModel) ToSharedCreateIntegrationInstance(ctx
 		Name:            name,
 		DisplayName:     displayName,
 		Description:     description,
+		Labels:          labels,
 		Config:          config,
 	}
 
@@ -132,6 +149,19 @@ func (r *IntegrationInstanceResourceModel) ToSharedUpdateIntegrationInstance(ctx
 	} else {
 		description = nil
 	}
+	var labels map[string]*string
+	if r.Labels != nil {
+		labels = make(map[string]*string)
+		for labelsKey := range r.Labels {
+			labelsInst := new(string)
+			if !r.Labels[labelsKey].IsUnknown() && !r.Labels[labelsKey].IsNull() {
+				*labelsInst = r.Labels[labelsKey].ValueString()
+			} else {
+				labelsInst = nil
+			}
+			labels[labelsKey] = labelsInst
+		}
+	}
 	var config interface{}
 	if !r.Config.IsUnknown() && !r.Config.IsNull() {
 		_ = json.Unmarshal([]byte(r.Config.ValueString()), &config)
@@ -140,6 +170,7 @@ func (r *IntegrationInstanceResourceModel) ToSharedUpdateIntegrationInstance(ctx
 		Name:        name,
 		DisplayName: displayName,
 		Description: description,
+		Labels:      labels,
 		Config:      config,
 	}
 

@@ -88,7 +88,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) RefreshFromSharedKafkaConsumePl
 					if resp.Config.SchemaRegistry.Confluent.Authentication.Basic == nil {
 						r.Config.SchemaRegistry.Confluent.Authentication.Basic = nil
 					} else {
-						r.Config.SchemaRegistry.Confluent.Authentication.Basic = &tfTypes.Basic{}
+						r.Config.SchemaRegistry.Confluent.Authentication.Basic = &tfTypes.BackendClusterAuthenticationSaslPlain{}
 						r.Config.SchemaRegistry.Confluent.Authentication.Basic.Password = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Password)
 						r.Config.SchemaRegistry.Confluent.Authentication.Basic.Username = types.StringValue(resp.Config.SchemaRegistry.Confluent.Authentication.Basic.Username)
 					}
@@ -191,7 +191,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) RefreshFromSharedKafkaConsumePl
 						if topicsItem.SchemaRegistry.Confluent.Authentication.Basic == nil {
 							topics.SchemaRegistry.Confluent.Authentication.Basic = nil
 						} else {
-							topics.SchemaRegistry.Confluent.Authentication.Basic = &tfTypes.Basic{}
+							topics.SchemaRegistry.Confluent.Authentication.Basic = &tfTypes.BackendClusterAuthenticationSaslPlain{}
 							topics.SchemaRegistry.Confluent.Authentication.Basic.Password = types.StringValue(topicsItem.SchemaRegistry.Confluent.Authentication.Basic.Password)
 							topics.SchemaRegistry.Confluent.Authentication.Basic.Username = types.StringValue(topicsItem.SchemaRegistry.Confluent.Authentication.Basic.Username)
 						}

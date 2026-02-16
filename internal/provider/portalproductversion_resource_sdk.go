@@ -45,6 +45,13 @@ func (r *PortalProductVersionResourceModel) RefreshFromSharedV2PortalProductVers
 					authStrategies.KeyAuth.KeyNames = append(authStrategies.KeyAuth.KeyNames, types.StringValue(v))
 				}
 				authStrategies.KeyAuth.Name = types.StringPointerValue(authStrategiesItem.AuthStrategyKeyAuth.Name)
+				if authStrategiesItem.AuthStrategyKeyAuth.TTL == nil {
+					authStrategies.KeyAuth.TTL = nil
+				} else {
+					authStrategies.KeyAuth.TTL = &tfTypes.TTL{}
+					authStrategies.KeyAuth.TTL.Unit = types.StringValue(string(authStrategiesItem.AuthStrategyKeyAuth.TTL.Unit))
+					authStrategies.KeyAuth.TTL.Value = types.Int64Value(authStrategiesItem.AuthStrategyKeyAuth.TTL.Value)
+				}
 			}
 
 			r.AuthStrategies = append(r.AuthStrategies, authStrategies)

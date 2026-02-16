@@ -24,6 +24,7 @@ const (
 	RoleNameDeployer                  RoleName = "Deployer"
 	RoleNameDiscoveryAdmin            RoleName = "Discovery Admin"
 	RoleNameDiscoveryViewer           RoleName = "Discovery Viewer"
+	RoleNameEditor                    RoleName = "Editor"
 	RoleNameGatewayServiceAdmin       RoleName = "Gateway Service Admin"
 	RoleNameIntegrationAdmin          RoleName = "Integration Admin"
 	RoleNameIntegrationViewer         RoleName = "Integration Viewer"
@@ -80,6 +81,8 @@ func (e *RoleName) UnmarshalJSON(data []byte) error {
 	case "Discovery Admin":
 		fallthrough
 	case "Discovery Viewer":
+		fallthrough
+	case "Editor":
 		fallthrough
 	case "Gateway Service Admin":
 		fallthrough
@@ -146,6 +149,7 @@ const (
 	EntityTypeNameMeshControlPlanes         EntityTypeName = "Mesh Control Planes"
 	EntityTypeNameNetworks                  EntityTypeName = "Networks"
 	EntityTypeNamePortals                   EntityTypeName = "Portals"
+	EntityTypeNameReports                   EntityTypeName = "Reports"
 	EntityTypeNameServiceHub                EntityTypeName = "Service Hub"
 )
 
@@ -179,6 +183,8 @@ func (e *EntityTypeName) UnmarshalJSON(data []byte) error {
 	case "Networks":
 		fallthrough
 	case "Portals":
+		fallthrough
+	case "Reports":
 		fallthrough
 	case "Service Hub":
 		*e = EntityTypeName(v)

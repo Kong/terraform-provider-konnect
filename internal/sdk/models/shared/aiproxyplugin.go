@@ -254,6 +254,7 @@ const (
 	AiProxyPluginGenaiCategoryImageGeneration    AiProxyPluginGenaiCategory = "image/generation"
 	AiProxyPluginGenaiCategoryTextEmbeddings     AiProxyPluginGenaiCategory = "text/embeddings"
 	AiProxyPluginGenaiCategoryTextGeneration     AiProxyPluginGenaiCategory = "text/generation"
+	AiProxyPluginGenaiCategoryVideoGeneration    AiProxyPluginGenaiCategory = "video/generation"
 )
 
 func (e AiProxyPluginGenaiCategory) ToPointer() *AiProxyPluginGenaiCategory {
@@ -274,6 +275,8 @@ func (e *AiProxyPluginGenaiCategory) UnmarshalJSON(data []byte) error {
 	case "text/embeddings":
 		fallthrough
 	case "text/generation":
+		fallthrough
+	case "video/generation":
 		*e = AiProxyPluginGenaiCategory(v)
 		return nil
 	default:
