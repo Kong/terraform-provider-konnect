@@ -119,10 +119,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 									"ttl": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"unit":  types.StringType,
-											"value": types.Int64Type,
-										})),
 										PlanModifiers: []planmodifier.Object{
 											objectplanmodifier.RequiresReplaceIfConfigured(),
 										},

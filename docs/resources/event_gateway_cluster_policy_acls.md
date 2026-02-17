@@ -84,7 +84,7 @@ Required:
 
 - `action` (String) How to handle the request if the rule matches. must be one of ["allow", "deny"]
 - `operations` (Attributes List) Types of Kafka operations to match against. Note that not every operation can apply to every resource type. (see [below for nested schema](#nestedatt--config--rules--operations))
-- `resource_names` (Attributes List) If any of these entries match, the resource name matches for this rule. (see [below for nested schema](#nestedatt--config--rules--resource_names))
+- `resource_names` (Attributes List) If any of these entries match, the resource name matches for this rule. A maximum of 50 entries are allowed. (see [below for nested schema](#nestedatt--config--rules--resource_names))
 - `resource_type` (String) This rule applies to access only for type of resource. must be one of ["topic", "group", "transactional_id", "cluster"]
 
 <a id="nestedatt--config--rules--operations"></a>

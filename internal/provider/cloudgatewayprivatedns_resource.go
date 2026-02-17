@@ -246,6 +246,25 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 						Computed:    true,
 						Description: `Human-readable name of the Private DNS.`,
 					},
+					"private_dns_attachment_config": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"dns_config": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"remote_dns_server_ip_addresses": schema.ListAttribute{
+										Computed:    true,
+										ElementType: types.StringType,
+										Description: `IP addresses of remote DNS servers used by the Private DNS Resolver for DNS resolution.`,
+									},
+								},
+								Description: `Object that contains mappings from proxied internal domains to remote DNS server IP address for a Private DNS Resolver.`,
+							},
+							"kind": schema.StringAttribute{
+								Computed: true,
+							},
+						},
+					},
 					"state": schema.StringAttribute{
 						Computed: true,
 						MarkdownDescription: `The current state of the Private DNS attachment. Possible values:` + "\n" +
@@ -443,6 +462,8 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("aws_private_hosted_zone_attachment_config"),
+								path.MatchRelative().AtParent().AtName("azure_private_dns_resolver_attachment_config"),
+								path.MatchRelative().AtParent().AtName("azure_private_hosted_zone_attachment_config"),
 								path.MatchRelative().AtParent().AtName("gcp_private_hosted_zone_attachment_config"),
 							}...),
 						},
@@ -477,6 +498,118 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("aws_private_dns_resolver_attachment_config"),
+								path.MatchRelative().AtParent().AtName("azure_private_dns_resolver_attachment_config"),
+								path.MatchRelative().AtParent().AtName("azure_private_hosted_zone_attachment_config"),
+								path.MatchRelative().AtParent().AtName("gcp_private_hosted_zone_attachment_config"),
+							}...),
+						},
+					},
+					"azure_private_dns_resolver_attachment_config": schema.SingleNestedAttribute{
+						Optional: true,
+						PlanModifiers: []planmodifier.Object{
+							objectplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						Attributes: map[string]schema.Attribute{
+							"dns_config": schema.SingleNestedAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.Object{
+									objectplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Attributes: map[string]schema.Attribute{
+									"remote_dns_server_ip_addresses": schema.ListAttribute{
+										Required: true,
+										PlanModifiers: []planmodifier.List{
+											listplanmodifier.RequiresReplaceIfConfigured(),
+										},
+										ElementType: types.StringType,
+										Description: `IP addresses of remote DNS servers used by the Private DNS Resolver for DNS resolution. Requires replacement if changed.`,
+									},
+								},
+								Description: `Object that contains mappings from proxied internal domains to remote DNS server IP address for a Private DNS Resolver. Requires replacement if changed.`,
+							},
+							"kind": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `must be "azure-outbound-resolver"; Requires replacement if changed.`,
+								Validators: []validator.String{
+									stringvalidator.OneOf(
+										"azure-outbound-resolver",
+									),
+								},
+							},
+						},
+						Description: `Requires replacement if changed.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("aws_private_dns_resolver_attachment_config"),
+								path.MatchRelative().AtParent().AtName("aws_private_hosted_zone_attachment_config"),
+								path.MatchRelative().AtParent().AtName("azure_private_hosted_zone_attachment_config"),
+								path.MatchRelative().AtParent().AtName("gcp_private_hosted_zone_attachment_config"),
+							}...),
+						},
+					},
+					"azure_private_hosted_zone_attachment_config": schema.SingleNestedAttribute{
+						Optional: true,
+						PlanModifiers: []planmodifier.Object{
+							objectplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						Attributes: map[string]schema.Attribute{
+							"domain_name": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `Customer's Azure Private DNS Zone Name. Requires replacement if changed.`,
+							},
+							"kind": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `must be "azure-private-hosted-zone-attachment"; Requires replacement if changed.`,
+								Validators: []validator.String{
+									stringvalidator.OneOf(
+										"azure-private-hosted-zone-attachment",
+									),
+								},
+							},
+							"peer_resource_group_id": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `Customer's Azure Resource Group ID. Requires replacement if changed.`,
+							},
+							"peer_subscription_id": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `Customer's Azure Subscription ID. Requires replacement if changed.`,
+							},
+							"peer_tenant_id": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `Customer's Azure Tenant ID. Requires replacement if changed.`,
+							},
+							"peer_vnet_link_name": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `Customer's Azure VNet Link Name. Requires replacement if changed.`,
+							},
+						},
+						Description: `Requires replacement if changed.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("aws_private_dns_resolver_attachment_config"),
+								path.MatchRelative().AtParent().AtName("aws_private_hosted_zone_attachment_config"),
+								path.MatchRelative().AtParent().AtName("azure_private_dns_resolver_attachment_config"),
 								path.MatchRelative().AtParent().AtName("gcp_private_hosted_zone_attachment_config"),
 							}...),
 						},
@@ -526,6 +659,8 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 							objectvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("aws_private_dns_resolver_attachment_config"),
 								path.MatchRelative().AtParent().AtName("aws_private_hosted_zone_attachment_config"),
+								path.MatchRelative().AtParent().AtName("azure_private_dns_resolver_attachment_config"),
+								path.MatchRelative().AtParent().AtName("azure_private_hosted_zone_attachment_config"),
 							}...),
 						},
 					},

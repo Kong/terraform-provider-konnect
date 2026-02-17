@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 691ddc6f1a262d721669152eef3f1e03
+  docChecksum: f1498e5faab4762f3c7b3875bae752d4
   docVersion: 2.0.0
   speakeasyVersion: 1.665.0
   generationVersion: 2.767.2
@@ -1168,7 +1168,9 @@ generatedFiles:
   - internal/provider/types/aws_vpc_peering_gateway_response.go
   - internal/provider/types/azure.go
   - internal/provider/types/azure_functions_plugin_config.go
+  - internal/provider/types/azure_private_dns_resolver_attachment_config.go
   - internal/provider/types/azure_private_dns_resolver_response.go
+  - internal/provider/types/azure_private_hosted_zone_attachment_config.go
   - internal/provider/types/azure_transit_gateway.go
   - internal/provider/types/azure_transit_gateway_response.go
   - internal/provider/types/azure_vhub_peering_gateway.go
@@ -2436,7 +2438,9 @@ generatedFiles:
   - internal/sdk/models/shared/awsvpcpeeringgatewayattachmentconfig.go
   - internal/sdk/models/shared/awsvpcpeeringgatewayresponse.go
   - internal/sdk/models/shared/azurefunctionsplugin.go
+  - internal/sdk/models/shared/azureprivatednsresolverattachmentconfig.go
   - internal/sdk/models/shared/azureprivatednsresolverresponse.go
+  - internal/sdk/models/shared/azureprivatehostedzoneattachmentconfig.go
   - internal/sdk/models/shared/azuretransitgateway.go
   - internal/sdk/models/shared/azuretransitgatewayresponse.go
   - internal/sdk/models/shared/azurevhubpeeringgateway.go
@@ -3396,10 +3400,10 @@ examples:
   create-app-auth-strategy:
     speakeasy-default-create-app-auth-strategy:
       requestBody:
-        application/json: {"name": "<value>", "display_name": "Theo_Boyer", "strategy_type": "key_auth", "configs": {"key-auth": {"key_names": null, "ttl": null}}}
+        application/json: {"name": "<value>", "display_name": "Theo_Boyer", "strategy_type": "key_auth", "configs": {"key-auth": {"key_names": null, "ttl": {"value": 254892, "unit": "years"}}}}
       responses:
         "201":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "display_name": "Joana.Mann", "strategy_type": "key_auth", "configs": {"key-auth": {"key_names": null, "ttl": null}}, "active": true, "dcr_provider": {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "provider_type": "http"}, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "display_name": "Joana.Mann", "strategy_type": "key_auth", "configs": {"key-auth": {"key_names": null, "ttl": {"value": 254892, "unit": "years"}}}, "active": true, "dcr_provider": {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "provider_type": "http"}, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 927156, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
         "401":
@@ -3413,7 +3417,7 @@ examples:
           authStrategyId: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
       responses:
         "200":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "display_name": "Abdiel_Pacocha", "strategy_type": "key_auth", "configs": {"key-auth": {"key_names": null, "ttl": null}}, "active": true, "dcr_provider": {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "provider_type": "curity"}, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "display_name": "Abdiel_Pacocha", "strategy_type": "key_auth", "configs": {"key-auth": {"key_names": null, "ttl": {"value": 240216, "unit": "days"}}}, "active": true, "dcr_provider": {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "provider_type": "curity"}, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -3429,7 +3433,7 @@ examples:
         application/json: {"labels": {"env": "test"}, "dcr_provider_id": null}
       responses:
         "200":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "display_name": "Ora_MacGyver-Waelchi", "strategy_type": "key_auth", "configs": {"key-auth": {"key_names": null, "ttl": null}}, "active": false, "dcr_provider": {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "provider_type": "azureAd"}, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "display_name": "Ora_MacGyver-Waelchi", "strategy_type": "key_auth", "configs": {"key-auth": {"key_names": null, "ttl": {"value": 431390, "unit": "years"}}}, "active": false, "dcr_provider": {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "provider_type": "azureAd"}, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 360314, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": null, "source": "body"}]}
         "401":
@@ -13382,7 +13386,7 @@ examples:
         path:
           networkId: "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
       requestBody:
-        application/json: {"name": "us-east-2 private dns", "private_dns_attachment_config": {"kind": "aws-private-hosted-zone-attachment", "hosted_zone_id": "<id>"}}
+        application/json: {"name": "us-east-2 private dns", "private_dns_attachment_config": {"kind": "azure-private-hosted-zone-attachment", "domain_name": "example.private.azure.com", "peer_tenant_id": "87654321-4321-4321-4321-210987654321", "peer_subscription_id": "12345678-1234-1234-1234-123456789012", "peer_resource_group_id": "customer-dns-rg", "peer_vnet_link_name": "kong-vnet-link"}}
       responses:
         "201":
           application/json: {"id": "1850820b-c69f-4a2a-b9be-bbcdbc5cd618", "state": "error", "state_metadata": {"reported_status": "ERROR", "reason": "Failed to create Private Dns due to invalid Cloud Provider configuration.\n"}, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "us-east-2 private dns", "private_dns_attachment_config": {"kind": "aws-private-hosted-zone-attachment", "hosted_zone_id": "<id>"}}
@@ -15697,7 +15701,7 @@ examples:
           eventGatewayListenerId: "60c0a875-ed08-4959-a810-6710c2d37b44"
           policyId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"type": "forward_to_virtual_cluster", "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"type": "sni", "broker_host_format": null}}
+        application/json: {"type": "forward_to_virtual_cluster", "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"type": "sni", "broker_host_format": {"type": "per_cluster_suffix"}}}
       responses:
         "200":
           application/json: {"type": "<value>", "description": "", "enabled": true, "labels": {"env": "test"}, "id": "a964a42a-4b6e-438a-847c-79680f3800f7", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -15776,7 +15780,7 @@ examples:
           gatewayId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           eventGatewayListenerId: "cc1f804b-d05f-4c4b-ae7c-01ee08446fa7"
       requestBody:
-        application/json: {"type": "forward_to_virtual_cluster", "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"type": "sni", "broker_host_format": null}}
+        application/json: {"type": "forward_to_virtual_cluster", "description": "", "enabled": true, "labels": {"env": "test"}, "config": {"type": "sni", "broker_host_format": {"type": "per_cluster_suffix"}}}
       responses:
         "201":
           application/json: {"type": "<value>", "description": "", "enabled": true, "labels": {"env": "test"}, "id": "55a6e644-871e-4251-8b96-3dbbcc3555cf", "config": {}, "created_at": "2022-11-04T20:10:06.927Z", "parent_policy_id": null, "updated_at": "2022-11-04T20:10:06.927Z"}

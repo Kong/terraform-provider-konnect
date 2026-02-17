@@ -11,15 +11,19 @@ import (
 type PrivateDNSAttachmentConfigType string
 
 const (
-	PrivateDNSAttachmentConfigTypeAwsPrivateHostedZoneAttachmentConfig  PrivateDNSAttachmentConfigType = "AwsPrivateHostedZoneAttachmentConfig"
-	PrivateDNSAttachmentConfigTypeAwsPrivateDNSResolverAttachmentConfig PrivateDNSAttachmentConfigType = "AwsPrivateDnsResolverAttachmentConfig"
-	PrivateDNSAttachmentConfigTypeGcpPrivateHostedZoneAttachmentConfig  PrivateDNSAttachmentConfigType = "GcpPrivateHostedZoneAttachmentConfig"
+	PrivateDNSAttachmentConfigTypeAwsPrivateHostedZoneAttachmentConfig    PrivateDNSAttachmentConfigType = "AwsPrivateHostedZoneAttachmentConfig"
+	PrivateDNSAttachmentConfigTypeAwsPrivateDNSResolverAttachmentConfig   PrivateDNSAttachmentConfigType = "AwsPrivateDnsResolverAttachmentConfig"
+	PrivateDNSAttachmentConfigTypeGcpPrivateHostedZoneAttachmentConfig    PrivateDNSAttachmentConfigType = "GcpPrivateHostedZoneAttachmentConfig"
+	PrivateDNSAttachmentConfigTypeAzurePrivateHostedZoneAttachmentConfig  PrivateDNSAttachmentConfigType = "AzurePrivateHostedZoneAttachmentConfig"
+	PrivateDNSAttachmentConfigTypeAzurePrivateDNSResolverAttachmentConfig PrivateDNSAttachmentConfigType = "AzurePrivateDnsResolverAttachmentConfig"
 )
 
 type PrivateDNSAttachmentConfig struct {
-	AwsPrivateHostedZoneAttachmentConfig  *AwsPrivateHostedZoneAttachmentConfig  `queryParam:"inline,name=private_dns_attachment_config"`
-	AwsPrivateDNSResolverAttachmentConfig *AwsPrivateDNSResolverAttachmentConfig `queryParam:"inline,name=private_dns_attachment_config"`
-	GcpPrivateHostedZoneAttachmentConfig  *GcpPrivateHostedZoneAttachmentConfig  `queryParam:"inline,name=private_dns_attachment_config"`
+	AwsPrivateHostedZoneAttachmentConfig    *AwsPrivateHostedZoneAttachmentConfig    `queryParam:"inline,name=private_dns_attachment_config"`
+	AwsPrivateDNSResolverAttachmentConfig   *AwsPrivateDNSResolverAttachmentConfig   `queryParam:"inline,name=private_dns_attachment_config"`
+	GcpPrivateHostedZoneAttachmentConfig    *GcpPrivateHostedZoneAttachmentConfig    `queryParam:"inline,name=private_dns_attachment_config"`
+	AzurePrivateHostedZoneAttachmentConfig  *AzurePrivateHostedZoneAttachmentConfig  `queryParam:"inline,name=private_dns_attachment_config"`
+	AzurePrivateDNSResolverAttachmentConfig *AzurePrivateDNSResolverAttachmentConfig `queryParam:"inline,name=private_dns_attachment_config"`
 
 	Type PrivateDNSAttachmentConfigType
 }
@@ -51,11 +55,37 @@ func CreatePrivateDNSAttachmentConfigGcpPrivateHostedZoneAttachmentConfig(gcpPri
 	}
 }
 
+func CreatePrivateDNSAttachmentConfigAzurePrivateHostedZoneAttachmentConfig(azurePrivateHostedZoneAttachmentConfig AzurePrivateHostedZoneAttachmentConfig) PrivateDNSAttachmentConfig {
+	typ := PrivateDNSAttachmentConfigTypeAzurePrivateHostedZoneAttachmentConfig
+
+	return PrivateDNSAttachmentConfig{
+		AzurePrivateHostedZoneAttachmentConfig: &azurePrivateHostedZoneAttachmentConfig,
+		Type:                                   typ,
+	}
+}
+
+func CreatePrivateDNSAttachmentConfigAzurePrivateDNSResolverAttachmentConfig(azurePrivateDNSResolverAttachmentConfig AzurePrivateDNSResolverAttachmentConfig) PrivateDNSAttachmentConfig {
+	typ := PrivateDNSAttachmentConfigTypeAzurePrivateDNSResolverAttachmentConfig
+
+	return PrivateDNSAttachmentConfig{
+		AzurePrivateDNSResolverAttachmentConfig: &azurePrivateDNSResolverAttachmentConfig,
+		Type:                                    typ,
+	}
+}
+
 func (u *PrivateDNSAttachmentConfig) UnmarshalJSON(data []byte) error {
 
 	var candidates []utils.UnionCandidate
 
 	// Collect all valid candidates
+	var azurePrivateHostedZoneAttachmentConfig AzurePrivateHostedZoneAttachmentConfig = AzurePrivateHostedZoneAttachmentConfig{}
+	if err := utils.UnmarshalJSON(data, &azurePrivateHostedZoneAttachmentConfig, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  PrivateDNSAttachmentConfigTypeAzurePrivateHostedZoneAttachmentConfig,
+			Value: &azurePrivateHostedZoneAttachmentConfig,
+		})
+	}
+
 	var gcpPrivateHostedZoneAttachmentConfig GcpPrivateHostedZoneAttachmentConfig = GcpPrivateHostedZoneAttachmentConfig{}
 	if err := utils.UnmarshalJSON(data, &gcpPrivateHostedZoneAttachmentConfig, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
@@ -80,6 +110,14 @@ func (u *PrivateDNSAttachmentConfig) UnmarshalJSON(data []byte) error {
 		})
 	}
 
+	var azurePrivateDNSResolverAttachmentConfig AzurePrivateDNSResolverAttachmentConfig = AzurePrivateDNSResolverAttachmentConfig{}
+	if err := utils.UnmarshalJSON(data, &azurePrivateDNSResolverAttachmentConfig, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  PrivateDNSAttachmentConfigTypeAzurePrivateDNSResolverAttachmentConfig,
+			Value: &azurePrivateDNSResolverAttachmentConfig,
+		})
+	}
+
 	if len(candidates) == 0 {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for PrivateDNSAttachmentConfig", string(data))
 	}
@@ -93,6 +131,9 @@ func (u *PrivateDNSAttachmentConfig) UnmarshalJSON(data []byte) error {
 	// Set the union type and value based on the best candidate
 	u.Type = best.Type.(PrivateDNSAttachmentConfigType)
 	switch best.Type {
+	case PrivateDNSAttachmentConfigTypeAzurePrivateHostedZoneAttachmentConfig:
+		u.AzurePrivateHostedZoneAttachmentConfig = best.Value.(*AzurePrivateHostedZoneAttachmentConfig)
+		return nil
 	case PrivateDNSAttachmentConfigTypeGcpPrivateHostedZoneAttachmentConfig:
 		u.GcpPrivateHostedZoneAttachmentConfig = best.Value.(*GcpPrivateHostedZoneAttachmentConfig)
 		return nil
@@ -101,6 +142,9 @@ func (u *PrivateDNSAttachmentConfig) UnmarshalJSON(data []byte) error {
 		return nil
 	case PrivateDNSAttachmentConfigTypeAwsPrivateDNSResolverAttachmentConfig:
 		u.AwsPrivateDNSResolverAttachmentConfig = best.Value.(*AwsPrivateDNSResolverAttachmentConfig)
+		return nil
+	case PrivateDNSAttachmentConfigTypeAzurePrivateDNSResolverAttachmentConfig:
+		u.AzurePrivateDNSResolverAttachmentConfig = best.Value.(*AzurePrivateDNSResolverAttachmentConfig)
 		return nil
 	}
 
@@ -118,6 +162,14 @@ func (u PrivateDNSAttachmentConfig) MarshalJSON() ([]byte, error) {
 
 	if u.GcpPrivateHostedZoneAttachmentConfig != nil {
 		return utils.MarshalJSON(u.GcpPrivateHostedZoneAttachmentConfig, "", true)
+	}
+
+	if u.AzurePrivateHostedZoneAttachmentConfig != nil {
+		return utils.MarshalJSON(u.AzurePrivateHostedZoneAttachmentConfig, "", true)
+	}
+
+	if u.AzurePrivateDNSResolverAttachmentConfig != nil {
+		return utils.MarshalJSON(u.AzurePrivateDNSResolverAttachmentConfig, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type PrivateDNSAttachmentConfig: all fields are null")
