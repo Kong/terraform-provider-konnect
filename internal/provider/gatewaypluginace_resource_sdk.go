@@ -66,6 +66,8 @@ func (r *GatewayPluginAceResourceModel) RefreshFromSharedAcePlugin(ctx context.C
 
 							r.Config.RateLimiting.Redis.ClusterNodes = append(r.Config.RateLimiting.Redis.ClusterNodes, clusterNodes)
 						}
+					} else {
+						r.Config.RateLimiting.Redis.ClusterNodes = nil
 					}
 					r.Config.RateLimiting.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.RateLimiting.Redis.ConnectTimeout)
 					r.Config.RateLimiting.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.RateLimiting.Redis.ConnectionIsProxied)
@@ -89,6 +91,8 @@ func (r *GatewayPluginAceResourceModel) RefreshFromSharedAcePlugin(ctx context.C
 
 							r.Config.RateLimiting.Redis.SentinelNodes = append(r.Config.RateLimiting.Redis.SentinelNodes, sentinelNodes)
 						}
+					} else {
+						r.Config.RateLimiting.Redis.SentinelNodes = nil
 					}
 					r.Config.RateLimiting.Redis.SentinelPassword = types.StringPointerValue(resp.Config.RateLimiting.Redis.SentinelPassword)
 					if resp.Config.RateLimiting.Redis.SentinelRole != nil {
@@ -144,6 +148,8 @@ func (r *GatewayPluginAceResourceModel) RefreshFromSharedAcePlugin(ctx context.C
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -166,6 +172,8 @@ func (r *GatewayPluginAceResourceModel) RefreshFromSharedAcePlugin(ctx context.C
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

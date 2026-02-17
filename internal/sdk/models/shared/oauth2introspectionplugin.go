@@ -139,7 +139,7 @@ func (o Oauth2IntrospectionPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (o *Oauth2IntrospectionPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"authorization_value", "introspection_url"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -324,7 +324,7 @@ func (o Oauth2IntrospectionPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (o *Oauth2IntrospectionPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
 		return err
 	}
 	return nil

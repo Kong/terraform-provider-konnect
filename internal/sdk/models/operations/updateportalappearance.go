@@ -11,7 +11,7 @@ type UpdatePortalAppearanceRequest struct {
 	// The Portal identifier
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 	// Update a portal's appearance settings
-	V2PortalAppearance shared.V2PortalAppearance `request:"mediaType=application/json"`
+	V2UpdatePortalAppearanceRequest shared.V2UpdatePortalAppearanceRequest `request:"mediaType=application/json"`
 }
 
 func (u *UpdatePortalAppearanceRequest) GetPortalID() string {
@@ -21,11 +21,11 @@ func (u *UpdatePortalAppearanceRequest) GetPortalID() string {
 	return u.PortalID
 }
 
-func (u *UpdatePortalAppearanceRequest) GetV2PortalAppearance() shared.V2PortalAppearance {
+func (u *UpdatePortalAppearanceRequest) GetV2UpdatePortalAppearanceRequest() shared.V2UpdatePortalAppearanceRequest {
 	if u == nil {
-		return shared.V2PortalAppearance{}
+		return shared.V2UpdatePortalAppearanceRequest{}
 	}
-	return u.V2PortalAppearance
+	return u.V2UpdatePortalAppearanceRequest
 }
 
 type UpdatePortalAppearanceResponse struct {

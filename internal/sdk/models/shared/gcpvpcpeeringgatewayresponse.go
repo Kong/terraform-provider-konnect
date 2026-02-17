@@ -79,7 +79,7 @@ func (g GCPVPCPeeringGatewayResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GCPVPCPeeringGatewayResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"name", "dns_config", "transit_gateway_attachment_config", "id", "state", "entity_version", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
 		return err
 	}
 	return nil

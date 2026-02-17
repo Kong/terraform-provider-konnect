@@ -22,7 +22,7 @@ func (p PatchAWSTransitGatewayAWSTransitGateway) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PatchAWSTransitGatewayAWSTransitGateway) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"cidr_blocks"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -70,7 +70,7 @@ func (t TransitGatewayAttachmentConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TransitGatewayAttachmentConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"kind", "resource_config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -100,7 +100,7 @@ func (p PatchAWSResourceEndpointGatewayAWSResourceEndpointGateway) MarshalJSON()
 }
 
 func (p *PatchAWSResourceEndpointGatewayAWSResourceEndpointGateway) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"transit_gateway_attachment_config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -122,8 +122,8 @@ const (
 
 // PatchTransitGatewayRequest - Request schema for updating a transit gateway.
 type PatchTransitGatewayRequest struct {
-	PatchAWSResourceEndpointGatewayAWSResourceEndpointGateway *PatchAWSResourceEndpointGatewayAWSResourceEndpointGateway `queryParam:"inline,name=PatchTransitGatewayRequest"`
-	PatchAWSTransitGatewayAWSTransitGateway                   *PatchAWSTransitGatewayAWSTransitGateway                   `queryParam:"inline,name=PatchTransitGatewayRequest"`
+	PatchAWSResourceEndpointGatewayAWSResourceEndpointGateway *PatchAWSResourceEndpointGatewayAWSResourceEndpointGateway `queryParam:"inline" union:"member"`
+	PatchAWSTransitGatewayAWSTransitGateway                   *PatchAWSTransitGatewayAWSTransitGateway                   `queryParam:"inline" union:"member"`
 
 	Type PatchTransitGatewayRequestType
 }
@@ -172,7 +172,7 @@ func (u *PatchTransitGatewayRequest) UnmarshalJSON(data []byte) error {
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for PatchTransitGatewayRequest", string(data))
 	}

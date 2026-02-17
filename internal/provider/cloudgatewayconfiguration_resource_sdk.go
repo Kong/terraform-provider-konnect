@@ -51,6 +51,8 @@ func (r *CloudGatewayConfigurationResourceModel) RefreshFromSharedConfigurationM
 				for _, v := range dataplaneGroupsItem.EgressIPAddresses {
 					dataplaneGroups.EgressIPAddresses = append(dataplaneGroups.EgressIPAddresses, types.StringValue(v))
 				}
+			} else {
+				dataplaneGroups.EgressIPAddresses = nil
 			}
 			dataplaneGroups.Environment = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
 
@@ -68,6 +70,8 @@ func (r *CloudGatewayConfigurationResourceModel) RefreshFromSharedConfigurationM
 				for _, v := range dataplaneGroupsItem.PrivateIPAddresses {
 					dataplaneGroups.PrivateIPAddresses = append(dataplaneGroups.PrivateIPAddresses, types.StringValue(v))
 				}
+			} else {
+				dataplaneGroups.PrivateIPAddresses = nil
 			}
 			dataplaneGroups.Provider = types.StringValue(string(dataplaneGroupsItem.Provider))
 			dataplaneGroups.Region = types.StringValue(dataplaneGroupsItem.Region)

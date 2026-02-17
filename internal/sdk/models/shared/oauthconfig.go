@@ -23,7 +23,7 @@ func (o OauthConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OauthConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"type", "client_id", "client_secret", "authorization_endpoint", "token_endpoint"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
 		return err
 	}
 	return nil

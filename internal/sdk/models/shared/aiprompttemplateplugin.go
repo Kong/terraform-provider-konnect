@@ -81,7 +81,7 @@ func (a *AiPromptTemplatePluginPartials) GetPath() *string {
 type Templates struct {
 	// Unique name for the template, can be called with `{template://NAME}`
 	Name string `json:"name"`
-	// Template string for this request, supports mustache-style `{{"{{"}}placeholders}}`
+	// Template string for this request, supports mustache-style `{{placeholders}}`
 	Template string `json:"template"`
 }
 
@@ -115,7 +115,7 @@ func (a AiPromptTemplatePluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiPromptTemplatePluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"templates"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -265,7 +265,7 @@ func (a AiPromptTemplatePlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiPromptTemplatePlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

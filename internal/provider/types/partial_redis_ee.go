@@ -7,10 +7,10 @@ import (
 )
 
 type PartialRedisEe struct {
-	Config    PartialRedisEeConfig `tfsdk:"config"`
-	CreatedAt types.Int64          `tfsdk:"created_at"`
-	ID        types.String         `tfsdk:"id"`
-	Name      types.String         `tfsdk:"name"`
-	Tags      []types.String       `tfsdk:"tags"`
-	UpdatedAt types.Int64          `tfsdk:"updated_at"`
+	Config    *PartialRedisEeConfig `tfsdk:"config"`
+	CreatedAt types.Int64           `tfsdk:"created_at"`
+	ID        types.String          `tfsdk:"id"`
+	Name      types.String          `tfsdk:"name"`
+	Tags      []types.String        `tfsdk:"tags"`
+	UpdatedAt types.Int64           `tfsdk:"updated_at"`
 }

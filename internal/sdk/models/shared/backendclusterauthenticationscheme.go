@@ -18,9 +18,9 @@ const (
 )
 
 type BackendClusterAuthenticationScheme struct {
-	BackendClusterAuthenticationAnonymous *BackendClusterAuthenticationAnonymous `queryParam:"inline,name=BackendClusterAuthenticationScheme"`
-	BackendClusterAuthenticationSaslPlain *BackendClusterAuthenticationSaslPlain `queryParam:"inline,name=BackendClusterAuthenticationScheme"`
-	BackendClusterAuthenticationSaslScram *BackendClusterAuthenticationSaslScram `queryParam:"inline,name=BackendClusterAuthenticationScheme"`
+	BackendClusterAuthenticationAnonymous *BackendClusterAuthenticationAnonymous `queryParam:"inline" union:"member"`
+	BackendClusterAuthenticationSaslPlain *BackendClusterAuthenticationSaslPlain `queryParam:"inline" union:"member"`
+	BackendClusterAuthenticationSaslScram *BackendClusterAuthenticationSaslScram `queryParam:"inline" union:"member"`
 
 	Type BackendClusterAuthenticationSchemeType
 }

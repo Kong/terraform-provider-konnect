@@ -7,7 +7,7 @@ import (
 )
 
 type EventGatewayEncryptConfig struct {
-	EncryptionKey EncryptionKey  `tfsdk:"encryption_key"`
+	EncryptionKey *EncryptionKey `tfsdk:"encryption_key"`
 	FailureMode   types.String   `tfsdk:"failure_mode"`
 	PartOfRecord  []types.String `tfsdk:"part_of_record"`
 }

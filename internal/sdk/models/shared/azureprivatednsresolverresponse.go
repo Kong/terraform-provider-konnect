@@ -73,7 +73,7 @@ func (a AzurePrivateDNSResolverResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AzurePrivateDNSResolverResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "state", "state_metadata", "entity_version", "created_at", "updated_at", "name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

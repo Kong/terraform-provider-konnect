@@ -15,6 +15,7 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) RefreshFromSharedHeaderCertAu
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.HeaderCertAuthPluginConfig{}
 		r.Config.AllowPartialChain = types.BoolPointerValue(resp.Config.AllowPartialChain)
 		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
 		if resp.Config.AuthenticatedGroupBy != nil {
@@ -87,6 +88,8 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) RefreshFromSharedHeaderCertAu
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -109,6 +112,8 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) RefreshFromSharedHeaderCertAu
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

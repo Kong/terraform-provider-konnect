@@ -41,7 +41,7 @@ func (b BackendCluster) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BackendCluster) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"id", "name", "authentication", "bootstrap_servers", "tls", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
 		return err
 	}
 	return nil

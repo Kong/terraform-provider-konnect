@@ -683,7 +683,7 @@ func (g GraphqlRateLimitingAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GraphqlRateLimitingAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"limit", "sync_rate", "window_size"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -889,7 +889,7 @@ func (g GraphqlRateLimitingAdvancedPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GraphqlRateLimitingAdvancedPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
 		return err
 	}
 	return nil

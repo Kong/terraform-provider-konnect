@@ -36,7 +36,7 @@ func (e EventGatewayStaticKey) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayStaticKey) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"name", "id", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
 		return err
 	}
 	return nil

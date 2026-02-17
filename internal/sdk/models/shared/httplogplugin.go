@@ -279,7 +279,7 @@ func (h HTTPLogPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (h *HTTPLogPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &h, "", false, []string{"http_endpoint"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -490,7 +490,7 @@ func (h HTTPLogPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (h *HTTPLogPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &h, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
 		return err
 	}
 	return nil

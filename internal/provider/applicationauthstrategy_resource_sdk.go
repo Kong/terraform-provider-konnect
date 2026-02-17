@@ -22,11 +22,15 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			r.KeyAuth = &tfTypes.AppAuthStrategyKeyAuthRequest{}
 			r.KeyAuth.Active = types.BoolValue(resp.AppAuthStrategyKeyAuthResponse.Active)
 			r.Active = r.KeyAuth.Active
+			r.KeyAuth.Configs = &tfTypes.AppAuthStrategyKeyAuthRequestConfigs{}
+			r.KeyAuth.Configs.KeyAuth = &tfTypes.AppAuthStrategyConfigKeyAuth{}
 			if resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames != nil {
 				r.KeyAuth.Configs.KeyAuth.KeyNames = make([]types.String, 0, len(resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames))
 				for _, v := range resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames {
 					r.KeyAuth.Configs.KeyAuth.KeyNames = append(r.KeyAuth.Configs.KeyAuth.KeyNames, types.StringValue(v))
 				}
+			} else {
+				r.KeyAuth.Configs.KeyAuth.KeyNames = nil
 			}
 			if resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.TTL == nil {
 				r.KeyAuth.Configs.KeyAuth.TTL = nil
@@ -64,6 +68,8 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			r.OpenidConnect = &tfTypes.AppAuthStrategyOpenIDConnectRequest{}
 			r.OpenidConnect.Active = types.BoolValue(resp.AppAuthStrategyOpenIDConnectResponse.Active)
 			r.Active = r.OpenidConnect.Active
+			r.OpenidConnect.Configs = &tfTypes.AppAuthStrategyOpenIDConnectRequestConfigs{}
+			r.OpenidConnect.Configs.OpenidConnect = &tfTypes.AppAuthStrategyConfigOpenIDConnect{}
 			if resp.AppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.AdditionalProperties == nil {
 				r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties = jsontypes.NewNormalizedNull()
 			} else {
@@ -245,7 +251,7 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 		for authMethodsIndex := range r.OpenidConnect.Configs.OpenidConnect.AuthMethods {
 			authMethods = append(authMethods, r.OpenidConnect.Configs.OpenidConnect.AuthMethods[authMethodsIndex].ValueString())
 		}
-		var additionalProperties interface{}
+		var additionalProperties map[string]any
 		if !r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties.IsUnknown() && !r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties.IsNull() {
 			_ = json.Unmarshal([]byte(r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties.ValueString()), &additionalProperties)
 		}

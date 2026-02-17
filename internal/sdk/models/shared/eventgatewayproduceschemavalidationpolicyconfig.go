@@ -18,8 +18,8 @@ const (
 
 // EventGatewayProduceSchemaValidationPolicyConfig - The configuration of the produce schema validation policy.
 type EventGatewayProduceSchemaValidationPolicyConfig struct {
-	EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig *EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig `queryParam:"inline,name=EventGatewayProduceSchemaValidationPolicyConfig"`
-	EventGatewayProduceSchemaValidationPolicyJSONConfig           *EventGatewayProduceSchemaValidationPolicyJSONConfig           `queryParam:"inline,name=EventGatewayProduceSchemaValidationPolicyConfig"`
+	EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig *EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig `queryParam:"inline" union:"member"`
+	EventGatewayProduceSchemaValidationPolicyJSONConfig           *EventGatewayProduceSchemaValidationPolicyJSONConfig           `queryParam:"inline" union:"member"`
 
 	Type EventGatewayProduceSchemaValidationPolicyConfigType
 }

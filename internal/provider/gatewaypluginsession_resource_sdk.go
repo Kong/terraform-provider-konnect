@@ -26,6 +26,8 @@ func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(ctx c
 				for _, v := range resp.Config.Bind {
 					r.Config.Bind = append(r.Config.Bind, types.StringValue(string(v)))
 				}
+			} else {
+				r.Config.Bind = nil
 			}
 			r.Config.CookieDomain = types.StringPointerValue(resp.Config.CookieDomain)
 			r.Config.CookieHTTPOnly = types.BoolPointerValue(resp.Config.CookieHTTPOnly)
@@ -55,12 +57,16 @@ func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(ctx c
 				for _, v := range resp.Config.RequestHeaders {
 					r.Config.RequestHeaders = append(r.Config.RequestHeaders, types.StringValue(string(v)))
 				}
+			} else {
+				r.Config.RequestHeaders = nil
 			}
 			if resp.Config.ResponseHeaders != nil {
 				r.Config.ResponseHeaders = make([]types.String, 0, len(resp.Config.ResponseHeaders))
 				for _, v := range resp.Config.ResponseHeaders {
 					r.Config.ResponseHeaders = append(r.Config.ResponseHeaders, types.StringValue(string(v)))
 				}
+			} else {
+				r.Config.ResponseHeaders = nil
 			}
 			r.Config.RollingTimeout = types.Float64PointerValue(resp.Config.RollingTimeout)
 			r.Config.Secret = types.StringPointerValue(resp.Config.Secret)
@@ -111,6 +117,8 @@ func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(ctx c
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -133,6 +141,8 @@ func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(ctx c
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

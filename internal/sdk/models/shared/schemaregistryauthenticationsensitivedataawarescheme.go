@@ -17,7 +17,7 @@ const (
 
 // SchemaRegistryAuthenticationSensitiveDataAwareScheme - The authentication configuration for the schema registry.
 type SchemaRegistryAuthenticationSensitiveDataAwareScheme struct {
-	SchemaRegistryAuthenticationBasicSensitiveDataAware *SchemaRegistryAuthenticationBasicSensitiveDataAware `queryParam:"inline,name=SchemaRegistryAuthenticationSensitiveDataAwareScheme"`
+	SchemaRegistryAuthenticationBasicSensitiveDataAware *SchemaRegistryAuthenticationBasicSensitiveDataAware `queryParam:"inline" union:"member"`
 
 	Type SchemaRegistryAuthenticationSensitiveDataAwareSchemeType
 }

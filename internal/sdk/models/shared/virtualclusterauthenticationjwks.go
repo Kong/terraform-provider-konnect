@@ -21,7 +21,7 @@ func (v VirtualClusterAuthenticationJWKS) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VirtualClusterAuthenticationJWKS) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"endpoint"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
 		return err
 	}
 	return nil

@@ -314,7 +314,7 @@ func (c ConfluentConsumePluginOauth2) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfluentConsumePluginOauth2) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"token_endpoint"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -798,7 +798,7 @@ func (c ConfluentConsumePluginConfigOauth2) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfluentConsumePluginConfigOauth2) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"token_endpoint"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1221,7 +1221,7 @@ func (c ConfluentConsumePluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfluentConsumePluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"cluster_api_key", "cluster_api_secret", "topics"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1475,7 +1475,7 @@ func (c ConfluentConsumePlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfluentConsumePlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
 	return nil

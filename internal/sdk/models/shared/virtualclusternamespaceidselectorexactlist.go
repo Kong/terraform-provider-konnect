@@ -15,7 +15,7 @@ func (e ExactList) MarshalJSON() ([]byte, error) {
 }
 
 func (e *ExactList) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"value"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -38,7 +38,7 @@ func (v VirtualClusterNamespaceIDSelectorExactList) MarshalJSON() ([]byte, error
 }
 
 func (v *VirtualClusterNamespaceIDSelectorExactList) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
 		return err
 	}
 	return nil

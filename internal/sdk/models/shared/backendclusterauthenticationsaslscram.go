@@ -56,7 +56,7 @@ func (b BackendClusterAuthenticationSaslScram) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BackendClusterAuthenticationSaslScram) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"type", "algorithm", "username", "password"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
 		return err
 	}
 	return nil

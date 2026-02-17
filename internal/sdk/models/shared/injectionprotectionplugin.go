@@ -355,7 +355,7 @@ func (i InjectionProtectionPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (i *InjectionProtectionPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
 		return err
 	}
 	return nil

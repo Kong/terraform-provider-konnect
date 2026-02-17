@@ -401,7 +401,7 @@ func (x XMLThreatProtectionPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (x *XMLThreatProtectionPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &x, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &x, "", false, nil); err != nil {
 		return err
 	}
 	return nil

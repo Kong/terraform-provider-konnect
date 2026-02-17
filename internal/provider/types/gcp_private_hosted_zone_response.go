@@ -7,12 +7,12 @@ import (
 )
 
 type GcpPrivateHostedZoneResponse struct {
-	CreatedAt                  types.String                         `tfsdk:"created_at"`
-	EntityVersion              types.Int64                          `tfsdk:"entity_version"`
-	ID                         types.String                         `tfsdk:"id"`
-	Name                       types.String                         `tfsdk:"name"`
-	PrivateDNSAttachmentConfig GcpPrivateHostedZoneAttachmentConfig `tfsdk:"private_dns_attachment_config"`
-	State                      types.String                         `tfsdk:"state"`
-	StateMetadata              CustomDomainStateMetadata            `tfsdk:"state_metadata"`
-	UpdatedAt                  types.String                         `tfsdk:"updated_at"`
+	CreatedAt                  types.String                          `tfsdk:"created_at"`
+	EntityVersion              types.Int64                           `tfsdk:"entity_version"`
+	ID                         types.String                          `tfsdk:"id"`
+	Name                       types.String                          `tfsdk:"name"`
+	PrivateDNSAttachmentConfig *GcpPrivateHostedZoneAttachmentConfig `tfsdk:"private_dns_attachment_config"`
+	State                      types.String                          `tfsdk:"state"`
+	StateMetadata              *CustomDomainStateMetadata            `tfsdk:"state_metadata"`
+	UpdatedAt                  types.String                          `tfsdk:"updated_at"`
 }

@@ -44,7 +44,7 @@ func (e EventGatewayInfo) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayInfo) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"id", "name", "created_at", "updated_at", "nodes_total", "virtual_clusters_total", "min_runtime_version", "version"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
 		return err
 	}
 	return nil

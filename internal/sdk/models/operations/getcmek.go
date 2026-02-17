@@ -18,7 +18,7 @@ func (g GetCmekRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetCmekRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"cmekId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
 		return err
 	}
 	return nil

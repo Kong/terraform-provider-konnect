@@ -26,12 +26,16 @@ func (r *GatewayPluginCorsResourceModel) RefreshFromSharedCorsPlugin(ctx context
 				for _, v := range resp.Config.ExposedHeaders {
 					r.Config.ExposedHeaders = append(r.Config.ExposedHeaders, types.StringValue(v))
 				}
+			} else {
+				r.Config.ExposedHeaders = nil
 			}
 			if resp.Config.Headers != nil {
 				r.Config.Headers = make([]types.String, 0, len(resp.Config.Headers))
 				for _, v := range resp.Config.Headers {
 					r.Config.Headers = append(r.Config.Headers, types.StringValue(v))
 				}
+			} else {
+				r.Config.Headers = nil
 			}
 			r.Config.MaxAge = types.Float64PointerValue(resp.Config.MaxAge)
 			r.Config.Methods = make([]types.String, 0, len(resp.Config.Methods))
@@ -43,6 +47,8 @@ func (r *GatewayPluginCorsResourceModel) RefreshFromSharedCorsPlugin(ctx context
 				for _, v := range resp.Config.Origins {
 					r.Config.Origins = append(r.Config.Origins, types.StringValue(v))
 				}
+			} else {
+				r.Config.Origins = nil
 			}
 			r.Config.PreflightContinue = types.BoolPointerValue(resp.Config.PreflightContinue)
 			r.Config.PrivateNetwork = types.BoolPointerValue(resp.Config.PrivateNetwork)
@@ -86,6 +92,8 @@ func (r *GatewayPluginCorsResourceModel) RefreshFromSharedCorsPlugin(ctx context
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -108,6 +116,8 @@ func (r *GatewayPluginCorsResourceModel) RefreshFromSharedCorsPlugin(ctx context
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

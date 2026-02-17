@@ -284,7 +284,7 @@ func (m MockingPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MockingPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil

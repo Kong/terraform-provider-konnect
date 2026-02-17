@@ -173,7 +173,7 @@ func (a AiAwsGuardrailsPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiAwsGuardrailsPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"aws_region", "guardrails_id", "guardrails_version"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -400,7 +400,7 @@ func (a AiAwsGuardrailsPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiAwsGuardrailsPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

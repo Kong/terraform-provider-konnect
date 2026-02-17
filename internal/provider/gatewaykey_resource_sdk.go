@@ -38,6 +38,8 @@ func (r *GatewayKeyResourceModel) RefreshFromSharedKey(ctx context.Context, resp
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 		r.X5t = types.StringPointerValue(resp.X5t)

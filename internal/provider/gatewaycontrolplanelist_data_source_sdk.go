@@ -22,6 +22,7 @@ func (r *GatewayControlPlaneListDataSourceModel) RefreshFromSharedListControlPla
 		for _, dataItem := range resp.Data {
 			var data tfTypes.ControlPlane
 
+			data.Config = &tfTypes.ControlPlaneConfig{}
 			data.Config.AuthType = types.StringValue(string(dataItem.Config.AuthType))
 			data.Config.CloudGateway = types.BoolValue(dataItem.Config.CloudGateway)
 			data.Config.ClusterType = types.StringValue(string(dataItem.Config.ClusterType))

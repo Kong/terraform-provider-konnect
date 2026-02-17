@@ -15,6 +15,7 @@ func (r *GatewayPluginProxyCacheResourceModel) RefreshFromSharedProxyCachePlugin
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.ProxyCachePluginConfig{}
 		r.Config.CacheControl = types.BoolPointerValue(resp.Config.CacheControl)
 		r.Config.CacheTTL = types.Int64PointerValue(resp.Config.CacheTTL)
 		r.Config.ContentType = make([]types.String, 0, len(resp.Config.ContentType))
@@ -51,12 +52,16 @@ func (r *GatewayPluginProxyCacheResourceModel) RefreshFromSharedProxyCachePlugin
 			for _, v := range resp.Config.VaryHeaders {
 				r.Config.VaryHeaders = append(r.Config.VaryHeaders, types.StringValue(v))
 			}
+		} else {
+			r.Config.VaryHeaders = nil
 		}
 		if resp.Config.VaryQueryParams != nil {
 			r.Config.VaryQueryParams = make([]types.String, 0, len(resp.Config.VaryQueryParams))
 			for _, v := range resp.Config.VaryQueryParams {
 				r.Config.VaryQueryParams = append(r.Config.VaryQueryParams, types.StringValue(v))
 			}
+		} else {
+			r.Config.VaryQueryParams = nil
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -109,6 +114,8 @@ func (r *GatewayPluginProxyCacheResourceModel) RefreshFromSharedProxyCachePlugin
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -131,6 +138,8 @@ func (r *GatewayPluginProxyCacheResourceModel) RefreshFromSharedProxyCachePlugin
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

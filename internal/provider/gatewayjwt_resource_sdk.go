@@ -29,6 +29,8 @@ func (r *GatewayJWTResourceModel) RefreshFromSharedJwt(ctx context.Context, resp
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 	}
 

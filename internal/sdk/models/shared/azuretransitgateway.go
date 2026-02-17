@@ -21,7 +21,7 @@ func (a AzureTransitGateway) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AzureTransitGateway) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "transit_gateway_attachment_config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

@@ -15,6 +15,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) RefreshFromSharedLdapAuthAd
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.LdapAuthAdvancedPluginConfig{}
 		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
 		r.Config.Attribute = types.StringValue(resp.Config.Attribute)
 		r.Config.BaseDn = types.StringValue(resp.Config.BaseDn)
@@ -33,6 +34,8 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) RefreshFromSharedLdapAuthAd
 			for _, v := range resp.Config.GroupsRequired {
 				r.Config.GroupsRequired = append(r.Config.GroupsRequired, types.StringValue(v))
 			}
+		} else {
+			r.Config.GroupsRequired = nil
 		}
 		r.Config.HeaderType = types.StringPointerValue(resp.Config.HeaderType)
 		r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
@@ -85,6 +88,8 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) RefreshFromSharedLdapAuthAd
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -107,6 +112,8 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) RefreshFromSharedLdapAuthAd
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

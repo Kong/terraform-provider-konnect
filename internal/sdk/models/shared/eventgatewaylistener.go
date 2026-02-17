@@ -49,7 +49,7 @@ func (e EventGatewayListener) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayListener) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"id", "name", "addresses", "ports", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
 		return err
 	}
 	return nil

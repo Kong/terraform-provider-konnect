@@ -18,7 +18,7 @@ func (e EventGatewayModifyHeaderRemoveAction) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewayModifyHeaderRemoveAction) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"op", "key"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
 		return err
 	}
 	return nil

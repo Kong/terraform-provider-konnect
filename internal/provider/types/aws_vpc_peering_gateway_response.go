@@ -7,14 +7,14 @@ import (
 )
 
 type AwsVpcPeeringGatewayResponse struct {
-	CidrBlocks                     []types.String                       `tfsdk:"cidr_blocks"`
-	CreatedAt                      types.String                         `tfsdk:"created_at"`
-	DNSConfig                      []TransitGatewayDNSConfig            `tfsdk:"dns_config"`
-	EntityVersion                  types.Int64                          `tfsdk:"entity_version"`
-	ID                             types.String                         `tfsdk:"id"`
-	Name                           types.String                         `tfsdk:"name"`
-	State                          types.String                         `tfsdk:"state"`
-	StateMetadata                  *CustomDomainStateMetadata           `tfsdk:"state_metadata"`
-	TransitGatewayAttachmentConfig AwsVpcPeeringGatewayAttachmentConfig `tfsdk:"transit_gateway_attachment_config"`
-	UpdatedAt                      types.String                         `tfsdk:"updated_at"`
+	CidrBlocks                     []types.String                        `tfsdk:"cidr_blocks"`
+	CreatedAt                      types.String                          `tfsdk:"created_at"`
+	DNSConfig                      []TransitGatewayDNSConfig             `tfsdk:"dns_config"`
+	EntityVersion                  types.Int64                           `tfsdk:"entity_version"`
+	ID                             types.String                          `tfsdk:"id"`
+	Name                           types.String                          `tfsdk:"name"`
+	State                          types.String                          `tfsdk:"state"`
+	StateMetadata                  *CustomDomainStateMetadata            `tfsdk:"state_metadata"`
+	TransitGatewayAttachmentConfig *AwsVpcPeeringGatewayAttachmentConfig `tfsdk:"transit_gateway_attachment_config"`
+	UpdatedAt                      types.String                          `tfsdk:"updated_at"`
 }

@@ -46,7 +46,7 @@ func (i InvalidParameterDependentItem) MarshalJSON() ([]byte, error) {
 }
 
 func (i *InvalidParameterDependentItem) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, []string{"field", "reason"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
 		return err
 	}
 	return nil

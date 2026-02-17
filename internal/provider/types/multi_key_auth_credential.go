@@ -10,7 +10,7 @@ type MultiKeyAuthCredential struct {
 	CreatedAt           types.String        `tfsdk:"created_at"`
 	ExpiresAt           types.String        `tfsdk:"expires_at"`
 	ID                  types.String        `tfsdk:"id"`
-	IntegrationInstance Portals             `tfsdk:"integration_instance"`
+	IntegrationInstance *Portals            `tfsdk:"integration_instance"`
 	MissingPermissions  []MissingPermission `tfsdk:"missing_permissions"`
 	Tainted             types.Bool          `tfsdk:"tainted"`
 }

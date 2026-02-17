@@ -26,7 +26,7 @@ func (m MeshControlPlane) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeshControlPlane) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"id", "name", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
 		return err
 	}
 	return nil

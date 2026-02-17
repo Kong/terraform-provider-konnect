@@ -38,19 +38,19 @@ type CloudGatewayNetworkResource struct {
 
 // CloudGatewayNetworkResourceModel describes the resource data model.
 type CloudGatewayNetworkResourceModel struct {
-	AvailabilityZones             []types.String                  `tfsdk:"availability_zones"`
-	CidrBlock                     types.String                    `tfsdk:"cidr_block"`
-	CloudGatewayProviderAccountID types.String                    `tfsdk:"cloud_gateway_provider_account_id"`
-	ConfigurationReferenceCount   types.Int64                     `tfsdk:"configuration_reference_count"`
-	CreatedAt                     types.String                    `tfsdk:"created_at"`
-	Default                       types.Bool                      `tfsdk:"default"`
-	EntityVersion                 types.Int64                     `tfsdk:"entity_version"`
-	ID                            types.String                    `tfsdk:"id"`
-	Name                          types.String                    `tfsdk:"name"`
-	ProviderMetadata              tfTypes.NetworkProviderMetadata `tfsdk:"provider_metadata"`
-	Region                        types.String                    `tfsdk:"region"`
-	TransitGatewayCount           types.Int64                     `tfsdk:"transit_gateway_count"`
-	UpdatedAt                     types.String                    `tfsdk:"updated_at"`
+	AvailabilityZones             []types.String                   `tfsdk:"availability_zones"`
+	CidrBlock                     types.String                     `tfsdk:"cidr_block"`
+	CloudGatewayProviderAccountID types.String                     `tfsdk:"cloud_gateway_provider_account_id"`
+	ConfigurationReferenceCount   types.Int64                      `tfsdk:"configuration_reference_count"`
+	CreatedAt                     types.String                     `tfsdk:"created_at"`
+	Default                       types.Bool                       `tfsdk:"default"`
+	EntityVersion                 types.Int64                      `tfsdk:"entity_version"`
+	ID                            types.String                     `tfsdk:"id"`
+	Name                          types.String                     `tfsdk:"name"`
+	ProviderMetadata              *tfTypes.NetworkProviderMetadata `tfsdk:"provider_metadata"`
+	Region                        types.String                     `tfsdk:"region"`
+	TransitGatewayCount           types.Int64                      `tfsdk:"transit_gateway_count"`
+	UpdatedAt                     types.String                     `tfsdk:"updated_at"`
 }
 
 func (r *CloudGatewayNetworkResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

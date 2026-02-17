@@ -81,7 +81,7 @@ func (f ForwardToClusterByPortMappingConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (f *ForwardToClusterByPortMappingConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"type", "destination", "advertised_host"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
 		return err
 	}
 	return nil

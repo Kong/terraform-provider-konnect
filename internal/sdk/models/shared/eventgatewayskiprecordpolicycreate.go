@@ -36,7 +36,7 @@ func (e EventGatewaySkipRecordPolicyCreate) MarshalJSON() ([]byte, error) {
 }
 
 func (e *EventGatewaySkipRecordPolicyCreate) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
 		return err
 	}
 	return nil

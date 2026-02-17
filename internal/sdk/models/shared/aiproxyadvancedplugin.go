@@ -1737,7 +1737,7 @@ func (a AiProxyAdvancedPluginConfigModel) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyAdvancedPluginConfigModel) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"provider"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1849,7 +1849,7 @@ func (t Targets) MarshalJSON() ([]byte, error) {
 }
 
 func (t *Targets) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"model", "route_type"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -2587,7 +2587,7 @@ func (v Vectordb) MarshalJSON() ([]byte, error) {
 }
 
 func (v *Vectordb) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"dimensions", "distance_metric", "strategy"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -2657,7 +2657,7 @@ func (a AiProxyAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"targets"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -2848,7 +2848,7 @@ func (a AiProxyAdvancedPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiProxyAdvancedPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil

@@ -346,7 +346,7 @@ func (k KafkaLogPluginOauth2) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaLogPluginOauth2) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"token_endpoint"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -868,7 +868,7 @@ func (k KafkaLogPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaLogPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"topic"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1122,7 +1122,7 @@ func (k KafkaLogPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaLogPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
 		return err
 	}
 	return nil

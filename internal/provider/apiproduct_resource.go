@@ -71,7 +71,7 @@ func (r *APIProductResource) Schema(ctx context.Context, req resource.SchemaRequ
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `The API product ID.`,
+				Description: `API product identifier`,
 			},
 			"labels": schema.MapAttribute{
 				Computed:    true,
@@ -89,9 +89,10 @@ func (r *APIProductResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			},
 			"portal_ids": schema.ListAttribute{
-				Required:    true,
-				ElementType: types.StringType,
-				Description: `The list of portal identifiers which this API product should be published to`,
+				Required:           true,
+				ElementType:        types.StringType,
+				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+				Description:        `The list of portal identifiers which this API product should be published to`,
 				Validators: []validator.List{
 					listvalidator.SizeAtLeast(0),
 					listvalidator.UniqueValues(),

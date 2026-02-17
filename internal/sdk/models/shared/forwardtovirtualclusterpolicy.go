@@ -18,8 +18,8 @@ const (
 
 // ForwardToVirtualClusterPolicyConfig - The configuration of the policy.
 type ForwardToVirtualClusterPolicyConfig struct {
-	ForwardToClusterBySNIConfig         *ForwardToClusterBySNIConfig         `queryParam:"inline,name=config"`
-	ForwardToClusterByPortMappingConfig *ForwardToClusterByPortMappingConfig `queryParam:"inline,name=config"`
+	ForwardToClusterBySNIConfig         *ForwardToClusterBySNIConfig         `queryParam:"inline" union:"member"`
+	ForwardToClusterByPortMappingConfig *ForwardToClusterByPortMappingConfig `queryParam:"inline" union:"member"`
 
 	Type ForwardToVirtualClusterPolicyConfigType
 }
@@ -120,7 +120,7 @@ func (f ForwardToVirtualClusterPolicy) MarshalJSON() ([]byte, error) {
 }
 
 func (f *ForwardToVirtualClusterPolicy) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"type", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
 		return err
 	}
 	return nil

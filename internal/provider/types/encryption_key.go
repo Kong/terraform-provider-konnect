@@ -3,6 +3,6 @@
 package types
 
 type EncryptionKey struct {
-	Aws    *EncryptionKeyAWS    `queryParam:"inline" tfsdk:"aws" tfPlanOnly:"true"`
-	Static *EncryptionKeyStatic `queryParam:"inline" tfsdk:"static" tfPlanOnly:"true"`
+	Aws    *EncryptionKeyAWS    `queryParam:"inline" tfsdk:"aws"`
+	Static *EncryptionKeyStatic `queryParam:"inline" tfsdk:"static"`
 }

@@ -54,7 +54,7 @@ func (d DeleteRealmRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DeleteRealmRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"realmId"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
 		return err
 	}
 	return nil
