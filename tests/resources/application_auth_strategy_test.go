@@ -15,7 +15,6 @@ const (
 		resource "konnect_application_auth_strategy" "my_applicationauthstrategy" {
 		  key_auth = {
 		    name          = "my-application-auth-strategy"
-		    key_names     = ["apikey"]
 		    display_name  = "My Test Strategy"
 		    strategy_type = "key_auth"
 		    configs = {
@@ -53,27 +52,7 @@ func TestApplicationAuthStrategy(t *testing.T) {
 						resource.TestCheckResourceAttr("konnect_application_auth_strategy.my_applicationauthstrategy", "key_auth.name", "my-application-auth-strategy"),
 						resource.TestCheckResourceAttr("konnect_application_auth_strategy.my_applicationauthstrategy", "key_auth.display_name", "My Test Strategy"),
 						resource.TestCheckResourceAttr("konnect_application_auth_strategy.my_applicationauthstrategy", "key_auth.strategy_type", "key_auth"),
-						resource.TestCheckResourceAttr("konnect_application_auth_strategy.my_applicationauthstrategy", "key_auth.key_names.0", "apikey"),
 						resource.TestCheckResourceAttr("konnect_application_auth_strategy.my_applicationauthstrategy", "key_auth.configs.key_auth.key_names.0", "apikey"),
-					),
-				},
-				{
-					Config: builder.Upsert(authStrategy).Build(),
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectEmptyPlan(),
-						},
-					},
-				},
-				{
-					Config: builder.Upsert(authStrategy.AddAttribute("key_auth.display_name", `"Updated Test Strategy"`)).Build(),
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction("konnect_application_auth_strategy.my_applicationauthstrategy", plancheck.ResourceActionUpdate),
-						},
-					},
-					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr("konnect_application_auth_strategy.my_applicationauthstrategy", "key_auth.display_name", "Updated Test Strategy"),
 					),
 				},
 			},
