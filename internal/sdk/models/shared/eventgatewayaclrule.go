@@ -75,7 +75,7 @@ type EventGatewayACLRule struct {
 	Action Action `json:"action"`
 	// Types of Kafka operations to match against. Note that not every operation can apply to every resource type.
 	Operations []EventGatewayACLOperation `json:"operations"`
-	// If any of these entries match, the resource name matches for this rule.
+	// If any of these entries match, the resource name matches for this rule. A maximum of 50 entries are allowed.
 	ResourceNames []EventGatewayACLResourceName `json:"resource_names"`
 }
 
