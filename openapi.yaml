@@ -18513,6 +18513,7 @@ paths:
                   description: Indicates that the data should not be sent to the webhook.
                   type: boolean
                   const: false
+                  nullable: false
       responses:
         '200':
           $ref: '#/components/responses/AuditLogWebhook'
@@ -19904,6 +19905,7 @@ components:
       enum:
         - aws
         - azure
+        - gcp
       title: Provider Name
       x-speakeasy-unknown-values: allow
     ConfigurationDataPlaneGroupAutoscale:
@@ -20876,6 +20878,49 @@ components:
         - updated_at
         - name
         - private_dns_attachment_config
+    AzurePrivateHostedZoneAttachmentConfig:
+      type: object
+      properties:
+        kind:
+          enum:
+            - azure-private-hosted-zone-attachment
+          title: Azure Private Hosted Zone Type
+        domain_name:
+          description: Customer's Azure Private DNS Zone Name.
+          type: string
+          title: Domain Name
+        peer_tenant_id:
+          description: Customer's Azure Tenant ID.
+          type: string
+          title: Peer Tenant Id
+        peer_subscription_id:
+          description: Customer's Azure Subscription ID.
+          type: string
+          title: Peer Subscription Id
+        peer_resource_group_id:
+          description: Customer's Azure Resource Group ID.
+          type: string
+          title: Peer Resource Group Id
+        peer_vnet_link_name:
+          description: Customer's Azure VNet Link Name.
+          type: string
+          title: Peer VNet Link Name
+      example:
+        kind: azure-private-hosted-zone-attachment
+        domain_name: example.private.azure.com
+        peer_tenant_id: 87654321-4321-4321-4321-210987654321
+        peer_subscription_id: 12345678-1234-1234-1234-123456789012
+        peer_resource_group_id: customer-dns-rg
+        peer_vnet_link_name: kong-vnet-link
+      additionalProperties: false
+      required:
+        - kind
+        - domain_name
+        - peer_tenant_id
+        - peer_subscription_id
+        - peer_resource_group_id
+        - peer_vnet_link_name
+      title: Azure Private Hosted Zone Attachment Config
     AwsPrivateDnsResolverResponse:
       type: object
       properties:
@@ -20995,6 +21040,8 @@ components:
           x-speakeasy-param-suppress-computed-diff: true
         name:
           $ref: '#/components/schemas/PrivateDnsName'
+        private_dns_attachment_config:
+          $ref: '#/components/schemas/AzurePrivateDnsResolverAttachmentConfig'
       required:
         - id
         - state
@@ -21003,6 +21050,7 @@ components:
         - created_at
         - updated_at
         - name
+        - private_dns_attachment_config
     AwsPrivateDnsResolverAttachmentConfig:
       type: object
       properties:
@@ -21017,6 +21065,29 @@ components:
         - kind
         - dns_config
       title: AWS Private DNS Resolver Attachment Config
+    AzurePrivateDnsResolverAttachmentConfig:
+      type: object
+      properties:
+        kind:
+          enum:
+            - azure-outbound-resolver
+          title: Azure Private DNS Resolver Type
+        dns_config:
+          $ref: '#/components/schemas/PrivateDnsResolverConfig'
+      example:
+        kind: azure-outbound-resolver
+        dns_config:
+          global.api.konghq.com:
+            remote_dns_server_ip_addresses:
+              - 10.0.0.2
+          us.api.konghq.dev:
+            remote_dns_server_ip_addresses:
+              - 10.0.0.8
+      additionalProperties: false
+      required:
+        - kind
+        - dns_config
+      title: Azure Private DNS Resolver Attachment Config
     PrivateDnsResolverConfig:
       description: |
         Object that contains mappings from proxied internal domains to remote DNS server IP address for a Private DNS Resolver.
@@ -21078,6 +21149,8 @@ components:
             - $ref: '#/components/schemas/AwsPrivateHostedZoneAttachmentConfig'
             - $ref: '#/components/schemas/AwsPrivateDnsResolverAttachmentConfig'
             - $ref: '#/components/schemas/GcpPrivateHostedZoneAttachmentConfig'
+            - $ref: '#/components/schemas/AzurePrivateHostedZoneAttachmentConfig'
+            - $ref: '#/components/schemas/AzurePrivateDnsResolverAttachmentConfig'
       title: CreatePrivateDnsRequest
     AwsTransitGatewayResponse:
       type: object
@@ -22801,8 +22874,7 @@ components:
         ttl:
           description: Default maximum Time-To-Live for keys created under this strategy.
           type: object
-          default: null
-          nullable: true
+          nullable: false
           properties:
             value:
               type: integer
@@ -22817,7 +22889,6 @@ components:
           required:
             - value
             - unit
-          x-speakeasy-param-computed: false
       additionalProperties: false
       title: AppAuthStrategyConfigKeyAuth
     PartialAppAuthStrategyConfigOpenIDConnect:
@@ -28433,8 +28504,6 @@ components:
             - `per_cluster_suffix` is the default and allocates one level in the hierarchy for virtual clusters: `broker-{node_id}.{virtual_cluster}.{sni_suffix}`
             - `shared_suffix` puts all brokers from every virtual clusters into the same level: `broker-{node_id}-{virtual_cluster}.{sni_suffix}`. This makes it easier to manage certificates for this listener.
           type: object
-          default: null
-          nullable: true
           properties:
             type:
               type: string
@@ -29089,7 +29158,7 @@ components:
           items:
             $ref: '#/components/schemas/EventGatewayACLOperation'
         resource_names:
-          description: 'If any of these entries match, the resource name matches for this rule.'
+          description: 'If any of these entries match, the resource name matches for this rule. A maximum of 50 entries are allowed.'
           type: array
           items:
             $ref: '#/components/schemas/EventGatewayACLResourceName'
