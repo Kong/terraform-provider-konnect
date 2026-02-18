@@ -13,6 +13,7 @@ type ProviderName string
 const (
 	ProviderNameAws   ProviderName = "aws"
 	ProviderNameAzure ProviderName = "azure"
+	ProviderNameGcp   ProviderName = "gcp"
 )
 
 func (e ProviderName) ToPointer() *ProviderName {
@@ -27,6 +28,8 @@ func (e *ProviderName) UnmarshalJSON(data []byte) error {
 	case "aws":
 		fallthrough
 	case "azure":
+		fallthrough
+	case "gcp":
 		*e = ProviderName(v)
 		return nil
 	default:

@@ -17,9 +17,15 @@ resource "konnect_cloud_gateway_private_dns" "my_cloudgatewayprivatedns" {
   name       = "us-east-2 private dns"
   network_id = "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
   private_dns_attachment_config = {
-    aws_private_hosted_zone_attachment_config = {
-      hosted_zone_id = "...my_hosted_zone_id..."
-      kind           = "aws-private-hosted-zone-attachment"
+    aws_private_dns_resolver_attachment_config = {
+      dns_config = {
+        key = {
+          remote_dns_server_ip_addresses = [
+            "10.0.0.2",
+          ]
+        }
+      }
+      kind = "aws-outbound-resolver"
     }
   }
 }
@@ -62,6 +68,8 @@ Optional:
 
 - `aws_private_dns_resolver_attachment_config` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--private_dns_attachment_config--aws_private_dns_resolver_attachment_config))
 - `aws_private_hosted_zone_attachment_config` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--private_dns_attachment_config--aws_private_hosted_zone_attachment_config))
+- `azure_private_dns_resolver_attachment_config` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--private_dns_attachment_config--azure_private_dns_resolver_attachment_config))
+- `azure_private_hosted_zone_attachment_config` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--private_dns_attachment_config--azure_private_hosted_zone_attachment_config))
 - `gcp_private_hosted_zone_attachment_config` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--private_dns_attachment_config--gcp_private_hosted_zone_attachment_config))
 
 <a id="nestedatt--private_dns_attachment_config--aws_private_dns_resolver_attachment_config"></a>
@@ -88,6 +96,36 @@ Required:
 
 - `hosted_zone_id` (String) AWS Hosted Zone to create attachment to. Requires replacement if changed.
 - `kind` (String) must be "aws-private-hosted-zone-attachment"; Requires replacement if changed.
+
+
+<a id="nestedatt--private_dns_attachment_config--azure_private_dns_resolver_attachment_config"></a>
+### Nested Schema for `private_dns_attachment_config.azure_private_dns_resolver_attachment_config`
+
+Required:
+
+- `dns_config` (Attributes) Object that contains mappings from proxied internal domains to remote DNS server IP address for a Private DNS Resolver. Requires replacement if changed. (see [below for nested schema](#nestedatt--private_dns_attachment_config--azure_private_dns_resolver_attachment_config--dns_config))
+- `kind` (String) must be "azure-outbound-resolver"; Requires replacement if changed.
+
+<a id="nestedatt--private_dns_attachment_config--azure_private_dns_resolver_attachment_config--dns_config"></a>
+### Nested Schema for `private_dns_attachment_config.azure_private_dns_resolver_attachment_config.dns_config`
+
+Required:
+
+- `remote_dns_server_ip_addresses` (List of String) IP addresses of remote DNS servers used by the Private DNS Resolver for DNS resolution. Requires replacement if changed.
+
+
+
+<a id="nestedatt--private_dns_attachment_config--azure_private_hosted_zone_attachment_config"></a>
+### Nested Schema for `private_dns_attachment_config.azure_private_hosted_zone_attachment_config`
+
+Required:
+
+- `domain_name` (String) Customer's Azure Private DNS Zone Name. Requires replacement if changed.
+- `kind` (String) must be "azure-private-hosted-zone-attachment"; Requires replacement if changed.
+- `peer_resource_group_id` (String) Customer's Azure Resource Group ID. Requires replacement if changed.
+- `peer_subscription_id` (String) Customer's Azure Subscription ID. Requires replacement if changed.
+- `peer_tenant_id` (String) Customer's Azure Tenant ID. Requires replacement if changed.
+- `peer_vnet_link_name` (String) Customer's Azure VNet Link Name. Requires replacement if changed.
 
 
 <a id="nestedatt--private_dns_attachment_config--gcp_private_hosted_zone_attachment_config"></a>
@@ -202,6 +240,7 @@ Read-Only:
 Private DNS.
 - `id` (String)
 - `name` (String) Human-readable name of the Private DNS.
+- `private_dns_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--azure_private_dns_resolver_response--private_dns_attachment_config))
 - `state` (String) The current state of the Private DNS attachment. Possible values:
 - `created` - The attachment has been created but is not attached to Private DNS.
 - `initializing` - The attachment is in the process of being initialized and is setting up necessary resources.
@@ -212,6 +251,23 @@ Private DNS.
 - `terminated` - The attachment has been fully deleted and is no longer available.
 - `state_metadata` (Attributes) Metadata describing the backing state of the Private Dns and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--azure_private_dns_resolver_response--state_metadata))
 - `updated_at` (String) An RFC-3339 timestamp representation of Private DNS update date.
+
+<a id="nestedatt--azure_private_dns_resolver_response--private_dns_attachment_config"></a>
+### Nested Schema for `azure_private_dns_resolver_response.private_dns_attachment_config`
+
+Read-Only:
+
+- `dns_config` (Attributes) Object that contains mappings from proxied internal domains to remote DNS server IP address for a Private DNS Resolver. (see [below for nested schema](#nestedatt--azure_private_dns_resolver_response--private_dns_attachment_config--dns_config))
+- `kind` (String)
+
+<a id="nestedatt--azure_private_dns_resolver_response--private_dns_attachment_config--dns_config"></a>
+### Nested Schema for `azure_private_dns_resolver_response.private_dns_attachment_config.dns_config`
+
+Read-Only:
+
+- `remote_dns_server_ip_addresses` (List of String) IP addresses of remote DNS servers used by the Private DNS Resolver for DNS resolution.
+
+
 
 <a id="nestedatt--azure_private_dns_resolver_response--state_metadata"></a>
 ### Nested Schema for `azure_private_dns_resolver_response.state_metadata`

@@ -65,7 +65,8 @@ type AzurePrivateDNSResolverResponse struct {
 	// An RFC-3339 timestamp representation of Private DNS update date.
 	UpdatedAt time.Time `json:"updated_at"`
 	// Human-readable name of the Private DNS.
-	Name string `json:"name"`
+	Name                       string                                  `json:"name"`
+	PrivateDNSAttachmentConfig AzurePrivateDNSResolverAttachmentConfig `json:"private_dns_attachment_config"`
 }
 
 func (a AzurePrivateDNSResolverResponse) MarshalJSON() ([]byte, error) {
@@ -73,7 +74,7 @@ func (a AzurePrivateDNSResolverResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AzurePrivateDNSResolverResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "state", "state_metadata", "entity_version", "created_at", "updated_at", "name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "state", "state_metadata", "entity_version", "created_at", "updated_at", "name", "private_dns_attachment_config"}); err != nil {
 		return err
 	}
 	return nil
@@ -126,4 +127,11 @@ func (a *AzurePrivateDNSResolverResponse) GetName() string {
 		return ""
 	}
 	return a.Name
+}
+
+func (a *AzurePrivateDNSResolverResponse) GetPrivateDNSAttachmentConfig() AzurePrivateDNSResolverAttachmentConfig {
+	if a == nil {
+		return AzurePrivateDNSResolverAttachmentConfig{}
+	}
+	return a.PrivateDNSAttachmentConfig
 }
