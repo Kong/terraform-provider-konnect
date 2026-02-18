@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // ReplaceCMEK - CMEK to be replaced
 type ReplaceCMEK struct {
 	// The Amazon Resource Name (ARN) of the Key Management Service (KMS) key to use for encryption and decryption. We recommend using one multi-region key (MRK) per Konnect region to enhance security and compliance, while also supporting failover to other AWS regions.
@@ -10,6 +14,17 @@ type ReplaceCMEK struct {
 	Name string `json:"name"`
 	// An optional description of the CMEK.
 	Description *string `json:"description,omitempty"`
+}
+
+func (r ReplaceCMEK) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ReplaceCMEK) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"key_arn", "name"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *ReplaceCMEK) GetKeyArn() string {

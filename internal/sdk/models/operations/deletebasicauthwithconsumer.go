@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"net/http"
 )
 
@@ -13,6 +14,17 @@ type DeleteBasicAuthWithConsumerRequest struct {
 	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
 	// ID of the Basic-auth credential to lookup
 	BasicAuthID string `pathParam:"style=simple,explode=false,name=BasicAuthId"`
+}
+
+func (d DeleteBasicAuthWithConsumerRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteBasicAuthWithConsumerRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities", "BasicAuthId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteBasicAuthWithConsumerRequest) GetControlPlaneID() string {
@@ -43,6 +55,17 @@ type DeleteBasicAuthWithConsumerResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+}
+
+func (d DeleteBasicAuthWithConsumerResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteBasicAuthWithConsumerResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteBasicAuthWithConsumerResponse) GetContentType() string {

@@ -12,6 +12,17 @@ type AiPromptGuardPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (a AiPromptGuardPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptGuardPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiPromptGuardPluginAfter) GetAccess() []string {
 	if a == nil {
 		return nil
@@ -21,6 +32,17 @@ func (a *AiPromptGuardPluginAfter) GetAccess() []string {
 
 type AiPromptGuardPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (a AiPromptGuardPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptGuardPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiPromptGuardPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (a *AiPromptGuardPluginBefore) GetAccess() []string {
 type AiPromptGuardPluginOrdering struct {
 	After  *AiPromptGuardPluginAfter  `json:"after,omitempty"`
 	Before *AiPromptGuardPluginBefore `json:"before,omitempty"`
+}
+
+func (a AiPromptGuardPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptGuardPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiPromptGuardPluginOrdering) GetAfter() *AiPromptGuardPluginAfter {
@@ -55,6 +88,17 @@ type AiPromptGuardPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (a AiPromptGuardPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptGuardPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiPromptGuardPluginPartials) GetID() *string {
@@ -241,6 +285,17 @@ type AiPromptGuardPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiPromptGuardPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptGuardPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiPromptGuardPluginConsumer) GetID() *string {
 	if a == nil {
 		return nil
@@ -251,6 +306,17 @@ func (a *AiPromptGuardPluginConsumer) GetID() *string {
 // AiPromptGuardPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type AiPromptGuardPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiPromptGuardPluginConsumerGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptGuardPluginConsumerGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiPromptGuardPluginConsumerGroup) GetID() *string {
@@ -297,6 +363,17 @@ type AiPromptGuardPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiPromptGuardPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptGuardPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiPromptGuardPluginRoute) GetID() *string {
 	if a == nil {
 		return nil
@@ -307,6 +384,17 @@ func (a *AiPromptGuardPluginRoute) GetID() *string {
 // AiPromptGuardPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type AiPromptGuardPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiPromptGuardPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptGuardPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiPromptGuardPluginService) GetID() *string {

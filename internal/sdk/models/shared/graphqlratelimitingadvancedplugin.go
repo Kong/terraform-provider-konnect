@@ -12,6 +12,17 @@ type GraphqlRateLimitingAdvancedPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (g GraphqlRateLimitingAdvancedPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GraphqlRateLimitingAdvancedPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (g *GraphqlRateLimitingAdvancedPluginAfter) GetAccess() []string {
 	if g == nil {
 		return nil
@@ -21,6 +32,17 @@ func (g *GraphqlRateLimitingAdvancedPluginAfter) GetAccess() []string {
 
 type GraphqlRateLimitingAdvancedPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (g GraphqlRateLimitingAdvancedPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GraphqlRateLimitingAdvancedPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GraphqlRateLimitingAdvancedPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (g *GraphqlRateLimitingAdvancedPluginBefore) GetAccess() []string {
 type GraphqlRateLimitingAdvancedPluginOrdering struct {
 	After  *GraphqlRateLimitingAdvancedPluginAfter  `json:"after,omitempty"`
 	Before *GraphqlRateLimitingAdvancedPluginBefore `json:"before,omitempty"`
+}
+
+func (g GraphqlRateLimitingAdvancedPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GraphqlRateLimitingAdvancedPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GraphqlRateLimitingAdvancedPluginOrdering) GetAfter() *GraphqlRateLimitingAdvancedPluginAfter {
@@ -55,6 +88,17 @@ type GraphqlRateLimitingAdvancedPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (g GraphqlRateLimitingAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GraphqlRateLimitingAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GraphqlRateLimitingAdvancedPluginPartials) GetID() *string {
@@ -792,6 +836,17 @@ type GraphqlRateLimitingAdvancedPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (g GraphqlRateLimitingAdvancedPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GraphqlRateLimitingAdvancedPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (g *GraphqlRateLimitingAdvancedPluginConsumer) GetID() *string {
 	if g == nil {
 		return nil
@@ -836,6 +891,17 @@ type GraphqlRateLimitingAdvancedPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (g GraphqlRateLimitingAdvancedPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GraphqlRateLimitingAdvancedPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (g *GraphqlRateLimitingAdvancedPluginRoute) GetID() *string {
 	if g == nil {
 		return nil
@@ -846,6 +912,17 @@ func (g *GraphqlRateLimitingAdvancedPluginRoute) GetID() *string {
 // GraphqlRateLimitingAdvancedPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type GraphqlRateLimitingAdvancedPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (g GraphqlRateLimitingAdvancedPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GraphqlRateLimitingAdvancedPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GraphqlRateLimitingAdvancedPluginService) GetID() *string {

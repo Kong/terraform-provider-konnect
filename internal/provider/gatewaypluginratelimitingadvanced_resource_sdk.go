@@ -15,17 +15,22 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.RateLimitingAdvancedPluginConfig{}
 		if resp.Config.CompoundIdentifier != nil {
 			r.Config.CompoundIdentifier = make([]types.String, 0, len(resp.Config.CompoundIdentifier))
 			for _, v := range resp.Config.CompoundIdentifier {
 				r.Config.CompoundIdentifier = append(r.Config.CompoundIdentifier, types.StringValue(string(v)))
 			}
+		} else {
+			r.Config.CompoundIdentifier = nil
 		}
 		if resp.Config.ConsumerGroups != nil {
 			r.Config.ConsumerGroups = make([]types.String, 0, len(resp.Config.ConsumerGroups))
 			for _, v := range resp.Config.ConsumerGroups {
 				r.Config.ConsumerGroups = append(r.Config.ConsumerGroups, types.StringValue(v))
 			}
+		} else {
+			r.Config.ConsumerGroups = nil
 		}
 		r.Config.DictionaryName = types.StringPointerValue(resp.Config.DictionaryName)
 		r.Config.DisablePenalty = types.BoolPointerValue(resp.Config.DisablePenalty)
@@ -83,6 +88,8 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 
 					r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes)
 				}
+			} else {
+				r.Config.Redis.ClusterNodes = nil
 			}
 			r.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Redis.ConnectTimeout)
 			r.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Redis.ConnectionIsProxied)
@@ -111,6 +118,8 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 
 					r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes)
 				}
+			} else {
+				r.Config.Redis.SentinelNodes = nil
 			}
 			r.Config.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Redis.SentinelPassword)
 			if resp.Config.Redis.SentinelRole != nil {
@@ -200,6 +209,8 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -222,6 +233,8 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

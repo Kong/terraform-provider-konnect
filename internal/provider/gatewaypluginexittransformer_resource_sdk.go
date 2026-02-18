@@ -15,6 +15,7 @@ func (r *GatewayPluginExitTransformerResourceModel) RefreshFromSharedExitTransfo
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.ExitTransformerPluginConfig{}
 		r.Config.Functions = make([]types.String, 0, len(resp.Config.Functions))
 		for _, v := range resp.Config.Functions {
 			r.Config.Functions = append(r.Config.Functions, types.StringValue(v))
@@ -66,6 +67,8 @@ func (r *GatewayPluginExitTransformerResourceModel) RefreshFromSharedExitTransfo
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -88,6 +91,8 @@ func (r *GatewayPluginExitTransformerResourceModel) RefreshFromSharedExitTransfo
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

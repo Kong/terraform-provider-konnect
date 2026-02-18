@@ -39,6 +39,8 @@ func (r *TeamListDataSourceModel) RefreshFromSharedTeamCollection(ctx context.Co
 
 				r.Data = append(r.Data, data)
 			}
+		} else {
+			r.Data = nil
 		}
 	}
 

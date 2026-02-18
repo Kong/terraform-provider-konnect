@@ -24,6 +24,8 @@ func (r *GatewayPluginACLResourceModel) RefreshFromSharedACLPlugin(ctx context.C
 				for _, v := range resp.Config.Allow {
 					r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
 				}
+			} else {
+				r.Config.Allow = nil
 			}
 			r.Config.AlwaysUseAuthenticatedGroups = types.BoolPointerValue(resp.Config.AlwaysUseAuthenticatedGroups)
 			if resp.Config.Deny != nil {
@@ -31,6 +33,8 @@ func (r *GatewayPluginACLResourceModel) RefreshFromSharedACLPlugin(ctx context.C
 				for _, v := range resp.Config.Deny {
 					r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
 				}
+			} else {
+				r.Config.Deny = nil
 			}
 			r.Config.HideGroupsHeader = types.BoolPointerValue(resp.Config.HideGroupsHeader)
 			r.Config.IncludeConsumerGroups = types.BoolPointerValue(resp.Config.IncludeConsumerGroups)
@@ -74,6 +78,8 @@ func (r *GatewayPluginACLResourceModel) RefreshFromSharedACLPlugin(ctx context.C
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -96,6 +102,8 @@ func (r *GatewayPluginACLResourceModel) RefreshFromSharedACLPlugin(ctx context.C
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

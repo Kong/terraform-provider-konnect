@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -16,6 +17,17 @@ type DeleteSystemAccountsIDAccessTokensIDRequest struct {
 	AccountID string `pathParam:"style=simple,explode=false,name=accountId"`
 	// ID of the system account access token.
 	TokenID string `pathParam:"style=simple,explode=false,name=tokenId"`
+}
+
+func (d DeleteSystemAccountsIDAccessTokensIDRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteSystemAccountsIDAccessTokensIDRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"accountId", "tokenId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteSystemAccountsIDAccessTokensIDRequest) GetAccountID() string {
@@ -43,6 +55,17 @@ type DeleteSystemAccountsIDAccessTokensIDResponse struct {
 	UnauthorizedError *shared.UnauthorizedError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (d DeleteSystemAccountsIDAccessTokensIDResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteSystemAccountsIDAccessTokensIDResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteSystemAccountsIDAccessTokensIDResponse) GetContentType() string {

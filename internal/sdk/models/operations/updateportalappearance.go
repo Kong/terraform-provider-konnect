@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,7 +12,18 @@ type UpdatePortalAppearanceRequest struct {
 	// The Portal identifier
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 	// Update a portal's appearance settings
-	V2PortalAppearance shared.V2PortalAppearance `request:"mediaType=application/json"`
+	V2UpdatePortalAppearanceRequest shared.V2UpdatePortalAppearanceRequest `request:"mediaType=application/json"`
+}
+
+func (u UpdatePortalAppearanceRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdatePortalAppearanceRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"portalId", "V2UpdatePortalAppearanceRequest"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdatePortalAppearanceRequest) GetPortalID() string {
@@ -21,11 +33,11 @@ func (u *UpdatePortalAppearanceRequest) GetPortalID() string {
 	return u.PortalID
 }
 
-func (u *UpdatePortalAppearanceRequest) GetV2PortalAppearance() shared.V2PortalAppearance {
+func (u *UpdatePortalAppearanceRequest) GetV2UpdatePortalAppearanceRequest() shared.V2UpdatePortalAppearanceRequest {
 	if u == nil {
-		return shared.V2PortalAppearance{}
+		return shared.V2UpdatePortalAppearanceRequest{}
 	}
-	return u.V2PortalAppearance
+	return u.V2UpdatePortalAppearanceRequest
 }
 
 type UpdatePortalAppearanceResponse struct {
@@ -45,6 +57,17 @@ type UpdatePortalAppearanceResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (u UpdatePortalAppearanceResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdatePortalAppearanceResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdatePortalAppearanceResponse) GetContentType() string {

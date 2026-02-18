@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type CreateRouteRouteExpressionRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Description of the new Route for creation
 	RouteExpression shared.RouteExpression `request:"mediaType=application/json"`
+}
+
+func (c CreateRouteRouteExpressionRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateRouteRouteExpressionRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "RouteExpression"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateRouteRouteExpressionRequest) GetControlPlaneID() string {
@@ -39,6 +51,17 @@ type CreateRouteRouteExpressionResponse struct {
 	RouteExpression *shared.RouteExpression
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (c CreateRouteRouteExpressionResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateRouteRouteExpressionResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateRouteRouteExpressionResponse) GetContentType() string {

@@ -15,6 +15,7 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) RefreshFromSharedProxyCac
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.ProxyCacheAdvancedPluginConfig{}
 		r.Config.BypassOnErr = types.BoolPointerValue(resp.Config.BypassOnErr)
 		r.Config.CacheControl = types.BoolPointerValue(resp.Config.CacheControl)
 		r.Config.CacheTTL = types.Int64PointerValue(resp.Config.CacheTTL)
@@ -66,6 +67,8 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) RefreshFromSharedProxyCac
 
 					r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes)
 				}
+			} else {
+				r.Config.Redis.ClusterNodes = nil
 			}
 			r.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Redis.ConnectTimeout)
 			r.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Redis.ConnectionIsProxied)
@@ -89,6 +92,8 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) RefreshFromSharedProxyCac
 
 					r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes)
 				}
+			} else {
+				r.Config.Redis.SentinelNodes = nil
 			}
 			r.Config.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Redis.SentinelPassword)
 			if resp.Config.Redis.SentinelRole != nil {
@@ -125,12 +130,16 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) RefreshFromSharedProxyCac
 			for _, v := range resp.Config.VaryHeaders {
 				r.Config.VaryHeaders = append(r.Config.VaryHeaders, types.StringValue(v))
 			}
+		} else {
+			r.Config.VaryHeaders = nil
 		}
 		if resp.Config.VaryQueryParams != nil {
 			r.Config.VaryQueryParams = make([]types.String, 0, len(resp.Config.VaryQueryParams))
 			for _, v := range resp.Config.VaryQueryParams {
 				r.Config.VaryQueryParams = append(r.Config.VaryQueryParams, types.StringValue(v))
 			}
+		} else {
+			r.Config.VaryQueryParams = nil
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -183,6 +192,8 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) RefreshFromSharedProxyCac
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -205,6 +216,8 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) RefreshFromSharedProxyCac
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

@@ -10,6 +10,6 @@ type Callouts struct {
 	Cache     *RequestCalloutPluginCache `tfsdk:"cache"`
 	DependsOn []types.String             `tfsdk:"depends_on"`
 	Name      types.String               `tfsdk:"name"`
-	Request   Request                    `tfsdk:"request"`
+	Request   *Request                   `tfsdk:"request"`
 	Response  *Response                  `tfsdk:"response"`
 }

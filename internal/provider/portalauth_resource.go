@@ -38,19 +38,19 @@ type PortalAuthResource struct {
 
 // PortalAuthResourceModel describes the resource data model.
 type PortalAuthResourceModel struct {
-	BasicAuthEnabled       types.Bool                                                            `tfsdk:"basic_auth_enabled"`
-	IdpMappingEnabled      types.Bool                                                            `tfsdk:"idp_mapping_enabled"`
-	KonnectMappingEnabled  types.Bool                                                            `tfsdk:"konnect_mapping_enabled"`
-	OidcAuthEnabled        types.Bool                                                            `tfsdk:"oidc_auth_enabled"`
-	OidcClaimMappings      *tfTypes.PortalAuthenticationSettingsUpdateRequestPortalClaimMappings `tfsdk:"oidc_claim_mappings"`
-	OidcClientID           types.String                                                          `tfsdk:"oidc_client_id"`
-	OidcClientSecret       types.String                                                          `tfsdk:"oidc_client_secret"`
-	OidcConfig             *tfTypes.PortalOIDCConfig                                             `tfsdk:"oidc_config"`
-	OidcIssuer             types.String                                                          `tfsdk:"oidc_issuer"`
-	OidcScopes             []types.String                                                        `tfsdk:"oidc_scopes"`
-	OidcTeamMappingEnabled types.Bool                                                            `tfsdk:"oidc_team_mapping_enabled"`
-	PortalID               types.String                                                          `tfsdk:"portal_id"`
-	SamlAuthEnabled        types.Bool                                                            `tfsdk:"saml_auth_enabled"`
+	BasicAuthEnabled       types.Bool                                 `tfsdk:"basic_auth_enabled"`
+	IdpMappingEnabled      types.Bool                                 `tfsdk:"idp_mapping_enabled"`
+	KonnectMappingEnabled  types.Bool                                 `tfsdk:"konnect_mapping_enabled"`
+	OidcAuthEnabled        types.Bool                                 `tfsdk:"oidc_auth_enabled"`
+	OidcClaimMappings      *tfTypes.OIDCIdentityProviderClaimMappings `tfsdk:"oidc_claim_mappings"`
+	OidcClientID           types.String                               `tfsdk:"oidc_client_id"`
+	OidcClientSecret       types.String                               `tfsdk:"oidc_client_secret"`
+	OidcConfig             *tfTypes.PortalOIDCConfig                  `tfsdk:"oidc_config"`
+	OidcIssuer             types.String                               `tfsdk:"oidc_issuer"`
+	OidcScopes             []types.String                             `tfsdk:"oidc_scopes"`
+	OidcTeamMappingEnabled types.Bool                                 `tfsdk:"oidc_team_mapping_enabled"`
+	PortalID               types.String                               `tfsdk:"portal_id"`
+	SamlAuthEnabled        types.Bool                                 `tfsdk:"saml_auth_enabled"`
 }
 
 func (r *PortalAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -297,43 +297,6 @@ func (r *PortalAuthResource) Create(ctx context.Context, req resource.CreateRequ
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsGetPortalAuthenticationSettingsRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.PortalAuthSettings.GetPortalAuthenticationSettings(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.PortalAuthenticationSettingsResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPortalAuthenticationSettingsResponse(ctx, res1.PortalAuthenticationSettingsResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -438,43 +401,6 @@ func (r *PortalAuthResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedPortalAuthenticationSettingsResponse(ctx, res.PortalAuthenticationSettingsResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsGetPortalAuthenticationSettingsRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.PortalAuthSettings.GetPortalAuthenticationSettings(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.PortalAuthenticationSettingsResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPortalAuthenticationSettingsResponse(ctx, res1.PortalAuthenticationSettingsResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

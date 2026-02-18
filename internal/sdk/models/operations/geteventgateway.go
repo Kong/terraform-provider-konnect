@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -10,6 +11,17 @@ import (
 type GetEventGatewayRequest struct {
 	// The UUID of your Gateway.
 	GatewayID string `pathParam:"style=simple,explode=false,name=gatewayId"`
+}
+
+func (g GetEventGatewayRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetEventGatewayRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"gatewayId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetEventGatewayRequest) GetGatewayID() string {
@@ -38,6 +50,17 @@ type GetEventGatewayResponse struct {
 	NotFoundError *shared.NotFoundError
 	// Internal
 	BaseError *shared.BaseError
+}
+
+func (g GetEventGatewayResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetEventGatewayResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetEventGatewayResponse) GetContentType() string {

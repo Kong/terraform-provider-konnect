@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateAppdynamicsPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID    string                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	AppDynamicsPlugin shared.AppDynamicsPlugin `request:"mediaType=application/json"`
+}
+
+func (c CreateAppdynamicsPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAppdynamicsPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "AppDynamicsPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateAppdynamicsPluginRequest) GetControlPlaneID() string {
@@ -38,6 +50,17 @@ type CreateAppdynamicsPluginResponse struct {
 	AppDynamicsPlugin *shared.AppDynamicsPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (c CreateAppdynamicsPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAppdynamicsPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateAppdynamicsPluginResponse) GetContentType() string {

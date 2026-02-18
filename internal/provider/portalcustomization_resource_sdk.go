@@ -34,6 +34,8 @@ func (r *PortalCustomizationResourceModel) RefreshFromSharedPortalCustomization(
 
 					r.Menu.FooterBottom = append(r.Menu.FooterBottom, footerBottom)
 				}
+			} else {
+				r.Menu.FooterBottom = nil
 			}
 			if resp.Menu.FooterSections != nil {
 				r.Menu.FooterSections = []tfTypes.PortalFooterMenuSection{}
@@ -57,6 +59,8 @@ func (r *PortalCustomizationResourceModel) RefreshFromSharedPortalCustomization(
 
 					r.Menu.FooterSections = append(r.Menu.FooterSections, footerSections)
 				}
+			} else {
+				r.Menu.FooterSections = nil
 			}
 			if resp.Menu.Main != nil {
 				r.Menu.Main = []tfTypes.PortalMenuItem{}
@@ -71,6 +75,8 @@ func (r *PortalCustomizationResourceModel) RefreshFromSharedPortalCustomization(
 
 					r.Menu.Main = append(r.Menu.Main, main)
 				}
+			} else {
+				r.Menu.Main = nil
 			}
 		}
 		r.Robots = types.StringPointerValue(resp.Robots)

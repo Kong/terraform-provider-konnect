@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -10,6 +11,17 @@ import (
 type GetAppAuthStrategyRequest struct {
 	// Application auth strategy identifier
 	AuthStrategyID string `pathParam:"style=simple,explode=false,name=authStrategyId"`
+}
+
+func (g GetAppAuthStrategyRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetAppAuthStrategyRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"authStrategyId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetAppAuthStrategyRequest) GetAuthStrategyID() string {
@@ -34,6 +46,17 @@ type GetAppAuthStrategyResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (g GetAppAuthStrategyResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetAppAuthStrategyResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetAppAuthStrategyResponse) GetContentType() string {

@@ -12,6 +12,17 @@ type SessionPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (s SessionPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SessionPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *SessionPluginAfter) GetAccess() []string {
 	if s == nil {
 		return nil
@@ -21,6 +32,17 @@ func (s *SessionPluginAfter) GetAccess() []string {
 
 type SessionPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (s SessionPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SessionPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *SessionPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (s *SessionPluginBefore) GetAccess() []string {
 type SessionPluginOrdering struct {
 	After  *SessionPluginAfter  `json:"after,omitempty"`
 	Before *SessionPluginBefore `json:"before,omitempty"`
+}
+
+func (s SessionPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SessionPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *SessionPluginOrdering) GetAfter() *SessionPluginAfter {
@@ -55,6 +88,17 @@ type SessionPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (s SessionPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SessionPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *SessionPluginPartials) GetID() *string {
@@ -581,6 +625,17 @@ type SessionPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (s SessionPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SessionPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *SessionPluginRoute) GetID() *string {
 	if s == nil {
 		return nil
@@ -591,6 +646,17 @@ func (s *SessionPluginRoute) GetID() *string {
 // SessionPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type SessionPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (s SessionPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SessionPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *SessionPluginService) GetID() *string {

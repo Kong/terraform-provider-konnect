@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"net/http"
 )
 
@@ -11,6 +12,17 @@ type DeleteConsumerInRealmRequest struct {
 	RealmID string `pathParam:"style=simple,explode=false,name=realmId"`
 	// ID of the of the consumer
 	ConsumerID string `pathParam:"style=simple,explode=false,name=consumerId"`
+}
+
+func (d DeleteConsumerInRealmRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteConsumerInRealmRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"realmId", "consumerId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteConsumerInRealmRequest) GetRealmID() string {
@@ -34,6 +46,17 @@ type DeleteConsumerInRealmResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+}
+
+func (d DeleteConsumerInRealmResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteConsumerInRealmResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteConsumerInRealmResponse) GetContentType() string {

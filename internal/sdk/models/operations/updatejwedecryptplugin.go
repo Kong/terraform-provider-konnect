@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -13,6 +14,17 @@ type UpdateJwedecryptPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID   string                  `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	JweDecryptPlugin shared.JweDecryptPlugin `request:"mediaType=application/json"`
+}
+
+func (u UpdateJwedecryptPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateJwedecryptPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "JweDecryptPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateJwedecryptPluginRequest) GetPluginID() string {
@@ -47,6 +59,17 @@ type UpdateJwedecryptPluginResponse struct {
 	JweDecryptPlugin *shared.JweDecryptPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (u UpdateJwedecryptPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateJwedecryptPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateJwedecryptPluginResponse) GetContentType() string {

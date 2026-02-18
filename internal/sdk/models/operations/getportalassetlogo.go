@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -10,6 +11,17 @@ import (
 type GetPortalAssetLogoRequest struct {
 	// The Portal identifier
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
+}
+
+func (g GetPortalAssetLogoRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetPortalAssetLogoRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"portalId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetPortalAssetLogoRequest) GetPortalID() string {
@@ -32,6 +44,17 @@ type GetPortalAssetLogoResponse struct {
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
 	ForbiddenError *shared.ForbiddenError
+}
+
+func (g GetPortalAssetLogoResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetPortalAssetLogoResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetPortalAssetLogoResponse) GetContentType() string {

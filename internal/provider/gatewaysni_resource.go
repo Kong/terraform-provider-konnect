@@ -34,7 +34,7 @@ type GatewaySNIResource struct {
 
 // GatewaySNIResourceModel describes the resource data model.
 type GatewaySNIResourceModel struct {
-	Certificate    tfTypes.Set    `tfsdk:"certificate"`
+	Certificate    *tfTypes.Set   `tfsdk:"certificate"`
 	ControlPlaneID types.String   `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64    `tfsdk:"created_at"`
 	ID             types.String   `tfsdk:"id"`
@@ -350,12 +350,12 @@ func (r *GatewaySNIResource) ImportState(ctx context.Context, req resource.Impor
 	}
 
 	if len(data.ControlPlaneID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"`)
+		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
 	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"64c17a1a-b7d7-4a65-a5a4-42e4a7016e7f"`)
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"64c17a1a-b7d7-4a65-a5a4-42e4a7016e7f"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)

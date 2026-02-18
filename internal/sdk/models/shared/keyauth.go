@@ -2,8 +2,23 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type KeyAuthConsumer struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (k KeyAuthConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KeyAuthConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (k *KeyAuthConsumer) GetID() *string {
@@ -24,6 +39,17 @@ type KeyAuth struct {
 	Tags []string `json:"tags"`
 	// key-auth ttl in seconds
 	TTL *int64 `json:"ttl,omitempty"`
+}
+
+func (k KeyAuth) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KeyAuth) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (k *KeyAuth) GetConsumer() *KeyAuthConsumer {

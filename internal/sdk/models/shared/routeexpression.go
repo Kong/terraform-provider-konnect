@@ -127,6 +127,17 @@ type RouteExpressionService struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (r RouteExpressionService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RouteExpressionService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RouteExpressionService) GetID() *string {
 	if r == nil {
 		return nil

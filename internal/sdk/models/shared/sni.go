@@ -2,9 +2,24 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // SNICertificate - The id (a UUID) of the certificate with which to associate the SNI hostname. The Certificate must have a valid private key associated with it to be used by the SNI object.
 type SNICertificate struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (s SNICertificate) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SNICertificate) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *SNICertificate) GetID() *string {
@@ -28,6 +43,17 @@ type Sni struct {
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
+}
+
+func (s Sni) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *Sni) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"certificate", "name"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *Sni) GetCertificate() SNICertificate {

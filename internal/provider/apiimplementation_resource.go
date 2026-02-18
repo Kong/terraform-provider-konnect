@@ -19,6 +19,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/boolplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
+	speakeasy_planmodifierutils "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/utils"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
@@ -41,9 +42,9 @@ type APIImplementationResource struct {
 // APIImplementationResourceModel describes the resource data model.
 type APIImplementationResourceModel struct {
 	APIID                 types.String                   `tfsdk:"api_id"`
-	ControlPlaneReference *tfTypes.ControlPlaneReference `queryParam:"inline" tfsdk:"control_plane_reference" tfPlanOnly:"true"`
+	ControlPlaneReference *tfTypes.ControlPlaneReference `queryParam:"inline" tfsdk:"control_plane_reference"`
 	ID                    types.String                   `tfsdk:"id"`
-	ServiceReference      *tfTypes.ServiceReference      `queryParam:"inline" tfsdk:"service_reference" tfPlanOnly:"true"`
+	ServiceReference      *tfTypes.ServiceReference      `queryParam:"inline" tfsdk:"service_reference"`
 }
 
 func (r *APIImplementationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -128,6 +129,7 @@ func (r *APIImplementationResource) Schema(ctx context.Context, req resource.Sch
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("service_reference"), FieldPath: path.Root("service_reference").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("control_plane_reference"), FieldPath: path.Root("control_plane_reference").AtName("id")}}),
 				},
 				Description: `Contains a unique identifier used for this resource.`,
 			},
@@ -427,12 +429,12 @@ func (r *APIImplementationResource) ImportState(ctx context.Context, req resourc
 	}
 
 	if len(data.APIID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field api_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9f5061ce-78f6-4452-9108-ad7c02821fd5"`)
+		resp.Diagnostics.AddError("Missing required field", `The field api_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9f5061ce-78f6-4452-9108-ad7c02821fd5"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("api_id"), data.APIID)...)
 	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"032d905a-ed33-46a3-a093-d8f536af9a8a"`)
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"032d905a-ed33-46a3-a093-d8f536af9a8a"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)

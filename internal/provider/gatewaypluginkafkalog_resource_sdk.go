@@ -15,6 +15,7 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.KafkaLogPluginConfig{}
 		if resp.Config.Authentication == nil {
 			r.Config.Authentication = nil
 		} else {
@@ -44,6 +45,8 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx
 
 				r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers)
 			}
+		} else {
+			r.Config.BootstrapServers = nil
 		}
 		r.Config.ClusterName = types.StringPointerValue(resp.Config.ClusterName)
 		if resp.Config.CustomFieldsByLua != nil {
@@ -226,6 +229,8 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -248,6 +253,8 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

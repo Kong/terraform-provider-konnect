@@ -2,10 +2,25 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // DataPlaneClientCertificateRequest - Request body for creating a dp-client-certificate.
 type DataPlaneClientCertificateRequest struct {
 	// JSON escaped string of the certificate.
 	Cert string `json:"cert"`
+}
+
+func (d DataPlaneClientCertificateRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DataPlaneClientCertificateRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"cert"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DataPlaneClientCertificateRequest) GetCert() string {

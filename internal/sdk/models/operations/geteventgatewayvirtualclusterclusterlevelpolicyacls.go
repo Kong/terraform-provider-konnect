@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -14,6 +15,17 @@ type GetEventGatewayVirtualClusterClusterLevelPolicyAclsRequest struct {
 	VirtualClusterID string `pathParam:"style=simple,explode=false,name=virtualClusterId"`
 	// The UUID of the policy.
 	PolicyID string `pathParam:"style=simple,explode=false,name=policyId"`
+}
+
+func (g GetEventGatewayVirtualClusterClusterLevelPolicyAclsRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetEventGatewayVirtualClusterClusterLevelPolicyAclsRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"gatewayId", "virtualClusterId", "policyId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetEventGatewayVirtualClusterClusterLevelPolicyAclsRequest) GetGatewayID() string {
@@ -52,6 +64,17 @@ type GetEventGatewayVirtualClusterClusterLevelPolicyAclsResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (g GetEventGatewayVirtualClusterClusterLevelPolicyAclsResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetEventGatewayVirtualClusterClusterLevelPolicyAclsResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetEventGatewayVirtualClusterClusterLevelPolicyAclsResponse) GetContentType() string {

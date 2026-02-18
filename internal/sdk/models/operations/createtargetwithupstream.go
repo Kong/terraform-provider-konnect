@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -14,6 +15,17 @@ type CreateTargetWithUpstreamRequest struct {
 	UpstreamID string `pathParam:"style=simple,explode=false,name=UpstreamIdForTarget"`
 	// Description of new Target for creation
 	TargetWithoutParents shared.TargetWithoutParents `request:"mediaType=application/json"`
+}
+
+func (c CreateTargetWithUpstreamRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateTargetWithUpstreamRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "UpstreamIdForTarget", "TargetWithoutParents"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateTargetWithUpstreamRequest) GetControlPlaneID() string {
@@ -46,6 +58,17 @@ type CreateTargetWithUpstreamResponse struct {
 	RawResponse *http.Response
 	// Successfully created Target
 	Target *shared.Target
+}
+
+func (c CreateTargetWithUpstreamResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateTargetWithUpstreamResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateTargetWithUpstreamResponse) GetContentType() string {

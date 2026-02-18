@@ -49,6 +49,17 @@ type UpstreamClientCertificate struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (u UpstreamClientCertificate) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamClientCertificate) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (u *UpstreamClientCertificate) GetID() *string {
 	if u == nil {
 		return nil

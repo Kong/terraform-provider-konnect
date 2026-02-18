@@ -65,7 +65,7 @@ func (r *GatewayCustomPluginSchemaResource) Schema(ctx context.Context, req reso
 			},
 			"name": schema.StringAttribute{
 				Computed:    true,
-				Description: `The custom plugin name determined by the custom plugin schema.`,
+				Description: `The custom plugin name`,
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
@@ -336,12 +336,12 @@ func (r *GatewayCustomPluginSchemaResource) ImportState(ctx context.Context, req
 	}
 
 	if len(data.ControlPlaneID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"`)
+		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
 	if len(data.Name) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field name is required but was not found in the json encoded ID. It's expected to be a value alike '"myplugin"`)
+		resp.Diagnostics.AddError("Missing required field", `The field name is required but was not found in the json encoded ID. It's expected to be a value alike '"myplugin"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), data.Name)...)

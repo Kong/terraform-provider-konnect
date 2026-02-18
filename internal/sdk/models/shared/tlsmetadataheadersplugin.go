@@ -12,6 +12,17 @@ type TLSMetadataHeadersPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (t TLSMetadataHeadersPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TLSMetadataHeadersPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (t *TLSMetadataHeadersPluginAfter) GetAccess() []string {
 	if t == nil {
 		return nil
@@ -21,6 +32,17 @@ func (t *TLSMetadataHeadersPluginAfter) GetAccess() []string {
 
 type TLSMetadataHeadersPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (t TLSMetadataHeadersPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TLSMetadataHeadersPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (t *TLSMetadataHeadersPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (t *TLSMetadataHeadersPluginBefore) GetAccess() []string {
 type TLSMetadataHeadersPluginOrdering struct {
 	After  *TLSMetadataHeadersPluginAfter  `json:"after,omitempty"`
 	Before *TLSMetadataHeadersPluginBefore `json:"before,omitempty"`
+}
+
+func (t TLSMetadataHeadersPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TLSMetadataHeadersPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (t *TLSMetadataHeadersPluginOrdering) GetAfter() *TLSMetadataHeadersPluginAfter {
@@ -55,6 +88,17 @@ type TLSMetadataHeadersPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (t TLSMetadataHeadersPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TLSMetadataHeadersPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (t *TLSMetadataHeadersPluginPartials) GetID() *string {
@@ -180,6 +224,17 @@ type TLSMetadataHeadersPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (t TLSMetadataHeadersPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TLSMetadataHeadersPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (t *TLSMetadataHeadersPluginRoute) GetID() *string {
 	if t == nil {
 		return nil
@@ -190,6 +245,17 @@ func (t *TLSMetadataHeadersPluginRoute) GetID() *string {
 // TLSMetadataHeadersPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type TLSMetadataHeadersPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (t TLSMetadataHeadersPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TLSMetadataHeadersPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (t *TLSMetadataHeadersPluginService) GetID() *string {

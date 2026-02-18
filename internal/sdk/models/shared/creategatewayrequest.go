@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // CreateGatewayRequest - The request schema for the create gateway request.
 type CreateGatewayRequest struct {
 	// The name of the Gateway.
@@ -18,6 +22,17 @@ type CreateGatewayRequest struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
+}
+
+func (c CreateGatewayRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateGatewayRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateGatewayRequest) GetName() string {

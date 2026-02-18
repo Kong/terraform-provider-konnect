@@ -13,6 +13,7 @@ generation:
     requestResponseComponentNamesFeb2024: true
     securityFeb2025: false
     sharedErrorComponentsApr2025: false
+    sharedNestedComponentsJan2026: false
   auth:
     oAuth2ClientCredentialsEnabled: false
     oAuth2PasswordEnabled: false
@@ -20,6 +21,8 @@ generation:
   schemas:
     allOfMergeStrategy: shallowMerge
   requestBodyFieldName: ""
+  versioningStrategy: automatic
+  persistentEdits: {}
   tests:
     generateTests: true
     generateNewTests: false
@@ -27,12 +30,16 @@ generation:
   baseServerURL: ""
 terraform:
   version: 3.7.0
+  additionalActions: []
   additionalDataSources: []
   additionalDependencies:
     github.com/Kong/shared-speakeasy/hclbuilder: v0.0.1
   additionalEphemeralResources: []
+  additionalFunctions: []
+  additionalListResources: []
   additionalProviderAttributes:
     httpHeaders: ""
+    tlsSkipVerify: ""
   additionalResources:
     - importAlias: custom
       importLocation: github.com/kong/terraform-provider-konnect/v3/src
@@ -40,6 +47,7 @@ terraform:
   allowUnknownFieldsInWeakUnions: false
   author: kong
   baseErrorName: KonnectError
+  debugLogging: {}
   defaultErrorName: SDKError
   enableCustomCodeRegions: false
   enableOperationSecurity: false
@@ -64,4 +72,6 @@ terraform:
   includeEmptyObjects: false
   inferUnionDiscriminators: false
   packageName: konnect
+  respectRequiredFields: true
+  respectTitlesForPrimitiveUnionMembers: false
   unionStrategy: populated-fields

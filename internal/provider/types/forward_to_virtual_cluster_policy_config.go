@@ -3,6 +3,6 @@
 package types
 
 type ForwardToVirtualClusterPolicyConfig struct {
-	PortMapping *ForwardToClusterByPortMappingConfig `queryParam:"inline" tfsdk:"port_mapping" tfPlanOnly:"true"`
-	Sni         *ForwardToClusterBySNIConfig         `queryParam:"inline" tfsdk:"sni" tfPlanOnly:"true"`
+	PortMapping *ForwardToClusterByPortMappingConfig `queryParam:"inline" tfsdk:"port_mapping"`
+	Sni         *ForwardToClusterBySNIConfig         `queryParam:"inline" tfsdk:"sni"`
 }

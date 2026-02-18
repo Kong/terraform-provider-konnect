@@ -12,6 +12,17 @@ type UDPLogPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (u UDPLogPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UDPLogPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (u *UDPLogPluginAfter) GetAccess() []string {
 	if u == nil {
 		return nil
@@ -21,6 +32,17 @@ func (u *UDPLogPluginAfter) GetAccess() []string {
 
 type UDPLogPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (u UDPLogPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UDPLogPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UDPLogPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (u *UDPLogPluginBefore) GetAccess() []string {
 type UDPLogPluginOrdering struct {
 	After  *UDPLogPluginAfter  `json:"after,omitempty"`
 	Before *UDPLogPluginBefore `json:"before,omitempty"`
+}
+
+func (u UDPLogPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UDPLogPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UDPLogPluginOrdering) GetAfter() *UDPLogPluginAfter {
@@ -55,6 +88,17 @@ type UDPLogPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (u UDPLogPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UDPLogPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UDPLogPluginPartials) GetID() *string {
@@ -133,6 +177,17 @@ type UDPLogPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (u UDPLogPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UDPLogPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (u *UDPLogPluginConsumer) GetID() *string {
 	if u == nil {
 		return nil
@@ -196,6 +251,17 @@ type UDPLogPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (u UDPLogPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UDPLogPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (u *UDPLogPluginRoute) GetID() *string {
 	if u == nil {
 		return nil
@@ -206,6 +272,17 @@ func (u *UDPLogPluginRoute) GetID() *string {
 // UDPLogPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type UDPLogPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (u UDPLogPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UDPLogPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UDPLogPluginService) GetID() *string {

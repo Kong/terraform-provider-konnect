@@ -920,6 +920,106 @@ EOF
 		})
 	})
 
+	t.Run("EGW Listener Policy Forward To Virtual Cluster with SNI", func(t *testing.T) {
+		builder := hclbuilder.NewWithProvider(hclbuilder.Konnect, fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort))
+		builder.ProviderProperty = hclbuilder.Konnect
+
+		egwCp, err := hclbuilder.FromString(eventGatewayCP)
+		require.NoError(t, err)
+
+		egwBackendCluster, err := hclbuilder.FromString(eventGatewayBackendCluster)
+		require.NoError(t, err)
+
+		egwBackendCluster.AddAttribute(
+			"gateway_id",
+			egwCp.ResourcePath()+".id",
+		)
+
+		egwVirtualCluster, err := hclbuilder.FromString(eventGatewayVirtualCluster)
+		require.NoError(t, err)
+
+		egwVirtualCluster.AddAttribute(
+			"gateway_id",
+			egwCp.ResourcePath()+".id",
+		)
+
+		egwListener, err := hclbuilder.FromString(`
+			resource "konnect_event_gateway_listener" "tf_test_egw_listener" {
+				name      = "tf_test_egw_listener"
+				addresses = ["0.0.0.0"]
+				ports     = ["9092", "9093", "9094", "9095"]
+				labels    = {}
+
+				description = "Description for listener"
+			}
+		`)
+		require.NoError(t, err)
+
+		egwListener.AddAttribute(
+			"gateway_id",
+			egwCp.ResourcePath()+".id",
+		)
+
+		listenerPolicy, err := hclbuilder.FromString(`
+			resource "konnect_event_gateway_listener_policy_forward_to_virtual_cluster" "tf_test_egw_forward_policy" {
+				name        = "tf_test_egw_forward_policy"
+				description = "Test forward to virtual cluster policy"
+				enabled     = true
+
+				config = {
+					sni = {
+						sni_suffix = ".example.com"
+					}
+				}
+			}
+		`)
+		require.NoError(t, err)
+
+		listenerPolicy.AddAttribute(
+			"listener_id",
+			egwListener.ResourcePath()+".id",
+		)
+		listenerPolicy.AddAttribute(
+			"gateway_id",
+			egwCp.ResourcePath()+".id",
+		)
+
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					Config: builder.Upsert(egwCp).Upsert(egwBackendCluster).Upsert(egwVirtualCluster).Upsert(egwListener).Upsert(listenerPolicy).Build(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectResourceAction("konnect_event_gateway_listener_policy_forward_to_virtual_cluster.tf_test_egw_forward_policy", plancheck.ResourceActionCreate),
+						},
+					},
+
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_event_gateway_listener_policy_forward_to_virtual_cluster.tf_test_egw_forward_policy", "name", "tf_test_egw_forward_policy"),
+						resource.TestCheckResourceAttr("konnect_event_gateway_listener_policy_forward_to_virtual_cluster.tf_test_egw_forward_policy", "description", "Test forward to virtual cluster policy"),
+						resource.TestCheckResourceAttr("konnect_event_gateway_listener_policy_forward_to_virtual_cluster.tf_test_egw_forward_policy", "enabled", "true"),
+						resource.TestCheckResourceAttr("konnect_event_gateway_listener_policy_forward_to_virtual_cluster.tf_test_egw_forward_policy", "config.sni.sni_suffix", ".example.com"),
+					),
+				},
+				{
+					Config: builder.Upsert(egwCp).Upsert(egwBackendCluster).Upsert(egwVirtualCluster).Upsert(egwListener).Upsert(listenerPolicy).Build(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectEmptyPlan(),
+						},
+					},
+				},
+				{
+					Config: builder.Upsert(egwCp).Upsert(egwBackendCluster).Upsert(egwVirtualCluster).Upsert(egwListener).Upsert(listenerPolicy.AddAttribute("description", `"Updated description"`)).Build(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_event_gateway_listener_policy_forward_to_virtual_cluster.tf_test_egw_forward_policy", "description", "Updated description"),
+					),
+				},
+			},
+		})
+	})
+
 	t.Run("EGW Listener Policy TLS Server", func(t *testing.T) {
 		builder := hclbuilder.NewWithProvider(
 			hclbuilder.Konnect,

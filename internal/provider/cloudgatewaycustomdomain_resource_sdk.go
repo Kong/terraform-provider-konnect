@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
@@ -24,6 +25,7 @@ func (r *CloudGatewayCustomDomainResourceModel) RefreshFromSharedCustomDomain(ct
 		r.ID = types.StringValue(resp.ID)
 		r.SniID = types.StringPointerValue(resp.SniID)
 		r.State = types.StringValue(string(resp.State))
+		r.StateMetadata = &tfTypes.CustomDomainStateMetadata{}
 		r.StateMetadata.Reason = types.StringPointerValue(resp.StateMetadata.Reason)
 		r.StateMetadata.ReportedStatus = types.StringPointerValue(resp.StateMetadata.ReportedStatus)
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))

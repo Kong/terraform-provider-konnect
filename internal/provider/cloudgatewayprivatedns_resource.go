@@ -22,6 +22,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/int64planmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
+	speakeasy_planmodifierutils "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/utils"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 )
@@ -42,15 +43,17 @@ type CloudGatewayPrivateDNSResource struct {
 
 // CloudGatewayPrivateDNSResourceModel describes the resource data model.
 type CloudGatewayPrivateDNSResourceModel struct {
-	AwsPrivateDNSResolverResponse   *tfTypes.AwsPrivateDNSResolverResponse   `queryParam:"inline" tfsdk:"aws_private_dns_resolver_response" tfPlanOnly:"true"`
-	AwsPrivateHostedZoneResponse    *tfTypes.AwsPrivateHostedZoneResponse    `queryParam:"inline" tfsdk:"aws_private_hosted_zone_response" tfPlanOnly:"true"`
-	AzurePrivateDNSResolverResponse *tfTypes.AzurePrivateDNSResolverResponse `queryParam:"inline" tfsdk:"azure_private_dns_resolver_response" tfPlanOnly:"true"`
+	AwsPrivateDNSResolverResponse   *tfTypes.AwsPrivateDNSResolverResponse   `queryParam:"inline" tfsdk:"aws_private_dns_resolver_response"`
+	AwsPrivateHostedZoneResponse    *tfTypes.AwsPrivateHostedZoneResponse    `queryParam:"inline" tfsdk:"aws_private_hosted_zone_response"`
+	AzurePrivateDNSResolverResponse *tfTypes.AzurePrivateDNSResolverResponse `queryParam:"inline" tfsdk:"azure_private_dns_resolver_response"`
+	AzurePrivateHostedZoneResponse  *tfTypes.AzurePrivateHostedZoneResponse  `queryParam:"inline" tfsdk:"azure_private_hosted_zone_response"`
 	EntityVersion                   types.Int64                              `tfsdk:"entity_version"`
-	GcpPrivateHostedZoneResponse    *tfTypes.GcpPrivateHostedZoneResponse    `queryParam:"inline" tfsdk:"gcp_private_hosted_zone_response" tfPlanOnly:"true"`
+	GcpPrivateHostedZoneResponse    *tfTypes.GcpPrivateHostedZoneResponse    `queryParam:"inline" tfsdk:"gcp_private_hosted_zone_response"`
 	ID                              types.String                             `tfsdk:"id"`
 	Name                            types.String                             `tfsdk:"name"`
 	NetworkID                       types.String                             `tfsdk:"network_id"`
 	PrivateDNSAttachmentConfig      *tfTypes.PrivateDNSAttachmentConfig      `tfsdk:"private_dns_attachment_config"`
+	State                           types.String                             `tfsdk:"state"`
 }
 
 func (r *CloudGatewayPrivateDNSResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -246,6 +249,115 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 						Computed:    true,
 						Description: `Human-readable name of the Private DNS.`,
 					},
+					"private_dns_attachment_config": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"dns_config": schema.SingleNestedAttribute{
+								Computed: true,
+								Attributes: map[string]schema.Attribute{
+									"remote_dns_server_ip_addresses": schema.ListAttribute{
+										Computed:    true,
+										ElementType: types.StringType,
+										Description: `IP addresses of remote DNS servers used by the Private DNS Resolver for DNS resolution.`,
+									},
+								},
+								Description: `Object that contains mappings from proxied internal domains to remote DNS server IP address for a Private DNS Resolver.`,
+							},
+							"kind": schema.StringAttribute{
+								Computed: true,
+							},
+						},
+					},
+					"state": schema.StringAttribute{
+						Computed: true,
+						MarkdownDescription: `The current state of the Private DNS attachment. Possible values:` + "\n" +
+							`- ` + "`" + `created` + "`" + ` - The attachment has been created but is not attached to Private DNS.` + "\n" +
+							`- ` + "`" + `initializing` + "`" + ` - The attachment is in the process of being initialized and is setting up necessary resources.` + "\n" +
+							`- ` + "`" + `pending-association` + "`" + ` The attachment request is awaiting association to the cloud provider infrastructure in order for provisioning to proceed.` + "\n" +
+							`- ` + "`" + `ready` + "`" + ` - The attachment is fully operational and can route traffic as configured.` + "\n" +
+							`- ` + "`" + `error` + "`" + ` - The attachment is in an error state, and is not operational.` + "\n" +
+							`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted.` + "\n" +
+							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.`,
+					},
+					"state_metadata": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"reason": schema.StringAttribute{
+								Computed:    true,
+								Description: `Reason why the Private Dns may be in an erroneous state, reported from backing infrastructure.`,
+							},
+							"reported_status": schema.StringAttribute{
+								Computed:    true,
+								Description: `Reported status of the Private Dns from backing infrastructure.`,
+							},
+						},
+						Description: `Metadata describing the backing state of the Private Dns and why it may be in an erroneous state.`,
+					},
+					"updated_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An RFC-3339 timestamp representation of Private DNS update date.`,
+					},
+				},
+			},
+			"azure_private_hosted_zone_response": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"created_at": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `An RFC-3339 timestamp representation of Private DNS creation date.`,
+					},
+					"entity_version": schema.Int64Attribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.Int64{
+							speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
+						},
+						MarkdownDescription: `Monotonically-increasing version count of the Private DNS, to indicate the order of updates to the` + "\n" +
+							`Private DNS.`,
+					},
+					"id": schema.StringAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+					},
+					"name": schema.StringAttribute{
+						Computed:    true,
+						Description: `Human-readable name of the Private DNS.`,
+					},
+					"private_dns_attachment_config": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"domain_name": schema.StringAttribute{
+								Computed:    true,
+								Description: `Customer's Azure Private DNS Zone Name.`,
+							},
+							"kind": schema.StringAttribute{
+								Computed: true,
+							},
+							"peer_resource_group_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `Customer's Azure Resource Group ID.`,
+							},
+							"peer_subscription_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `Customer's Azure Subscription ID.`,
+							},
+							"peer_tenant_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `Customer's Azure Tenant ID.`,
+							},
+							"peer_vnet_link_name": schema.StringAttribute{
+								Computed:    true,
+								Description: `Customer's Azure VNet Link Name.`,
+							},
+						},
+					},
 					"state": schema.StringAttribute{
 						Computed: true,
 						MarkdownDescription: `The current state of the Private DNS attachment. Possible values:` + "\n" +
@@ -284,6 +396,7 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 				Computed: true,
 				PlanModifiers: []planmodifier.Int64{
 					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
+					speakeasy_int64planmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_private_hosted_zone_response"), FieldPath: path.Root("aws_private_hosted_zone_response").AtName("entity_version")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_private_dns_resolver_response"), FieldPath: path.Root("aws_private_dns_resolver_response").AtName("entity_version")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gcp_private_hosted_zone_response"), FieldPath: path.Root("gcp_private_hosted_zone_response").AtName("entity_version")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_private_hosted_zone_response"), FieldPath: path.Root("azure_private_hosted_zone_response").AtName("entity_version")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_private_dns_resolver_response"), FieldPath: path.Root("azure_private_dns_resolver_response").AtName("entity_version")}}),
 				},
 				MarkdownDescription: `Monotonically-increasing version count of the Private DNS, to indicate the order of updates to the` + "\n" +
 					`Private DNS.`,
@@ -374,6 +487,7 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_private_hosted_zone_response"), FieldPath: path.Root("aws_private_hosted_zone_response").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_private_dns_resolver_response"), FieldPath: path.Root("aws_private_dns_resolver_response").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gcp_private_hosted_zone_response"), FieldPath: path.Root("gcp_private_hosted_zone_response").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_private_hosted_zone_response"), FieldPath: path.Root("azure_private_hosted_zone_response").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_private_dns_resolver_response"), FieldPath: path.Root("azure_private_dns_resolver_response").AtName("id")}}),
 				},
 			},
 			"name": schema.StringAttribute{
@@ -382,6 +496,7 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_private_hosted_zone_response"), FieldPath: path.Root("aws_private_hosted_zone_response").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_private_dns_resolver_response"), FieldPath: path.Root("aws_private_dns_resolver_response").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gcp_private_hosted_zone_response"), FieldPath: path.Root("gcp_private_hosted_zone_response").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_private_hosted_zone_response"), FieldPath: path.Root("azure_private_hosted_zone_response").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_private_dns_resolver_response"), FieldPath: path.Root("azure_private_dns_resolver_response").AtName("name")}}),
 				},
 				Description: `Human-readable name of the Private DNS. Requires replacement if changed.`,
 			},
@@ -443,6 +558,8 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("aws_private_hosted_zone_attachment_config"),
+								path.MatchRelative().AtParent().AtName("azure_private_dns_resolver_attachment_config"),
+								path.MatchRelative().AtParent().AtName("azure_private_hosted_zone_attachment_config"),
 								path.MatchRelative().AtParent().AtName("gcp_private_hosted_zone_attachment_config"),
 							}...),
 						},
@@ -477,6 +594,118 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("aws_private_dns_resolver_attachment_config"),
+								path.MatchRelative().AtParent().AtName("azure_private_dns_resolver_attachment_config"),
+								path.MatchRelative().AtParent().AtName("azure_private_hosted_zone_attachment_config"),
+								path.MatchRelative().AtParent().AtName("gcp_private_hosted_zone_attachment_config"),
+							}...),
+						},
+					},
+					"azure_private_dns_resolver_attachment_config": schema.SingleNestedAttribute{
+						Optional: true,
+						PlanModifiers: []planmodifier.Object{
+							objectplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						Attributes: map[string]schema.Attribute{
+							"dns_config": schema.SingleNestedAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.Object{
+									objectplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Attributes: map[string]schema.Attribute{
+									"remote_dns_server_ip_addresses": schema.ListAttribute{
+										Required: true,
+										PlanModifiers: []planmodifier.List{
+											listplanmodifier.RequiresReplaceIfConfigured(),
+										},
+										ElementType: types.StringType,
+										Description: `IP addresses of remote DNS servers used by the Private DNS Resolver for DNS resolution. Requires replacement if changed.`,
+									},
+								},
+								Description: `Object that contains mappings from proxied internal domains to remote DNS server IP address for a Private DNS Resolver. Requires replacement if changed.`,
+							},
+							"kind": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `must be "azure-outbound-resolver"; Requires replacement if changed.`,
+								Validators: []validator.String{
+									stringvalidator.OneOf(
+										"azure-outbound-resolver",
+									),
+								},
+							},
+						},
+						Description: `Requires replacement if changed.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("aws_private_dns_resolver_attachment_config"),
+								path.MatchRelative().AtParent().AtName("aws_private_hosted_zone_attachment_config"),
+								path.MatchRelative().AtParent().AtName("azure_private_hosted_zone_attachment_config"),
+								path.MatchRelative().AtParent().AtName("gcp_private_hosted_zone_attachment_config"),
+							}...),
+						},
+					},
+					"azure_private_hosted_zone_attachment_config": schema.SingleNestedAttribute{
+						Optional: true,
+						PlanModifiers: []planmodifier.Object{
+							objectplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						Attributes: map[string]schema.Attribute{
+							"domain_name": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `Customer's Azure Private DNS Zone Name. Requires replacement if changed.`,
+							},
+							"kind": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `must be "azure-private-hosted-zone-attachment"; Requires replacement if changed.`,
+								Validators: []validator.String{
+									stringvalidator.OneOf(
+										"azure-private-hosted-zone-attachment",
+									),
+								},
+							},
+							"peer_resource_group_id": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `Customer's Azure Resource Group ID. Requires replacement if changed.`,
+							},
+							"peer_subscription_id": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `Customer's Azure Subscription ID. Requires replacement if changed.`,
+							},
+							"peer_tenant_id": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `Customer's Azure Tenant ID. Requires replacement if changed.`,
+							},
+							"peer_vnet_link_name": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `Customer's Azure VNet Link Name. Requires replacement if changed.`,
+							},
+						},
+						Description: `Requires replacement if changed.`,
+						Validators: []validator.Object{
+							objectvalidator.ConflictsWith(path.Expressions{
+								path.MatchRelative().AtParent().AtName("aws_private_dns_resolver_attachment_config"),
+								path.MatchRelative().AtParent().AtName("aws_private_hosted_zone_attachment_config"),
+								path.MatchRelative().AtParent().AtName("azure_private_dns_resolver_attachment_config"),
 								path.MatchRelative().AtParent().AtName("gcp_private_hosted_zone_attachment_config"),
 							}...),
 						},
@@ -526,11 +755,27 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 							objectvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("aws_private_dns_resolver_attachment_config"),
 								path.MatchRelative().AtParent().AtName("aws_private_hosted_zone_attachment_config"),
+								path.MatchRelative().AtParent().AtName("azure_private_dns_resolver_attachment_config"),
+								path.MatchRelative().AtParent().AtName("azure_private_hosted_zone_attachment_config"),
 							}...),
 						},
 					},
 				},
 				Description: `Requires replacement if changed.`,
+			},
+			"state": schema.StringAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_private_hosted_zone_response"), FieldPath: path.Root("aws_private_hosted_zone_response").AtName("state")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_private_dns_resolver_response"), FieldPath: path.Root("aws_private_dns_resolver_response").AtName("state")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gcp_private_hosted_zone_response"), FieldPath: path.Root("gcp_private_hosted_zone_response").AtName("state")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_private_hosted_zone_response"), FieldPath: path.Root("azure_private_hosted_zone_response").AtName("state")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_private_dns_resolver_response"), FieldPath: path.Root("azure_private_dns_resolver_response").AtName("state")}}),
+				},
+				MarkdownDescription: `The current state of the Private DNS attachment. Possible values:` + "\n" +
+					`- ` + "`" + `created` + "`" + ` - The attachment has been created but is not attached to Private DNS.` + "\n" +
+					`- ` + "`" + `initializing` + "`" + ` - The attachment is in the process of being initialized and is setting up necessary resources.` + "\n" +
+					`- ` + "`" + `pending-association` + "`" + ` The attachment request is awaiting association to the cloud provider infrastructure in order for provisioning to proceed.` + "\n" +
+					`- ` + "`" + `ready` + "`" + ` - The attachment is fully operational and can route traffic as configured.` + "\n" +
+					`- ` + "`" + `error` + "`" + ` - The attachment is in an error state, and is not operational.` + "\n" +
+					`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted.` + "\n" +
+					`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.`,
 			},
 		},
 	}
@@ -608,43 +853,6 @@ func (r *CloudGatewayPrivateDNSResource) Create(ctx context.Context, req resourc
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedPrivateDNSResponse(ctx, res.PrivateDNSResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsGetPrivateDNSRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.CloudGateways.GetPrivateDNS(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.PrivateDNSResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPrivateDNSResponse(ctx, res1.PrivateDNSResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -798,12 +1006,12 @@ func (r *CloudGatewayPrivateDNSResource) ImportState(ctx context.Context, req re
 	}
 
 	if len(data.NetworkID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field network_id is required but was not found in the json encoded ID. It's expected to be a value alike '"36ae63d3-efd1-4bec-b246-62aa5d3f5695"`)
+		resp.Diagnostics.AddError("Missing required field", `The field network_id is required but was not found in the json encoded ID. It's expected to be a value alike '"36ae63d3-efd1-4bec-b246-62aa5d3f5695"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("network_id"), data.NetworkID)...)
 	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"1850820b-c69f-4a2a-b9be-bbcdbc5cd618"`)
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"1850820b-c69f-4a2a-b9be-bbcdbc5cd618"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)

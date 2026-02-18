@@ -15,6 +15,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) RefreshFromSharedAiRa
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.AiRateLimitingAdvancedPluginConfig{}
 		r.Config.CustomCostCountFunction = types.StringPointerValue(resp.Config.CustomCostCountFunction)
 		r.Config.DecreaseByFractionsInRedis = types.BoolPointerValue(resp.Config.DecreaseByFractionsInRedis)
 		r.Config.DictionaryName = types.StringPointerValue(resp.Config.DictionaryName)
@@ -90,6 +91,8 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) RefreshFromSharedAiRa
 
 					r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes)
 				}
+			} else {
+				r.Config.Redis.ClusterNodes = nil
 			}
 			r.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Redis.ConnectTimeout)
 			r.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Redis.ConnectionIsProxied)
@@ -113,6 +116,8 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) RefreshFromSharedAiRa
 
 					r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes)
 				}
+			} else {
+				r.Config.Redis.SentinelNodes = nil
 			}
 			r.Config.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Redis.SentinelPassword)
 			if resp.Config.Redis.SentinelRole != nil {
@@ -195,6 +200,8 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) RefreshFromSharedAiRa
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -217,6 +224,8 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) RefreshFromSharedAiRa
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

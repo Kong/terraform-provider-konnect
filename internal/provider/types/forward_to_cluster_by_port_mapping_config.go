@@ -7,8 +7,8 @@ import (
 )
 
 type ForwardToClusterByPortMappingConfig struct {
-	AdvertisedHost types.String            `tfsdk:"advertised_host"`
-	BootstrapPort  types.String            `tfsdk:"bootstrap_port"`
-	Destination    SchemaRegistryReference `tfsdk:"destination"`
-	MinBrokerID    types.Int64             `tfsdk:"min_broker_id"`
+	AdvertisedHost types.String             `tfsdk:"advertised_host"`
+	BootstrapPort  types.String             `tfsdk:"bootstrap_port"`
+	Destination    *SchemaRegistryReference `tfsdk:"destination"`
+	MinBrokerID    types.Int64              `tfsdk:"min_broker_id"`
 }

@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -13,6 +14,17 @@ type UpdateAcePluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	AcePlugin      shared.AcePlugin `request:"mediaType=application/json"`
+}
+
+func (u UpdateAcePluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateAcePluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "AcePlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateAcePluginRequest) GetPluginID() string {
@@ -47,6 +59,17 @@ type UpdateAcePluginResponse struct {
 	AcePlugin *shared.AcePlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (u UpdateAcePluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateAcePluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateAcePluginResponse) GetContentType() string {

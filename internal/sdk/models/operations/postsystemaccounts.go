@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -24,6 +25,17 @@ type PostSystemAccountsResponse struct {
 	UnauthorizedError *shared.UnauthorizedError
 	// Conflict
 	ConflictError *shared.ConflictError
+}
+
+func (p PostSystemAccountsResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PostSystemAccountsResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PostSystemAccountsResponse) GetContentType() string {

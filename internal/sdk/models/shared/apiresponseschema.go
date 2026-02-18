@@ -16,6 +16,17 @@ type Portals struct {
 	DisplayName string `json:"display_name"`
 }
 
+func (p Portals) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *Portals) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"id", "name", "display_name"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (p *Portals) GetID() string {
 	if p == nil {
 		return ""

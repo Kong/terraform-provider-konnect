@@ -12,6 +12,17 @@ type OpentelemetryPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (o OpentelemetryPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpentelemetryPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (o *OpentelemetryPluginAfter) GetAccess() []string {
 	if o == nil {
 		return nil
@@ -21,6 +32,17 @@ func (o *OpentelemetryPluginAfter) GetAccess() []string {
 
 type OpentelemetryPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (o OpentelemetryPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpentelemetryPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *OpentelemetryPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (o *OpentelemetryPluginBefore) GetAccess() []string {
 type OpentelemetryPluginOrdering struct {
 	After  *OpentelemetryPluginAfter  `json:"after,omitempty"`
 	Before *OpentelemetryPluginBefore `json:"before,omitempty"`
+}
+
+func (o OpentelemetryPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpentelemetryPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *OpentelemetryPluginOrdering) GetAfter() *OpentelemetryPluginAfter {
@@ -55,6 +88,17 @@ type OpentelemetryPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (o OpentelemetryPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpentelemetryPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *OpentelemetryPluginPartials) GetID() *string {
@@ -706,6 +750,17 @@ type OpentelemetryPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (o OpentelemetryPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpentelemetryPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (o *OpentelemetryPluginConsumer) GetID() *string {
 	if o == nil {
 		return nil
@@ -769,6 +824,17 @@ type OpentelemetryPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (o OpentelemetryPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpentelemetryPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (o *OpentelemetryPluginRoute) GetID() *string {
 	if o == nil {
 		return nil
@@ -779,6 +845,17 @@ func (o *OpentelemetryPluginRoute) GetID() *string {
 // OpentelemetryPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type OpentelemetryPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (o OpentelemetryPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpentelemetryPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *OpentelemetryPluginService) GetID() *string {

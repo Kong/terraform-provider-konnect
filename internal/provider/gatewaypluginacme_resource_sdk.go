@@ -17,6 +17,7 @@ func (r *GatewayPluginAcmeResourceModel) RefreshFromSharedAcmePlugin(ctx context
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.AcmePluginConfig{}
 		r.Config.AccountEmail = types.StringValue(resp.Config.AccountEmail)
 		if resp.Config.AccountKey == nil {
 			r.Config.AccountKey = nil
@@ -37,6 +38,8 @@ func (r *GatewayPluginAcmeResourceModel) RefreshFromSharedAcmePlugin(ctx context
 			for _, v := range resp.Config.Domains {
 				r.Config.Domains = append(r.Config.Domains, types.StringValue(v))
 			}
+		} else {
+			r.Config.Domains = nil
 		}
 		r.Config.EabHmacKey = types.StringPointerValue(resp.Config.EabHmacKey)
 		r.Config.EabKid = types.StringPointerValue(resp.Config.EabKid)
@@ -186,6 +189,8 @@ func (r *GatewayPluginAcmeResourceModel) RefreshFromSharedAcmePlugin(ctx context
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -196,6 +201,8 @@ func (r *GatewayPluginAcmeResourceModel) RefreshFromSharedAcmePlugin(ctx context
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

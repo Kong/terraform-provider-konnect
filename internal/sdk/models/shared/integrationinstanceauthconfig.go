@@ -16,7 +16,7 @@ const (
 
 // IntegrationInstanceAuthConfig - A response containing integration instance auth config.
 type IntegrationInstanceAuthConfig struct {
-	OauthAuthConfig *OauthAuthConfig `queryParam:"inline,name=IntegrationInstanceAuthConfig"`
+	OauthAuthConfig *OauthAuthConfig `queryParam:"inline" union:"member"`
 
 	Type IntegrationInstanceAuthConfigType
 }
@@ -48,7 +48,7 @@ func (u *IntegrationInstanceAuthConfig) UnmarshalJSON(data []byte) error {
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for IntegrationInstanceAuthConfig", string(data))
 	}

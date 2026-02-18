@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // V2ReplacePortalProductVersionPayload - Payload to update a Portal Product Version
 type V2ReplacePortalProductVersionPayload struct {
 	// Publication status of the API product version on the portal
@@ -16,6 +20,17 @@ type V2ReplacePortalProductVersionPayload struct {
 	Deprecated bool `json:"deprecated"`
 	// Whether to notify developers who are affected by this change
 	NotifyDevelopers *bool `json:"notify_developers,omitempty"`
+}
+
+func (v V2ReplacePortalProductVersionPayload) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *V2ReplacePortalProductVersionPayload) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"publish_status", "auth_strategy_ids", "application_registration_enabled", "auto_approve_registration", "deprecated"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (v *V2ReplacePortalProductVersionPayload) GetPublishStatus() V2PortalProductVersionPublishStatus {

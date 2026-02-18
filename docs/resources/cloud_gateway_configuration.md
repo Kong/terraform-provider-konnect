@@ -77,7 +77,7 @@ Optional:
 - `autoscale` (Attributes) (see [below for nested schema](#nestedatt--dataplane_groups--autoscale))
 - `cloud_gateway_network_id` (String) The network ID to operate on. For serverless.v1 kind of cloud gateways, this field should be omitted.
 - `environment` (Attributes List) Array of environment variables to set for a data-plane group. (see [below for nested schema](#nestedatt--dataplane_groups--environment))
-- `provider` (String) Name of cloud provider. Not Null; must be one of ["aws", "azure"]
+- `provider` (String) Name of cloud provider. Not Null; must be one of ["aws", "azure", "gcp"]
 - `region` (String) Region ID for cloud provider region. Not Null
 
 Read-Only:

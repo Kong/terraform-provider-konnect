@@ -16,8 +16,8 @@ const (
 )
 
 type ConfigurationDataPlaneGroupAutoscaleInput struct {
-	ConfigurationDataPlaneGroupAutoscaleStatic         *ConfigurationDataPlaneGroupAutoscaleStatic         `queryParam:"inline,name=ConfigurationDataPlaneGroupAutoscale"`
-	ConfigurationDataPlaneGroupAutoscaleAutopilotInput *ConfigurationDataPlaneGroupAutoscaleAutopilotInput `queryParam:"inline,name=ConfigurationDataPlaneGroupAutoscale"`
+	ConfigurationDataPlaneGroupAutoscaleStatic         *ConfigurationDataPlaneGroupAutoscaleStatic         `queryParam:"inline" union:"member"`
+	ConfigurationDataPlaneGroupAutoscaleAutopilotInput *ConfigurationDataPlaneGroupAutoscaleAutopilotInput `queryParam:"inline" union:"member"`
 
 	Type ConfigurationDataPlaneGroupAutoscaleInputType
 }
@@ -66,7 +66,7 @@ func (u *ConfigurationDataPlaneGroupAutoscaleInput) UnmarshalJSON(data []byte) e
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for ConfigurationDataPlaneGroupAutoscaleInput", string(data))
 	}

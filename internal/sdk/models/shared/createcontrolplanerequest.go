@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 // CreateControlPlaneRequestClusterType - The ClusterType value of the cluster associated with the Control Plane.
@@ -92,6 +93,17 @@ type CreateControlPlaneRequest struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]*string `json:"labels,omitempty"`
+}
+
+func (c CreateControlPlaneRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateControlPlaneRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateControlPlaneRequest) GetName() string {

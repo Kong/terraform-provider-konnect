@@ -38,17 +38,17 @@ type IntegrationInstanceResource struct {
 
 // IntegrationInstanceResourceModel describes the resource data model.
 type IntegrationInstanceResourceModel struct {
-	Authorized      types.Bool                            `tfsdk:"authorized"`
-	Config          jsontypes.Normalized                  `tfsdk:"config"`
-	CreatedAt       types.String                          `tfsdk:"created_at"`
-	Description     types.String                          `tfsdk:"description"`
-	DisplayName     types.String                          `tfsdk:"display_name"`
-	ID              types.String                          `tfsdk:"id"`
-	Integration     tfTypes.IntegrationRefWithoutInstance `tfsdk:"integration"`
-	IntegrationName types.String                          `tfsdk:"integration_name"`
-	Labels          map[string]types.String               `tfsdk:"labels"`
-	Name            types.String                          `tfsdk:"name"`
-	UpdatedAt       types.String                          `tfsdk:"updated_at"`
+	Authorized      types.Bool                             `tfsdk:"authorized"`
+	Config          jsontypes.Normalized                   `tfsdk:"config"`
+	CreatedAt       types.String                           `tfsdk:"created_at"`
+	Description     types.String                           `tfsdk:"description"`
+	DisplayName     types.String                           `tfsdk:"display_name"`
+	ID              types.String                           `tfsdk:"id"`
+	Integration     *tfTypes.IntegrationRefWithoutInstance `tfsdk:"integration"`
+	IntegrationName types.String                           `tfsdk:"integration_name"`
+	Labels          map[string]types.String                `tfsdk:"labels"`
+	Name            types.String                           `tfsdk:"name"`
+	UpdatedAt       types.String                           `tfsdk:"updated_at"`
 }
 
 func (r *IntegrationInstanceResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -99,7 +99,7 @@ func (r *IntegrationInstanceResource) Schema(ctx context.Context, req resource.S
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `The integration instance ID.`,
+				Description: `The ` + "`" + `id` + "`" + ` of the integration instance.`,
 			},
 			"integration": schema.SingleNestedAttribute{
 				Computed: true,
@@ -216,43 +216,6 @@ func (r *IntegrationInstanceResource) Create(ctx context.Context, req resource.C
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedIntegrationInstance(ctx, res.IntegrationInstance)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsFetchIntegrationInstanceRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.IntegrationInstances.FetchIntegrationInstance(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.IntegrationInstance != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedIntegrationInstance(ctx, res1.IntegrationInstance)...)
 
 	if resp.Diagnostics.HasError() {
 		return

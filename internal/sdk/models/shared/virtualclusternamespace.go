@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 // Mode - * hide_prefix - the configured prefix is hidden from clients for topics and IDs when reading.
@@ -53,6 +54,17 @@ type VirtualClusterNamespace struct {
 	//
 	Prefix     string                                       `json:"prefix"`
 	Additional *VirtualClusterNamespaceAdditionalProperties `json:"additional,omitempty"`
+}
+
+func (v VirtualClusterNamespace) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *VirtualClusterNamespace) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"mode", "prefix"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (v *VirtualClusterNamespace) GetMode() Mode {

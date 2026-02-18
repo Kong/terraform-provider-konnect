@@ -39,13 +39,13 @@ type ServerlessCloudGatewayResource struct {
 
 // ServerlessCloudGatewayResourceModel describes the resource data model.
 type ServerlessCloudGatewayResourceModel struct {
-	ClusterCert     types.String                   `tfsdk:"cluster_cert"`
-	ClusterCertKey  types.String                   `tfsdk:"cluster_cert_key"`
-	ControlPlane    tfTypes.ServerlessControlPlane `tfsdk:"control_plane"`
-	CreatedAt       types.String                   `tfsdk:"created_at"`
-	GatewayEndpoint types.String                   `tfsdk:"gateway_endpoint"`
-	Labels          map[string]types.String        `tfsdk:"labels"`
-	UpdatedAt       types.String                   `tfsdk:"updated_at"`
+	ClusterCert     types.String                    `tfsdk:"cluster_cert"`
+	ClusterCertKey  types.String                    `tfsdk:"cluster_cert_key"`
+	ControlPlane    *tfTypes.ServerlessControlPlane `tfsdk:"control_plane"`
+	CreatedAt       types.String                    `tfsdk:"created_at"`
+	GatewayEndpoint types.String                    `tfsdk:"gateway_endpoint"`
+	Labels          map[string]types.String         `tfsdk:"labels"`
+	UpdatedAt       types.String                    `tfsdk:"updated_at"`
 }
 
 func (r *ServerlessCloudGatewayResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -210,43 +210,6 @@ func (r *ServerlessCloudGatewayResource) Create(ctx context.Context, req resourc
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedServerlessCloudGateway(ctx, res.ServerlessCloudGateway)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsGetServerlessCloudGatewayRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.ServerlessCloudGateways.GetServerlessCloudGateway(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.ServerlessCloudGateway != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedServerlessCloudGateway(ctx, res1.ServerlessCloudGateway)...)
 
 	if resp.Diagnostics.HasError() {
 		return

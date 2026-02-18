@@ -145,6 +145,8 @@ func (r *GatewayUpstreamResourceModel) RefreshFromSharedUpstream(ctx context.Con
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 		r.UseSrvName = types.BoolPointerValue(resp.UseSrvName)

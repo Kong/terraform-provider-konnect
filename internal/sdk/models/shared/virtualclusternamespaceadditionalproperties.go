@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type VirtualClusterNamespaceAdditionalProperties struct {
 	// Additional backend topics to expose even if they don't match the namespace prefix.
 	// The topics are not affected by the hide/enforce prefix mode.
@@ -11,6 +15,17 @@ type VirtualClusterNamespaceAdditionalProperties struct {
 	// Consumer group IDs to expose even if they don't start with the namespace prefix.
 	//
 	ConsumerGroups []VirtualClusterNamespaceIDSelector `json:"consumer_groups,omitempty"`
+}
+
+func (v VirtualClusterNamespaceAdditionalProperties) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *VirtualClusterNamespaceAdditionalProperties) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (v *VirtualClusterNamespaceAdditionalProperties) GetTopics() []VirtualClusterNamespaceTopicSelector {

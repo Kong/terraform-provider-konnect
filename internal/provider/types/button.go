@@ -3,6 +3,6 @@
 package types
 
 type Button struct {
-	PrimaryFill V2AppearanceColorVariable `tfsdk:"primary_fill"`
-	PrimaryText V2AppearanceColorVariable `tfsdk:"primary_text"`
+	PrimaryFill *V2AppearanceColorVariable `tfsdk:"primary_fill"`
+	PrimaryText *V2AppearanceColorVariable `tfsdk:"primary_text"`
 }

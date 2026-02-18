@@ -12,6 +12,17 @@ type HTTPLogPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (h HTTPLogPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HTTPLogPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (h *HTTPLogPluginAfter) GetAccess() []string {
 	if h == nil {
 		return nil
@@ -21,6 +32,17 @@ func (h *HTTPLogPluginAfter) GetAccess() []string {
 
 type HTTPLogPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (h HTTPLogPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HTTPLogPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (h *HTTPLogPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (h *HTTPLogPluginBefore) GetAccess() []string {
 type HTTPLogPluginOrdering struct {
 	After  *HTTPLogPluginAfter  `json:"after,omitempty"`
 	Before *HTTPLogPluginBefore `json:"before,omitempty"`
+}
+
+func (h HTTPLogPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HTTPLogPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (h *HTTPLogPluginOrdering) GetAfter() *HTTPLogPluginAfter {
@@ -55,6 +88,17 @@ type HTTPLogPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (h HTTPLogPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HTTPLogPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (h *HTTPLogPluginPartials) GetID() *string {
@@ -374,6 +418,17 @@ type HTTPLogPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (h HTTPLogPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HTTPLogPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (h *HTTPLogPluginConsumer) GetID() *string {
 	if h == nil {
 		return nil
@@ -437,6 +492,17 @@ type HTTPLogPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (h HTTPLogPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HTTPLogPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (h *HTTPLogPluginRoute) GetID() *string {
 	if h == nil {
 		return nil
@@ -447,6 +513,17 @@ func (h *HTTPLogPluginRoute) GetID() *string {
 // HTTPLogPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type HTTPLogPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (h HTTPLogPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HTTPLogPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (h *HTTPLogPluginService) GetID() *string {

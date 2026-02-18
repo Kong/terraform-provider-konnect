@@ -57,6 +57,8 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 					for _, v := range resp.Config.Propagation.Clear {
 						r.Config.Propagation.Clear = append(r.Config.Propagation.Clear, types.StringValue(v))
 					}
+				} else {
+					r.Config.Propagation.Clear = nil
 				}
 				if resp.Config.Propagation.DefaultFormat != nil {
 					r.Config.Propagation.DefaultFormat = types.StringValue(string(*resp.Config.Propagation.DefaultFormat))
@@ -68,12 +70,16 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 					for _, v := range resp.Config.Propagation.Extract {
 						r.Config.Propagation.Extract = append(r.Config.Propagation.Extract, types.StringValue(string(v)))
 					}
+				} else {
+					r.Config.Propagation.Extract = nil
 				}
 				if resp.Config.Propagation.Inject != nil {
 					r.Config.Propagation.Inject = make([]types.String, 0, len(resp.Config.Propagation.Inject))
 					for _, v := range resp.Config.Propagation.Inject {
 						r.Config.Propagation.Inject = append(r.Config.Propagation.Inject, types.StringValue(string(v)))
 					}
+				} else {
+					r.Config.Propagation.Inject = nil
 				}
 			}
 			if resp.Config.Queue == nil {
@@ -154,6 +160,8 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -176,6 +184,8 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

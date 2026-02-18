@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -10,6 +11,17 @@ import (
 type GetRealmRequest struct {
 	// ID of the realm
 	RealmID string `pathParam:"style=simple,explode=false,name=realmId"`
+}
+
+func (g GetRealmRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetRealmRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"realmId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetRealmRequest) GetRealmID() string {
@@ -28,6 +40,17 @@ type GetRealmResponse struct {
 	RawResponse *http.Response
 	// success
 	ConsumerRealm *shared.ConsumerRealm
+}
+
+func (g GetRealmResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetRealmResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetRealmResponse) GetContentType() string {
