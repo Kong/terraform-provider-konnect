@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -13,6 +14,17 @@ type UpdateUpstreamtimeoutPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID        string                       `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	UpstreamTimeoutPlugin shared.UpstreamTimeoutPlugin `request:"mediaType=application/json"`
+}
+
+func (u UpdateUpstreamtimeoutPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateUpstreamtimeoutPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "UpstreamTimeoutPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateUpstreamtimeoutPluginRequest) GetPluginID() string {
@@ -47,6 +59,17 @@ type UpdateUpstreamtimeoutPluginResponse struct {
 	UpstreamTimeoutPlugin *shared.UpstreamTimeoutPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (u UpdateUpstreamtimeoutPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateUpstreamtimeoutPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateUpstreamtimeoutPluginResponse) GetContentType() string {

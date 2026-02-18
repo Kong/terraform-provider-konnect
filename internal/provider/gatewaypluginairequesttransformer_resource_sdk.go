@@ -17,12 +17,14 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.AiRequestTransformerPluginConfig{}
 		r.Config.HTTPProxyHost = types.StringPointerValue(resp.Config.HTTPProxyHost)
 		r.Config.HTTPProxyPort = types.Int64PointerValue(resp.Config.HTTPProxyPort)
 		r.Config.HTTPTimeout = types.Int64PointerValue(resp.Config.HTTPTimeout)
 		r.Config.HTTPSProxyHost = types.StringPointerValue(resp.Config.HTTPSProxyHost)
 		r.Config.HTTPSProxyPort = types.Int64PointerValue(resp.Config.HTTPSProxyPort)
 		r.Config.HTTPSVerify = types.BoolPointerValue(resp.Config.HTTPSVerify)
+		r.Config.Llm = &tfTypes.Llm{}
 		if resp.Config.Llm.Auth == nil {
 			r.Config.Llm.Auth = nil
 		} else {
@@ -61,6 +63,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 				r.Config.Llm.Metadata[key] = jsontypes.NewNormalizedValue(string(result))
 			}
 		}
+		r.Config.Llm.Model = &tfTypes.AiLlmAsJudgePluginModel{}
 		r.Config.Llm.Model.Name = types.StringPointerValue(resp.Config.Llm.Model.Name)
 		if resp.Config.Llm.Model.Options == nil {
 			r.Config.Llm.Model.Options = nil
@@ -186,6 +189,8 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -208,6 +213,8 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

@@ -44,6 +44,8 @@ func (r *GatewayPluginRequestValidatorResourceModel) RefreshFromSharedRequestVal
 
 					r.Config.ParameterSchema = append(r.Config.ParameterSchema, parameterSchema)
 				}
+			} else {
+				r.Config.ParameterSchema = nil
 			}
 			r.Config.VerboseResponse = types.BoolPointerValue(resp.Config.VerboseResponse)
 			if resp.Config.Version != nil {
@@ -97,6 +99,8 @@ func (r *GatewayPluginRequestValidatorResourceModel) RefreshFromSharedRequestVal
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -119,6 +123,8 @@ func (r *GatewayPluginRequestValidatorResourceModel) RefreshFromSharedRequestVal
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

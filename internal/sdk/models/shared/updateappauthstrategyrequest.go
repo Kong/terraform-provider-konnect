@@ -17,8 +17,8 @@ const (
 
 // Configs - JSON-B object containing the configuration for the OIDC strategy under the key 'openid-connect' or the configuration for the Key Auth strategy under the key 'key-auth'
 type Configs struct {
-	UpdateAppAuthStrategyRequestOpenIDConnect *UpdateAppAuthStrategyRequestOpenIDConnect `queryParam:"inline,name=configs"`
-	UpdateAppAuthStrategyRequestKeyAuth       *UpdateAppAuthStrategyRequestKeyAuth       `queryParam:"inline,name=configs"`
+	UpdateAppAuthStrategyRequestOpenIDConnect *UpdateAppAuthStrategyRequestOpenIDConnect `queryParam:"inline" union:"member"`
+	UpdateAppAuthStrategyRequestKeyAuth       *UpdateAppAuthStrategyRequestKeyAuth       `queryParam:"inline" union:"member"`
 
 	Type ConfigsType
 }
@@ -67,7 +67,7 @@ func (u *Configs) UnmarshalJSON(data []byte) error {
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for Configs", string(data))
 	}

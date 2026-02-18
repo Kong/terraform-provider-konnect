@@ -12,6 +12,17 @@ type TCPLogPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (t TCPLogPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TCPLogPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (t *TCPLogPluginAfter) GetAccess() []string {
 	if t == nil {
 		return nil
@@ -21,6 +32,17 @@ func (t *TCPLogPluginAfter) GetAccess() []string {
 
 type TCPLogPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (t TCPLogPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TCPLogPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (t *TCPLogPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (t *TCPLogPluginBefore) GetAccess() []string {
 type TCPLogPluginOrdering struct {
 	After  *TCPLogPluginAfter  `json:"after,omitempty"`
 	Before *TCPLogPluginBefore `json:"before,omitempty"`
+}
+
+func (t TCPLogPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TCPLogPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (t *TCPLogPluginOrdering) GetAfter() *TCPLogPluginAfter {
@@ -55,6 +88,17 @@ type TCPLogPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (t TCPLogPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TCPLogPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (t *TCPLogPluginPartials) GetID() *string {
@@ -169,6 +213,17 @@ type TCPLogPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (t TCPLogPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TCPLogPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (t *TCPLogPluginConsumer) GetID() *string {
 	if t == nil {
 		return nil
@@ -232,6 +287,17 @@ type TCPLogPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (t TCPLogPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TCPLogPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (t *TCPLogPluginRoute) GetID() *string {
 	if t == nil {
 		return nil
@@ -242,6 +308,17 @@ func (t *TCPLogPluginRoute) GetID() *string {
 // TCPLogPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type TCPLogPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (t TCPLogPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TCPLogPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (t *TCPLogPluginService) GetID() *string {

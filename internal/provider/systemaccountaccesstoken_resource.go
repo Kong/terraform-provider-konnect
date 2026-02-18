@@ -73,7 +73,7 @@ func (r *SystemAccountAccessTokenResource) Schema(ctx context.Context, req resou
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `Requires replacement if changed.`,
+				Description: `Timestamp of when the system account access token will expire. Requires replacement if changed.`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
 				},
@@ -93,7 +93,8 @@ func (r *SystemAccountAccessTokenResource) Schema(ctx context.Context, req resou
 				Description: `Timestamp of when the system account access token was last used.`,
 			},
 			"name": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: `Name of the system account access token.`,
 			},
 			"token": schema.StringAttribute{
 				Computed:  true,
@@ -186,43 +187,6 @@ func (r *SystemAccountAccessTokenResource) Create(ctx context.Context, req resou
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedSystemAccountAccessTokenCreated(ctx, res.SystemAccountAccessTokenCreated)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsGetSystemAccountsIDAccessTokensIDRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.SystemAccountsAccessTokens.GetSystemAccountsIDAccessTokensID(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.SystemAccountAccessToken != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedSystemAccountAccessToken(ctx, res1.SystemAccountAccessToken)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -412,12 +376,12 @@ func (r *SystemAccountAccessTokenResource) ImportState(ctx context.Context, req 
 	}
 
 	if len(data.AccountID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field account_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		resp.Diagnostics.AddError("Missing required field", `The field account_id is required but was not found in the json encoded ID.`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("account_id"), data.AccountID)...)
 	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID.`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)

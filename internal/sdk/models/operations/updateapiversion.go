@@ -114,6 +114,17 @@ type UpdateAPIVersionResponse struct {
 	UnsupportedMediaTypeError *shared.UnsupportedMediaTypeError
 }
 
+func (u UpdateAPIVersionResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateAPIVersionResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (u *UpdateAPIVersionResponse) GetContentType() string {
 	if u == nil {
 		return ""

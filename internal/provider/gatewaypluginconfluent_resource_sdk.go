@@ -15,11 +15,14 @@ func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(c
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.ConfluentPluginConfig{}
 		if resp.Config.AllowedTopics != nil {
 			r.Config.AllowedTopics = make([]types.String, 0, len(resp.Config.AllowedTopics))
 			for _, v := range resp.Config.AllowedTopics {
 				r.Config.AllowedTopics = append(r.Config.AllowedTopics, types.StringValue(v))
 			}
+		} else {
+			r.Config.AllowedTopics = nil
 		}
 		if resp.Config.BootstrapServers != nil {
 			r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
@@ -32,6 +35,8 @@ func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(c
 
 				r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers)
 			}
+		} else {
+			r.Config.BootstrapServers = nil
 		}
 		r.Config.ClusterAPIKey = types.StringValue(resp.Config.ClusterAPIKey)
 		r.Config.ClusterAPISecret = types.StringValue(resp.Config.ClusterAPISecret)
@@ -50,6 +55,8 @@ func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(c
 			for _, v := range resp.Config.MessageByLuaFunctions {
 				r.Config.MessageByLuaFunctions = append(r.Config.MessageByLuaFunctions, types.StringValue(v))
 			}
+		} else {
+			r.Config.MessageByLuaFunctions = nil
 		}
 		r.Config.ProducerAsync = types.BoolPointerValue(resp.Config.ProducerAsync)
 		r.Config.ProducerAsyncBufferingLimitsMessagesInMemory = types.Int64PointerValue(resp.Config.ProducerAsyncBufferingLimitsMessagesInMemory)
@@ -221,6 +228,8 @@ func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(c
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -243,6 +252,8 @@ func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(c
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

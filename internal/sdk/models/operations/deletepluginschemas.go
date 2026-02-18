@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type DeletePluginSchemasRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// The custom plugin name
 	Name string `pathParam:"style=simple,explode=false,name=name"`
+}
+
+func (d DeletePluginSchemasRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeletePluginSchemasRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "name"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeletePluginSchemasRequest) GetControlPlaneID() string {
@@ -41,6 +53,17 @@ type DeletePluginSchemasResponse struct {
 	KonnectCPLegacyForbiddenError *shared.KonnectCPLegacyForbiddenError
 	// Forbidden
 	KonnectCPLegacyNotFoundError *shared.KonnectCPLegacyNotFoundError
+}
+
+func (d DeletePluginSchemasResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeletePluginSchemasResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeletePluginSchemasResponse) GetContentType() string {

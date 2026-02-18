@@ -7,8 +7,8 @@ import (
 )
 
 type SchemaRegistryConfluent struct {
-	Config      SchemaRegistryConfluentConfig `tfsdk:"config"`
-	Description types.String                  `tfsdk:"description"`
-	Labels      map[string]types.String       `tfsdk:"labels"`
-	Name        types.String                  `tfsdk:"name"`
+	Config      *SchemaRegistryConfluentConfig `tfsdk:"config"`
+	Description types.String                   `tfsdk:"description"`
+	Labels      map[string]types.String        `tfsdk:"labels"`
+	Name        types.String                   `tfsdk:"name"`
 }

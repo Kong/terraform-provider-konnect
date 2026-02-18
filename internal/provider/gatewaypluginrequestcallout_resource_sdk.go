@@ -15,6 +15,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.RequestCalloutPluginConfig{}
 		if resp.Config.Cache == nil {
 			r.Config.Cache = nil
 		} else {
@@ -63,6 +64,8 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 
 						r.Config.Cache.Redis.ClusterNodes = append(r.Config.Cache.Redis.ClusterNodes, clusterNodes)
 					}
+				} else {
+					r.Config.Cache.Redis.ClusterNodes = nil
 				}
 				r.Config.Cache.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.ConnectTimeout)
 				r.Config.Cache.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Cache.Redis.ConnectionIsProxied)
@@ -86,6 +89,8 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 
 						r.Config.Cache.Redis.SentinelNodes = append(r.Config.Cache.Redis.SentinelNodes, sentinelNodes)
 					}
+				} else {
+					r.Config.Cache.Redis.SentinelNodes = nil
 				}
 				r.Config.Cache.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Cache.Redis.SentinelPassword)
 				if resp.Config.Cache.Redis.SentinelRole != nil {
@@ -121,6 +126,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				callouts.DependsOn = append(callouts.DependsOn, types.StringValue(v))
 			}
 			callouts.Name = types.StringValue(calloutsItem.Name)
+			callouts.Request = &tfTypes.Request{}
 			if calloutsItem.Request.Body == nil {
 				callouts.Request.Body = nil
 			} else {
@@ -146,6 +152,8 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 					for _, v := range calloutsItem.Request.Error.HTTPStatuses {
 						callouts.Request.Error.HTTPStatuses = append(callouts.Request.Error.HTTPStatuses, types.Int64Value(v))
 					}
+				} else {
+					callouts.Request.Error.HTTPStatuses = nil
 				}
 				if calloutsItem.Request.Error.OnError != nil {
 					callouts.Request.Error.OnError = types.StringValue(string(*calloutsItem.Request.Error.OnError))
@@ -320,6 +328,8 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -342,6 +352,8 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

@@ -40,13 +40,13 @@ type PortalCustomDomainResource struct {
 
 // PortalCustomDomainResourceModel describes the resource data model.
 type PortalCustomDomainResourceModel struct {
-	CnameStatus types.String                        `tfsdk:"cname_status"`
-	CreatedAt   types.String                        `tfsdk:"created_at"`
-	Enabled     types.Bool                          `tfsdk:"enabled"`
-	Hostname    types.String                        `tfsdk:"hostname"`
-	PortalID    types.String                        `tfsdk:"portal_id"`
-	Ssl         tfTypes.CreatePortalCustomDomainSSL `tfsdk:"ssl"`
-	UpdatedAt   types.String                        `tfsdk:"updated_at"`
+	CnameStatus types.String                         `tfsdk:"cname_status"`
+	CreatedAt   types.String                         `tfsdk:"created_at"`
+	Enabled     types.Bool                           `tfsdk:"enabled"`
+	Hostname    types.String                         `tfsdk:"hostname"`
+	PortalID    types.String                         `tfsdk:"portal_id"`
+	Ssl         *tfTypes.CreatePortalCustomDomainSSL `tfsdk:"ssl"`
+	UpdatedAt   types.String                         `tfsdk:"updated_at"`
 }
 
 func (r *PortalCustomDomainResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -236,43 +236,6 @@ func (r *PortalCustomDomainResource) Create(ctx context.Context, req resource.Cr
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedPortalCustomDomain(ctx, res.PortalCustomDomain)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsGetPortalCustomDomainRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.PortalCustomDomains.GetPortalCustomDomain(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.PortalCustomDomain != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedPortalCustomDomain(ctx, res1.PortalCustomDomain)...)
 
 	if resp.Diagnostics.HasError() {
 		return

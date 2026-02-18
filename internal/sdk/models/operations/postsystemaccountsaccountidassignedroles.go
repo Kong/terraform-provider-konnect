@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -16,6 +17,17 @@ type PostSystemAccountsAccountIDAssignedRolesRequest struct {
 	AccountID string `pathParam:"style=simple,explode=false,name=accountId"`
 	// The request schema for assigning a role.
 	AssignRole *shared.AssignRole `request:"mediaType=application/json"`
+}
+
+func (p PostSystemAccountsAccountIDAssignedRolesRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PostSystemAccountsAccountIDAssignedRolesRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"accountId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PostSystemAccountsAccountIDAssignedRolesRequest) GetAccountID() string {
@@ -47,6 +59,17 @@ type PostSystemAccountsAccountIDAssignedRolesResponse struct {
 	NotFoundError *shared.NotFoundError
 	// Conflict
 	ConflictError *shared.ConflictError
+}
+
+func (p PostSystemAccountsAccountIDAssignedRolesResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PostSystemAccountsAccountIDAssignedRolesResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PostSystemAccountsAccountIDAssignedRolesResponse) GetContentType() string {

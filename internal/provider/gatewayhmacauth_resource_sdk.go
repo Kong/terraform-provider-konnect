@@ -22,6 +22,8 @@ func (r *GatewayHMACAuthResourceModel) RefreshFromSharedHMACAuth(ctx context.Con
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.Username = types.StringValue(resp.Username)
 	}

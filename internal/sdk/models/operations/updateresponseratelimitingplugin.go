@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -13,6 +14,17 @@ type UpdateResponseratelimitingPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID             string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	ResponseRatelimitingPlugin shared.ResponseRatelimitingPlugin `request:"mediaType=application/json"`
+}
+
+func (u UpdateResponseratelimitingPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateResponseratelimitingPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "ResponseRatelimitingPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateResponseratelimitingPluginRequest) GetPluginID() string {
@@ -47,6 +59,17 @@ type UpdateResponseratelimitingPluginResponse struct {
 	ResponseRatelimitingPlugin *shared.ResponseRatelimitingPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (u UpdateResponseratelimitingPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateResponseratelimitingPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateResponseratelimitingPluginResponse) GetContentType() string {

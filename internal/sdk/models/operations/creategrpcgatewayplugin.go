@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateGrpcgatewayPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID    string                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	GrpcGatewayPlugin shared.GrpcGatewayPlugin `request:"mediaType=application/json"`
+}
+
+func (c CreateGrpcgatewayPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateGrpcgatewayPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "GrpcGatewayPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateGrpcgatewayPluginRequest) GetControlPlaneID() string {
@@ -38,6 +50,17 @@ type CreateGrpcgatewayPluginResponse struct {
 	GrpcGatewayPlugin *shared.GrpcGatewayPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (c CreateGrpcgatewayPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateGrpcgatewayPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateGrpcgatewayPluginResponse) GetContentType() string {

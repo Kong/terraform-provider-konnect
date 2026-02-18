@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type APIProductVersionPortal struct {
 	PortalID                       string                          `json:"portal_id"`
 	PortalName                     string                          `json:"portal_name"`
@@ -11,6 +15,17 @@ type APIProductVersionPortal struct {
 	ApplicationRegistrationEnabled bool                            `json:"application_registration_enabled"`
 	AutoApproveRegistration        bool                            `json:"auto_approve_registration"`
 	AuthStrategies                 []APIProductVersionAuthStrategy `json:"auth_strategies"`
+}
+
+func (a APIProductVersionPortal) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *APIProductVersionPortal) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"portal_id", "portal_name", "portal_product_version_id", "publish_status", "deprecated", "application_registration_enabled", "auto_approve_registration", "auth_strategies"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *APIProductVersionPortal) GetPortalID() string {

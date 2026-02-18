@@ -17,7 +17,7 @@ const (
 
 // SchemaRegistryUpdate - The typed schema of the schema registry to modify it.
 type SchemaRegistryUpdate struct {
-	SchemaRegistryConfluentSensitiveDataAware *SchemaRegistryConfluentSensitiveDataAware `queryParam:"inline,name=SchemaRegistryUpdate"`
+	SchemaRegistryConfluentSensitiveDataAware *SchemaRegistryConfluentSensitiveDataAware `queryParam:"inline" union:"member"`
 
 	Type SchemaRegistryUpdateType
 }

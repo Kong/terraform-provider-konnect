@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateLdapauthadvancedPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID         string                        `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	LdapAuthAdvancedPlugin shared.LdapAuthAdvancedPlugin `request:"mediaType=application/json"`
+}
+
+func (c CreateLdapauthadvancedPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateLdapauthadvancedPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "LdapAuthAdvancedPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateLdapauthadvancedPluginRequest) GetControlPlaneID() string {
@@ -38,6 +50,17 @@ type CreateLdapauthadvancedPluginResponse struct {
 	LdapAuthAdvancedPlugin *shared.LdapAuthAdvancedPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (c CreateLdapauthadvancedPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateLdapauthadvancedPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateLdapauthadvancedPluginResponse) GetContentType() string {

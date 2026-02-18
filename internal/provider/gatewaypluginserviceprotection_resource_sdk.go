@@ -15,6 +15,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) RefreshFromSharedServicePr
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.ServiceProtectionPluginConfig{}
 		r.Config.DictionaryName = types.StringPointerValue(resp.Config.DictionaryName)
 		r.Config.DisablePenalty = types.BoolPointerValue(resp.Config.DisablePenalty)
 		r.Config.ErrorCode = types.Float64PointerValue(resp.Config.ErrorCode)
@@ -63,6 +64,8 @@ func (r *GatewayPluginServiceProtectionResourceModel) RefreshFromSharedServicePr
 
 					r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes)
 				}
+			} else {
+				r.Config.Redis.ClusterNodes = nil
 			}
 			r.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Redis.ConnectTimeout)
 			r.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Redis.ConnectionIsProxied)
@@ -86,6 +89,8 @@ func (r *GatewayPluginServiceProtectionResourceModel) RefreshFromSharedServicePr
 
 					r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes)
 				}
+			} else {
+				r.Config.Redis.SentinelNodes = nil
 			}
 			r.Config.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Redis.SentinelPassword)
 			if resp.Config.Redis.SentinelRole != nil {
@@ -154,6 +159,8 @@ func (r *GatewayPluginServiceProtectionResourceModel) RefreshFromSharedServicePr
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -170,6 +177,8 @@ func (r *GatewayPluginServiceProtectionResourceModel) RefreshFromSharedServicePr
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

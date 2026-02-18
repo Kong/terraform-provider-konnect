@@ -15,6 +15,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.UpstreamOauthPluginConfig{}
 		if resp.Config.Behavior == nil {
 			r.Config.Behavior = nil
 		} else {
@@ -78,6 +79,8 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 
 						r.Config.Cache.Redis.ClusterNodes = append(r.Config.Cache.Redis.ClusterNodes, clusterNodes)
 					}
+				} else {
+					r.Config.Cache.Redis.ClusterNodes = nil
 				}
 				r.Config.Cache.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.ConnectTimeout)
 				r.Config.Cache.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Cache.Redis.ConnectionIsProxied)
@@ -101,6 +104,8 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 
 						r.Config.Cache.Redis.SentinelNodes = append(r.Config.Cache.Redis.SentinelNodes, sentinelNodes)
 					}
+				} else {
+					r.Config.Cache.Redis.SentinelNodes = nil
 				}
 				r.Config.Cache.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Cache.Redis.SentinelPassword)
 				if resp.Config.Cache.Redis.SentinelRole != nil {
@@ -144,6 +149,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 			r.Config.Client.SslVerify = types.BoolPointerValue(resp.Config.Client.SslVerify)
 			r.Config.Client.Timeout = types.Int64PointerValue(resp.Config.Client.Timeout)
 		}
+		r.Config.Oauth = &tfTypes.Oauth{}
 		r.Config.Oauth.Audience = make([]types.String, 0, len(resp.Config.Oauth.Audience))
 		for _, v := range resp.Config.Oauth.Audience {
 			r.Config.Oauth.Audience = append(r.Config.Oauth.Audience, types.StringValue(v))
@@ -161,6 +167,8 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 			for _, v := range resp.Config.Oauth.Scopes {
 				r.Config.Oauth.Scopes = append(r.Config.Oauth.Scopes, types.StringValue(v))
 			}
+		} else {
+			r.Config.Oauth.Scopes = nil
 		}
 		r.Config.Oauth.TokenEndpoint = types.StringValue(resp.Config.Oauth.TokenEndpoint)
 		if len(resp.Config.Oauth.TokenHeaders) > 0 {
@@ -227,6 +235,8 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -249,6 +259,8 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

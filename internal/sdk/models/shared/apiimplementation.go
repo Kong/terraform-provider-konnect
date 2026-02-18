@@ -17,8 +17,8 @@ const (
 
 // APIImplementation - An entity that implements an API
 type APIImplementation struct {
-	ServiceReference      *ServiceReference      `queryParam:"inline,name=ApiImplementation"`
-	ControlPlaneReference *ControlPlaneReference `queryParam:"inline,name=ApiImplementation"`
+	ServiceReference      *ServiceReference      `queryParam:"inline" union:"member"`
+	ControlPlaneReference *ControlPlaneReference `queryParam:"inline" union:"member"`
 
 	Type APIImplementationType
 }
@@ -67,7 +67,7 @@ func (u *APIImplementation) UnmarshalJSON(data []byte) error {
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for APIImplementation", string(data))
 	}

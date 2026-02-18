@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // NotFoundError - standard error
 type NotFoundError struct {
 	Status   any `json:"status"`
@@ -9,6 +13,17 @@ type NotFoundError struct {
 	Type     any `json:"type,omitempty"`
 	Instance any `json:"instance"`
 	Detail   any `json:"detail"`
+}
+
+func (n NotFoundError) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(n, "", false)
+}
+
+func (n *NotFoundError) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &n, "", false, []string{"status", "title", "instance", "detail"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (n *NotFoundError) GetStatus() any {

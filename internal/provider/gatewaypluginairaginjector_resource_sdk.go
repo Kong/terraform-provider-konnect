@@ -15,6 +15,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.AiRagInjectorPluginConfig{}
 		if resp.Config.CollectionACLConfig != nil {
 			r.Config.CollectionACLConfig = make(map[string]tfTypes.CollectionACLConfig, len(resp.Config.CollectionACLConfig))
 			for collectionACLConfigKey, collectionACLConfigValue := range resp.Config.CollectionACLConfig {
@@ -36,6 +37,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 		} else {
 			r.Config.ConsumerIdentifier = types.StringNull()
 		}
+		r.Config.Embeddings = &tfTypes.Embeddings{}
 		if resp.Config.Embeddings.Auth == nil {
 			r.Config.Embeddings.Auth = nil
 		} else {
@@ -59,6 +61,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 			r.Config.Embeddings.Auth.ParamName = types.StringPointerValue(resp.Config.Embeddings.Auth.ParamName)
 			r.Config.Embeddings.Auth.ParamValue = types.StringPointerValue(resp.Config.Embeddings.Auth.ParamValue)
 		}
+		r.Config.Embeddings.Model = &tfTypes.AiProxyAdvancedPluginModel{}
 		r.Config.Embeddings.Model.Name = types.StringValue(resp.Config.Embeddings.Model.Name)
 		if resp.Config.Embeddings.Model.Options == nil {
 			r.Config.Embeddings.Model.Options = nil
@@ -130,6 +133,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 		r.Config.MaxFilterClauses = types.Int64PointerValue(resp.Config.MaxFilterClauses)
 		r.Config.StopOnFailure = types.BoolPointerValue(resp.Config.StopOnFailure)
 		r.Config.StopOnFilterError = types.BoolPointerValue(resp.Config.StopOnFilterError)
+		r.Config.Vectordb = &tfTypes.Vectordb{}
 		r.Config.Vectordb.Dimensions = types.Int64Value(resp.Config.Vectordb.Dimensions)
 		r.Config.Vectordb.DistanceMetric = types.StringValue(string(resp.Config.Vectordb.DistanceMetric))
 		if resp.Config.Vectordb.Pgvector == nil {
@@ -190,6 +194,8 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 
 					r.Config.Vectordb.Redis.ClusterNodes = append(r.Config.Vectordb.Redis.ClusterNodes, clusterNodes)
 				}
+			} else {
+				r.Config.Vectordb.Redis.ClusterNodes = nil
 			}
 			r.Config.Vectordb.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.ConnectTimeout)
 			r.Config.Vectordb.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Vectordb.Redis.ConnectionIsProxied)
@@ -213,6 +219,8 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 
 					r.Config.Vectordb.Redis.SentinelNodes = append(r.Config.Vectordb.Redis.SentinelNodes, sentinelNodes)
 				}
+			} else {
+				r.Config.Vectordb.Redis.SentinelNodes = nil
 			}
 			r.Config.Vectordb.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Vectordb.Redis.SentinelPassword)
 			if resp.Config.Vectordb.Redis.SentinelRole != nil {
@@ -280,6 +288,8 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -302,6 +312,8 @@ func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjector
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

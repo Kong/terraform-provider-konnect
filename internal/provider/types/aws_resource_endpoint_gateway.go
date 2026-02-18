@@ -7,7 +7,7 @@ import (
 )
 
 type AWSResourceEndpointGateway struct {
-	DNSConfig                      []TransitGatewayDNSConfig           `tfsdk:"dns_config"`
-	Name                           types.String                        `tfsdk:"name"`
-	TransitGatewayAttachmentConfig AwsResourceEndpointAttachmentConfig `tfsdk:"transit_gateway_attachment_config"`
+	DNSConfig                      []TransitGatewayDNSConfig            `tfsdk:"dns_config"`
+	Name                           types.String                         `tfsdk:"name"`
+	TransitGatewayAttachmentConfig *AwsResourceEndpointAttachmentConfig `tfsdk:"transit_gateway_attachment_config"`
 }

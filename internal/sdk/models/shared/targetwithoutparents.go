@@ -11,6 +11,17 @@ type TargetWithoutParentsUpstream struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (t TargetWithoutParentsUpstream) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TargetWithoutParentsUpstream) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (t *TargetWithoutParentsUpstream) GetID() *string {
 	if t == nil {
 		return nil

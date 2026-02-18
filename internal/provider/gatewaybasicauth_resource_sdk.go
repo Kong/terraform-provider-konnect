@@ -21,6 +21,8 @@ func (r *GatewayBasicAuthResourceModel) RefreshFromSharedBasicAuth(ctx context.C
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.Username = types.StringValue(resp.Username)
 	}

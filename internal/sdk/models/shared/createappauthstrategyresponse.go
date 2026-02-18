@@ -508,8 +508,8 @@ const (
 
 // CreateAppAuthStrategyResponse - A set of plugin configurations that represent how the gateway will perform authentication and authorization for a Product Version. Called “Auth Strategy” for short in the context of portals/applications. The plugins are synced to any Gateway Service that is currently linked or becomes linked to the Product Version.
 type CreateAppAuthStrategyResponse struct {
-	AppAuthStrategyKeyAuthResponse       *AppAuthStrategyKeyAuthResponse       `queryParam:"inline,name=CreateAppAuthStrategyResponse"`
-	AppAuthStrategyOpenIDConnectResponse *AppAuthStrategyOpenIDConnectResponse `queryParam:"inline,name=CreateAppAuthStrategyResponse"`
+	AppAuthStrategyKeyAuthResponse       *AppAuthStrategyKeyAuthResponse       `queryParam:"inline" union:"member"`
+	AppAuthStrategyOpenIDConnectResponse *AppAuthStrategyOpenIDConnectResponse `queryParam:"inline" union:"member"`
 
 	Type CreateAppAuthStrategyResponseType
 }

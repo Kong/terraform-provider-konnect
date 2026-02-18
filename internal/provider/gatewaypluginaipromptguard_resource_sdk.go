@@ -25,12 +25,16 @@ func (r *GatewayPluginAiPromptGuardResourceModel) RefreshFromSharedAiPromptGuard
 				for _, v := range resp.Config.AllowPatterns {
 					r.Config.AllowPatterns = append(r.Config.AllowPatterns, types.StringValue(v))
 				}
+			} else {
+				r.Config.AllowPatterns = nil
 			}
 			if resp.Config.DenyPatterns != nil {
 				r.Config.DenyPatterns = make([]types.String, 0, len(resp.Config.DenyPatterns))
 				for _, v := range resp.Config.DenyPatterns {
 					r.Config.DenyPatterns = append(r.Config.DenyPatterns, types.StringValue(v))
 				}
+			} else {
+				r.Config.DenyPatterns = nil
 			}
 			if resp.Config.GenaiCategory != nil {
 				r.Config.GenaiCategory = types.StringValue(string(*resp.Config.GenaiCategory))
@@ -96,6 +100,8 @@ func (r *GatewayPluginAiPromptGuardResourceModel) RefreshFromSharedAiPromptGuard
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -118,6 +124,8 @@ func (r *GatewayPluginAiPromptGuardResourceModel) RefreshFromSharedAiPromptGuard
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

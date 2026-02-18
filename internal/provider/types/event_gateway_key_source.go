@@ -3,6 +3,6 @@
 package types
 
 type EventGatewayKeySource struct {
-	Aws    *Metadata `queryParam:"inline" tfsdk:"aws" tfPlanOnly:"true"`
-	Static *Metadata `queryParam:"inline" tfsdk:"static" tfPlanOnly:"true"`
+	Aws    *Metadata `queryParam:"inline" tfsdk:"aws"`
+	Static *Metadata `queryParam:"inline" tfsdk:"static"`
 }

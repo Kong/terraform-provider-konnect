@@ -7,13 +7,13 @@ import (
 )
 
 type GCPVPCPeeringGatewayResponse struct {
-	CreatedAt                      types.String                  `tfsdk:"created_at"`
-	DNSConfig                      []TransitGatewayDNSConfig     `tfsdk:"dns_config"`
-	EntityVersion                  types.Int64                   `tfsdk:"entity_version"`
-	ID                             types.String                  `tfsdk:"id"`
-	Name                           types.String                  `tfsdk:"name"`
-	State                          types.String                  `tfsdk:"state"`
-	StateMetadata                  *CustomDomainStateMetadata    `tfsdk:"state_metadata"`
-	TransitGatewayAttachmentConfig GCPVPCPeeringAttachmentConfig `tfsdk:"transit_gateway_attachment_config"`
-	UpdatedAt                      types.String                  `tfsdk:"updated_at"`
+	CreatedAt                      types.String                   `tfsdk:"created_at"`
+	DNSConfig                      []TransitGatewayDNSConfig      `tfsdk:"dns_config"`
+	EntityVersion                  types.Int64                    `tfsdk:"entity_version"`
+	ID                             types.String                   `tfsdk:"id"`
+	Name                           types.String                   `tfsdk:"name"`
+	State                          types.String                   `tfsdk:"state"`
+	StateMetadata                  *CustomDomainStateMetadata     `tfsdk:"state_metadata"`
+	TransitGatewayAttachmentConfig *GCPVPCPeeringAttachmentConfig `tfsdk:"transit_gateway_attachment_config"`
+	UpdatedAt                      types.String                   `tfsdk:"updated_at"`
 }

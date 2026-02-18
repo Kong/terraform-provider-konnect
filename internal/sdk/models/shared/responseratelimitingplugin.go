@@ -12,6 +12,17 @@ type ResponseRatelimitingPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (r ResponseRatelimitingPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseRatelimitingPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *ResponseRatelimitingPluginAfter) GetAccess() []string {
 	if r == nil {
 		return nil
@@ -21,6 +32,17 @@ func (r *ResponseRatelimitingPluginAfter) GetAccess() []string {
 
 type ResponseRatelimitingPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (r ResponseRatelimitingPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseRatelimitingPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *ResponseRatelimitingPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (r *ResponseRatelimitingPluginBefore) GetAccess() []string {
 type ResponseRatelimitingPluginOrdering struct {
 	After  *ResponseRatelimitingPluginAfter  `json:"after,omitempty"`
 	Before *ResponseRatelimitingPluginBefore `json:"before,omitempty"`
+}
+
+func (r ResponseRatelimitingPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseRatelimitingPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *ResponseRatelimitingPluginOrdering) GetAfter() *ResponseRatelimitingPluginAfter {
@@ -55,6 +88,17 @@ type ResponseRatelimitingPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (r ResponseRatelimitingPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseRatelimitingPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *ResponseRatelimitingPluginPartials) GetID() *string {
@@ -549,6 +593,17 @@ type ResponseRatelimitingPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (r ResponseRatelimitingPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseRatelimitingPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *ResponseRatelimitingPluginConsumer) GetID() *string {
 	if r == nil {
 		return nil
@@ -593,6 +648,17 @@ type ResponseRatelimitingPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (r ResponseRatelimitingPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseRatelimitingPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *ResponseRatelimitingPluginRoute) GetID() *string {
 	if r == nil {
 		return nil
@@ -603,6 +669,17 @@ func (r *ResponseRatelimitingPluginRoute) GetID() *string {
 // ResponseRatelimitingPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type ResponseRatelimitingPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (r ResponseRatelimitingPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ResponseRatelimitingPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *ResponseRatelimitingPluginService) GetID() *string {

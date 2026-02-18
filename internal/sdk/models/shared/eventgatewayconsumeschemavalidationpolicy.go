@@ -28,6 +28,17 @@ type EventGatewayConsumeSchemaValidationPolicyConfig struct {
 	ValueValidationAction *ConsumeValueValidationAction `json:"value_validation_action,omitempty"`
 }
 
+func (e EventGatewayConsumeSchemaValidationPolicyConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *EventGatewayConsumeSchemaValidationPolicyConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"type"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (e *EventGatewayConsumeSchemaValidationPolicyConfig) GetType() SchemaValidationType {
 	if e == nil {
 		return SchemaValidationType("")

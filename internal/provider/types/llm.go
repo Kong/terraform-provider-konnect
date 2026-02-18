@@ -12,7 +12,7 @@ type Llm struct {
 	Description types.String                    `tfsdk:"description"`
 	Logging     *AiLlmAsJudgePluginLogging      `tfsdk:"logging"`
 	Metadata    map[string]jsontypes.Normalized `tfsdk:"metadata"`
-	Model       AiLlmAsJudgePluginModel         `tfsdk:"model"`
+	Model       *AiLlmAsJudgePluginModel        `tfsdk:"model"`
 	RouteType   types.String                    `tfsdk:"route_type"`
 	Weight      types.Int64                     `tfsdk:"weight"`
 }

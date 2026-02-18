@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -15,6 +16,17 @@ type UpdateEventGatewayListenerPolicyTLSServerRequest struct {
 	// The UUID of the policy.
 	PolicyID                                        string                                                  `pathParam:"style=simple,explode=false,name=policyId"`
 	EventGatewayTLSListenerSensitiveDataAwarePolicy *shared.EventGatewayTLSListenerSensitiveDataAwarePolicy `request:"mediaType=application/json"`
+}
+
+func (u UpdateEventGatewayListenerPolicyTLSServerRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateEventGatewayListenerPolicyTLSServerRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"gatewayId", "eventGatewayListenerId", "policyId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateEventGatewayListenerPolicyTLSServerRequest) GetGatewayID() string {
@@ -60,6 +72,17 @@ type UpdateEventGatewayListenerPolicyTLSServerResponse struct {
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
 	ForbiddenError *shared.ForbiddenError
+}
+
+func (u UpdateEventGatewayListenerPolicyTLSServerResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateEventGatewayListenerPolicyTLSServerResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateEventGatewayListenerPolicyTLSServerResponse) GetContentType() string {

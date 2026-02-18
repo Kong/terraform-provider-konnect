@@ -2,12 +2,27 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // BackendClusterReference - The backend cluster associated with the virtual cluster.
 type BackendClusterReference struct {
 	// The unique identifier of the backend cluster.
 	ID string `json:"id"`
 	// The unique name of the backend cluster.
 	Name string `json:"name"`
+}
+
+func (b BackendClusterReference) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BackendClusterReference) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"id", "name"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (b *BackendClusterReference) GetID() string {

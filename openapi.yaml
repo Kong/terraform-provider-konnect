@@ -18513,7 +18513,6 @@ paths:
                   description: Indicates that the data should not be sent to the webhook.
                   type: boolean
                   const: false
-                  required: true
       responses:
         '200':
           $ref: '#/components/responses/AuditLogWebhook'

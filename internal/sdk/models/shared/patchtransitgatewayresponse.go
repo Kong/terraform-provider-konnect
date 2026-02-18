@@ -17,8 +17,8 @@ const (
 
 // PatchTransitGatewayResponse - Response format for updating a transit gateway.
 type PatchTransitGatewayResponse struct {
-	AwsResourceEndpointGatewayResponse *AwsResourceEndpointGatewayResponse `queryParam:"inline,name=PatchTransitGatewayResponse"`
-	AwsTransitGatewayResponse          *AwsTransitGatewayResponse          `queryParam:"inline,name=PatchTransitGatewayResponse"`
+	AwsResourceEndpointGatewayResponse *AwsResourceEndpointGatewayResponse `queryParam:"inline" union:"member"`
+	AwsTransitGatewayResponse          *AwsTransitGatewayResponse          `queryParam:"inline" union:"member"`
 
 	Type PatchTransitGatewayResponseType
 }
@@ -46,14 +46,6 @@ func (u *PatchTransitGatewayResponse) UnmarshalJSON(data []byte) error {
 	var candidates []utils.UnionCandidate
 
 	// Collect all valid candidates
-	var awsTransitGatewayResponse AwsTransitGatewayResponse = AwsTransitGatewayResponse{}
-	if err := utils.UnmarshalJSON(data, &awsTransitGatewayResponse, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  PatchTransitGatewayResponseTypeAwsTransitGatewayResponse,
-			Value: &awsTransitGatewayResponse,
-		})
-	}
-
 	var awsResourceEndpointGatewayResponse AwsResourceEndpointGatewayResponse = AwsResourceEndpointGatewayResponse{}
 	if err := utils.UnmarshalJSON(data, &awsResourceEndpointGatewayResponse, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
@@ -62,12 +54,20 @@ func (u *PatchTransitGatewayResponse) UnmarshalJSON(data []byte) error {
 		})
 	}
 
+	var awsTransitGatewayResponse AwsTransitGatewayResponse = AwsTransitGatewayResponse{}
+	if err := utils.UnmarshalJSON(data, &awsTransitGatewayResponse, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  PatchTransitGatewayResponseTypeAwsTransitGatewayResponse,
+			Value: &awsTransitGatewayResponse,
+		})
+	}
+
 	if len(candidates) == 0 {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for PatchTransitGatewayResponse", string(data))
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for PatchTransitGatewayResponse", string(data))
 	}
@@ -75,11 +75,11 @@ func (u *PatchTransitGatewayResponse) UnmarshalJSON(data []byte) error {
 	// Set the union type and value based on the best candidate
 	u.Type = best.Type.(PatchTransitGatewayResponseType)
 	switch best.Type {
-	case PatchTransitGatewayResponseTypeAwsTransitGatewayResponse:
-		u.AwsTransitGatewayResponse = best.Value.(*AwsTransitGatewayResponse)
-		return nil
 	case PatchTransitGatewayResponseTypeAwsResourceEndpointGatewayResponse:
 		u.AwsResourceEndpointGatewayResponse = best.Value.(*AwsResourceEndpointGatewayResponse)
+		return nil
+	case PatchTransitGatewayResponseTypeAwsTransitGatewayResponse:
+		u.AwsTransitGatewayResponse = best.Value.(*AwsTransitGatewayResponse)
 		return nil
 	}
 

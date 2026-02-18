@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -10,6 +11,17 @@ import (
 type DeleteControlPlaneRequest struct {
 	// The control plane ID
 	ID string `pathParam:"style=simple,explode=false,name=id"`
+}
+
+func (d DeleteControlPlaneRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteControlPlaneRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"id"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteControlPlaneRequest) GetID() string {
@@ -38,6 +50,17 @@ type DeleteControlPlaneResponse struct {
 	InternalServerError *shared.InternalServerError
 	// Service Unavailable
 	ServiceUnavailable *shared.ServiceUnavailable
+}
+
+func (d DeleteControlPlaneResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteControlPlaneResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteControlPlaneResponse) GetContentType() string {

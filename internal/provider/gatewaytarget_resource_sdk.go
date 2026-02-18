@@ -23,6 +23,8 @@ func (r *GatewayTargetResourceModel) RefreshFromSharedTarget(ctx context.Context
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.Target = types.StringValue(resp.Target)
 		r.UpdatedAt = types.Float64PointerValue(resp.UpdatedAt)

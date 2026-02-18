@@ -2,8 +2,12 @@
 
 package shared
 
-// V2PortalAppearance - Update a portal's appearance settings
-type V2PortalAppearance struct {
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
+// V2UpdatePortalAppearanceRequest - Update a portal's appearance settings
+type V2UpdatePortalAppearanceRequest struct {
 	// Select a pre-existing default theme or specify 'custom' to use custom_theme variables.
 	ThemeName *V2PortalTheme `json:"theme_name,omitempty"`
 	// Groups of variables for configuring visual details of the portal user interface. Set theme_name to 'custom' to use custom values for theme variables.
@@ -18,42 +22,53 @@ type V2PortalAppearance struct {
 	Images *V2AppearanceImages `json:"images,omitempty"`
 }
 
-func (v *V2PortalAppearance) GetThemeName() *V2PortalTheme {
+func (v V2UpdatePortalAppearanceRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *V2UpdatePortalAppearanceRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (v *V2UpdatePortalAppearanceRequest) GetThemeName() *V2PortalTheme {
 	if v == nil {
 		return nil
 	}
 	return v.ThemeName
 }
 
-func (v *V2PortalAppearance) GetCustomTheme() *V2NullableAppearanceThemeVariables {
+func (v *V2UpdatePortalAppearanceRequest) GetCustomTheme() *V2NullableAppearanceThemeVariables {
 	if v == nil {
 		return nil
 	}
 	return v.CustomTheme
 }
 
-func (v *V2PortalAppearance) GetCustomFonts() *V2NullableAppearanceFonts {
+func (v *V2UpdatePortalAppearanceRequest) GetCustomFonts() *V2NullableAppearanceFonts {
 	if v == nil {
 		return nil
 	}
 	return v.CustomFonts
 }
 
-func (v *V2PortalAppearance) GetUseCustomFonts() *bool {
+func (v *V2UpdatePortalAppearanceRequest) GetUseCustomFonts() *bool {
 	if v == nil {
 		return nil
 	}
 	return v.UseCustomFonts
 }
 
-func (v *V2PortalAppearance) GetText() *V2NullableAppearanceTextVariables {
+func (v *V2UpdatePortalAppearanceRequest) GetText() *V2NullableAppearanceTextVariables {
 	if v == nil {
 		return nil
 	}
 	return v.Text
 }
 
-func (v *V2PortalAppearance) GetImages() *V2AppearanceImages {
+func (v *V2UpdatePortalAppearanceRequest) GetImages() *V2AppearanceImages {
 	if v == nil {
 		return nil
 	}

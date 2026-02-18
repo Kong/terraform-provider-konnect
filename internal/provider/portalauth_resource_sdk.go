@@ -53,6 +53,8 @@ func (r *PortalAuthResourceModel) RefreshFromSharedPortalAuthenticationSettingsR
 			for _, v := range resp.OidcScopes {
 				r.OidcScopes = append(r.OidcScopes, types.StringValue(v))
 			}
+		} else {
+			r.OidcScopes = nil
 		}
 		r.OidcTeamMappingEnabled = types.BoolValue(resp.OidcTeamMappingEnabled)
 		r.SamlAuthEnabled = types.BoolPointerValue(resp.SamlAuthEnabled)

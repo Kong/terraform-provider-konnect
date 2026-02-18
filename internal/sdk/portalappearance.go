@@ -264,7 +264,7 @@ func (s *PortalAppearance) UpdatePortalAppearance(ctx context.Context, request o
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "V2PortalAppearance", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "V2UpdatePortalAppearanceRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}

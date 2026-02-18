@@ -12,6 +12,17 @@ type RedirectPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (r RedirectPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RedirectPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RedirectPluginAfter) GetAccess() []string {
 	if r == nil {
 		return nil
@@ -21,6 +32,17 @@ func (r *RedirectPluginAfter) GetAccess() []string {
 
 type RedirectPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (r RedirectPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RedirectPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RedirectPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (r *RedirectPluginBefore) GetAccess() []string {
 type RedirectPluginOrdering struct {
 	After  *RedirectPluginAfter  `json:"after,omitempty"`
 	Before *RedirectPluginBefore `json:"before,omitempty"`
+}
+
+func (r RedirectPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RedirectPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RedirectPluginOrdering) GetAfter() *RedirectPluginAfter {
@@ -55,6 +88,17 @@ type RedirectPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (r RedirectPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RedirectPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RedirectPluginPartials) GetID() *string {
@@ -124,6 +168,17 @@ type RedirectPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (r RedirectPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RedirectPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RedirectPluginConsumer) GetID() *string {
 	if r == nil {
 		return nil
@@ -134,6 +189,17 @@ func (r *RedirectPluginConsumer) GetID() *string {
 // RedirectPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type RedirectPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (r RedirectPluginConsumerGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RedirectPluginConsumerGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RedirectPluginConsumerGroup) GetID() *string {
@@ -180,6 +246,17 @@ type RedirectPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (r RedirectPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RedirectPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (r *RedirectPluginRoute) GetID() *string {
 	if r == nil {
 		return nil
@@ -190,6 +267,17 @@ func (r *RedirectPluginRoute) GetID() *string {
 // RedirectPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type RedirectPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (r RedirectPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RedirectPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *RedirectPluginService) GetID() *string {

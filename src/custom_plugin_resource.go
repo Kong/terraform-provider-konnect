@@ -505,7 +505,6 @@ func refreshPlan(ctx context.Context, plan types.Object, target interface{}, dia
 	diagnostics.Append(tfReflect.Into(ctx, obj, val, target, tfReflect.Options{
 		UnhandledNullAsEmpty:    true,
 		UnhandledUnknownAsEmpty: true,
-		SourceType:              tfReflect.SourceTypePlan,
 	}, path.Empty())...)
 }
 

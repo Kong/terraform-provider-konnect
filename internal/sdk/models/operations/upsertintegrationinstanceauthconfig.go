@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type UpsertIntegrationInstanceAuthConfigRequest struct {
 	// The `id` of the integration instance.
 	IntegrationInstanceID               string                                     `pathParam:"style=simple,explode=false,name=integrationInstanceId"`
 	UpsertIntegrationInstanceAuthConfig shared.UpsertIntegrationInstanceAuthConfig `request:"mediaType=application/json"`
+}
+
+func (u UpsertIntegrationInstanceAuthConfigRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpsertIntegrationInstanceAuthConfigRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"integrationInstanceId", "UpsertIntegrationInstanceAuthConfig"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpsertIntegrationInstanceAuthConfigRequest) GetIntegrationInstanceID() string {
@@ -44,6 +56,17 @@ type UpsertIntegrationInstanceAuthConfigResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (u UpsertIntegrationInstanceAuthConfigResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpsertIntegrationInstanceAuthConfigResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpsertIntegrationInstanceAuthConfigResponse) GetContentType() string {

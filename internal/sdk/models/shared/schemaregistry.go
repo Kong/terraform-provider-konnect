@@ -11,6 +11,17 @@ import (
 type SchemaRegistryConfig struct {
 }
 
+func (s SchemaRegistryConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SchemaRegistryConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 // SchemaRegistry - A schema registry that contains schemas.
 type SchemaRegistry struct {
 	// The unique name of the schema registry.

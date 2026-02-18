@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -19,6 +20,17 @@ type Filter struct {
 	Description *shared.LegacyStringFieldFilter `queryParam:"name=description"`
 	// Filter by a boolean value (true/false).
 	KonnectManaged *bool `queryParam:"name=konnect_managed"`
+}
+
+func (f Filter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *Filter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (f *Filter) GetName() *shared.LegacyStringFieldFilter {
@@ -49,6 +61,17 @@ type GetSystemAccountsRequest struct {
 	PageNumber *int64 `queryParam:"style=form,explode=true,name=page[number]"`
 	// Filter system accounts returned in the response.
 	Filter *Filter `queryParam:"style=deepObject,explode=true,name=filter"`
+}
+
+func (g GetSystemAccountsRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetSystemAccountsRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetSystemAccountsRequest) GetPageSize() *int64 {
@@ -87,6 +110,17 @@ type GetSystemAccountsResponse struct {
 	UnauthorizedError *shared.UnauthorizedError
 
 	Next func() (*GetSystemAccountsResponse, error)
+}
+
+func (g GetSystemAccountsResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetSystemAccountsResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetSystemAccountsResponse) GetContentType() string {

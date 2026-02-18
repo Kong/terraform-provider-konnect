@@ -6,6 +6,7 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
@@ -14,6 +15,7 @@ func (r *GatewaySNIResourceModel) RefreshFromSharedSni(ctx context.Context, resp
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Certificate = &tfTypes.Set{}
 		r.Certificate.ID = types.StringPointerValue(resp.Certificate.ID)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -23,6 +25,8 @@ func (r *GatewaySNIResourceModel) RefreshFromSharedSni(ctx context.Context, resp
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

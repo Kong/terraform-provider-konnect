@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type CreatePortalSnippetRequest struct {
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 	// Create a snippet in a portal.
 	CreatePortalSnippetRequest shared.CreatePortalSnippetRequest `request:"mediaType=application/json"`
+}
+
+func (c CreatePortalSnippetRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreatePortalSnippetRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"portalId", "CreatePortalSnippetRequest"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreatePortalSnippetRequest) GetPortalID() string {
@@ -45,6 +57,17 @@ type CreatePortalSnippetResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (c CreatePortalSnippetResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreatePortalSnippetResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreatePortalSnippetResponse) GetContentType() string {

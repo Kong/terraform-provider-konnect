@@ -15,6 +15,8 @@ func (r *GatewayPluginSolaceConsumeResourceModel) RefreshFromSharedSolaceConsume
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.SolaceConsumePluginConfig{}
+		r.Config.Flow = &tfTypes.Flow{}
 		if resp.Config.Flow.AckMode != nil {
 			r.Config.Flow.AckMode = types.StringValue(string(*resp.Config.Flow.AckMode))
 		} else {
@@ -39,6 +41,8 @@ func (r *GatewayPluginSolaceConsumeResourceModel) RefreshFromSharedSolaceConsume
 			for _, v := range resp.Config.Flow.Functions {
 				r.Config.Flow.Functions = append(r.Config.Flow.Functions, types.StringValue(v))
 			}
+		} else {
+			r.Config.Flow.Functions = nil
 		}
 		r.Config.Flow.MaxUnackedMessages = types.Int64PointerValue(resp.Config.Flow.MaxUnackedMessages)
 		if resp.Config.Flow.Properties != nil {
@@ -61,6 +65,7 @@ func (r *GatewayPluginSolaceConsumeResourceModel) RefreshFromSharedSolaceConsume
 			r.Config.Polling = &tfTypes.Polling{}
 			r.Config.Polling.Timeout = types.Int64PointerValue(resp.Config.Polling.Timeout)
 		}
+		r.Config.Session = &tfTypes.Session{}
 		if resp.Config.Session.Authentication == nil {
 			r.Config.Session.Authentication = nil
 		} else {
@@ -140,6 +145,8 @@ func (r *GatewayPluginSolaceConsumeResourceModel) RefreshFromSharedSolaceConsume
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -162,6 +169,8 @@ func (r *GatewayPluginSolaceConsumeResourceModel) RefreshFromSharedSolaceConsume
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

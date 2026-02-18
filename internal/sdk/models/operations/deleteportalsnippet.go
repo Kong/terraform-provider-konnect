@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type DeletePortalSnippetRequest struct {
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 	// ID of the snippet.
 	SnippetID string `pathParam:"style=simple,explode=false,name=snippetId"`
+}
+
+func (d DeletePortalSnippetRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeletePortalSnippetRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"portalId", "snippetId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeletePortalSnippetRequest) GetPortalID() string {
@@ -41,6 +53,17 @@ type DeletePortalSnippetResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (d DeletePortalSnippetResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeletePortalSnippetResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeletePortalSnippetResponse) GetContentType() string {

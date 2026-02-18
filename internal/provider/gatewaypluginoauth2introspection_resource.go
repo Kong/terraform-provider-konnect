@@ -45,19 +45,19 @@ type GatewayPluginOauth2IntrospectionResource struct {
 
 // GatewayPluginOauth2IntrospectionResourceModel describes the resource data model.
 type GatewayPluginOauth2IntrospectionResourceModel struct {
-	Config         tfTypes.Oauth2IntrospectionPluginConfig `tfsdk:"config"`
-	ControlPlaneID types.String                            `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                             `tfsdk:"created_at"`
-	Enabled        types.Bool                              `tfsdk:"enabled"`
-	ID             types.String                            `tfsdk:"id"`
-	InstanceName   types.String                            `tfsdk:"instance_name"`
-	Ordering       *tfTypes.AcePluginOrdering              `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials                      `tfsdk:"partials"`
-	Protocols      []types.String                          `tfsdk:"protocols"`
-	Route          *tfTypes.Set                            `tfsdk:"route"`
-	Service        *tfTypes.Set                            `tfsdk:"service"`
-	Tags           []types.String                          `tfsdk:"tags"`
-	UpdatedAt      types.Int64                             `tfsdk:"updated_at"`
+	Config         *tfTypes.Oauth2IntrospectionPluginConfig `tfsdk:"config"`
+	ControlPlaneID types.String                             `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                              `tfsdk:"created_at"`
+	Enabled        types.Bool                               `tfsdk:"enabled"`
+	ID             types.String                             `tfsdk:"id"`
+	InstanceName   types.String                             `tfsdk:"instance_name"`
+	Ordering       *tfTypes.AcePluginOrdering               `tfsdk:"ordering"`
+	Partials       []tfTypes.Partials                       `tfsdk:"partials"`
+	Protocols      []types.String                           `tfsdk:"protocols"`
+	Route          *tfTypes.Set                             `tfsdk:"route"`
+	Service        *tfTypes.Set                             `tfsdk:"service"`
+	Tags           []types.String                           `tfsdk:"tags"`
+	UpdatedAt      types.Int64                              `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginOauth2IntrospectionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -562,12 +562,12 @@ func (r *GatewayPluginOauth2IntrospectionResource) ImportState(ctx context.Conte
 	}
 
 	if len(data.ControlPlaneID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"`)
+		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
 	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"3473c251-5b6c-4f45-b1ff-7ede735a366d"`)
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"3473c251-5b6c-4f45-b1ff-7ede735a366d"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)

@@ -89,7 +89,6 @@ func refreshPlan(ctx context.Context, plan types.Object, target any) diag.Diagno
 	diags.Append(tfReflect.Into(ctx, obj, val, target, tfReflect.Options{
 		UnhandledNullAsEmpty:    true,
 		UnhandledUnknownAsEmpty: true,
-		SourceType:              tfReflect.SourceTypePlan,
 	}, path.Empty())...)
 
 	return diags

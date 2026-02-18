@@ -2,11 +2,26 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // ListControlPlanesResponse - A paginated list response for a collection of control planes.
 type ListControlPlanesResponse struct {
 	// returns the pagination information
 	Meta PaginatedMeta  `json:"meta"`
 	Data []ControlPlane `json:"data"`
+}
+
+func (l ListControlPlanesResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *ListControlPlanesResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"meta", "data"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (l *ListControlPlanesResponse) GetMeta() PaginatedMeta {

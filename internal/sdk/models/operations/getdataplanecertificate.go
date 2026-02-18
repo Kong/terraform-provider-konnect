@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type GetDataplaneCertificateRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	CertificateID  string `pathParam:"style=simple,explode=false,name=certificateId"`
+}
+
+func (g GetDataplaneCertificateRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetDataplaneCertificateRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"controlPlaneId", "certificateId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetDataplaneCertificateRequest) GetControlPlaneID() string {
@@ -42,6 +54,17 @@ type GetDataplaneCertificateResponse struct {
 	KonnectCPLegacyForbiddenError *shared.KonnectCPLegacyForbiddenError
 	// Forbidden
 	KonnectCPLegacyNotFoundError *shared.KonnectCPLegacyNotFoundError
+}
+
+func (g GetDataplaneCertificateResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetDataplaneCertificateResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetDataplaneCertificateResponse) GetContentType() string {

@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -14,6 +15,17 @@ type GetAPIProductVersionSpecRequest struct {
 	APIProductVersionID string `pathParam:"style=simple,explode=false,name=apiProductVersionId"`
 	// The API product version specification identifier
 	SpecificationID string `pathParam:"style=simple,explode=false,name=specificationId"`
+}
+
+func (g GetAPIProductVersionSpecRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetAPIProductVersionSpecRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"apiProductId", "apiProductVersionId", "specificationId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetAPIProductVersionSpecRequest) GetAPIProductID() string {
@@ -52,6 +64,17 @@ type GetAPIProductVersionSpecResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (g GetAPIProductVersionSpecResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetAPIProductVersionSpecResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetAPIProductVersionSpecResponse) GetContentType() string {

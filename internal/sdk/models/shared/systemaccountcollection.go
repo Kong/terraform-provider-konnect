@@ -2,11 +2,26 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // SystemAccountCollection - A paginated list response for a collection of system accounts.
 type SystemAccountCollection struct {
 	// returns the pagination information
 	Meta *PaginatedMeta  `json:"meta,omitempty"`
 	Data []SystemAccount `json:"data"`
+}
+
+func (s SystemAccountCollection) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SystemAccountCollection) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *SystemAccountCollection) GetMeta() *PaginatedMeta {

@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateAPIDocumentRequest struct {
 	// The UUID API identifier
 	APIID                    string                          `pathParam:"style=simple,explode=false,name=apiId"`
 	CreateAPIDocumentRequest shared.CreateAPIDocumentRequest `request:"mediaType=application/json"`
+}
+
+func (c CreateAPIDocumentRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAPIDocumentRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"apiId", "CreateApiDocumentRequest"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateAPIDocumentRequest) GetAPIID() string {
@@ -48,6 +60,17 @@ type CreateAPIDocumentResponse struct {
 	APISlugConflict *shared.APISlugConflict
 	// Unsupported Media Type
 	UnsupportedMediaTypeError *shared.UnsupportedMediaTypeError
+}
+
+func (c CreateAPIDocumentResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAPIDocumentResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateAPIDocumentResponse) GetContentType() string {

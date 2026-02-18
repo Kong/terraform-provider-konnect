@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -10,6 +11,17 @@ import (
 type GetAuditLogDestinationRequest struct {
 	// ID of the Audit Log Destination.
 	AuditLogDestinationID string `pathParam:"style=simple,explode=false,name=auditLogDestinationId"`
+}
+
+func (g GetAuditLogDestinationRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetAuditLogDestinationRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"auditLogDestinationId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetAuditLogDestinationRequest) GetAuditLogDestinationID() string {
@@ -34,6 +46,17 @@ type GetAuditLogDestinationResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (g GetAuditLogDestinationResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetAuditLogDestinationResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetAuditLogDestinationResponse) GetContentType() string {

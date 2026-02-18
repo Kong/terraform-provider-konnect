@@ -25,12 +25,16 @@ func (r *GatewayCertificateResourceModel) RefreshFromSharedCertificate(ctx conte
 			for _, v := range resp.Snis {
 				r.Snis = append(r.Snis, types.StringValue(v))
 			}
+		} else {
+			r.Snis = nil
 		}
 		if resp.Tags != nil {
 			r.Tags = make([]types.String, 0, len(resp.Tags))
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

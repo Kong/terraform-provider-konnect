@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type Name string
@@ -60,6 +61,17 @@ func (e *Name) UnmarshalJSON(data []byte) error {
 // EventGatewayACLOperation - An Event Gateway operation to match against in an ACL rule.
 type EventGatewayACLOperation struct {
 	Name Name `json:"name"`
+}
+
+func (e EventGatewayACLOperation) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *EventGatewayACLOperation) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"name"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (e *EventGatewayACLOperation) GetName() Name {

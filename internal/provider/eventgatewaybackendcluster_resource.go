@@ -45,18 +45,18 @@ type EventGatewayBackendClusterResource struct {
 
 // EventGatewayBackendClusterResourceModel describes the resource data model.
 type EventGatewayBackendClusterResourceModel struct {
-	Authentication                           tfTypes.BackendClusterAuthenticationScheme `tfsdk:"authentication"`
-	BootstrapServers                         []types.String                             `tfsdk:"bootstrap_servers"`
-	CreatedAt                                types.String                               `tfsdk:"created_at"`
-	Description                              types.String                               `tfsdk:"description"`
-	GatewayID                                types.String                               `tfsdk:"gateway_id"`
-	ID                                       types.String                               `tfsdk:"id"`
-	InsecureAllowAnonymousVirtualClusterAuth types.Bool                                 `tfsdk:"insecure_allow_anonymous_virtual_cluster_auth"`
-	Labels                                   map[string]types.String                    `tfsdk:"labels"`
-	MetadataUpdateIntervalSeconds            types.Int64                                `tfsdk:"metadata_update_interval_seconds"`
-	Name                                     types.String                               `tfsdk:"name"`
-	TLS                                      tfTypes.BackendClusterTLS                  `tfsdk:"tls"`
-	UpdatedAt                                types.String                               `tfsdk:"updated_at"`
+	Authentication                           *tfTypes.BackendClusterAuthenticationScheme `tfsdk:"authentication"`
+	BootstrapServers                         []types.String                              `tfsdk:"bootstrap_servers"`
+	CreatedAt                                types.String                                `tfsdk:"created_at"`
+	Description                              types.String                                `tfsdk:"description"`
+	GatewayID                                types.String                                `tfsdk:"gateway_id"`
+	ID                                       types.String                                `tfsdk:"id"`
+	InsecureAllowAnonymousVirtualClusterAuth types.Bool                                  `tfsdk:"insecure_allow_anonymous_virtual_cluster_auth"`
+	Labels                                   map[string]types.String                     `tfsdk:"labels"`
+	MetadataUpdateIntervalSeconds            types.Int64                                 `tfsdk:"metadata_update_interval_seconds"`
+	Name                                     types.String                                `tfsdk:"name"`
+	TLS                                      *tfTypes.BackendClusterTLS                  `tfsdk:"tls"`
+	UpdatedAt                                types.String                                `tfsdk:"updated_at"`
 }
 
 func (r *EventGatewayBackendClusterResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -553,12 +553,12 @@ func (r *EventGatewayBackendClusterResource) ImportState(ctx context.Context, re
 	}
 
 	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID.`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
 	if len(data.GatewayID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field gateway_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"`)
+		resp.Diagnostics.AddError("Missing required field", `The field gateway_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("gateway_id"), data.GatewayID)...)

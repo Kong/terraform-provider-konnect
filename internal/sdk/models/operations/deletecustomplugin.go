@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type DeleteCustomPluginRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// ID of the CustomPlugin to lookup
 	CustomPluginID string `pathParam:"style=simple,explode=false,name=CustomPluginId"`
+}
+
+func (d DeleteCustomPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteCustomPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "CustomPluginId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteCustomPluginRequest) GetControlPlaneID() string {
@@ -37,6 +49,17 @@ type DeleteCustomPluginResponse struct {
 	RawResponse *http.Response
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (d DeleteCustomPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteCustomPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteCustomPluginResponse) GetContentType() string {

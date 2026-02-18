@@ -2,9 +2,24 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type APIProductPortal struct {
 	PortalID   string `json:"portal_id"`
 	PortalName string `json:"portal_name"`
+}
+
+func (a APIProductPortal) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *APIProductPortal) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"portal_id", "portal_name"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *APIProductPortal) GetPortalID() string {

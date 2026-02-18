@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -19,6 +20,17 @@ type CreateEventGatewayListenerPolicyTLSServerRequest struct {
 	//
 	After                         *string                               `queryParam:"style=form,explode=true,name=after"`
 	EventGatewayTLSListenerPolicy *shared.EventGatewayTLSListenerPolicy `request:"mediaType=application/json"`
+}
+
+func (c CreateEventGatewayListenerPolicyTLSServerRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateEventGatewayListenerPolicyTLSServerRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"gatewayId", "eventGatewayListenerId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateEventGatewayListenerPolicyTLSServerRequest) GetGatewayID() string {
@@ -71,6 +83,17 @@ type CreateEventGatewayListenerPolicyTLSServerResponse struct {
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
 	ForbiddenError *shared.ForbiddenError
+}
+
+func (c CreateEventGatewayListenerPolicyTLSServerResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateEventGatewayListenerPolicyTLSServerResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateEventGatewayListenerPolicyTLSServerResponse) GetContentType() string {

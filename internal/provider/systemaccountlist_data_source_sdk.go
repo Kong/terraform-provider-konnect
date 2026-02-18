@@ -33,6 +33,8 @@ func (r *SystemAccountListDataSourceModel) RefreshFromSharedSystemAccountCollect
 
 				r.Data = append(r.Data, data)
 			}
+		} else {
+			r.Data = nil
 		}
 	}
 

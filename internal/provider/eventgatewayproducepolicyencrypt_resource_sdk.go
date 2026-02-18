@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
@@ -18,9 +19,12 @@ func (r *EventGatewayProducePolicyEncryptResourceModel) RefreshFromSharedEventGa
 		r.Condition = types.StringPointerValue(resp.Condition)
 		if resp.Config != nil {
 			configPriorData := r.Config
-			r.Config.EncryptionKey = configPriorData.EncryptionKey
-			r.Config.FailureMode = configPriorData.FailureMode
-			r.Config.PartOfRecord = configPriorData.PartOfRecord
+			r.Config = &tfTypes.EventGatewayEncryptConfig{}
+			if configPriorData != nil {
+				r.Config.EncryptionKey = configPriorData.EncryptionKey
+				r.Config.FailureMode = configPriorData.FailureMode
+				r.Config.PartOfRecord = configPriorData.PartOfRecord
+			}
 		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)

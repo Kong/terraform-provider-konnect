@@ -15,12 +15,15 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.OpenidConnectPluginConfig{}
 		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
 		if resp.Config.Audience != nil {
 			r.Config.Audience = make([]types.String, 0, len(resp.Config.Audience))
 			for _, v := range resp.Config.Audience {
 				r.Config.Audience = append(r.Config.Audience, types.StringValue(v))
 			}
+		} else {
+			r.Config.Audience = nil
 		}
 		r.Config.AudienceClaim = make([]types.String, 0, len(resp.Config.AudienceClaim))
 		for _, v := range resp.Config.AudienceClaim {
@@ -31,6 +34,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.AudienceRequired {
 				r.Config.AudienceRequired = append(r.Config.AudienceRequired, types.StringValue(v))
 			}
+		} else {
+			r.Config.AudienceRequired = nil
 		}
 		r.Config.AuthMethods = make([]types.String, 0, len(resp.Config.AuthMethods))
 		for _, v := range resp.Config.AuthMethods {
@@ -41,6 +46,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.AuthenticatedGroupsClaim {
 				r.Config.AuthenticatedGroupsClaim = append(r.Config.AuthenticatedGroupsClaim, types.StringValue(v))
 			}
+		} else {
+			r.Config.AuthenticatedGroupsClaim = nil
 		}
 		r.Config.AuthorizationCookieDomain = types.StringPointerValue(resp.Config.AuthorizationCookieDomain)
 		r.Config.AuthorizationCookieHTTPOnly = types.BoolPointerValue(resp.Config.AuthorizationCookieHTTPOnly)
@@ -58,18 +65,24 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.AuthorizationQueryArgsClient {
 				r.Config.AuthorizationQueryArgsClient = append(r.Config.AuthorizationQueryArgsClient, types.StringValue(v))
 			}
+		} else {
+			r.Config.AuthorizationQueryArgsClient = nil
 		}
 		if resp.Config.AuthorizationQueryArgsNames != nil {
 			r.Config.AuthorizationQueryArgsNames = make([]types.String, 0, len(resp.Config.AuthorizationQueryArgsNames))
 			for _, v := range resp.Config.AuthorizationQueryArgsNames {
 				r.Config.AuthorizationQueryArgsNames = append(r.Config.AuthorizationQueryArgsNames, types.StringValue(v))
 			}
+		} else {
+			r.Config.AuthorizationQueryArgsNames = nil
 		}
 		if resp.Config.AuthorizationQueryArgsValues != nil {
 			r.Config.AuthorizationQueryArgsValues = make([]types.String, 0, len(resp.Config.AuthorizationQueryArgsValues))
 			for _, v := range resp.Config.AuthorizationQueryArgsValues {
 				r.Config.AuthorizationQueryArgsValues = append(r.Config.AuthorizationQueryArgsValues, types.StringValue(v))
 			}
+		} else {
+			r.Config.AuthorizationQueryArgsValues = nil
 		}
 		r.Config.AuthorizationRollingTimeout = types.Float64PointerValue(resp.Config.AuthorizationRollingTimeout)
 		r.Config.BearerTokenCookieName = types.StringPointerValue(resp.Config.BearerTokenCookieName)
@@ -93,12 +106,16 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.ClaimsForbidden {
 				r.Config.ClaimsForbidden = append(r.Config.ClaimsForbidden, types.StringValue(v))
 			}
+		} else {
+			r.Config.ClaimsForbidden = nil
 		}
 		if resp.Config.ClientAlg != nil {
 			r.Config.ClientAlg = make([]types.String, 0, len(resp.Config.ClientAlg))
 			for _, v := range resp.Config.ClientAlg {
 				r.Config.ClientAlg = append(r.Config.ClientAlg, types.StringValue(string(v)))
 			}
+		} else {
+			r.Config.ClientAlg = nil
 		}
 		r.Config.ClientArg = types.StringPointerValue(resp.Config.ClientArg)
 		if resp.Config.ClientAuth != nil {
@@ -106,6 +123,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.ClientAuth {
 				r.Config.ClientAuth = append(r.Config.ClientAuth, types.StringValue(string(v)))
 			}
+		} else {
+			r.Config.ClientAuth = nil
 		}
 		r.Config.ClientCredentialsParamType = make([]types.String, 0, len(resp.Config.ClientCredentialsParamType))
 		for _, v := range resp.Config.ClientCredentialsParamType {
@@ -116,6 +135,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.ClientID {
 				r.Config.ClientID = append(r.Config.ClientID, types.StringValue(v))
 			}
+		} else {
+			r.Config.ClientID = nil
 		}
 		if resp.Config.ClientJwk != nil {
 			r.Config.ClientJwk = []tfTypes.ClientJwk{}
@@ -136,6 +157,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 					for _, v := range clientJwkItem.KeyOps {
 						clientJwk.KeyOps = append(clientJwk.KeyOps, types.StringValue(v))
 					}
+				} else {
+					clientJwk.KeyOps = nil
 				}
 				clientJwk.Kid = types.StringPointerValue(clientJwkItem.Kid)
 				clientJwk.Kty = types.StringPointerValue(clientJwkItem.Kty)
@@ -153,6 +176,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 					for _, v := range clientJwkItem.X5c {
 						clientJwk.X5c = append(clientJwk.X5c, types.StringValue(v))
 					}
+				} else {
+					clientJwk.X5c = nil
 				}
 				clientJwk.X5t = types.StringPointerValue(clientJwkItem.X5t)
 				clientJwk.X5tNumberS256 = types.StringPointerValue(clientJwkItem.X5tNumberS256)
@@ -161,12 +186,16 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 
 				r.Config.ClientJwk = append(r.Config.ClientJwk, clientJwk)
 			}
+		} else {
+			r.Config.ClientJwk = nil
 		}
 		if resp.Config.ClientSecret != nil {
 			r.Config.ClientSecret = make([]types.String, 0, len(resp.Config.ClientSecret))
 			for _, v := range resp.Config.ClientSecret {
 				r.Config.ClientSecret = append(r.Config.ClientSecret, types.StringValue(v))
 			}
+		} else {
+			r.Config.ClientSecret = nil
 		}
 		if resp.Config.ClusterCacheRedis == nil {
 			r.Config.ClusterCacheRedis = nil
@@ -205,6 +234,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 
 					r.Config.ClusterCacheRedis.ClusterNodes = append(r.Config.ClusterCacheRedis.ClusterNodes, clusterNodes)
 				}
+			} else {
+				r.Config.ClusterCacheRedis.ClusterNodes = nil
 			}
 			r.Config.ClusterCacheRedis.ConnectTimeout = types.Int64PointerValue(resp.Config.ClusterCacheRedis.ConnectTimeout)
 			r.Config.ClusterCacheRedis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.ClusterCacheRedis.ConnectionIsProxied)
@@ -228,6 +259,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 
 					r.Config.ClusterCacheRedis.SentinelNodes = append(r.Config.ClusterCacheRedis.SentinelNodes, sentinelNodes)
 				}
+			} else {
+				r.Config.ClusterCacheRedis.SentinelNodes = nil
 			}
 			r.Config.ClusterCacheRedis.SentinelPassword = types.StringPointerValue(resp.Config.ClusterCacheRedis.SentinelPassword)
 			if resp.Config.ClusterCacheRedis.SentinelRole != nil {
@@ -255,12 +288,16 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.ConsumerClaim {
 				r.Config.ConsumerClaim = append(r.Config.ConsumerClaim, types.StringValue(v))
 			}
+		} else {
+			r.Config.ConsumerClaim = nil
 		}
 		if resp.Config.ConsumerGroupsClaim != nil {
 			r.Config.ConsumerGroupsClaim = make([]types.String, 0, len(resp.Config.ConsumerGroupsClaim))
 			for _, v := range resp.Config.ConsumerGroupsClaim {
 				r.Config.ConsumerGroupsClaim = append(r.Config.ConsumerGroupsClaim, types.StringValue(v))
 			}
+		} else {
+			r.Config.ConsumerGroupsClaim = nil
 		}
 		r.Config.ConsumerGroupsOptional = types.BoolPointerValue(resp.Config.ConsumerGroupsOptional)
 		r.Config.ConsumerOptional = types.BoolPointerValue(resp.Config.ConsumerOptional)
@@ -273,18 +310,24 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.DisableSession {
 				r.Config.DisableSession = append(r.Config.DisableSession, types.StringValue(string(v)))
 			}
+		} else {
+			r.Config.DisableSession = nil
 		}
 		if resp.Config.DiscoveryHeadersNames != nil {
 			r.Config.DiscoveryHeadersNames = make([]types.String, 0, len(resp.Config.DiscoveryHeadersNames))
 			for _, v := range resp.Config.DiscoveryHeadersNames {
 				r.Config.DiscoveryHeadersNames = append(r.Config.DiscoveryHeadersNames, types.StringValue(v))
 			}
+		} else {
+			r.Config.DiscoveryHeadersNames = nil
 		}
 		if resp.Config.DiscoveryHeadersValues != nil {
 			r.Config.DiscoveryHeadersValues = make([]types.String, 0, len(resp.Config.DiscoveryHeadersValues))
 			for _, v := range resp.Config.DiscoveryHeadersValues {
 				r.Config.DiscoveryHeadersValues = append(r.Config.DiscoveryHeadersValues, types.StringValue(v))
 			}
+		} else {
+			r.Config.DiscoveryHeadersValues = nil
 		}
 		r.Config.DisplayErrors = types.BoolPointerValue(resp.Config.DisplayErrors)
 		if resp.Config.Domains != nil {
@@ -292,6 +335,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.Domains {
 				r.Config.Domains = append(r.Config.Domains, types.StringValue(v))
 			}
+		} else {
+			r.Config.Domains = nil
 		}
 		r.Config.DownstreamAccessTokenHeader = types.StringPointerValue(resp.Config.DownstreamAccessTokenHeader)
 		r.Config.DownstreamAccessTokenJwkHeader = types.StringPointerValue(resp.Config.DownstreamAccessTokenJwkHeader)
@@ -300,12 +345,16 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.DownstreamHeadersClaims {
 				r.Config.DownstreamHeadersClaims = append(r.Config.DownstreamHeadersClaims, types.StringValue(v))
 			}
+		} else {
+			r.Config.DownstreamHeadersClaims = nil
 		}
 		if resp.Config.DownstreamHeadersNames != nil {
 			r.Config.DownstreamHeadersNames = make([]types.String, 0, len(resp.Config.DownstreamHeadersNames))
 			for _, v := range resp.Config.DownstreamHeadersNames {
 				r.Config.DownstreamHeadersNames = append(r.Config.DownstreamHeadersNames, types.StringValue(v))
 			}
+		} else {
+			r.Config.DownstreamHeadersNames = nil
 		}
 		r.Config.DownstreamIDTokenHeader = types.StringPointerValue(resp.Config.DownstreamIDTokenHeader)
 		r.Config.DownstreamIDTokenJwkHeader = types.StringPointerValue(resp.Config.DownstreamIDTokenJwkHeader)
@@ -325,6 +374,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.ExtraJwksUris {
 				r.Config.ExtraJwksUris = append(r.Config.ExtraJwksUris, types.StringValue(v))
 			}
+		} else {
+			r.Config.ExtraJwksUris = nil
 		}
 		r.Config.ForbiddenDestroySession = types.BoolPointerValue(resp.Config.ForbiddenDestroySession)
 		r.Config.ForbiddenErrorMessage = types.StringPointerValue(resp.Config.ForbiddenErrorMessage)
@@ -333,6 +384,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.ForbiddenRedirectURI {
 				r.Config.ForbiddenRedirectURI = append(r.Config.ForbiddenRedirectURI, types.StringValue(v))
 			}
+		} else {
+			r.Config.ForbiddenRedirectURI = nil
 		}
 		r.Config.GroupsClaim = make([]types.String, 0, len(resp.Config.GroupsClaim))
 		for _, v := range resp.Config.GroupsClaim {
@@ -343,6 +396,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.GroupsRequired {
 				r.Config.GroupsRequired = append(r.Config.GroupsRequired, types.StringValue(v))
 			}
+		} else {
+			r.Config.GroupsRequired = nil
 		}
 		r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
 		r.Config.HTTPProxy = types.StringPointerValue(resp.Config.HTTPProxy)
@@ -377,18 +432,24 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.IntrospectionHeadersClient {
 				r.Config.IntrospectionHeadersClient = append(r.Config.IntrospectionHeadersClient, types.StringValue(v))
 			}
+		} else {
+			r.Config.IntrospectionHeadersClient = nil
 		}
 		if resp.Config.IntrospectionHeadersNames != nil {
 			r.Config.IntrospectionHeadersNames = make([]types.String, 0, len(resp.Config.IntrospectionHeadersNames))
 			for _, v := range resp.Config.IntrospectionHeadersNames {
 				r.Config.IntrospectionHeadersNames = append(r.Config.IntrospectionHeadersNames, types.StringValue(v))
 			}
+		} else {
+			r.Config.IntrospectionHeadersNames = nil
 		}
 		if resp.Config.IntrospectionHeadersValues != nil {
 			r.Config.IntrospectionHeadersValues = make([]types.String, 0, len(resp.Config.IntrospectionHeadersValues))
 			for _, v := range resp.Config.IntrospectionHeadersValues {
 				r.Config.IntrospectionHeadersValues = append(r.Config.IntrospectionHeadersValues, types.StringValue(v))
 			}
+		} else {
+			r.Config.IntrospectionHeadersValues = nil
 		}
 		r.Config.IntrospectionHint = types.StringPointerValue(resp.Config.IntrospectionHint)
 		if resp.Config.IntrospectionPostArgsClient != nil {
@@ -396,24 +457,32 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.IntrospectionPostArgsClient {
 				r.Config.IntrospectionPostArgsClient = append(r.Config.IntrospectionPostArgsClient, types.StringValue(v))
 			}
+		} else {
+			r.Config.IntrospectionPostArgsClient = nil
 		}
 		if resp.Config.IntrospectionPostArgsClientHeaders != nil {
 			r.Config.IntrospectionPostArgsClientHeaders = make([]types.String, 0, len(resp.Config.IntrospectionPostArgsClientHeaders))
 			for _, v := range resp.Config.IntrospectionPostArgsClientHeaders {
 				r.Config.IntrospectionPostArgsClientHeaders = append(r.Config.IntrospectionPostArgsClientHeaders, types.StringValue(v))
 			}
+		} else {
+			r.Config.IntrospectionPostArgsClientHeaders = nil
 		}
 		if resp.Config.IntrospectionPostArgsNames != nil {
 			r.Config.IntrospectionPostArgsNames = make([]types.String, 0, len(resp.Config.IntrospectionPostArgsNames))
 			for _, v := range resp.Config.IntrospectionPostArgsNames {
 				r.Config.IntrospectionPostArgsNames = append(r.Config.IntrospectionPostArgsNames, types.StringValue(v))
 			}
+		} else {
+			r.Config.IntrospectionPostArgsNames = nil
 		}
 		if resp.Config.IntrospectionPostArgsValues != nil {
 			r.Config.IntrospectionPostArgsValues = make([]types.String, 0, len(resp.Config.IntrospectionPostArgsValues))
 			for _, v := range resp.Config.IntrospectionPostArgsValues {
 				r.Config.IntrospectionPostArgsValues = append(r.Config.IntrospectionPostArgsValues, types.StringValue(v))
 			}
+		} else {
+			r.Config.IntrospectionPostArgsValues = nil
 		}
 		r.Config.IntrospectionTokenParamName = types.StringPointerValue(resp.Config.IntrospectionTokenParamName)
 		r.Config.Issuer = types.StringValue(resp.Config.Issuer)
@@ -422,6 +491,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.IssuersAllowed {
 				r.Config.IssuersAllowed = append(r.Config.IssuersAllowed, types.StringValue(v))
 			}
+		} else {
+			r.Config.IssuersAllowed = nil
 		}
 		r.Config.JwtSessionClaim = types.StringPointerValue(resp.Config.JwtSessionClaim)
 		r.Config.JwtSessionCookie = types.StringPointerValue(resp.Config.JwtSessionCookie)
@@ -446,6 +517,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.LoginRedirectURI {
 				r.Config.LoginRedirectURI = append(r.Config.LoginRedirectURI, types.StringValue(v))
 			}
+		} else {
+			r.Config.LoginRedirectURI = nil
 		}
 		r.Config.LoginTokens = make([]types.String, 0, len(resp.Config.LoginTokens))
 		for _, v := range resp.Config.LoginTokens {
@@ -462,6 +535,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.LogoutRedirectURI {
 				r.Config.LogoutRedirectURI = append(r.Config.LogoutRedirectURI, types.StringValue(v))
 			}
+		} else {
+			r.Config.LogoutRedirectURI = nil
 		}
 		r.Config.LogoutRevoke = types.BoolPointerValue(resp.Config.LogoutRevoke)
 		r.Config.LogoutRevokeAccessToken = types.BoolPointerValue(resp.Config.LogoutRevokeAccessToken)
@@ -499,6 +574,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.RedirectURI {
 				r.Config.RedirectURI = append(r.Config.RedirectURI, types.StringValue(v))
 			}
+		} else {
+			r.Config.RedirectURI = nil
 		}
 		if resp.Config.Redis == nil {
 			r.Config.Redis = nil
@@ -537,6 +614,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 
 					r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes1)
 				}
+			} else {
+				r.Config.Redis.ClusterNodes = nil
 			}
 			r.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Redis.ConnectTimeout)
 			r.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Redis.ConnectionIsProxied)
@@ -561,6 +640,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 
 					r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes1)
 				}
+			} else {
+				r.Config.Redis.SentinelNodes = nil
 			}
 			r.Config.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Redis.SentinelPassword)
 			if resp.Config.Redis.SentinelRole != nil {
@@ -612,6 +693,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.RolesRequired {
 				r.Config.RolesRequired = append(r.Config.RolesRequired, types.StringValue(v))
 			}
+		} else {
+			r.Config.RolesRequired = nil
 		}
 		r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
 		if resp.Config.Scopes != nil {
@@ -619,6 +702,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.Scopes {
 				r.Config.Scopes = append(r.Config.Scopes, types.StringValue(v))
 			}
+		} else {
+			r.Config.Scopes = nil
 		}
 		r.Config.ScopesClaim = make([]types.String, 0, len(resp.Config.ScopesClaim))
 		for _, v := range resp.Config.ScopesClaim {
@@ -629,6 +714,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.ScopesRequired {
 				r.Config.ScopesRequired = append(r.Config.ScopesRequired, types.StringValue(v))
 			}
+		} else {
+			r.Config.ScopesRequired = nil
 		}
 		r.Config.SearchUserInfo = types.BoolPointerValue(resp.Config.SearchUserInfo)
 		r.Config.SessionAbsoluteTimeout = types.Float64PointerValue(resp.Config.SessionAbsoluteTimeout)
@@ -638,6 +725,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.SessionBind {
 				r.Config.SessionBind = append(r.Config.SessionBind, types.StringValue(string(v)))
 			}
+		} else {
+			r.Config.SessionBind = nil
 		}
 		r.Config.SessionCookieDomain = types.StringPointerValue(resp.Config.SessionCookieDomain)
 		r.Config.SessionCookieHTTPOnly = types.BoolPointerValue(resp.Config.SessionCookieHTTPOnly)
@@ -668,12 +757,16 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.SessionRequestHeaders {
 				r.Config.SessionRequestHeaders = append(r.Config.SessionRequestHeaders, types.StringValue(string(v)))
 			}
+		} else {
+			r.Config.SessionRequestHeaders = nil
 		}
 		if resp.Config.SessionResponseHeaders != nil {
 			r.Config.SessionResponseHeaders = make([]types.String, 0, len(resp.Config.SessionResponseHeaders))
 			for _, v := range resp.Config.SessionResponseHeaders {
 				r.Config.SessionResponseHeaders = append(r.Config.SessionResponseHeaders, types.StringValue(string(v)))
 			}
+		} else {
+			r.Config.SessionResponseHeaders = nil
 		}
 		r.Config.SessionRollingTimeout = types.Float64PointerValue(resp.Config.SessionRollingTimeout)
 		r.Config.SessionSecret = types.StringPointerValue(resp.Config.SessionSecret)
@@ -700,18 +793,24 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.TokenHeadersClient {
 				r.Config.TokenHeadersClient = append(r.Config.TokenHeadersClient, types.StringValue(v))
 			}
+		} else {
+			r.Config.TokenHeadersClient = nil
 		}
 		if resp.Config.TokenHeadersGrants != nil {
 			r.Config.TokenHeadersGrants = make([]types.String, 0, len(resp.Config.TokenHeadersGrants))
 			for _, v := range resp.Config.TokenHeadersGrants {
 				r.Config.TokenHeadersGrants = append(r.Config.TokenHeadersGrants, types.StringValue(string(v)))
 			}
+		} else {
+			r.Config.TokenHeadersGrants = nil
 		}
 		if resp.Config.TokenHeadersNames != nil {
 			r.Config.TokenHeadersNames = make([]types.String, 0, len(resp.Config.TokenHeadersNames))
 			for _, v := range resp.Config.TokenHeadersNames {
 				r.Config.TokenHeadersNames = append(r.Config.TokenHeadersNames, types.StringValue(v))
 			}
+		} else {
+			r.Config.TokenHeadersNames = nil
 		}
 		r.Config.TokenHeadersPrefix = types.StringPointerValue(resp.Config.TokenHeadersPrefix)
 		if resp.Config.TokenHeadersReplay != nil {
@@ -719,30 +818,40 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.TokenHeadersReplay {
 				r.Config.TokenHeadersReplay = append(r.Config.TokenHeadersReplay, types.StringValue(v))
 			}
+		} else {
+			r.Config.TokenHeadersReplay = nil
 		}
 		if resp.Config.TokenHeadersValues != nil {
 			r.Config.TokenHeadersValues = make([]types.String, 0, len(resp.Config.TokenHeadersValues))
 			for _, v := range resp.Config.TokenHeadersValues {
 				r.Config.TokenHeadersValues = append(r.Config.TokenHeadersValues, types.StringValue(v))
 			}
+		} else {
+			r.Config.TokenHeadersValues = nil
 		}
 		if resp.Config.TokenPostArgsClient != nil {
 			r.Config.TokenPostArgsClient = make([]types.String, 0, len(resp.Config.TokenPostArgsClient))
 			for _, v := range resp.Config.TokenPostArgsClient {
 				r.Config.TokenPostArgsClient = append(r.Config.TokenPostArgsClient, types.StringValue(v))
 			}
+		} else {
+			r.Config.TokenPostArgsClient = nil
 		}
 		if resp.Config.TokenPostArgsNames != nil {
 			r.Config.TokenPostArgsNames = make([]types.String, 0, len(resp.Config.TokenPostArgsNames))
 			for _, v := range resp.Config.TokenPostArgsNames {
 				r.Config.TokenPostArgsNames = append(r.Config.TokenPostArgsNames, types.StringValue(v))
 			}
+		} else {
+			r.Config.TokenPostArgsNames = nil
 		}
 		if resp.Config.TokenPostArgsValues != nil {
 			r.Config.TokenPostArgsValues = make([]types.String, 0, len(resp.Config.TokenPostArgsValues))
 			for _, v := range resp.Config.TokenPostArgsValues {
 				r.Config.TokenPostArgsValues = append(r.Config.TokenPostArgsValues, types.StringValue(v))
 			}
+		} else {
+			r.Config.TokenPostArgsValues = nil
 		}
 		r.Config.UnauthorizedDestroySession = types.BoolPointerValue(resp.Config.UnauthorizedDestroySession)
 		r.Config.UnauthorizedErrorMessage = types.StringPointerValue(resp.Config.UnauthorizedErrorMessage)
@@ -751,12 +860,16 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.UnauthorizedRedirectURI {
 				r.Config.UnauthorizedRedirectURI = append(r.Config.UnauthorizedRedirectURI, types.StringValue(v))
 			}
+		} else {
+			r.Config.UnauthorizedRedirectURI = nil
 		}
 		if resp.Config.UnexpectedRedirectURI != nil {
 			r.Config.UnexpectedRedirectURI = make([]types.String, 0, len(resp.Config.UnexpectedRedirectURI))
 			for _, v := range resp.Config.UnexpectedRedirectURI {
 				r.Config.UnexpectedRedirectURI = append(r.Config.UnexpectedRedirectURI, types.StringValue(v))
 			}
+		} else {
+			r.Config.UnexpectedRedirectURI = nil
 		}
 		r.Config.UpstreamAccessTokenHeader = types.StringPointerValue(resp.Config.UpstreamAccessTokenHeader)
 		r.Config.UpstreamAccessTokenJwkHeader = types.StringPointerValue(resp.Config.UpstreamAccessTokenJwkHeader)
@@ -765,12 +878,16 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.UpstreamHeadersClaims {
 				r.Config.UpstreamHeadersClaims = append(r.Config.UpstreamHeadersClaims, types.StringValue(v))
 			}
+		} else {
+			r.Config.UpstreamHeadersClaims = nil
 		}
 		if resp.Config.UpstreamHeadersNames != nil {
 			r.Config.UpstreamHeadersNames = make([]types.String, 0, len(resp.Config.UpstreamHeadersNames))
 			for _, v := range resp.Config.UpstreamHeadersNames {
 				r.Config.UpstreamHeadersNames = append(r.Config.UpstreamHeadersNames, types.StringValue(v))
 			}
+		} else {
+			r.Config.UpstreamHeadersNames = nil
 		}
 		r.Config.UpstreamIDTokenHeader = types.StringPointerValue(resp.Config.UpstreamIDTokenHeader)
 		r.Config.UpstreamIDTokenJwkHeader = types.StringPointerValue(resp.Config.UpstreamIDTokenJwkHeader)
@@ -791,36 +908,48 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Config.UserinfoHeadersClient {
 				r.Config.UserinfoHeadersClient = append(r.Config.UserinfoHeadersClient, types.StringValue(v))
 			}
+		} else {
+			r.Config.UserinfoHeadersClient = nil
 		}
 		if resp.Config.UserinfoHeadersNames != nil {
 			r.Config.UserinfoHeadersNames = make([]types.String, 0, len(resp.Config.UserinfoHeadersNames))
 			for _, v := range resp.Config.UserinfoHeadersNames {
 				r.Config.UserinfoHeadersNames = append(r.Config.UserinfoHeadersNames, types.StringValue(v))
 			}
+		} else {
+			r.Config.UserinfoHeadersNames = nil
 		}
 		if resp.Config.UserinfoHeadersValues != nil {
 			r.Config.UserinfoHeadersValues = make([]types.String, 0, len(resp.Config.UserinfoHeadersValues))
 			for _, v := range resp.Config.UserinfoHeadersValues {
 				r.Config.UserinfoHeadersValues = append(r.Config.UserinfoHeadersValues, types.StringValue(v))
 			}
+		} else {
+			r.Config.UserinfoHeadersValues = nil
 		}
 		if resp.Config.UserinfoQueryArgsClient != nil {
 			r.Config.UserinfoQueryArgsClient = make([]types.String, 0, len(resp.Config.UserinfoQueryArgsClient))
 			for _, v := range resp.Config.UserinfoQueryArgsClient {
 				r.Config.UserinfoQueryArgsClient = append(r.Config.UserinfoQueryArgsClient, types.StringValue(v))
 			}
+		} else {
+			r.Config.UserinfoQueryArgsClient = nil
 		}
 		if resp.Config.UserinfoQueryArgsNames != nil {
 			r.Config.UserinfoQueryArgsNames = make([]types.String, 0, len(resp.Config.UserinfoQueryArgsNames))
 			for _, v := range resp.Config.UserinfoQueryArgsNames {
 				r.Config.UserinfoQueryArgsNames = append(r.Config.UserinfoQueryArgsNames, types.StringValue(v))
 			}
+		} else {
+			r.Config.UserinfoQueryArgsNames = nil
 		}
 		if resp.Config.UserinfoQueryArgsValues != nil {
 			r.Config.UserinfoQueryArgsValues = make([]types.String, 0, len(resp.Config.UserinfoQueryArgsValues))
 			for _, v := range resp.Config.UserinfoQueryArgsValues {
 				r.Config.UserinfoQueryArgsValues = append(r.Config.UserinfoQueryArgsValues, types.StringValue(v))
 			}
+		} else {
+			r.Config.UserinfoQueryArgsValues = nil
 		}
 		r.Config.UsingPseudoIssuer = types.BoolPointerValue(resp.Config.UsingPseudoIssuer)
 		r.Config.VerifyClaims = types.BoolPointerValue(resp.Config.VerifyClaims)
@@ -866,6 +995,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -888,6 +1019,8 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

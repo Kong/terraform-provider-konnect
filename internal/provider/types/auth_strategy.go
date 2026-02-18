@@ -3,6 +3,6 @@
 package types
 
 type AuthStrategy struct {
-	ClientCredentials *AuthStrategyClientCredentials `queryParam:"inline" tfsdk:"client_credentials" tfPlanOnly:"true"`
-	KeyAuth           *AuthStrategyKeyAuth           `queryParam:"inline" tfsdk:"key_auth" tfPlanOnly:"true"`
+	ClientCredentials *AuthStrategyClientCredentials `queryParam:"inline" tfsdk:"client_credentials"`
+	KeyAuth           *AuthStrategyKeyAuth           `queryParam:"inline" tfsdk:"key_auth"`
 }

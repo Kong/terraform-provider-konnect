@@ -2,10 +2,25 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // AddUserToTeam - The request schema for adding a user to a team.
 type AddUserToTeam struct {
 	// The user ID for the user being added to a team.
 	UserID string `json:"id"`
+}
+
+func (a AddUserToTeam) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AddUserToTeam) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AddUserToTeam) GetUserID() string {

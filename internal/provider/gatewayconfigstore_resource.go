@@ -73,7 +73,8 @@ func (r *GatewayConfigStoreResource) Schema(ctx context.Context, req resource.Sc
 				Description: `The Config Store ID.`,
 			},
 			"name": schema.StringAttribute{
-				Optional: true,
+				Optional:    true,
+				Description: `The name of the Config Store`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 100),
 				},
@@ -343,12 +344,12 @@ func (r *GatewayConfigStoreResource) ImportState(ctx context.Context, req resour
 	}
 
 	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"d32d905a-ed33-46a3-a093-d8f536af9a8a"`)
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"d32d905a-ed33-46a3-a093-d8f536af9a8a"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
 	if len(data.ControlPlaneID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"`)
+		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)

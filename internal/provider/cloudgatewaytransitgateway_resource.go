@@ -22,6 +22,7 @@ import (
 	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/int64planmodifier"
 	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
+	speakeasy_planmodifierutils "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/utils"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 )
@@ -42,22 +43,23 @@ type CloudGatewayTransitGatewayResource struct {
 
 // CloudGatewayTransitGatewayResourceModel describes the resource data model.
 type CloudGatewayTransitGatewayResourceModel struct {
-	AWSResourceEndpointGateway         *tfTypes.AWSResourceEndpointGateway         `queryParam:"inline" tfsdk:"aws_resource_endpoint_gateway" tfPlanOnly:"true"`
-	AwsResourceEndpointGatewayResponse *tfTypes.AwsResourceEndpointGatewayResponse `queryParam:"inline" tfsdk:"aws_resource_endpoint_gateway_response" tfPlanOnly:"true"`
-	AWSTransitGateway                  *tfTypes.AWSTransitGateway                  `queryParam:"inline" tfsdk:"aws_transit_gateway" tfPlanOnly:"true"`
-	AwsTransitGatewayResponse          *tfTypes.AwsTransitGatewayResponse          `queryParam:"inline" tfsdk:"aws_transit_gateway_response" tfPlanOnly:"true"`
-	AWSVpcPeeringGateway               *tfTypes.AWSVpcPeeringGateway               `queryParam:"inline" tfsdk:"aws_vpc_peering_gateway" tfPlanOnly:"true"`
-	AwsVpcPeeringGatewayResponse       *tfTypes.AwsVpcPeeringGatewayResponse       `queryParam:"inline" tfsdk:"aws_vpc_peering_gateway_response" tfPlanOnly:"true"`
-	AzureTransitGateway                *tfTypes.AzureTransitGateway                `queryParam:"inline" tfsdk:"azure_transit_gateway" tfPlanOnly:"true"`
-	AzureTransitGatewayResponse        *tfTypes.AzureTransitGatewayResponse        `queryParam:"inline" tfsdk:"azure_transit_gateway_response" tfPlanOnly:"true"`
-	AzureVhubPeeringGateway            *tfTypes.AzureVhubPeeringGateway            `queryParam:"inline" tfsdk:"azure_vhub_peering_gateway" tfPlanOnly:"true"`
-	AzureVhubPeeringGatewayResponse    *tfTypes.AzureVhubPeeringGatewayResponse    `queryParam:"inline" tfsdk:"azure_vhub_peering_gateway_response" tfPlanOnly:"true"`
+	AWSResourceEndpointGateway         *tfTypes.AWSResourceEndpointGateway         `queryParam:"inline" tfsdk:"aws_resource_endpoint_gateway"`
+	AwsResourceEndpointGatewayResponse *tfTypes.AwsResourceEndpointGatewayResponse `queryParam:"inline" tfsdk:"aws_resource_endpoint_gateway_response"`
+	AWSTransitGateway                  *tfTypes.AWSTransitGateway                  `queryParam:"inline" tfsdk:"aws_transit_gateway"`
+	AwsTransitGatewayResponse          *tfTypes.AwsTransitGatewayResponse          `queryParam:"inline" tfsdk:"aws_transit_gateway_response"`
+	AWSVpcPeeringGateway               *tfTypes.AWSVpcPeeringGateway               `queryParam:"inline" tfsdk:"aws_vpc_peering_gateway"`
+	AwsVpcPeeringGatewayResponse       *tfTypes.AwsVpcPeeringGatewayResponse       `queryParam:"inline" tfsdk:"aws_vpc_peering_gateway_response"`
+	AzureTransitGateway                *tfTypes.AzureTransitGateway                `queryParam:"inline" tfsdk:"azure_transit_gateway"`
+	AzureTransitGatewayResponse        *tfTypes.AzureTransitGatewayResponse        `queryParam:"inline" tfsdk:"azure_transit_gateway_response"`
+	AzureVhubPeeringGateway            *tfTypes.AzureVhubPeeringGateway            `queryParam:"inline" tfsdk:"azure_vhub_peering_gateway"`
+	AzureVhubPeeringGatewayResponse    *tfTypes.AzureVhubPeeringGatewayResponse    `queryParam:"inline" tfsdk:"azure_vhub_peering_gateway_response"`
 	EntityVersion                      types.Int64                                 `tfsdk:"entity_version"`
-	GCPVPCPeeringGatewayResponse       *tfTypes.GCPVPCPeeringGatewayResponse       `queryParam:"inline" tfsdk:"gcpvpc_peering_gateway_response" tfPlanOnly:"true"`
-	GcpVpcPeeringTransitGateway        *tfTypes.GcpVpcPeeringTransitGateway        `queryParam:"inline" tfsdk:"gcp_vpc_peering_transit_gateway" tfPlanOnly:"true"`
+	GCPVPCPeeringGatewayResponse       *tfTypes.GCPVPCPeeringGatewayResponse       `queryParam:"inline" tfsdk:"gcpvpc_peering_gateway_response"`
+	GcpVpcPeeringTransitGateway        *tfTypes.GcpVpcPeeringTransitGateway        `queryParam:"inline" tfsdk:"gcp_vpc_peering_transit_gateway"`
 	ID                                 types.String                                `tfsdk:"id"`
 	Name                               types.String                                `tfsdk:"name"`
 	NetworkID                          types.String                                `tfsdk:"network_id"`
+	State                              types.String                                `tfsdk:"state"`
 }
 
 func (r *CloudGatewayTransitGatewayResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -1124,6 +1126,7 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 				Computed: true,
 				PlanModifiers: []planmodifier.Int64{
 					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
+					speakeasy_int64planmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_transit_gateway_response"), FieldPath: path.Root("aws_transit_gateway_response").AtName("entity_version")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_vpc_peering_gateway_response"), FieldPath: path.Root("aws_vpc_peering_gateway_response").AtName("entity_version")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_transit_gateway_response"), FieldPath: path.Root("azure_transit_gateway_response").AtName("entity_version")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_vhub_peering_gateway_response"), FieldPath: path.Root("azure_vhub_peering_gateway_response").AtName("entity_version")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gcpvpc_peering_gateway_response"), FieldPath: path.Root("gcpvpc_peering_gateway_response").AtName("entity_version")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_resource_endpoint_gateway_response"), FieldPath: path.Root("aws_resource_endpoint_gateway_response").AtName("entity_version")}}),
 				},
 				MarkdownDescription: `Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the` + "\n" +
 					`transit gateway.`,
@@ -1337,10 +1340,14 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_transit_gateway_response"), FieldPath: path.Root("aws_transit_gateway_response").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_vpc_peering_gateway_response"), FieldPath: path.Root("aws_vpc_peering_gateway_response").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_transit_gateway_response"), FieldPath: path.Root("azure_transit_gateway_response").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_vhub_peering_gateway_response"), FieldPath: path.Root("azure_vhub_peering_gateway_response").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gcpvpc_peering_gateway_response"), FieldPath: path.Root("gcpvpc_peering_gateway_response").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_resource_endpoint_gateway_response"), FieldPath: path.Root("aws_resource_endpoint_gateway_response").AtName("id")}}),
 				},
 			},
 			"name": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_transit_gateway_response"), FieldPath: path.Root("aws_transit_gateway_response").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_vpc_peering_gateway_response"), FieldPath: path.Root("aws_vpc_peering_gateway_response").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_transit_gateway_response"), FieldPath: path.Root("azure_transit_gateway_response").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_vhub_peering_gateway_response"), FieldPath: path.Root("azure_vhub_peering_gateway_response").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gcpvpc_peering_gateway_response"), FieldPath: path.Root("gcpvpc_peering_gateway_response").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_resource_endpoint_gateway_response"), FieldPath: path.Root("aws_resource_endpoint_gateway_response").AtName("name")}}),
+				},
 				Description: `Human-readable name of the transit gateway.`,
 			},
 			"network_id": schema.StringAttribute{
@@ -1349,6 +1356,22 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
 				Description: `The network to operate on. Requires replacement if changed.`,
+			},
+			"state": schema.StringAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_transit_gateway_response"), FieldPath: path.Root("aws_transit_gateway_response").AtName("state")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_vpc_peering_gateway_response"), FieldPath: path.Root("aws_vpc_peering_gateway_response").AtName("state")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_transit_gateway_response"), FieldPath: path.Root("azure_transit_gateway_response").AtName("state")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_vhub_peering_gateway_response"), FieldPath: path.Root("azure_vhub_peering_gateway_response").AtName("state")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gcpvpc_peering_gateway_response"), FieldPath: path.Root("gcpvpc_peering_gateway_response").AtName("state")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_resource_endpoint_gateway_response"), FieldPath: path.Root("aws_resource_endpoint_gateway_response").AtName("state")}}),
+				},
+				MarkdownDescription: `The current state of the Transit Gateway. Possible values:` + "\n" +
+					`- ` + "`" + `created` + "`" + ` - The attachment has been created but is not attached to transit gateway.` + "\n" +
+					`- ` + "`" + `initializing` + "`" + ` - The attachment is in the process of being initialized and is setting up necessary resources.` + "\n" +
+					`- ` + "`" + `pending-acceptance` + "`" + ` The attachment request is awaiting acceptance in customer VPC.` + "\n" +
+					`- ` + "`" + `pending-user-action` + "`" + ` The attachment request is awaiting user action in customer VPC.` + "\n" +
+					`- ` + "`" + `ready` + "`" + ` - The transit gateway attachment is fully operational and can route traffic as configured.` + "\n" +
+					`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted and is no longer accepting new traffic.` + "\n" +
+					`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.` + "\n" +
+					`- ` + "`" + `error` + "`" + ` - The attachment is in an error state.`,
 			},
 		},
 	}
@@ -1615,12 +1638,12 @@ func (r *CloudGatewayTransitGatewayResource) ImportState(ctx context.Context, re
 	}
 
 	if len(data.NetworkID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field network_id is required but was not found in the json encoded ID. It's expected to be a value alike '"36ae63d3-efd1-4bec-b246-62aa5d3f5695"`)
+		resp.Diagnostics.AddError("Missing required field", `The field network_id is required but was not found in the json encoded ID. It's expected to be a value alike '"36ae63d3-efd1-4bec-b246-62aa5d3f5695"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("network_id"), data.NetworkID)...)
 	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"0850820b-d153-4a2a-b9be-7d2204779139"`)
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"0850820b-d153-4a2a-b9be-7d2204779139"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)

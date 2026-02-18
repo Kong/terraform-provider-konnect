@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateAillmasjudgePluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID     string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	AiLlmAsJudgePlugin shared.AiLlmAsJudgePlugin `request:"mediaType=application/json"`
+}
+
+func (c CreateAillmasjudgePluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAillmasjudgePluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "AiLlmAsJudgePlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateAillmasjudgePluginRequest) GetControlPlaneID() string {
@@ -38,6 +50,17 @@ type CreateAillmasjudgePluginResponse struct {
 	AiLlmAsJudgePlugin *shared.AiLlmAsJudgePlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (c CreateAillmasjudgePluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAillmasjudgePluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateAillmasjudgePluginResponse) GetContentType() string {

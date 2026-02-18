@@ -24,7 +24,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/boolplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
+	speakeasy_planmodifierutils "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/utils"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 	speakeasy_int64validators "github.com/kong/terraform-provider-konnect/v3/internal/validators/int64validators"
@@ -52,9 +54,10 @@ type ApplicationAuthStrategyResourceModel struct {
 	Active        types.Bool                                   `tfsdk:"active"`
 	DisplayName   types.String                                 `tfsdk:"display_name"`
 	ID            types.String                                 `tfsdk:"id"`
-	KeyAuth       *tfTypes.AppAuthStrategyKeyAuthRequest       `queryParam:"inline" tfsdk:"key_auth" tfPlanOnly:"true"`
+	KeyAuth       *tfTypes.AppAuthStrategyKeyAuthRequest       `queryParam:"inline" tfsdk:"key_auth"`
 	Name          types.String                                 `tfsdk:"name"`
-	OpenidConnect *tfTypes.AppAuthStrategyOpenIDConnectRequest `queryParam:"inline" tfsdk:"openid_connect" tfPlanOnly:"true"`
+	OpenidConnect *tfTypes.AppAuthStrategyOpenIDConnectRequest `queryParam:"inline" tfsdk:"openid_connect"`
+	StrategyType  types.String                                 `tfsdk:"strategy_type"`
 }
 
 func (r *ApplicationAuthStrategyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -66,7 +69,10 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 		MarkdownDescription: "ApplicationAuthStrategy Resource",
 		Attributes: map[string]schema.Attribute{
 			"active": schema.BoolAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.Bool{
+					speakeasy_boolplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("key_auth"), FieldPath: path.Root("key_auth").AtName("active")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openid_connect"), FieldPath: path.Root("openid_connect").AtName("active")}}),
+				},
 				Description: `At least one published entity is using this auth strategy.`,
 			},
 			"display_name": schema.StringAttribute{
@@ -77,6 +83,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("key_auth"), FieldPath: path.Root("key_auth").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openid_connect"), FieldPath: path.Root("openid_connect").AtName("id")}}),
 				},
 				Description: `Contains a unique identifier used for this resource.`,
 			},
@@ -516,6 +523,12 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 					}...),
 				},
 			},
+			"strategy_type": schema.StringAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("key_auth"), FieldPath: path.Root("key_auth").AtName("strategy_type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openid_connect"), FieldPath: path.Root("openid_connect").AtName("strategy_type")}}),
+				},
+			},
 		},
 	}
 }
@@ -585,43 +598,6 @@ func (r *ApplicationAuthStrategyResource) Create(ctx context.Context, req resour
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedCreateAppAuthStrategyResponse(ctx, res.CreateAppAuthStrategyResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsGetAppAuthStrategyRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.AppAuthStrategies.GetAppAuthStrategy(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.CreateAppAuthStrategyResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedCreateAppAuthStrategyResponse(ctx, res1.CreateAppAuthStrategyResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -736,43 +712,6 @@ func (r *ApplicationAuthStrategyResource) Update(ctx context.Context, req resour
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedCreateAppAuthStrategyResponse(ctx, res.CreateAppAuthStrategyResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsGetAppAuthStrategyRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.AppAuthStrategies.GetAppAuthStrategy(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.CreateAppAuthStrategyResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedCreateAppAuthStrategyResponse(ctx, res1.CreateAppAuthStrategyResponse)...)
 
 	if resp.Diagnostics.HasError() {
 		return

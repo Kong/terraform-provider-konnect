@@ -17,7 +17,7 @@ const (
 
 // SchemaRegistryCreate - The typed schema of the schema registry to create it.
 type SchemaRegistryCreate struct {
-	SchemaRegistryConfluent *SchemaRegistryConfluent `queryParam:"inline,name=SchemaRegistryCreate"`
+	SchemaRegistryConfluent *SchemaRegistryConfluent `queryParam:"inline" union:"member"`
 
 	Type SchemaRegistryCreateType
 }

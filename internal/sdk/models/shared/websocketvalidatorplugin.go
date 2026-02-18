@@ -12,6 +12,17 @@ type WebsocketValidatorPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (w WebsocketValidatorPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(w, "", false)
+}
+
+func (w *WebsocketValidatorPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &w, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (w *WebsocketValidatorPluginAfter) GetAccess() []string {
 	if w == nil {
 		return nil
@@ -21,6 +32,17 @@ func (w *WebsocketValidatorPluginAfter) GetAccess() []string {
 
 type WebsocketValidatorPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (w WebsocketValidatorPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(w, "", false)
+}
+
+func (w *WebsocketValidatorPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &w, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (w *WebsocketValidatorPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (w *WebsocketValidatorPluginBefore) GetAccess() []string {
 type WebsocketValidatorPluginOrdering struct {
 	After  *WebsocketValidatorPluginAfter  `json:"after,omitempty"`
 	Before *WebsocketValidatorPluginBefore `json:"before,omitempty"`
+}
+
+func (w WebsocketValidatorPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(w, "", false)
+}
+
+func (w *WebsocketValidatorPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &w, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (w *WebsocketValidatorPluginOrdering) GetAfter() *WebsocketValidatorPluginAfter {
@@ -55,6 +88,17 @@ type WebsocketValidatorPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (w WebsocketValidatorPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(w, "", false)
+}
+
+func (w *WebsocketValidatorPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &w, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (w *WebsocketValidatorPluginPartials) GetID() *string {
@@ -109,6 +153,17 @@ type Binary struct {
 	Type WebsocketValidatorPluginType `json:"type"`
 }
 
+func (b Binary) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *Binary) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"schema", "type"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (b *Binary) GetSchema() string {
 	if b == nil {
 		return ""
@@ -154,6 +209,17 @@ type WebsocketValidatorPluginConfigText struct {
 	Type WebsocketValidatorPluginConfigType `json:"type"`
 }
 
+func (w WebsocketValidatorPluginConfigText) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(w, "", false)
+}
+
+func (w *WebsocketValidatorPluginConfigText) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &w, "", false, []string{"schema", "type"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (w *WebsocketValidatorPluginConfigText) GetSchema() string {
 	if w == nil {
 		return ""
@@ -171,6 +237,17 @@ func (w *WebsocketValidatorPluginConfigText) GetType() WebsocketValidatorPluginC
 type WebsocketValidatorPluginClient struct {
 	Binary *Binary                             `json:"binary"`
 	Text   *WebsocketValidatorPluginConfigText `json:"text"`
+}
+
+func (w WebsocketValidatorPluginClient) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(w, "", false)
+}
+
+func (w *WebsocketValidatorPluginClient) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &w, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (w *WebsocketValidatorPluginClient) GetBinary() *Binary {
@@ -218,6 +295,17 @@ type WebsocketValidatorPluginBinary struct {
 	Type WebsocketValidatorPluginConfigUpstreamType `json:"type"`
 }
 
+func (w WebsocketValidatorPluginBinary) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(w, "", false)
+}
+
+func (w *WebsocketValidatorPluginBinary) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &w, "", false, []string{"schema", "type"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (w *WebsocketValidatorPluginBinary) GetSchema() string {
 	if w == nil {
 		return ""
@@ -263,6 +351,17 @@ type WebsocketValidatorPluginText struct {
 	Type WebsocketValidatorPluginConfigUpstreamTextType `json:"type"`
 }
 
+func (w WebsocketValidatorPluginText) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(w, "", false)
+}
+
+func (w *WebsocketValidatorPluginText) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &w, "", false, []string{"schema", "type"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (w *WebsocketValidatorPluginText) GetSchema() string {
 	if w == nil {
 		return ""
@@ -280,6 +379,17 @@ func (w *WebsocketValidatorPluginText) GetType() WebsocketValidatorPluginConfigU
 type WebsocketValidatorPluginUpstream struct {
 	Binary *WebsocketValidatorPluginBinary `json:"binary"`
 	Text   *WebsocketValidatorPluginText   `json:"text"`
+}
+
+func (w WebsocketValidatorPluginUpstream) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(w, "", false)
+}
+
+func (w *WebsocketValidatorPluginUpstream) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &w, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (w *WebsocketValidatorPluginUpstream) GetBinary() *WebsocketValidatorPluginBinary {
@@ -301,6 +411,17 @@ type WebsocketValidatorPluginConfig struct {
 	Upstream *WebsocketValidatorPluginUpstream `json:"upstream"`
 }
 
+func (w WebsocketValidatorPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(w, "", false)
+}
+
+func (w *WebsocketValidatorPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &w, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (w *WebsocketValidatorPluginConfig) GetClient() *WebsocketValidatorPluginClient {
 	if w == nil {
 		return nil
@@ -318,6 +439,17 @@ func (w *WebsocketValidatorPluginConfig) GetUpstream() *WebsocketValidatorPlugin
 // WebsocketValidatorPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 type WebsocketValidatorPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (w WebsocketValidatorPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(w, "", false)
+}
+
+func (w *WebsocketValidatorPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &w, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (w *WebsocketValidatorPluginConsumer) GetID() *string {
@@ -358,6 +490,17 @@ type WebsocketValidatorPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (w WebsocketValidatorPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(w, "", false)
+}
+
+func (w *WebsocketValidatorPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &w, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (w *WebsocketValidatorPluginRoute) GetID() *string {
 	if w == nil {
 		return nil
@@ -368,6 +511,17 @@ func (w *WebsocketValidatorPluginRoute) GetID() *string {
 // WebsocketValidatorPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type WebsocketValidatorPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (w WebsocketValidatorPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(w, "", false)
+}
+
+func (w *WebsocketValidatorPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &w, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (w *WebsocketValidatorPluginService) GetID() *string {

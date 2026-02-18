@@ -15,6 +15,7 @@ func (r *GatewayPluginUDPLogResourceModel) RefreshFromSharedUDPLogPlugin(ctx con
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.UDPLogPluginConfig{}
 		if resp.Config.CustomFieldsByLua != nil {
 			r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
 			for key, value := range resp.Config.CustomFieldsByLua {
@@ -69,6 +70,8 @@ func (r *GatewayPluginUDPLogResourceModel) RefreshFromSharedUDPLogPlugin(ctx con
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -91,6 +94,8 @@ func (r *GatewayPluginUDPLogResourceModel) RefreshFromSharedUDPLogPlugin(ctx con
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
