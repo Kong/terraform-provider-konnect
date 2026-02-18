@@ -255,12 +255,13 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 						"provider": schema.StringAttribute{
 							Computed:    true,
 							Optional:    true,
-							Description: `Name of cloud provider. Not Null; must be one of ["aws", "azure"]`,
+							Description: `Name of cloud provider. Not Null; must be one of ["aws", "azure", "gcp"]`,
 							Validators: []validator.String{
 								speakeasy_stringvalidators.NotNull(),
 								stringvalidator.OneOf(
 									"aws",
 									"azure",
+									"gcp",
 								),
 							},
 						},
