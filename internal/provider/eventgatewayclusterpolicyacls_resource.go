@@ -124,7 +124,7 @@ func (r *EventGatewayClusterPolicyAclsResource) Schema(ctx context.Context, req 
 											},
 										},
 									},
-									Description: `If any of these entries match, the resource name matches for this rule.`,
+									Description: `If any of these entries match, the resource name matches for this rule. A maximum of 50 entries are allowed.`,
 								},
 								"resource_type": schema.StringAttribute{
 									Required:    true,

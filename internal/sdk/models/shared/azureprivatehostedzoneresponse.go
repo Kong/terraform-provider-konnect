@@ -7,8 +7,8 @@ import (
 	"time"
 )
 
-// AzurePrivateDNSResolverResponsePrivateDNSStateMetadata - Metadata describing the backing state of the Private Dns and why it may be in an erroneous state.
-type AzurePrivateDNSResolverResponsePrivateDNSStateMetadata struct {
+// AzurePrivateHostedZoneResponsePrivateDNSStateMetadata - Metadata describing the backing state of the Private Dns and why it may be in an erroneous state.
+type AzurePrivateHostedZoneResponsePrivateDNSStateMetadata struct {
 	// Reported status of the Private Dns from backing infrastructure.
 	ReportedStatus *string `default:"null" json:"reported_status"`
 	// Reason why the Private Dns may be in an erroneous state, reported from backing infrastructure.
@@ -16,32 +16,32 @@ type AzurePrivateDNSResolverResponsePrivateDNSStateMetadata struct {
 	Reason *string `default:"null" json:"reason"`
 }
 
-func (a AzurePrivateDNSResolverResponsePrivateDNSStateMetadata) MarshalJSON() ([]byte, error) {
+func (a AzurePrivateHostedZoneResponsePrivateDNSStateMetadata) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(a, "", false)
 }
 
-func (a *AzurePrivateDNSResolverResponsePrivateDNSStateMetadata) UnmarshalJSON(data []byte) error {
+func (a *AzurePrivateHostedZoneResponsePrivateDNSStateMetadata) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AzurePrivateDNSResolverResponsePrivateDNSStateMetadata) GetReportedStatus() *string {
+func (a *AzurePrivateHostedZoneResponsePrivateDNSStateMetadata) GetReportedStatus() *string {
 	if a == nil {
 		return nil
 	}
 	return a.ReportedStatus
 }
 
-func (a *AzurePrivateDNSResolverResponsePrivateDNSStateMetadata) GetReason() *string {
+func (a *AzurePrivateHostedZoneResponsePrivateDNSStateMetadata) GetReason() *string {
 	if a == nil {
 		return nil
 	}
 	return a.Reason
 }
 
-type AzurePrivateDNSResolverResponse struct {
+type AzurePrivateHostedZoneResponse struct {
 	ID string `json:"id"`
 	// The current state of the Private DNS attachment. Possible values:
 	// - `created` - The attachment has been created but is not attached to Private DNS.
@@ -55,7 +55,7 @@ type AzurePrivateDNSResolverResponse struct {
 	State PrivateDNSState `json:"state"`
 	// Metadata describing the backing state of the Private Dns and why it may be in an erroneous state.
 	//
-	StateMetadata AzurePrivateDNSResolverResponsePrivateDNSStateMetadata `json:"state_metadata"`
+	StateMetadata AzurePrivateHostedZoneResponsePrivateDNSStateMetadata `json:"state_metadata"`
 	// Monotonically-increasing version count of the Private DNS, to indicate the order of updates to the
 	// Private DNS.
 	//
@@ -65,73 +65,73 @@ type AzurePrivateDNSResolverResponse struct {
 	// An RFC-3339 timestamp representation of Private DNS update date.
 	UpdatedAt time.Time `json:"updated_at"`
 	// Human-readable name of the Private DNS.
-	Name                       string                                  `json:"name"`
-	PrivateDNSAttachmentConfig AzurePrivateDNSResolverAttachmentConfig `json:"private_dns_attachment_config"`
+	Name                       string                                 `json:"name"`
+	PrivateDNSAttachmentConfig AzurePrivateHostedZoneAttachmentConfig `json:"private_dns_attachment_config"`
 }
 
-func (a AzurePrivateDNSResolverResponse) MarshalJSON() ([]byte, error) {
+func (a AzurePrivateHostedZoneResponse) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(a, "", false)
 }
 
-func (a *AzurePrivateDNSResolverResponse) UnmarshalJSON(data []byte) error {
+func (a *AzurePrivateHostedZoneResponse) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "state", "state_metadata", "entity_version", "created_at", "updated_at", "name", "private_dns_attachment_config"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AzurePrivateDNSResolverResponse) GetID() string {
+func (a *AzurePrivateHostedZoneResponse) GetID() string {
 	if a == nil {
 		return ""
 	}
 	return a.ID
 }
 
-func (a *AzurePrivateDNSResolverResponse) GetState() PrivateDNSState {
+func (a *AzurePrivateHostedZoneResponse) GetState() PrivateDNSState {
 	if a == nil {
 		return PrivateDNSState("")
 	}
 	return a.State
 }
 
-func (a *AzurePrivateDNSResolverResponse) GetStateMetadata() AzurePrivateDNSResolverResponsePrivateDNSStateMetadata {
+func (a *AzurePrivateHostedZoneResponse) GetStateMetadata() AzurePrivateHostedZoneResponsePrivateDNSStateMetadata {
 	if a == nil {
-		return AzurePrivateDNSResolverResponsePrivateDNSStateMetadata{}
+		return AzurePrivateHostedZoneResponsePrivateDNSStateMetadata{}
 	}
 	return a.StateMetadata
 }
 
-func (a *AzurePrivateDNSResolverResponse) GetEntityVersion() int64 {
+func (a *AzurePrivateHostedZoneResponse) GetEntityVersion() int64 {
 	if a == nil {
 		return 0
 	}
 	return a.EntityVersion
 }
 
-func (a *AzurePrivateDNSResolverResponse) GetCreatedAt() time.Time {
+func (a *AzurePrivateHostedZoneResponse) GetCreatedAt() time.Time {
 	if a == nil {
 		return time.Time{}
 	}
 	return a.CreatedAt
 }
 
-func (a *AzurePrivateDNSResolverResponse) GetUpdatedAt() time.Time {
+func (a *AzurePrivateHostedZoneResponse) GetUpdatedAt() time.Time {
 	if a == nil {
 		return time.Time{}
 	}
 	return a.UpdatedAt
 }
 
-func (a *AzurePrivateDNSResolverResponse) GetName() string {
+func (a *AzurePrivateHostedZoneResponse) GetName() string {
 	if a == nil {
 		return ""
 	}
 	return a.Name
 }
 
-func (a *AzurePrivateDNSResolverResponse) GetPrivateDNSAttachmentConfig() AzurePrivateDNSResolverAttachmentConfig {
+func (a *AzurePrivateHostedZoneResponse) GetPrivateDNSAttachmentConfig() AzurePrivateHostedZoneAttachmentConfig {
 	if a == nil {
-		return AzurePrivateDNSResolverAttachmentConfig{}
+		return AzurePrivateHostedZoneAttachmentConfig{}
 	}
 	return a.PrivateDNSAttachmentConfig
 }

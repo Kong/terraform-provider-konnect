@@ -74,12 +74,42 @@ func (r *CloudGatewayPrivateDNSResourceModel) RefreshFromSharedPrivateDNSRespons
 			r.ID = r.AzurePrivateDNSResolverResponse.ID
 			r.AzurePrivateDNSResolverResponse.Name = types.StringValue(resp.AzurePrivateDNSResolverResponse.Name)
 			r.Name = r.AzurePrivateDNSResolverResponse.Name
+			r.AzurePrivateDNSResolverResponse.PrivateDNSAttachmentConfig = &tfTypes.AzurePrivateDNSResolverAttachmentConfig{}
+			r.AzurePrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig = &tfTypes.PrivateDNSResolverConfig{}
+			r.AzurePrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig.RemoteDNSServerIPAddresses = make([]types.String, 0, len(resp.AzurePrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig.RemoteDNSServerIPAddresses))
+			for _, v := range resp.AzurePrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig.RemoteDNSServerIPAddresses {
+				r.AzurePrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig.RemoteDNSServerIPAddresses = append(r.AzurePrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig.RemoteDNSServerIPAddresses, types.StringValue(v))
+			}
+			r.AzurePrivateDNSResolverResponse.PrivateDNSAttachmentConfig.Kind = types.StringValue(string(resp.AzurePrivateDNSResolverResponse.PrivateDNSAttachmentConfig.Kind))
 			r.AzurePrivateDNSResolverResponse.State = types.StringValue(string(resp.AzurePrivateDNSResolverResponse.State))
 			r.State = r.AzurePrivateDNSResolverResponse.State
 			r.AzurePrivateDNSResolverResponse.StateMetadata = &tfTypes.CustomDomainStateMetadata{}
 			r.AzurePrivateDNSResolverResponse.StateMetadata.Reason = types.StringPointerValue(resp.AzurePrivateDNSResolverResponse.StateMetadata.Reason)
 			r.AzurePrivateDNSResolverResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AzurePrivateDNSResolverResponse.StateMetadata.ReportedStatus)
 			r.AzurePrivateDNSResolverResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AzurePrivateDNSResolverResponse.UpdatedAt))
+		}
+		if resp.AzurePrivateHostedZoneResponse != nil {
+			r.AzurePrivateHostedZoneResponse = &tfTypes.AzurePrivateHostedZoneResponse{}
+			r.AzurePrivateHostedZoneResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AzurePrivateHostedZoneResponse.CreatedAt))
+			r.AzurePrivateHostedZoneResponse.EntityVersion = types.Int64Value(resp.AzurePrivateHostedZoneResponse.EntityVersion)
+			r.EntityVersion = r.AzurePrivateHostedZoneResponse.EntityVersion
+			r.AzurePrivateHostedZoneResponse.ID = types.StringValue(resp.AzurePrivateHostedZoneResponse.ID)
+			r.ID = r.AzurePrivateHostedZoneResponse.ID
+			r.AzurePrivateHostedZoneResponse.Name = types.StringValue(resp.AzurePrivateHostedZoneResponse.Name)
+			r.Name = r.AzurePrivateHostedZoneResponse.Name
+			r.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig = &tfTypes.AzurePrivateHostedZoneAttachmentConfig{}
+			r.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig.DomainName = types.StringValue(resp.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig.DomainName)
+			r.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig.Kind = types.StringValue(string(resp.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig.Kind))
+			r.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig.PeerResourceGroupID = types.StringValue(resp.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig.PeerResourceGroupID)
+			r.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig.PeerSubscriptionID = types.StringValue(resp.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig.PeerSubscriptionID)
+			r.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig.PeerTenantID = types.StringValue(resp.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig.PeerTenantID)
+			r.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig.PeerVnetLinkName = types.StringValue(resp.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig.PeerVnetLinkName)
+			r.AzurePrivateHostedZoneResponse.State = types.StringValue(string(resp.AzurePrivateHostedZoneResponse.State))
+			r.State = r.AzurePrivateHostedZoneResponse.State
+			r.AzurePrivateHostedZoneResponse.StateMetadata = &tfTypes.CustomDomainStateMetadata{}
+			r.AzurePrivateHostedZoneResponse.StateMetadata.Reason = types.StringPointerValue(resp.AzurePrivateHostedZoneResponse.StateMetadata.Reason)
+			r.AzurePrivateHostedZoneResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AzurePrivateHostedZoneResponse.StateMetadata.ReportedStatus)
+			r.AzurePrivateHostedZoneResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AzurePrivateHostedZoneResponse.UpdatedAt))
 		}
 		if resp.GcpPrivateHostedZoneResponse != nil {
 			r.GcpPrivateHostedZoneResponse = &tfTypes.GcpPrivateHostedZoneResponse{}
@@ -235,6 +265,58 @@ func (r *CloudGatewayPrivateDNSResourceModel) ToSharedCreatePrivateDNSRequest(ct
 		if gcpPrivateHostedZoneAttachmentConfig != nil {
 			privateDNSAttachmentConfig = &shared.PrivateDNSAttachmentConfig{
 				GcpPrivateHostedZoneAttachmentConfig: gcpPrivateHostedZoneAttachmentConfig,
+			}
+		}
+		var azurePrivateHostedZoneAttachmentConfig *shared.AzurePrivateHostedZoneAttachmentConfig
+		if r.PrivateDNSAttachmentConfig.AzurePrivateHostedZoneAttachmentConfig != nil {
+			kind3 := shared.AzurePrivateHostedZoneType(r.PrivateDNSAttachmentConfig.AzurePrivateHostedZoneAttachmentConfig.Kind.ValueString())
+			var domainName1 string
+			domainName1 = r.PrivateDNSAttachmentConfig.AzurePrivateHostedZoneAttachmentConfig.DomainName.ValueString()
+
+			var peerTenantID string
+			peerTenantID = r.PrivateDNSAttachmentConfig.AzurePrivateHostedZoneAttachmentConfig.PeerTenantID.ValueString()
+
+			var peerSubscriptionID string
+			peerSubscriptionID = r.PrivateDNSAttachmentConfig.AzurePrivateHostedZoneAttachmentConfig.PeerSubscriptionID.ValueString()
+
+			var peerResourceGroupID string
+			peerResourceGroupID = r.PrivateDNSAttachmentConfig.AzurePrivateHostedZoneAttachmentConfig.PeerResourceGroupID.ValueString()
+
+			var peerVnetLinkName string
+			peerVnetLinkName = r.PrivateDNSAttachmentConfig.AzurePrivateHostedZoneAttachmentConfig.PeerVnetLinkName.ValueString()
+
+			azurePrivateHostedZoneAttachmentConfig = &shared.AzurePrivateHostedZoneAttachmentConfig{
+				Kind:                kind3,
+				DomainName:          domainName1,
+				PeerTenantID:        peerTenantID,
+				PeerSubscriptionID:  peerSubscriptionID,
+				PeerResourceGroupID: peerResourceGroupID,
+				PeerVnetLinkName:    peerVnetLinkName,
+			}
+		}
+		if azurePrivateHostedZoneAttachmentConfig != nil {
+			privateDNSAttachmentConfig = &shared.PrivateDNSAttachmentConfig{
+				AzurePrivateHostedZoneAttachmentConfig: azurePrivateHostedZoneAttachmentConfig,
+			}
+		}
+		var azurePrivateDNSResolverAttachmentConfig *shared.AzurePrivateDNSResolverAttachmentConfig
+		if r.PrivateDNSAttachmentConfig.AzurePrivateDNSResolverAttachmentConfig != nil {
+			kind4 := shared.AzurePrivateDNSResolverType(r.PrivateDNSAttachmentConfig.AzurePrivateDNSResolverAttachmentConfig.Kind.ValueString())
+			remoteDNSServerIPAddresses1 := make([]string, 0, len(r.PrivateDNSAttachmentConfig.AzurePrivateDNSResolverAttachmentConfig.DNSConfig.RemoteDNSServerIPAddresses))
+			for remoteDNSServerIPAddressesIndex1 := range r.PrivateDNSAttachmentConfig.AzurePrivateDNSResolverAttachmentConfig.DNSConfig.RemoteDNSServerIPAddresses {
+				remoteDNSServerIPAddresses1 = append(remoteDNSServerIPAddresses1, r.PrivateDNSAttachmentConfig.AzurePrivateDNSResolverAttachmentConfig.DNSConfig.RemoteDNSServerIPAddresses[remoteDNSServerIPAddressesIndex1].ValueString())
+			}
+			dnsConfig1 := shared.PrivateDNSResolverConfig{
+				RemoteDNSServerIPAddresses: remoteDNSServerIPAddresses1,
+			}
+			azurePrivateDNSResolverAttachmentConfig = &shared.AzurePrivateDNSResolverAttachmentConfig{
+				Kind:      kind4,
+				DNSConfig: dnsConfig1,
+			}
+		}
+		if azurePrivateDNSResolverAttachmentConfig != nil {
+			privateDNSAttachmentConfig = &shared.PrivateDNSAttachmentConfig{
+				AzurePrivateDNSResolverAttachmentConfig: azurePrivateDNSResolverAttachmentConfig,
 			}
 		}
 	}

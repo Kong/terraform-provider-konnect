@@ -1,5 +1,17 @@
 # Changelog
 
+## 3.8.0
+> Released 2026/02/??
+
+### Features
+* Support `gcp` as provider in `konnect_cloud_gateway_configuration` resource 
+* Support Azure Private Hosted Zone in `konnect_cloud_gateway_private_dns` resource
+
+### Bug Fixes
+* Fix creating `konnect_event_gateway_listener_policy_forward_to_virtual_cluster` resource using `sni` routing
+* Fix unmarshalling errors seen while loading `konnect_cloud_gateway_provider_account_list` data source
+* Fix provisioning key-auth `konnect_application_auth_strategy` by treating `configs.ttl` as non-nullable
+
 ## 3.7.0
 > Released 2026/02/16
 

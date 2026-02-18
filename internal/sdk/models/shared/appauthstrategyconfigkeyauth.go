@@ -75,7 +75,7 @@ type AppAuthStrategyConfigKeyAuth struct {
 	// The names of the headers containing the API key. You can specify multiple header names.
 	KeyNames []string `json:"key_names"`
 	// Default maximum Time-To-Live for keys created under this strategy.
-	TTL *TTL `json:"ttl"`
+	TTL *TTL `json:"ttl,omitempty"`
 }
 
 func (a AppAuthStrategyConfigKeyAuth) MarshalJSON() ([]byte, error) {
