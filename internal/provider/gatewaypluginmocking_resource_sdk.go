@@ -28,6 +28,8 @@ func (r *GatewayPluginMockingResourceModel) RefreshFromSharedMockingPlugin(ctx c
 				for _, v := range resp.Config.IncludedStatusCodes {
 					r.Config.IncludedStatusCodes = append(r.Config.IncludedStatusCodes, types.Int64Value(v))
 				}
+			} else {
+				r.Config.IncludedStatusCodes = nil
 			}
 			r.Config.MaxDelayTime = types.Float64PointerValue(resp.Config.MaxDelayTime)
 			r.Config.MinDelayTime = types.Float64PointerValue(resp.Config.MinDelayTime)
@@ -80,6 +82,8 @@ func (r *GatewayPluginMockingResourceModel) RefreshFromSharedMockingPlugin(ctx c
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -102,6 +106,8 @@ func (r *GatewayPluginMockingResourceModel) RefreshFromSharedMockingPlugin(ctx c
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

@@ -15,6 +15,7 @@ func (r *GatewayPluginConfluentConsumeResourceModel) RefreshFromSharedConfluentC
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.ConfluentConsumePluginConfig{}
 		if resp.Config.AutoOffsetReset != nil {
 			r.Config.AutoOffsetReset = types.StringValue(string(*resp.Config.AutoOffsetReset))
 		} else {
@@ -31,6 +32,8 @@ func (r *GatewayPluginConfluentConsumeResourceModel) RefreshFromSharedConfluentC
 
 				r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers)
 			}
+		} else {
+			r.Config.BootstrapServers = nil
 		}
 		r.Config.ClusterAPIKey = types.StringValue(resp.Config.ClusterAPIKey)
 		r.Config.ClusterAPISecret = types.StringValue(resp.Config.ClusterAPISecret)
@@ -52,6 +55,8 @@ func (r *GatewayPluginConfluentConsumeResourceModel) RefreshFromSharedConfluentC
 			for _, v := range resp.Config.MessageByLuaFunctions {
 				r.Config.MessageByLuaFunctions = append(r.Config.MessageByLuaFunctions, types.StringValue(v))
 			}
+		} else {
+			r.Config.MessageByLuaFunctions = nil
 		}
 		if resp.Config.MessageDeserializer != nil {
 			r.Config.MessageDeserializer = types.StringValue(string(*resp.Config.MessageDeserializer))
@@ -302,6 +307,8 @@ func (r *GatewayPluginConfluentConsumeResourceModel) RefreshFromSharedConfluentC
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -324,6 +331,8 @@ func (r *GatewayPluginConfluentConsumeResourceModel) RefreshFromSharedConfluentC
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

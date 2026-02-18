@@ -17,6 +17,17 @@ type PortalOIDCConfig struct {
 	ClaimMappings *PortalClaimMappings `json:"claim_mappings,omitempty"`
 }
 
+func (p PortalOIDCConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PortalOIDCConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"issuer", "client_id"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (p *PortalOIDCConfig) GetIssuer() string {
 	if p == nil {
 		return ""

@@ -17,6 +17,7 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.DatakitPluginConfig{}
 		r.Config.Debug = types.BoolPointerValue(resp.Config.Debug)
 		r.Config.Nodes = []tfTypes.Nodes{}
 
@@ -30,6 +31,8 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 					for _, v := range nodesItem.Branch.Else {
 						nodes.Branch.Else = append(nodes.Branch.Else, types.StringValue(v))
 					}
+				} else {
+					nodes.Branch.Else = nil
 				}
 				nodes.Branch.Input = types.StringPointerValue(nodesItem.Branch.Input)
 				nodes.Branch.Name = types.StringPointerValue(nodesItem.Branch.Name)
@@ -46,6 +49,8 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 					for _, v := range nodesItem.Branch.Then {
 						nodes.Branch.Then = append(nodes.Branch.Then, types.StringValue(v))
 					}
+				} else {
+					nodes.Branch.Then = nil
 				}
 			}
 			if nodesItem.NodesCache != nil {
@@ -244,6 +249,8 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 
 							r.Config.Resources.Cache.Redis.ClusterNodes = append(r.Config.Resources.Cache.Redis.ClusterNodes, clusterNodes)
 						}
+					} else {
+						r.Config.Resources.Cache.Redis.ClusterNodes = nil
 					}
 					r.Config.Resources.Cache.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Resources.Cache.Redis.ConnectTimeout)
 					r.Config.Resources.Cache.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Resources.Cache.Redis.ConnectionIsProxied)
@@ -267,6 +274,8 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 
 							r.Config.Resources.Cache.Redis.SentinelNodes = append(r.Config.Resources.Cache.Redis.SentinelNodes, sentinelNodes)
 						}
+					} else {
+						r.Config.Resources.Cache.Redis.SentinelNodes = nil
 					}
 					r.Config.Resources.Cache.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Resources.Cache.Redis.SentinelPassword)
 					if resp.Config.Resources.Cache.Redis.SentinelRole != nil {
@@ -344,6 +353,8 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -366,6 +377,8 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

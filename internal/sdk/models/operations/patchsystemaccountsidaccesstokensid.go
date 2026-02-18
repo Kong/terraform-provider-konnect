@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -17,6 +18,17 @@ type PatchSystemAccountsIDAccessTokensIDRequest struct {
 	// ID of the system account access token.
 	TokenID                        string                                 `pathParam:"style=simple,explode=false,name=tokenId"`
 	UpdateSystemAccountAccessToken *shared.UpdateSystemAccountAccessToken `request:"mediaType=application/json"`
+}
+
+func (p PatchSystemAccountsIDAccessTokensIDRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PatchSystemAccountsIDAccessTokensIDRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"accountId", "tokenId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PatchSystemAccountsIDAccessTokensIDRequest) GetAccountID() string {
@@ -55,6 +67,17 @@ type PatchSystemAccountsIDAccessTokensIDResponse struct {
 	NotFoundError *shared.NotFoundError
 	// Conflict
 	ConflictError *shared.ConflictError
+}
+
+func (p PatchSystemAccountsIDAccessTokensIDResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *PatchSystemAccountsIDAccessTokensIDResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (p *PatchSystemAccountsIDAccessTokensIDResponse) GetContentType() string {

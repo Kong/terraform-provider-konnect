@@ -14,6 +14,7 @@ import (
 func (r *GatewayControlPlaneDataSourceModel) RefreshFromSharedControlPlane(ctx context.Context, resp *shared.ControlPlane) diag.Diagnostics {
 	var diags diag.Diagnostics
 
+	r.Config = &tfTypes.ControlPlaneConfig{}
 	r.Config.AuthType = types.StringValue(string(resp.Config.AuthType))
 	r.Config.CloudGateway = types.BoolValue(resp.Config.CloudGateway)
 	r.Config.ClusterType = types.StringValue(string(resp.Config.ClusterType))

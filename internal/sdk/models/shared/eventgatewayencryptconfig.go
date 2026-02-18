@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // EventGatewayEncryptConfig - The configuration of the encrypt policy.
 type EventGatewayEncryptConfig struct {
 	// Describes how to handle failing encryption or decryption.
@@ -14,6 +18,17 @@ type EventGatewayEncryptConfig struct {
 	// The key to use for encryption.
 	//
 	EncryptionKey EncryptionKey `json:"encryption_key"`
+}
+
+func (e EventGatewayEncryptConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *EventGatewayEncryptConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"failure_mode", "part_of_record", "encryption_key"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (e *EventGatewayEncryptConfig) GetFailureMode() EncryptionFailureMode {

@@ -389,12 +389,12 @@ func (r *CentralizedConsumerResource) ImportState(ctx context.Context, req resou
 	}
 
 	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID.`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
 	if len(data.RealmID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field realm_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		resp.Diagnostics.AddError("Missing required field", `The field realm_id is required but was not found in the json encoded ID.`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("realm_id"), data.RealmID)...)

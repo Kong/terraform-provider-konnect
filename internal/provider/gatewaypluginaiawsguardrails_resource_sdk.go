@@ -15,6 +15,7 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) RefreshFromSharedAiAwsGuardr
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.AiAwsGuardrailsPluginConfig{}
 		r.Config.AllowMasking = types.BoolPointerValue(resp.Config.AllowMasking)
 		r.Config.AwsAccessKeyID = types.StringPointerValue(resp.Config.AwsAccessKeyID)
 		r.Config.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.AwsAssumeRoleArn)
@@ -89,6 +90,8 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) RefreshFromSharedAiAwsGuardr
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -111,6 +114,8 @@ func (r *GatewayPluginAiAwsGuardrailsResourceModel) RefreshFromSharedAiAwsGuardr
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

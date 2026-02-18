@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type CreatePartialRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Description of the new Partial for creation
 	Partial shared.Partial `request:"mediaType=application/json"`
+}
+
+func (c CreatePartialRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreatePartialRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "Partial"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreatePartialRequest) GetControlPlaneID() string {
@@ -47,6 +59,17 @@ type CreatePartialResponse struct {
 	Partial *shared.Partial
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (c CreatePartialResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreatePartialResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreatePartialResponse) GetContentType() string {

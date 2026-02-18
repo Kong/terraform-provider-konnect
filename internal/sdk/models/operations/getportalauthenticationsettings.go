@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -10,6 +11,17 @@ import (
 type GetPortalAuthenticationSettingsRequest struct {
 	// The Portal identifier
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
+}
+
+func (g GetPortalAuthenticationSettingsRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetPortalAuthenticationSettingsRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"portalId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetPortalAuthenticationSettingsRequest) GetPortalID() string {
@@ -30,6 +42,17 @@ type GetPortalAuthenticationSettingsResponse struct {
 	PortalAuthenticationSettingsResponse *shared.PortalAuthenticationSettingsResponse
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError
+}
+
+func (g GetPortalAuthenticationSettingsResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetPortalAuthenticationSettingsResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetPortalAuthenticationSettingsResponse) GetContentType() string {

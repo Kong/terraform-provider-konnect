@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type GetEventGatewayListenerRequest struct {
 	GatewayID string `pathParam:"style=simple,explode=false,name=gatewayId"`
 	// The ID of the Event Gateway Listener.
 	EventGatewayListenerID string `pathParam:"style=simple,explode=false,name=eventGatewayListenerId"`
+}
+
+func (g GetEventGatewayListenerRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetEventGatewayListenerRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"gatewayId", "eventGatewayListenerId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetEventGatewayListenerRequest) GetGatewayID() string {
@@ -43,6 +55,17 @@ type GetEventGatewayListenerResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (g GetEventGatewayListenerResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetEventGatewayListenerResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetEventGatewayListenerResponse) GetContentType() string {

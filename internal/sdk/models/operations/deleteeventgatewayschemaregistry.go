@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type DeleteEventGatewaySchemaRegistryRequest struct {
 	GatewayID string `pathParam:"style=simple,explode=false,name=gatewayId"`
 	// The ID of the Schema Registry.
 	SchemaRegistryID string `pathParam:"style=simple,explode=false,name=schemaRegistryId"`
+}
+
+func (d DeleteEventGatewaySchemaRegistryRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteEventGatewaySchemaRegistryRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"gatewayId", "schemaRegistryId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteEventGatewaySchemaRegistryRequest) GetGatewayID() string {
@@ -43,6 +55,17 @@ type DeleteEventGatewaySchemaRegistryResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (d DeleteEventGatewaySchemaRegistryResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteEventGatewaySchemaRegistryResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteEventGatewaySchemaRegistryResponse) GetContentType() string {

@@ -12,6 +12,17 @@ type TLSHandshakeModifierPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (t TLSHandshakeModifierPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TLSHandshakeModifierPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (t *TLSHandshakeModifierPluginAfter) GetAccess() []string {
 	if t == nil {
 		return nil
@@ -21,6 +32,17 @@ func (t *TLSHandshakeModifierPluginAfter) GetAccess() []string {
 
 type TLSHandshakeModifierPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (t TLSHandshakeModifierPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TLSHandshakeModifierPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (t *TLSHandshakeModifierPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (t *TLSHandshakeModifierPluginBefore) GetAccess() []string {
 type TLSHandshakeModifierPluginOrdering struct {
 	After  *TLSHandshakeModifierPluginAfter  `json:"after,omitempty"`
 	Before *TLSHandshakeModifierPluginBefore `json:"before,omitempty"`
+}
+
+func (t TLSHandshakeModifierPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TLSHandshakeModifierPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (t *TLSHandshakeModifierPluginOrdering) GetAfter() *TLSHandshakeModifierPluginAfter {
@@ -55,6 +88,17 @@ type TLSHandshakeModifierPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (t TLSHandshakeModifierPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TLSHandshakeModifierPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (t *TLSHandshakeModifierPluginPartials) GetID() *string {
@@ -159,6 +203,17 @@ type TLSHandshakeModifierPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (t TLSHandshakeModifierPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TLSHandshakeModifierPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (t *TLSHandshakeModifierPluginRoute) GetID() *string {
 	if t == nil {
 		return nil
@@ -169,6 +224,17 @@ func (t *TLSHandshakeModifierPluginRoute) GetID() *string {
 // TLSHandshakeModifierPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type TLSHandshakeModifierPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (t TLSHandshakeModifierPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TLSHandshakeModifierPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (t *TLSHandshakeModifierPluginService) GetID() *string {

@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type GetCanaryPluginRequest struct {
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+}
+
+func (g GetCanaryPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetCanaryPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"PluginId", "controlPlaneId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetCanaryPluginRequest) GetPluginID() string {
@@ -39,6 +51,17 @@ type GetCanaryPluginResponse struct {
 	CanaryPlugin *shared.CanaryPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (g GetCanaryPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetCanaryPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetCanaryPluginResponse) GetContentType() string {

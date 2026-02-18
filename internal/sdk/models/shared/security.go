@@ -2,11 +2,26 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type Security struct {
 	PersonalAccessToken      *string `security:"scheme,type=http,subtype=bearer,name=Authorization"`
 	SystemAccountAccessToken *string `security:"scheme,type=http,subtype=bearer,name=Authorization"`
 	KonnectAccessToken       *string `security:"scheme,type=http,subtype=bearer,name=Authorization"`
 	ServiceAccessToken       *string `security:"scheme,type=http,subtype=bearer,name=Authorization"`
+}
+
+func (s Security) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *Security) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *Security) GetPersonalAccessToken() *string {

@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 // ResourceType - This rule applies to access only for type of resource
@@ -77,6 +78,17 @@ type EventGatewayACLRule struct {
 	Operations []EventGatewayACLOperation `json:"operations"`
 	// If any of these entries match, the resource name matches for this rule.
 	ResourceNames []EventGatewayACLResourceName `json:"resource_names"`
+}
+
+func (e EventGatewayACLRule) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *EventGatewayACLRule) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"resource_type", "action", "operations", "resource_names"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (e *EventGatewayACLRule) GetResourceType() ResourceType {

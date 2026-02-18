@@ -12,6 +12,17 @@ type AiSemanticResponseGuardPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (a AiSemanticResponseGuardPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticResponseGuardPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiSemanticResponseGuardPluginAfter) GetAccess() []string {
 	if a == nil {
 		return nil
@@ -21,6 +32,17 @@ func (a *AiSemanticResponseGuardPluginAfter) GetAccess() []string {
 
 type AiSemanticResponseGuardPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (a AiSemanticResponseGuardPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticResponseGuardPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiSemanticResponseGuardPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (a *AiSemanticResponseGuardPluginBefore) GetAccess() []string {
 type AiSemanticResponseGuardPluginOrdering struct {
 	After  *AiSemanticResponseGuardPluginAfter  `json:"after,omitempty"`
 	Before *AiSemanticResponseGuardPluginBefore `json:"before,omitempty"`
+}
+
+func (a AiSemanticResponseGuardPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticResponseGuardPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiSemanticResponseGuardPluginOrdering) GetAfter() *AiSemanticResponseGuardPluginAfter {
@@ -55,6 +88,17 @@ type AiSemanticResponseGuardPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (a AiSemanticResponseGuardPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticResponseGuardPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiSemanticResponseGuardPluginPartials) GetID() *string {
@@ -540,6 +584,17 @@ type AiSemanticResponseGuardPluginModel struct {
 	Provider AiSemanticResponseGuardPluginProvider `json:"provider"`
 }
 
+func (a AiSemanticResponseGuardPluginModel) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticResponseGuardPluginModel) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "provider"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiSemanticResponseGuardPluginModel) GetName() string {
 	if a == nil {
 		return ""
@@ -564,6 +619,17 @@ func (a *AiSemanticResponseGuardPluginModel) GetProvider() AiSemanticResponseGua
 type AiSemanticResponseGuardPluginEmbeddings struct {
 	Auth  *AiSemanticResponseGuardPluginAuth `json:"auth"`
 	Model AiSemanticResponseGuardPluginModel `json:"model"`
+}
+
+func (a AiSemanticResponseGuardPluginEmbeddings) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticResponseGuardPluginEmbeddings) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"model"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiSemanticResponseGuardPluginEmbeddings) GetAuth() *AiSemanticResponseGuardPluginAuth {
@@ -705,6 +771,17 @@ func (a *AiSemanticResponseGuardPluginRules) GetMaxResponseBodySize() *int64 {
 type AiSemanticResponseGuardPluginSearch struct {
 	// Threshold for the similarity score to be considered a match.
 	Threshold *float64 `json:"threshold,omitempty"`
+}
+
+func (a AiSemanticResponseGuardPluginSearch) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticResponseGuardPluginSearch) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiSemanticResponseGuardPluginSearch) GetThreshold() *float64 {
@@ -1514,6 +1591,17 @@ type AiSemanticResponseGuardPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiSemanticResponseGuardPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticResponseGuardPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiSemanticResponseGuardPluginConsumer) GetID() *string {
 	if a == nil {
 		return nil
@@ -1524,6 +1612,17 @@ func (a *AiSemanticResponseGuardPluginConsumer) GetID() *string {
 // AiSemanticResponseGuardPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type AiSemanticResponseGuardPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiSemanticResponseGuardPluginConsumerGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticResponseGuardPluginConsumerGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiSemanticResponseGuardPluginConsumerGroup) GetID() *string {
@@ -1570,6 +1669,17 @@ type AiSemanticResponseGuardPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiSemanticResponseGuardPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticResponseGuardPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiSemanticResponseGuardPluginRoute) GetID() *string {
 	if a == nil {
 		return nil
@@ -1580,6 +1690,17 @@ func (a *AiSemanticResponseGuardPluginRoute) GetID() *string {
 // AiSemanticResponseGuardPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type AiSemanticResponseGuardPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiSemanticResponseGuardPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiSemanticResponseGuardPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiSemanticResponseGuardPluginService) GetID() *string {

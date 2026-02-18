@@ -2,9 +2,24 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type Catalog struct {
 	WelcomeMessage string `json:"welcome_message"`
 	PrimaryHeader  string `json:"primary_header"`
+}
+
+func (c Catalog) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *Catalog) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"welcome_message", "primary_header"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *Catalog) GetWelcomeMessage() string {
@@ -24,6 +39,17 @@ func (c *Catalog) GetPrimaryHeader() string {
 // V2NullableAppearanceTextVariables - Values to display for customizable text in the portal user interface
 type V2NullableAppearanceTextVariables struct {
 	Catalog Catalog `json:"catalog"`
+}
+
+func (v V2NullableAppearanceTextVariables) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *V2NullableAppearanceTextVariables) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"catalog"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (v *V2NullableAppearanceTextVariables) GetCatalog() Catalog {

@@ -15,6 +15,7 @@ func (r *GatewayPluginAiGcpModelArmorResourceModel) RefreshFromSharedAiGcpModelA
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.AiGcpModelArmorPluginConfig{}
 		r.Config.EnableMultiLanguageDetection = types.BoolPointerValue(resp.Config.EnableMultiLanguageDetection)
 		r.Config.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.GcpServiceAccountJSON)
 		r.Config.GcpUseServiceAccount = types.BoolPointerValue(resp.Config.GcpUseServiceAccount)
@@ -89,6 +90,8 @@ func (r *GatewayPluginAiGcpModelArmorResourceModel) RefreshFromSharedAiGcpModelA
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -111,6 +114,8 @@ func (r *GatewayPluginAiGcpModelArmorResourceModel) RefreshFromSharedAiGcpModelA
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

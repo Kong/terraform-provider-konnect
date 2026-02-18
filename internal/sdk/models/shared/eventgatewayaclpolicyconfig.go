@@ -2,10 +2,25 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // EventGatewayACLPolicyConfig - Apply ACLs to virtual cluster traffic.
 type EventGatewayACLPolicyConfig struct {
 	// Every ACL rule in this list applies independently.
 	Rules []EventGatewayACLRule `json:"rules"`
+}
+
+func (e EventGatewayACLPolicyConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *EventGatewayACLPolicyConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"rules"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (e *EventGatewayACLPolicyConfig) GetRules() []EventGatewayACLRule {

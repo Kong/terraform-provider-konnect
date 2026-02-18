@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -19,6 +20,17 @@ type CreateEventGatewayVirtualClusterConsumePolicySkipRecordRequest struct {
 	//
 	After                              *string                                    `queryParam:"style=form,explode=true,name=after"`
 	EventGatewaySkipRecordPolicyCreate *shared.EventGatewaySkipRecordPolicyCreate `request:"mediaType=application/json"`
+}
+
+func (c CreateEventGatewayVirtualClusterConsumePolicySkipRecordRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateEventGatewayVirtualClusterConsumePolicySkipRecordRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"gatewayId", "virtualClusterId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateEventGatewayVirtualClusterConsumePolicySkipRecordRequest) GetGatewayID() string {
@@ -71,6 +83,17 @@ type CreateEventGatewayVirtualClusterConsumePolicySkipRecordResponse struct {
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
 	ForbiddenError *shared.ForbiddenError
+}
+
+func (c CreateEventGatewayVirtualClusterConsumePolicySkipRecordResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateEventGatewayVirtualClusterConsumePolicySkipRecordResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateEventGatewayVirtualClusterConsumePolicySkipRecordResponse) GetContentType() string {

@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -15,6 +16,17 @@ type UpdateNetworkRequest struct {
 	// The network to operate on.
 	NetworkID           string                     `pathParam:"style=simple,explode=false,name=networkId"`
 	PatchNetworkRequest shared.PatchNetworkRequest `request:"mediaType=application/json"`
+}
+
+func (u UpdateNetworkRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateNetworkRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"networkId", "PatchNetworkRequest"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateNetworkRequest) GetNetworkID() string {
@@ -50,6 +62,17 @@ type UpdateNetworkResponse struct {
 	NotFoundError *shared.NotFoundError
 	// Conflict
 	ConflictError *shared.ConflictError
+}
+
+func (u UpdateNetworkResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateNetworkResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateNetworkResponse) GetContentType() string {

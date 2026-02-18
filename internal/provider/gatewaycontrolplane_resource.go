@@ -37,15 +37,15 @@ type GatewayControlPlaneResource struct {
 
 // GatewayControlPlaneResourceModel describes the resource data model.
 type GatewayControlPlaneResourceModel struct {
-	AuthType     types.String               `tfsdk:"auth_type"`
-	CloudGateway types.Bool                 `tfsdk:"cloud_gateway"`
-	ClusterType  types.String               `tfsdk:"cluster_type"`
-	Config       tfTypes.ControlPlaneConfig `tfsdk:"config"`
-	Description  types.String               `tfsdk:"description"`
-	ID           types.String               `tfsdk:"id"`
-	Labels       map[string]types.String    `tfsdk:"labels"`
-	Name         types.String               `tfsdk:"name"`
-	ProxyUrls    []tfTypes.ProxyURL         `tfsdk:"proxy_urls"`
+	AuthType     types.String                `tfsdk:"auth_type"`
+	CloudGateway types.Bool                  `tfsdk:"cloud_gateway"`
+	ClusterType  types.String                `tfsdk:"cluster_type"`
+	Config       *tfTypes.ControlPlaneConfig `tfsdk:"config"`
+	Description  types.String                `tfsdk:"description"`
+	ID           types.String                `tfsdk:"id"`
+	Labels       map[string]types.String     `tfsdk:"labels"`
+	Name         types.String                `tfsdk:"name"`
+	ProxyUrls    []tfTypes.ProxyURL          `tfsdk:"proxy_urls"`
 }
 
 func (r *GatewayControlPlaneResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -161,7 +161,7 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `The control plane ID.`,
+				Description: `The control plane ID`,
 			},
 			"labels": schema.MapAttribute{
 				Computed:    true,
@@ -281,43 +281,6 @@ func (r *GatewayControlPlaneResource) Create(ctx context.Context, req resource.C
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsGetControlPlaneRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.ControlPlanes.GetControlPlane(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.ControlPlane != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedControlPlane(ctx, res1.ControlPlane)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -422,43 +385,6 @@ func (r *GatewayControlPlaneResource) Update(ctx context.Context, req resource.U
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedControlPlane(ctx, res.ControlPlane)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsGetControlPlaneRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.ControlPlanes.GetControlPlane(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.ControlPlane != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedControlPlane(ctx, res1.ControlPlane)...)
 
 	if resp.Diagnostics.HasError() {
 		return

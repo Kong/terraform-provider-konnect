@@ -39,7 +39,7 @@ type EventGatewaySchemaRegistryResource struct {
 // EventGatewaySchemaRegistryResourceModel describes the resource data model.
 type EventGatewaySchemaRegistryResourceModel struct {
 	Config      *tfTypes.Metadata                `tfsdk:"config"`
-	Confluent   *tfTypes.SchemaRegistryConfluent `queryParam:"inline" tfsdk:"confluent" tfPlanOnly:"true"`
+	Confluent   *tfTypes.SchemaRegistryConfluent `queryParam:"inline" tfsdk:"confluent"`
 	CreatedAt   types.String                     `tfsdk:"created_at"`
 	Description types.String                     `tfsdk:"description"`
 	GatewayID   types.String                     `tfsdk:"gateway_id"`
@@ -450,12 +450,12 @@ func (r *EventGatewaySchemaRegistryResource) ImportState(ctx context.Context, re
 	}
 
 	if len(data.GatewayID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field gateway_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"`)
+		resp.Diagnostics.AddError("Missing required field", `The field gateway_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("gateway_id"), data.GatewayID)...)
 	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID.`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)

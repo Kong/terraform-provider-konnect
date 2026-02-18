@@ -287,43 +287,6 @@ func (r *PortalProductVersionResource) Create(ctx context.Context, req resource.
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsGetPortalProductVersionRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.PortalProductVersions.GetPortalProductVersion(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.V2PortalProductVersion != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedV2PortalProductVersion(ctx, res1.V2PortalProductVersion)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -438,43 +401,6 @@ func (r *PortalProductVersionResource) Update(ctx context.Context, req resource.
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	request1, request1Diags := data.ToOperationsGetPortalProductVersionRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.PortalProductVersions.GetPortalProductVersion(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.V2PortalProductVersion != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedV2PortalProductVersion(ctx, res1.V2PortalProductVersion)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -540,12 +466,12 @@ func (r *PortalProductVersionResource) ImportState(ctx context.Context, req reso
 	}
 
 	if len(data.PortalID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field portal_id is required but was not found in the json encoded ID. It's expected to be a value alike '"f32d905a-ed33-46a3-a093-d8f536af9a8a"`)
+		resp.Diagnostics.AddError("Missing required field", `The field portal_id is required but was not found in the json encoded ID. It's expected to be a value alike '"f32d905a-ed33-46a3-a093-d8f536af9a8a"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("portal_id"), data.PortalID)...)
 	if len(data.ProductVersionID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field product_version_id is required but was not found in the json encoded ID. It's expected to be a value alike '"5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"`)
+		resp.Diagnostics.AddError("Missing required field", `The field product_version_id is required but was not found in the json encoded ID. It's expected to be a value alike '"5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("product_version_id"), data.ProductVersionID)...)

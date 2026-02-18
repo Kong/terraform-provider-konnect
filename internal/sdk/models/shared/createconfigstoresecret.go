@@ -2,9 +2,24 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type CreateConfigStoreSecret struct {
 	Key   string `json:"key"`
 	Value string `json:"value"`
+}
+
+func (c CreateConfigStoreSecret) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateConfigStoreSecret) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"key", "value"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateConfigStoreSecret) GetKey() string {

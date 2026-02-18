@@ -24,6 +24,8 @@ func (r *GatewayPluginStatsdResourceModel) RefreshFromSharedStatsdPlugin(ctx con
 				for _, v := range resp.Config.AllowStatusCodes {
 					r.Config.AllowStatusCodes = append(r.Config.AllowStatusCodes, types.StringValue(v))
 				}
+			} else {
+				r.Config.AllowStatusCodes = nil
 			}
 			if resp.Config.ConsumerIdentifierDefault != nil {
 				r.Config.ConsumerIdentifierDefault = types.StringValue(string(*resp.Config.ConsumerIdentifierDefault))
@@ -60,6 +62,8 @@ func (r *GatewayPluginStatsdResourceModel) RefreshFromSharedStatsdPlugin(ctx con
 
 					r.Config.Metrics = append(r.Config.Metrics, metrics)
 				}
+			} else {
+				r.Config.Metrics = nil
 			}
 			r.Config.Port = types.Int64PointerValue(resp.Config.Port)
 			r.Config.Prefix = types.StringPointerValue(resp.Config.Prefix)
@@ -145,6 +149,8 @@ func (r *GatewayPluginStatsdResourceModel) RefreshFromSharedStatsdPlugin(ctx con
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -167,6 +173,8 @@ func (r *GatewayPluginStatsdResourceModel) RefreshFromSharedStatsdPlugin(ctx con
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

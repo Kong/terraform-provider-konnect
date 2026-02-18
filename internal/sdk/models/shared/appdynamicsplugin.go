@@ -12,6 +12,17 @@ type AppDynamicsPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (a AppDynamicsPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AppDynamicsPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AppDynamicsPluginAfter) GetAccess() []string {
 	if a == nil {
 		return nil
@@ -21,6 +32,17 @@ func (a *AppDynamicsPluginAfter) GetAccess() []string {
 
 type AppDynamicsPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (a AppDynamicsPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AppDynamicsPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AppDynamicsPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (a *AppDynamicsPluginBefore) GetAccess() []string {
 type AppDynamicsPluginOrdering struct {
 	After  *AppDynamicsPluginAfter  `json:"after,omitempty"`
 	Before *AppDynamicsPluginBefore `json:"before,omitempty"`
+}
+
+func (a AppDynamicsPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AppDynamicsPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AppDynamicsPluginOrdering) GetAfter() *AppDynamicsPluginAfter {
@@ -55,6 +88,17 @@ type AppDynamicsPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (a AppDynamicsPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AppDynamicsPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AppDynamicsPluginPartials) GetID() *string {
@@ -81,6 +125,17 @@ func (a *AppDynamicsPluginPartials) GetPath() *string {
 // AppDynamicsPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 type AppDynamicsPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AppDynamicsPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AppDynamicsPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AppDynamicsPluginConsumer) GetID() *string {
@@ -127,6 +182,17 @@ type AppDynamicsPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AppDynamicsPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AppDynamicsPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AppDynamicsPluginRoute) GetID() *string {
 	if a == nil {
 		return nil
@@ -137,6 +203,17 @@ func (a *AppDynamicsPluginRoute) GetID() *string {
 // AppDynamicsPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type AppDynamicsPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AppDynamicsPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AppDynamicsPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AppDynamicsPluginService) GetID() *string {

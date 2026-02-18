@@ -7,8 +7,8 @@ import (
 )
 
 type AWSTransitGateway struct {
-	CidrBlocks                     []types.String                    `tfsdk:"cidr_blocks"`
-	DNSConfig                      []TransitGatewayDNSConfig         `tfsdk:"dns_config"`
-	Name                           types.String                      `tfsdk:"name"`
-	TransitGatewayAttachmentConfig AwsTransitGatewayAttachmentConfig `tfsdk:"transit_gateway_attachment_config"`
+	CidrBlocks                     []types.String                     `tfsdk:"cidr_blocks"`
+	DNSConfig                      []TransitGatewayDNSConfig          `tfsdk:"dns_config"`
+	Name                           types.String                       `tfsdk:"name"`
+	TransitGatewayAttachmentConfig *AwsTransitGatewayAttachmentConfig `tfsdk:"transit_gateway_attachment_config"`
 }

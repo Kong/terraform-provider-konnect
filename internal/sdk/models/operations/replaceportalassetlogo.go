@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type ReplacePortalAssetLogoRequest struct {
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 	// Update an image asset for the portal.
 	ReplacePortalImageAsset *shared.ReplacePortalImageAsset `request:"mediaType=application/json"`
+}
+
+func (r ReplacePortalAssetLogoRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ReplacePortalAssetLogoRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"portalId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *ReplacePortalAssetLogoRequest) GetPortalID() string {
@@ -43,6 +55,17 @@ type ReplacePortalAssetLogoResponse struct {
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
 	ForbiddenError *shared.ForbiddenError
+}
+
+func (r ReplacePortalAssetLogoResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *ReplacePortalAssetLogoResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *ReplacePortalAssetLogoResponse) GetContentType() string {

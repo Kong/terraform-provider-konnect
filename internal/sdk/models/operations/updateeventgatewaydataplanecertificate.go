@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -14,6 +15,17 @@ type UpdateEventGatewayDataPlaneCertificateRequest struct {
 	CertificateID string `pathParam:"style=simple,explode=false,name=certificateId"`
 	// The request schema for updating a dataplane certificate.
 	UpdateEventGatewayDataPlaneCertificateRequest *shared.UpdateEventGatewayDataPlaneCertificateRequest `request:"mediaType=application/json"`
+}
+
+func (u UpdateEventGatewayDataPlaneCertificateRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateEventGatewayDataPlaneCertificateRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"gatewayId", "certificateId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateEventGatewayDataPlaneCertificateRequest) GetGatewayID() string {
@@ -52,6 +64,17 @@ type UpdateEventGatewayDataPlaneCertificateResponse struct {
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
 	ForbiddenError *shared.ForbiddenError
+}
+
+func (u UpdateEventGatewayDataPlaneCertificateResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateEventGatewayDataPlaneCertificateResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateEventGatewayDataPlaneCertificateResponse) GetContentType() string {

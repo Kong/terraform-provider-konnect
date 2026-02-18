@@ -3,8 +3,8 @@
 package types
 
 type VirtualClusterAuthenticationScheme struct {
-	Anonymous   *Metadata                                `queryParam:"inline" tfsdk:"anonymous" tfPlanOnly:"true"`
-	OauthBearer *VirtualClusterAuthenticationOauthBearer `queryParam:"inline" tfsdk:"oauth_bearer" tfPlanOnly:"true"`
-	SaslPlain   *VirtualClusterAuthenticationSaslPlain   `queryParam:"inline" tfsdk:"sasl_plain" tfPlanOnly:"true"`
-	SaslScram   *VirtualClusterAuthenticationSaslScram   `queryParam:"inline" tfsdk:"sasl_scram" tfPlanOnly:"true"`
+	Anonymous   *Metadata                                `queryParam:"inline" tfsdk:"anonymous"`
+	OauthBearer *VirtualClusterAuthenticationOauthBearer `queryParam:"inline" tfsdk:"oauth_bearer"`
+	SaslPlain   *VirtualClusterAuthenticationSaslPlain   `queryParam:"inline" tfsdk:"sasl_plain"`
+	SaslScram   *VirtualClusterAuthenticationSaslScram   `queryParam:"inline" tfsdk:"sasl_scram"`
 }

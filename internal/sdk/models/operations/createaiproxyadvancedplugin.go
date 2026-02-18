@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateAiproxyadvancedPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID        string                       `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	AiProxyAdvancedPlugin shared.AiProxyAdvancedPlugin `request:"mediaType=application/json"`
+}
+
+func (c CreateAiproxyadvancedPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAiproxyadvancedPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "AiProxyAdvancedPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateAiproxyadvancedPluginRequest) GetControlPlaneID() string {
@@ -38,6 +50,17 @@ type CreateAiproxyadvancedPluginResponse struct {
 	AiProxyAdvancedPlugin *shared.AiProxyAdvancedPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (c CreateAiproxyadvancedPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAiproxyadvancedPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateAiproxyadvancedPluginResponse) GetContentType() string {

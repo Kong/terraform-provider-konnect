@@ -41,6 +41,17 @@ type Colors struct {
 	Primary *string `json:"primary,omitempty"`
 }
 
+func (c Colors) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *Colors) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (c *Colors) GetPrimary() *string {
 	if c == nil {
 		return nil
@@ -52,6 +63,17 @@ type Theme struct {
 	Name   *string                  `json:"name,omitempty"`
 	Mode   *PortalCustomizationMode `json:"mode,omitempty"`
 	Colors *Colors                  `json:"colors,omitempty"`
+}
+
+func (t Theme) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *Theme) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (t *Theme) GetName() *string {
@@ -79,6 +101,17 @@ type Menu struct {
 	Main           []PortalMenuItem          `json:"main"`
 	FooterSections []PortalFooterMenuSection `json:"footer_sections"`
 	FooterBottom   []PortalMenuItem          `json:"footer_bottom"`
+}
+
+func (m Menu) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *Menu) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (m *Menu) GetMain() []PortalMenuItem {

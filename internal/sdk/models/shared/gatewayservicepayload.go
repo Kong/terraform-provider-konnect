@@ -2,11 +2,26 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type GatewayServicePayload struct {
 	// The identifier of a gateway service associated with the version of the API product.
 	ID string `json:"id"`
 	// The identifier of the control plane that the gateway service resides in
 	ControlPlaneID string `json:"control_plane_id"`
+}
+
+func (g GatewayServicePayload) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GatewayServicePayload) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"id", "control_plane_id"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GatewayServicePayload) GetID() string {

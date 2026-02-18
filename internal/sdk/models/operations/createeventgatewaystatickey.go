@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type CreateEventGatewayStaticKeyRequest struct {
 	GatewayID string `pathParam:"style=simple,explode=false,name=gatewayId"`
 	// The request schema for creating a static key.
 	EventGatewayStaticKeyCreate *shared.EventGatewayStaticKeyCreate `request:"mediaType=application/json"`
+}
+
+func (c CreateEventGatewayStaticKeyRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateEventGatewayStaticKeyRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"gatewayId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateEventGatewayStaticKeyRequest) GetGatewayID() string {
@@ -45,6 +57,17 @@ type CreateEventGatewayStaticKeyResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (c CreateEventGatewayStaticKeyResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateEventGatewayStaticKeyResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateEventGatewayStaticKeyResponse) GetContentType() string {

@@ -21,12 +21,12 @@ const (
 
 // TransitGatewayResponse - Response format for creating a transit gateway.
 type TransitGatewayResponse struct {
-	AwsTransitGatewayResponse          *AwsTransitGatewayResponse          `queryParam:"inline,name=TransitGatewayResponse"`
-	AwsVpcPeeringGatewayResponse       *AwsVpcPeeringGatewayResponse       `queryParam:"inline,name=TransitGatewayResponse"`
-	AzureTransitGatewayResponse        *AzureTransitGatewayResponse        `queryParam:"inline,name=TransitGatewayResponse"`
-	AzureVhubPeeringGatewayResponse    *AzureVhubPeeringGatewayResponse    `queryParam:"inline,name=TransitGatewayResponse"`
-	GCPVPCPeeringGatewayResponse       *GCPVPCPeeringGatewayResponse       `queryParam:"inline,name=TransitGatewayResponse"`
-	AwsResourceEndpointGatewayResponse *AwsResourceEndpointGatewayResponse `queryParam:"inline,name=TransitGatewayResponse"`
+	AwsTransitGatewayResponse          *AwsTransitGatewayResponse          `queryParam:"inline" union:"member"`
+	AwsVpcPeeringGatewayResponse       *AwsVpcPeeringGatewayResponse       `queryParam:"inline" union:"member"`
+	AzureTransitGatewayResponse        *AzureTransitGatewayResponse        `queryParam:"inline" union:"member"`
+	AzureVhubPeeringGatewayResponse    *AzureVhubPeeringGatewayResponse    `queryParam:"inline" union:"member"`
+	GCPVPCPeeringGatewayResponse       *GCPVPCPeeringGatewayResponse       `queryParam:"inline" union:"member"`
+	AwsResourceEndpointGatewayResponse *AwsResourceEndpointGatewayResponse `queryParam:"inline" union:"member"`
 
 	Type TransitGatewayResponseType
 }
@@ -114,6 +114,14 @@ func (u *TransitGatewayResponse) UnmarshalJSON(data []byte) error {
 		})
 	}
 
+	var azureVhubPeeringGatewayResponse AzureVhubPeeringGatewayResponse = AzureVhubPeeringGatewayResponse{}
+	if err := utils.UnmarshalJSON(data, &azureVhubPeeringGatewayResponse, "", true, nil); err == nil {
+		candidates = append(candidates, utils.UnionCandidate{
+			Type:  TransitGatewayResponseTypeAzureVhubPeeringGatewayResponse,
+			Value: &azureVhubPeeringGatewayResponse,
+		})
+	}
+
 	var gcpvpcPeeringGatewayResponse GCPVPCPeeringGatewayResponse = GCPVPCPeeringGatewayResponse{}
 	if err := utils.UnmarshalJSON(data, &gcpvpcPeeringGatewayResponse, "", true, nil); err == nil {
 		candidates = append(candidates, utils.UnionCandidate{
@@ -130,20 +138,12 @@ func (u *TransitGatewayResponse) UnmarshalJSON(data []byte) error {
 		})
 	}
 
-	var azureVhubPeeringGatewayResponse AzureVhubPeeringGatewayResponse = AzureVhubPeeringGatewayResponse{}
-	if err := utils.UnmarshalJSON(data, &azureVhubPeeringGatewayResponse, "", true, nil); err == nil {
-		candidates = append(candidates, utils.UnionCandidate{
-			Type:  TransitGatewayResponseTypeAzureVhubPeeringGatewayResponse,
-			Value: &azureVhubPeeringGatewayResponse,
-		})
-	}
-
 	if len(candidates) == 0 {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for TransitGatewayResponse", string(data))
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for TransitGatewayResponse", string(data))
 	}
@@ -160,14 +160,14 @@ func (u *TransitGatewayResponse) UnmarshalJSON(data []byte) error {
 	case TransitGatewayResponseTypeAzureTransitGatewayResponse:
 		u.AzureTransitGatewayResponse = best.Value.(*AzureTransitGatewayResponse)
 		return nil
+	case TransitGatewayResponseTypeAzureVhubPeeringGatewayResponse:
+		u.AzureVhubPeeringGatewayResponse = best.Value.(*AzureVhubPeeringGatewayResponse)
+		return nil
 	case TransitGatewayResponseTypeGCPVPCPeeringGatewayResponse:
 		u.GCPVPCPeeringGatewayResponse = best.Value.(*GCPVPCPeeringGatewayResponse)
 		return nil
 	case TransitGatewayResponseTypeAwsResourceEndpointGatewayResponse:
 		u.AwsResourceEndpointGatewayResponse = best.Value.(*AwsResourceEndpointGatewayResponse)
-		return nil
-	case TransitGatewayResponseTypeAzureVhubPeeringGatewayResponse:
-		u.AzureVhubPeeringGatewayResponse = best.Value.(*AzureVhubPeeringGatewayResponse)
 		return nil
 	}
 

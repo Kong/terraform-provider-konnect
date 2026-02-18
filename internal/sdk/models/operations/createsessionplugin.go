@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateSessionPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	SessionPlugin  shared.SessionPlugin `request:"mediaType=application/json"`
+}
+
+func (c CreateSessionPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateSessionPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "SessionPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateSessionPluginRequest) GetControlPlaneID() string {
@@ -38,6 +50,17 @@ type CreateSessionPluginResponse struct {
 	SessionPlugin *shared.SessionPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (c CreateSessionPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateSessionPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateSessionPluginResponse) GetContentType() string {

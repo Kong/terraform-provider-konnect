@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type GetPortalPageRequest struct {
 	PortalID string `pathParam:"style=simple,explode=false,name=portalId"`
 	// ID of the page.
 	PageID string `pathParam:"style=simple,explode=false,name=pageId"`
+}
+
+func (g GetPortalPageRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetPortalPageRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"portalId", "pageId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetPortalPageRequest) GetPortalID() string {
@@ -41,6 +53,17 @@ type GetPortalPageResponse struct {
 	UnauthorizedError *shared.UnauthorizedError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (g GetPortalPageResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetPortalPageResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetPortalPageResponse) GetContentType() string {

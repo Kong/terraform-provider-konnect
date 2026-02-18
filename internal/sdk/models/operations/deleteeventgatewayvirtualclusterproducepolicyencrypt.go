@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -14,6 +15,17 @@ type DeleteEventGatewayVirtualClusterProducePolicyEncryptRequest struct {
 	VirtualClusterID string `pathParam:"style=simple,explode=false,name=virtualClusterId"`
 	// The UUID of the policy.
 	PolicyID string `pathParam:"style=simple,explode=false,name=policyId"`
+}
+
+func (d DeleteEventGatewayVirtualClusterProducePolicyEncryptRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteEventGatewayVirtualClusterProducePolicyEncryptRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"gatewayId", "virtualClusterId", "policyId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteEventGatewayVirtualClusterProducePolicyEncryptRequest) GetGatewayID() string {
@@ -50,6 +62,17 @@ type DeleteEventGatewayVirtualClusterProducePolicyEncryptResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (d DeleteEventGatewayVirtualClusterProducePolicyEncryptResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteEventGatewayVirtualClusterProducePolicyEncryptResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteEventGatewayVirtualClusterProducePolicyEncryptResponse) GetContentType() string {

@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -14,6 +15,17 @@ type GetEventGatewayVirtualClusterConsumePolicySchemaValidationRequest struct {
 	VirtualClusterID string `pathParam:"style=simple,explode=false,name=virtualClusterId"`
 	// The UUID of the policy.
 	PolicyID string `pathParam:"style=simple,explode=false,name=policyId"`
+}
+
+func (g GetEventGatewayVirtualClusterConsumePolicySchemaValidationRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetEventGatewayVirtualClusterConsumePolicySchemaValidationRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"gatewayId", "virtualClusterId", "policyId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetEventGatewayVirtualClusterConsumePolicySchemaValidationRequest) GetGatewayID() string {
@@ -52,6 +64,17 @@ type GetEventGatewayVirtualClusterConsumePolicySchemaValidationResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (g GetEventGatewayVirtualClusterConsumePolicySchemaValidationResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetEventGatewayVirtualClusterConsumePolicySchemaValidationResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetEventGatewayVirtualClusterConsumePolicySchemaValidationResponse) GetContentType() string {

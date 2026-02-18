@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type FetchAPIVersionRequest struct {
 	APIID string `pathParam:"style=simple,explode=false,name=apiId"`
 	// The API version identifier
 	VersionID string `pathParam:"style=simple,explode=false,name=versionId"`
+}
+
+func (f FetchAPIVersionRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *FetchAPIVersionRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"apiId", "versionId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (f *FetchAPIVersionRequest) GetAPIID() string {
@@ -43,6 +55,17 @@ type FetchAPIVersionResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (f FetchAPIVersionResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *FetchAPIVersionResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (f *FetchAPIVersionResponse) GetContentType() string {

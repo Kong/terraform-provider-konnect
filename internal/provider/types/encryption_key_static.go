@@ -3,5 +3,5 @@
 package types
 
 type EncryptionKeyStatic struct {
-	Key SchemaRegistryReference `tfsdk:"key"`
+	Key *SchemaRegistryReference `tfsdk:"key"`
 }

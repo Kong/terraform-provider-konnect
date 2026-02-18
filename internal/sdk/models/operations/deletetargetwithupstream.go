@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"net/http"
 )
 
@@ -13,6 +14,17 @@ type DeleteTargetWithUpstreamRequest struct {
 	UpstreamID string `pathParam:"style=simple,explode=false,name=UpstreamIdForTarget"`
 	// ID of the Target to lookup
 	TargetID string `pathParam:"style=simple,explode=false,name=TargetId"`
+}
+
+func (d DeleteTargetWithUpstreamRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteTargetWithUpstreamRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId", "UpstreamIdForTarget", "TargetId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteTargetWithUpstreamRequest) GetControlPlaneID() string {
@@ -43,6 +55,17 @@ type DeleteTargetWithUpstreamResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+}
+
+func (d DeleteTargetWithUpstreamResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteTargetWithUpstreamResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteTargetWithUpstreamResponse) GetContentType() string {

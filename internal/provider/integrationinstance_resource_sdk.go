@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
@@ -24,6 +25,7 @@ func (r *IntegrationInstanceResourceModel) RefreshFromSharedIntegrationInstance(
 		r.Description = types.StringPointerValue(resp.Description)
 		r.DisplayName = types.StringValue(resp.DisplayName)
 		r.ID = types.StringValue(resp.ID)
+		r.Integration = &tfTypes.IntegrationRefWithoutInstance{}
 		r.Integration.DisplayName = types.StringValue(resp.Integration.DisplayName)
 		r.Integration.Name = types.StringValue(resp.Integration.Name)
 		if len(resp.Labels) > 0 {

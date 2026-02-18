@@ -15,6 +15,7 @@ func (r *GatewayPluginJweDecryptResourceModel) RefreshFromSharedJweDecryptPlugin
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.JweDecryptPluginConfig{}
 		r.Config.ForwardHeaderName = types.StringPointerValue(resp.Config.ForwardHeaderName)
 		r.Config.KeySets = make([]types.String, 0, len(resp.Config.KeySets))
 		for _, v := range resp.Config.KeySets {
@@ -61,6 +62,8 @@ func (r *GatewayPluginJweDecryptResourceModel) RefreshFromSharedJweDecryptPlugin
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -83,6 +86,8 @@ func (r *GatewayPluginJweDecryptResourceModel) RefreshFromSharedJweDecryptPlugin
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

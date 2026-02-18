@@ -44,6 +44,8 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) RefreshFromSharedAiPromptD
 
 						r.Config.Prompts.Append = append(r.Config.Prompts.Append, append1)
 					}
+				} else {
+					r.Config.Prompts.Append = nil
 				}
 				if resp.Config.Prompts.Prepend != nil {
 					r.Config.Prompts.Prepend = []tfTypes.AiPromptDecoratorPluginAppend{}
@@ -60,6 +62,8 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) RefreshFromSharedAiPromptD
 
 						r.Config.Prompts.Prepend = append(r.Config.Prompts.Prepend, prepend)
 					}
+				} else {
+					r.Config.Prompts.Prepend = nil
 				}
 			}
 		}
@@ -114,6 +118,8 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) RefreshFromSharedAiPromptD
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -136,6 +142,8 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) RefreshFromSharedAiPromptD
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -14,6 +15,17 @@ var GetTeamServerList = []string{
 type GetTeamRequest struct {
 	// The team ID
 	TeamID string `pathParam:"style=simple,explode=false,name=teamId"`
+}
+
+func (g GetTeamRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetTeamRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"teamId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetTeamRequest) GetTeamID() string {
@@ -36,6 +48,17 @@ type GetTeamResponse struct {
 	BadRequestError *shared.BadRequestError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (g GetTeamResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetTeamResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetTeamResponse) GetContentType() string {

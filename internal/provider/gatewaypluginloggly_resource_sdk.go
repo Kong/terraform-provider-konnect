@@ -15,6 +15,7 @@ func (r *GatewayPluginLogglyResourceModel) RefreshFromSharedLogglyPlugin(ctx con
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.LogglyPluginConfig{}
 		if resp.Config.ClientErrorsSeverity != nil {
 			r.Config.ClientErrorsSeverity = types.StringValue(string(*resp.Config.ClientErrorsSeverity))
 		} else {
@@ -94,6 +95,8 @@ func (r *GatewayPluginLogglyResourceModel) RefreshFromSharedLogglyPlugin(ctx con
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -116,6 +119,8 @@ func (r *GatewayPluginLogglyResourceModel) RefreshFromSharedLogglyPlugin(ctx con
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

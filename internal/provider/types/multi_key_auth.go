@@ -3,5 +3,5 @@
 package types
 
 type MultiKeyAuth struct {
-	Config CreateMultiKeyAuthCredentialConfig `tfsdk:"config"`
+	Config *CreateMultiKeyAuthCredentialConfig `tfsdk:"config"`
 }

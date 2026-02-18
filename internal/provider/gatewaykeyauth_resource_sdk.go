@@ -22,6 +22,8 @@ func (r *GatewayKeyAuthResourceModel) RefreshFromSharedKeyAuth(ctx context.Conte
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.TTL = types.Int64PointerValue(resp.TTL)
 	}

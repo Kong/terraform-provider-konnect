@@ -12,6 +12,17 @@ type HeaderCertAuthPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (h HeaderCertAuthPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HeaderCertAuthPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (h *HeaderCertAuthPluginAfter) GetAccess() []string {
 	if h == nil {
 		return nil
@@ -21,6 +32,17 @@ func (h *HeaderCertAuthPluginAfter) GetAccess() []string {
 
 type HeaderCertAuthPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (h HeaderCertAuthPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HeaderCertAuthPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (h *HeaderCertAuthPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (h *HeaderCertAuthPluginBefore) GetAccess() []string {
 type HeaderCertAuthPluginOrdering struct {
 	After  *HeaderCertAuthPluginAfter  `json:"after,omitempty"`
 	Before *HeaderCertAuthPluginBefore `json:"before,omitempty"`
+}
+
+func (h HeaderCertAuthPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HeaderCertAuthPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (h *HeaderCertAuthPluginOrdering) GetAfter() *HeaderCertAuthPluginAfter {
@@ -55,6 +88,17 @@ type HeaderCertAuthPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (h HeaderCertAuthPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HeaderCertAuthPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (h *HeaderCertAuthPluginPartials) GetID() *string {
@@ -410,6 +454,17 @@ type HeaderCertAuthPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (h HeaderCertAuthPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HeaderCertAuthPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (h *HeaderCertAuthPluginRoute) GetID() *string {
 	if h == nil {
 		return nil
@@ -420,6 +475,17 @@ func (h *HeaderCertAuthPluginRoute) GetID() *string {
 // HeaderCertAuthPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type HeaderCertAuthPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (h HeaderCertAuthPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HeaderCertAuthPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (h *HeaderCertAuthPluginService) GetID() *string {

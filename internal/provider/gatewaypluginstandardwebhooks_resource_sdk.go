@@ -15,6 +15,7 @@ func (r *GatewayPluginStandardWebhooksResourceModel) RefreshFromSharedStandardWe
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.StandardWebhooksPluginConfig{}
 		r.Config.SecretV1 = types.StringValue(resp.Config.SecretV1)
 		r.Config.ToleranceSecond = types.Int64PointerValue(resp.Config.ToleranceSecond)
 		if resp.ConsumerGroup == nil {
@@ -62,6 +63,8 @@ func (r *GatewayPluginStandardWebhooksResourceModel) RefreshFromSharedStandardWe
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -84,6 +87,8 @@ func (r *GatewayPluginStandardWebhooksResourceModel) RefreshFromSharedStandardWe
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

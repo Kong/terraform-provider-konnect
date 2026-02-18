@@ -20,6 +20,7 @@ import (
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/listplanmodifier"
 	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
+	speakeasy_planmodifierutils "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/utils"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 )
@@ -43,11 +44,11 @@ type IntegrationInstanceAuthCredentialResourceModel struct {
 	CreatedAt              types.String                    `tfsdk:"created_at"`
 	ExpiresAt              types.String                    `tfsdk:"expires_at"`
 	ID                     types.String                    `tfsdk:"id"`
-	IntegrationInstance    tfTypes.Portals                 `tfsdk:"integration_instance"`
+	IntegrationInstance    *tfTypes.Portals                `tfsdk:"integration_instance"`
 	IntegrationInstanceID  types.String                    `tfsdk:"integration_instance_id"`
 	MissingPermissions     []tfTypes.MissingPermission     `tfsdk:"missing_permissions"`
-	MultiKeyAuth           *tfTypes.MultiKeyAuth           `queryParam:"inline" tfsdk:"multi_key_auth" tfPlanOnly:"true"`
-	MultiKeyAuthCredential *tfTypes.MultiKeyAuthCredential `queryParam:"inline" tfsdk:"multi_key_auth_credential" tfPlanOnly:"true"`
+	MultiKeyAuth           *tfTypes.MultiKeyAuth           `queryParam:"inline" tfsdk:"multi_key_auth"`
+	MultiKeyAuthCredential *tfTypes.MultiKeyAuthCredential `queryParam:"inline" tfsdk:"multi_key_auth_credential"`
 	Tainted                types.Bool                      `tfsdk:"tainted"`
 }
 
@@ -63,11 +64,15 @@ func (r *IntegrationInstanceAuthCredentialResource) Schema(ctx context.Context, 
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("multi_key_auth_credential"), FieldPath: path.Root("multi_key_auth_credential").AtName("created_at")}}),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
 			"expires_at": schema.StringAttribute{
 				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("multi_key_auth_credential"), FieldPath: path.Root("multi_key_auth_credential").AtName("expires_at")}}),
+				},
 				MarkdownDescription: `Timestamp denoting when the when the credential will expire in RFC-3339 format with a "T" character separating date from time within the field value.` + "\n" +
 					`When expired, the credential must be replaced with a new valid credential to re-enable full functionality for the given integration instance.` + "\n" +
 					`` + "\n" +
@@ -76,34 +81,25 @@ func (r *IntegrationInstanceAuthCredentialResource) Schema(ctx context.Context, 
 			"id": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("multi_key_auth_credential"), FieldPath: path.Root("multi_key_auth_credential").AtName("id")}}),
 				},
 			},
 			"integration_instance": schema.SingleNestedAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.Object{
-					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+					speakeasy_objectplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("multi_key_auth_credential"), FieldPath: path.Root("multi_key_auth_credential").AtName("integration_instance")}}),
 				},
 				Attributes: map[string]schema.Attribute{
 					"display_name": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
+						Computed:    true,
 						Description: `The display name of the integration instance.`,
 					},
 					"id": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
+						Computed:    true,
 						Description: `The integration instance ID.`,
 					},
 					"name": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
+						Computed:    true,
 						Description: `The machine name of the integration instance that uniquely identifies it within the catalog.`,
 					},
 				},
@@ -119,26 +115,17 @@ func (r *IntegrationInstanceAuthCredentialResource) Schema(ctx context.Context, 
 			"missing_permissions": schema.ListNestedAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.List{
-					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+					speakeasy_listplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("multi_key_auth_credential"), FieldPath: path.Root("multi_key_auth_credential").AtName("missing_permissions")}}),
 				},
 				NestedObject: schema.NestedAttributeObject{
-					PlanModifiers: []planmodifier.Object{
-						speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-					},
 					Attributes: map[string]schema.Attribute{
 						"message": schema.StringAttribute{
 							Computed: true,
-							PlanModifiers: []planmodifier.String{
-								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-							},
 							MarkdownDescription: `Describes the degraded experience of the integration instance due to the missing permission.` + "\n" +
 								`May also include a message on how to resolve the missing permission.`,
 						},
 						"scopes": schema.ListAttribute{
-							Computed: true,
-							PlanModifiers: []planmodifier.List{
-								speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
-							},
+							Computed:    true,
 							ElementType: types.StringType,
 						},
 					},
@@ -200,9 +187,6 @@ func (r *IntegrationInstanceAuthCredentialResource) Schema(ctx context.Context, 
 			},
 			"multi_key_auth_credential": schema.SingleNestedAttribute{
 				Computed: true,
-				PlanModifiers: []planmodifier.Object{
-					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-				},
 				Attributes: map[string]schema.Attribute{
 					"created_at": schema.StringAttribute{
 						Computed: true,
@@ -296,7 +280,7 @@ func (r *IntegrationInstanceAuthCredentialResource) Schema(ctx context.Context, 
 			"tainted": schema.BoolAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.Bool{
-					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+					speakeasy_boolplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("multi_key_auth_credential"), FieldPath: path.Root("multi_key_auth_credential").AtName("tainted")}}),
 				},
 				Description: `Indicates that the credential is no longer valid and must be replaced with a new valid credential.`,
 			},

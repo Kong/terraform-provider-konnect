@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -19,6 +20,17 @@ type CreateEventGatewayVirtualClusterProducePolicyEncryptRequest struct {
 	//
 	After                     *string                           `queryParam:"style=form,explode=true,name=after"`
 	EventGatewayEncryptPolicy *shared.EventGatewayEncryptPolicy `request:"mediaType=application/json"`
+}
+
+func (c CreateEventGatewayVirtualClusterProducePolicyEncryptRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateEventGatewayVirtualClusterProducePolicyEncryptRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"gatewayId", "virtualClusterId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateEventGatewayVirtualClusterProducePolicyEncryptRequest) GetGatewayID() string {
@@ -71,6 +83,17 @@ type CreateEventGatewayVirtualClusterProducePolicyEncryptResponse struct {
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
 	ForbiddenError *shared.ForbiddenError
+}
+
+func (c CreateEventGatewayVirtualClusterProducePolicyEncryptResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateEventGatewayVirtualClusterProducePolicyEncryptResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateEventGatewayVirtualClusterProducePolicyEncryptResponse) GetContentType() string {

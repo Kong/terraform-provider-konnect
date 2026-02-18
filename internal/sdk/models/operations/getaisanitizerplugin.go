@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type GetAisanitizerPluginRequest struct {
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+}
+
+func (g GetAisanitizerPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetAisanitizerPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"PluginId", "controlPlaneId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetAisanitizerPluginRequest) GetPluginID() string {
@@ -39,6 +51,17 @@ type GetAisanitizerPluginResponse struct {
 	AiSanitizerPlugin *shared.AiSanitizerPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (g GetAisanitizerPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetAisanitizerPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetAisanitizerPluginResponse) GetContentType() string {

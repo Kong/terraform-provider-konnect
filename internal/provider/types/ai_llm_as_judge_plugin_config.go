@@ -16,7 +16,7 @@ type AiLlmAsJudgePluginConfig struct {
 	IgnoreAssistantPrompts types.Bool    `tfsdk:"ignore_assistant_prompts"`
 	IgnoreSystemPrompts    types.Bool    `tfsdk:"ignore_system_prompts"`
 	IgnoreToolPrompts      types.Bool    `tfsdk:"ignore_tool_prompts"`
-	Llm                    Llm           `tfsdk:"llm"`
+	Llm                    *Llm          `tfsdk:"llm"`
 	MessageCountback       types.Float64 `tfsdk:"message_countback"`
 	Prompt                 types.String  `tfsdk:"prompt"`
 	SamplingRate           types.Float64 `tfsdk:"sampling_rate"`

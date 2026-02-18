@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // StringFieldFilter - Filter using **one** of the following operators: `eq`, `oeq`, `neq`, `contains`, `ocontains`
 type StringFieldFilter struct {
 	// The field exactly matches the provided value.
@@ -14,6 +18,17 @@ type StringFieldFilter struct {
 	Oeq *string `queryParam:"name=oeq"`
 	// The field does not match the provided value.
 	Neq *string `queryParam:"name=neq"`
+}
+
+func (s StringFieldFilter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *StringFieldFilter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *StringFieldFilter) GetEq() *string {

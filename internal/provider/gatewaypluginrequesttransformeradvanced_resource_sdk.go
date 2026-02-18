@@ -49,6 +49,8 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) RefreshFromShared
 					for _, v := range resp.Config.Allow.Body {
 						r.Config.Allow.Body = append(r.Config.Allow.Body, types.StringValue(v))
 					}
+				} else {
+					r.Config.Allow.Body = nil
 				}
 			}
 			if resp.Config.Append == nil {
@@ -182,6 +184,8 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) RefreshFromShared
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -204,6 +208,8 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) RefreshFromShared
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

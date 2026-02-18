@@ -20,6 +20,8 @@ func (r *APIPublicationResourceModel) RefreshFromSharedAPIPublicationResponse(ct
 			for _, v := range resp.AuthStrategyIds {
 				r.AuthStrategyIds = append(r.AuthStrategyIds, types.StringValue(v))
 			}
+		} else {
+			r.AuthStrategyIds = nil
 		}
 		r.AutoApproveRegistrations = types.BoolPointerValue(resp.AutoApproveRegistrations)
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))

@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type CreateConsumerGroupRequest struct {
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Description of the new Consumer Group for creation
 	ConsumerGroup shared.ConsumerGroup `request:"mediaType=application/json"`
+}
+
+func (c CreateConsumerGroupRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateConsumerGroupRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "ConsumerGroup"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateConsumerGroupRequest) GetControlPlaneID() string {
@@ -39,6 +51,17 @@ type CreateConsumerGroupResponse struct {
 	ConsumerGroup *shared.ConsumerGroup
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (c CreateConsumerGroupResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateConsumerGroupResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateConsumerGroupResponse) GetContentType() string {

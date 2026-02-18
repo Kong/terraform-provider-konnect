@@ -27,38 +27,59 @@ func (r *PortalAppearanceResourceModel) RefreshFromSharedV2GetPortalAppearanceRe
 			r.CustomTheme = nil
 		} else {
 			r.CustomTheme = &tfTypes.V2NullableAppearanceThemeVariables{}
+			r.CustomTheme.Colors = &tfTypes.V2AppearanceThemeColorVariables{}
+			r.CustomTheme.Colors.Button = &tfTypes.Button{}
+			r.CustomTheme.Colors.Button.PrimaryFill = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Button.PrimaryFill.Description = types.StringPointerValue(resp.CustomTheme.Colors.Button.PrimaryFill.Description)
 			r.CustomTheme.Colors.Button.PrimaryFill.Value = types.StringValue(resp.CustomTheme.Colors.Button.PrimaryFill.Value)
+			r.CustomTheme.Colors.Button.PrimaryText = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Button.PrimaryText.Description = types.StringPointerValue(resp.CustomTheme.Colors.Button.PrimaryText.Description)
 			r.CustomTheme.Colors.Button.PrimaryText.Value = types.StringValue(resp.CustomTheme.Colors.Button.PrimaryText.Value)
+			r.CustomTheme.Colors.Section = &tfTypes.Section{}
+			r.CustomTheme.Colors.Section.Accent = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Section.Accent.Description = types.StringPointerValue(resp.CustomTheme.Colors.Section.Accent.Description)
 			r.CustomTheme.Colors.Section.Accent.Value = types.StringValue(resp.CustomTheme.Colors.Section.Accent.Value)
+			r.CustomTheme.Colors.Section.Body = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Section.Body.Description = types.StringPointerValue(resp.CustomTheme.Colors.Section.Body.Description)
 			r.CustomTheme.Colors.Section.Body.Value = types.StringValue(resp.CustomTheme.Colors.Section.Body.Value)
+			r.CustomTheme.Colors.Section.Footer = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Section.Footer.Description = types.StringPointerValue(resp.CustomTheme.Colors.Section.Footer.Description)
 			r.CustomTheme.Colors.Section.Footer.Value = types.StringValue(resp.CustomTheme.Colors.Section.Footer.Value)
+			r.CustomTheme.Colors.Section.Header = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Section.Header.Description = types.StringPointerValue(resp.CustomTheme.Colors.Section.Header.Description)
 			r.CustomTheme.Colors.Section.Header.Value = types.StringValue(resp.CustomTheme.Colors.Section.Header.Value)
+			r.CustomTheme.Colors.Section.Hero = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Section.Hero.Description = types.StringPointerValue(resp.CustomTheme.Colors.Section.Hero.Description)
 			r.CustomTheme.Colors.Section.Hero.Value = types.StringValue(resp.CustomTheme.Colors.Section.Hero.Value)
+			r.CustomTheme.Colors.Section.Stroke = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Section.Stroke.Description = types.StringPointerValue(resp.CustomTheme.Colors.Section.Stroke.Description)
 			r.CustomTheme.Colors.Section.Stroke.Value = types.StringValue(resp.CustomTheme.Colors.Section.Stroke.Value)
+			r.CustomTheme.Colors.Section.Tertiary = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Section.Tertiary.Description = types.StringPointerValue(resp.CustomTheme.Colors.Section.Tertiary.Description)
 			r.CustomTheme.Colors.Section.Tertiary.Value = types.StringValue(resp.CustomTheme.Colors.Section.Tertiary.Value)
+			r.CustomTheme.Colors.Text = &tfTypes.Text{}
+			r.CustomTheme.Colors.Text.Accent = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Text.Accent.Description = types.StringPointerValue(resp.CustomTheme.Colors.Text.Accent.Description)
 			r.CustomTheme.Colors.Text.Accent.Value = types.StringValue(resp.CustomTheme.Colors.Text.Accent.Value)
+			r.CustomTheme.Colors.Text.Footer = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Text.Footer.Description = types.StringPointerValue(resp.CustomTheme.Colors.Text.Footer.Description)
 			r.CustomTheme.Colors.Text.Footer.Value = types.StringValue(resp.CustomTheme.Colors.Text.Footer.Value)
+			r.CustomTheme.Colors.Text.Header = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Text.Header.Description = types.StringPointerValue(resp.CustomTheme.Colors.Text.Header.Description)
 			r.CustomTheme.Colors.Text.Header.Value = types.StringValue(resp.CustomTheme.Colors.Text.Header.Value)
+			r.CustomTheme.Colors.Text.Headings = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Text.Headings.Description = types.StringPointerValue(resp.CustomTheme.Colors.Text.Headings.Description)
 			r.CustomTheme.Colors.Text.Headings.Value = types.StringValue(resp.CustomTheme.Colors.Text.Headings.Value)
+			r.CustomTheme.Colors.Text.Hero = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Text.Hero.Description = types.StringPointerValue(resp.CustomTheme.Colors.Text.Hero.Description)
 			r.CustomTheme.Colors.Text.Hero.Value = types.StringValue(resp.CustomTheme.Colors.Text.Hero.Value)
+			r.CustomTheme.Colors.Text.Link = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Text.Link.Description = types.StringPointerValue(resp.CustomTheme.Colors.Text.Link.Description)
 			r.CustomTheme.Colors.Text.Link.Value = types.StringValue(resp.CustomTheme.Colors.Text.Link.Value)
+			r.CustomTheme.Colors.Text.Primary = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Text.Primary.Description = types.StringPointerValue(resp.CustomTheme.Colors.Text.Primary.Description)
 			r.CustomTheme.Colors.Text.Primary.Value = types.StringValue(resp.CustomTheme.Colors.Text.Primary.Value)
+			r.CustomTheme.Colors.Text.Secondary = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Text.Secondary.Description = types.StringPointerValue(resp.CustomTheme.Colors.Text.Secondary.Description)
 			r.CustomTheme.Colors.Text.Secondary.Value = types.StringValue(resp.CustomTheme.Colors.Text.Secondary.Value)
 		}
@@ -92,6 +113,7 @@ func (r *PortalAppearanceResourceModel) RefreshFromSharedV2GetPortalAppearanceRe
 			r.Text = nil
 		} else {
 			r.Text = &tfTypes.V2NullableAppearanceTextVariables{}
+			r.Text.Catalog = &tfTypes.Catalog{}
 			r.Text.Catalog.PrimaryHeader = types.StringValue(resp.Text.Catalog.PrimaryHeader)
 			r.Text.Catalog.WelcomeMessage = types.StringValue(resp.Text.Catalog.WelcomeMessage)
 		}
@@ -118,38 +140,59 @@ func (r *PortalAppearanceResourceModel) RefreshFromSharedV2UpdatePortalAppearanc
 			r.CustomTheme = nil
 		} else {
 			r.CustomTheme = &tfTypes.V2NullableAppearanceThemeVariables{}
+			r.CustomTheme.Colors = &tfTypes.V2AppearanceThemeColorVariables{}
+			r.CustomTheme.Colors.Button = &tfTypes.Button{}
+			r.CustomTheme.Colors.Button.PrimaryFill = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Button.PrimaryFill.Description = types.StringPointerValue(resp.CustomTheme.Colors.Button.PrimaryFill.Description)
 			r.CustomTheme.Colors.Button.PrimaryFill.Value = types.StringValue(resp.CustomTheme.Colors.Button.PrimaryFill.Value)
+			r.CustomTheme.Colors.Button.PrimaryText = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Button.PrimaryText.Description = types.StringPointerValue(resp.CustomTheme.Colors.Button.PrimaryText.Description)
 			r.CustomTheme.Colors.Button.PrimaryText.Value = types.StringValue(resp.CustomTheme.Colors.Button.PrimaryText.Value)
+			r.CustomTheme.Colors.Section = &tfTypes.Section{}
+			r.CustomTheme.Colors.Section.Accent = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Section.Accent.Description = types.StringPointerValue(resp.CustomTheme.Colors.Section.Accent.Description)
 			r.CustomTheme.Colors.Section.Accent.Value = types.StringValue(resp.CustomTheme.Colors.Section.Accent.Value)
+			r.CustomTheme.Colors.Section.Body = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Section.Body.Description = types.StringPointerValue(resp.CustomTheme.Colors.Section.Body.Description)
 			r.CustomTheme.Colors.Section.Body.Value = types.StringValue(resp.CustomTheme.Colors.Section.Body.Value)
+			r.CustomTheme.Colors.Section.Footer = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Section.Footer.Description = types.StringPointerValue(resp.CustomTheme.Colors.Section.Footer.Description)
 			r.CustomTheme.Colors.Section.Footer.Value = types.StringValue(resp.CustomTheme.Colors.Section.Footer.Value)
+			r.CustomTheme.Colors.Section.Header = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Section.Header.Description = types.StringPointerValue(resp.CustomTheme.Colors.Section.Header.Description)
 			r.CustomTheme.Colors.Section.Header.Value = types.StringValue(resp.CustomTheme.Colors.Section.Header.Value)
+			r.CustomTheme.Colors.Section.Hero = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Section.Hero.Description = types.StringPointerValue(resp.CustomTheme.Colors.Section.Hero.Description)
 			r.CustomTheme.Colors.Section.Hero.Value = types.StringValue(resp.CustomTheme.Colors.Section.Hero.Value)
+			r.CustomTheme.Colors.Section.Stroke = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Section.Stroke.Description = types.StringPointerValue(resp.CustomTheme.Colors.Section.Stroke.Description)
 			r.CustomTheme.Colors.Section.Stroke.Value = types.StringValue(resp.CustomTheme.Colors.Section.Stroke.Value)
+			r.CustomTheme.Colors.Section.Tertiary = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Section.Tertiary.Description = types.StringPointerValue(resp.CustomTheme.Colors.Section.Tertiary.Description)
 			r.CustomTheme.Colors.Section.Tertiary.Value = types.StringValue(resp.CustomTheme.Colors.Section.Tertiary.Value)
+			r.CustomTheme.Colors.Text = &tfTypes.Text{}
+			r.CustomTheme.Colors.Text.Accent = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Text.Accent.Description = types.StringPointerValue(resp.CustomTheme.Colors.Text.Accent.Description)
 			r.CustomTheme.Colors.Text.Accent.Value = types.StringValue(resp.CustomTheme.Colors.Text.Accent.Value)
+			r.CustomTheme.Colors.Text.Footer = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Text.Footer.Description = types.StringPointerValue(resp.CustomTheme.Colors.Text.Footer.Description)
 			r.CustomTheme.Colors.Text.Footer.Value = types.StringValue(resp.CustomTheme.Colors.Text.Footer.Value)
+			r.CustomTheme.Colors.Text.Header = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Text.Header.Description = types.StringPointerValue(resp.CustomTheme.Colors.Text.Header.Description)
 			r.CustomTheme.Colors.Text.Header.Value = types.StringValue(resp.CustomTheme.Colors.Text.Header.Value)
+			r.CustomTheme.Colors.Text.Headings = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Text.Headings.Description = types.StringPointerValue(resp.CustomTheme.Colors.Text.Headings.Description)
 			r.CustomTheme.Colors.Text.Headings.Value = types.StringValue(resp.CustomTheme.Colors.Text.Headings.Value)
+			r.CustomTheme.Colors.Text.Hero = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Text.Hero.Description = types.StringPointerValue(resp.CustomTheme.Colors.Text.Hero.Description)
 			r.CustomTheme.Colors.Text.Hero.Value = types.StringValue(resp.CustomTheme.Colors.Text.Hero.Value)
+			r.CustomTheme.Colors.Text.Link = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Text.Link.Description = types.StringPointerValue(resp.CustomTheme.Colors.Text.Link.Description)
 			r.CustomTheme.Colors.Text.Link.Value = types.StringValue(resp.CustomTheme.Colors.Text.Link.Value)
+			r.CustomTheme.Colors.Text.Primary = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Text.Primary.Description = types.StringPointerValue(resp.CustomTheme.Colors.Text.Primary.Description)
 			r.CustomTheme.Colors.Text.Primary.Value = types.StringValue(resp.CustomTheme.Colors.Text.Primary.Value)
+			r.CustomTheme.Colors.Text.Secondary = &tfTypes.V2AppearanceColorVariable{}
 			r.CustomTheme.Colors.Text.Secondary.Description = types.StringPointerValue(resp.CustomTheme.Colors.Text.Secondary.Description)
 			r.CustomTheme.Colors.Text.Secondary.Value = types.StringValue(resp.CustomTheme.Colors.Text.Secondary.Value)
 		}
@@ -183,6 +226,7 @@ func (r *PortalAppearanceResourceModel) RefreshFromSharedV2UpdatePortalAppearanc
 			r.Text = nil
 		} else {
 			r.Text = &tfTypes.V2NullableAppearanceTextVariables{}
+			r.Text.Catalog = &tfTypes.Catalog{}
 			r.Text.Catalog.PrimaryHeader = types.StringValue(resp.Text.Catalog.PrimaryHeader)
 			r.Text.Catalog.WelcomeMessage = types.StringValue(resp.Text.Catalog.WelcomeMessage)
 		}
@@ -212,22 +256,22 @@ func (r *PortalAppearanceResourceModel) ToOperationsUpdatePortalAppearanceReques
 	var portalID string
 	portalID = r.PortalID.ValueString()
 
-	v2PortalAppearance, v2PortalAppearanceDiags := r.ToSharedV2PortalAppearance(ctx)
-	diags.Append(v2PortalAppearanceDiags...)
+	v2UpdatePortalAppearanceRequest, v2UpdatePortalAppearanceRequestDiags := r.ToSharedV2UpdatePortalAppearanceRequest(ctx)
+	diags.Append(v2UpdatePortalAppearanceRequestDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := operations.UpdatePortalAppearanceRequest{
-		PortalID:           portalID,
-		V2PortalAppearance: *v2PortalAppearance,
+		PortalID:                        portalID,
+		V2UpdatePortalAppearanceRequest: *v2UpdatePortalAppearanceRequest,
 	}
 
 	return &out, diags
 }
 
-func (r *PortalAppearanceResourceModel) ToSharedV2PortalAppearance(ctx context.Context) (*shared.V2PortalAppearance, diag.Diagnostics) {
+func (r *PortalAppearanceResourceModel) ToSharedV2UpdatePortalAppearanceRequest(ctx context.Context) (*shared.V2UpdatePortalAppearanceRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	themeName := new(shared.V2PortalTheme)
@@ -580,7 +624,7 @@ func (r *PortalAppearanceResourceModel) ToSharedV2PortalAppearance(ctx context.C
 			CatalogCover: catalogCover,
 		}
 	}
-	out := shared.V2PortalAppearance{
+	out := shared.V2UpdatePortalAppearanceRequest{
 		ThemeName:      themeName,
 		CustomTheme:    customTheme,
 		CustomFonts:    customFonts,

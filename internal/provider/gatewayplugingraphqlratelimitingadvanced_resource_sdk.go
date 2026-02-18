@@ -15,6 +15,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) RefreshFromShare
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.GraphqlRateLimitingAdvancedPluginConfig{}
 		if resp.Config.CostStrategy != nil {
 			r.Config.CostStrategy = types.StringValue(string(*resp.Config.CostStrategy))
 		} else {
@@ -71,6 +72,8 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) RefreshFromShare
 
 					r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes)
 				}
+			} else {
+				r.Config.Redis.ClusterNodes = nil
 			}
 			r.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Redis.ConnectTimeout)
 			r.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Redis.ConnectionIsProxied)
@@ -94,6 +97,8 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) RefreshFromShare
 
 					r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes)
 				}
+			} else {
+				r.Config.Redis.SentinelNodes = nil
 			}
 			r.Config.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Redis.SentinelPassword)
 			if resp.Config.Redis.SentinelRole != nil {
@@ -168,6 +173,8 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) RefreshFromShare
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -190,6 +197,8 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) RefreshFromShare
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

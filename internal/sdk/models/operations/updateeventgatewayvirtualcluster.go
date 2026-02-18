@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -14,6 +15,17 @@ type UpdateEventGatewayVirtualClusterRequest struct {
 	VirtualClusterID string `pathParam:"style=simple,explode=false,name=virtualClusterId"`
 	// The request schema for updating a virtual cluster.
 	UpdateVirtualClusterRequest *shared.UpdateVirtualClusterRequest `request:"mediaType=application/json"`
+}
+
+func (u UpdateEventGatewayVirtualClusterRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateEventGatewayVirtualClusterRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"gatewayId", "virtualClusterId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateEventGatewayVirtualClusterRequest) GetGatewayID() string {
@@ -52,6 +64,17 @@ type UpdateEventGatewayVirtualClusterResponse struct {
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
 	ForbiddenError *shared.ForbiddenError
+}
+
+func (u UpdateEventGatewayVirtualClusterResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateEventGatewayVirtualClusterResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateEventGatewayVirtualClusterResponse) GetContentType() string {

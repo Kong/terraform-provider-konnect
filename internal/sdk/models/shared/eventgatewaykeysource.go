@@ -20,8 +20,8 @@ const (
 // It can be an AWS KMS key source that uses a KMS to find a symmetric key,
 // or a static key source that uses a static symmetric key provided as secrets.
 type EventGatewayKeySource struct {
-	EventGatewayAWSKeySource    *EventGatewayAWSKeySource    `queryParam:"inline,name=EventGatewayKeySource"`
-	EventGatewayStaticKeySource *EventGatewayStaticKeySource `queryParam:"inline,name=EventGatewayKeySource"`
+	EventGatewayAWSKeySource    *EventGatewayAWSKeySource    `queryParam:"inline" union:"member"`
+	EventGatewayStaticKeySource *EventGatewayStaticKeySource `queryParam:"inline" union:"member"`
 
 	Type EventGatewayKeySourceType
 }
