@@ -231,6 +231,17 @@ type ListPortalsResponse struct {
 	Meta PaginatedMeta `json:"meta"`
 }
 
+func (l ListPortalsResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *ListPortalsResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"data", "meta"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (l *ListPortalsResponse) GetData() []Portal {
 	if l == nil {
 		return []Portal{}

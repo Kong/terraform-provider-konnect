@@ -38,6 +38,17 @@ func (e *Status) UnmarshalJSON(data []byte) error {
 type APIProductDocumentMetadata struct {
 }
 
+func (a APIProductDocumentMetadata) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *APIProductDocumentMetadata) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 // APIProductDocument - an api product document
 type APIProductDocument struct {
 	ID               string                     `json:"id"`

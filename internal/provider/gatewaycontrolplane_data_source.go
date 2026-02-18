@@ -29,7 +29,7 @@ type GatewayControlPlaneDataSource struct {
 
 // GatewayControlPlaneDataSourceModel describes the data model.
 type GatewayControlPlaneDataSourceModel struct {
-	Config       tfTypes.ControlPlaneConfig            `tfsdk:"config"`
+	Config       *tfTypes.ControlPlaneConfig           `tfsdk:"config"`
 	Description  types.String                          `tfsdk:"description"`
 	Filter       *tfTypes.ControlPlaneFilterParameters `queryParam:"style=deepObject,explode=true,name=filter" tfsdk:"filter"`
 	FilterLabels types.String                          `queryParam:"style=form,explode=true,name=labels" tfsdk:"filter_labels"`

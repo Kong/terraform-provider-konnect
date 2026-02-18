@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateOpentelemetryPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID      string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	OpentelemetryPlugin shared.OpentelemetryPlugin `request:"mediaType=application/json"`
+}
+
+func (c CreateOpentelemetryPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateOpentelemetryPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "OpentelemetryPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateOpentelemetryPluginRequest) GetControlPlaneID() string {
@@ -38,6 +50,17 @@ type CreateOpentelemetryPluginResponse struct {
 	OpentelemetryPlugin *shared.OpentelemetryPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (c CreateOpentelemetryPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateOpentelemetryPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateOpentelemetryPluginResponse) GetContentType() string {

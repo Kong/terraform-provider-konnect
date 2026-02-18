@@ -3,5 +3,5 @@
 package types
 
 type AppAuthStrategyOpenIDConnectRequestConfigs struct {
-	OpenidConnect AppAuthStrategyConfigOpenIDConnect `tfsdk:"openid_connect"`
+	OpenidConnect *AppAuthStrategyConfigOpenIDConnect `tfsdk:"openid_connect"`
 }

@@ -3,6 +3,6 @@
 package types
 
 type EventGatewayModifyHeaderAction struct {
-	Remove *EventGatewayModifyHeaderRemoveAction `queryParam:"inline" tfsdk:"remove" tfPlanOnly:"true"`
-	Set    *EventGatewayModifyHeaderSetAction    `queryParam:"inline" tfsdk:"set" tfPlanOnly:"true"`
+	Remove *EventGatewayModifyHeaderRemoveAction `queryParam:"inline" tfsdk:"remove"`
+	Set    *EventGatewayModifyHeaderSetAction    `queryParam:"inline" tfsdk:"set"`
 }

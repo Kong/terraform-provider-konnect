@@ -17,6 +17,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.AiMcpProxyPluginConfig{}
 		if resp.Config.ConsumerIdentifier != nil {
 			r.Config.ConsumerIdentifier = types.StringValue(string(*resp.Config.ConsumerIdentifier))
 		} else {
@@ -33,17 +34,23 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 					for _, v := range defaultACLItem.Allow {
 						defaultACL.Allow = append(defaultACL.Allow, types.StringValue(v))
 					}
+				} else {
+					defaultACL.Allow = nil
 				}
 				if defaultACLItem.Deny != nil {
 					defaultACL.Deny = make([]types.String, 0, len(defaultACLItem.Deny))
 					for _, v := range defaultACLItem.Deny {
 						defaultACL.Deny = append(defaultACL.Deny, types.StringValue(v))
 					}
+				} else {
+					defaultACL.Deny = nil
 				}
 				defaultACL.Scope = types.StringPointerValue(defaultACLItem.Scope)
 
 				r.Config.DefaultACL = append(r.Config.DefaultACL, defaultACL)
 			}
+		} else {
+			r.Config.DefaultACL = nil
 		}
 		r.Config.IncludeConsumerGroups = types.BoolPointerValue(resp.Config.IncludeConsumerGroups)
 		if resp.Config.Logging == nil {
@@ -79,12 +86,16 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 						for _, v := range toolsItem.ACL.Allow {
 							tools.ACL.Allow = append(tools.ACL.Allow, types.StringValue(v))
 						}
+					} else {
+						tools.ACL.Allow = nil
 					}
 					if toolsItem.ACL.Deny != nil {
 						tools.ACL.Deny = make([]types.String, 0, len(toolsItem.ACL.Deny))
 						for _, v := range toolsItem.ACL.Deny {
 							tools.ACL.Deny = append(tools.ACL.Deny, types.StringValue(v))
 						}
+					} else {
+						tools.ACL.Deny = nil
 					}
 				}
 				if toolsItem.Annotations == nil {
@@ -142,6 +153,8 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 
 						tools.Parameters = append(tools.Parameters, parameters)
 					}
+				} else {
+					tools.Parameters = nil
 				}
 				tools.Path = types.StringPointerValue(toolsItem.Path)
 				if toolsItem.Query != nil {
@@ -178,6 +191,8 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 
 				r.Config.Tools = append(r.Config.Tools, tools)
 			}
+		} else {
+			r.Config.Tools = nil
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -218,6 +233,8 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -240,6 +257,8 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
@@ -662,7 +681,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 					} else {
 						description1 = nil
 					}
-					var additionalProperties interface{}
+					var additionalProperties map[string]any
 					if !r.Config.Tools[toolsIndex].Parameters[parametersIndex].AdditionalProperties.IsUnknown() && !r.Config.Tools[toolsIndex].Parameters[parametersIndex].AdditionalProperties.IsNull() {
 						_ = json.Unmarshal([]byte(r.Config.Tools[toolsIndex].Parameters[parametersIndex].AdditionalProperties.ValueString()), &additionalProperties)
 					}

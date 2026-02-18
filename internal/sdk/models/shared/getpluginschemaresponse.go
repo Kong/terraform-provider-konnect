@@ -2,9 +2,24 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // GetPluginSchemaResponse - The schema for the plugin
 type GetPluginSchemaResponse struct {
 	Fields []map[string]any `json:"fields"`
+}
+
+func (g GetPluginSchemaResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetPluginSchemaResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GetPluginSchemaResponse) GetFields() []map[string]any {

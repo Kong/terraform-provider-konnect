@@ -16,13 +16,13 @@ terraform {
   required_providers {
     konnect = {
       source  = "kong/konnect"
-      version = "3.7.0"
+      version = "3.8.0"
     }
   }
 }
 
 provider "konnect" {
-  # Configuration options
+  server_url = "..." # Optional - can use KONNECT_SERVER_URL environment variable
 }
 ```
 

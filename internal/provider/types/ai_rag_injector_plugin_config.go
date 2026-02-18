@@ -9,7 +9,7 @@ import (
 type AiRagInjectorPluginConfig struct {
 	CollectionACLConfig map[string]CollectionACLConfig `tfsdk:"collection_acl_config"`
 	ConsumerIdentifier  types.String                   `tfsdk:"consumer_identifier"`
-	Embeddings          Embeddings                     `tfsdk:"embeddings"`
+	Embeddings          *Embeddings                    `tfsdk:"embeddings"`
 	FetchChunksCount    types.Float64                  `tfsdk:"fetch_chunks_count"`
 	FilterMode          types.String                   `tfsdk:"filter_mode"`
 	GlobalACLConfig     *CollectionACLConfig           `tfsdk:"global_acl_config"`
@@ -18,6 +18,6 @@ type AiRagInjectorPluginConfig struct {
 	MaxFilterClauses    types.Int64                    `tfsdk:"max_filter_clauses"`
 	StopOnFailure       types.Bool                     `tfsdk:"stop_on_failure"`
 	StopOnFilterError   types.Bool                     `tfsdk:"stop_on_filter_error"`
-	Vectordb            Vectordb                       `tfsdk:"vectordb"`
+	Vectordb            *Vectordb                      `tfsdk:"vectordb"`
 	VectordbNamespace   types.String                   `tfsdk:"vectordb_namespace"`
 }

@@ -2,9 +2,24 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // KonnectCPLegacyUnauthorizedError - standard error
 type KonnectCPLegacyUnauthorizedError struct {
 	Message any `json:"message,omitempty"`
+}
+
+func (k KonnectCPLegacyUnauthorizedError) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KonnectCPLegacyUnauthorizedError) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (k *KonnectCPLegacyUnauthorizedError) GetMessage() any {

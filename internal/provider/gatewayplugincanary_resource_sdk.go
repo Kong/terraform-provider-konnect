@@ -26,6 +26,8 @@ func (r *GatewayPluginCanaryResourceModel) RefreshFromSharedCanaryPlugin(ctx con
 				for _, v := range resp.Config.Groups {
 					r.Config.Groups = append(r.Config.Groups, types.StringValue(v))
 				}
+			} else {
+				r.Config.Groups = nil
 			}
 			if resp.Config.Hash != nil {
 				r.Config.Hash = types.StringValue(string(*resp.Config.Hash))
@@ -80,6 +82,8 @@ func (r *GatewayPluginCanaryResourceModel) RefreshFromSharedCanaryPlugin(ctx con
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -102,6 +106,8 @@ func (r *GatewayPluginCanaryResourceModel) RefreshFromSharedCanaryPlugin(ctx con
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

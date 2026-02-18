@@ -23,6 +23,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/int64planmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
+	speakeasy_planmodifierutils "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/utils"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
@@ -48,8 +51,8 @@ type GatewayPartialResourceModel struct {
 	CreatedAt      types.Int64             `tfsdk:"created_at"`
 	ID             types.String            `tfsdk:"id"`
 	Name           types.String            `tfsdk:"name"`
-	RedisCe        *tfTypes.PartialRedisCe `queryParam:"inline" tfsdk:"redis_ce" tfPlanOnly:"true"`
-	RedisEe        *tfTypes.PartialRedisEe `queryParam:"inline" tfsdk:"redis_ee" tfPlanOnly:"true"`
+	RedisCe        *tfTypes.PartialRedisCe `queryParam:"inline" tfsdk:"redis_ce"`
+	RedisEe        *tfTypes.PartialRedisEe `queryParam:"inline" tfsdk:"redis_ee"`
 	UpdatedAt      types.Int64             `tfsdk:"updated_at"`
 }
 
@@ -69,15 +72,24 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.Int64{
+					speakeasy_int64planmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("redis_ce"), FieldPath: path.Root("redis_ce").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("redis_ee"), FieldPath: path.Root("redis_ee").AtName("created_at")}}),
+				},
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("redis_ce"), FieldPath: path.Root("redis_ce").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("redis_ee"), FieldPath: path.Root("redis_ee").AtName("id")}}),
+				},
 				Description: `A string representing a UUID (universally unique identifier).`,
 			},
 			"name": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("redis_ce"), FieldPath: path.Root("redis_ce").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("redis_ee"), FieldPath: path.Root("redis_ee").AtName("name")}}),
+				},
 				Description: `A unique string representing a UTF-8 encoded name.`,
 			},
 			"redis_ce": schema.SingleNestedAttribute{
@@ -564,7 +576,10 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 				},
 			},
 			"updated_at": schema.Int64Attribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.Int64{
+					speakeasy_int64planmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("redis_ce"), FieldPath: path.Root("redis_ce").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("redis_ee"), FieldPath: path.Root("redis_ee").AtName("updated_at")}}),
+				},
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -825,12 +840,12 @@ func (r *GatewayPartialResource) ImportState(ctx context.Context, req resource.I
 	}
 
 	if len(data.ControlPlaneID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"`)
+		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
 	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '""'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)

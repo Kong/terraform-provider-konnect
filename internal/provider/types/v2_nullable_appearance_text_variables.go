@@ -3,5 +3,5 @@
 package types
 
 type V2NullableAppearanceTextVariables struct {
-	Catalog Catalog `tfsdk:"catalog"`
+	Catalog *Catalog `tfsdk:"catalog"`
 }

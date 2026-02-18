@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -14,6 +15,17 @@ type UpdateEventGatewaySchemaRegistryRequest struct {
 	SchemaRegistryID string `pathParam:"style=simple,explode=false,name=schemaRegistryId"`
 	// The request schema for updating a schema registry.
 	SchemaRegistryUpdate *shared.SchemaRegistryUpdate `request:"mediaType=application/json"`
+}
+
+func (u UpdateEventGatewaySchemaRegistryRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateEventGatewaySchemaRegistryRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"gatewayId", "schemaRegistryId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateEventGatewaySchemaRegistryRequest) GetGatewayID() string {
@@ -59,6 +71,17 @@ type UpdateEventGatewaySchemaRegistryResponse struct {
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
 	ForbiddenError *shared.ForbiddenError
+}
+
+func (u UpdateEventGatewaySchemaRegistryResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateEventGatewaySchemaRegistryResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateEventGatewaySchemaRegistryResponse) GetContentType() string {

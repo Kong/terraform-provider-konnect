@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateRequestsizelimitingPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID            string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	RequestSizeLimitingPlugin shared.RequestSizeLimitingPlugin `request:"mediaType=application/json"`
+}
+
+func (c CreateRequestsizelimitingPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateRequestsizelimitingPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "RequestSizeLimitingPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateRequestsizelimitingPluginRequest) GetControlPlaneID() string {
@@ -38,6 +50,17 @@ type CreateRequestsizelimitingPluginResponse struct {
 	RequestSizeLimitingPlugin *shared.RequestSizeLimitingPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (c CreateRequestsizelimitingPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateRequestsizelimitingPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateRequestsizelimitingPluginResponse) GetContentType() string {

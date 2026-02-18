@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type Section struct {
 	Header   V2AppearanceColorVariable `json:"header"`
 	Body     V2AppearanceColorVariable `json:"body"`
@@ -10,6 +14,17 @@ type Section struct {
 	Tertiary V2AppearanceColorVariable `json:"tertiary"`
 	Stroke   V2AppearanceColorVariable `json:"stroke"`
 	Footer   V2AppearanceColorVariable `json:"footer"`
+}
+
+func (s Section) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *Section) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"header", "body", "hero", "accent", "tertiary", "stroke", "footer"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *Section) GetHeader() V2AppearanceColorVariable {
@@ -70,6 +85,17 @@ type Text struct {
 	Accent    V2AppearanceColorVariable `json:"accent"`
 	Link      V2AppearanceColorVariable `json:"link"`
 	Footer    V2AppearanceColorVariable `json:"footer"`
+}
+
+func (t Text) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *Text) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"header", "hero", "headings", "primary", "secondary", "accent", "link", "footer"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (t *Text) GetHeader() V2AppearanceColorVariable {
@@ -133,6 +159,17 @@ type Button struct {
 	PrimaryText V2AppearanceColorVariable `json:"primary_text"`
 }
 
+func (b Button) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *Button) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"primary_fill", "primary_text"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (b *Button) GetPrimaryFill() V2AppearanceColorVariable {
 	if b == nil {
 		return V2AppearanceColorVariable{}
@@ -151,6 +188,17 @@ type V2AppearanceThemeColorVariables struct {
 	Section Section `json:"section"`
 	Text    Text    `json:"text"`
 	Button  Button  `json:"button"`
+}
+
+func (v V2AppearanceThemeColorVariables) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *V2AppearanceThemeColorVariables) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"section", "text", "button"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (v *V2AppearanceThemeColorVariables) GetSection() Section {

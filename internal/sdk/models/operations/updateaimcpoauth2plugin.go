@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -13,6 +14,17 @@ type UpdateAimcpoauth2PluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID    string                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	AiMcpOauth2Plugin shared.AiMcpOauth2Plugin `request:"mediaType=application/json"`
+}
+
+func (u UpdateAimcpoauth2PluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateAimcpoauth2PluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "AiMcpOauth2Plugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateAimcpoauth2PluginRequest) GetPluginID() string {
@@ -47,6 +59,17 @@ type UpdateAimcpoauth2PluginResponse struct {
 	AiMcpOauth2Plugin *shared.AiMcpOauth2Plugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (u UpdateAimcpoauth2PluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateAimcpoauth2PluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateAimcpoauth2PluginResponse) GetContentType() string {

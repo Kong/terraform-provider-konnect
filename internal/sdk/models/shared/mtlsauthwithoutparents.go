@@ -2,8 +2,23 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type MTLSAuthWithoutParentsCaCertificate struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (m MTLSAuthWithoutParentsCaCertificate) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MTLSAuthWithoutParentsCaCertificate) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (m *MTLSAuthWithoutParentsCaCertificate) GetID() *string {
@@ -15,6 +30,17 @@ func (m *MTLSAuthWithoutParentsCaCertificate) GetID() *string {
 
 type MTLSAuthWithoutParentsConsumer struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (m MTLSAuthWithoutParentsConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MTLSAuthWithoutParentsConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (m *MTLSAuthWithoutParentsConsumer) GetID() *string {
@@ -34,6 +60,17 @@ type MTLSAuthWithoutParents struct {
 	SubjectName string  `json:"subject_name"`
 	// A set of strings representing tags.
 	Tags []string `json:"tags"`
+}
+
+func (m MTLSAuthWithoutParents) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MTLSAuthWithoutParents) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"subject_name"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (m *MTLSAuthWithoutParents) GetCaCertificate() *MTLSAuthWithoutParentsCaCertificate {

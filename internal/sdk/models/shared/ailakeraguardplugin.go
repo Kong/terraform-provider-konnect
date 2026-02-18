@@ -12,6 +12,17 @@ type AiLakeraGuardPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (a AiLakeraGuardPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiLakeraGuardPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiLakeraGuardPluginAfter) GetAccess() []string {
 	if a == nil {
 		return nil
@@ -21,6 +32,17 @@ func (a *AiLakeraGuardPluginAfter) GetAccess() []string {
 
 type AiLakeraGuardPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (a AiLakeraGuardPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiLakeraGuardPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiLakeraGuardPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (a *AiLakeraGuardPluginBefore) GetAccess() []string {
 type AiLakeraGuardPluginOrdering struct {
 	After  *AiLakeraGuardPluginAfter  `json:"after,omitempty"`
 	Before *AiLakeraGuardPluginBefore `json:"before,omitempty"`
+}
+
+func (a AiLakeraGuardPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiLakeraGuardPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiLakeraGuardPluginOrdering) GetAfter() *AiLakeraGuardPluginAfter {
@@ -55,6 +88,17 @@ type AiLakeraGuardPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (a AiLakeraGuardPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiLakeraGuardPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiLakeraGuardPluginPartials) GetID() *string {
@@ -265,6 +309,17 @@ type AiLakeraGuardPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiLakeraGuardPluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiLakeraGuardPluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiLakeraGuardPluginConsumer) GetID() *string {
 	if a == nil {
 		return nil
@@ -275,6 +330,17 @@ func (a *AiLakeraGuardPluginConsumer) GetID() *string {
 // AiLakeraGuardPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type AiLakeraGuardPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiLakeraGuardPluginConsumerGroup) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiLakeraGuardPluginConsumerGroup) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiLakeraGuardPluginConsumerGroup) GetID() *string {
@@ -321,6 +387,17 @@ type AiLakeraGuardPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (a AiLakeraGuardPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiLakeraGuardPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AiLakeraGuardPluginRoute) GetID() *string {
 	if a == nil {
 		return nil
@@ -331,6 +408,17 @@ func (a *AiLakeraGuardPluginRoute) GetID() *string {
 // AiLakeraGuardPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type AiLakeraGuardPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (a AiLakeraGuardPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiLakeraGuardPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AiLakeraGuardPluginService) GetID() *string {

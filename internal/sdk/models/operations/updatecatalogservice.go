@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type UpdateCatalogServiceRequest struct {
 	// The `id` of the service.
 	ID                   string                      `pathParam:"style=simple,explode=false,name=id"`
 	UpdateCatalogService shared.UpdateCatalogService `request:"mediaType=application/json"`
+}
+
+func (u UpdateCatalogServiceRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateCatalogServiceRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"id", "UpdateCatalogService"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateCatalogServiceRequest) GetID() string {
@@ -46,6 +58,17 @@ type UpdateCatalogServiceResponse struct {
 	NotFoundError *shared.NotFoundError
 	// Conflict
 	ConflictError *shared.ConflictError
+}
+
+func (u UpdateCatalogServiceResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateCatalogServiceResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateCatalogServiceResponse) GetContentType() string {

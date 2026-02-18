@@ -15,6 +15,7 @@ func (r *GatewayPluginAzureFunctionsResourceModel) RefreshFromSharedAzureFunctio
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.AzureFunctionsPluginConfig{}
 		r.Config.Apikey = types.StringPointerValue(resp.Config.Apikey)
 		r.Config.Appname = types.StringValue(resp.Config.Appname)
 		r.Config.Clientid = types.StringPointerValue(resp.Config.Clientid)
@@ -70,6 +71,8 @@ func (r *GatewayPluginAzureFunctionsResourceModel) RefreshFromSharedAzureFunctio
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -92,6 +95,8 @@ func (r *GatewayPluginAzureFunctionsResourceModel) RefreshFromSharedAzureFunctio
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

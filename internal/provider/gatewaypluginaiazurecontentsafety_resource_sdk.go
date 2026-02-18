@@ -15,6 +15,7 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) RefreshFromSharedAiAzur
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.AiAzureContentSafetyPluginConfig{}
 		r.Config.AzureAPIVersion = types.StringPointerValue(resp.Config.AzureAPIVersion)
 		r.Config.AzureClientID = types.StringPointerValue(resp.Config.AzureClientID)
 		r.Config.AzureClientSecret = types.StringPointerValue(resp.Config.AzureClientSecret)
@@ -25,6 +26,8 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) RefreshFromSharedAiAzur
 			for _, v := range resp.Config.BlocklistNames {
 				r.Config.BlocklistNames = append(r.Config.BlocklistNames, types.StringValue(v))
 			}
+		} else {
+			r.Config.BlocklistNames = nil
 		}
 		if resp.Config.Categories != nil {
 			r.Config.Categories = []tfTypes.Categories{}
@@ -37,6 +40,8 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) RefreshFromSharedAiAzur
 
 				r.Config.Categories = append(r.Config.Categories, categories)
 			}
+		} else {
+			r.Config.Categories = nil
 		}
 		r.Config.ContentSafetyKey = types.StringPointerValue(resp.Config.ContentSafetyKey)
 		r.Config.ContentSafetyURL = types.StringValue(resp.Config.ContentSafetyURL)
@@ -99,6 +104,8 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) RefreshFromSharedAiAzur
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -121,6 +128,8 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) RefreshFromSharedAiAzur
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

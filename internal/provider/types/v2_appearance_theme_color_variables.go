@@ -3,7 +3,7 @@
 package types
 
 type V2AppearanceThemeColorVariables struct {
-	Button  Button  `tfsdk:"button"`
-	Section Section `tfsdk:"section"`
-	Text    Text    `tfsdk:"text"`
+	Button  *Button  `tfsdk:"button"`
+	Section *Section `tfsdk:"section"`
+	Text    *Text    `tfsdk:"text"`
 }

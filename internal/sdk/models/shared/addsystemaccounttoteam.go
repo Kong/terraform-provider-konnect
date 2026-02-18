@@ -2,10 +2,25 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // AddSystemAccountToTeam - The request schema for adding a system account to a team.
 type AddSystemAccountToTeam struct {
 	// ID of the system account.
 	AccountID *string `json:"id,omitempty"`
+}
+
+func (a AddSystemAccountToTeam) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AddSystemAccountToTeam) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AddSystemAccountToTeam) GetAccountID() *string {

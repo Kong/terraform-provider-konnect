@@ -15,7 +15,7 @@ const (
 )
 
 type CreateIntegrationInstanceAuthCredential struct {
-	MultiKeyAuth *MultiKeyAuth `queryParam:"inline,name=CreateIntegrationInstanceAuthCredential"`
+	MultiKeyAuth *MultiKeyAuth `queryParam:"inline" union:"member"`
 
 	Type CreateIntegrationInstanceAuthCredentialType
 }
@@ -47,7 +47,7 @@ func (u *CreateIntegrationInstanceAuthCredential) UnmarshalJSON(data []byte) err
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for CreateIntegrationInstanceAuthCredential", string(data))
 	}

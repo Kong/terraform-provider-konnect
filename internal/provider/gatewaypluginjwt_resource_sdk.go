@@ -25,6 +25,8 @@ func (r *GatewayPluginJwtResourceModel) RefreshFromSharedJwtPlugin(ctx context.C
 				for _, v := range resp.Config.ClaimsToVerify {
 					r.Config.ClaimsToVerify = append(r.Config.ClaimsToVerify, types.StringValue(string(v)))
 				}
+			} else {
+				r.Config.ClaimsToVerify = nil
 			}
 			r.Config.CookieNames = make([]types.String, 0, len(resp.Config.CookieNames))
 			for _, v := range resp.Config.CookieNames {
@@ -83,6 +85,8 @@ func (r *GatewayPluginJwtResourceModel) RefreshFromSharedJwtPlugin(ctx context.C
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -105,6 +109,8 @@ func (r *GatewayPluginJwtResourceModel) RefreshFromSharedJwtPlugin(ctx context.C
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

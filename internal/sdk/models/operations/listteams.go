@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -15,6 +16,17 @@ var ListTeamsServerList = []string{
 type QueryParamFilter struct {
 	// Filter using **one** of the following operators: `eq`, `contains`
 	Name *shared.LegacyStringFieldFilter `queryParam:"name=name"`
+}
+
+func (q QueryParamFilter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(q, "", false)
+}
+
+func (q *QueryParamFilter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &q, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (q *QueryParamFilter) GetName() *shared.LegacyStringFieldFilter {
@@ -31,6 +43,17 @@ type ListTeamsRequest struct {
 	PageNumber *int64 `queryParam:"style=form,explode=true,name=page[number]"`
 	// Filter teams returned in the response.
 	Filter *QueryParamFilter `queryParam:"style=deepObject,explode=true,name=filter"`
+}
+
+func (l ListTeamsRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *ListTeamsRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (l *ListTeamsRequest) GetPageSize() *int64 {
@@ -69,6 +92,17 @@ type ListTeamsResponse struct {
 	NotFoundError *shared.NotFoundError
 
 	Next func() (*ListTeamsResponse, error)
+}
+
+func (l ListTeamsResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(l, "", false)
+}
+
+func (l *ListTeamsResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (l *ListTeamsResponse) GetContentType() string {

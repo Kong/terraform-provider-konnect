@@ -10,13 +10,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -44,17 +42,17 @@ type EventGatewayListenerPolicyForwardToVirtualClusterResource struct {
 
 // EventGatewayListenerPolicyForwardToVirtualClusterResourceModel describes the resource data model.
 type EventGatewayListenerPolicyForwardToVirtualClusterResourceModel struct {
-	Config         tfTypes.ForwardToVirtualClusterPolicyConfig `tfsdk:"config"`
-	CreatedAt      types.String                                `tfsdk:"created_at"`
-	Description    types.String                                `tfsdk:"description"`
-	Enabled        types.Bool                                  `tfsdk:"enabled"`
-	GatewayID      types.String                                `tfsdk:"gateway_id"`
-	ID             types.String                                `tfsdk:"id"`
-	Labels         map[string]types.String                     `tfsdk:"labels"`
-	ListenerID     types.String                                `tfsdk:"listener_id"`
-	Name           types.String                                `tfsdk:"name"`
-	ParentPolicyID types.String                                `tfsdk:"parent_policy_id"`
-	UpdatedAt      types.String                                `tfsdk:"updated_at"`
+	Config         *tfTypes.ForwardToVirtualClusterPolicyConfig `tfsdk:"config"`
+	CreatedAt      types.String                                 `tfsdk:"created_at"`
+	Description    types.String                                 `tfsdk:"description"`
+	Enabled        types.Bool                                   `tfsdk:"enabled"`
+	GatewayID      types.String                                 `tfsdk:"gateway_id"`
+	ID             types.String                                 `tfsdk:"id"`
+	Labels         map[string]types.String                      `tfsdk:"labels"`
+	ListenerID     types.String                                 `tfsdk:"listener_id"`
+	Name           types.String                                 `tfsdk:"name"`
+	ParentPolicyID types.String                                 `tfsdk:"parent_policy_id"`
+	UpdatedAt      types.String                                 `tfsdk:"updated_at"`
 }
 
 func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -151,11 +149,7 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Schema(ctx c
 								},
 							},
 							"broker_host_format": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"type": types.StringType,
-								})),
 								Attributes: map[string]schema.Attribute{
 									"type": schema.StringAttribute{
 										Computed:    true,
@@ -335,43 +329,6 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Create(ctx c
 		return
 	}
 	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayListenerPolicy(ctx, res.EventGatewayListenerPolicy)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	request1, request1Diags := data.ToOperationsGetEventGatewayListenerPolicyForwardToVirtualClusterRequest(ctx)
-	resp.Diagnostics.Append(request1Diags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res1, err := r.client.EventGatewayListenerPolicies.GetEventGatewayListenerPolicyForwardToVirtualCluster(ctx, *request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.EventGatewayListenerPolicy != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedEventGatewayListenerPolicy(ctx, res1.EventGatewayListenerPolicy)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -562,17 +519,17 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) ImportState(
 	}
 
 	if len(data.GatewayID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field gateway_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"`)
+		resp.Diagnostics.AddError("Missing required field", `The field gateway_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("gateway_id"), data.GatewayID)...)
 	if len(data.ListenerID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field listener_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		resp.Diagnostics.AddError("Missing required field", `The field listener_id is required but was not found in the json encoded ID.`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("listener_id"), data.ListenerID)...)
 	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"`)
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)

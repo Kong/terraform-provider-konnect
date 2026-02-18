@@ -24,7 +24,6 @@ func (r *APIProductDocumentResourceModel) RefreshFromSharedAPIProductDocument(ct
 		r.ID = types.StringValue(resp.ID)
 		if r.Metadata == nil {
 			r.Metadata = &tfTypes.Metadata{}
-
 		}
 		r.ParentDocumentID = types.StringPointerValue(resp.ParentDocumentID)
 		r.Slug = types.StringValue(resp.Slug)

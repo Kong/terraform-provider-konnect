@@ -5,6 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
 type DomainVerificationMethod string
@@ -42,6 +43,17 @@ type CreatePortalCustomDomainSSL struct {
 	// Advanced option. If true, the custom certificate is served exactly as provided, without attempting to bundle against a public trust store. Required for certificates issued by an internal/private CA.
 	//
 	SkipCaCheck *bool `json:"skip_ca_check,omitempty"`
+}
+
+func (c CreatePortalCustomDomainSSL) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreatePortalCustomDomainSSL) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreatePortalCustomDomainSSL) GetDomainVerificationMethod() *DomainVerificationMethod {

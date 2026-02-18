@@ -12,6 +12,17 @@ type KafkaConsumePluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (k KafkaConsumePluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaConsumePluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (k *KafkaConsumePluginAfter) GetAccess() []string {
 	if k == nil {
 		return nil
@@ -21,6 +32,17 @@ func (k *KafkaConsumePluginAfter) GetAccess() []string {
 
 type KafkaConsumePluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (k KafkaConsumePluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaConsumePluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (k *KafkaConsumePluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (k *KafkaConsumePluginBefore) GetAccess() []string {
 type KafkaConsumePluginOrdering struct {
 	After  *KafkaConsumePluginAfter  `json:"after,omitempty"`
 	Before *KafkaConsumePluginBefore `json:"before,omitempty"`
+}
+
+func (k KafkaConsumePluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaConsumePluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (k *KafkaConsumePluginOrdering) GetAfter() *KafkaConsumePluginAfter {
@@ -55,6 +88,17 @@ type KafkaConsumePluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (k KafkaConsumePluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaConsumePluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (k *KafkaConsumePluginPartials) GetID() *string {
@@ -225,6 +269,17 @@ type KafkaConsumePluginBootstrapServers struct {
 	Port int64 `json:"port"`
 }
 
+func (k KafkaConsumePluginBootstrapServers) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaConsumePluginBootstrapServers) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"host", "port"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (k *KafkaConsumePluginBootstrapServers) GetHost() string {
 	if k == nil {
 		return ""
@@ -326,6 +381,17 @@ func (e *KafkaConsumePluginMode) UnmarshalJSON(data []byte) error {
 type KafkaConsumePluginBasic struct {
 	Password string `json:"password"`
 	Username string `json:"username"`
+}
+
+func (k KafkaConsumePluginBasic) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaConsumePluginBasic) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"password", "username"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (k *KafkaConsumePluginBasic) GetPassword() string {
@@ -777,6 +843,17 @@ type KafkaConsumePluginSchemaRegistry struct {
 	Confluent *KafkaConsumePluginConfluent `json:"confluent"`
 }
 
+func (k KafkaConsumePluginSchemaRegistry) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaConsumePluginSchemaRegistry) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (k *KafkaConsumePluginSchemaRegistry) GetConfluent() *KafkaConsumePluginConfluent {
 	if k == nil {
 		return nil
@@ -828,6 +905,17 @@ func (k *KafkaConsumePluginSecurity) GetSslVerify() *bool {
 type KafkaConsumePluginConfigBasic struct {
 	Password string `json:"password"`
 	Username string `json:"username"`
+}
+
+func (k KafkaConsumePluginConfigBasic) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaConsumePluginConfigBasic) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"password", "username"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (k *KafkaConsumePluginConfigBasic) GetPassword() string {
@@ -1279,6 +1367,17 @@ type KafkaConsumePluginConfigSchemaRegistry struct {
 	Confluent *KafkaConsumePluginConfigConfluent `json:"confluent"`
 }
 
+func (k KafkaConsumePluginConfigSchemaRegistry) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaConsumePluginConfigSchemaRegistry) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (k *KafkaConsumePluginConfigSchemaRegistry) GetConfluent() *KafkaConsumePluginConfigConfluent {
 	if k == nil {
 		return nil
@@ -1290,6 +1389,17 @@ type KafkaConsumePluginTopics struct {
 	Name string `json:"name"`
 	// The plugin-global schema registry configuration.
 	SchemaRegistry *KafkaConsumePluginConfigSchemaRegistry `json:"schema_registry,omitempty"`
+}
+
+func (k KafkaConsumePluginTopics) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaConsumePluginTopics) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"name"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (k *KafkaConsumePluginTopics) GetName() string {
@@ -1449,6 +1559,17 @@ type KafkaConsumePluginConsumer struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (k KafkaConsumePluginConsumer) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaConsumePluginConsumer) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (k *KafkaConsumePluginConsumer) GetID() *string {
 	if k == nil {
 		return nil
@@ -1497,6 +1618,17 @@ func (e *KafkaConsumePluginProtocols) UnmarshalJSON(data []byte) error {
 // KafkaConsumePluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 type KafkaConsumePluginRoute struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (k KafkaConsumePluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaConsumePluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (k *KafkaConsumePluginRoute) GetID() *string {

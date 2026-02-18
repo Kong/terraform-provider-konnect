@@ -11,6 +11,17 @@ import (
 type EventGatewayProducePolicySchemaValidationTFOnlyConfig struct {
 }
 
+func (e EventGatewayProducePolicySchemaValidationTFOnlyConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *EventGatewayProducePolicySchemaValidationTFOnlyConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 // EventGatewayProducePolicySchemaValidationTFOnly - A policy associated with an Event Gateway.
 type EventGatewayProducePolicySchemaValidationTFOnly struct {
 	// The type name of the policy.

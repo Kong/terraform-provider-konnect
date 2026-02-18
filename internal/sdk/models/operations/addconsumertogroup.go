@@ -37,6 +37,17 @@ type AddConsumerToGroupRequest struct {
 	RequestBody    *AddConsumerToGroupRequestBody `request:"mediaType=application/json"`
 }
 
+func (a AddConsumerToGroupRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AddConsumerToGroupRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"ConsumerGroupId", "controlPlaneId"}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (a *AddConsumerToGroupRequest) GetConsumerGroupID() string {
 	if a == nil {
 		return ""
@@ -65,6 +76,17 @@ type AddConsumerToGroupResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+}
+
+func (a AddConsumerToGroupResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AddConsumerToGroupResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *AddConsumerToGroupResponse) GetContentType() string {

@@ -3,5 +3,5 @@
 package types
 
 type AppAuthStrategyKeyAuthRequestConfigs struct {
-	KeyAuth AppAuthStrategyConfigKeyAuth `tfsdk:"key_auth"`
+	KeyAuth *AppAuthStrategyConfigKeyAuth `tfsdk:"key_auth"`
 }

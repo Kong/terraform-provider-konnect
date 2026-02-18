@@ -57,6 +57,8 @@ func (r *EventGatewayVirtualClusterResourceModel) RefreshFromSharedVirtualCluste
 
 							authentication.OauthBearer.Validate.Audiences = append(authentication.OauthBearer.Validate.Audiences, audiences)
 						}
+					} else {
+						authentication.OauthBearer.Validate.Audiences = nil
 					}
 					authentication.OauthBearer.Validate.Issuer = types.StringPointerValue(authenticationItem.VirtualClusterAuthenticationOauthBearer.Validate.Issuer)
 				}
@@ -75,6 +77,8 @@ func (r *EventGatewayVirtualClusterResourceModel) RefreshFromSharedVirtualCluste
 
 						authentication.SaslPlain.Principals = append(authentication.SaslPlain.Principals, principals)
 					}
+				} else {
+					authentication.SaslPlain.Principals = nil
 				}
 			}
 			if authenticationItem.VirtualClusterAuthenticationSaslScram != nil {
@@ -86,6 +90,7 @@ func (r *EventGatewayVirtualClusterResourceModel) RefreshFromSharedVirtualCluste
 		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
+		r.Destination = &tfTypes.BackendClusterReferenceModify{}
 		r.Destination.ID = types.StringValue(resp.Destination.ID)
 		r.Destination.Name = types.StringValue(resp.Destination.Name)
 		r.DNSLabel = types.StringValue(resp.DNSLabel)
@@ -122,6 +127,8 @@ func (r *EventGatewayVirtualClusterResourceModel) RefreshFromSharedVirtualCluste
 
 								consumerGroups.ExactList.ExactList = append(consumerGroups.ExactList.ExactList, exactList)
 							}
+						} else {
+							consumerGroups.ExactList.ExactList = nil
 						}
 					}
 					if consumerGroupsItem.VirtualClusterNamespaceIDSelectorGlob != nil {
@@ -153,6 +160,8 @@ func (r *EventGatewayVirtualClusterResourceModel) RefreshFromSharedVirtualCluste
 
 								topics.ExactList.ExactList = append(topics.ExactList.ExactList, exactList1)
 							}
+						} else {
+							topics.ExactList.ExactList = nil
 						}
 					}
 					if topicsItem.VirtualClusterNamespaceTopicSelectorGlob != nil {

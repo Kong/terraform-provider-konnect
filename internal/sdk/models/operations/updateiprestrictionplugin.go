@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -13,6 +14,17 @@ type UpdateIprestrictionPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID      string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	IPRestrictionPlugin shared.IPRestrictionPlugin `request:"mediaType=application/json"`
+}
+
+func (u UpdateIprestrictionPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateIprestrictionPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "IpRestrictionPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateIprestrictionPluginRequest) GetPluginID() string {
@@ -47,6 +59,17 @@ type UpdateIprestrictionPluginResponse struct {
 	IPRestrictionPlugin *shared.IPRestrictionPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (u UpdateIprestrictionPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateIprestrictionPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateIprestrictionPluginResponse) GetContentType() string {

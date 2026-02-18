@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type DeleteAPIImplementationRequest struct {
 	APIID string `pathParam:"style=simple,explode=false,name=apiId"`
 	// The Portal identifier
 	ImplementationID string `pathParam:"style=simple,explode=false,name=implementationId"`
+}
+
+func (d DeleteAPIImplementationRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteAPIImplementationRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"apiId", "implementationId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteAPIImplementationRequest) GetAPIID() string {
@@ -41,6 +53,17 @@ type DeleteAPIImplementationResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (d DeleteAPIImplementationResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteAPIImplementationResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteAPIImplementationResponse) GetContentType() string {

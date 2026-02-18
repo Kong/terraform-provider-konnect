@@ -46,7 +46,7 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 ### Read-Only
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `id` (String) The API product version identifier.
+- `id` (String) The API product version identifier
 - `portals` (Attributes List) The list of portals which this API product version is configured for (see [below for nested schema](#nestedatt--portals))
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 

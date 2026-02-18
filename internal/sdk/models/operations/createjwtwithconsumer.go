@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -14,6 +15,17 @@ type CreateJwtWithConsumerRequest struct {
 	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
 	// Description of new JWT for creation
 	JWTWithoutParents *shared.JWTWithoutParents `request:"mediaType=application/json"`
+}
+
+func (c CreateJwtWithConsumerRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateJwtWithConsumerRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateJwtWithConsumerRequest) GetControlPlaneID() string {
@@ -46,6 +58,17 @@ type CreateJwtWithConsumerResponse struct {
 	RawResponse *http.Response
 	// Successfully created JWT
 	Jwt *shared.Jwt
+}
+
+func (c CreateJwtWithConsumerResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateJwtWithConsumerResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateJwtWithConsumerResponse) GetContentType() string {

@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -14,6 +15,17 @@ type CreateKeyAuthWithConsumerRequest struct {
 	ConsumerID string `pathParam:"style=simple,explode=false,name=ConsumerIdForNestedEntities"`
 	// Description of new API-key for creation
 	KeyAuthWithoutParents *shared.KeyAuthWithoutParents `request:"mediaType=application/json"`
+}
+
+func (c CreateKeyAuthWithConsumerRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateKeyAuthWithConsumerRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "ConsumerIdForNestedEntities"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateKeyAuthWithConsumerRequest) GetControlPlaneID() string {
@@ -46,6 +58,17 @@ type CreateKeyAuthWithConsumerResponse struct {
 	RawResponse *http.Response
 	// Successfully created API-key
 	KeyAuth *shared.KeyAuth
+}
+
+func (c CreateKeyAuthWithConsumerResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateKeyAuthWithConsumerResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateKeyAuthWithConsumerResponse) GetContentType() string {

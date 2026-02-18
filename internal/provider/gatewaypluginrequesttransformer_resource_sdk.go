@@ -158,6 +158,8 @@ func (r *GatewayPluginRequestTransformerResourceModel) RefreshFromSharedRequestT
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -180,6 +182,8 @@ func (r *GatewayPluginRequestTransformerResourceModel) RefreshFromSharedRequestT
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

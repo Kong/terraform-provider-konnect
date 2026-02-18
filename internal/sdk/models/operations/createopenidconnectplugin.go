@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateOpenidconnectPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID      string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	OpenidConnectPlugin shared.OpenidConnectPlugin `request:"mediaType=application/json"`
+}
+
+func (c CreateOpenidconnectPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateOpenidconnectPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "OpenidConnectPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateOpenidconnectPluginRequest) GetControlPlaneID() string {
@@ -38,6 +50,17 @@ type CreateOpenidconnectPluginResponse struct {
 	OpenidConnectPlugin *shared.OpenidConnectPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (c CreateOpenidconnectPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateOpenidconnectPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateOpenidconnectPluginResponse) GetContentType() string {

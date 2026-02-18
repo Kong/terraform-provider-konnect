@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -13,6 +14,17 @@ type UpdatePluginSchemasRequest struct {
 	// The custom plugin name
 	Name                string                      `pathParam:"style=simple,explode=false,name=name"`
 	CreatePluginSchemas *shared.CreatePluginSchemas `request:"mediaType=application/json"`
+}
+
+func (u UpdatePluginSchemasRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdatePluginSchemasRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"controlPlaneId", "name"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdatePluginSchemasRequest) GetControlPlaneID() string {
@@ -53,6 +65,17 @@ type UpdatePluginSchemasResponse struct {
 	KonnectCPLegacyForbiddenError *shared.KonnectCPLegacyForbiddenError
 	// Forbidden
 	KonnectCPLegacyNotFoundError *shared.KonnectCPLegacyNotFoundError
+}
+
+func (u UpdatePluginSchemasResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdatePluginSchemasResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdatePluginSchemasResponse) GetContentType() string {

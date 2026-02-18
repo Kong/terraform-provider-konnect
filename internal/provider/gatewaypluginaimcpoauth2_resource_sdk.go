@@ -15,6 +15,7 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) RefreshFromSharedAiMcpOauth2Plug
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Config = &tfTypes.AiMcpOauth2PluginConfig{}
 		if resp.Config.Args != nil {
 			r.Config.Args = make(map[string]types.String, len(resp.Config.Args))
 			for key, value := range resp.Config.Args {
@@ -37,6 +38,8 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) RefreshFromSharedAiMcpOauth2Plug
 
 				r.Config.ClaimToHeader = append(r.Config.ClaimToHeader, claimToHeader)
 			}
+		} else {
+			r.Config.ClaimToHeader = nil
 		}
 		if resp.Config.ClientAlg != nil {
 			r.Config.ClientAlg = types.StringValue(string(*resp.Config.ClientAlg))
@@ -80,6 +83,8 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) RefreshFromSharedAiMcpOauth2Plug
 			for _, v := range resp.Config.ScopesSupported {
 				r.Config.ScopesSupported = append(r.Config.ScopesSupported, types.StringValue(v))
 			}
+		} else {
+			r.Config.ScopesSupported = nil
 		}
 		r.Config.SslVerify = types.BoolPointerValue(resp.Config.SslVerify)
 		r.Config.Timeout = types.Float64PointerValue(resp.Config.Timeout)
@@ -125,6 +130,8 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) RefreshFromSharedAiMcpOauth2Plug
 
 				r.Partials = append(r.Partials, partials)
 			}
+		} else {
+			r.Partials = nil
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
@@ -147,6 +154,8 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) RefreshFromSharedAiMcpOauth2Plug
 			for _, v := range resp.Tags {
 				r.Tags = append(r.Tags, types.StringValue(v))
 			}
+		} else {
+			r.Tags = nil
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}

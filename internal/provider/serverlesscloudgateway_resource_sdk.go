@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
@@ -15,6 +16,7 @@ func (r *ServerlessCloudGatewayResourceModel) RefreshFromSharedServerlessCloudGa
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.ControlPlane = &tfTypes.ServerlessControlPlane{}
 		r.ControlPlane.ID = types.StringValue(resp.ControlPlane.ID)
 		r.ControlPlane.Prefix = types.StringValue(resp.ControlPlane.Prefix)
 		r.ControlPlane.Region = types.StringValue(string(resp.ControlPlane.Region))

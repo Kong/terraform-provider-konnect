@@ -13,6 +13,17 @@ type Spec struct {
 	Type *APISpecType `json:"type,omitempty"`
 }
 
+func (s Spec) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *Spec) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *Spec) GetType() *APISpecType {
 	if s == nil {
 		return nil

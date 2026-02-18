@@ -12,6 +12,17 @@ type OpenidConnectPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (o OpenidConnectPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpenidConnectPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (o *OpenidConnectPluginAfter) GetAccess() []string {
 	if o == nil {
 		return nil
@@ -21,6 +32,17 @@ func (o *OpenidConnectPluginAfter) GetAccess() []string {
 
 type OpenidConnectPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (o OpenidConnectPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpenidConnectPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *OpenidConnectPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (o *OpenidConnectPluginBefore) GetAccess() []string {
 type OpenidConnectPluginOrdering struct {
 	After  *OpenidConnectPluginAfter  `json:"after,omitempty"`
 	Before *OpenidConnectPluginBefore `json:"before,omitempty"`
+}
+
+func (o OpenidConnectPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpenidConnectPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *OpenidConnectPluginOrdering) GetAfter() *OpenidConnectPluginAfter {
@@ -55,6 +88,17 @@ type OpenidConnectPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (o OpenidConnectPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpenidConnectPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *OpenidConnectPluginPartials) GetID() *string {
@@ -4489,6 +4533,17 @@ type OpenidConnectPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (o OpenidConnectPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpenidConnectPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (o *OpenidConnectPluginRoute) GetID() *string {
 	if o == nil {
 		return nil
@@ -4499,6 +4554,17 @@ func (o *OpenidConnectPluginRoute) GetID() *string {
 // OpenidConnectPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type OpenidConnectPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (o OpenidConnectPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpenidConnectPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *OpenidConnectPluginService) GetID() *string {

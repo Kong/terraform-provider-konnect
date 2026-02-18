@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -12,6 +13,17 @@ type CreateEventGatewayDataPlaneCertificateRequest struct {
 	GatewayID string `pathParam:"style=simple,explode=false,name=gatewayId"`
 	// Request body for creating a certificate.
 	CreateEventGatewayDataPlaneCertificateRequest *shared.CreateEventGatewayDataPlaneCertificateRequest `request:"mediaType=application/json"`
+}
+
+func (c CreateEventGatewayDataPlaneCertificateRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateEventGatewayDataPlaneCertificateRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"gatewayId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateEventGatewayDataPlaneCertificateRequest) GetGatewayID() string {
@@ -45,6 +57,17 @@ type CreateEventGatewayDataPlaneCertificateResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (c CreateEventGatewayDataPlaneCertificateResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateEventGatewayDataPlaneCertificateResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateEventGatewayDataPlaneCertificateResponse) GetContentType() string {

@@ -122,8 +122,8 @@ const (
 
 // PatchTransitGatewayRequest - Request schema for updating a transit gateway.
 type PatchTransitGatewayRequest struct {
-	PatchAWSResourceEndpointGatewayAWSResourceEndpointGateway *PatchAWSResourceEndpointGatewayAWSResourceEndpointGateway `queryParam:"inline,name=PatchTransitGatewayRequest"`
-	PatchAWSTransitGatewayAWSTransitGateway                   *PatchAWSTransitGatewayAWSTransitGateway                   `queryParam:"inline,name=PatchTransitGatewayRequest"`
+	PatchAWSResourceEndpointGatewayAWSResourceEndpointGateway *PatchAWSResourceEndpointGatewayAWSResourceEndpointGateway `queryParam:"inline" union:"member"`
+	PatchAWSTransitGatewayAWSTransitGateway                   *PatchAWSTransitGatewayAWSTransitGateway                   `queryParam:"inline" union:"member"`
 
 	Type PatchTransitGatewayRequestType
 }
@@ -172,7 +172,7 @@ func (u *PatchTransitGatewayRequest) UnmarshalJSON(data []byte) error {
 	}
 
 	// Pick the best candidate using multi-stage filtering
-	best := utils.PickBestCandidate(candidates)
+	best := utils.PickBestUnionCandidate(candidates, data)
 	if best == nil {
 		return fmt.Errorf("could not unmarshal `%s` into any supported union types for PatchTransitGatewayRequest", string(data))
 	}

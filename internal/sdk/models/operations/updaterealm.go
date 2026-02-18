@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type UpdateRealmRequest struct {
 	// ID of the realm
 	RealmID                    string                            `pathParam:"style=simple,explode=false,name=realmId"`
 	ConsumerRealmUpdateRequest shared.ConsumerRealmUpdateRequest `request:"mediaType=application/json"`
+}
+
+func (u UpdateRealmRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateRealmRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"realmId", "ConsumerRealmUpdateRequest"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateRealmRequest) GetRealmID() string {
@@ -38,6 +50,17 @@ type UpdateRealmResponse struct {
 	ConsumerRealm *shared.ConsumerRealm
 	// Bad Request
 	BadRequestError *shared.BadRequestError
+}
+
+func (u UpdateRealmResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpdateRealmResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u *UpdateRealmResponse) GetContentType() string {

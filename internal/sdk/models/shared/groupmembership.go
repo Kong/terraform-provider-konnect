@@ -2,8 +2,23 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type Members struct {
 	ID string `json:"id"`
+}
+
+func (m Members) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *Members) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"id"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (m *Members) GetID() string {
@@ -16,6 +31,17 @@ func (m *Members) GetID() string {
 // GroupMembership - Request body for adding a list of child control planes to a control plane group membership.
 type GroupMembership struct {
 	Members []Members `json:"members"`
+}
+
+func (g GroupMembership) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GroupMembership) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"members"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (g *GroupMembership) GetMembers() []Members {

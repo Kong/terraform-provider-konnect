@@ -3,13 +3,13 @@
 package types
 
 type Nodes struct {
-	Branch    *Branch     `queryParam:"inline" tfsdk:"branch" tfPlanOnly:"true"`
-	Cache     *NodesCache `queryParam:"inline" tfsdk:"cache" tfPlanOnly:"true"`
-	Call      *Call       `queryParam:"inline" tfsdk:"call" tfPlanOnly:"true"`
-	Exit      *Exit       `queryParam:"inline" tfsdk:"exit" tfPlanOnly:"true"`
-	Jq        *Jq         `queryParam:"inline" tfsdk:"jq" tfPlanOnly:"true"`
-	JSONToXML *JSONToXML  `queryParam:"inline" tfsdk:"json_to_xml" tfPlanOnly:"true"`
-	Property  *Property   `queryParam:"inline" tfsdk:"property" tfPlanOnly:"true"`
-	Static    *Static     `queryParam:"inline" tfsdk:"static" tfPlanOnly:"true"`
-	XMLToJSON *XMLToJSON  `queryParam:"inline" tfsdk:"xml_to_json" tfPlanOnly:"true"`
+	Branch    *Branch     `queryParam:"inline" tfsdk:"branch"`
+	Cache     *NodesCache `queryParam:"inline" tfsdk:"cache"`
+	Call      *Call       `queryParam:"inline" tfsdk:"call"`
+	Exit      *Exit       `queryParam:"inline" tfsdk:"exit"`
+	Jq        *Jq         `queryParam:"inline" tfsdk:"jq"`
+	JSONToXML *JSONToXML  `queryParam:"inline" tfsdk:"json_to_xml"`
+	Property  *Property   `queryParam:"inline" tfsdk:"property"`
+	Static    *Static     `queryParam:"inline" tfsdk:"static"`
+	XMLToJSON *XMLToJSON  `queryParam:"inline" tfsdk:"xml_to_json"`
 }

@@ -2,12 +2,27 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // EventGatewayACLResourceName - An Event Gateway resource name to match against in an ACL rule.
 type EventGatewayACLResourceName struct {
 	// Currently supported are exact matches and globs.
 	// All `*` characters are interpreted as globs, i.e. they match zero or more of any character.
 	//
 	Match string `json:"match"`
+}
+
+func (e EventGatewayACLResourceName) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *EventGatewayACLResourceName) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"match"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (e *EventGatewayACLResourceName) GetMatch() string {

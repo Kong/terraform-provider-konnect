@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 // TLSCertificate - A TLS certificate and its associated private key.
 type TLSCertificate struct {
 	// A literal value or a reference to an existing secret as a template string expression.
@@ -13,6 +17,17 @@ type TLSCertificate struct {
 	// If provided as an expression, the expression itself is stored and returned by the API.
 	//
 	Key string `json:"key"`
+}
+
+func (t TLSCertificate) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TLSCertificate) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"certificate", "key"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (t *TLSCertificate) GetCertificate() string {

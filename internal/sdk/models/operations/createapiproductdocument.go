@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateAPIProductDocumentRequest struct {
 	// The API product identifier
 	APIProductID                string                             `pathParam:"style=simple,explode=false,name=apiProductId"`
 	CreateAPIProductDocumentDTO shared.CreateAPIProductDocumentDTO `request:"mediaType=application/json"`
+}
+
+func (c CreateAPIProductDocumentRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAPIProductDocumentRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"apiProductId", "CreateAPIProductDocumentDTO"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateAPIProductDocumentRequest) GetAPIProductID() string {
@@ -48,6 +60,17 @@ type CreateAPIProductDocumentResponse struct {
 	SlugConflict *shared.SlugConflict
 	// Unsupported Media Type
 	UnsupportedMediaTypeError *shared.UnsupportedMediaTypeError
+}
+
+func (c CreateAPIProductDocumentResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateAPIProductDocumentResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateAPIProductDocumentResponse) GetContentType() string {

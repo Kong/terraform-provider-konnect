@@ -12,6 +12,17 @@ type BotDetectionPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
+func (b BotDetectionPluginAfter) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BotDetectionPluginAfter) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (b *BotDetectionPluginAfter) GetAccess() []string {
 	if b == nil {
 		return nil
@@ -21,6 +32,17 @@ func (b *BotDetectionPluginAfter) GetAccess() []string {
 
 type BotDetectionPluginBefore struct {
 	Access []string `json:"access,omitempty"`
+}
+
+func (b BotDetectionPluginBefore) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BotDetectionPluginBefore) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (b *BotDetectionPluginBefore) GetAccess() []string {
@@ -33,6 +55,17 @@ func (b *BotDetectionPluginBefore) GetAccess() []string {
 type BotDetectionPluginOrdering struct {
 	After  *BotDetectionPluginAfter  `json:"after,omitempty"`
 	Before *BotDetectionPluginBefore `json:"before,omitempty"`
+}
+
+func (b BotDetectionPluginOrdering) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BotDetectionPluginOrdering) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (b *BotDetectionPluginOrdering) GetAfter() *BotDetectionPluginAfter {
@@ -55,6 +88,17 @@ type BotDetectionPluginPartials struct {
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path *string `json:"path,omitempty"`
+}
+
+func (b BotDetectionPluginPartials) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BotDetectionPluginPartials) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (b *BotDetectionPluginPartials) GetID() *string {
@@ -83,6 +127,17 @@ type BotDetectionPluginConfig struct {
 	Allow []string `json:"allow,omitempty"`
 	// An array of regular expressions that should be denied. The regular expressions will be checked against the `User-Agent` header.
 	Deny []string `json:"deny,omitempty"`
+}
+
+func (b BotDetectionPluginConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BotDetectionPluginConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (b *BotDetectionPluginConfig) GetAllow() []string {
@@ -136,6 +191,17 @@ type BotDetectionPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
+func (b BotDetectionPluginRoute) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BotDetectionPluginRoute) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (b *BotDetectionPluginRoute) GetID() *string {
 	if b == nil {
 		return nil
@@ -146,6 +212,17 @@ func (b *BotDetectionPluginRoute) GetID() *string {
 // BotDetectionPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type BotDetectionPluginService struct {
 	ID *string `json:"id,omitempty"`
+}
+
+func (b BotDetectionPluginService) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BotDetectionPluginService) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (b *BotDetectionPluginService) GetID() *string {

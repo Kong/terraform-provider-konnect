@@ -12,6 +12,17 @@ type EventGatewayModifyHeadersPolicyConfig struct {
 	Actions []EventGatewayModifyHeaderAction `json:"actions"`
 }
 
+func (e EventGatewayModifyHeadersPolicyConfig) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *EventGatewayModifyHeadersPolicyConfig) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (e *EventGatewayModifyHeadersPolicyConfig) GetActions() []EventGatewayModifyHeaderAction {
 	if e == nil {
 		return nil

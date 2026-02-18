@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -14,6 +15,17 @@ var DeleteServerlessCloudGatewayServerList = []string{
 type DeleteServerlessCloudGatewayRequest struct {
 	// Id of the Serverless Cloud Gateway control plane
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+}
+
+func (d DeleteServerlessCloudGatewayRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteServerlessCloudGatewayRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"controlPlaneId"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteServerlessCloudGatewayRequest) GetControlPlaneID() string {
@@ -36,6 +48,17 @@ type DeleteServerlessCloudGatewayResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+}
+
+func (d DeleteServerlessCloudGatewayResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DeleteServerlessCloudGatewayResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (d *DeleteServerlessCloudGatewayResponse) GetContentType() string {

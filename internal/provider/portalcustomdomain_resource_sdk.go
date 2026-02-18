@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/provider/typeconvert"
+	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
@@ -20,6 +21,7 @@ func (r *PortalCustomDomainResourceModel) RefreshFromSharedPortalCustomDomain(ct
 		r.Enabled = types.BoolValue(resp.Enabled)
 		r.Hostname = types.StringValue(resp.Hostname)
 		sslPriorData := r.Ssl
+		r.Ssl = &tfTypes.CreatePortalCustomDomainSSL{}
 		r.Ssl.DomainVerificationMethod = types.StringValue(string(resp.Ssl.DomainVerificationMethod))
 		r.Ssl.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.Ssl.ExpiresAt))
 		r.Ssl.SkipCaCheck = types.BoolPointerValue(resp.Ssl.SkipCaCheck)
@@ -29,8 +31,10 @@ func (r *PortalCustomDomainResourceModel) RefreshFromSharedPortalCustomDomain(ct
 			r.Ssl.ValidationErrors = append(r.Ssl.ValidationErrors, types.StringValue(v))
 		}
 		r.Ssl.VerificationStatus = types.StringValue(string(resp.Ssl.VerificationStatus))
-		r.Ssl.CustomCertificate = sslPriorData.CustomCertificate
-		r.Ssl.CustomPrivateKey = sslPriorData.CustomPrivateKey
+		if sslPriorData != nil {
+			r.Ssl.CustomCertificate = sslPriorData.CustomCertificate
+			r.Ssl.CustomPrivateKey = sslPriorData.CustomPrivateKey
+		}
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
 

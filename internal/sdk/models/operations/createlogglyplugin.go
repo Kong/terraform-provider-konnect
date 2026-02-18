@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"net/http"
 )
@@ -11,6 +12,17 @@ type CreateLogglyPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string              `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	LogglyPlugin   shared.LogglyPlugin `request:"mediaType=application/json"`
+}
+
+func (c CreateLogglyPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateLogglyPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"controlPlaneId", "LogglyPlugin"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateLogglyPluginRequest) GetControlPlaneID() string {
@@ -38,6 +50,17 @@ type CreateLogglyPluginResponse struct {
 	LogglyPlugin *shared.LogglyPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
+}
+
+func (c CreateLogglyPluginResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateLogglyPluginResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"ContentType", "StatusCode", "RawResponse"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (c *CreateLogglyPluginResponse) GetContentType() string {

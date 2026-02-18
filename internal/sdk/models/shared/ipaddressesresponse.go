@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
+)
+
 type IPAddressesResponse struct {
 	// Timestamp of the last update in "YYYY-MM-DD-HH-mm-ss" format.
 	//
@@ -16,6 +20,17 @@ type IPAddressesResponse struct {
 	// addresses representing outbound IPs used by Konnect.
 	//
 	EgressIps map[string][]string `json:"egressIPs"`
+}
+
+func (i IPAddressesResponse) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(i, "", false)
+}
+
+func (i *IPAddressesResponse) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &i, "", false, []string{"updateDate", "regions", "ingressIPs", "egressIPs"}); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (i *IPAddressesResponse) GetUpdateDate() string {
