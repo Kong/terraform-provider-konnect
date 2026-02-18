@@ -1,11 +1,11 @@
 # Changelog
 
 ## 3.8.0
-> Released 2026/02/??
+> Released 2026/02/18
 
 ### Features
-* Support `gcp` as provider in `konnect_cloud_gateway_configuration` resource 
-* Support Azure Private Hosted Zone in `konnect_cloud_gateway_private_dns` resource
+* Add support for `gcp` as provider in `konnect_cloud_gateway_configuration` resource 
+* Add support for Azure Private Hosted Zone in `konnect_cloud_gateway_private_dns` resource
 * Add support for `konnect_identity_provider` and `konnect_authentication_settings` resources
 
 ### Bug Fixes
