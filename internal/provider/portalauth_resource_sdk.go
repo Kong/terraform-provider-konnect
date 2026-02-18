@@ -22,7 +22,7 @@ func (r *PortalAuthResourceModel) RefreshFromSharedPortalAuthenticationSettingsR
 		if resp.OidcClaimMappings == nil {
 			r.OidcClaimMappings = nil
 		} else {
-			r.OidcClaimMappings = &tfTypes.PortalAuthenticationSettingsUpdateRequestPortalClaimMappings{}
+			r.OidcClaimMappings = &tfTypes.OIDCIdentityProviderClaimMappings{}
 			r.OidcClaimMappings.Email = types.StringPointerValue(resp.OidcClaimMappings.Email)
 			r.OidcClaimMappings.Groups = types.StringPointerValue(resp.OidcClaimMappings.Groups)
 			r.OidcClaimMappings.Name = types.StringPointerValue(resp.OidcClaimMappings.Name)
@@ -35,7 +35,7 @@ func (r *PortalAuthResourceModel) RefreshFromSharedPortalAuthenticationSettingsR
 			if resp.OidcConfig.ClaimMappings == nil {
 				r.OidcConfig.ClaimMappings = nil
 			} else {
-				r.OidcConfig.ClaimMappings = &tfTypes.PortalAuthenticationSettingsUpdateRequestPortalClaimMappings{}
+				r.OidcConfig.ClaimMappings = &tfTypes.OIDCIdentityProviderClaimMappings{}
 				r.OidcConfig.ClaimMappings.Email = types.StringPointerValue(resp.OidcConfig.ClaimMappings.Email)
 				r.OidcConfig.ClaimMappings.Groups = types.StringPointerValue(resp.OidcConfig.ClaimMappings.Groups)
 				r.OidcConfig.ClaimMappings.Name = types.StringPointerValue(resp.OidcConfig.ClaimMappings.Name)

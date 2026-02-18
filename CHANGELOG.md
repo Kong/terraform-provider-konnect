@@ -6,6 +6,7 @@
 ### Features
 * Support `gcp` as provider in `konnect_cloud_gateway_configuration` resource 
 * Support Azure Private Hosted Zone in `konnect_cloud_gateway_private_dns` resource
+* Add support for `konnect_identity_provider` and `konnect_authentication_settings` resources
 
 ### Bug Fixes
 * Fix creating `konnect_event_gateway_listener_policy_forward_to_virtual_cluster` resource using `sni` routing

@@ -38,19 +38,19 @@ type PortalAuthResource struct {
 
 // PortalAuthResourceModel describes the resource data model.
 type PortalAuthResourceModel struct {
-	BasicAuthEnabled       types.Bool                                                            `tfsdk:"basic_auth_enabled"`
-	IdpMappingEnabled      types.Bool                                                            `tfsdk:"idp_mapping_enabled"`
-	KonnectMappingEnabled  types.Bool                                                            `tfsdk:"konnect_mapping_enabled"`
-	OidcAuthEnabled        types.Bool                                                            `tfsdk:"oidc_auth_enabled"`
-	OidcClaimMappings      *tfTypes.PortalAuthenticationSettingsUpdateRequestPortalClaimMappings `tfsdk:"oidc_claim_mappings"`
-	OidcClientID           types.String                                                          `tfsdk:"oidc_client_id"`
-	OidcClientSecret       types.String                                                          `tfsdk:"oidc_client_secret"`
-	OidcConfig             *tfTypes.PortalOIDCConfig                                             `tfsdk:"oidc_config"`
-	OidcIssuer             types.String                                                          `tfsdk:"oidc_issuer"`
-	OidcScopes             []types.String                                                        `tfsdk:"oidc_scopes"`
-	OidcTeamMappingEnabled types.Bool                                                            `tfsdk:"oidc_team_mapping_enabled"`
-	PortalID               types.String                                                          `tfsdk:"portal_id"`
-	SamlAuthEnabled        types.Bool                                                            `tfsdk:"saml_auth_enabled"`
+	BasicAuthEnabled       types.Bool                                 `tfsdk:"basic_auth_enabled"`
+	IdpMappingEnabled      types.Bool                                 `tfsdk:"idp_mapping_enabled"`
+	KonnectMappingEnabled  types.Bool                                 `tfsdk:"konnect_mapping_enabled"`
+	OidcAuthEnabled        types.Bool                                 `tfsdk:"oidc_auth_enabled"`
+	OidcClaimMappings      *tfTypes.OIDCIdentityProviderClaimMappings `tfsdk:"oidc_claim_mappings"`
+	OidcClientID           types.String                               `tfsdk:"oidc_client_id"`
+	OidcClientSecret       types.String                               `tfsdk:"oidc_client_secret"`
+	OidcConfig             *tfTypes.PortalOIDCConfig                  `tfsdk:"oidc_config"`
+	OidcIssuer             types.String                               `tfsdk:"oidc_issuer"`
+	OidcScopes             []types.String                             `tfsdk:"oidc_scopes"`
+	OidcTeamMappingEnabled types.Bool                                 `tfsdk:"oidc_team_mapping_enabled"`
+	PortalID               types.String                               `tfsdk:"portal_id"`
+	SamlAuthEnabled        types.Bool                                 `tfsdk:"saml_auth_enabled"`
 }
 
 func (r *PortalAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
