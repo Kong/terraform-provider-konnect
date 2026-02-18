@@ -88,6 +88,29 @@ func (r *CloudGatewayPrivateDNSResourceModel) RefreshFromSharedPrivateDNSRespons
 			r.AzurePrivateDNSResolverResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AzurePrivateDNSResolverResponse.StateMetadata.ReportedStatus)
 			r.AzurePrivateDNSResolverResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AzurePrivateDNSResolverResponse.UpdatedAt))
 		}
+		if resp.AzurePrivateHostedZoneResponse != nil {
+			r.AzurePrivateHostedZoneResponse = &tfTypes.AzurePrivateHostedZoneResponse{}
+			r.AzurePrivateHostedZoneResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AzurePrivateHostedZoneResponse.CreatedAt))
+			r.AzurePrivateHostedZoneResponse.EntityVersion = types.Int64Value(resp.AzurePrivateHostedZoneResponse.EntityVersion)
+			r.EntityVersion = r.AzurePrivateHostedZoneResponse.EntityVersion
+			r.AzurePrivateHostedZoneResponse.ID = types.StringValue(resp.AzurePrivateHostedZoneResponse.ID)
+			r.ID = r.AzurePrivateHostedZoneResponse.ID
+			r.AzurePrivateHostedZoneResponse.Name = types.StringValue(resp.AzurePrivateHostedZoneResponse.Name)
+			r.Name = r.AzurePrivateHostedZoneResponse.Name
+			r.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig = &tfTypes.AzurePrivateHostedZoneAttachmentConfig{}
+			r.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig.DomainName = types.StringValue(resp.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig.DomainName)
+			r.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig.Kind = types.StringValue(string(resp.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig.Kind))
+			r.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig.PeerResourceGroupID = types.StringValue(resp.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig.PeerResourceGroupID)
+			r.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig.PeerSubscriptionID = types.StringValue(resp.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig.PeerSubscriptionID)
+			r.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig.PeerTenantID = types.StringValue(resp.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig.PeerTenantID)
+			r.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig.PeerVnetLinkName = types.StringValue(resp.AzurePrivateHostedZoneResponse.PrivateDNSAttachmentConfig.PeerVnetLinkName)
+			r.AzurePrivateHostedZoneResponse.State = types.StringValue(string(resp.AzurePrivateHostedZoneResponse.State))
+			r.State = r.AzurePrivateHostedZoneResponse.State
+			r.AzurePrivateHostedZoneResponse.StateMetadata = &tfTypes.CustomDomainStateMetadata{}
+			r.AzurePrivateHostedZoneResponse.StateMetadata.Reason = types.StringPointerValue(resp.AzurePrivateHostedZoneResponse.StateMetadata.Reason)
+			r.AzurePrivateHostedZoneResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AzurePrivateHostedZoneResponse.StateMetadata.ReportedStatus)
+			r.AzurePrivateHostedZoneResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AzurePrivateHostedZoneResponse.UpdatedAt))
+		}
 		if resp.GcpPrivateHostedZoneResponse != nil {
 			r.GcpPrivateHostedZoneResponse = &tfTypes.GcpPrivateHostedZoneResponse{}
 			r.GcpPrivateHostedZoneResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.GcpPrivateHostedZoneResponse.CreatedAt))

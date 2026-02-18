@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: f1498e5faab4762f3c7b3875bae752d4
+  docChecksum: 92f3335db318f5a6939490394fa2d7b8
   docVersion: 2.0.0
   speakeasyVersion: 1.722.1
   generationVersion: 2.832.1
   releaseVersion: 3.7.0
   configChecksum: ff6818ac4919fd17bc5a6f759e8f6683
 persistentEdits:
-  generation_id: 05544081-279d-4d06-8c9e-a3f1b41355ed
-  pristine_commit_hash: aa95d5491f86c097108fd1d84cdca9cde75de3b6
-  pristine_tree_hash: 3ea316bb631c61a959fe60362277bb5fb2b78a07
+  generation_id: 18cda7a8-dde9-46d6-ab82-4e65d8cbdb51
+  pristine_commit_hash: d8eb664510ddb3000f52abebfd6e8791d7452437
+  pristine_tree_hash: 6a5979596ac2755a6e2839225e52d02735013395
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -2732,12 +2732,12 @@ trackedFiles:
     pristine_git_object: 7b2a663157630a60cbc946b44fccd64764a795fd
   internal/provider/cloudgatewayprivatedns_resource.go:
     id: 97db0f2fd5c0
-    last_write_checksum: sha1:a5820841bfb9a88788126f998aecf529b6272f79
-    pristine_git_object: ec81d5b1f9fe247f6d5c2291e4ec184cd91832a3
+    last_write_checksum: sha1:e1a5878676c2d9d9e833f7448d86ce9b963285e9
+    pristine_git_object: 2dbf57e1c99c24ac5cdf785ec7e158ad08b6ba64
   internal/provider/cloudgatewayprivatedns_resource_sdk.go:
     id: 3d67f881d291
-    last_write_checksum: sha1:c170d96e1c5f10c38f54a27213d9469e210378bc
-    pristine_git_object: 8446ec8767c0dcc9c0aad25a1197c7a71df3a141
+    last_write_checksum: sha1:ac759a7bee565ba9717c0b84c2fef2e3e039f296
+    pristine_git_object: 9666fa9c33bb469e1e83277334906969c89c6dbc
   internal/provider/cloudgatewayprovideraccountlist_data_source.go:
     id: 7dc866fdfc1d
     last_write_checksum: sha1:b00d2be22d89c83c0f739e9e21b54a6ea4ea3950
@@ -4686,6 +4686,10 @@ trackedFiles:
     id: a97a4dc626fc
     last_write_checksum: sha1:15862c1cb480fdc9c207f5f0905cd39499f17fa7
     pristine_git_object: cc00b40f18e58ab2a21f9e4b4266115573bf0725
+  internal/provider/types/azure_private_hosted_zone_response.go:
+    id: 42bf07a93529
+    last_write_checksum: sha1:5f2d43cd3fb1e3a44b649c00735bb754d27a0ba3
+    pristine_git_object: efb273260ca4920fc80bc66d351b87479bfd32fc
   internal/provider/types/azure_transit_gateway.go:
     id: 283985a53bad
     last_write_checksum: sha1:e5a3afab8bb63af7b86b904eeef8f1820899a8d3
@@ -9774,6 +9778,10 @@ trackedFiles:
     id: b4b758374f6c
     last_write_checksum: sha1:3404aa17b4fedae04e4197b877ce171c23798c79
     pristine_git_object: 9bf9bb20a5cc97360537e806371abe335b96855f
+  internal/sdk/models/shared/azureprivatehostedzoneresponse.go:
+    id: 05f67bdabd05
+    last_write_checksum: sha1:5d5f8277b93f6bec52e9020a3f828a7a7541a448
+    pristine_git_object: 184c431849feb91903ce9d7ef36627d2b4f24db4
   internal/sdk/models/shared/azuretransitgateway.go:
     id: e913dcb73d11
     last_write_checksum: sha1:c905d97869a3f8eeae77fc70bf86e575e8268268
@@ -10916,8 +10924,8 @@ trackedFiles:
     pristine_git_object: 31837f1c042f911db48b1b7f9a4fc2dbffeb85d6
   internal/sdk/models/shared/privatednsresponse.go:
     id: 4af3fd9f2f4f
-    last_write_checksum: sha1:c54ccd9aa887312193e75a39108e99c99d0a011c
-    pristine_git_object: e74ade9c90283d9504041089d24d60ce98b3577d
+    last_write_checksum: sha1:2e02199bc82a836c3c6f6a86afe95e6aa2b71ac2
+    pristine_git_object: bf4c3cd19fd41bc48e66dd9b42e2801e8ec328b1
   internal/sdk/models/shared/privatednsstate.go:
     id: 6a1e1efae5cd
     last_write_checksum: sha1:33db1fd09b51d9816e9d993a3474c2189e3a84a6
