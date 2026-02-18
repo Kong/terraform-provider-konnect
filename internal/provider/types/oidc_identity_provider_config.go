@@ -6,9 +6,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type PortalOIDCConfig struct {
+type OIDCIdentityProviderConfig struct {
 	ClaimMappings *OIDCIdentityProviderClaimMappings `tfsdk:"claim_mappings"`
 	ClientID      types.String                       `tfsdk:"client_id"`
-	Issuer        types.String                       `tfsdk:"issuer"`
+	ClientSecret  types.String                       `tfsdk:"client_secret"`
+	IssuerURL     types.String                       `tfsdk:"issuer_url"`
 	Scopes        []types.String                     `tfsdk:"scopes"`
 }
