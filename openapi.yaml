@@ -17092,6 +17092,150 @@ paths:
           $ref: '#/components/responses/ApiNotFound'
       tags:
         - API Version
+  /v3/authentication-settings:
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: AuthenticationSettings#read
+        terraform-datasource: null
+      operationId: get-authentication-settings
+      summary: Get Auth Settings
+      description: 'Returns authentication configuration, which determines how users can log in and how they are assigned to teams.'
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthenticationSettings'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Auth Settings
+    patch:
+      x-speakeasy-entity-operation: 'AuthenticationSettings#create,update'
+      operationId: update-authentication-settings
+      summary: Update Auth Settings
+      description: Updates authentication configuration.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateAuthenticationSettings'
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthenticationSettings'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Auth Settings
+  /v3/identity-providers:
+    post:
+      x-speakeasy-entity-operation: IdentityProvider#create
+      operationId: create-identity-provider
+      summary: Create Identity Provider
+      description: |
+        Creates a new identity provider. This operation allows the creation of a new identity provider for
+        authentication purposes.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateIdentityProviderRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/IdentityProvider'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/CreateIdentityProviderPermissionDenied'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Auth Settings
+  '/v3/identity-providers/{id}':
+    parameters:
+      - name: id
+        in: path
+        description: ID of the identity provider.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityProvider#read
+        terraform-datasource: null
+      operationId: get-identity-provider
+      summary: Get Identity Provider
+      description: |
+        Retrieves the configuration of a single identity provider. This operation returns information about a
+        specific identity provider's settings and authentication integration details.
+      responses:
+        '200':
+          $ref: '#/components/responses/IdentityProvider'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/IdentityPermissionDenied'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Auth Settings
+    patch:
+      x-speakeasy-entity-operation: IdentityProvider#update
+      operationId: update-identity-provider
+      summary: Update Identity Provider
+      description: |
+        Updates the configuration of an existing identity provider. This operation allows modifications to be made
+        to an existing identity provider's configuration.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateIdentityProviderRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/IdentityProvider'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/IdentityPermissionDenied'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Auth Settings
+    delete:
+      x-speakeasy-entity-operation: IdentityProvider#delete
+      operationId: delete-identity-provider
+      summary: Delete Identity Provider
+      description: |
+        Deletes an existing identity provider configuration. This operation removes a specific identity provider
+        from the organization.
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/IdentityPermissionDenied'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Auth Settings
   /v3/portals:
     get:
       x-speakeasy-entity-operation:
@@ -18525,6 +18669,52 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Audit Logs
+  /v3/authentication-settings#delete:
+    patch:
+      x-speakeasy-entity-operation: AuthenticationSettings#delete
+      operationId: reset-authentication-settings
+      summary: Reset Auth Settings
+      description: Reset authentication configuration.
+      requestBody:
+        description: Reset authentication settings to defaults
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                basic_auth_enabled:
+                  type: boolean
+                  const: true
+                oidc_auth_enabled:
+                  type: boolean
+                  default: null
+                  const: false
+                  nullable: true
+                  x-speakeasy-param-computed: false
+                saml_auth_enabled:
+                  type: boolean
+                  default: null
+                  const: false
+                  nullable: true
+                  x-speakeasy-param-computed: false
+                idp_mapping_enabled:
+                  type: boolean
+                  default: null
+                  const: false
+                  nullable: true
+                  x-speakeasy-param-computed: false
+                konnect_mapping_enabled:
+                  type: boolean
+                  const: true
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthenticationSettings'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/Unauthorized'
 components:
   parameters:
     ACLId:
@@ -23353,6 +23543,195 @@ components:
       example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
       readOnly: true
       x-speakeasy-param-suppress-computed-diff: true
+    IdentityProviderType:
+      description: Specifies the type of identity provider.
+      type: string
+      example: oidc
+      enum:
+        - oidc
+        - saml
+      x-speakeasy-unknown-values: allow
+    IdentityProviderLoginPath:
+      description: The path used for initiating login requests with the identity provider.
+      type: string
+      example: myapp
+      title: Identity Provider Login Path Property
+    OIDCIdentityProviderIssuer:
+      description: The issuer URI of the identity provider. This is the URL where the provider's metadata can be obtained.
+      type: string
+      format: uri
+      example: 'https://konghq.okta.com/oauth2/default'
+      title: OIDC Identity Provider Issuer Property
+    OIDCIdentityProviderClientId:
+      description: The client ID assigned to your application by the identity provider.
+      type: string
+      example: YOUR_CLIENT_ID
+      title: OIDC Identity Provider Login Client Id Property
+    OIDCIdentityProviderClientSecret:
+      description: The Client Secret assigned to your application by the identity provider.
+      type: string
+      example: YOUR_CLIENT_SECRET
+      title: OIDC Identity Provider Login Client Secret Property
+      writeOnly: true
+      x-speakeasy-param-sensitive: true
+      x-speakeasy-terraform-plan-only: true
+    OIDCIdentityProviderScopes:
+      description: The scopes requested by your application when authenticating with the identity provider.
+      type: array
+      items:
+        type: string
+      default:
+        - email
+        - openid
+        - profile
+      title: OIDC Identity Provider Scopes Property
+    OIDCIdentityProviderClaimMappings:
+      description: |
+        Defines the mappings between OpenID Connect (OIDC) claims and local claims used by your application for 
+        authentication.
+      type: object
+      properties:
+        name:
+          description: The claim mapping for the user's name.
+          type: string
+          example: name
+          default: name
+        email:
+          description: The claim mapping for the user's email address.
+          type: string
+          example: email
+          default: email
+        groups:
+          description: The claim mapping for the user's group membership information.
+          type: string
+          example: groups
+          default: groups
+      title: OIDC Claim Mappings
+    SAMLIdentityProviderMetadataURL:
+      description: The identity provider's metadata URL where the identity provider's metadata can be obtained.
+      type: string
+      format: uri
+      example: 'https://mocksaml.com/api/saml/metadata'
+      title: SAML Identity Provider Metadata URL
+    SAMLIdentityProviderMetadata:
+      description: |
+        The identity provider's SAML metadata. If the identity provider supports a metadata URL, you can use the `idp_metadata_url` field instead.
+      type: string
+      example: |
+        <?xml version="1.0" encoding="UTF-8"?>
+        <EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
+          <!-- SAML metadata content here -->
+        </EntityDescriptor>
+      title: SAML Identity Provider Metadata
+    CreateIdentityProvider:
+      x-speakeasy-entity: IdentityProvider
+      description: The identity provider that contains configuration data for creating an authentication integration.
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/IdentityProviderType'
+        enabled:
+          $ref: '#/components/schemas/IdentityProviderEnabled'
+        login_path:
+          $ref: '#/components/schemas/IdentityProviderLoginPath'
+        config:
+          type: object
+          oneOf:
+            - $ref: '#/components/schemas/OIDCIdentityProviderConfig'
+            - $ref: '#/components/schemas/SAMLIdentityProviderConfig'
+      title: Identity Provider
+    UpdateIdentityProvider:
+      x-speakeasy-entity: IdentityProvider
+      description: The identity provider that contains configuration data for updating an authentication integration.
+      type: object
+      properties:
+        enabled:
+          $ref: '#/components/schemas/IdentityProviderEnabled'
+        login_path:
+          $ref: '#/components/schemas/IdentityProviderLoginPath'
+        config:
+          type: object
+          oneOf:
+            - $ref: '#/components/schemas/OIDCIdentityProviderConfig'
+            - $ref: '#/components/schemas/SAMLIdentityProviderConfig'
+      title: Identity Provider
+    IdentityProvider:
+      x-speakeasy-entity: IdentityProvider
+      description: The identity provider that contains configuration data for authentication integration.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        type:
+          $ref: '#/components/schemas/IdentityProviderType'
+        enabled:
+          $ref: '#/components/schemas/IdentityProviderEnabled'
+        login_path:
+          $ref: '#/components/schemas/IdentityProviderLoginPath'
+        config:
+          type: object
+          oneOf:
+            - $ref: '#/components/schemas/OIDCIdentityProviderConfig'
+            - $ref: '#/components/schemas/SAMLIdentityProviderConfig'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      title: Identity Provider
+    OIDCIdentityProviderConfig:
+      description: The identity provider that contains configuration data for the OIDC authentication integration.
+      type: object
+      properties:
+        issuer_url:
+          $ref: '#/components/schemas/OIDCIdentityProviderIssuer'
+        client_id:
+          $ref: '#/components/schemas/OIDCIdentityProviderClientId'
+        client_secret:
+          $ref: '#/components/schemas/OIDCIdentityProviderClientSecret'
+        scopes:
+          $ref: '#/components/schemas/OIDCIdentityProviderScopes'
+        claim_mappings:
+          $ref: '#/components/schemas/OIDCIdentityProviderClaimMappings'
+      additionalProperties: false
+      required:
+        - issuer_url
+        - client_id
+      title: OIDC Identity Provider Config
+    SAMLIdentityProviderConfig:
+      description: The identity provider that contains configuration data for the SAML authentication integration.
+      type: object
+      properties:
+        idp_metadata_url:
+          $ref: '#/components/schemas/SAMLIdentityProviderMetadataURL'
+        idp_metadata_xml:
+          $ref: '#/components/schemas/SAMLIdentityProviderMetadata'
+        sp_metadata_url:
+          type: string
+          format: path
+          example: /api/v2/developer/authenticate/saml/metadata
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        sp_entity_id:
+          description: The entity ID of the service provider (SP).
+          type: string
+          example: 'https://cloud.konghq.com/sp/00000000-0000-0000-0000-000000000000'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        login_url:
+          description: The URL to redirect users to for initiating login with the identity provider.
+          type: string
+          example: 'https://cloud.konghq.com/login/the-saml-konnect-org'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        callback_url:
+          description: The path URL where the SAML identity provider sends authentication responses after successful login attempts.
+          type: string
+          format: path
+          example: /api/v2/developer/authenticate/saml/acs
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      additionalProperties: false
+      title: SAML Identity Provider Config
     Team:
       x-speakeasy-entity: Team
       description: The team object contains information about a group of users.
@@ -23570,6 +23949,14 @@ components:
         expires_at: '2022-12-31T12:52:23Z'
         last_used_at: '2022-10-24T13:05:42Z'
       title: System Account Access Token
+    IdentityProviderEnabled:
+      description: |
+        Indicates whether the identity provider is enabled.
+        Only one identity provider can be active at a time, such as SAML or OIDC.
+      type: boolean
+      example: true
+      default: false
+      title: Identity Provider Enabled Property
     LegacyStringFieldFilter:
       description: 'Filter using **one** of the following operators: `eq`, `contains`'
       type: object
@@ -64051,6 +64438,64 @@ components:
                 format: uuid
                 x-speakeasy-name-override: account_id
       description: The request schema for adding a system account to a team.
+    UpdateAuthenticationSettings:
+      description: The request schema to update an organization's authentication settings.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              basic_auth_enabled:
+                description: The organization has basic auth enabled.
+                type: boolean
+                example: true
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+              oidc_auth_enabled:
+                description: The organization has OIDC disabled.
+                type: boolean
+                example: false
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+              saml_auth_enabled:
+                description: The organization has SAML disabled.
+                type: boolean
+                example: false
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+              idp_mapping_enabled:
+                description: Whether IdP groups determine the Konnect teams a user has.
+                type: boolean
+                example: true
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+              konnect_mapping_enabled:
+                description: Whether a Konnect Identity Admin assigns teams to a user.
+                type: boolean
+                example: false
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+    CreateIdentityProviderRequest:
+      description: |
+        An object representing the configuration for creating a new identity provider. This configuration may pertain  to either an OIDC or a SAML identity provider.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateIdentityProvider'
+    UpdateIdentityProviderRequest:
+      description: |
+        An object representing the configuration for updating an identity provider. This configuration may pertain  to either an OIDC or a SAML identity provider.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateIdentityProvider'
     UpdateAuditLogWebhook:
       description: The request schema to modify an audit log webhook.
       content:
@@ -65741,6 +66186,49 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/AssignedRole'
+    AuthenticationSettings:
+      description: Response for authentication settings endpoint
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              basic_auth_enabled:
+                description: The organization has basic auth enabled.
+                type: boolean
+                example: true
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+              oidc_auth_enabled:
+                description: The organization has OIDC disabled.
+                type: boolean
+                example: false
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+              saml_auth_enabled:
+                description: The organization has SAML disabled.
+                type: boolean
+                example: false
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+              idp_mapping_enabled:
+                description: IdP groups determine the Konnect teams a user has.
+                type: boolean
+                example: true
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+              konnect_mapping_enabled:
+                description: A Konnect Identity Admin assigns teams to a user.
+                type: boolean
+                example: false
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+            title: Authentication Settings Response
     IdentityBadRequest:
       description: Bad Request
       content:
@@ -65753,6 +66241,12 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/ConflictError'
+    CreateIdentityProviderPermissionDenied:
+      description: Permission denied
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenError'
     IdentityPermissionDenied:
       description: Permission denied
       content:
@@ -65865,6 +66359,13 @@ components:
               last_used_at: '2022-10-24T13:05:42Z'
               token: spat_12345678901234567890123456789012345678901234567890
             title: System Account Access Token Created Response
+    IdentityProvider:
+      description: |
+        An identity provider configuration. This response represents the configuration of a specific identity provider, which can be either OIDC or SAML.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IdentityProvider'
     RetrieveServerlessCloudGatewayResponse:
       description: A response to retrieving a serverless cloud gateway.
       content:
@@ -66741,6 +67242,7 @@ tags:
       Application Auth Strategies are sets of plugin configurations that represent how the gateway will perform authentication and authorization for a Product Version. 
       Called “Auth Strategy” for short in the context of portals/applications. 
       The plugins are synced to any Gateway Service that is currently linked or becomes linked to the Product Version.
+  - name: Auth Settings
   - name: Roles
   - name: Team Membership
   - name: Teams
