@@ -27,6 +27,16 @@ resource "konnect_cloud_gateway_private_dns" "my_cloudgatewayprivatedns" {
       }
       kind = "aws-outbound-resolver"
     }
+    azure_private_dns_resolver_attachment_config = {
+      dns_config = {
+        key = {
+          remote_dns_server_ip_addresses = [
+            "10.0.0.2",
+          ]
+        }
+      }
+      kind = "azure-outbound-resolver"
+    }
   }
 }
 ```
@@ -104,7 +114,7 @@ Required:
 
 Required:
 
-- `dns_config` (Attributes) Object that contains mappings from proxied internal domains to remote DNS server IP address for a Private DNS Resolver. Requires replacement if changed. (see [below for nested schema](#nestedatt--private_dns_attachment_config--azure_private_dns_resolver_attachment_config--dns_config))
+- `dns_config` (Attributes Map) Object that contains mappings from proxied internal domains to remote DNS server IP address for a Private DNS Resolver. Requires replacement if changed. (see [below for nested schema](#nestedatt--private_dns_attachment_config--azure_private_dns_resolver_attachment_config--dns_config))
 - `kind` (String) must be "azure-outbound-resolver"; Requires replacement if changed.
 
 <a id="nestedatt--private_dns_attachment_config--azure_private_dns_resolver_attachment_config--dns_config"></a>
@@ -258,7 +268,7 @@ Private DNS.
 
 Read-Only:
 
-- `dns_config` (Attributes) Object that contains mappings from proxied internal domains to remote DNS server IP address for a Private DNS Resolver. (see [below for nested schema](#nestedatt--azure_private_dns_resolver_response--private_dns_attachment_config--dns_config))
+- `dns_config` (Attributes Map) Object that contains mappings from proxied internal domains to remote DNS server IP address for a Private DNS Resolver. (see [below for nested schema](#nestedatt--azure_private_dns_resolver_response--private_dns_attachment_config--dns_config))
 - `kind` (String)
 
 <a id="nestedatt--azure_private_dns_resolver_response--private_dns_attachment_config--dns_config"></a>

@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.9.0
+> Released 2026/02/20
+
+# Features
+* Add support for Azure Private DNS in `konnect_cloud_gateway_private_dns` resource
+
 ## 3.8.0
 > Released 2026/02/18
 

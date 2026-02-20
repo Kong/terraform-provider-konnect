@@ -3,9 +3,9 @@
 package types
 
 type PrivateDNSAttachmentConfig struct {
-	AwsPrivateDNSResolverAttachmentConfig   *AwsPrivateDNSResolverAttachmentConfig   `queryParam:"inline" tfsdk:"aws_private_dns_resolver_attachment_config"`
-	AwsPrivateHostedZoneAttachmentConfig    *AwsPrivateHostedZoneAttachmentConfig    `queryParam:"inline" tfsdk:"aws_private_hosted_zone_attachment_config"`
-	AzurePrivateDNSResolverAttachmentConfig *AzurePrivateDNSResolverAttachmentConfig `queryParam:"inline" tfsdk:"azure_private_dns_resolver_attachment_config"`
-	AzurePrivateHostedZoneAttachmentConfig  *AzurePrivateHostedZoneAttachmentConfig  `queryParam:"inline" tfsdk:"azure_private_hosted_zone_attachment_config"`
-	GcpPrivateHostedZoneAttachmentConfig    *GcpPrivateHostedZoneAttachmentConfig    `queryParam:"inline" tfsdk:"gcp_private_hosted_zone_attachment_config"`
+	AwsPrivateDNSResolverAttachmentConfig   *AwsPrivateDNSResolverAttachmentConfig  `queryParam:"inline" tfsdk:"aws_private_dns_resolver_attachment_config"`
+	AwsPrivateHostedZoneAttachmentConfig    *AwsPrivateHostedZoneAttachmentConfig   `queryParam:"inline" tfsdk:"aws_private_hosted_zone_attachment_config"`
+	AzurePrivateDNSResolverAttachmentConfig *AwsPrivateDNSResolverAttachmentConfig  `queryParam:"inline" tfsdk:"azure_private_dns_resolver_attachment_config"`
+	AzurePrivateHostedZoneAttachmentConfig  *AzurePrivateHostedZoneAttachmentConfig `queryParam:"inline" tfsdk:"azure_private_hosted_zone_attachment_config"`
+	GcpPrivateHostedZoneAttachmentConfig    *GcpPrivateHostedZoneAttachmentConfig   `queryParam:"inline" tfsdk:"gcp_private_hosted_zone_attachment_config"`
 }
