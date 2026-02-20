@@ -6,6 +6,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type PrivateDNSResolverConfig struct {
+type PrivateDNSResolverConfigObject struct {
 	RemoteDNSServerIPAddresses []types.String `tfsdk:"remote_dns_server_ip_addresses"`
 }

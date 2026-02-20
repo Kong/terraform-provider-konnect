@@ -6,23 +6,23 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-type PrivateDNSResolverConfig struct {
+type PrivateDNSResolverConfigObject struct {
 	// IP addresses of remote DNS servers used by the Private DNS Resolver for DNS resolution.
 	RemoteDNSServerIPAddresses []string `json:"remote_dns_server_ip_addresses"`
 }
 
-func (p PrivateDNSResolverConfig) MarshalJSON() ([]byte, error) {
+func (p PrivateDNSResolverConfigObject) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(p, "", false)
 }
 
-func (p *PrivateDNSResolverConfig) UnmarshalJSON(data []byte) error {
+func (p *PrivateDNSResolverConfigObject) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"remote_dns_server_ip_addresses"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *PrivateDNSResolverConfig) GetRemoteDNSServerIPAddresses() []string {
+func (p *PrivateDNSResolverConfigObject) GetRemoteDNSServerIPAddresses() []string {
 	if p == nil {
 		return []string{}
 	}

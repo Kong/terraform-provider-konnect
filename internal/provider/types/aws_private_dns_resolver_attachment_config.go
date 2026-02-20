@@ -7,6 +7,6 @@ import (
 )
 
 type AwsPrivateDNSResolverAttachmentConfig struct {
-	DNSConfig map[string]PrivateDNSResolverConfig `tfsdk:"dns_config"`
-	Kind      types.String                        `tfsdk:"kind"`
+	DNSConfig map[string]PrivateDNSResolverConfigObject `tfsdk:"dns_config"`
+	Kind      types.String                              `tfsdk:"kind"`
 }

@@ -21356,18 +21356,20 @@ components:
           remote_dns_server_ip_addresses:
             - 10.0.0.8
       additionalProperties:
-        type: object
-        properties:
-          remote_dns_server_ip_addresses:
-            description: IP addresses of remote DNS servers used by the Private DNS Resolver for DNS resolution.
-            type: array
-            items:
-              type: string
-            example:
-              - 10.0.0.2
-        required:
-          - remote_dns_server_ip_addresses
+        $ref: '#/components/schemas/PrivateDnsResolverConfigObject'
       title: Private DNS Resolver Config Item
+    PrivateDnsResolverConfigObject:
+      type: object
+      properties:
+        remote_dns_server_ip_addresses:
+          description: IP addresses of remote DNS servers used by the Private DNS Resolver for DNS resolution.
+          type: array
+          items:
+            type: string
+          example:
+            - 10.0.0.2
+      required:
+        - remote_dns_server_ip_addresses
     PrivateDnsName:
       description: Human-readable name of the Private DNS.
       type: string

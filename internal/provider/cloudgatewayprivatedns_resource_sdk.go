@@ -27,15 +27,15 @@ func (r *CloudGatewayPrivateDNSResourceModel) RefreshFromSharedPrivateDNSRespons
 			r.Name = r.AwsPrivateDNSResolverResponse.Name
 			r.AwsPrivateDNSResolverResponse.PrivateDNSAttachmentConfig = &tfTypes.AwsPrivateDNSResolverAttachmentConfig{}
 			if len(resp.AwsPrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig) > 0 {
-				r.AwsPrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig = make(map[string]tfTypes.PrivateDNSResolverConfig, len(resp.AwsPrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig))
-				for privateDNSResolverConfigKey, privateDNSResolverConfigValue := range resp.AwsPrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig {
-					var privateDNSResolverConfigResult tfTypes.PrivateDNSResolverConfig
-					privateDNSResolverConfigResult.RemoteDNSServerIPAddresses = make([]types.String, 0, len(privateDNSResolverConfigValue.RemoteDNSServerIPAddresses))
-					for _, v := range privateDNSResolverConfigValue.RemoteDNSServerIPAddresses {
-						privateDNSResolverConfigResult.RemoteDNSServerIPAddresses = append(privateDNSResolverConfigResult.RemoteDNSServerIPAddresses, types.StringValue(v))
+				r.AwsPrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig = make(map[string]tfTypes.PrivateDNSResolverConfigObject, len(resp.AwsPrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig))
+				for privateDNSResolverConfigObjectKey, privateDNSResolverConfigObjectValue := range resp.AwsPrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig {
+					var privateDNSResolverConfigObjectResult tfTypes.PrivateDNSResolverConfigObject
+					privateDNSResolverConfigObjectResult.RemoteDNSServerIPAddresses = make([]types.String, 0, len(privateDNSResolverConfigObjectValue.RemoteDNSServerIPAddresses))
+					for _, v := range privateDNSResolverConfigObjectValue.RemoteDNSServerIPAddresses {
+						privateDNSResolverConfigObjectResult.RemoteDNSServerIPAddresses = append(privateDNSResolverConfigObjectResult.RemoteDNSServerIPAddresses, types.StringValue(v))
 					}
 
-					r.AwsPrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig[privateDNSResolverConfigKey] = privateDNSResolverConfigResult
+					r.AwsPrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig[privateDNSResolverConfigObjectKey] = privateDNSResolverConfigObjectResult
 				}
 			}
 			r.AwsPrivateDNSResolverResponse.PrivateDNSAttachmentConfig.Kind = types.StringValue(string(resp.AwsPrivateDNSResolverResponse.PrivateDNSAttachmentConfig.Kind))
@@ -66,7 +66,7 @@ func (r *CloudGatewayPrivateDNSResourceModel) RefreshFromSharedPrivateDNSRespons
 			r.AwsPrivateHostedZoneResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsPrivateHostedZoneResponse.UpdatedAt))
 		}
 		if resp.AzurePrivateDNSResolverResponse != nil {
-			r.AzurePrivateDNSResolverResponse = &tfTypes.AzurePrivateDNSResolverResponse{}
+			r.AzurePrivateDNSResolverResponse = &tfTypes.AwsPrivateDNSResolverResponse{}
 			r.AzurePrivateDNSResolverResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AzurePrivateDNSResolverResponse.CreatedAt))
 			r.AzurePrivateDNSResolverResponse.EntityVersion = types.Int64Value(resp.AzurePrivateDNSResolverResponse.EntityVersion)
 			r.EntityVersion = r.AzurePrivateDNSResolverResponse.EntityVersion
@@ -74,11 +74,18 @@ func (r *CloudGatewayPrivateDNSResourceModel) RefreshFromSharedPrivateDNSRespons
 			r.ID = r.AzurePrivateDNSResolverResponse.ID
 			r.AzurePrivateDNSResolverResponse.Name = types.StringValue(resp.AzurePrivateDNSResolverResponse.Name)
 			r.Name = r.AzurePrivateDNSResolverResponse.Name
-			r.AzurePrivateDNSResolverResponse.PrivateDNSAttachmentConfig = &tfTypes.AzurePrivateDNSResolverAttachmentConfig{}
-			r.AzurePrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig = &tfTypes.PrivateDNSResolverConfig{}
-			r.AzurePrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig.RemoteDNSServerIPAddresses = make([]types.String, 0, len(resp.AzurePrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig.RemoteDNSServerIPAddresses))
-			for _, v := range resp.AzurePrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig.RemoteDNSServerIPAddresses {
-				r.AzurePrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig.RemoteDNSServerIPAddresses = append(r.AzurePrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig.RemoteDNSServerIPAddresses, types.StringValue(v))
+			r.AzurePrivateDNSResolverResponse.PrivateDNSAttachmentConfig = &tfTypes.AwsPrivateDNSResolverAttachmentConfig{}
+			if len(resp.AzurePrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig) > 0 {
+				r.AzurePrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig = make(map[string]tfTypes.PrivateDNSResolverConfigObject, len(resp.AzurePrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig))
+				for privateDNSResolverConfigObjectKey1, privateDNSResolverConfigObjectValue1 := range resp.AzurePrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig {
+					var privateDNSResolverConfigObjectResult1 tfTypes.PrivateDNSResolverConfigObject
+					privateDNSResolverConfigObjectResult1.RemoteDNSServerIPAddresses = make([]types.String, 0, len(privateDNSResolverConfigObjectValue1.RemoteDNSServerIPAddresses))
+					for _, v := range privateDNSResolverConfigObjectValue1.RemoteDNSServerIPAddresses {
+						privateDNSResolverConfigObjectResult1.RemoteDNSServerIPAddresses = append(privateDNSResolverConfigObjectResult1.RemoteDNSServerIPAddresses, types.StringValue(v))
+					}
+
+					r.AzurePrivateDNSResolverResponse.PrivateDNSAttachmentConfig.DNSConfig[privateDNSResolverConfigObjectKey1] = privateDNSResolverConfigObjectResult1
+				}
 			}
 			r.AzurePrivateDNSResolverResponse.PrivateDNSAttachmentConfig.Kind = types.StringValue(string(resp.AzurePrivateDNSResolverResponse.PrivateDNSAttachmentConfig.Kind))
 			r.AzurePrivateDNSResolverResponse.State = types.StringValue(string(resp.AzurePrivateDNSResolverResponse.State))
@@ -222,13 +229,13 @@ func (r *CloudGatewayPrivateDNSResourceModel) ToSharedCreatePrivateDNSRequest(ct
 		var awsPrivateDNSResolverAttachmentConfig *shared.AwsPrivateDNSResolverAttachmentConfig
 		if r.PrivateDNSAttachmentConfig.AwsPrivateDNSResolverAttachmentConfig != nil {
 			kind1 := shared.AWSPrivateDNSResolverType(r.PrivateDNSAttachmentConfig.AwsPrivateDNSResolverAttachmentConfig.Kind.ValueString())
-			dnsConfig := make(map[string]shared.PrivateDNSResolverConfig)
+			dnsConfig := make(map[string]shared.PrivateDNSResolverConfigObject)
 			for dnsConfigKey := range r.PrivateDNSAttachmentConfig.AwsPrivateDNSResolverAttachmentConfig.DNSConfig {
 				remoteDNSServerIPAddresses := make([]string, 0, len(r.PrivateDNSAttachmentConfig.AwsPrivateDNSResolverAttachmentConfig.DNSConfig[dnsConfigKey].RemoteDNSServerIPAddresses))
 				for remoteDNSServerIPAddressesIndex := range r.PrivateDNSAttachmentConfig.AwsPrivateDNSResolverAttachmentConfig.DNSConfig[dnsConfigKey].RemoteDNSServerIPAddresses {
 					remoteDNSServerIPAddresses = append(remoteDNSServerIPAddresses, r.PrivateDNSAttachmentConfig.AwsPrivateDNSResolverAttachmentConfig.DNSConfig[dnsConfigKey].RemoteDNSServerIPAddresses[remoteDNSServerIPAddressesIndex].ValueString())
 				}
-				dnsConfigInst := shared.PrivateDNSResolverConfig{
+				dnsConfigInst := shared.PrivateDNSResolverConfigObject{
 					RemoteDNSServerIPAddresses: remoteDNSServerIPAddresses,
 				}
 				dnsConfig[dnsConfigKey] = dnsConfigInst
@@ -302,12 +309,16 @@ func (r *CloudGatewayPrivateDNSResourceModel) ToSharedCreatePrivateDNSRequest(ct
 		var azurePrivateDNSResolverAttachmentConfig *shared.AzurePrivateDNSResolverAttachmentConfig
 		if r.PrivateDNSAttachmentConfig.AzurePrivateDNSResolverAttachmentConfig != nil {
 			kind4 := shared.AzurePrivateDNSResolverType(r.PrivateDNSAttachmentConfig.AzurePrivateDNSResolverAttachmentConfig.Kind.ValueString())
-			remoteDNSServerIPAddresses1 := make([]string, 0, len(r.PrivateDNSAttachmentConfig.AzurePrivateDNSResolverAttachmentConfig.DNSConfig.RemoteDNSServerIPAddresses))
-			for remoteDNSServerIPAddressesIndex1 := range r.PrivateDNSAttachmentConfig.AzurePrivateDNSResolverAttachmentConfig.DNSConfig.RemoteDNSServerIPAddresses {
-				remoteDNSServerIPAddresses1 = append(remoteDNSServerIPAddresses1, r.PrivateDNSAttachmentConfig.AzurePrivateDNSResolverAttachmentConfig.DNSConfig.RemoteDNSServerIPAddresses[remoteDNSServerIPAddressesIndex1].ValueString())
-			}
-			dnsConfig1 := shared.PrivateDNSResolverConfig{
-				RemoteDNSServerIPAddresses: remoteDNSServerIPAddresses1,
+			dnsConfig1 := make(map[string]shared.PrivateDNSResolverConfigObject)
+			for dnsConfigKey1 := range r.PrivateDNSAttachmentConfig.AzurePrivateDNSResolverAttachmentConfig.DNSConfig {
+				remoteDNSServerIPAddresses1 := make([]string, 0, len(r.PrivateDNSAttachmentConfig.AzurePrivateDNSResolverAttachmentConfig.DNSConfig[dnsConfigKey1].RemoteDNSServerIPAddresses))
+				for remoteDNSServerIPAddressesIndex1 := range r.PrivateDNSAttachmentConfig.AzurePrivateDNSResolverAttachmentConfig.DNSConfig[dnsConfigKey1].RemoteDNSServerIPAddresses {
+					remoteDNSServerIPAddresses1 = append(remoteDNSServerIPAddresses1, r.PrivateDNSAttachmentConfig.AzurePrivateDNSResolverAttachmentConfig.DNSConfig[dnsConfigKey1].RemoteDNSServerIPAddresses[remoteDNSServerIPAddressesIndex1].ValueString())
+				}
+				dnsConfigInst1 := shared.PrivateDNSResolverConfigObject{
+					RemoteDNSServerIPAddresses: remoteDNSServerIPAddresses1,
+				}
+				dnsConfig1[dnsConfigKey1] = dnsConfigInst1
 			}
 			azurePrivateDNSResolverAttachmentConfig = &shared.AzurePrivateDNSResolverAttachmentConfig{
 				Kind:      kind4,
