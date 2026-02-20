@@ -43,17 +43,17 @@ type CloudGatewayPrivateDNSResource struct {
 
 // CloudGatewayPrivateDNSResourceModel describes the resource data model.
 type CloudGatewayPrivateDNSResourceModel struct {
-	AwsPrivateDNSResolverResponse   *tfTypes.AwsPrivateDNSResolverResponse   `queryParam:"inline" tfsdk:"aws_private_dns_resolver_response"`
-	AwsPrivateHostedZoneResponse    *tfTypes.AwsPrivateHostedZoneResponse    `queryParam:"inline" tfsdk:"aws_private_hosted_zone_response"`
-	AzurePrivateDNSResolverResponse *tfTypes.AzurePrivateDNSResolverResponse `queryParam:"inline" tfsdk:"azure_private_dns_resolver_response"`
-	AzurePrivateHostedZoneResponse  *tfTypes.AzurePrivateHostedZoneResponse  `queryParam:"inline" tfsdk:"azure_private_hosted_zone_response"`
-	EntityVersion                   types.Int64                              `tfsdk:"entity_version"`
-	GcpPrivateHostedZoneResponse    *tfTypes.GcpPrivateHostedZoneResponse    `queryParam:"inline" tfsdk:"gcp_private_hosted_zone_response"`
-	ID                              types.String                             `tfsdk:"id"`
-	Name                            types.String                             `tfsdk:"name"`
-	NetworkID                       types.String                             `tfsdk:"network_id"`
-	PrivateDNSAttachmentConfig      *tfTypes.PrivateDNSAttachmentConfig      `tfsdk:"private_dns_attachment_config"`
-	State                           types.String                             `tfsdk:"state"`
+	AwsPrivateDNSResolverResponse   *tfTypes.AwsPrivateDNSResolverResponse  `queryParam:"inline" tfsdk:"aws_private_dns_resolver_response"`
+	AwsPrivateHostedZoneResponse    *tfTypes.AwsPrivateHostedZoneResponse   `queryParam:"inline" tfsdk:"aws_private_hosted_zone_response"`
+	AzurePrivateDNSResolverResponse *tfTypes.AwsPrivateDNSResolverResponse  `queryParam:"inline" tfsdk:"azure_private_dns_resolver_response"`
+	AzurePrivateHostedZoneResponse  *tfTypes.AzurePrivateHostedZoneResponse `queryParam:"inline" tfsdk:"azure_private_hosted_zone_response"`
+	EntityVersion                   types.Int64                             `tfsdk:"entity_version"`
+	GcpPrivateHostedZoneResponse    *tfTypes.GcpPrivateHostedZoneResponse   `queryParam:"inline" tfsdk:"gcp_private_hosted_zone_response"`
+	ID                              types.String                            `tfsdk:"id"`
+	Name                            types.String                            `tfsdk:"name"`
+	NetworkID                       types.String                            `tfsdk:"network_id"`
+	PrivateDNSAttachmentConfig      *tfTypes.PrivateDNSAttachmentConfig     `tfsdk:"private_dns_attachment_config"`
+	State                           types.String                            `tfsdk:"state"`
 }
 
 func (r *CloudGatewayPrivateDNSResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -252,13 +252,15 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 					"private_dns_attachment_config": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
-							"dns_config": schema.SingleNestedAttribute{
+							"dns_config": schema.MapNestedAttribute{
 								Computed: true,
-								Attributes: map[string]schema.Attribute{
-									"remote_dns_server_ip_addresses": schema.ListAttribute{
-										Computed:    true,
-										ElementType: types.StringType,
-										Description: `IP addresses of remote DNS servers used by the Private DNS Resolver for DNS resolution.`,
+								NestedObject: schema.NestedAttributeObject{
+									Attributes: map[string]schema.Attribute{
+										"remote_dns_server_ip_addresses": schema.ListAttribute{
+											Computed:    true,
+											ElementType: types.StringType,
+											Description: `IP addresses of remote DNS servers used by the Private DNS Resolver for DNS resolution.`,
+										},
 									},
 								},
 								Description: `Object that contains mappings from proxied internal domains to remote DNS server IP address for a Private DNS Resolver.`,
@@ -606,19 +608,24 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 							objectplanmodifier.RequiresReplaceIfConfigured(),
 						},
 						Attributes: map[string]schema.Attribute{
-							"dns_config": schema.SingleNestedAttribute{
+							"dns_config": schema.MapNestedAttribute{
 								Required: true,
-								PlanModifiers: []planmodifier.Object{
-									objectplanmodifier.RequiresReplaceIfConfigured(),
+								PlanModifiers: []planmodifier.Map{
+									mapplanmodifier.RequiresReplaceIfConfigured(),
 								},
-								Attributes: map[string]schema.Attribute{
-									"remote_dns_server_ip_addresses": schema.ListAttribute{
-										Required: true,
-										PlanModifiers: []planmodifier.List{
-											listplanmodifier.RequiresReplaceIfConfigured(),
+								NestedObject: schema.NestedAttributeObject{
+									PlanModifiers: []planmodifier.Object{
+										objectplanmodifier.RequiresReplaceIfConfigured(),
+									},
+									Attributes: map[string]schema.Attribute{
+										"remote_dns_server_ip_addresses": schema.ListAttribute{
+											Required: true,
+											PlanModifiers: []planmodifier.List{
+												listplanmodifier.RequiresReplaceIfConfigured(),
+											},
+											ElementType: types.StringType,
+											Description: `IP addresses of remote DNS servers used by the Private DNS Resolver for DNS resolution. Requires replacement if changed.`,
 										},
-										ElementType: types.StringType,
-										Description: `IP addresses of remote DNS servers used by the Private DNS Resolver for DNS resolution. Requires replacement if changed.`,
 									},
 								},
 								Description: `Object that contains mappings from proxied internal domains to remote DNS server IP address for a Private DNS Resolver. Requires replacement if changed.`,

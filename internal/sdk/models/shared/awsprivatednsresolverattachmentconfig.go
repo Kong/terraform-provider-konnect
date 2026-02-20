@@ -35,7 +35,7 @@ type AwsPrivateDNSResolverAttachmentConfig struct {
 	Kind AWSPrivateDNSResolverType `json:"kind"`
 	// Object that contains mappings from proxied internal domains to remote DNS server IP address for a Private DNS Resolver.
 	//
-	DNSConfig map[string]PrivateDNSResolverConfig `json:"dns_config"`
+	DNSConfig map[string]PrivateDNSResolverConfigObject `json:"dns_config"`
 }
 
 func (a AwsPrivateDNSResolverAttachmentConfig) MarshalJSON() ([]byte, error) {
@@ -56,9 +56,9 @@ func (a *AwsPrivateDNSResolverAttachmentConfig) GetKind() AWSPrivateDNSResolverT
 	return a.Kind
 }
 
-func (a *AwsPrivateDNSResolverAttachmentConfig) GetDNSConfig() map[string]PrivateDNSResolverConfig {
+func (a *AwsPrivateDNSResolverAttachmentConfig) GetDNSConfig() map[string]PrivateDNSResolverConfigObject {
 	if a == nil {
-		return map[string]PrivateDNSResolverConfig{}
+		return map[string]PrivateDNSResolverConfigObject{}
 	}
 	return a.DNSConfig
 }
