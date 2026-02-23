@@ -23149,6 +23149,45 @@ components:
             - unit
       additionalProperties: false
       title: AppAuthStrategyConfigKeyAuth
+    PartialAppAuthStrategyConfigKeyAuth:
+      description: |
+        Key Auth configuration for updating an Application Auth Strategy.
+        The ttl field can be set to null to unset the Time-To-Live.
+      type: object
+      properties:
+        key_names:
+          description: The names of the headers containing the API key. You can specify multiple header names.
+          type: array
+          items:
+            type: string
+            maxLength: 256
+          default: null
+          maxItems: 10
+          minItems: 1
+          nullable: true
+          x-speakeasy-param-computed: false
+        ttl:
+          description: Default maximum Time-To-Live for keys created under this strategy. Set to null to unset.
+          type: object
+          default: null
+          nullable: true
+          properties:
+            value:
+              type: integer
+              minimum: 1
+            unit:
+              type: string
+              enum:
+                - days
+                - weeks
+                - years
+              x-speakeasy-unknown-values: allow
+          required:
+            - value
+            - unit
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      title: PartialAppAuthStrategyConfigKeyAuth
     PartialAppAuthStrategyConfigOpenIDConnect:
       description: |
         A more advanced mode to configure an API Product Version’s Application Auth Strategy. 
@@ -23511,7 +23550,7 @@ components:
       type: object
       properties:
         key-auth:
-          $ref: '#/components/schemas/AppAuthStrategyConfigKeyAuth'
+          $ref: '#/components/schemas/PartialAppAuthStrategyConfigKeyAuth'
       additionalProperties: false
       required:
         - key-auth
@@ -29008,7 +29047,7 @@ components:
         condition:
           description: A string containing the boolean expression that determines whether the policy is applied.
           type: string
-          example: 'context.topic.name.endsWith("my_suffix") && records.headers["x-flag"] == "a-value"'
+          example: 'context.topic.name.endsWith("my_suffix") && record.headers["x-flag"] == "a-value"'
           default: ''
           maxLength: 1000
           x-expression:
@@ -29074,7 +29113,7 @@ components:
         condition:
           description: A string containing the boolean expression that determines whether the policy is applied.
           type: string
-          example: 'context.topic.name.endsWith("my_suffix") && records.headers["x-flag"] == "a-value"'
+          example: 'context.topic.name.endsWith("my_suffix") && record.headers["x-flag"] == "a-value"'
           default: ''
           maxLength: 1000
           x-expression:
@@ -29427,7 +29466,7 @@ components:
         condition:
           description: A string containing the boolean expression that determines whether the policy is applied.
           type: string
-          example: 'context.topic.name.endsWith("my_suffix") && records.headers["x-flag"] == "a-value"'
+          example: 'context.topic.name.endsWith("my_suffix") && record.headers["x-flag"] == "a-value"'
           default: ''
           maxLength: 1000
           x-expression:
@@ -29475,7 +29514,7 @@ components:
         condition:
           description: A string containing the boolean expression that determines whether the policy is applied.
           type: string
-          example: 'context.topic.name.endsWith("my_suffix") && records.headers["x-flag"] == "a-value"'
+          example: 'context.topic.name.endsWith("my_suffix") && record.headers["x-flag"] == "a-value"'
           default: ''
           maxLength: 1000
           x-expression:
@@ -32112,6 +32151,7 @@ components:
                   additionalProperties: true
                   nullable: true
                   x-speakeasy-param-computed: false
+                  x-speakeasy-type-override: any
                 model:
                   type: object
                   properties:
@@ -32940,7 +32980,6 @@ components:
                   parameters:
                     description: 'The API parameters specification defined in OpenAPI. For example, ''[{"name": "city", "in": "query", "description": "Name of the city to get the weather for", "required": true, "schema": {"type": "string"}}]''.See https://swagger.io/docs/specification/v3_0/describing-parameters/ for more details.'
                     items:
-                      additionalProperties: true
                       type: object
                       properties:
                         name:
@@ -32981,6 +33020,7 @@ components:
                     additionalProperties: true
                     nullable: true
                     x-speakeasy-param-computed: false
+                    x-speakeasy-type-override: any
                   responses:
                     description: 'The API responses specification defined in OpenAPI. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, ''{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}''.See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details.Only one non-error (status code < 400) responses are supported.'
                     additionalProperties: true
@@ -32988,6 +33028,7 @@ components:
                     nullable: true
                     type: object
                     x-speakeasy-param-computed: false
+                    x-speakeasy-type-override: any
                   scheme:
                     description: 'The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it.'
                     type: string
@@ -34083,6 +34124,7 @@ components:
                     additionalProperties: true
                     nullable: true
                     x-speakeasy-param-computed: false
+                    x-speakeasy-type-override: any
                   model:
                     type: object
                     properties:
@@ -36754,6 +36796,7 @@ components:
                   additionalProperties: true
                   nullable: true
                   x-speakeasy-param-computed: false
+                  x-speakeasy-type-override: any
                 model:
                   type: object
                   properties:
@@ -37288,6 +37331,7 @@ components:
                   additionalProperties: true
                   nullable: true
                   x-speakeasy-param-computed: false
+                  x-speakeasy-type-override: any
                 model:
                   type: object
                   properties:
@@ -43432,10 +43476,10 @@ components:
                       values:
                         description: An object with string keys and freeform values
                         type: object
-                        default: null
                         additionalProperties: true
-                        nullable: true
-                        x-speakeasy-param-computed: false
+                        x-speakeasy-type-override: any
+                    required:
+                      - values
                     title: static
                     type: object
                   - description: convert XML to JSON
