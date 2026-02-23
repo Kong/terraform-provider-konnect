@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.10.0
+> Released 2026/02/??
+
+# Bug Fixes
+* Support free form objects with nested structure as JSON encoded strings in plugins 
+
 ## 3.9.0
 > Released 2026/02/20
 
