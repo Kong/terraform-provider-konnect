@@ -8,11 +8,11 @@ import (
 )
 
 type Llm struct {
-	Auth        *AiLlmAsJudgePluginAuth         `tfsdk:"auth"`
-	Description types.String                    `tfsdk:"description"`
-	Logging     *AiLlmAsJudgePluginLogging      `tfsdk:"logging"`
-	Metadata    map[string]jsontypes.Normalized `tfsdk:"metadata"`
-	Model       *AiLlmAsJudgePluginModel        `tfsdk:"model"`
-	RouteType   types.String                    `tfsdk:"route_type"`
-	Weight      types.Int64                     `tfsdk:"weight"`
+	Auth        *AiLlmAsJudgePluginAuth    `tfsdk:"auth"`
+	Description types.String               `tfsdk:"description"`
+	Logging     *AiLlmAsJudgePluginLogging `tfsdk:"logging"`
+	Metadata    jsontypes.Normalized       `tfsdk:"metadata"`
+	Model       *AiLlmAsJudgePluginModel   `tfsdk:"model"`
+	RouteType   types.String               `tfsdk:"route_type"`
+	Weight      types.Int64                `tfsdk:"weight"`
 }

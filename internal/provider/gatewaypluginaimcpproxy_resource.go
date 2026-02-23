@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
-	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -27,7 +26,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
@@ -299,12 +297,6 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 											speakeasy_objectvalidators.NotNull(),
 										},
 										Attributes: map[string]schema.Attribute{
-											"additional_properties": schema.StringAttribute{
-												CustomType:  jsontypes.NormalizedType{},
-												Computed:    true,
-												Optional:    true,
-												Description: `Parsed as JSON.`,
-											},
 											"description": schema.StringAttribute{
 												Computed: true,
 												Optional: true,
@@ -346,21 +338,15 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 									},
 									Description: `The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.`,
 								},
-								"request_body": schema.MapAttribute{
+								"request_body": schema.StringAttribute{
+									CustomType:  jsontypes.NormalizedType{},
 									Optional:    true,
-									ElementType: jsontypes.NormalizedType{},
-									Description: `The API requestBody specification defined in OpenAPI. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details.`,
-									Validators: []validator.Map{
-										mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-									},
+									Description: `The API requestBody specification defined in OpenAPI. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details. Parsed as JSON.`,
 								},
-								"responses": schema.MapAttribute{
+								"responses": schema.StringAttribute{
+									CustomType:  jsontypes.NormalizedType{},
 									Optional:    true,
-									ElementType: jsontypes.NormalizedType{},
-									Description: `The API responses specification defined in OpenAPI. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details.Only one non-error (status code < 400) responses are supported.`,
-									Validators: []validator.Map{
-										mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-									},
+									Description: `The API responses specification defined in OpenAPI. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details.Only one non-error (status code < 400) responses are supported. Parsed as JSON.`,
 								},
 								"scheme": schema.StringAttribute{
 									Computed:    true,

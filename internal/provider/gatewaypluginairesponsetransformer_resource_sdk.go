@@ -56,12 +56,11 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) RefreshFromSharedAiRes
 			r.Config.Llm.Logging.LogPayloads = types.BoolPointerValue(resp.Config.Llm.Logging.LogPayloads)
 			r.Config.Llm.Logging.LogStatistics = types.BoolPointerValue(resp.Config.Llm.Logging.LogStatistics)
 		}
-		if resp.Config.Llm.Metadata != nil {
-			r.Config.Llm.Metadata = make(map[string]jsontypes.Normalized, len(resp.Config.Llm.Metadata))
-			for key, value := range resp.Config.Llm.Metadata {
-				result, _ := json.Marshal(value)
-				r.Config.Llm.Metadata[key] = jsontypes.NewNormalizedValue(string(result))
-			}
+		if resp.Config.Llm.Metadata == nil {
+			r.Config.Llm.Metadata = jsontypes.NewNormalizedNull()
+		} else {
+			metadataResult, _ := json.Marshal(resp.Config.Llm.Metadata)
+			r.Config.Llm.Metadata = jsontypes.NewNormalizedValue(string(metadataResult))
 		}
 		r.Config.Llm.Model = &tfTypes.AiLlmAsJudgePluginModel{}
 		r.Config.Llm.Model.Name = types.StringPointerValue(resp.Config.Llm.Model.Name)
@@ -569,14 +568,9 @@ func (r *GatewayPluginAiResponseTransformerResourceModel) ToSharedAiResponseTran
 			LogStatistics: logStatistics,
 		}
 	}
-	var metadata map[string]interface{}
-	if r.Config.Llm.Metadata != nil {
-		metadata = make(map[string]interface{})
-		for metadataKey := range r.Config.Llm.Metadata {
-			var metadataInst interface{}
-			_ = json.Unmarshal([]byte(r.Config.Llm.Metadata[metadataKey].ValueString()), &metadataInst)
-			metadata[metadataKey] = metadataInst
-		}
+	var metadata interface{}
+	if !r.Config.Llm.Metadata.IsUnknown() && !r.Config.Llm.Metadata.IsNull() {
+		_ = json.Unmarshal([]byte(r.Config.Llm.Metadata.ValueString()), &metadata)
 	}
 	name1 := new(string)
 	if !r.Config.Llm.Model.Name.IsUnknown() && !r.Config.Llm.Model.Name.IsNull() {

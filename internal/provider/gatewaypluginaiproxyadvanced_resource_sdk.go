@@ -175,12 +175,11 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				targets.Logging.LogPayloads = types.BoolPointerValue(targetsItem.Logging.LogPayloads)
 				targets.Logging.LogStatistics = types.BoolPointerValue(targetsItem.Logging.LogStatistics)
 			}
-			if targetsItem.Metadata != nil {
-				targets.Metadata = make(map[string]jsontypes.Normalized, len(targetsItem.Metadata))
-				for key, value := range targetsItem.Metadata {
-					result, _ := json.Marshal(value)
-					targets.Metadata[key] = jsontypes.NewNormalizedValue(string(result))
-				}
+			if targetsItem.Metadata == nil {
+				targets.Metadata = jsontypes.NewNormalizedNull()
+			} else {
+				metadataResult, _ := json.Marshal(targetsItem.Metadata)
+				targets.Metadata = jsontypes.NewNormalizedValue(string(metadataResult))
 			}
 			targets.Model = &tfTypes.AiLlmAsJudgePluginModel{}
 			targets.Model.Name = types.StringPointerValue(targetsItem.Model.Name)
@@ -1137,14 +1136,9 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 				LogStatistics: logStatistics,
 			}
 		}
-		var metadata map[string]interface{}
-		if r.Config.Targets[targetsIndex].Metadata != nil {
-			metadata = make(map[string]interface{})
-			for metadataKey := range r.Config.Targets[targetsIndex].Metadata {
-				var metadataInst interface{}
-				_ = json.Unmarshal([]byte(r.Config.Targets[targetsIndex].Metadata[metadataKey].ValueString()), &metadataInst)
-				metadata[metadataKey] = metadataInst
-			}
+		var metadata interface{}
+		if !r.Config.Targets[targetsIndex].Metadata.IsUnknown() && !r.Config.Targets[targetsIndex].Metadata.IsNull() {
+			_ = json.Unmarshal([]byte(r.Config.Targets[targetsIndex].Metadata.ValueString()), &metadata)
 		}
 		name2 := new(string)
 		if !r.Config.Targets[targetsIndex].Model.Name.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Name.IsNull() {

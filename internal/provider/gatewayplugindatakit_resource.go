@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -28,7 +27,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
@@ -731,12 +729,13 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											ElementType: types.StringType,
 											Description: `Individual items from ` + "`" + `.values` + "`" + `, referenced by key`,
 										},
-										"values": schema.MapAttribute{
+										"values": schema.StringAttribute{
+											CustomType:  jsontypes.NormalizedType{},
+											Computed:    true,
 											Optional:    true,
-											ElementType: jsontypes.NormalizedType{},
-											Description: `An object with string keys and freeform values`,
-											Validators: []validator.Map{
-												mapvalidator.ValueStringsAre(validators.IsValidJSON()),
+											Description: `An object with string keys and freeform values. Not Null; Parsed as JSON.`,
+											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
 											},
 										},
 									},

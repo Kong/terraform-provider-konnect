@@ -1902,7 +1902,7 @@ type Targets struct {
 	Description *string                       `default:"null" json:"description"`
 	Logging     *AiProxyAdvancedPluginLogging `json:"logging"`
 	// For internal use only.
-	Metadata map[string]any                   `json:"metadata,omitempty"`
+	Metadata any                              `json:"metadata,omitempty"`
 	Model    AiProxyAdvancedPluginConfigModel `json:"model"`
 	// The model's operation implementation, for this provider.
 	RouteType AiProxyAdvancedPluginRouteType `json:"route_type"`
@@ -1942,7 +1942,7 @@ func (t *Targets) GetLogging() *AiProxyAdvancedPluginLogging {
 	return t.Logging
 }
 
-func (t *Targets) GetMetadata() map[string]any {
+func (t *Targets) GetMetadata() any {
 	if t == nil {
 		return nil
 	}

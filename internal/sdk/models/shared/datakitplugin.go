@@ -229,7 +229,7 @@ type Static struct {
 	Outputs map[string]string `json:"outputs,omitempty"`
 	type_   *string           `const:"static" json:"type,omitempty"`
 	// An object with string keys and freeform values
-	Values map[string]any `json:"values,omitempty"`
+	Values any `json:"values"`
 }
 
 func (s Static) MarshalJSON() ([]byte, error) {
@@ -237,7 +237,7 @@ func (s Static) MarshalJSON() ([]byte, error) {
 }
 
 func (s *Static) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"values"}); err != nil {
 		return err
 	}
 	return nil
@@ -268,7 +268,7 @@ func (s *Static) GetType() *string {
 	return types.Pointer("static")
 }
 
-func (s *Static) GetValues() map[string]any {
+func (s *Static) GetValues() any {
 	if s == nil {
 		return nil
 	}

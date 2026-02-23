@@ -8,17 +8,17 @@ import (
 )
 
 type Tools struct {
-	ACL         *AiMcpProxyPluginACL            `tfsdk:"acl"`
-	Annotations *Annotations                    `tfsdk:"annotations"`
-	Description types.String                    `tfsdk:"description"`
-	Headers     map[string][]types.String       `tfsdk:"headers"`
-	Host        types.String                    `tfsdk:"host"`
-	Method      types.String                    `tfsdk:"method"`
-	Name        types.String                    `tfsdk:"name"`
-	Parameters  []Parameters                    `tfsdk:"parameters"`
-	Path        types.String                    `tfsdk:"path"`
-	Query       map[string][]types.String       `tfsdk:"query"`
-	RequestBody map[string]jsontypes.Normalized `tfsdk:"request_body"`
-	Responses   map[string]jsontypes.Normalized `tfsdk:"responses"`
-	Scheme      types.String                    `tfsdk:"scheme"`
+	ACL         *AiMcpProxyPluginACL      `tfsdk:"acl"`
+	Annotations *Annotations              `tfsdk:"annotations"`
+	Description types.String              `tfsdk:"description"`
+	Headers     map[string][]types.String `tfsdk:"headers"`
+	Host        types.String              `tfsdk:"host"`
+	Method      types.String              `tfsdk:"method"`
+	Name        types.String              `tfsdk:"name"`
+	Parameters  []Parameters              `tfsdk:"parameters"`
+	Path        types.String              `tfsdk:"path"`
+	Query       map[string][]types.String `tfsdk:"query"`
+	RequestBody jsontypes.Normalized      `tfsdk:"request_body"`
+	Responses   jsontypes.Normalized      `tfsdk:"responses"`
+	Scheme      types.String              `tfsdk:"scheme"`
 }

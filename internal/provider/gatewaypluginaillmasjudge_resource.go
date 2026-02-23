@@ -10,7 +10,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/float64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -29,7 +28,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 )
 
@@ -249,13 +247,10 @@ func (r *GatewayPluginAiLlmAsJudgeResource) Schema(ctx context.Context, req reso
 									},
 								},
 							},
-							"metadata": schema.MapAttribute{
+							"metadata": schema.StringAttribute{
+								CustomType:  jsontypes.NormalizedType{},
 								Optional:    true,
-								ElementType: jsontypes.NormalizedType{},
-								Description: `For internal use only.`,
-								Validators: []validator.Map{
-									mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-								},
+								Description: `For internal use only. Parsed as JSON.`,
 							},
 							"model": schema.SingleNestedAttribute{
 								Required: true,

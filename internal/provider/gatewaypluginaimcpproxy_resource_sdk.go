@@ -134,12 +134,6 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 					for _, parametersItem := range toolsItem.Parameters {
 						var parameters tfTypes.Parameters
 
-						if parametersItem.AdditionalProperties == nil {
-							parameters.AdditionalProperties = jsontypes.NewNormalizedNull()
-						} else {
-							additionalPropertiesResult, _ := json.Marshal(parametersItem.AdditionalProperties)
-							parameters.AdditionalProperties = jsontypes.NewNormalizedValue(string(additionalPropertiesResult))
-						}
 						parameters.Description = types.StringPointerValue(parametersItem.Description)
 						parameters.In = types.StringPointerValue(parametersItem.In)
 						parameters.Name = types.StringPointerValue(parametersItem.Name)
@@ -169,19 +163,17 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 						tools.Query[queryKey] = queryResult
 					}
 				}
-				if toolsItem.RequestBody != nil {
-					tools.RequestBody = make(map[string]jsontypes.Normalized, len(toolsItem.RequestBody))
-					for key, value := range toolsItem.RequestBody {
-						result, _ := json.Marshal(value)
-						tools.RequestBody[key] = jsontypes.NewNormalizedValue(string(result))
-					}
+				if toolsItem.RequestBody == nil {
+					tools.RequestBody = jsontypes.NewNormalizedNull()
+				} else {
+					requestBodyResult, _ := json.Marshal(toolsItem.RequestBody)
+					tools.RequestBody = jsontypes.NewNormalizedValue(string(requestBodyResult))
 				}
-				if toolsItem.Responses != nil {
-					tools.Responses = make(map[string]jsontypes.Normalized, len(toolsItem.Responses))
-					for key1, value1 := range toolsItem.Responses {
-						result1, _ := json.Marshal(value1)
-						tools.Responses[key1] = jsontypes.NewNormalizedValue(string(result1))
-					}
+				if toolsItem.Responses == nil {
+					tools.Responses = jsontypes.NewNormalizedNull()
+				} else {
+					responsesResult, _ := json.Marshal(toolsItem.Responses)
+					tools.Responses = jsontypes.NewNormalizedValue(string(responsesResult))
 				}
 				if toolsItem.Scheme != nil {
 					tools.Scheme = types.StringValue(string(*toolsItem.Scheme))
@@ -681,17 +673,12 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 					} else {
 						description1 = nil
 					}
-					var additionalProperties map[string]any
-					if !r.Config.Tools[toolsIndex].Parameters[parametersIndex].AdditionalProperties.IsUnknown() && !r.Config.Tools[toolsIndex].Parameters[parametersIndex].AdditionalProperties.IsNull() {
-						_ = json.Unmarshal([]byte(r.Config.Tools[toolsIndex].Parameters[parametersIndex].AdditionalProperties.ValueString()), &additionalProperties)
-					}
 					parameters = append(parameters, shared.Parameters{
-						Name:                 name2,
-						In:                   in,
-						Required:             required,
-						Schema:               schema,
-						Description:          description1,
-						AdditionalProperties: additionalProperties,
+						Name:        name2,
+						In:          in,
+						Required:    required,
+						Schema:      schema,
+						Description: description1,
 					})
 				}
 			}
@@ -712,23 +699,13 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 					query[queryKey] = queryInst
 				}
 			}
-			var requestBody map[string]interface{}
-			if r.Config.Tools[toolsIndex].RequestBody != nil {
-				requestBody = make(map[string]interface{})
-				for requestBodyKey := range r.Config.Tools[toolsIndex].RequestBody {
-					var requestBodyInst interface{}
-					_ = json.Unmarshal([]byte(r.Config.Tools[toolsIndex].RequestBody[requestBodyKey].ValueString()), &requestBodyInst)
-					requestBody[requestBodyKey] = requestBodyInst
-				}
+			var requestBody interface{}
+			if !r.Config.Tools[toolsIndex].RequestBody.IsUnknown() && !r.Config.Tools[toolsIndex].RequestBody.IsNull() {
+				_ = json.Unmarshal([]byte(r.Config.Tools[toolsIndex].RequestBody.ValueString()), &requestBody)
 			}
-			var responses map[string]interface{}
-			if r.Config.Tools[toolsIndex].Responses != nil {
-				responses = make(map[string]interface{})
-				for responsesKey := range r.Config.Tools[toolsIndex].Responses {
-					var responsesInst interface{}
-					_ = json.Unmarshal([]byte(r.Config.Tools[toolsIndex].Responses[responsesKey].ValueString()), &responsesInst)
-					responses[responsesKey] = responsesInst
-				}
+			var responses interface{}
+			if !r.Config.Tools[toolsIndex].Responses.IsUnknown() && !r.Config.Tools[toolsIndex].Responses.IsNull() {
+				_ = json.Unmarshal([]byte(r.Config.Tools[toolsIndex].Responses.ValueString()), &responses)
 			}
 			scheme := new(shared.Scheme)
 			if !r.Config.Tools[toolsIndex].Scheme.IsUnknown() && !r.Config.Tools[toolsIndex].Scheme.IsNull() {

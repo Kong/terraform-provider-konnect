@@ -990,7 +990,7 @@ type AiResponseTransformerPluginLlm struct {
 	Description *string                             `default:"null" json:"description"`
 	Logging     *AiResponseTransformerPluginLogging `json:"logging"`
 	// For internal use only.
-	Metadata map[string]any                   `json:"metadata,omitempty"`
+	Metadata any                              `json:"metadata,omitempty"`
 	Model    AiResponseTransformerPluginModel `json:"model"`
 	// The model's operation implementation, for this provider.
 	RouteType AiResponseTransformerPluginRouteType `json:"route_type"`
@@ -1030,7 +1030,7 @@ func (a *AiResponseTransformerPluginLlm) GetLogging() *AiResponseTransformerPlug
 	return a.Logging
 }
 
-func (a *AiResponseTransformerPluginLlm) GetMetadata() map[string]any {
+func (a *AiResponseTransformerPluginLlm) GetMetadata() any {
 	if a == nil {
 		return nil
 	}

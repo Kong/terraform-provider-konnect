@@ -14,7 +14,7 @@ EventGatewayConsumePolicyDecrypt Resource
 
 ```terraform
 resource "konnect_event_gateway_consume_policy_decrypt" "my_eventgatewayconsumepolicydecrypt" {
-  condition = "context.topic.name.endsWith(\"my_suffix\") && records.headers[\"x-flag\"] == \"a-value\""
+  condition = "context.topic.name.endsWith(\"my_suffix\") && record.headers[\"x-flag\"] == \"a-value\""
   config = {
     failure_mode = "passthrough"
     key_sources = [
