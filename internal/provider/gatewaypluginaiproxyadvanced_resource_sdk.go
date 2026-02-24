@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -174,13 +172,6 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				targets.Logging = &tfTypes.AiLlmAsJudgePluginLogging{}
 				targets.Logging.LogPayloads = types.BoolPointerValue(targetsItem.Logging.LogPayloads)
 				targets.Logging.LogStatistics = types.BoolPointerValue(targetsItem.Logging.LogStatistics)
-			}
-			if targetsItem.Metadata != nil {
-				targets.Metadata = make(map[string]jsontypes.Normalized, len(targetsItem.Metadata))
-				for key, value := range targetsItem.Metadata {
-					result, _ := json.Marshal(value)
-					targets.Metadata[key] = jsontypes.NewNormalizedValue(string(result))
-				}
 			}
 			targets.Model = &tfTypes.AiLlmAsJudgePluginModel{}
 			targets.Model.Name = types.StringPointerValue(targetsItem.Model.Name)
@@ -1137,15 +1128,8 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 				LogStatistics: logStatistics,
 			}
 		}
-		var metadata map[string]interface{}
-		if r.Config.Targets[targetsIndex].Metadata != nil {
-			metadata = make(map[string]interface{})
-			for metadataKey := range r.Config.Targets[targetsIndex].Metadata {
-				var metadataInst interface{}
-				_ = json.Unmarshal([]byte(r.Config.Targets[targetsIndex].Metadata[metadataKey].ValueString()), &metadataInst)
-				metadata[metadataKey] = metadataInst
-			}
-		}
+		// GatewayPluginAiProxyAdvanced#create.config.targets.metadataGatewayPluginAiProxyAdvanced#create.config.targets.metadata impedance mismatch: any != class
+		var metadata *interface{}
 		name2 := new(string)
 		if !r.Config.Targets[targetsIndex].Model.Name.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Name.IsNull() {
 			*name2 = r.Config.Targets[targetsIndex].Model.Name.ValueString()

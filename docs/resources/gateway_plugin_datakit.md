@@ -354,7 +354,7 @@ Optional:
 - `name` (String) A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
 - `output` (String) The entire `.values` map
 - `outputs` (Map of String) Individual items from `.values`, referenced by key
-- `values` (Map of String) An object with string keys and freeform values
+- `values` (String) An object with string keys and freeform values. Not Null; Parsed as JSON.
 
 
 <a id="nestedatt--config--nodes--xml_to_json"></a>

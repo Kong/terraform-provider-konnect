@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -58,13 +56,6 @@ func (r *GatewayPluginAiLlmAsJudgeResourceModel) RefreshFromSharedAiLlmAsJudgePl
 			r.Config.Llm.Logging = &tfTypes.AiLlmAsJudgePluginLogging{}
 			r.Config.Llm.Logging.LogPayloads = types.BoolPointerValue(resp.Config.Llm.Logging.LogPayloads)
 			r.Config.Llm.Logging.LogStatistics = types.BoolPointerValue(resp.Config.Llm.Logging.LogStatistics)
-		}
-		if resp.Config.Llm.Metadata != nil {
-			r.Config.Llm.Metadata = make(map[string]jsontypes.Normalized, len(resp.Config.Llm.Metadata))
-			for key, value := range resp.Config.Llm.Metadata {
-				result, _ := json.Marshal(value)
-				r.Config.Llm.Metadata[key] = jsontypes.NewNormalizedValue(string(result))
-			}
 		}
 		r.Config.Llm.Model = &tfTypes.AiLlmAsJudgePluginModel{}
 		r.Config.Llm.Model.Name = types.StringPointerValue(resp.Config.Llm.Model.Name)
@@ -589,15 +580,6 @@ func (r *GatewayPluginAiLlmAsJudgeResourceModel) ToSharedAiLlmAsJudgePlugin(ctx 
 			LogStatistics: logStatistics,
 		}
 	}
-	var metadata map[string]interface{}
-	if r.Config.Llm.Metadata != nil {
-		metadata = make(map[string]interface{})
-		for metadataKey := range r.Config.Llm.Metadata {
-			var metadataInst interface{}
-			_ = json.Unmarshal([]byte(r.Config.Llm.Metadata[metadataKey].ValueString()), &metadataInst)
-			metadata[metadataKey] = metadataInst
-		}
-	}
 	name1 := new(string)
 	if !r.Config.Llm.Model.Name.IsUnknown() && !r.Config.Llm.Model.Name.IsNull() {
 		*name1 = r.Config.Llm.Model.Name.ValueString()
@@ -873,7 +855,6 @@ func (r *GatewayPluginAiLlmAsJudgeResourceModel) ToSharedAiLlmAsJudgePlugin(ctx 
 		Auth:        auth,
 		Description: description,
 		Logging:     logging,
-		Metadata:    metadata,
 		Model:       model,
 		RouteType:   routeType,
 		Weight:      weight,

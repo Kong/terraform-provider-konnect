@@ -107,9 +107,6 @@ resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadva
           log_payloads   = true
           log_statistics = true
         }
-        metadata = {
-          key = jsonencode("value")
-        }
         model = {
           name = "...my_name..."
           options = {
@@ -325,7 +322,6 @@ Optional:
 - `auth` (Attributes) (see [below for nested schema](#nestedatt--config--targets--auth))
 - `description` (String) The semantic description of the target, required if using semantic load balancing. Specially, setting this to 'CATCHALL' will indicate such target to be used when no other targets match the semantic threshold. Only used by ai-proxy-advanced.
 - `logging` (Attributes) (see [below for nested schema](#nestedatt--config--targets--logging))
-- `metadata` (Map of String) For internal use only.
 - `model` (Attributes) Not Null (see [below for nested schema](#nestedatt--config--targets--model))
 - `route_type` (String) The model's operation implementation, for this provider. Not Null; must be one of ["audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime", "video/v1/videos/generations"]
 - `weight` (Number) The weight this target gets within the upstream loadbalancer (1-65535). Only used by ai-proxy-advanced. Default: 100
