@@ -7,7 +7,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/float64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -227,11 +226,6 @@ func (r *GatewayPluginAiResponseTransformerResource) Schema(ctx context.Context,
 										Description: `If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output. Default: false`,
 									},
 								},
-							},
-							"metadata": schema.StringAttribute{
-								CustomType:  jsontypes.NormalizedType{},
-								Optional:    true,
-								Description: `For internal use only. Parsed as JSON.`,
 							},
 							"model": schema.SingleNestedAttribute{
 								Required: true,

@@ -46,7 +46,6 @@ resource "konnect_gateway_plugin_ai_llm_as_judge" "my_gatewaypluginaillmasjudge"
         log_payloads   = false
         log_statistics = false
       }
-      metadata = "{ \"see\": \"documentation\" }"
       model = {
         name = "...my_name..."
         options = {
@@ -206,7 +205,6 @@ Optional:
 - `auth` (Attributes) (see [below for nested schema](#nestedatt--config--llm--auth))
 - `description` (String) The semantic description of the target, required if using semantic load balancing. Specially, setting this to 'CATCHALL' will indicate such target to be used when no other targets match the semantic threshold. Only used by ai-proxy-advanced.
 - `logging` (Attributes) (see [below for nested schema](#nestedatt--config--llm--logging))
-- `metadata` (String) For internal use only. Parsed as JSON.
 - `weight` (Number) The weight this target gets within the upstream loadbalancer (1-65535). Only used by ai-proxy-advanced. Default: 100
 
 <a id="nestedatt--config--llm--model"></a>

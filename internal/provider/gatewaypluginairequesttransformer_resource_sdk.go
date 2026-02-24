@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -55,12 +53,6 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 			r.Config.Llm.Logging = &tfTypes.AiLlmAsJudgePluginLogging{}
 			r.Config.Llm.Logging.LogPayloads = types.BoolPointerValue(resp.Config.Llm.Logging.LogPayloads)
 			r.Config.Llm.Logging.LogStatistics = types.BoolPointerValue(resp.Config.Llm.Logging.LogStatistics)
-		}
-		if resp.Config.Llm.Metadata == nil {
-			r.Config.Llm.Metadata = jsontypes.NewNormalizedNull()
-		} else {
-			metadataResult, _ := json.Marshal(resp.Config.Llm.Metadata)
-			r.Config.Llm.Metadata = jsontypes.NewNormalizedValue(string(metadataResult))
 		}
 		r.Config.Llm.Model = &tfTypes.AiLlmAsJudgePluginModel{}
 		r.Config.Llm.Model.Name = types.StringPointerValue(resp.Config.Llm.Model.Name)
@@ -561,10 +553,6 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 			LogStatistics: logStatistics,
 		}
 	}
-	var metadata interface{}
-	if !r.Config.Llm.Metadata.IsUnknown() && !r.Config.Llm.Metadata.IsNull() {
-		_ = json.Unmarshal([]byte(r.Config.Llm.Metadata.ValueString()), &metadata)
-	}
 	name1 := new(string)
 	if !r.Config.Llm.Model.Name.IsUnknown() && !r.Config.Llm.Model.Name.IsNull() {
 		*name1 = r.Config.Llm.Model.Name.ValueString()
@@ -840,7 +828,6 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 		Auth:        auth,
 		Description: description,
 		Logging:     logging,
-		Metadata:    metadata,
 		Model:       model,
 		RouteType:   routeType,
 		Weight:      weight,
