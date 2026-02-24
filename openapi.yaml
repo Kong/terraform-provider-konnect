@@ -32147,10 +32147,9 @@ components:
                 metadata:
                   description: 'For internal use only. '
                   type: object
-                  default: null
                   additionalProperties: true
                   nullable: true
-                  x-speakeasy-param-computed: false
+                  x-speakeasy-terraform-ignore: true
                   x-speakeasy-type-override: any
                 model:
                   type: object
@@ -34120,10 +34119,9 @@ components:
                   metadata:
                     description: 'For internal use only. '
                     type: object
-                    default: null
                     additionalProperties: true
                     nullable: true
-                    x-speakeasy-param-computed: false
+                    x-speakeasy-terraform-ignore: true
                     x-speakeasy-type-override: any
                   model:
                     type: object
@@ -36792,10 +36790,9 @@ components:
                 metadata:
                   description: 'For internal use only. '
                   type: object
-                  default: null
                   additionalProperties: true
                   nullable: true
-                  x-speakeasy-param-computed: false
+                  x-speakeasy-terraform-ignore: true
                   x-speakeasy-type-override: any
                 model:
                   type: object
@@ -37327,10 +37324,9 @@ components:
                 metadata:
                   description: 'For internal use only. '
                   type: object
-                  default: null
                   additionalProperties: true
                   nullable: true
-                  x-speakeasy-param-computed: false
+                  x-speakeasy-terraform-ignore: true
                   x-speakeasy-type-override: any
                 model:
                   type: object
