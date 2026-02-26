@@ -19,6 +19,8 @@ func TestGatewayPluginKeyAuth(t *testing.T) {
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_gateway_plugin_key_auth.my_key_auth", "instance_name", "my_key_auth_plugin"),
 						resource.TestCheckResourceAttr("konnect_gateway_plugin_key_auth.my_key_auth", "enabled", "true"),
+						// This property is computed. It should not be set to a default by provider when not given in config.
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_key_auth.my_key_auth", "config.identity_realms.0.scope", "cp"),
 						resource.TestCheckResourceAttr("konnect_gateway_plugin_key_auth.my_key_auth", "config.anonymous", "anon-user"),
 					),
 				},

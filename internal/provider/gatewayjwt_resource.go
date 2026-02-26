@@ -373,9 +373,9 @@ func (r *GatewayJWTResource) ImportState(ctx context.Context, req resource.Impor
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
+		ID             string `json:"id"`
 		ConsumerID     string `json:"consumer_id"`
 		ControlPlaneID string `json:"control_plane_id"`
-		ID             string `json:"id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
@@ -383,6 +383,11 @@ func (r *GatewayJWTResource) ImportState(ctx context.Context, req resource.Impor
 		return
 	}
 
+	if len(data.ID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"4a7f5faa-8c96-46d6-8214-c87573ef2ac4"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
 	if len(data.ConsumerID) == 0 {
 		resp.Diagnostics.AddError("Missing required field", `The field consumer_id is required but was not found in the json encoded ID. It's expected to be a value alike '"f28acbfa-c866-4587-b688-0208ac24df21"'`)
 		return
@@ -393,9 +398,4 @@ func (r *GatewayJWTResource) ImportState(ctx context.Context, req resource.Impor
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
-	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"4a7f5faa-8c96-46d6-8214-c87573ef2ac4"'`)
-		return
-	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
 }

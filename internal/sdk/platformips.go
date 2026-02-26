@@ -149,7 +149,9 @@ func (s *PlatformIPs) ListIPAddresses(ctx context.Context, opts ...operations.Op
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
 	case httpRes.StatusCode >= 400 && httpRes.StatusCode < 500:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode >= 500 && httpRes.StatusCode < 600:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {

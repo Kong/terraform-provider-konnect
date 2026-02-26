@@ -25,6 +25,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/boolplanmodifier"
+	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	speakeasy_planmodifierutils "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/utils"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -76,7 +77,10 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 				Description: `At least one published entity is using this auth strategy.`,
 			},
 			"display_name": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("key_auth"), FieldPath: path.Root("key_auth").AtName("display_name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openid_connect"), FieldPath: path.Root("openid_connect").AtName("display_name")}}),
+				},
 				Description: `The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.`,
 			},
 			"id": schema.StringAttribute{
@@ -191,6 +195,9 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 							"name":          types.StringType,
 							"provider_type": types.StringType,
 						})),
+						PlanModifiers: []planmodifier.Object{
+							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+						},
 						Attributes: map[string]schema.Attribute{
 							"display_name": schema.StringAttribute{
 								Computed: true,
@@ -292,7 +299,10 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 				},
 			},
 			"name": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("key_auth"), FieldPath: path.Root("key_auth").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openid_connect"), FieldPath: path.Root("openid_connect").AtName("name")}}),
+				},
 				Description: `The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.`,
 			},
 			"openid_connect": schema.SingleNestedAttribute{
@@ -410,6 +420,9 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 							"name":          types.StringType,
 							"provider_type": types.StringType,
 						})),
+						PlanModifiers: []planmodifier.Object{
+							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+						},
 						Attributes: map[string]schema.Attribute{
 							"display_name": schema.StringAttribute{
 								Computed: true,

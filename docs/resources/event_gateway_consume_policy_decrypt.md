@@ -22,9 +22,6 @@ resource "konnect_event_gateway_consume_policy_decrypt" "my_eventgatewayconsumep
         aws = {
           # ...
         }
-        static = {
-          # ...
-        }
       }
     ]
     part_of_record = [

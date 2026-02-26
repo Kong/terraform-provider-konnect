@@ -27,16 +27,6 @@ resource "konnect_cloud_gateway_private_dns" "my_cloudgatewayprivatedns" {
       }
       kind = "aws-outbound-resolver"
     }
-    azure_private_dns_resolver_attachment_config = {
-      dns_config = {
-        key = {
-          remote_dns_server_ip_addresses = [
-            "10.0.0.2",
-          ]
-        }
-      }
-      kind = "azure-outbound-resolver"
-    }
   }
 }
 ```

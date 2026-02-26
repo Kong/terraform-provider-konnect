@@ -155,10 +155,10 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 				Description: `Request schema for updating AWS Resource Endpoint.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
-						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway_response"),
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
 						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
+						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway_response"),
+						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
 						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway_response"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
@@ -388,9 +388,9 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway"),
+						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
 						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway_response"),
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
-						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
 						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway_response"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
@@ -616,8 +616,8 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway_response"),
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
+						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway_response"),
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
 						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway_response"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
@@ -842,10 +842,10 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway_response"),
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
 						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
+						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway_response"),
+						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
 						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway_response"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
 						path.MatchRelative().AtParent().AtName("azure_vhub_peering_gateway"),
@@ -1020,10 +1020,10 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway_response"),
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
 						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
+						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway_response"),
+						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
 						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway_response"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
@@ -1218,10 +1218,10 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway_response"),
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
 						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
+						path.MatchRelative().AtParent().AtName("aws_resource_endpoint_gateway_response"),
+						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
 						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway_response"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
