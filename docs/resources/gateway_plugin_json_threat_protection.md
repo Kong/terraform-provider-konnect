@@ -19,10 +19,10 @@ resource "konnect_gateway_plugin_json_threat_protection" "my_gatewaypluginjsonth
     enforcement_mode                  = "log_only"
     error_message                     = "...my_error_message..."
     error_status_code                 = 434
-    max_array_element_count           = 96675195
-    max_body_size                     = 99378519
+    max_array_element_count           = 96675194
+    max_body_size                     = 99378518
     max_container_depth               = 2031079601
-    max_object_entry_count            = 916870322
+    max_object_entry_count            = 916870321
     max_object_entry_name_length      = 1383216872
     max_string_value_length           = 1149380350
   }

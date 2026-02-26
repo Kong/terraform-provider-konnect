@@ -16,13 +16,6 @@ EventGatewayProducePolicySchemaValidation Resource
 resource "konnect_event_gateway_produce_policy_schema_validation" "my_eventgatewayproducepolicyschemavalidation" {
   condition = "context.topic.name.endsWith(\"my_suffix\") && record.headers[\"x-flag\"] == \"a-value\""
   config = {
-    confluent_schema_registry = {
-      key_validation_action = "reject"
-      schema_registry = {
-        id = "95ce4f52-159c-43dd-a6dd-9bb6e8e07446"
-      }
-      value_validation_action = "reject"
-    }
     json = {
       key_validation_action = "mark"
       schema_registry = {

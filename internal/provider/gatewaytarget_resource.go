@@ -168,7 +168,7 @@ func (r *GatewayTargetResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 				Description: `The weight this target gets within the upstream loadbalancer (` + "`" + `0` + "`" + `-` + "`" + `65535` + "`" + `). If the hostname resolves to an SRV record, the ` + "`" + `weight` + "`" + ` value will be overridden by the value from the DNS record. Default: 100; Requires replacement if changed.`,
 				Validators: []validator.Int64{
-					int64validator.AtMost(65535),
+					int64validator.Between(0, 65535),
 				},
 			},
 		},
@@ -383,8 +383,8 @@ func (r *GatewayTargetResource) ImportState(ctx context.Context, req resource.Im
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		ControlPlaneID string `json:"control_plane_id"`
 		ID             string `json:"id"`
+		ControlPlaneID string `json:"control_plane_id"`
 		UpstreamID     string `json:"upstream_id"`
 	}
 
@@ -393,16 +393,16 @@ func (r *GatewayTargetResource) ImportState(ctx context.Context, req resource.Im
 		return
 	}
 
-	if len(data.ControlPlaneID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
-		return
-	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
 	if len(data.ID) == 0 {
 		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"5a078780-5d4c-4aae-984a-bdc6f52113d8"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
+	if len(data.ControlPlaneID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
 	if len(data.UpstreamID) == 0 {
 		resp.Diagnostics.AddError("Missing required field", `The field upstream_id is required but was not found in the json encoded ID. It's expected to be a value alike '"5a078780-5d4c-4aae-984a-bdc6f52113d8"'`)
 		return
