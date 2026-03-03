@@ -19,6 +19,7 @@ func (r *CloudGatewayPrivateDNSResourceModel) RefreshFromSharedPrivateDNSRespons
 		if resp.AwsPrivateDNSResolverResponse != nil {
 			r.AwsPrivateDNSResolverResponse = &tfTypes.AwsPrivateDNSResolverResponse{}
 			r.AwsPrivateDNSResolverResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsPrivateDNSResolverResponse.CreatedAt))
+			r.CreatedAt = r.AwsPrivateDNSResolverResponse.CreatedAt
 			r.AwsPrivateDNSResolverResponse.EntityVersion = types.Int64Value(resp.AwsPrivateDNSResolverResponse.EntityVersion)
 			r.EntityVersion = r.AwsPrivateDNSResolverResponse.EntityVersion
 			r.AwsPrivateDNSResolverResponse.ID = types.StringValue(resp.AwsPrivateDNSResolverResponse.ID)
@@ -45,10 +46,12 @@ func (r *CloudGatewayPrivateDNSResourceModel) RefreshFromSharedPrivateDNSRespons
 			r.AwsPrivateDNSResolverResponse.StateMetadata.Reason = types.StringPointerValue(resp.AwsPrivateDNSResolverResponse.StateMetadata.Reason)
 			r.AwsPrivateDNSResolverResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AwsPrivateDNSResolverResponse.StateMetadata.ReportedStatus)
 			r.AwsPrivateDNSResolverResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsPrivateDNSResolverResponse.UpdatedAt))
+			r.UpdatedAt = r.AwsPrivateDNSResolverResponse.UpdatedAt
 		}
 		if resp.AwsPrivateHostedZoneResponse != nil {
 			r.AwsPrivateHostedZoneResponse = &tfTypes.AwsPrivateHostedZoneResponse{}
 			r.AwsPrivateHostedZoneResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsPrivateHostedZoneResponse.CreatedAt))
+			r.CreatedAt = r.AwsPrivateHostedZoneResponse.CreatedAt
 			r.AwsPrivateHostedZoneResponse.EntityVersion = types.Int64Value(resp.AwsPrivateHostedZoneResponse.EntityVersion)
 			r.EntityVersion = r.AwsPrivateHostedZoneResponse.EntityVersion
 			r.AwsPrivateHostedZoneResponse.ID = types.StringValue(resp.AwsPrivateHostedZoneResponse.ID)
@@ -64,10 +67,12 @@ func (r *CloudGatewayPrivateDNSResourceModel) RefreshFromSharedPrivateDNSRespons
 			r.AwsPrivateHostedZoneResponse.StateMetadata.Reason = types.StringPointerValue(resp.AwsPrivateHostedZoneResponse.StateMetadata.Reason)
 			r.AwsPrivateHostedZoneResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AwsPrivateHostedZoneResponse.StateMetadata.ReportedStatus)
 			r.AwsPrivateHostedZoneResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsPrivateHostedZoneResponse.UpdatedAt))
+			r.UpdatedAt = r.AwsPrivateHostedZoneResponse.UpdatedAt
 		}
 		if resp.AzurePrivateDNSResolverResponse != nil {
 			r.AzurePrivateDNSResolverResponse = &tfTypes.AwsPrivateDNSResolverResponse{}
 			r.AzurePrivateDNSResolverResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AzurePrivateDNSResolverResponse.CreatedAt))
+			r.CreatedAt = r.AzurePrivateDNSResolverResponse.CreatedAt
 			r.AzurePrivateDNSResolverResponse.EntityVersion = types.Int64Value(resp.AzurePrivateDNSResolverResponse.EntityVersion)
 			r.EntityVersion = r.AzurePrivateDNSResolverResponse.EntityVersion
 			r.AzurePrivateDNSResolverResponse.ID = types.StringValue(resp.AzurePrivateDNSResolverResponse.ID)
@@ -94,10 +99,12 @@ func (r *CloudGatewayPrivateDNSResourceModel) RefreshFromSharedPrivateDNSRespons
 			r.AzurePrivateDNSResolverResponse.StateMetadata.Reason = types.StringPointerValue(resp.AzurePrivateDNSResolverResponse.StateMetadata.Reason)
 			r.AzurePrivateDNSResolverResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AzurePrivateDNSResolverResponse.StateMetadata.ReportedStatus)
 			r.AzurePrivateDNSResolverResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AzurePrivateDNSResolverResponse.UpdatedAt))
+			r.UpdatedAt = r.AzurePrivateDNSResolverResponse.UpdatedAt
 		}
 		if resp.AzurePrivateHostedZoneResponse != nil {
 			r.AzurePrivateHostedZoneResponse = &tfTypes.AzurePrivateHostedZoneResponse{}
 			r.AzurePrivateHostedZoneResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AzurePrivateHostedZoneResponse.CreatedAt))
+			r.CreatedAt = r.AzurePrivateHostedZoneResponse.CreatedAt
 			r.AzurePrivateHostedZoneResponse.EntityVersion = types.Int64Value(resp.AzurePrivateHostedZoneResponse.EntityVersion)
 			r.EntityVersion = r.AzurePrivateHostedZoneResponse.EntityVersion
 			r.AzurePrivateHostedZoneResponse.ID = types.StringValue(resp.AzurePrivateHostedZoneResponse.ID)
@@ -117,10 +124,12 @@ func (r *CloudGatewayPrivateDNSResourceModel) RefreshFromSharedPrivateDNSRespons
 			r.AzurePrivateHostedZoneResponse.StateMetadata.Reason = types.StringPointerValue(resp.AzurePrivateHostedZoneResponse.StateMetadata.Reason)
 			r.AzurePrivateHostedZoneResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AzurePrivateHostedZoneResponse.StateMetadata.ReportedStatus)
 			r.AzurePrivateHostedZoneResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AzurePrivateHostedZoneResponse.UpdatedAt))
+			r.UpdatedAt = r.AzurePrivateHostedZoneResponse.UpdatedAt
 		}
 		if resp.GcpPrivateHostedZoneResponse != nil {
 			r.GcpPrivateHostedZoneResponse = &tfTypes.GcpPrivateHostedZoneResponse{}
 			r.GcpPrivateHostedZoneResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.GcpPrivateHostedZoneResponse.CreatedAt))
+			r.CreatedAt = r.GcpPrivateHostedZoneResponse.CreatedAt
 			r.GcpPrivateHostedZoneResponse.EntityVersion = types.Int64Value(resp.GcpPrivateHostedZoneResponse.EntityVersion)
 			r.EntityVersion = r.GcpPrivateHostedZoneResponse.EntityVersion
 			r.GcpPrivateHostedZoneResponse.ID = types.StringValue(resp.GcpPrivateHostedZoneResponse.ID)
@@ -138,6 +147,7 @@ func (r *CloudGatewayPrivateDNSResourceModel) RefreshFromSharedPrivateDNSRespons
 			r.GcpPrivateHostedZoneResponse.StateMetadata.Reason = types.StringPointerValue(resp.GcpPrivateHostedZoneResponse.StateMetadata.Reason)
 			r.GcpPrivateHostedZoneResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.GcpPrivateHostedZoneResponse.StateMetadata.ReportedStatus)
 			r.GcpPrivateHostedZoneResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.GcpPrivateHostedZoneResponse.UpdatedAt))
+			r.UpdatedAt = r.GcpPrivateHostedZoneResponse.UpdatedAt
 		}
 	}
 

@@ -280,7 +280,7 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 								Computed:    true,
 								Optional:    true,
 								Default:     int64default.StaticInt64(1),
-								Description: `The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of ["-1", "1"]`,
+								Description: `The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of [-1, 1]`,
 								Validators: []validator.Int64{
 									int64validator.OneOf(-1, 1),
 								},
@@ -404,7 +404,7 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 						Computed:    true,
 						Optional:    true,
 						Default:     int64default.StaticInt64(16),
-						Description: `The length in bytes of each request's Trace ID. Default: 16; must be one of ["8", "16"]`,
+						Description: `The length in bytes of each request's Trace ID. Default: 16; must be one of [8, 16]`,
 						Validators: []validator.Int64{
 							int64validator.OneOf(8, 16),
 						},

@@ -53,12 +53,14 @@ type ApplicationAuthStrategyResource struct {
 // ApplicationAuthStrategyResourceModel describes the resource data model.
 type ApplicationAuthStrategyResourceModel struct {
 	Active        types.Bool                                   `tfsdk:"active"`
+	CreatedAt     types.String                                 `tfsdk:"created_at"`
 	DisplayName   types.String                                 `tfsdk:"display_name"`
 	ID            types.String                                 `tfsdk:"id"`
 	KeyAuth       *tfTypes.AppAuthStrategyKeyAuthRequest       `queryParam:"inline" tfsdk:"key_auth"`
 	Name          types.String                                 `tfsdk:"name"`
 	OpenidConnect *tfTypes.AppAuthStrategyOpenIDConnectRequest `queryParam:"inline" tfsdk:"openid_connect"`
 	StrategyType  types.String                                 `tfsdk:"strategy_type"`
+	UpdatedAt     types.String                                 `tfsdk:"updated_at"`
 }
 
 func (r *ApplicationAuthStrategyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -76,6 +78,13 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 				},
 				Description: `At least one published entity is using this auth strategy.`,
 			},
+			"created_at": schema.StringAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("key_auth"), FieldPath: path.Root("key_auth").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openid_connect"), FieldPath: path.Root("openid_connect").AtName("created_at")}}),
+				},
+				Description: `An ISO-8601 timestamp representation of entity creation date.`,
+			},
 			"display_name": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
@@ -86,7 +95,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 			"id": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("key_auth"), FieldPath: path.Root("key_auth").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openid_connect"), FieldPath: path.Root("openid_connect").AtName("id")}}),
 				},
 				Description: `Contains a unique identifier used for this resource.`,
@@ -537,6 +545,13 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("key_auth"), FieldPath: path.Root("key_auth").AtName("strategy_type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openid_connect"), FieldPath: path.Root("openid_connect").AtName("strategy_type")}}),
 				},
+			},
+			"updated_at": schema.StringAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("key_auth"), FieldPath: path.Root("key_auth").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openid_connect"), FieldPath: path.Root("openid_connect").AtName("updated_at")}}),
+				},
+				Description: `An ISO-8601 timestamp representation of entity update date.`,
 			},
 		},
 	}

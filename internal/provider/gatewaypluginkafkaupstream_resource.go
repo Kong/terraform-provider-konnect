@@ -224,7 +224,7 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						Default:     int64default.StaticInt64(1),
-						Description: `The number of acknowledgments the producer requires the leader to have received before considering a request complete. Allowed values: 0 for no acknowledgments; 1 for only the leader; and -1 for the full ISR (In-Sync Replica set). Default: 1; must be one of ["-1", "0", "1"]`,
+						Description: `The number of acknowledgments the producer requires the leader to have received before considering a request complete. Allowed values: 0 for no acknowledgments; 1 for only the leader; and -1 for the full ISR (In-Sync Replica set). Default: 1; must be one of [-1, 0, 1]`,
 						Validators: []validator.Int64{
 							int64validator.OneOf(-1, 0, 1),
 						},

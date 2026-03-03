@@ -49,6 +49,7 @@ resource "konnect_cloud_gateway_private_dns" "my_cloudgatewayprivatedns" {
 - `aws_private_hosted_zone_response` (Attributes) (see [below for nested schema](#nestedatt--aws_private_hosted_zone_response))
 - `azure_private_dns_resolver_response` (Attributes) (see [below for nested schema](#nestedatt--azure_private_dns_resolver_response))
 - `azure_private_hosted_zone_response` (Attributes) (see [below for nested schema](#nestedatt--azure_private_hosted_zone_response))
+- `created_at` (String) An RFC-3339 timestamp representation of Private DNS creation date.
 - `entity_version` (Number) Monotonically-increasing version count of the Private DNS, to indicate the order of updates to the
 Private DNS.
 - `gcp_private_hosted_zone_response` (Attributes) (see [below for nested schema](#nestedatt--gcp_private_hosted_zone_response))
@@ -61,6 +62,7 @@ Private DNS.
 - `error` - The attachment is in an error state, and is not operational.
 - `terminating` - The attachment is in the process of being deleted.
 - `terminated` - The attachment has been fully deleted and is no longer available.
+- `updated_at` (String) An RFC-3339 timestamp representation of Private DNS update date.
 
 <a id="nestedatt--private_dns_attachment_config"></a>
 ### Nested Schema for `private_dns_attachment_config`

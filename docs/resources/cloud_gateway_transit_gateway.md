@@ -162,6 +162,7 @@ resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway"
 - `aws_vpc_peering_gateway_response` (Attributes) (see [below for nested schema](#nestedatt--aws_vpc_peering_gateway_response))
 - `azure_transit_gateway_response` (Attributes) (see [below for nested schema](#nestedatt--azure_transit_gateway_response))
 - `azure_vhub_peering_gateway_response` (Attributes) (see [below for nested schema](#nestedatt--azure_vhub_peering_gateway_response))
+- `created_at` (String) An RFC-3339 timestamp representation of transit gateway creation date.
 - `entity_version` (Number) Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the
 transit gateway.
 - `gcpvpc_peering_gateway_response` (Attributes) (see [below for nested schema](#nestedatt--gcpvpc_peering_gateway_response))
@@ -176,6 +177,7 @@ transit gateway.
 - `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
 - `terminated` - The attachment has been fully deleted and is no longer available.
 - `error` - The attachment is in an error state.
+- `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
 
 <a id="nestedatt--aws_resource_endpoint_gateway"></a>
 ### Nested Schema for `aws_resource_endpoint_gateway`

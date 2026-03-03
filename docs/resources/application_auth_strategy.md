@@ -47,10 +47,12 @@ resource "konnect_application_auth_strategy" "my_applicationauthstrategy" {
 ### Read-Only
 
 - `active` (Boolean) At least one published entity is using this auth strategy.
+- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `display_name` (String) The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.
 - `id` (String) Contains a unique identifier used for this resource.
 - `name` (String) The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.
 - `strategy_type` (String)
+- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--key_auth"></a>
 ### Nested Schema for `key_auth`
