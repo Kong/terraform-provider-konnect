@@ -160,7 +160,7 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 						Computed:    true,
 						Optional:    true,
 						Default:     int64default.StaticInt64(4096),
-						Description: `RSA private key size for the certificate. The possible values are 2048, 3072, or 4096. Default: 4096; must be one of ["2048", "3072", "4096"]`,
+						Description: `RSA private key size for the certificate. The possible values are 2048, 3072, or 4096. Default: 4096; must be one of [2048, 3072, 4096]`,
 						Validators: []validator.Int64{
 							int64validator.OneOf(
 								2048,

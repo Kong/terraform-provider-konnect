@@ -53,6 +53,7 @@ type CloudGatewayTransitGatewayResourceModel struct {
 	AzureTransitGatewayResponse        *tfTypes.AzureTransitGatewayResponse        `queryParam:"inline" tfsdk:"azure_transit_gateway_response"`
 	AzureVhubPeeringGateway            *tfTypes.AzureVhubPeeringGateway            `queryParam:"inline" tfsdk:"azure_vhub_peering_gateway"`
 	AzureVhubPeeringGatewayResponse    *tfTypes.AzureVhubPeeringGatewayResponse    `queryParam:"inline" tfsdk:"azure_vhub_peering_gateway_response"`
+	CreatedAt                          types.String                                `tfsdk:"created_at"`
 	EntityVersion                      types.Int64                                 `tfsdk:"entity_version"`
 	GCPVPCPeeringGatewayResponse       *tfTypes.GCPVPCPeeringGatewayResponse       `queryParam:"inline" tfsdk:"gcpvpc_peering_gateway_response"`
 	GcpVpcPeeringTransitGateway        *tfTypes.GcpVpcPeeringTransitGateway        `queryParam:"inline" tfsdk:"gcp_vpc_peering_transit_gateway"`
@@ -60,6 +61,7 @@ type CloudGatewayTransitGatewayResourceModel struct {
 	Name                               types.String                                `tfsdk:"name"`
 	NetworkID                          types.String                                `tfsdk:"network_id"`
 	State                              types.String                                `tfsdk:"state"`
+	UpdatedAt                          types.String                                `tfsdk:"updated_at"`
 }
 
 func (r *CloudGatewayTransitGatewayResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -1122,10 +1124,16 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 					},
 				},
 			},
+			"created_at": schema.StringAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_transit_gateway_response"), FieldPath: path.Root("aws_transit_gateway_response").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_vpc_peering_gateway_response"), FieldPath: path.Root("aws_vpc_peering_gateway_response").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_transit_gateway_response"), FieldPath: path.Root("azure_transit_gateway_response").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_vhub_peering_gateway_response"), FieldPath: path.Root("azure_vhub_peering_gateway_response").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gcpvpc_peering_gateway_response"), FieldPath: path.Root("gcpvpc_peering_gateway_response").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_resource_endpoint_gateway_response"), FieldPath: path.Root("aws_resource_endpoint_gateway_response").AtName("created_at")}}),
+				},
+				Description: `An RFC-3339 timestamp representation of transit gateway creation date.`,
+			},
 			"entity_version": schema.Int64Attribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.Int64{
-					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
 					speakeasy_int64planmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_transit_gateway_response"), FieldPath: path.Root("aws_transit_gateway_response").AtName("entity_version")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_vpc_peering_gateway_response"), FieldPath: path.Root("aws_vpc_peering_gateway_response").AtName("entity_version")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_transit_gateway_response"), FieldPath: path.Root("azure_transit_gateway_response").AtName("entity_version")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_vhub_peering_gateway_response"), FieldPath: path.Root("azure_vhub_peering_gateway_response").AtName("entity_version")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gcpvpc_peering_gateway_response"), FieldPath: path.Root("gcpvpc_peering_gateway_response").AtName("entity_version")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_resource_endpoint_gateway_response"), FieldPath: path.Root("aws_resource_endpoint_gateway_response").AtName("entity_version")}}),
 				},
 				MarkdownDescription: `Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the` + "\n" +
@@ -1339,7 +1347,6 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 			"id": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_transit_gateway_response"), FieldPath: path.Root("aws_transit_gateway_response").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_vpc_peering_gateway_response"), FieldPath: path.Root("aws_vpc_peering_gateway_response").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_transit_gateway_response"), FieldPath: path.Root("azure_transit_gateway_response").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_vhub_peering_gateway_response"), FieldPath: path.Root("azure_vhub_peering_gateway_response").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gcpvpc_peering_gateway_response"), FieldPath: path.Root("gcpvpc_peering_gateway_response").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_resource_endpoint_gateway_response"), FieldPath: path.Root("aws_resource_endpoint_gateway_response").AtName("id")}}),
 				},
 			},
@@ -1360,7 +1367,6 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 			"state": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_transit_gateway_response"), FieldPath: path.Root("aws_transit_gateway_response").AtName("state")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_vpc_peering_gateway_response"), FieldPath: path.Root("aws_vpc_peering_gateway_response").AtName("state")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_transit_gateway_response"), FieldPath: path.Root("azure_transit_gateway_response").AtName("state")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_vhub_peering_gateway_response"), FieldPath: path.Root("azure_vhub_peering_gateway_response").AtName("state")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gcpvpc_peering_gateway_response"), FieldPath: path.Root("gcpvpc_peering_gateway_response").AtName("state")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_resource_endpoint_gateway_response"), FieldPath: path.Root("aws_resource_endpoint_gateway_response").AtName("state")}}),
 				},
 				MarkdownDescription: `The current state of the Transit Gateway. Possible values:` + "\n" +
@@ -1372,6 +1378,13 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 					`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted and is no longer accepting new traffic.` + "\n" +
 					`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.` + "\n" +
 					`- ` + "`" + `error` + "`" + ` - The attachment is in an error state.`,
+			},
+			"updated_at": schema.StringAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_transit_gateway_response"), FieldPath: path.Root("aws_transit_gateway_response").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_vpc_peering_gateway_response"), FieldPath: path.Root("aws_vpc_peering_gateway_response").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_transit_gateway_response"), FieldPath: path.Root("azure_transit_gateway_response").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_vhub_peering_gateway_response"), FieldPath: path.Root("azure_vhub_peering_gateway_response").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gcpvpc_peering_gateway_response"), FieldPath: path.Root("gcpvpc_peering_gateway_response").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_resource_endpoint_gateway_response"), FieldPath: path.Root("aws_resource_endpoint_gateway_response").AtName("updated_at")}}),
+				},
+				Description: `An RFC-3339 timestamp representation of transit gateway update date.`,
 			},
 		},
 	}

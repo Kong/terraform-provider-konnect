@@ -140,7 +140,7 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 								Computed:    true,
 								Optional:    true,
 								Default:     int64default.StaticInt64(1),
-								Description: `The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of ["-1", "1"]`,
+								Description: `The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of [-1, 1]`,
 								Validators: []validator.Int64{
 									int64validator.OneOf(-1, 1),
 								},
