@@ -3,6 +3,9 @@
 ## 3.10.0
 > Released 2026/02/??
 
+# Features
+* Support new roles `Registration Approver` and `Content Editor` in `konnect_team_role` resource
+
 # Bug Fixes
 * Support free form objects with nested structure as JSON encoded strings in plugins 
 * Fix a bug in `konnect_gateway_plugin_key_auth` resource where `config.identity_realms` was incorrectly configured when omitted in resource definition

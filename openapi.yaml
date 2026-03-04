@@ -64349,6 +64349,8 @@ components:
                   - Upstream Admin
                   - Vault Admin
                   - Viewer
+                  - Registration Approver
+                  - Content Editor
                 x-speakeasy-unknown-values: allow
               entity_id:
                 description: The ID of the entity.
