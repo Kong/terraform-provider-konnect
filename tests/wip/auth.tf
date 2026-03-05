@@ -8,6 +8,6 @@ terraform {
 }
 
 provider "konnect" {
-  server_url = "https://us.api.konghq.com"
+  server_url = "https://us.api.konghq.tech"
 }
 

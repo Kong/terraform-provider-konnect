@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: d6a25ccada7aad6acf74128d7ac2d7a5
+  docChecksum: 02101ea46750cdd87a53d6f4ca092749
   docVersion: 2.0.0
   speakeasyVersion: 1.739.0
   generationVersion: 2.846.1
   releaseVersion: 3.9.0
   configChecksum: 2e2f7b4e67fa4a5bb354999941652d27
 persistentEdits:
-  generation_id: 1245ef93-9e5a-4d65-a65c-3e572c6f1c29
-  pristine_commit_hash: 753bcb4a2105186e33f6064217df145c4f0d83ad
-  pristine_tree_hash: 18dfd8ad3013d584812dc8e467b7a526a7fc2527
+  generation_id: 159e377f-1010-4894-93c2-508918580e57
+  pristine_commit_hash: 080d257287ea04d84feb9c63af48befc4da0f5b2
+  pristine_tree_hash: ea77a838e4d17201870e9039c0db54c7b9c661fb
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -48,12 +48,12 @@ trackedFiles:
     pristine_git_object: 1495c30e77fa2b4fc0f244b8d2c14e429499867d
   examples/data-sources/konnect_gateway_control_plane/data-source.tf:
     id: 35c3cc963523
-    last_write_checksum: sha1:38013b8d2cdd3e799acd1dc76a369ac520774599
-    pristine_git_object: 360bc36a72302684b049f0c2b05337ba63f65682
+    last_write_checksum: sha1:ec73d070cf135814cf5362300f7efe4ec18eaea7
+    pristine_git_object: f4ac6f8ea7bb80a3ea291d5741c1b50b2744c826
   examples/data-sources/konnect_gateway_control_plane_list/data-source.tf:
     id: 61fb88e3f73d
-    last_write_checksum: sha1:be5592bccff0fe72a0db67f2103779850ca4cace
-    pristine_git_object: d22d835bc3c7f7bb97524a76955073dd7d162ed2
+    last_write_checksum: sha1:b6732de4e3e191aad2459ed5e56ea08516af0d40
+    pristine_git_object: 22772e5be26067e9a7f0a8bba305611e45735273
   examples/data-sources/konnect_mesh_control_planes/data-source.tf:
     id: ebdf6311bbc5
     last_write_checksum: sha1:169cc70cc8d9519e22e5e34cf7dd1cdc662759b6
@@ -2996,28 +2996,28 @@ trackedFiles:
     pristine_git_object: ecf1e040b904f3a77f832559c6c924856ea01403
   internal/provider/gatewaycontrolplane_data_source.go:
     id: 86ae40c50d2e
-    last_write_checksum: sha1:2a516ba1ed3f749d43eb7db0396f46043ffb8b74
-    pristine_git_object: 9c74f4e30daf00fc30cd9ba6a54c57380430be46
+    last_write_checksum: sha1:48178e66da7d7b0105389526a607a160e5ff0f30
+    pristine_git_object: ca6a6a0bb9553ab5ce0af3489ad3cb97e8b5ea53
   internal/provider/gatewaycontrolplane_data_source_sdk.go:
     id: fb77b917e142
-    last_write_checksum: sha1:1c7af546b52bec451a79ba94f92f8c2d5c42295a
-    pristine_git_object: 4c8b8ba9584e7422ebc3bde7b84cbbfcae923de3
+    last_write_checksum: sha1:185e4d18e9ea4671f8541112aec15b1e246942ca
+    pristine_git_object: 3da711a74830ab5ad833e047738e07463bdc4106
   internal/provider/gatewaycontrolplane_resource.go:
     id: 0abb61c802fc
-    last_write_checksum: sha1:fd413f35311d661fc96590368ea334e0011fafbd
-    pristine_git_object: 11ab2899ecece7f67ad72c45efcc1619b5b3486b
+    last_write_checksum: sha1:1c114b848b48b57c445e3fb00edd86d1220431f0
+    pristine_git_object: 18013503e92fe9895c7f532d7da4469b861373e3
   internal/provider/gatewaycontrolplane_resource_sdk.go:
     id: ea4c55b8de9e
     last_write_checksum: sha1:e4e706f0484c31c694201375cbfb62096fb0e495
     pristine_git_object: b490128c62a40d46a114cf1c0e6239a8cd3d3f43
   internal/provider/gatewaycontrolplanelist_data_source.go:
     id: 9b79eabaa7ab
-    last_write_checksum: sha1:cefc0ed53485b3665d6c3a2714af4f6d0805da57
-    pristine_git_object: e1ef0cff65beeb2df5bca058202d8858198fc182
+    last_write_checksum: sha1:4a292a11f036d30c020ff3f95d00459847e64e0e
+    pristine_git_object: 88cb499880f076891a3f83429edcfc22301edfcc
   internal/provider/gatewaycontrolplanelist_data_source_sdk.go:
     id: c5b3e8291612
-    last_write_checksum: sha1:6b175caf0d57bd475ed95df02b6740cc586f9396
-    pristine_git_object: 4eb12a9e4285bf419941bb9f4c723bca4dbb375a
+    last_write_checksum: sha1:7c8dceea7db4aa008dc1a02f920ca1ee393e2c6d
+    pristine_git_object: 84ed1c4d6563e6a24c00e90b6d29047774ffabf2
   internal/provider/gatewaycontrolplanemembership_resource.go:
     id: 108490a7b046
     last_write_checksum: sha1:38ed03d2ea0dd29424a0dce826fda3eb2be37a04
@@ -4844,8 +4844,8 @@ trackedFiles:
     pristine_git_object: a01774e9d6daa47497388d47077b60c835285cc9
   internal/provider/types/cluster_type.go:
     id: 5f96f3f955e5
-    last_write_checksum: sha1:d110c49efc585916d4d8ade98db68787b1ac2a82
-    pristine_git_object: 1d8182fa16212880f6e53417193763846f458ab0
+    last_write_checksum: sha1:7ba71ec3015c1acc73972edbbdda36524efffbe2
+    pristine_git_object: 2dc71b7056aaf9020e14c2eb8e68007afd7bb78e
   internal/provider/types/collection_acl_config.go:
     id: d2e79e608f1f
     last_write_checksum: sha1:214cca3a9ed594fb4ee4f01b597e70b3752d1045
@@ -5500,8 +5500,8 @@ trackedFiles:
     pristine_git_object: b0d391fc342d95d390d6540d295d4c57e0af5ec8
   internal/provider/types/portal_filter_parameters.go:
     id: 8f94f30ed6c7
-    last_write_checksum: sha1:152de5b7a767f72c2e522318e6352d5e567a067b
-    pristine_git_object: 94bf4a4ad6633c98b13efd36394b6488950f6b36
+    last_write_checksum: sha1:dfaf5ea33cf87340bb3f7f28f15dc2ca38e2d281
+    pristine_git_object: 631d58281c4cd373c508219fa24d18e172eae923
   internal/provider/types/portal_footer_menu_section.go:
     id: 10c5910a3502
     last_write_checksum: sha1:0dc70c839659420d57cf65d3aa7caaa516a8f7ee
@@ -5946,10 +5946,6 @@ trackedFiles:
     id: e39461453a56
     last_write_checksum: sha1:6705911cb4acb03fb581a2aedc8cbd4b947b1ecc
     pristine_git_object: 3a5fcaba6c11dbf67a6e71280ffee4c2253de2ec
-  internal/provider/types/uuid_field_filter.go:
-    id: 13d5592ece76
-    last_write_checksum: sha1:898dfd5f877469ca170b3caf259f3cfd34ed1a1a
-    pristine_git_object: 2ee084f9081baf2de3498e19377ccdb36ed92bad
   internal/provider/types/v2_appearance_color_variable.go:
     id: 77ed12cf19a4
     last_write_checksum: sha1:af88ac2cc90ffd78df5302c0af3dc30da793720a
@@ -10080,12 +10076,12 @@ trackedFiles:
     pristine_git_object: a0e75796ce95ecdc27259201d5f282eeda3f82da
   internal/sdk/models/shared/controlplane.go:
     id: 08ebd7f2bc84
-    last_write_checksum: sha1:989f0f448101240deab7bd51ce03a178ab07e579
-    pristine_git_object: 288752bf442e00aa81983d39e49a8a0a6d240516
+    last_write_checksum: sha1:0e64c277ddd303834d03369dfc72133a8dc602f8
+    pristine_git_object: bf9809544284f18ef800613d7aba11eeb2b46212
   internal/sdk/models/shared/controlplanefilterparameters.go:
     id: 4ce48f874a6d
-    last_write_checksum: sha1:b378289b3380bd58e2114ab6fddf466f31a712c4
-    pristine_git_object: 7485077b7afb269174c370ef71ce9f6e60064160
+    last_write_checksum: sha1:2afa4c293864ddf2c0feadf56e89de1586c5d6ab
+    pristine_git_object: 9bc2eb5c4088b60a3a5bed6e4148e3ca3630fe08
   internal/sdk/models/shared/controlplanegeo.go:
     id: 20624856b343
     last_write_checksum: sha1:45e5e67b474bca6dd392b61ba9d60ccbf3059d94
@@ -10184,8 +10180,8 @@ trackedFiles:
     pristine_git_object: 020eb8f1aeefe4c389a03eedd3f212350c38827a
   internal/sdk/models/shared/createcontrolplanerequest.go:
     id: 354ee6837d4a
-    last_write_checksum: sha1:03b233095ee078dedee46c63c8f687df0b8681c2
-    pristine_git_object: 41253503548c37c44fad9eb22782ad9f9a1ce926
+    last_write_checksum: sha1:9be9fea7aa55177a6429f2efa8285aeb4a504a90
+    pristine_git_object: ae1cbaf27ab4c2f30e7f70a3c87357251147f95a
   internal/sdk/models/shared/createcustomdomainrequest.go:
     id: ba40e0b672f8
     last_write_checksum: sha1:3ce2bb98a24a3afba65b402fa912bde67ddddb4c
@@ -22383,7 +22379,7 @@ examples:
           privateDnsId: "1850820b-c69f-4a2a-b9be-bbcdbc5cd618"
       responses:
         "200":
-          application/json: {"id": "1850820b-c69f-4a2a-b9be-bbcdbc5cd618", "state": "terminating", "state_metadata": {"reported_status": "ERROR", "reason": "Failed to create Private Dns due to invalid Cloud Provider configuration.\n"}, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "us-east-2 private dns", "private_dns_attachment_config": {"kind": "aws-outbound-resolver", "dns_config": {"global.api.konghq.com": {"remote_dns_server_ip_addresses": ["10.0.0.2"]}, "us.api.konghq.dev": {"remote_dns_server_ip_addresses": ["10.0.0.8"]}}}}
+          application/json: {"id": "1850820b-c69f-4a2a-b9be-bbcdbc5cd618", "state": "terminating", "state_metadata": {"reported_status": "ERROR", "reason": "Failed to create Private Dns due to invalid Cloud Provider configuration.\n"}, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "us-east-2 private dns", "private_dns_attachment_config": {"kind": "aws-outbound-resolver", "dns_config": {"global.api.konghq.tech": {"remote_dns_server_ip_addresses": ["10.0.0.2"]}, "us.api.konghq.dev": {"remote_dns_server_ip_addresses": ["10.0.0.8"]}}}}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -22397,7 +22393,7 @@ examples:
           networkId: "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
           privateDnsId: "1850820b-c69f-4a2a-b9be-bbcdbc5cd618"
       requestBody:
-        application/json: {"name": "us-east-2 private dns", "private_dns_attachment_config": {"kind": "aws-outbound-resolver", "dns_config": {"global.api.konghq.com": {"remote_dns_server_ip_addresses": ["10.0.0.2"]}, "us.api.konghq.dev": {"remote_dns_server_ip_addresses": ["10.0.0.8"]}}}}
+        application/json: {"name": "us-east-2 private dns", "private_dns_attachment_config": {"kind": "aws-outbound-resolver", "dns_config": {"global.api.konghq.tech": {"remote_dns_server_ip_addresses": ["10.0.0.2"]}, "us.api.konghq.dev": {"remote_dns_server_ip_addresses": ["10.0.0.8"]}}}}
       responses:
         "200":
           application/json: {"id": "1850820b-c69f-4a2a-b9be-bbcdbc5cd618", "state": "ready", "state_metadata": {"reported_status": "ERROR", "reason": "Failed to create Private Dns due to invalid Cloud Provider configuration.\n"}, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "us-east-2 private dns", "private_dns_attachment_config": {"kind": "aws-private-hosted-zone-attachment", "hosted_zone_id": "<id>"}}

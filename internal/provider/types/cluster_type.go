@@ -9,4 +9,5 @@ import (
 type ClusterType struct {
 	Eq  types.String `queryParam:"name=eq" tfsdk:"eq"`
 	Neq types.String `queryParam:"name=neq" tfsdk:"neq"`
+	Oeq types.String `queryParam:"name=oeq" tfsdk:"oeq"`
 }

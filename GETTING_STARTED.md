@@ -18,7 +18,7 @@ terraform {
 
 provider "konnect" {
   personal_access_token = "kpat_YOUR_PAT"
-  server_url            = "https://us.api.konghq.com"
+  server_url            = "https://us.api.konghq.tech"
 }
 
 # Create a new Control Plane

@@ -8,6 +8,10 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"net/http"
+	"net/url"
+	"time"
+
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/config"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/hooks"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
@@ -15,19 +19,16 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/retry"
-	"net/http"
-	"net/url"
-	"time"
 )
 
 // ServerList contains the list of servers available to the SDK
 var ServerList = []string{
-	"https://global.api.konghq.com",
-	"https://us.api.konghq.com",
-	"https://eu.api.konghq.com",
-	"https://au.api.konghq.com",
-	"https://me.api.konghq.com",
-	"https://in.api.konghq.com",
+	"https://global.api.konghq.tech",
+	"https://us.api.konghq.tech",
+	"https://eu.api.konghq.tech",
+	"https://au.api.konghq.tech",
+	"https://me.api.konghq.tech",
+	"https://in.api.konghq.tech",
 }
 
 // HTTPClient provides an interface for supplying the SDK with a custom HTTP client

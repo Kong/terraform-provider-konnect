@@ -3,13 +3,14 @@
 package operations
 
 import (
+	"net/http"
+
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
-	"net/http"
 )
 
 var DeleteSystemAccountsIDServerList = []string{
-	"https://global.api.konghq.com/",
+	"https://global.api.konghq.tech/",
 }
 
 type DeleteSystemAccountsIDRequest struct {

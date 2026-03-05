@@ -4,6 +4,9 @@ package provider
 
 import (
 	"context"
+	"net/http"
+	"os"
+
 	"github.com/hashicorp/terraform-plugin-framework/action"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/ephemeral"
@@ -16,8 +19,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 	custom "github.com/kong/terraform-provider-konnect/v3/src"
-	"net/http"
-	"os"
 )
 
 var _ provider.Provider = (*KonnectProvider)(nil)
@@ -60,7 +61,7 @@ func (p *KonnectProvider) Schema(ctx context.Context, req provider.SchemaRequest
 				Sensitive:           true,
 			},
 			"server_url": schema.StringAttribute{
-				Description: `Server URL (defaults to https://global.api.konghq.com)`,
+				Description: `Server URL (defaults to https://global.api.konghq.tech)`,
 				Optional:    true,
 			},
 			"service_access_token": schema.StringAttribute{
@@ -73,7 +74,7 @@ func (p *KonnectProvider) Schema(ctx context.Context, req provider.SchemaRequest
 				MarkdownDescription: `The system account access token is meant for automations and integrations that are not directly associated with a human identity.` + "\n" +
 					`You can generate a system account Access Token by creating a system account and then obtaining a system account access token for that account.` + "\n" +
 					`The access token must be passed in the header of a request, for example:` + "\n" +
-					`` + "`" + `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer spat_i2Ej...'` + "`" + `` + "\n" +
+					`` + "`" + `curl -X GET 'https://global.api.konghq.tech/v2/users/' --header 'Authorization: Bearer spat_i2Ej...'` + "`" + `` + "\n" +
 					`. Configurable via environment variable ` + "`" + `KONNECT_SPAT` + "`" + `.`,
 				Optional:  true,
 				Sensitive: true,
@@ -99,7 +100,7 @@ func (p *KonnectProvider) Configure(ctx context.Context, req provider.ConfigureR
 	}
 
 	if serverUrl == "" {
-		serverUrl = "https://global.api.konghq.com"
+		serverUrl = "https://global.api.konghq.tech"
 	}
 
 	security := shared.Security{}

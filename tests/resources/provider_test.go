@@ -16,13 +16,13 @@ var (
 	}
 
 	providerConfigUs = `provider "konnect" {
-  server_url = "https://us.api.konghq.com"
+  server_url = "https://us.api.konghq.tech"
 }
 `
 )
 
 func providerConfigFromEnv() (string, int, string) {
-	serverHost := "us.api.konghq.com"
+	serverHost := "us.api.konghq.tech"
 	if len(os.Getenv("E2E_SERVER_URL")) > 0 {
 		serverHost = os.Getenv("E2E_SERVER_URL")
 	}

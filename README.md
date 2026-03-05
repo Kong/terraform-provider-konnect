@@ -91,7 +91,7 @@ terraform {
 
 provider "konnect" {
   personal_access_token = "kpat_YOUR_PAT"
-  server_url            = "https://us.api.konghq.com"
+  server_url            = "https://us.api.konghq.tech"
 }
 ```
 
@@ -115,7 +115,7 @@ We are currently working on official data source support (see [#10](https://gith
 
 ```hcl
 data "http" "production_cp" {
-  url    = "https://us.api.konghq.com/v2/control-planes?page%5Bsize%5D=1&page%5Bnumber%5D=1&filter%5Bname%5D%5Beq%5D=production"
+  url    = "https://us.api.konghq.tech/v2/control-planes?page%5Bsize%5D=1&page%5Bnumber%5D=1&filter%5Bname%5D%5Beq%5D=production"
   request_headers = {
     Accept           = "application/json"
     Authorization    = "Bearer ${var.konnect_personal_access_token}"

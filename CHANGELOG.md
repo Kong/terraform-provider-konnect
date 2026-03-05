@@ -504,7 +504,7 @@
 * Add support for the `konnect_api_product_specification`, `konnect_gateway_custom_plugin_schema`, `konnect_team`, `konnect_team_role` and `konnect_team_user` resources
 
 ### Bug Fixes
-* Make Cloud Gateways + Identity APIs point at `global.api.konghq.com` rather than the provided `server_url`
+* Make Cloud Gateways + Identity APIs point at `global.api.konghq.tech` rather than the provided `server_url`
 
 ## 0.3.1
 > Released on 2024/06/14
@@ -556,7 +556,7 @@
 > Released on 2024/04/18
 
 ### BREAKING CHANGES
-* The provider `server_url` no longer contains an API version. Update your provider configuration to use `https://us.api.konghq.com` (or your chosen region)
+* The provider `server_url` no longer contains an API version. Update your provider configuration to use `https://us.api.konghq.tech` (or your chosen region)
 * `labels` on the `konnect_gateway_control_plane` resource now accept a map of values rather than using `jsonencode()`
 
 ### Fixes

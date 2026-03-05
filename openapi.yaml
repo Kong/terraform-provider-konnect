@@ -25,12 +25,12 @@ info:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
 servers:
-  - url: 'https://global.api.konghq.com'
-  - url: 'https://us.api.konghq.com'
-  - url: 'https://eu.api.konghq.com'
-  - url: 'https://au.api.konghq.com'
-  - url: 'https://me.api.konghq.com'
-  - url: 'https://in.api.konghq.com'
+  - url: 'https://global.api.konghq.tech'
+  - url: 'https://us.api.konghq.tech'
+  - url: 'https://eu.api.konghq.tech'
+  - url: 'https://au.api.konghq.tech'
+  - url: 'https://me.api.konghq.tech'
+  - url: 'https://in.api.konghq.tech'
 paths:
   /ip-addresses.json:
     servers:
@@ -83,7 +83,7 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Serverless Cloud Gateways
   '/v0/serverless-cloud-gateways/{controlPlaneId}':
@@ -118,7 +118,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Serverless Cloud Gateways
     delete:
@@ -142,7 +142,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Serverless Cloud Gateways
   /v1/catalog-services:
@@ -3523,7 +3523,7 @@ paths:
         '409':
           $ref: '#/components/responses/CloudGatewaysConflict'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Data-Plane Group Configurations
       x-speakeasy-group: CloudGateways
@@ -3547,7 +3547,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Data-Plane Group Configurations
       x-speakeasy-group: CloudGateways
@@ -3581,7 +3581,7 @@ paths:
         '409':
           $ref: '#/components/responses/Conflict'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Custom Domains
       x-speakeasy-group: CloudGateways
@@ -3605,7 +3605,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Custom Domains
       x-speakeasy-group: CloudGateways
@@ -3630,7 +3630,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Custom Domains
       x-speakeasy-group: CloudGateways
@@ -3670,7 +3670,7 @@ paths:
         '409':
           $ref: '#/components/responses/Conflict'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Networks
       x-speakeasy-group: CloudGateways
@@ -3694,7 +3694,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Networks
       x-speakeasy-group: CloudGateways
@@ -3727,7 +3727,7 @@ paths:
         '409':
           $ref: '#/components/responses/Conflict'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Networks
       x-speakeasy-group: CloudGateways
@@ -3752,7 +3752,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Networks
       x-speakeasy-group: CloudGateways
@@ -3801,7 +3801,7 @@ paths:
         '409':
           $ref: '#/components/responses/Conflict'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Private DNS
       x-speakeasy-group: CloudGateways
@@ -3841,7 +3841,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Private DNS
       x-speakeasy-group: CloudGateways
@@ -3872,7 +3872,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Private DNS
       x-speakeasy-group: CloudGateways
@@ -3921,7 +3921,7 @@ paths:
         '409':
           $ref: '#/components/responses/Conflict'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Transit Gateways
       x-speakeasy-group: CloudGateways
@@ -3962,7 +3962,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Transit Gateways
       x-speakeasy-group: CloudGateways
@@ -4002,7 +4002,7 @@ paths:
         '409':
           $ref: '#/components/responses/Conflict'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Transit Gateways
       x-speakeasy-group: CloudGateways
@@ -4034,7 +4034,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Transit Gateways
       x-speakeasy-group: CloudGateways
@@ -4067,7 +4067,7 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Provider Accounts
       x-speakeasy-group: CloudGateways
@@ -17106,7 +17106,7 @@ paths:
         '401':
           $ref: '#/components/responses/IdentityUnauthenticated'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Auth Settings
     patch:
@@ -17126,7 +17126,7 @@ paths:
         '403':
           $ref: '#/components/responses/Unauthorized'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Auth Settings
   /v3/identity-providers:
@@ -17151,7 +17151,7 @@ paths:
         '409':
           $ref: '#/components/responses/Conflict'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Auth Settings
   '/v3/identity-providers/{id}':
@@ -17185,7 +17185,7 @@ paths:
         '404':
           $ref: '#/components/responses/IdentityNotFound'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Auth Settings
     patch:
@@ -17211,7 +17211,7 @@ paths:
         '409':
           $ref: '#/components/responses/Conflict'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Auth Settings
     delete:
@@ -17233,7 +17233,7 @@ paths:
         '404':
           $ref: '#/components/responses/IdentityNotFound'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Auth Settings
   /v3/portals:
@@ -17977,7 +17977,7 @@ paths:
         '403':
           $ref: '#/components/responses/Unauthorized'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - System Accounts
       x-speakeasy-pagination:
@@ -18011,7 +18011,7 @@ paths:
         '409':
           $ref: '#/components/responses/IdentityConflict'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - System Accounts
   '/v3/system-accounts/{accountId}':
@@ -18032,7 +18032,7 @@ paths:
         '404':
           $ref: '#/components/responses/IdentityNotFound'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - System Accounts
     parameters:
@@ -18064,7 +18064,7 @@ paths:
         '409':
           $ref: '#/components/responses/IdentityConflict'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - System Accounts
     delete:
@@ -18084,7 +18084,7 @@ paths:
         '404':
           $ref: '#/components/responses/IdentityNotFound'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - System Accounts
   '/v3/system-accounts/{accountId}/access-tokens':
@@ -18116,7 +18116,7 @@ paths:
         '409':
           $ref: '#/components/responses/IdentityConflict'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - System Accounts - Access Tokens
   '/v3/system-accounts/{accountId}/access-tokens/{tokenId}':
@@ -18137,7 +18137,7 @@ paths:
         '404':
           $ref: '#/components/responses/IdentityNotFound'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - System Accounts - Access Tokens
     parameters:
@@ -18175,7 +18175,7 @@ paths:
         '409':
           $ref: '#/components/responses/IdentityConflict'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - System Accounts - Access Tokens
     delete:
@@ -18195,7 +18195,7 @@ paths:
         '404':
           $ref: '#/components/responses/IdentityNotFound'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - System Accounts - Access Tokens
   '/v3/system-accounts/{accountId}/assigned-roles':
@@ -18227,7 +18227,7 @@ paths:
         '409':
           $ref: '#/components/responses/IdentityConflict'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - System Accounts - Roles
   '/v3/system-accounts/{accountId}/assigned-roles/{roleId}':
@@ -18262,7 +18262,7 @@ paths:
         '404':
           $ref: '#/components/responses/IdentityNotFound'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - System Accounts - Roles
   /v3/teams:
@@ -18295,7 +18295,7 @@ paths:
         '404':
           $ref: '#/components/responses/IdentityNotFound'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Teams
       x-speakeasy-pagination:
@@ -18327,7 +18327,7 @@ paths:
         '403':
           $ref: '#/components/responses/IdentityPermissionDenied'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Teams
   '/v3/teams/{teamId}':
@@ -18356,7 +18356,7 @@ paths:
         '404':
           $ref: '#/components/responses/IdentityNotFound'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Teams
     patch:
@@ -18376,7 +18376,7 @@ paths:
         '404':
           $ref: '#/components/responses/IdentityNotFound'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Teams
     delete:
@@ -18394,7 +18394,7 @@ paths:
         '404':
           $ref: '#/components/responses/IdentityNotFound'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Teams
   '/v3/teams/{teamId}/assigned-roles':
@@ -18430,7 +18430,7 @@ paths:
         '409':
           $ref: '#/components/responses/IdentityConflict'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Roles
   '/v3/teams/{teamId}/assigned-roles/{roleId}':
@@ -18471,7 +18471,7 @@ paths:
         '404':
           $ref: '#/components/responses/IdentityNotFound'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Roles
   '/v3/teams/{teamId}/system-accounts':
@@ -18503,7 +18503,7 @@ paths:
         '409':
           $ref: '#/components/responses/IdentityConflict'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - System Accounts - Team Membership
   '/v3/teams/{teamId}/system-accounts/{accountId}':
@@ -18537,7 +18537,7 @@ paths:
         '404':
           $ref: '#/components/responses/IdentityNotFound'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - System Accounts - Team Membership
   '/v3/teams/{teamId}/users':
@@ -18569,7 +18569,7 @@ paths:
         '409':
           $ref: '#/components/responses/IdentityConflict'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Team Membership
   '/v3/teams/{teamId}/users/{userId}':
@@ -18607,7 +18607,7 @@ paths:
         '404':
           $ref: '#/components/responses/IdentityNotFound'
       servers:
-        - url: 'https://global.api.konghq.com/'
+        - url: 'https://global.api.konghq.tech/'
       tags:
         - Team Membership
   /v2/control-planes#single-resource:
@@ -19351,6 +19351,7 @@ components:
             - CLUSTER_TYPE_SERVERLESS
             - CLUSTER_TYPE_HYBRID
             - CLUSTER_TYPE_CLOUD_API_GATEWAY
+            - CLUSTER_TYPE_SERVERLESS_V1
           x-speakeasy-unknown-values: allow
         auth_type:
           description: The auth type value of the cluster associated with the Runtime Group.
@@ -19456,6 +19457,7 @@ components:
                 - CLUSTER_TYPE_SERVERLESS
                 - CLUSTER_TYPE_HYBRID
                 - CLUSTER_TYPE_CLOUD_API_GATEWAY
+                - CLUSTER_TYPE_SERVERLESS_V1
               readOnly: true
               x-speakeasy-param-suppress-computed-diff: true
               x-speakeasy-unknown-values: allow
@@ -19585,7 +19587,7 @@ components:
               description: The field does not match the provided value.
               type: string
         cluster_type:
-          description: 'Filter using **one** of the following operators: `eq`, `neq`'
+          description: 'Filter using **one** of the following operators: `eq`, `oeq`, `neq`'
           type: object
           additionalProperties: false
           properties:
@@ -19594,6 +19596,9 @@ components:
               type: string
             neq:
               description: The field does not match the provided value.
+              type: string
+            oeq:
+              description: The field matches any of the provided values.
               type: string
         cloud_gateway:
           $ref: '#/components/schemas/BooleanFieldFilter'
@@ -21333,7 +21338,7 @@ components:
       example:
         kind: azure-outbound-resolver
         dns_config:
-          global.api.konghq.com:
+          global.api.konghq.tech:
             remote_dns_server_ip_addresses:
               - 10.0.0.2
           us.api.konghq.dev:
@@ -21349,7 +21354,7 @@ components:
         Object that contains mappings from proxied internal domains to remote DNS server IP address for a Private DNS Resolver.
       type: object
       example:
-        global.api.konghq.com:
+        global.api.konghq.tech:
           remote_dns_server_ip_addresses:
             - 10.0.0.2
         us.api.konghq.dev:
@@ -67255,7 +67260,7 @@ components:
         The system account access token is meant for automations and integrations that are not directly associated with a human identity.
         You can generate a system account Access Token by creating a system account and then obtaining a system account access token for that account.
         The access token must be passed in the header of a request, for example:
-        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer spat_i2Ej...'`
+        `curl -X GET 'https://global.api.konghq.tech/v2/users/' --header 'Authorization: Bearer spat_i2Ej...'`
     konnectAccessToken:
       type: http
       scheme: bearer
