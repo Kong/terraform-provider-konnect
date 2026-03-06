@@ -164,11 +164,11 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) RefreshFromShare
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.AcePluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.AcePluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -177,7 +177,7 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) RefreshFromShare
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.AcePluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
@@ -185,10 +185,10 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) RefreshFromShare
 			}
 		}
 		if resp.Partials != nil {
-			r.Partials = []tfTypes.Partials{}
+			r.Partials = []tfTypes.ACLPluginPartials{}
 
 			for _, partialsItem := range resp.Partials {
-				var partials tfTypes.Partials
+				var partials tfTypes.ACLPluginPartials
 
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)

@@ -4,8 +4,6 @@ package provider
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -174,13 +172,6 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				targets.Logging = &tfTypes.AiLlmAsJudgePluginLogging{}
 				targets.Logging.LogPayloads = types.BoolPointerValue(targetsItem.Logging.LogPayloads)
 				targets.Logging.LogStatistics = types.BoolPointerValue(targetsItem.Logging.LogStatistics)
-			}
-			if targetsItem.Metadata != nil {
-				targets.Metadata = make(map[string]jsontypes.Normalized, len(targetsItem.Metadata))
-				for key, value := range targetsItem.Metadata {
-					result, _ := json.Marshal(value)
-					targets.Metadata[key] = jsontypes.NewNormalizedValue(string(result))
-				}
 			}
 			targets.Model = &tfTypes.AiLlmAsJudgePluginModel{}
 			targets.Model.Name = types.StringPointerValue(targetsItem.Model.Name)
@@ -389,11 +380,11 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.AcePluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.AcePluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -402,7 +393,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.AcePluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
@@ -410,10 +401,10 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 			}
 		}
 		if resp.Partials != nil {
-			r.Partials = []tfTypes.Partials{}
+			r.Partials = []tfTypes.ACLPluginPartials{}
 
 			for _, partialsItem := range resp.Partials {
-				var partials tfTypes.Partials
+				var partials tfTypes.ACLPluginPartials
 
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
@@ -1137,15 +1128,8 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 				LogStatistics: logStatistics,
 			}
 		}
-		var metadata map[string]interface{}
-		if r.Config.Targets[targetsIndex].Metadata != nil {
-			metadata = make(map[string]interface{})
-			for metadataKey := range r.Config.Targets[targetsIndex].Metadata {
-				var metadataInst interface{}
-				_ = json.Unmarshal([]byte(r.Config.Targets[targetsIndex].Metadata[metadataKey].ValueString()), &metadataInst)
-				metadata[metadataKey] = metadataInst
-			}
-		}
+		// GatewayPluginAiProxyAdvanced#create.config.targets.metadataGatewayPluginAiProxyAdvanced#create.config.targets.metadata impedance mismatch: any != class
+		var metadata *interface{}
 		name2 := new(string)
 		if !r.Config.Targets[targetsIndex].Model.Name.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Name.IsNull() {
 			*name2 = r.Config.Targets[targetsIndex].Model.Name.ValueString()

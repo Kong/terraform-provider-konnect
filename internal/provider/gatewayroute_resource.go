@@ -103,7 +103,7 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 							Optional:    true,
 							Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 							Validators: []validator.Int64{
-								int64validator.AtMost(65535),
+								int64validator.Between(0, 65535),
 							},
 						},
 					},
@@ -126,7 +126,7 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				Computed:    true,
 				Optional:    true,
 				Default:     int64default.StaticInt64(426),
-				Description: `The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the ` + "`" + `https` + "`" + ` protocol. Default: 426; must be one of ["301", "302", "307", "308", "426"]`,
+				Description: `The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the ` + "`" + `https` + "`" + ` protocol. Default: 426; must be one of [301, 302, 307, 308, 426]`,
 				Validators: []validator.Int64{
 					int64validator.OneOf(
 						301,
@@ -233,7 +233,7 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 							Optional:    true,
 							Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 							Validators: []validator.Int64{
-								int64validator.AtMost(65535),
+								int64validator.Between(0, 65535),
 							},
 						},
 					},
@@ -504,8 +504,8 @@ func (r *GatewayRouteResource) ImportState(ctx context.Context, req resource.Imp
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		ControlPlaneID string `json:"control_plane_id"`
 		ID             string `json:"id"`
+		ControlPlaneID string `json:"control_plane_id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
@@ -513,14 +513,14 @@ func (r *GatewayRouteResource) ImportState(ctx context.Context, req resource.Imp
 		return
 	}
 
-	if len(data.ControlPlaneID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
-		return
-	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
 	if len(data.ID) == 0 {
 		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
+	if len(data.ControlPlaneID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
 }

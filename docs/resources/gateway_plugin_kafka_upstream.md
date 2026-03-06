@@ -205,7 +205,7 @@ Optional:
 - `producer_async` (Boolean) Flag to enable asynchronous mode. Default: true
 - `producer_async_buffering_limits_messages_in_memory` (Number) Maximum number of messages that can be buffered in memory in asynchronous mode. Default: 50000
 - `producer_async_flush_timeout` (Number) Maximum time interval in milliseconds between buffer flushes in asynchronous mode. Default: 1000
-- `producer_request_acks` (Number) The number of acknowledgments the producer requires the leader to have received before considering a request complete. Allowed values: 0 for no acknowledgments; 1 for only the leader; and -1 for the full ISR (In-Sync Replica set). Default: 1; must be one of ["-1", "0", "1"]
+- `producer_request_acks` (Number) The number of acknowledgments the producer requires the leader to have received before considering a request complete. Allowed values: 0 for no acknowledgments; 1 for only the leader; and -1 for the full ISR (In-Sync Replica set). Default: 1; must be one of [-1, 0, 1]
 - `producer_request_limits_bytes_per_request` (Number) Maximum size of a Produce request in bytes. Default: 1048576
 - `producer_request_limits_messages_per_request` (Number) Maximum number of messages to include into a single producer request. Default: 200
 - `producer_request_retries_backoff_timeout` (Number) Backoff interval between retry attempts in milliseconds. Default: 100

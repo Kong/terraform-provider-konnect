@@ -990,7 +990,7 @@ type Llm struct {
 	Description *string                    `default:"null" json:"description"`
 	Logging     *AiLlmAsJudgePluginLogging `json:"logging"`
 	// For internal use only.
-	Metadata map[string]any          `json:"metadata,omitempty"`
+	Metadata any                     `json:"metadata,omitempty"`
 	Model    AiLlmAsJudgePluginModel `json:"model"`
 	// The model's operation implementation, for this provider.
 	RouteType AiLlmAsJudgePluginRouteType `json:"route_type"`
@@ -1030,7 +1030,7 @@ func (l *Llm) GetLogging() *AiLlmAsJudgePluginLogging {
 	return l.Logging
 }
 
-func (l *Llm) GetMetadata() map[string]any {
+func (l *Llm) GetMetadata() any {
 	if l == nil {
 		return nil
 	}

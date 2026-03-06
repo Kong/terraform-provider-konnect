@@ -7,10 +7,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/float64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -29,7 +27,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 )
 
@@ -57,8 +54,8 @@ type GatewayPluginAiLlmAsJudgeResourceModel struct {
 	Enabled        types.Bool                        `tfsdk:"enabled"`
 	ID             types.String                      `tfsdk:"id"`
 	InstanceName   types.String                      `tfsdk:"instance_name"`
-	Ordering       *tfTypes.AcePluginOrdering        `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials                `tfsdk:"partials"`
+	Ordering       *tfTypes.ACLPluginOrdering        `tfsdk:"ordering"`
+	Partials       []tfTypes.ACLPluginPartials       `tfsdk:"partials"`
 	Protocols      []types.String                    `tfsdk:"protocols"`
 	Route          *tfTypes.Set                      `tfsdk:"route"`
 	Service        *tfTypes.Set                      `tfsdk:"service"`
@@ -85,7 +82,7 @@ func (r *GatewayPluginAiLlmAsJudgeResource) Schema(ctx context.Context, req reso
 						Optional:    true,
 						Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 						Validators: []validator.Int64{
-							int64validator.AtMost(65535),
+							int64validator.Between(0, 65535),
 						},
 					},
 					"http_timeout": schema.Int64Attribute{
@@ -102,7 +99,7 @@ func (r *GatewayPluginAiLlmAsJudgeResource) Schema(ctx context.Context, req reso
 						Optional:    true,
 						Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 						Validators: []validator.Int64{
-							int64validator.AtMost(65535),
+							int64validator.Between(0, 65535),
 						},
 					},
 					"https_verify": schema.BoolAttribute{
@@ -247,14 +244,6 @@ func (r *GatewayPluginAiLlmAsJudgeResource) Schema(ctx context.Context, req reso
 										Default:     booldefault.StaticBool(false),
 										Description: `If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output. Default: false`,
 									},
-								},
-							},
-							"metadata": schema.MapAttribute{
-								Optional:    true,
-								ElementType: jsontypes.NormalizedType{},
-								Description: `For internal use only.`,
-								Validators: []validator.Map{
-									mapvalidator.ValueStringsAre(validators.IsValidJSON()),
 								},
 							},
 							"model": schema.SingleNestedAttribute{
@@ -526,7 +515,7 @@ func (r *GatewayPluginAiLlmAsJudgeResource) Schema(ctx context.Context, req reso
 												Optional:    true,
 												Description: `Defines the top-k most likely tokens, if supported.`,
 												Validators: []validator.Int64{
-													int64validator.AtMost(500),
+													int64validator.Between(0, 500),
 												},
 											},
 											"top_p": schema.Float64Attribute{
@@ -1057,8 +1046,8 @@ func (r *GatewayPluginAiLlmAsJudgeResource) ImportState(ctx context.Context, req
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		ControlPlaneID string `json:"control_plane_id"`
 		ID             string `json:"id"`
+		ControlPlaneID string `json:"control_plane_id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
@@ -1066,14 +1055,14 @@ func (r *GatewayPluginAiLlmAsJudgeResource) ImportState(ctx context.Context, req
 		return
 	}
 
-	if len(data.ControlPlaneID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
-		return
-	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
 	if len(data.ID) == 0 {
 		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"3473c251-5b6c-4f45-b1ff-7ede735a366d"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
+	if len(data.ControlPlaneID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
 }

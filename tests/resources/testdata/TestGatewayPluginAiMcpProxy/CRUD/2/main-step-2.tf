@@ -15,25 +15,12 @@ resource "konnect_gateway_plugin_ai_mcp_proxy" "my_plugin" {
         description = "Get users"
         method      = "GET"
         path        = "/marketplace/users"
-
         annotations = {
           title = "Get users"
         }
-        parameters = [
-          {
-            name     = "id"
-            in       = "query"
-            required = false
-
-            schema = {
-              type = "string"
-            }
-            description = "Optional user ID"
-        }]
       },
-
       {
-        description = "Get orders for a user"
+        description = "Get orders for a user - require parameter"
         method      = "GET"
         path        = "/marketplace/orders"
 
@@ -51,12 +38,20 @@ resource "konnect_gateway_plugin_ai_mcp_proxy" "my_plugin" {
             }
             description = "User ID to filter orders"
         }]
+      },
+      {
+        description = "Get orders for a user - body"
+        method      = "GET"
+        path        = "/marketplace/orders"
+        annotations = {
+          title = "Get users orders"
+        }
     }]
 
     server = {
       timeout = 60000
     }
-    max_request_body_size = 8192
+    max_request_body_size = 4096
   }
 
   control_plane_id = konnect_gateway_control_plane.my_konnect_cp.id

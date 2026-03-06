@@ -171,7 +171,7 @@ new certificate and a renewal certificate.
 Default: 5
 - `preferred_chain` (String) A string value that specifies the preferred certificate chain to use when generating certificates.
 - `renew_threshold_days` (Number) Days remaining to renew the certificate before it expires. Default: 14
-- `rsa_key_size` (Number) RSA private key size for the certificate. The possible values are 2048, 3072, or 4096. Default: 4096; must be one of ["2048", "3072", "4096"]
+- `rsa_key_size` (Number) RSA private key size for the certificate. The possible values are 2048, 3072, or 4096. Default: 4096; must be one of [2048, 3072, 4096]
 - `storage` (String) The backend storage type to use. In DB-less mode and Konnect, `kong` storage is unavailable. In hybrid mode and Konnect, `shm` storage is unavailable. `shm` storage does not persist during Kong restarts and does not work for Kong running on different machines, so consider using one of `kong`, `redis`, `consul`, or `vault` in production. Default: "shm"; must be one of ["consul", "kong", "redis", "shm", "vault"]
 - `storage_config` (Attributes) (see [below for nested schema](#nestedatt--config--storage_config))
 - `tos_accepted` (Boolean) If you are using Let's Encrypt, you must set this to `true` to agree the terms of service. Default: false

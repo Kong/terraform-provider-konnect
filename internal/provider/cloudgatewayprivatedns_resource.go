@@ -47,6 +47,7 @@ type CloudGatewayPrivateDNSResourceModel struct {
 	AwsPrivateHostedZoneResponse    *tfTypes.AwsPrivateHostedZoneResponse   `queryParam:"inline" tfsdk:"aws_private_hosted_zone_response"`
 	AzurePrivateDNSResolverResponse *tfTypes.AwsPrivateDNSResolverResponse  `queryParam:"inline" tfsdk:"azure_private_dns_resolver_response"`
 	AzurePrivateHostedZoneResponse  *tfTypes.AzurePrivateHostedZoneResponse `queryParam:"inline" tfsdk:"azure_private_hosted_zone_response"`
+	CreatedAt                       types.String                            `tfsdk:"created_at"`
 	EntityVersion                   types.Int64                             `tfsdk:"entity_version"`
 	GcpPrivateHostedZoneResponse    *tfTypes.GcpPrivateHostedZoneResponse   `queryParam:"inline" tfsdk:"gcp_private_hosted_zone_response"`
 	ID                              types.String                            `tfsdk:"id"`
@@ -54,6 +55,7 @@ type CloudGatewayPrivateDNSResourceModel struct {
 	NetworkID                       types.String                            `tfsdk:"network_id"`
 	PrivateDNSAttachmentConfig      *tfTypes.PrivateDNSAttachmentConfig     `tfsdk:"private_dns_attachment_config"`
 	State                           types.String                            `tfsdk:"state"`
+	UpdatedAt                       types.String                            `tfsdk:"updated_at"`
 }
 
 func (r *CloudGatewayPrivateDNSResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -394,10 +396,16 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 					},
 				},
 			},
+			"created_at": schema.StringAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_private_hosted_zone_response"), FieldPath: path.Root("aws_private_hosted_zone_response").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_private_dns_resolver_response"), FieldPath: path.Root("aws_private_dns_resolver_response").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gcp_private_hosted_zone_response"), FieldPath: path.Root("gcp_private_hosted_zone_response").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_private_hosted_zone_response"), FieldPath: path.Root("azure_private_hosted_zone_response").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_private_dns_resolver_response"), FieldPath: path.Root("azure_private_dns_resolver_response").AtName("created_at")}}),
+				},
+				Description: `An RFC-3339 timestamp representation of Private DNS creation date.`,
+			},
 			"entity_version": schema.Int64Attribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.Int64{
-					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
 					speakeasy_int64planmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_private_hosted_zone_response"), FieldPath: path.Root("aws_private_hosted_zone_response").AtName("entity_version")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_private_dns_resolver_response"), FieldPath: path.Root("aws_private_dns_resolver_response").AtName("entity_version")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gcp_private_hosted_zone_response"), FieldPath: path.Root("gcp_private_hosted_zone_response").AtName("entity_version")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_private_hosted_zone_response"), FieldPath: path.Root("azure_private_hosted_zone_response").AtName("entity_version")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_private_dns_resolver_response"), FieldPath: path.Root("azure_private_dns_resolver_response").AtName("entity_version")}}),
 				},
 				MarkdownDescription: `Monotonically-increasing version count of the Private DNS, to indicate the order of updates to the` + "\n" +
@@ -488,7 +496,6 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 			"id": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_private_hosted_zone_response"), FieldPath: path.Root("aws_private_hosted_zone_response").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_private_dns_resolver_response"), FieldPath: path.Root("aws_private_dns_resolver_response").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gcp_private_hosted_zone_response"), FieldPath: path.Root("gcp_private_hosted_zone_response").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_private_hosted_zone_response"), FieldPath: path.Root("azure_private_hosted_zone_response").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_private_dns_resolver_response"), FieldPath: path.Root("azure_private_dns_resolver_response").AtName("id")}}),
 				},
 			},
@@ -497,7 +504,6 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_private_hosted_zone_response"), FieldPath: path.Root("aws_private_hosted_zone_response").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_private_dns_resolver_response"), FieldPath: path.Root("aws_private_dns_resolver_response").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gcp_private_hosted_zone_response"), FieldPath: path.Root("gcp_private_hosted_zone_response").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_private_hosted_zone_response"), FieldPath: path.Root("azure_private_hosted_zone_response").AtName("name")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_private_dns_resolver_response"), FieldPath: path.Root("azure_private_dns_resolver_response").AtName("name")}}),
 				},
 				Description: `Human-readable name of the Private DNS. Requires replacement if changed.`,
@@ -783,6 +789,13 @@ func (r *CloudGatewayPrivateDNSResource) Schema(ctx context.Context, req resourc
 					`- ` + "`" + `error` + "`" + ` - The attachment is in an error state, and is not operational.` + "\n" +
 					`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted.` + "\n" +
 					`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.`,
+			},
+			"updated_at": schema.StringAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_private_hosted_zone_response"), FieldPath: path.Root("aws_private_hosted_zone_response").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("aws_private_dns_resolver_response"), FieldPath: path.Root("aws_private_dns_resolver_response").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("gcp_private_hosted_zone_response"), FieldPath: path.Root("gcp_private_hosted_zone_response").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_private_hosted_zone_response"), FieldPath: path.Root("azure_private_hosted_zone_response").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("azure_private_dns_resolver_response"), FieldPath: path.Root("azure_private_dns_resolver_response").AtName("updated_at")}}),
+				},
+				Description: `An RFC-3339 timestamp representation of Private DNS update date.`,
 			},
 		},
 	}

@@ -68,11 +68,10 @@ resource "konnect_gateway_plugin_ai_mcp_proxy" "my_gatewaypluginaimcpproxy" {
         name   = "...my_name..."
         parameters = [
           {
-            additional_properties = "{ \"see\": \"documentation\" }"
-            description           = "...my_description..."
-            in                    = "...my_in..."
-            name                  = "...my_name..."
-            required              = true
+            description = "...my_description..."
+            in          = "...my_in..."
+            name        = "...my_name..."
+            required    = true
             schema = {
               type = "...my_type..."
             }
@@ -84,13 +83,9 @@ resource "konnect_gateway_plugin_ai_mcp_proxy" "my_gatewaypluginaimcpproxy" {
             # ...
           ]
         }
-        request_body = {
-          key = jsonencode("value")
-        }
-        responses = {
-          key = jsonencode("value")
-        }
-        scheme = "https"
+        request_body = "{ \"see\": \"documentation\" }"
+        responses    = "{ \"see\": \"documentation\" }"
+        scheme       = "https"
       }
     ]
   }
@@ -218,8 +213,8 @@ Optional:
 - `parameters` (Attributes List) The API parameters specification defined in OpenAPI. For example, '[{"name": "city", "in": "query", "description": "Name of the city to get the weather for", "required": true, "schema": {"type": "string"}}]'.See https://swagger.io/docs/specification/v3_0/describing-parameters/ for more details. (see [below for nested schema](#nestedatt--config--tools--parameters))
 - `path` (String) The path of the exported API. By default, Kong will extract the path from API configuration. If the configured path is not exactly matched, this field is required. Paths not starting with '/' are treated as relative paths.
 - `query` (Map of List of String) The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.
-- `request_body` (Map of String) The API requestBody specification defined in OpenAPI. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details.
-- `responses` (Map of String) The API responses specification defined in OpenAPI. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details.Only one non-error (status code < 400) responses are supported.
+- `request_body` (String) The API requestBody specification defined in OpenAPI. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details. Parsed as JSON.
+- `responses` (String) The API responses specification defined in OpenAPI. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details.Only one non-error (status code < 400) responses are supported. Parsed as JSON.
 - `scheme` (String) The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it. must be one of ["http", "https"]
 
 <a id="nestedatt--config--tools--acl"></a>
@@ -248,7 +243,6 @@ Optional:
 
 Optional:
 
-- `additional_properties` (String) Parsed as JSON.
 - `description` (String)
 - `in` (String)
 - `name` (String)

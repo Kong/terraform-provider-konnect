@@ -45,19 +45,19 @@ type GatewayPluginSamlResource struct {
 
 // GatewayPluginSamlResourceModel describes the resource data model.
 type GatewayPluginSamlResourceModel struct {
-	Config         *tfTypes.SamlPluginConfig  `tfsdk:"config"`
-	ControlPlaneID types.String               `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                `tfsdk:"created_at"`
-	Enabled        types.Bool                 `tfsdk:"enabled"`
-	ID             types.String               `tfsdk:"id"`
-	InstanceName   types.String               `tfsdk:"instance_name"`
-	Ordering       *tfTypes.AcePluginOrdering `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials         `tfsdk:"partials"`
-	Protocols      []types.String             `tfsdk:"protocols"`
-	Route          *tfTypes.Set               `tfsdk:"route"`
-	Service        *tfTypes.Set               `tfsdk:"service"`
-	Tags           []types.String             `tfsdk:"tags"`
-	UpdatedAt      types.Int64                `tfsdk:"updated_at"`
+	Config         *tfTypes.SamlPluginConfig   `tfsdk:"config"`
+	ControlPlaneID types.String                `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                 `tfsdk:"created_at"`
+	Enabled        types.Bool                  `tfsdk:"enabled"`
+	ID             types.String                `tfsdk:"id"`
+	InstanceName   types.String                `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering  `tfsdk:"ordering"`
+	Partials       []tfTypes.ACLPluginPartials `tfsdk:"partials"`
+	Protocols      []types.String              `tfsdk:"protocols"`
+	Route          *tfTypes.Set                `tfsdk:"route"`
+	Service        *tfTypes.Set                `tfsdk:"service"`
+	Tags           []types.String              `tfsdk:"tags"`
+	UpdatedAt      types.Int64                 `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginSamlResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -268,7 +268,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 											Default:     int64default.StaticInt64(6379),
 											Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
 											Validators: []validator.Int64{
-												int64validator.AtMost(65535),
+												int64validator.Between(0, 65535),
 											},
 										},
 									},
@@ -281,7 +281,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 								Default:     int64default.StaticInt64(2000),
 								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
 								Validators: []validator.Int64{
-									int64validator.AtMost(2147483646),
+									int64validator.Between(0, 2147483646),
 								},
 							},
 							"connection_is_proxied": schema.BoolAttribute{
@@ -306,7 +306,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 								Optional:    true,
 								Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `keepalive_pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `keepalive_pool_size` + "`" + `.`,
 								Validators: []validator.Int64{
-									int64validator.AtMost(2147483646),
+									int64validator.Between(0, 2147483646),
 								},
 							},
 							"keepalive_pool_size": schema.Int64Attribute{
@@ -328,7 +328,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 								Default:     int64default.StaticInt64(6379),
 								Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
 								Validators: []validator.Int64{
-									int64validator.AtMost(65535),
+									int64validator.Between(0, 65535),
 								},
 							},
 							"prefix": schema.StringAttribute{
@@ -341,7 +341,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 								Default:     int64default.StaticInt64(2000),
 								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
 								Validators: []validator.Int64{
-									int64validator.AtMost(2147483646),
+									int64validator.Between(0, 2147483646),
 								},
 							},
 							"send_timeout": schema.Int64Attribute{
@@ -350,7 +350,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 								Default:     int64default.StaticInt64(2000),
 								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
 								Validators: []validator.Int64{
-									int64validator.AtMost(2147483646),
+									int64validator.Between(0, 2147483646),
 								},
 							},
 							"sentinel_master": schema.StringAttribute{
@@ -376,7 +376,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 											Default:     int64default.StaticInt64(6379),
 											Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
 											Validators: []validator.Int64{
-												int64validator.AtMost(65535),
+												int64validator.Between(0, 65535),
 											},
 										},
 									},
@@ -579,7 +579,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						Default:     int64default.StaticInt64(11211),
 						Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 11211`,
 						Validators: []validator.Int64{
-							int64validator.AtMost(65535),
+							int64validator.Between(0, 65535),
 						},
 					},
 					"session_memcached_prefix": schema.StringAttribute{
@@ -1063,8 +1063,8 @@ func (r *GatewayPluginSamlResource) ImportState(ctx context.Context, req resourc
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		ControlPlaneID string `json:"control_plane_id"`
 		ID             string `json:"id"`
+		ControlPlaneID string `json:"control_plane_id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
@@ -1072,14 +1072,14 @@ func (r *GatewayPluginSamlResource) ImportState(ctx context.Context, req resourc
 		return
 	}
 
-	if len(data.ControlPlaneID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
-		return
-	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
 	if len(data.ID) == 0 {
 		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"3473c251-5b6c-4f45-b1ff-7ede735a366d"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
+	if len(data.ControlPlaneID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
 }
