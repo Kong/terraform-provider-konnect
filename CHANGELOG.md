@@ -1,7 +1,7 @@
 # Changelog
 
 ## 3.10.0
-> Released 2026/02/??
+> Released 2026/03/06
 
 # Features
 * Support new roles `Registration Approver` and `Content Editor` in `konnect_team_role` resource
