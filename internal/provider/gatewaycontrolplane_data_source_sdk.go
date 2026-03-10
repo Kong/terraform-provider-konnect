@@ -11,7 +11,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
-func (r *GatewayControlPlaneDataSourceModel) RefreshFromSharedControlPlane(ctx context.Context, resp *shared.ControlPlane) diag.Diagnostics {
+func (r *GatewayControlPlaneDataSourceModel) RefreshFromSharedControlPlane1(ctx context.Context, resp *shared.ControlPlane1) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	r.Config = &tfTypes.ControlPlaneConfig{}
@@ -53,7 +53,7 @@ func (r *GatewayControlPlaneDataSourceModel) RefreshFromSharedListControlPlanesR
 			return diags
 		}
 
-		diags.Append(r.RefreshFromSharedControlPlane(ctx, &resp.Data[0])...)
+		diags.Append(r.RefreshFromSharedControlPlane1(ctx, &resp.Data[0])...)
 
 		if diags.HasError() {
 			return diags
@@ -128,9 +128,16 @@ func (r *GatewayControlPlaneDataSourceModel) ToOperationsListControlPlanesSingle
 			} else {
 				neq1 = nil
 			}
+			oeq1 := new(string)
+			if !r.Filter.ClusterType.Oeq.IsUnknown() && !r.Filter.ClusterType.Oeq.IsNull() {
+				*oeq1 = r.Filter.ClusterType.Oeq.ValueString()
+			} else {
+				oeq1 = nil
+			}
 			clusterType = &shared.ClusterType{
 				Eq:  eq2,
 				Neq: neq1,
+				Oeq: oeq1,
 			}
 		}
 		cloudGateway := new(bool)

@@ -7,9 +7,6 @@ import (
 )
 
 type ControlPlane struct {
-	Config      *ControlPlaneConfig     `tfsdk:"config"`
-	Description types.String            `tfsdk:"description"`
-	ID          types.String            `tfsdk:"id"`
-	Labels      map[string]types.String `tfsdk:"labels"`
-	Name        types.String            `tfsdk:"name"`
+	ControlPlaneGeo types.String `tfsdk:"control_plane_geo"`
+	ControlPlaneID  types.String `tfsdk:"control_plane_id"`
 }
