@@ -133,7 +133,10 @@ func (r *CloudGatewayNetworkResource) Schema(ctx context.Context, req resource.S
 				},
 				Attributes: map[string]schema.Attribute{
 					"subnet_ids": schema.ListAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.List{
+							speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+						},
 						ElementType: types.StringType,
 					},
 					"vpc_id": schema.StringAttribute{

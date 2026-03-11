@@ -23,7 +23,7 @@ type CustomPluginResourceModel struct {
 	CreatedAt      types.Int64                `tfsdk:"created_at"`
 	Enabled        types.Bool                 `tfsdk:"enabled"`
 	InstanceName   types.String               `tfsdk:"instance_name"`
-	Ordering       *tfTypes.AcePluginOrdering `tfsdk:"ordering"`
+	Ordering       *tfTypes.ACLPluginOrdering `tfsdk:"ordering"`
 	Protocols      []types.String             `tfsdk:"protocols"`
 	Route          *ForeignKeyWithId          `tfsdk:"route"`
 	Service        *ForeignKeyWithId          `tfsdk:"service"`

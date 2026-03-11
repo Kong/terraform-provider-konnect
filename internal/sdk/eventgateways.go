@@ -893,6 +893,7 @@ func (s *EventGateways) DeleteEventGateway(ctx context.Context, request operatio
 
 	switch {
 	case httpRes.StatusCode == 204:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 401:
 		switch {
 		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):

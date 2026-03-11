@@ -38,8 +38,9 @@ func (r *ServerlessCloudGatewayResourceModel) ToOperationsDeleteServerlessCloudG
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
-	controlPlaneID = r.ControlPlane.ID.ValueString()
-
+	if r.ControlPlane != nil {
+		controlPlaneID = r.ControlPlane.ID.ValueString()
+	}
 	out := operations.DeleteServerlessCloudGatewayRequest{
 		ControlPlaneID: controlPlaneID,
 	}
@@ -51,8 +52,9 @@ func (r *ServerlessCloudGatewayResourceModel) ToOperationsGetServerlessCloudGate
 	var diags diag.Diagnostics
 
 	var controlPlaneID string
-	controlPlaneID = r.ControlPlane.ID.ValueString()
-
+	if r.ControlPlane != nil {
+		controlPlaneID = r.ControlPlane.ID.ValueString()
+	}
 	out := operations.GetServerlessCloudGatewayRequest{
 		ControlPlaneID: controlPlaneID,
 	}

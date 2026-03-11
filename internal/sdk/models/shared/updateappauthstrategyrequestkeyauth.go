@@ -7,11 +7,10 @@ import (
 )
 
 type UpdateAppAuthStrategyRequestKeyAuth struct {
-	// The most basic mode to configure an Application Auth Strategy for an API Product Version.
-	// Using this mode will allow developers to generate API keys that will authenticate their application requests.
-	// Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for Key Auth.
+	// Key Auth configuration for updating an Application Auth Strategy.
+	// The ttl field can be set to null to unset the Time-To-Live.
 	//
-	KeyAuth AppAuthStrategyConfigKeyAuth `json:"key-auth"`
+	KeyAuth PartialAppAuthStrategyConfigKeyAuth `json:"key-auth"`
 }
 
 func (u UpdateAppAuthStrategyRequestKeyAuth) MarshalJSON() ([]byte, error) {
@@ -25,9 +24,9 @@ func (u *UpdateAppAuthStrategyRequestKeyAuth) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (u *UpdateAppAuthStrategyRequestKeyAuth) GetKeyAuth() AppAuthStrategyConfigKeyAuth {
+func (u *UpdateAppAuthStrategyRequestKeyAuth) GetKeyAuth() PartialAppAuthStrategyConfigKeyAuth {
 	if u == nil {
-		return AppAuthStrategyConfigKeyAuth{}
+		return PartialAppAuthStrategyConfigKeyAuth{}
 	}
 	return u.KeyAuth
 }

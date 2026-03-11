@@ -47,6 +47,8 @@ const (
 	RoleNameUpstreamAdmin             RoleName = "Upstream Admin"
 	RoleNameVaultAdmin                RoleName = "Vault Admin"
 	RoleNameViewer                    RoleName = "Viewer"
+	RoleNameRegistrationApprover      RoleName = "Registration Approver"
+	RoleNameContentEditor             RoleName = "Content Editor"
 )
 
 func (e RoleName) ToPointer() *RoleName {
@@ -127,6 +129,10 @@ func (e *RoleName) UnmarshalJSON(data []byte) error {
 	case "Vault Admin":
 		fallthrough
 	case "Viewer":
+		fallthrough
+	case "Registration Approver":
+		fallthrough
+	case "Content Editor":
 		*e = RoleName(v)
 		return nil
 	default:

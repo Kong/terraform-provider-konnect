@@ -63,7 +63,6 @@ func (r *IntegrationInstanceAuthCredentialResource) Schema(ctx context.Context, 
 			"created_at": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("multi_key_auth_credential"), FieldPath: path.Root("multi_key_auth_credential").AtName("created_at")}}),
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,

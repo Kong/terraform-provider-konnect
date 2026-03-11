@@ -483,7 +483,9 @@ func (s *CentrallyManagedKeys) DeleteConsumerKey(ctx context.Context, request op
 
 	switch {
 	case httpRes.StatusCode == 204:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 404:
+		utils.DrainBody(httpRes)
 	default:
 		rawBody, err := utils.ConsumeRawBody(httpRes)
 		if err != nil {

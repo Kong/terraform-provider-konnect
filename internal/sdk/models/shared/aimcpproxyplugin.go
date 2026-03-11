@@ -460,12 +460,11 @@ func (s *Schema) GetType() *string {
 }
 
 type Parameters struct {
-	Name                 *string `json:"name,omitempty"`
-	In                   *string `json:"in,omitempty"`
-	Required             *bool   `json:"required,omitempty"`
-	Schema               *Schema `json:"schema,omitempty"`
-	Description          *string `json:"description,omitempty"`
-	AdditionalProperties any     `additionalProperties:"true" json:"-"`
+	Name        *string `json:"name,omitempty"`
+	In          *string `json:"in,omitempty"`
+	Required    *bool   `json:"required,omitempty"`
+	Schema      *Schema `json:"schema,omitempty"`
+	Description *string `json:"description,omitempty"`
 }
 
 func (p Parameters) MarshalJSON() ([]byte, error) {
@@ -512,13 +511,6 @@ func (p *Parameters) GetDescription() *string {
 		return nil
 	}
 	return p.Description
-}
-
-func (p *Parameters) GetAdditionalProperties() any {
-	if p == nil {
-		return nil
-	}
-	return p.AdditionalProperties
 }
 
 // Scheme - The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it.
@@ -569,9 +561,9 @@ type Tools struct {
 	// The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.
 	Query map[string][]string `json:"query,omitempty"`
 	// The API requestBody specification defined in OpenAPI. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details.
-	RequestBody map[string]any `json:"request_body,omitempty"`
+	RequestBody any `json:"request_body,omitempty"`
 	// The API responses specification defined in OpenAPI. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details.Only one non-error (status code < 400) responses are supported.
-	Responses map[string]any `json:"responses,omitempty"`
+	Responses any `json:"responses,omitempty"`
 	// The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it.
 	Scheme *Scheme `json:"scheme,omitempty"`
 }
@@ -657,14 +649,14 @@ func (t *Tools) GetQuery() map[string][]string {
 	return t.Query
 }
 
-func (t *Tools) GetRequestBody() map[string]any {
+func (t *Tools) GetRequestBody() any {
 	if t == nil {
 		return nil
 	}
 	return t.RequestBody
 }
 
-func (t *Tools) GetResponses() map[string]any {
+func (t *Tools) GetResponses() any {
 	if t == nil {
 		return nil
 	}

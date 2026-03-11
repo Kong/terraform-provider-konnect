@@ -9,6 +9,7 @@ resource "konnect_gateway_plugin_key_auth" "my_key_auth" {
   instance_name    = "my_key_auth_plugin"
 
   config = {
+    // Note: identity_realms is not set.
     key_names = ["apikey"]
     anonymous = "anon-user"
   }

@@ -10,7 +10,7 @@ import (
 func TestGatewayPluginAiMcpProxy(t *testing.T) {
 	t.Parallel()
 
-	t.Run("smoke", func(t *testing.T) {
+	t.Run("CRUD", func(t *testing.T) {
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
@@ -19,6 +19,21 @@ func TestGatewayPluginAiMcpProxy(t *testing.T) {
 					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_gateway_plugin_ai_mcp_proxy.my_plugin", "instance_name", "my-test-plugin"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_ai_mcp_proxy.my_plugin", "config.tools.0.parameters.0.name", "id"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_ai_mcp_proxy.my_plugin", "config.tools.1.parameters.0.name", "userid"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_ai_mcp_proxy.my_plugin", "config.tools.1.parameters.0.required", "true"),
+						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_ai_mcp_proxy.my_plugin", "config.tools.2.request_body"),
+					),
+				},
+				{
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestStepDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_ai_mcp_proxy.my_plugin", "config.max_request_body_size", "4096"),
+						resource.TestCheckNoResourceAttr("konnect_gateway_plugin_ai_mcp_proxy.my_plugin", "config.tools.0.parameters"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_ai_mcp_proxy.my_plugin", "config.tools.1.parameters.0.name", "userid"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_ai_mcp_proxy.my_plugin", "config.tools.1.parameters.0.required", "true"),
+						resource.TestCheckNoResourceAttr("konnect_gateway_plugin_ai_mcp_proxy.my_plugin", "config.tools.2.request_body"),
 					),
 				},
 			},

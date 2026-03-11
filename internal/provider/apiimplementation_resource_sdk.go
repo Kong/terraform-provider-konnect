@@ -26,13 +26,16 @@ func (r *APIImplementationResourceModel) RefreshFromSharedAPIImplementationRespo
 				r.ControlPlaneReference.ControlPlane.ID = types.StringValue(resp.APIImplementationResponseControlPlaneReference.ControlPlane.ID)
 			}
 			r.ControlPlaneReference.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.APIImplementationResponseControlPlaneReference.CreatedAt))
+			r.CreatedAt = r.ControlPlaneReference.CreatedAt
 			r.ControlPlaneReference.ID = types.StringValue(resp.APIImplementationResponseControlPlaneReference.ID)
 			r.ID = r.ControlPlaneReference.ID
 			r.ControlPlaneReference.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.APIImplementationResponseControlPlaneReference.UpdatedAt))
+			r.UpdatedAt = r.ControlPlaneReference.UpdatedAt
 		}
 		if resp.APIImplementationResponseServiceReference != nil {
 			r.ServiceReference = &tfTypes.ServiceReference{}
 			r.ServiceReference.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.APIImplementationResponseServiceReference.CreatedAt))
+			r.CreatedAt = r.ServiceReference.CreatedAt
 			r.ServiceReference.ID = types.StringValue(resp.APIImplementationResponseServiceReference.ID)
 			r.ID = r.ServiceReference.ID
 			if resp.APIImplementationResponseServiceReference.Service == nil {
@@ -43,6 +46,7 @@ func (r *APIImplementationResourceModel) RefreshFromSharedAPIImplementationRespo
 				r.ServiceReference.Service.ID = types.StringValue(resp.APIImplementationResponseServiceReference.Service.ID)
 			}
 			r.ServiceReference.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.APIImplementationResponseServiceReference.UpdatedAt))
+			r.UpdatedAt = r.ServiceReference.UpdatedAt
 		}
 	}
 

@@ -175,13 +175,8 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 						nodes.Static.Outputs[key2] = types.StringValue(value2)
 					}
 				}
-				if nodesItem.Static.Values != nil {
-					nodes.Static.Values = make(map[string]jsontypes.Normalized, len(nodesItem.Static.Values))
-					for key3, value3 := range nodesItem.Static.Values {
-						result, _ := json.Marshal(value3)
-						nodes.Static.Values[key3] = jsontypes.NewNormalizedValue(string(result))
-					}
-				}
+				valuesResult, _ := json.Marshal(nodesItem.Static.Values)
+				nodes.Static.Values = jsontypes.NewNormalizedValue(string(valuesResult))
 			}
 			if nodesItem.XMLToJSON != nil {
 				nodes.XMLToJSON = &tfTypes.XMLToJSON{}
@@ -297,8 +292,8 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 			}
 			if resp.Config.Resources.Vault != nil {
 				r.Config.Resources.Vault = make(map[string]types.String, len(resp.Config.Resources.Vault))
-				for key4, value4 := range resp.Config.Resources.Vault {
-					r.Config.Resources.Vault[key4] = types.StringValue(value4)
+				for key3, value3 := range resp.Config.Resources.Vault {
+					r.Config.Resources.Vault[key3] = types.StringValue(value3)
 				}
 			}
 		}
@@ -321,11 +316,11 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.AcePluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.AcePluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -334,7 +329,7 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.AcePluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
@@ -342,10 +337,10 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 			}
 		}
 		if resp.Partials != nil {
-			r.Partials = []tfTypes.Partials{}
+			r.Partials = []tfTypes.ACLPluginPartials{}
 
 			for _, partialsItem := range resp.Partials {
-				var partials tfTypes.Partials
+				var partials tfTypes.ACLPluginPartials
 
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
@@ -1116,15 +1111,8 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 					outputs3[outputsKey] = outputsInst
 				}
 			}
-			var values map[string]interface{}
-			if r.Config.Nodes[nodesItem].Static.Values != nil {
-				values = make(map[string]interface{})
-				for valuesKey := range r.Config.Nodes[nodesItem].Static.Values {
-					var valuesInst interface{}
-					_ = json.Unmarshal([]byte(r.Config.Nodes[nodesItem].Static.Values[valuesKey].ValueString()), &valuesInst)
-					values[valuesKey] = valuesInst
-				}
-			}
+			var values interface{}
+			_ = json.Unmarshal([]byte(r.Config.Nodes[nodesItem].Static.Values.ValueString()), &values)
 			static := shared.Static{
 				Name:    name8,
 				Output:  output6,

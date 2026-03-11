@@ -7,7 +7,7 @@ import (
 )
 
 type ResponseHeaders struct {
-	Age          types.Bool `tfsdk:"age"`
 	XCacheKey    types.Bool `tfsdk:"x_cache_key"`
 	XCacheStatus types.Bool `tfsdk:"x_cache_status"`
+	Age          types.Bool `tfsdk:"age"`
 }

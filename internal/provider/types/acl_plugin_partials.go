@@ -6,6 +6,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type AcePluginAfter struct {
-	Access []types.String `tfsdk:"access"`
+type ACLPluginPartials struct {
+	ID   types.String `tfsdk:"id"`
+	Name types.String `tfsdk:"name"`
+	Path types.String `tfsdk:"path"`
 }

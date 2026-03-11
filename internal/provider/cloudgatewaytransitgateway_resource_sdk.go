@@ -19,6 +19,7 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedPatchTransitG
 		if resp.AwsResourceEndpointGatewayResponse != nil {
 			r.AwsResourceEndpointGatewayResponse = &tfTypes.AwsResourceEndpointGatewayResponse{}
 			r.AwsResourceEndpointGatewayResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsResourceEndpointGatewayResponse.CreatedAt))
+			r.CreatedAt = r.AwsResourceEndpointGatewayResponse.CreatedAt
 			r.AwsResourceEndpointGatewayResponse.DNSConfig = []tfTypes.TransitGatewayDNSConfig{}
 
 			for _, dnsConfigItem := range resp.AwsResourceEndpointGatewayResponse.DNSConfig {
@@ -65,6 +66,7 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedPatchTransitG
 				r.AwsResourceEndpointGatewayResponse.TransitGatewayAttachmentConfig.ResourceConfig = append(r.AwsResourceEndpointGatewayResponse.TransitGatewayAttachmentConfig.ResourceConfig, resourceConfig)
 			}
 			r.AwsResourceEndpointGatewayResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsResourceEndpointGatewayResponse.UpdatedAt))
+			r.UpdatedAt = r.AwsResourceEndpointGatewayResponse.UpdatedAt
 		}
 		if resp.AwsTransitGatewayResponse != nil {
 			r.AwsTransitGatewayResponse = &tfTypes.AwsTransitGatewayResponse{}
@@ -73,6 +75,7 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedPatchTransitG
 				r.AwsTransitGatewayResponse.CidrBlocks = append(r.AwsTransitGatewayResponse.CidrBlocks, types.StringValue(v))
 			}
 			r.AwsTransitGatewayResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsTransitGatewayResponse.CreatedAt))
+			r.CreatedAt = r.AwsTransitGatewayResponse.CreatedAt
 			r.AwsTransitGatewayResponse.DNSConfig = []tfTypes.TransitGatewayDNSConfig{}
 
 			for _, dnsConfigItem1 := range resp.AwsTransitGatewayResponse.DNSConfig {
@@ -109,6 +112,7 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedPatchTransitG
 			r.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.RAMShareArn = types.StringValue(resp.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.RAMShareArn)
 			r.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.TransitGatewayID = types.StringValue(resp.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.TransitGatewayID)
 			r.AwsTransitGatewayResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsTransitGatewayResponse.UpdatedAt))
+			r.UpdatedAt = r.AwsTransitGatewayResponse.UpdatedAt
 		}
 	}
 
@@ -122,6 +126,7 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 		if resp.AwsResourceEndpointGatewayResponse != nil {
 			r.AwsResourceEndpointGatewayResponse = &tfTypes.AwsResourceEndpointGatewayResponse{}
 			r.AwsResourceEndpointGatewayResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsResourceEndpointGatewayResponse.CreatedAt))
+			r.CreatedAt = r.AwsResourceEndpointGatewayResponse.CreatedAt
 			r.AwsResourceEndpointGatewayResponse.DNSConfig = []tfTypes.TransitGatewayDNSConfig{}
 
 			for _, dnsConfigItem := range resp.AwsResourceEndpointGatewayResponse.DNSConfig {
@@ -168,6 +173,7 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 				r.AwsResourceEndpointGatewayResponse.TransitGatewayAttachmentConfig.ResourceConfig = append(r.AwsResourceEndpointGatewayResponse.TransitGatewayAttachmentConfig.ResourceConfig, resourceConfig)
 			}
 			r.AwsResourceEndpointGatewayResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsResourceEndpointGatewayResponse.UpdatedAt))
+			r.UpdatedAt = r.AwsResourceEndpointGatewayResponse.UpdatedAt
 		}
 		if resp.AwsTransitGatewayResponse != nil {
 			r.AwsTransitGatewayResponse = &tfTypes.AwsTransitGatewayResponse{}
@@ -176,6 +182,7 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 				r.AwsTransitGatewayResponse.CidrBlocks = append(r.AwsTransitGatewayResponse.CidrBlocks, types.StringValue(v))
 			}
 			r.AwsTransitGatewayResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsTransitGatewayResponse.CreatedAt))
+			r.CreatedAt = r.AwsTransitGatewayResponse.CreatedAt
 			r.AwsTransitGatewayResponse.DNSConfig = []tfTypes.TransitGatewayDNSConfig{}
 
 			for _, dnsConfigItem1 := range resp.AwsTransitGatewayResponse.DNSConfig {
@@ -212,6 +219,7 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 			r.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.RAMShareArn = types.StringValue(resp.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.RAMShareArn)
 			r.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.TransitGatewayID = types.StringValue(resp.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.TransitGatewayID)
 			r.AwsTransitGatewayResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsTransitGatewayResponse.UpdatedAt))
+			r.UpdatedAt = r.AwsTransitGatewayResponse.UpdatedAt
 		}
 		if resp.AwsVpcPeeringGatewayResponse != nil {
 			r.AwsVpcPeeringGatewayResponse = &tfTypes.AwsVpcPeeringGatewayResponse{}
@@ -220,6 +228,7 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 				r.AwsVpcPeeringGatewayResponse.CidrBlocks = append(r.AwsVpcPeeringGatewayResponse.CidrBlocks, types.StringValue(v))
 			}
 			r.AwsVpcPeeringGatewayResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsVpcPeeringGatewayResponse.CreatedAt))
+			r.CreatedAt = r.AwsVpcPeeringGatewayResponse.CreatedAt
 			r.AwsVpcPeeringGatewayResponse.DNSConfig = []tfTypes.TransitGatewayDNSConfig{}
 
 			for _, dnsConfigItem2 := range resp.AwsVpcPeeringGatewayResponse.DNSConfig {
@@ -257,10 +266,12 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 			r.AwsVpcPeeringGatewayResponse.TransitGatewayAttachmentConfig.PeerVpcID = types.StringValue(resp.AwsVpcPeeringGatewayResponse.TransitGatewayAttachmentConfig.PeerVpcID)
 			r.AwsVpcPeeringGatewayResponse.TransitGatewayAttachmentConfig.PeerVpcRegion = types.StringValue(resp.AwsVpcPeeringGatewayResponse.TransitGatewayAttachmentConfig.PeerVpcRegion)
 			r.AwsVpcPeeringGatewayResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsVpcPeeringGatewayResponse.UpdatedAt))
+			r.UpdatedAt = r.AwsVpcPeeringGatewayResponse.UpdatedAt
 		}
 		if resp.AzureTransitGatewayResponse != nil {
 			r.AzureTransitGatewayResponse = &tfTypes.AzureTransitGatewayResponse{}
 			r.AzureTransitGatewayResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AzureTransitGatewayResponse.CreatedAt))
+			r.CreatedAt = r.AzureTransitGatewayResponse.CreatedAt
 			r.AzureTransitGatewayResponse.DNSConfig = []tfTypes.TransitGatewayDNSConfig{}
 
 			for _, dnsConfigItem3 := range resp.AzureTransitGatewayResponse.DNSConfig {
@@ -299,10 +310,12 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 			r.AzureTransitGatewayResponse.TransitGatewayAttachmentConfig.TenantID = types.StringValue(resp.AzureTransitGatewayResponse.TransitGatewayAttachmentConfig.TenantID)
 			r.AzureTransitGatewayResponse.TransitGatewayAttachmentConfig.VnetName = types.StringValue(resp.AzureTransitGatewayResponse.TransitGatewayAttachmentConfig.VnetName)
 			r.AzureTransitGatewayResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AzureTransitGatewayResponse.UpdatedAt))
+			r.UpdatedAt = r.AzureTransitGatewayResponse.UpdatedAt
 		}
 		if resp.AzureVhubPeeringGatewayResponse != nil {
 			r.AzureVhubPeeringGatewayResponse = &tfTypes.AzureVhubPeeringGatewayResponse{}
 			r.AzureVhubPeeringGatewayResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AzureVhubPeeringGatewayResponse.CreatedAt))
+			r.CreatedAt = r.AzureVhubPeeringGatewayResponse.CreatedAt
 			r.AzureVhubPeeringGatewayResponse.DNSConfig = []tfTypes.TransitGatewayDNSConfig{}
 
 			for _, dnsConfigItem4 := range resp.AzureVhubPeeringGatewayResponse.DNSConfig {
@@ -335,10 +348,12 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 				r.AzureVhubPeeringGatewayResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AzureVhubPeeringGatewayResponse.StateMetadata.ReportedStatus)
 			}
 			r.AzureVhubPeeringGatewayResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AzureVhubPeeringGatewayResponse.UpdatedAt))
+			r.UpdatedAt = r.AzureVhubPeeringGatewayResponse.UpdatedAt
 		}
 		if resp.GCPVPCPeeringGatewayResponse != nil {
 			r.GCPVPCPeeringGatewayResponse = &tfTypes.GCPVPCPeeringGatewayResponse{}
 			r.GCPVPCPeeringGatewayResponse.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.GCPVPCPeeringGatewayResponse.CreatedAt))
+			r.CreatedAt = r.GCPVPCPeeringGatewayResponse.CreatedAt
 			r.GCPVPCPeeringGatewayResponse.DNSConfig = []tfTypes.TransitGatewayDNSConfig{}
 
 			for _, dnsConfigItem5 := range resp.GCPVPCPeeringGatewayResponse.DNSConfig {
@@ -375,6 +390,7 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 			r.GCPVPCPeeringGatewayResponse.TransitGatewayAttachmentConfig.PeerProjectID = types.StringValue(resp.GCPVPCPeeringGatewayResponse.TransitGatewayAttachmentConfig.PeerProjectID)
 			r.GCPVPCPeeringGatewayResponse.TransitGatewayAttachmentConfig.PeerVpcName = types.StringValue(resp.GCPVPCPeeringGatewayResponse.TransitGatewayAttachmentConfig.PeerVpcName)
 			r.GCPVPCPeeringGatewayResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.GCPVPCPeeringGatewayResponse.UpdatedAt))
+			r.UpdatedAt = r.GCPVPCPeeringGatewayResponse.UpdatedAt
 		}
 	}
 

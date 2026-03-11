@@ -148,7 +148,7 @@ Optional:
 
 Optional:
 
-- `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of ["-1", "1"]
+- `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of [-1, 1]
 - `initial_retry_delay` (Number) Time in seconds before the initial retry is made for a failing batch.
 - `max_batch_size` (Number) Maximum number of entries that can be processed at a time. Default: 1
 - `max_bytes` (Number) Maximum number of bytes that can be waiting on a queue, requires string content.

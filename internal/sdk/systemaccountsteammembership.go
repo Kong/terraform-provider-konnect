@@ -133,6 +133,7 @@ func (s *SystemAccountsTeamMembership) PostTeamsTeamIDSystemAccounts(ctx context
 
 	switch {
 	case httpRes.StatusCode == 201:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 401:
 		fallthrough
 	case httpRes.StatusCode == 403:
@@ -307,6 +308,7 @@ func (s *SystemAccountsTeamMembership) DeleteTeamsTeamIDSystemAccountsAccountID(
 
 	switch {
 	case httpRes.StatusCode == 204:
+		utils.DrainBody(httpRes)
 	case httpRes.StatusCode == 401:
 		fallthrough
 	case httpRes.StatusCode == 403:

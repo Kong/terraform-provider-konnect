@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
-	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -27,7 +26,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v3/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
@@ -54,8 +52,8 @@ type GatewayPluginAiMcpProxyResourceModel struct {
 	Enabled        types.Bool                      `tfsdk:"enabled"`
 	ID             types.String                    `tfsdk:"id"`
 	InstanceName   types.String                    `tfsdk:"instance_name"`
-	Ordering       *tfTypes.AcePluginOrdering      `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials              `tfsdk:"partials"`
+	Ordering       *tfTypes.ACLPluginOrdering      `tfsdk:"ordering"`
+	Partials       []tfTypes.ACLPluginPartials     `tfsdk:"partials"`
 	Protocols      []types.String                  `tfsdk:"protocols"`
 	Route          *tfTypes.Set                    `tfsdk:"route"`
 	Service        *tfTypes.Set                    `tfsdk:"service"`
@@ -299,12 +297,6 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 											speakeasy_objectvalidators.NotNull(),
 										},
 										Attributes: map[string]schema.Attribute{
-											"additional_properties": schema.StringAttribute{
-												CustomType:  jsontypes.NormalizedType{},
-												Computed:    true,
-												Optional:    true,
-												Description: `Parsed as JSON.`,
-											},
 											"description": schema.StringAttribute{
 												Computed: true,
 												Optional: true,
@@ -346,21 +338,15 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 									},
 									Description: `The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.`,
 								},
-								"request_body": schema.MapAttribute{
+								"request_body": schema.StringAttribute{
+									CustomType:  jsontypes.NormalizedType{},
 									Optional:    true,
-									ElementType: jsontypes.NormalizedType{},
-									Description: `The API requestBody specification defined in OpenAPI. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details.`,
-									Validators: []validator.Map{
-										mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-									},
+									Description: `The API requestBody specification defined in OpenAPI. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details. Parsed as JSON.`,
 								},
-								"responses": schema.MapAttribute{
+								"responses": schema.StringAttribute{
+									CustomType:  jsontypes.NormalizedType{},
 									Optional:    true,
-									ElementType: jsontypes.NormalizedType{},
-									Description: `The API responses specification defined in OpenAPI. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details.Only one non-error (status code < 400) responses are supported.`,
-									Validators: []validator.Map{
-										mapvalidator.ValueStringsAre(validators.IsValidJSON()),
-									},
+									Description: `The API responses specification defined in OpenAPI. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details.Only one non-error (status code < 400) responses are supported. Parsed as JSON.`,
 								},
 								"scheme": schema.StringAttribute{
 									Computed:    true,
@@ -778,8 +764,8 @@ func (r *GatewayPluginAiMcpProxyResource) ImportState(ctx context.Context, req r
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		ControlPlaneID string `json:"control_plane_id"`
 		ID             string `json:"id"`
+		ControlPlaneID string `json:"control_plane_id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
@@ -787,14 +773,14 @@ func (r *GatewayPluginAiMcpProxyResource) ImportState(ctx context.Context, req r
 		return
 	}
 
-	if len(data.ControlPlaneID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
-		return
-	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
 	if len(data.ID) == 0 {
 		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"3473c251-5b6c-4f45-b1ff-7ede735a366d"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
+	if len(data.ControlPlaneID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
 }

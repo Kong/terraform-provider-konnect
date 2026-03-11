@@ -50,8 +50,8 @@ type GatewayPluginJSONThreatProtectionResourceModel struct {
 	Enabled        types.Bool                                `tfsdk:"enabled"`
 	ID             types.String                              `tfsdk:"id"`
 	InstanceName   types.String                              `tfsdk:"instance_name"`
-	Ordering       *tfTypes.AcePluginOrdering                `tfsdk:"ordering"`
-	Partials       []tfTypes.Partials                        `tfsdk:"partials"`
+	Ordering       *tfTypes.ACLPluginOrdering                `tfsdk:"ordering"`
+	Partials       []tfTypes.ACLPluginPartials               `tfsdk:"partials"`
 	Protocols      []types.String                            `tfsdk:"protocols"`
 	Route          *tfTypes.Set                              `tfsdk:"route"`
 	Service        *tfTypes.Set                              `tfsdk:"service"`
@@ -122,7 +122,7 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 						Default:     int64default.StaticInt64(-1),
 						Description: `Max number of elements in an array. -1 means unlimited. Default: -1`,
 						Validators: []validator.Int64{
-							int64validator.AtMost(2147483648),
+							int64validator.Between(-1, 2147483648),
 						},
 					},
 					"max_body_size": schema.Int64Attribute{
@@ -131,7 +131,7 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 						Default:     int64default.StaticInt64(8192),
 						Description: `Max size of the request body. -1 means unlimited. Default: 8192`,
 						Validators: []validator.Int64{
-							int64validator.AtMost(2147483648),
+							int64validator.Between(-1, 2147483648),
 						},
 					},
 					"max_container_depth": schema.Int64Attribute{
@@ -140,7 +140,7 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 						Default:     int64default.StaticInt64(-1),
 						Description: `Max nested depth of objects and arrays. -1 means unlimited. Default: -1`,
 						Validators: []validator.Int64{
-							int64validator.AtMost(2147483648),
+							int64validator.Between(-1, 2147483648),
 						},
 					},
 					"max_object_entry_count": schema.Int64Attribute{
@@ -149,7 +149,7 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 						Default:     int64default.StaticInt64(-1),
 						Description: `Max number of entries in an object. -1 means unlimited. Default: -1`,
 						Validators: []validator.Int64{
-							int64validator.AtMost(2147483648),
+							int64validator.Between(-1, 2147483648),
 						},
 					},
 					"max_object_entry_name_length": schema.Int64Attribute{
@@ -158,7 +158,7 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 						Default:     int64default.StaticInt64(-1),
 						Description: `Max string length of object name. -1 means unlimited. Default: -1`,
 						Validators: []validator.Int64{
-							int64validator.AtMost(2147483648),
+							int64validator.Between(-1, 2147483648),
 						},
 					},
 					"max_string_value_length": schema.Int64Attribute{
@@ -167,7 +167,7 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 						Default:     int64default.StaticInt64(-1),
 						Description: `Max string value length. -1 means unlimited. Default: -1`,
 						Validators: []validator.Int64{
-							int64validator.AtMost(2147483648),
+							int64validator.Between(-1, 2147483648),
 						},
 					},
 				},
@@ -572,8 +572,8 @@ func (r *GatewayPluginJSONThreatProtectionResource) ImportState(ctx context.Cont
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		ControlPlaneID string `json:"control_plane_id"`
 		ID             string `json:"id"`
+		ControlPlaneID string `json:"control_plane_id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
@@ -581,14 +581,14 @@ func (r *GatewayPluginJSONThreatProtectionResource) ImportState(ctx context.Cont
 		return
 	}
 
-	if len(data.ControlPlaneID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
-		return
-	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
 	if len(data.ID) == 0 {
 		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"3473c251-5b6c-4f45-b1ff-7ede735a366d"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
+	if len(data.ControlPlaneID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
 }

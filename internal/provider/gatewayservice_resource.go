@@ -144,7 +144,7 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 				Default:     int64default.StaticInt64(80),
 				Description: `The upstream server port. Default: 80`,
 				Validators: []validator.Int64{
-					int64validator.AtMost(65535),
+					int64validator.Between(0, 65535),
 				},
 			},
 			"protocol": schema.StringAttribute{
@@ -182,7 +182,7 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 				Default:     int64default.StaticInt64(5),
 				Description: `The number of retries to execute upon failure to proxy. Default: 5`,
 				Validators: []validator.Int64{
-					int64validator.AtMost(32767),
+					int64validator.Between(0, 32767),
 				},
 			},
 			"tags": schema.ListAttribute{
@@ -223,7 +223,7 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 				Optional:    true,
 				Description: `Maximum depth of chain while verifying Upstream server's TLS certificate. If set to ` + "`" + `null` + "`" + `, then the Nginx default is respected.`,
 				Validators: []validator.Int64{
-					int64validator.AtMost(64),
+					int64validator.Between(0, 64),
 				},
 			},
 			"updated_at": schema.Int64Attribute{
@@ -488,8 +488,8 @@ func (r *GatewayServiceResource) ImportState(ctx context.Context, req resource.I
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		ControlPlaneID string `json:"control_plane_id"`
 		ID             string `json:"id"`
+		ControlPlaneID string `json:"control_plane_id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
@@ -497,14 +497,14 @@ func (r *GatewayServiceResource) ImportState(ctx context.Context, req resource.I
 		return
 	}
 
-	if len(data.ControlPlaneID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
-		return
-	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
 	if len(data.ID) == 0 {
 		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"7fca84d6-7d37-4a74-a7b0-93e576089a41"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
+	if len(data.ControlPlaneID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field control_plane_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9524ec7d-36d9-465d-a8c5-83a3c9390458"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
 }

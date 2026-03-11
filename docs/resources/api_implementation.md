@@ -43,7 +43,9 @@ resource "konnect_api_implementation" "my_apiimplementation" {
 
 ### Read-Only
 
+- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) Contains a unique identifier used for this resource.
+- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--control_plane_reference"></a>
 ### Nested Schema for `control_plane_reference`

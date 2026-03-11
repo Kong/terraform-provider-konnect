@@ -40,6 +40,7 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 				r.KeyAuth.Configs.KeyAuth.TTL.Value = types.Int64Value(resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.TTL.Value)
 			}
 			r.KeyAuth.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AppAuthStrategyKeyAuthResponse.CreatedAt))
+			r.CreatedAt = r.KeyAuth.CreatedAt
 			if resp.AppAuthStrategyKeyAuthResponse.DcrProvider == nil {
 				r.KeyAuth.DcrProvider = nil
 			} else {
@@ -64,6 +65,7 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			r.KeyAuth.StrategyType = types.StringValue(string(resp.AppAuthStrategyKeyAuthResponse.StrategyType))
 			r.StrategyType = r.KeyAuth.StrategyType
 			r.KeyAuth.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AppAuthStrategyKeyAuthResponse.UpdatedAt))
+			r.UpdatedAt = r.KeyAuth.UpdatedAt
 		}
 		if resp.AppAuthStrategyOpenIDConnectResponse != nil {
 			r.OpenidConnect = &tfTypes.AppAuthStrategyOpenIDConnectRequest{}
@@ -91,6 +93,7 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 				r.OpenidConnect.Configs.OpenidConnect.Scopes = append(r.OpenidConnect.Configs.OpenidConnect.Scopes, types.StringValue(v))
 			}
 			r.OpenidConnect.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AppAuthStrategyOpenIDConnectResponse.CreatedAt))
+			r.CreatedAt = r.OpenidConnect.CreatedAt
 			if resp.AppAuthStrategyOpenIDConnectResponse.DcrProvider == nil {
 				r.OpenidConnect.DcrProvider = nil
 			} else {
@@ -115,6 +118,7 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			r.OpenidConnect.StrategyType = types.StringValue(string(resp.AppAuthStrategyOpenIDConnectResponse.StrategyType))
 			r.StrategyType = r.OpenidConnect.StrategyType
 			r.OpenidConnect.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AppAuthStrategyOpenIDConnectResponse.UpdatedAt))
+			r.UpdatedAt = r.OpenidConnect.UpdatedAt
 		}
 	}
 

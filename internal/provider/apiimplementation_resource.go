@@ -43,8 +43,10 @@ type APIImplementationResource struct {
 type APIImplementationResourceModel struct {
 	APIID                 types.String                   `tfsdk:"api_id"`
 	ControlPlaneReference *tfTypes.ControlPlaneReference `queryParam:"inline" tfsdk:"control_plane_reference"`
+	CreatedAt             types.String                   `tfsdk:"created_at"`
 	ID                    types.String                   `tfsdk:"id"`
 	ServiceReference      *tfTypes.ServiceReference      `queryParam:"inline" tfsdk:"service_reference"`
+	UpdatedAt             types.String                   `tfsdk:"updated_at"`
 }
 
 func (r *APIImplementationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -125,10 +127,16 @@ func (r *APIImplementationResource) Schema(ctx context.Context, req resource.Sch
 					}...),
 				},
 			},
+			"created_at": schema.StringAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("service_reference"), FieldPath: path.Root("service_reference").AtName("created_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("control_plane_reference"), FieldPath: path.Root("control_plane_reference").AtName("created_at")}}),
+				},
+				Description: `An ISO-8601 timestamp representation of entity creation date.`,
+			},
 			"id": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("service_reference"), FieldPath: path.Root("service_reference").AtName("id")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("control_plane_reference"), FieldPath: path.Root("control_plane_reference").AtName("id")}}),
 				},
 				Description: `Contains a unique identifier used for this resource.`,
@@ -199,6 +207,13 @@ func (r *APIImplementationResource) Schema(ctx context.Context, req resource.Sch
 						path.MatchRelative().AtParent().AtName("control_plane_reference"),
 					}...),
 				},
+			},
+			"updated_at": schema.StringAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("service_reference"), FieldPath: path.Root("service_reference").AtName("updated_at")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("control_plane_reference"), FieldPath: path.Root("control_plane_reference").AtName("updated_at")}}),
+				},
+				Description: `An ISO-8601 timestamp representation of entity update date.`,
 			},
 		},
 	}
