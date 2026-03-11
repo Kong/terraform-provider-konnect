@@ -4,7 +4,7 @@
 > Released 2026/03/11
 
 # Features
-* Add support for resources to order Event Gateway Policies - 
+* Add resources to support ordering Event Gateway Policies -
   * `konnect_event_gateway_listener_policy_chain`
   * `konnect_event_gateway_virtual_cluster_cluster_policy_chain`
   * `konnect_event_gateway_virtual_cluster_consume_policy_chain`
