@@ -1,9 +1,15 @@
 # Changelog
 
 ## 3.10.0
-> Released 2026/03/10
+> Released 2026/03/11
 
 # Features
+* Add support for resources to order Event Gateway Policies - 
+  * `konnect_event_gateway_listener_policy_chain`
+  * `konnect_event_gateway_virtual_cluster_cluster_policy_chain`
+  * `konnect_event_gateway_virtual_cluster_consume_policy_chain`
+  * `konnect_event_gateway_virtual_cluster_produce_policy_chain`
+* Add support for configuring Managed Cache in Cloud Gateway using `konnect_cloud_gateway_addon` resource
 * Support new roles `Registration Approver` and `Content Editor` in `konnect_team_role` resource
 
 # Bug Fixes
