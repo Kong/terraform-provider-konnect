@@ -19,6 +19,7 @@ data "konnect_gateway_control_plane" "my_gatewaycontrolplane" {
     cluster_type = {
       eq  = "...my_eq..."
       neq = "...my_neq..."
+      oeq = "...my_oeq..."
     }
     id = {
       eq  = "...my_eq..."
@@ -61,7 +62,7 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 Optional:
 
 - `cloud_gateway` (Boolean) Filter by a boolean value (true/false).
-- `cluster_type` (Attributes) Filter using **one** of the following operators: `eq`, `neq` (see [below for nested schema](#nestedatt--filter--cluster_type))
+- `cluster_type` (Attributes) Filter using **one** of the following operators: `eq`, `oeq`, `neq` (see [below for nested schema](#nestedatt--filter--cluster_type))
 - `id` (Attributes) Filter using **one** of the following operators: `eq`, `oeq` (see [below for nested schema](#nestedatt--filter--id))
 - `name` (Attributes) Filter using **one** of the following operators: `eq`, `neq`, `contains` (see [below for nested schema](#nestedatt--filter--name))
 
@@ -72,6 +73,7 @@ Optional:
 
 - `eq` (String) The field exactly matches the provided value.
 - `neq` (String) The field does not match the provided value.
+- `oeq` (String) The field matches any of the provided values.
 
 
 <a id="nestedatt--filter--id"></a>

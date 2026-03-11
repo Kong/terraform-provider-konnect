@@ -29,7 +29,7 @@ type GatewayControlPlaneListDataSource struct {
 
 // GatewayControlPlaneListDataSourceModel describes the data model.
 type GatewayControlPlaneListDataSourceModel struct {
-	Data         []tfTypes.ControlPlane                `tfsdk:"data"`
+	Data         []tfTypes.ControlPlane1               `tfsdk:"data"`
 	Filter       *tfTypes.ControlPlaneFilterParameters `queryParam:"style=deepObject,explode=true,name=filter" tfsdk:"filter"`
 	FilterLabels types.String                          `queryParam:"style=form,explode=true,name=labels" tfsdk:"filter_labels"`
 	Sort         types.String                          `queryParam:"style=form,explode=true,name=sort" tfsdk:"sort"`
@@ -136,8 +136,12 @@ func (r *GatewayControlPlaneListDataSource) Schema(ctx context.Context, req data
 								Optional:    true,
 								Description: `The field does not match the provided value.`,
 							},
+							"oeq": schema.StringAttribute{
+								Optional:    true,
+								Description: `The field matches any of the provided values.`,
+							},
 						},
-						Description: `Filter using **one** of the following operators: ` + "`" + `eq` + "`" + `, ` + "`" + `neq` + "`" + ``,
+						Description: `Filter using **one** of the following operators: ` + "`" + `eq` + "`" + `, ` + "`" + `oeq` + "`" + `, ` + "`" + `neq` + "`" + ``,
 					},
 					"id": schema.SingleNestedAttribute{
 						Optional: true,

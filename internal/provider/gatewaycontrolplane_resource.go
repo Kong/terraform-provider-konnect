@@ -270,7 +270,7 @@ func (r *GatewayControlPlaneResource) Create(ctx context.Context, req resource.C
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedControlPlane(ctx, res.ControlPlane)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedControlPlane1(ctx, res.ControlPlane)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -334,7 +334,7 @@ func (r *GatewayControlPlaneResource) Read(ctx context.Context, req resource.Rea
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedControlPlane(ctx, res.ControlPlane)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedControlPlane1(ctx, res.ControlPlane)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -384,7 +384,7 @@ func (r *GatewayControlPlaneResource) Update(ctx context.Context, req resource.U
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedControlPlane(ctx, res.ControlPlane)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedControlPlane1(ctx, res.ControlPlane)...)
 
 	if resp.Diagnostics.HasError() {
 		return

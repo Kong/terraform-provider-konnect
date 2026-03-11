@@ -506,7 +506,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 	}
 	var redis *shared.Redis
 	if r.Config.Redis != nil {
-		var cloudAuthentication *shared.CloudAuthentication
+		var cloudAuthentication *shared.AiRateLimitingAdvancedPluginCloudAuthentication
 		if r.Config.Redis.CloudAuthentication != nil {
 			authProvider := new(shared.AuthProvider)
 			if !r.Config.Redis.CloudAuthentication.AuthProvider.IsUnknown() && !r.Config.Redis.CloudAuthentication.AuthProvider.IsNull() {
@@ -580,7 +580,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 			} else {
 				gcpServiceAccountJSON = nil
 			}
-			cloudAuthentication = &shared.CloudAuthentication{
+			cloudAuthentication = &shared.AiRateLimitingAdvancedPluginCloudAuthentication{
 				AuthProvider:          authProvider,
 				AwsAccessKeyID:        awsAccessKeyID,
 				AwsAssumeRoleArn:      awsAssumeRoleArn,

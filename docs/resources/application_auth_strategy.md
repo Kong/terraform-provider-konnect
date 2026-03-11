@@ -52,6 +52,8 @@ resource "konnect_application_auth_strategy" "my_applicationauthstrategy" {
 - `id` (String) Contains a unique identifier used for this resource.
 - `name` (String) The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.
 - `strategy_type` (String)
+- `supports_multiple_credentials` (Boolean) Indicates whether this auth strategy supports multiple credentials.
+Always `true` for KEY_AUTH.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--key_auth"></a>
@@ -74,6 +76,9 @@ Read-Only:
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `dcr_provider` (Attributes) (see [below for nested schema](#nestedatt--key_auth--dcr_provider))
 - `id` (String) Contains a unique identifier used for this resource.
+- `supports_multiple_credentials` (Boolean) Indicates whether this auth strategy supports multiple credentials.
+Always `true` for KEY_AUTH.
+Default: true
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--key_auth--configs"></a>
@@ -138,6 +143,9 @@ Read-Only:
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `dcr_provider` (Attributes) (see [below for nested schema](#nestedatt--openid_connect--dcr_provider))
 - `id` (String) Contains a unique identifier used for this resource.
+- `supports_multiple_credentials` (Boolean) Indicates whether this auth strategy supports multiple credentials.
+- `true` for Key Auth strategies and when supported for Client Credentials strategies
+- `false` when not supported for Client Credentials strategies
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--openid_connect--configs"></a>

@@ -450,7 +450,7 @@ func (s *ControlPlanes) CreateControlPlane(ctx context.Context, request shared.C
 				return nil, err
 			}
 
-			var out shared.ControlPlane
+			var out shared.ControlPlane1
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
@@ -712,7 +712,7 @@ func (s *ControlPlanes) GetControlPlane(ctx context.Context, request operations.
 				return nil, err
 			}
 
-			var out shared.ControlPlane
+			var out shared.ControlPlane1
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
@@ -981,7 +981,7 @@ func (s *ControlPlanes) UpdateControlPlane(ctx context.Context, request operatio
 				return nil, err
 			}
 
-			var out shared.ControlPlane
+			var out shared.ControlPlane1
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}

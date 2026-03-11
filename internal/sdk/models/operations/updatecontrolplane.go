@@ -47,7 +47,7 @@ type UpdateControlPlaneResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// A response to updating a control plane.
-	ControlPlane *shared.ControlPlane
+	ControlPlane *shared.ControlPlane1
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthenticated
@@ -94,7 +94,7 @@ func (u *UpdateControlPlaneResponse) GetRawResponse() *http.Response {
 	return u.RawResponse
 }
 
-func (u *UpdateControlPlaneResponse) GetControlPlane() *shared.ControlPlane {
+func (u *UpdateControlPlaneResponse) GetControlPlane() *shared.ControlPlane1 {
 	if u == nil {
 		return nil
 	}
