@@ -14,6 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/mapplanmodifier"
@@ -52,15 +53,16 @@ type ApplicationAuthStrategyResource struct {
 
 // ApplicationAuthStrategyResourceModel describes the resource data model.
 type ApplicationAuthStrategyResourceModel struct {
-	Active        types.Bool                                   `tfsdk:"active"`
-	CreatedAt     types.String                                 `tfsdk:"created_at"`
-	DisplayName   types.String                                 `tfsdk:"display_name"`
-	ID            types.String                                 `tfsdk:"id"`
-	KeyAuth       *tfTypes.AppAuthStrategyKeyAuthRequest       `queryParam:"inline" tfsdk:"key_auth"`
-	Name          types.String                                 `tfsdk:"name"`
-	OpenidConnect *tfTypes.AppAuthStrategyOpenIDConnectRequest `queryParam:"inline" tfsdk:"openid_connect"`
-	StrategyType  types.String                                 `tfsdk:"strategy_type"`
-	UpdatedAt     types.String                                 `tfsdk:"updated_at"`
+	Active                      types.Bool                                   `tfsdk:"active"`
+	CreatedAt                   types.String                                 `tfsdk:"created_at"`
+	DisplayName                 types.String                                 `tfsdk:"display_name"`
+	ID                          types.String                                 `tfsdk:"id"`
+	KeyAuth                     *tfTypes.AppAuthStrategyKeyAuthRequest       `queryParam:"inline" tfsdk:"key_auth"`
+	Name                        types.String                                 `tfsdk:"name"`
+	OpenidConnect               *tfTypes.AppAuthStrategyOpenIDConnectRequest `queryParam:"inline" tfsdk:"openid_connect"`
+	StrategyType                types.String                                 `tfsdk:"strategy_type"`
+	SupportsMultipleCredentials types.Bool                                   `tfsdk:"supports_multiple_credentials"`
+	UpdatedAt                   types.String                                 `tfsdk:"updated_at"`
 }
 
 func (r *ApplicationAuthStrategyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -290,6 +292,16 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.OneOf("key_auth"),
 						},
+					},
+					"supports_multiple_credentials": schema.BoolAttribute{
+						Computed: true,
+						Default:  booldefault.StaticBool(true),
+						PlanModifiers: []planmodifier.Bool{
+							speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+						},
+						MarkdownDescription: `Indicates whether this auth strategy supports multiple credentials.` + "\n" +
+							`Always ` + "`" + `true` + "`" + ` for KEY_AUTH.` + "\n" +
+							`Default: true`,
 					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
@@ -525,6 +537,15 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 							),
 						},
 					},
+					"supports_multiple_credentials": schema.BoolAttribute{
+						Computed: true,
+						PlanModifiers: []planmodifier.Bool{
+							speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+						},
+						MarkdownDescription: `Indicates whether this auth strategy supports multiple credentials.` + "\n" +
+							`- ` + "`" + `true` + "`" + ` for Key Auth strategies and when supported for Client Credentials strategies` + "\n" +
+							`- ` + "`" + `false` + "`" + ` when not supported for Client Credentials strategies`,
+					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.String{
@@ -545,6 +566,14 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("key_auth"), FieldPath: path.Root("key_auth").AtName("strategy_type")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openid_connect"), FieldPath: path.Root("openid_connect").AtName("strategy_type")}}),
 				},
+			},
+			"supports_multiple_credentials": schema.BoolAttribute{
+				Computed: true,
+				PlanModifiers: []planmodifier.Bool{
+					speakeasy_boolplanmodifier.UseHoistedValue([]speakeasy_planmodifierutils.HoistedSource{speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("key_auth"), FieldPath: path.Root("key_auth").AtName("supports_multiple_credentials")}, speakeasy_planmodifierutils.HoistedSource{AssociatedTypePath: path.Root("openid_connect"), FieldPath: path.Root("openid_connect").AtName("supports_multiple_credentials")}}),
+				},
+				MarkdownDescription: `Indicates whether this auth strategy supports multiple credentials.` + "\n" +
+					`Always ` + "`" + `true` + "`" + ` for KEY_AUTH.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

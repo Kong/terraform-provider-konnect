@@ -16,11 +16,11 @@ func (r *GatewayControlPlaneListDataSourceModel) RefreshFromSharedListControlPla
 
 	if resp != nil {
 		if r.Data == nil {
-			r.Data = []tfTypes.ControlPlane{}
+			r.Data = []tfTypes.ControlPlane1{}
 		}
 
 		for _, dataItem := range resp.Data {
-			var data tfTypes.ControlPlane
+			var data tfTypes.ControlPlane1
 
 			data.Config = &tfTypes.ControlPlaneConfig{}
 			data.Config.AuthType = types.StringValue(string(dataItem.Config.AuthType))
@@ -122,9 +122,16 @@ func (r *GatewayControlPlaneListDataSourceModel) ToOperationsListControlPlanesRe
 			} else {
 				neq1 = nil
 			}
+			oeq1 := new(string)
+			if !r.Filter.ClusterType.Oeq.IsUnknown() && !r.Filter.ClusterType.Oeq.IsNull() {
+				*oeq1 = r.Filter.ClusterType.Oeq.ValueString()
+			} else {
+				oeq1 = nil
+			}
 			clusterType = &shared.ClusterType{
 				Eq:  eq2,
 				Neq: neq1,
+				Oeq: oeq1,
 			}
 		}
 		cloudGateway := new(bool)

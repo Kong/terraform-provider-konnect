@@ -3489,6 +3489,136 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Audit Logs
+  /v2/cloud-gateways/add-ons:
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: CloudGatewayAddon#create
+      operationId: create-add-on
+      summary: Create Add-On
+      description: |
+        Creates a new add-on. Specific add-on types (e.g., managed cache)
+        are defined by the sub-kind configuration.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAddOnRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateAddOnResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '409':
+          description: Conflict
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Add-Ons
+      x-speakeasy-group: CloudGateways
+  '/v2/cloud-gateways/add-ons/{addOnId}':
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: CloudGatewayAddon#read
+      operationId: get-add-on
+      summary: Get Add-On
+      description: Retrieves an add-on by ID.
+      parameters:
+        - $ref: '#/components/parameters/AddOnId'
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrieveAddOnResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Add-Ons
+      x-speakeasy-group: CloudGateways
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: CloudGatewayAddon#delete
+        terraform-datasource: null
+      operationId: delete-add-on
+      summary: Delete Add-On
+      description: |
+        Deletes an add-on by ID. The request will be rejected if the managed cache partial is still in use by some plugins.
+      parameters:
+        - $ref: '#/components/parameters/AddOnId'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Add-Ons
+      x-speakeasy-group: CloudGateways
   /v2/cloud-gateways/configurations:
     put:
       x-speakeasy-entity-operation:
@@ -18726,6 +18856,14 @@ components:
       schema:
         type: string
       x-speakeasy-match: id
+    AddOnId:
+      name: addOnId
+      description: ID of the add-on to operate on.
+      required: true
+      in: path
+      schema:
+        $ref: '#/components/schemas/AddOnId'
+      x-speakeasy-match: id
     ApiId:
       schema:
         type: string
@@ -19350,7 +19488,7 @@ components:
             - CLUSTER_TYPE_CONTROL_PLANE_GROUP
             - CLUSTER_TYPE_SERVERLESS
             - CLUSTER_TYPE_HYBRID
-            - CLUSTER_TYPE_CLOUD_API_GATEWAY
+            - CLUSTER_TYPE_SERVERLESS_V1
           x-speakeasy-unknown-values: allow
         auth_type:
           description: The auth type value of the cluster associated with the Runtime Group.
@@ -19455,7 +19593,7 @@ components:
                 - CLUSTER_TYPE_CONTROL_PLANE_GROUP
                 - CLUSTER_TYPE_SERVERLESS
                 - CLUSTER_TYPE_HYBRID
-                - CLUSTER_TYPE_CLOUD_API_GATEWAY
+                - CLUSTER_TYPE_SERVERLESS_V1
               readOnly: true
               x-speakeasy-param-suppress-computed-diff: true
               x-speakeasy-unknown-values: allow
@@ -19585,7 +19723,7 @@ components:
               description: The field does not match the provided value.
               type: string
         cluster_type:
-          description: 'Filter using **one** of the following operators: `eq`, `neq`'
+          description: 'Filter using **one** of the following operators: `eq`, `oeq`, `neq`'
           type: object
           additionalProperties: false
           properties:
@@ -19594,6 +19732,9 @@ components:
               type: string
             neq:
               description: The field does not match the provided value.
+              type: string
+            oeq:
+              description: The field matches any of the provided values.
               type: string
         cloud_gateway:
           $ref: '#/components/schemas/BooleanFieldFilter'
@@ -20690,6 +20831,34 @@ components:
         - transit_gateway_id
         - ram_share_arn
       title: AWS Transit Gateway Attachment Config
+    AwsTransitGatewayAttachmentConfigForResponse:
+      type: object
+      properties:
+        kind:
+          enum:
+            - aws-transit-gateway-attachment
+          title: AWS Transit Gateway Attachment Type
+        transit_gateway_id:
+          description: AWS Transit Gateway ID to create attachment to.
+          type: string
+          title: Transit Gateway ID
+        ram_share_arn:
+          description: Resource Share ARN to verify request to create transit gateway attachment.
+          type: string
+          title: RAM Share ARN
+        attachment_id:
+          description: ID of the AWS Transit Gateway attachment.
+          type: string
+          default: null
+          nullable: true
+          title: AWS Transit Gateway Attachment ID
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      required:
+        - kind
+        - transit_gateway_id
+        - ram_share_arn
+      title: AWS Transit Gateway Attachment Config
     AwsVpcPeeringGatewayAttachmentConfig:
       type: object
       properties:
@@ -20703,6 +20872,31 @@ components:
           type: string
         peer_vpc_region:
           type: string
+      additionalProperties: false
+      required:
+        - kind
+        - peer_account_id
+        - peer_vpc_id
+        - peer_vpc_region
+      title: AWS VPC Peering Attachment Config
+    AwsVpcPeeringGatewayAttachmentConfigForResponse:
+      type: object
+      properties:
+        kind:
+          enum:
+            - aws-vpc-peering-attachment
+          title: AWS VPC Peering Attachment Config
+        peer_account_id:
+          type: string
+        peer_vpc_id:
+          type: string
+        peer_vpc_region:
+          type: string
+        peering_connection_id:
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
       additionalProperties: false
       required:
         - kind
@@ -21420,7 +21614,7 @@ components:
         cidr_blocks:
           $ref: '#/components/schemas/TransitGatewayCIDRBlocks'
         transit_gateway_attachment_config:
-          $ref: '#/components/schemas/AwsTransitGatewayAttachmentConfig'
+          $ref: '#/components/schemas/AwsTransitGatewayAttachmentConfigForResponse'
         id:
           $ref: '#/components/schemas/TransitGatewayId'
         state:
@@ -21493,7 +21687,7 @@ components:
         cidr_blocks:
           $ref: '#/components/schemas/TransitGatewayCIDRBlocks'
         transit_gateway_attachment_config:
-          $ref: '#/components/schemas/AwsVpcPeeringGatewayAttachmentConfig'
+          $ref: '#/components/schemas/AwsVpcPeeringGatewayAttachmentConfigForResponse'
         id:
           $ref: '#/components/schemas/TransitGatewayId'
         state:
@@ -21555,7 +21749,7 @@ components:
         - entity_version
         - created_at
         - updated_at
-      title: AWS Vpc Peering Gateway
+      title: AWS VPC Peering Gateway
     AwsResourceEndpointGatewayResponse:
       type: object
       properties:
@@ -22133,6 +22327,385 @@ components:
         - control_plane_geo
         - domain
       title: CreateCustomDomainRequest
+    AddOnId:
+      type: string
+      format: uuid
+      example: 550e8400-e29b-41d4-a716-446655440000
+      readOnly: true
+      x-speakeasy-param-suppress-computed-diff: true
+    AddOnConfigResponse:
+      description: Configuration object for different types of add-ons.
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/ManagedCacheAddOnConfigResponse'
+      title: AddOnConfigResponse
+    ManagedCacheAddOnConfigResponse:
+      description: Configuration for managed cache add-on.
+      type: object
+      properties:
+        kind:
+          description: Type of add-on configuration.
+          type: string
+          const: managed-cache.v0
+        capacity_config:
+          $ref: '#/components/schemas/ManagedCacheCapacityConfig'
+        data_plane_groups:
+          description: List of data-plane groups where the managed cache is deployed.
+          type: array
+          items:
+            $ref: '#/components/schemas/ManagedCacheAddOnDataPlaneGroup'
+        state_metadata:
+          description: |
+            Metadata describing the state of the managed cache add-on.
+          type: object
+          additionalProperties: false
+          properties:
+            cache_config_id:
+              description: Reference to cache configuration for this add-on.
+              type: string
+              format: uuid
+              example: edaf40f9-9fb0-4ffe-bb74-4e763a6bd471
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            cache_server_name:
+              description: Env vault path to cache server name.
+              type: string
+              example: '{vault://env/ADDON_MANAGED_CACHE_SERVER_NAME}'
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            cache_host:
+              description: Env vault path to cache hostname.
+              type: string
+              example: '{vault://env/ADDON_MANAGED_CACHE_HOST}'
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            cache_port:
+              description: Env vault path to cache port.
+              type: string
+              example: '{vault://env/ADDON_MANAGED_CACHE_PORT}'
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            cache_username:
+              description: Env vault path to cache username.
+              type: string
+              example: '{vault://env/ADDON_MANAGED_CACHE_USERNAME}'
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+            cloud_authentication:
+              description: |
+                Metadata describing the cloud authentication details for managed cache add-on.
+              type: object
+              default: null
+              additionalProperties: false
+              nullable: true
+              properties:
+                auth_provider:
+                  description: Env vault path to cache auth provider.
+                  type: string
+                  example: '{vault://env/ADDON_MANAGED_CACHE_AUTH_PROVIDER}'
+                  default: null
+                  nullable: true
+                  x-speakeasy-param-computed: false
+                aws_cache_name:
+                  description: Env vault path to aws cache name.
+                  type: string
+                  example: '{vault://env/ADDON_MANAGED_CACHE_AWS_CACHE_NAME}'
+                  default: null
+                  nullable: true
+                  x-speakeasy-param-computed: false
+                aws_region:
+                  description: Env vault path to aws region.
+                  type: string
+                  example: '{vault://env/ADDON_MANAGED_CACHE_AWS_REGION}'
+                  default: null
+                  nullable: true
+                  x-speakeasy-param-computed: false
+                aws_assume_role_arn:
+                  description: Env vault path to aws assume role arn.
+                  type: string
+                  example: '{vault://env/ADDON_MANAGED_CACHE_AWS_ASSUME_ROLE_ARN}'
+                  default: null
+                  nullable: true
+                  x-speakeasy-param-computed: false
+                azure_tenant_id:
+                  description: Env vault path to azure tenant id.
+                  type: string
+                  example: '{vault://env/ADDON_MANAGED_CACHE_AZURE_TENANT_ID}'
+                  default: null
+                  nullable: true
+                  x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: false
+      additionalProperties: false
+      required:
+        - kind
+        - capacity_config
+        - data_plane_groups
+        - state_metadata
+      title: ManagedCacheAddOnConfigResponse
+    ManagedCacheAddOnDataPlaneGroup:
+      description: Object that describes a data-plane group where managed cache add-on is deployed.
+      type: object
+      properties:
+        id:
+          description: ID of the data-plane group.
+          type: string
+          format: uuid
+          example: 1150820b-c69f-4a2a-b9be-bbcdbc5cd618
+        cloud_gateway_network_id:
+          description: Network ID this data-plane group is attached to.
+          type: string
+          format: uuid
+          example: 36ae63d3-efd1-4bec-b246-62aa5d3f5695
+        provider:
+          $ref: '#/components/schemas/ProviderName'
+        region:
+          description: Region of cloud provider the data-plane group is deployed to.
+          type: string
+          example: us-east-1
+        state:
+          description: |
+            The current state of the managed cache add-on in the data-plane group. Possible values:
+            - `initializing` - The add-on is in the process of being initialized/updated and is setting up necessary resources for this data-plane group.
+            - `ready` - The add-on is fully operational for this data-plane group.
+            - `error` - The add-on is in an error state, and is not operational for this data-plane group.
+            - `terminating` - The add-on is in the process of being deleted for this data-plane group.
+          type: string
+          enum:
+            - initializing
+            - ready
+            - error
+            - terminating
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+          x-speakeasy-unknown-values: allow
+        state_metadata:
+          description: |
+            Metadata describing the state of the managed cache add-on in the data-plane group.
+          type: object
+          additionalProperties: false
+          properties:
+            error_reason:
+              description: |
+                Reason why the managed cache add-on may be in an error state, reported from backing infrastructure.
+              type: string
+              example: |
+                Failed to create managed cache add-on due to invalid configuration.
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
+      additionalProperties: false
+      required:
+        - id
+        - cloud_gateway_network_id
+        - provider
+        - region
+        - state
+        - state_metadata
+      title: ManagedCacheAddOnDataPlaneGroup
+    AddOnState:
+      description: |
+        The current state of the add-on. Possible values:
+        - `initializing` - The add-on is in the process of being initialized/updated.
+        - `ready` - The add-on is fully operational.
+        - `terminating` - The add-on is in the process of being deleted.
+      type: string
+      enum:
+        - initializing
+        - ready
+        - terminating
+      readOnly: true
+      title: Add-On State
+      x-speakeasy-param-suppress-computed-diff: true
+      x-speakeasy-unknown-values: allow
+    AddOnResponse:
+      description: Object containing information about an add-on.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/AddOnId'
+        name:
+          $ref: '#/components/schemas/AddOnName'
+        owner:
+          $ref: '#/components/schemas/AddOnOwner'
+        config:
+          $ref: '#/components/schemas/AddOnConfigResponse'
+        entity_version:
+          description: 'Monotonically-increasing version count of the add-on, to indicate the order of updates to the add-on.'
+          type: integer
+          example: 1
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        state:
+          $ref: '#/components/schemas/AddOnState'
+        created_at:
+          description: RFC-3339 timestamp representation of add-on creation date.
+          type: string
+          format: date-time
+          example: '2025-08-26T06:56:41Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        updated_at:
+          description: RFC-3339 timestamp representation of add-on update date.
+          type: string
+          format: date-time
+          example: '2025-08-26T06:56:41Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - owner
+        - config
+        - entity_version
+        - state
+        - created_at
+        - updated_at
+      title: AddOnResponse
+    CreateAddOnRequest:
+      description: Request schema for creating an add-on.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/AddOnName'
+        owner:
+          $ref: '#/components/schemas/AddOnOwner'
+        config:
+          $ref: '#/components/schemas/CreateAddOnConfig'
+      additionalProperties: false
+      required:
+        - name
+        - owner
+        - config
+      title: CreateAddOnRequest
+    AddOnName:
+      description: Unique human-readable name of the add-on.
+      type: string
+      example: my-add-on
+      maxLength: 70
+      minLength: 1
+      title: AddOnName
+    AddOnOwner:
+      description: Owner for the add-on.
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/ControlPlaneAddOnOwner'
+        - $ref: '#/components/schemas/ControlPlaneGroupAddOnOwner'
+      title: AddOnOwner
+    ControlPlaneAddOnOwner:
+      description: Control Plane is the owner for the add-on.
+      type: object
+      properties:
+        kind:
+          description: Type of owner for the add-on.
+          type: string
+          const: control-plane
+        control_plane_id:
+          description: ID of the control-plane that owns this add-on.
+          type: string
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        control_plane_geo:
+          $ref: '#/components/schemas/ControlPlaneGeo'
+      additionalProperties: false
+      required:
+        - kind
+        - control_plane_id
+        - control_plane_geo
+      title: ControlPlaneAddOnOwner
+      x-speakeasy-name-override: control_plane
+    ControlPlaneGroupAddOnOwner:
+      description: Control Plane Group is the owner for the add-on.
+      type: object
+      properties:
+        kind:
+          description: Type of owner for the add-on.
+          type: string
+          const: control-plane-group
+        control_plane_group_id:
+          description: ID of the control-plane group that owns this add-on.
+          type: string
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        control_plane_group_geo:
+          $ref: '#/components/schemas/ControlPlaneGeo'
+      additionalProperties: false
+      required:
+        - kind
+        - control_plane_group_id
+        - control_plane_group_geo
+      title: ControlPlaneGroupAddOnOwner
+      x-speakeasy-name-override: control_plane_group
+    CreateAddOnConfig:
+      description: Configuration for creating different types of add-ons.
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/CreateManagedCacheAddOnConfig'
+      title: CreateAddOnConfig
+    CreateManagedCacheAddOnConfig:
+      description: Configuration for creating a managed cache add-on.
+      type: object
+      properties:
+        kind:
+          description: Type of add-on configuration.
+          type: string
+          const: managed-cache.v0
+        capacity_config:
+          $ref: '#/components/schemas/ManagedCacheCapacityConfig'
+      additionalProperties: false
+      required:
+        - kind
+        - capacity_config
+      title: CreateManagedCacheAddOnConfig
+      x-speakeasy-name-override: managed_cache
+    ManagedCacheCapacityConfig:
+      description: Configuration for managed cache capacity and performance characteristics.
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/TieredCapacityConfig'
+      title: ManagedCacheCapacityConfig
+    TieredCapacityConfig:
+      description: Capacity tiers with pre-configured size and performance characteristics.
+      type: object
+      properties:
+        kind:
+          description: Type of capacity configuration.
+          type: string
+          const: tiered
+        tier:
+          description: |
+            Capacity tier that determines both cache size and performance characteristics:
+            - micro: ~0.5 GiB capacity
+            - small: ~1 GiB capacity
+            - medium: ~3 GiB capacity
+            - large: ~6 GiB capacity
+            - xlarge: ~12 GiB capacity
+            - 2xlarge: ~25 GiB capacity
+            - 4xlarge: ~52 GiB capacity
+          type: string
+          enum:
+            - micro
+            - small
+            - medium
+            - large
+            - xlarge
+            - 2xlarge
+            - 4xlarge
+          x-speakeasy-unknown-values: allow
+      example:
+        kind: tiered
+        tier: small
+      additionalProperties: false
+      required:
+        - kind
+        - tier
+      title: TieredCapacityConfig
+      x-speakeasy-name-override: Tiered
     UuidFieldFilter:
       description: 'Filter using **one** of the following operators: `eq`, `oeq`, `neq`'
       type: object
@@ -23360,6 +23933,14 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
+        supports_multiple_credentials:
+          description: |
+            Indicates whether this auth strategy supports multiple credentials.
+            Always `true` for KEY_AUTH.
+          type: boolean
+          default: true
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
       additionalProperties: false
       required:
         - id
@@ -23470,6 +24051,14 @@ components:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
+        supports_multiple_credentials:
+          description: |
+            Indicates whether this auth strategy supports multiple credentials.
+            - `true` for Key Auth strategies and when supported for Client Credentials strategies
+            - `false` when not supported for Client Credentials strategies
+          type: boolean
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
       additionalProperties: false
       required:
         - id
@@ -29053,10 +29642,19 @@ components:
           x-expression:
             type: boolean
             fields:
-              - context.auth.principal.name
-              - context.auth.type
-              - context.topic.name
-              - record.headers
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
+              - name: context.topic.name
+                type: string
+                description: The name of the topic.
+              - name: record.headers
+                type: object
+                description: An associative array of header key value pairs.
       required:
         - type
         - config
@@ -29119,10 +29717,19 @@ components:
           x-expression:
             type: boolean
             fields:
-              - context.auth.principal.name
-              - context.auth.type
-              - context.topic.name
-              - record.headers
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
+              - name: context.topic.name
+                type: string
+                description: The name of the topic.
+              - name: record.headers
+                type: object
+                description: An associative array of header key value pairs.
       required:
         - type
         - config
@@ -29202,12 +29809,25 @@ components:
           x-expression:
             type: boolean
             fields:
-              - context.auth.principal.name
-              - context.auth.type
-              - context.topic.name
-              - record.headers
-              - record.value.validated
-              - record.value.content
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
+              - name: context.topic.name
+                type: string
+                description: The name of the topic.
+              - name: record.headers
+                type: object
+                description: An associative array of header key value pairs.
+              - name: record.value.validated
+                type: boolean
+                description: Indicates whether the record value was successfully validated.
+              - name: record.value.content
+                type: object
+                description: The content of the record value.
       required:
         - type
         - config
@@ -29265,12 +29885,25 @@ components:
           x-expression:
             type: boolean
             fields:
-              - context.auth.principal.name
-              - context.auth.type
-              - context.topic.name
-              - record.headers
-              - record.value.validated
-              - record.value.content
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
+              - name: context.topic.name
+                type: string
+                description: The name of the topic.
+              - name: record.headers
+                type: object
+                description: An associative array of header key value pairs.
+              - name: record.value.validated
+                type: boolean
+                description: Indicates whether the record value was successfully validated.
+              - name: record.value.content
+                type: object
+                description: The content of the record value.
         parent_policy_id:
           description: 'The unique identifier of the parent schema validation policy, if any.'
           type: string
@@ -29320,12 +29953,25 @@ components:
           x-expression:
             type: boolean
             fields:
-              - context.auth.principal.name
-              - context.auth.type
-              - context.topic.name
-              - record.headers
-              - record.value.validated
-              - record.value.content
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
+              - name: context.topic.name
+                type: string
+                description: The name of the topic.
+              - name: record.headers
+                type: object
+                description: An associative array of header key value pairs.
+              - name: record.value.validated
+                type: boolean
+                description: Indicates whether the record value was successfully validated.
+              - name: record.value.content
+                type: object
+                description: The content of the record value.
       required:
         - type
     EventGatewaySkipRecordPolicyCreate:
@@ -29368,12 +30014,25 @@ components:
           x-expression:
             type: boolean
             fields:
-              - context.auth.principal.name
-              - context.auth.type
-              - context.topic.name
-              - record.headers
-              - record.value.validated
-              - record.value.content
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
+              - name: context.topic.name
+                type: string
+                description: The name of the topic.
+              - name: record.headers
+                type: object
+                description: An associative array of header key value pairs.
+              - name: record.value.validated
+                type: boolean
+                description: Indicates whether the record value was successfully validated.
+              - name: record.value.content
+                type: object
+                description: The content of the record value.
         parent_policy_id:
           description: 'The unique identifier of the parent schema validation policy, if any.'
           type: string
@@ -29472,10 +30131,19 @@ components:
           x-expression:
             type: boolean
             fields:
-              - context.auth.principal.name
-              - context.auth.type
-              - context.topic.name
-              - record.headers
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
+              - name: context.topic.name
+                type: string
+                description: The name of the topic.
+              - name: record.headers
+                type: object
+                description: An associative array of header key value pairs.
       required:
         - type
         - config
@@ -29520,10 +30188,19 @@ components:
           x-expression:
             type: boolean
             fields:
-              - context.auth.principal.name
-              - context.auth.type
-              - context.topic.name
-              - record.headers
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
+              - name: context.topic.name
+                type: string
+                description: The name of the topic.
+              - name: record.headers
+                type: object
+                description: An associative array of header key value pairs.
       required:
         - type
         - config
@@ -29608,8 +30285,13 @@ components:
           x-expression:
             type: boolean
             fields:
-              - context.auth.principal.name
-              - context.auth.type
+              - name: context.auth.principal.name
+                type: string
+                description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.type
+                type: string
+                description: |
+                  The matched authentication type from a virtual cluster: anonymous, sasl_plain, sasl_scram_sha256, sasl_scram_sha512, sasl_oauth_bearer.
       required:
         - type
         - config
@@ -66027,6 +66709,18 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/ConflictError'
+    CreateAddOnResponse:
+      description: Response format for creating an add-on.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddOnResponse'
+    RetrieveAddOnResponse:
+      description: Response format for retrieving an add-on by ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddOnResponse'
     Conflict:
       description: Conflict
       content:
@@ -67274,6 +67968,7 @@ tags:
   - name: Networks
   - name: Transit Gateways
   - name: Private DNS
+  - name: Add-Ons
   - name: Provider Accounts
   - name: Custom Domains
   - name: Mesh

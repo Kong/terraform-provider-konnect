@@ -178,6 +178,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewCatalogServiceResource,
 		NewCentralizedConsumerResource,
 		NewCentralizedConsumerKeyResource,
+		NewCloudGatewayAddonResource,
 		NewCloudGatewayConfigurationResource,
 		NewCloudGatewayCustomDomainResource,
 		NewCloudGatewayNetworkResource,

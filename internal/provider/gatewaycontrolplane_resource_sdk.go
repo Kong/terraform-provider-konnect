@@ -11,7 +11,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
-func (r *GatewayControlPlaneResourceModel) RefreshFromSharedControlPlane(ctx context.Context, resp *shared.ControlPlane) diag.Diagnostics {
+func (r *GatewayControlPlaneResourceModel) RefreshFromSharedControlPlane1(ctx context.Context, resp *shared.ControlPlane1) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {

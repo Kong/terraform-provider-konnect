@@ -39,7 +39,7 @@ type GetControlPlaneResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// A response to retrieving a single control plane.
-	ControlPlane *shared.ControlPlane
+	ControlPlane *shared.ControlPlane1
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthenticated
@@ -86,7 +86,7 @@ func (g *GetControlPlaneResponse) GetRawResponse() *http.Response {
 	return g.RawResponse
 }
 
-func (g *GetControlPlaneResponse) GetControlPlane() *shared.ControlPlane {
+func (g *GetControlPlaneResponse) GetControlPlane() *shared.ControlPlane1 {
 	if g == nil {
 		return nil
 	}
