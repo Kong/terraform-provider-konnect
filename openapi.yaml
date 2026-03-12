@@ -19652,7 +19652,6 @@ components:
             - CLUSTER_TYPE_CONTROL_PLANE_GROUP
             - CLUSTER_TYPE_SERVERLESS
             - CLUSTER_TYPE_HYBRID
-            - CLUSTER_TYPE_CLOUD_API_GATEWAY
             - CLUSTER_TYPE_SERVERLESS_V1
           x-speakeasy-unknown-values: allow
         auth_type:
@@ -19758,7 +19757,6 @@ components:
                 - CLUSTER_TYPE_CONTROL_PLANE_GROUP
                 - CLUSTER_TYPE_SERVERLESS
                 - CLUSTER_TYPE_HYBRID
-                - CLUSTER_TYPE_CLOUD_API_GATEWAY
                 - CLUSTER_TYPE_SERVERLESS_V1
               readOnly: true
               x-speakeasy-param-suppress-computed-diff: true
