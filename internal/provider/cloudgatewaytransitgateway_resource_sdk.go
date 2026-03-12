@@ -107,7 +107,8 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedPatchTransitG
 				r.AwsTransitGatewayResponse.StateMetadata.Reason = types.StringPointerValue(resp.AwsTransitGatewayResponse.StateMetadata.Reason)
 				r.AwsTransitGatewayResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AwsTransitGatewayResponse.StateMetadata.ReportedStatus)
 			}
-			r.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig = &tfTypes.AwsTransitGatewayAttachmentConfig{}
+			r.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig = &tfTypes.AwsTransitGatewayAttachmentConfigForResponse{}
+			r.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.AttachmentID = types.StringPointerValue(resp.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.AttachmentID)
 			r.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.Kind = types.StringValue(string(resp.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.Kind))
 			r.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.RAMShareArn = types.StringValue(resp.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.RAMShareArn)
 			r.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.TransitGatewayID = types.StringValue(resp.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.TransitGatewayID)
@@ -214,7 +215,8 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 				r.AwsTransitGatewayResponse.StateMetadata.Reason = types.StringPointerValue(resp.AwsTransitGatewayResponse.StateMetadata.Reason)
 				r.AwsTransitGatewayResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AwsTransitGatewayResponse.StateMetadata.ReportedStatus)
 			}
-			r.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig = &tfTypes.AwsTransitGatewayAttachmentConfig{}
+			r.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig = &tfTypes.AwsTransitGatewayAttachmentConfigForResponse{}
+			r.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.AttachmentID = types.StringPointerValue(resp.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.AttachmentID)
 			r.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.Kind = types.StringValue(string(resp.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.Kind))
 			r.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.RAMShareArn = types.StringValue(resp.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.RAMShareArn)
 			r.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.TransitGatewayID = types.StringValue(resp.AwsTransitGatewayResponse.TransitGatewayAttachmentConfig.TransitGatewayID)
@@ -260,11 +262,12 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 				r.AwsVpcPeeringGatewayResponse.StateMetadata.Reason = types.StringPointerValue(resp.AwsVpcPeeringGatewayResponse.StateMetadata.Reason)
 				r.AwsVpcPeeringGatewayResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AwsVpcPeeringGatewayResponse.StateMetadata.ReportedStatus)
 			}
-			r.AwsVpcPeeringGatewayResponse.TransitGatewayAttachmentConfig = &tfTypes.AwsVpcPeeringGatewayAttachmentConfig{}
+			r.AwsVpcPeeringGatewayResponse.TransitGatewayAttachmentConfig = &tfTypes.AwsVpcPeeringGatewayAttachmentConfigForResponse{}
 			r.AwsVpcPeeringGatewayResponse.TransitGatewayAttachmentConfig.Kind = types.StringValue(string(resp.AwsVpcPeeringGatewayResponse.TransitGatewayAttachmentConfig.Kind))
 			r.AwsVpcPeeringGatewayResponse.TransitGatewayAttachmentConfig.PeerAccountID = types.StringValue(resp.AwsVpcPeeringGatewayResponse.TransitGatewayAttachmentConfig.PeerAccountID)
 			r.AwsVpcPeeringGatewayResponse.TransitGatewayAttachmentConfig.PeerVpcID = types.StringValue(resp.AwsVpcPeeringGatewayResponse.TransitGatewayAttachmentConfig.PeerVpcID)
 			r.AwsVpcPeeringGatewayResponse.TransitGatewayAttachmentConfig.PeerVpcRegion = types.StringValue(resp.AwsVpcPeeringGatewayResponse.TransitGatewayAttachmentConfig.PeerVpcRegion)
+			r.AwsVpcPeeringGatewayResponse.TransitGatewayAttachmentConfig.PeeringConnectionID = types.StringPointerValue(resp.AwsVpcPeeringGatewayResponse.TransitGatewayAttachmentConfig.PeeringConnectionID)
 			r.AwsVpcPeeringGatewayResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AwsVpcPeeringGatewayResponse.UpdatedAt))
 			r.UpdatedAt = r.AwsVpcPeeringGatewayResponse.UpdatedAt
 		}
