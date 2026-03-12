@@ -18,7 +18,6 @@ const (
 	ControlPlaneClusterTypeClusterTypeControlPlaneGroup    ControlPlaneClusterType = "CLUSTER_TYPE_CONTROL_PLANE_GROUP"
 	ControlPlaneClusterTypeClusterTypeServerless           ControlPlaneClusterType = "CLUSTER_TYPE_SERVERLESS"
 	ControlPlaneClusterTypeClusterTypeHybrid               ControlPlaneClusterType = "CLUSTER_TYPE_HYBRID"
-	ControlPlaneClusterTypeClusterTypeCloudAPIGateway      ControlPlaneClusterType = "CLUSTER_TYPE_CLOUD_API_GATEWAY"
 	ControlPlaneClusterTypeClusterTypeServerlessV1         ControlPlaneClusterType = "CLUSTER_TYPE_SERVERLESS_V1"
 )
 
@@ -40,8 +39,6 @@ func (e *ControlPlaneClusterType) UnmarshalJSON(data []byte) error {
 	case "CLUSTER_TYPE_SERVERLESS":
 		fallthrough
 	case "CLUSTER_TYPE_HYBRID":
-		fallthrough
-	case "CLUSTER_TYPE_CLOUD_API_GATEWAY":
 		fallthrough
 	case "CLUSTER_TYPE_SERVERLESS_V1":
 		*e = ControlPlaneClusterType(v)

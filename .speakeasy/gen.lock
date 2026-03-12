@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 8fe2493dad372508c42b1ef73bab4d13
+  docChecksum: 4ba3d9588a624eec80db191857543a51
   docVersion: 2.0.0
   speakeasyVersion: 1.751.0
   generationVersion: 2.858.2
   releaseVersion: 3.10.0
   configChecksum: 3df40a4d4f4cae5be7cce1f3261a7967
 persistentEdits:
-  generation_id: 4708a44f-214d-4558-b1bf-f57194bdbd5a
-  pristine_commit_hash: e7fb216d4a2b08f1574245966c65381122bd518a
-  pristine_tree_hash: aeff9b72d3b2ab9ccabe6d8cfb4e193d81e573b7
+  generation_id: 1abaacb6-cb12-4376-ac9c-71bf2356ccbc
+  pristine_commit_hash: a1cfaf3988eeaee28c2aa65ad3486dab7daa0d91
+  pristine_tree_hash: a381be17bc6e6981092c9c66294e5b16c82a77be
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -3104,8 +3104,8 @@ trackedFiles:
     pristine_git_object: 84c39a8d374df39b575825a054c0e784e006467f
   internal/provider/gatewaycontrolplane_resource.go:
     id: 0abb61c802fc
-    last_write_checksum: sha1:b1ed138b0f6c3c8626188d189d9d54023c627f89
-    pristine_git_object: 4fc70f245f3311d16a483fb1b0abcff598cf4b27
+    last_write_checksum: sha1:11b0451a5dc95aaff700e4051ba2a49a34881d16
+    pristine_git_object: 9346c3149ddc37db01caab1e15a9ac785d3dd786
   internal/provider/gatewaycontrolplane_resource_sdk.go:
     id: ea4c55b8de9e
     last_write_checksum: sha1:18c0df644f2520883849f0754639f828d18fad47
@@ -10304,8 +10304,8 @@ trackedFiles:
     pristine_git_object: 54f1d1c2ef9a84e11a6be47a027ff9ba4cca5987
   internal/sdk/models/shared/controlplane1.go:
     id: e523ada5ef28
-    last_write_checksum: sha1:2192efe77790b6e1c1116cbd745d1f8b5b58a6e2
-    pristine_git_object: d223a4c644f82e2692212b13d1ebc1a19cc14945
+    last_write_checksum: sha1:bad243080e49a7672f27e4706afa4671c5c5be29
+    pristine_git_object: a4738da53251e2514769e10133c2367280c3e36d
   internal/sdk/models/shared/controlplanefilterparameters.go:
     id: 4ce48f874a6d
     last_write_checksum: sha1:2afa4c293864ddf2c0feadf56e89de1586c5d6ab
@@ -10420,8 +10420,8 @@ trackedFiles:
     pristine_git_object: 020eb8f1aeefe4c389a03eedd3f212350c38827a
   internal/sdk/models/shared/createcontrolplanerequest.go:
     id: 354ee6837d4a
-    last_write_checksum: sha1:9be9fea7aa55177a6429f2efa8285aeb4a504a90
-    pristine_git_object: ae1cbaf27ab4c2f30e7f70a3c87357251147f95a
+    last_write_checksum: sha1:8a0db7b6cec581c45cbfe2d62217ce4cffc966b1
+    pristine_git_object: c2bcad2b59b7099dac753e99f03baf3c6de58add
   internal/sdk/models/shared/createcustomdomainrequest.go:
     id: ba40e0b672f8
     last_write_checksum: sha1:3ce2bb98a24a3afba65b402fa912bde67ddddb4c
