@@ -1,7 +1,7 @@
 # Changelog
 
 ## 3.11.0
-> Released 2026/03/??
+> Released 2026/03/12
 
 # Features
 * Add support for configuring Serverless Gateways
