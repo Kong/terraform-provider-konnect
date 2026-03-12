@@ -940,47 +940,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/gatewayId'
       - $ref: '#/components/parameters/eventGatewayListenerId'
-  '/v1/event-gateways/{gatewayId}/listeners/{eventGatewayListenerId}/policy-chain':
-    parameters:
-      - $ref: '#/components/parameters/gatewayId'
-      - $ref: '#/components/parameters/eventGatewayListenerId'
-    get:
-      x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayListenerPolicyChain#read
-        terraform-datasource: null
-      operationId: get-event-gateway-listener-policy-chain
-      summary: Get Policy Chain for Listener
-      description: |
-        Get the policy chain for a listener composed of all the ids of the policies in order of execution.
-      responses:
-        '200':
-          $ref: '#/components/responses/EventGatewayPolicyChainResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-      tags:
-        - Event Gateway Listener Policies
-    put:
-      x-speakeasy-entity-operation:
-        terraform-resource: 'EventGatewayListenerPolicyChain#create,update'
-        terraform-datasource: null
-      operationId: update-event-gateway-listener-policy-chain
-      summary: Update Policy Chain for Listener
-      description: Update the policy chain for a listener by providing an ordered list of policy ids.
-      requestBody:
-        $ref: '#/components/requestBodies/UpdateEventGatewayPolicyChainRequest'
-      responses:
-        '200':
-          $ref: '#/components/responses/EventGatewayPolicyChainResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-      tags:
-        - Event Gateway Listener Policies
   '/v1/event-gateways/{gatewayId}/schema-registries':
     parameters:
       - $ref: '#/components/parameters/gatewayId'
@@ -1383,47 +1342,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/gatewayId'
       - $ref: '#/components/parameters/virtualClusterId'
-  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/cluster-policy-chain':
-    parameters:
-      - $ref: '#/components/parameters/gatewayId'
-      - $ref: '#/components/parameters/virtualClusterId'
-    get:
-      x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterClusterPolicyChain#read
-        terraform-datasource: null
-      operationId: get-event-gateway-virtual-cluster-cluster-level-policy-chain
-      summary: Get Cluster Policy Chain for Virtual Cluster
-      description: |
-        Get the cluster-level policy chain for a virtual cluster composed of all the ids of the cluster-level policies in order of execution.
-      responses:
-        '200':
-          $ref: '#/components/responses/EventGatewayPolicyChainResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-      tags:
-        - Event Gateway Virtual Cluster Policies
-    put:
-      x-speakeasy-entity-operation:
-        terraform-resource: 'EventGatewayVirtualClusterClusterPolicyChain#create,update'
-        terraform-datasource: null
-      operationId: update-event-gateway-virtual-cluster-cluster-level-policy-chain
-      summary: Update Cluster Policy Chain
-      description: Update the cluster-level policy chain for a virtual cluster by providing an ordered list of cluster-level policy ids.
-      requestBody:
-        $ref: '#/components/requestBodies/UpdateEventGatewayPolicyChainRequest'
-      responses:
-        '200':
-          $ref: '#/components/responses/EventGatewayPolicyChainResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-      tags:
-        - Event Gateway Virtual Cluster Policies
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policies/{policyId}#Decrypt':
     get:
       x-speakeasy-entity-operation:
@@ -1880,47 +1798,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/gatewayId'
       - $ref: '#/components/parameters/virtualClusterId'
-  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/consume-policy-chain':
-    parameters:
-      - $ref: '#/components/parameters/gatewayId'
-      - $ref: '#/components/parameters/virtualClusterId'
-    get:
-      x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterConsumePolicyChain#read
-        terraform-datasource: null
-      operationId: get-event-gateway-virtual-cluster-consume-policy-chain
-      summary: Get Consume Policy Chain
-      description: |
-        Get the consume policy chain for a virtual cluster composed of all the ids of the consume policies in order of execution.
-      responses:
-        '200':
-          $ref: '#/components/responses/EventGatewayPolicyChainResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-      tags:
-        - Event Gateway Virtual Cluster Consume Policies
-    put:
-      x-speakeasy-entity-operation:
-        terraform-resource: 'EventGatewayVirtualClusterConsumePolicyChain#create,update'
-        terraform-datasource: null
-      operationId: update-event-gateway-virtual-cluster-consume-policy-chain
-      summary: Update Consume Policy Chain
-      description: Update the consume policy chain for a virtual cluster by providing an ordered list of consume policy ids.
-      requestBody:
-        $ref: '#/components/requestBodies/UpdateEventGatewayPolicyChainRequest'
-      responses:
-        '200':
-          $ref: '#/components/responses/EventGatewayPolicyChainResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-      tags:
-        - Event Gateway Virtual Cluster Consume Policies
   '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policies/{policyId}#Encrypt':
     get:
       x-speakeasy-entity-operation:
@@ -2263,47 +2140,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/gatewayId'
       - $ref: '#/components/parameters/virtualClusterId'
-  '/v1/event-gateways/{gatewayId}/virtual-clusters/{virtualClusterId}/produce-policy-chain':
-    parameters:
-      - $ref: '#/components/parameters/gatewayId'
-      - $ref: '#/components/parameters/virtualClusterId'
-    get:
-      x-speakeasy-entity-operation:
-        terraform-resource: EventGatewayVirtualClusterProducePolicyChain#read
-        terraform-datasource: null
-      operationId: get-event-gateway-virtual-cluster-produce-policy-chain
-      summary: Get Produce Policy Chain for Virtual Cluster
-      description: |
-        Get the produce policy chain for a virtual cluster composed of all the ids of the produce policies in order of execution.
-      responses:
-        '200':
-          $ref: '#/components/responses/EventGatewayPolicyChainResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-      tags:
-        - Event Gateway Virtual Cluster Produce Policies
-    put:
-      x-speakeasy-entity-operation:
-        terraform-resource: 'EventGatewayVirtualClusterProducePolicyChain#create,update'
-        terraform-datasource: null
-      operationId: update-event-gateway-virtual-cluster-produce-policy-chain
-      summary: Update Produce Policy Chain
-      description: Update the produce policy chain for a virtual cluster by providing an ordered list of produce policy ids.
-      requestBody:
-        $ref: '#/components/requestBodies/UpdateEventGatewayPolicyChainRequest'
-      responses:
-        '200':
-          $ref: '#/components/responses/EventGatewayPolicyChainResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-      tags:
-        - Event Gateway Virtual Cluster Produce Policies
   /v1/integration-instances:
     post:
       x-speakeasy-entity-operation: IntegrationInstance#create
@@ -31052,16 +30888,6 @@ components:
       required:
         - name
         - value
-    EventGatewayPolicyReference:
-      description: A reference to an Event Gateway policy.
-      type: object
-      properties:
-        id:
-          description: The unique identifier of the policy.
-          type: string
-          format: uuid
-      required:
-        - id
     GatewayName:
       description: The name of the Gateway.
       type: string
@@ -66518,19 +66344,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EventGatewayStaticKeyCreate'
-    UpdateEventGatewayPolicyChainRequest:
-      description: The request schema for updating the policy chain.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              policies:
-                type: array
-                items:
-                  $ref: '#/components/schemas/EventGatewayPolicyReference'
-            required:
-              - policies
     DataPlaneClientCertificateRequest:
       content:
         application/json:
@@ -67990,19 +67803,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EventGatewayInfo'
-    EventGatewayPolicyChainResponse:
-      description: A response containing the list of policies in order of execution.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              policies:
-                type: array
-                items:
-                  $ref: '#/components/schemas/EventGatewayPolicyReference'
-            required:
-              - policies
     DataPlaneClientCertificateResponse:
       description: Response body for retrieving a dp-client-certificate.
       content:
