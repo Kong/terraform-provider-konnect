@@ -525,6 +525,7 @@ Read-Only:
 
 Read-Only:
 
+- `attachment_id` (String) ID of the AWS Transit Gateway attachment.
 - `kind` (String)
 - `ram_share_arn` (String) Resource Share ARN to verify request to create transit gateway attachment.
 - `transit_gateway_id` (String) AWS Transit Gateway ID to create attachment to.
@@ -586,6 +587,7 @@ Read-Only:
 - `peer_account_id` (String)
 - `peer_vpc_id` (String)
 - `peer_vpc_region` (String)
+- `peering_connection_id` (String)
 
 
 
