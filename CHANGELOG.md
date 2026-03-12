@@ -5,11 +5,6 @@
 
 # Features
 * Add support for configuring Serverless Gateways
-* Add resources to support ordering Event Gateway Policies -
-  * `konnect_event_gateway_listener_policy_chain`
-  * `konnect_event_gateway_virtual_cluster_cluster_policy_chain`
-  * `konnect_event_gateway_virtual_cluster_consume_policy_chain`
-  * `konnect_event_gateway_virtual_cluster_produce_policy_chain`
 * Add support for configuring Managed Cache in Cloud Gateway using `konnect_cloud_gateway_addon` resource
 
 ## 3.10.0
