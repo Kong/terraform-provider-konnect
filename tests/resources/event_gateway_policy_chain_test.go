@@ -54,6 +54,7 @@ func TestEventGatewayPolicyChain(t *testing.T) {
 	`
 
 	t.Run("Listener Policy Chain", func(t *testing.T) {
+		t.Skip("Skipping listener policy chain test until supported in the Provider")
 		builder := hclbuilder.NewWithProvider(hclbuilder.Konnect, fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort))
 		builder.ProviderProperty = hclbuilder.Konnect
 
@@ -216,6 +217,7 @@ func TestEventGatewayPolicyChain(t *testing.T) {
 	})
 
 	t.Run("Cluster Policy Chain", func(t *testing.T) {
+		t.Skip("Skipping cluster policy chain test until supported in the Provider")
 		builder := hclbuilder.NewWithProvider(hclbuilder.Konnect, fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort))
 		builder.ProviderProperty = hclbuilder.Konnect
 
@@ -382,6 +384,7 @@ func TestEventGatewayPolicyChain(t *testing.T) {
 	})
 
 	t.Run("Produce Policy Chain", func(t *testing.T) {
+		t.Skip("Skipping produce policy chain test until supported in the Provider")
 		builder := hclbuilder.NewWithProvider(hclbuilder.Konnect, fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort))
 		builder.ProviderProperty = hclbuilder.Konnect
 
@@ -531,6 +534,7 @@ func TestEventGatewayPolicyChain(t *testing.T) {
 	})
 
 	t.Run("Consume Policy Chain", func(t *testing.T) {
+		t.Skip("Skipping consume policy chain test until supported in the Provider")
 		builder := hclbuilder.NewWithProvider(hclbuilder.Konnect, fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort))
 		builder.ProviderProperty = hclbuilder.Konnect
 
