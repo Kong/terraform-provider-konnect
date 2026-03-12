@@ -9,8 +9,8 @@ import (
 // ListControlPlanesResponse - A paginated list response for a collection of control planes.
 type ListControlPlanesResponse struct {
 	// returns the pagination information
-	Meta PaginatedMeta  `json:"meta"`
-	Data []ControlPlane `json:"data"`
+	Meta PaginatedMeta   `json:"meta"`
+	Data []ControlPlane1 `json:"data"`
 }
 
 func (l ListControlPlanesResponse) MarshalJSON() ([]byte, error) {
@@ -31,9 +31,9 @@ func (l *ListControlPlanesResponse) GetMeta() PaginatedMeta {
 	return l.Meta
 }
 
-func (l *ListControlPlanesResponse) GetData() []ControlPlane {
+func (l *ListControlPlanesResponse) GetData() []ControlPlane1 {
 	if l == nil {
-		return []ControlPlane{}
+		return []ControlPlane1{}
 	}
 	return l.Data
 }

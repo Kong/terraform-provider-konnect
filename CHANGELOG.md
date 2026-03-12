@@ -1,7 +1,14 @@
 # Changelog
 
+## 3.11.0
+> Released 2026/03/??
+
+# Features
+* Add support for configuring Serverless Gateways
+* Add support for configuring Managed Cache in Cloud Gateway using `konnect_cloud_gateway_addon` resource
+
 ## 3.10.0
-> Released 2026/03/10
+> Released 2026/03/11
 
 # Features
 * Support new roles `Registration Approver` and `Content Editor` in `konnect_team_role` resource

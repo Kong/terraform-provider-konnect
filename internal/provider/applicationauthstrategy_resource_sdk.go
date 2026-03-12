@@ -64,6 +64,8 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			r.Name = r.KeyAuth.Name
 			r.KeyAuth.StrategyType = types.StringValue(string(resp.AppAuthStrategyKeyAuthResponse.StrategyType))
 			r.StrategyType = r.KeyAuth.StrategyType
+			r.KeyAuth.SupportsMultipleCredentials = types.BoolPointerValue(resp.AppAuthStrategyKeyAuthResponse.SupportsMultipleCredentials)
+			r.SupportsMultipleCredentials = r.KeyAuth.SupportsMultipleCredentials
 			r.KeyAuth.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AppAuthStrategyKeyAuthResponse.UpdatedAt))
 			r.UpdatedAt = r.KeyAuth.UpdatedAt
 		}
@@ -117,6 +119,8 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			r.Name = r.OpenidConnect.Name
 			r.OpenidConnect.StrategyType = types.StringValue(string(resp.AppAuthStrategyOpenIDConnectResponse.StrategyType))
 			r.StrategyType = r.OpenidConnect.StrategyType
+			r.OpenidConnect.SupportsMultipleCredentials = types.BoolPointerValue(resp.AppAuthStrategyOpenIDConnectResponse.SupportsMultipleCredentials)
+			r.SupportsMultipleCredentials = r.OpenidConnect.SupportsMultipleCredentials
 			r.OpenidConnect.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AppAuthStrategyOpenIDConnectResponse.UpdatedAt))
 			r.UpdatedAt = r.OpenidConnect.UpdatedAt
 		}

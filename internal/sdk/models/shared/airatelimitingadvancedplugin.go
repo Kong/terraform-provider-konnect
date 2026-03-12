@@ -328,8 +328,8 @@ func (e *AuthProvider) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// CloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
-type CloudAuthentication struct {
+// AiRateLimitingAdvancedPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
+type AiRateLimitingAdvancedPluginCloudAuthentication struct {
 	// Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
 	AuthProvider *AuthProvider `json:"auth_provider,omitempty"`
 	// AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
@@ -356,99 +356,99 @@ type CloudAuthentication struct {
 	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
 }
 
-func (c CloudAuthentication) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
+func (a AiRateLimitingAdvancedPluginCloudAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
 }
 
-func (c *CloudAuthentication) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+func (a *AiRateLimitingAdvancedPluginCloudAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CloudAuthentication) GetAuthProvider() *AuthProvider {
-	if c == nil {
+func (a *AiRateLimitingAdvancedPluginCloudAuthentication) GetAuthProvider() *AuthProvider {
+	if a == nil {
 		return nil
 	}
-	return c.AuthProvider
+	return a.AuthProvider
 }
 
-func (c *CloudAuthentication) GetAwsAccessKeyID() *string {
-	if c == nil {
+func (a *AiRateLimitingAdvancedPluginCloudAuthentication) GetAwsAccessKeyID() *string {
+	if a == nil {
 		return nil
 	}
-	return c.AwsAccessKeyID
+	return a.AwsAccessKeyID
 }
 
-func (c *CloudAuthentication) GetAwsAssumeRoleArn() *string {
-	if c == nil {
+func (a *AiRateLimitingAdvancedPluginCloudAuthentication) GetAwsAssumeRoleArn() *string {
+	if a == nil {
 		return nil
 	}
-	return c.AwsAssumeRoleArn
+	return a.AwsAssumeRoleArn
 }
 
-func (c *CloudAuthentication) GetAwsCacheName() *string {
-	if c == nil {
+func (a *AiRateLimitingAdvancedPluginCloudAuthentication) GetAwsCacheName() *string {
+	if a == nil {
 		return nil
 	}
-	return c.AwsCacheName
+	return a.AwsCacheName
 }
 
-func (c *CloudAuthentication) GetAwsIsServerless() *bool {
-	if c == nil {
+func (a *AiRateLimitingAdvancedPluginCloudAuthentication) GetAwsIsServerless() *bool {
+	if a == nil {
 		return nil
 	}
-	return c.AwsIsServerless
+	return a.AwsIsServerless
 }
 
-func (c *CloudAuthentication) GetAwsRegion() *string {
-	if c == nil {
+func (a *AiRateLimitingAdvancedPluginCloudAuthentication) GetAwsRegion() *string {
+	if a == nil {
 		return nil
 	}
-	return c.AwsRegion
+	return a.AwsRegion
 }
 
-func (c *CloudAuthentication) GetAwsRoleSessionName() *string {
-	if c == nil {
+func (a *AiRateLimitingAdvancedPluginCloudAuthentication) GetAwsRoleSessionName() *string {
+	if a == nil {
 		return nil
 	}
-	return c.AwsRoleSessionName
+	return a.AwsRoleSessionName
 }
 
-func (c *CloudAuthentication) GetAwsSecretAccessKey() *string {
-	if c == nil {
+func (a *AiRateLimitingAdvancedPluginCloudAuthentication) GetAwsSecretAccessKey() *string {
+	if a == nil {
 		return nil
 	}
-	return c.AwsSecretAccessKey
+	return a.AwsSecretAccessKey
 }
 
-func (c *CloudAuthentication) GetAzureClientID() *string {
-	if c == nil {
+func (a *AiRateLimitingAdvancedPluginCloudAuthentication) GetAzureClientID() *string {
+	if a == nil {
 		return nil
 	}
-	return c.AzureClientID
+	return a.AzureClientID
 }
 
-func (c *CloudAuthentication) GetAzureClientSecret() *string {
-	if c == nil {
+func (a *AiRateLimitingAdvancedPluginCloudAuthentication) GetAzureClientSecret() *string {
+	if a == nil {
 		return nil
 	}
-	return c.AzureClientSecret
+	return a.AzureClientSecret
 }
 
-func (c *CloudAuthentication) GetAzureTenantID() *string {
-	if c == nil {
+func (a *AiRateLimitingAdvancedPluginCloudAuthentication) GetAzureTenantID() *string {
+	if a == nil {
 		return nil
 	}
-	return c.AzureTenantID
+	return a.AzureTenantID
 }
 
-func (c *CloudAuthentication) GetGcpServiceAccountJSON() *string {
-	if c == nil {
+func (a *AiRateLimitingAdvancedPluginCloudAuthentication) GetGcpServiceAccountJSON() *string {
+	if a == nil {
 		return nil
 	}
-	return c.GcpServiceAccountJSON
+	return a.GcpServiceAccountJSON
 }
 
 type ClusterNodes struct {
@@ -547,7 +547,7 @@ func (e *SentinelRole) UnmarshalJSON(data []byte) error {
 
 type Redis struct {
 	// Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
-	CloudAuthentication *CloudAuthentication `json:"cloud_authentication"`
+	CloudAuthentication *AiRateLimitingAdvancedPluginCloudAuthentication `json:"cloud_authentication"`
 	// Maximum retry attempts for redirection.
 	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
@@ -603,7 +603,7 @@ func (r *Redis) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (r *Redis) GetCloudAuthentication() *CloudAuthentication {
+func (r *Redis) GetCloudAuthentication() *AiRateLimitingAdvancedPluginCloudAuthentication {
 	if r == nil {
 		return nil
 	}
