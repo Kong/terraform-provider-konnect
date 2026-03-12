@@ -51,9 +51,9 @@ type AwsVpcPeeringGatewayResponse struct {
 	// CIDR blocks for constructing a route table for the transit gateway, when attaching to the owning
 	// network.
 	//
-	CidrBlocks                     []string                             `json:"cidr_blocks"`
-	TransitGatewayAttachmentConfig AwsVpcPeeringGatewayAttachmentConfig `json:"transit_gateway_attachment_config"`
-	ID                             string                               `json:"id"`
+	CidrBlocks                     []string                                        `json:"cidr_blocks"`
+	TransitGatewayAttachmentConfig AwsVpcPeeringGatewayAttachmentConfigForResponse `json:"transit_gateway_attachment_config"`
+	ID                             string                                          `json:"id"`
 	// The current state of the Transit Gateway. Possible values:
 	// - `created` - The attachment has been created but is not attached to transit gateway.
 	// - `initializing` - The attachment is in the process of being initialized and is setting up necessary resources.
@@ -110,9 +110,9 @@ func (a *AwsVpcPeeringGatewayResponse) GetCidrBlocks() []string {
 	return a.CidrBlocks
 }
 
-func (a *AwsVpcPeeringGatewayResponse) GetTransitGatewayAttachmentConfig() AwsVpcPeeringGatewayAttachmentConfig {
+func (a *AwsVpcPeeringGatewayResponse) GetTransitGatewayAttachmentConfig() AwsVpcPeeringGatewayAttachmentConfigForResponse {
 	if a == nil {
-		return AwsVpcPeeringGatewayAttachmentConfig{}
+		return AwsVpcPeeringGatewayAttachmentConfigForResponse{}
 	}
 	return a.TransitGatewayAttachmentConfig
 }

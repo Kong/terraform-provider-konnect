@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 24b5d0cf1ae6b08c6558c9debab530d1
+  docChecksum: 4ba3d9588a624eec80db191857543a51
   docVersion: 2.0.0
   speakeasyVersion: 1.751.0
   generationVersion: 2.858.2
   releaseVersion: 3.10.0
   configChecksum: 3df40a4d4f4cae5be7cce1f3261a7967
 persistentEdits:
-  generation_id: 7256f268-d45e-4989-af2e-0c01ef094b36
-  pristine_commit_hash: b8ce30af44a44a5fa5116a6d3198f7ddbe3a620d
-  pristine_tree_hash: 0d85d9749403ddd4fb93cb200a706e803dabdc7d
+  generation_id: 1abaacb6-cb12-4376-ac9c-71bf2356ccbc
+  pristine_commit_hash: a1cfaf3988eeaee28c2aa65ad3486dab7daa0d91
+  pristine_tree_hash: a381be17bc6e6981092c9c66294e5b16c82a77be
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -2840,12 +2840,12 @@ trackedFiles:
     pristine_git_object: 9eb8c024c48b92bd3f3b142c87ffb073947d50a2
   internal/provider/cloudgatewaytransitgateway_resource.go:
     id: 402e7fc592aa
-    last_write_checksum: sha1:eece6cc20513c1edf01f835a89b9c97b131bf5e5
-    pristine_git_object: 4eeff8a70fa5a979831e7fcb37cc85e731dcd806
+    last_write_checksum: sha1:7f760777decc01c41f6fb14a88bc0f3768228bc8
+    pristine_git_object: d05823aadc21f30b9ff9b7742f1d7dcd3bd563d3
   internal/provider/cloudgatewaytransitgateway_resource_sdk.go:
     id: 03546078aaa1
-    last_write_checksum: sha1:48e96c69e398f2701e575fe8cc6650f4f13765c4
-    pristine_git_object: 6f247a848ac92e42ed7b3a5ab0dd78db1b0a1557
+    last_write_checksum: sha1:3b394d9ff6e4de8f01d0fb21f3bfaf1d57c911a6
+    pristine_git_object: d6921b1e1e92ee746d00b5ded0f3044d796c9d7a
   internal/provider/cmek_resource.go:
     id: 3e600c0a21e2
     last_write_checksum: sha1:4bfcb78addfe918407644e5111a397a300e83608
@@ -3104,8 +3104,8 @@ trackedFiles:
     pristine_git_object: 84c39a8d374df39b575825a054c0e784e006467f
   internal/provider/gatewaycontrolplane_resource.go:
     id: 0abb61c802fc
-    last_write_checksum: sha1:000710d767164d018721885f58354dacd8eb465f
-    pristine_git_object: 33fb51094d49476d08fd7112d81f8808d6bf024e
+    last_write_checksum: sha1:11b0451a5dc95aaff700e4051ba2a49a34881d16
+    pristine_git_object: 9346c3149ddc37db01caab1e15a9ac785d3dd786
   internal/provider/gatewaycontrolplane_resource_sdk.go:
     id: ea4c55b8de9e
     last_write_checksum: sha1:18c0df644f2520883849f0754639f828d18fad47
@@ -4790,10 +4790,14 @@ trackedFiles:
     id: c394ae739da2
     last_write_checksum: sha1:7b421f82f2505a39ed19e3fed2adb9ddabbd2f88
     pristine_git_object: f9cf32a7521dd85c05c0310014b36b99845b5b66
+  internal/provider/types/aws_transit_gateway_attachment_config_for_response.go:
+    id: 018e2fea49bd
+    last_write_checksum: sha1:215999573de6b5d6e81ad2ad549e58fa9108b713
+    pristine_git_object: 54ae2250421a7058bcebaa2721891dfcac2346ad
   internal/provider/types/aws_transit_gateway_response.go:
     id: 06fda2eded6e
-    last_write_checksum: sha1:dc84ae3a9c08b5224aa8135f8a5dfbf0e86e7dbf
-    pristine_git_object: 8187dfe0716880d5ce27d6a730f39babd8702fc6
+    last_write_checksum: sha1:677a9b275a4da3a13279680dc056c24018b26dae
+    pristine_git_object: 2688762512a35531adac5629a054df11d04ccd12
   internal/provider/types/aws_vpc_peering_gateway.go:
     id: 65c1f24a359b
     last_write_checksum: sha1:a57e204343f6f66f6b5f4e873cde7d6939440905
@@ -4802,10 +4806,14 @@ trackedFiles:
     id: b6d61e2da9b2
     last_write_checksum: sha1:dc1ee6bfd79e5a7fe03af27c5b5b3d47d7409d88
     pristine_git_object: f3da6e82c42c5cedfc29adc072d172b7dbfc0433
+  internal/provider/types/aws_vpc_peering_gateway_attachment_config_for_response.go:
+    id: 583c5bab74a5
+    last_write_checksum: sha1:548659b0ab43b9be618d10d8ca48afae1f6799f7
+    pristine_git_object: 4d36066281961cb30a1accea6fc83f422e3b57e1
   internal/provider/types/aws_vpc_peering_gateway_response.go:
     id: 1cf36224db1b
-    last_write_checksum: sha1:d28fec1de1fb26f40cf911fc36cdbe14f1dee13f
-    pristine_git_object: c5ee504795375ca0878989da0f5304ad24ba88d6
+    last_write_checksum: sha1:59dfcd97fac13337d0ea8f6d29388c217510bace
+    pristine_git_object: 6a0566f39ff7fd5b2dcf3ab3d604d5513160cdbe
   internal/provider/types/azure.go:
     id: 17cc327a293e
     last_write_checksum: sha1:a8d98058b7ce4bc63dd7048a53149508d48ee9b6
@@ -10022,10 +10030,14 @@ trackedFiles:
     id: 3f63d216c954
     last_write_checksum: sha1:003c3efe62f6ca7821871123fb46b99e4294200a
     pristine_git_object: 5a3225e18e197c09cbb203c425384a6eecf5f882
+  internal/sdk/models/shared/awstransitgatewayattachmentconfigforresponse.go:
+    id: cffd91efab90
+    last_write_checksum: sha1:5d70334a7148f1ee0e42e2124bc25c7a2ba48fc3
+    pristine_git_object: 9b2f66a90f2c1ab90fd3ccd1e88f8628d4bd3494
   internal/sdk/models/shared/awstransitgatewayresponse.go:
     id: e4acfb62bd0d
-    last_write_checksum: sha1:b6fa083fa6fafe52fe5c579172d6d710b8f38df9
-    pristine_git_object: 2b226cf4e2029cd5dee66cefa41f1039a87de52a
+    last_write_checksum: sha1:cab6e7c85700020a45185246145553685d3be022
+    pristine_git_object: f12c45c76798cb960fa6b53eb3dd10c83fbf6717
   internal/sdk/models/shared/awsvpcpeeringgateway.go:
     id: ebf32375a83d
     last_write_checksum: sha1:234e9861715799dd3e65be3e8913fb4a2107c691
@@ -10034,10 +10046,14 @@ trackedFiles:
     id: f47bf750ded5
     last_write_checksum: sha1:d4807bffa76060af18ce43801466fc558d59044b
     pristine_git_object: b9d0064f0f6eafd5ad65d2da7c755262729cd155
+  internal/sdk/models/shared/awsvpcpeeringgatewayattachmentconfigforresponse.go:
+    id: ca0a4dd64649
+    last_write_checksum: sha1:e7151d298e1111d9891b25ea65de6c6c45d010d3
+    pristine_git_object: 4e615bf531020ce83d8459d1b4d623d7a4adc539
   internal/sdk/models/shared/awsvpcpeeringgatewayresponse.go:
     id: 15904253173f
-    last_write_checksum: sha1:1e6da87207553977645fc8f889dc2d2ecf075a0d
-    pristine_git_object: 87880eb38ae46e8dce85c854a2eba1bffab4dbbd
+    last_write_checksum: sha1:d70ff085d36517296d205dc8d9ae9406248f7dde
+    pristine_git_object: 1831f05e919330853a49f4ab2668d4deb3a92320
   internal/sdk/models/shared/azurefunctionsplugin.go:
     id: 881d16976a40
     last_write_checksum: sha1:7ab2278242a49f0bb8046e9145bcc4045856d59a
@@ -10288,8 +10304,8 @@ trackedFiles:
     pristine_git_object: 54f1d1c2ef9a84e11a6be47a027ff9ba4cca5987
   internal/sdk/models/shared/controlplane1.go:
     id: e523ada5ef28
-    last_write_checksum: sha1:39750933418e4bee913097d7e9d0e0f8f776d9a4
-    pristine_git_object: 76241bd0588f005dc1be8e338fac4d2e4d345e51
+    last_write_checksum: sha1:bad243080e49a7672f27e4706afa4671c5c5be29
+    pristine_git_object: a4738da53251e2514769e10133c2367280c3e36d
   internal/sdk/models/shared/controlplanefilterparameters.go:
     id: 4ce48f874a6d
     last_write_checksum: sha1:2afa4c293864ddf2c0feadf56e89de1586c5d6ab
@@ -10404,8 +10420,8 @@ trackedFiles:
     pristine_git_object: 020eb8f1aeefe4c389a03eedd3f212350c38827a
   internal/sdk/models/shared/createcontrolplanerequest.go:
     id: 354ee6837d4a
-    last_write_checksum: sha1:03b233095ee078dedee46c63c8f687df0b8681c2
-    pristine_git_object: 41253503548c37c44fad9eb22782ad9f9a1ce926
+    last_write_checksum: sha1:8a0db7b6cec581c45cbfe2d62217ce4cffc966b1
+    pristine_git_object: c2bcad2b59b7099dac753e99f03baf3c6de58add
   internal/sdk/models/shared/createcustomdomainrequest.go:
     id: ba40e0b672f8
     last_write_checksum: sha1:3ce2bb98a24a3afba65b402fa912bde67ddddb4c
@@ -12923,7 +12939,7 @@ examples:
         application/json: {"name": "us-east-2 transit gateway", "dns_config": [{"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}, {"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}], "cidr_blocks": ["10.0.0.0/8", "100.64.0.0/10", "172.16.0.0/12"], "transit_gateway_attachment_config": {"kind": "aws-vpc-peering-attachment", "peer_account_id": "<id>", "peer_vpc_id": "<id>", "peer_vpc_region": "<value>"}}
       responses:
         "201":
-          application/json: {"name": "us-east-2 transit gateway", "dns_config": [{"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}], "cidr_blocks": ["10.0.0.0/8", "100.64.0.0/10", "172.16.0.0/12"], "transit_gateway_attachment_config": {"kind": "aws-transit-gateway-attachment", "transit_gateway_id": "<id>", "ram_share_arn": "<value>"}, "id": "0850820b-d153-4a2a-b9be-7d2204779139", "state": "ready", "state_metadata": {"reported_status": "ERROR", "reason": "Transit Gateway Attachment configuration could not find a resource with the provided ram share arn.\n"}, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"name": "us-east-2 transit gateway", "dns_config": [{"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}], "cidr_blocks": ["10.0.0.0/8", "100.64.0.0/10", "172.16.0.0/12"], "transit_gateway_attachment_config": {"kind": "aws-transit-gateway-attachment", "transit_gateway_id": "<id>", "ram_share_arn": "<value>", "attachment_id": null}, "id": "0850820b-d153-4a2a-b9be-7d2204779139", "state": "ready", "state_metadata": {"reported_status": "ERROR", "reason": "Transit Gateway Attachment configuration could not find a resource with the provided ram share arn.\n"}, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 568379, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_symbols", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}, {"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value 1>", "<value 2>"], "source": "body"}, {"field": "name", "rule": "max_length", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
         "401":
@@ -12942,7 +12958,7 @@ examples:
           transitGatewayId: "0850820b-d153-4a2a-b9be-7d2204779139"
       responses:
         "200":
-          application/json: {"name": "us-east-2 transit gateway", "dns_config": [{"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}], "cidr_blocks": ["10.0.0.0/8", "100.64.0.0/10", "172.16.0.0/12"], "transit_gateway_attachment_config": {"kind": "aws-transit-gateway-attachment", "transit_gateway_id": "<id>", "ram_share_arn": "<value>"}, "id": "0850820b-d153-4a2a-b9be-7d2204779139", "state": "terminated", "state_metadata": {"reported_status": "ERROR", "reason": "Transit Gateway Attachment configuration could not find a resource with the provided ram share arn.\n"}, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"name": "us-east-2 transit gateway", "dns_config": [{"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}], "cidr_blocks": ["10.0.0.0/8", "100.64.0.0/10", "172.16.0.0/12"], "transit_gateway_attachment_config": {"kind": "aws-transit-gateway-attachment", "transit_gateway_id": "<id>", "ram_share_arn": "<value>", "attachment_id": null}, "id": "0850820b-d153-4a2a-b9be-7d2204779139", "state": "terminated", "state_metadata": {"reported_status": "ERROR", "reason": "Transit Gateway Attachment configuration could not find a resource with the provided ram share arn.\n"}, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":

@@ -17,7 +17,6 @@ resource "konnect_cloud_gateway_addon" "my_addon" {
     }
     owner = {
         control_plane = {
-            kind             = "control-plane"
             control_plane_geo = "us"
             control_plane_id  = konnect_gateway_control_plane.test_cp.id
         }

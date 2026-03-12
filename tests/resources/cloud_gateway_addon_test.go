@@ -34,7 +34,6 @@ func TestCloudGatewayAddOn(t *testing.T) {
           }
           owner = {
             control_plane = {
-             kind             = "control-plane"
              control_plane_geo = "us"
              control_plane_id  = konnect_gateway_control_plane.test_cp.id
             }

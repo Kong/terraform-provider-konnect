@@ -492,6 +492,10 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 					"transit_gateway_attachment_config": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
+							"attachment_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `ID of the AWS Transit Gateway attachment.`,
+							},
 							"kind": schema.StringAttribute{
 								Computed: true,
 							},
@@ -730,6 +734,9 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 								Computed: true,
 							},
 							"peer_vpc_region": schema.StringAttribute{
+								Computed: true,
+							},
+							"peering_connection_id": schema.StringAttribute{
 								Computed: true,
 							},
 						},
