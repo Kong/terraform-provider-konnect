@@ -3672,15 +3672,35 @@ paths:
         '201':
           $ref: '#/components/responses/CreateAddOnResponse'
         '400':
-          $ref: '#/components/responses/CloudGatewaysBadRequest'
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
         '403':
-          $ref: '#/components/responses/CloudGatewaysForbidden'
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
         '404':
-          $ref: '#/components/responses/NotFound'
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
         '409':
-          $ref: '#/components/responses/CloudGatewaysConflict'
+          description: Conflict
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
       servers:
         - url: 'https://global.api.konghq.com/'
       tags:
@@ -3699,11 +3719,23 @@ paths:
         '200':
           $ref: '#/components/responses/RetrieveAddOnResponse'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
         '403':
-          $ref: '#/components/responses/Forbidden'
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
         '404':
-          $ref: '#/components/responses/NotFound'
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
       servers:
         - url: 'https://global.api.konghq.com/'
       tags:
@@ -3723,13 +3755,29 @@ paths:
         '204':
           description: No Content
         '400':
-          $ref: '#/components/responses/CloudGatewaysBadRequest'
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
         '403':
-          $ref: '#/components/responses/Forbidden'
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
         '404':
-          $ref: '#/components/responses/NotFound'
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
       servers:
         - url: 'https://global.api.konghq.com/'
       tags:
@@ -19605,6 +19653,7 @@ components:
             - CLUSTER_TYPE_SERVERLESS
             - CLUSTER_TYPE_HYBRID
             - CLUSTER_TYPE_CLOUD_API_GATEWAY
+            - CLUSTER_TYPE_SERVERLESS_V1
           x-speakeasy-unknown-values: allow
         auth_type:
           description: The auth type value of the cluster associated with the Runtime Group.
@@ -19710,6 +19759,7 @@ components:
                 - CLUSTER_TYPE_SERVERLESS
                 - CLUSTER_TYPE_HYBRID
                 - CLUSTER_TYPE_CLOUD_API_GATEWAY
+                - CLUSTER_TYPE_SERVERLESS_V1
               readOnly: true
               x-speakeasy-param-suppress-computed-diff: true
               x-speakeasy-unknown-values: allow
@@ -20947,6 +20997,34 @@ components:
         - transit_gateway_id
         - ram_share_arn
       title: AWS Transit Gateway Attachment Config
+    AwsTransitGatewayAttachmentConfigForResponse:
+      type: object
+      properties:
+        kind:
+          enum:
+            - aws-transit-gateway-attachment
+          title: AWS Transit Gateway Attachment Type
+        transit_gateway_id:
+          description: AWS Transit Gateway ID to create attachment to.
+          type: string
+          title: Transit Gateway ID
+        ram_share_arn:
+          description: Resource Share ARN to verify request to create transit gateway attachment.
+          type: string
+          title: RAM Share ARN
+        attachment_id:
+          description: ID of the AWS Transit Gateway attachment.
+          type: string
+          default: null
+          nullable: true
+          title: AWS Transit Gateway Attachment ID
+          x-speakeasy-param-computed: false
+      additionalProperties: false
+      required:
+        - kind
+        - transit_gateway_id
+        - ram_share_arn
+      title: AWS Transit Gateway Attachment Config
     AwsVpcPeeringGatewayAttachmentConfig:
       type: object
       properties:
@@ -20960,6 +21038,31 @@ components:
           type: string
         peer_vpc_region:
           type: string
+      additionalProperties: false
+      required:
+        - kind
+        - peer_account_id
+        - peer_vpc_id
+        - peer_vpc_region
+      title: AWS VPC Peering Attachment Config
+    AwsVpcPeeringGatewayAttachmentConfigForResponse:
+      type: object
+      properties:
+        kind:
+          enum:
+            - aws-vpc-peering-attachment
+          title: AWS VPC Peering Attachment Config
+        peer_account_id:
+          type: string
+        peer_vpc_id:
+          type: string
+        peer_vpc_region:
+          type: string
+        peering_connection_id:
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
       additionalProperties: false
       required:
         - kind
@@ -21677,7 +21780,7 @@ components:
         cidr_blocks:
           $ref: '#/components/schemas/TransitGatewayCIDRBlocks'
         transit_gateway_attachment_config:
-          $ref: '#/components/schemas/AwsTransitGatewayAttachmentConfig'
+          $ref: '#/components/schemas/AwsTransitGatewayAttachmentConfigForResponse'
         id:
           $ref: '#/components/schemas/TransitGatewayId'
         state:
@@ -21750,7 +21853,7 @@ components:
         cidr_blocks:
           $ref: '#/components/schemas/TransitGatewayCIDRBlocks'
         transit_gateway_attachment_config:
-          $ref: '#/components/schemas/AwsVpcPeeringGatewayAttachmentConfig'
+          $ref: '#/components/schemas/AwsVpcPeeringGatewayAttachmentConfigForResponse'
         id:
           $ref: '#/components/schemas/TransitGatewayId'
         state:
@@ -21812,7 +21915,7 @@ components:
         - entity_version
         - created_at
         - updated_at
-      title: AWS Vpc Peering Gateway
+      title: AWS VPC Peering Gateway
     AwsResourceEndpointGatewayResponse:
       type: object
       properties:
@@ -22760,6 +22863,9 @@ components:
             - 2xlarge
             - 4xlarge
           x-speakeasy-unknown-values: allow
+      example:
+        kind: tiered
+        tier: small
       additionalProperties: false
       required:
         - kind
