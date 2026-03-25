@@ -31,8 +31,8 @@ resource "konnect_gateway_plugin_confluent_consume" "my_gatewaypluginconfluentco
     dlq_topic                   = "...my_dlq_topic..."
     enable_dlq                  = true
     enforce_latest_offset_reset = false
-    keepalive                   = 2
-    keepalive_enabled           = true
+    keepalive                   = 60000
+    keepalive_enabled           = false
     message_by_lua_functions = [
       "..."
     ]
@@ -45,14 +45,14 @@ resource "konnect_gateway_plugin_confluent_consume" "my_gatewaypluginconfluentco
             password = "...my_password..."
             username = "...my_username..."
           }
-          mode = "basic"
+          mode = "none"
           oauth2 = {
             audience = [
               "..."
             ]
             client_id     = "...my_client_id..."
             client_secret = "...my_client_secret..."
-            grant_type    = "password"
+            grant_type    = "client_credentials"
             password      = "...my_password..."
             scopes = [
               "..."
@@ -67,20 +67,20 @@ resource "konnect_gateway_plugin_confluent_consume" "my_gatewaypluginconfluentco
             username = "...my_username..."
           }
           oauth2_client = {
-            auth_method               = "client_secret_basic"
+            auth_method               = "client_secret_post"
             client_secret_jwt_alg     = "HS512"
             http_proxy                = "...my_http_proxy..."
             http_proxy_authorization  = "...my_http_proxy_authorization..."
             http_version              = 8.6
             https_proxy               = "...my_https_proxy..."
             https_proxy_authorization = "...my_https_proxy_authorization..."
-            keep_alive                = false
+            keep_alive                = true
             no_proxy                  = "...my_no_proxy..."
-            ssl_verify                = true
-            timeout                   = 595962925
+            ssl_verify                = false
+            timeout                   = 10000
           }
         }
-        ssl_verify = false
+        ssl_verify = true
         ttl        = 2309.04
         url        = "...my_url..."
       }
@@ -88,7 +88,7 @@ resource "konnect_gateway_plugin_confluent_consume" "my_gatewaypluginconfluentco
     security = {
       ssl_verify = false
     }
-    timeout = 7
+    timeout = 10000
     topics = [
       {
         name = "...my_name..."
@@ -99,7 +99,7 @@ resource "konnect_gateway_plugin_confluent_consume" "my_gatewaypluginconfluentco
                 password = "...my_password..."
                 username = "...my_username..."
               }
-              mode = "basic"
+              mode = "none"
               oauth2 = {
                 audience = [
                   "..."
@@ -121,17 +121,17 @@ resource "konnect_gateway_plugin_confluent_consume" "my_gatewaypluginconfluentco
                 username = "...my_username..."
               }
               oauth2_client = {
-                auth_method               = "client_secret_basic"
+                auth_method               = "client_secret_post"
                 client_secret_jwt_alg     = "HS512"
                 http_proxy                = "...my_http_proxy..."
                 http_proxy_authorization  = "...my_http_proxy_authorization..."
                 http_version              = 5.07
                 https_proxy               = "...my_https_proxy..."
                 https_proxy_authorization = "...my_https_proxy_authorization..."
-                keep_alive                = false
+                keep_alive                = true
                 no_proxy                  = "...my_no_proxy..."
-                ssl_verify                = true
-                timeout                   = 1747283445
+                ssl_verify                = false
+                timeout                   = 10000
               }
             }
             ssl_verify = true

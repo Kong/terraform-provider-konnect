@@ -26,17 +26,17 @@ resource "konnect_gateway_plugin_solace_consume" "my_gatewaypluginsolaceconsume"
       functions = [
         "..."
       ]
-      max_unacked_messages = 5
+      max_unacked_messages = -1
       properties = {
         key = "value"
       }
       selector     = "...my_selector..."
-      wait_timeout = 2591
-      window_size  = 141
+      wait_timeout = 50
+      window_size  = 255
     }
-    mode = "WEBSOCKET"
+    mode = "POLLING"
     polling = {
-      timeout = 287082
+      timeout = 0
     }
     session = {
       authentication = {
@@ -49,28 +49,28 @@ resource "konnect_gateway_plugin_solace_consume" "my_gatewaypluginsolaceconsume"
         scheme              = "BASIC"
         username            = "...my_username..."
       }
-      calculate_message_expiry = false
-      connect_timeout          = 27609
+      calculate_message_expiry = true
+      connect_timeout          = 3000
       generate_rcv_timestamps  = true
       generate_send_timestamps = true
-      generate_sender_id       = false
+      generate_sender_id       = true
       generate_sequence_number = true
       host                     = "...my_host..."
       properties = {
         key = "value"
       }
-      ssl_validate_certificate = true
+      ssl_validate_certificate = false
       vpn_name                 = "...my_vpn_name..."
     }
     websocket = {
-      max_recv_len = 5
-      max_send_len = 10
-      timeout      = 44172
+      max_recv_len = 65536
+      max_send_len = 65536
+      timeout      = 1000
     }
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 8
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

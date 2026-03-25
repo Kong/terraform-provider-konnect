@@ -18,10 +18,10 @@ resource "konnect_gateway_plugin_statsd" "my_gatewaypluginstatsd" {
     allow_status_codes = [
       "..."
     ]
-    consumer_identifier_default = "username"
+    consumer_identifier_default = "custom_id"
     flush_timeout               = 5.68
-    host                        = "...my_host..."
-    hostname_in_prefix          = true
+    host                        = "localhost"
+    hostname_in_prefix          = false
     metrics = [
       {
         consumer_identifier  = "username"
@@ -32,25 +32,25 @@ resource "konnect_gateway_plugin_statsd" "my_gatewaypluginstatsd" {
         workspace_identifier = "workspace_name"
       }
     ]
-    port   = 6303
-    prefix = "...my_prefix..."
+    port   = 8125
+    prefix = "kong"
     queue = {
-      concurrency_limit    = 0
+      concurrency_limit    = 1
       initial_retry_delay  = 75641.56
-      max_batch_size       = 347740
+      max_batch_size       = 1
       max_bytes            = 9
-      max_coalescing_delay = 1430.25
-      max_entries          = 139203
-      max_retry_delay      = 226190.6
-      max_retry_time       = 1.03
+      max_coalescing_delay = 1
+      max_entries          = 10000
+      max_retry_delay      = 60
+      max_retry_time       = 60
     }
     queue_size                   = 10
     retry_count                  = 8
-    service_identifier_default   = "service_name"
+    service_identifier_default   = "service_name_or_host"
     tag_style                    = "librato"
-    udp_packet_size              = 61921
+    udp_packet_size              = 0
     use_tcp                      = false
-    workspace_identifier_default = "workspace_name"
+    workspace_identifier_default = "workspace_id"
   }
   consumer = {
     id = "...my_id..."

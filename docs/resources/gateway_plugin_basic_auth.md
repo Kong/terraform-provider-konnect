@@ -32,24 +32,24 @@ resource "konnect_gateway_plugin_basic_auth" "my_gatewaypluginbasicauth" {
           azure_tenant_id          = "...my_azure_tenant_id..."
           gcp_service_account_json = "...my_gcp_service_account_json..."
         }
-        database    = 2
+        database    = 0
         host        = "...my_host..."
         password    = "...my_password..."
-        port        = 18528
+        port        = 6379
         server_name = "...my_server_name..."
-        ssl         = true
-        ssl_verify  = true
-        timeout     = 1835674936
+        ssl         = false
+        ssl_verify  = false
+        timeout     = 2000
         username    = "...my_username..."
       }
-      strategy = "redis"
+      strategy = "off"
     }
     hide_credentials = false
-    realm            = "...my_realm..."
+    realm            = "service"
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 6
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

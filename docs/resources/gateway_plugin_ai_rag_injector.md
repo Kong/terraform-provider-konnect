@@ -25,10 +25,10 @@ resource "konnect_gateway_plugin_ai_rag_injector" "my_gatewaypluginairaginjector
         ]
       }
     }
-    consumer_identifier = "custom_id"
+    consumer_identifier = "consumer_group"
     embeddings = {
       auth = {
-        allow_override             = true
+        allow_override             = false
         aws_access_key_id          = "...my_aws_access_key_id..."
         aws_secret_access_key      = "...my_aws_secret_access_key..."
         azure_client_id            = "...my_azure_client_id..."
@@ -47,7 +47,7 @@ resource "konnect_gateway_plugin_ai_rag_injector" "my_gatewaypluginairaginjector
         name = "...my_name..."
         options = {
           azure = {
-            api_version   = "...my_api_version..."
+            api_version   = "2023-05-15"
             deployment_id = "...my_deployment_id..."
             instance      = "...my_instance..."
           }
@@ -74,8 +74,8 @@ resource "konnect_gateway_plugin_ai_rag_injector" "my_gatewaypluginairaginjector
         provider = "gemini"
       }
     }
-    fetch_chunks_count = 9.36
-    filter_mode        = "strict"
+    fetch_chunks_count = 5
+    filter_mode        = "compatible"
     global_acl_config = {
       allow = [
         "..."
@@ -85,26 +85,26 @@ resource "konnect_gateway_plugin_ai_rag_injector" "my_gatewaypluginairaginjector
       ]
     }
     inject_as_role       = "user"
-    inject_template      = "...my_inject_template..."
-    max_filter_clauses   = 287
-    stop_on_failure      = true
-    stop_on_filter_error = true
+    inject_template      = "<CONTEXT>\n<PROMPT>"
+    max_filter_clauses   = 100
+    stop_on_failure      = false
+    stop_on_filter_error = false
     vectordb = {
       dimensions      = 3
       distance_metric = "cosine"
       pgvector = {
-        database     = "...my_database..."
-        host         = "...my_host..."
+        database     = "kong-pgvector"
+        host         = "127.0.0.1"
         password     = "...my_password..."
-        port         = 9
-        ssl          = true
+        port         = 5432
+        ssl          = false
         ssl_cert     = "...my_ssl_cert..."
         ssl_cert_key = "...my_ssl_cert_key..."
-        ssl_required = true
+        ssl_required = false
         ssl_verify   = false
         ssl_version  = "tlsv1_2"
-        timeout      = 2.12
-        user         = "...my_user..."
+        timeout      = 5000
+        user         = "postgres"
       }
       redis = {
         cloud_authentication = {
@@ -112,7 +112,7 @@ resource "konnect_gateway_plugin_ai_rag_injector" "my_gatewaypluginairaginjector
           aws_access_key_id        = "...my_aws_access_key_id..."
           aws_assume_role_arn      = "...my_aws_assume_role_arn..."
           aws_cache_name           = "...my_aws_cache_name..."
-          aws_is_serverless        = false
+          aws_is_serverless        = true
           aws_region               = "...my_aws_region..."
           aws_role_session_name    = "...my_aws_role_session_name..."
           aws_secret_access_key    = "...my_aws_secret_access_key..."
@@ -121,28 +121,28 @@ resource "konnect_gateway_plugin_ai_rag_injector" "my_gatewaypluginairaginjector
           azure_tenant_id          = "...my_azure_tenant_id..."
           gcp_service_account_json = "...my_gcp_service_account_json..."
         }
-        cluster_max_redirections = 7
+        cluster_max_redirections = 5
         cluster_nodes = [
           {
-            ip   = "...my_ip..."
-            port = 39880
+            ip   = "127.0.0.1"
+            port = 6379
           }
         ]
-        connect_timeout       = 1321340165
-        connection_is_proxied = true
-        database              = 8
-        host                  = "...my_host..."
+        connect_timeout       = 2000
+        connection_is_proxied = false
+        database              = 0
+        host                  = "127.0.0.1"
         keepalive_backlog     = 1612696819
-        keepalive_pool_size   = 1283057640
+        keepalive_pool_size   = 256
         password              = "...my_password..."
-        port                  = 34990
-        read_timeout          = 186060548
-        send_timeout          = 1645981911
+        port                  = 6379
+        read_timeout          = 2000
+        send_timeout          = 2000
         sentinel_master       = "...my_sentinel_master..."
         sentinel_nodes = [
           {
-            host = "...my_host..."
-            port = 49697
+            host = "127.0.0.1"
+            port = 6379
           }
         ]
         sentinel_password = "...my_sentinel_password..."
@@ -150,13 +150,13 @@ resource "konnect_gateway_plugin_ai_rag_injector" "my_gatewaypluginairaginjector
         sentinel_username = "...my_sentinel_username..."
         server_name       = "...my_server_name..."
         ssl               = false
-        ssl_verify        = true
+        ssl_verify        = false
         username          = "...my_username..."
       }
       strategy  = "redis"
       threshold = 6.88
     }
-    vectordb_namespace = "...my_vectordb_namespace..."
+    vectordb_namespace = "kong_rag_injector"
   }
   consumer = {
     id = "...my_id..."

@@ -19,7 +19,7 @@ resource "konnect_gateway_plugin_request_validator" "my_gatewaypluginrequestvali
       "..."
     ]
     body_schema                       = "...my_body_schema..."
-    content_type_parameter_validation = false
+    content_type_parameter_validation = true
     parameter_schema = [
       {
         explode  = true
@@ -30,15 +30,15 @@ resource "konnect_gateway_plugin_request_validator" "my_gatewaypluginrequestvali
         style    = "matrix"
       }
     ]
-    verbose_response = true
-    version          = "draft6"
+    verbose_response = false
+    version          = "kong"
   }
   consumer = {
     id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 5
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

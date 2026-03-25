@@ -18,8 +18,8 @@ resource "konnect_gateway_plugin_exit_transformer" "my_gatewaypluginexittransfor
     functions = [
       "..."
     ]
-    handle_unexpected = true
-    handle_unknown    = true
+    handle_unexpected = false
+    handle_unknown    = false
   }
   consumer = {
     id = "...my_id..."

@@ -181,15 +181,11 @@ func (s *ControlPlanes) ListControlPlanes(ctx context.Context, request operation
 		if len(arr) == 0 {
 			return nil, nil
 		}
+		request.PageNumber = &nP
 
 		return s.ListControlPlanes(
 			ctx,
-			operations.ListControlPlanesRequest{
-				PageNumber:   &nP,
-				Filter:       request.Filter,
-				FilterLabels: request.FilterLabels,
-				Sort:         request.Sort,
-			},
+			request,
 		)
 	}
 

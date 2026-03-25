@@ -28,7 +28,7 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
       }
     }
   ]
-  description = "...my_description..."
+  description = ""
   destination = {
     id = "759b5471-3de4-485c-b7d3-6e8cb8929d81"
   }

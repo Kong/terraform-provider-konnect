@@ -58,6 +58,7 @@ func (e *BootstrapPort) UnmarshalJSON(data []byte) error {
 //
 // It is strongly discouraged to use port mapping in production.
 type ForwardToClusterByPortMappingConfig struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"port_mapping" json:"type"`
 	// Reference a virtual cluster by its unique identifier.
 	Destination VirtualClusterReference `json:"destination"`

@@ -139,6 +139,7 @@ func (m *ManagedCacheAddOnConfigResponseStateMetadata) GetCloudAuthentication() 
 // ManagedCacheAddOnConfigResponse - Configuration for managed cache add-on.
 type ManagedCacheAddOnConfigResponse struct {
 	// Type of add-on configuration.
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	kind string `const:"managed-cache.v0" json:"kind"`
 	// Configuration for managed cache capacity and performance characteristics.
 	CapacityConfig ManagedCacheCapacityConfig `json:"capacity_config"`

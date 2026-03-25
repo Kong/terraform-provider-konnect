@@ -37,3 +37,6 @@ func (v *V2AppearanceImage) GetFilename() *string {
 	}
 	return v.Filename
 }
+
+// #region class-body-v2appearanceimage
+// #endregion class-body-v2appearanceimage

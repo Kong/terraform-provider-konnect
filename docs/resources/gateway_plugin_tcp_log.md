@@ -19,10 +19,10 @@ resource "konnect_gateway_plugin_tcp_log" "my_gatewayplugintcplog" {
       key = "value"
     }
     host       = "...my_host..."
-    keepalive  = 1.57
+    keepalive  = 60000
     port       = 54956
-    ssl_verify = true
-    timeout    = 5.53
+    ssl_verify = false
+    timeout    = 10000
     tls        = false
     tls_sni    = "...my_tls_sni..."
   }

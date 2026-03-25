@@ -15,15 +15,15 @@ GatewayPluginServiceProtection Resource
 ```terraform
 resource "konnect_gateway_plugin_service_protection" "my_gatewaypluginserviceprotection" {
   config = {
-    dictionary_name     = "...my_dictionary_name..."
-    disable_penalty     = true
-    error_code          = 2.21
-    error_message       = "...my_error_message..."
+    dictionary_name     = "kong_rate_limiting_counters"
+    disable_penalty     = false
+    error_code          = 429
+    error_message       = "API rate limit exceeded"
     hide_client_headers = false
     limit = [
       3.19
     ]
-    lock_dictionary_name = "...my_lock_dictionary_name..."
+    lock_dictionary_name = "kong_locks"
     namespace            = "...my_namespace..."
     redis = {
       cloud_authentication = {
@@ -31,7 +31,7 @@ resource "konnect_gateway_plugin_service_protection" "my_gatewaypluginservicepro
         aws_access_key_id        = "...my_aws_access_key_id..."
         aws_assume_role_arn      = "...my_aws_assume_role_arn..."
         aws_cache_name           = "...my_aws_cache_name..."
-        aws_is_serverless        = false
+        aws_is_serverless        = true
         aws_region               = "...my_aws_region..."
         aws_role_session_name    = "...my_aws_role_session_name..."
         aws_secret_access_key    = "...my_aws_secret_access_key..."
@@ -40,28 +40,28 @@ resource "konnect_gateway_plugin_service_protection" "my_gatewaypluginservicepro
         azure_tenant_id          = "...my_azure_tenant_id..."
         gcp_service_account_json = "...my_gcp_service_account_json..."
       }
-      cluster_max_redirections = 3
+      cluster_max_redirections = 5
       cluster_nodes = [
         {
-          ip   = "...my_ip..."
-          port = 33693
+          ip   = "127.0.0.1"
+          port = 6379
         }
       ]
-      connect_timeout       = 498772011
+      connect_timeout       = 2000
       connection_is_proxied = false
-      database              = 3
-      host                  = "...my_host..."
+      database              = 0
+      host                  = "127.0.0.1"
       keepalive_backlog     = 312843254
-      keepalive_pool_size   = 1451118259
+      keepalive_pool_size   = 256
       password              = "...my_password..."
-      port                  = 56514
-      read_timeout          = 206958009
-      send_timeout          = 408106576
+      port                  = 6379
+      read_timeout          = 2000
+      send_timeout          = 2000
       sentinel_master       = "...my_sentinel_master..."
       sentinel_nodes = [
         {
-          host = "...my_host..."
-          port = 32122
+          host = "127.0.0.1"
+          port = 6379
         }
       ]
       sentinel_password = "...my_sentinel_password..."
@@ -69,11 +69,11 @@ resource "konnect_gateway_plugin_service_protection" "my_gatewaypluginservicepro
       sentinel_username = "...my_sentinel_username..."
       server_name       = "...my_server_name..."
       ssl               = false
-      ssl_verify        = true
+      ssl_verify        = false
       username          = "...my_username..."
     }
-    retry_after_jitter_max = 4.23
-    strategy               = "redis"
+    retry_after_jitter_max = 0
+    strategy               = "local"
     sync_rate              = 5.69
     window_size = [
       5.81

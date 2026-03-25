@@ -39,6 +39,9 @@ func (c *CreateOauth2introspectionPluginRequest) GetOauth2IntrospectionPlugin() 
 	return c.Oauth2IntrospectionPlugin
 }
 
+// #region class-body-createoauth2introspectionpluginrequest
+// #endregion class-body-createoauth2introspectionpluginrequest
+
 type CreateOauth2introspectionPluginResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -97,3 +100,6 @@ func (c *CreateOauth2introspectionPluginResponse) GetGatewayUnauthorizedError() 
 	}
 	return c.GatewayUnauthorizedError
 }
+
+// #region class-body-createoauth2introspectionpluginresponse
+// #endregion class-body-createoauth2introspectionpluginresponse

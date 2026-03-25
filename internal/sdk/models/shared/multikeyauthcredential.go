@@ -24,7 +24,8 @@ type MultiKeyAuthCredential struct {
 	ExpiresAt *time.Time `default:"null" json:"expires_at"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
-	type_     string    `const:"multi_key_auth" json:"type"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"multi_key_auth" json:"type"`
 }
 
 func (m MultiKeyAuthCredential) MarshalJSON() ([]byte, error) {

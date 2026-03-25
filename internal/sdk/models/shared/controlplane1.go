@@ -224,3 +224,6 @@ func (c *ControlPlane1) GetUpdatedAt() time.Time {
 	}
 	return c.UpdatedAt
 }
+
+// #region class-body-controlplane1
+// #endregion class-body-controlplane1

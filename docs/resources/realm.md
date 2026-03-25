@@ -23,8 +23,8 @@ resource "konnect_realm" "my_realm" {
   ]
   force_destroy = "false"
   name          = "...my_name..."
-  negative_ttl  = 11
-  ttl           = 15
+  negative_ttl  = 10
+  ttl           = 10
 }
 ```
 

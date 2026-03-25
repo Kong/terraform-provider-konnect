@@ -15,21 +15,21 @@ GatewayPluginAiGcpModelArmor Resource
 ```terraform
 resource "konnect_gateway_plugin_ai_gcp_model_armor" "my_gatewaypluginaigcpmodelarmor" {
   config = {
-    enable_multi_language_detection = true
+    enable_multi_language_detection = false
     gcp_service_account_json        = "...my_gcp_service_account_json..."
-    gcp_use_service_account         = true
+    gcp_use_service_account         = false
     guarding_mode                   = "INPUT"
     location_id                     = "...my_location_id..."
     project_id                      = "...my_project_id..."
-    request_failure_message         = "...my_request_failure_message..."
-    response_buffer_size            = 8.82
-    response_failure_message        = "...my_response_failure_message..."
+    request_failure_message         = "Request was filtered by GCP Model Armor"
+    response_buffer_size            = 100
+    response_failure_message        = "Response was filtered by GCP Model Armor"
     reveal_failure_categories       = false
     source_language                 = "...my_source_language..."
-    stop_on_error                   = false
+    stop_on_error                   = true
     template_id                     = "...my_template_id..."
-    text_source                     = "concatenate_all_content"
-    timeout                         = 7.5
+    text_source                     = "last_message"
+    timeout                         = 10000
   }
   consumer = {
     id = "...my_id..."
@@ -39,7 +39,7 @@ resource "konnect_gateway_plugin_ai_gcp_model_armor" "my_gatewaypluginaigcpmodel
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 3
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

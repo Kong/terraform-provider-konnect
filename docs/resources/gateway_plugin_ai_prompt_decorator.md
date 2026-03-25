@@ -15,19 +15,19 @@ GatewayPluginAiPromptDecorator Resource
 ```terraform
 resource "konnect_gateway_plugin_ai_prompt_decorator" "my_gatewaypluginaipromptdecorator" {
   config = {
-    llm_format            = "anthropic"
-    max_request_body_size = 3
+    llm_format            = "openai"
+    max_request_body_size = 1048576
     prompts = {
       append = [
         {
           content = "...my_content..."
-          role    = "user"
+          role    = "system"
         }
       ]
       prepend = [
         {
           content = "...my_content..."
-          role    = "assistant"
+          role    = "system"
         }
       ]
     }
@@ -40,7 +40,7 @@ resource "konnect_gateway_plugin_ai_prompt_decorator" "my_gatewaypluginaipromptd
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 4
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

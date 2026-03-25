@@ -190,13 +190,11 @@ func (s *Mesh) ListMeshControlPlanes(ctx context.Context, request operations.Lis
 		if len(arr) < l {
 			return nil, nil
 		}
+		request.PageNumber = &nP
 
 		return s.ListMeshControlPlanes(
 			ctx,
-			operations.ListMeshControlPlanesRequest{
-				PageSize:   request.PageSize,
-				PageNumber: &nP,
-			},
+			request,
 		)
 	}
 

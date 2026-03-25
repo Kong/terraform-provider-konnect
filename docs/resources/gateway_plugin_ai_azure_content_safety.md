@@ -15,11 +15,11 @@ GatewayPluginAiAzureContentSafety Resource
 ```terraform
 resource "konnect_gateway_plugin_ai_azure_content_safety" "my_gatewaypluginaiazurecontentsafety" {
   config = {
-    azure_api_version          = "...my_azure_api_version..."
+    azure_api_version          = "2023-10-01"
     azure_client_id            = "...my_azure_client_id..."
     azure_client_secret        = "...my_azure_client_secret..."
     azure_tenant_id            = "...my_azure_tenant_id..."
-    azure_use_managed_identity = true
+    azure_use_managed_identity = false
     blocklist_names = [
       "..."
     ]
@@ -32,13 +32,13 @@ resource "konnect_gateway_plugin_ai_azure_content_safety" "my_gatewaypluginaiazu
     content_safety_key    = "...my_content_safety_key..."
     content_safety_url    = "...my_content_safety_url..."
     guarding_mode         = "INPUT"
-    halt_on_blocklist_hit = false
+    halt_on_blocklist_hit = true
     output_type           = "FourSeverityLevels"
-    response_buffer_size  = 7.56
-    reveal_failure_reason = false
+    response_buffer_size  = 100
+    reveal_failure_reason = true
     ssl_verify            = false
-    stop_on_error         = false
-    text_source           = "concatenate_user_content"
+    stop_on_error         = true
+    text_source           = "concatenate_all_content"
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 10

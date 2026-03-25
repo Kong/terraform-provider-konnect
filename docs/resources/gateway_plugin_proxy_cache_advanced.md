@@ -15,15 +15,15 @@ GatewayPluginProxyCacheAdvanced Resource
 ```terraform
 resource "konnect_gateway_plugin_proxy_cache_advanced" "my_gatewaypluginproxycacheadvanced" {
   config = {
-    bypass_on_err = true
-    cache_control = true
-    cache_ttl     = 5
+    bypass_on_err = false
+    cache_control = false
+    cache_ttl     = 300
     content_type = [
       "..."
     ]
     ignore_uri_case = false
     memory = {
-      dictionary_name = "...my_dictionary_name..."
+      dictionary_name = "kong_db_cache"
     }
     redis = {
       cloud_authentication = {
@@ -40,28 +40,28 @@ resource "konnect_gateway_plugin_proxy_cache_advanced" "my_gatewaypluginproxycac
         azure_tenant_id          = "...my_azure_tenant_id..."
         gcp_service_account_json = "...my_gcp_service_account_json..."
       }
-      cluster_max_redirections = 7
+      cluster_max_redirections = 5
       cluster_nodes = [
         {
-          ip   = "...my_ip..."
-          port = 56343
+          ip   = "127.0.0.1"
+          port = 6379
         }
       ]
-      connect_timeout       = 883264270
+      connect_timeout       = 2000
       connection_is_proxied = false
-      database              = 1
-      host                  = "...my_host..."
+      database              = 0
+      host                  = "127.0.0.1"
       keepalive_backlog     = 578209368
-      keepalive_pool_size   = 1307431457
+      keepalive_pool_size   = 256
       password              = "...my_password..."
-      port                  = 54281
-      read_timeout          = 350076819
-      send_timeout          = 2140614627
+      port                  = 6379
+      read_timeout          = 2000
+      send_timeout          = 2000
       sentinel_master       = "...my_sentinel_master..."
       sentinel_nodes = [
         {
-          host = "...my_host..."
-          port = 8222
+          host = "127.0.0.1"
+          port = 6379
         }
       ]
       sentinel_password = "...my_sentinel_password..."
@@ -69,7 +69,7 @@ resource "konnect_gateway_plugin_proxy_cache_advanced" "my_gatewaypluginproxycac
       sentinel_username = "...my_sentinel_username..."
       server_name       = "...my_server_name..."
       ssl               = false
-      ssl_verify        = true
+      ssl_verify        = false
       username          = "...my_username..."
     }
     request_method = [
@@ -79,7 +79,7 @@ resource "konnect_gateway_plugin_proxy_cache_advanced" "my_gatewaypluginproxycac
       269
     ]
     response_headers = {
-      age            = false
+      age            = true
       x_cache_key    = true
       x_cache_status = true
     }
@@ -100,7 +100,7 @@ resource "konnect_gateway_plugin_proxy_cache_advanced" "my_gatewaypluginproxycac
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 8
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

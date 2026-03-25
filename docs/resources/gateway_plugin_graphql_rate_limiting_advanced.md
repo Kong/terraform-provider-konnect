@@ -16,15 +16,15 @@ GatewayPluginGraphqlRateLimitingAdvanced Resource
 resource "konnect_gateway_plugin_graphql_rate_limiting_advanced" "my_gatewayplugingraphqlratelimitingadvanced" {
   config = {
     cost_strategy       = "default"
-    dictionary_name     = "...my_dictionary_name..."
-    hide_client_headers = true
-    identifier          = "credential"
+    dictionary_name     = "kong_rate_limiting_counters"
+    hide_client_headers = false
+    identifier          = "consumer"
     limit = [
       1.18
     ]
-    max_cost                    = 5.02
+    max_cost                    = 0
     namespace                   = "...my_namespace..."
-    pass_all_downstream_headers = true
+    pass_all_downstream_headers = false
     redis = {
       cloud_authentication = {
         auth_provider            = "aws"
@@ -40,45 +40,45 @@ resource "konnect_gateway_plugin_graphql_rate_limiting_advanced" "my_gatewayplug
         azure_tenant_id          = "...my_azure_tenant_id..."
         gcp_service_account_json = "...my_gcp_service_account_json..."
       }
-      cluster_max_redirections = 0
+      cluster_max_redirections = 5
       cluster_nodes = [
         {
-          ip   = "...my_ip..."
-          port = 11194
+          ip   = "127.0.0.1"
+          port = 6379
         }
       ]
-      connect_timeout       = 374060135
+      connect_timeout       = 2000
       connection_is_proxied = false
       database              = 0
-      host                  = "...my_host..."
+      host                  = "127.0.0.1"
       keepalive_backlog     = 171042224
-      keepalive_pool_size   = 2132834450
+      keepalive_pool_size   = 256
       password              = "...my_password..."
-      port                  = 18586
-      read_timeout          = 329378340
-      send_timeout          = 778888138
+      port                  = 6379
+      read_timeout          = 2000
+      send_timeout          = 2000
       sentinel_master       = "...my_sentinel_master..."
       sentinel_nodes = [
         {
-          host = "...my_host..."
-          port = 63567
+          host = "127.0.0.1"
+          port = 6379
         }
       ]
       sentinel_password = "...my_sentinel_password..."
       sentinel_role     = "any"
       sentinel_username = "...my_sentinel_username..."
       server_name       = "...my_server_name..."
-      ssl               = true
+      ssl               = false
       ssl_verify        = false
       username          = "...my_username..."
     }
-    score_factor = 5.13
-    strategy     = "redis"
+    score_factor = 1
+    strategy     = "cluster"
     sync_rate    = 5.2
     window_size = [
       1.07
     ]
-    window_type = "fixed"
+    window_type = "sliding"
   }
   consumer = {
     id = "...my_id..."

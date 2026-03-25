@@ -107,3 +107,6 @@ func (v *V2PortalProductVersion) GetDeprecated() bool {
 	}
 	return v.Deprecated
 }
+
+// #region class-body-v2portalproductversion
+// #endregion class-body-v2portalproductversion

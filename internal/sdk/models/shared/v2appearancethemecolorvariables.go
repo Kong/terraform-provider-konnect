@@ -221,3 +221,6 @@ func (v *V2AppearanceThemeColorVariables) GetButton() Button {
 	}
 	return v.Button
 }
+
+// #region class-body-v2appearancethemecolorvariables
+// #endregion class-body-v2appearancethemecolorvariables

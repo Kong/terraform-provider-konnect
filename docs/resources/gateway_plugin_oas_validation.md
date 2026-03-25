@@ -15,22 +15,22 @@ GatewayPluginOasValidation Resource
 ```terraform
 resource "konnect_gateway_plugin_oas_validation" "my_gatewaypluginoasvalidation" {
   config = {
-    allowed_header_parameters                    = "...my_allowed_header_parameters..."
+    allowed_header_parameters                    = "Host,Content-Type,User-Agent,Accept,Content-Length"
     api_spec                                     = "...my_api_spec..."
-    api_spec_encoded                             = false
+    api_spec_encoded                             = true
     collect_all_errors                           = false
     custom_base_path                             = "...my_custom_base_path..."
     header_parameter_check                       = false
-    include_base_path                            = true
+    include_base_path                            = false
     notify_only_request_validation_failure       = false
-    notify_only_response_body_validation_failure = true
-    query_parameter_check                        = true
+    notify_only_response_body_validation_failure = false
+    query_parameter_check                        = false
     validate_request_body                        = true
     validate_request_header_params               = true
-    validate_request_query_params                = false
+    validate_request_query_params                = true
     validate_request_uri_params                  = true
     validate_response_body                       = false
-    verbose_response                             = true
+    verbose_response                             = false
   }
   consumer = {
     id = "...my_id..."

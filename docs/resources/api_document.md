@@ -18,7 +18,7 @@ resource "konnect_api_document" "my_apidocument" {
   content            = "...my_content..."
   parent_document_id = "0b689d9d-af35-4768-9730-3ec1c14d44e3"
   slug               = "api-document"
-  status             = "published"
+  status             = "unpublished"
   title              = "API Document"
 }
 ```

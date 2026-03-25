@@ -15,20 +15,20 @@ GatewayPluginLoggly Resource
 ```terraform
 resource "konnect_gateway_plugin_loggly" "my_gatewaypluginloggly" {
   config = {
-    client_errors_severity = "notice"
+    client_errors_severity = "info"
     custom_fields_by_lua = {
       key = "value"
     }
-    host                   = "...my_host..."
+    host                   = "logs-01.loggly.com"
     key                    = "...my_key..."
-    log_level              = "alert"
-    port                   = 51730
-    server_errors_severity = "crit"
-    successful_severity    = "alert"
+    log_level              = "info"
+    port                   = 514
+    server_errors_severity = "info"
+    successful_severity    = "info"
     tags = [
       "..."
     ]
-    timeout = 9.55
+    timeout = 10000
   }
   consumer = {
     id = "...my_id..."

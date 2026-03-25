@@ -16,7 +16,7 @@ GatewayPluginAce Resource
 resource "konnect_gateway_plugin_ace" "my_gatewaypluginace" {
   config = {
     anonymous    = "...my_anonymous..."
-    match_policy = "required"
+    match_policy = "if_present"
     rate_limiting = {
       redis = {
         cloud_authentication = {
@@ -24,7 +24,7 @@ resource "konnect_gateway_plugin_ace" "my_gatewaypluginace" {
           aws_access_key_id        = "...my_aws_access_key_id..."
           aws_assume_role_arn      = "...my_aws_assume_role_arn..."
           aws_cache_name           = "...my_aws_cache_name..."
-          aws_is_serverless        = false
+          aws_is_serverless        = true
           aws_region               = "...my_aws_region..."
           aws_role_session_name    = "...my_aws_role_session_name..."
           aws_secret_access_key    = "...my_aws_secret_access_key..."
@@ -33,35 +33,35 @@ resource "konnect_gateway_plugin_ace" "my_gatewaypluginace" {
           azure_tenant_id          = "...my_azure_tenant_id..."
           gcp_service_account_json = "...my_gcp_service_account_json..."
         }
-        cluster_max_redirections = 10
+        cluster_max_redirections = 5
         cluster_nodes = [
           {
-            ip   = "...my_ip..."
-            port = 57941
+            ip   = "127.0.0.1"
+            port = 6379
           }
         ]
-        connect_timeout       = 1979030271
+        connect_timeout       = 2000
         connection_is_proxied = false
-        database              = 7
-        host                  = "...my_host..."
+        database              = 0
+        host                  = "127.0.0.1"
         keepalive_backlog     = 162019354
-        keepalive_pool_size   = 1227973735
+        keepalive_pool_size   = 256
         password              = "...my_password..."
-        port                  = 61563
-        read_timeout          = 837560096
-        send_timeout          = 1354140762
+        port                  = 6379
+        read_timeout          = 2000
+        send_timeout          = 2000
         sentinel_master       = "...my_sentinel_master..."
         sentinel_nodes = [
           {
-            host = "...my_host..."
-            port = 41842
+            host = "127.0.0.1"
+            port = 6379
           }
         ]
         sentinel_password = "...my_sentinel_password..."
         sentinel_role     = "any"
         sentinel_username = "...my_sentinel_username..."
         server_name       = "...my_server_name..."
-        ssl               = true
+        ssl               = false
         ssl_verify        = false
         username          = "...my_username..."
       }

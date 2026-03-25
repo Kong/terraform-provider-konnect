@@ -15,7 +15,7 @@ EventGatewayListenerPolicyTLSServer Resource
 ```terraform
 resource "konnect_event_gateway_listener_policy_tls_server" "my_eventgatewaylistenerpolicytlsserver" {
   config = {
-    allow_plaintext = true
+    allow_plaintext = false
     certificates = [
       {
         certificate = "...my_certificate..."
@@ -24,10 +24,10 @@ resource "konnect_event_gateway_listener_policy_tls_server" "my_eventgatewaylist
     ]
     versions = {
       max = "TLSv1.3"
-      min = "TLSv1.3"
+      min = "TLSv1.2"
     }
   }
-  description = "...my_description..."
+  description = ""
   enabled     = true
   gateway_id  = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   labels = {

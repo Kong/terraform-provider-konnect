@@ -29,25 +29,25 @@ resource "konnect_gateway_plugin_confluent" "my_gatewaypluginconfluent" {
     cluster_name               = "...my_cluster_name..."
     confluent_cloud_api_key    = "...my_confluent_cloud_api_key..."
     confluent_cloud_api_secret = "...my_confluent_cloud_api_secret..."
-    forward_body               = false
+    forward_body               = true
     forward_headers            = false
     forward_method             = false
-    forward_uri                = true
-    keepalive                  = 3
-    keepalive_enabled          = true
+    forward_uri                = false
+    keepalive                  = 60000
+    keepalive_enabled          = false
     key_query_arg              = "...my_key_query_arg..."
     message_by_lua_functions = [
       "..."
     ]
-    producer_async                                     = false
-    producer_async_buffering_limits_messages_in_memory = 9
-    producer_async_flush_timeout                       = 1
-    producer_request_acks                              = 0
-    producer_request_limits_bytes_per_request          = 7
-    producer_request_limits_messages_per_request       = 6
-    producer_request_retries_backoff_timeout           = 4
-    producer_request_retries_max_attempts              = 2
-    producer_request_timeout                           = 1
+    producer_async                                     = true
+    producer_async_buffering_limits_messages_in_memory = 50000
+    producer_async_flush_timeout                       = 1000
+    producer_request_acks                              = 1
+    producer_request_limits_bytes_per_request          = 1048576
+    producer_request_limits_messages_per_request       = 200
+    producer_request_retries_backoff_timeout           = 100
+    producer_request_retries_max_attempts              = 10
+    producer_request_timeout                           = 2000
     schema_registry = {
       confluent = {
         authentication = {
@@ -62,7 +62,7 @@ resource "konnect_gateway_plugin_confluent" "my_gatewaypluginconfluent" {
             ]
             client_id     = "...my_client_id..."
             client_secret = "...my_client_secret..."
-            grant_type    = "password"
+            grant_type    = "client_credentials"
             password      = "...my_password..."
             scopes = [
               "..."
@@ -77,17 +77,17 @@ resource "konnect_gateway_plugin_confluent" "my_gatewaypluginconfluent" {
             username = "...my_username..."
           }
           oauth2_client = {
-            auth_method               = "none"
+            auth_method               = "client_secret_post"
             client_secret_jwt_alg     = "HS512"
             http_proxy                = "...my_http_proxy..."
             http_proxy_authorization  = "...my_http_proxy_authorization..."
             http_version              = 1.18
             https_proxy               = "...my_https_proxy..."
             https_proxy_authorization = "...my_https_proxy_authorization..."
-            keep_alive                = false
+            keep_alive                = true
             no_proxy                  = "...my_no_proxy..."
-            ssl_verify                = true
-            timeout                   = 170470379
+            ssl_verify                = false
+            timeout                   = 10000
           }
         }
         key_schema = {
@@ -104,9 +104,9 @@ resource "konnect_gateway_plugin_confluent" "my_gatewaypluginconfluent" {
       }
     }
     security = {
-      ssl_verify = true
+      ssl_verify = false
     }
-    timeout          = 0
+    timeout          = 10000
     topic            = "...my_topic..."
     topics_query_arg = "...my_topics_query_arg..."
   }

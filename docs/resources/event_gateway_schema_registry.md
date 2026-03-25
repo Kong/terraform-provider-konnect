@@ -24,7 +24,7 @@ resource "konnect_event_gateway_schema_registry" "my_eventgatewayschemaregistry"
       }
       endpoint        = "https://key-hovercraft.com"
       schema_type     = "avro"
-      timeout_seconds = 8
+      timeout_seconds = 10
     }
     description = "...my_description..."
     labels = {

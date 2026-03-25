@@ -22,7 +22,7 @@ resource "konnect_centralized_consumer" "my_centralizedconsumer" {
   tags = [
     "..."
   ]
-  type     = "application"
+  type     = "proxy"
   username = "...my_username..."
 }
 ```

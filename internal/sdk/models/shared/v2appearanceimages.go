@@ -47,3 +47,6 @@ func (v *V2AppearanceImages) GetCatalogCover() *V2AppearanceImage {
 	}
 	return v.CatalogCover
 }
+
+// #region class-body-v2appearanceimages
+// #endregion class-body-v2appearanceimages

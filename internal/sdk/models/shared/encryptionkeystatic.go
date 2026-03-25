@@ -8,6 +8,7 @@ import (
 
 // EncryptionKeyStatic - A static encryption key.
 type EncryptionKeyStatic struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"static" json:"type"`
 	// A static encryption key reference by ID.
 	Key EncryptionKeyStaticReference `json:"key"`

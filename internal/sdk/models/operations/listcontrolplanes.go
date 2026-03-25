@@ -10,6 +10,7 @@ import (
 
 type ListControlPlanesRequest struct {
 	// The maximum number of items to include per page. The last page of a collection may include fewer items.
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	pageSize int64 `const:"100" queryParam:"style=form,explode=true,name=page[size]"`
 	// Determines which page of the entities to retrieve.
 	PageNumber *int64 `queryParam:"style=form,explode=true,name=page[number]"`

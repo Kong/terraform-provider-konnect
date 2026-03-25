@@ -17,7 +17,7 @@ resource "konnect_gateway_plugin_ai_prompt_template" "my_gatewaypluginaipromptte
   config = {
     allow_untemplated_requests = true
     log_original_request       = false
-    max_request_body_size      = 9
+    max_request_body_size      = 1048576
     templates = [
       {
         name     = "...my_name..."
@@ -33,7 +33,7 @@ resource "konnect_gateway_plugin_ai_prompt_template" "my_gatewaypluginaipromptte
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 1
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

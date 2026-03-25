@@ -22,7 +22,7 @@ resource "konnect_gateway_partial" "my_gatewaypartial" {
         aws_access_key_id        = "...my_aws_access_key_id..."
         aws_assume_role_arn      = "...my_aws_assume_role_arn..."
         aws_cache_name           = "...my_aws_cache_name..."
-        aws_is_serverless        = false
+        aws_is_serverless        = true
         aws_region               = "...my_aws_region..."
         aws_role_session_name    = "...my_aws_role_session_name..."
         aws_secret_access_key    = "...my_aws_secret_access_key..."
@@ -31,14 +31,14 @@ resource "konnect_gateway_partial" "my_gatewaypartial" {
         azure_tenant_id          = "...my_azure_tenant_id..."
         gcp_service_account_json = "...my_gcp_service_account_json..."
       }
-      database    = 5
+      database    = 0
       host        = "...my_host..."
       password    = "...my_password..."
-      port        = 8055
+      port        = 6379
       server_name = "...my_server_name..."
-      ssl         = true
-      ssl_verify  = true
-      timeout     = 2089324356
+      ssl         = false
+      ssl_verify  = false
+      timeout     = 2000
       username    = "...my_username..."
     }
     created_at = 10
@@ -56,7 +56,7 @@ resource "konnect_gateway_partial" "my_gatewaypartial" {
         aws_access_key_id        = "...my_aws_access_key_id..."
         aws_assume_role_arn      = "...my_aws_assume_role_arn..."
         aws_cache_name           = "...my_aws_cache_name..."
-        aws_is_serverless        = false
+        aws_is_serverless        = true
         aws_region               = "...my_aws_region..."
         aws_role_session_name    = "...my_aws_role_session_name..."
         aws_secret_access_key    = "...my_aws_secret_access_key..."
@@ -65,28 +65,28 @@ resource "konnect_gateway_partial" "my_gatewaypartial" {
         azure_tenant_id          = "...my_azure_tenant_id..."
         gcp_service_account_json = "...my_gcp_service_account_json..."
       }
-      cluster_max_redirections = 4
+      cluster_max_redirections = 5
       cluster_nodes = [
         {
-          ip   = "...my_ip..."
-          port = 13662
+          ip   = "127.0.0.1"
+          port = 6379
         }
       ]
-      connect_timeout       = 1346533360
+      connect_timeout       = 2000
       connection_is_proxied = false
-      database              = 1
-      host                  = "...my_host..."
+      database              = 0
+      host                  = "127.0.0.1"
       keepalive_backlog     = 259647341
-      keepalive_pool_size   = 1491672736
+      keepalive_pool_size   = 256
       password              = "...my_password..."
-      port                  = 17730
-      read_timeout          = 1431389868
-      send_timeout          = 1316344582
+      port                  = 6379
+      read_timeout          = 2000
+      send_timeout          = 2000
       sentinel_master       = "...my_sentinel_master..."
       sentinel_nodes = [
         {
-          host = "...my_host..."
-          port = 32792
+          host = "127.0.0.1"
+          port = 6379
         }
       ]
       sentinel_password = "...my_sentinel_password..."

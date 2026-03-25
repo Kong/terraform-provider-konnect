@@ -16,16 +16,16 @@ GatewayPluginAiRateLimitingAdvanced Resource
 resource "konnect_gateway_plugin_ai_rate_limiting_advanced" "my_gatewaypluginairatelimitingadvanced" {
   config = {
     custom_cost_count_function     = "...my_custom_cost_count_function..."
-    decrease_by_fractions_in_redis = true
-    dictionary_name                = "...my_dictionary_name..."
+    decrease_by_fractions_in_redis = false
+    dictionary_name                = "kong_rate_limiting_counters"
     disable_penalty                = false
-    error_code                     = 8.18
+    error_code                     = 429
     error_hide_providers           = false
-    error_message                  = "...my_error_message..."
+    error_message                  = "AI token rate limit exceeded for provider(s): "
     header_name                    = "...my_header_name..."
     hide_client_headers            = false
-    identifier                     = "credential"
-    llm_format                     = "gemini"
+    identifier                     = "consumer"
+    llm_format                     = "openai"
     llm_providers = [
       {
         limit = [
@@ -45,7 +45,7 @@ resource "konnect_gateway_plugin_ai_rate_limiting_advanced" "my_gatewaypluginair
         aws_access_key_id        = "...my_aws_access_key_id..."
         aws_assume_role_arn      = "...my_aws_assume_role_arn..."
         aws_cache_name           = "...my_aws_cache_name..."
-        aws_is_serverless        = false
+        aws_is_serverless        = true
         aws_region               = "...my_aws_region..."
         aws_role_session_name    = "...my_aws_role_session_name..."
         aws_secret_access_key    = "...my_aws_secret_access_key..."
@@ -57,25 +57,25 @@ resource "konnect_gateway_plugin_ai_rate_limiting_advanced" "my_gatewaypluginair
       cluster_max_redirections = 5
       cluster_nodes = [
         {
-          ip   = "...my_ip..."
-          port = 36904
+          ip   = "127.0.0.1"
+          port = 6379
         }
       ]
-      connect_timeout       = 883187098
-      connection_is_proxied = true
-      database              = 5
-      host                  = "...my_host..."
+      connect_timeout       = 2000
+      connection_is_proxied = false
+      database              = 0
+      host                  = "127.0.0.1"
       keepalive_backlog     = 125882903
-      keepalive_pool_size   = 165809619
+      keepalive_pool_size   = 256
       password              = "...my_password..."
-      port                  = 37236
-      read_timeout          = 394887043
-      send_timeout          = 590662462
+      port                  = 6379
+      read_timeout          = 2000
+      send_timeout          = 2000
       sentinel_master       = "...my_sentinel_master..."
       sentinel_nodes = [
         {
-          host = "...my_host..."
-          port = 35255
+          host = "127.0.0.1"
+          port = 6379
         }
       ]
       sentinel_password = "...my_sentinel_password..."
@@ -83,14 +83,14 @@ resource "konnect_gateway_plugin_ai_rate_limiting_advanced" "my_gatewaypluginair
       sentinel_username = "...my_sentinel_username..."
       server_name       = "...my_server_name..."
       ssl               = false
-      ssl_verify        = true
+      ssl_verify        = false
       username          = "...my_username..."
     }
     request_prompt_count_function = "...my_request_prompt_count_function..."
-    retry_after_jitter_max        = 8.14
-    strategy                      = "redis"
+    retry_after_jitter_max        = 0
+    strategy                      = "local"
     sync_rate                     = 3.98
-    tokens_count_strategy         = "prompt_tokens"
+    tokens_count_strategy         = "total_tokens"
     window_type                   = "sliding"
   }
   consumer = {

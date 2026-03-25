@@ -836,14 +836,11 @@ func (s *Portals) ListPortalsClassic(ctx context.Context, request operations.Lis
 		if len(arr) < l {
 			return nil, nil
 		}
+		request.PageNumber = &nP
 
 		return s.ListPortalsClassic(
 			ctx,
-			operations.ListPortalsClassicRequest{
-				PageSize:   request.PageSize,
-				PageNumber: &nP,
-				Sort:       request.Sort,
-			},
+			request,
 		)
 	}
 

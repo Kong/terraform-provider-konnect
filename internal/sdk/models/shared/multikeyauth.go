@@ -65,6 +65,7 @@ func (c *CreateMultiKeyAuthCredentialConfig) GetHeaders() []Headers {
 
 // MultiKeyAuth - Payload used to create an `Multi Key` credential for an integration instance.
 type MultiKeyAuth struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_  string                             `const:"multi_key_auth" json:"type"`
 	Config CreateMultiKeyAuthCredentialConfig `json:"config"`
 }

@@ -32,25 +32,25 @@ resource "konnect_gateway_plugin_kafka_upstream" "my_gatewaypluginkafkaupstream"
       }
     ]
     cluster_name      = "...my_cluster_name..."
-    forward_body      = false
-    forward_headers   = true
-    forward_method    = true
+    forward_body      = true
+    forward_headers   = false
+    forward_method    = false
     forward_uri       = false
-    keepalive         = 3
-    keepalive_enabled = true
+    keepalive         = 60000
+    keepalive_enabled = false
     key_query_arg     = "...my_key_query_arg..."
     message_by_lua_functions = [
       "..."
     ]
     producer_async                                     = true
-    producer_async_buffering_limits_messages_in_memory = 5
-    producer_async_flush_timeout                       = 5
+    producer_async_buffering_limits_messages_in_memory = 50000
+    producer_async_flush_timeout                       = 1000
     producer_request_acks                              = 1
-    producer_request_limits_bytes_per_request          = 1
-    producer_request_limits_messages_per_request       = 9
-    producer_request_retries_backoff_timeout           = 4
-    producer_request_retries_max_attempts              = 5
-    producer_request_timeout                           = 10
+    producer_request_limits_bytes_per_request          = 1048576
+    producer_request_limits_messages_per_request       = 200
+    producer_request_retries_backoff_timeout           = 100
+    producer_request_retries_max_attempts              = 10
+    producer_request_timeout                           = 2000
     schema_registry = {
       confluent = {
         authentication = {
@@ -80,7 +80,7 @@ resource "konnect_gateway_plugin_kafka_upstream" "my_gatewaypluginkafkaupstream"
             username = "...my_username..."
           }
           oauth2_client = {
-            auth_method               = "client_secret_jwt"
+            auth_method               = "client_secret_post"
             client_secret_jwt_alg     = "HS512"
             http_proxy                = "...my_http_proxy..."
             http_proxy_authorization  = "...my_http_proxy_authorization..."
@@ -90,7 +90,7 @@ resource "konnect_gateway_plugin_kafka_upstream" "my_gatewaypluginkafkaupstream"
             keep_alive                = true
             no_proxy                  = "...my_no_proxy..."
             ssl_verify                = false
-            timeout                   = 990649997
+            timeout                   = 10000
           }
         }
         key_schema = {
@@ -109,9 +109,9 @@ resource "konnect_gateway_plugin_kafka_upstream" "my_gatewaypluginkafkaupstream"
     security = {
       certificate_id = "...my_certificate_id..."
       ssl            = false
-      ssl_verify     = true
+      ssl_verify     = false
     }
-    timeout          = 0
+    timeout          = 10000
     topic            = "...my_topic..."
     topics_query_arg = "...my_topics_query_arg..."
   }
@@ -120,7 +120,7 @@ resource "konnect_gateway_plugin_kafka_upstream" "my_gatewaypluginkafkaupstream"
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 10
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {
