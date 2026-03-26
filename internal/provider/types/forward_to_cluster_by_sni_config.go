@@ -7,7 +7,6 @@ import (
 )
 
 type ForwardToClusterBySNIConfig struct {
-	AdvertisedPort   types.Int64       `tfsdk:"advertised_port"`
-	BrokerHostFormat *BrokerHostFormat `tfsdk:"broker_host_format"`
-	SniSuffix        types.String      `tfsdk:"sni_suffix"`
+	AdvertisedPort types.Int64  `tfsdk:"advertised_port"`
+	SniSuffix      types.String `tfsdk:"sni_suffix"`
 }

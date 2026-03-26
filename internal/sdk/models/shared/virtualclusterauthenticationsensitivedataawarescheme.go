@@ -12,10 +12,11 @@ import (
 type VirtualClusterAuthenticationSensitiveDataAwareSchemeType string
 
 const (
-	VirtualClusterAuthenticationSensitiveDataAwareSchemeTypeAnonymous   VirtualClusterAuthenticationSensitiveDataAwareSchemeType = "anonymous"
-	VirtualClusterAuthenticationSensitiveDataAwareSchemeTypeSaslPlain   VirtualClusterAuthenticationSensitiveDataAwareSchemeType = "sasl_plain"
-	VirtualClusterAuthenticationSensitiveDataAwareSchemeTypeSaslScram   VirtualClusterAuthenticationSensitiveDataAwareSchemeType = "sasl_scram"
-	VirtualClusterAuthenticationSensitiveDataAwareSchemeTypeOauthBearer VirtualClusterAuthenticationSensitiveDataAwareSchemeType = "oauth_bearer"
+	VirtualClusterAuthenticationSensitiveDataAwareSchemeTypeAnonymous         VirtualClusterAuthenticationSensitiveDataAwareSchemeType = "anonymous"
+	VirtualClusterAuthenticationSensitiveDataAwareSchemeTypeSaslPlain         VirtualClusterAuthenticationSensitiveDataAwareSchemeType = "sasl_plain"
+	VirtualClusterAuthenticationSensitiveDataAwareSchemeTypeSaslScram         VirtualClusterAuthenticationSensitiveDataAwareSchemeType = "sasl_scram"
+	VirtualClusterAuthenticationSensitiveDataAwareSchemeTypeOauthBearer       VirtualClusterAuthenticationSensitiveDataAwareSchemeType = "oauth_bearer"
+	VirtualClusterAuthenticationSensitiveDataAwareSchemeTypeClientCertificate VirtualClusterAuthenticationSensitiveDataAwareSchemeType = "client_certificate"
 )
 
 type VirtualClusterAuthenticationSensitiveDataAwareScheme struct {
@@ -23,6 +24,7 @@ type VirtualClusterAuthenticationSensitiveDataAwareScheme struct {
 	VirtualClusterAuthenticationSaslPlainSensitiveDataAware *VirtualClusterAuthenticationSaslPlainSensitiveDataAware `queryParam:"inline" union:"member"`
 	VirtualClusterAuthenticationSaslScram                   *VirtualClusterAuthenticationSaslScram                   `queryParam:"inline" union:"member"`
 	VirtualClusterAuthenticationOauthBearer                 *VirtualClusterAuthenticationOauthBearer                 `queryParam:"inline" union:"member"`
+	VirtualClusterAuthenticationClientCertificate           *VirtualClusterAuthenticationClientCertificate           `queryParam:"inline" union:"member"`
 
 	Type VirtualClusterAuthenticationSensitiveDataAwareSchemeType
 }
@@ -60,6 +62,15 @@ func CreateVirtualClusterAuthenticationSensitiveDataAwareSchemeOauthBearer(oauth
 	return VirtualClusterAuthenticationSensitiveDataAwareScheme{
 		VirtualClusterAuthenticationOauthBearer: &oauthBearer,
 		Type:                                    typ,
+	}
+}
+
+func CreateVirtualClusterAuthenticationSensitiveDataAwareSchemeClientCertificate(clientCertificate VirtualClusterAuthenticationClientCertificate) VirtualClusterAuthenticationSensitiveDataAwareScheme {
+	typ := VirtualClusterAuthenticationSensitiveDataAwareSchemeTypeClientCertificate
+
+	return VirtualClusterAuthenticationSensitiveDataAwareScheme{
+		VirtualClusterAuthenticationClientCertificate: &clientCertificate,
+		Type: typ,
 	}
 }
 
@@ -111,6 +122,15 @@ func (u *VirtualClusterAuthenticationSensitiveDataAwareScheme) UnmarshalJSON(dat
 		u.VirtualClusterAuthenticationOauthBearer = virtualClusterAuthenticationOauthBearer
 		u.Type = VirtualClusterAuthenticationSensitiveDataAwareSchemeTypeOauthBearer
 		return nil
+	case "client_certificate":
+		virtualClusterAuthenticationClientCertificate := new(VirtualClusterAuthenticationClientCertificate)
+		if err := utils.UnmarshalJSON(data, &virtualClusterAuthenticationClientCertificate, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == client_certificate) type VirtualClusterAuthenticationClientCertificate within VirtualClusterAuthenticationSensitiveDataAwareScheme: %w", string(data), err)
+		}
+
+		u.VirtualClusterAuthenticationClientCertificate = virtualClusterAuthenticationClientCertificate
+		u.Type = VirtualClusterAuthenticationSensitiveDataAwareSchemeTypeClientCertificate
+		return nil
 	}
 
 	return fmt.Errorf("could not unmarshal `%s` into any supported union types for VirtualClusterAuthenticationSensitiveDataAwareScheme", string(data))
@@ -131,6 +151,10 @@ func (u VirtualClusterAuthenticationSensitiveDataAwareScheme) MarshalJSON() ([]b
 
 	if u.VirtualClusterAuthenticationOauthBearer != nil {
 		return utils.MarshalJSON(u.VirtualClusterAuthenticationOauthBearer, "", true)
+	}
+
+	if u.VirtualClusterAuthenticationClientCertificate != nil {
+		return utils.MarshalJSON(u.VirtualClusterAuthenticationClientCertificate, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type VirtualClusterAuthenticationSensitiveDataAwareScheme: all fields are null")

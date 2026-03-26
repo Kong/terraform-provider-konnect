@@ -8,6 +8,6 @@ import (
 
 type EventGatewayTLSListenerPolicyConfig struct {
 	AllowPlaintext types.Bool       `tfsdk:"allow_plaintext"`
-	Certificates   []ClientIdentity `tfsdk:"certificates"`
+	Certificates   []TLSCertificate `tfsdk:"certificates"`
 	Versions       *TLSVersionRange `tfsdk:"versions"`
 }

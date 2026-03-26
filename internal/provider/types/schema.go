@@ -6,7 +6,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type ClientIdentity struct {
-	Certificate types.String `tfsdk:"certificate"`
-	Key         types.String `tfsdk:"key"`
+type Schema struct {
+	Type types.String `tfsdk:"type"`
 }

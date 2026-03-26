@@ -7,9 +7,8 @@ import (
 )
 
 type BackendClusterTLS struct {
-	CaBundle           types.String    `tfsdk:"ca_bundle"`
-	ClientIdentity     *ClientIdentity `tfsdk:"client_identity"`
-	Enabled            types.Bool      `tfsdk:"enabled"`
-	InsecureSkipVerify types.Bool      `tfsdk:"insecure_skip_verify"`
-	TLSVersions        []types.String  `tfsdk:"tls_versions"`
+	CaBundle           types.String   `tfsdk:"ca_bundle"`
+	Enabled            types.Bool     `tfsdk:"enabled"`
+	InsecureSkipVerify types.Bool     `tfsdk:"insecure_skip_verify"`
+	TLSVersions        []types.String `tfsdk:"tls_versions"`
 }
