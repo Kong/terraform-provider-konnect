@@ -1766,4 +1766,165 @@ EOF
 		})
 	})
 
+	t.Run("Event Gateway TLS Trust Bundles", func(t *testing.T) {
+		builder := hclbuilder.NewWithProvider(
+			hclbuilder.Konnect,
+			fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort),
+		)
+		builder.ProviderProperty = hclbuilder.Konnect
+
+		egwCp, err := hclbuilder.FromString(eventGatewayCP)
+		require.NoError(t, err)
+
+		tlsTrustBundle, err := hclbuilder.FromString(`
+			resource "konnect_event_gateway_tls_trust_bundle" "my_eventgatewaytlstrustbundle" {
+				config = {
+					trusted_ca = "$${vault.env['MY_TLS_BUNDLE']}"
+				}
+				description = "My TLS trust bundle description"
+				labels = {
+					key = "value"
+				}
+				name = "test-trust-bundle"
+			}
+		`)
+		require.NoError(t, err)
+
+		tlsTrustBundle.AddAttribute("gateway_id", egwCp.ResourcePath()+".id")
+
+		egwListener, err := hclbuilder.FromString(`
+			resource "konnect_event_gateway_listener" "test_listener_tls" {
+				name      = "test-listener-tls"
+				addresses = ["0.0.0.0"]
+				ports     = ["9092", "9093"]
+				labels    = {}
+				description = "Listener for TLS server policy"
+
+				lifecycle {
+					ignore_changes = [labels]
+				}
+			}
+		`)
+		require.NoError(t, err)
+
+		egwListener.AddAttribute(
+			"gateway_id",
+			egwCp.ResourcePath()+".id",
+		)
+
+		tlsServerPolicy, err := hclbuilder.FromString(`
+			resource "konnect_event_gateway_listener_policy_tls_server" "test_tls_policy" {
+				name        = "test-tls-server-policy"
+				description = "Test TLS server policy for encryption"
+				enabled     = true
+
+				config = {
+					allow_plaintext = false
+					certificates = [
+						{
+							certificate = "-----BEGIN CERTIFICATE-----\nMIICpDCCAYwCCQDUbDYmNl9pgDANBgkqhkiG9w0BAQsFADAUMRIwEAYDVQQDDAls\nb2NhbGhvc3QwHhcNMjYwMjAzMDkwNDQzWhcNMjcwMjAzMDkwNDQzWjAUMRIwEAYD\nVQQDDAlsb2NhbGhvc3QwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDa\nlChS/0kiE/7r6dqCWAXg1RBm72/0563J7VGMunKTVS3tMiv8WpvkEbqBXfohrCv2\nG82CNhks4x5s0xI9wdZ2OS79TbQ/o4TvtAV6pvmHVdAKPTw4r2P1VXyLR4ahPZfz\nypRRUCbaUy7M+ymGeQjbrjM/HghyTkUuszAzUUYsVVnTbBtLXUJMhlb7D6W5w71b\nTFOmOojlhByxbp9bMM3B4sq+lbOZ7Ew2EfCzVnkBtmL5Vc+kH2tBCoq6SJK7b/vu\niNAz/nhbkeGNUf4TJxluY3ZOoLsMXCgRujOo3LAypXgl+a1kPDlu9OFG7c6dGzTq\nMGgorbXLj0d1GAsMeQATAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAFF7H2EQwJ86\nSO79zfw6cTezdpUi51iwuojO690EFoQEV2tiMiT+I2RQWjPDGbZlzOokcDb6mUgo\n78LZgCsg4PYn+2zA48RQc78vJsCdw+FAHaqq4rCkYSpNeMrZxOZR+G9wpYv+OSqR\nMzsOu4lBncDCS2JA5AXkSJGZLp9QjreU0n7yffPjHax0fAecJDQzXYjgkUXDCylM\nf0xCYlV/hcVK2o/KuIchlZn6CgOpFYyLFz/Fer2rCF5Lf67yNtO2MYgHzbzt9v5y\nk1XlWi3il4P1ePHqJGRlWqqPOiZnj3obz+FEjucFoBLyfahzCvaJL8jyc/m2ntg2\nJw25i5wl80Q=\n-----END CERTIFICATE-----"
+							key = "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDalChS/0kiE/7r\n6dqCWAXg1RBm72/0563J7VGMunKTVS3tMiv8WpvkEbqBXfohrCv2G82CNhks4x5s\n0xI9wdZ2OS79TbQ/o4TvtAV6pvmHVdAKPTw4r2P1VXyLR4ahPZfzypRRUCbaUy7M\n+ymGeQjbrjM/HghyTkUuszAzUUYsVVnTbBtLXUJMhlb7D6W5w71bTFOmOojlhByx\nbp9bMM3B4sq+lbOZ7Ew2EfCzVnkBtmL5Vc+kH2tBCoq6SJK7b/vuiNAz/nhbkeGN\nUf4TJxluY3ZOoLsMXCgRujOo3LAypXgl+a1kPDlu9OFG7c6dGzTqMGgorbXLj0d1\nGAsMeQATAgMBAAECggEAfhtqpG/7DrlAo3WZhwgn5A6pVuofysl7//t2yF2tywki\n5S3EKOVR+aSs2QSSUqkV9/kUeWKi5b3niNvCM3VJOY5GaQhSzUCXawCPBLOfVZCR\n5cZsnzu5zQrUPzs2FoMFzzb6mWtH70B8yPDDhX0BOlVn5at7Lg+wZIAneAQVG2/V\nIIYEQqTHMLAfppnaVT0aS6jZex/P1s1we8zUmq57CAd8po305PMDz0ZiAyNGb3Lg\nNcEdrEv2YAo5PnjCoyMRvDh2luOc/FampODfsV338aRoeBFulgkM8/A/OJBYn2Xf\neQCrtnHZRdqve0KwL23RE7kdhNvmVAC+0oCElQYgAQKBgQD+nCT4LUT1C/Pw6VTJ\nCI78+x9QGH0ky7LwnfDQrM/HM9ZjbwRulmCkn3S4jEYfU3nUouHpAht8fTmIsuaj\nDmXHhyMPFPGCEJ0LZD7RsIKdzbUTFf+GPjxyx8CO/EsBmFeERFcN0kHNmQQH3x05\nlZFidzXiIRkNnffwqHGR00vwEwKBgQDbxadzAVOlfvk9lVvhAtzAXtrHOoIDitea\nK32kYd1lKaGkNhl0mr0RR+mPzpP6k7iZ1+Om9BAddFHbD0+RLHu4VQxL/S0mZBBd\nmCKLnGrpPrWeJExr4w3SDpU1VZBobZayKuehXtK6RHMQdrctGC4nEfZrQliPgcnv\nskGqr2CwAQKBgAQrKEvL6fIdJPxPxayY8EZiEiwsinf8wcxAub2g5rH7PkpYefkZ\nizGGztFqsoc2xarek9ZNy4dpQXTkgPQweygeJUvM6vtXLEsQdBrYyfqtcIaEeK+I\n+1JhxNxScyPui5hFyisWwy8Lj05Vr9POiBfVndM6+X8IlBOjnmBl1jtzAoGAaSjP\nshD9dGAoZNZWC3nyJT5+Evyk/4rtFYEf8os9g82C4e9dCNWOCHnPgZdIaYtLtpl9\n/gIkv+NL07UkzoNpg892PdocQ5V320ETrpge9BKkltIpmyofD9cYgFe77Kwbgo9T\nHH0h+i0MneEgTzyVwO4waixp8ekZtk8masTWUAECgYEA4g6ZEkqXVYXYlhKFbdVz\nVQi7k8TJTEk1x0CrQNRypGk8ljhgKPoQgyYfDMTgSK5vZau3SMUHwR0xHemv8sp/\nXP4NayVdHuyhfVHh46BcvAyAIarnRWbMBv5b760OwCAm2fI+4Z2J9Ru9Sm2SVu6H\nrEhkniXbLOWM/jO/tIcJUpM=\n-----END PRIVATE KEY-----"
+						}
+					]
+					client_authentication = {
+						mode              = "requested"
+						tls_trust_bundles = [
+							{
+								id = konnect_event_gateway_tls_trust_bundle.my_eventgatewaytlstrustbundle.id
+							}
+						]
+					}
+					versions = {
+						min = "TLSv1.2"
+						max = "TLSv1.3"
+					}
+				}
+			}
+		`)
+		require.NoError(t, err)
+
+		tlsServerPolicy.AddAttribute(
+			"listener_id",
+			egwListener.ResourcePath()+".id",
+		)
+		tlsServerPolicy.AddAttribute(
+			"gateway_id",
+			egwCp.ResourcePath()+".id",
+		)
+
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					Config: builder.Upsert(egwCp).
+						Upsert(tlsTrustBundle).
+						Upsert(egwListener).
+						Upsert(tlsServerPolicy).
+						Build(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectResourceAction(
+								"konnect_event_gateway_tls_trust_bundle.my_eventgatewaytlstrustbundle",
+								plancheck.ResourceActionCreate,
+							),
+							plancheck.ExpectResourceAction(
+								"konnect_event_gateway_listener.test_listener_tls",
+								plancheck.ResourceActionCreate,
+							),
+							plancheck.ExpectResourceAction(
+								"konnect_event_gateway_listener_policy_tls_server.test_tls_policy",
+								plancheck.ResourceActionCreate,
+							),
+						},
+					},
+
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr(
+							"konnect_event_gateway_tls_trust_bundle.my_eventgatewaytlstrustbundle",
+							"name",
+							"test-trust-bundle",
+						),
+						resource.TestCheckResourceAttr(
+							"konnect_event_gateway_tls_trust_bundle.my_eventgatewaytlstrustbundle",
+							"config.trusted_ca",
+							"${vault.env['MY_TLS_BUNDLE']}",
+						),
+						resource.TestCheckResourceAttr(
+							"konnect_event_gateway_listener_policy_tls_server.test_tls_policy",
+							"config.client_authentication.mode",
+							"requested",
+						),
+					),
+				},
+				{
+					Config: builder.Upsert(egwCp).Upsert(tlsTrustBundle).Build(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectEmptyPlan(),
+						},
+					},
+				},
+				{
+					Config: builder.Upsert(egwCp).Upsert(
+						tlsTrustBundle.AddAttribute(
+							"labels",
+							`{ env = "test" }`,
+						),
+					).Build(),
+
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr(
+							"konnect_event_gateway_tls_trust_bundle.my_eventgatewaytlstrustbundle",
+							"labels.%", "1",
+						),
+						resource.TestCheckResourceAttr(
+							"konnect_event_gateway_tls_trust_bundle.my_eventgatewaytlstrustbundle",
+							"labels.env",
+							"test",
+						),
+					),
+				},
+			},
+		})
+	})
 }
