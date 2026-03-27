@@ -36,12 +36,13 @@ type PortalTeamResource struct {
 
 // PortalTeamResourceModel describes the resource data model.
 type PortalTeamResourceModel struct {
-	CreatedAt   types.String `tfsdk:"created_at"`
-	Description types.String `tfsdk:"description"`
-	ID          types.String `tfsdk:"id"`
-	Name        types.String `tfsdk:"name"`
-	PortalID    types.String `tfsdk:"portal_id"`
-	UpdatedAt   types.String `tfsdk:"updated_at"`
+	CanOwnApplications types.Bool   `tfsdk:"can_own_applications"`
+	CreatedAt          types.String `tfsdk:"created_at"`
+	Description        types.String `tfsdk:"description"`
+	ID                 types.String `tfsdk:"id"`
+	Name               types.String `tfsdk:"name"`
+	PortalID           types.String `tfsdk:"portal_id"`
+	UpdatedAt          types.String `tfsdk:"updated_at"`
 }
 
 func (r *PortalTeamResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -52,6 +53,11 @@ func (r *PortalTeamResource) Schema(ctx context.Context, req resource.SchemaRequ
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "PortalTeam Resource",
 		Attributes: map[string]schema.Attribute{
+			"can_own_applications": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `Whether the team is allowed to own applications`,
+			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{

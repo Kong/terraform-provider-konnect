@@ -1126,6 +1126,116 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Event Gateway Static Keys
+  '/v1/event-gateways/{gatewayId}/tls-trust-bundles':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayTLSTrustBundle#create
+        terraform-datasource: null
+      operationId: create-event-gateway-tls-trust-bundle
+      summary: Create TLS Trust Bundle
+      description: Creates a new TLS trust bundle containing trusted CA certificates for client certificate verification.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateTLSTrustBundleRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TLSTrustBundle'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway TLS Trust Bundles
+      x-min-runtime-version: '1.1'
+      x-speakeasy-param-computed: false
+  '/v1/event-gateways/{gatewayId}/tls-trust-bundles/{tlsTrustBundleId}':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - name: tlsTrustBundleId
+        in: path
+        description: The ID of the TLS trust bundle.
+        required: true
+        schema:
+          type: string
+          format: uuid
+        x-speakeasy-match: id
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayTLSTrustBundle#read
+        terraform-datasource: null
+      operationId: get-event-gateway-tls-trust-bundle
+      summary: Get a TLS Trust Bundle
+      description: Returns information about a specific TLS trust bundle.
+      responses:
+        '200':
+          description: A single TLS trust bundle object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TLSTrustBundle'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway TLS Trust Bundles
+      x-min-runtime-version: '1.1'
+      x-speakeasy-param-computed: false
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayTLSTrustBundle#update
+        terraform-datasource: null
+      operationId: update-event-gateway-tls-trust-bundle
+      summary: Update TLS Trust Bundle
+      description: Updates an existing TLS trust bundle.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateTLSTrustBundleRequest'
+      responses:
+        '200':
+          description: Updated TLS trust bundle object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TLSTrustBundle'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway TLS Trust Bundles
+      x-min-runtime-version: '1.1'
+      x-speakeasy-param-computed: false
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayTLSTrustBundle#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-tls-trust-bundle
+      summary: Delete TLS Trust Bundle
+      description: Deletes a specific TLS trust bundle associated with the Event Gateway.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway TLS Trust Bundles
+      x-min-runtime-version: '1.1'
+      x-speakeasy-param-computed: false
   '/v1/event-gateways/{gatewayId}/virtual-clusters':
     parameters:
       - $ref: '#/components/parameters/gatewayId'
@@ -19000,7 +19110,7 @@ components:
       x-speakeasy-match: id
     ConsumerIdForNestedEntities:
       description: Consumer ID for nested entities
-      example: f28acbfa-c866-4587-b688-0208ac24df21
+      example: ''
       in: path
       name: ConsumerIdForNestedEntities
       required: true
@@ -20447,6 +20557,19 @@ components:
         - serverless.v1
       title: ConfigurationKind
       x-speakeasy-unknown-values: allow
+    CustomDomainKind:
+      description: |-
+        **Pre-release Feature**
+        This feature is currently in beta and is subject to change.
+
+        Kind of the custom domain based on Cloud Gateway deployment.
+      type: string
+      default: dedicated.v0
+      enum:
+        - dedicated.v0
+        - serverless.v1
+      title: CustomDomainKind
+      x-speakeasy-unknown-values: allow
     ConfigurationManifest:
       x-speakeasy-entity: CloudGatewayConfiguration
       description: Object containing information about a control-plane's cloud-gateways configuration.
@@ -21015,6 +21138,37 @@ components:
         - resource_group_name
         - vnet_name
       title: Azure VNET Peering Attachment Config
+    AzureVHubPeeringAttachmentConfig:
+      type: object
+      properties:
+        kind:
+          enum:
+            - azure-vhub-peering-attachment
+          title: Azure Virtual Hub Peering Attachment Type
+        tenant_id:
+          description: Tenant ID of the Azure Virtual Hub resource.
+          type: string
+          title: Tenant ID
+        subscription_id:
+          description: Subscription ID of the Azure Virtual Hub resource.
+          type: string
+          title: Subscription ID
+        resource_group_name:
+          description: Resource Group Name of the Azure Virtual Hub resource.
+          type: string
+          title: Resource Group Name
+        vhub_name:
+          description: Name of the Azure Virtual Hub resource.
+          type: string
+          title: Virtual Hub Name
+      additionalProperties: false
+      required:
+        - kind
+        - tenant_id
+        - subscription_id
+        - resource_group_name
+        - vhub_name
+      title: Azure Virtual Hub Peering Attachment Config
     GCPVPCPeeringAttachmentConfig:
       type: object
       properties:
@@ -21897,6 +22051,8 @@ components:
           $ref: '#/components/schemas/TransitGatewayName'
         dns_config:
           $ref: '#/components/schemas/TransitGatewayDnsConfig'
+        transit_gateway_attachment_config:
+          $ref: '#/components/schemas/AzureVHubPeeringAttachmentConfig'
         id:
           $ref: '#/components/schemas/TransitGatewayId'
         state:
@@ -21950,6 +22106,7 @@ components:
           x-speakeasy-param-suppress-computed-diff: true
       required:
         - name
+        - transit_gateway_attachment_config
         - id
         - dns_config
         - state
@@ -22105,8 +22262,11 @@ components:
           $ref: '#/components/schemas/TransitGatewayName'
         dns_config:
           $ref: '#/components/schemas/TransitGatewayDnsConfig'
+        transit_gateway_attachment_config:
+          $ref: '#/components/schemas/AzureVHubPeeringAttachmentConfig'
       required:
         - name
+        - transit_gateway_attachment_config
       title: Azure Virtual Hub Peering Gateway
       x-speakeasy-name-override: AzureVhubPeeringGateway
     CreateGCPVPCPeeringTransitGateway:
@@ -22273,6 +22433,8 @@ components:
           example: '2022-11-04T20:10:06.927Z'
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
+        kind:
+          $ref: '#/components/schemas/CustomDomainKind'
       required:
         - id
         - control_plane_id
@@ -22321,6 +22483,8 @@ components:
           $ref: '#/components/schemas/ControlPlaneGeo'
         domain:
           $ref: '#/components/schemas/CustomDomainName'
+        kind:
+          $ref: '#/components/schemas/CustomDomainKind'
       additionalProperties: false
       required:
         - control_plane_id
@@ -27593,9 +27757,17 @@ components:
           nullable: true
           writeOnly: true
           x-speakeasy-param-computed: false
+        can_own_applications:
+          description: Whether the team is allowed to own applications.
+          type: boolean
+          example: true
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
       example:
         name: IDM - Developers
         description: The Identity Management (IDM) API team.
+        can_own_applications: false
       title: PortalUpdateTeamRequest
     PortalCreateTeamRequest:
       x-speakeasy-entity: PortalTeam
@@ -27615,9 +27787,15 @@ components:
           nullable: true
           writeOnly: true
           x-speakeasy-param-computed: false
+        can_own_applications:
+          description: Whether the team is allowed to own applications
+          type: boolean
+          example: true
+          x-speakeasy-param-computed: true
       example:
         name: IDM - Developers
         description: The Identity Management (IDM) team.
+        can_own_applications: false
       required:
         - name
       title: PortalCreateTeamRequest
@@ -27658,12 +27836,20 @@ components:
           example: '2022-02-07T17:00:00.52Z'
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
+        can_own_applications:
+          description: Whether the team is allowed to own applications.
+          type: boolean
+          example: false
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
       example:
         id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
         name: IDM - Developers
         description: The developers for the IDM API.
         created_at: '1992-02-07T17:46:57.52Z'
         updated_at: '2022-08-31T17:00:00.52Z'
+        can_own_applications: false
       title: PortalTeamResponse
     ApiResponseSchema:
       type: object
@@ -28456,11 +28642,13 @@ components:
           sasl_plain: '#/components/schemas/VirtualClusterAuthenticationSaslPlainSensitiveDataAware'
           sasl_scram: '#/components/schemas/VirtualClusterAuthenticationSaslScram'
           oauth_bearer: '#/components/schemas/VirtualClusterAuthenticationOauthBearer'
+          client_certificate: '#/components/schemas/VirtualClusterAuthenticationClientCertificate'
       oneOf:
         - $ref: '#/components/schemas/VirtualClusterAuthenticationAnonymous'
         - $ref: '#/components/schemas/VirtualClusterAuthenticationSaslPlainSensitiveDataAware'
         - $ref: '#/components/schemas/VirtualClusterAuthenticationSaslScram'
         - $ref: '#/components/schemas/VirtualClusterAuthenticationOauthBearer'
+        - $ref: '#/components/schemas/VirtualClusterAuthenticationClientCertificate'
     VirtualClusterAuthenticationScheme:
       discriminator:
         propertyName: type
@@ -28469,11 +28657,13 @@ components:
           sasl_plain: '#/components/schemas/VirtualClusterAuthenticationSaslPlain'
           sasl_scram: '#/components/schemas/VirtualClusterAuthenticationSaslScram'
           oauth_bearer: '#/components/schemas/VirtualClusterAuthenticationOauthBearer'
+          client_certificate: '#/components/schemas/VirtualClusterAuthenticationClientCertificate'
       oneOf:
         - $ref: '#/components/schemas/VirtualClusterAuthenticationAnonymous'
         - $ref: '#/components/schemas/VirtualClusterAuthenticationSaslPlain'
         - $ref: '#/components/schemas/VirtualClusterAuthenticationSaslScram'
         - $ref: '#/components/schemas/VirtualClusterAuthenticationOauthBearer'
+        - $ref: '#/components/schemas/VirtualClusterAuthenticationClientCertificate'
     VirtualClusterAuthenticationAnonymous:
       type: object
       properties:
@@ -28482,6 +28672,95 @@ components:
           const: anonymous
       required:
         - type
+    VirtualClusterAuthenticationClientCertificate:
+      description: Client certificate (mTLS) authentication scheme for the virtual cluster.
+      type: object
+      properties:
+        type:
+          type: string
+          const: client_certificate
+      example:
+        type: client_certificate
+      additionalProperties: false
+      required:
+        - type
+      x-min-runtime-version: '1.1'
+      x-speakeasy-param-computed: false
+    TLSTrustBundle:
+      description: |
+        A TLS trust bundle defines a set of trusted certificate authorities (CAs) used for client certificate
+        verification during mutual TLS (mTLS). Trust bundles are referenced by TLS listener policies to
+        determine which client certificates are accepted.
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the TLS trust bundle.
+          type: string
+          format: uuid
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        name:
+          $ref: '#/components/schemas/TLSTrustBundleName'
+        description:
+          description: A human-readable description of the TLS trust bundle.
+          type: string
+          default: ''
+          maxLength: 512
+        config:
+          $ref: '#/components/schemas/TLSTrustBundleConfig'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - config
+        - created_at
+        - updated_at
+      x-min-runtime-version: '1.1'
+      x-speakeasy-param-computed: false
+    TLSTrustBundleName:
+      description: The unique name of the TLS trust bundle.
+      type: string
+      maxLength: 255
+      minLength: 1
+      x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+    TLSTrustBundleConfig:
+      type: object
+      properties:
+        trusted_ca:
+          description: |
+            PEM-encoded list of trusted CA certificates used to verify client certificates.
+            Can be a literal PEM string or a vault reference.
+          type: string
+          minLength: 1
+          x-expression:
+            type: string
+            fields:
+              - vault
+      required:
+        - trusted_ca
+    TLSTrustBundleReference:
+      description: |
+        A reference to a TLS trust bundle resource.
+
+        Either `id` or `name` must be provided. Following changes to the trust bundle name won't affect the
+        reference, as the system will create the entities relationship by `id`.
+      $ref: '#/components/schemas/TLSTrustBundleReferenceById'
+    TLSTrustBundleReferenceById:
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the TLS trust bundle.
+          type: string
+          format: uuid
+          minLength: 1
+      required:
+        - id
     VirtualClusterAuthenticationSaslPlainSensitiveDataAware:
       description: SASL/PLAIN authentication scheme for the virtual cluster.
       type: object
@@ -29378,6 +29657,79 @@ components:
             If false, only TLS connections are allowed. If true, both TLS and plaintext connections are allowed.
           type: boolean
           default: false
+        client_authentication:
+          description: |
+            Configures mutual TLS (mTLS) client certificate verification. When set, the gateway
+            requests or requires clients to present a certificate during the TLS handshake.
+          type: object
+          properties:
+            mode:
+              description: |
+                * required - Reject TLS connections without a valid client certificate.
+                * requested - Request a client certificate during the TLS handshake, but allow connections without one (falls back to other configured authentication methods). If a certificate is presented but cannot be verified, the connection is closed.
+              type: string
+              enum:
+                - required
+                - requested
+              x-speakeasy-unknown-values: allow
+            tls_trust_bundles:
+              description: |
+                TLS trust bundles contain CA certificate bundles used to verify client certificates.
+                All bundles are merged into a single trust store; a client certificate is accepted if it
+                chains to any trusted CA across all bundles.
+              type: array
+              items:
+                $ref: '#/components/schemas/TLSTrustBundleReference'
+              minItems: 1
+            principal_mapping:
+              description: |
+                An expression that extracts a principal identifier from a verified client certificate.
+                This expression must evaluate to a string.
+              type: string
+              example: '$${context.certificate.subject[''CN''] ? context.certificate.subject[''CN''] : context.certificate.sans.uri[0]}'
+              x-expression:
+                type: string
+                fields:
+                  - name: context.certificate.serialNumber
+                    type: string
+                    description: The string serial number of the certificate
+                  - name: context.certificate.subject
+                    type: object
+                    description: |
+                      A map of the subject distinguished name.
+
+                      A distinguished name as described by RFC 4514 is represented as a map with each key being
+                      the attribute type and the value being the attribute value.
+                      For example:
+                      * `certificate.subject['CN']` is the common name
+                      * `certificate.subject['O']` is the organization
+                  - name: context.certificate.issuer
+                    type: object
+                    description: |
+                      A map of the issuer distinguished name.
+
+                      A distinguished name as described by RFC 4514 is represented as a map with each key being
+                      the attribute type and the value being the attribute value.
+                      For example:
+                      * `certificate.issuer['CN']` is the common name
+                      * `certificate.issuer['O']` is the organization
+                  - name: context.certificate.sans.dns
+                    type: array
+                    items:
+                      type: string
+                    description: An array of the DNS Subject Alternative Names from the certificate.
+                  - name: context.certificate.sans.uri
+                    type: array
+                    items:
+                      type: string
+                    description: An array of the URI Subject Alternative Names from the certificate.
+              x-min-runtime-version: '1.1'
+              x-speakeasy-param-computed: false
+          required:
+            - mode
+            - tls_trust_bundles
+          x-min-runtime-version: '1.1'
+          x-speakeasy-param-computed: false
       required:
         - certificates
     EventGatewayTLSListenerPolicyConfig:
@@ -29396,6 +29748,79 @@ components:
             If false, only TLS connections are allowed. If true, both TLS and plaintext connections are allowed.
           type: boolean
           default: false
+        client_authentication:
+          description: |
+            Configures mutual TLS (mTLS) client certificate verification. When set, the gateway
+            requests or requires clients to present a certificate during the TLS handshake.
+          type: object
+          properties:
+            mode:
+              description: |
+                * required - Reject TLS connections without a valid client certificate.
+                * requested - Request a client certificate during the TLS handshake, but allow connections without one (falls back to other configured authentication methods). If a certificate is presented but cannot be verified, the connection is closed.
+              type: string
+              enum:
+                - required
+                - requested
+              x-speakeasy-unknown-values: allow
+            tls_trust_bundles:
+              description: |
+                TLS trust bundles contain CA certificate bundles used to verify client certificates.
+                All bundles are merged into a single trust store; a client certificate is accepted if it
+                chains to any trusted CA across all bundles.
+              type: array
+              items:
+                $ref: '#/components/schemas/TLSTrustBundleReference'
+              minItems: 1
+            principal_mapping:
+              description: |
+                An expression that extracts a principal identifier from a verified client certificate.
+                This expression must evaluate to a string.
+              type: string
+              example: '$${context.certificate.subject[''CN''] ? context.certificate.subject[''CN''] : context.certificate.sans.uri[0]}'
+              x-expression:
+                type: string
+                fields:
+                  - name: context.certificate.serialNumber
+                    type: string
+                    description: The string serial number of the certificate
+                  - name: context.certificate.subject
+                    type: object
+                    description: |
+                      A map of the subject distinguished name.
+
+                      A distinguished name as described by RFC 4514 is represented as a map with each key being
+                      the attribute type and the value being the attribute value.
+                      For example:
+                      * `certificate.subject['CN']` is the common name
+                      * `certificate.subject['O']` is the organization
+                  - name: context.certificate.issuer
+                    type: object
+                    description: |
+                      A map of the issuer distinguished name.
+
+                      A distinguished name as described by RFC 4514 is represented as a map with each key being
+                      the attribute type and the value being the attribute value.
+                      For example:
+                      * `certificate.issuer['CN']` is the common name
+                      * `certificate.issuer['O']` is the organization
+                  - name: context.certificate.sans.dns
+                    type: array
+                    items:
+                      type: string
+                    description: An array of the DNS Subject Alternative Names from the certificate.
+                  - name: context.certificate.sans.uri
+                    type: array
+                    items:
+                      type: string
+                    description: An array of the URI Subject Alternative Names from the certificate.
+              x-min-runtime-version: '1.1'
+              x-speakeasy-param-computed: false
+          required:
+            - mode
+            - tls_trust_bundles
+          x-min-runtime-version: '1.1'
+          x-speakeasy-param-computed: false
       required:
         - certificates
     TLSCertificateSensitiveDataAware:
@@ -65005,6 +65430,7 @@ components:
                   - Consumer Admin
                   - Connector
                   - Creator
+                  - Debug Session Creator
                   - Deployer
                   - Discovery Admin
                   - Discovery Viewer
@@ -66344,6 +66770,49 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EventGatewayStaticKeyCreate'
+    CreateTLSTrustBundleRequest:
+      description: The request schema for creating a TLS trust bundle.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/TLSTrustBundleName'
+              description:
+                description: A human-readable description of the TLS trust bundle.
+                type: string
+                default: ''
+                maxLength: 512
+              config:
+                $ref: '#/components/schemas/TLSTrustBundleConfig'
+              labels:
+                $ref: '#/components/schemas/Labels'
+            additionalProperties: false
+            required:
+              - name
+              - config
+    UpdateTLSTrustBundleRequest:
+      description: The request schema for updating a TLS trust bundle.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/TLSTrustBundleName'
+              description:
+                description: A human-readable description of the TLS trust bundle.
+                type: string
+                default: ''
+                maxLength: 512
+              config:
+                $ref: '#/components/schemas/TLSTrustBundleConfig'
+              labels:
+                $ref: '#/components/schemas/Labels'
+            additionalProperties: false
     DataPlaneClientCertificateRequest:
       content:
         application/json:
@@ -68121,6 +68590,11 @@ tags:
   - name: Event Gateway Schema Registries
     description: |
       Configure a schema registry that can be used to validate payloads when producing/consuming messages
+  - name: Event Gateway TLS Trust Bundles
+    description: |
+      A TLS trust bundle defines a set of trusted certificate authorities (CAs) used for client certificate
+      verification during mutual TLS (mTLS). Trust bundles are referenced by TLS listener policies to
+      determine which client certificates are accepted.
   - description: DP Certificates
     name: DP Certificates
   - description: Custom Plugin Schemas

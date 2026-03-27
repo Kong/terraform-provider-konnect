@@ -21,6 +21,7 @@ const (
 	RoleNameConsumerAdmin             RoleName = "Consumer Admin"
 	RoleNameConnector                 RoleName = "Connector"
 	RoleNameCreator                   RoleName = "Creator"
+	RoleNameDebugSessionCreator       RoleName = "Debug Session Creator"
 	RoleNameDeployer                  RoleName = "Deployer"
 	RoleNameDiscoveryAdmin            RoleName = "Discovery Admin"
 	RoleNameDiscoveryViewer           RoleName = "Discovery Viewer"
@@ -77,6 +78,8 @@ func (e *RoleName) UnmarshalJSON(data []byte) error {
 	case "Connector":
 		fallthrough
 	case "Creator":
+		fallthrough
+	case "Debug Session Creator":
 		fallthrough
 	case "Deployer":
 		fallthrough

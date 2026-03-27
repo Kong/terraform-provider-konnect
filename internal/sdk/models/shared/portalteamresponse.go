@@ -14,6 +14,8 @@ type PortalTeamResponse struct {
 	Description *string    `default:"null" json:"description"`
 	CreatedAt   *time.Time `json:"created_at,omitempty"`
 	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
+	// Whether the team is allowed to own applications.
+	CanOwnApplications *bool `default:"null" json:"can_own_applications"`
 }
 
 func (p PortalTeamResponse) MarshalJSON() ([]byte, error) {
@@ -60,4 +62,11 @@ func (p *PortalTeamResponse) GetUpdatedAt() *time.Time {
 		return nil
 	}
 	return p.UpdatedAt
+}
+
+func (p *PortalTeamResponse) GetCanOwnApplications() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.CanOwnApplications
 }

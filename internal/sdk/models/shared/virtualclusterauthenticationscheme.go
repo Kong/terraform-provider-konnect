@@ -12,17 +12,19 @@ import (
 type VirtualClusterAuthenticationSchemeType string
 
 const (
-	VirtualClusterAuthenticationSchemeTypeAnonymous   VirtualClusterAuthenticationSchemeType = "anonymous"
-	VirtualClusterAuthenticationSchemeTypeSaslPlain   VirtualClusterAuthenticationSchemeType = "sasl_plain"
-	VirtualClusterAuthenticationSchemeTypeSaslScram   VirtualClusterAuthenticationSchemeType = "sasl_scram"
-	VirtualClusterAuthenticationSchemeTypeOauthBearer VirtualClusterAuthenticationSchemeType = "oauth_bearer"
+	VirtualClusterAuthenticationSchemeTypeAnonymous         VirtualClusterAuthenticationSchemeType = "anonymous"
+	VirtualClusterAuthenticationSchemeTypeSaslPlain         VirtualClusterAuthenticationSchemeType = "sasl_plain"
+	VirtualClusterAuthenticationSchemeTypeSaslScram         VirtualClusterAuthenticationSchemeType = "sasl_scram"
+	VirtualClusterAuthenticationSchemeTypeOauthBearer       VirtualClusterAuthenticationSchemeType = "oauth_bearer"
+	VirtualClusterAuthenticationSchemeTypeClientCertificate VirtualClusterAuthenticationSchemeType = "client_certificate"
 )
 
 type VirtualClusterAuthenticationScheme struct {
-	VirtualClusterAuthenticationAnonymous   *VirtualClusterAuthenticationAnonymous   `queryParam:"inline" union:"member"`
-	VirtualClusterAuthenticationSaslPlain   *VirtualClusterAuthenticationSaslPlain   `queryParam:"inline" union:"member"`
-	VirtualClusterAuthenticationSaslScram   *VirtualClusterAuthenticationSaslScram   `queryParam:"inline" union:"member"`
-	VirtualClusterAuthenticationOauthBearer *VirtualClusterAuthenticationOauthBearer `queryParam:"inline" union:"member"`
+	VirtualClusterAuthenticationAnonymous         *VirtualClusterAuthenticationAnonymous         `queryParam:"inline" union:"member"`
+	VirtualClusterAuthenticationSaslPlain         *VirtualClusterAuthenticationSaslPlain         `queryParam:"inline" union:"member"`
+	VirtualClusterAuthenticationSaslScram         *VirtualClusterAuthenticationSaslScram         `queryParam:"inline" union:"member"`
+	VirtualClusterAuthenticationOauthBearer       *VirtualClusterAuthenticationOauthBearer       `queryParam:"inline" union:"member"`
+	VirtualClusterAuthenticationClientCertificate *VirtualClusterAuthenticationClientCertificate `queryParam:"inline" union:"member"`
 
 	Type VirtualClusterAuthenticationSchemeType
 }
@@ -60,6 +62,15 @@ func CreateVirtualClusterAuthenticationSchemeOauthBearer(oauthBearer VirtualClus
 	return VirtualClusterAuthenticationScheme{
 		VirtualClusterAuthenticationOauthBearer: &oauthBearer,
 		Type:                                    typ,
+	}
+}
+
+func CreateVirtualClusterAuthenticationSchemeClientCertificate(clientCertificate VirtualClusterAuthenticationClientCertificate) VirtualClusterAuthenticationScheme {
+	typ := VirtualClusterAuthenticationSchemeTypeClientCertificate
+
+	return VirtualClusterAuthenticationScheme{
+		VirtualClusterAuthenticationClientCertificate: &clientCertificate,
+		Type: typ,
 	}
 }
 
@@ -111,6 +122,15 @@ func (u *VirtualClusterAuthenticationScheme) UnmarshalJSON(data []byte) error {
 		u.VirtualClusterAuthenticationOauthBearer = virtualClusterAuthenticationOauthBearer
 		u.Type = VirtualClusterAuthenticationSchemeTypeOauthBearer
 		return nil
+	case "client_certificate":
+		virtualClusterAuthenticationClientCertificate := new(VirtualClusterAuthenticationClientCertificate)
+		if err := utils.UnmarshalJSON(data, &virtualClusterAuthenticationClientCertificate, "", true, nil); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (Type == client_certificate) type VirtualClusterAuthenticationClientCertificate within VirtualClusterAuthenticationScheme: %w", string(data), err)
+		}
+
+		u.VirtualClusterAuthenticationClientCertificate = virtualClusterAuthenticationClientCertificate
+		u.Type = VirtualClusterAuthenticationSchemeTypeClientCertificate
+		return nil
 	}
 
 	return fmt.Errorf("could not unmarshal `%s` into any supported union types for VirtualClusterAuthenticationScheme", string(data))
@@ -131,6 +151,10 @@ func (u VirtualClusterAuthenticationScheme) MarshalJSON() ([]byte, error) {
 
 	if u.VirtualClusterAuthenticationOauthBearer != nil {
 		return utils.MarshalJSON(u.VirtualClusterAuthenticationOauthBearer, "", true)
+	}
+
+	if u.VirtualClusterAuthenticationClientCertificate != nil {
+		return utils.MarshalJSON(u.VirtualClusterAuthenticationClientCertificate, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type VirtualClusterAuthenticationScheme: all fields are null")

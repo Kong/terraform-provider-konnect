@@ -10,6 +10,8 @@ import (
 type PortalUpdateTeamRequest struct {
 	Name        *string `default:"null" json:"name"`
 	Description *string `default:"null" json:"description"`
+	// Whether the team is allowed to own applications.
+	CanOwnApplications *bool `default:"null" json:"can_own_applications"`
 }
 
 func (p PortalUpdateTeamRequest) MarshalJSON() ([]byte, error) {
@@ -35,4 +37,11 @@ func (p *PortalUpdateTeamRequest) GetDescription() *string {
 		return nil
 	}
 	return p.Description
+}
+
+func (p *PortalUpdateTeamRequest) GetCanOwnApplications() *bool {
+	if p == nil {
+		return nil
+	}
+	return p.CanOwnApplications
 }

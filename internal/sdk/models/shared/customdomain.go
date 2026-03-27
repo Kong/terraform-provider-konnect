@@ -70,6 +70,11 @@ type CustomDomain struct {
 	CreatedAt time.Time `json:"created_at"`
 	// An RFC-3339 timestamp representation of custom domain update date.
 	UpdatedAt time.Time `json:"updated_at"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// Kind of the custom domain based on Cloud Gateway deployment.
+	Kind *CustomDomainKind `default:"dedicated.v0" json:"kind"`
 }
 
 func (c CustomDomain) MarshalJSON() ([]byte, error) {
@@ -158,4 +163,11 @@ func (c *CustomDomain) GetUpdatedAt() time.Time {
 		return time.Time{}
 	}
 	return c.UpdatedAt
+}
+
+func (c *CustomDomain) GetKind() *CustomDomainKind {
+	if c == nil {
+		return nil
+	}
+	return c.Kind
 }

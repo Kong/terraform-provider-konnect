@@ -18,6 +18,7 @@ func TestTeamRole(t *testing.T) {
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttrSet("konnect_team_role.my_teamrole", "entity_id"),
 						resource.TestCheckResourceAttr("konnect_team_role.my_teamrole", "role_name", "Viewer"),
+						resource.TestCheckResourceAttr("konnect_team_role.my_teamrole_debug_session", "role_name", "Debug Session Creator"),
 					),
 				},
 			},
