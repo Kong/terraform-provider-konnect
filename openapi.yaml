@@ -1126,6 +1126,116 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Event Gateway Static Keys
+  '/v1/event-gateways/{gatewayId}/tls-trust-bundles':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayTLSTrustBundle#create
+        terraform-datasource: null
+      operationId: create-event-gateway-tls-trust-bundle
+      summary: Create TLS Trust Bundle
+      description: Creates a new TLS trust bundle containing trusted CA certificates for client certificate verification.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateTLSTrustBundleRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TLSTrustBundle'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway TLS Trust Bundles
+      x-min-runtime-version: '1.1'
+      x-speakeasy-param-computed: false
+  '/v1/event-gateways/{gatewayId}/tls-trust-bundles/{tlsTrustBundleId}':
+    parameters:
+      - $ref: '#/components/parameters/gatewayId'
+      - name: tlsTrustBundleId
+        in: path
+        description: The ID of the TLS trust bundle.
+        required: true
+        schema:
+          type: string
+          format: uuid
+        x-speakeasy-match: id
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayTLSTrustBundle#read
+        terraform-datasource: null
+      operationId: get-event-gateway-tls-trust-bundle
+      summary: Get a TLS Trust Bundle
+      description: Returns information about a specific TLS trust bundle.
+      responses:
+        '200':
+          description: A single TLS trust bundle object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TLSTrustBundle'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway TLS Trust Bundles
+      x-min-runtime-version: '1.1'
+      x-speakeasy-param-computed: false
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayTLSTrustBundle#update
+        terraform-datasource: null
+      operationId: update-event-gateway-tls-trust-bundle
+      summary: Update TLS Trust Bundle
+      description: Updates an existing TLS trust bundle.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateTLSTrustBundleRequest'
+      responses:
+        '200':
+          description: Updated TLS trust bundle object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TLSTrustBundle'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Event Gateway TLS Trust Bundles
+      x-min-runtime-version: '1.1'
+      x-speakeasy-param-computed: false
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: EventGatewayTLSTrustBundle#delete
+        terraform-datasource: null
+      operationId: delete-event-gateway-tls-trust-bundle
+      summary: Delete TLS Trust Bundle
+      description: Deletes a specific TLS trust bundle associated with the Event Gateway.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Event Gateway TLS Trust Bundles
+      x-min-runtime-version: '1.1'
+      x-speakeasy-param-computed: false
   '/v1/event-gateways/{gatewayId}/virtual-clusters':
     parameters:
       - $ref: '#/components/parameters/gatewayId'
@@ -28576,6 +28686,64 @@ components:
         - type
       x-min-runtime-version: '1.1'
       x-speakeasy-param-computed: false
+    TLSTrustBundle:
+      description: |
+        A TLS trust bundle defines a set of trusted certificate authorities (CAs) used for client certificate
+        verification during mutual TLS (mTLS). Trust bundles are referenced by TLS listener policies to
+        determine which client certificates are accepted.
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the TLS trust bundle.
+          type: string
+          format: uuid
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
+        name:
+          $ref: '#/components/schemas/TLSTrustBundleName'
+        description:
+          description: A human-readable description of the TLS trust bundle.
+          type: string
+          default: ''
+          maxLength: 512
+        config:
+          $ref: '#/components/schemas/TLSTrustBundleConfig'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - config
+        - created_at
+        - updated_at
+      x-min-runtime-version: '1.1'
+      x-speakeasy-param-computed: false
+    TLSTrustBundleName:
+      description: The unique name of the TLS trust bundle.
+      type: string
+      maxLength: 255
+      minLength: 1
+      x-unicode-pattern: '^[\p{L}\p{N}][\p{L}\p{N} _\-\.:/+'']*[\p{L}\p{N}]$'
+    TLSTrustBundleConfig:
+      type: object
+      properties:
+        trusted_ca:
+          description: |
+            PEM-encoded list of trusted CA certificates used to verify client certificates.
+            Can be a literal PEM string or a vault reference.
+          type: string
+          minLength: 1
+          x-expression:
+            type: string
+            fields:
+              - vault
+      required:
+        - trusted_ca
     TLSTrustBundleReference:
       description: |
         A reference to a TLS trust bundle resource.
@@ -66602,6 +66770,49 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EventGatewayStaticKeyCreate'
+    CreateTLSTrustBundleRequest:
+      description: The request schema for creating a TLS trust bundle.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/TLSTrustBundleName'
+              description:
+                description: A human-readable description of the TLS trust bundle.
+                type: string
+                default: ''
+                maxLength: 512
+              config:
+                $ref: '#/components/schemas/TLSTrustBundleConfig'
+              labels:
+                $ref: '#/components/schemas/Labels'
+            additionalProperties: false
+            required:
+              - name
+              - config
+    UpdateTLSTrustBundleRequest:
+      description: The request schema for updating a TLS trust bundle.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/TLSTrustBundleName'
+              description:
+                description: A human-readable description of the TLS trust bundle.
+                type: string
+                default: ''
+                maxLength: 512
+              config:
+                $ref: '#/components/schemas/TLSTrustBundleConfig'
+              labels:
+                $ref: '#/components/schemas/Labels'
+            additionalProperties: false
     DataPlaneClientCertificateRequest:
       content:
         application/json:
@@ -68379,6 +68590,11 @@ tags:
   - name: Event Gateway Schema Registries
     description: |
       Configure a schema registry that can be used to validate payloads when producing/consuming messages
+  - name: Event Gateway TLS Trust Bundles
+    description: |
+      A TLS trust bundle defines a set of trusted certificate authorities (CAs) used for client certificate
+      verification during mutual TLS (mTLS). Trust bundles are referenced by TLS listener policies to
+      determine which client certificates are accepted.
   - description: DP Certificates
     name: DP Certificates
   - description: Custom Plugin Schemas
