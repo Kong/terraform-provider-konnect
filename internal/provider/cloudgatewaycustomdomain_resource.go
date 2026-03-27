@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -44,6 +45,7 @@ type CloudGatewayCustomDomainResourceModel struct {
 	Domain          types.String                       `tfsdk:"domain"`
 	EntityVersion   types.Int64                        `tfsdk:"entity_version"`
 	ID              types.String                       `tfsdk:"id"`
+	Kind            types.String                       `tfsdk:"kind"`
 	SniID           types.String                       `tfsdk:"sni_id"`
 	State           types.String                       `tfsdk:"state"`
 	StateMetadata   *tfTypes.CustomDomainStateMetadata `tfsdk:"state_metadata"`
@@ -116,6 +118,26 @@ func (r *CloudGatewayCustomDomainResource) Schema(ctx context.Context, req resou
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+			},
+			"kind": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString(`dedicated.v0`),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				MarkdownDescription: `**Pre-release Feature**` + "\n" +
+					`This feature is currently in beta and is subject to change.` + "\n" +
+					`` + "\n" +
+					`Kind of the custom domain based on Cloud Gateway deployment.` + "\n" +
+					`Default: "dedicated.v0"; must be one of ["dedicated.v0", "serverless.v1"]; Requires replacement if changed.`,
+				Validators: []validator.String{
+					stringvalidator.OneOf(
+						"dedicated.v0",
+						"serverless.v1",
+					),
 				},
 			},
 			"sni_id": schema.StringAttribute{

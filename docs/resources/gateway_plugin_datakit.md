@@ -25,8 +25,8 @@ resource "konnect_gateway_plugin_datakit" "my_gatewayplugindatakit" {
           name                   = "...my_name..."
           output                 = "...my_output..."
           recognize_type         = true
-          text_as_property       = true
-          text_block_name        = "...my_text_block_name..."
+          text_as_property       = false
+          text_block_name        = "#text"
           xpath                  = "...my_xpath..."
         }
       }
@@ -34,7 +34,7 @@ resource "konnect_gateway_plugin_datakit" "my_gatewayplugindatakit" {
     resources = {
       cache = {
         memory = {
-          dictionary_name = "...my_dictionary_name..."
+          dictionary_name = "kong_db_cache"
         }
         redis = {
           cloud_authentication = {
@@ -42,7 +42,7 @@ resource "konnect_gateway_plugin_datakit" "my_gatewayplugindatakit" {
             aws_access_key_id        = "...my_aws_access_key_id..."
             aws_assume_role_arn      = "...my_aws_assume_role_arn..."
             aws_cache_name           = "...my_aws_cache_name..."
-            aws_is_serverless        = false
+            aws_is_serverless        = true
             aws_region               = "...my_aws_region..."
             aws_role_session_name    = "...my_aws_role_session_name..."
             aws_secret_access_key    = "...my_aws_secret_access_key..."
@@ -51,28 +51,28 @@ resource "konnect_gateway_plugin_datakit" "my_gatewayplugindatakit" {
             azure_tenant_id          = "...my_azure_tenant_id..."
             gcp_service_account_json = "...my_gcp_service_account_json..."
           }
-          cluster_max_redirections = 10
+          cluster_max_redirections = 5
           cluster_nodes = [
             {
-              ip   = "...my_ip..."
-              port = 23392
+              ip   = "127.0.0.1"
+              port = 6379
             }
           ]
-          connect_timeout       = 2043965363
-          connection_is_proxied = true
-          database              = 6
-          host                  = "...my_host..."
+          connect_timeout       = 2000
+          connection_is_proxied = false
+          database              = 0
+          host                  = "127.0.0.1"
           keepalive_backlog     = 1403771087
-          keepalive_pool_size   = 371071403
+          keepalive_pool_size   = 256
           password              = "...my_password..."
-          port                  = 3296
-          read_timeout          = 1474836361
-          send_timeout          = 1614607440
+          port                  = 6379
+          read_timeout          = 2000
+          send_timeout          = 2000
           sentinel_master       = "...my_sentinel_master..."
           sentinel_nodes = [
             {
-              host = "...my_host..."
-              port = 15355
+              host = "127.0.0.1"
+              port = 6379
             }
           ]
           sentinel_password = "...my_sentinel_password..."

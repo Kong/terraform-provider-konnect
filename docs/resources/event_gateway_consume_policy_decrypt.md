@@ -28,8 +28,8 @@ resource "konnect_event_gateway_consume_policy_decrypt" "my_eventgatewayconsumep
       "key"
     ]
   }
-  description = "...my_description..."
-  enabled     = false
+  description = ""
+  enabled     = true
   gateway_id  = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   labels = {
     key = "value"

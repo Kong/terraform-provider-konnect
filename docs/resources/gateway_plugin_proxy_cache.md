@@ -16,13 +16,13 @@ GatewayPluginProxyCache Resource
 resource "konnect_gateway_plugin_proxy_cache" "my_gatewaypluginproxycache" {
   config = {
     cache_control = false
-    cache_ttl     = 8
+    cache_ttl     = 300
     content_type = [
       "..."
     ]
     ignore_uri_case = false
     memory = {
-      dictionary_name = "...my_dictionary_name..."
+      dictionary_name = "kong_db_cache"
     }
     request_method = [
       "PATCH"
@@ -31,9 +31,9 @@ resource "konnect_gateway_plugin_proxy_cache" "my_gatewaypluginproxycache" {
       411
     ]
     response_headers = {
-      age            = false
+      age            = true
       x_cache_key    = true
-      x_cache_status = false
+      x_cache_status = true
     }
     storage_ttl = 2
     strategy    = "memory"

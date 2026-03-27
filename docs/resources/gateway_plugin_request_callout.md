@@ -16,9 +16,9 @@ GatewayPluginRequestCallout Resource
 resource "konnect_gateway_plugin_request_callout" "my_gatewaypluginrequestcallout" {
   config = {
     cache = {
-      cache_ttl = 7
+      cache_ttl = 300
       memory = {
-        dictionary_name = "...my_dictionary_name..."
+        dictionary_name = "kong_db_cache"
       }
       redis = {
         cloud_authentication = {
@@ -35,44 +35,44 @@ resource "konnect_gateway_plugin_request_callout" "my_gatewaypluginrequestcallou
           azure_tenant_id          = "...my_azure_tenant_id..."
           gcp_service_account_json = "...my_gcp_service_account_json..."
         }
-        cluster_max_redirections = 10
+        cluster_max_redirections = 5
         cluster_nodes = [
           {
-            ip   = "...my_ip..."
-            port = 12116
+            ip   = "127.0.0.1"
+            port = 6379
           }
         ]
-        connect_timeout       = 221492024
+        connect_timeout       = 2000
         connection_is_proxied = false
         database              = 0
-        host                  = "...my_host..."
+        host                  = "127.0.0.1"
         keepalive_backlog     = 2070085081
-        keepalive_pool_size   = 254346691
+        keepalive_pool_size   = 256
         password              = "...my_password..."
-        port                  = 2887
-        read_timeout          = 1913162680
-        send_timeout          = 27958014
+        port                  = 6379
+        read_timeout          = 2000
+        send_timeout          = 2000
         sentinel_master       = "...my_sentinel_master..."
         sentinel_nodes = [
           {
-            host = "...my_host..."
-            port = 48331
+            host = "127.0.0.1"
+            port = 6379
           }
         ]
         sentinel_password = "...my_sentinel_password..."
         sentinel_role     = "master"
         sentinel_username = "...my_sentinel_username..."
         server_name       = "...my_server_name..."
-        ssl               = true
+        ssl               = false
         ssl_verify        = false
         username          = "...my_username..."
       }
-      strategy = "redis"
+      strategy = "off"
     }
     callouts = [
       {
         cache = {
-          bypass = true
+          bypass = false
         }
         depends_on = [
           "..."
@@ -83,18 +83,18 @@ resource "konnect_gateway_plugin_request_callout" "my_gatewaypluginrequestcallou
             custom = {
               key = "value"
             }
-            decode  = true
+            decode  = false
             forward = false
           }
           by_lua = "...my_by_lua..."
           error = {
-            error_response_code = 5
-            error_response_msg  = "...my_error_response_msg..."
+            error_response_code = 400
+            error_response_msg  = "service callout error"
             http_statuses = [
               791
             ]
             on_error = "fail"
-            retries  = 4
+            retries  = 2
           }
           headers = {
             custom = {
@@ -110,19 +110,19 @@ resource "konnect_gateway_plugin_request_callout" "my_gatewaypluginrequestcallou
               https_proxy   = "...my_https_proxy..."
             }
             ssl_server_name = "...my_ssl_server_name..."
-            ssl_verify      = true
+            ssl_verify      = false
             timeouts = {
               connect = 396369045
               read    = 2097982023
               write   = 1346258560
             }
           }
-          method = "...my_method..."
+          method = "GET"
           query = {
             custom = {
               key = "value"
             }
-            forward = true
+            forward = false
           }
           url = "...my_url..."
         }
@@ -133,7 +133,7 @@ resource "konnect_gateway_plugin_request_callout" "my_gatewaypluginrequestcallou
           }
           by_lua = "...my_by_lua..."
           headers = {
-            store = false
+            store = true
           }
         }
       }
@@ -144,7 +144,7 @@ resource "konnect_gateway_plugin_request_callout" "my_gatewaypluginrequestcallou
           key = "value"
         }
         decode  = true
-        forward = false
+        forward = true
       }
       by_lua = "...my_by_lua..."
       headers = {
@@ -157,7 +157,7 @@ resource "konnect_gateway_plugin_request_callout" "my_gatewaypluginrequestcallou
         custom = {
           key = "value"
         }
-        forward = false
+        forward = true
       }
     }
   }

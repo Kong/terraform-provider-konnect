@@ -74,3 +74,6 @@ func (v *V2ReplacePortalProductVersionPayload) GetNotifyDevelopers() *bool {
 	}
 	return v.NotifyDevelopers
 }
+
+// #region class-body-v2replaceportalproductversionpayload
+// #endregion class-body-v2replaceportalproductversionpayload

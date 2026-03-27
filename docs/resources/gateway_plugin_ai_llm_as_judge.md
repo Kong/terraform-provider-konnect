@@ -17,10 +17,10 @@ resource "konnect_gateway_plugin_ai_llm_as_judge" "my_gatewaypluginaillmasjudge"
   config = {
     http_proxy_host          = "...my_http_proxy_host..."
     http_proxy_port          = 8774
-    http_timeout             = 0
+    http_timeout             = 60000
     https_proxy_host         = "...my_https_proxy_host..."
     https_proxy_port         = 29092
-    https_verify             = false
+    https_verify             = true
     ignore_assistant_prompts = true
     ignore_system_prompts    = true
     ignore_tool_prompts      = true
@@ -32,7 +32,7 @@ resource "konnect_gateway_plugin_ai_llm_as_judge" "my_gatewaypluginaillmasjudge"
         azure_client_id            = "...my_azure_client_id..."
         azure_client_secret        = "...my_azure_client_secret..."
         azure_tenant_id            = "...my_azure_tenant_id..."
-        azure_use_managed_identity = true
+        azure_use_managed_identity = false
         gcp_service_account_json   = "...my_gcp_service_account_json..."
         gcp_use_service_account    = false
         header_name                = "...my_header_name..."
@@ -50,7 +50,7 @@ resource "konnect_gateway_plugin_ai_llm_as_judge" "my_gatewaypluginaillmasjudge"
         name = "...my_name..."
         options = {
           anthropic_version   = "...my_anthropic_version..."
-          azure_api_version   = "...my_azure_api_version..."
+          azure_api_version   = "2023-05-15"
           azure_deployment_id = "...my_azure_deployment_id..."
           azure_instance      = "...my_azure_instance..."
           bedrock = {
@@ -63,7 +63,7 @@ resource "konnect_gateway_plugin_ai_llm_as_judge" "my_gatewaypluginaillmasjudge"
             video_output_s3_uri        = "...my_video_output_s3_uri..."
           }
           cohere = {
-            embedding_input_type = "search_document"
+            embedding_input_type = "classification"
             wait_for_model       = false
           }
           dashscope = {
@@ -94,11 +94,11 @@ resource "konnect_gateway_plugin_ai_llm_as_judge" "my_gatewaypluginaillmasjudge"
         provider = "dashscope"
       }
       route_type = "llm/v1/embeddings"
-      weight     = 28655
+      weight     = 100
     }
-    message_countback = 928.19
-    prompt            = "...my_prompt..."
-    sampling_rate     = 0.51
+    message_countback = 1
+    prompt            = "You are a strict evaluator. You will be given a prompt and a response. Your task is to judge whether the response is correct or incorrect. You must assign a score between 1 and 100, where: 100 represents a completely correct and ideal response, 1 represents a completely incorrect or irrelevant response. Your score must be a single number only — no text, labels, or explanations. Use the full range of values (e.g., 13, 47, 86), not just round numbers like 10, 50, or 100. Be accurate and consistent, as this score will be used by another model for learning and evaluation."
+    sampling_rate     = 1
   }
   consumer = {
     id = "...my_id..."

@@ -70,6 +70,7 @@ func (e *EventGatewayConsumeSchemaValidationPolicyConfig) GetValueValidationActi
 // EventGatewayConsumeSchemaValidationPolicy - A policy that validates consume messages against a schema registry.
 type EventGatewayConsumeSchemaValidationPolicy struct {
 	// The type name of the policy.
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"schema_validation" json:"type"`
 	// A unique user-defined name of the policy.
 	Name *string `json:"name,omitempty"`

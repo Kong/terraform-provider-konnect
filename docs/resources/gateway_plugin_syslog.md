@@ -15,14 +15,14 @@ GatewayPluginSyslog Resource
 ```terraform
 resource "konnect_gateway_plugin_syslog" "my_gatewaypluginsyslog" {
   config = {
-    client_errors_severity = "warning"
+    client_errors_severity = "info"
     custom_fields_by_lua = {
       key = "value"
     }
-    facility               = "uucp"
-    log_level              = "crit"
-    server_errors_severity = "notice"
-    successful_severity    = "debug"
+    facility               = "user"
+    log_level              = "info"
+    server_errors_severity = "info"
+    successful_severity    = "info"
   }
   consumer = {
     id = "...my_id..."

@@ -22,7 +22,7 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
       tokenauth = true
       user      = "...my_user..."
     }
-    auto_offset_reset = "earliest"
+    auto_offset_reset = "latest"
     bootstrap_servers = [
       {
         host = "...my_host..."
@@ -30,7 +30,7 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
       }
     ]
     cluster_name                = "...my_cluster_name..."
-    commit_strategy             = "off"
+    commit_strategy             = "auto"
     dlq_topic                   = "...my_dlq_topic..."
     enable_dlq                  = false
     enforce_latest_offset_reset = false
@@ -38,7 +38,7 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
       "..."
     ]
     message_deserializer = "noop"
-    mode                 = "websocket"
+    mode                 = "http-get"
     schema_registry = {
       confluent = {
         authentication = {
@@ -46,7 +46,7 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
             password = "...my_password..."
             username = "...my_username..."
           }
-          mode = "oauth2"
+          mode = "none"
           oauth2 = {
             audience = [
               "..."
@@ -68,20 +68,20 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
             username = "...my_username..."
           }
           oauth2_client = {
-            auth_method               = "client_secret_basic"
-            client_secret_jwt_alg     = "HS256"
+            auth_method               = "client_secret_post"
+            client_secret_jwt_alg     = "HS512"
             http_proxy                = "...my_http_proxy..."
             http_proxy_authorization  = "...my_http_proxy_authorization..."
             http_version              = 6.33
             https_proxy               = "...my_https_proxy..."
             https_proxy_authorization = "...my_https_proxy_authorization..."
-            keep_alive                = false
+            keep_alive                = true
             no_proxy                  = "...my_no_proxy..."
-            ssl_verify                = true
-            timeout                   = 2132166923
+            ssl_verify                = false
+            timeout                   = 10000
           }
         }
-        ssl_verify = false
+        ssl_verify = true
         ttl        = 1981.8
         url        = "...my_url..."
       }
@@ -108,7 +108,7 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
                 ]
                 client_id     = "...my_client_id..."
                 client_secret = "...my_client_secret..."
-                grant_type    = "password"
+                grant_type    = "client_credentials"
                 password      = "...my_password..."
                 scopes = [
                   "..."
@@ -123,8 +123,8 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
                 username = "...my_username..."
               }
               oauth2_client = {
-                auth_method               = "client_secret_basic"
-                client_secret_jwt_alg     = "HS256"
+                auth_method               = "client_secret_post"
+                client_secret_jwt_alg     = "HS512"
                 http_proxy                = "...my_http_proxy..."
                 http_proxy_authorization  = "...my_http_proxy_authorization..."
                 http_version              = 3.98
@@ -133,7 +133,7 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
                 keep_alive                = true
                 no_proxy                  = "...my_no_proxy..."
                 ssl_verify                = false
-                timeout                   = 217890936
+                timeout                   = 10000
               }
             }
             ssl_verify = true
@@ -149,7 +149,7 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 0
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

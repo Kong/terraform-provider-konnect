@@ -29,6 +29,7 @@ func (e *ExactList) GetValue() string {
 }
 
 type VirtualClusterNamespaceIDSelectorExactList struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_     string      `const:"exact_list" json:"type"`
 	ExactList []ExactList `json:"exact_list"`
 }

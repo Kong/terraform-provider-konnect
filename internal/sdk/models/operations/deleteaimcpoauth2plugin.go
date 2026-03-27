@@ -40,6 +40,9 @@ func (d *DeleteAimcpoauth2PluginRequest) GetControlPlaneID() string {
 	return d.ControlPlaneID
 }
 
+// #region class-body-deleteaimcpoauth2pluginrequest
+// #endregion class-body-deleteaimcpoauth2pluginrequest
+
 type DeleteAimcpoauth2PluginResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -89,3 +92,6 @@ func (d *DeleteAimcpoauth2PluginResponse) GetGatewayUnauthorizedError() *shared.
 	}
 	return d.GatewayUnauthorizedError
 }
+
+// #region class-body-deleteaimcpoauth2pluginresponse
+// #endregion class-body-deleteaimcpoauth2pluginresponse

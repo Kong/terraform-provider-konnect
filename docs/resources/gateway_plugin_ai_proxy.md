@@ -16,13 +16,13 @@ GatewayPluginAiProxy Resource
 resource "konnect_gateway_plugin_ai_proxy" "my_gatewaypluginaiproxy" {
   config = {
     auth = {
-      allow_override             = true
+      allow_override             = false
       aws_access_key_id          = "...my_aws_access_key_id..."
       aws_secret_access_key      = "...my_aws_secret_access_key..."
       azure_client_id            = "...my_azure_client_id..."
       azure_client_secret        = "...my_azure_client_secret..."
       azure_tenant_id            = "...my_azure_tenant_id..."
-      azure_use_managed_identity = true
+      azure_use_managed_identity = false
       gcp_service_account_json   = "...my_gcp_service_account_json..."
       gcp_use_service_account    = false
       header_name                = "...my_header_name..."
@@ -31,18 +31,18 @@ resource "konnect_gateway_plugin_ai_proxy" "my_gatewaypluginaiproxy" {
       param_name                 = "...my_param_name..."
       param_value                = "...my_param_value..."
     }
-    genai_category = "image/generation"
-    llm_format     = "anthropic"
+    genai_category = "text/generation"
+    llm_format     = "openai"
     logging = {
       log_payloads   = false
-      log_statistics = true
+      log_statistics = false
     }
-    max_request_body_size = 10
+    max_request_body_size = 1048576
     model = {
       name = "...my_name..."
       options = {
         anthropic_version   = "...my_anthropic_version..."
-        azure_api_version   = "...my_azure_api_version..."
+        azure_api_version   = "2023-05-15"
         azure_deployment_id = "...my_azure_deployment_id..."
         azure_instance      = "...my_azure_instance..."
         bedrock = {
@@ -55,7 +55,7 @@ resource "konnect_gateway_plugin_ai_proxy" "my_gatewaypluginaiproxy" {
           video_output_s3_uri        = "...my_video_output_s3_uri..."
         }
         cohere = {
-          embedding_input_type = "image"
+          embedding_input_type = "classification"
           wait_for_model       = false
         }
         dashscope = {

@@ -47,6 +47,7 @@ func (e *VirtualClusterAuthenticationOauthBearerMediation) UnmarshalJSON(data []
 
 // VirtualClusterAuthenticationOauthBearer - Oauth Bearer authentication scheme for the virtual cluster.
 type VirtualClusterAuthenticationOauthBearer struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"oauth_bearer" json:"type"`
 	// Methods to mediate authentication:
 	// * passthrough - pass authentication from the client through proxy to the backend cluster without any kind of

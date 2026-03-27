@@ -47,3 +47,6 @@ func (v *V2NullableAppearanceFonts) GetHeadings() V2AppearanceFontName {
 	}
 	return v.Headings
 }
+
+// #region class-body-v2nullableappearancefonts
+// #endregion class-body-v2nullableappearancefonts

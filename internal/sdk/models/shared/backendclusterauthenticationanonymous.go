@@ -9,6 +9,7 @@ import (
 // BackendClusterAuthenticationAnonymous - Anonymous authentication scheme for the backend cluster.
 type BackendClusterAuthenticationAnonymous struct {
 	// The type of authentication scheme.
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"anonymous" json:"type"`
 }
 

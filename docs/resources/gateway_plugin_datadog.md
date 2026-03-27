@@ -15,9 +15,9 @@ GatewayPluginDatadog Resource
 ```terraform
 resource "konnect_gateway_plugin_datadog" "my_gatewayplugindatadog" {
   config = {
-    consumer_tag  = "...my_consumer_tag..."
+    consumer_tag  = "consumer"
     flush_timeout = 5.18
-    host          = "...my_host..."
+    host          = "localhost"
     metrics = [
       {
         consumer_identifier = "username"
@@ -29,23 +29,23 @@ resource "konnect_gateway_plugin_datadog" "my_gatewayplugindatadog" {
         ]
       }
     ]
-    port   = 19191
-    prefix = "...my_prefix..."
+    port   = 8125
+    prefix = "kong"
     queue = {
       concurrency_limit    = 1
       initial_retry_delay  = 632515.49
-      max_batch_size       = 689907
+      max_batch_size       = 1
       max_bytes            = 2
-      max_coalescing_delay = 645.74
-      max_entries          = 470545
-      max_retry_delay      = 272290.78
-      max_retry_time       = 9.63
+      max_coalescing_delay = 1
+      max_entries          = 10000
+      max_retry_delay      = 60
+      max_retry_time       = 60
     }
     queue_size       = 10
     retry_count      = 2
     route_name_tag   = "...my_route_name_tag..."
-    service_name_tag = "...my_service_name_tag..."
-    status_tag       = "...my_status_tag..."
+    service_name_tag = "name"
+    status_tag       = "status"
   }
   consumer = {
     id = "...my_id..."

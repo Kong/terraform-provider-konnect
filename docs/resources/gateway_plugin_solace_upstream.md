@@ -16,28 +16,28 @@ GatewayPluginSolaceUpstream Resource
 resource "konnect_gateway_plugin_solace_upstream" "my_gatewaypluginsolaceupstream" {
   config = {
     message = {
-      ack_timeout     = 89103
+      ack_timeout     = 2000
       default_content = "...my_default_content..."
       delivery_mode   = "DIRECT"
       destinations = [
         {
           name = "...my_name..."
-          type = "TOPIC"
+          type = "QUEUE"
         }
       ]
-      dmq_eligible    = true
+      dmq_eligible    = false
       forward_body    = false
       forward_headers = false
-      forward_method  = true
+      forward_method  = false
       forward_uri     = false
       functions = [
         "..."
       ]
-      priority        = 106
+      priority        = 4
       sender_id       = "...my_sender_id..."
       tracing         = false
       tracing_sampled = false
-      ttl             = 9
+      ttl             = 0
     }
     session = {
       authentication = {
@@ -47,26 +47,26 @@ resource "konnect_gateway_plugin_solace_upstream" "my_gatewaypluginsolaceupstrea
         id_token            = "...my_id_token..."
         id_token_header     = "...my_id_token_header..."
         password            = "...my_password..."
-        scheme              = "NONE"
+        scheme              = "BASIC"
         username            = "...my_username..."
       }
-      calculate_message_expiry = false
-      connect_timeout          = 82788
-      generate_rcv_timestamps  = false
-      generate_send_timestamps = false
-      generate_sender_id       = false
-      generate_sequence_number = false
+      calculate_message_expiry = true
+      connect_timeout          = 3000
+      generate_rcv_timestamps  = true
+      generate_send_timestamps = true
+      generate_sender_id       = true
+      generate_sequence_number = true
       host                     = "...my_host..."
       properties = {
         key = "value"
       }
-      ssl_validate_certificate = true
+      ssl_validate_certificate = false
       vpn_name                 = "...my_vpn_name..."
     }
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 5
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

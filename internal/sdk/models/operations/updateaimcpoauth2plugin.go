@@ -48,6 +48,9 @@ func (u *UpdateAimcpoauth2PluginRequest) GetAiMcpOauth2Plugin() shared.AiMcpOaut
 	return u.AiMcpOauth2Plugin
 }
 
+// #region class-body-updateaimcpoauth2pluginrequest
+// #endregion class-body-updateaimcpoauth2pluginrequest
+
 type UpdateAimcpoauth2PluginResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -106,3 +109,6 @@ func (u *UpdateAimcpoauth2PluginResponse) GetGatewayUnauthorizedError() *shared.
 	}
 	return u.GatewayUnauthorizedError
 }
+
+// #region class-body-updateaimcpoauth2pluginresponse
+// #endregion class-body-updateaimcpoauth2pluginresponse

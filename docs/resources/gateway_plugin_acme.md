@@ -21,19 +21,19 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
       key_set = "...my_key_set..."
     }
     allow_any_domain = false
-    api_uri          = "...my_api_uri..."
-    cert_type        = "ecc"
+    api_uri          = "https://acme-v02.api.letsencrypt.org/directory"
+    cert_type        = "rsa"
     domains = [
       "..."
     ]
     eab_hmac_key            = "...my_eab_hmac_key..."
     eab_kid                 = "...my_eab_kid..."
-    enable_ipv4_common_name = false
-    fail_backoff_minutes    = 7.02
+    enable_ipv4_common_name = true
+    fail_backoff_minutes    = 5
     preferred_chain         = "...my_preferred_chain..."
-    renew_threshold_days    = 1.5
-    rsa_key_size            = 3072
-    storage                 = "kong"
+    renew_threshold_days    = 14
+    rsa_key_size            = 4096
+    storage                 = "shm"
     storage_config = {
       consul = {
         host    = "...my_host..."
@@ -52,7 +52,7 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
           aws_access_key_id        = "...my_aws_access_key_id..."
           aws_assume_role_arn      = "...my_aws_assume_role_arn..."
           aws_cache_name           = "...my_aws_cache_name..."
-          aws_is_serverless        = false
+          aws_is_serverless        = true
           aws_region               = "...my_aws_region..."
           aws_role_session_name    = "...my_aws_role_session_name..."
           aws_secret_access_key    = "...my_aws_secret_access_key..."
@@ -61,22 +61,22 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
           azure_tenant_id          = "...my_azure_tenant_id..."
           gcp_service_account_json = "...my_gcp_service_account_json..."
         }
-        database = 6
+        database = 0
         extra_options = {
-          namespace  = "...my_namespace..."
-          scan_count = 4.65
+          namespace  = ""
+          scan_count = 10
         }
         host        = "...my_host..."
         password    = "...my_password..."
-        port        = 60103
+        port        = 6379
         server_name = "...my_server_name..."
-        ssl         = true
+        ssl         = false
         ssl_verify  = false
-        timeout     = 1734626631
+        timeout     = 2000
         username    = "...my_username..."
       }
       shm = {
-        shm_name = "...my_shm_name..."
+        shm_name = "kong"
       }
       vault = {
         auth_method     = "token"
@@ -93,7 +93,7 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
         token           = "...my_token..."
       }
     }
-    tos_accepted = true
+    tos_accepted = false
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 0

@@ -137,8 +137,9 @@ type XMLToJSON struct {
 	RecognizeType  *bool   `default:"true" json:"recognize_type"`
 	TextAsProperty *bool   `default:"false" json:"text_as_property"`
 	TextBlockName  *string `default:"#text" json:"text_block_name"`
-	type_          *string `const:"xml_to_json" json:"type,omitempty"`
-	Xpath          *string `default:"null" json:"xpath"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ *string `const:"xml_to_json" json:"type,omitempty"`
+	Xpath *string `default:"null" json:"xpath"`
 }
 
 func (x XMLToJSON) MarshalJSON() ([]byte, error) {
@@ -227,7 +228,8 @@ type Static struct {
 	Output *string `default:"null" json:"output"`
 	// Individual items from `.values`, referenced by key
 	Outputs map[string]string `json:"outputs,omitempty"`
-	type_   *string           `const:"static" json:"type,omitempty"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ *string `const:"static" json:"type,omitempty"`
 	// An object with string keys and freeform values
 	Values any `json:"values"`
 }
@@ -316,8 +318,9 @@ type Property struct {
 	// Property output. This can be connected regardless of whether the node is operating in GET mode or SET mode.
 	Output *string `default:"null" json:"output"`
 	// The property name to get/set
-	Property string  `json:"property"`
-	type_    *string `const:"property" json:"type,omitempty"`
+	Property string `json:"property"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ *string `const:"property" json:"type,omitempty"`
 }
 
 func (p Property) MarshalJSON() ([]byte, error) {
@@ -385,7 +388,8 @@ type JSONToXML struct {
 	RootElementName *string `default:"null" json:"root_element_name"`
 	// The name of the block to treat as XML text content.
 	TextBlockName *string `default:"#text" json:"text_block_name"`
-	type_         *string `const:"json_to_xml" json:"type,omitempty"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ *string `const:"json_to_xml" json:"type,omitempty"`
 }
 
 func (j JSONToXML) MarshalJSON() ([]byte, error) {
@@ -471,7 +475,8 @@ type Jq struct {
 	Name *string `default:"null" json:"name"`
 	// filter output(s)
 	Output *string `default:"null" json:"output"`
-	type_  *string `const:"jq" json:"type,omitempty"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ *string `const:"jq" json:"type,omitempty"`
 }
 
 func (j Jq) MarshalJSON() ([]byte, error) {
@@ -566,7 +571,8 @@ type Exit struct {
 	// A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
 	Name *string `default:"null" json:"name"`
 	// HTTP status code
-	Status          *int64  `default:"200" json:"status"`
+	Status *int64 `default:"200" json:"status"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_           *string `const:"exit" json:"type,omitempty"`
 	WarnHeadersSent *bool   `default:"null" json:"warn_headers_sent"`
 }
@@ -769,8 +775,9 @@ type Call struct {
 	// Whether to verify the TLS certificate when making HTTPS requests.
 	SslVerify *bool `default:"null" json:"ssl_verify"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	Timeout *int64  `default:"null" json:"timeout"`
-	type_   *string `const:"call" json:"type,omitempty"`
+	Timeout *int64 `default:"null" json:"timeout"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ *string `const:"call" json:"type,omitempty"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
 	URL *string `default:"null" json:"url"`
 }
@@ -967,7 +974,8 @@ type NodesCache struct {
 	// cache node outputs
 	Outputs *NodesOutputs `json:"outputs"`
 	TTL     *int64        `default:"null" json:"ttl"`
-	type_   *string       `const:"cache" json:"type,omitempty"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ *string `const:"cache" json:"type,omitempty"`
 }
 
 func (n NodesCache) MarshalJSON() ([]byte, error) {
@@ -1080,8 +1088,9 @@ type Branch struct {
 	// branch node outputs
 	Outputs *Outputs `json:"outputs"`
 	// nodes to execute if the input condition is `true`
-	Then  []string `json:"then"`
-	type_ *string  `const:"branch" json:"type,omitempty"`
+	Then []string `json:"then"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ *string `const:"branch" json:"type,omitempty"`
 }
 
 func (b Branch) MarshalJSON() ([]byte, error) {
@@ -2161,9 +2170,10 @@ type DatakitPlugin struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                `default:"null" json:"instance_name"`
-	name         string                 `const:"datakit" json:"name"`
-	Ordering     *DatakitPluginOrdering `json:"ordering"`
+	InstanceName *string `default:"null" json:"instance_name"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	name     string                 `const:"datakit" json:"name"`
+	Ordering *DatakitPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []DatakitPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.

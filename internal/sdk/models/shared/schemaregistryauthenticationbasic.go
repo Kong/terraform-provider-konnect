@@ -8,6 +8,7 @@ import (
 
 // SchemaRegistryAuthenticationBasic - Basic authentication scheme for the schema registry with username and password.
 type SchemaRegistryAuthenticationBasic struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"basic" json:"type"`
 	// A literal value or a reference to an existing secret as a template string expression.
 	// The value is stored and returned by the API as-is, not treated as sensitive information.

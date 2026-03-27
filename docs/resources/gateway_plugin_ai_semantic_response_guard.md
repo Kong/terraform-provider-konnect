@@ -23,7 +23,7 @@ resource "konnect_gateway_plugin_ai_semantic_response_guard" "my_gatewaypluginai
         azure_client_id            = "...my_azure_client_id..."
         azure_client_secret        = "...my_azure_client_secret..."
         azure_tenant_id            = "...my_azure_tenant_id..."
-        azure_use_managed_identity = true
+        azure_use_managed_identity = false
         gcp_service_account_json   = "...my_gcp_service_account_json..."
         gcp_use_service_account    = false
         header_name                = "...my_header_name..."
@@ -36,7 +36,7 @@ resource "konnect_gateway_plugin_ai_semantic_response_guard" "my_gatewaypluginai
         name = "...my_name..."
         options = {
           azure = {
-            api_version   = "...my_api_version..."
+            api_version   = "2023-05-15"
             deployment_id = "...my_deployment_id..."
             instance      = "...my_instance..."
           }
@@ -45,7 +45,7 @@ resource "konnect_gateway_plugin_ai_semantic_response_guard" "my_gatewaypluginai
             aws_region                 = "...my_aws_region..."
             aws_role_session_name      = "...my_aws_role_session_name..."
             aws_sts_endpoint_url       = "...my_aws_sts_endpoint_url..."
-            embeddings_normalize       = true
+            embeddings_normalize       = false
             performance_config_latency = "...my_performance_config_latency..."
             video_output_s3_uri        = "...my_video_output_s3_uri..."
           }
@@ -63,8 +63,8 @@ resource "konnect_gateway_plugin_ai_semantic_response_guard" "my_gatewaypluginai
         provider = "azure"
       }
     }
-    genai_category = "video/generation"
-    llm_format     = "anthropic"
+    genai_category = "text/generation"
+    llm_format     = "openai"
     rules = {
       allow_responses = [
         "..."
@@ -72,7 +72,7 @@ resource "konnect_gateway_plugin_ai_semantic_response_guard" "my_gatewaypluginai
       deny_responses = [
         "..."
       ]
-      max_response_body_size = 4
+      max_response_body_size = 8192
     }
     search = {
       threshold = 1.9
@@ -81,18 +81,18 @@ resource "konnect_gateway_plugin_ai_semantic_response_guard" "my_gatewaypluginai
       dimensions      = 7
       distance_metric = "euclidean"
       pgvector = {
-        database     = "...my_database..."
-        host         = "...my_host..."
+        database     = "kong-pgvector"
+        host         = "127.0.0.1"
         password     = "...my_password..."
-        port         = 1
+        port         = 5432
         ssl          = false
         ssl_cert     = "...my_ssl_cert..."
         ssl_cert_key = "...my_ssl_cert_key..."
-        ssl_required = true
+        ssl_required = false
         ssl_verify   = false
-        ssl_version  = "any"
-        timeout      = 7.2
-        user         = "...my_user..."
+        ssl_version  = "tlsv1_2"
+        timeout      = 5000
+        user         = "postgres"
       }
       redis = {
         cloud_authentication = {
@@ -109,28 +109,28 @@ resource "konnect_gateway_plugin_ai_semantic_response_guard" "my_gatewaypluginai
           azure_tenant_id          = "...my_azure_tenant_id..."
           gcp_service_account_json = "...my_gcp_service_account_json..."
         }
-        cluster_max_redirections = 4
+        cluster_max_redirections = 5
         cluster_nodes = [
           {
-            ip   = "...my_ip..."
-            port = 24018
+            ip   = "127.0.0.1"
+            port = 6379
           }
         ]
-        connect_timeout       = 1871752216
-        connection_is_proxied = true
-        database              = 8
-        host                  = "...my_host..."
+        connect_timeout       = 2000
+        connection_is_proxied = false
+        database              = 0
+        host                  = "127.0.0.1"
         keepalive_backlog     = 1017001581
-        keepalive_pool_size   = 843009957
+        keepalive_pool_size   = 256
         password              = "...my_password..."
-        port                  = 9330
-        read_timeout          = 737805427
-        send_timeout          = 1581780287
+        port                  = 6379
+        read_timeout          = 2000
+        send_timeout          = 2000
         sentinel_master       = "...my_sentinel_master..."
         sentinel_nodes = [
           {
-            host = "...my_host..."
-            port = 48060
+            host = "127.0.0.1"
+            port = 6379
           }
         ]
         sentinel_password = "...my_sentinel_password..."
@@ -138,7 +138,7 @@ resource "konnect_gateway_plugin_ai_semantic_response_guard" "my_gatewaypluginai
         sentinel_username = "...my_sentinel_username..."
         server_name       = "...my_server_name..."
         ssl               = false
-        ssl_verify        = true
+        ssl_verify        = false
         username          = "...my_username..."
       }
       strategy  = "redis"

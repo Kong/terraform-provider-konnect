@@ -51,12 +51,12 @@ resource "konnect_portal_customization" "my_portalcustomization" {
   robots    = "...my_robots..."
   spec_renderer = {
     allow_custom_server_urls = true
-    hide_deprecated          = true
+    hide_deprecated          = false
     hide_internal            = false
-    infinite_scroll          = false
-    show_schemas             = false
-    try_it_insomnia          = false
-    try_it_ui                = false
+    infinite_scroll          = true
+    show_schemas             = true
+    try_it_insomnia          = true
+    try_it_ui                = true
   }
   theme = {
     colors = {

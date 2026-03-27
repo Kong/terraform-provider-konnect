@@ -11,6 +11,7 @@ import (
 // See [aws docs](https://docs.aws.amazon.com/sdk-for-rust/latest/dg/credproviders.html#credproviders-default-credentials-provider-chain)
 // for more information about how credential retrieval.
 type EventGatewayAWSKeySource struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"aws" json:"type"`
 }
 

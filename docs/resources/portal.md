@@ -14,7 +14,7 @@ Portal Resource
 
 ```terraform
 resource "konnect_portal" "my_portal" {
-  authentication_enabled               = false
+  authentication_enabled               = true
   auto_approve_applications            = false
   auto_approve_developers              = false
   default_api_visibility               = "public"
@@ -27,7 +27,7 @@ resource "konnect_portal" "my_portal" {
     key = "value"
   }
   name         = "...my_name..."
-  rbac_enabled = true
+  rbac_enabled = false
 }
 ```
 

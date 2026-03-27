@@ -14,7 +14,7 @@ GatewayACL Resource
 
 ```terraform
 resource "konnect_gateway_acl" "my_gatewayacl" {
-  consumer_id      = "f28acbfa-c866-4587-b688-0208ac24df21"
+  consumer_id      = ""
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 3
   group            = "...my_group..."
@@ -50,7 +50,7 @@ In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.
 import {
   to = konnect_gateway_acl.my_konnect_gateway_acl
   id = jsonencode({
-    consumer_id = "f28acbfa-c866-4587-b688-0208ac24df21"
+    consumer_id = ""
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     id = "f28acbfa-c866-4587-b688-0208ac24df21"
   })
@@ -60,5 +60,5 @@ import {
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_gateway_acl.my_konnect_gateway_acl '{"consumer_id": "f28acbfa-c866-4587-b688-0208ac24df21", "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "f28acbfa-c866-4587-b688-0208ac24df21"}'
+terraform import konnect_gateway_acl.my_konnect_gateway_acl '{"consumer_id": "", "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458", "id": "f28acbfa-c866-4587-b688-0208ac24df21"}'
 ```

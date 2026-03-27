@@ -15,19 +15,28 @@ EventGatewayListenerPolicyTLSServer Resource
 ```terraform
 resource "konnect_event_gateway_listener_policy_tls_server" "my_eventgatewaylistenerpolicytlsserver" {
   config = {
-    allow_plaintext = true
+    allow_plaintext = false
     certificates = [
       {
         certificate = "...my_certificate..."
         key         = "$${vault.env['MY_ENV_VAR']}"
       }
     ]
+    client_authentication = {
+      mode              = "requested"
+      principal_mapping = "$${context.certificate.subject['CN'] ? context.certificate.subject['CN'] : context.certificate.sans.uri[0]}"
+      tls_trust_bundles = [
+        {
+          id = "4207e6bd-68dd-4f60-bac1-adbb586553d5"
+        }
+      ]
+    }
     versions = {
       max = "TLSv1.3"
-      min = "TLSv1.3"
+      min = "TLSv1.2"
     }
   }
-  description = "...my_description..."
+  description = ""
   enabled     = true
   gateway_id  = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   labels = {
@@ -73,6 +82,8 @@ Required:
 Optional:
 
 - `allow_plaintext` (Boolean) If false, only TLS connections are allowed. If true, both TLS and plaintext connections are allowed. Default: false
+- `client_authentication` (Attributes) Configures mutual TLS (mTLS) client certificate verification. When set, the gateway
+requests or requires clients to present a certificate during the TLS handshake. (see [below for nested schema](#nestedatt--config--client_authentication))
 - `versions` (Attributes) A range of TLS versions. (see [below for nested schema](#nestedatt--config--versions))
 
 <a id="nestedatt--config--certificates"></a>
@@ -85,6 +96,32 @@ The value is stored and returned by the API as-is, not treated as sensitive info
 - `key` (String) A sensitive value containing the secret or a reference to a secret as a template string expression.
 If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
 If provided as an expression, the expression itself is stored and returned by the API.
+
+
+<a id="nestedatt--config--client_authentication"></a>
+### Nested Schema for `config.client_authentication`
+
+Required:
+
+- `mode` (String) * required - Reject TLS connections without a valid client certificate.
+* requested - Request a client certificate during the TLS handshake, but allow connections without one (falls back to other configured authentication methods). If a certificate is presented but cannot be verified, the connection is closed.
+must be one of ["required", "requested"]
+- `tls_trust_bundles` (Attributes List) TLS trust bundles contain CA certificate bundles used to verify client certificates.
+All bundles are merged into a single trust store; a client certificate is accepted if it
+chains to any trusted CA across all bundles. (see [below for nested schema](#nestedatt--config--client_authentication--tls_trust_bundles))
+
+Optional:
+
+- `principal_mapping` (String) An expression that extracts a principal identifier from a verified client certificate.
+This expression must evaluate to a string.
+
+<a id="nestedatt--config--client_authentication--tls_trust_bundles"></a>
+### Nested Schema for `config.client_authentication.tls_trust_bundles`
+
+Required:
+
+- `id` (String) The unique identifier of the TLS trust bundle.
+
 
 
 <a id="nestedatt--config--versions"></a>

@@ -15,7 +15,7 @@ GatewayPluginHTTPLog Resource
 ```terraform
 resource "konnect_gateway_plugin_http_log" "my_gatewaypluginhttplog" {
   config = {
-    content_type = "application/json; charset=utf-8"
+    content_type = "application/json"
     custom_fields_by_lua = {
       key = "value"
     }
@@ -24,29 +24,29 @@ resource "konnect_gateway_plugin_http_log" "my_gatewaypluginhttplog" {
       key = "value"
     }
     http_endpoint = "...my_http_endpoint..."
-    keepalive     = 2.25
+    keepalive     = 60000
     method        = "POST"
     queue = {
-      concurrency_limit    = 0
+      concurrency_limit    = 1
       initial_retry_delay  = 154435.3
-      max_batch_size       = 297113
+      max_batch_size       = 1
       max_bytes            = 7
-      max_coalescing_delay = 198.88
-      max_entries          = 603921
-      max_retry_delay      = 290740.88
-      max_retry_time       = 4.99
+      max_coalescing_delay = 1
+      max_entries          = 10000
+      max_retry_delay      = 60
+      max_retry_time       = 60
     }
     queue_size  = 3
     retry_count = 10
     ssl_verify  = false
-    timeout     = 6.49
+    timeout     = 10000
   }
   consumer = {
     id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 1
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

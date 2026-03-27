@@ -17,16 +17,16 @@ resource "konnect_gateway_plugin_ai_lakera_guard" "my_gatewaypluginailakeraguard
   config = {
     api_key                   = "...my_api_key..."
     guarding_mode             = "INPUT"
-    lakera_service_url        = "...my_lakera_service_url..."
+    lakera_service_url        = "https://api.lakera.ai/v2/guard"
     project_id                = "...my_project_id..."
-    request_failure_message   = "...my_request_failure_message..."
-    response_buffer_size      = 9.27
-    response_failure_message  = "...my_response_failure_message..."
-    reveal_failure_categories = true
+    request_failure_message   = "Request was filtered by Lakera Guard"
+    response_buffer_size      = 100
+    response_failure_message  = "Response was filtered by Lakera Guard"
+    reveal_failure_categories = false
     stop_on_error             = true
-    text_source               = "last_message"
-    timeout                   = 4.57
-    verify_ssl                = false
+    text_source               = "concatenate_all_content"
+    timeout                   = 10000
+    verify_ssl                = true
   }
   consumer = {
     id = "...my_id..."
@@ -36,7 +36,7 @@ resource "konnect_gateway_plugin_ai_lakera_guard" "my_gatewaypluginailakeraguard
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 5
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

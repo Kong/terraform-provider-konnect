@@ -15,7 +15,7 @@ GatewayPluginAiMcpProxy Resource
 ```terraform
 resource "konnect_gateway_plugin_ai_mcp_proxy" "my_gatewaypluginaimcpproxy" {
   config = {
-    consumer_identifier = "custom_id"
+    consumer_identifier = "username"
     default_acl = [
       {
         allow = [
@@ -24,21 +24,21 @@ resource "konnect_gateway_plugin_ai_mcp_proxy" "my_gatewaypluginaimcpproxy" {
         deny = [
           "..."
         ]
-        scope = "...my_scope..."
+        scope = "tools"
       }
     ]
     include_consumer_groups = false
     logging = {
-      log_audits     = true
+      log_audits     = false
       log_payloads   = false
-      log_statistics = true
+      log_statistics = false
     }
-    max_request_body_size = 8
+    max_request_body_size = 1048576
     mode                  = "passthrough-listener"
     server = {
       forward_client_headers = true
       tag                    = "...my_tag..."
-      timeout                = 7.85
+      timeout                = 10000
     }
     tools = [
       {
@@ -91,7 +91,7 @@ resource "konnect_gateway_plugin_ai_mcp_proxy" "my_gatewaypluginaimcpproxy" {
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 4
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

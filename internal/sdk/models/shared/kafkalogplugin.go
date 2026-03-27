@@ -488,6 +488,9 @@ func (k *KafkaLogPluginOauth2) GetUsername() *string {
 	return k.Username
 }
 
+// #region class-body-kafkalogpluginoauth2
+// #endregion class-body-kafkalogpluginoauth2
+
 // KafkaLogPluginAuthMethod - The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body.
 type KafkaLogPluginAuthMethod string
 
@@ -660,6 +663,9 @@ func (k *KafkaLogPluginOauth2Client) GetTimeout() *int64 {
 	}
 	return k.Timeout
 }
+
+// #region class-body-kafkalogpluginoauth2client
+// #endregion class-body-kafkalogpluginoauth2client
 
 type KafkaLogPluginConfigAuthentication struct {
 	Basic *KafkaLogPluginBasic `json:"basic"`
@@ -1207,9 +1213,10 @@ type KafkaLogPlugin struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                 `default:"null" json:"instance_name"`
-	name         string                  `const:"kafka-log" json:"name"`
-	Ordering     *KafkaLogPluginOrdering `json:"ordering"`
+	InstanceName *string `default:"null" json:"instance_name"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	name     string                  `const:"kafka-log" json:"name"`
+	Ordering *KafkaLogPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []KafkaLogPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.

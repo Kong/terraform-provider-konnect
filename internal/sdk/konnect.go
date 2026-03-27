@@ -2,7 +2,7 @@
 
 package sdk
 
-// Generated from OpenAPI doc version 2.0.0 and generator version 2.858.2
+// Generated from OpenAPI doc version 2.0.0 and generator version 2.869.23
 
 import (
 	"bytes"
@@ -110,6 +110,11 @@ type Konnect struct {
 	// Static Keys are used by the Encrypt and Decrypt policies to encrypt data at rest
 	//
 	EventGatewayStaticKeys *EventGatewayStaticKeys
+	// A TLS trust bundle defines a set of trusted certificate authorities (CAs) used for client certificate
+	// verification during mutual TLS (mTLS). Trust bundles are referenced by TLS listener policies to
+	// determine which client certificates are accepted.
+	//
+	EventGatewayTLSTrustBundles *EventGatewayTLSTrustBundles
 	// Virtual clusters are the primary way clients interact with the Event Gateway proxy. They allow you to isolate clients from each other when connecting to the same backend cluster, and provide each client with modified view while still appearing as a standard Kafka cluster.
 	//
 	EventGatewayVirtualClusters *EventGatewayVirtualClusters
@@ -390,9 +395,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *Konnect {
 	sdk := &Konnect{
-		SDKVersion: "3.11.0",
+		SDKVersion: "3.12.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 3.11.0 2.858.2 2.0.0 github.com/kong/terraform-provider-konnect/v3/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 3.12.0 2.869.23 2.0.0 github.com/kong/terraform-provider-konnect/v3/internal/sdk",
 			ServerList: ServerList,
 		},
 		hooks: hooks.New(),
@@ -424,6 +429,7 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.EventGatewayListenerPolicies = newEventGatewayListenerPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewaySchemaRegistries = newEventGatewaySchemaRegistries(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayStaticKeys = newEventGatewayStaticKeys(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.EventGatewayTLSTrustBundles = newEventGatewayTLSTrustBundles(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayVirtualClusters = newEventGatewayVirtualClusters(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayVirtualClusterPolicies = newEventGatewayVirtualClusterPolicies(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.EventGatewayVirtualClusterConsumePolicies = newEventGatewayVirtualClusterConsumePolicies(sdk, sdk.sdkConfiguration, sdk.hooks)

@@ -200,6 +200,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewEventGatewayProducePolicySchemaValidationResource,
 		NewEventGatewaySchemaRegistryResource,
 		NewEventGatewayStaticKeyResource,
+		NewEventGatewayTLSTrustBundleResource,
 		NewEventGatewayVirtualClusterResource,
 		NewGatewayACLResource,
 		NewGatewayBasicAuthResource,

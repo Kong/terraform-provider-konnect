@@ -4723,13 +4723,11 @@ func (s *CloudGateways) ListProviderAccounts(ctx context.Context, request operat
 		if len(arr) < l {
 			return nil, nil
 		}
+		request.PageNumber = &nP
 
 		return s.ListProviderAccounts(
 			ctx,
-			operations.ListProviderAccountsRequest{
-				PageSize:   request.PageSize,
-				PageNumber: &nP,
-			},
+			request,
 			opts...,
 		)
 	}

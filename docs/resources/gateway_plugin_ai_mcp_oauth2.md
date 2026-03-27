@@ -21,7 +21,7 @@ resource "konnect_gateway_plugin_ai_mcp_oauth2" "my_gatewaypluginaimcpoauth2" {
     authorization_servers = [
       "..."
     ]
-    cache_introspection = false
+    cache_introspection = true
     claim_to_header = [
       {
         claim  = "...my_claim..."
@@ -44,8 +44,8 @@ resource "konnect_gateway_plugin_ai_mcp_oauth2" "my_gatewaypluginaimcpoauth2" {
     insecure_relaxed_audience_validation = false
     introspection_endpoint               = "...my_introspection_endpoint..."
     introspection_format                 = "base64"
-    keepalive                            = false
-    max_request_body_size                = 6
+    keepalive                            = true
+    max_request_body_size                = 1048576
     metadata_endpoint                    = "...my_metadata_endpoint..."
     mtls_introspection_endpoint          = "...my_mtls_introspection_endpoint..."
     no_proxy                             = "...my_no_proxy..."
@@ -54,10 +54,10 @@ resource "konnect_gateway_plugin_ai_mcp_oauth2" "my_gatewaypluginaimcpoauth2" {
       "..."
     ]
     ssl_verify                 = true
-    timeout                    = 4.02
+    timeout                    = 10000
     tls_client_auth_cert       = "...my_tls_client_auth_cert..."
     tls_client_auth_key        = "...my_tls_client_auth_key..."
-    tls_client_auth_ssl_verify = false
+    tls_client_auth_ssl_verify = true
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 6

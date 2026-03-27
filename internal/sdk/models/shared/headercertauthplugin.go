@@ -504,9 +504,10 @@ type HeaderCertAuthPlugin struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                       `default:"null" json:"instance_name"`
-	name         string                        `const:"header-cert-auth" json:"name"`
-	Ordering     *HeaderCertAuthPluginOrdering `json:"ordering"`
+	InstanceName *string `default:"null" json:"instance_name"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	name     string                        `const:"header-cert-auth" json:"name"`
+	Ordering *HeaderCertAuthPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []HeaderCertAuthPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.

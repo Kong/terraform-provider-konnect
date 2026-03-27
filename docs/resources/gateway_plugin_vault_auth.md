@@ -15,12 +15,12 @@ GatewayPluginVaultAuth Resource
 ```terraform
 resource "konnect_gateway_plugin_vault_auth" "my_gatewaypluginvaultauth" {
   config = {
-    access_token_name = "...my_access_token_name..."
+    access_token_name = "access_token"
     anonymous         = "...my_anonymous..."
     hide_credentials  = false
-    run_on_preflight  = false
-    secret_token_name = "...my_secret_token_name..."
-    tokens_in_body    = true
+    run_on_preflight  = true
+    secret_token_name = "secret_token"
+    tokens_in_body    = false
     vault = {
       id = "...my_id..."
     }

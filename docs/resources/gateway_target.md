@@ -27,7 +27,7 @@ resource "konnect_gateway_target" "my_gatewaytarget" {
     id = "...my_id..."
   }
   upstream_id = "5a078780-5d4c-4aae-984a-bdc6f52113d8"
-  weight      = 32684
+  weight      = 100
 }
 ```
 

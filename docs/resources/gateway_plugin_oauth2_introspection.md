@@ -15,7 +15,7 @@ GatewayPluginOauth2Introspection Resource
 ```terraform
 resource "konnect_gateway_plugin_oauth2_introspection" "my_gatewaypluginoauth2introspection" {
   config = {
-    anonymous           = "...my_anonymous..."
+    anonymous           = ""
     authorization_value = "...my_authorization_value..."
     consumer_by         = "username"
     custom_claims_forward = [
@@ -24,18 +24,18 @@ resource "konnect_gateway_plugin_oauth2_introspection" "my_gatewaypluginoauth2in
     custom_introspection_headers = {
       key = "value"
     }
-    hide_credentials   = true
+    hide_credentials   = false
     introspect_request = false
     introspection_url  = "...my_introspection_url..."
-    keepalive          = 2
+    keepalive          = 60000
     run_on_preflight   = true
-    timeout            = 8
+    timeout            = 10000
     token_type_hint    = "...my_token_type_hint..."
-    ttl                = 1.29
+    ttl                = 30
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 3
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

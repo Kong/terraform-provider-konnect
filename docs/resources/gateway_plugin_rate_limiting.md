@@ -16,13 +16,13 @@ GatewayPluginRateLimiting Resource
 resource "konnect_gateway_plugin_rate_limiting" "my_gatewaypluginratelimiting" {
   config = {
     day                 = 2.06
-    error_code          = 7.45
-    error_message       = "...my_error_message..."
+    error_code          = 429
+    error_message       = "API rate limit exceeded"
     fault_tolerant      = true
     header_name         = "...my_header_name..."
     hide_client_headers = false
     hour                = 0.92
-    limit_by            = "ip"
+    limit_by            = "consumer"
     minute              = 3.29
     month               = 7.22
     path                = "...my_path..."
@@ -42,18 +42,18 @@ resource "konnect_gateway_plugin_rate_limiting" "my_gatewaypluginratelimiting" {
         azure_tenant_id          = "...my_azure_tenant_id..."
         gcp_service_account_json = "...my_gcp_service_account_json..."
       }
-      database    = 3
+      database    = 0
       host        = "...my_host..."
       password    = "...my_password..."
-      port        = 37089
+      port        = 6379
       server_name = "...my_server_name..."
       ssl         = false
-      ssl_verify  = true
-      timeout     = 14058328
+      ssl_verify  = false
+      timeout     = 2000
       username    = "...my_username..."
     }
     second    = 1.89
-    sync_rate = 7.98
+    sync_rate = -1
     year      = 0.32
   }
   consumer = {

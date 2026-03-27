@@ -8,6 +8,7 @@ import (
 
 // EventGatewayModifyHeaderRemoveAction - An action that removes a header by key.
 type EventGatewayModifyHeaderRemoveAction struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	op string `const:"remove" json:"op"`
 	// The key of the header to remove.
 	Key string `json:"key"`

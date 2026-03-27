@@ -350,6 +350,12 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 				r.AzureVhubPeeringGatewayResponse.StateMetadata.Reason = types.StringPointerValue(resp.AzureVhubPeeringGatewayResponse.StateMetadata.Reason)
 				r.AzureVhubPeeringGatewayResponse.StateMetadata.ReportedStatus = types.StringPointerValue(resp.AzureVhubPeeringGatewayResponse.StateMetadata.ReportedStatus)
 			}
+			r.AzureVhubPeeringGatewayResponse.TransitGatewayAttachmentConfig = &tfTypes.AzureVHubPeeringAttachmentConfig{}
+			r.AzureVhubPeeringGatewayResponse.TransitGatewayAttachmentConfig.Kind = types.StringValue(string(resp.AzureVhubPeeringGatewayResponse.TransitGatewayAttachmentConfig.Kind))
+			r.AzureVhubPeeringGatewayResponse.TransitGatewayAttachmentConfig.ResourceGroupName = types.StringValue(resp.AzureVhubPeeringGatewayResponse.TransitGatewayAttachmentConfig.ResourceGroupName)
+			r.AzureVhubPeeringGatewayResponse.TransitGatewayAttachmentConfig.SubscriptionID = types.StringValue(resp.AzureVhubPeeringGatewayResponse.TransitGatewayAttachmentConfig.SubscriptionID)
+			r.AzureVhubPeeringGatewayResponse.TransitGatewayAttachmentConfig.TenantID = types.StringValue(resp.AzureVhubPeeringGatewayResponse.TransitGatewayAttachmentConfig.TenantID)
+			r.AzureVhubPeeringGatewayResponse.TransitGatewayAttachmentConfig.VhubName = types.StringValue(resp.AzureVhubPeeringGatewayResponse.TransitGatewayAttachmentConfig.VhubName)
 			r.AzureVhubPeeringGatewayResponse.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AzureVhubPeeringGatewayResponse.UpdatedAt))
 			r.UpdatedAt = r.AzureVhubPeeringGatewayResponse.UpdatedAt
 		}
@@ -708,9 +714,30 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 				DomainProxyList:            domainProxyList4,
 			})
 		}
+		kind4 := shared.AzureVirtualHubPeeringAttachmentType(r.AzureVhubPeeringGateway.TransitGatewayAttachmentConfig.Kind.ValueString())
+		var tenantId1 string
+		tenantId1 = r.AzureVhubPeeringGateway.TransitGatewayAttachmentConfig.TenantID.ValueString()
+
+		var subscriptionId1 string
+		subscriptionId1 = r.AzureVhubPeeringGateway.TransitGatewayAttachmentConfig.SubscriptionID.ValueString()
+
+		var resourceGroupName1 string
+		resourceGroupName1 = r.AzureVhubPeeringGateway.TransitGatewayAttachmentConfig.ResourceGroupName.ValueString()
+
+		var vhubName string
+		vhubName = r.AzureVhubPeeringGateway.TransitGatewayAttachmentConfig.VhubName.ValueString()
+
+		transitGatewayAttachmentConfig4 := shared.AzureVHubPeeringAttachmentConfig{
+			Kind:              kind4,
+			TenantID:          tenantId1,
+			SubscriptionID:    subscriptionId1,
+			ResourceGroupName: resourceGroupName1,
+			VhubName:          vhubName,
+		}
 		azureVhubPeeringGateway = &shared.AzureVhubPeeringGateway{
-			Name:      name4,
-			DNSConfig: dnsConfig4,
+			Name:                           name4,
+			DNSConfig:                      dnsConfig4,
+			TransitGatewayAttachmentConfig: transitGatewayAttachmentConfig4,
 		}
 	}
 	if azureVhubPeeringGateway != nil {
@@ -738,22 +765,22 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 				DomainProxyList:            domainProxyList5,
 			})
 		}
-		kind4 := shared.GCPVPCPeeringAttachmentType(r.GcpVpcPeeringTransitGateway.TransitGatewayAttachmentConfig.Kind.ValueString())
+		kind5 := shared.GCPVPCPeeringAttachmentType(r.GcpVpcPeeringTransitGateway.TransitGatewayAttachmentConfig.Kind.ValueString())
 		var peerProjectID string
 		peerProjectID = r.GcpVpcPeeringTransitGateway.TransitGatewayAttachmentConfig.PeerProjectID.ValueString()
 
 		var peerVpcName string
 		peerVpcName = r.GcpVpcPeeringTransitGateway.TransitGatewayAttachmentConfig.PeerVpcName.ValueString()
 
-		transitGatewayAttachmentConfig4 := shared.GCPVPCPeeringAttachmentConfig{
-			Kind:          kind4,
+		transitGatewayAttachmentConfig5 := shared.GCPVPCPeeringAttachmentConfig{
+			Kind:          kind5,
 			PeerProjectID: peerProjectID,
 			PeerVpcName:   peerVpcName,
 		}
 		gcpVpcPeeringTransitGateway = &shared.GcpVpcPeeringTransitGateway{
 			Name:                           name5,
 			DNSConfig:                      dnsConfig5,
-			TransitGatewayAttachmentConfig: transitGatewayAttachmentConfig4,
+			TransitGatewayAttachmentConfig: transitGatewayAttachmentConfig5,
 		}
 	}
 	if gcpVpcPeeringTransitGateway != nil {

@@ -40,6 +40,9 @@ func (d *DeleteOauth2introspectionPluginRequest) GetControlPlaneID() string {
 	return d.ControlPlaneID
 }
 
+// #region class-body-deleteoauth2introspectionpluginrequest
+// #endregion class-body-deleteoauth2introspectionpluginrequest
+
 type DeleteOauth2introspectionPluginResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -89,3 +92,6 @@ func (d *DeleteOauth2introspectionPluginResponse) GetGatewayUnauthorizedError() 
 	}
 	return d.GatewayUnauthorizedError
 }
+
+// #region class-body-deleteoauth2introspectionpluginresponse
+// #endregion class-body-deleteoauth2introspectionpluginresponse

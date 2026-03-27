@@ -16,11 +16,11 @@ GatewayPluginSolaceLog Resource
 resource "konnect_gateway_plugin_solace_log" "my_gatewaypluginsolacelog" {
   config = {
     message = {
-      ack_timeout = 49183
+      ack_timeout = 2000
       custom_fields_by_lua = {
         key = "value"
       }
-      delivery_mode = "PERSISTENT"
+      delivery_mode = "DIRECT"
       destinations = [
         {
           name = "...my_name..."
@@ -28,11 +28,11 @@ resource "konnect_gateway_plugin_solace_log" "my_gatewaypluginsolacelog" {
         }
       ]
       dmq_eligible    = false
-      priority        = 228
+      priority        = 4
       sender_id       = "...my_sender_id..."
       tracing         = false
       tracing_sampled = false
-      ttl             = 10
+      ttl             = 0
     }
     session = {
       authentication = {
@@ -42,20 +42,20 @@ resource "konnect_gateway_plugin_solace_log" "my_gatewaypluginsolacelog" {
         id_token            = "...my_id_token..."
         id_token_header     = "...my_id_token_header..."
         password            = "...my_password..."
-        scheme              = "NONE"
+        scheme              = "BASIC"
         username            = "...my_username..."
       }
-      calculate_message_expiry = false
-      connect_timeout          = 98544
-      generate_rcv_timestamps  = false
-      generate_send_timestamps = false
+      calculate_message_expiry = true
+      connect_timeout          = 3000
+      generate_rcv_timestamps  = true
+      generate_send_timestamps = true
       generate_sender_id       = true
-      generate_sequence_number = false
+      generate_sequence_number = true
       host                     = "...my_host..."
       properties = {
         key = "value"
       }
-      ssl_validate_certificate = true
+      ssl_validate_certificate = false
       vpn_name                 = "...my_vpn_name..."
     }
   }

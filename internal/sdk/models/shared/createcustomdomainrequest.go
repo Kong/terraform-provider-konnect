@@ -13,6 +13,11 @@ type CreateCustomDomainRequest struct {
 	ControlPlaneGeo ControlPlaneGeo `json:"control_plane_geo"`
 	// Domain name of the custom domain.
 	Domain string `json:"domain"`
+	// **Pre-release Feature**
+	// This feature is currently in beta and is subject to change.
+	//
+	// Kind of the custom domain based on Cloud Gateway deployment.
+	Kind *CustomDomainKind `default:"dedicated.v0" json:"kind"`
 }
 
 func (c CreateCustomDomainRequest) MarshalJSON() ([]byte, error) {
@@ -45,4 +50,11 @@ func (c *CreateCustomDomainRequest) GetDomain() string {
 		return ""
 	}
 	return c.Domain
+}
+
+func (c *CreateCustomDomainRequest) GetKind() *CustomDomainKind {
+	if c == nil {
+		return nil
+	}
+	return c.Kind
 }

@@ -90,6 +90,19 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 							Optional: true,
 							Validators: []validator.Object{
 								objectvalidator.ConflictsWith(path.Expressions{
+									path.MatchRelative().AtParent().AtName("client_certificate"),
+									path.MatchRelative().AtParent().AtName("oauth_bearer"),
+									path.MatchRelative().AtParent().AtName("sasl_plain"),
+									path.MatchRelative().AtParent().AtName("sasl_scram"),
+								}...),
+							},
+						},
+						"client_certificate": schema.SingleNestedAttribute{
+							Optional:    true,
+							Description: `Client certificate (mTLS) authentication scheme for the virtual cluster.`,
+							Validators: []validator.Object{
+								objectvalidator.ConflictsWith(path.Expressions{
+									path.MatchRelative().AtParent().AtName("anonymous"),
 									path.MatchRelative().AtParent().AtName("oauth_bearer"),
 									path.MatchRelative().AtParent().AtName("sasl_plain"),
 									path.MatchRelative().AtParent().AtName("sasl_scram"),
@@ -211,6 +224,7 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 							Validators: []validator.Object{
 								objectvalidator.ConflictsWith(path.Expressions{
 									path.MatchRelative().AtParent().AtName("anonymous"),
+									path.MatchRelative().AtParent().AtName("client_certificate"),
 									path.MatchRelative().AtParent().AtName("sasl_plain"),
 									path.MatchRelative().AtParent().AtName("sasl_scram"),
 								}...),
@@ -273,6 +287,7 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 							Validators: []validator.Object{
 								objectvalidator.ConflictsWith(path.Expressions{
 									path.MatchRelative().AtParent().AtName("anonymous"),
+									path.MatchRelative().AtParent().AtName("client_certificate"),
 									path.MatchRelative().AtParent().AtName("oauth_bearer"),
 									path.MatchRelative().AtParent().AtName("sasl_scram"),
 								}...),
@@ -298,6 +313,7 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 							Validators: []validator.Object{
 								objectvalidator.ConflictsWith(path.Expressions{
 									path.MatchRelative().AtParent().AtName("anonymous"),
+									path.MatchRelative().AtParent().AtName("client_certificate"),
 									path.MatchRelative().AtParent().AtName("oauth_bearer"),
 									path.MatchRelative().AtParent().AtName("sasl_plain"),
 								}...),

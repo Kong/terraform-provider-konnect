@@ -1024,6 +1024,55 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 						},
 						Description: `Human-readable name of the transit gateway. Requires replacement if changed.`,
 					},
+					"transit_gateway_attachment_config": schema.SingleNestedAttribute{
+						Required: true,
+						PlanModifiers: []planmodifier.Object{
+							objectplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						Attributes: map[string]schema.Attribute{
+							"kind": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `must be "azure-vhub-peering-attachment"; Requires replacement if changed.`,
+								Validators: []validator.String{
+									stringvalidator.OneOf(
+										"azure-vhub-peering-attachment",
+									),
+								},
+							},
+							"resource_group_name": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `Resource Group Name of the Azure Virtual Hub resource. Requires replacement if changed.`,
+							},
+							"subscription_id": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `Subscription ID of the Azure Virtual Hub resource. Requires replacement if changed.`,
+							},
+							"tenant_id": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `Tenant ID of the Azure Virtual Hub resource. Requires replacement if changed.`,
+							},
+							"vhub_name": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `Name of the Azure Virtual Hub resource. Requires replacement if changed.`,
+							},
+						},
+						Description: `Requires replacement if changed.`,
+					},
 				},
 				Description: `Requires replacement if changed.`,
 				Validators: []validator.Object{
@@ -1121,6 +1170,30 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 							},
 						},
 						Description: `Metadata describing the backing state of the transit gateway and why it may be in an erroneous state.`,
+					},
+					"transit_gateway_attachment_config": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"kind": schema.StringAttribute{
+								Computed: true,
+							},
+							"resource_group_name": schema.StringAttribute{
+								Computed:    true,
+								Description: `Resource Group Name of the Azure Virtual Hub resource.`,
+							},
+							"subscription_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `Subscription ID of the Azure Virtual Hub resource.`,
+							},
+							"tenant_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `Tenant ID of the Azure Virtual Hub resource.`,
+							},
+							"vhub_name": schema.StringAttribute{
+								Computed:    true,
+								Description: `Name of the Azure Virtual Hub resource.`,
+							},
+						},
 					},
 					"updated_at": schema.StringAttribute{
 						Computed: true,

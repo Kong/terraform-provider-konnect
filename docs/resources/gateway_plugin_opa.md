@@ -15,17 +15,17 @@ GatewayPluginOpa Resource
 ```terraform
 resource "konnect_gateway_plugin_opa" "my_gatewaypluginopa" {
   config = {
-    include_body_in_opa_input             = true
-    include_consumer_in_opa_input         = true
-    include_parsed_json_body_in_opa_input = true
+    include_body_in_opa_input             = false
+    include_consumer_in_opa_input         = false
+    include_parsed_json_body_in_opa_input = false
     include_route_in_opa_input            = false
-    include_service_in_opa_input          = true
+    include_service_in_opa_input          = false
     include_uri_captures_in_opa_input     = false
-    opa_host                              = "...my_opa_host..."
+    opa_host                              = "localhost"
     opa_path                              = "...my_opa_path..."
-    opa_port                              = 43549
-    opa_protocol                          = "https"
-    ssl_verify                            = false
+    opa_port                              = 8181
+    opa_protocol                          = "http"
+    ssl_verify                            = true
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 0

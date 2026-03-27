@@ -21,7 +21,8 @@ type EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig struct {
 	//   to help to identify the clients violating schema.
 	//
 	ValueValidationAction *ProduceValueValidationAction `json:"value_validation_action,omitempty"`
-	type_                 string                        `const:"confluent_schema_registry" json:"type"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	type_ string `const:"confluent_schema_registry" json:"type"`
 }
 
 func (e EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig) MarshalJSON() ([]byte, error) {

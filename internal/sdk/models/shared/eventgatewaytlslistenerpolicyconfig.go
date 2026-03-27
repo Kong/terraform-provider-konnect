@@ -3,8 +3,88 @@
 package shared
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
+
+// EventGatewayTLSListenerPolicyConfigMode - * required - Reject TLS connections without a valid client certificate.
+// * requested - Request a client certificate during the TLS handshake, but allow connections without one (falls back to other configured authentication methods). If a certificate is presented but cannot be verified, the connection is closed.
+type EventGatewayTLSListenerPolicyConfigMode string
+
+const (
+	EventGatewayTLSListenerPolicyConfigModeRequired  EventGatewayTLSListenerPolicyConfigMode = "required"
+	EventGatewayTLSListenerPolicyConfigModeRequested EventGatewayTLSListenerPolicyConfigMode = "requested"
+)
+
+func (e EventGatewayTLSListenerPolicyConfigMode) ToPointer() *EventGatewayTLSListenerPolicyConfigMode {
+	return &e
+}
+func (e *EventGatewayTLSListenerPolicyConfigMode) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "required":
+		fallthrough
+	case "requested":
+		*e = EventGatewayTLSListenerPolicyConfigMode(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for EventGatewayTLSListenerPolicyConfigMode: %v", v)
+	}
+}
+
+// EventGatewayTLSListenerPolicyConfigClientAuthentication - Configures mutual TLS (mTLS) client certificate verification. When set, the gateway
+// requests or requires clients to present a certificate during the TLS handshake.
+type EventGatewayTLSListenerPolicyConfigClientAuthentication struct {
+	// * required - Reject TLS connections without a valid client certificate.
+	// * requested - Request a client certificate during the TLS handshake, but allow connections without one (falls back to other configured authentication methods). If a certificate is presented but cannot be verified, the connection is closed.
+	//
+	Mode EventGatewayTLSListenerPolicyConfigMode `json:"mode"`
+	// TLS trust bundles contain CA certificate bundles used to verify client certificates.
+	// All bundles are merged into a single trust store; a client certificate is accepted if it
+	// chains to any trusted CA across all bundles.
+	//
+	TLSTrustBundles []TLSTrustBundleReference `json:"tls_trust_bundles"`
+	// An expression that extracts a principal identifier from a verified client certificate.
+	// This expression must evaluate to a string.
+	//
+	PrincipalMapping *string `json:"principal_mapping,omitempty"`
+}
+
+func (e EventGatewayTLSListenerPolicyConfigClientAuthentication) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *EventGatewayTLSListenerPolicyConfigClientAuthentication) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"mode", "tls_trust_bundles"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (e *EventGatewayTLSListenerPolicyConfigClientAuthentication) GetMode() EventGatewayTLSListenerPolicyConfigMode {
+	if e == nil {
+		return EventGatewayTLSListenerPolicyConfigMode("")
+	}
+	return e.Mode
+}
+
+func (e *EventGatewayTLSListenerPolicyConfigClientAuthentication) GetTLSTrustBundles() []TLSTrustBundleReference {
+	if e == nil {
+		return []TLSTrustBundleReference{}
+	}
+	return e.TLSTrustBundles
+}
+
+func (e *EventGatewayTLSListenerPolicyConfigClientAuthentication) GetPrincipalMapping() *string {
+	if e == nil {
+		return nil
+	}
+	return e.PrincipalMapping
+}
 
 type EventGatewayTLSListenerPolicyConfig struct {
 	Certificates []TLSCertificate `json:"certificates"`
@@ -13,6 +93,10 @@ type EventGatewayTLSListenerPolicyConfig struct {
 	// If false, only TLS connections are allowed. If true, both TLS and plaintext connections are allowed.
 	//
 	AllowPlaintext *bool `default:"false" json:"allow_plaintext"`
+	// Configures mutual TLS (mTLS) client certificate verification. When set, the gateway
+	// requests or requires clients to present a certificate during the TLS handshake.
+	//
+	ClientAuthentication *EventGatewayTLSListenerPolicyConfigClientAuthentication `json:"client_authentication,omitempty"`
 }
 
 func (e EventGatewayTLSListenerPolicyConfig) MarshalJSON() ([]byte, error) {
@@ -45,4 +129,11 @@ func (e *EventGatewayTLSListenerPolicyConfig) GetAllowPlaintext() *bool {
 		return nil
 	}
 	return e.AllowPlaintext
+}
+
+func (e *EventGatewayTLSListenerPolicyConfig) GetClientAuthentication() *EventGatewayTLSListenerPolicyConfigClientAuthentication {
+	if e == nil {
+		return nil
+	}
+	return e.ClientAuthentication
 }

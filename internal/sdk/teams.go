@@ -188,14 +188,11 @@ func (s *Teams) ListTeams(ctx context.Context, request operations.ListTeamsReque
 		if len(arr) < l {
 			return nil, nil
 		}
+		request.PageNumber = &nP
 
 		return s.ListTeams(
 			ctx,
-			operations.ListTeamsRequest{
-				PageSize:   request.PageSize,
-				PageNumber: &nP,
-				Filter:     request.Filter,
-			},
+			request,
 			opts...,
 		)
 	}

@@ -22,10 +22,10 @@ resource "konnect_gateway_plugin_ai_prompt_guard" "my_gatewaypluginaipromptguard
     deny_patterns = [
       "..."
     ]
-    genai_category        = "realtime/generation"
-    llm_format            = "gemini"
+    genai_category        = "text/generation"
+    llm_format            = "openai"
     match_all_roles       = false
-    max_request_body_size = 10
+    max_request_body_size = 1048576
   }
   consumer = {
     id = "...my_id..."
@@ -35,7 +35,7 @@ resource "konnect_gateway_plugin_ai_prompt_guard" "my_gatewaypluginaipromptguard
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 7
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

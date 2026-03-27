@@ -60,6 +60,7 @@ func (e *Tier) UnmarshalJSON(data []byte) error {
 // Tiered - Capacity tiers with pre-configured size and performance characteristics.
 type Tiered struct {
 	// Type of capacity configuration.
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	kind string `const:"tiered" json:"kind"`
 	// Capacity tier that determines both cache size and performance characteristics:
 	// - micro: ~0.5 GiB capacity

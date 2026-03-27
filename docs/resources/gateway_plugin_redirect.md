@@ -15,9 +15,9 @@ GatewayPluginRedirect Resource
 ```terraform
 resource "konnect_gateway_plugin_redirect" "my_gatewaypluginredirect" {
   config = {
-    keep_incoming_path = true
+    keep_incoming_path = false
     location           = "...my_location..."
-    status_code        = 448
+    status_code        = 301
   }
   consumer = {
     id = "...my_id..."
@@ -27,7 +27,7 @@ resource "konnect_gateway_plugin_redirect" "my_gatewaypluginredirect" {
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 6
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

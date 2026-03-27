@@ -37,6 +37,7 @@ func (e *BackendClusterAuthenticationSaslScramSensitiveDataAwareAlgorithm) Unmar
 
 // BackendClusterAuthenticationSaslScramSensitiveDataAware - SASL/SCRAM authentication scheme for the backend cluster without requiring sensitive password data.
 type BackendClusterAuthenticationSaslScramSensitiveDataAware struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"sasl_scram" json:"type"`
 	// The algorithm used for SASL/SCRAM authentication.
 	Algorithm BackendClusterAuthenticationSaslScramSensitiveDataAwareAlgorithm `json:"algorithm"`

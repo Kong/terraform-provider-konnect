@@ -15,33 +15,33 @@ GatewayPluginXMLThreatProtection Resource
 ```terraform
 resource "konnect_gateway_plugin_xml_threat_protection" "my_gatewaypluginxmlthreatprotection" {
   config = {
-    allow_dtd = true
+    allow_dtd = false
     allowed_content_types = [
       "..."
     ]
-    attribute             = 6
-    bla_max_amplification = 6.05
-    bla_threshold         = 1030
-    buffer                = 7
+    attribute             = 1048576
+    bla_max_amplification = 100
+    bla_threshold         = 8388608
+    buffer                = 1048576
     checked_content_types = [
       "..."
     ]
-    comment         = 1
-    document        = 4
-    entity          = 1
-    entityname      = 5
-    entityproperty  = 7
-    localname       = 4
-    max_attributes  = 6
-    max_children    = 7
-    max_depth       = 8
-    max_namespaces  = 6
-    namespace_aware = false
-    namespaceuri    = 0
-    pidata          = 10
-    pitarget        = 9
-    prefix          = 3
-    text            = 3
+    comment         = 1024
+    document        = 10485760
+    entity          = 1024
+    entityname      = 1024
+    entityproperty  = 1024
+    localname       = 1024
+    max_attributes  = 100
+    max_children    = 100
+    max_depth       = 50
+    max_namespaces  = 20
+    namespace_aware = true
+    namespaceuri    = 1024
+    pidata          = 1024
+    pitarget        = 1024
+    prefix          = 1024
+    text            = 1048576
   }
   consumer = {
     id = "...my_id..."

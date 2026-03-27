@@ -22,8 +22,8 @@ resource "konnect_gateway_plugin_injection_protection" "my_gatewayplugininjectio
       }
     ]
     enforcement_mode  = "block"
-    error_message     = "...my_error_message..."
-    error_status_code = 416
+    error_message     = "Bad Request"
+    error_status_code = 400
     injection_types = [
       "sql"
     ]
@@ -33,7 +33,7 @@ resource "konnect_gateway_plugin_injection_protection" "my_gatewayplugininjectio
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 9
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

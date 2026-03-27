@@ -15,12 +15,12 @@ GatewayPluginPrometheus Resource
 ```terraform
 resource "konnect_gateway_plugin_prometheus" "my_gatewaypluginprometheus" {
   config = {
-    ai_metrics              = true
+    ai_metrics              = false
     bandwidth_metrics       = false
     latency_metrics         = false
-    per_consumer            = true
-    status_code_metrics     = true
-    upstream_health_metrics = true
+    per_consumer            = false
+    status_code_metrics     = false
+    upstream_health_metrics = false
     wasm_metrics            = true
   }
   consumer = {

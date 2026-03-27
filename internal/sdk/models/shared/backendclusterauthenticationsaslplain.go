@@ -8,6 +8,7 @@ import (
 
 // BackendClusterAuthenticationSaslPlain - SASL/PLAIN authentication scheme for the backend cluster.
 type BackendClusterAuthenticationSaslPlain struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"sasl_plain" json:"type"`
 	// A literal value or a reference to an existing secret as a template string expression.
 	// The value is stored and returned by the API as-is, not treated as sensitive information.
