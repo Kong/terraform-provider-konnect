@@ -1,13 +1,12 @@
 # Changelog
 
 ## 3.12.0
-> Released 2026/03/??
+> Released 2026/03/27
 
 # Features
 * Add support for client authentication on `konnect_event_gateway_listener_policy_tls_server` using `konnect_event_gateway_tls_trust_bundle` resource
 * Add support for provisioning custom domain for serverless gateway using `konnect_cloud_gateway_custom_domain` resource with `kind = "serverless.v1"`
 * Add support for "Debug Session Creator" role in `konnect_team_role` resource
-
 
 ## 3.11.0
 > Released 2026/03/12
