@@ -28576,7 +28576,6 @@ components:
         - type
       x-min-runtime-version: '1.1'
       x-speakeasy-param-computed: false
-      x-speakeasy-terraform-ignore: true
     TLSTrustBundleReference:
       description: |
         A reference to a TLS trust bundle resource.
@@ -28929,7 +28928,6 @@ components:
             - key
           x-min-runtime-version: '1.1'
           x-speakeasy-param-computed: false
-          x-speakeasy-terraform-ignore: true
       required:
         - enabled
     BackendMetadataUpdateIntervalSeconds:
@@ -29559,13 +29557,11 @@ components:
                     description: An array of the URI Subject Alternative Names from the certificate.
               x-min-runtime-version: '1.1'
               x-speakeasy-param-computed: false
-              x-speakeasy-terraform-ignore: true
           required:
             - mode
             - tls_trust_bundles
           x-min-runtime-version: '1.1'
           x-speakeasy-param-computed: false
-          x-speakeasy-terraform-ignore: true
       required:
         - certificates
     EventGatewayTLSListenerPolicyConfig:
@@ -29652,13 +29648,11 @@ components:
                     description: An array of the URI Subject Alternative Names from the certificate.
               x-min-runtime-version: '1.1'
               x-speakeasy-param-computed: false
-              x-speakeasy-terraform-ignore: true
           required:
             - mode
             - tls_trust_bundles
           x-min-runtime-version: '1.1'
           x-speakeasy-param-computed: false
-          x-speakeasy-terraform-ignore: true
       required:
         - certificates
     TLSCertificateSensitiveDataAware:
@@ -29862,7 +29856,6 @@ components:
             - type
           x-min-runtime-version: '1.1'
           x-speakeasy-param-computed: false
-          x-speakeasy-terraform-ignore: true
       additionalProperties: false
       required:
         - type
