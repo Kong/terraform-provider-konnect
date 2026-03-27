@@ -9,6 +9,7 @@ import (
 // EventGatewayEncryptPolicy - Encrypts Kafka records or keys using AES_256_GCM. Keys are therefore 256 bits long.
 type EventGatewayEncryptPolicy struct {
 	// The type name of the policy.
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"encrypt" json:"type"`
 	// A unique user-defined name of the policy.
 	Name *string `json:"name,omitempty"`

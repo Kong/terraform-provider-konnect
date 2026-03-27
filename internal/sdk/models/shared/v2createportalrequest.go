@@ -122,3 +122,6 @@ func (v *V2CreatePortalRequest) GetLabels() map[string]*string {
 	}
 	return v.Labels
 }
+
+// #region class-body-v2createportalrequest
+// #endregion class-body-v2createportalrequest

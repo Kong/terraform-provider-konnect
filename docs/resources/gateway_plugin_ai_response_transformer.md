@@ -17,10 +17,10 @@ resource "konnect_gateway_plugin_ai_response_transformer" "my_gatewaypluginaires
   config = {
     http_proxy_host  = "...my_http_proxy_host..."
     http_proxy_port  = 51351
-    http_timeout     = 8
+    http_timeout     = 60000
     https_proxy_host = "...my_https_proxy_host..."
     https_proxy_port = 17075
-    https_verify     = false
+    https_verify     = true
     llm = {
       auth = {
         allow_override             = false
@@ -40,14 +40,14 @@ resource "konnect_gateway_plugin_ai_response_transformer" "my_gatewaypluginaires
       }
       description = "...my_description..."
       logging = {
-        log_payloads   = true
-        log_statistics = true
+        log_payloads   = false
+        log_statistics = false
       }
       model = {
         name = "...my_name..."
         options = {
           anthropic_version   = "...my_anthropic_version..."
-          azure_api_version   = "...my_azure_api_version..."
+          azure_api_version   = "2023-05-15"
           azure_deployment_id = "...my_azure_deployment_id..."
           azure_instance      = "...my_azure_instance..."
           bedrock = {
@@ -60,11 +60,11 @@ resource "konnect_gateway_plugin_ai_response_transformer" "my_gatewaypluginaires
             video_output_s3_uri        = "...my_video_output_s3_uri..."
           }
           cohere = {
-            embedding_input_type = "search_document"
+            embedding_input_type = "classification"
             wait_for_model       = false
           }
           dashscope = {
-            international = false
+            international = true
           }
           embeddings_dimensions = 4
           gemini = {
@@ -91,10 +91,10 @@ resource "konnect_gateway_plugin_ai_response_transformer" "my_gatewaypluginaires
         provider = "cohere"
       }
       route_type = "llm/v1/completions"
-      weight     = 31016
+      weight     = 100
     }
-    max_request_body_size                = 3
-    parse_llm_response_json_instructions = true
+    max_request_body_size                = 1048576
+    parse_llm_response_json_instructions = false
     prompt                               = "...my_prompt..."
     transformation_extract_pattern       = "...my_transformation_extract_pattern..."
   }

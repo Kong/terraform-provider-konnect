@@ -62,6 +62,7 @@ func (b *BrokerHostFormat) GetType() *ForwardToClusterBySNIConfigType {
 
 // ForwardToClusterBySNIConfig - The configuration to forward requests to virtual clusters configured with SNI routing.
 type ForwardToClusterBySNIConfig struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"sni" json:"type"`
 	// Optional suffix for TLS SNI validation.
 	//

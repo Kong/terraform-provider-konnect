@@ -8,6 +8,7 @@ import (
 
 // EventGatewayModifyHeaderSetAction - An action that sets a header key and value.
 type EventGatewayModifyHeaderSetAction struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	op string `const:"set" json:"op"`
 	// The key of the header to set.
 	Key string `json:"key"`

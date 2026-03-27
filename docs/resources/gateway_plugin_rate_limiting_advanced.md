@@ -21,18 +21,18 @@ resource "konnect_gateway_plugin_rate_limiting_advanced" "my_gatewaypluginrateli
     consumer_groups = [
       "..."
     ]
-    dictionary_name         = "...my_dictionary_name..."
+    dictionary_name         = "kong_rate_limiting_counters"
     disable_penalty         = false
     enforce_consumer_groups = false
-    error_code              = 3.07
-    error_message           = "...my_error_message..."
+    error_code              = 429
+    error_message           = "API rate limit exceeded"
     header_name             = "...my_header_name..."
-    hide_client_headers     = true
+    hide_client_headers     = false
     identifier              = "consumer"
     limit = [
       4.52
     ]
-    lock_dictionary_name = "...my_lock_dictionary_name..."
+    lock_dictionary_name = "kong_locks"
     namespace            = "...my_namespace..."
     path                 = "...my_path..."
     redis = {
@@ -50,47 +50,47 @@ resource "konnect_gateway_plugin_rate_limiting_advanced" "my_gatewaypluginrateli
         azure_tenant_id          = "...my_azure_tenant_id..."
         gcp_service_account_json = "...my_gcp_service_account_json..."
       }
-      cluster_max_redirections = 7
+      cluster_max_redirections = 5
       cluster_nodes = [
         {
-          ip   = "...my_ip..."
-          port = 54354
+          ip   = "127.0.0.1"
+          port = 6379
         }
       ]
-      connect_timeout       = 374037696
+      connect_timeout       = 2000
       connection_is_proxied = false
-      database              = 3
-      host                  = "...my_host..."
+      database              = 0
+      host                  = "127.0.0.1"
       keepalive_backlog     = 788639936
-      keepalive_pool_size   = 1875079515
+      keepalive_pool_size   = 256
       password              = "...my_password..."
-      port                  = 63483
-      read_timeout          = 382621324
+      port                  = 6379
+      read_timeout          = 2000
       redis_proxy_type      = "envoy_v1.31"
-      send_timeout          = 1710404950
+      send_timeout          = 2000
       sentinel_master       = "...my_sentinel_master..."
       sentinel_nodes = [
         {
-          host = "...my_host..."
-          port = 57176
+          host = "127.0.0.1"
+          port = 6379
         }
       ]
       sentinel_password = "...my_sentinel_password..."
       sentinel_role     = "any"
       sentinel_username = "...my_sentinel_username..."
       server_name       = "...my_server_name..."
-      ssl               = true
-      ssl_verify        = true
+      ssl               = false
+      ssl_verify        = false
       username          = "...my_username..."
     }
-    retry_after_jitter_max = 9.23
-    strategy               = "cluster"
+    retry_after_jitter_max = 0
+    strategy               = "local"
     sync_rate              = 4.11
     throttling = {
       enabled     = false
-      interval    = 248813.69
-      queue_limit = 503655.16
-      retry_times = 989778.57
+      interval    = 5
+      queue_limit = 5
+      retry_times = 3
     }
     window_size = [
       4.61

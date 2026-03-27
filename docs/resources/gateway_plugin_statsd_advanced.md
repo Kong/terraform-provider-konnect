@@ -18,8 +18,8 @@ resource "konnect_gateway_plugin_statsd_advanced" "my_gatewaypluginstatsdadvance
     allow_status_codes = [
       "..."
     ]
-    consumer_identifier_default = "username"
-    host                        = "...my_host..."
+    consumer_identifier_default = "custom_id"
+    host                        = "localhost"
     hostname_in_prefix          = false
     metrics = [
       {
@@ -31,20 +31,20 @@ resource "konnect_gateway_plugin_statsd_advanced" "my_gatewaypluginstatsdadvance
         workspace_identifier = "workspace_name"
       }
     ]
-    port   = 36120
-    prefix = "...my_prefix..."
+    port   = 8125
+    prefix = "kong"
     queue = {
       concurrency_limit    = 1
       initial_retry_delay  = 603656.13
-      max_batch_size       = 216641
+      max_batch_size       = 1
       max_bytes            = 3
-      max_coalescing_delay = 1405.3
-      max_entries          = 814148
-      max_retry_delay      = 686342.11
-      max_retry_time       = 8.95
+      max_coalescing_delay = 1
+      max_entries          = 10000
+      max_retry_delay      = 60
+      max_retry_time       = 60
     }
-    service_identifier_default   = "service_name"
-    udp_packet_size              = 19205.04
+    service_identifier_default   = "service_name_or_host"
+    udp_packet_size              = 0
     use_tcp                      = false
     workspace_identifier_default = "workspace_id"
   }
@@ -53,7 +53,7 @@ resource "konnect_gateway_plugin_statsd_advanced" "my_gatewaypluginstatsdadvance
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 7
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

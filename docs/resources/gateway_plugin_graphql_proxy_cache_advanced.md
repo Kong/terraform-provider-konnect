@@ -15,10 +15,10 @@ GatewayPluginGraphqlProxyCacheAdvanced Resource
 ```terraform
 resource "konnect_gateway_plugin_graphql_proxy_cache_advanced" "my_gatewayplugingraphqlproxycacheadvanced" {
   config = {
-    bypass_on_err = true
-    cache_ttl     = 7
+    bypass_on_err = false
+    cache_ttl     = 300
     memory = {
-      dictionary_name = "...my_dictionary_name..."
+      dictionary_name = "kong_db_cache"
     }
     redis = {
       cloud_authentication = {
@@ -35,35 +35,35 @@ resource "konnect_gateway_plugin_graphql_proxy_cache_advanced" "my_gatewayplugin
         azure_tenant_id          = "...my_azure_tenant_id..."
         gcp_service_account_json = "...my_gcp_service_account_json..."
       }
-      cluster_max_redirections = 8
+      cluster_max_redirections = 5
       cluster_nodes = [
         {
-          ip   = "...my_ip..."
-          port = 438
+          ip   = "127.0.0.1"
+          port = 6379
         }
       ]
-      connect_timeout       = 974295670
-      connection_is_proxied = true
+      connect_timeout       = 2000
+      connection_is_proxied = false
       database              = 0
-      host                  = "...my_host..."
+      host                  = "127.0.0.1"
       keepalive_backlog     = 329763938
-      keepalive_pool_size   = 353109135
+      keepalive_pool_size   = 256
       password              = "...my_password..."
-      port                  = 47126
-      read_timeout          = 1749476727
-      send_timeout          = 2078135811
+      port                  = 6379
+      read_timeout          = 2000
+      send_timeout          = 2000
       sentinel_master       = "...my_sentinel_master..."
       sentinel_nodes = [
         {
-          host = "...my_host..."
-          port = 41845
+          host = "127.0.0.1"
+          port = 6379
         }
       ]
       sentinel_password = "...my_sentinel_password..."
       sentinel_role     = "slave"
       sentinel_username = "...my_sentinel_username..."
       server_name       = "...my_server_name..."
-      ssl               = true
+      ssl               = false
       ssl_verify        = false
       username          = "...my_username..."
     }
@@ -77,7 +77,7 @@ resource "konnect_gateway_plugin_graphql_proxy_cache_advanced" "my_gatewayplugin
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 6
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

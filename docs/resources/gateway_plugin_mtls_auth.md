@@ -17,29 +17,29 @@ resource "konnect_gateway_plugin_mtls_auth" "my_gatewaypluginmtlsauth" {
   config = {
     allow_partial_chain    = false
     anonymous              = "...my_anonymous..."
-    authenticated_group_by = "DN"
+    authenticated_group_by = "CN"
     ca_certificates = [
       "..."
     ]
-    cache_ttl      = 5.53
-    cert_cache_ttl = 4.84
+    cache_ttl      = 60
+    cert_cache_ttl = 60000
     consumer_by = [
       "username"
     ]
     default_consumer      = "...my_default_consumer..."
     http_proxy_host       = "...my_http_proxy_host..."
     http_proxy_port       = 30482
-    http_timeout          = 4.02
+    http_timeout          = 30000
     https_proxy_host      = "...my_https_proxy_host..."
     https_proxy_port      = 17238
-    revocation_check_mode = "STRICT"
-    send_ca_dn            = true
-    skip_consumer_lookup  = true
+    revocation_check_mode = "IGNORE_CA_ERROR"
+    send_ca_dn            = false
+    skip_consumer_lookup  = false
     ssl_verify            = false
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 8
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

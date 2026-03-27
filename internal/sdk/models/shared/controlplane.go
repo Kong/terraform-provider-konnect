@@ -9,6 +9,7 @@ import (
 // ControlPlane - Control Plane is the owner for the add-on.
 type ControlPlane struct {
 	// Type of owner for the add-on.
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	kind string `const:"control-plane" json:"kind"`
 	// ID of the control-plane that owns this add-on.
 	ControlPlaneID string `json:"control_plane_id"`

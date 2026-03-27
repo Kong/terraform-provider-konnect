@@ -188,14 +188,11 @@ func (s *SystemAccounts) GetSystemAccounts(ctx context.Context, request operatio
 		if len(arr) < l {
 			return nil, nil
 		}
+		request.PageNumber = &nP
 
 		return s.GetSystemAccounts(
 			ctx,
-			operations.GetSystemAccountsRequest{
-				PageSize:   request.PageSize,
-				PageNumber: &nP,
-				Filter:     request.Filter,
-			},
+			request,
 			opts...,
 		)
 	}

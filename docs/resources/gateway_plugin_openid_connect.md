@@ -32,10 +32,10 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
       "..."
     ]
     authorization_cookie_domain    = "...my_authorization_cookie_domain..."
-    authorization_cookie_http_only = false
-    authorization_cookie_name      = "...my_authorization_cookie_name..."
-    authorization_cookie_path      = "...my_authorization_cookie_path..."
-    authorization_cookie_same_site = "Strict"
+    authorization_cookie_http_only = true
+    authorization_cookie_name      = "authorization"
+    authorization_cookie_path      = "/"
+    authorization_cookie_same_site = "Default"
     authorization_cookie_secure    = false
     authorization_endpoint         = "...my_authorization_endpoint..."
     authorization_query_args_client = [
@@ -47,29 +47,29 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     authorization_query_args_values = [
       "..."
     ]
-    authorization_rolling_timeout = 1.26
+    authorization_rolling_timeout = 600
     bearer_token_cookie_name      = "...my_bearer_token_cookie_name..."
     bearer_token_param_type = [
       "body"
     ]
     by_username_ignore_case = false
     cache_introspection     = true
-    cache_token_exchange    = false
-    cache_tokens            = false
+    cache_token_exchange    = true
+    cache_tokens            = true
     cache_tokens_salt       = "...my_cache_tokens_salt..."
-    cache_ttl               = 4.51
+    cache_ttl               = 3600
     cache_ttl_max           = 8.18
     cache_ttl_min           = 0.48
     cache_ttl_neg           = 5.85
     cache_ttl_resurrect     = 0.5
-    cache_user_info         = false
+    cache_user_info         = true
     claims_forbidden = [
       "..."
     ]
     client_alg = [
       "HS384"
     ]
-    client_arg = "...my_client_arg..."
+    client_arg = "client_id"
     client_auth = [
       "client_secret_post"
     ]
@@ -121,7 +121,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
         aws_access_key_id        = "...my_aws_access_key_id..."
         aws_assume_role_arn      = "...my_aws_assume_role_arn..."
         aws_cache_name           = "...my_aws_cache_name..."
-        aws_is_serverless        = false
+        aws_is_serverless        = true
         aws_region               = "...my_aws_region..."
         aws_role_session_name    = "...my_aws_role_session_name..."
         aws_secret_access_key    = "...my_aws_secret_access_key..."
@@ -133,33 +133,33 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
       cluster_max_redirections = 5
       cluster_nodes = [
         {
-          ip   = "...my_ip..."
-          port = 39126
+          ip   = "127.0.0.1"
+          port = 6379
         }
       ]
-      connect_timeout       = 1007376275
+      connect_timeout       = 2000
       connection_is_proxied = false
-      database              = 6
-      host                  = "...my_host..."
+      database              = 0
+      host                  = "127.0.0.1"
       keepalive_backlog     = 513691764
-      keepalive_pool_size   = 742855137
+      keepalive_pool_size   = 256
       password              = "...my_password..."
-      port                  = 25288
-      read_timeout          = 1652724306
-      send_timeout          = 24704322
+      port                  = 6379
+      read_timeout          = 2000
+      send_timeout          = 2000
       sentinel_master       = "...my_sentinel_master..."
       sentinel_nodes = [
         {
-          host = "...my_host..."
-          port = 5690
+          host = "127.0.0.1"
+          port = 6379
         }
       ]
       sentinel_password = "...my_sentinel_password..."
       sentinel_role     = "any"
       sentinel_username = "...my_sentinel_username..."
       server_name       = "...my_server_name..."
-      ssl               = true
-      ssl_verify        = true
+      ssl               = false
+      ssl_verify        = false
       username          = "...my_username..."
     }
     cluster_cache_strategy = "off"
@@ -172,8 +172,8 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     consumer_groups_claim = [
       "..."
     ]
-    consumer_groups_optional = true
-    consumer_optional        = true
+    consumer_groups_optional = false
+    consumer_optional        = false
     credential_claim = [
       "..."
     ]
@@ -206,16 +206,16 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     downstream_session_id_header        = "...my_downstream_session_id_header..."
     downstream_user_info_header         = "...my_downstream_user_info_header..."
     downstream_user_info_jwt_header     = "...my_downstream_user_info_jwt_header..."
-    dpop_proof_lifetime                 = 9.34
-    dpop_use_nonce                      = true
-    enable_hs_signatures                = true
+    dpop_proof_lifetime                 = 300
+    dpop_use_nonce                      = false
+    enable_hs_signatures                = false
     end_session_endpoint                = "...my_end_session_endpoint..."
-    expose_error_code                   = false
+    expose_error_code                   = true
     extra_jwks_uris = [
       "..."
     ]
-    forbidden_destroy_session = false
-    forbidden_error_message   = "...my_forbidden_error_message..."
+    forbidden_destroy_session = true
+    forbidden_error_message   = "Forbidden"
     forbidden_redirect_uri = [
       "..."
     ]
@@ -225,7 +225,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     groups_required = [
       "..."
     ]
-    hide_credentials          = true
+    hide_credentials          = false
     http_proxy                = "...my_http_proxy..."
     http_proxy_authorization  = "...my_http_proxy_authorization..."
     http_version              = 2.54
@@ -238,9 +238,9 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     ignore_signature = [
       "refresh_token"
     ]
-    introspect_jwt_tokens              = true
+    introspect_jwt_tokens              = false
     introspection_accept               = "application/json"
-    introspection_check_active         = false
+    introspection_check_active         = true
     introspection_endpoint             = "...my_introspection_endpoint..."
     introspection_endpoint_auth_method = "client_secret_basic"
     introspection_headers_client = [
@@ -252,7 +252,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     introspection_headers_values = [
       "..."
     ]
-    introspection_hint = "...my_introspection_hint..."
+    introspection_hint = "access_token"
     introspection_post_args_client = [
       "..."
     ]
@@ -265,20 +265,20 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     introspection_post_args_values = [
       "..."
     ]
-    introspection_token_param_name = "...my_introspection_token_param_name..."
+    introspection_token_param_name = "token"
     issuer                         = "...my_issuer..."
     issuers_allowed = [
       "..."
     ]
-    jwt_session_claim  = "...my_jwt_session_claim..."
+    jwt_session_claim  = "sid"
     jwt_session_cookie = "...my_jwt_session_cookie..."
     keepalive          = true
-    leeway             = 4.43
-    login_action       = "redirect"
+    leeway             = 0
+    login_action       = "upstream"
     login_methods = [
       "authorization_code"
     ]
-    login_redirect_mode = "query"
+    login_redirect_mode = "fragment"
     login_redirect_uri = [
       "..."
     ]
@@ -293,9 +293,9 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     logout_redirect_uri = [
       "..."
     ]
-    logout_revoke               = true
-    logout_revoke_access_token  = false
-    logout_revoke_refresh_token = false
+    logout_revoke               = false
+    logout_revoke_access_token  = true
+    logout_revoke_refresh_token = true
     logout_uri_suffix           = "...my_logout_uri_suffix..."
     max_age                     = 0.81
     mtls_introspection_endpoint = "...my_mtls_introspection_endpoint..."
@@ -305,9 +305,9 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     password_param_type = [
       "body"
     ]
-    preserve_query_args                               = true
+    preserve_query_args                               = false
     proof_of_possession_auth_methods_validation       = true
-    proof_of_possession_dpop                          = "optional"
+    proof_of_possession_dpop                          = "off"
     proof_of_possession_mtls                          = "off"
     pushed_authorization_request_endpoint             = "...my_pushed_authorization_request_endpoint..."
     pushed_authorization_request_endpoint_auth_method = "tls_client_auth"
@@ -320,7 +320,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
         aws_access_key_id        = "...my_aws_access_key_id..."
         aws_assume_role_arn      = "...my_aws_assume_role_arn..."
         aws_cache_name           = "...my_aws_cache_name..."
-        aws_is_serverless        = false
+        aws_is_serverless        = true
         aws_region               = "...my_aws_region..."
         aws_role_session_name    = "...my_aws_role_session_name..."
         aws_secret_access_key    = "...my_aws_secret_access_key..."
@@ -329,29 +329,29 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
         azure_tenant_id          = "...my_azure_tenant_id..."
         gcp_service_account_json = "...my_gcp_service_account_json..."
       }
-      cluster_max_redirections = 9
+      cluster_max_redirections = 5
       cluster_nodes = [
         {
-          ip   = "...my_ip..."
-          port = 55819
+          ip   = "127.0.0.1"
+          port = 6379
         }
       ]
-      connect_timeout       = 829309575
-      connection_is_proxied = true
-      database              = 2
-      host                  = "...my_host..."
+      connect_timeout       = 2000
+      connection_is_proxied = false
+      database              = 0
+      host                  = "127.0.0.1"
       keepalive_backlog     = 1420640006
-      keepalive_pool_size   = 147781497
+      keepalive_pool_size   = 256
       password              = "...my_password..."
-      port                  = 20220
+      port                  = 6379
       prefix                = "...my_prefix..."
-      read_timeout          = 2120279470
-      send_timeout          = 523577252
+      read_timeout          = 2000
+      send_timeout          = 2000
       sentinel_master       = "...my_sentinel_master..."
       sentinel_nodes = [
         {
-          host = "...my_host..."
-          port = 58352
+          host = "127.0.0.1"
+          port = 6379
         }
       ]
       sentinel_password = "...my_sentinel_password..."
@@ -359,11 +359,11 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
       sentinel_username = "...my_sentinel_username..."
       server_name       = "...my_server_name..."
       socket            = "...my_socket..."
-      ssl               = true
-      ssl_verify        = true
+      ssl               = false
+      ssl_verify        = false
       username          = "...my_username..."
     }
-    rediscovery_lifetime     = 0.82
+    rediscovery_lifetime     = 30
     refresh_token_param_name = "...my_refresh_token_param_name..."
     refresh_token_param_type = [
       "header"
@@ -372,15 +372,15 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     require_proof_key_for_code_exchange   = true
     require_pushed_authorization_requests = true
     require_signed_request_object         = false
-    resolve_distributed_claims            = true
-    response_mode                         = "fragment.jwt"
+    resolve_distributed_claims            = false
+    response_mode                         = "query"
     response_type = [
       "..."
     ]
     reverify                        = false
     revocation_endpoint             = "...my_revocation_endpoint..."
     revocation_endpoint_auth_method = "tls_client_auth"
-    revocation_token_param_name     = "...my_revocation_token_param_name..."
+    revocation_token_param_name     = "token"
     roles_claim = [
       "..."
     ]
@@ -398,46 +398,46 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
       "..."
     ]
     search_user_info         = false
-    session_absolute_timeout = 6.27
-    session_audience         = "...my_session_audience..."
+    session_absolute_timeout = 86400
+    session_audience         = "default"
     session_bind = [
       "scheme"
     ]
     session_cookie_domain             = "...my_session_cookie_domain..."
-    session_cookie_http_only          = false
-    session_cookie_name               = "...my_session_cookie_name..."
-    session_cookie_path               = "...my_session_cookie_path..."
-    session_cookie_same_site          = "Default"
+    session_cookie_http_only          = true
+    session_cookie_name               = "session"
+    session_cookie_path               = "/"
+    session_cookie_same_site          = "Lax"
     session_cookie_secure             = true
     session_enforce_same_subject      = false
     session_hash_storage_key          = false
     session_hash_subject              = false
-    session_idling_timeout            = 9.33
-    session_memcached_host            = "...my_session_memcached_host..."
-    session_memcached_port            = 10230
+    session_idling_timeout            = 900
+    session_memcached_host            = "127.0.0.1"
+    session_memcached_port            = 11211
     session_memcached_prefix          = "...my_session_memcached_prefix..."
     session_memcached_socket          = "...my_session_memcached_socket..."
-    session_memcached_ssl             = true
+    session_memcached_ssl             = false
     session_memcached_ssl_verify      = false
     session_remember                  = false
-    session_remember_absolute_timeout = 6.89
-    session_remember_cookie_name      = "...my_session_remember_cookie_name..."
-    session_remember_rolling_timeout  = 2.91
+    session_remember_absolute_timeout = 2592000
+    session_remember_cookie_name      = "remember"
+    session_remember_rolling_timeout  = 604800
     session_request_headers = [
       "audience"
     ]
     session_response_headers = [
       "absolute-timeout"
     ]
-    session_rolling_timeout       = 5.68
+    session_rolling_timeout       = 3600
     session_secret                = "...my_session_secret..."
-    session_storage               = "memcache"
-    session_store_metadata        = true
-    ssl_verify                    = true
-    timeout                       = 0.75
+    session_storage               = "cookie"
+    session_store_metadata        = false
+    ssl_verify                    = false
+    timeout                       = 10000
     tls_client_auth_cert_id       = "...my_tls_client_auth_cert_id..."
-    tls_client_auth_ssl_verify    = false
-    token_cache_key_include_scope = true
+    tls_client_auth_ssl_verify    = true
+    token_cache_key_include_scope = false
     token_endpoint                = "...my_token_endpoint..."
     token_endpoint_auth_method    = "client_secret_post"
     token_exchange_endpoint       = "...my_token_exchange_endpoint..."
@@ -466,15 +466,15 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     token_post_args_values = [
       "..."
     ]
-    unauthorized_destroy_session = false
-    unauthorized_error_message   = "...my_unauthorized_error_message..."
+    unauthorized_destroy_session = true
+    unauthorized_error_message   = "Unauthorized"
     unauthorized_redirect_uri = [
       "..."
     ]
     unexpected_redirect_uri = [
       "..."
     ]
-    upstream_access_token_header     = "...my_upstream_access_token_header..."
+    upstream_access_token_header     = "authorization:bearer"
     upstream_access_token_jwk_header = "...my_upstream_access_token_jwk_header..."
     upstream_headers_claims = [
       "..."
@@ -510,11 +510,11 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     userinfo_query_args_values = [
       "..."
     ]
-    using_pseudo_issuer = true
+    using_pseudo_issuer = false
     verify_claims       = true
-    verify_nonce        = false
-    verify_parameters   = true
-    verify_signature    = false
+    verify_nonce        = true
+    verify_parameters   = false
+    verify_signature    = true
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 7

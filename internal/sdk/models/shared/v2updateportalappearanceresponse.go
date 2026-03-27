@@ -73,3 +73,6 @@ func (v *V2UpdatePortalAppearanceResponse) GetImages() *V2AppearanceImages {
 	}
 	return v.Images
 }
+
+// #region class-body-v2updateportalappearanceresponse
+// #endregion class-body-v2updateportalappearanceresponse

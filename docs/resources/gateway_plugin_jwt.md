@@ -25,8 +25,8 @@ resource "konnect_gateway_plugin_jwt" "my_gatewaypluginjwt" {
     header_names = [
       "..."
     ]
-    key_claim_name     = "...my_key_claim_name..."
-    maximum_expiration = 24905725.8
+    key_claim_name     = "iss"
+    maximum_expiration = 0
     realm              = "...my_realm..."
     run_on_preflight   = true
     secret_is_base64   = false

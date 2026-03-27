@@ -8,6 +8,7 @@ import (
 
 // EventGatewayStaticKeySource - A key source that uses static symmetric keys.
 type EventGatewayStaticKeySource struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"static" json:"type"`
 }
 

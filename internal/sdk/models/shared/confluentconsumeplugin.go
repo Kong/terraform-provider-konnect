@@ -456,6 +456,9 @@ func (c *ConfluentConsumePluginOauth2) GetUsername() *string {
 	return c.Username
 }
 
+// #region class-body-confluentconsumepluginoauth2
+// #endregion class-body-confluentconsumepluginoauth2
+
 // ConfluentConsumePluginAuthMethod - The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body.
 type ConfluentConsumePluginAuthMethod string
 
@@ -628,6 +631,9 @@ func (c *ConfluentConsumePluginOauth2Client) GetTimeout() *int64 {
 	}
 	return c.Timeout
 }
+
+// #region class-body-confluentconsumepluginoauth2client
+// #endregion class-body-confluentconsumepluginoauth2client
 
 type ConfluentConsumePluginAuthentication struct {
 	Basic *ConfluentConsumePluginBasic `json:"basic"`
@@ -962,6 +968,9 @@ func (c *ConfluentConsumePluginConfigOauth2) GetUsername() *string {
 	return c.Username
 }
 
+// #region class-body-confluentconsumepluginconfigoauth2
+// #endregion class-body-confluentconsumepluginconfigoauth2
+
 // ConfluentConsumePluginConfigAuthMethod - The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body.
 type ConfluentConsumePluginConfigAuthMethod string
 
@@ -1134,6 +1143,9 @@ func (c *ConfluentConsumePluginConfigOauth2Client) GetTimeout() *int64 {
 	}
 	return c.Timeout
 }
+
+// #region class-body-confluentconsumepluginconfigoauth2client
+// #endregion class-body-confluentconsumepluginconfigoauth2client
 
 type ConfluentConsumePluginConfigAuthentication struct {
 	Basic *ConfluentConsumePluginConfigBasic `json:"basic"`
@@ -1593,9 +1605,10 @@ type ConfluentConsumePlugin struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                         `default:"null" json:"instance_name"`
-	name         string                          `const:"confluent-consume" json:"name"`
-	Ordering     *ConfluentConsumePluginOrdering `json:"ordering"`
+	InstanceName *string `default:"null" json:"instance_name"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	name     string                          `const:"confluent-consume" json:"name"`
+	Ordering *ConfluentConsumePluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []ConfluentConsumePluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.

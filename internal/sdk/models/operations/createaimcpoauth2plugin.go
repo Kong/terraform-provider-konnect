@@ -39,6 +39,9 @@ func (c *CreateAimcpoauth2PluginRequest) GetAiMcpOauth2Plugin() shared.AiMcpOaut
 	return c.AiMcpOauth2Plugin
 }
 
+// #region class-body-createaimcpoauth2pluginrequest
+// #endregion class-body-createaimcpoauth2pluginrequest
+
 type CreateAimcpoauth2PluginResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -97,3 +100,6 @@ func (c *CreateAimcpoauth2PluginResponse) GetGatewayUnauthorizedError() *shared.
 	}
 	return c.GatewayUnauthorizedError
 }
+
+// #region class-body-createaimcpoauth2pluginresponse
+// #endregion class-body-createaimcpoauth2pluginresponse

@@ -49,7 +49,7 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     access_token_introspection_expiry_claim = [
       "..."
     ]
-    access_token_introspection_hint = "...my_access_token_introspection_hint..."
+    access_token_introspection_hint = "access_token"
     access_token_introspection_issuer_claim = [
       "..."
     ]
@@ -59,7 +59,7 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     access_token_introspection_jwt_claim = [
       "..."
     ]
-    access_token_introspection_leeway = 6.18
+    access_token_introspection_leeway = 0
     access_token_introspection_notbefore_claim = [
       "..."
     ]
@@ -86,7 +86,7 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
       "..."
     ]
     access_token_introspection_timeout = 4.24
-    access_token_issuer                = "...my_access_token_issuer..."
+    access_token_issuer                = "kong"
     access_token_issuer_claim = [
       "..."
     ]
@@ -99,15 +99,15 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     }
     access_token_jwks_uri_client_password = "...my_access_token_jwks_uri_client_password..."
     access_token_jwks_uri_client_username = "...my_access_token_jwks_uri_client_username..."
-    access_token_jwks_uri_rotate_period   = 0.18
-    access_token_keyset                   = "...my_access_token_keyset..."
+    access_token_jwks_uri_rotate_period   = 0
+    access_token_keyset                   = "kong"
     access_token_keyset_client_certificate = {
       id = "...my_id..."
     }
     access_token_keyset_client_password = "...my_access_token_keyset_client_password..."
     access_token_keyset_client_username = "...my_access_token_keyset_client_username..."
-    access_token_keyset_rotate_period   = 4.53
-    access_token_leeway                 = 0.51
+    access_token_keyset_rotate_period   = 0
+    access_token_leeway                 = 0
     access_token_notbefore_claim = [
       "..."
     ]
@@ -117,7 +117,7 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
         # ...
       ]
     ]
-    access_token_request_header = "...my_access_token_request_header..."
+    access_token_request_header = "Authorization"
     access_token_required_claims = [
       [
         # ...
@@ -130,15 +130,15 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
       "..."
     ]
     access_token_signing           = true
-    access_token_signing_algorithm = "PS384"
+    access_token_signing_algorithm = "RS256"
     access_token_subject_claim = [
       "..."
     ]
     access_token_subjects_allowed = [
       "..."
     ]
-    access_token_upstream_header = "...my_access_token_upstream_header..."
-    access_token_upstream_leeway = 1.88
+    access_token_upstream_header = "Authorization:Bearer"
+    access_token_upstream_leeway = 0
     add_access_token_claims = {
       key = "value"
     }
@@ -148,7 +148,7 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     add_claims = {
       key = "value"
     }
-    cache_access_token_introspection  = false
+    cache_access_token_introspection  = true
     cache_channel_token_introspection = true
     channel_token_audience_claim = [
       "..."
@@ -194,7 +194,7 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     channel_token_introspection_jwt_claim = [
       "..."
     ]
-    channel_token_introspection_leeway = 4.31
+    channel_token_introspection_leeway = 0
     channel_token_introspection_notbefore_claim = [
       "..."
     ]
@@ -221,7 +221,7 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
       "..."
     ]
     channel_token_introspection_timeout = 6.9
-    channel_token_issuer                = "...my_channel_token_issuer..."
+    channel_token_issuer                = "kong"
     channel_token_issuer_claim = [
       "..."
     ]
@@ -234,15 +234,15 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     }
     channel_token_jwks_uri_client_password = "...my_channel_token_jwks_uri_client_password..."
     channel_token_jwks_uri_client_username = "...my_channel_token_jwks_uri_client_username..."
-    channel_token_jwks_uri_rotate_period   = 9.27
-    channel_token_keyset                   = "...my_channel_token_keyset..."
+    channel_token_jwks_uri_rotate_period   = 0
+    channel_token_keyset                   = "kong"
     channel_token_keyset_client_certificate = {
       id = "...my_id..."
     }
     channel_token_keyset_client_password = "...my_channel_token_keyset_client_password..."
     channel_token_keyset_client_username = "...my_channel_token_keyset_client_username..."
-    channel_token_keyset_rotate_period   = 0.98
-    channel_token_leeway                 = 4.86
+    channel_token_keyset_rotate_period   = 0
+    channel_token_leeway                 = 0
     channel_token_notbefore_claim = [
       "..."
     ]
@@ -264,8 +264,8 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     channel_token_scopes_required = [
       "..."
     ]
-    channel_token_signing           = false
-    channel_token_signing_algorithm = "PS512"
+    channel_token_signing           = true
+    channel_token_signing_algorithm = "RS256"
     channel_token_subject_claim = [
       "..."
     ]
@@ -273,11 +273,11 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
       "..."
     ]
     channel_token_upstream_header          = "...my_channel_token_upstream_header..."
-    channel_token_upstream_leeway          = 5.01
-    enable_access_token_introspection      = false
+    channel_token_upstream_leeway          = 0
+    enable_access_token_introspection      = true
     enable_channel_token_introspection     = true
     enable_hs_signatures                   = false
-    enable_instrumentation                 = true
+    enable_instrumentation                 = false
     original_access_token_upstream_header  = "...my_original_access_token_upstream_header..."
     original_channel_token_upstream_header = "...my_original_channel_token_upstream_header..."
     realm                                  = "...my_realm..."
@@ -297,37 +297,37 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
       key = "value"
     }
     trust_access_token_introspection             = true
-    trust_channel_token_introspection            = false
+    trust_channel_token_introspection            = true
     verify_access_token_audience                 = true
     verify_access_token_expiry                   = true
     verify_access_token_introspection_audience   = true
-    verify_access_token_introspection_expiry     = false
+    verify_access_token_introspection_expiry     = true
     verify_access_token_introspection_issuer     = true
-    verify_access_token_introspection_notbefore  = true
-    verify_access_token_introspection_scopes     = false
-    verify_access_token_introspection_subject    = false
+    verify_access_token_introspection_notbefore  = false
+    verify_access_token_introspection_scopes     = true
+    verify_access_token_introspection_subject    = true
     verify_access_token_issuer                   = true
-    verify_access_token_notbefore                = true
-    verify_access_token_scopes                   = false
+    verify_access_token_notbefore                = false
+    verify_access_token_scopes                   = true
     verify_access_token_signature                = true
-    verify_access_token_subject                  = false
+    verify_access_token_subject                  = true
     verify_channel_token_audience                = true
-    verify_channel_token_expiry                  = false
-    verify_channel_token_introspection_audience  = false
-    verify_channel_token_introspection_expiry    = false
+    verify_channel_token_expiry                  = true
+    verify_channel_token_introspection_audience  = true
+    verify_channel_token_introspection_expiry    = true
     verify_channel_token_introspection_issuer    = true
     verify_channel_token_introspection_notbefore = false
     verify_channel_token_introspection_scopes    = true
-    verify_channel_token_introspection_subject   = false
+    verify_channel_token_introspection_subject   = true
     verify_channel_token_issuer                  = true
-    verify_channel_token_notbefore               = true
-    verify_channel_token_scopes                  = false
-    verify_channel_token_signature               = false
+    verify_channel_token_notbefore               = false
+    verify_channel_token_scopes                  = true
+    verify_channel_token_signature               = true
     verify_channel_token_subject                 = true
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 8
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

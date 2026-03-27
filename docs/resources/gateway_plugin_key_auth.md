@@ -25,13 +25,13 @@ resource "konnect_gateway_plugin_key_auth" "my_gatewaypluginkeyauth" {
       }
     ]
     key_in_body   = false
-    key_in_header = false
+    key_in_header = true
     key_in_query  = true
     key_names = [
       "..."
     ]
     realm            = "...my_realm..."
-    run_on_preflight = false
+    run_on_preflight = true
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 5

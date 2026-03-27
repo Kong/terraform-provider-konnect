@@ -32,18 +32,18 @@ resource "konnect_gateway_plugin_kafka_log" "my_gatewaypluginkafkalog" {
     custom_fields_by_lua = {
       key = "value"
     }
-    keepalive                                          = 2
-    keepalive_enabled                                  = true
+    keepalive                                          = 60000
+    keepalive_enabled                                  = false
     key_query_arg                                      = "...my_key_query_arg..."
-    producer_async                                     = false
-    producer_async_buffering_limits_messages_in_memory = 2
-    producer_async_flush_timeout                       = 6
-    producer_request_acks                              = 0
-    producer_request_limits_bytes_per_request          = 5
-    producer_request_limits_messages_per_request       = 10
-    producer_request_retries_backoff_timeout           = 1
-    producer_request_retries_max_attempts              = 4
-    producer_request_timeout                           = 3
+    producer_async                                     = true
+    producer_async_buffering_limits_messages_in_memory = 50000
+    producer_async_flush_timeout                       = 1000
+    producer_request_acks                              = 1
+    producer_request_limits_bytes_per_request          = 1048576
+    producer_request_limits_messages_per_request       = 200
+    producer_request_retries_backoff_timeout           = 100
+    producer_request_retries_max_attempts              = 10
+    producer_request_timeout                           = 2000
     schema_registry = {
       confluent = {
         authentication = {
@@ -51,14 +51,14 @@ resource "konnect_gateway_plugin_kafka_log" "my_gatewaypluginkafkalog" {
             password = "...my_password..."
             username = "...my_username..."
           }
-          mode = "oauth2"
+          mode = "none"
           oauth2 = {
             audience = [
               "..."
             ]
             client_id     = "...my_client_id..."
             client_secret = "...my_client_secret..."
-            grant_type    = "password"
+            grant_type    = "client_credentials"
             password      = "...my_password..."
             scopes = [
               "..."
@@ -73,7 +73,7 @@ resource "konnect_gateway_plugin_kafka_log" "my_gatewaypluginkafkalog" {
             username = "...my_username..."
           }
           oauth2_client = {
-            auth_method               = "client_secret_jwt"
+            auth_method               = "client_secret_post"
             client_secret_jwt_alg     = "HS512"
             http_proxy                = "...my_http_proxy..."
             http_proxy_authorization  = "...my_http_proxy_authorization..."
@@ -82,8 +82,8 @@ resource "konnect_gateway_plugin_kafka_log" "my_gatewaypluginkafkalog" {
             https_proxy_authorization = "...my_https_proxy_authorization..."
             keep_alive                = true
             no_proxy                  = "...my_no_proxy..."
-            ssl_verify                = true
-            timeout                   = 893347002
+            ssl_verify                = false
+            timeout                   = 10000
           }
         }
         key_schema = {
@@ -104,7 +104,7 @@ resource "konnect_gateway_plugin_kafka_log" "my_gatewaypluginkafkalog" {
       ssl            = false
       ssl_verify     = false
     }
-    timeout = 2
+    timeout = 10000
     topic   = "...my_topic..."
   }
   consumer = {

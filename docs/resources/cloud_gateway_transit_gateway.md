@@ -116,6 +116,13 @@ resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway"
       }
     ]
     name = "us-east-2 transit gateway"
+    transit_gateway_attachment_config = {
+      kind                = "azure-vhub-peering-attachment"
+      resource_group_name = "...my_resource_group_name..."
+      subscription_id     = "...my_subscription_id..."
+      tenant_id           = "...my_tenant_id..."
+      vhub_name           = "...my_vhub_name..."
+    }
   }
   gcp_vpc_peering_transit_gateway = {
     dns_config = [
@@ -349,12 +356,25 @@ Requires replacement if changed.
 Required:
 
 - `name` (String) Human-readable name of the transit gateway. Requires replacement if changed.
+- `transit_gateway_attachment_config` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--azure_vhub_peering_gateway--transit_gateway_attachment_config))
 
 Optional:
 
 - `dns_config` (Attributes List) List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway
 attachment.
 Requires replacement if changed. (see [below for nested schema](#nestedatt--azure_vhub_peering_gateway--dns_config))
+
+<a id="nestedatt--azure_vhub_peering_gateway--transit_gateway_attachment_config"></a>
+### Nested Schema for `azure_vhub_peering_gateway.transit_gateway_attachment_config`
+
+Required:
+
+- `kind` (String) must be "azure-vhub-peering-attachment"; Requires replacement if changed.
+- `resource_group_name` (String) Resource Group Name of the Azure Virtual Hub resource. Requires replacement if changed.
+- `subscription_id` (String) Subscription ID of the Azure Virtual Hub resource. Requires replacement if changed.
+- `tenant_id` (String) Tenant ID of the Azure Virtual Hub resource. Requires replacement if changed.
+- `vhub_name` (String) Name of the Azure Virtual Hub resource. Requires replacement if changed.
+
 
 <a id="nestedatt--azure_vhub_peering_gateway--dns_config"></a>
 ### Nested Schema for `azure_vhub_peering_gateway.dns_config`
@@ -670,6 +690,7 @@ transit gateway.
 - `terminated` - The attachment has been fully deleted and is no longer available.
 - `error` - The attachment is in an error state.
 - `state_metadata` (Attributes) Metadata describing the backing state of the transit gateway and why it may be in an erroneous state. (see [below for nested schema](#nestedatt--azure_vhub_peering_gateway_response--state_metadata))
+- `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--azure_vhub_peering_gateway_response--transit_gateway_attachment_config))
 - `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
 
 <a id="nestedatt--azure_vhub_peering_gateway_response--dns_config"></a>
@@ -689,6 +710,18 @@ Read-Only:
 
 - `reason` (String) Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.
 - `reported_status` (String) Reported status of the transit gateway from backing infrastructure.
+
+
+<a id="nestedatt--azure_vhub_peering_gateway_response--transit_gateway_attachment_config"></a>
+### Nested Schema for `azure_vhub_peering_gateway_response.transit_gateway_attachment_config`
+
+Read-Only:
+
+- `kind` (String)
+- `resource_group_name` (String) Resource Group Name of the Azure Virtual Hub resource.
+- `subscription_id` (String) Subscription ID of the Azure Virtual Hub resource.
+- `tenant_id` (String) Tenant ID of the Azure Virtual Hub resource.
+- `vhub_name` (String) Name of the Azure Virtual Hub resource.
 
 
 

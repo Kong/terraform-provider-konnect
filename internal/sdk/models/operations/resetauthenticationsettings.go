@@ -11,10 +11,15 @@ import (
 
 // ResetAuthenticationSettingsRequestBody - Reset authentication settings to defaults
 type ResetAuthenticationSettingsRequestBody struct {
-	basicAuthEnabled      *bool `const:"true" json:"basic_auth_enabled,omitempty"`
-	oidcAuthEnabled       *bool `const:"false" json:"oidc_auth_enabled"`
-	samlAuthEnabled       *bool `const:"false" json:"saml_auth_enabled"`
-	idpMappingEnabled     *bool `const:"false" json:"idp_mapping_enabled"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	basicAuthEnabled *bool `const:"true" json:"basic_auth_enabled,omitempty"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	oidcAuthEnabled *bool `const:"false" json:"oidc_auth_enabled"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	samlAuthEnabled *bool `const:"false" json:"saml_auth_enabled"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	idpMappingEnabled *bool `const:"false" json:"idp_mapping_enabled"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	konnectMappingEnabled *bool `const:"true" json:"konnect_mapping_enabled,omitempty"`
 }
 

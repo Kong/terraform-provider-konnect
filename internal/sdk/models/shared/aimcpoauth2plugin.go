@@ -30,6 +30,9 @@ func (a *AiMcpOauth2PluginAfter) GetAccess() []string {
 	return a.Access
 }
 
+// #region class-body-aimcpoauth2pluginafter
+// #endregion class-body-aimcpoauth2pluginafter
+
 type AiMcpOauth2PluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
@@ -51,6 +54,9 @@ func (a *AiMcpOauth2PluginBefore) GetAccess() []string {
 	}
 	return a.Access
 }
+
+// #region class-body-aimcpoauth2pluginbefore
+// #endregion class-body-aimcpoauth2pluginbefore
 
 type AiMcpOauth2PluginOrdering struct {
 	After  *AiMcpOauth2PluginAfter  `json:"after,omitempty"`
@@ -81,6 +87,9 @@ func (a *AiMcpOauth2PluginOrdering) GetBefore() *AiMcpOauth2PluginBefore {
 	}
 	return a.Before
 }
+
+// #region class-body-aimcpoauth2pluginordering
+// #endregion class-body-aimcpoauth2pluginordering
 
 type AiMcpOauth2PluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
@@ -121,6 +130,9 @@ func (a *AiMcpOauth2PluginPartials) GetPath() *string {
 	}
 	return a.Path
 }
+
+// #region class-body-aimcpoauth2pluginpartials
+// #endregion class-body-aimcpoauth2pluginpartials
 
 type ClaimToHeader struct {
 	// The claim name to be used in the access token.
@@ -568,6 +580,9 @@ func (a *AiMcpOauth2PluginConfig) GetTLSClientAuthSslVerify() *bool {
 	return a.TLSClientAuthSslVerify
 }
 
+// #region class-body-aimcpoauth2pluginconfig
+// #endregion class-body-aimcpoauth2pluginconfig
+
 type AiMcpOauth2PluginProtocols string
 
 const (
@@ -623,6 +638,9 @@ func (a *AiMcpOauth2PluginRoute) GetID() *string {
 	return a.ID
 }
 
+// #region class-body-aimcpoauth2pluginroute
+// #endregion class-body-aimcpoauth2pluginroute
+
 // AiMcpOauth2PluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 type AiMcpOauth2PluginService struct {
 	ID *string `json:"id,omitempty"`
@@ -646,6 +664,9 @@ func (a *AiMcpOauth2PluginService) GetID() *string {
 	return a.ID
 }
 
+// #region class-body-aimcpoauth2pluginservice
+// #endregion class-body-aimcpoauth2pluginservice
+
 // AiMcpOauth2Plugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type AiMcpOauth2Plugin struct {
 	// Unix epoch when the resource was created.
@@ -655,9 +676,10 @@ type AiMcpOauth2Plugin struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                    `default:"null" json:"instance_name"`
-	name         string                     `const:"ai-mcp-oauth2" json:"name"`
-	Ordering     *AiMcpOauth2PluginOrdering `json:"ordering"`
+	InstanceName *string `default:"null" json:"instance_name"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	name     string                     `const:"ai-mcp-oauth2" json:"name"`
+	Ordering *AiMcpOauth2PluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []AiMcpOauth2PluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
@@ -772,3 +794,6 @@ func (a *AiMcpOauth2Plugin) GetService() *AiMcpOauth2PluginService {
 	}
 	return a.Service
 }
+
+// #region class-body-aimcpoauth2plugin
+// #endregion class-body-aimcpoauth2plugin

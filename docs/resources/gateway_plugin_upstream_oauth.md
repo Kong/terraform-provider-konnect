@@ -16,20 +16,20 @@ GatewayPluginUpstreamOauth Resource
 resource "konnect_gateway_plugin_upstream_oauth" "my_gatewaypluginupstreamoauth" {
   config = {
     behavior = {
-      idp_error_response_body_template = "...my_idp_error_response_body_template..."
-      idp_error_response_content_type  = "...my_idp_error_response_content_type..."
-      idp_error_response_message       = "...my_idp_error_response_message..."
-      idp_error_response_status_code   = 576
+      idp_error_response_body_template = "{ \"code\": \"{{status}}\", \"message\": \"{{message}}\" }"
+      idp_error_response_content_type  = "application/json; charset=utf-8"
+      idp_error_response_message       = "Failed to authenticate request to upstream"
+      idp_error_response_status_code   = 502
       purge_token_on_upstream_status_codes = [
         373
       ]
-      upstream_access_token_header_name = "...my_upstream_access_token_header_name..."
+      upstream_access_token_header_name = "Authorization"
     }
     cache = {
-      default_ttl    = 7.94
-      eagerly_expire = 9
+      default_ttl    = 3600
+      eagerly_expire = 5
       memory = {
-        dictionary_name = "...my_dictionary_name..."
+        dictionary_name = "kong_db_cache"
       }
       redis = {
         cloud_authentication = {
@@ -46,43 +46,43 @@ resource "konnect_gateway_plugin_upstream_oauth" "my_gatewaypluginupstreamoauth"
           azure_tenant_id          = "...my_azure_tenant_id..."
           gcp_service_account_json = "...my_gcp_service_account_json..."
         }
-        cluster_max_redirections = 10
+        cluster_max_redirections = 5
         cluster_nodes = [
           {
-            ip   = "...my_ip..."
-            port = 20643
+            ip   = "127.0.0.1"
+            port = 6379
           }
         ]
-        connect_timeout       = 305131733
-        connection_is_proxied = true
-        database              = 10
-        host                  = "...my_host..."
+        connect_timeout       = 2000
+        connection_is_proxied = false
+        database              = 0
+        host                  = "127.0.0.1"
         keepalive_backlog     = 1047987263
-        keepalive_pool_size   = 459234090
+        keepalive_pool_size   = 256
         password              = "...my_password..."
-        port                  = 35119
-        read_timeout          = 245223357
-        send_timeout          = 1142057358
+        port                  = 6379
+        read_timeout          = 2000
+        send_timeout          = 2000
         sentinel_master       = "...my_sentinel_master..."
         sentinel_nodes = [
           {
-            host = "...my_host..."
-            port = 31719
+            host = "127.0.0.1"
+            port = 6379
           }
         ]
         sentinel_password = "...my_sentinel_password..."
         sentinel_role     = "any"
         sentinel_username = "...my_sentinel_username..."
         server_name       = "...my_server_name..."
-        ssl               = true
-        ssl_verify        = true
+        ssl               = false
+        ssl_verify        = false
         username          = "...my_username..."
       }
       strategy = "memory"
     }
     client = {
-      auth_method               = "none"
-      client_secret_jwt_alg     = "HS256"
+      auth_method               = "client_secret_post"
+      client_secret_jwt_alg     = "HS512"
       http_proxy                = "...my_http_proxy..."
       http_proxy_authorization  = "...my_http_proxy_authorization..."
       http_version              = 6.12
@@ -91,7 +91,7 @@ resource "konnect_gateway_plugin_upstream_oauth" "my_gatewaypluginupstreamoauth"
       keep_alive                = true
       no_proxy                  = "...my_no_proxy..."
       ssl_verify                = false
-      timeout                   = 1421616738
+      timeout                   = 10000
     }
     oauth = {
       audience = [
@@ -99,7 +99,7 @@ resource "konnect_gateway_plugin_upstream_oauth" "my_gatewaypluginupstreamoauth"
       ]
       client_id     = "...my_client_id..."
       client_secret = "...my_client_secret..."
-      grant_type    = "password"
+      grant_type    = "client_credentials"
       password      = "...my_password..."
       scopes = [
         "..."
@@ -122,7 +122,7 @@ resource "konnect_gateway_plugin_upstream_oauth" "my_gatewaypluginupstreamoauth"
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 5
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

@@ -47,8 +47,9 @@ type AzureVhubPeeringGatewayResponse struct {
 	// List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway
 	// attachment.
 	//
-	DNSConfig []TransitGatewayDNSConfig `json:"dns_config"`
-	ID        string                    `json:"id"`
+	DNSConfig                      []TransitGatewayDNSConfig        `json:"dns_config"`
+	TransitGatewayAttachmentConfig AzureVHubPeeringAttachmentConfig `json:"transit_gateway_attachment_config"`
+	ID                             string                           `json:"id"`
 	// The current state of the Transit Gateway. Possible values:
 	// - `created` - The attachment has been created but is not attached to transit gateway.
 	// - `initializing` - The attachment is in the process of being initialized and is setting up necessary resources.
@@ -78,7 +79,7 @@ func (a AzureVhubPeeringGatewayResponse) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AzureVhubPeeringGatewayResponse) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "dns_config", "id", "state", "entity_version", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "dns_config", "transit_gateway_attachment_config", "id", "state", "entity_version", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
@@ -96,6 +97,13 @@ func (a *AzureVhubPeeringGatewayResponse) GetDNSConfig() []TransitGatewayDNSConf
 		return []TransitGatewayDNSConfig{}
 	}
 	return a.DNSConfig
+}
+
+func (a *AzureVhubPeeringGatewayResponse) GetTransitGatewayAttachmentConfig() AzureVHubPeeringAttachmentConfig {
+	if a == nil {
+		return AzureVHubPeeringAttachmentConfig{}
+	}
+	return a.TransitGatewayAttachmentConfig
 }
 
 func (a *AzureVhubPeeringGatewayResponse) GetID() string {

@@ -13,6 +13,7 @@ type SchemaRegistryConfluentSensitiveDataAware struct {
 	// A human-readable description.
 	Description *string `json:"description,omitempty"`
 	// The type of the schema registry.
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"confluent" json:"type"`
 	// The configuration of [Confluent Schema Registry](https://github.com/confluentinc/schema-registry)
 	//

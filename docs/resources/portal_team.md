@@ -14,9 +14,10 @@ PortalTeam Resource
 
 ```terraform
 resource "konnect_portal_team" "my_portalteam" {
-  description = "The Identity Management (IDM) team."
-  name        = "IDM - Developers"
-  portal_id   = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+  can_own_applications = true
+  description          = "The Identity Management (IDM) team."
+  name                 = "IDM - Developers"
+  portal_id            = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
 }
 ```
 
@@ -30,6 +31,7 @@ resource "konnect_portal_team" "my_portalteam" {
 
 ### Optional
 
+- `can_own_applications` (Boolean) Whether the team is allowed to own applications
 - `description` (String)
 
 ### Read-Only

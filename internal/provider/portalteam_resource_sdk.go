@@ -15,6 +15,7 @@ func (r *PortalTeamResourceModel) RefreshFromSharedPortalTeamResponse(ctx contex
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.CanOwnApplications = types.BoolPointerValue(resp.CanOwnApplications)
 		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -117,9 +118,16 @@ func (r *PortalTeamResourceModel) ToSharedPortalCreateTeamRequest(ctx context.Co
 	} else {
 		description = nil
 	}
+	canOwnApplications := new(bool)
+	if !r.CanOwnApplications.IsUnknown() && !r.CanOwnApplications.IsNull() {
+		*canOwnApplications = r.CanOwnApplications.ValueBool()
+	} else {
+		canOwnApplications = nil
+	}
 	out := shared.PortalCreateTeamRequest{
-		Name:        name,
-		Description: description,
+		Name:               name,
+		Description:        description,
+		CanOwnApplications: canOwnApplications,
 	}
 
 	return &out, diags
@@ -140,9 +148,16 @@ func (r *PortalTeamResourceModel) ToSharedPortalUpdateTeamRequest(ctx context.Co
 	} else {
 		description = nil
 	}
+	canOwnApplications := new(bool)
+	if !r.CanOwnApplications.IsUnknown() && !r.CanOwnApplications.IsNull() {
+		*canOwnApplications = r.CanOwnApplications.ValueBool()
+	} else {
+		canOwnApplications = nil
+	}
 	out := shared.PortalUpdateTeamRequest{
-		Name:        name,
-		Description: description,
+		Name:               name,
+		Description:        description,
+		CanOwnApplications: canOwnApplications,
 	}
 
 	return &out, diags

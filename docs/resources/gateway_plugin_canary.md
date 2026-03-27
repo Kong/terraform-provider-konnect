@@ -16,15 +16,15 @@ GatewayPluginCanary Resource
 resource "konnect_gateway_plugin_canary" "my_gatewayplugincanary" {
   config = {
     canary_by_header_name = "...my_canary_by_header_name..."
-    duration              = 0.88
+    duration              = 3600
     groups = [
       "..."
     ]
-    hash              = "ip"
+    hash              = "consumer"
     hash_header       = "...my_hash_header..."
     percentage        = 35.35
     start             = 7.39
-    steps             = 5.98
+    steps             = 1000
     upstream_fallback = false
     upstream_host     = "...my_upstream_host..."
     upstream_port     = 15742
@@ -32,7 +32,7 @@ resource "konnect_gateway_plugin_canary" "my_gatewayplugincanary" {
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 10
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

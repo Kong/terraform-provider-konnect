@@ -16,7 +16,7 @@ GatewayPluginCors Resource
 resource "konnect_gateway_plugin_cors" "my_gatewayplugincors" {
   config = {
     allow_origin_absent = true
-    credentials         = true
+    credentials         = false
     exposed_headers = [
       "..."
     ]
@@ -30,8 +30,8 @@ resource "konnect_gateway_plugin_cors" "my_gatewayplugincors" {
     origins = [
       "..."
     ]
-    preflight_continue = true
-    private_network    = true
+    preflight_continue = false
+    private_network    = false
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 3

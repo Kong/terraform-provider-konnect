@@ -12,6 +12,7 @@ import (
 // DeleteAuditLogWebhookRequestBody - The request schema to disable an audit log webhook.
 type DeleteAuditLogWebhookRequestBody struct {
 	// Indicates that the data should not be sent to the webhook.
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	enabled *bool `const:"false" json:"enabled,omitempty"`
 }
 

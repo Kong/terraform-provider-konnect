@@ -17,9 +17,9 @@ resource "konnect_gateway_plugin_request_termination" "my_gatewaypluginrequestte
   config = {
     body         = "...my_body..."
     content_type = "...my_content_type..."
-    echo         = true
+    echo         = false
     message      = "...my_message..."
-    status_code  = 536
+    status_code  = 503
     trigger      = "...my_trigger..."
   }
   consumer = {
@@ -30,7 +30,7 @@ resource "konnect_gateway_plugin_request_termination" "my_gatewaypluginrequestte
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 3
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

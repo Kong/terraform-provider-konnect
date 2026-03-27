@@ -20,7 +20,7 @@ resource "konnect_gateway_plugin_udp_log" "my_gatewaypluginudplog" {
     }
     host    = "...my_host..."
     port    = 32780
-    timeout = 6.74
+    timeout = 10000
   }
   consumer = {
     id = "...my_id..."

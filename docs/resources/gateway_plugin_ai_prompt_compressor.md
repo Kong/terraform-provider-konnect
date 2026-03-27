@@ -22,15 +22,15 @@ resource "konnect_gateway_plugin_ai_prompt_compressor" "my_gatewaypluginaiprompt
         value      = 5.24
       }
     ]
-    compressor_type   = "target_token"
-    compressor_url    = "...my_compressor_url..."
-    keepalive_timeout = 6.37
-    log_text_data     = true
+    compressor_type   = "rate"
+    compressor_url    = "http://localhost:8080"
+    keepalive_timeout = 60000
+    log_text_data     = false
     message_type = [
       "user"
     ]
     stop_on_error = true
-    timeout       = 1.73
+    timeout       = 10000
   }
   consumer = {
     id = "...my_id..."
@@ -40,7 +40,7 @@ resource "konnect_gateway_plugin_ai_prompt_compressor" "my_gatewaypluginaiprompt
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 2
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

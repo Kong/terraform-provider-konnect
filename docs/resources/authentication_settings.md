@@ -17,7 +17,7 @@ resource "konnect_authentication_settings" "my_authenticationsettings" {
   basic_auth_enabled      = true
   idp_mapping_enabled     = true
   konnect_mapping_enabled = false
-  oidc_auth_enabled       = false
+  oidc_auth_enabled       = true
   saml_auth_enabled       = false
 }
 ```

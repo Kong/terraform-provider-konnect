@@ -28,3 +28,6 @@ func (v *V2NullableAppearanceThemeVariables) GetColors() V2AppearanceThemeColorV
 	}
 	return v.Colors
 }
+
+// #region class-body-v2nullableappearancethemevariables
+// #endregion class-body-v2nullableappearancethemevariables

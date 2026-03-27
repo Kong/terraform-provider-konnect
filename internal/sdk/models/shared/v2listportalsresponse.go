@@ -37,3 +37,6 @@ func (v *V2ListPortalsResponse) GetData() []V2Portal {
 	}
 	return v.Data
 }
+
+// #region class-body-v2listportalsresponse
+// #endregion class-body-v2listportalsresponse

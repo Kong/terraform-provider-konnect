@@ -58,3 +58,6 @@ func (v *V2NullableAppearanceTextVariables) GetCatalog() Catalog {
 	}
 	return v.Catalog
 }
+
+// #region class-body-v2nullableappearancetextvariables
+// #endregion class-body-v2nullableappearancetextvariables

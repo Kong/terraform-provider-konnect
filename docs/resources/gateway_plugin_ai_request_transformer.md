@@ -17,10 +17,10 @@ resource "konnect_gateway_plugin_ai_request_transformer" "my_gatewaypluginairequ
   config = {
     http_proxy_host  = "...my_http_proxy_host..."
     http_proxy_port  = 19860
-    http_timeout     = 10
+    http_timeout     = 60000
     https_proxy_host = "...my_https_proxy_host..."
     https_proxy_port = 20590
-    https_verify     = false
+    https_verify     = true
     llm = {
       auth = {
         allow_override             = false
@@ -29,9 +29,9 @@ resource "konnect_gateway_plugin_ai_request_transformer" "my_gatewaypluginairequ
         azure_client_id            = "...my_azure_client_id..."
         azure_client_secret        = "...my_azure_client_secret..."
         azure_tenant_id            = "...my_azure_tenant_id..."
-        azure_use_managed_identity = true
+        azure_use_managed_identity = false
         gcp_service_account_json   = "...my_gcp_service_account_json..."
-        gcp_use_service_account    = true
+        gcp_use_service_account    = false
         header_name                = "...my_header_name..."
         header_value               = "...my_header_value..."
         param_location             = "query"
@@ -47,7 +47,7 @@ resource "konnect_gateway_plugin_ai_request_transformer" "my_gatewaypluginairequ
         name = "...my_name..."
         options = {
           anthropic_version   = "...my_anthropic_version..."
-          azure_api_version   = "...my_azure_api_version..."
+          azure_api_version   = "2023-05-15"
           azure_deployment_id = "...my_azure_deployment_id..."
           azure_instance      = "...my_azure_instance..."
           bedrock = {
@@ -60,11 +60,11 @@ resource "konnect_gateway_plugin_ai_request_transformer" "my_gatewaypluginairequ
             video_output_s3_uri        = "...my_video_output_s3_uri..."
           }
           cohere = {
-            embedding_input_type = "search_query"
+            embedding_input_type = "classification"
             wait_for_model       = false
           }
           dashscope = {
-            international = false
+            international = true
           }
           embeddings_dimensions = 4
           gemini = {
@@ -91,9 +91,9 @@ resource "konnect_gateway_plugin_ai_request_transformer" "my_gatewaypluginairequ
         provider = "openai"
       }
       route_type = "llm/v1/responses"
-      weight     = 1422
+      weight     = 100
     }
-    max_request_body_size          = 7
+    max_request_body_size          = 1048576
     prompt                         = "...my_prompt..."
     transformation_extract_pattern = "...my_transformation_extract_pattern..."
   }

@@ -21,6 +21,7 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) RefreshFromSharedEven
 		if configPriorData != nil {
 			r.Config.AllowPlaintext = configPriorData.AllowPlaintext
 			r.Config.Certificates = configPriorData.Certificates
+			r.Config.ClientAuthentication = configPriorData.ClientAuthentication
 			r.Config.Versions = configPriorData.Versions
 		}
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
@@ -206,10 +207,35 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToSharedEventGatewayT
 	} else {
 		allowPlaintext = nil
 	}
+	var clientAuthentication *shared.EventGatewayTLSListenerPolicyConfigClientAuthentication
+	if r.Config.ClientAuthentication != nil {
+		mode := shared.EventGatewayTLSListenerPolicyConfigMode(r.Config.ClientAuthentication.Mode.ValueString())
+		tlsTrustBundles := make([]shared.TLSTrustBundleReference, 0, len(r.Config.ClientAuthentication.TLSTrustBundles))
+		for tlsTrustBundlesIndex := range r.Config.ClientAuthentication.TLSTrustBundles {
+			var id string
+			id = r.Config.ClientAuthentication.TLSTrustBundles[tlsTrustBundlesIndex].ID.ValueString()
+
+			tlsTrustBundles = append(tlsTrustBundles, shared.TLSTrustBundleReference{
+				ID: id,
+			})
+		}
+		principalMapping := new(string)
+		if !r.Config.ClientAuthentication.PrincipalMapping.IsUnknown() && !r.Config.ClientAuthentication.PrincipalMapping.IsNull() {
+			*principalMapping = r.Config.ClientAuthentication.PrincipalMapping.ValueString()
+		} else {
+			principalMapping = nil
+		}
+		clientAuthentication = &shared.EventGatewayTLSListenerPolicyConfigClientAuthentication{
+			Mode:             mode,
+			TLSTrustBundles:  tlsTrustBundles,
+			PrincipalMapping: principalMapping,
+		}
+	}
 	config := shared.EventGatewayTLSListenerPolicyConfig{
-		Certificates:   certificates,
-		Versions:       versions,
-		AllowPlaintext: allowPlaintext,
+		Certificates:         certificates,
+		Versions:             versions,
+		AllowPlaintext:       allowPlaintext,
+		ClientAuthentication: clientAuthentication,
 	}
 	out := shared.EventGatewayTLSListenerPolicy{
 		Name:        name,
@@ -294,10 +320,35 @@ func (r *EventGatewayListenerPolicyTLSServerResourceModel) ToSharedEventGatewayT
 	} else {
 		allowPlaintext = nil
 	}
+	var clientAuthentication *shared.ClientAuthentication
+	if r.Config.ClientAuthentication != nil {
+		mode := shared.EventGatewayTLSListenerPolicyConfigSensitiveDataAwareMode(r.Config.ClientAuthentication.Mode.ValueString())
+		tlsTrustBundles := make([]shared.TLSTrustBundleReference, 0, len(r.Config.ClientAuthentication.TLSTrustBundles))
+		for tlsTrustBundlesIndex := range r.Config.ClientAuthentication.TLSTrustBundles {
+			var id string
+			id = r.Config.ClientAuthentication.TLSTrustBundles[tlsTrustBundlesIndex].ID.ValueString()
+
+			tlsTrustBundles = append(tlsTrustBundles, shared.TLSTrustBundleReference{
+				ID: id,
+			})
+		}
+		principalMapping := new(string)
+		if !r.Config.ClientAuthentication.PrincipalMapping.IsUnknown() && !r.Config.ClientAuthentication.PrincipalMapping.IsNull() {
+			*principalMapping = r.Config.ClientAuthentication.PrincipalMapping.ValueString()
+		} else {
+			principalMapping = nil
+		}
+		clientAuthentication = &shared.ClientAuthentication{
+			Mode:             mode,
+			TLSTrustBundles:  tlsTrustBundles,
+			PrincipalMapping: principalMapping,
+		}
+	}
 	config := shared.EventGatewayTLSListenerPolicyConfigSensitiveDataAware{
-		Certificates:   certificates,
-		Versions:       versions,
-		AllowPlaintext: allowPlaintext,
+		Certificates:         certificates,
+		Versions:             versions,
+		AllowPlaintext:       allowPlaintext,
+		ClientAuthentication: clientAuthentication,
 	}
 	out := shared.EventGatewayTLSListenerSensitiveDataAwarePolicy{
 		Name:        name,

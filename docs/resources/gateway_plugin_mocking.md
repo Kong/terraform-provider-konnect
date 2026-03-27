@@ -18,15 +18,15 @@ resource "konnect_gateway_plugin_mocking" "my_gatewaypluginmocking" {
     api_specification          = "...my_api_specification..."
     api_specification_filename = "...my_api_specification_filename..."
     custom_base_path           = "...my_custom_base_path..."
-    include_base_path          = true
+    include_base_path          = false
     included_status_codes = [
       5
     ]
-    max_delay_time     = 1.21
+    max_delay_time     = 1
     min_delay_time     = 6.51
-    random_delay       = true
+    random_delay       = false
     random_examples    = false
-    random_status_code = true
+    random_status_code = false
   }
   consumer = {
     id = "...my_id..."

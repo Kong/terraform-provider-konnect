@@ -7,6 +7,7 @@ import (
 )
 
 type OauthConfig struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"oauth" json:"type"`
 	// The OAuth client identifier.
 	ClientID string `json:"client_id"`

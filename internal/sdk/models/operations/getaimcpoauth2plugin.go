@@ -40,6 +40,9 @@ func (g *GetAimcpoauth2PluginRequest) GetControlPlaneID() string {
 	return g.ControlPlaneID
 }
 
+// #region class-body-getaimcpoauth2pluginrequest
+// #endregion class-body-getaimcpoauth2pluginrequest
+
 type GetAimcpoauth2PluginResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -98,3 +101,6 @@ func (g *GetAimcpoauth2PluginResponse) GetGatewayUnauthorizedError() *shared.Gat
 	}
 	return g.GatewayUnauthorizedError
 }
+
+// #region class-body-getaimcpoauth2pluginresponse
+// #endregion class-body-getaimcpoauth2pluginresponse

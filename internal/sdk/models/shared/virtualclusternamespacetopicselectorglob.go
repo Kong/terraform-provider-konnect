@@ -38,6 +38,7 @@ func (e *Conflict) UnmarshalJSON(data []byte) error {
 }
 
 type VirtualClusterNamespaceTopicSelectorGlob struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"glob" json:"type"`
 	// Expose any backend topic that matches this glob pattern (e.g., `operations_data_*`).
 	Glob string `json:"glob"`

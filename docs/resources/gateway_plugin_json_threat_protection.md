@@ -15,20 +15,20 @@ GatewayPluginJSONThreatProtection Resource
 ```terraform
 resource "konnect_gateway_plugin_json_threat_protection" "my_gatewaypluginjsonthreatprotection" {
   config = {
-    allow_duplicate_object_entry_name = false
-    enforcement_mode                  = "log_only"
-    error_message                     = "...my_error_message..."
-    error_status_code                 = 434
-    max_array_element_count           = 96675194
-    max_body_size                     = 99378518
-    max_container_depth               = 2031079601
-    max_object_entry_count            = 916870321
-    max_object_entry_name_length      = 1383216872
-    max_string_value_length           = 1149380350
+    allow_duplicate_object_entry_name = true
+    enforcement_mode                  = "block"
+    error_message                     = "Bad Request"
+    error_status_code                 = 400
+    max_array_element_count           = -1
+    max_body_size                     = 8192
+    max_container_depth               = -1
+    max_object_entry_count            = -1
+    max_object_entry_name_length      = -1
+    max_string_value_length           = -1
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 6
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

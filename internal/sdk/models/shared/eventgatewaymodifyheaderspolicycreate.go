@@ -33,6 +33,7 @@ func (e *EventGatewayModifyHeadersPolicyCreateConfig) GetActions() []EventGatewa
 // EventGatewayModifyHeadersPolicyCreate - A policy that modifies headers for requests.
 type EventGatewayModifyHeadersPolicyCreate struct {
 	// The type name of the policy.
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"modify_headers" json:"type"`
 	// A unique user-defined name of the policy.
 	Name *string `json:"name,omitempty"`

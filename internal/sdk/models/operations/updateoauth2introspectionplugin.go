@@ -48,6 +48,9 @@ func (u *UpdateOauth2introspectionPluginRequest) GetOauth2IntrospectionPlugin() 
 	return u.Oauth2IntrospectionPlugin
 }
 
+// #region class-body-updateoauth2introspectionpluginrequest
+// #endregion class-body-updateoauth2introspectionpluginrequest
+
 type UpdateOauth2introspectionPluginResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
@@ -106,3 +109,6 @@ func (u *UpdateOauth2introspectionPluginResponse) GetGatewayUnauthorizedError() 
 	}
 	return u.GatewayUnauthorizedError
 }
+
+// #region class-body-updateoauth2introspectionpluginresponse
+// #endregion class-body-updateoauth2introspectionpluginresponse

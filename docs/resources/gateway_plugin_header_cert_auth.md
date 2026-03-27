@@ -17,12 +17,12 @@ resource "konnect_gateway_plugin_header_cert_auth" "my_gatewaypluginheadercertau
   config = {
     allow_partial_chain    = false
     anonymous              = "...my_anonymous..."
-    authenticated_group_by = "DN"
+    authenticated_group_by = "CN"
     ca_certificates = [
       "..."
     ]
-    cache_ttl                 = 5.31
-    cert_cache_ttl            = 6.32
+    cache_ttl                 = 60
+    cert_cache_ttl            = 60000
     certificate_header_format = "url_encoded"
     certificate_header_name   = "...my_certificate_header_name..."
     consumer_by = [
@@ -31,17 +31,17 @@ resource "konnect_gateway_plugin_header_cert_auth" "my_gatewaypluginheadercertau
     default_consumer      = "...my_default_consumer..."
     http_proxy_host       = "...my_http_proxy_host..."
     http_proxy_port       = 1064
-    http_timeout          = 5.78
+    http_timeout          = 30000
     https_proxy_host      = "...my_https_proxy_host..."
     https_proxy_port      = 10840
-    revocation_check_mode = "SKIP"
+    revocation_check_mode = "IGNORE_CA_ERROR"
     secure_source         = true
-    skip_consumer_lookup  = true
+    skip_consumer_lookup  = false
     ssl_verify            = true
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 5
-  enabled          = false
+  enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {

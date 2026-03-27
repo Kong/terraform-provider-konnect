@@ -19,12 +19,12 @@ resource "konnect_gateway_plugin_azure_functions" "my_gatewaypluginazurefunction
     appname      = "...my_appname..."
     clientid     = "...my_clientid..."
     functionname = "...my_functionname..."
-    hostdomain   = "...my_hostdomain..."
-    https        = false
+    hostdomain   = "azurewebsites.net"
+    https        = true
     https_verify = false
-    keepalive    = 4.24
-    routeprefix  = "...my_routeprefix..."
-    timeout      = 0.71
+    keepalive    = 60000
+    routeprefix  = "api"
+    timeout      = 600000
   }
   consumer = {
     id = "...my_id..."

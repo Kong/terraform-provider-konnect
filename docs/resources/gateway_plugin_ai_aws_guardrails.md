@@ -15,7 +15,7 @@ GatewayPluginAiAwsGuardrails Resource
 ```terraform
 resource "konnect_gateway_plugin_ai_aws_guardrails" "my_gatewaypluginaiawsguardrails" {
   config = {
-    allow_masking         = true
+    allow_masking         = false
     aws_access_key_id     = "...my_aws_access_key_id..."
     aws_assume_role_arn   = "...my_aws_assume_role_arn..."
     aws_region            = "...my_aws_region..."
@@ -25,11 +25,11 @@ resource "konnect_gateway_plugin_ai_aws_guardrails" "my_gatewaypluginaiawsguardr
     guarding_mode         = "INPUT"
     guardrails_id         = "...my_guardrails_id..."
     guardrails_version    = "...my_guardrails_version..."
-    response_buffer_size  = 4.85
+    response_buffer_size  = 100
     ssl_verify            = true
-    stop_on_error         = false
+    stop_on_error         = true
     text_source           = "concatenate_all_content"
-    timeout               = 4.59
+    timeout               = 10000
   }
   consumer = {
     id = "...my_id..."

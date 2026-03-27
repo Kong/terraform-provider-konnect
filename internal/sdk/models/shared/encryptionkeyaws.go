@@ -8,6 +8,7 @@ import (
 
 // EncryptionKeyAWS - The AWS KMS key to use for encryption.
 type EncryptionKeyAWS struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"aws" json:"type"`
 	// The AWS KMS key ARN.
 	Arn string `json:"arn"`

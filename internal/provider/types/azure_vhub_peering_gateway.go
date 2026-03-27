@@ -7,6 +7,7 @@ import (
 )
 
 type AzureVhubPeeringGateway struct {
-	DNSConfig []TransitGatewayDNSConfig `tfsdk:"dns_config"`
-	Name      types.String              `tfsdk:"name"`
+	DNSConfig                      []TransitGatewayDNSConfig         `tfsdk:"dns_config"`
+	Name                           types.String                      `tfsdk:"name"`
+	TransitGatewayAttachmentConfig *AzureVHubPeeringAttachmentConfig `tfsdk:"transit_gateway_attachment_config"`
 }

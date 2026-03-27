@@ -186,3 +186,6 @@ func (v *V2GetPortalResponse) GetPublishedProductCount() float64 {
 	}
 	return v.PublishedProductCount
 }
+
+// #region class-body-v2getportalresponse
+// #endregion class-body-v2getportalresponse

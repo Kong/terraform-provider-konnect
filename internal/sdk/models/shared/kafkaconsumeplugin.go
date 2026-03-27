@@ -569,6 +569,9 @@ func (k *KafkaConsumePluginOauth2) GetUsername() *string {
 	return k.Username
 }
 
+// #region class-body-kafkaconsumepluginoauth2
+// #endregion class-body-kafkaconsumepluginoauth2
+
 // KafkaConsumePluginAuthMethod - The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body.
 type KafkaConsumePluginAuthMethod string
 
@@ -741,6 +744,9 @@ func (k *KafkaConsumePluginOauth2Client) GetTimeout() *int64 {
 	}
 	return k.Timeout
 }
+
+// #region class-body-kafkaconsumepluginoauth2client
+// #endregion class-body-kafkaconsumepluginoauth2client
 
 type KafkaConsumePluginAuthentication struct {
 	Basic *KafkaConsumePluginBasic `json:"basic"`
@@ -1093,6 +1099,9 @@ func (k *KafkaConsumePluginConfigOauth2) GetUsername() *string {
 	return k.Username
 }
 
+// #region class-body-kafkaconsumepluginconfigoauth2
+// #endregion class-body-kafkaconsumepluginconfigoauth2
+
 // KafkaConsumePluginConfigAuthMethod - The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body.
 type KafkaConsumePluginConfigAuthMethod string
 
@@ -1265,6 +1274,9 @@ func (k *KafkaConsumePluginConfigOauth2Client) GetTimeout() *int64 {
 	}
 	return k.Timeout
 }
+
+// #region class-body-kafkaconsumepluginconfigoauth2client
+// #endregion class-body-kafkaconsumepluginconfigoauth2client
 
 type KafkaConsumePluginConfigAuthentication struct {
 	Basic *KafkaConsumePluginConfigBasic `json:"basic"`
@@ -1647,9 +1659,10 @@ type KafkaConsumePlugin struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
-	InstanceName *string                     `default:"null" json:"instance_name"`
-	name         string                      `const:"kafka-consume" json:"name"`
-	Ordering     *KafkaConsumePluginOrdering `json:"ordering"`
+	InstanceName *string `default:"null" json:"instance_name"`
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
+	name     string                      `const:"kafka-consume" json:"name"`
+	Ordering *KafkaConsumePluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
 	Partials []KafkaConsumePluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.

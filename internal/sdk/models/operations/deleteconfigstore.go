@@ -14,6 +14,7 @@ type DeleteConfigStoreRequest struct {
 	// Config Store identifier
 	ConfigStoreID string `pathParam:"style=simple,explode=false,name=configStoreId"`
 	// [Overlay change] Always cascade delete when being managed with declarative configuation
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	force string `const:"true" queryParam:"style=form,explode=true,name=force"`
 }
 

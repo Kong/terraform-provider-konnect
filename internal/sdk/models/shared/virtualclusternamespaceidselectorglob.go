@@ -7,6 +7,7 @@ import (
 )
 
 type VirtualClusterNamespaceIDSelectorGlob struct {
+	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"glob" json:"type"`
 	// Expose any id that matches this glob pattern (e.g., `my_id_*`).
 	Glob string `json:"glob"`

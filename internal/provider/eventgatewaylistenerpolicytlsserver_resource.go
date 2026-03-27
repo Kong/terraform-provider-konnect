@@ -97,6 +97,50 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Schema(ctx context.Context
 							listvalidator.SizeAtMost(1),
 						},
 					},
+					"client_authentication": schema.SingleNestedAttribute{
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"mode": schema.StringAttribute{
+								Required: true,
+								MarkdownDescription: `* required - Reject TLS connections without a valid client certificate.` + "\n" +
+									`* requested - Request a client certificate during the TLS handshake, but allow connections without one (falls back to other configured authentication methods). If a certificate is presented but cannot be verified, the connection is closed.` + "\n" +
+									`must be one of ["required", "requested"]`,
+								Validators: []validator.String{
+									stringvalidator.OneOf(
+										"required",
+										"requested",
+									),
+								},
+							},
+							"principal_mapping": schema.StringAttribute{
+								Optional: true,
+								MarkdownDescription: `An expression that extracts a principal identifier from a verified client certificate.` + "\n" +
+									`This expression must evaluate to a string.`,
+							},
+							"tls_trust_bundles": schema.ListNestedAttribute{
+								Required: true,
+								NestedObject: schema.NestedAttributeObject{
+									Attributes: map[string]schema.Attribute{
+										"id": schema.StringAttribute{
+											Required:    true,
+											Description: `The unique identifier of the TLS trust bundle.`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthAtLeast(1),
+											},
+										},
+									},
+								},
+								MarkdownDescription: `TLS trust bundles contain CA certificate bundles used to verify client certificates.` + "\n" +
+									`All bundles are merged into a single trust store; a client certificate is accepted if it` + "\n" +
+									`chains to any trusted CA across all bundles.`,
+								Validators: []validator.List{
+									listvalidator.SizeAtLeast(1),
+								},
+							},
+						},
+						MarkdownDescription: `Configures mutual TLS (mTLS) client certificate verification. When set, the gateway` + "\n" +
+							`requests or requires clients to present a certificate during the TLS handshake.`,
+					},
 					"versions": schema.SingleNestedAttribute{
 						Optional: true,
 						Attributes: map[string]schema.Attribute{

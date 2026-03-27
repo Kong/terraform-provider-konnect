@@ -19,13 +19,13 @@ resource "konnect_gateway_plugin_hmac_auth" "my_gatewaypluginhmacauth" {
       "hmac-sha256"
     ]
     anonymous  = "...my_anonymous..."
-    clock_skew = 5.59
+    clock_skew = 300
     enforce_headers = [
       "..."
     ]
-    hide_credentials      = true
+    hide_credentials      = false
     realm                 = "...my_realm..."
-    validate_request_body = true
+    validate_request_body = false
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 4

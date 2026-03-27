@@ -35,3 +35,6 @@ func (v *V2AppearanceColorVariable) GetDescription() *string {
 	}
 	return v.Description
 }
+
+// #region class-body-v2appearancecolorvariable
+// #endregion class-body-v2appearancecolorvariable

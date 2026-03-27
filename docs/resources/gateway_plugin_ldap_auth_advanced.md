@@ -15,33 +15,33 @@ GatewayPluginLdapAuthAdvanced Resource
 ```terraform
 resource "konnect_gateway_plugin_ldap_auth_advanced" "my_gatewaypluginldapauthadvanced" {
   config = {
-    anonymous = "...my_anonymous..."
+    anonymous = ""
     attribute = "...my_attribute..."
     base_dn   = "...my_base_dn..."
     bind_dn   = "...my_bind_dn..."
-    cache_ttl = 2.41
+    cache_ttl = 60
     consumer_by = [
       "username"
     ]
-    consumer_optional      = true
+    consumer_optional      = false
     group_base_dn          = "...my_group_base_dn..."
-    group_member_attribute = "...my_group_member_attribute..."
+    group_member_attribute = "memberOf"
     group_name_attribute   = "...my_group_name_attribute..."
     groups_required = [
       "..."
     ]
-    header_type        = "...my_header_type..."
-    hide_credentials   = true
-    keepalive          = 3.29
+    header_type        = "ldap"
+    hide_credentials   = false
+    keepalive          = 60000
     ldap_host          = "...my_ldap_host..."
     ldap_password      = "...my_ldap_password..."
-    ldap_port          = 3.46
+    ldap_port          = 389
     ldaps              = false
     log_search_results = false
     realm              = "...my_realm..."
-    start_tls          = true
-    timeout            = 8.28
-    verify_ldap_host   = true
+    start_tls          = false
+    timeout            = 10000
+    verify_ldap_host   = false
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 9

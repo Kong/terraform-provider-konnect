@@ -37,7 +37,7 @@ resource "konnect_cloud_gateway_configuration" "my_cloudgatewayconfiguration" {
       region   = "us-east-2"
     }
   ]
-  kind    = "serverless.v1"
+  kind    = "dedicated.v0"
   version = "3.2"
 }
 ```

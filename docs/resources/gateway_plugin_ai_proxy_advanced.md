@@ -16,24 +16,24 @@ GatewayPluginAiProxyAdvanced Resource
 resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadvanced" {
   config = {
     balancer = {
-      algorithm       = "lowest-latency"
-      connect_timeout = 1069677678
-      fail_timeout    = 251767862
+      algorithm       = "round-robin"
+      connect_timeout = 60000
+      fail_timeout    = 10000
       failover_criteria = [
         "http_403"
       ]
-      hash_on_header        = "...my_hash_on_header..."
-      latency_strategy      = "e2e"
-      max_fails             = 32489
-      read_timeout          = 1128540479
-      retries               = 14809
-      slots                 = 27573
-      tokens_count_strategy = "prompt-tokens"
-      write_timeout         = 1475900303
+      hash_on_header        = "X-Kong-LLM-Request-ID"
+      latency_strategy      = "tpot"
+      max_fails             = 0
+      read_timeout          = 60000
+      retries               = 5
+      slots                 = 10000
+      tokens_count_strategy = "total-tokens"
+      write_timeout         = 60000
     }
     embeddings = {
       auth = {
-        allow_override             = true
+        allow_override             = false
         aws_access_key_id          = "...my_aws_access_key_id..."
         aws_secret_access_key      = "...my_aws_secret_access_key..."
         azure_client_id            = "...my_azure_client_id..."
@@ -52,7 +52,7 @@ resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadva
         name = "...my_name..."
         options = {
           azure = {
-            api_version   = "...my_api_version..."
+            api_version   = "2023-05-15"
             deployment_id = "...my_deployment_id..."
             instance      = "...my_instance..."
           }
@@ -61,7 +61,7 @@ resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadva
             aws_region                 = "...my_aws_region..."
             aws_role_session_name      = "...my_aws_role_session_name..."
             aws_sts_endpoint_url       = "...my_aws_sts_endpoint_url..."
-            embeddings_normalize       = true
+            embeddings_normalize       = false
             performance_config_latency = "...my_performance_config_latency..."
             video_output_s3_uri        = "...my_video_output_s3_uri..."
           }
@@ -79,21 +79,21 @@ resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadva
         provider = "gemini"
       }
     }
-    genai_category        = "realtime/generation"
-    llm_format            = "huggingface"
-    max_request_body_size = 5
+    genai_category        = "text/generation"
+    llm_format            = "openai"
+    max_request_body_size = 1048576
     model_name_header     = true
     response_streaming    = "allow"
     targets = [
       {
         auth = {
-          allow_override             = true
+          allow_override             = false
           aws_access_key_id          = "...my_aws_access_key_id..."
           aws_secret_access_key      = "...my_aws_secret_access_key..."
           azure_client_id            = "...my_azure_client_id..."
           azure_client_secret        = "...my_azure_client_secret..."
           azure_tenant_id            = "...my_azure_tenant_id..."
-          azure_use_managed_identity = true
+          azure_use_managed_identity = false
           gcp_service_account_json   = "...my_gcp_service_account_json..."
           gcp_use_service_account    = false
           header_name                = "...my_header_name..."
@@ -104,14 +104,14 @@ resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadva
         }
         description = "...my_description..."
         logging = {
-          log_payloads   = true
-          log_statistics = true
+          log_payloads   = false
+          log_statistics = false
         }
         model = {
           name = "...my_name..."
           options = {
             anthropic_version   = "...my_anthropic_version..."
-            azure_api_version   = "...my_azure_api_version..."
+            azure_api_version   = "2023-05-15"
             azure_deployment_id = "...my_azure_deployment_id..."
             azure_instance      = "...my_azure_instance..."
             bedrock = {
@@ -119,7 +119,7 @@ resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadva
               aws_region                 = "...my_aws_region..."
               aws_role_session_name      = "...my_aws_role_session_name..."
               aws_sts_endpoint_url       = "...my_aws_sts_endpoint_url..."
-              embeddings_normalize       = true
+              embeddings_normalize       = false
               performance_config_latency = "...my_performance_config_latency..."
               video_output_s3_uri        = "...my_video_output_s3_uri..."
             }
@@ -155,25 +155,25 @@ resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadva
           provider = "cerebras"
         }
         route_type = "llm/v1/assistants"
-        weight     = 58189
+        weight     = 100
       }
     ]
     vectordb = {
       dimensions      = 3
       distance_metric = "euclidean"
       pgvector = {
-        database     = "...my_database..."
-        host         = "...my_host..."
+        database     = "kong-pgvector"
+        host         = "127.0.0.1"
         password     = "...my_password..."
-        port         = 5
-        ssl          = true
+        port         = 5432
+        ssl          = false
         ssl_cert     = "...my_ssl_cert..."
         ssl_cert_key = "...my_ssl_cert_key..."
-        ssl_required = true
-        ssl_verify   = true
-        ssl_version  = "any"
-        timeout      = 3.81
-        user         = "...my_user..."
+        ssl_required = false
+        ssl_verify   = false
+        ssl_version  = "tlsv1_2"
+        timeout      = 5000
+        user         = "postgres"
       }
       redis = {
         cloud_authentication = {
@@ -181,7 +181,7 @@ resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadva
           aws_access_key_id        = "...my_aws_access_key_id..."
           aws_assume_role_arn      = "...my_aws_assume_role_arn..."
           aws_cache_name           = "...my_aws_cache_name..."
-          aws_is_serverless        = false
+          aws_is_serverless        = true
           aws_region               = "...my_aws_region..."
           aws_role_session_name    = "...my_aws_role_session_name..."
           aws_secret_access_key    = "...my_aws_secret_access_key..."
@@ -190,35 +190,35 @@ resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadva
           azure_tenant_id          = "...my_azure_tenant_id..."
           gcp_service_account_json = "...my_gcp_service_account_json..."
         }
-        cluster_max_redirections = 4
+        cluster_max_redirections = 5
         cluster_nodes = [
           {
-            ip   = "...my_ip..."
-            port = 50944
+            ip   = "127.0.0.1"
+            port = 6379
           }
         ]
-        connect_timeout       = 656443886
+        connect_timeout       = 2000
         connection_is_proxied = false
-        database              = 10
-        host                  = "...my_host..."
+        database              = 0
+        host                  = "127.0.0.1"
         keepalive_backlog     = 251172057
-        keepalive_pool_size   = 1127137192
+        keepalive_pool_size   = 256
         password              = "...my_password..."
-        port                  = 31201
-        read_timeout          = 1222450418
-        send_timeout          = 1541453227
+        port                  = 6379
+        read_timeout          = 2000
+        send_timeout          = 2000
         sentinel_master       = "...my_sentinel_master..."
         sentinel_nodes = [
           {
-            host = "...my_host..."
-            port = 61553
+            host = "127.0.0.1"
+            port = 6379
           }
         ]
         sentinel_password = "...my_sentinel_password..."
         sentinel_role     = "master"
         sentinel_username = "...my_sentinel_username..."
         server_name       = "...my_server_name..."
-        ssl               = true
+        ssl               = false
         ssl_verify        = false
         username          = "...my_username..."
       }

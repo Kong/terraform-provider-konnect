@@ -15,8 +15,8 @@ GatewayPluginAiSemanticCache Resource
 ```terraform
 resource "konnect_gateway_plugin_ai_semantic_cache" "my_gatewaypluginaisemanticcache" {
   config = {
-    cache_control = true
-    cache_ttl     = 7
+    cache_control = false
+    cache_ttl     = 300
     embeddings = {
       auth = {
         allow_override             = false
@@ -25,9 +25,9 @@ resource "konnect_gateway_plugin_ai_semantic_cache" "my_gatewaypluginaisemanticc
         azure_client_id            = "...my_azure_client_id..."
         azure_client_secret        = "...my_azure_client_secret..."
         azure_tenant_id            = "...my_azure_tenant_id..."
-        azure_use_managed_identity = true
+        azure_use_managed_identity = false
         gcp_service_account_json   = "...my_gcp_service_account_json..."
-        gcp_use_service_account    = true
+        gcp_use_service_account    = false
         header_name                = "...my_header_name..."
         header_value               = "...my_header_value..."
         param_location             = "body"
@@ -38,7 +38,7 @@ resource "konnect_gateway_plugin_ai_semantic_cache" "my_gatewaypluginaisemanticc
         name = "...my_name..."
         options = {
           azure = {
-            api_version   = "...my_api_version..."
+            api_version   = "2023-05-15"
             deployment_id = "...my_deployment_id..."
             instance      = "...my_instance..."
           }
@@ -47,7 +47,7 @@ resource "konnect_gateway_plugin_ai_semantic_cache" "my_gatewaypluginaisemanticc
             aws_region                 = "...my_aws_region..."
             aws_role_session_name      = "...my_aws_role_session_name..."
             aws_sts_endpoint_url       = "...my_aws_sts_endpoint_url..."
-            embeddings_normalize       = true
+            embeddings_normalize       = false
             performance_config_latency = "...my_performance_config_latency..."
             video_output_s3_uri        = "...my_video_output_s3_uri..."
           }
@@ -65,29 +65,29 @@ resource "konnect_gateway_plugin_ai_semantic_cache" "my_gatewaypluginaisemanticc
         provider = "bedrock"
       }
     }
-    exact_caching            = true
-    ignore_assistant_prompts = true
+    exact_caching            = false
+    ignore_assistant_prompts = false
     ignore_system_prompts    = false
-    ignore_tool_prompts      = true
-    llm_format               = "huggingface"
-    message_countback        = 289.61
+    ignore_tool_prompts      = false
+    llm_format               = "openai"
+    message_countback        = 1
     stop_on_failure          = false
     vectordb = {
       dimensions      = 9
       distance_metric = "euclidean"
       pgvector = {
-        database     = "...my_database..."
-        host         = "...my_host..."
+        database     = "kong-pgvector"
+        host         = "127.0.0.1"
         password     = "...my_password..."
-        port         = 4
+        port         = 5432
         ssl          = false
         ssl_cert     = "...my_ssl_cert..."
         ssl_cert_key = "...my_ssl_cert_key..."
         ssl_required = false
-        ssl_verify   = true
-        ssl_version  = "any"
-        timeout      = 6.41
-        user         = "...my_user..."
+        ssl_verify   = false
+        ssl_version  = "tlsv1_2"
+        timeout      = 5000
+        user         = "postgres"
       }
       redis = {
         cloud_authentication = {
@@ -104,35 +104,35 @@ resource "konnect_gateway_plugin_ai_semantic_cache" "my_gatewaypluginaisemanticc
           azure_tenant_id          = "...my_azure_tenant_id..."
           gcp_service_account_json = "...my_gcp_service_account_json..."
         }
-        cluster_max_redirections = 8
+        cluster_max_redirections = 5
         cluster_nodes = [
           {
-            ip   = "...my_ip..."
-            port = 18507
+            ip   = "127.0.0.1"
+            port = 6379
           }
         ]
-        connect_timeout       = 282426182
+        connect_timeout       = 2000
         connection_is_proxied = false
         database              = 0
-        host                  = "...my_host..."
+        host                  = "127.0.0.1"
         keepalive_backlog     = 673476807
-        keepalive_pool_size   = 230676668
+        keepalive_pool_size   = 256
         password              = "...my_password..."
-        port                  = 51340
-        read_timeout          = 289855833
-        send_timeout          = 1337575450
+        port                  = 6379
+        read_timeout          = 2000
+        send_timeout          = 2000
         sentinel_master       = "...my_sentinel_master..."
         sentinel_nodes = [
           {
-            host = "...my_host..."
-            port = 38845
+            host = "127.0.0.1"
+            port = 6379
           }
         ]
         sentinel_password = "...my_sentinel_password..."
         sentinel_role     = "slave"
         sentinel_username = "...my_sentinel_username..."
         server_name       = "...my_server_name..."
-        ssl               = true
+        ssl               = false
         ssl_verify        = false
         username          = "...my_username..."
       }

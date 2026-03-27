@@ -12,7 +12,8 @@ type AzureVhubPeeringGateway struct {
 	// List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway
 	// attachment.
 	//
-	DNSConfig []TransitGatewayDNSConfig `json:"dns_config,omitempty"`
+	DNSConfig                      []TransitGatewayDNSConfig        `json:"dns_config,omitempty"`
+	TransitGatewayAttachmentConfig AzureVHubPeeringAttachmentConfig `json:"transit_gateway_attachment_config"`
 }
 
 func (a AzureVhubPeeringGateway) MarshalJSON() ([]byte, error) {
@@ -20,7 +21,7 @@ func (a AzureVhubPeeringGateway) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AzureVhubPeeringGateway) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "transit_gateway_attachment_config"}); err != nil {
 		return err
 	}
 	return nil
@@ -38,4 +39,11 @@ func (a *AzureVhubPeeringGateway) GetDNSConfig() []TransitGatewayDNSConfig {
 		return nil
 	}
 	return a.DNSConfig
+}
+
+func (a *AzureVhubPeeringGateway) GetTransitGatewayAttachmentConfig() AzureVHubPeeringAttachmentConfig {
+	if a == nil {
+		return AzureVHubPeeringAttachmentConfig{}
+	}
+	return a.TransitGatewayAttachmentConfig
 }

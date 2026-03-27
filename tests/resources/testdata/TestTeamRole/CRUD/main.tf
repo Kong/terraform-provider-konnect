@@ -17,3 +17,11 @@ resource "konnect_team_role" "my_teamrole" {
   role_name        = "Viewer"
   team_id          = konnect_team.my_team.id
 }
+
+resource "konnect_team_role" "my_teamrole_debug_session" {
+  entity_id        = konnect_gateway_control_plane.my_konnect_cp.id
+  entity_region    = "us"
+  entity_type_name = "Control Planes"
+  role_name        = "Debug Session Creator"
+  team_id          = konnect_team.my_team.id
+}

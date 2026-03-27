@@ -15,11 +15,11 @@ GatewayPluginResponseRatelimiting Resource
 ```terraform
 resource "konnect_gateway_plugin_response_ratelimiting" "my_gatewaypluginresponseratelimiting" {
   config = {
-    block_on_first_violation = true
-    fault_tolerant           = false
-    header_name              = "...my_header_name..."
-    hide_client_headers      = true
-    limit_by                 = "ip"
+    block_on_first_violation = false
+    fault_tolerant           = true
+    header_name              = "x-kong-limit"
+    hide_client_headers      = false
+    limit_by                 = "consumer"
     limits = {
       key = {
         day    = 6.02
@@ -30,7 +30,7 @@ resource "konnect_gateway_plugin_response_ratelimiting" "my_gatewaypluginrespons
         year   = 4.52
       }
     }
-    policy = "cluster"
+    policy = "local"
     redis = {
       cloud_authentication = {
         auth_provider            = "gcp"
@@ -46,14 +46,14 @@ resource "konnect_gateway_plugin_response_ratelimiting" "my_gatewaypluginrespons
         azure_tenant_id          = "...my_azure_tenant_id..."
         gcp_service_account_json = "...my_gcp_service_account_json..."
       }
-      database    = 9
+      database    = 0
       host        = "...my_host..."
       password    = "...my_password..."
-      port        = 32565
+      port        = 6379
       server_name = "...my_server_name..."
-      ssl         = true
+      ssl         = false
       ssl_verify  = false
-      timeout     = 70842937
+      timeout     = 2000
       username    = "...my_username..."
     }
   }

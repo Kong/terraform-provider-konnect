@@ -30,7 +30,7 @@ resource "konnect_gateway_route" "my_gatewayroute" {
   hosts = [
     "..."
   ]
-  https_redirect_status_code = 308
+  https_redirect_status_code = 426
   id                         = "...my_id..."
   methods = [
     "..."
@@ -44,9 +44,9 @@ resource "konnect_gateway_route" "my_gatewayroute" {
   protocols = [
     "tcp"
   ]
-  regex_priority     = 9
+  regex_priority     = 0
   request_buffering  = true
-  response_buffering = false
+  response_buffering = true
   service = {
     id = "...my_id..."
   }
