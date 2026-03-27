@@ -148,6 +148,27 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Schema(ctx c
 									int64validator.Between(1, 65535),
 								},
 							},
+							"broker_host_format": schema.SingleNestedAttribute{
+								Optional: true,
+								Attributes: map[string]schema.Attribute{
+									"type": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     stringdefault.StaticString(`per_cluster_suffix`),
+										Description: `Default: "per_cluster_suffix"; must be one of ["per_cluster_suffix", "shared_suffix"]`,
+										Validators: []validator.String{
+											stringvalidator.OneOf(
+												"per_cluster_suffix",
+												"shared_suffix",
+											),
+										},
+									},
+								},
+								MarkdownDescription: `Configures DNS names assigned to brokers in virtual clusters.` + "\n" +
+									`` + "\n" +
+									`- ` + "`" + `per_cluster_suffix` + "`" + ` is the default and allocates one level in the hierarchy for virtual clusters: ` + "`" + `broker-{node_id}.{virtual_cluster}.{sni_suffix}` + "`" + `` + "\n" +
+									`- ` + "`" + `shared_suffix` + "`" + ` puts all brokers from every virtual clusters into the same level: ` + "`" + `broker-{node_id}-{virtual_cluster}.{sni_suffix}` + "`" + `. This makes it easier to manage certificates for this listener.`,
+							},
 							"sni_suffix": schema.StringAttribute{
 								Optional: true,
 								MarkdownDescription: `Optional suffix for TLS SNI validation.` + "\n" +

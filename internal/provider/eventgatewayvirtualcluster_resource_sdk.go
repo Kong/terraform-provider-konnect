@@ -25,6 +25,9 @@ func (r *EventGatewayVirtualClusterResourceModel) RefreshFromSharedVirtualCluste
 			if authenticationItem.VirtualClusterAuthenticationAnonymous != nil {
 				authentication.Anonymous = &tfTypes.Metadata{}
 			}
+			if authenticationItem.VirtualClusterAuthenticationClientCertificate != nil {
+				authentication.ClientCertificate = &tfTypes.Metadata{}
+			}
 			if authenticationItem.VirtualClusterAuthenticationOauthBearer != nil {
 				authentication.OauthBearer = &tfTypes.VirtualClusterAuthenticationOauthBearer{}
 				if authenticationItem.VirtualClusterAuthenticationOauthBearer.ClaimsMapping == nil {
@@ -409,6 +412,12 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedCreateVirtualClusterRe
 				VirtualClusterAuthenticationOauthBearer: &virtualClusterAuthenticationOauthBearer,
 			})
 		}
+		if r.Authentication[authenticationItem].ClientCertificate != nil {
+			virtualClusterAuthenticationClientCertificate := shared.VirtualClusterAuthenticationClientCertificate{}
+			authentication = append(authentication, shared.VirtualClusterAuthenticationScheme{
+				VirtualClusterAuthenticationClientCertificate: &virtualClusterAuthenticationClientCertificate,
+			})
+		}
 	}
 	var namespace *shared.VirtualClusterNamespace
 	if r.Namespace != nil {
@@ -683,6 +692,12 @@ func (r *EventGatewayVirtualClusterResourceModel) ToSharedUpdateVirtualClusterRe
 			}
 			authentication = append(authentication, shared.VirtualClusterAuthenticationSensitiveDataAwareScheme{
 				VirtualClusterAuthenticationOauthBearer: &virtualClusterAuthenticationOauthBearer,
+			})
+		}
+		if r.Authentication[authenticationItem].ClientCertificate != nil {
+			virtualClusterAuthenticationClientCertificate := shared.VirtualClusterAuthenticationClientCertificate{}
+			authentication = append(authentication, shared.VirtualClusterAuthenticationSensitiveDataAwareScheme{
+				VirtualClusterAuthenticationClientCertificate: &virtualClusterAuthenticationClientCertificate,
 			})
 		}
 	}

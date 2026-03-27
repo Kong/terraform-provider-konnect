@@ -141,7 +141,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 						if parametersItem.Schema == nil {
 							parameters.Schema = nil
 						} else {
-							parameters.Schema = &tfTypes.Schema{}
+							parameters.Schema = &tfTypes.BrokerHostFormat{}
 							parameters.Schema.Type = types.StringPointerValue(parametersItem.Schema.Type)
 						}
 
