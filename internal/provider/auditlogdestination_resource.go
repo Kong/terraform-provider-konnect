@@ -54,7 +54,7 @@ func (r *AuditLogDestinationResource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "AuditLogDestination Resource",
 		Attributes: map[string]schema.Attribute{
 			"authorization": schema.StringAttribute{
-				Optional:    true,
+				Required:    true,
 				Description: `The value to include in the ` + "`" + `Authorization` + "`" + ` header when sending audit logs to the webhook.`,
 			},
 			"created_at": schema.StringAttribute{

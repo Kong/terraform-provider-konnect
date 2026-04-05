@@ -39,3 +39,25 @@ resource "konnect_team_role" "my_teamrole" {
 ### Read-Only
 
 - `id` (String) The ID of the role assignment.
+
+## Import
+
+Import is supported using the following syntax:
+
+In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.com/terraform/language/import) can be used with the `id` attribute, for example:
+
+```terraform
+import {
+  to = konnect_team_role.my_konnect_team_role
+  id = jsonencode({
+    id = "8350205f-a305-4e39-abe9-bc082a80091a"
+    team_id = "e81bc3e5-e9db-4764-b7dd-e81e39072cbe"
+  })
+}
+```
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+terraform import konnect_team_role.my_konnect_team_role '{"id": "8350205f-a305-4e39-abe9-bc082a80091a", "team_id": "e81bc3e5-e9db-4764-b7dd-e81e39072cbe"}'
+```

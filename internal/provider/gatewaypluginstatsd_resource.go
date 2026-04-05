@@ -151,6 +151,7 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 						Description: `Default: false`,
 					},
 					"metrics": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -195,6 +196,7 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 									},
 								},
 								"sample_rate": schema.Float64Attribute{
+									Computed:    true,
 									Optional:    true,
 									Description: `Sampling rate`,
 								},
@@ -260,16 +262,6 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 					"queue": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"concurrency_limit":    types.Int64Type,
-							"initial_retry_delay":  types.Float64Type,
-							"max_batch_size":       types.Int64Type,
-							"max_bytes":            types.Int64Type,
-							"max_coalescing_delay": types.Float64Type,
-							"max_entries":          types.Int64Type,
-							"max_retry_delay":      types.Float64Type,
-							"max_retry_time":       types.Float64Type,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"concurrency_limit": schema.Int64Attribute{
 								Computed:    true,
@@ -298,6 +290,7 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 								},
 							},
 							"max_bytes": schema.Int64Attribute{
+								Computed:    true,
 								Optional:    true,
 								Description: `Maximum number of bytes that can be waiting on a queue, requires string content.`,
 							},

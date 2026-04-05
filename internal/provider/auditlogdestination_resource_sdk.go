@@ -87,12 +87,9 @@ func (r *AuditLogDestinationResourceModel) ToSharedCreateAuditLogDestination(ctx
 	var endpoint string
 	endpoint = r.Endpoint.ValueString()
 
-	authorization := new(string)
-	if !r.Authorization.IsUnknown() && !r.Authorization.IsNull() {
-		*authorization = r.Authorization.ValueString()
-	} else {
-		authorization = nil
-	}
+	var authorization string
+	authorization = r.Authorization.ValueString()
+
 	logFormat := new(shared.LogFormat)
 	if !r.LogFormat.IsUnknown() && !r.LogFormat.IsNull() {
 		*logFormat = shared.LogFormat(r.LogFormat.ValueString())
