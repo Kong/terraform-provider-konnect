@@ -35,6 +35,7 @@ func (r *PortalResourceModel) RefreshFromSharedPortalResponse(ctx context.Contex
 		}
 		r.Name = types.StringValue(resp.Name)
 		r.RbacEnabled = types.BoolPointerValue(resp.RbacEnabled)
+		r.SiprEnabled = types.BoolPointerValue(resp.SiprEnabled)
 		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
 
@@ -125,6 +126,12 @@ func (r *PortalResourceModel) ToSharedCreatePortal(ctx context.Context) (*shared
 	} else {
 		rbacEnabled = nil
 	}
+	siprEnabled := new(bool)
+	if !r.SiprEnabled.IsUnknown() && !r.SiprEnabled.IsNull() {
+		*siprEnabled = r.SiprEnabled.ValueBool()
+	} else {
+		siprEnabled = nil
+	}
 	defaultAPIVisibility := new(shared.DefaultAPIVisibility)
 	if !r.DefaultAPIVisibility.IsUnknown() && !r.DefaultAPIVisibility.IsNull() {
 		*defaultAPIVisibility = shared.DefaultAPIVisibility(r.DefaultAPIVisibility.ValueString())
@@ -174,6 +181,7 @@ func (r *PortalResourceModel) ToSharedCreatePortal(ctx context.Context) (*shared
 		Description:                      description,
 		AuthenticationEnabled:            authenticationEnabled,
 		RbacEnabled:                      rbacEnabled,
+		SiprEnabled:                      siprEnabled,
 		DefaultAPIVisibility:             defaultAPIVisibility,
 		DefaultPageVisibility:            defaultPageVisibility,
 		DefaultApplicationAuthStrategyID: defaultApplicationAuthStrategyID,
@@ -217,6 +225,12 @@ func (r *PortalResourceModel) ToSharedUpdatePortal(ctx context.Context) (*shared
 		*rbacEnabled = r.RbacEnabled.ValueBool()
 	} else {
 		rbacEnabled = nil
+	}
+	siprEnabled := new(bool)
+	if !r.SiprEnabled.IsUnknown() && !r.SiprEnabled.IsNull() {
+		*siprEnabled = r.SiprEnabled.ValueBool()
+	} else {
+		siprEnabled = nil
 	}
 	defaultAPIVisibility := new(shared.UpdatePortalDefaultAPIVisibility)
 	if !r.DefaultAPIVisibility.IsUnknown() && !r.DefaultAPIVisibility.IsNull() {
@@ -267,6 +281,7 @@ func (r *PortalResourceModel) ToSharedUpdatePortal(ctx context.Context) (*shared
 		Description:                      description,
 		AuthenticationEnabled:            authenticationEnabled,
 		RbacEnabled:                      rbacEnabled,
+		SiprEnabled:                      siprEnabled,
 		DefaultAPIVisibility:             defaultAPIVisibility,
 		DefaultPageVisibility:            defaultPageVisibility,
 		DefaultApplicationAuthStrategyID: defaultApplicationAuthStrategyID,

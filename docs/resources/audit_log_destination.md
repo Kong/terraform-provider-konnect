@@ -27,12 +27,12 @@ resource "konnect_audit_log_destination" "my_auditlogdestination" {
 
 ### Required
 
+- `authorization` (String) The value to include in the `Authorization` header when sending audit logs to the webhook.
 - `endpoint` (String) The endpoint that will receive audit log messages.
 - `name` (String) The name of the audit log destination.
 
 ### Optional
 
-- `authorization` (String) The value to include in the `Authorization` header when sending audit logs to the webhook.
 - `log_format` (String) The output format of each log messages. Default: "cef"; must be one of ["cef", "json", "cps"]
 - `skip_ssl_verification` (Boolean) Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
 We strongly recommend not setting this to 'true' as you are subject to man-in-the-middle and other attacks.

@@ -51,6 +51,7 @@ type PortalResourceModel struct {
 	Labels                           map[string]types.String `tfsdk:"labels"`
 	Name                             types.String            `tfsdk:"name"`
 	RbacEnabled                      types.Bool              `tfsdk:"rbac_enabled"`
+	SiprEnabled                      types.Bool              `tfsdk:"sipr_enabled"`
 	UpdatedAt                        types.String            `tfsdk:"updated_at"`
 }
 
@@ -186,6 +187,12 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Optional:    true,
 				Default:     booldefault.StaticBool(false),
 				Description: `Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC. Default: false`,
+			},
+			"sipr_enabled": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Default:     booldefault.StaticBool(false),
+				Description: `Whether ip allow list is enabled for the organization. Default: false`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

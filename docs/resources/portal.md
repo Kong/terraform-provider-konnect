@@ -28,6 +28,7 @@ resource "konnect_portal" "my_portal" {
   }
   name         = "...my_name..."
   rbac_enabled = false
+  sipr_enabled = true
 }
 ```
 
@@ -58,6 +59,7 @@ Labels are intended to store **INTERNAL** metadata.
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 - `rbac_enabled` (Boolean) Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC. Default: false
+- `sipr_enabled` (Boolean) Whether ip allow list is enabled for the organization. Default: false
 
 ### Read-Only
 

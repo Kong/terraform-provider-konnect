@@ -199,14 +199,15 @@ type Konnect struct {
 	// The consumer object represents a consumer - or a user - of a service.
 	// You can either rely on Kong Gateway as the primary datastore, or you can map the consumer list with your database to keep consistency between Kong Gateway and your existing primary datastore.
 	//
-	Consumers            *Consumers
-	ACLs                 *ACLs
-	BasicAuthCredentials *BasicAuthCredentials
-	HMACAuthCredentials  *HMACAuthCredentials
-	JWTs                 *JWTs
-	APIKeys              *APIKeys
-	MTLSAuthCredentials  *MTLSAuthCredentials
-	CustomPlugins        *CustomPlugins
+	Consumers              *Consumers
+	ACLs                   *ACLs
+	BasicAuthCredentials   *BasicAuthCredentials
+	HMACAuthCredentials    *HMACAuthCredentials
+	JWTs                   *JWTs
+	APIKeys                *APIKeys
+	MTLSAuthCredentials    *MTLSAuthCredentials
+	CustomPlugins          *CustomPlugins
+	GraphQLCostDecorations *GraphQLCostDecorations
 	// A JSON Web key set. Key sets are the preferred way to expose keys to plugins because they tell the plugin where to look for keys or have a scoping mechanism to restrict plugins to specific keys.
 	//
 	KeySets *KeySets
@@ -395,9 +396,9 @@ func WithTimeout(timeout time.Duration) SDKOption {
 // New creates a new instance of the SDK with the provided options
 func New(opts ...SDKOption) *Konnect {
 	sdk := &Konnect{
-		SDKVersion: "3.12.0",
+		SDKVersion: "3.13.0",
 		sdkConfiguration: config.SDKConfiguration{
-			UserAgent:  "speakeasy-sdk/terraform 3.12.0 2.869.23 2.0.0 github.com/kong/terraform-provider-konnect/v3/internal/sdk",
+			UserAgent:  "speakeasy-sdk/terraform 3.13.0 2.869.23 2.0.0 github.com/kong/terraform-provider-konnect/v3/internal/sdk",
 			ServerList: ServerList,
 		},
 		hooks: hooks.New(),
@@ -462,6 +463,7 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.APIKeys = newAPIKeys(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.MTLSAuthCredentials = newMTLSAuthCredentials(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.CustomPlugins = newCustomPlugins(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.GraphQLCostDecorations = newGraphQLCostDecorations(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.KeySets = newKeySets(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Keys = newKeys(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Partials = newPartials(sdk, sdk.sdkConfiguration, sdk.hooks)

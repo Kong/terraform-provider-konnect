@@ -53,6 +53,23 @@ func (r *SystemAccountRoleResourceModel) ToOperationsDeleteSystemAccountsAccount
 	return &out, diags
 }
 
+func (r *SystemAccountRoleResourceModel) ToOperationsGetSystemAccountRoleRequest(ctx context.Context) (*operations.GetSystemAccountRoleRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var accountID string
+	accountID = r.AccountID.ValueString()
+
+	var roleID string
+	roleID = r.ID.ValueString()
+
+	out := operations.GetSystemAccountRoleRequest{
+		AccountID: accountID,
+		RoleID:    roleID,
+	}
+
+	return &out, diags
+}
+
 func (r *SystemAccountRoleResourceModel) ToOperationsPostSystemAccountsAccountIDAssignedRolesRequest(ctx context.Context) (*operations.PostSystemAccountsAccountIDAssignedRolesRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
