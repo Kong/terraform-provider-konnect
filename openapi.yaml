@@ -145,6 +145,312 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Serverless Cloud Gateways
+  /v1/auth-servers:
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServer#create
+        terraform-datasource: null
+      operationId: createAuthServer
+      summary: Create a new auth server
+      description: 'Create a new auth server. Each auth server has a unique, randomly generated, public issuer URL.'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateAuthServer'
+      responses:
+        '201':
+          $ref: '#/components/responses/AuthServer'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Auth Server
+  '/v1/auth-servers/{authServerId}':
+    parameters:
+      - $ref: '#/components/parameters/authServerId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServer#read
+        terraform-datasource: null
+      operationId: getAuthServer
+      summary: Get an auth server
+      description: Get an auth server.
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthServer'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Auth Server
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServer#update
+        terraform-datasource: null
+      operationId: updateAuthServer
+      summary: Update an auth server
+      description: Update an auth server.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateAuthServer'
+      responses:
+        '200':
+          $ref: '#/components/responses/AuthServer'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Auth Server
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServer#delete
+        terraform-datasource: null
+      operationId: deleteAuthServer
+      summary: Delete an auth server
+      description: 'Delete an auth server. If force=true, delete the auth server and all its associated resources. If force=false, only allow deletion if no resources are associated with the auth server. This action is irreversible.'
+      parameters:
+        - name: force
+          in: query
+          description: 'If true, delete the specified auth server and all its associated resources. If false, only allow deletion if no clients, scopes or claims are associated with the auth server.'
+          schema:
+            type: string
+            default: 'false'
+            enum:
+              - 'true'
+              - 'false'
+          x-speakeasy-name-override: force_destroy
+      responses:
+        '204':
+          description: Success
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Auth Server
+  '/v1/auth-servers/{authServerId}/claims':
+    parameters:
+      - $ref: '#/components/parameters/authServerIdForChildren'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServerClaim#create
+        terraform-datasource: null
+      operationId: createAuthServerClaim
+      summary: Create a new auth server claim
+      description: 'Create a new claim for a given auth server. The `name` attribute will appear in the JWT access token as a claim with the given case-sensitive name. The `value` attribute will be used to populate the claim value in the JWT access token. The value can be templated, which allows you to use variables like `${ uuidv4 }` to generate dynamic values. Claim values are hydrated based on their types, which may include JSON.'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateClaim'
+      responses:
+        '201':
+          $ref: '#/components/responses/Claim'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Auth Server Claims
+  '/v1/auth-servers/{authServerId}/claims/{claimId}':
+    parameters:
+      - $ref: '#/components/parameters/authServerIdForChildren'
+      - $ref: '#/components/parameters/claimId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServerClaim#read
+        terraform-datasource: null
+      operationId: getAuthServerClaim
+      summary: Get an auth server claim
+      description: Get a claim for given auth server.
+      responses:
+        '200':
+          $ref: '#/components/responses/Claim'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Auth Server Claims
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServerClaim#update
+        terraform-datasource: null
+      operationId: updateAuthServerClaim
+      summary: Update an auth server claim
+      description: Update a claim for a given auth server.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateClaim'
+      responses:
+        '200':
+          $ref: '#/components/responses/Claim'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Auth Server Claims
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServerClaim#delete
+        terraform-datasource: null
+      operationId: deleteAuthServerClaim
+      summary: Delete an auth server claim
+      description: 'Delete a claim for a given auth server. If the claim is included in any scopes, it will be removed from those scopes.'
+      responses:
+        '204':
+          description: Success
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Auth Server Claims
+  '/v1/auth-servers/{authServerId}/clients':
+    parameters:
+      - $ref: '#/components/parameters/authServerIdForChildren'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServerClient#create
+        terraform-datasource: null
+      operationId: createAuthServerClient
+      summary: Create a new auth server client
+      description: Create a new client for a given auth server. The client ID and secret will be generated automatically. The `name` attribute must be unique within the auth server. The `grant_types` and `response_types` attributes define the OAuth 2.0 and OpenID Connect capabilities of the client.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateClient'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreatedClient'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Auth Server Clients
+  '/v1/auth-servers/{authServerId}/clients/{clientId}':
+    parameters:
+      - $ref: '#/components/parameters/authServerIdForChildren'
+      - $ref: '#/components/parameters/clientId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServerClient#read
+        terraform-datasource: null
+      operationId: getAuthServerClient
+      summary: Get an auth server client
+      description: Get a client for given auth server.
+      responses:
+        '200':
+          $ref: '#/components/responses/Client'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Auth Server Clients
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServerClient#update
+        terraform-datasource: null
+      operationId: replaceAuthServerClient
+      summary: Replace an auth server client
+      description: 'Replace a client for a given auth server. The client ID and secret can be provided to update an existing client, or to create a client with the matching ID and secret.'
+      requestBody:
+        $ref: '#/components/requestBodies/ReplaceClient'
+      responses:
+        '200':
+          $ref: '#/components/responses/Client'
+        '201':
+          $ref: '#/components/responses/Client'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Auth Server Clients
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServerClient#delete
+        terraform-datasource: null
+      operationId: deleteAuthServerClient
+      summary: Delete an auth server client
+      description: Delete a client for a given auth server. All tokens associated with the client will also be deleted. This action is irreversible.
+      responses:
+        '204':
+          description: Success
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Auth Server Clients
+  '/v1/auth-servers/{authServerId}/scopes':
+    parameters:
+      - $ref: '#/components/parameters/authServerIdForChildren'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServerScope#create
+        terraform-datasource: null
+      operationId: createAuthServerScope
+      summary: Create a new auth server scope
+      description: Create a new scope for a given auth server. The `name` attribute must be unique within the auth server.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateScope'
+      responses:
+        '201':
+          $ref: '#/components/responses/Scope'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Auth Server Scopes
+  '/v1/auth-servers/{authServerId}/scopes/{scopeId}':
+    parameters:
+      - $ref: '#/components/parameters/authServerIdForChildren'
+      - $ref: '#/components/parameters/scopeId'
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServerScope#read
+        terraform-datasource: null
+      operationId: getAuthServerScope
+      summary: Get an auth server scope
+      description: Get a scope for given auth server.
+      responses:
+        '200':
+          $ref: '#/components/responses/Scope'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Auth Server Scopes
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServerScope#update
+        terraform-datasource: null
+      operationId: updateAuthServerScope
+      summary: Update an auth server scope
+      description: Update a scope for a given auth server.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateScope'
+      responses:
+        '200':
+          $ref: '#/components/responses/Scope'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Auth Server Scopes
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityAuthServerScope#delete
+        terraform-datasource: null
+      operationId: deleteAuthServerScope
+      summary: Delete an auth server scope
+      description: 'Delete a scope for a given auth server. If the scope is included in any clients, it will be removed from those clients.'
+      responses:
+        '204':
+          description: Success
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Auth Server Scopes
   /v1/catalog-services:
     post:
       x-speakeasy-entity-operation: CatalogService#create
@@ -19060,6 +19366,26 @@ components:
       required: true
       description: ID of the Audit Log Destination.
       x-speakeasy-match: id
+    authServerId:
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: authServerId
+      in: path
+      required: true
+      description: The auth server ID
+      x-speakeasy-match: id
+    authServerIdForChildren:
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: authServerId
+      in: path
+      required: true
+      description: The auth server ID
+      x-speakeasy-name-override: auth_server_id
     AuthStrategyId:
       name: authStrategyId
       description: Application auth strategy identifier
@@ -19101,6 +19427,24 @@ components:
       required: true
       schema:
         type: string
+      x-speakeasy-match: id
+    claimId:
+      schema:
+        type: string
+        format: uuid
+        example: 07d05309-45cc-4b37-92fb-1524846deec3
+      name: claimId
+      in: path
+      required: true
+      description: The claim ID
+      x-speakeasy-match: id
+    clientId:
+      schema:
+        $ref: '#/components/schemas/ClientId'
+      name: clientId
+      in: path
+      required: true
+      description: The OAuth 2.0 client ID
       x-speakeasy-match: id
     cmekId:
       name: cmekId
@@ -19480,6 +19824,16 @@ components:
       required: true
       schema:
         type: string
+      x-speakeasy-match: id
+    scopeId:
+      schema:
+        type: string
+        format: uuid
+        example: c5e12516-182c-4928-ae04-05374b3b1cca
+      name: scopeId
+      in: path
+      required: true
+      description: The scope ID
       x-speakeasy-match: id
     ServiceId:
       description: ID of the Service to lookup
@@ -31474,6 +31828,359 @@ components:
         fields:
           - vault
       x-sensitive: true
+    ResponseType:
+      description: OAuth 2.0 response type
+      type: string
+      enum:
+        - none
+        - token
+        - code
+        - id_token
+      x-speakeasy-unknown-values: allow
+    ResponseTypes:
+      description: List of OAuth 2.0 response types
+      type: array
+      items:
+        $ref: '#/components/schemas/ResponseType'
+      nullable: false
+    GrantType:
+      description: OAuth 2.0 grant type
+      type: string
+      enum:
+        - implicit
+        - client_credentials
+      x-speakeasy-unknown-values: allow
+    GrantTypes:
+      description: List of OAuth 2.0 grant types
+      type: array
+      items:
+        $ref: '#/components/schemas/GrantType'
+      nullable: false
+      uniqueItems: true
+    RedirectURIs:
+      description: 'The URIs that the client is allowed to redirect to after authentication in interactive flows. All redirect URIs must be absolute URIs, be secure (HTTPS), and must not include a fragment component.'
+      type: array
+      items:
+        type: string
+        format: uri
+      nullable: false
+    LoginURI:
+      description: The URI of the login page where the user is redirected to authenticate in interactive flows. The login page must be secure (HTTPS).
+      type: string
+      format: uri
+      default: null
+      nullable: true
+      x-speakeasy-param-computed: false
+    TokenDuration:
+      description: 'The duration of the minted token is valid for, in seconds'
+      type: integer
+      default: 300
+      maximum: 2592000
+      minimum: 60
+    ClientAllowAllScopes:
+      description: Specifies whether the client is allowed to request all scopes
+      type: boolean
+      default: false
+    ClientAllowScopes:
+      description: Specifies the scopes IDs that the client is allowed to request
+      type: array
+      items:
+        type: string
+        format: uuid
+      nullable: false
+      uniqueItems: true
+    ClientId:
+      description: The OAuth 2.0 client ID
+      type: string
+      example: kYa9iQFU5xPDSIUH9z1z
+      maxLength: 36
+      minLength: 1
+      pattern: '[-_\w]+'
+      readOnly: true
+      x-speakeasy-param-suppress-computed-diff: true
+    AuthServerName:
+      description: The name of the auth server
+      type: string
+      minLength: 1
+    AuthServerDescription:
+      description: The description of the auth server
+      type: string
+    Audience:
+      description: The recipients that the tokens are intended for. This becomes the 'aud' claim in an access token
+      type: string
+      minLength: 1
+    UpdateAlgorithm:
+      description: Algorithm used in the key signing process
+      type: string
+      enum:
+        - RS256
+        - RS384
+        - RS512
+        - PS256
+        - PS384
+        - PS512
+      x-speakeasy-unknown-values: allow
+    Algorithm:
+      description: Algorithm used in the key signing process
+      type: string
+      default: RS256
+      enum:
+        - RS256
+        - RS384
+        - RS512
+        - PS256
+        - PS384
+        - PS512
+      x-speakeasy-unknown-values: allow
+    Issuer:
+      description: The complete URL for the custom authorization server. This becomes the 'iss' claim in an access token.
+      type: string
+    TokenEndpointAuthMethod:
+      description: Requested authentication method for OAuth 2.0 endpoints.
+      type: string
+      default: client_secret_post
+      enum:
+        - client_secret_post
+        - none
+      x-speakeasy-unknown-values: allow
+    TrustedOrigins:
+      description: A list or trusted origins to apply the CORS header on for the auth server
+      type: array
+      items:
+        $ref: '#/components/schemas/TrustedOrigin'
+      maxLength: 16
+      uniqueItems: true
+    TrustedOrigin:
+      description: A trusted origin for the auth server
+      type: string
+      format: uri
+      example: 'https://example.com'
+    AuthServer:
+      type: object
+      properties:
+        id:
+          description: The ID of the auth server
+          type: string
+          format: uuid
+        name:
+          $ref: '#/components/schemas/AuthServerName'
+        description:
+          $ref: '#/components/schemas/AuthServerDescription'
+        audience:
+          $ref: '#/components/schemas/Audience'
+        signing_algorithm:
+          $ref: '#/components/schemas/Algorithm'
+        issuer:
+          $ref: '#/components/schemas/Issuer'
+        metadata_uri:
+          description: The URI of the metadata document for the auth server
+          type: string
+          format: uri
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        trusted_origins:
+          $ref: '#/components/schemas/TrustedOrigins'
+      required:
+        - id
+        - name
+        - description
+        - audience
+        - signing_algorithm
+        - issuer
+        - metadata_uri
+        - labels
+        - created_at
+        - updated_at
+    ClaimName:
+      description: The name of the claim
+      type: string
+      minLength: 1
+    ClaimValue:
+      description: Specifies the value of the claim. It may contain a static value or a dynamic (templated) value. Static values which are valid JSON will result in a JSON object in the token claims.
+      type: string
+      minLength: 1
+    UpdateClaimIncludeInToken:
+      description: 'Specifies whether to include claim in the token. If the value is set to ''false'' for a claim, the client instead uses the access token to get claims from the ''/userinfo'' endpoint.'
+      type: boolean
+    ClaimIncludeInToken:
+      description: 'Specifies whether to include claim in the token. If the value is set to ''false'' for a claim, the client instead uses the access token to get claims from the ''/userinfo'' endpoint.'
+      type: boolean
+      default: false
+    UpdateClaimIncludeInAllScopes:
+      description: 'Specifies whether to include the claim in all scopes. If the value is set to ''false'' for a claim, the claim is only included in the scopes that explicitly list it.'
+      type: boolean
+    ClaimIncludeInAllScopes:
+      description: 'Specifies whether to include the claim in all scopes. If the value is set to ''false'' for a claim, the claim is only included in the scopes that explicitly list it.'
+      type: boolean
+      default: false
+    ClaimIncludeInScopes:
+      description: Specifies the scopes IDs in which the claim is included
+      type: array
+      items:
+        type: string
+        format: uuid
+      nullable: false
+    UpdateClaimEnabled:
+      description: 'Specifies whether the claim is enabled. If the claim is not enabled, it will not be included in the token or the ''/userinfo'' endpoint.'
+      type: boolean
+    ClaimEnabled:
+      description: 'Specifies whether the claim is enabled. If the claim is not enabled, it will not be included in the token or the ''/userinfo'' endpoint.'
+      type: boolean
+      default: true
+    Claim:
+      type: object
+      properties:
+        id:
+          description: The ID of the claim
+          type: string
+          format: uuid
+        name:
+          $ref: '#/components/schemas/ClaimName'
+        value:
+          $ref: '#/components/schemas/ClaimValue'
+        include_in_token:
+          $ref: '#/components/schemas/ClaimIncludeInToken'
+        include_in_all_scopes:
+          $ref: '#/components/schemas/ClaimIncludeInAllScopes'
+        include_in_scopes:
+          $ref: '#/components/schemas/ClaimIncludeInScopes'
+        enabled:
+          $ref: '#/components/schemas/ClaimEnabled'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - name
+        - value
+        - include_in_token
+        - include_in_all_scopes
+        - include_in_scopes
+        - enabled
+        - created_at
+        - updated_at
+    ScopeName:
+      description: The name of the scope
+      type: string
+      minLength: 1
+    ScopeDescription:
+      description: Description of the scope
+      type: string
+    UpdateScopeDefault:
+      description: 'Specifies whether the scope is included by default in access tokens without being explicitly requested by the client. If the scope is not allowed by the client, it will not be included in the access token.'
+      type: boolean
+    ScopeDefault:
+      description: 'Specifies whether the scope is included by default in access tokens without being explicitly requested by the client. If the scope is not allowed by the client, it will not be included in the access token.'
+      type: boolean
+      default: false
+    UpdateScopeIncludeInMetadata:
+      description: Specifies whether to include the scope in the metadata document
+      type: boolean
+    ScopeIncludeInMetadata:
+      description: Specifies whether to include the scope in the metadata document
+      type: boolean
+      default: false
+    UpdateScopeEnabled:
+      description: 'Specifies whether the scope is enabled. If the scope is not enabled, it cannot be requested by clients and will not be included in the access token.'
+      type: boolean
+    ScopeEnabled:
+      description: 'Specifies whether the scope is enabled. If the scope is not enabled, it cannot be requested by clients and will not be included in the access token.'
+      type: boolean
+      default: true
+    Scope:
+      type: object
+      properties:
+        id:
+          description: The ID of the scope
+          type: string
+          format: uuid
+        name:
+          $ref: '#/components/schemas/ScopeName'
+        description:
+          $ref: '#/components/schemas/ScopeDescription'
+        default:
+          $ref: '#/components/schemas/ScopeDefault'
+        include_in_metadata:
+          $ref: '#/components/schemas/ScopeIncludeInMetadata'
+        enabled:
+          $ref: '#/components/schemas/ScopeEnabled'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - name
+        - description
+        - default
+        - include_in_metadata
+        - enabled
+        - created_at
+        - updated_at
+    ClientName:
+      description: The name of the client
+      type: string
+      minLength: 1
+    Client:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ClientId'
+        name:
+          $ref: '#/components/schemas/ClientName'
+        grant_types:
+          $ref: '#/components/schemas/GrantTypes'
+        redirect_uris:
+          $ref: '#/components/schemas/RedirectURIs'
+        login_uri:
+          $ref: '#/components/schemas/LoginURI'
+        access_token_duration:
+          $ref: '#/components/schemas/TokenDuration'
+        id_token_duration:
+          $ref: '#/components/schemas/TokenDuration'
+        allow_all_scopes:
+          $ref: '#/components/schemas/ClientAllowAllScopes'
+        allow_scopes:
+          $ref: '#/components/schemas/ClientAllowScopes'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        response_types:
+          $ref: '#/components/schemas/ResponseTypes'
+        token_endpoint_auth_method:
+          $ref: '#/components/schemas/TokenEndpointAuthMethod'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - name
+        - grant_types
+        - redirect_uris
+        - allow_all_scopes
+        - allow_scopes
+        - access_token_duration
+        - id_token_duration
+        - labels
+        - response_types
+        - created_at
+        - updated_at
+    CreatedClient:
+      allOf:
+        - $ref: '#/components/schemas/Client'
+        - type: object
+          required:
+            - client_secret
+          properties:
+            client_secret:
+              description: The OAuth 2.0 client secret
+              type: string
+              example: YAzsyUlNZ5gNGeKS9H3VAdxVPzhPo4ae
     DataPlaneClientCertificate:
       x-speakeasy-entity: GatewayDataPlaneClientCertificate
       type: object
@@ -66927,6 +67634,214 @@ components:
               labels:
                 $ref: '#/components/schemas/Labels'
             additionalProperties: false
+    CreateAuthServer:
+      description: Auth server to be created
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/AuthServerName'
+              description:
+                $ref: '#/components/schemas/AuthServerDescription'
+              audience:
+                $ref: '#/components/schemas/Audience'
+              signing_algorithm:
+                $ref: '#/components/schemas/Algorithm'
+              labels:
+                $ref: '#/components/schemas/Labels'
+              trusted_origins:
+                $ref: '#/components/schemas/TrustedOrigins'
+            required:
+              - name
+              - audience
+    UpdateAuthServer:
+      description: Auth server to be updated
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/AuthServerName'
+              description:
+                $ref: '#/components/schemas/AuthServerDescription'
+              audience:
+                $ref: '#/components/schemas/Audience'
+              signing_algorithm:
+                $ref: '#/components/schemas/UpdateAlgorithm'
+              labels:
+                $ref: '#/components/schemas/LabelsUpdate'
+              trusted_origins:
+                $ref: '#/components/schemas/TrustedOrigins'
+    CreateClaim:
+      description: Claim to be created
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/ClaimName'
+              value:
+                $ref: '#/components/schemas/ClaimValue'
+              include_in_token:
+                $ref: '#/components/schemas/ClaimIncludeInToken'
+              include_in_all_scopes:
+                $ref: '#/components/schemas/ClaimIncludeInAllScopes'
+              include_in_scopes:
+                $ref: '#/components/schemas/ClaimIncludeInScopes'
+              enabled:
+                $ref: '#/components/schemas/ClaimEnabled'
+            required:
+              - name
+              - value
+    UpdateClaim:
+      description: Claim to be updated
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/ClaimName'
+              value:
+                $ref: '#/components/schemas/ClaimValue'
+              include_in_token:
+                $ref: '#/components/schemas/UpdateClaimIncludeInToken'
+              include_in_all_scopes:
+                $ref: '#/components/schemas/UpdateClaimIncludeInAllScopes'
+              include_in_scopes:
+                $ref: '#/components/schemas/ClaimIncludeInScopes'
+              enabled:
+                $ref: '#/components/schemas/UpdateClaimEnabled'
+    CreateScope:
+      description: Scope to be created
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/ScopeName'
+              description:
+                $ref: '#/components/schemas/ScopeDescription'
+              default:
+                $ref: '#/components/schemas/ScopeDefault'
+              include_in_metadata:
+                $ref: '#/components/schemas/ScopeIncludeInMetadata'
+              enabled:
+                $ref: '#/components/schemas/ScopeEnabled'
+            required:
+              - name
+    UpdateScope:
+      description: Scope to be update
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/ScopeName'
+              description:
+                $ref: '#/components/schemas/ScopeDescription'
+              default:
+                $ref: '#/components/schemas/UpdateScopeDefault'
+              include_in_metadata:
+                $ref: '#/components/schemas/UpdateScopeIncludeInMetadata'
+              enabled:
+                $ref: '#/components/schemas/UpdateScopeEnabled'
+    CreateClient:
+      description: Client to be created
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/ClientName'
+              grant_types:
+                $ref: '#/components/schemas/GrantTypes'
+              response_types:
+                $ref: '#/components/schemas/ResponseTypes'
+              redirect_uris:
+                $ref: '#/components/schemas/RedirectURIs'
+              login_uri:
+                $ref: '#/components/schemas/LoginURI'
+              access_token_duration:
+                $ref: '#/components/schemas/TokenDuration'
+              id_token_duration:
+                $ref: '#/components/schemas/TokenDuration'
+              allow_all_scopes:
+                $ref: '#/components/schemas/ClientAllowAllScopes'
+              allow_scopes:
+                $ref: '#/components/schemas/ClientAllowScopes'
+              labels:
+                $ref: '#/components/schemas/Labels'
+              token_endpoint_auth_method:
+                $ref: '#/components/schemas/TokenEndpointAuthMethod'
+              id:
+                description: The OAuth 2.0 client ID
+                type: string
+                example: kYa9iQFU5xPDSIUH9z1z
+                maxLength: 36
+                pattern: '[-_\w]+'
+                x-speakeasy-param-computed: true
+              client_secret:
+                description: Secret of the client - will be used when ID is also set.
+                type: string
+                x-speakeasy-param-computed: true
+            required:
+              - name
+              - grant_types
+              - response_types
+    ReplaceClient:
+      description: Client to be replaced
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                $ref: '#/components/schemas/ClientName'
+              client_secret:
+                description: Secret of the client
+                type: string
+                minLength: 1
+              grant_types:
+                $ref: '#/components/schemas/GrantTypes'
+              response_types:
+                $ref: '#/components/schemas/ResponseTypes'
+              redirect_uris:
+                $ref: '#/components/schemas/RedirectURIs'
+              login_uri:
+                $ref: '#/components/schemas/LoginURI'
+              access_token_duration:
+                $ref: '#/components/schemas/TokenDuration'
+              id_token_duration:
+                $ref: '#/components/schemas/TokenDuration'
+              allow_all_scopes:
+                $ref: '#/components/schemas/ClientAllowAllScopes'
+              allow_scopes:
+                $ref: '#/components/schemas/ClientAllowScopes'
+              token_endpoint_auth_method:
+                $ref: '#/components/schemas/TokenEndpointAuthMethod'
+              labels:
+                $ref: '#/components/schemas/Labels'
+            required:
+              - name
+              - client_secret
+              - grant_types
+              - response_types
     DataPlaneClientCertificateRequest:
       content:
         application/json:
@@ -68392,6 +69307,36 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EventGatewayInfo'
+    AuthServer:
+      description: An auth server
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthServer'
+    Claim:
+      description: A claim
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Claim'
+    Scope:
+      description: A scope
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Scope'
+    Client:
+      description: A client
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Client'
+    CreatedClient:
+      description: A client with a secret
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatedClient'
     DataPlaneClientCertificateResponse:
       description: Response body for retrieving a dp-client-certificate.
       content:
@@ -68715,6 +69660,14 @@ tags:
       A TLS trust bundle defines a set of trusted certificate authorities (CAs) used for client certificate
       verification during mutual TLS (mTLS). Trust bundles are referenced by TLS listener policies to
       determine which client certificates are accepted.
+  - name: Auth Server
+    description: 'Auth Servers expose an OAuth 2.0 and OpenID Connect server interface for generating access tokens. The management API will give you the ability to create, configure and manage multiple Auth Servers per Konnect organization. Auth Servers are a regional Konnect entity.'
+  - name: Auth Server Clients
+    description: 'Clients represent the identity of machines, such as microservices, mobile apps, or scripts entity. The management API will give you the ability to create, configure and manage multiple Clients per Auth Server.'
+  - name: Auth Server Claims
+    description: 'Claims are statements about the Client, included in tokens issued by the Auth Server. The management API will give you the ability to create, configure and manage multiple Claims per Auth Server, and include them in tokens based on the requested Scopes.'
+  - name: Auth Server Scopes
+    description: 'Scopes define the extent of access that an access token grants to a Client. The management API will give you the ability to create, configure and manage multiple Scopes per Auth Server, and restrict their usage by Client.'
   - description: DP Certificates
     name: DP Certificates
   - description: Custom Plugin Schemas
