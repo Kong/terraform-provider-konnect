@@ -15,7 +15,7 @@ type StatsdPluginConfig struct {
 	Metrics                    []StatsdPluginMetrics `tfsdk:"metrics"`
 	Port                       types.Int64           `tfsdk:"port"`
 	Prefix                     types.String          `tfsdk:"prefix"`
-	Queue                      *Queue                `tfsdk:"queue"`
+	Queue                      *StatsdPluginQueue    `tfsdk:"queue"`
 	QueueSize                  types.Int64           `tfsdk:"queue_size"`
 	RetryCount                 types.Int64           `tfsdk:"retry_count"`
 	ServiceIdentifierDefault   types.String          `tfsdk:"service_identifier_default"`

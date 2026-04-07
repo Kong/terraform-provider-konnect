@@ -74,6 +74,8 @@ type CreatePortal struct {
 	AuthenticationEnabled *bool `default:"true" json:"authentication_enabled"`
 	// Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for APIs until unless assigned to teams with access to view and consume specific APIs. Authentication must be enabled to use RBAC.
 	RbacEnabled *bool `default:"false" json:"rbac_enabled"`
+	// Whether ip allow list is enabled for the organization.
+	SiprEnabled *bool `default:"false" json:"sipr_enabled"`
 	// The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.
 	DefaultAPIVisibility *DefaultAPIVisibility `json:"default_api_visibility,omitempty"`
 	// The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.
@@ -137,6 +139,13 @@ func (c *CreatePortal) GetRbacEnabled() *bool {
 		return nil
 	}
 	return c.RbacEnabled
+}
+
+func (c *CreatePortal) GetSiprEnabled() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.SiprEnabled
 }
 
 func (c *CreatePortal) GetDefaultAPIVisibility() *DefaultAPIVisibility {

@@ -36,6 +36,23 @@ func (r *TeamRoleResourceModel) RefreshFromSharedAssignedRole(ctx context.Contex
 	return diags
 }
 
+func (r *TeamRoleResourceModel) ToOperationsGetTeamRoleRequest(ctx context.Context) (*operations.GetTeamRoleRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var teamID string
+	teamID = r.TeamID.ValueString()
+
+	var roleID string
+	roleID = r.ID.ValueString()
+
+	out := operations.GetTeamRoleRequest{
+		TeamID: teamID,
+		RoleID: roleID,
+	}
+
+	return &out, diags
+}
+
 func (r *TeamRoleResourceModel) ToOperationsTeamsAssignRoleRequest(ctx context.Context) (*operations.TeamsAssignRoleRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 

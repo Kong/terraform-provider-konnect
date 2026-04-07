@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.13.0
+> Released 2026/03/??
+
+# Features
+* Add support for importing `konnect_system_account_role` and `konnect_team_role`
+
+# Bug Fixes
+* Fix drift in `konnect_gateway_plugin_kafka_upstream` and `konnect_gateway_plugin_statsd` resources
+
 ## 3.12.0
 > Released 2026/03/27
 

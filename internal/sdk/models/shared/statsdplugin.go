@@ -352,7 +352,7 @@ type StatsdPluginMetrics struct {
 	// StatsD metric’s name.
 	Name StatsdPluginName `json:"name"`
 	// Sampling rate
-	SampleRate *float64 `default:"null" json:"sample_rate"`
+	SampleRate *float64 `json:"sample_rate,omitempty"`
 	// Service detail.
 	ServiceIdentifier *ServiceIdentifier `json:"service_identifier,omitempty"`
 	// Determines what sort of event a metric represents.
@@ -449,7 +449,7 @@ type StatsdPluginQueue struct {
 	// Maximum number of entries that can be processed at a time.
 	MaxBatchSize *int64 `default:"1" json:"max_batch_size"`
 	// Maximum number of bytes that can be waiting on a queue, requires string content.
-	MaxBytes *int64 `default:"null" json:"max_bytes"`
+	MaxBytes *int64 `json:"max_bytes,omitempty"`
 	// Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.
 	MaxCoalescingDelay *float64 `default:"1" json:"max_coalescing_delay"`
 	// Maximum number of entries that can be waiting on the queue.
@@ -626,12 +626,12 @@ type StatsdPluginConfig struct {
 	Host             *string `default:"localhost" json:"host"`
 	HostnameInPrefix *bool   `default:"false" json:"hostname_in_prefix"`
 	// List of metrics to be logged.
-	Metrics []StatsdPluginMetrics `json:"metrics"`
+	Metrics []StatsdPluginMetrics `json:"metrics,omitempty"`
 	// The port of StatsD server to send data to.
 	Port *int64 `default:"8125" json:"port"`
 	// String to prefix to each metric's name.
 	Prefix                     *string                     `default:"kong" json:"prefix"`
-	Queue                      *StatsdPluginQueue          `json:"queue"`
+	Queue                      *StatsdPluginQueue          `json:"queue,omitempty"`
 	QueueSize                  *int64                      `default:"null" json:"queue_size"`
 	RetryCount                 *int64                      `default:"null" json:"retry_count"`
 	ServiceIdentifierDefault   *ServiceIdentifierDefault   `default:"service_name_or_host" json:"service_identifier_default"`

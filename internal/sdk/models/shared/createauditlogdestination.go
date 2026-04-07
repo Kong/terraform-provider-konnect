@@ -13,7 +13,7 @@ type CreateAuditLogDestination struct {
 	// The endpoint that will receive audit log messages.
 	Endpoint string `json:"endpoint"`
 	// The value to include in the `Authorization` header when sending audit logs to the webhook.
-	Authorization *string `default:"null" json:"authorization"`
+	Authorization string `json:"authorization"`
 	// The output format of each log messages.
 	LogFormat *LogFormat `default:"cef" json:"log_format"`
 	// Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
@@ -27,7 +27,7 @@ func (c CreateAuditLogDestination) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateAuditLogDestination) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "endpoint"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"name", "endpoint", "authorization"}); err != nil {
 		return err
 	}
 	return nil
@@ -47,9 +47,9 @@ func (c *CreateAuditLogDestination) GetEndpoint() string {
 	return c.Endpoint
 }
 
-func (c *CreateAuditLogDestination) GetAuthorization() *string {
+func (c *CreateAuditLogDestination) GetAuthorization() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.Authorization
 }

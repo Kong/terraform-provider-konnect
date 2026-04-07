@@ -35,10 +35,10 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) RefreshFromSharedStatsdAdvanc
 			r.Config.Host = types.StringPointerValue(resp.Config.Host)
 			r.Config.HostnameInPrefix = types.BoolPointerValue(resp.Config.HostnameInPrefix)
 			if resp.Config.Metrics != nil {
-				r.Config.Metrics = []tfTypes.StatsdPluginMetrics{}
+				r.Config.Metrics = []tfTypes.StatsdAdvancedPluginMetrics{}
 
 				for _, metricsItem := range resp.Config.Metrics {
-					var metrics tfTypes.StatsdPluginMetrics
+					var metrics tfTypes.StatsdAdvancedPluginMetrics
 
 					if metricsItem.ConsumerIdentifier != nil {
 						metrics.ConsumerIdentifier = types.StringValue(string(*metricsItem.ConsumerIdentifier))
