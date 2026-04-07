@@ -1,7 +1,7 @@
 # Changelog
 
 ## 3.13.0
-> Released 2026/03/??
+> Released 2026/04/07
 
 # Features
 * Add support for importing `konnect_system_account_role` and `konnect_team_role`
