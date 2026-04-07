@@ -192,7 +192,7 @@ func (r *EventGatewayBackendClusterResourceModel) ToSharedCreateBackendClusterRe
 	}
 	var backendClusterAuthenticationSaslScram *shared.BackendClusterAuthenticationSaslScram
 	if r.Authentication.SaslScram != nil {
-		algorithm := shared.Algorithm(r.Authentication.SaslScram.Algorithm.ValueString())
+		algorithm := shared.BackendClusterAuthenticationSaslScramAlgorithm(r.Authentication.SaslScram.Algorithm.ValueString())
 		var username1 string
 		username1 = r.Authentication.SaslScram.Username.ValueString()
 

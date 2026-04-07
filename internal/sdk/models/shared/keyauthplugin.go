@@ -122,17 +122,17 @@ func (k *KeyAuthPluginPartials) GetPath() *string {
 	return k.Path
 }
 
-type Scope string
+type KeyAuthPluginScope string
 
 const (
-	ScopeCp    Scope = "cp"
-	ScopeRealm Scope = "realm"
+	KeyAuthPluginScopeCp    KeyAuthPluginScope = "cp"
+	KeyAuthPluginScopeRealm KeyAuthPluginScope = "realm"
 )
 
-func (e Scope) ToPointer() *Scope {
+func (e KeyAuthPluginScope) ToPointer() *KeyAuthPluginScope {
 	return &e
 }
-func (e *Scope) UnmarshalJSON(data []byte) error {
+func (e *KeyAuthPluginScope) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -141,18 +141,18 @@ func (e *Scope) UnmarshalJSON(data []byte) error {
 	case "cp":
 		fallthrough
 	case "realm":
-		*e = Scope(v)
+		*e = KeyAuthPluginScope(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Scope: %v", v)
+		return fmt.Errorf("invalid value for KeyAuthPluginScope: %v", v)
 	}
 }
 
 type IdentityRealms struct {
 	// A string representing a UUID (universally unique identifier).
-	ID     *string `json:"id,omitempty"`
-	Region *string `default:"null" json:"region"`
-	Scope  *Scope  `json:"scope,omitempty"`
+	ID     *string             `json:"id,omitempty"`
+	Region *string             `default:"null" json:"region"`
+	Scope  *KeyAuthPluginScope `json:"scope,omitempty"`
 }
 
 func (i IdentityRealms) MarshalJSON() ([]byte, error) {
@@ -180,7 +180,7 @@ func (i *IdentityRealms) GetRegion() *string {
 	return i.Region
 }
 
-func (i *IdentityRealms) GetScope() *Scope {
+func (i *IdentityRealms) GetScope() *KeyAuthPluginScope {
 	if i == nil {
 		return nil
 	}

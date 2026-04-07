@@ -816,7 +816,7 @@ func (e *ClientSecretJwtAlg) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type Client struct {
+type UpstreamOauthPluginClient struct {
 	// The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body.
 	AuthMethod *AuthMethod `default:"client_secret_post" json:"auth_method"`
 	// The algorithm to use with JWT when using `client_secret_jwt` authentication.
@@ -841,106 +841,106 @@ type Client struct {
 	Timeout *int64 `default:"10000" json:"timeout"`
 }
 
-func (c Client) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
+func (u UpstreamOauthPluginClient) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
 }
 
-func (c *Client) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+func (u *UpstreamOauthPluginClient) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *Client) GetAuthMethod() *AuthMethod {
-	if c == nil {
+func (u *UpstreamOauthPluginClient) GetAuthMethod() *AuthMethod {
+	if u == nil {
 		return nil
 	}
-	return c.AuthMethod
+	return u.AuthMethod
 }
 
-func (c *Client) GetClientSecretJwtAlg() *ClientSecretJwtAlg {
-	if c == nil {
+func (u *UpstreamOauthPluginClient) GetClientSecretJwtAlg() *ClientSecretJwtAlg {
+	if u == nil {
 		return nil
 	}
-	return c.ClientSecretJwtAlg
+	return u.ClientSecretJwtAlg
 }
 
-func (c *Client) GetHTTPProxy() *string {
-	if c == nil {
+func (u *UpstreamOauthPluginClient) GetHTTPProxy() *string {
+	if u == nil {
 		return nil
 	}
-	return c.HTTPProxy
+	return u.HTTPProxy
 }
 
-func (c *Client) GetHTTPProxyAuthorization() *string {
-	if c == nil {
+func (u *UpstreamOauthPluginClient) GetHTTPProxyAuthorization() *string {
+	if u == nil {
 		return nil
 	}
-	return c.HTTPProxyAuthorization
+	return u.HTTPProxyAuthorization
 }
 
-func (c *Client) GetHTTPVersion() *float64 {
-	if c == nil {
+func (u *UpstreamOauthPluginClient) GetHTTPVersion() *float64 {
+	if u == nil {
 		return nil
 	}
-	return c.HTTPVersion
+	return u.HTTPVersion
 }
 
-func (c *Client) GetHTTPSProxy() *string {
-	if c == nil {
+func (u *UpstreamOauthPluginClient) GetHTTPSProxy() *string {
+	if u == nil {
 		return nil
 	}
-	return c.HTTPSProxy
+	return u.HTTPSProxy
 }
 
-func (c *Client) GetHTTPSProxyAuthorization() *string {
-	if c == nil {
+func (u *UpstreamOauthPluginClient) GetHTTPSProxyAuthorization() *string {
+	if u == nil {
 		return nil
 	}
-	return c.HTTPSProxyAuthorization
+	return u.HTTPSProxyAuthorization
 }
 
-func (c *Client) GetKeepAlive() *bool {
-	if c == nil {
+func (u *UpstreamOauthPluginClient) GetKeepAlive() *bool {
+	if u == nil {
 		return nil
 	}
-	return c.KeepAlive
+	return u.KeepAlive
 }
 
-func (c *Client) GetNoProxy() *string {
-	if c == nil {
+func (u *UpstreamOauthPluginClient) GetNoProxy() *string {
+	if u == nil {
 		return nil
 	}
-	return c.NoProxy
+	return u.NoProxy
 }
 
-func (c *Client) GetSslVerify() *bool {
-	if c == nil {
+func (u *UpstreamOauthPluginClient) GetSslVerify() *bool {
+	if u == nil {
 		return nil
 	}
-	return c.SslVerify
+	return u.SslVerify
 }
 
-func (c *Client) GetTimeout() *int64 {
-	if c == nil {
+func (u *UpstreamOauthPluginClient) GetTimeout() *int64 {
+	if u == nil {
 		return nil
 	}
-	return c.Timeout
+	return u.Timeout
 }
 
-// GrantType - The OAuth grant type to be used.
-type GrantType string
+// UpstreamOauthPluginGrantType - The OAuth grant type to be used.
+type UpstreamOauthPluginGrantType string
 
 const (
-	GrantTypeClientCredentials GrantType = "client_credentials"
-	GrantTypePassword          GrantType = "password"
+	UpstreamOauthPluginGrantTypeClientCredentials UpstreamOauthPluginGrantType = "client_credentials"
+	UpstreamOauthPluginGrantTypePassword          UpstreamOauthPluginGrantType = "password"
 )
 
-func (e GrantType) ToPointer() *GrantType {
+func (e UpstreamOauthPluginGrantType) ToPointer() *UpstreamOauthPluginGrantType {
 	return &e
 }
-func (e *GrantType) UnmarshalJSON(data []byte) error {
+func (e *UpstreamOauthPluginGrantType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -949,10 +949,10 @@ func (e *GrantType) UnmarshalJSON(data []byte) error {
 	case "client_credentials":
 		fallthrough
 	case "password":
-		*e = GrantType(v)
+		*e = UpstreamOauthPluginGrantType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for GrantType: %v", v)
+		return fmt.Errorf("invalid value for UpstreamOauthPluginGrantType: %v", v)
 	}
 }
 
@@ -964,7 +964,7 @@ type Oauth struct {
 	// The client secret for the application registration in the IdP.
 	ClientSecret *string `default:"null" json:"client_secret"`
 	// The OAuth grant type to be used.
-	GrantType *GrantType `default:"client_credentials" json:"grant_type"`
+	GrantType *UpstreamOauthPluginGrantType `default:"client_credentials" json:"grant_type"`
 	// The password to use if `config.oauth.grant_type` is set to `password`.
 	Password *string `default:"null" json:"password"`
 	// List of scopes to request from the IdP when obtaining a new token.
@@ -1011,7 +1011,7 @@ func (o *Oauth) GetClientSecret() *string {
 	return o.ClientSecret
 }
 
-func (o *Oauth) GetGrantType() *GrantType {
+func (o *Oauth) GetGrantType() *UpstreamOauthPluginGrantType {
 	if o == nil {
 		return nil
 	}
@@ -1061,10 +1061,10 @@ func (o *Oauth) GetUsername() *string {
 }
 
 type UpstreamOauthPluginConfig struct {
-	Behavior *Behavior                 `json:"behavior"`
-	Cache    *UpstreamOauthPluginCache `json:"cache,omitempty"`
-	Client   *Client                   `json:"client,omitempty"`
-	Oauth    Oauth                     `json:"oauth"`
+	Behavior *Behavior                  `json:"behavior"`
+	Cache    *UpstreamOauthPluginCache  `json:"cache,omitempty"`
+	Client   *UpstreamOauthPluginClient `json:"client,omitempty"`
+	Oauth    Oauth                      `json:"oauth"`
 }
 
 func (u UpstreamOauthPluginConfig) MarshalJSON() ([]byte, error) {
@@ -1092,7 +1092,7 @@ func (u *UpstreamOauthPluginConfig) GetCache() *UpstreamOauthPluginCache {
 	return u.Cache
 }
 
-func (u *UpstreamOauthPluginConfig) GetClient() *Client {
+func (u *UpstreamOauthPluginConfig) GetClient() *UpstreamOauthPluginClient {
 	if u == nil {
 		return nil
 	}

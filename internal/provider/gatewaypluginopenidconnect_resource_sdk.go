@@ -3051,9 +3051,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		tokenEndpoint = nil
 	}
-	tokenEndpointAuthMethod := new(shared.TokenEndpointAuthMethod)
+	tokenEndpointAuthMethod := new(shared.OpenidConnectPluginTokenEndpointAuthMethod)
 	if !r.Config.TokenEndpointAuthMethod.IsUnknown() && !r.Config.TokenEndpointAuthMethod.IsNull() {
-		*tokenEndpointAuthMethod = shared.TokenEndpointAuthMethod(r.Config.TokenEndpointAuthMethod.ValueString())
+		*tokenEndpointAuthMethod = shared.OpenidConnectPluginTokenEndpointAuthMethod(r.Config.TokenEndpointAuthMethod.ValueString())
 	} else {
 		tokenEndpointAuthMethod = nil
 	}
