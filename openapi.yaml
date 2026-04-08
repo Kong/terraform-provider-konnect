@@ -32174,13 +32174,12 @@ components:
       allOf:
         - $ref: '#/components/schemas/Client'
         - type: object
-          required:
-            - client_secret
           properties:
             client_secret:
               description: The OAuth 2.0 client secret
               type: string
               example: YAzsyUlNZ5gNGeKS9H3VAdxVPzhPo4ae
+              x-speakeasy-param-computed: true
     DataPlaneClientCertificate:
       x-speakeasy-entity: GatewayDataPlaneClientCertificate
       type: object
