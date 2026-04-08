@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: e34ddff0cf7f601c3133424f71917211
+  docChecksum: f39a98b68839d6676c3b8f814fbb5986
   docVersion: 2.0.0
   speakeasyVersion: 1.759.2
   generationVersion: 2.869.23
   releaseVersion: 3.13.0
   configChecksum: b5623595e10a9f0547ce745841d122d9
 persistentEdits:
-  generation_id: d5e09e3b-4eae-43ba-b79a-be023178cb9b
-  pristine_commit_hash: 7c891206bb45a4ceef72ae407ba6d8004689b91d
-  pristine_tree_hash: ae0a9ed648ad0d0e390018fb620c0cba55afe4b5
+  generation_id: 73617fe6-aa87-46aa-99c3-8a0a7b056733
+  pristine_commit_hash: d9a1fac54d90fc0f1ea53317d296440702b95002
+  pristine_tree_hash: fc7f05276a089865a461885b9f16cfc4967008cf
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -4152,8 +4152,8 @@ trackedFiles:
     pristine_git_object: 6c90e3d3cc255a3485f9d57d69e127b84962a0f9
   internal/provider/identityauthserverclient_resource_sdk.go:
     id: 811cb5a3fc49
-    last_write_checksum: sha1:73d51293859dff8fbd1ab0601a16b4b1c204cab6
-    pristine_git_object: f532c05801f9bd587cf3bc7025be711433e3ac64
+    last_write_checksum: sha1:a80f8652582879df488b28c9c1075c9ddab5c315
+    pristine_git_object: b575548e9fcd2ffa25ae6f539aed5865b1dc250a
   internal/provider/identityauthserverscope_resource.go:
     id: 1fd33f04fc52
     last_write_checksum: sha1:e6609f245a9f9ab3bceb4819a2a3ce9d8b70e59c
@@ -10600,8 +10600,8 @@ trackedFiles:
     pristine_git_object: 3dbdc47e75a8603d5ce7d09028b0fd17002c7493
   internal/sdk/models/shared/createdclient.go:
     id: 7b57a38b5bdf
-    last_write_checksum: sha1:74f866551cb06324a3cbd4df964f2d0e4a3ac829
-    pristine_git_object: c5d02407c41e37d497e210e9c984b02f9cd55537
+    last_write_checksum: sha1:c594d211c310cfe85dc1b55dcb914e76ca86b9d0
+    pristine_git_object: 2fad635e640b8ece0ce94753b524e1a6e81dd458
   internal/sdk/models/shared/createeventgatewaydataplanecertificaterequest.go:
     id: "432976321e70"
     last_write_checksum: sha1:e1fd7595530582bbfde3021d3b0440cc76fcdec6
@@ -26447,6 +26447,8 @@ examples:
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
         "409":
           application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+        "200":
+          application/json: {"id": "kYa9iQFU5xPDSIUH9z1z", "name": "<value>", "grant_types": ["client_credentials"], "redirect_uris": [], "login_uri": null, "access_token_duration": 300, "id_token_duration": 300, "allow_all_scopes": false, "allow_scopes": [], "labels": {"env": "test"}, "response_types": ["id_token"], "token_endpoint_auth_method": "client_secret_post", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "client_secret": "YAzsyUlNZ5gNGeKS9H3VAdxVPzhPo4ae"}
   getAuthServerClient:
     speakeasy-default-get-auth-server-client:
       parameters:

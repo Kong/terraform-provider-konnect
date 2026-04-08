@@ -40,7 +40,7 @@ type CreatedClient struct {
 	// An ISO-8601 timestamp representation of entity update date.
 	UpdatedAt time.Time `json:"updated_at"`
 	// The OAuth 2.0 client secret
-	ClientSecret string `json:"client_secret"`
+	ClientSecret *string `json:"client_secret,omitempty"`
 }
 
 func (c CreatedClient) MarshalJSON() ([]byte, error) {
@@ -48,7 +48,7 @@ func (c CreatedClient) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreatedClient) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "name", "grant_types", "redirect_uris", "allow_scopes", "labels", "response_types", "created_at", "updated_at", "client_secret"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "name", "grant_types", "redirect_uris", "allow_scopes", "labels", "response_types", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
@@ -152,9 +152,9 @@ func (c *CreatedClient) GetUpdatedAt() time.Time {
 	return c.UpdatedAt
 }
 
-func (c *CreatedClient) GetClientSecret() string {
+func (c *CreatedClient) GetClientSecret() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ClientSecret
 }

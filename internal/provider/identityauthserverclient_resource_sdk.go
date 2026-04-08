@@ -65,7 +65,7 @@ func (r *IdentityAuthServerClientResourceModel) RefreshFromSharedCreatedClient(c
 		for _, v := range resp.AllowScopes {
 			r.AllowScopes = append(r.AllowScopes, types.StringValue(v))
 		}
-		r.ClientSecret = types.StringValue(resp.ClientSecret)
+		r.ClientSecret = types.StringPointerValue(resp.ClientSecret)
 		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.GrantTypes = make([]types.String, 0, len(resp.GrantTypes))
 		for _, v := range resp.GrantTypes {
