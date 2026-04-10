@@ -803,7 +803,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 			Strategy:      strategy,
 		}
 	}
-	var client *shared.Client
+	var client *shared.UpstreamOauthPluginClient
 	if r.Config.Client != nil {
 		authMethod := new(shared.AuthMethod)
 		if !r.Config.Client.AuthMethod.IsUnknown() && !r.Config.Client.AuthMethod.IsNull() {
@@ -871,7 +871,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 		} else {
 			timeout = nil
 		}
-		client = &shared.Client{
+		client = &shared.UpstreamOauthPluginClient{
 			AuthMethod:              authMethod,
 			ClientSecretJwtAlg:      clientSecretJwtAlg,
 			HTTPProxy:               httpProxy,
@@ -901,9 +901,9 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 	} else {
 		clientSecret = nil
 	}
-	grantType := new(shared.GrantType)
+	grantType := new(shared.UpstreamOauthPluginGrantType)
 	if !r.Config.Oauth.GrantType.IsUnknown() && !r.Config.Oauth.GrantType.IsNull() {
-		*grantType = shared.GrantType(r.Config.Oauth.GrantType.ValueString())
+		*grantType = shared.UpstreamOauthPluginGrantType(r.Config.Oauth.GrantType.ValueString())
 	} else {
 		grantType = nil
 	}

@@ -2347,23 +2347,23 @@ func (e *SessionStorage) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// TokenEndpointAuthMethod - The token endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
-type TokenEndpointAuthMethod string
+// OpenidConnectPluginTokenEndpointAuthMethod - The token endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
+type OpenidConnectPluginTokenEndpointAuthMethod string
 
 const (
-	TokenEndpointAuthMethodClientSecretBasic       TokenEndpointAuthMethod = "client_secret_basic"
-	TokenEndpointAuthMethodClientSecretJwt         TokenEndpointAuthMethod = "client_secret_jwt"
-	TokenEndpointAuthMethodClientSecretPost        TokenEndpointAuthMethod = "client_secret_post"
-	TokenEndpointAuthMethodNone                    TokenEndpointAuthMethod = "none"
-	TokenEndpointAuthMethodPrivateKeyJwt           TokenEndpointAuthMethod = "private_key_jwt"
-	TokenEndpointAuthMethodSelfSignedTLSClientAuth TokenEndpointAuthMethod = "self_signed_tls_client_auth"
-	TokenEndpointAuthMethodTLSClientAuth           TokenEndpointAuthMethod = "tls_client_auth"
+	OpenidConnectPluginTokenEndpointAuthMethodClientSecretBasic       OpenidConnectPluginTokenEndpointAuthMethod = "client_secret_basic"
+	OpenidConnectPluginTokenEndpointAuthMethodClientSecretJwt         OpenidConnectPluginTokenEndpointAuthMethod = "client_secret_jwt"
+	OpenidConnectPluginTokenEndpointAuthMethodClientSecretPost        OpenidConnectPluginTokenEndpointAuthMethod = "client_secret_post"
+	OpenidConnectPluginTokenEndpointAuthMethodNone                    OpenidConnectPluginTokenEndpointAuthMethod = "none"
+	OpenidConnectPluginTokenEndpointAuthMethodPrivateKeyJwt           OpenidConnectPluginTokenEndpointAuthMethod = "private_key_jwt"
+	OpenidConnectPluginTokenEndpointAuthMethodSelfSignedTLSClientAuth OpenidConnectPluginTokenEndpointAuthMethod = "self_signed_tls_client_auth"
+	OpenidConnectPluginTokenEndpointAuthMethodTLSClientAuth           OpenidConnectPluginTokenEndpointAuthMethod = "tls_client_auth"
 )
 
-func (e TokenEndpointAuthMethod) ToPointer() *TokenEndpointAuthMethod {
+func (e OpenidConnectPluginTokenEndpointAuthMethod) ToPointer() *OpenidConnectPluginTokenEndpointAuthMethod {
 	return &e
 }
-func (e *TokenEndpointAuthMethod) UnmarshalJSON(data []byte) error {
+func (e *OpenidConnectPluginTokenEndpointAuthMethod) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -2382,10 +2382,10 @@ func (e *TokenEndpointAuthMethod) UnmarshalJSON(data []byte) error {
 	case "self_signed_tls_client_auth":
 		fallthrough
 	case "tls_client_auth":
-		*e = TokenEndpointAuthMethod(v)
+		*e = OpenidConnectPluginTokenEndpointAuthMethod(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for TokenEndpointAuthMethod: %v", v)
+		return fmt.Errorf("invalid value for OpenidConnectPluginTokenEndpointAuthMethod: %v", v)
 	}
 }
 
@@ -2822,7 +2822,7 @@ type OpenidConnectPluginConfig struct {
 	// The token endpoint. If set it overrides the value in `token_endpoint` returned by the discovery endpoint.
 	TokenEndpoint *string `default:"null" json:"token_endpoint"`
 	// The token endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
-	TokenEndpointAuthMethod *TokenEndpointAuthMethod `json:"token_endpoint_auth_method,omitempty"`
+	TokenEndpointAuthMethod *OpenidConnectPluginTokenEndpointAuthMethod `json:"token_endpoint_auth_method,omitempty"`
 	// The token exchange endpoint.
 	TokenExchangeEndpoint *string `default:"null" json:"token_exchange_endpoint"`
 	// Extra headers passed from the client to the token endpoint.
@@ -4216,7 +4216,7 @@ func (o *OpenidConnectPluginConfig) GetTokenEndpoint() *string {
 	return o.TokenEndpoint
 }
 
-func (o *OpenidConnectPluginConfig) GetTokenEndpointAuthMethod() *TokenEndpointAuthMethod {
+func (o *OpenidConnectPluginConfig) GetTokenEndpointAuthMethod() *OpenidConnectPluginTokenEndpointAuthMethod {
 	if o == nil {
 		return nil
 	}

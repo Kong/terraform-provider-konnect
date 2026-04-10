@@ -322,9 +322,9 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPlugin(ctx context.Co
 			} else {
 				region = nil
 			}
-			scope := new(shared.Scope)
+			scope := new(shared.KeyAuthPluginScope)
 			if !r.Config.IdentityRealms[identityRealmsIndex].Scope.IsUnknown() && !r.Config.IdentityRealms[identityRealmsIndex].Scope.IsNull() {
-				*scope = shared.Scope(r.Config.IdentityRealms[identityRealmsIndex].Scope.ValueString())
+				*scope = shared.KeyAuthPluginScope(r.Config.IdentityRealms[identityRealmsIndex].Scope.ValueString())
 			} else {
 				scope = nil
 			}

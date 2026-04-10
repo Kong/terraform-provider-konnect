@@ -11,6 +11,8 @@ import "os"
  */
 
 func initHooks(h *Hooks) {
+	// This supports importing auth server clients with ID and client secret in input
+	h.registerBeforeRequestHook(&AuthServerClientCreateHook{})
 
 	// Domain customization - enable usage with non-prod domains
 	h.registerBeforeRequestHook(&CustomizeKongDomainHook{

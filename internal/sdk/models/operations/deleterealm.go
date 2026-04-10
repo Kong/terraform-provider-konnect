@@ -10,20 +10,20 @@ import (
 	"net/http"
 )
 
-// Force - If set to "true", the realm and all consumers and credentials will be deleted when running `terraform destroy`.
+// QueryParamForce - If set to "true", the realm and all consumers and credentials will be deleted when running `terraform destroy`.
 // If set to "false", the realm will not be deleted until all child entities are manually removed.
 // This will IRREVERSIBLY DELETE ALL REGISTERED CONSUMERS AND THEIR CREDENTIALS. Only set to "true" if you want this behavior.
-type Force string
+type QueryParamForce string
 
 const (
-	ForceTrue  Force = "true"
-	ForceFalse Force = "false"
+	QueryParamForceTrue  QueryParamForce = "true"
+	QueryParamForceFalse QueryParamForce = "false"
 )
 
-func (e Force) ToPointer() *Force {
+func (e QueryParamForce) ToPointer() *QueryParamForce {
 	return &e
 }
-func (e *Force) UnmarshalJSON(data []byte) error {
+func (e *QueryParamForce) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -32,10 +32,10 @@ func (e *Force) UnmarshalJSON(data []byte) error {
 	case "true":
 		fallthrough
 	case "false":
-		*e = Force(v)
+		*e = QueryParamForce(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Force: %v", v)
+		return fmt.Errorf("invalid value for QueryParamForce: %v", v)
 	}
 }
 
@@ -46,7 +46,7 @@ type DeleteRealmRequest struct {
 	// If set to "false", the realm will not be deleted until all child entities are manually removed.
 	// This will IRREVERSIBLY DELETE ALL REGISTERED CONSUMERS AND THEIR CREDENTIALS. Only set to "true" if you want this behavior.
 	//
-	ForceDestroy *Force `default:"false" queryParam:"style=form,explode=true,name=force"`
+	ForceDestroy *QueryParamForce `default:"false" queryParam:"style=form,explode=true,name=force"`
 }
 
 func (d DeleteRealmRequest) MarshalJSON() ([]byte, error) {
@@ -67,7 +67,7 @@ func (d *DeleteRealmRequest) GetRealmID() string {
 	return d.RealmID
 }
 
-func (d *DeleteRealmRequest) GetForceDestroy() *Force {
+func (d *DeleteRealmRequest) GetForceDestroy() *QueryParamForce {
 	if d == nil {
 		return nil
 	}

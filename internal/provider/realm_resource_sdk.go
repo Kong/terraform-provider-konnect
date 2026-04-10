@@ -41,9 +41,9 @@ func (r *RealmResourceModel) ToOperationsDeleteRealmRequest(ctx context.Context)
 	var realmID string
 	realmID = r.ID.ValueString()
 
-	forceDestroy := new(operations.Force)
+	forceDestroy := new(operations.QueryParamForce)
 	if !r.ForceDestroy.IsUnknown() && !r.ForceDestroy.IsNull() {
-		*forceDestroy = operations.Force(r.ForceDestroy.ValueString())
+		*forceDestroy = operations.QueryParamForce(r.ForceDestroy.ValueString())
 	} else {
 		forceDestroy = nil
 	}

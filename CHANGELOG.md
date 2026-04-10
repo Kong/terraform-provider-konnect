@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.14.0
+> Released 2026/??/??
+
+# Features
+* Add support for `konnect_identity_auth_server`, `konnect_identity_auth_server_scope`, `konnect_identity_auth_server_claim`, `konnect_identity_auth_server_client`
+
+
 ## 3.13.0
 > Released 2026/04/07
 
