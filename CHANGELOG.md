@@ -5,6 +5,7 @@
 
 # Features
 * Add support for `konnect_identity_auth_server`, `konnect_identity_auth_server_scope`, `konnect_identity_auth_server_claim`, `konnect_identity_auth_server_client`
+* Add `konnect_cloud_gateway_network` data source
 
 
 ## 3.13.0

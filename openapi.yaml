@@ -4191,6 +4191,31 @@ paths:
           - 400
         retryConnectionErrors: false
   /v2/cloud-gateways/networks:
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: null
+        terraform-datasource: CloudGatewayNetwork#read
+      operationId: list-networks
+      summary: List Networks
+      description: Returns a paginated list of networks.
+      parameters:
+        - $ref: '#/components/parameters/NetworksFilter'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListNetworksResponse'
+        '400':
+          $ref: '#/components/responses/CloudGatewaysBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Networks
+      x-speakeasy-group: CloudGateways
     post:
       x-speakeasy-entity-operation:
         terraform-resource: CloudGatewayNetwork#create
@@ -19734,6 +19759,14 @@ components:
       schema:
         $ref: '#/components/schemas/NetworkId'
       x-speakeasy-match: id
+    NetworksFilter:
+      name: filter
+      description: Filters supported for networks.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/NetworksFilterParameters'
+      style: deepObject
     PageId:
       schema:
         type: string
@@ -23301,6 +23334,48 @@ components:
         - tier
       title: TieredCapacityConfig
       x-speakeasy-name-override: Tiered
+    NetworksFilterParameters:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/CloudGatewaysStringFieldFilterOverride'
+        state:
+          $ref: '#/components/schemas/NetworkStateFieldFilter'
+      additionalProperties: false
+      title: NetworksFilterParameters
+    CloudGatewaysStringFieldFilterOverride:
+      description: 'Filter using **one** of the following operators: `eq`, `oeq`, `neq`, `contains`, `ocontains`'
+      type: object
+      properties:
+        eq:
+          description: The field exactly matches the provided value.
+          type: string
+        contains:
+          description: The field contains the provided value.
+          type: string
+        neq:
+          description: The field does not match the provided value.
+          type: string
+        oeq:
+          description: The field matches any of the provided values.
+          type: string
+        ocontains:
+          description: The field contains any of the provided values.
+          type: string
+      additionalProperties: false
+    NetworkStateFieldFilter:
+      description: 'Filter using **one** of the following operators: `eq`, `oeq`, `neq`'
+      type: object
+      properties:
+        eq:
+          description: The field exactly matches the provided value.
+          $ref: '#/components/schemas/NetworkState'
+        neq:
+          description: The field does not match the provided value.
+          $ref: '#/components/schemas/NetworkState'
+        oeq:
+          description: The field matches any of the provided values.
+          type: string
     UuidFieldFilter:
       description: 'Filter using **one** of the following operators: `eq`, `oeq`, `neq`'
       type: object
@@ -68108,6 +68183,23 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ConfigurationManifest'
+    ListNetworksResponse:
+      description: A paginated list for a collection of networks.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Network'
+            required:
+              - meta
+              - data
+            title: ListNetworksResponse
     RetrieveNetworkResponse:
       description: Response format for retrieving a network.
       content:
