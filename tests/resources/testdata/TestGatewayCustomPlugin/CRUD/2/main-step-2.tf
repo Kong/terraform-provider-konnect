@@ -49,14 +49,18 @@ resource "konnect_gateway_plugin_request_transformer" "my_request_transformer" {
 resource "konnect_gateway_custom_plugin" "custom_basic_auth" {
   name             = "basic-auth"
   instance_name    = "custom-plugin-test"
-  config           = {}
+  config           = jsonencode({
+    "anonymous": "capybara"
+  })
   control_plane_id = konnect_gateway_control_plane.tfdemo.id
 }
 
 resource "konnect_gateway_custom_plugin" "custom_basic_auth_nested" {
   name             = "basic-auth"
   instance_name    = "custom-nested-plugin-test"
-  config           = {}
+  config           = {
+    anonymous = "capybara"
+  }
   control_plane_id = konnect_gateway_control_plane.tfdemo.id
   service = {
     id = konnect_gateway_service.httpbin.id
