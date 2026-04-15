@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
@@ -37,7 +38,17 @@ func (r *CustomPluginResourceModel) ToSharedPluginInput() (shared.Plugin, error)
 	// Use .String() to convert the dynamic value to a string,
 	// then unmarshal the JSON string into a map[string]any
 	var configJson map[string]any
-	err := json.Unmarshal([]byte(config.String()), &configJson)
+	var confstr string
+	switch v := config.(type) {
+	case basetypes.StringValue:
+		confstr = v.ValueString()
+	case types.Object:
+		confstr = config.String()
+	default:
+		confstr = config.String()
+	}
+
+	err := json.Unmarshal([]byte(confstr), &configJson)
 	if err != nil {
 		return shared.Plugin{}, err
 	}
