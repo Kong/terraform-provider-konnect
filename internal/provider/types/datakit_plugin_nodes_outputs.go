@@ -9,5 +9,6 @@ import (
 type DatakitPluginNodesOutputs struct {
 	Body    types.String `tfsdk:"body"`
 	Headers types.String `tfsdk:"headers"`
+	RawBody types.String `tfsdk:"raw_body"`
 	Status  types.String `tfsdk:"status"`
 }

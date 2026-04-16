@@ -45,6 +45,7 @@ type GatewayPluginAwsLambdaResource struct {
 
 // GatewayPluginAwsLambdaResourceModel describes the resource data model.
 type GatewayPluginAwsLambdaResourceModel struct {
+	Condition      types.String                   `tfsdk:"condition"`
 	Config         *tfTypes.AwsLambdaPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                   `tfsdk:"consumer"`
 	ControlPlaneID types.String                   `tfsdk:"control_plane_id"`
@@ -69,6 +70,13 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginAwsLambda Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
@@ -99,6 +107,7 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 					"proxy_url":                             types.StringType,
 					"qualifier":                             types.StringType,
 					"skip_large_bodies":                     types.BoolType,
+					"ssl_verify":                            types.BoolType,
 					"timeout":                               types.Float64Type,
 					"unhandled_status":                      types.Int64Type,
 				})),
@@ -271,6 +280,12 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 						Optional:    true,
 						Default:     booldefault.StaticBool(true),
 						Description: `An optional value that defines whether Kong should send large bodies that are buffered to disk. Default: true`,
+					},
+					"ssl_verify": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(true),
+						Description: `Set to ` + "`" + `true` + "`" + ` to verify the TLS certificate when connecting to AWS services. Default: true`,
 					},
 					"timeout": schema.Float64Attribute{
 						Computed:    true,

@@ -184,12 +184,13 @@ func (e *EnforcementMode) UnmarshalJSON(data []byte) error {
 type InjectionTypes string
 
 const (
-	InjectionTypesJavaException    InjectionTypes = "java_exception"
-	InjectionTypesJs               InjectionTypes = "js"
-	InjectionTypesSQL              InjectionTypes = "sql"
-	InjectionTypesSsi              InjectionTypes = "ssi"
-	InjectionTypesXpathAbbreviated InjectionTypes = "xpath_abbreviated"
-	InjectionTypesXpathExtended    InjectionTypes = "xpath_extended"
+	InjectionTypesJavaException     InjectionTypes = "java_exception"
+	InjectionTypesJs                InjectionTypes = "js"
+	InjectionTypesSQL               InjectionTypes = "sql"
+	InjectionTypesSQLLowSensitivity InjectionTypes = "sql_low_sensitivity"
+	InjectionTypesSsi               InjectionTypes = "ssi"
+	InjectionTypesXpathAbbreviated  InjectionTypes = "xpath_abbreviated"
+	InjectionTypesXpathExtended     InjectionTypes = "xpath_extended"
 )
 
 func (e InjectionTypes) ToPointer() *InjectionTypes {
@@ -206,6 +207,8 @@ func (e *InjectionTypes) UnmarshalJSON(data []byte) error {
 	case "js":
 		fallthrough
 	case "sql":
+		fallthrough
+	case "sql_low_sensitivity":
 		fallthrough
 	case "ssi":
 		fallthrough
@@ -402,6 +405,8 @@ func (i *InjectionProtectionPluginService) GetID() *string {
 
 // InjectionProtectionPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type InjectionProtectionPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -437,6 +442,13 @@ func (i *InjectionProtectionPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (i *InjectionProtectionPlugin) GetCondition() *string {
+	if i == nil {
+		return nil
+	}
+	return i.Condition
 }
 
 func (i *InjectionProtectionPlugin) GetCreatedAt() *int64 {

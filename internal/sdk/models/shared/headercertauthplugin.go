@@ -176,17 +176,17 @@ func (e *CertificateHeaderFormat) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type ConsumerBy string
+type HeaderCertAuthPluginConsumerBy string
 
 const (
-	ConsumerByCustomID ConsumerBy = "custom_id"
-	ConsumerByUsername ConsumerBy = "username"
+	HeaderCertAuthPluginConsumerByCustomID HeaderCertAuthPluginConsumerBy = "custom_id"
+	HeaderCertAuthPluginConsumerByUsername HeaderCertAuthPluginConsumerBy = "username"
 )
 
-func (e ConsumerBy) ToPointer() *ConsumerBy {
+func (e HeaderCertAuthPluginConsumerBy) ToPointer() *HeaderCertAuthPluginConsumerBy {
 	return &e
 }
-func (e *ConsumerBy) UnmarshalJSON(data []byte) error {
+func (e *HeaderCertAuthPluginConsumerBy) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -195,10 +195,10 @@ func (e *ConsumerBy) UnmarshalJSON(data []byte) error {
 	case "custom_id":
 		fallthrough
 	case "username":
-		*e = ConsumerBy(v)
+		*e = HeaderCertAuthPluginConsumerBy(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for ConsumerBy: %v", v)
+		return fmt.Errorf("invalid value for HeaderCertAuthPluginConsumerBy: %v", v)
 	}
 }
 
@@ -250,7 +250,7 @@ type HeaderCertAuthPluginConfig struct {
 	// Name of the header that contains the certificate, received from the WAF or other L7 downstream proxy.
 	CertificateHeaderName string `json:"certificate_header_name"`
 	// Whether to match the subject name of the client-supplied certificate against consumer's `username` and/or `custom_id` attribute. If set to `[]` (the empty array), then auto-matching is disabled.
-	ConsumerBy []ConsumerBy `json:"consumer_by,omitempty"`
+	ConsumerBy []HeaderCertAuthPluginConsumerBy `json:"consumer_by,omitempty"`
 	// The UUID or username of the consumer to use when a trusted client certificate is presented but no consumer matches. Note that this value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
 	DefaultConsumer *string `default:"null" json:"default_consumer"`
 	// A string representing a host name, such as example.com.
@@ -270,7 +270,7 @@ type HeaderCertAuthPluginConfig struct {
 	// Skip consumer lookup once certificate is trusted against the configured CA list.
 	SkipConsumerLookup *bool `default:"false" json:"skip_consumer_lookup"`
 	// This option enables verification of the certificate presented by the server of the OCSP responder's URL and by the server of the CRL Distribution Point.
-	SslVerify *bool `default:"null" json:"ssl_verify"`
+	SslVerify *bool `default:"true" json:"ssl_verify"`
 }
 
 func (h HeaderCertAuthPluginConfig) MarshalJSON() ([]byte, error) {
@@ -340,7 +340,7 @@ func (h *HeaderCertAuthPluginConfig) GetCertificateHeaderName() string {
 	return h.CertificateHeaderName
 }
 
-func (h *HeaderCertAuthPluginConfig) GetConsumerBy() []ConsumerBy {
+func (h *HeaderCertAuthPluginConfig) GetConsumerBy() []HeaderCertAuthPluginConsumerBy {
 	if h == nil {
 		return nil
 	}
@@ -497,6 +497,8 @@ func (h *HeaderCertAuthPluginService) GetID() *string {
 
 // HeaderCertAuthPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type HeaderCertAuthPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -532,6 +534,13 @@ func (h *HeaderCertAuthPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (h *HeaderCertAuthPlugin) GetCondition() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Condition
 }
 
 func (h *HeaderCertAuthPlugin) GetCreatedAt() *int64 {

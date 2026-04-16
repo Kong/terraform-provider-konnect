@@ -15,6 +15,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) RefreshFromSharedLdapAuthAd
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.LdapAuthAdvancedPluginConfig{}
 		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
 		r.Config.Attribute = types.StringValue(resp.Config.Attribute)
@@ -204,6 +205,12 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToOperationsUpdateLdapautha
 func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToSharedLdapAuthAdvancedPlugin(ctx context.Context) (*shared.LdapAuthAdvancedPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -479,6 +486,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToSharedLdapAuthAdvancedPlu
 		}
 	}
 	out := shared.LdapAuthAdvancedPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

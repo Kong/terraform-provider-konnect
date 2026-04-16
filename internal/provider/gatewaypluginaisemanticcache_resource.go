@@ -46,6 +46,7 @@ type GatewayPluginAiSemanticCacheResource struct {
 
 // GatewayPluginAiSemanticCacheResourceModel describes the resource data model.
 type GatewayPluginAiSemanticCacheResourceModel struct {
+	Condition      types.String                         `tfsdk:"condition"`
 	Config         *tfTypes.AiSemanticCachePluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                         `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.Set                         `tfsdk:"consumer_group"`
@@ -71,6 +72,13 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginAiSemanticCache Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -100,6 +108,8 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 									"azure_client_secret":        types.StringType,
 									"azure_tenant_id":            types.StringType,
 									"azure_use_managed_identity": types.BoolType,
+									"gcp_metadata_url":           types.StringType,
+									"gcp_oauth_token_url":        types.StringType,
 									"gcp_service_account_json":   types.StringType,
 									"gcp_use_service_account":    types.BoolType,
 									"header_name":                types.StringType,
@@ -140,6 +150,14 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 										Optional:    true,
 										Default:     booldefault.StaticBool(false),
 										Description: `Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models. Default: false`,
+									},
+									"gcp_metadata_url": schema.StringAttribute{
+										Optional:    true,
+										Description: `Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.`,
+									},
+									"gcp_oauth_token_url": schema.StringAttribute{
+										Optional:    true,
+										Description: `Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.`,
 									},
 									"gcp_service_account_json": schema.StringAttribute{
 										Optional:    true,
@@ -204,6 +222,8 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 													`aws_region`:                 types.StringType,
 													`aws_role_session_name`:      types.StringType,
 													`aws_sts_endpoint_url`:       types.StringType,
+													`batch_bucket_prefix`:        types.StringType,
+													`batch_role_arn`:             types.StringType,
 													`embeddings_normalize`:       types.BoolType,
 													`performance_config_latency`: types.StringType,
 													`video_output_s3_uri`:        types.StringType,
@@ -258,6 +278,8 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 													"aws_region":                 types.StringType,
 													"aws_role_session_name":      types.StringType,
 													"aws_sts_endpoint_url":       types.StringType,
+													"batch_bucket_prefix":        types.StringType,
+													"batch_role_arn":             types.StringType,
 													"embeddings_normalize":       types.BoolType,
 													"performance_config_latency": types.StringType,
 													"video_output_s3_uri":        types.StringType,
@@ -278,6 +300,14 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 													"aws_sts_endpoint_url": schema.StringAttribute{
 														Optional:    true,
 														Description: `If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.`,
+													},
+													"batch_bucket_prefix": schema.StringAttribute{
+														Optional:    true,
+														Description: `S3 URI prefix (s3://bucket/prefix/) where Bedrock will get input files from and store results to for native batch API.`,
+													},
+													"batch_role_arn": schema.StringAttribute{
+														Optional:    true,
+														Description: `AWS role arn used for calling batch API. Try to get the value from request if ommited.`,
 													},
 													"embeddings_normalize": schema.BoolAttribute{
 														Computed:    true,
@@ -345,7 +375,7 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 									},
 									"provider": schema.StringAttribute{
 										Required:    true,
-										Description: `AI provider format to use for embeddings API. must be one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "openai"]`,
+										Description: `AI provider format to use for embeddings API. must be one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai"]`,
 										Validators: []validator.String{
 											stringvalidator.OneOf(
 												"azure",
@@ -353,6 +383,7 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 												"gemini",
 												"huggingface",
 												"mistral",
+												"ollama",
 												"openai",
 											),
 										},
@@ -496,8 +527,8 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 									"ssl_verify": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Default:     booldefault.StaticBool(false),
-										Description: `whether to verify ssl for the pgvector database. Default: false`,
+										Default:     booldefault.StaticBool(true),
+										Description: `whether to verify ssl for the pgvector database. Default: true`,
 									},
 									"ssl_version": schema.StringAttribute{
 										Computed:    true,
@@ -831,8 +862,8 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 									"ssl_verify": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Default:     booldefault.StaticBool(false),
-										Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: false`,
+										Default:     booldefault.StaticBool(true),
+										Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
 									},
 									"username": schema.StringAttribute{
 										Optional:    true,
@@ -852,7 +883,7 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 							},
 							"threshold": schema.Float64Attribute{
 								Optional:    true,
-								Description: `the default similarity threshold for accepting semantic search results (float)`,
+								Description: `the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.`,
 							},
 						},
 					},

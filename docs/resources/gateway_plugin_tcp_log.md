@@ -14,6 +14,7 @@ GatewayPluginTCPLog Resource
 
 ```terraform
 resource "konnect_gateway_plugin_tcp_log" "my_gatewayplugintcplog" {
+  condition = "...my_condition..."
   config = {
     custom_fields_by_lua = {
       key = "value"
@@ -21,7 +22,7 @@ resource "konnect_gateway_plugin_tcp_log" "my_gatewayplugintcplog" {
     host       = "...my_host..."
     keepalive  = 60000
     port       = 54956
-    ssl_verify = false
+    ssl_verify = true
     timeout    = 10000
     tls        = false
     tls_sni    = "...my_tls_sni..."
@@ -79,6 +80,7 @@ resource "konnect_gateway_plugin_tcp_log" "my_gatewayplugintcplog" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
@@ -104,7 +106,7 @@ Optional:
 
 - `custom_fields_by_lua` (Map of String) A list of key-value pairs, where the key is the name of a log field and the value is a chunk of Lua code, whose return value sets or replaces the log field value.
 - `keepalive` (Number) An optional value in milliseconds that defines how long an idle connection lives before being closed. Default: 60000
-- `ssl_verify` (Boolean) When using TLS, this option enables verification of the certificate presented by the server. Default: false
+- `ssl_verify` (Boolean) When using TLS, this option enables verification of the certificate presented by the server. Default: true
 - `timeout` (Number) An optional timeout in milliseconds when sending data to the upstream server. Default: 10000
 - `tls` (Boolean) Indicates whether to perform a TLS handshake against the remote server. Default: false
 - `tls_sni` (String) An optional string that defines the SNI (Server Name Indication) hostname to send in the TLS handshake.

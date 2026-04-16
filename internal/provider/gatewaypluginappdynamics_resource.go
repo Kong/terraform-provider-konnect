@@ -44,6 +44,7 @@ type GatewayPluginAppDynamicsResource struct {
 
 // GatewayPluginAppDynamicsResourceModel describes the resource data model.
 type GatewayPluginAppDynamicsResourceModel struct {
+	Condition      types.String                    `tfsdk:"condition"`
 	Config         map[string]jsontypes.Normalized `tfsdk:"config"`
 	Consumer       *tfTypes.Set                    `tfsdk:"consumer"`
 	ControlPlaneID types.String                    `tfsdk:"control_plane_id"`
@@ -68,6 +69,13 @@ func (r *GatewayPluginAppDynamicsResource) Schema(ctx context.Context, req resou
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginAppDynamics Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.MapAttribute{
 				Optional:    true,
 				ElementType: jsontypes.NormalizedType{},

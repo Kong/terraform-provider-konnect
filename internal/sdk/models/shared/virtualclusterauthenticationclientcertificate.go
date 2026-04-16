@@ -7,6 +7,8 @@ import (
 )
 
 // VirtualClusterAuthenticationClientCertificate - Client certificate (mTLS) authentication scheme for the virtual cluster.
+//
+// **Requires a minimum runtime version of `1.1`**.
 type VirtualClusterAuthenticationClientCertificate struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"client_certificate" json:"type"`

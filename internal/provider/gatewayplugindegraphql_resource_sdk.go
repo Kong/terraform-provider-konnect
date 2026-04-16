@@ -15,6 +15,7 @@ func (r *GatewayPluginDegraphqlResourceModel) RefreshFromSharedDegraphqlPlugin(c
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
@@ -176,6 +177,12 @@ func (r *GatewayPluginDegraphqlResourceModel) ToOperationsUpdateDegraphqlPluginR
 func (r *GatewayPluginDegraphqlResourceModel) ToSharedDegraphqlPlugin(ctx context.Context) (*shared.DegraphqlPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -310,6 +317,7 @@ func (r *GatewayPluginDegraphqlResourceModel) ToSharedDegraphqlPlugin(ctx contex
 		}
 	}
 	out := shared.DegraphqlPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

@@ -7,10 +7,10 @@ import (
 )
 
 type AiSemanticResponseGuardPluginVectordb struct {
-	Dimensions     types.Int64     `tfsdk:"dimensions"`
-	DistanceMetric types.String    `tfsdk:"distance_metric"`
-	Pgvector       *Pgvector       `tfsdk:"pgvector"`
-	Redis          *AcePluginRedis `tfsdk:"redis"`
-	Strategy       types.String    `tfsdk:"strategy"`
-	Threshold      types.Float64   `tfsdk:"threshold"`
+	Dimensions     types.Int64              `tfsdk:"dimensions"`
+	DistanceMetric types.String             `tfsdk:"distance_metric"`
+	Pgvector       *PartialVectordbPgvector `tfsdk:"pgvector"`
+	Redis          *PartialVectordbRedis    `tfsdk:"redis"`
+	Strategy       types.String             `tfsdk:"strategy"`
+	Threshold      types.Float64            `tfsdk:"threshold"`
 }

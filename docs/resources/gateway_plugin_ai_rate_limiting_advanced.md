@@ -14,6 +14,7 @@ GatewayPluginAiRateLimitingAdvanced Resource
 
 ```terraform
 resource "konnect_gateway_plugin_ai_rate_limiting_advanced" "my_gatewaypluginairatelimitingadvanced" {
+  condition = "...my_condition..."
   config = {
     custom_cost_count_function     = "...my_custom_cost_count_function..."
     decrease_by_fractions_in_redis = false
@@ -25,7 +26,7 @@ resource "konnect_gateway_plugin_ai_rate_limiting_advanced" "my_gatewaypluginair
     header_name                    = "...my_header_name..."
     hide_client_headers            = false
     identifier                     = "consumer"
-    llm_format                     = "openai"
+    llm_format                     = "gemini"
     llm_providers = [
       {
         limit = [
@@ -39,6 +40,29 @@ resource "konnect_gateway_plugin_ai_rate_limiting_advanced" "my_gatewaypluginair
     ]
     namespace = "...my_namespace..."
     path      = "...my_path..."
+    policies = [
+      {
+        id = "...my_id..."
+        limits = [
+          {
+            limit                 = 4.82
+            tokens_count_strategy = "total_tokens"
+            window_size           = 1
+          }
+        ]
+        match = [
+          {
+            key          = "...my_key..."
+            partition_by = false
+            type         = "header"
+            values = [
+              "..."
+            ]
+          }
+        ]
+        window_type = "sliding"
+      }
+    ]
     redis = {
       cloud_authentication = {
         auth_provider            = "gcp"
@@ -83,7 +107,7 @@ resource "konnect_gateway_plugin_ai_rate_limiting_advanced" "my_gatewaypluginair
       sentinel_username = "...my_sentinel_username..."
       server_name       = "...my_server_name..."
       ssl               = false
-      ssl_verify        = false
+      ssl_verify        = true
       username          = "...my_username..."
     }
     request_prompt_count_function = "...my_request_prompt_count_function..."
@@ -144,11 +168,12 @@ resource "konnect_gateway_plugin_ai_rate_limiting_advanced" "my_gatewaypluginair
 
 ### Required
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -166,15 +191,11 @@ resource "konnect_gateway_plugin_ai_rate_limiting_advanced" "my_gatewaypluginair
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
-Required:
-
-- `llm_providers` (Attributes List) The provider config. Takes an array of `name`, `limit` and `window size` values. (see [below for nested schema](#nestedatt--config--llm_providers))
-
 Optional:
 
 - `custom_cost_count_function` (String) If defined, it uses custom function to generate cost for the inference request
 - `decrease_by_fractions_in_redis` (Boolean) By default, Kong decreates the AI rate limiting counters by whole number in Redis. This setting allows to decrease the counters by float number. Default: false
-- `dictionary_name` (String) The shared dictionary where counters are stored. When the plugin is configured to synchronize counter data externally (that is `config.strategy` is `cluster` or `redis` and `config.sync_rate` isn't `-1`), this dictionary serves as a buffer to populate counters in the data store on each synchronization cycle. Default: "kong_rate_limiting_counters"
+- `dictionary_name` (String) The shared dictionary where counters are stored. When the plugin is configured to synchronize counter data externally (that is `config.strategy` is `cluster` or `redis` and `config.sync_rate` isn't `-1`), this dictionary serves as a buffer to populate counters in the data store on each synchronization cycle. The dictionary must be defined in the nginx configuration using `lua_shared_dict` directive (e.g., `lua_shared_dict kong_rate_limiting_counters 12m`). Default: "kong_rate_limiting_counters"
 - `disable_penalty` (Boolean) If set to `true`, this doesn't count denied requests (status = `429`). If set to `false`, all requests, including denied ones, are counted. This parameter only affects the `sliding` window_type and the request prompt provider. Default: false
 - `error_code` (Number) Set a custom error code to return when the rate limit is exceeded. Default: 429
 - `error_hide_providers` (Boolean) Optionally hide informative response that would otherwise provide information about the provider in the error message. Default: false
@@ -182,9 +203,11 @@ Optional:
 - `header_name` (String) A string representing an HTTP header name.
 - `hide_client_headers` (Boolean) Optionally hide informative response headers that would otherwise provide information about the current status of limits and counters. Default: false
 - `identifier` (String) The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`. Note if `identifier` is `consumer-group`, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate. Default: "consumer"; must be one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "service"]
-- `llm_format` (String) LLM input and output format and schema to use. Default: "openai"; must be one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]
+- `llm_format` (String) LLM input and output format and schema to use. must be one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]
+- `llm_providers` (Attributes List) The provider config. Takes an array of `name`, `limit` and `window size` values. Mutually exclusive with `policies`. (see [below for nested schema](#nestedatt--config--llm_providers))
 - `namespace` (String) The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `dictionary_name`, need to be the same.
 - `path` (String) A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
+- `policies` (Attributes List) Policy-based rate limiting. Each policy defines match conditions and limits. Mutually exclusive with `llm_providers`. (see [below for nested schema](#nestedatt--config--policies))
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--redis))
 - `request_prompt_count_function` (String) If defined, it use custom function to count requests for the request prompt provider
 - `retry_after_jitter_max` (Number) The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header. Default: 0
@@ -201,6 +224,38 @@ Optional:
 - `limit` (List of Number) One or more requests-per-window limits to apply. There must be a matching number of window limits and sizes specified. Not Null
 - `name` (String) The LLM provider to which the rate limit applies. Not Null; must be one of ["anthropic", "azure", "bedrock", "cohere", "customCost", "gemini", "huggingface", "llama2", "mistral", "openai", "requestPrompt"]
 - `window_size` (List of Number) One or more window sizes to apply a limit to (defined in seconds). There must be a matching number of window limits and sizes specified. Not Null
+
+
+<a id="nestedatt--config--policies"></a>
+### Nested Schema for `config.policies`
+
+Optional:
+
+- `id` (String) UUID reference to a reusable ai_rate_limiting_policies DAO entity. Mutually exclusive with inline limits.
+- `limits` (Attributes List) Rate limits to enforce when this policy matches. (see [below for nested schema](#nestedatt--config--policies--limits))
+- `match` (Attributes List) Array of match conditions (AND logic). If omitted, this policy acts as a fallback for unmatched requests. (see [below for nested schema](#nestedatt--config--policies--match))
+- `window_type` (String) The time window type for this policy. Default: "sliding"; must be one of ["fixed", "sliding"]
+
+<a id="nestedatt--config--policies--limits"></a>
+### Nested Schema for `config.policies.limits`
+
+Optional:
+
+- `limit` (Number) The rate limit threshold for this window. Not Null
+- `tokens_count_strategy` (String) What to count for this limit. Supported strategies: total_tokens, prompt_tokens, completion_tokens, cost. Default: "total_tokens"; must be one of ["completion_tokens", "cost", "prompt_tokens", "total_tokens"]
+- `window_size` (Number) The window size in seconds. Not Null
+
+
+<a id="nestedatt--config--policies--match"></a>
+### Nested Schema for `config.policies.match`
+
+Optional:
+
+- `key` (String) Sub-key for consumer (id|username|custom_id), consumer_group (id|name), or header (header name).
+- `partition_by` (Boolean) If true, the matched value contributes to the composite rate limit counter key. Default: false
+- `type` (String) The attribute to match against. Not Null; must be one of ["consumer", "consumer_group", "header", "ip", "model", "path", "provider"]
+- `values` (List of String) Values to match. If omitted, matches any value of this type.
+
 
 
 <a id="nestedatt--config--redis"></a>
@@ -228,7 +283,7 @@ Optional:
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
-- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: false
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
 - `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 
 <a id="nestedatt--config--redis--cloud_authentication"></a>

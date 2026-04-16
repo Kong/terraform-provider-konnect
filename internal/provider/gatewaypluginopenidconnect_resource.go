@@ -27,7 +27,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/listvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -46,6 +48,7 @@ type GatewayPluginOpenidConnectResource struct {
 
 // GatewayPluginOpenidConnectResourceModel describes the resource data model.
 type GatewayPluginOpenidConnectResourceModel struct {
+	Condition      types.String                       `tfsdk:"condition"`
 	Config         *tfTypes.OpenidConnectPluginConfig `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -69,6 +72,13 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginOpenidConnect Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -211,7 +221,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						Default:     booldefault.StaticBool(true),
-						Description: `Cache the token exchange endpoint requests. Default: true`,
+						Description: `Cache the legacy token exchange endpoint requests. Default: true`,
 					},
 					"cache_tokens": schema.BoolAttribute{
 						Computed:    true,
@@ -665,10 +675,12 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						ElementType: types.StringType,
 						Description: `Consumer fields used for mapping: - ` + "`" + `id` + "`" + `: try to find the matching Consumer by ` + "`" + `id` + "`" + ` - ` + "`" + `username` + "`" + `: try to find the matching Consumer by ` + "`" + `username` + "`" + ` - ` + "`" + `custom_id` + "`" + `: try to find the matching Consumer by ` + "`" + `custom_id` + "`" + `. Default: ["custom_id","username"]`,
 					},
-					"consumer_claim": schema.ListAttribute{
-						Optional:    true,
-						ElementType: types.StringType,
-						Description: `The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.`,
+					"consumer_claims": schema.ListAttribute{
+						Optional: true,
+						ElementType: types.ListType{
+							ElemType: types.StringType,
+						},
+						Description: `The claims used for consumer mapping. Each entry represents a claim path inside the token payload. The paths are evaluated in order, and the first matching claim is used.`,
 					},
 					"consumer_groups_claim": schema.ListAttribute{
 						Optional:    true,
@@ -728,10 +740,38 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						Description: `The downstream access token JWK header.`,
 					},
+					"downstream_headers": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"header": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The name of the header. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+									},
+								},
+								"path": schema.ListAttribute{
+									Computed:    true,
+									Optional:    true,
+									ElementType: types.StringType,
+									Description: `The path of the header value. Not Null`,
+									Validators: []validator.List{
+										speakeasy_listvalidators.NotNull(),
+									},
+								},
+							},
+						},
+						Description: `The downstream claim to header mappings.`,
+					},
 					"downstream_headers_claims": schema.ListAttribute{
 						Optional:    true,
 						ElementType: types.StringType,
-						Description: `The downstream header claims. If multiple values are set, it means the claim is inside a nested object of the token payload.`,
+						Description: `The downstream header claims. Only top level claims are supported.`,
 					},
 					"downstream_headers_names": schema.ListAttribute{
 						Optional:    true,
@@ -835,8 +875,8 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"hide_credentials": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Remove the credentials used for authentication from the request. If multiple credentials are sent with the same request, the plugin will remove those that were used for successful authentication. Default: false`,
+						Default:     booldefault.StaticBool(true),
+						Description: `Remove the credentials used for authentication from the request. If multiple credentials are sent with the same request, the plugin will remove those that were used for successful authentication. Default: true`,
 					},
 					"http_proxy": schema.StringAttribute{
 						Optional:    true,
@@ -981,6 +1021,10 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `The issuers allowed to be present in the tokens (` + "`" + `iss` + "`" + ` claim).`,
+					},
+					"jwks_endpoint": schema.StringAttribute{
+						Optional:    true,
+						Description: `Overrides the ` + "`" + `jwks_uri` + "`" + ` returned by discovery. Use when the IdP exposes a non-standard JWKS endpoint.`,
 					},
 					"jwt_session_claim": schema.StringAttribute{
 						Computed:    true,
@@ -1708,16 +1752,14 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Description: `The memcached unix socket path.`,
 					},
 					"session_memcached_ssl": schema.BoolAttribute{
-						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `If set to true, uses SSL to connect to memcached. Default: false`,
+						Description: `If set to true, uses SSL to connect to memcached`,
 					},
 					"session_memcached_ssl_verify": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `If set to true, verifies the validity of the memcached server SSL certificate. Default: false`,
+						Default:     booldefault.StaticBool(true),
+						Description: `If set to true, verifies the validity of the memcached server SSL certificate. Default: true`,
 					},
 					"session_remember": schema.BoolAttribute{
 						Computed:    true,
@@ -1786,8 +1828,8 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"ssl_verify": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Verify identity provider server certificate. If set to ` + "`" + `true` + "`" + `, the plugin uses the CA certificate set in the ` + "`" + `kong.conf` + "`" + ` config parameter ` + "`" + `lua_ssl_trusted_certificate` + "`" + `. Default: false`,
+						Default:     booldefault.StaticBool(true),
+						Description: `Verify identity provider server certificate. If set to ` + "`" + `true` + "`" + `, the plugin uses the CA certificate set in the ` + "`" + `kong.conf` + "`" + ` config parameter ` + "`" + `lua_ssl_trusted_certificate` + "`" + `. Default: true`,
 					},
 					"timeout": schema.Float64Attribute{
 						Computed:    true,
@@ -1831,9 +1873,175 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 							),
 						},
 					},
+					"token_exchange": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"cache": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`enabled`: types.BoolType,
+									`ttl`:     types.Int64Type,
+								},
+							},
+							"request": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`audience`: types.ListType{
+										ElemType: types.StringType,
+									},
+									`empty_audience`: types.BoolType,
+									`empty_scopes`:   types.BoolType,
+									`scopes`: types.ListType{
+										ElemType: types.StringType,
+									},
+								},
+							},
+							"subject_token_issuers": types.ListType{
+								ElemType: types.ObjectType{
+									AttrTypes: map[string]attr.Type{
+										`conditions`: types.ObjectType{
+											AttrTypes: map[string]attr.Type{
+												`has_audience`: types.ListType{
+													ElemType: types.StringType,
+												},
+												`has_scopes`: types.ListType{
+													ElemType: types.StringType,
+												},
+												`missing_audience`: types.ListType{
+													ElemType: types.StringType,
+												},
+												`missing_scopes`: types.ListType{
+													ElemType: types.StringType,
+												},
+											},
+										},
+										`issuer`: types.StringType,
+									},
+								},
+							},
+						})),
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"enabled": types.BoolType,
+									"ttl":     types.Int64Type,
+								})),
+								Attributes: map[string]schema.Attribute{
+									"enabled": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(true),
+										Description: `Whether to enable caching. Default: true`,
+									},
+									"ttl": schema.Int64Attribute{
+										Optional:    true,
+										Description: `Cache ttl in seconds used when caching exchanged tokens, use it to override ` + "`" + `conf.cache_ttl` + "`" + `. Token expiry will be used if shorter than this value.`,
+									},
+								},
+								Description: `Cache support for token exchange`,
+							},
+							"request": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"audience": types.ListType{
+										ElemType: types.StringType,
+									},
+									"empty_audience": types.BoolType,
+									"empty_scopes":   types.BoolType,
+									"scopes": types.ListType{
+										ElemType: types.StringType,
+									},
+								})),
+								Attributes: map[string]schema.Attribute{
+									"audience": schema.ListAttribute{
+										Optional:    true,
+										ElementType: types.StringType,
+										Description: `Audiences used in the token exchange request. Values defined here override those defined in ` + "`" + `config.audience` + "`" + `.`,
+									},
+									"empty_audience": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(false),
+										Description: `Use empty audiences. Use this field to override audiences defined in ` + "`" + `config.audience` + "`" + `. Default: false`,
+									},
+									"empty_scopes": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(false),
+										Description: `Use empty scopes. Use this field to override scopes defined in ` + "`" + `config.scopes` + "`" + `. Default: false`,
+									},
+									"scopes": schema.ListAttribute{
+										Optional:    true,
+										ElementType: types.StringType,
+										Description: `Scopes used in the token exchange request. Values defined here override those defined in ` + "`" + `config.scopes` + "`" + `.`,
+									},
+								},
+								Description: `Parameters used in the token exchange request.`,
+							},
+							"subject_token_issuers": schema.ListNestedAttribute{
+								Required: true,
+								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+									Attributes: map[string]schema.Attribute{
+										"conditions": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+												"has_audience": types.ListType{
+													ElemType: types.StringType,
+												},
+												"has_scopes": types.ListType{
+													ElemType: types.StringType,
+												},
+												"missing_audience": types.ListType{
+													ElemType: types.StringType,
+												},
+												"missing_scopes": types.ListType{
+													ElemType: types.StringType,
+												},
+											})),
+											Attributes: map[string]schema.Attribute{
+												"has_audience": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+												},
+												"has_scopes": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+												},
+												"missing_audience": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+												},
+												"missing_scopes": schema.ListAttribute{
+													Optional:    true,
+													ElementType: types.StringType,
+												},
+											},
+											Description: `A tokens will only be exchange when it matches all these criteria. To exchanging tokens issued from a different issuer, conditions must not be defined; On the contrary, to exchange tokens issued from the target issuer itself, conditions must be defined.`,
+										},
+										"issuer": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `Tokens of whose iss claim matches this value will be exchanged. Not Null`,
+											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
+											},
+										},
+									},
+								},
+								Description: `Trusted token issuers from which the upstream may accept tokens to be exchanged. If a JWT bearer matches all the conditions of a subject token issuer item, the token will be exchanged.`,
+							},
+						},
+						Description: `Details on how to accept tokens from other identity providers.`,
+					},
 					"token_exchange_endpoint": schema.StringAttribute{
 						Optional:    true,
-						Description: `The token exchange endpoint.`,
+						Description: `Endpoint used to perform the legacy token exchange.`,
 					},
 					"token_headers_client": schema.ListAttribute{
 						Optional:    true,
@@ -1910,6 +2118,34 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"upstream_access_token_jwk_header": schema.StringAttribute{
 						Optional:    true,
 						Description: `The upstream access token JWK header.`,
+					},
+					"upstream_headers": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"header": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The name of the header. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+									},
+								},
+								"path": schema.ListAttribute{
+									Computed:    true,
+									Optional:    true,
+									ElementType: types.StringType,
+									Description: `The path of the header value. Not Null`,
+									Validators: []validator.List{
+										speakeasy_listvalidators.NotNull(),
+									},
+								},
+							},
+						},
+						Description: `The upstream claim to header mappings.`,
 					},
 					"upstream_headers_claims": schema.ListAttribute{
 						Optional:    true,
@@ -2143,7 +2379,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					types.StringValue("https"),
 				})),
 				ElementType: types.StringType,
-				Description: `A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]`,
+				Description: `A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls. Default: ["grpc","grpcs","http","https"]`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,

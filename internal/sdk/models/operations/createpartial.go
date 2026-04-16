@@ -40,12 +40,24 @@ func (c *CreatePartialRequest) GetPartial() shared.Partial {
 	return c.Partial
 }
 
+func (c *CreatePartialRequest) GetPartialEmbeddings() *shared.PartialEmbeddings {
+	return c.GetPartial().PartialEmbeddings
+}
+
+func (c *CreatePartialRequest) GetPartialModel() *shared.PartialModel {
+	return c.GetPartial().PartialModel
+}
+
 func (c *CreatePartialRequest) GetPartialRedisCe() *shared.PartialRedisCe {
 	return c.GetPartial().PartialRedisCe
 }
 
 func (c *CreatePartialRequest) GetPartialRedisEe() *shared.PartialRedisEe {
 	return c.GetPartial().PartialRedisEe
+}
+
+func (c *CreatePartialRequest) GetPartialVectordb() *shared.PartialVectordb {
+	return c.GetPartial().PartialVectordb
 }
 
 type CreatePartialResponse struct {
@@ -100,6 +112,20 @@ func (c *CreatePartialResponse) GetPartial() *shared.Partial {
 	return c.Partial
 }
 
+func (c *CreatePartialResponse) GetPartialEmbeddings() *shared.PartialEmbeddings {
+	if v := c.GetPartial(); v != nil {
+		return v.PartialEmbeddings
+	}
+	return nil
+}
+
+func (c *CreatePartialResponse) GetPartialModel() *shared.PartialModel {
+	if v := c.GetPartial(); v != nil {
+		return v.PartialModel
+	}
+	return nil
+}
+
 func (c *CreatePartialResponse) GetPartialRedisCe() *shared.PartialRedisCe {
 	if v := c.GetPartial(); v != nil {
 		return v.PartialRedisCe
@@ -110,6 +136,13 @@ func (c *CreatePartialResponse) GetPartialRedisCe() *shared.PartialRedisCe {
 func (c *CreatePartialResponse) GetPartialRedisEe() *shared.PartialRedisEe {
 	if v := c.GetPartial(); v != nil {
 		return v.PartialRedisEe
+	}
+	return nil
+}
+
+func (c *CreatePartialResponse) GetPartialVectordb() *shared.PartialVectordb {
+	if v := c.GetPartial(); v != nil {
+		return v.PartialVectordb
 	}
 	return nil
 }

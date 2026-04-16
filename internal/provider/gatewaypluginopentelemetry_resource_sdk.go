@@ -15,11 +15,23 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.OpentelemetryPluginConfig{}
-			r.Config.AccessLogsEndpoint = types.StringPointerValue(resp.Config.AccessLogsEndpoint)
+			if resp.Config.AccessLogs == nil {
+				r.Config.AccessLogs = nil
+			} else {
+				r.Config.AccessLogs = &tfTypes.AccessLogs{}
+				if resp.Config.AccessLogs.CustomAttributesByLua != nil {
+					r.Config.AccessLogs.CustomAttributesByLua = make(map[string]types.String, len(resp.Config.AccessLogs.CustomAttributesByLua))
+					for key, value := range resp.Config.AccessLogs.CustomAttributesByLua {
+						r.Config.AccessLogs.CustomAttributesByLua[key] = types.StringValue(value)
+					}
+				}
+				r.Config.AccessLogs.Endpoint = types.StringPointerValue(resp.Config.AccessLogs.Endpoint)
+			}
 			r.Config.BatchFlushDelay = types.Int64PointerValue(resp.Config.BatchFlushDelay)
 			r.Config.BatchSpanCount = types.Int64PointerValue(resp.Config.BatchSpanCount)
 			r.Config.ConnectTimeout = types.Int64PointerValue(resp.Config.ConnectTimeout)
@@ -30,8 +42,8 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 			}
 			if resp.Config.Headers != nil {
 				r.Config.Headers = make(map[string]types.String, len(resp.Config.Headers))
-				for key, value := range resp.Config.Headers {
-					r.Config.Headers[key] = types.StringValue(value)
+				for key1, value1 := range resp.Config.Headers {
+					r.Config.Headers[key1] = types.StringValue(value1)
 				}
 			}
 			r.Config.HTTPResponseHeaderForTraceid = types.StringPointerValue(resp.Config.HTTPResponseHeaderForTraceid)
@@ -40,6 +52,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 				r.Config.Metrics = nil
 			} else {
 				r.Config.Metrics = &tfTypes.OpentelemetryPluginMetrics{}
+				r.Config.Metrics.EnableAiMetrics = types.BoolPointerValue(resp.Config.Metrics.EnableAiMetrics)
 				r.Config.Metrics.EnableBandwidthMetrics = types.BoolPointerValue(resp.Config.Metrics.EnableBandwidthMetrics)
 				r.Config.Metrics.EnableConsumerAttribute = types.BoolPointerValue(resp.Config.Metrics.EnableConsumerAttribute)
 				r.Config.Metrics.EnableLatencyMetrics = types.BoolPointerValue(resp.Config.Metrics.EnableLatencyMetrics)
@@ -102,8 +115,8 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 			r.Config.ReadTimeout = types.Int64PointerValue(resp.Config.ReadTimeout)
 			if len(resp.Config.ResourceAttributes) > 0 {
 				r.Config.ResourceAttributes = make(map[string]types.String, len(resp.Config.ResourceAttributes))
-				for key1, value1 := range resp.Config.ResourceAttributes {
-					r.Config.ResourceAttributes[key1] = types.StringValue(value1)
+				for key2, value2 := range resp.Config.ResourceAttributes {
+					r.Config.ResourceAttributes[key2] = types.StringValue(value2)
 				}
 			}
 			r.Config.SamplingRate = types.Float64PointerValue(resp.Config.SamplingRate)
@@ -276,6 +289,12 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToOperationsUpdateOpentelemetr
 func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ctx context.Context) (*shared.OpentelemetryPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -371,11 +390,28 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ct
 	}
 	var config *shared.OpentelemetryPluginConfig
 	if r.Config != nil {
-		accessLogsEndpoint := new(string)
-		if !r.Config.AccessLogsEndpoint.IsUnknown() && !r.Config.AccessLogsEndpoint.IsNull() {
-			*accessLogsEndpoint = r.Config.AccessLogsEndpoint.ValueString()
-		} else {
-			accessLogsEndpoint = nil
+		var accessLogs *shared.AccessLogs
+		if r.Config.AccessLogs != nil {
+			var customAttributesByLua map[string]string
+			if r.Config.AccessLogs.CustomAttributesByLua != nil {
+				customAttributesByLua = make(map[string]string)
+				for customAttributesByLuaKey := range r.Config.AccessLogs.CustomAttributesByLua {
+					var customAttributesByLuaInst string
+					customAttributesByLuaInst = r.Config.AccessLogs.CustomAttributesByLua[customAttributesByLuaKey].ValueString()
+
+					customAttributesByLua[customAttributesByLuaKey] = customAttributesByLuaInst
+				}
+			}
+			endpoint := new(string)
+			if !r.Config.AccessLogs.Endpoint.IsUnknown() && !r.Config.AccessLogs.Endpoint.IsNull() {
+				*endpoint = r.Config.AccessLogs.Endpoint.ValueString()
+			} else {
+				endpoint = nil
+			}
+			accessLogs = &shared.AccessLogs{
+				CustomAttributesByLua: customAttributesByLua,
+				Endpoint:              endpoint,
+			}
 		}
 		batchFlushDelay := new(int64)
 		if !r.Config.BatchFlushDelay.IsUnknown() && !r.Config.BatchFlushDelay.IsNull() {
@@ -425,6 +461,12 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ct
 		}
 		var metrics *shared.OpentelemetryPluginMetrics
 		if r.Config.Metrics != nil {
+			enableAiMetrics := new(bool)
+			if !r.Config.Metrics.EnableAiMetrics.IsUnknown() && !r.Config.Metrics.EnableAiMetrics.IsNull() {
+				*enableAiMetrics = r.Config.Metrics.EnableAiMetrics.ValueBool()
+			} else {
+				enableAiMetrics = nil
+			}
 			enableBandwidthMetrics := new(bool)
 			if !r.Config.Metrics.EnableBandwidthMetrics.IsUnknown() && !r.Config.Metrics.EnableBandwidthMetrics.IsNull() {
 				*enableBandwidthMetrics = r.Config.Metrics.EnableBandwidthMetrics.ValueBool()
@@ -455,11 +497,11 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ct
 			} else {
 				enableUpstreamHealthMetrics = nil
 			}
-			endpoint := new(string)
+			endpoint1 := new(string)
 			if !r.Config.Metrics.Endpoint.IsUnknown() && !r.Config.Metrics.Endpoint.IsNull() {
-				*endpoint = r.Config.Metrics.Endpoint.ValueString()
+				*endpoint1 = r.Config.Metrics.Endpoint.ValueString()
 			} else {
-				endpoint = nil
+				endpoint1 = nil
 			}
 			pushInterval := new(float64)
 			if !r.Config.Metrics.PushInterval.IsUnknown() && !r.Config.Metrics.PushInterval.IsNull() {
@@ -468,12 +510,13 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ct
 				pushInterval = nil
 			}
 			metrics = &shared.OpentelemetryPluginMetrics{
+				EnableAiMetrics:             enableAiMetrics,
 				EnableBandwidthMetrics:      enableBandwidthMetrics,
 				EnableConsumerAttribute:     enableConsumerAttribute,
 				EnableLatencyMetrics:        enableLatencyMetrics,
 				EnableRequestMetrics:        enableRequestMetrics,
 				EnableUpstreamHealthMetrics: enableUpstreamHealthMetrics,
-				Endpoint:                    endpoint,
+				Endpoint:                    endpoint1,
 				PushInterval:                pushInterval,
 			}
 		}
@@ -612,7 +655,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ct
 			tracesEndpoint = nil
 		}
 		config = &shared.OpentelemetryPluginConfig{
-			AccessLogsEndpoint:           accessLogsEndpoint,
+			AccessLogs:                   accessLogs,
 			BatchFlushDelay:              batchFlushDelay,
 			BatchSpanCount:               batchSpanCount,
 			ConnectTimeout:               connectTimeout,
@@ -672,6 +715,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ct
 		}
 	}
 	out := shared.OpentelemetryPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

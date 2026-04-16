@@ -174,7 +174,7 @@ type LdapAuthAdvancedPluginConfig struct {
 	// An optional string to use as part of the Authorization header. By default, a valid Authorization header looks like this: `Authorization: ldap base64(username:password)`. If `header_type` is set to "basic", then the Authorization header would be `Authorization: basic base64(username:password)`. Note that `header_type` can take any string, not just `'ldap'` and `'basic'`.
 	HeaderType *string `default:"ldap" json:"header_type"`
 	// An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request.
-	HideCredentials *bool `default:"false" json:"hide_credentials"`
+	HideCredentials *bool `default:"true" json:"hide_credentials"`
 	// An optional value in milliseconds that defines how long an idle connection to LDAP server will live before being closed.
 	Keepalive *float64 `default:"60000" json:"keepalive"`
 	// Host on which the LDAP server is running.
@@ -194,7 +194,7 @@ type LdapAuthAdvancedPluginConfig struct {
 	// An optional timeout in milliseconds when waiting for connection with LDAP server.
 	Timeout *float64 `default:"10000" json:"timeout"`
 	// Set to `true` to authenticate LDAP server. The server certificate will be verified according to the CA certificates specified by the `lua_ssl_trusted_certificate` directive.
-	VerifyLdapHost *bool `default:"false" json:"verify_ldap_host"`
+	VerifyLdapHost *bool `default:"true" json:"verify_ldap_host"`
 }
 
 func (l LdapAuthAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
@@ -455,6 +455,8 @@ func (l *LdapAuthAdvancedPluginService) GetID() *string {
 
 // LdapAuthAdvancedPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type LdapAuthAdvancedPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -490,6 +492,13 @@ func (l *LdapAuthAdvancedPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (l *LdapAuthAdvancedPlugin) GetCondition() *string {
+	if l == nil {
+		return nil
+	}
+	return l.Condition
 }
 
 func (l *LdapAuthAdvancedPlugin) GetCreatedAt() *int64 {

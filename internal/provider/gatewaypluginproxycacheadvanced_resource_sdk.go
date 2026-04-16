@@ -15,6 +15,7 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) RefreshFromSharedProxyCac
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.ProxyCacheAdvancedPluginConfig{}
 		r.Config.BypassOnErr = types.BoolPointerValue(resp.Config.BypassOnErr)
 		r.Config.CacheControl = types.BoolPointerValue(resp.Config.CacheControl)
@@ -33,7 +34,7 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) RefreshFromSharedProxyCac
 		if resp.Config.Redis == nil {
 			r.Config.Redis = nil
 		} else {
-			r.Config.Redis = &tfTypes.AcePluginRedis{}
+			r.Config.Redis = &tfTypes.PartialVectordbRedis{}
 			if resp.Config.Redis.CloudAuthentication == nil {
 				r.Config.Redis.CloudAuthentication = nil
 			} else {
@@ -308,6 +309,12 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsUpdateProxyca
 func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToSharedProxyCacheAdvancedPlugin(ctx context.Context) (*shared.ProxyCacheAdvancedPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -839,6 +846,7 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToSharedProxyCacheAdvance
 		}
 	}
 	out := shared.ProxyCacheAdvancedPlugin{
+		Condition:     condition,
 		CreatedAt:     createdAt,
 		Enabled:       enabled,
 		ID:            id,

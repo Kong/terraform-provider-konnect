@@ -45,6 +45,7 @@ type GatewayPluginLdapAuthResource struct {
 
 // GatewayPluginLdapAuthResourceModel describes the resource data model.
 type GatewayPluginLdapAuthResourceModel struct {
+	Condition      types.String                  `tfsdk:"condition"`
 	Config         *tfTypes.LdapAuthPluginConfig `tfsdk:"config"`
 	ControlPlaneID types.String                  `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                   `tfsdk:"created_at"`
@@ -68,6 +69,13 @@ func (r *GatewayPluginLdapAuthResource) Schema(ctx context.Context, req resource
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginLdapAuth Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -98,8 +106,8 @@ func (r *GatewayPluginLdapAuthResource) Schema(ctx context.Context, req resource
 					"hide_credentials": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request. Default: false`,
+						Default:     booldefault.StaticBool(true),
+						Description: `An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request. Default: true`,
 					},
 					"keepalive": schema.Float64Attribute{
 						Computed:    true,
@@ -145,8 +153,8 @@ func (r *GatewayPluginLdapAuthResource) Schema(ctx context.Context, req resource
 					"verify_ldap_host": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Set to ` + "`" + `true` + "`" + ` to authenticate LDAP server. The server certificate will be verified according to the CA certificates specified by the ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` directive. Default: false`,
+						Default:     booldefault.StaticBool(true),
+						Description: `Set to ` + "`" + `true` + "`" + ` to authenticate LDAP server. The server certificate will be verified according to the CA certificates specified by the ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` directive. Default: true`,
 					},
 				},
 			},

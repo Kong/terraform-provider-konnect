@@ -38,6 +38,8 @@ func (e *ForwardToClusterBySNIConfigType) UnmarshalJSON(data []byte) error {
 //
 // - `per_cluster_suffix` is the default and allocates one level in the hierarchy for virtual clusters: `broker-{node_id}.{virtual_cluster}.{sni_suffix}`
 // - `shared_suffix` puts all brokers from every virtual clusters into the same level: `broker-{node_id}-{virtual_cluster}.{sni_suffix}`. This makes it easier to manage certificates for this listener.
+//
+// **Requires a minimum runtime version of `1.1`**.
 type BrokerHostFormat struct {
 	Type *ForwardToClusterBySNIConfigType `default:"per_cluster_suffix" json:"type"`
 }
@@ -88,6 +90,7 @@ type ForwardToClusterBySNIConfig struct {
 	// - `per_cluster_suffix` is the default and allocates one level in the hierarchy for virtual clusters: `broker-{node_id}.{virtual_cluster}.{sni_suffix}`
 	// - `shared_suffix` puts all brokers from every virtual clusters into the same level: `broker-{node_id}-{virtual_cluster}.{sni_suffix}`. This makes it easier to manage certificates for this listener.
 	//
+	// **Requires a minimum runtime version of `1.1`**.
 	BrokerHostFormat *BrokerHostFormat `json:"broker_host_format,omitempty"`
 }
 

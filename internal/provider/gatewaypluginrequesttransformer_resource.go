@@ -42,6 +42,7 @@ type GatewayPluginRequestTransformerResource struct {
 
 // GatewayPluginRequestTransformerResourceModel describes the resource data model.
 type GatewayPluginRequestTransformerResourceModel struct {
+	Condition      types.String                            `tfsdk:"condition"`
 	Config         *tfTypes.RequestTransformerPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                            `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.Set                            `tfsdk:"consumer_group"`
@@ -67,6 +68,13 @@ func (r *GatewayPluginRequestTransformerResource) Schema(ctx context.Context, re
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginRequestTransformer Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,

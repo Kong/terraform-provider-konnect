@@ -14,6 +14,7 @@ GatewayPluginAwsLambda Resource
 
 ```terraform
 resource "konnect_gateway_plugin_aws_lambda" "my_gatewaypluginawslambda" {
+  condition = "...my_condition..."
   config = {
     aws_assume_role_arn                   = "...my_aws_assume_role_arn..."
     aws_imds_protocol_version             = "v1"
@@ -41,6 +42,7 @@ resource "konnect_gateway_plugin_aws_lambda" "my_gatewaypluginawslambda" {
     proxy_url                             = "...my_proxy_url..."
     qualifier                             = "...my_qualifier..."
     skip_large_bodies                     = true
+    ssl_verify                            = true
     timeout                               = 60000
     unhandled_status                      = 115
   }
@@ -96,6 +98,7 @@ resource "konnect_gateway_plugin_aws_lambda" "my_gatewaypluginawslambda" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -141,6 +144,7 @@ Optional:
 - `proxy_url` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
 - `qualifier` (String) The qualifier to use when invoking the function.
 - `skip_large_bodies` (Boolean) An optional value that defines whether Kong should send large bodies that are buffered to disk. Default: true
+- `ssl_verify` (Boolean) Set to `true` to verify the TLS certificate when connecting to AWS services. Default: true
 - `timeout` (Number) An optional timeout in milliseconds when invoking the function. Default: 60000
 - `unhandled_status` (Number) The response status code to use (instead of the default 200, 202, or 204) in the case of an Unhandled Function Error.
 

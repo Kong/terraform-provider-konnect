@@ -14,6 +14,7 @@ GatewayPluginLdapAuthAdvanced Resource
 
 ```terraform
 resource "konnect_gateway_plugin_ldap_auth_advanced" "my_gatewaypluginldapauthadvanced" {
+  condition = "...my_condition..."
   config = {
     anonymous = ""
     attribute = "...my_attribute..."
@@ -31,7 +32,7 @@ resource "konnect_gateway_plugin_ldap_auth_advanced" "my_gatewaypluginldapauthad
       "..."
     ]
     header_type        = "ldap"
-    hide_credentials   = false
+    hide_credentials   = true
     keepalive          = 60000
     ldap_host          = "...my_ldap_host..."
     ldap_password      = "...my_ldap_password..."
@@ -41,7 +42,7 @@ resource "konnect_gateway_plugin_ldap_auth_advanced" "my_gatewaypluginldapauthad
     realm              = "...my_realm..."
     start_tls          = false
     timeout            = 10000
-    verify_ldap_host   = false
+    verify_ldap_host   = true
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 9
@@ -93,6 +94,7 @@ resource "konnect_gateway_plugin_ldap_auth_advanced" "my_gatewaypluginldapauthad
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
@@ -126,7 +128,7 @@ Optional:
 - `group_name_attribute` (String) Sets the attribute holding the name of a group, typically called `name` (in Active Directory) or `cn` (in OpenLDAP). This field is case-insensitive.
 - `groups_required` (List of String) The groups required to be present in the LDAP search result for successful authorization. This config parameter works in both **AND** / **OR** cases. - When `["group1 group2"]` are in the same array indices, both `group1` AND `group2` need to be present in the LDAP search result. - When `["group1", "group2"]` are in different array indices, either `group1` OR `group2` need to be present in the LDAP search result.
 - `header_type` (String) An optional string to use as part of the Authorization header. By default, a valid Authorization header looks like this: `Authorization: ldap base64(username:password)`. If `header_type` is set to "basic", then the Authorization header would be `Authorization: basic base64(username:password)`. Note that `header_type` can take any string, not just `'ldap'` and `'basic'`. Default: "ldap"
-- `hide_credentials` (Boolean) An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request. Default: false
+- `hide_credentials` (Boolean) An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request. Default: true
 - `keepalive` (Number) An optional value in milliseconds that defines how long an idle connection to LDAP server will live before being closed. Default: 60000
 - `ldap_password` (String) The password to the LDAP server.
 - `ldap_port` (Number) TCP port where the LDAP server is listening. 389 is the default port for non-SSL LDAP and AD. 636 is the port required for SSL LDAP and AD. If `ldaps` is configured, you must use port 636. Default: 389
@@ -135,7 +137,7 @@ Optional:
 - `realm` (String) When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
 - `start_tls` (Boolean) Set it to `true` to issue StartTLS (Transport Layer Security) extended operation over `ldap` connection. If the `start_tls` setting is enabled, ensure the `ldaps` setting is disabled. Default: false
 - `timeout` (Number) An optional timeout in milliseconds when waiting for connection with LDAP server. Default: 10000
-- `verify_ldap_host` (Boolean) Set to `true` to authenticate LDAP server. The server certificate will be verified according to the CA certificates specified by the `lua_ssl_trusted_certificate` directive. Default: false
+- `verify_ldap_host` (Boolean) Set to `true` to authenticate LDAP server. The server certificate will be verified according to the CA certificates specified by the `lua_ssl_trusted_certificate` directive. Default: true
 
 
 <a id="nestedatt--ordering"></a>

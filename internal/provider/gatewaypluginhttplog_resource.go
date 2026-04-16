@@ -46,6 +46,7 @@ type GatewayPluginHTTPLogResource struct {
 
 // GatewayPluginHTTPLogResourceModel describes the resource data model.
 type GatewayPluginHTTPLogResourceModel struct {
+	Condition      types.String                 `tfsdk:"condition"`
 	Config         *tfTypes.HTTPLogPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                 `tfsdk:"consumer"`
 	ControlPlaneID types.String                 `tfsdk:"control_plane_id"`
@@ -70,6 +71,13 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginHTTPLog Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -210,8 +218,10 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 						Description: `Number of times to retry when sending data to the upstream server.`,
 					},
 					"ssl_verify": schema.BoolAttribute{
+						Computed:    true,
 						Optional:    true,
-						Description: `When using TLS, this option enables verification of the certificate presented by the server.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `When using TLS, this option enables verification of the certificate presented by the server. Default: true`,
 					},
 					"timeout": schema.Float64Attribute{
 						Computed:    true,

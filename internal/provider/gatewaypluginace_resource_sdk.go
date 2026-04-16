@@ -15,6 +15,7 @@ func (r *GatewayPluginAceResourceModel) RefreshFromSharedAcePlugin(ctx context.C
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
@@ -32,7 +33,7 @@ func (r *GatewayPluginAceResourceModel) RefreshFromSharedAcePlugin(ctx context.C
 				if resp.Config.RateLimiting.Redis == nil {
 					r.Config.RateLimiting.Redis = nil
 				} else {
-					r.Config.RateLimiting.Redis = &tfTypes.AcePluginRedis{}
+					r.Config.RateLimiting.Redis = &tfTypes.PartialVectordbRedis{}
 					if resp.Config.RateLimiting.Redis.CloudAuthentication == nil {
 						r.Config.RateLimiting.Redis.CloudAuthentication = nil
 					} else {
@@ -264,6 +265,12 @@ func (r *GatewayPluginAceResourceModel) ToOperationsUpdateAcePluginRequest(ctx c
 func (r *GatewayPluginAceResourceModel) ToSharedAcePlugin(ctx context.Context) (*shared.AcePlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -693,6 +700,7 @@ func (r *GatewayPluginAceResourceModel) ToSharedAcePlugin(ctx context.Context) (
 		}
 	}
 	out := shared.AcePlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

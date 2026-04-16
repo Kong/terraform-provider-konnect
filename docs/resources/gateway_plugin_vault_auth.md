@@ -14,10 +14,11 @@ GatewayPluginVaultAuth Resource
 
 ```terraform
 resource "konnect_gateway_plugin_vault_auth" "my_gatewaypluginvaultauth" {
+  condition = "...my_condition..."
   config = {
     access_token_name = "access_token"
     anonymous         = "...my_anonymous..."
-    hide_credentials  = false
+    hide_credentials  = true
     run_on_preflight  = true
     secret_token_name = "secret_token"
     tokens_in_body    = false
@@ -74,6 +75,7 @@ resource "konnect_gateway_plugin_vault_auth" "my_gatewaypluginvaultauth" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
@@ -94,7 +96,7 @@ Optional:
 
 - `access_token_name` (String) Describes an array of comma-separated parameter names where the plugin looks for an access token. The client must send the access token in one of those key names, and the plugin will try to read the credential from a header or the querystring parameter with the same name. The key names can only contain [a-z], [A-Z], [0-9], [_], and [-]. Default: "access_token"
 - `anonymous` (String) An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request fails with an authentication failure `4xx`. Note that this value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
-- `hide_credentials` (Boolean) An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin will strip the credential from the request (i.e. the header or querystring containing the key) before proxying it. Default: false
+- `hide_credentials` (Boolean) An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin will strip the credential from the request (i.e. the header or querystring containing the key) before proxying it. Default: true
 - `run_on_preflight` (Boolean) A boolean value that indicates whether the plugin should run (and try to authenticate) on `OPTIONS` preflight requests. If set to `false`, then `OPTIONS` requests will always be allowed. Default: true
 - `secret_token_name` (String) Describes an array of comma-separated parameter names where the plugin looks for a secret token. The client must send the secret in one of those key names, and the plugin will try to read the credential from a header or the querystring parameter with the same name. The key names can only contain [a-z], [A-Z], [0-9], [_], and [-]. Default: "secret_token"
 - `tokens_in_body` (Boolean) If enabled, the plugin will read the request body (if said request has one and its MIME type is supported) and try to find the key in it. Supported MIME types are `application/www-form-urlencoded`, `application/json`, and `multipart/form-data`. Default: false

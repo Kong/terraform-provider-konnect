@@ -14,6 +14,7 @@ GatewayPluginOpenidConnect Resource
 
 ```terraform
 resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect" {
+  condition = "...my_condition..."
   config = {
     anonymous = "...my_anonymous..."
     audience = [
@@ -166,8 +167,10 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     consumer_by = [
       "id"
     ]
-    consumer_claim = [
-      "..."
+    consumer_claims = [
+      [
+        # ...
+      ]
     ]
     consumer_groups_claim = [
       "..."
@@ -192,6 +195,14 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     ]
     downstream_access_token_header     = "...my_downstream_access_token_header..."
     downstream_access_token_jwk_header = "...my_downstream_access_token_jwk_header..."
+    downstream_headers = [
+      {
+        header = "...my_header..."
+        path = [
+          "..."
+        ]
+      }
+    ]
     downstream_headers_claims = [
       "..."
     ]
@@ -225,7 +236,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     groups_required = [
       "..."
     ]
-    hide_credentials          = false
+    hide_credentials          = true
     http_proxy                = "...my_http_proxy..."
     http_proxy_authorization  = "...my_http_proxy_authorization..."
     http_version              = 2.54
@@ -270,6 +281,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     issuers_allowed = [
       "..."
     ]
+    jwks_endpoint      = "...my_jwks_endpoint..."
     jwt_session_claim  = "sid"
     jwt_session_cookie = "...my_jwt_session_cookie..."
     keepalive          = true
@@ -417,8 +429,8 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     session_memcached_port            = 11211
     session_memcached_prefix          = "...my_session_memcached_prefix..."
     session_memcached_socket          = "...my_session_memcached_socket..."
-    session_memcached_ssl             = false
-    session_memcached_ssl_verify      = false
+    session_memcached_ssl             = true
+    session_memcached_ssl_verify      = true
     session_remember                  = false
     session_remember_absolute_timeout = 2592000
     session_remember_cookie_name      = "remember"
@@ -433,14 +445,49 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     session_secret                = "...my_session_secret..."
     session_storage               = "cookie"
     session_store_metadata        = false
-    ssl_verify                    = false
+    ssl_verify                    = true
     timeout                       = 10000
     tls_client_auth_cert_id       = "...my_tls_client_auth_cert_id..."
     tls_client_auth_ssl_verify    = true
     token_cache_key_include_scope = false
     token_endpoint                = "...my_token_endpoint..."
     token_endpoint_auth_method    = "client_secret_post"
-    token_exchange_endpoint       = "...my_token_exchange_endpoint..."
+    token_exchange = {
+      cache = {
+        enabled = true
+        ttl     = 10
+      }
+      request = {
+        audience = [
+          "..."
+        ]
+        empty_audience = false
+        empty_scopes   = false
+        scopes = [
+          "..."
+        ]
+      }
+      subject_token_issuers = [
+        {
+          conditions = {
+            has_audience = [
+              "..."
+            ]
+            has_scopes = [
+              "..."
+            ]
+            missing_audience = [
+              "..."
+            ]
+            missing_scopes = [
+              "..."
+            ]
+          }
+          issuer = "...my_issuer..."
+        }
+      ]
+    }
+    token_exchange_endpoint = "...my_token_exchange_endpoint..."
     token_headers_client = [
       "..."
     ]
@@ -476,6 +523,14 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     ]
     upstream_access_token_header     = "authorization:bearer"
     upstream_access_token_jwk_header = "...my_upstream_access_token_jwk_header..."
+    upstream_headers = [
+      {
+        header = "...my_header..."
+        path = [
+          "..."
+        ]
+      }
+    ]
     upstream_headers_claims = [
       "..."
     ]
@@ -541,7 +596,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     }
   ]
   protocols = [
-    "http"
+    "https"
   ]
   route = {
     id = "...my_id..."
@@ -566,13 +621,14 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
-- `protocols` (Set of String) A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]
+- `protocols` (Set of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls. Default: ["grpc","grpcs","http","https"]
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
@@ -608,7 +664,7 @@ Optional:
 - `bearer_token_param_type` (List of String) Where to look for the bearer token: - `header`: search the `Authorization`, `access-token`, and `x-access-token` HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`. Default: ["body","header","query"]
 - `by_username_ignore_case` (Boolean) If `consumer_by` is set to `username`, specify whether `username` can match consumers case-insensitively. Default: false
 - `cache_introspection` (Boolean) Cache the introspection endpoint requests. Default: true
-- `cache_token_exchange` (Boolean) Cache the token exchange endpoint requests. Default: true
+- `cache_token_exchange` (Boolean) Cache the legacy token exchange endpoint requests. Default: true
 - `cache_tokens` (Boolean) Cache the token endpoint requests. Default: true
 - `cache_tokens_salt` (String) Salt used for generating the cache key that is used for caching the token endpoint requests.
 - `cache_ttl` (Number) The default cache ttl in seconds that is used in case the cached object does not specify the expiry. Default: 3600
@@ -628,7 +684,7 @@ Optional:
 - `cluster_cache_redis` (Attributes) (see [below for nested schema](#nestedatt--config--cluster_cache_redis))
 - `cluster_cache_strategy` (String) The strategy to use for the cluster cache. If set, the plugin will share cache with nodes configured with the same strategy backend. Currentlly only introspection cache is shared. Default: "off"; must be one of ["off", "redis"]
 - `consumer_by` (List of String) Consumer fields used for mapping: - `id`: try to find the matching Consumer by `id` - `username`: try to find the matching Consumer by `username` - `custom_id`: try to find the matching Consumer by `custom_id`. Default: ["custom_id","username"]
-- `consumer_claim` (List of String) The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
+- `consumer_claims` (List of List of String) The claims used for consumer mapping. Each entry represents a claim path inside the token payload. The paths are evaluated in order, and the first matching claim is used.
 - `consumer_groups_claim` (List of String) The claim used for consumer groups mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
 - `consumer_groups_optional` (Boolean) Do not terminate the request if consumer groups mapping fails. Default: false
 - `consumer_optional` (Boolean) Do not terminate the request if consumer mapping fails. Default: false
@@ -640,7 +696,8 @@ Optional:
 - `domains` (List of String) The allowed values for the `hd` claim.
 - `downstream_access_token_header` (String) The downstream access token header.
 - `downstream_access_token_jwk_header` (String) The downstream access token JWK header.
-- `downstream_headers_claims` (List of String) The downstream header claims. If multiple values are set, it means the claim is inside a nested object of the token payload.
+- `downstream_headers` (Attributes List) The downstream claim to header mappings. (see [below for nested schema](#nestedatt--config--downstream_headers))
+- `downstream_headers_claims` (List of String) The downstream header claims. Only top level claims are supported.
 - `downstream_headers_names` (List of String) The downstream header names for the claim values.
 - `downstream_id_token_header` (String) The downstream id token header.
 - `downstream_id_token_jwk_header` (String) The downstream id token JWK header.
@@ -661,7 +718,7 @@ Optional:
 - `forbidden_redirect_uri` (List of String) Where to redirect the client on forbidden requests.
 - `groups_claim` (List of String) The claim that contains the groups. If multiple values are set, it means the claim is inside a nested object of the token payload. Default: ["groups"]
 - `groups_required` (List of String) The groups (`groups_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
-- `hide_credentials` (Boolean) Remove the credentials used for authentication from the request. If multiple credentials are sent with the same request, the plugin will remove those that were used for successful authentication. Default: false
+- `hide_credentials` (Boolean) Remove the credentials used for authentication from the request. If multiple credentials are sent with the same request, the plugin will remove those that were used for successful authentication. Default: true
 - `http_proxy` (String) The HTTP proxy.
 - `http_proxy_authorization` (String) The HTTP proxy authorization.
 - `http_version` (Number) The HTTP version used for the requests by this plugin: - `1.1`: HTTP 1.1 (the default) - `1.0`: HTTP 1.0.
@@ -685,6 +742,7 @@ Optional:
 - `introspection_post_args_values` (List of String) Extra post argument values passed to the introspection endpoint.
 - `introspection_token_param_name` (String) Designate token's parameter name for introspection. Default: "token"
 - `issuers_allowed` (List of String) The issuers allowed to be present in the tokens (`iss` claim).
+- `jwks_endpoint` (String) Overrides the `jwks_uri` returned by discovery. Use when the IdP exposes a non-standard JWKS endpoint.
 - `jwt_session_claim` (String) The claim to match against the JWT session cookie. Default: "sid"
 - `jwt_session_cookie` (String) The name of the JWT session cookie.
 - `keepalive` (Boolean) Use keepalive with the HTTP client. Default: true
@@ -757,8 +815,8 @@ Default: false
 - `session_memcached_port` (Number) The memcached port. Default: 11211
 - `session_memcached_prefix` (String) The memcached session key prefix.
 - `session_memcached_socket` (String) The memcached unix socket path.
-- `session_memcached_ssl` (Boolean) If set to true, uses SSL to connect to memcached. Default: false
-- `session_memcached_ssl_verify` (Boolean) If set to true, verifies the validity of the memcached server SSL certificate. Default: false
+- `session_memcached_ssl` (Boolean) If set to true, uses SSL to connect to memcached
+- `session_memcached_ssl_verify` (Boolean) If set to true, verifies the validity of the memcached server SSL certificate. Default: true
 - `session_remember` (Boolean) Enables or disables persistent sessions. Default: false
 - `session_remember_absolute_timeout` (Number) Limits how long the persistent session can be renewed in seconds, until re-authentication is required. 0 disables the checks. Default: 2592000
 - `session_remember_cookie_name` (String) Persistent session cookie name. Use with the `remember` configuration parameter. Default: "remember"
@@ -769,14 +827,15 @@ Default: false
 - `session_secret` (String) The session secret.
 - `session_storage` (String) The session storage for session data: - `cookie`: stores session data with the session cookie (the session cannot be invalidated or revoked without changing session secret, but is stateless, and doesn't require a database) - `memcache`: stores session data in memcached - `redis`: stores session data in Redis. Default: "cookie"; must be one of ["cookie", "memcache", "memcached", "redis"]
 - `session_store_metadata` (Boolean) Configures whether or not session metadata should be stored. This metadata includes information about the active sessions for a specific audience belonging to a specific subject. Default: false
-- `ssl_verify` (Boolean) Verify identity provider server certificate. If set to `true`, the plugin uses the CA certificate set in the `kong.conf` config parameter `lua_ssl_trusted_certificate`. Default: false
+- `ssl_verify` (Boolean) Verify identity provider server certificate. If set to `true`, the plugin uses the CA certificate set in the `kong.conf` config parameter `lua_ssl_trusted_certificate`. Default: true
 - `timeout` (Number) Network IO timeout in milliseconds. Default: 10000
 - `tls_client_auth_cert_id` (String) ID of the Certificate entity representing the client certificate to use for mTLS client authentication for connections between Kong and the Auth Server.
 - `tls_client_auth_ssl_verify` (Boolean) Verify identity provider server certificate during mTLS client authentication. Default: true
 - `token_cache_key_include_scope` (Boolean) Include the scope in the token cache key, so token with different scopes are considered diffrent tokens. Default: false
 - `token_endpoint` (String) The token endpoint. If set it overrides the value in `token_endpoint` returned by the discovery endpoint.
 - `token_endpoint_auth_method` (String) The token endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate. must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]
-- `token_exchange_endpoint` (String) The token exchange endpoint.
+- `token_exchange` (Attributes) Details on how to accept tokens from other identity providers. (see [below for nested schema](#nestedatt--config--token_exchange))
+- `token_exchange_endpoint` (String) Endpoint used to perform the legacy token exchange.
 - `token_headers_client` (List of String) Extra headers passed from the client to the token endpoint.
 - `token_headers_grants` (List of String) Enable the sending of the token endpoint response headers only with certain grants: - `password`: with OAuth password grant - `client_credentials`: with OAuth client credentials grant - `authorization_code`: with authorization code flow - `refresh_token` with refresh token grant.
 - `token_headers_names` (List of String) Extra header names passed to the token endpoint.
@@ -792,6 +851,7 @@ Default: false
 - `unexpected_redirect_uri` (List of String) Where to redirect the client when unexpected errors happen with the requests.
 - `upstream_access_token_header` (String) The upstream access token header. Default: "authorization:bearer"
 - `upstream_access_token_jwk_header` (String) The upstream access token JWK header.
+- `upstream_headers` (Attributes List) The upstream claim to header mappings. (see [below for nested schema](#nestedatt--config--upstream_headers))
 - `upstream_headers_claims` (List of String) The upstream header claims. Only top level claims are supported.
 - `upstream_headers_names` (List of String) The upstream header names for the claim values.
 - `upstream_id_token_header` (String) The upstream id token header.
@@ -914,6 +974,15 @@ Optional:
 
 
 
+<a id="nestedatt--config--downstream_headers"></a>
+### Nested Schema for `config.downstream_headers`
+
+Optional:
+
+- `header` (String) The name of the header. Not Null
+- `path` (List of String) The path of the header value. Not Null
+
+
 <a id="nestedatt--config--redis"></a>
 ### Nested Schema for `config.redis`
 
@@ -980,6 +1049,68 @@ Optional:
 - `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
 - `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
 
+
+
+<a id="nestedatt--config--token_exchange"></a>
+### Nested Schema for `config.token_exchange`
+
+Required:
+
+- `subject_token_issuers` (Attributes List) Trusted token issuers from which the upstream may accept tokens to be exchanged. If a JWT bearer matches all the conditions of a subject token issuer item, the token will be exchanged. (see [below for nested schema](#nestedatt--config--token_exchange--subject_token_issuers))
+
+Optional:
+
+- `cache` (Attributes) Cache support for token exchange (see [below for nested schema](#nestedatt--config--token_exchange--cache))
+- `request` (Attributes) Parameters used in the token exchange request. (see [below for nested schema](#nestedatt--config--token_exchange--request))
+
+<a id="nestedatt--config--token_exchange--subject_token_issuers"></a>
+### Nested Schema for `config.token_exchange.subject_token_issuers`
+
+Optional:
+
+- `conditions` (Attributes) A tokens will only be exchange when it matches all these criteria. To exchanging tokens issued from a different issuer, conditions must not be defined; On the contrary, to exchange tokens issued from the target issuer itself, conditions must be defined. (see [below for nested schema](#nestedatt--config--token_exchange--subject_token_issuers--conditions))
+- `issuer` (String) Tokens of whose iss claim matches this value will be exchanged. Not Null
+
+<a id="nestedatt--config--token_exchange--subject_token_issuers--conditions"></a>
+### Nested Schema for `config.token_exchange.subject_token_issuers.conditions`
+
+Optional:
+
+- `has_audience` (List of String)
+- `has_scopes` (List of String)
+- `missing_audience` (List of String)
+- `missing_scopes` (List of String)
+
+
+
+<a id="nestedatt--config--token_exchange--cache"></a>
+### Nested Schema for `config.token_exchange.cache`
+
+Optional:
+
+- `enabled` (Boolean) Whether to enable caching. Default: true
+- `ttl` (Number) Cache ttl in seconds used when caching exchanged tokens, use it to override `conf.cache_ttl`. Token expiry will be used if shorter than this value.
+
+
+<a id="nestedatt--config--token_exchange--request"></a>
+### Nested Schema for `config.token_exchange.request`
+
+Optional:
+
+- `audience` (List of String) Audiences used in the token exchange request. Values defined here override those defined in `config.audience`.
+- `empty_audience` (Boolean) Use empty audiences. Use this field to override audiences defined in `config.audience`. Default: false
+- `empty_scopes` (Boolean) Use empty scopes. Use this field to override scopes defined in `config.scopes`. Default: false
+- `scopes` (List of String) Scopes used in the token exchange request. Values defined here override those defined in `config.scopes`.
+
+
+
+<a id="nestedatt--config--upstream_headers"></a>
+### Nested Schema for `config.upstream_headers`
+
+Optional:
+
+- `header` (String) The name of the header. Not Null
+- `path` (List of String) The path of the header value. Not Null
 
 
 

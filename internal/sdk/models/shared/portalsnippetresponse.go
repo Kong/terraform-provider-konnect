@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-// PortalSnippetResponse - Details about a page in a portal.
+// PortalSnippetResponse - Details about a snippet in a portal.
 type PortalSnippetResponse struct {
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`

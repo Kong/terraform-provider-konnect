@@ -14,6 +14,7 @@ GatewayPluginForwardProxy Resource
 
 ```terraform
 resource "konnect_gateway_plugin_forward_proxy" "my_gatewaypluginforwardproxy" {
+  condition = "...my_condition..."
   config = {
     auth_password    = "...my_auth_password..."
     auth_username    = "...my_auth_username..."
@@ -21,7 +22,7 @@ resource "konnect_gateway_plugin_forward_proxy" "my_gatewaypluginforwardproxy" {
     http_proxy_port  = 61130
     https_proxy_host = "...my_https_proxy_host..."
     https_proxy_port = 38011
-    https_verify     = false
+    https_verify     = true
     proxy_scheme     = "http"
     x_headers        = "append"
   }
@@ -77,6 +78,7 @@ resource "konnect_gateway_plugin_forward_proxy" "my_gatewaypluginforwardproxy" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -104,7 +106,7 @@ by basic authentication.
 - `http_proxy_port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 - `https_proxy_host` (String) A string representing a host name, such as example.com.
 - `https_proxy_port` (Number) An integer representing a port number between 0 and 65535, inclusive.
-- `https_verify` (Boolean) Whether the server certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate. Default: false
+- `https_verify` (Boolean) Whether the server certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate. Default: true
 - `proxy_scheme` (String) The proxy scheme to use when connecting. Only `http` is supported. Default: "http"; must be "http"
 - `x_headers` (String) Determines how to handle headers when forwarding the request. Default: "append"; must be one of ["append", "delete", "transparent"]
 

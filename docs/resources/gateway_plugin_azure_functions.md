@@ -14,6 +14,7 @@ GatewayPluginAzureFunctions Resource
 
 ```terraform
 resource "konnect_gateway_plugin_azure_functions" "my_gatewaypluginazurefunctions" {
+  condition = "...my_condition..."
   config = {
     apikey       = "...my_apikey..."
     appname      = "...my_appname..."
@@ -21,7 +22,7 @@ resource "konnect_gateway_plugin_azure_functions" "my_gatewaypluginazurefunction
     functionname = "...my_functionname..."
     hostdomain   = "azurewebsites.net"
     https        = true
-    https_verify = false
+    https_verify = true
     keepalive    = 60000
     routeprefix  = "api"
     timeout      = 600000
@@ -79,6 +80,7 @@ resource "konnect_gateway_plugin_azure_functions" "my_gatewaypluginazurefunction
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
@@ -106,7 +108,7 @@ Optional:
 - `clientid` (String) The `clientid` to access the Azure resources. If provided, it is injected as the `x-functions-clientid` header.
 - `hostdomain` (String) The domain where the function resides. Default: "azurewebsites.net"
 - `https` (Boolean) Use of HTTPS to connect with the Azure Functions server. Default: true
-- `https_verify` (Boolean) Set to `true` to authenticate the Azure Functions server. Default: false
+- `https_verify` (Boolean) Set to `true` to authenticate the Azure Functions server. Default: true
 - `keepalive` (Number) Time in milliseconds during which an idle connection to the Azure Functions server lives before being closed. Default: 60000
 - `routeprefix` (String) Route prefix to use. Default: "api"
 - `timeout` (Number) Timeout in milliseconds before closing a connection to the Azure Functions server. Default: 600000

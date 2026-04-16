@@ -15,6 +15,7 @@ func (r *GatewayPluginMtlsAuthResourceModel) RefreshFromSharedMtlsAuthPlugin(ctx
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.MtlsAuthPluginConfig{}
 		r.Config.AllowPartialChain = types.BoolPointerValue(resp.Config.AllowPartialChain)
 		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
@@ -43,6 +44,10 @@ func (r *GatewayPluginMtlsAuthResourceModel) RefreshFromSharedMtlsAuthPlugin(ctx
 			r.Config.RevocationCheckMode = types.StringValue(string(*resp.Config.RevocationCheckMode))
 		} else {
 			r.Config.RevocationCheckMode = types.StringNull()
+		}
+		r.Config.SanDirnameMatcher = make([]types.String, 0, len(resp.Config.SanDirnameMatcher))
+		for _, v := range resp.Config.SanDirnameMatcher {
+			r.Config.SanDirnameMatcher = append(r.Config.SanDirnameMatcher, types.StringValue(v))
 		}
 		r.Config.SendCaDn = types.BoolPointerValue(resp.Config.SendCaDn)
 		r.Config.SkipConsumerLookup = types.BoolPointerValue(resp.Config.SkipConsumerLookup)
@@ -202,6 +207,12 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToOperationsUpdateMtlsauthPluginReq
 func (r *GatewayPluginMtlsAuthResourceModel) ToSharedMtlsAuthPlugin(ctx context.Context) (*shared.MtlsAuthPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -375,6 +386,10 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToSharedMtlsAuthPlugin(ctx context.
 	} else {
 		revocationCheckMode = nil
 	}
+	sanDirnameMatcher := make([]string, 0, len(r.Config.SanDirnameMatcher))
+	for sanDirnameMatcherIndex := range r.Config.SanDirnameMatcher {
+		sanDirnameMatcher = append(sanDirnameMatcher, r.Config.SanDirnameMatcher[sanDirnameMatcherIndex].ValueString())
+	}
 	sendCaDn := new(bool)
 	if !r.Config.SendCaDn.IsUnknown() && !r.Config.SendCaDn.IsNull() {
 		*sendCaDn = r.Config.SendCaDn.ValueBool()
@@ -408,6 +423,7 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToSharedMtlsAuthPlugin(ctx context.
 		HTTPSProxyHost:       httpsProxyHost,
 		HTTPSProxyPort:       httpsProxyPort,
 		RevocationCheckMode:  revocationCheckMode,
+		SanDirnameMatcher:    sanDirnameMatcher,
 		SendCaDn:             sendCaDn,
 		SkipConsumerLookup:   skipConsumerLookup,
 		SslVerify:            sslVerify,
@@ -441,6 +457,7 @@ func (r *GatewayPluginMtlsAuthResourceModel) ToSharedMtlsAuthPlugin(ctx context.
 		}
 	}
 	out := shared.MtlsAuthPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

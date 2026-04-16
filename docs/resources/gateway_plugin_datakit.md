@@ -14,20 +14,38 @@ GatewayPluginDatakit Resource
 
 ```terraform
 resource "konnect_gateway_plugin_datakit" "my_gatewayplugindatakit" {
+  condition = "...my_condition..."
   config = {
     debug = false
     nodes = [
       {
-        xml_to_json = {
-          attributes_block_name  = "...my_attributes_block_name..."
-          attributes_name_prefix = "...my_attributes_name_prefix..."
-          input                  = "...my_input..."
-          name                   = "...my_name..."
-          output                 = "...my_output..."
-          recognize_type         = true
-          text_as_property       = false
-          text_block_name        = "#text"
-          xpath                  = "...my_xpath..."
+        jwt_verify = {
+          allowed_algorithms = [
+            "PS256"
+          ]
+          audiences = [
+            "..."
+          ]
+          input = "...my_input..."
+          inputs = {
+            key   = "...my_key..."
+            token = "...my_token..."
+          }
+          issuers = [
+            "..."
+          ]
+          leeway = 0
+          name   = "...my_name..."
+          output = "...my_output..."
+          outputs = {
+            claims = "...my_claims..."
+            header = "...my_header..."
+          }
+          required_claims = [
+            "..."
+          ]
+          validate_exp = true
+          validate_nbf = true
         }
       }
     ]
@@ -80,7 +98,7 @@ resource "konnect_gateway_plugin_datakit" "my_gatewayplugindatakit" {
           sentinel_username = "...my_sentinel_username..."
           server_name       = "...my_server_name..."
           ssl               = false
-          ssl_verify        = false
+          ssl_verify        = true
           username          = "...my_username..."
         }
         strategy = "memory"
@@ -146,6 +164,7 @@ resource "konnect_gateway_plugin_datakit" "my_gatewayplugindatakit" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -183,6 +202,9 @@ Optional:
 - `exit` (Attributes) Terminate the request and send a response to the client (see [below for nested schema](#nestedatt--config--nodes--exit))
 - `jq` (Attributes) Process data using `jq` syntax (see [below for nested schema](#nestedatt--config--nodes--jq))
 - `json_to_xml` (Attributes) transform JSON or lua table to XML (see [below for nested schema](#nestedatt--config--nodes--json_to_xml))
+- `jwt_decode` (Attributes) Decode JWT without signature verification (see [below for nested schema](#nestedatt--config--nodes--jwt_decode))
+- `jwt_sign` (Attributes) Create and sign a JWT (see [below for nested schema](#nestedatt--config--nodes--jwt_sign))
+- `jwt_verify` (Attributes) Verify JWT signature and validate claims (see [below for nested schema](#nestedatt--config--nodes--jwt_verify))
 - `property` (Attributes) Get or set a property (see [below for nested schema](#nestedatt--config--nodes--property))
 - `static` (Attributes) Produce reusable outputs from statically-configured values (see [below for nested schema](#nestedatt--config--nodes--static))
 - `xml_to_json` (Attributes) convert XML to JSON (see [below for nested schema](#nestedatt--config--nodes--xml_to_json))
@@ -256,7 +278,7 @@ Optional:
 - `output` (String) call node output
 - `outputs` (Attributes) call node outputs (see [below for nested schema](#nestedatt--config--nodes--call--outputs))
 - `ssl_server_name` (String) A string representing an SNI (server name indication) value for TLS.
-- `ssl_verify` (Boolean) Whether to verify the TLS certificate when making HTTPS requests.
+- `ssl_verify` (Boolean) Whether to verify the TLS certificate when making HTTPS requests. Default: true
 - `timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 - `url` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
 
@@ -282,6 +304,7 @@ Optional:
 
 - `body` (String) HTTP response body
 - `headers` (String) HTTP response headers
+- `raw_body` (String) The raw, non-decoded HTTP response body
 - `status` (String) HTTP response status code
 
 
@@ -332,6 +355,101 @@ Optional:
 - `output` (String) XML document converted from JSON
 - `root_element_name` (String)
 - `text_block_name` (String) The name of the block to treat as XML text content. Default: "#text"
+
+
+<a id="nestedatt--config--nodes--jwt_decode"></a>
+### Nested Schema for `config.nodes.jwt_decode`
+
+Optional:
+
+- `input` (String) JWT token (with or without Bearer prefix)
+- `name` (String) A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+- `output` (String) jwt_decode node output
+- `outputs` (Attributes) jwt_decode node outputs (see [below for nested schema](#nestedatt--config--nodes--jwt_decode--outputs))
+
+<a id="nestedatt--config--nodes--jwt_decode--outputs"></a>
+### Nested Schema for `config.nodes.jwt_decode.outputs`
+
+Optional:
+
+- `header` (String) Decoded JWT header (alg, kid, typ)
+- `payload` (String) Decoded JWT payload (claims)
+- `signature` (String) Raw signature (base64url encoded)
+
+
+
+<a id="nestedatt--config--nodes--jwt_sign"></a>
+### Nested Schema for `config.nodes.jwt_sign`
+
+Optional:
+
+- `algorithm` (String) Signing algorithm. Not Null; must be one of ["ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512"]
+- `expires_in` (Number) Seconds until token expires (for exp claim). Default: 300
+- `input` (String) jwt_sign node input
+- `inputs` (Attributes) jwt_sign node inputs (see [below for nested schema](#nestedatt--config--nodes--jwt_sign--inputs))
+- `kid` (String) Key ID for header
+- `name` (String) A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+- `not_before` (Number) Seconds until token becomes valid (for nbf claim). Default: 0
+- `output` (String) jwt_sign node output
+- `outputs` (Attributes) jwt_sign node outputs (see [below for nested schema](#nestedatt--config--nodes--jwt_sign--outputs))
+- `static_claims` (Map of String) Static claims always included
+- `typ` (String) Token type for header. Default: "JWT"
+
+<a id="nestedatt--config--nodes--jwt_sign--inputs"></a>
+### Nested Schema for `config.nodes.jwt_sign.inputs`
+
+Optional:
+
+- `claims` (String) Dynamic claims to include
+- `key` (String) Signing key (PEM, JWK JSON string, or HMAC secret)
+
+
+<a id="nestedatt--config--nodes--jwt_sign--outputs"></a>
+### Nested Schema for `config.nodes.jwt_sign.outputs`
+
+Optional:
+
+- `claims` (String) Complete claims used
+- `header` (String) JWT header
+- `token` (String) Signed JWT
+
+
+
+<a id="nestedatt--config--nodes--jwt_verify"></a>
+### Nested Schema for `config.nodes.jwt_verify`
+
+Optional:
+
+- `allowed_algorithms` (List of String) Allowed signing algorithms (empty = any supported). Default: []
+- `audiences` (List of String) Allowed audiences (empty = any). Default: []
+- `input` (String) jwt_verify node input
+- `inputs` (Attributes) jwt_verify node inputs (see [below for nested schema](#nestedatt--config--nodes--jwt_verify--inputs))
+- `issuers` (List of String) Allowed issuers (empty = any). Default: []
+- `leeway` (Number) Allowed clock skew in seconds for exp/nbf validation. Default: 0
+- `name` (String) A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
+- `output` (String) jwt_verify node output
+- `outputs` (Attributes) jwt_verify node outputs (see [below for nested schema](#nestedatt--config--nodes--jwt_verify--outputs))
+- `required_claims` (List of String) Claims that must be present. Default: []
+- `validate_exp` (Boolean) Validate expiration claim. Default: true
+- `validate_nbf` (Boolean) Validate not-before claim. Default: true
+
+<a id="nestedatt--config--nodes--jwt_verify--inputs"></a>
+### Nested Schema for `config.nodes.jwt_verify.inputs`
+
+Optional:
+
+- `key` (String) Verification key: JWKS, JWK, PEM string, or HMAC secret
+- `token` (String) JWT token (with or without Bearer prefix)
+
+
+<a id="nestedatt--config--nodes--jwt_verify--outputs"></a>
+### Nested Schema for `config.nodes.jwt_verify.outputs`
+
+Optional:
+
+- `claims` (String) JWT payload claims
+- `header` (String) JWT header
+
 
 
 <a id="nestedatt--config--nodes--property"></a>
@@ -424,7 +542,7 @@ Optional:
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
-- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: false
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
 - `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 
 <a id="nestedatt--config--resources--cache--redis--cloud_authentication"></a>

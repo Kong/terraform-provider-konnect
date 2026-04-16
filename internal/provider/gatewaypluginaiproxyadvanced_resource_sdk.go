@@ -15,7 +15,65 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.AiProxyAdvancedPluginConfig{}
+		if resp.Config.Acls == nil {
+			r.Config.Acls = nil
+		} else {
+			r.Config.Acls = &tfTypes.Acls{}
+			if resp.Config.Acls.Allow != nil {
+				r.Config.Acls.Allow = []tfTypes.AiProxyAdvancedPluginAllow{}
+
+				for _, allowItem := range resp.Config.Acls.Allow {
+					var allow tfTypes.AiProxyAdvancedPluginAllow
+
+					allow.Match = []tfTypes.AiProxyAdvancedPluginConfigMatch{}
+
+					for _, matchItem := range allowItem.Match {
+						var match tfTypes.AiProxyAdvancedPluginConfigMatch
+
+						match.Key = types.StringPointerValue(matchItem.Key)
+						match.Type = types.StringValue(string(matchItem.Type))
+						match.Values = make([]types.String, 0, len(matchItem.Values))
+						for _, v := range matchItem.Values {
+							match.Values = append(match.Values, types.StringValue(v))
+						}
+
+						allow.Match = append(allow.Match, match)
+					}
+
+					r.Config.Acls.Allow = append(r.Config.Acls.Allow, allow)
+				}
+			} else {
+				r.Config.Acls.Allow = nil
+			}
+			if resp.Config.Acls.Deny != nil {
+				r.Config.Acls.Deny = []tfTypes.AiProxyAdvancedPluginAllow{}
+
+				for _, denyItem := range resp.Config.Acls.Deny {
+					var deny tfTypes.AiProxyAdvancedPluginAllow
+
+					deny.Match = []tfTypes.AiProxyAdvancedPluginConfigMatch{}
+
+					for _, matchItem1 := range denyItem.Match {
+						var match1 tfTypes.AiProxyAdvancedPluginConfigMatch
+
+						match1.Key = types.StringPointerValue(matchItem1.Key)
+						match1.Type = types.StringValue(string(matchItem1.Type))
+						match1.Values = make([]types.String, 0, len(matchItem1.Values))
+						for _, v := range matchItem1.Values {
+							match1.Values = append(match1.Values, types.StringValue(v))
+						}
+
+						deny.Match = append(deny.Match, match1)
+					}
+
+					r.Config.Acls.Deny = append(r.Config.Acls.Deny, deny)
+				}
+			} else {
+				r.Config.Acls.Deny = nil
+			}
+		}
 		if resp.Config.Balancer == nil {
 			r.Config.Balancer = nil
 		} else {
@@ -51,11 +109,11 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 		if resp.Config.Embeddings == nil {
 			r.Config.Embeddings = nil
 		} else {
-			r.Config.Embeddings = &tfTypes.Embeddings{}
+			r.Config.Embeddings = &tfTypes.PartialEmbeddingsConfig{}
 			if resp.Config.Embeddings.Auth == nil {
 				r.Config.Embeddings.Auth = nil
 			} else {
-				r.Config.Embeddings.Auth = &tfTypes.AiLlmAsJudgePluginAuth{}
+				r.Config.Embeddings.Auth = &tfTypes.PartialEmbeddingsAuth{}
 				r.Config.Embeddings.Auth.AllowOverride = types.BoolPointerValue(resp.Config.Embeddings.Auth.AllowOverride)
 				r.Config.Embeddings.Auth.AwsAccessKeyID = types.StringPointerValue(resp.Config.Embeddings.Auth.AwsAccessKeyID)
 				r.Config.Embeddings.Auth.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Embeddings.Auth.AwsSecretAccessKey)
@@ -63,6 +121,8 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				r.Config.Embeddings.Auth.AzureClientSecret = types.StringPointerValue(resp.Config.Embeddings.Auth.AzureClientSecret)
 				r.Config.Embeddings.Auth.AzureTenantID = types.StringPointerValue(resp.Config.Embeddings.Auth.AzureTenantID)
 				r.Config.Embeddings.Auth.AzureUseManagedIdentity = types.BoolPointerValue(resp.Config.Embeddings.Auth.AzureUseManagedIdentity)
+				r.Config.Embeddings.Auth.GcpMetadataURL = types.StringPointerValue(resp.Config.Embeddings.Auth.GcpMetadataURL)
+				r.Config.Embeddings.Auth.GcpOauthTokenURL = types.StringPointerValue(resp.Config.Embeddings.Auth.GcpOauthTokenURL)
 				r.Config.Embeddings.Auth.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.Embeddings.Auth.GcpServiceAccountJSON)
 				r.Config.Embeddings.Auth.GcpUseServiceAccount = types.BoolPointerValue(resp.Config.Embeddings.Auth.GcpUseServiceAccount)
 				r.Config.Embeddings.Auth.HeaderName = types.StringPointerValue(resp.Config.Embeddings.Auth.HeaderName)
@@ -75,16 +135,16 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				r.Config.Embeddings.Auth.ParamName = types.StringPointerValue(resp.Config.Embeddings.Auth.ParamName)
 				r.Config.Embeddings.Auth.ParamValue = types.StringPointerValue(resp.Config.Embeddings.Auth.ParamValue)
 			}
-			r.Config.Embeddings.Model = &tfTypes.AiProxyAdvancedPluginModel{}
+			r.Config.Embeddings.Model = &tfTypes.PartialEmbeddingsModel{}
 			r.Config.Embeddings.Model.Name = types.StringValue(resp.Config.Embeddings.Model.Name)
 			if resp.Config.Embeddings.Model.Options == nil {
 				r.Config.Embeddings.Model.Options = nil
 			} else {
-				r.Config.Embeddings.Model.Options = &tfTypes.AiProxyAdvancedPluginOptions{}
+				r.Config.Embeddings.Model.Options = &tfTypes.PartialEmbeddingsOptions{}
 				if resp.Config.Embeddings.Model.Options.Azure == nil {
 					r.Config.Embeddings.Model.Options.Azure = nil
 				} else {
-					r.Config.Embeddings.Model.Options.Azure = &tfTypes.Azure{}
+					r.Config.Embeddings.Model.Options.Azure = &tfTypes.PartialEmbeddingsAzure{}
 					r.Config.Embeddings.Model.Options.Azure.APIVersion = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.APIVersion)
 					r.Config.Embeddings.Model.Options.Azure.DeploymentID = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.DeploymentID)
 					r.Config.Embeddings.Model.Options.Azure.Instance = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.Instance)
@@ -92,11 +152,13 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				if resp.Config.Embeddings.Model.Options.Bedrock == nil {
 					r.Config.Embeddings.Model.Options.Bedrock = nil
 				} else {
-					r.Config.Embeddings.Model.Options.Bedrock = &tfTypes.AiLlmAsJudgePluginBedrock{}
+					r.Config.Embeddings.Model.Options.Bedrock = &tfTypes.PartialEmbeddingsBedrock{}
 					r.Config.Embeddings.Model.Options.Bedrock.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsAssumeRoleArn)
 					r.Config.Embeddings.Model.Options.Bedrock.AwsRegion = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsRegion)
 					r.Config.Embeddings.Model.Options.Bedrock.AwsRoleSessionName = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsRoleSessionName)
 					r.Config.Embeddings.Model.Options.Bedrock.AwsStsEndpointURL = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsStsEndpointURL)
+					r.Config.Embeddings.Model.Options.Bedrock.BatchBucketPrefix = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.BatchBucketPrefix)
+					r.Config.Embeddings.Model.Options.Bedrock.BatchRoleArn = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.BatchRoleArn)
 					r.Config.Embeddings.Model.Options.Bedrock.EmbeddingsNormalize = types.BoolPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.EmbeddingsNormalize)
 					r.Config.Embeddings.Model.Options.Bedrock.PerformanceConfigLatency = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.PerformanceConfigLatency)
 					r.Config.Embeddings.Model.Options.Bedrock.VideoOutputS3URI = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.VideoOutputS3URI)
@@ -104,7 +166,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				if resp.Config.Embeddings.Model.Options.Gemini == nil {
 					r.Config.Embeddings.Model.Options.Gemini = nil
 				} else {
-					r.Config.Embeddings.Model.Options.Gemini = &tfTypes.AiProxyAdvancedPluginGemini{}
+					r.Config.Embeddings.Model.Options.Gemini = &tfTypes.PartialEmbeddingsGemini{}
 					r.Config.Embeddings.Model.Options.Gemini.APIEndpoint = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Gemini.APIEndpoint)
 					r.Config.Embeddings.Model.Options.Gemini.LocationID = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Gemini.LocationID)
 					r.Config.Embeddings.Model.Options.Gemini.ProjectID = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Gemini.ProjectID)
@@ -112,7 +174,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				if resp.Config.Embeddings.Model.Options.Huggingface == nil {
 					r.Config.Embeddings.Model.Options.Huggingface = nil
 				} else {
-					r.Config.Embeddings.Model.Options.Huggingface = &tfTypes.AiLlmAsJudgePluginHuggingface{}
+					r.Config.Embeddings.Model.Options.Huggingface = &tfTypes.PartialEmbeddingsHuggingface{}
 					r.Config.Embeddings.Model.Options.Huggingface.UseCache = types.BoolPointerValue(resp.Config.Embeddings.Model.Options.Huggingface.UseCache)
 					r.Config.Embeddings.Model.Options.Huggingface.WaitForModel = types.BoolPointerValue(resp.Config.Embeddings.Model.Options.Huggingface.WaitForModel)
 				}
@@ -145,7 +207,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 			if targetsItem.Auth == nil {
 				targets.Auth = nil
 			} else {
-				targets.Auth = &tfTypes.AiLlmAsJudgePluginAuth{}
+				targets.Auth = &tfTypes.PartialEmbeddingsAuth{}
 				targets.Auth.AllowOverride = types.BoolPointerValue(targetsItem.Auth.AllowOverride)
 				targets.Auth.AwsAccessKeyID = types.StringPointerValue(targetsItem.Auth.AwsAccessKeyID)
 				targets.Auth.AwsSecretAccessKey = types.StringPointerValue(targetsItem.Auth.AwsSecretAccessKey)
@@ -153,6 +215,8 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				targets.Auth.AzureClientSecret = types.StringPointerValue(targetsItem.Auth.AzureClientSecret)
 				targets.Auth.AzureTenantID = types.StringPointerValue(targetsItem.Auth.AzureTenantID)
 				targets.Auth.AzureUseManagedIdentity = types.BoolPointerValue(targetsItem.Auth.AzureUseManagedIdentity)
+				targets.Auth.GcpMetadataURL = types.StringPointerValue(targetsItem.Auth.GcpMetadataURL)
+				targets.Auth.GcpOauthTokenURL = types.StringPointerValue(targetsItem.Auth.GcpOauthTokenURL)
 				targets.Auth.GcpServiceAccountJSON = types.StringPointerValue(targetsItem.Auth.GcpServiceAccountJSON)
 				targets.Auth.GcpUseServiceAccount = types.BoolPointerValue(targetsItem.Auth.GcpUseServiceAccount)
 				targets.Auth.HeaderName = types.StringPointerValue(targetsItem.Auth.HeaderName)
@@ -169,16 +233,17 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 			if targetsItem.Logging == nil {
 				targets.Logging = nil
 			} else {
-				targets.Logging = &tfTypes.AiLlmAsJudgePluginLogging{}
+				targets.Logging = &tfTypes.PartialModelLogging{}
 				targets.Logging.LogPayloads = types.BoolPointerValue(targetsItem.Logging.LogPayloads)
 				targets.Logging.LogStatistics = types.BoolPointerValue(targetsItem.Logging.LogStatistics)
 			}
-			targets.Model = &tfTypes.AiLlmAsJudgePluginModel{}
+			targets.Model = &tfTypes.PartialModelModel{}
+			targets.Model.ModelAlias = types.StringPointerValue(targetsItem.Model.ModelAlias)
 			targets.Model.Name = types.StringPointerValue(targetsItem.Model.Name)
 			if targetsItem.Model.Options == nil {
 				targets.Model.Options = nil
 			} else {
-				targets.Model.Options = &tfTypes.AiLlmAsJudgePluginOptions{}
+				targets.Model.Options = &tfTypes.PartialModelOptions{}
 				targets.Model.Options.AnthropicVersion = types.StringPointerValue(targetsItem.Model.Options.AnthropicVersion)
 				targets.Model.Options.AzureAPIVersion = types.StringPointerValue(targetsItem.Model.Options.AzureAPIVersion)
 				targets.Model.Options.AzureDeploymentID = types.StringPointerValue(targetsItem.Model.Options.AzureDeploymentID)
@@ -186,11 +251,13 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				if targetsItem.Model.Options.Bedrock == nil {
 					targets.Model.Options.Bedrock = nil
 				} else {
-					targets.Model.Options.Bedrock = &tfTypes.AiLlmAsJudgePluginBedrock{}
+					targets.Model.Options.Bedrock = &tfTypes.PartialEmbeddingsBedrock{}
 					targets.Model.Options.Bedrock.AwsAssumeRoleArn = types.StringPointerValue(targetsItem.Model.Options.Bedrock.AwsAssumeRoleArn)
 					targets.Model.Options.Bedrock.AwsRegion = types.StringPointerValue(targetsItem.Model.Options.Bedrock.AwsRegion)
 					targets.Model.Options.Bedrock.AwsRoleSessionName = types.StringPointerValue(targetsItem.Model.Options.Bedrock.AwsRoleSessionName)
 					targets.Model.Options.Bedrock.AwsStsEndpointURL = types.StringPointerValue(targetsItem.Model.Options.Bedrock.AwsStsEndpointURL)
+					targets.Model.Options.Bedrock.BatchBucketPrefix = types.StringPointerValue(targetsItem.Model.Options.Bedrock.BatchBucketPrefix)
+					targets.Model.Options.Bedrock.BatchRoleArn = types.StringPointerValue(targetsItem.Model.Options.Bedrock.BatchRoleArn)
 					targets.Model.Options.Bedrock.EmbeddingsNormalize = types.BoolPointerValue(targetsItem.Model.Options.Bedrock.EmbeddingsNormalize)
 					targets.Model.Options.Bedrock.PerformanceConfigLatency = types.StringPointerValue(targetsItem.Model.Options.Bedrock.PerformanceConfigLatency)
 					targets.Model.Options.Bedrock.VideoOutputS3URI = types.StringPointerValue(targetsItem.Model.Options.Bedrock.VideoOutputS3URI)
@@ -198,7 +265,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				if targetsItem.Model.Options.Cohere == nil {
 					targets.Model.Options.Cohere = nil
 				} else {
-					targets.Model.Options.Cohere = &tfTypes.AiLlmAsJudgePluginCohere{}
+					targets.Model.Options.Cohere = &tfTypes.PartialModelCohere{}
 					if targetsItem.Model.Options.Cohere.EmbeddingInputType != nil {
 						targets.Model.Options.Cohere.EmbeddingInputType = types.StringValue(string(*targetsItem.Model.Options.Cohere.EmbeddingInputType))
 					} else {
@@ -209,14 +276,20 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				if targetsItem.Model.Options.Dashscope == nil {
 					targets.Model.Options.Dashscope = nil
 				} else {
-					targets.Model.Options.Dashscope = &tfTypes.AiLlmAsJudgePluginDashscope{}
+					targets.Model.Options.Dashscope = &tfTypes.PartialModelDashscope{}
 					targets.Model.Options.Dashscope.International = types.BoolPointerValue(targetsItem.Model.Options.Dashscope.International)
+				}
+				if targetsItem.Model.Options.Databricks == nil {
+					targets.Model.Options.Databricks = nil
+				} else {
+					targets.Model.Options.Databricks = &tfTypes.PartialModelDatabricks{}
+					targets.Model.Options.Databricks.WorkspaceInstanceID = types.StringPointerValue(targetsItem.Model.Options.Databricks.WorkspaceInstanceID)
 				}
 				targets.Model.Options.EmbeddingsDimensions = types.Int64PointerValue(targetsItem.Model.Options.EmbeddingsDimensions)
 				if targetsItem.Model.Options.Gemini == nil {
 					targets.Model.Options.Gemini = nil
 				} else {
-					targets.Model.Options.Gemini = &tfTypes.AiLlmAsJudgePluginGemini{}
+					targets.Model.Options.Gemini = &tfTypes.PartialModelGemini{}
 					targets.Model.Options.Gemini.APIEndpoint = types.StringPointerValue(targetsItem.Model.Options.Gemini.APIEndpoint)
 					targets.Model.Options.Gemini.EndpointID = types.StringPointerValue(targetsItem.Model.Options.Gemini.EndpointID)
 					targets.Model.Options.Gemini.LocationID = types.StringPointerValue(targetsItem.Model.Options.Gemini.LocationID)
@@ -225,7 +298,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				if targetsItem.Model.Options.Huggingface == nil {
 					targets.Model.Options.Huggingface = nil
 				} else {
-					targets.Model.Options.Huggingface = &tfTypes.AiLlmAsJudgePluginHuggingface{}
+					targets.Model.Options.Huggingface = &tfTypes.PartialEmbeddingsHuggingface{}
 					targets.Model.Options.Huggingface.UseCache = types.BoolPointerValue(targetsItem.Model.Options.Huggingface.UseCache)
 					targets.Model.Options.Huggingface.WaitForModel = types.BoolPointerValue(targetsItem.Model.Options.Huggingface.WaitForModel)
 				}
@@ -257,13 +330,13 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 		if resp.Config.Vectordb == nil {
 			r.Config.Vectordb = nil
 		} else {
-			r.Config.Vectordb = &tfTypes.Vectordb{}
+			r.Config.Vectordb = &tfTypes.PartialVectordbConfig{}
 			r.Config.Vectordb.Dimensions = types.Int64Value(resp.Config.Vectordb.Dimensions)
 			r.Config.Vectordb.DistanceMetric = types.StringValue(string(resp.Config.Vectordb.DistanceMetric))
 			if resp.Config.Vectordb.Pgvector == nil {
 				r.Config.Vectordb.Pgvector = nil
 			} else {
-				r.Config.Vectordb.Pgvector = &tfTypes.Pgvector{}
+				r.Config.Vectordb.Pgvector = &tfTypes.PartialVectordbPgvector{}
 				r.Config.Vectordb.Pgvector.Database = types.StringPointerValue(resp.Config.Vectordb.Pgvector.Database)
 				r.Config.Vectordb.Pgvector.Host = types.StringPointerValue(resp.Config.Vectordb.Pgvector.Host)
 				r.Config.Vectordb.Pgvector.Password = types.StringPointerValue(resp.Config.Vectordb.Pgvector.Password)
@@ -284,7 +357,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 			if resp.Config.Vectordb.Redis == nil {
 				r.Config.Vectordb.Redis = nil
 			} else {
-				r.Config.Vectordb.Redis = &tfTypes.AcePluginRedis{}
+				r.Config.Vectordb.Redis = &tfTypes.PartialVectordbRedis{}
 				if resp.Config.Vectordb.Redis.CloudAuthentication == nil {
 					r.Config.Vectordb.Redis.CloudAuthentication = nil
 				} else {
@@ -528,6 +601,12 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsUpdateAiproxyadv
 func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugin(ctx context.Context) (*shared.AiProxyAdvancedPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -620,6 +699,69 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
 		updatedAt = nil
+	}
+	var acls *shared.Acls
+	if r.Config.Acls != nil {
+		var allow []shared.AiProxyAdvancedPluginAllow
+		if r.Config.Acls.Allow != nil {
+			allow = make([]shared.AiProxyAdvancedPluginAllow, 0, len(r.Config.Acls.Allow))
+			for allowIndex := range r.Config.Acls.Allow {
+				match := make([]shared.AiProxyAdvancedPluginConfigMatch, 0, len(r.Config.Acls.Allow[allowIndex].Match))
+				for matchIndex := range r.Config.Acls.Allow[allowIndex].Match {
+					key := new(string)
+					if !r.Config.Acls.Allow[allowIndex].Match[matchIndex].Key.IsUnknown() && !r.Config.Acls.Allow[allowIndex].Match[matchIndex].Key.IsNull() {
+						*key = r.Config.Acls.Allow[allowIndex].Match[matchIndex].Key.ValueString()
+					} else {
+						key = nil
+					}
+					typeVar := shared.AiProxyAdvancedPluginType(r.Config.Acls.Allow[allowIndex].Match[matchIndex].Type.ValueString())
+					values := make([]string, 0, len(r.Config.Acls.Allow[allowIndex].Match[matchIndex].Values))
+					for valuesIndex := range r.Config.Acls.Allow[allowIndex].Match[matchIndex].Values {
+						values = append(values, r.Config.Acls.Allow[allowIndex].Match[matchIndex].Values[valuesIndex].ValueString())
+					}
+					match = append(match, shared.AiProxyAdvancedPluginConfigMatch{
+						Key:    key,
+						Type:   typeVar,
+						Values: values,
+					})
+				}
+				allow = append(allow, shared.AiProxyAdvancedPluginAllow{
+					Match: match,
+				})
+			}
+		}
+		var deny []shared.Deny
+		if r.Config.Acls.Deny != nil {
+			deny = make([]shared.Deny, 0, len(r.Config.Acls.Deny))
+			for denyIndex := range r.Config.Acls.Deny {
+				match1 := make([]shared.AiProxyAdvancedPluginMatch, 0, len(r.Config.Acls.Deny[denyIndex].Match))
+				for matchIndex1 := range r.Config.Acls.Deny[denyIndex].Match {
+					key1 := new(string)
+					if !r.Config.Acls.Deny[denyIndex].Match[matchIndex1].Key.IsUnknown() && !r.Config.Acls.Deny[denyIndex].Match[matchIndex1].Key.IsNull() {
+						*key1 = r.Config.Acls.Deny[denyIndex].Match[matchIndex1].Key.ValueString()
+					} else {
+						key1 = nil
+					}
+					type1 := shared.AiProxyAdvancedPluginConfigType(r.Config.Acls.Deny[denyIndex].Match[matchIndex1].Type.ValueString())
+					values1 := make([]string, 0, len(r.Config.Acls.Deny[denyIndex].Match[matchIndex1].Values))
+					for valuesIndex1 := range r.Config.Acls.Deny[denyIndex].Match[matchIndex1].Values {
+						values1 = append(values1, r.Config.Acls.Deny[denyIndex].Match[matchIndex1].Values[valuesIndex1].ValueString())
+					}
+					match1 = append(match1, shared.AiProxyAdvancedPluginMatch{
+						Key:    key1,
+						Type:   type1,
+						Values: values1,
+					})
+				}
+				deny = append(deny, shared.Deny{
+					Match: match1,
+				})
+			}
+		}
+		acls = &shared.Acls{
+			Allow: allow,
+			Deny:  deny,
+		}
 	}
 	var balancer *shared.Balancer
 	if r.Config.Balancer != nil {
@@ -754,6 +896,18 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 			} else {
 				azureUseManagedIdentity = nil
 			}
+			gcpMetadataURL := new(string)
+			if !r.Config.Embeddings.Auth.GcpMetadataURL.IsUnknown() && !r.Config.Embeddings.Auth.GcpMetadataURL.IsNull() {
+				*gcpMetadataURL = r.Config.Embeddings.Auth.GcpMetadataURL.ValueString()
+			} else {
+				gcpMetadataURL = nil
+			}
+			gcpOauthTokenURL := new(string)
+			if !r.Config.Embeddings.Auth.GcpOauthTokenURL.IsUnknown() && !r.Config.Embeddings.Auth.GcpOauthTokenURL.IsNull() {
+				*gcpOauthTokenURL = r.Config.Embeddings.Auth.GcpOauthTokenURL.ValueString()
+			} else {
+				gcpOauthTokenURL = nil
+			}
 			gcpServiceAccountJSON := new(string)
 			if !r.Config.Embeddings.Auth.GcpServiceAccountJSON.IsUnknown() && !r.Config.Embeddings.Auth.GcpServiceAccountJSON.IsNull() {
 				*gcpServiceAccountJSON = r.Config.Embeddings.Auth.GcpServiceAccountJSON.ValueString()
@@ -804,6 +958,8 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 				AzureClientSecret:       azureClientSecret,
 				AzureTenantID:           azureTenantID,
 				AzureUseManagedIdentity: azureUseManagedIdentity,
+				GcpMetadataURL:          gcpMetadataURL,
+				GcpOauthTokenURL:        gcpOauthTokenURL,
 				GcpServiceAccountJSON:   gcpServiceAccountJSON,
 				GcpUseServiceAccount:    gcpUseServiceAccount,
 				HeaderName:              headerName,
@@ -870,6 +1026,18 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 				} else {
 					awsStsEndpointURL = nil
 				}
+				batchBucketPrefix := new(string)
+				if !r.Config.Embeddings.Model.Options.Bedrock.BatchBucketPrefix.IsUnknown() && !r.Config.Embeddings.Model.Options.Bedrock.BatchBucketPrefix.IsNull() {
+					*batchBucketPrefix = r.Config.Embeddings.Model.Options.Bedrock.BatchBucketPrefix.ValueString()
+				} else {
+					batchBucketPrefix = nil
+				}
+				batchRoleArn := new(string)
+				if !r.Config.Embeddings.Model.Options.Bedrock.BatchRoleArn.IsUnknown() && !r.Config.Embeddings.Model.Options.Bedrock.BatchRoleArn.IsNull() {
+					*batchRoleArn = r.Config.Embeddings.Model.Options.Bedrock.BatchRoleArn.ValueString()
+				} else {
+					batchRoleArn = nil
+				}
 				embeddingsNormalize := new(bool)
 				if !r.Config.Embeddings.Model.Options.Bedrock.EmbeddingsNormalize.IsUnknown() && !r.Config.Embeddings.Model.Options.Bedrock.EmbeddingsNormalize.IsNull() {
 					*embeddingsNormalize = r.Config.Embeddings.Model.Options.Bedrock.EmbeddingsNormalize.ValueBool()
@@ -893,6 +1061,8 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 					AwsRegion:                awsRegion,
 					AwsRoleSessionName:       awsRoleSessionName,
 					AwsStsEndpointURL:        awsStsEndpointURL,
+					BatchBucketPrefix:        batchBucketPrefix,
+					BatchRoleArn:             batchRoleArn,
 					EmbeddingsNormalize:      embeddingsNormalize,
 					PerformanceConfigLatency: performanceConfigLatency,
 					VideoOutputS3URI:         videoOutputS3URI,
@@ -1044,6 +1214,18 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 			} else {
 				azureUseManagedIdentity1 = nil
 			}
+			gcpMetadataUrl1 := new(string)
+			if !r.Config.Targets[targetsIndex].Auth.GcpMetadataURL.IsUnknown() && !r.Config.Targets[targetsIndex].Auth.GcpMetadataURL.IsNull() {
+				*gcpMetadataUrl1 = r.Config.Targets[targetsIndex].Auth.GcpMetadataURL.ValueString()
+			} else {
+				gcpMetadataUrl1 = nil
+			}
+			gcpOauthTokenUrl1 := new(string)
+			if !r.Config.Targets[targetsIndex].Auth.GcpOauthTokenURL.IsUnknown() && !r.Config.Targets[targetsIndex].Auth.GcpOauthTokenURL.IsNull() {
+				*gcpOauthTokenUrl1 = r.Config.Targets[targetsIndex].Auth.GcpOauthTokenURL.ValueString()
+			} else {
+				gcpOauthTokenUrl1 = nil
+			}
 			gcpServiceAccountJson1 := new(string)
 			if !r.Config.Targets[targetsIndex].Auth.GcpServiceAccountJSON.IsUnknown() && !r.Config.Targets[targetsIndex].Auth.GcpServiceAccountJSON.IsNull() {
 				*gcpServiceAccountJson1 = r.Config.Targets[targetsIndex].Auth.GcpServiceAccountJSON.ValueString()
@@ -1094,6 +1276,8 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 				AzureClientSecret:       azureClientSecret1,
 				AzureTenantID:           azureTenantId1,
 				AzureUseManagedIdentity: azureUseManagedIdentity1,
+				GcpMetadataURL:          gcpMetadataUrl1,
+				GcpOauthTokenURL:        gcpOauthTokenUrl1,
 				GcpServiceAccountJSON:   gcpServiceAccountJson1,
 				GcpUseServiceAccount:    gcpUseServiceAccount1,
 				HeaderName:              headerName1,
@@ -1130,6 +1314,12 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 		}
 		// GatewayPluginAiProxyAdvanced#create.config.targets.metadataGatewayPluginAiProxyAdvanced#create.config.targets.metadata impedance mismatch: any != class
 		var metadata *interface{}
+		modelAlias := new(string)
+		if !r.Config.Targets[targetsIndex].Model.ModelAlias.IsUnknown() && !r.Config.Targets[targetsIndex].Model.ModelAlias.IsNull() {
+			*modelAlias = r.Config.Targets[targetsIndex].Model.ModelAlias.ValueString()
+		} else {
+			modelAlias = nil
+		}
 		name2 := new(string)
 		if !r.Config.Targets[targetsIndex].Model.Name.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Name.IsNull() {
 			*name2 = r.Config.Targets[targetsIndex].Model.Name.ValueString()
@@ -1188,6 +1378,18 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 				} else {
 					awsStsEndpointUrl1 = nil
 				}
+				batchBucketPrefix1 := new(string)
+				if !r.Config.Targets[targetsIndex].Model.Options.Bedrock.BatchBucketPrefix.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.Bedrock.BatchBucketPrefix.IsNull() {
+					*batchBucketPrefix1 = r.Config.Targets[targetsIndex].Model.Options.Bedrock.BatchBucketPrefix.ValueString()
+				} else {
+					batchBucketPrefix1 = nil
+				}
+				batchRoleArn1 := new(string)
+				if !r.Config.Targets[targetsIndex].Model.Options.Bedrock.BatchRoleArn.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.Bedrock.BatchRoleArn.IsNull() {
+					*batchRoleArn1 = r.Config.Targets[targetsIndex].Model.Options.Bedrock.BatchRoleArn.ValueString()
+				} else {
+					batchRoleArn1 = nil
+				}
 				embeddingsNormalize1 := new(bool)
 				if !r.Config.Targets[targetsIndex].Model.Options.Bedrock.EmbeddingsNormalize.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.Bedrock.EmbeddingsNormalize.IsNull() {
 					*embeddingsNormalize1 = r.Config.Targets[targetsIndex].Model.Options.Bedrock.EmbeddingsNormalize.ValueBool()
@@ -1211,6 +1413,8 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 					AwsRegion:                awsRegion1,
 					AwsRoleSessionName:       awsRoleSessionName1,
 					AwsStsEndpointURL:        awsStsEndpointUrl1,
+					BatchBucketPrefix:        batchBucketPrefix1,
+					BatchRoleArn:             batchRoleArn1,
 					EmbeddingsNormalize:      embeddingsNormalize1,
 					PerformanceConfigLatency: performanceConfigLatency1,
 					VideoOutputS3URI:         videoOutputS3Uri1,
@@ -1245,6 +1449,18 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 				}
 				dashscope = &shared.AiProxyAdvancedPluginDashscope{
 					International: international,
+				}
+			}
+			var databricks *shared.AiProxyAdvancedPluginDatabricks
+			if r.Config.Targets[targetsIndex].Model.Options.Databricks != nil {
+				workspaceInstanceID := new(string)
+				if !r.Config.Targets[targetsIndex].Model.Options.Databricks.WorkspaceInstanceID.IsUnknown() && !r.Config.Targets[targetsIndex].Model.Options.Databricks.WorkspaceInstanceID.IsNull() {
+					*workspaceInstanceID = r.Config.Targets[targetsIndex].Model.Options.Databricks.WorkspaceInstanceID.ValueString()
+				} else {
+					workspaceInstanceID = nil
+				}
+				databricks = &shared.AiProxyAdvancedPluginDatabricks{
+					WorkspaceInstanceID: workspaceInstanceID,
 				}
 			}
 			embeddingsDimensions := new(int64)
@@ -1373,6 +1589,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 				Bedrock:              bedrock1,
 				Cohere:               cohere,
 				Dashscope:            dashscope,
+				Databricks:           databricks,
 				EmbeddingsDimensions: embeddingsDimensions,
 				Gemini:               gemini1,
 				Huggingface:          huggingface1,
@@ -1390,9 +1607,10 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 		}
 		provider1 := shared.AiProxyAdvancedPluginConfigProvider(r.Config.Targets[targetsIndex].Model.Provider.ValueString())
 		model1 := shared.AiProxyAdvancedPluginConfigModel{
-			Name:     name2,
-			Options:  optionsVar1,
-			Provider: provider1,
+			ModelAlias: modelAlias,
+			Name:       name2,
+			Options:    optionsVar1,
+			Provider:   provider1,
 		}
 		routeType := shared.AiProxyAdvancedPluginRouteType(r.Config.Targets[targetsIndex].RouteType.ValueString())
 		weight := new(int64)
@@ -1797,6 +2015,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 		}
 	}
 	config := shared.AiProxyAdvancedPluginConfig{
+		Acls:               acls,
 		Balancer:           balancer,
 		Embeddings:         embeddings,
 		GenaiCategory:      genaiCategory,
@@ -1860,6 +2079,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 		}
 	}
 	out := shared.AiProxyAdvancedPlugin{
+		Condition:     condition,
 		CreatedAt:     createdAt,
 		Enabled:       enabled,
 		ID:            id,

@@ -121,7 +121,9 @@ behind loadbalancer listening on different port.
 - `broker_host_format` (Attributes) Configures DNS names assigned to brokers in virtual clusters.
 
 - `per_cluster_suffix` is the default and allocates one level in the hierarchy for virtual clusters: `broker-{node_id}.{virtual_cluster}.{sni_suffix}`
-- `shared_suffix` puts all brokers from every virtual clusters into the same level: `broker-{node_id}-{virtual_cluster}.{sni_suffix}`. This makes it easier to manage certificates for this listener. (see [below for nested schema](#nestedatt--config--sni--broker_host_format))
+- `shared_suffix` puts all brokers from every virtual clusters into the same level: `broker-{node_id}-{virtual_cluster}.{sni_suffix}`. This makes it easier to manage certificates for this listener.
+
+**Requires a minimum runtime version of `1.1`**. (see [below for nested schema](#nestedatt--config--sni--broker_host_format))
 - `sni_suffix` (String) Optional suffix for TLS SNI validation.
 
 This suffix is concatenated with the virtual cluster "dns.label" label to form the base name for the SNI.

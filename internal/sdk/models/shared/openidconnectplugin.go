@@ -1139,6 +1139,38 @@ func (e *DisableSession) UnmarshalJSON(data []byte) error {
 	}
 }
 
+type DownstreamHeaders struct {
+	// The name of the header.
+	Header string `json:"header"`
+	// The path of the header value.
+	Path []string `json:"path"`
+}
+
+func (d DownstreamHeaders) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DownstreamHeaders) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"header", "path"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *DownstreamHeaders) GetHeader() string {
+	if d == nil {
+		return ""
+	}
+	return d.Header
+}
+
+func (d *DownstreamHeaders) GetPath() []string {
+	if d == nil {
+		return []string{}
+	}
+	return d.Path
+}
+
 type IDTokenParamType string
 
 const (
@@ -2389,6 +2421,211 @@ func (e *OpenidConnectPluginTokenEndpointAuthMethod) UnmarshalJSON(data []byte) 
 	}
 }
 
+// OpenidConnectPluginCache - Cache support for token exchange
+type OpenidConnectPluginCache struct {
+	// Whether to enable caching.
+	Enabled *bool `default:"true" json:"enabled"`
+	// Cache ttl in seconds used when caching exchanged tokens, use it to override `conf.cache_ttl`. Token expiry will be used if shorter than this value.
+	TTL *int64 `default:"null" json:"ttl"`
+}
+
+func (o OpenidConnectPluginCache) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpenidConnectPluginCache) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OpenidConnectPluginCache) GetEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Enabled
+}
+
+func (o *OpenidConnectPluginCache) GetTTL() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.TTL
+}
+
+// OpenidConnectPluginRequest - Parameters used in the token exchange request.
+type OpenidConnectPluginRequest struct {
+	// Audiences used in the token exchange request. Values defined here override those defined in `config.audience`.
+	Audience []string `json:"audience"`
+	// Use empty audiences. Use this field to override audiences defined in `config.audience`.
+	EmptyAudience *bool `default:"false" json:"empty_audience"`
+	// Use empty scopes. Use this field to override scopes defined in `config.scopes`.
+	EmptyScopes *bool `default:"false" json:"empty_scopes"`
+	// Scopes used in the token exchange request. Values defined here override those defined in `config.scopes`.
+	Scopes []string `json:"scopes"`
+}
+
+func (o OpenidConnectPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpenidConnectPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OpenidConnectPluginRequest) GetAudience() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Audience
+}
+
+func (o *OpenidConnectPluginRequest) GetEmptyAudience() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EmptyAudience
+}
+
+func (o *OpenidConnectPluginRequest) GetEmptyScopes() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EmptyScopes
+}
+
+func (o *OpenidConnectPluginRequest) GetScopes() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Scopes
+}
+
+// Conditions - A tokens will only be exchange when it matches all these criteria. To exchanging tokens issued from a different issuer, conditions must not be defined; On the contrary, to exchange tokens issued from the target issuer itself, conditions must be defined.
+type Conditions struct {
+	HasAudience     []string `json:"has_audience"`
+	HasScopes       []string `json:"has_scopes"`
+	MissingAudience []string `json:"missing_audience"`
+	MissingScopes   []string `json:"missing_scopes"`
+}
+
+func (c Conditions) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *Conditions) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *Conditions) GetHasAudience() []string {
+	if c == nil {
+		return nil
+	}
+	return c.HasAudience
+}
+
+func (c *Conditions) GetHasScopes() []string {
+	if c == nil {
+		return nil
+	}
+	return c.HasScopes
+}
+
+func (c *Conditions) GetMissingAudience() []string {
+	if c == nil {
+		return nil
+	}
+	return c.MissingAudience
+}
+
+func (c *Conditions) GetMissingScopes() []string {
+	if c == nil {
+		return nil
+	}
+	return c.MissingScopes
+}
+
+type SubjectTokenIssuers struct {
+	// A tokens will only be exchange when it matches all these criteria. To exchanging tokens issued from a different issuer, conditions must not be defined; On the contrary, to exchange tokens issued from the target issuer itself, conditions must be defined.
+	Conditions *Conditions `json:"conditions"`
+	// Tokens of whose iss claim matches this value will be exchanged.
+	Issuer string `json:"issuer"`
+}
+
+func (s SubjectTokenIssuers) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SubjectTokenIssuers) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"issuer"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *SubjectTokenIssuers) GetConditions() *Conditions {
+	if s == nil {
+		return nil
+	}
+	return s.Conditions
+}
+
+func (s *SubjectTokenIssuers) GetIssuer() string {
+	if s == nil {
+		return ""
+	}
+	return s.Issuer
+}
+
+// OpenidConnectPluginTokenExchange - Details on how to accept tokens from other identity providers.
+type OpenidConnectPluginTokenExchange struct {
+	// Cache support for token exchange
+	Cache *OpenidConnectPluginCache `json:"cache"`
+	// Parameters used in the token exchange request.
+	Request *OpenidConnectPluginRequest `json:"request"`
+	// Trusted token issuers from which the upstream may accept tokens to be exchanged. If a JWT bearer matches all the conditions of a subject token issuer item, the token will be exchanged.
+	SubjectTokenIssuers []SubjectTokenIssuers `json:"subject_token_issuers"`
+}
+
+func (o OpenidConnectPluginTokenExchange) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpenidConnectPluginTokenExchange) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"subject_token_issuers"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OpenidConnectPluginTokenExchange) GetCache() *OpenidConnectPluginCache {
+	if o == nil {
+		return nil
+	}
+	return o.Cache
+}
+
+func (o *OpenidConnectPluginTokenExchange) GetRequest() *OpenidConnectPluginRequest {
+	if o == nil {
+		return nil
+	}
+	return o.Request
+}
+
+func (o *OpenidConnectPluginTokenExchange) GetSubjectTokenIssuers() []SubjectTokenIssuers {
+	if o == nil {
+		return []SubjectTokenIssuers{}
+	}
+	return o.SubjectTokenIssuers
+}
+
 type TokenHeadersGrants string
 
 const (
@@ -2419,6 +2656,38 @@ func (e *TokenHeadersGrants) UnmarshalJSON(data []byte) error {
 	default:
 		return fmt.Errorf("invalid value for TokenHeadersGrants: %v", v)
 	}
+}
+
+type OpenidConnectPluginUpstreamHeaders struct {
+	// The name of the header.
+	Header string `json:"header"`
+	// The path of the header value.
+	Path []string `json:"path"`
+}
+
+func (o OpenidConnectPluginUpstreamHeaders) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpenidConnectPluginUpstreamHeaders) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"header", "path"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OpenidConnectPluginUpstreamHeaders) GetHeader() string {
+	if o == nil {
+		return ""
+	}
+	return o.Header
+}
+
+func (o *OpenidConnectPluginUpstreamHeaders) GetPath() []string {
+	if o == nil {
+		return []string{}
+	}
+	return o.Path
 }
 
 // UserinfoAccept - The value of `Accept` header for user info requests: - `application/json`: user info response as JSON - `application/jwt`: user info response as JWT (from the obsolete IETF draft document).
@@ -2491,7 +2760,7 @@ type OpenidConnectPluginConfig struct {
 	ByUsernameIgnoreCase *bool `default:"false" json:"by_username_ignore_case"`
 	// Cache the introspection endpoint requests.
 	CacheIntrospection *bool `default:"true" json:"cache_introspection"`
-	// Cache the token exchange endpoint requests.
+	// Cache the legacy token exchange endpoint requests.
 	CacheTokenExchange *bool `default:"true" json:"cache_token_exchange"`
 	// Cache the token endpoint requests.
 	CacheTokens *bool `default:"true" json:"cache_tokens"`
@@ -2530,8 +2799,8 @@ type OpenidConnectPluginConfig struct {
 	ClusterCacheStrategy *ClusterCacheStrategy `default:"off" json:"cluster_cache_strategy"`
 	// Consumer fields used for mapping: - `id`: try to find the matching Consumer by `id` - `username`: try to find the matching Consumer by `username` - `custom_id`: try to find the matching Consumer by `custom_id`.
 	ConsumerBy []OpenidConnectPluginConsumerBy `json:"consumer_by,omitempty"`
-	// The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
-	ConsumerClaim []string `json:"consumer_claim"`
+	// The claims used for consumer mapping. Each entry represents a claim path inside the token payload. The paths are evaluated in order, and the first matching claim is used.
+	ConsumerClaims [][]string `json:"consumer_claims"`
 	// The claim used for consumer groups mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	ConsumerGroupsClaim []string `json:"consumer_groups_claim"`
 	// Do not terminate the request if consumer groups mapping fails.
@@ -2554,7 +2823,9 @@ type OpenidConnectPluginConfig struct {
 	DownstreamAccessTokenHeader *string `default:"null" json:"downstream_access_token_header"`
 	// The downstream access token JWK header.
 	DownstreamAccessTokenJwkHeader *string `default:"null" json:"downstream_access_token_jwk_header"`
-	// The downstream header claims. If multiple values are set, it means the claim is inside a nested object of the token payload.
+	// The downstream claim to header mappings.
+	DownstreamHeaders []DownstreamHeaders `json:"downstream_headers"`
+	// The downstream header claims. Only top level claims are supported.
 	DownstreamHeadersClaims []string `json:"downstream_headers_claims"`
 	// The downstream header names for the claim values.
 	DownstreamHeadersNames []string `json:"downstream_headers_names"`
@@ -2597,7 +2868,7 @@ type OpenidConnectPluginConfig struct {
 	// The groups (`groups_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
 	GroupsRequired []string `json:"groups_required"`
 	// Remove the credentials used for authentication from the request. If multiple credentials are sent with the same request, the plugin will remove those that were used for successful authentication.
-	HideCredentials *bool `default:"false" json:"hide_credentials"`
+	HideCredentials *bool `default:"true" json:"hide_credentials"`
 	// The HTTP proxy.
 	HTTPProxy *string `default:"null" json:"http_proxy"`
 	// The HTTP proxy authorization.
@@ -2646,6 +2917,8 @@ type OpenidConnectPluginConfig struct {
 	Issuer string `json:"issuer"`
 	// The issuers allowed to be present in the tokens (`iss` claim).
 	IssuersAllowed []string `json:"issuers_allowed"`
+	// Overrides the `jwks_uri` returned by discovery. Use when the IdP exposes a non-standard JWKS endpoint.
+	JwksEndpoint *string `default:"null" json:"jwks_endpoint"`
 	// The claim to match against the JWT session cookie.
 	JwtSessionClaim *string `default:"sid" json:"jwt_session_claim"`
 	// The name of the JWT session cookie.
@@ -2786,9 +3059,9 @@ type OpenidConnectPluginConfig struct {
 	// The memcached unix socket path.
 	SessionMemcachedSocket *string `default:"null" json:"session_memcached_socket"`
 	// If set to true, uses SSL to connect to memcached
-	SessionMemcachedSsl *bool `default:"false" json:"session_memcached_ssl"`
+	SessionMemcachedSsl *bool `default:"null" json:"session_memcached_ssl"`
 	// If set to true, verifies the validity of the memcached server SSL certificate
-	SessionMemcachedSslVerify *bool `default:"false" json:"session_memcached_ssl_verify"`
+	SessionMemcachedSslVerify *bool `default:"true" json:"session_memcached_ssl_verify"`
 	// Enables or disables persistent sessions.
 	SessionRemember *bool `default:"false" json:"session_remember"`
 	// Limits how long the persistent session can be renewed in seconds, until re-authentication is required. 0 disables the checks.
@@ -2810,7 +3083,7 @@ type OpenidConnectPluginConfig struct {
 	// Configures whether or not session metadata should be stored. This metadata includes information about the active sessions for a specific audience belonging to a specific subject.
 	SessionStoreMetadata *bool `default:"false" json:"session_store_metadata"`
 	// Verify identity provider server certificate. If set to `true`, the plugin uses the CA certificate set in the `kong.conf` config parameter `lua_ssl_trusted_certificate`.
-	SslVerify *bool `default:"false" json:"ssl_verify"`
+	SslVerify *bool `default:"true" json:"ssl_verify"`
 	// Network IO timeout in milliseconds.
 	Timeout *float64 `default:"10000" json:"timeout"`
 	// ID of the Certificate entity representing the client certificate to use for mTLS client authentication for connections between Kong and the Auth Server.
@@ -2823,7 +3096,9 @@ type OpenidConnectPluginConfig struct {
 	TokenEndpoint *string `default:"null" json:"token_endpoint"`
 	// The token endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
 	TokenEndpointAuthMethod *OpenidConnectPluginTokenEndpointAuthMethod `json:"token_endpoint_auth_method,omitempty"`
-	// The token exchange endpoint.
+	// Details on how to accept tokens from other identity providers.
+	TokenExchange *OpenidConnectPluginTokenExchange `json:"token_exchange"`
+	// Endpoint used to perform the legacy token exchange.
 	TokenExchangeEndpoint *string `default:"null" json:"token_exchange_endpoint"`
 	// Extra headers passed from the client to the token endpoint.
 	TokenHeadersClient []string `json:"token_headers_client"`
@@ -2855,6 +3130,8 @@ type OpenidConnectPluginConfig struct {
 	UpstreamAccessTokenHeader *string `default:"authorization:bearer" json:"upstream_access_token_header"`
 	// The upstream access token JWK header.
 	UpstreamAccessTokenJwkHeader *string `default:"null" json:"upstream_access_token_jwk_header"`
+	// The upstream claim to header mappings.
+	UpstreamHeaders []OpenidConnectPluginUpstreamHeaders `json:"upstream_headers"`
 	// The upstream header claims. Only top level claims are supported.
 	UpstreamHeadersClaims []string `json:"upstream_headers_claims"`
 	// The upstream header names for the claim values.
@@ -3201,11 +3478,11 @@ func (o *OpenidConnectPluginConfig) GetConsumerBy() []OpenidConnectPluginConsume
 	return o.ConsumerBy
 }
 
-func (o *OpenidConnectPluginConfig) GetConsumerClaim() []string {
+func (o *OpenidConnectPluginConfig) GetConsumerClaims() [][]string {
 	if o == nil {
 		return nil
 	}
-	return o.ConsumerClaim
+	return o.ConsumerClaims
 }
 
 func (o *OpenidConnectPluginConfig) GetConsumerGroupsClaim() []string {
@@ -3283,6 +3560,13 @@ func (o *OpenidConnectPluginConfig) GetDownstreamAccessTokenJwkHeader() *string 
 		return nil
 	}
 	return o.DownstreamAccessTokenJwkHeader
+}
+
+func (o *OpenidConnectPluginConfig) GetDownstreamHeaders() []DownstreamHeaders {
+	if o == nil {
+		return nil
+	}
+	return o.DownstreamHeaders
 }
 
 func (o *OpenidConnectPluginConfig) GetDownstreamHeadersClaims() []string {
@@ -3605,6 +3889,13 @@ func (o *OpenidConnectPluginConfig) GetIssuersAllowed() []string {
 		return nil
 	}
 	return o.IssuersAllowed
+}
+
+func (o *OpenidConnectPluginConfig) GetJwksEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.JwksEndpoint
 }
 
 func (o *OpenidConnectPluginConfig) GetJwtSessionClaim() *string {
@@ -4223,6 +4514,13 @@ func (o *OpenidConnectPluginConfig) GetTokenEndpointAuthMethod() *OpenidConnectP
 	return o.TokenEndpointAuthMethod
 }
 
+func (o *OpenidConnectPluginConfig) GetTokenExchange() *OpenidConnectPluginTokenExchange {
+	if o == nil {
+		return nil
+	}
+	return o.TokenExchange
+}
+
 func (o *OpenidConnectPluginConfig) GetTokenExchangeEndpoint() *string {
 	if o == nil {
 		return nil
@@ -4333,6 +4631,13 @@ func (o *OpenidConnectPluginConfig) GetUpstreamAccessTokenJwkHeader() *string {
 		return nil
 	}
 	return o.UpstreamAccessTokenJwkHeader
+}
+
+func (o *OpenidConnectPluginConfig) GetUpstreamHeaders() []OpenidConnectPluginUpstreamHeaders {
+	if o == nil {
+		return nil
+	}
+	return o.UpstreamHeaders
 }
 
 func (o *OpenidConnectPluginConfig) GetUpstreamHeadersClaims() []string {
@@ -4503,6 +4808,8 @@ const (
 	OpenidConnectPluginProtocolsGrpcs OpenidConnectPluginProtocols = "grpcs"
 	OpenidConnectPluginProtocolsHTTP  OpenidConnectPluginProtocols = "http"
 	OpenidConnectPluginProtocolsHTTPS OpenidConnectPluginProtocols = "https"
+	OpenidConnectPluginProtocolsWs    OpenidConnectPluginProtocols = "ws"
+	OpenidConnectPluginProtocolsWss   OpenidConnectPluginProtocols = "wss"
 )
 
 func (e OpenidConnectPluginProtocols) ToPointer() *OpenidConnectPluginProtocols {
@@ -4521,6 +4828,10 @@ func (e *OpenidConnectPluginProtocols) UnmarshalJSON(data []byte) error {
 	case "http":
 		fallthrough
 	case "https":
+		fallthrough
+	case "ws":
+		fallthrough
+	case "wss":
 		*e = OpenidConnectPluginProtocols(v)
 		return nil
 	default:
@@ -4576,6 +4887,8 @@ func (o *OpenidConnectPluginService) GetID() *string {
 
 // OpenidConnectPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type OpenidConnectPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -4594,7 +4907,7 @@ type OpenidConnectPlugin struct {
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                    `json:"updated_at,omitempty"`
 	Config    OpenidConnectPluginConfig `json:"config"`
-	// A set of strings representing HTTP protocols.
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []OpenidConnectPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *OpenidConnectPluginRoute `json:"route"`
@@ -4611,6 +4924,13 @@ func (o *OpenidConnectPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (o *OpenidConnectPlugin) GetCondition() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Condition
 }
 
 func (o *OpenidConnectPlugin) GetCreatedAt() *int64 {

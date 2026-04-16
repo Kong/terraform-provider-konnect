@@ -14,6 +14,7 @@ GatewayPluginACL Resource
 
 ```terraform
 resource "konnect_gateway_plugin_acl" "my_gatewaypluginacl" {
+  condition = "...my_condition..."
   config = {
     allow = [
       "..."
@@ -50,7 +51,7 @@ resource "konnect_gateway_plugin_acl" "my_gatewaypluginacl" {
     }
   ]
   protocols = [
-    "grpc"
+    "grpcs"
   ]
   route = {
     id = "...my_id..."
@@ -74,6 +75,7 @@ resource "konnect_gateway_plugin_acl" "my_gatewaypluginacl" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
@@ -81,7 +83,7 @@ resource "konnect_gateway_plugin_acl" "my_gatewaypluginacl" {
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
-- `protocols` (Set of String) A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]
+- `protocols` (Set of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls. Default: ["grpc","grpcs","http","https"]
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.

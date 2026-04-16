@@ -46,6 +46,7 @@ type GatewayPluginOpentelemetryResource struct {
 
 // GatewayPluginOpentelemetryResourceModel describes the resource data model.
 type GatewayPluginOpentelemetryResourceModel struct {
+	Condition      types.String                       `tfsdk:"condition"`
 	Config         *tfTypes.OpentelemetryPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                       `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
@@ -70,13 +71,31 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginOpentelemetry Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
-					"access_logs_endpoint": schema.StringAttribute{
-						Optional:    true,
-						Description: `An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.`,
+					"access_logs": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"custom_attributes_by_lua": schema.MapAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `A key-value map that dynamically modifies access log fields using Lua code.`,
+							},
+							"endpoint": schema.StringAttribute{
+								Optional:    true,
+								Description: `An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.`,
+							},
+						},
 					},
 					"batch_flush_delay": schema.Int64Attribute{
 						Optional:    true,
@@ -132,6 +151,12 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"enable_ai_metrics": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `A boolean value that determines if AI metrics should be collected. If enabled, ` + "`" + `gen_ai.*` + "`" + `, ` + "`" + `mcp.*` + "`" + `, ` + "`" + `kong.gen_ai.*` + "`" + `, ` + "`" + `kong.gen_ai.a2a.*` + "`" + ` and ` + "`" + `kong.mcp.*` + "`" + ` metrics will be exported. To enable latency metrics for AI metrics, ` + "`" + `enable_latency_metrics` + "`" + ` must also be set to ` + "`" + `true` + "`" + `. To enable ` + "`" + `error.type` + "`" + ` attribute for AI metrics, ` + "`" + `enable_request_metrics` + "`" + ` must also be set to ` + "`" + `true` + "`" + `. Default: false`,
+							},
 							"enable_bandwidth_metrics": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,

@@ -14,6 +14,7 @@ GatewayPluginRequestCallout Resource
 
 ```terraform
 resource "konnect_gateway_plugin_request_callout" "my_gatewaypluginrequestcallout" {
+  condition = "...my_condition..."
   config = {
     cache = {
       cache_ttl = 300
@@ -110,7 +111,7 @@ resource "konnect_gateway_plugin_request_callout" "my_gatewaypluginrequestcallou
               https_proxy   = "...my_https_proxy..."
             }
             ssl_server_name = "...my_ssl_server_name..."
-            ssl_verify      = false
+            ssl_verify      = true
             timeouts = {
               connect = 396369045
               read    = 2097982023
@@ -217,6 +218,7 @@ resource "konnect_gateway_plugin_request_callout" "my_gatewaypluginrequestcallou
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -314,7 +316,7 @@ Optional:
 
 - `proxy` (Attributes) Proxy settings. (see [below for nested schema](#nestedatt--config--callouts--request--http_opts--proxy))
 - `ssl_server_name` (String) The SNI used in the callout request. Defaults to host if omitted.
-- `ssl_verify` (Boolean) If set to `true`, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your callout API. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: false
+- `ssl_verify` (Boolean) If set to `true`, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your callout API. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
 - `timeouts` (Attributes) Socket timeouts in milliseconds. All or none must be set. (see [below for nested schema](#nestedatt--config--callouts--request--http_opts--timeouts))
 
 <a id="nestedatt--config--callouts--request--http_opts--proxy"></a>

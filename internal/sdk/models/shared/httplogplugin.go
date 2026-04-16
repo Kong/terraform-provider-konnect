@@ -313,7 +313,7 @@ type HTTPLogPluginConfig struct {
 	// Number of times to retry when sending data to the upstream server.
 	RetryCount *int64 `default:"null" json:"retry_count"`
 	// When using TLS, this option enables verification of the certificate presented by the server.
-	SslVerify *bool `default:"null" json:"ssl_verify"`
+	SslVerify *bool `default:"true" json:"ssl_verify"`
 	// An optional timeout in milliseconds when sending data to the upstream server.
 	Timeout *float64 `default:"10000" json:"timeout"`
 }
@@ -535,6 +535,8 @@ func (h *HTTPLogPluginService) GetID() *string {
 
 // HTTPLogPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type HTTPLogPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -572,6 +574,13 @@ func (h *HTTPLogPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (h *HTTPLogPlugin) GetCondition() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Condition
 }
 
 func (h *HTTPLogPlugin) GetCreatedAt() *int64 {

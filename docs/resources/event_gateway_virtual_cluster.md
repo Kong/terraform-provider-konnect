@@ -111,7 +111,9 @@ It allows to either hide or enforce a static prefix on resources (topics, consum
 Optional:
 
 - `anonymous` (Attributes) (see [below for nested schema](#nestedatt--authentication--anonymous))
-- `client_certificate` (Attributes) Client certificate (mTLS) authentication scheme for the virtual cluster. (see [below for nested schema](#nestedatt--authentication--client_certificate))
+- `client_certificate` (Attributes) Client certificate (mTLS) authentication scheme for the virtual cluster.
+
+**Requires a minimum runtime version of `1.1`**. (see [below for nested schema](#nestedatt--authentication--client_certificate))
 - `oauth_bearer` (Attributes) Oauth Bearer authentication scheme for the virtual cluster. (see [below for nested schema](#nestedatt--authentication--oauth_bearer))
 - `sasl_plain` (Attributes) SASL/PLAIN authentication scheme for the virtual cluster. (see [below for nested schema](#nestedatt--authentication--sasl_plain))
 - `sasl_scram` (Attributes) SASL/SCRAM authentication scheme for the virtual cluster. (see [below for nested schema](#nestedatt--authentication--sasl_scram))

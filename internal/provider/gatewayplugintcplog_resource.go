@@ -43,6 +43,7 @@ type GatewayPluginTCPLogResource struct {
 
 // GatewayPluginTCPLogResourceModel describes the resource data model.
 type GatewayPluginTCPLogResourceModel struct {
+	Condition      types.String                `tfsdk:"condition"`
 	Config         *tfTypes.TCPLogPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                `tfsdk:"consumer"`
 	ControlPlaneID types.String                `tfsdk:"control_plane_id"`
@@ -67,6 +68,13 @@ func (r *GatewayPluginTCPLogResource) Schema(ctx context.Context, req resource.S
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginTCPLog Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -95,8 +103,8 @@ func (r *GatewayPluginTCPLogResource) Schema(ctx context.Context, req resource.S
 					"ssl_verify": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `When using TLS, this option enables verification of the certificate presented by the server. Default: false`,
+						Default:     booldefault.StaticBool(true),
+						Description: `When using TLS, this option enables verification of the certificate presented by the server. Default: true`,
 					},
 					"timeout": schema.Float64Attribute{
 						Computed:    true,

@@ -45,6 +45,7 @@ type GatewayPluginSamlResource struct {
 
 // GatewayPluginSamlResourceModel describes the resource data model.
 type GatewayPluginSamlResourceModel struct {
+	Condition      types.String                `tfsdk:"condition"`
 	Config         *tfTypes.SamlPluginConfig   `tfsdk:"config"`
 	ControlPlaneID types.String                `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                 `tfsdk:"created_at"`
@@ -68,6 +69,13 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginSaml Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -420,8 +428,8 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 							"ssl_verify": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     booldefault.StaticBool(false),
-								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: false`,
+								Default:     booldefault.StaticBool(true),
+								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
 							},
 							"username": schema.StringAttribute{
 								Optional:    true,

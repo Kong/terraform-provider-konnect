@@ -14,9 +14,10 @@ GatewayPluginKeyAuth Resource
 
 ```terraform
 resource "konnect_gateway_plugin_key_auth" "my_gatewaypluginkeyauth" {
+  condition = "...my_condition..."
   config = {
     anonymous        = "...my_anonymous..."
-    hide_credentials = false
+    hide_credentials = true
     identity_realms = [
       {
         id     = "...my_id..."
@@ -82,6 +83,7 @@ resource "konnect_gateway_plugin_key_auth" "my_gatewaypluginkeyauth" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
@@ -101,7 +103,7 @@ resource "konnect_gateway_plugin_key_auth" "my_gatewaypluginkeyauth" {
 Optional:
 
 - `anonymous` (String) An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`.
-- `hide_credentials` (Boolean) An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin strips the credential from the request. Default: false
+- `hide_credentials` (Boolean) An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin strips the credential from the request. Default: true
 - `identity_realms` (Attributes List) A configuration of Konnect Identity Realms that indicate where to source a consumer from. (see [below for nested schema](#nestedatt--config--identity_realms))
 - `key_in_body` (Boolean) If enabled, the plugin reads the request body. Supported MIME types: `application/www-form-urlencoded`, `application/json`, and `multipart/form-data`. Default: false
 - `key_in_header` (Boolean) If enabled (default), the plugin reads the request header and tries to find the key in it. Default: true

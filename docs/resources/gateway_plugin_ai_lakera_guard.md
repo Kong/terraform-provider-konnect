@@ -14,10 +14,12 @@ GatewayPluginAiLakeraGuard Resource
 
 ```terraform
 resource "konnect_gateway_plugin_ai_lakera_guard" "my_gatewaypluginailakeraguard" {
+  condition = "...my_condition..."
   config = {
     api_key                   = "...my_api_key..."
     guarding_mode             = "INPUT"
     lakera_service_url        = "https://api.lakera.ai/v2/guard"
+    log_blocked_content       = false
     project_id                = "...my_project_id..."
     request_failure_message   = "Request was filtered by Lakera Guard"
     response_buffer_size      = 100
@@ -83,6 +85,7 @@ resource "konnect_gateway_plugin_ai_lakera_guard" "my_gatewaypluginailakeraguard
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
@@ -106,6 +109,7 @@ Optional:
 - `api_key` (String) API key for the Lakera Guard subscription.
 - `guarding_mode` (String) The guardrail mode to use for the request. Default: "INPUT"; must be one of ["BOTH", "INPUT", "OUTPUT"]
 - `lakera_service_url` (String) The guard-operation URL of the Lakera Guard service. Defaults to the SaaS /v2/guard endpoint. It can be set to a locally hosted instance of Lakera Guard. Default: "https://api.lakera.ai/v2/guard"
+- `log_blocked_content` (Boolean) Whether to log prompts and responses that are blocked by the guardrail. Default: false
 - `project_id` (String) Project ID to apply filters from. If null, it will use the subscription's default project.
 - `request_failure_message` (String) The message to return when a failure occurs on the request phase. Default: "Request was filtered by Lakera Guard"
 - `response_buffer_size` (Number) The amount of bytes receiving from upstream to be buffered before sending to the Lakera Guard service. This only applies to the response content guard. Default: 100

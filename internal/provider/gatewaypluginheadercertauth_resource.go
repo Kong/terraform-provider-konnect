@@ -45,6 +45,7 @@ type GatewayPluginHeaderCertAuthResource struct {
 
 // GatewayPluginHeaderCertAuthResourceModel describes the resource data model.
 type GatewayPluginHeaderCertAuthResourceModel struct {
+	Condition      types.String                        `tfsdk:"condition"`
 	Config         *tfTypes.HeaderCertAuthPluginConfig `tfsdk:"config"`
 	ControlPlaneID types.String                        `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                         `tfsdk:"created_at"`
@@ -68,6 +69,13 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginHeaderCertAuth Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -189,8 +197,10 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 						Description: `Skip consumer lookup once certificate is trusted against the configured CA list. Default: false`,
 					},
 					"ssl_verify": schema.BoolAttribute{
+						Computed:    true,
 						Optional:    true,
-						Description: `This option enables verification of the certificate presented by the server of the OCSP responder's URL and by the server of the CRL Distribution Point.`,
+						Default:     booldefault.StaticBool(true),
+						Description: `This option enables verification of the certificate presented by the server of the OCSP responder's URL and by the server of the CRL Distribution Point. Default: true`,
 					},
 				},
 			},

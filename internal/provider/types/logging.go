@@ -7,7 +7,7 @@ import (
 )
 
 type Logging struct {
-	LogAudits     types.Bool `tfsdk:"log_audits"`
-	LogPayloads   types.Bool `tfsdk:"log_payloads"`
-	LogStatistics types.Bool `tfsdk:"log_statistics"`
+	LogPayloads    types.Bool  `tfsdk:"log_payloads"`
+	LogStatistics  types.Bool  `tfsdk:"log_statistics"`
+	MaxPayloadSize types.Int64 `tfsdk:"max_payload_size"`
 }

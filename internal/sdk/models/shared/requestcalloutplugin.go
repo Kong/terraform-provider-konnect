@@ -970,7 +970,7 @@ type HTTPOpts struct {
 	// The SNI used in the callout request. Defaults to host if omitted.
 	SslServerName *string `default:"null" json:"ssl_server_name"`
 	// If set to `true`, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your callout API. You may also need to configure `lua_ssl_verify_depth` accordingly.
-	SslVerify *bool `default:"false" json:"ssl_verify"`
+	SslVerify *bool `default:"true" json:"ssl_verify"`
 	// Socket timeouts in milliseconds. All or none must be set.
 	Timeouts *Timeouts `json:"timeouts"`
 }
@@ -1047,8 +1047,8 @@ func (r *RequestCalloutPluginQuery) GetForward() *bool {
 	return r.Forward
 }
 
-// Request - The customizations for the callout request.
-type Request struct {
+// RequestCalloutPluginRequest - The customizations for the callout request.
+type RequestCalloutPluginRequest struct {
 	// Callout request body customizations.
 	Body *RequestCalloutPluginConfigBody `json:"body"`
 	// Lua code that executes before the callout request is made. **Warning** can impact system behavior. Standard Lua sandboxing restrictions apply.
@@ -1067,67 +1067,67 @@ type Request struct {
 	URL string `json:"url"`
 }
 
-func (r Request) MarshalJSON() ([]byte, error) {
+func (r RequestCalloutPluginRequest) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(r, "", false)
 }
 
-func (r *Request) UnmarshalJSON(data []byte) error {
+func (r *RequestCalloutPluginRequest) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"url"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *Request) GetBody() *RequestCalloutPluginConfigBody {
+func (r *RequestCalloutPluginRequest) GetBody() *RequestCalloutPluginConfigBody {
 	if r == nil {
 		return nil
 	}
 	return r.Body
 }
 
-func (r *Request) GetByLua() *string {
+func (r *RequestCalloutPluginRequest) GetByLua() *string {
 	if r == nil {
 		return nil
 	}
 	return r.ByLua
 }
 
-func (r *Request) GetError() *Error {
+func (r *RequestCalloutPluginRequest) GetError() *Error {
 	if r == nil {
 		return nil
 	}
 	return r.Error
 }
 
-func (r *Request) GetHeaders() *RequestCalloutPluginConfigCalloutsHeaders {
+func (r *RequestCalloutPluginRequest) GetHeaders() *RequestCalloutPluginConfigCalloutsHeaders {
 	if r == nil {
 		return nil
 	}
 	return r.Headers
 }
 
-func (r *Request) GetHTTPOpts() *HTTPOpts {
+func (r *RequestCalloutPluginRequest) GetHTTPOpts() *HTTPOpts {
 	if r == nil {
 		return nil
 	}
 	return r.HTTPOpts
 }
 
-func (r *Request) GetMethod() *string {
+func (r *RequestCalloutPluginRequest) GetMethod() *string {
 	if r == nil {
 		return nil
 	}
 	return r.Method
 }
 
-func (r *Request) GetQuery() *RequestCalloutPluginQuery {
+func (r *RequestCalloutPluginRequest) GetQuery() *RequestCalloutPluginQuery {
 	if r == nil {
 		return nil
 	}
 	return r.Query
 }
 
-func (r *Request) GetURL() string {
+func (r *RequestCalloutPluginRequest) GetURL() string {
 	if r == nil {
 		return ""
 	}
@@ -1190,8 +1190,8 @@ func (r *RequestCalloutPluginConfigHeaders) GetStore() *bool {
 	return r.Store
 }
 
-// Response - Configurations of callout response handling.
-type Response struct {
+// RequestCalloutPluginResponse - Configurations of callout response handling.
+type RequestCalloutPluginResponse struct {
 	Body *RequestCalloutPluginBody `json:"body"`
 	// Lua code that executes after the callout response is received, before caching takes place. Can produce side effects. Standard Lua sandboxing restrictions apply.
 	ByLua *string `default:"null" json:"by_lua"`
@@ -1199,32 +1199,32 @@ type Response struct {
 	Headers *RequestCalloutPluginConfigHeaders `json:"headers"`
 }
 
-func (r Response) MarshalJSON() ([]byte, error) {
+func (r RequestCalloutPluginResponse) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(r, "", false)
 }
 
-func (r *Response) UnmarshalJSON(data []byte) error {
+func (r *RequestCalloutPluginResponse) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *Response) GetBody() *RequestCalloutPluginBody {
+func (r *RequestCalloutPluginResponse) GetBody() *RequestCalloutPluginBody {
 	if r == nil {
 		return nil
 	}
 	return r.Body
 }
 
-func (r *Response) GetByLua() *string {
+func (r *RequestCalloutPluginResponse) GetByLua() *string {
 	if r == nil {
 		return nil
 	}
 	return r.ByLua
 }
 
-func (r *Response) GetHeaders() *RequestCalloutPluginConfigHeaders {
+func (r *RequestCalloutPluginResponse) GetHeaders() *RequestCalloutPluginConfigHeaders {
 	if r == nil {
 		return nil
 	}
@@ -1239,9 +1239,9 @@ type Callouts struct {
 	// A string identifier for a callout. A callout object is referenceable via its name in the `kong.ctx.shared.callouts.<name>`
 	Name string `json:"name"`
 	// The customizations for the callout request.
-	Request Request `json:"request"`
+	Request RequestCalloutPluginRequest `json:"request"`
 	// Configurations of callout response handling.
-	Response *Response `json:"response"`
+	Response *RequestCalloutPluginResponse `json:"response"`
 }
 
 func (c Callouts) MarshalJSON() ([]byte, error) {
@@ -1276,14 +1276,14 @@ func (c *Callouts) GetName() string {
 	return c.Name
 }
 
-func (c *Callouts) GetRequest() Request {
+func (c *Callouts) GetRequest() RequestCalloutPluginRequest {
 	if c == nil {
-		return Request{}
+		return RequestCalloutPluginRequest{}
 	}
 	return c.Request
 }
 
-func (c *Callouts) GetResponse() *Response {
+func (c *Callouts) GetResponse() *RequestCalloutPluginResponse {
 	if c == nil {
 		return nil
 	}
@@ -1616,6 +1616,8 @@ func (r *RequestCalloutPluginService) GetID() *string {
 
 // RequestCalloutPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type RequestCalloutPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -1655,6 +1657,13 @@ func (r *RequestCalloutPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (r *RequestCalloutPlugin) GetCondition() *string {
+	if r == nil {
+		return nil
+	}
+	return r.Condition
 }
 
 func (r *RequestCalloutPlugin) GetCreatedAt() *int64 {

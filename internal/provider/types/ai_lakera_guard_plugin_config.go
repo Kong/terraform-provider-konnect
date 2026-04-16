@@ -10,6 +10,7 @@ type AiLakeraGuardPluginConfig struct {
 	APIKey                  types.String  `tfsdk:"api_key"`
 	GuardingMode            types.String  `tfsdk:"guarding_mode"`
 	LakeraServiceURL        types.String  `tfsdk:"lakera_service_url"`
+	LogBlockedContent       types.Bool    `tfsdk:"log_blocked_content"`
 	ProjectID               types.String  `tfsdk:"project_id"`
 	RequestFailureMessage   types.String  `tfsdk:"request_failure_message"`
 	ResponseBufferSize      types.Float64 `tfsdk:"response_buffer_size"`

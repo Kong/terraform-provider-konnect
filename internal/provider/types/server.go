@@ -7,7 +7,8 @@ import (
 )
 
 type Server struct {
-	ForwardClientHeaders types.Bool    `tfsdk:"forward_client_headers"`
-	Tag                  types.String  `tfsdk:"tag"`
-	Timeout              types.Float64 `tfsdk:"timeout"`
+	ForwardClientHeaders types.Bool               `tfsdk:"forward_client_headers"`
+	Session              *AiMcpProxyPluginSession `tfsdk:"session"`
+	Tag                  types.String             `tfsdk:"tag"`
+	Timeout              types.Float64            `tfsdk:"timeout"`
 }

@@ -14,6 +14,7 @@ GatewayPluginUpstreamOauth Resource
 
 ```terraform
 resource "konnect_gateway_plugin_upstream_oauth" "my_gatewaypluginupstreamoauth" {
+  condition = "...my_condition..."
   config = {
     behavior = {
       idp_error_response_body_template = "{ \"code\": \"{{status}}\", \"message\": \"{{message}}\" }"
@@ -170,6 +171,7 @@ resource "konnect_gateway_plugin_upstream_oauth" "my_gatewaypluginupstreamoauth"
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.

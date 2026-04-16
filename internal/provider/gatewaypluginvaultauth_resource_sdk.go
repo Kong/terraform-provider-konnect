@@ -15,6 +15,7 @@ func (r *GatewayPluginVaultAuthResourceModel) RefreshFromSharedVaultAuthPlugin(c
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
@@ -187,6 +188,12 @@ func (r *GatewayPluginVaultAuthResourceModel) ToOperationsUpdateVaultauthPluginR
 func (r *GatewayPluginVaultAuthResourceModel) ToSharedVaultAuthPlugin(ctx context.Context) (*shared.VaultAuthPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -369,6 +376,7 @@ func (r *GatewayPluginVaultAuthResourceModel) ToSharedVaultAuthPlugin(ctx contex
 		}
 	}
 	out := shared.VaultAuthPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

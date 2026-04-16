@@ -15,6 +15,7 @@ func (r *GatewayPluginStandardWebhooksResourceModel) RefreshFromSharedStandardWe
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.StandardWebhooksPluginConfig{}
 		r.Config.SecretV1 = types.StringValue(resp.Config.SecretV1)
 		r.Config.ToleranceSecond = types.Int64PointerValue(resp.Config.ToleranceSecond)
@@ -179,6 +180,12 @@ func (r *GatewayPluginStandardWebhooksResourceModel) ToOperationsUpdateStandardw
 func (r *GatewayPluginStandardWebhooksResourceModel) ToSharedStandardWebhooksPlugin(ctx context.Context) (*shared.StandardWebhooksPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -326,6 +333,7 @@ func (r *GatewayPluginStandardWebhooksResourceModel) ToSharedStandardWebhooksPlu
 		}
 	}
 	out := shared.StandardWebhooksPlugin{
+		Condition:     condition,
 		CreatedAt:     createdAt,
 		Enabled:       enabled,
 		ID:            id,

@@ -15,6 +15,7 @@ func (r *GatewayPluginProxyCacheResourceModel) RefreshFromSharedProxyCachePlugin
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.ProxyCachePluginConfig{}
 		r.Config.CacheControl = types.BoolPointerValue(resp.Config.CacheControl)
 		r.Config.CacheTTL = types.Int64PointerValue(resp.Config.CacheTTL)
@@ -230,6 +231,12 @@ func (r *GatewayPluginProxyCacheResourceModel) ToOperationsUpdateProxycachePlugi
 func (r *GatewayPluginProxyCacheResourceModel) ToSharedProxyCachePlugin(ctx context.Context) (*shared.ProxyCachePlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -479,6 +486,7 @@ func (r *GatewayPluginProxyCacheResourceModel) ToSharedProxyCachePlugin(ctx cont
 		}
 	}
 	out := shared.ProxyCachePlugin{
+		Condition:     condition,
 		CreatedAt:     createdAt,
 		Enabled:       enabled,
 		ID:            id,

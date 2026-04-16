@@ -173,7 +173,7 @@ type Oauth2IntrospectionPluginConfig struct {
 	// A list of custom headers to be added in the introspection request.
 	CustomIntrospectionHeaders map[string]string `json:"custom_introspection_headers,omitempty"`
 	// An optional boolean value telling the plugin to hide the credential to the upstream API server. It will be removed by Kong before proxying the request.
-	HideCredentials *bool `default:"false" json:"hide_credentials"`
+	HideCredentials *bool `default:"true" json:"hide_credentials"`
 	// A boolean indicating whether to forward information about the current downstream request to the introspect endpoint. If true, headers `X-Request-Path` and `X-Request-Http-Method` will be inserted into the introspect request.
 	IntrospectRequest *bool `default:"false" json:"introspect_request"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
@@ -381,6 +381,8 @@ func (o *Oauth2IntrospectionPluginService) GetID() *string {
 
 // Oauth2IntrospectionPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type Oauth2IntrospectionPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -416,6 +418,13 @@ func (o *Oauth2IntrospectionPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (o *Oauth2IntrospectionPlugin) GetCondition() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Condition
 }
 
 func (o *Oauth2IntrospectionPlugin) GetCreatedAt() *int64 {

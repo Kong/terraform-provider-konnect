@@ -15,6 +15,7 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) RefreshFromSharedUpstreamTim
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
@@ -184,6 +185,12 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsUpdateUpstreamti
 func (r *GatewayPluginUpstreamTimeoutResourceModel) ToSharedUpstreamTimeoutPlugin(ctx context.Context) (*shared.UpstreamTimeoutPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -344,6 +351,7 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) ToSharedUpstreamTimeoutPlugi
 		}
 	}
 	out := shared.UpstreamTimeoutPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

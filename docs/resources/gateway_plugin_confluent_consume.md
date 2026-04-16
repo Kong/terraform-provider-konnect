@@ -14,6 +14,7 @@ GatewayPluginConfluentConsume Resource
 
 ```terraform
 resource "konnect_gateway_plugin_confluent_consume" "my_gatewaypluginconfluentconsume" {
+  condition = "...my_condition..."
   config = {
     auto_offset_reset = "earliest"
     bootstrap_servers = [
@@ -76,7 +77,7 @@ resource "konnect_gateway_plugin_confluent_consume" "my_gatewaypluginconfluentco
             https_proxy_authorization = "...my_https_proxy_authorization..."
             keep_alive                = true
             no_proxy                  = "...my_no_proxy..."
-            ssl_verify                = false
+            ssl_verify                = true
             timeout                   = 10000
           }
         }
@@ -86,7 +87,7 @@ resource "konnect_gateway_plugin_confluent_consume" "my_gatewaypluginconfluentco
       }
     }
     security = {
-      ssl_verify = false
+      ssl_verify = true
     }
     timeout = 10000
     topics = [
@@ -130,7 +131,7 @@ resource "konnect_gateway_plugin_confluent_consume" "my_gatewaypluginconfluentco
                 https_proxy_authorization = "...my_https_proxy_authorization..."
                 keep_alive                = true
                 no_proxy                  = "...my_no_proxy..."
-                ssl_verify                = false
+                ssl_verify                = true
                 timeout                   = 10000
               }
             }
@@ -195,6 +196,7 @@ resource "konnect_gateway_plugin_confluent_consume" "my_gatewaypluginconfluentco
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
@@ -312,7 +314,7 @@ Optional:
 - `https_proxy_authorization` (String) The `Proxy-Authorization` header value to be used with `https_proxy`.
 - `keep_alive` (Boolean) Whether to use keepalive connections to the IdP. Default: true
 - `no_proxy` (String) A comma-separated list of hosts that should not be proxied.
-- `ssl_verify` (Boolean) Whether to verify the certificate presented by the IdP when using HTTPS. Default: false
+- `ssl_verify` (Boolean) Whether to verify the certificate presented by the IdP when using HTTPS. Default: true
 - `timeout` (Number) Network I/O timeout for requests to the IdP in milliseconds. Default: 10000
 
 
@@ -399,7 +401,7 @@ Optional:
 - `https_proxy_authorization` (String) The `Proxy-Authorization` header value to be used with `https_proxy`.
 - `keep_alive` (Boolean) Whether to use keepalive connections to the IdP. Default: true
 - `no_proxy` (String) A comma-separated list of hosts that should not be proxied.
-- `ssl_verify` (Boolean) Whether to verify the certificate presented by the IdP when using HTTPS. Default: false
+- `ssl_verify` (Boolean) Whether to verify the certificate presented by the IdP when using HTTPS. Default: true
 - `timeout` (Number) Network I/O timeout for requests to the IdP in milliseconds. Default: 10000
 
 
@@ -411,7 +413,7 @@ Optional:
 
 Optional:
 
-- `ssl_verify` (Boolean) Enables verification of the certificate presented by the server. Default: false
+- `ssl_verify` (Boolean) Enables verification of the certificate presented by the server. Default: true
 
 
 

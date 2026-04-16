@@ -48,6 +48,7 @@ Default: "private"; must be one of ["public", "private"]
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
+- `warnings` (List of String) Informational warnings (e.g. incompatible fields stripped for ACE). Empty if none.
 
 ## Import
 

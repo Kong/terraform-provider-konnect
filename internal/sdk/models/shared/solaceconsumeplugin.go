@@ -486,7 +486,7 @@ type Session struct {
 	// Additional Solace session properties (each setting needs to have `SESSION_` prefix).
 	Properties map[string]string `json:"properties,omitempty"`
 	// Indicates whether the API should validate server certificates with the trusted certificates.
-	SslValidateCertificate *bool `default:"false" json:"ssl_validate_certificate"`
+	SslValidateCertificate *bool `default:"true" json:"ssl_validate_certificate"`
 	// The name of the Message VPN to attempt to join when connecting to an event broker.
 	VpnName *string `default:"null" json:"vpn_name"`
 }
@@ -760,6 +760,8 @@ func (s *SolaceConsumePluginService) GetID() *string {
 
 // SolaceConsumePlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type SolaceConsumePlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -795,6 +797,13 @@ func (s *SolaceConsumePlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (s *SolaceConsumePlugin) GetCondition() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Condition
 }
 
 func (s *SolaceConsumePlugin) GetCreatedAt() *int64 {

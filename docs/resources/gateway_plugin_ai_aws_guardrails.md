@@ -14,6 +14,7 @@ GatewayPluginAiAwsGuardrails Resource
 
 ```terraform
 resource "konnect_gateway_plugin_ai_aws_guardrails" "my_gatewaypluginaiawsguardrails" {
+  condition = "...my_condition..."
   config = {
     allow_masking         = false
     aws_access_key_id     = "...my_aws_access_key_id..."
@@ -25,6 +26,7 @@ resource "konnect_gateway_plugin_ai_aws_guardrails" "my_gatewaypluginaiawsguardr
     guarding_mode         = "INPUT"
     guardrails_id         = "...my_guardrails_id..."
     guardrails_version    = "...my_guardrails_version..."
+    log_blocked_content   = false
     response_buffer_size  = 100
     ssl_verify            = true
     stop_on_error         = true
@@ -87,6 +89,7 @@ resource "konnect_gateway_plugin_ai_aws_guardrails" "my_gatewaypluginaiawsguardr
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -119,8 +122,9 @@ Optional:
 - `aws_secret_access_key` (String) The AWS secret access key to use for authentication
 - `aws_sts_endpoint_url` (String) Override the STS endpoint URL when assuming a different role
 - `guarding_mode` (String) The guardrail mode to use for the request. Default: "INPUT"; must be one of ["BOTH", "INPUT", "OUTPUT"]
+- `log_blocked_content` (Boolean) Whether to log prompts and responses that are blocked by the guardrail. Default: false
 - `response_buffer_size` (Number) The amount of bytes receiving from upstream to be buffered before sending to the guardrails service. This only applies to the response content guard. Default: 100
-- `ssl_verify` (Boolean) Verify TLS certificate when connecting to the bedrock service.
+- `ssl_verify` (Boolean) Verify TLS certificate when connecting to the bedrock service. Default: true
 - `stop_on_error` (Boolean) Stop processing if an error occurs. Default: true
 - `text_source` (String) Select where to pick the 'text' for the Content Guard Services request. Default: "concatenate_all_content"; must be one of ["concatenate_all_content", "concatenate_user_content"]
 - `timeout` (Number) Connection timeout with the bedrock service. Default: 10000

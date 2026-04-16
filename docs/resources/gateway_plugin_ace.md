@@ -14,6 +14,7 @@ GatewayPluginAce Resource
 
 ```terraform
 resource "konnect_gateway_plugin_ace" "my_gatewaypluginace" {
+  condition = "...my_condition..."
   config = {
     anonymous    = "...my_anonymous..."
     match_policy = "if_present"
@@ -62,7 +63,7 @@ resource "konnect_gateway_plugin_ace" "my_gatewaypluginace" {
         sentinel_username = "...my_sentinel_username..."
         server_name       = "...my_server_name..."
         ssl               = false
-        ssl_verify        = false
+        ssl_verify        = true
         username          = "...my_username..."
       }
       sync_rate = 161.65
@@ -117,6 +118,7 @@ resource "konnect_gateway_plugin_ace" "my_gatewaypluginace" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
@@ -172,7 +174,7 @@ Optional:
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
-- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: false
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
 - `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 
 <a id="nestedatt--config--rate_limiting--redis--cloud_authentication"></a>

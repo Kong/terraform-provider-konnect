@@ -15,6 +15,7 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.KafkaLogPluginConfig{}
 		if resp.Config.Authentication == nil {
 			r.Config.Authentication = nil
@@ -345,6 +346,12 @@ func (r *GatewayPluginKafkaLogResourceModel) ToOperationsUpdateKafkalogPluginReq
 func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin(ctx context.Context) (*shared.KafkaLogPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -939,6 +946,7 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin(ctx context.
 		}
 	}
 	out := shared.KafkaLogPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

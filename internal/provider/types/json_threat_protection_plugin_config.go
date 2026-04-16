@@ -8,6 +8,7 @@ import (
 
 type JSONThreatProtectionPluginConfig struct {
 	AllowDuplicateObjectEntryName types.Bool   `tfsdk:"allow_duplicate_object_entry_name"`
+	AllowNonJSONRequests          types.Bool   `tfsdk:"allow_non_json_requests"`
 	EnforcementMode               types.String `tfsdk:"enforcement_mode"`
 	ErrorMessage                  types.String `tfsdk:"error_message"`
 	ErrorStatusCode               types.Int64  `tfsdk:"error_status_code"`

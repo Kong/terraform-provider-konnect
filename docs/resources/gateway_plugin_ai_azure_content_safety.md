@@ -14,6 +14,7 @@ GatewayPluginAiAzureContentSafety Resource
 
 ```terraform
 resource "konnect_gateway_plugin_ai_azure_content_safety" "my_gatewaypluginaiazurecontentsafety" {
+  condition = "...my_condition..."
   config = {
     azure_api_version          = "2023-10-01"
     azure_client_id            = "...my_azure_client_id..."
@@ -33,10 +34,11 @@ resource "konnect_gateway_plugin_ai_azure_content_safety" "my_gatewaypluginaiazu
     content_safety_url    = "...my_content_safety_url..."
     guarding_mode         = "INPUT"
     halt_on_blocklist_hit = true
+    log_blocked_content   = false
     output_type           = "FourSeverityLevels"
     response_buffer_size  = 100
     reveal_failure_reason = true
-    ssl_verify            = false
+    ssl_verify            = true
     stop_on_error         = true
     text_source           = "concatenate_all_content"
   }
@@ -90,6 +92,7 @@ resource "konnect_gateway_plugin_ai_azure_content_safety" "my_gatewaypluginaiazu
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
@@ -121,10 +124,11 @@ Optional:
 - `content_safety_key` (String) If `azure_use_managed_identity` is true, set the API key to call Content Safety.
 - `guarding_mode` (String) The guard mode to use for the request. Default: "INPUT"; must be one of ["BOTH", "INPUT", "OUTPUT"]
 - `halt_on_blocklist_hit` (Boolean) Tells Azure to reject the request if any blocklist filter is hit. Default: true
+- `log_blocked_content` (Boolean) Whether to log prompts and responses that are blocked by the guardrail. Default: false
 - `output_type` (String) See https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/content-filter#content-filtering-categories. Default: "FourSeverityLevels"; must be one of ["EightSeverityLevels", "FourSeverityLevels"]
 - `response_buffer_size` (Number) The amount of bytes receiving from upstream to be buffered before sending to the guardrails service. This only applies to the response content guard. Default: 100
 - `reveal_failure_reason` (Boolean) Set true to tell the caller why their request was rejected, if so. Default: true
-- `ssl_verify` (Boolean) Whether to verify the certificate presented by the Azure Content Safety service when using HTTPS. Default: false
+- `ssl_verify` (Boolean) Whether to verify the certificate presented by the Azure Content Safety service when using HTTPS. Default: true
 - `stop_on_error` (Boolean) Stop processing if an error occurs. Default: true
 - `text_source` (String) Select where to pick the 'text' for the Azure Content Services request. Default: "concatenate_all_content"; must be one of ["concatenate_all_content", "concatenate_user_content"]
 

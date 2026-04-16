@@ -35,6 +35,8 @@ func (e *TLSVersions) UnmarshalJSON(data []byte) error {
 }
 
 // ClientIdentity - Client mTLS configuration.
+//
+// **Requires a minimum runtime version of `1.1`**.
 type ClientIdentity struct {
 	// A literal value or a reference to an existing secret as a template string expression.
 	// The value is stored and returned by the API as-is, not treated as sensitive information.
@@ -84,6 +86,8 @@ type BackendClusterTLS struct {
 	// List of supported TLS versions.
 	TLSVersions []TLSVersions `json:"tls_versions,omitempty"`
 	// Client mTLS configuration.
+	//
+	// **Requires a minimum runtime version of `1.1`**.
 	ClientIdentity *ClientIdentity `json:"client_identity,omitempty"`
 }
 

@@ -167,7 +167,9 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Schema(ctx c
 								MarkdownDescription: `Configures DNS names assigned to brokers in virtual clusters.` + "\n" +
 									`` + "\n" +
 									`- ` + "`" + `per_cluster_suffix` + "`" + ` is the default and allocates one level in the hierarchy for virtual clusters: ` + "`" + `broker-{node_id}.{virtual_cluster}.{sni_suffix}` + "`" + `` + "\n" +
-									`- ` + "`" + `shared_suffix` + "`" + ` puts all brokers from every virtual clusters into the same level: ` + "`" + `broker-{node_id}-{virtual_cluster}.{sni_suffix}` + "`" + `. This makes it easier to manage certificates for this listener.`,
+									`- ` + "`" + `shared_suffix` + "`" + ` puts all brokers from every virtual clusters into the same level: ` + "`" + `broker-{node_id}-{virtual_cluster}.{sni_suffix}` + "`" + `. This makes it easier to manage certificates for this listener.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.1` + "`" + `**.`,
 							},
 							"sni_suffix": schema.StringAttribute{
 								Optional: true,

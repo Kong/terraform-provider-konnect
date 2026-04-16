@@ -15,15 +15,18 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/listvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
@@ -44,6 +47,7 @@ type GatewayPluginAiMcpOauth2Resource struct {
 
 // GatewayPluginAiMcpOauth2ResourceModel describes the resource data model.
 type GatewayPluginAiMcpOauth2ResourceModel struct {
+	Condition      types.String                     `tfsdk:"condition"`
 	Config         *tfTypes.AiMcpOauth2PluginConfig `tfsdk:"config"`
 	ControlPlaneID types.String                     `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                      `tfsdk:"created_at"`
@@ -67,6 +71,13 @@ func (r *GatewayPluginAiMcpOauth2Resource) Schema(ctx context.Context, req resou
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginAiMcpOauth2 Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -110,6 +121,7 @@ func (r *GatewayPluginAiMcpOauth2Resource) Schema(ctx context.Context, req resou
 								},
 							},
 						},
+						Description: `Map top-level token claims to upstream headers. Mutually exclusive with upstream_headers.`,
 					},
 					"client_alg": schema.StringAttribute{
 						Computed:    true,
@@ -150,7 +162,7 @@ func (r *GatewayPluginAiMcpOauth2Resource) Schema(ctx context.Context, req resou
 						},
 					},
 					"client_id": schema.StringAttribute{
-						Required:    true,
+						Optional:    true,
 						Description: `The client ID for authentication.`,
 					},
 					"client_jwk": schema.StringAttribute{
@@ -160,6 +172,45 @@ func (r *GatewayPluginAiMcpOauth2Resource) Schema(ctx context.Context, req resou
 					"client_secret": schema.StringAttribute{
 						Optional:    true,
 						Description: `The client secret for authentication.`,
+					},
+					"consumer_by": schema.ListAttribute{
+						Computed: true,
+						Optional: true,
+						Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+							types.StringValue("custom_id"),
+							types.StringValue("username"),
+						})),
+						ElementType: types.StringType,
+						Description: `Consumer fields used for mapping: - ` + "`" + `id` + "`" + `: try to find the matching Consumer by ` + "`" + `id` + "`" + ` - ` + "`" + `username` + "`" + `: try to find the matching Consumer by ` + "`" + `username` + "`" + ` - ` + "`" + `custom_id` + "`" + `: try to find the matching Consumer by ` + "`" + `custom_id` + "`" + `. Default: ["custom_id","username"]`,
+					},
+					"consumer_claim": schema.ListAttribute{
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.`,
+					},
+					"consumer_groups_claim": schema.ListAttribute{
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `The claim used for consumer groups mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.`,
+					},
+					"consumer_groups_optional": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `Do not terminate the request if consumer groups mapping fails. Default: false`,
+					},
+					"consumer_optional": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `Do not terminate the request if consumer mapping fails. Default: false`,
+					},
+					"credential_claim": schema.ListAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("sub")})),
+						ElementType: types.StringType,
+						Description: `The claim used to derive virtual credentials (e.g. to be consumed by the rate-limiting plugin), in case the consumer mapping is not used. If multiple values are set, it means the claim is inside a nested object of the token payload. Default: ["sub"]`,
 					},
 					"headers": schema.MapAttribute{
 						Optional:    true,
@@ -194,8 +245,8 @@ func (r *GatewayPluginAiMcpOauth2Resource) Schema(ctx context.Context, req resou
 						Description: `If enabled, the plugin will not validate the audience of the access token. Disable it if the authorization server does not correctly set the audience claim according to RFC 8707 and MCP specification. Default: false`,
 					},
 					"introspection_endpoint": schema.StringAttribute{
-						Required:    true,
-						Description: `The introspection endpoint URL.`,
+						Optional:    true,
+						Description: `The Token Introspection Endpoint. If not provided, the plugin will attempt to use JWKS to verify the token. If the token is opaque, this field must be provided.`,
 					},
 					"introspection_format": schema.StringAttribute{
 						Computed:    true,
@@ -209,6 +260,22 @@ func (r *GatewayPluginAiMcpOauth2Resource) Schema(ctx context.Context, req resou
 							),
 						},
 					},
+					"jwks_cache_ttl": schema.Int64Attribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     int64default.StaticInt64(3600),
+						Description: `The cache TTL in seconds for JWKS. Default: 3600`,
+					},
+					"jwks_endpoint": schema.StringAttribute{
+						Optional:    true,
+						Description: `The JWKS endpoint URL for fetching the authorization server's public keys. If not provided, the plugin will attempt to discover it from the authorization server metadata.`,
+					},
+					"jwt_claims_leeway": schema.Int64Attribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     int64default.StaticInt64(0),
+						Description: `The leeway in seconds for JWT claims validation (exp, nbf). This allows tokens that are slightly expired or not yet valid due to clock skew. Default: 0`,
+					},
 					"keepalive": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -221,6 +288,22 @@ func (r *GatewayPluginAiMcpOauth2Resource) Schema(ctx context.Context, req resou
 						Default:     int64default.StaticInt64(1048576),
 						Description: `max allowed body size allowed to be handled as MCP request. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 1048576`,
 					},
+					"metadata_cache_ttl": schema.Int64Attribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     int64default.StaticInt64(3600),
+						Description: `The cache TTL in seconds for discovered authorization server metadata. Default: 3600`,
+					},
+					"metadata_discovery_endpoint": schema.StringAttribute{
+						Optional:    true,
+						Description: `Custom OAuth 2.0 authorization server metadata discovery URL. If provided, the plugin will use this URL directly instead of trying standard well-known discovery paths. The custom endpoint URL should end with either '/.well-known/openid-configuration' or '/.well-known/oauth-authorization-server'.`,
+					},
+					"metadata_discovery_retry": schema.Int64Attribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     int64default.StaticInt64(3),
+						Description: `The number of retry attempts for metadata discovery requests per URL. Default: 3`,
+					},
 					"metadata_endpoint": schema.StringAttribute{
 						Optional:    true,
 						Description: `The path for OAuth 2.0 Protected Resource Metadata. Default to $resource/.well-known/oauth-protected-resource. For example, if the configured resource is https://api.example.com/mcp, the metadata endpoint is /mcp/.well-known/oauth-protected-resource.`,
@@ -232,6 +315,12 @@ func (r *GatewayPluginAiMcpOauth2Resource) Schema(ctx context.Context, req resou
 					"no_proxy": schema.StringAttribute{
 						Optional:    true,
 						Description: `Comma-separated list of hosts to exclude from proxy.`,
+					},
+					"passthrough_credentials": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `Keep the credentials used for authentication in the request. If multiple credentials are sent with the same request, the plugin will keep those that were used for successful authentication. Default: false`,
 					},
 					"resource": schema.StringAttribute{
 						Required:    true,
@@ -266,6 +355,199 @@ func (r *GatewayPluginAiMcpOauth2Resource) Schema(ctx context.Context, req resou
 						Optional:    true,
 						Default:     booldefault.StaticBool(true),
 						Description: `Verify server certificate in mTLS. Default: true`,
+					},
+					"token_exchange": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"cache": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`enabled`: types.BoolType,
+									`ttl`:     types.Int64Type,
+								},
+							},
+							"client_auth":   types.StringType,
+							"client_id":     types.StringType,
+							"client_secret": types.StringType,
+							"enabled":       types.BoolType,
+							"request": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`actor_token`:        types.StringType,
+									`actor_token_header`: types.StringType,
+									`actor_token_source`: types.StringType,
+									`actor_token_type`:   types.StringType,
+									`audience`: types.ListType{
+										ElemType: types.StringType,
+									},
+									`requested_token_type`: types.StringType,
+									`resource`:             types.StringType,
+									`scopes`: types.ListType{
+										ElemType: types.StringType,
+									},
+									`subject_token_type`: types.StringType,
+								},
+							},
+							"token_endpoint": types.StringType,
+						})),
+						Attributes: map[string]schema.Attribute{
+							"cache": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"enabled": types.BoolType,
+									"ttl":     types.Int64Type,
+								})),
+								Attributes: map[string]schema.Attribute{
+									"enabled": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(true),
+										Description: `Whether to cache exchanged token. Default: true`,
+									},
+									"ttl": schema.Int64Attribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     int64default.StaticInt64(3600),
+										Description: `The default cache TTL to store exchanged token. If the exchange endpoint does not provide 'expires_in' data when token is exchanged this TTL value will be used to cache it. Default: 3600`,
+									},
+								},
+							},
+							"client_auth": schema.StringAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     stringdefault.StaticString(`client_secret_basic`),
+								Description: `The type of authentication method to use with the exchange endpoint. Use 'inherit' to use the same client_id, and secret as in introspection_endpoint. Default: "client_secret_basic"; must be one of ["client_secret_basic", "client_secret_post", "inherit", "none"]`,
+								Validators: []validator.String{
+									stringvalidator.OneOf(
+										"client_secret_basic",
+										"client_secret_post",
+										"inherit",
+										"none",
+									),
+								},
+							},
+							"client_id": schema.StringAttribute{
+								Optional:    true,
+								Description: `The client ID for authentication.`,
+							},
+							"client_secret": schema.StringAttribute{
+								Optional:    true,
+								Description: `The client secret for authentication.`,
+							},
+							"enabled": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Whether Token Exchange should be enabled. Default: false`,
+							},
+							"request": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"actor_token":        types.StringType,
+									"actor_token_header": types.StringType,
+									"actor_token_source": types.StringType,
+									"actor_token_type":   types.StringType,
+									"audience": types.ListType{
+										ElemType: types.StringType,
+									},
+									"requested_token_type": types.StringType,
+									"resource":             types.StringType,
+									"scopes": types.ListType{
+										ElemType: types.StringType,
+									},
+									"subject_token_type": types.StringType,
+								})),
+								Attributes: map[string]schema.Attribute{
+									"actor_token": schema.StringAttribute{
+										Optional:    true,
+										Description: `Static actor token value (when source is config).`,
+									},
+									"actor_token_header": schema.StringAttribute{
+										Optional:    true,
+										Description: `Header name containing actor token (when source is header).`,
+									},
+									"actor_token_source": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     stringdefault.StaticString(`none`),
+										Description: `Where to obtain actor token. Default: "none"; must be one of ["config", "header", "none"]`,
+										Validators: []validator.String{
+											stringvalidator.OneOf(
+												"config",
+												"header",
+												"none",
+											),
+										},
+									},
+									"actor_token_type": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     stringdefault.StaticString(`urn:ietf:params:oauth:token-type:access_token`),
+										Description: `The token type identifier of actor token. Default: "urn:ietf:params:oauth:token-type:access_token"`,
+									},
+									"audience": schema.ListAttribute{
+										Optional:    true,
+										ElementType: types.StringType,
+										Description: `Audiences used in the token exchange request.`,
+									},
+									"requested_token_type": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     stringdefault.StaticString(`urn:ietf:params:oauth:token-type:access_token`),
+										Description: `The desired output token type. Default: "urn:ietf:params:oauth:token-type:access_token"`,
+									},
+									"resource": schema.StringAttribute{
+										Optional:    true,
+										Description: `The absolute URI of target MCP service where token will be used.`,
+									},
+									"scopes": schema.ListAttribute{
+										Optional:    true,
+										ElementType: types.StringType,
+										Description: `Scopes used in the token exchange request.`,
+									},
+									"subject_token_type": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     stringdefault.StaticString(`urn:ietf:params:oauth:token-type:access_token`),
+										Description: `The type of token to be exchanged. Default: "urn:ietf:params:oauth:token-type:access_token"`,
+									},
+								},
+							},
+							"token_endpoint": schema.StringAttribute{
+								Required:    true,
+								Description: `The token exchange endopint.`,
+							},
+						},
+						Description: `Configuration details about token exchange that should happen before reaching upstream MCP server`,
+					},
+					"upstream_headers": schema.ListNestedAttribute{
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"header": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `The name of the header. Not Null`,
+									Validators: []validator.String{
+										speakeasy_stringvalidators.NotNull(),
+									},
+								},
+								"path": schema.ListAttribute{
+									Computed:    true,
+									Optional:    true,
+									ElementType: types.StringType,
+									Description: `The path of the header value. Not Null`,
+									Validators: []validator.List{
+										speakeasy_listvalidators.NotNull(),
+									},
+								},
+							},
+						},
+						Description: `Map token claims to upstream headers using path-based access. Each entry specifies a header name and a path (array of strings) to traverse the token claims. Mutually exclusive with claim_to_header.`,
 					},
 				},
 				Description: `The configuration for MCP authorization in OAuth2. If this is enabled, make sure the configured metadata_endpoint is also covered by the same route so the authorization can be applied correctly.`,

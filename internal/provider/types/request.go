@@ -7,12 +7,9 @@ import (
 )
 
 type Request struct {
-	Body     *RequestCalloutPluginConfigBody            `tfsdk:"body"`
-	ByLua    types.String                               `tfsdk:"by_lua"`
-	Error    *Error                                     `tfsdk:"error"`
-	Headers  *RequestCalloutPluginConfigCalloutsHeaders `tfsdk:"headers"`
-	HTTPOpts *HTTPOpts                                  `tfsdk:"http_opts"`
-	Method   types.String                               `tfsdk:"method"`
-	Query    *RequestCalloutPluginConfigCalloutsHeaders `tfsdk:"query"`
-	URL      types.String                               `tfsdk:"url"`
+	Auth    *AiCustomGuardrailPluginAuth `tfsdk:"auth"`
+	Body    map[string]types.String      `tfsdk:"body"`
+	Headers map[string]types.String      `tfsdk:"headers"`
+	Queries map[string]types.String      `tfsdk:"queries"`
+	URL     types.String                 `tfsdk:"url"`
 }

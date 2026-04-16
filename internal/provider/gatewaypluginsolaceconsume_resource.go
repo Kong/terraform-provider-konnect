@@ -45,6 +45,7 @@ type GatewayPluginSolaceConsumeResource struct {
 
 // GatewayPluginSolaceConsumeResourceModel describes the resource data model.
 type GatewayPluginSolaceConsumeResourceModel struct {
+	Condition      types.String                       `tfsdk:"condition"`
 	Config         *tfTypes.SolaceConsumePluginConfig `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -68,6 +69,13 @@ func (r *GatewayPluginSolaceConsumeResource) Schema(ctx context.Context, req res
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginSolaceConsume Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -302,8 +310,8 @@ func (r *GatewayPluginSolaceConsumeResource) Schema(ctx context.Context, req res
 							"ssl_validate_certificate": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     booldefault.StaticBool(false),
-								Description: `Indicates whether the API should validate server certificates with the trusted certificates. Default: false`,
+								Default:     booldefault.StaticBool(true),
+								Description: `Indicates whether the API should validate server certificates with the trusted certificates. Default: true`,
 							},
 							"vpn_name": schema.StringAttribute{
 								Optional:    true,

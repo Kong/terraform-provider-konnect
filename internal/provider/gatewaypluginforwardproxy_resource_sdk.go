@@ -15,6 +15,7 @@ func (r *GatewayPluginForwardProxyResourceModel) RefreshFromSharedForwardProxyPl
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
@@ -198,6 +199,12 @@ func (r *GatewayPluginForwardProxyResourceModel) ToOperationsUpdateForwardproxyP
 func (r *GatewayPluginForwardProxyResourceModel) ToSharedForwardProxyPlugin(ctx context.Context) (*shared.ForwardProxyPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -400,6 +407,7 @@ func (r *GatewayPluginForwardProxyResourceModel) ToSharedForwardProxyPlugin(ctx 
 		}
 	}
 	out := shared.ForwardProxyPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

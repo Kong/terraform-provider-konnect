@@ -14,6 +14,7 @@ GatewayPluginSolaceConsume Resource
 
 ```terraform
 resource "konnect_gateway_plugin_solace_consume" "my_gatewaypluginsolaceconsume" {
+  condition = "...my_condition..."
   config = {
     flow = {
       ack_mode = "CLIENT"
@@ -59,7 +60,7 @@ resource "konnect_gateway_plugin_solace_consume" "my_gatewaypluginsolaceconsume"
       properties = {
         key = "value"
       }
-      ssl_validate_certificate = false
+      ssl_validate_certificate = true
       vpn_name                 = "...my_vpn_name..."
     }
     websocket = {
@@ -118,6 +119,7 @@ resource "konnect_gateway_plugin_solace_consume" "my_gatewaypluginsolaceconsume"
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
@@ -188,7 +190,7 @@ Optional:
 - `generate_sender_id` (Boolean) When enabled, a sender id is automatically included (if not already present) in the Solace-defined fields for each message sent. Default: true
 - `generate_sequence_number` (Boolean) When enabled, a sequence number is automatically included (if not already present) in the Solace-defined fields for each message sent. Default: true
 - `properties` (Map of String) Additional Solace session properties (each setting needs to have `SESSION_` prefix).
-- `ssl_validate_certificate` (Boolean) Indicates whether the API should validate server certificates with the trusted certificates. Default: false
+- `ssl_validate_certificate` (Boolean) Indicates whether the API should validate server certificates with the trusted certificates. Default: true
 - `vpn_name` (String) The name of the Message VPN to attempt to join when connecting to an event broker.
 
 <a id="nestedatt--config--session--authentication"></a>

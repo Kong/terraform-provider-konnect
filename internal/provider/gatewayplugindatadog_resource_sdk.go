@@ -15,6 +15,7 @@ func (r *GatewayPluginDatadogResourceModel) RefreshFromSharedDatadogPlugin(ctx c
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
@@ -22,10 +23,10 @@ func (r *GatewayPluginDatadogResourceModel) RefreshFromSharedDatadogPlugin(ctx c
 			r.Config.ConsumerTag = types.StringPointerValue(resp.Config.ConsumerTag)
 			r.Config.FlushTimeout = types.Float64PointerValue(resp.Config.FlushTimeout)
 			r.Config.Host = types.StringPointerValue(resp.Config.Host)
-			r.Config.Metrics = []tfTypes.Metrics{}
+			r.Config.Metrics = []tfTypes.DatadogPluginMetrics{}
 
 			for _, metricsItem := range resp.Config.Metrics {
-				var metrics tfTypes.Metrics
+				var metrics tfTypes.DatadogPluginMetrics
 
 				if metricsItem.ConsumerIdentifier != nil {
 					metrics.ConsumerIdentifier = types.StringValue(string(*metricsItem.ConsumerIdentifier))
@@ -228,6 +229,12 @@ func (r *GatewayPluginDatadogResourceModel) ToOperationsUpdateDatadogPluginReque
 func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin(ctx context.Context) (*shared.DatadogPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -341,7 +348,7 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin(ctx context.Co
 		} else {
 			host = nil
 		}
-		metrics := make([]shared.Metrics, 0, len(r.Config.Metrics))
+		metrics := make([]shared.DatadogPluginMetrics, 0, len(r.Config.Metrics))
 		for metricsIndex := range r.Config.Metrics {
 			consumerIdentifier := new(shared.DatadogPluginConsumerIdentifier)
 			if !r.Config.Metrics[metricsIndex].ConsumerIdentifier.IsUnknown() && !r.Config.Metrics[metricsIndex].ConsumerIdentifier.IsNull() {
@@ -361,7 +368,7 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin(ctx context.Co
 			for tagsIndex1 := range r.Config.Metrics[metricsIndex].Tags {
 				tags1 = append(tags1, r.Config.Metrics[metricsIndex].Tags[tagsIndex1].ValueString())
 			}
-			metrics = append(metrics, shared.Metrics{
+			metrics = append(metrics, shared.DatadogPluginMetrics{
 				ConsumerIdentifier: consumerIdentifier,
 				Name:               name1,
 				SampleRate:         sampleRate,
@@ -528,6 +535,7 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPlugin(ctx context.Co
 		}
 	}
 	out := shared.DatadogPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

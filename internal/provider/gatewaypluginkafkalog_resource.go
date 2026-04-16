@@ -48,6 +48,7 @@ type GatewayPluginKafkaLogResource struct {
 
 // GatewayPluginKafkaLogResourceModel describes the resource data model.
 type GatewayPluginKafkaLogResourceModel struct {
+	Condition      types.String                  `tfsdk:"condition"`
 	Config         *tfTypes.KafkaLogPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                  `tfsdk:"consumer"`
 	ControlPlaneID types.String                  `tfsdk:"control_plane_id"`
@@ -72,6 +73,13 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginKafkaLog Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -610,8 +618,8 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 													"ssl_verify": schema.BoolAttribute{
 														Computed:    true,
 														Optional:    true,
-														Default:     booldefault.StaticBool(false),
-														Description: `Whether to verify the certificate presented by the IdP when using HTTPS. Default: false`,
+														Default:     booldefault.StaticBool(true),
+														Description: `Whether to verify the certificate presented by the IdP when using HTTPS. Default: true`,
 													},
 													"timeout": schema.Int64Attribute{
 														Computed:    true,
@@ -704,8 +712,8 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 							"ssl_verify": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     booldefault.StaticBool(false),
-								Description: `When using TLS, this option enables verification of the certificate presented by the server. Default: false`,
+								Default:     booldefault.StaticBool(true),
+								Description: `When using TLS, this option enables verification of the certificate presented by the server. Default: true`,
 							},
 						},
 					},

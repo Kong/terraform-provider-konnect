@@ -15,6 +15,7 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) RefreshFromSharedHeaderCertAu
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.HeaderCertAuthPluginConfig{}
 		r.Config.AllowPartialChain = types.BoolPointerValue(resp.Config.AllowPartialChain)
 		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
@@ -204,6 +205,12 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToOperationsUpdateHeadercerta
 func (r *GatewayPluginHeaderCertAuthResourceModel) ToSharedHeaderCertAuthPlugin(ctx context.Context) (*shared.HeaderCertAuthPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -335,9 +342,9 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToSharedHeaderCertAuthPlugin(
 	var certificateHeaderName string
 	certificateHeaderName = r.Config.CertificateHeaderName.ValueString()
 
-	consumerBy := make([]shared.ConsumerBy, 0, len(r.Config.ConsumerBy))
+	consumerBy := make([]shared.HeaderCertAuthPluginConsumerBy, 0, len(r.Config.ConsumerBy))
 	for _, consumerByItem := range r.Config.ConsumerBy {
-		consumerBy = append(consumerBy, shared.ConsumerBy(consumerByItem.ValueString()))
+		consumerBy = append(consumerBy, shared.HeaderCertAuthPluginConsumerBy(consumerByItem.ValueString()))
 	}
 	defaultConsumer := new(string)
 	if !r.Config.DefaultConsumer.IsUnknown() && !r.Config.DefaultConsumer.IsNull() {
@@ -449,6 +456,7 @@ func (r *GatewayPluginHeaderCertAuthResourceModel) ToSharedHeaderCertAuthPlugin(
 		}
 	}
 	out := shared.HeaderCertAuthPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

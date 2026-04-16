@@ -45,6 +45,7 @@ type GatewayPluginAiAzureContentSafetyResource struct {
 
 // GatewayPluginAiAzureContentSafetyResourceModel describes the resource data model.
 type GatewayPluginAiAzureContentSafetyResourceModel struct {
+	Condition      types.String                              `tfsdk:"condition"`
 	Config         *tfTypes.AiAzureContentSafetyPluginConfig `tfsdk:"config"`
 	ControlPlaneID types.String                              `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                               `tfsdk:"created_at"`
@@ -68,6 +69,13 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginAiAzureContentSafety Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -157,6 +165,12 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 						Default:     booldefault.StaticBool(true),
 						Description: `Tells Azure to reject the request if any blocklist filter is hit. Default: true`,
 					},
+					"log_blocked_content": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `Whether to log prompts and responses that are blocked by the guardrail. Default: false`,
+					},
 					"output_type": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -184,8 +198,8 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 					"ssl_verify": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(false),
-						Description: `Whether to verify the certificate presented by the Azure Content Safety service when using HTTPS. Default: false`,
+						Default:     booldefault.StaticBool(true),
+						Description: `Whether to verify the certificate presented by the Azure Content Safety service when using HTTPS. Default: true`,
 					},
 					"stop_on_error": schema.BoolAttribute{
 						Computed:    true,

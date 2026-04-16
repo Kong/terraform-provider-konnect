@@ -48,6 +48,7 @@ type GatewayPluginKafkaConsumeResource struct {
 
 // GatewayPluginKafkaConsumeResourceModel describes the resource data model.
 type GatewayPluginKafkaConsumeResourceModel struct {
+	Condition      types.String                      `tfsdk:"condition"`
 	Config         *tfTypes.KafkaConsumePluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                      `tfsdk:"consumer"`
 	ControlPlaneID types.String                      `tfsdk:"control_plane_id"`
@@ -71,6 +72,13 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginKafkaConsume Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -911,8 +919,8 @@ func (r *GatewayPluginKafkaConsumeResource) Schema(ctx context.Context, req reso
 																"ssl_verify": schema.BoolAttribute{
 																	Computed:    true,
 																	Optional:    true,
-																	Default:     booldefault.StaticBool(false),
-																	Description: `Whether to verify the certificate presented by the IdP when using HTTPS. Default: false`,
+																	Default:     booldefault.StaticBool(true),
+																	Description: `Whether to verify the certificate presented by the IdP when using HTTPS. Default: true`,
 																},
 																"timeout": schema.Int64Attribute{
 																	Computed:    true,

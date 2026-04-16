@@ -15,6 +15,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) RefreshFromSharedG
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
@@ -30,7 +31,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) RefreshFromSharedG
 			if resp.Config.Redis == nil {
 				r.Config.Redis = nil
 			} else {
-				r.Config.Redis = &tfTypes.AcePluginRedis{}
+				r.Config.Redis = &tfTypes.PartialVectordbRedis{}
 				if resp.Config.Redis.CloudAuthentication == nil {
 					r.Config.Redis.CloudAuthentication = nil
 				} else {
@@ -279,6 +280,12 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsUpdate
 func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToSharedGraphqlProxyCacheAdvancedPlugin(ctx context.Context) (*shared.GraphqlProxyCacheAdvancedPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -735,6 +742,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToSharedGraphqlPro
 		}
 	}
 	out := shared.GraphqlProxyCacheAdvancedPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

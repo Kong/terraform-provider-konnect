@@ -7,7 +7,7 @@ import (
 )
 
 type DatakitPluginCache struct {
-	Memory   *DatakitPluginMemory `tfsdk:"memory"`
-	Redis    *AcePluginRedis      `tfsdk:"redis"`
-	Strategy types.String         `tfsdk:"strategy"`
+	Memory   *DatakitPluginMemory  `tfsdk:"memory"`
+	Redis    *PartialVectordbRedis `tfsdk:"redis"`
+	Strategy types.String          `tfsdk:"strategy"`
 }

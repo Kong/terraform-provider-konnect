@@ -134,14 +134,11 @@ func (r *GatewayRouteExpressionResource) Schema(ctx context.Context, req resourc
 				},
 			},
 			"protocols": schema.ListAttribute{
-				Computed: true,
-				Optional: true,
-				Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
-					types.StringValue("http"),
-					types.StringValue("https"),
-				})),
+				Computed:    true,
+				Optional:    true,
+				Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("https")})),
 				ElementType: types.StringType,
-				Description: `An array of the protocols this Route should allow. See the [Route Object](#route-object) section for a list of accepted protocols. When set to only ` + "`" + `"https"` + "`" + `, HTTP requests are answered with an upgrade error. When set to only ` + "`" + `"http"` + "`" + `, HTTPS requests are answered with an error. Default: ["http","https"]`,
+				Description: `An array of the protocols this Route should allow. See the [Route Object](#route-object) section for a list of accepted protocols. When set to only ` + "`" + `"https"` + "`" + `, HTTP requests are answered with an upgrade error. When set to only ` + "`" + `"http"` + "`" + `, HTTPS requests are answered with an error. Default: ["https"]`,
 			},
 			"request_buffering": schema.BoolAttribute{
 				Computed:    true,

@@ -15,6 +15,7 @@ func (r *GatewayPluginUDPLogResourceModel) RefreshFromSharedUDPLogPlugin(ctx con
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.UDPLogPluginConfig{}
 		if resp.Config.CustomFieldsByLua != nil {
 			r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
@@ -186,6 +187,12 @@ func (r *GatewayPluginUDPLogResourceModel) ToOperationsUpdateUdplogPluginRequest
 func (r *GatewayPluginUDPLogResourceModel) ToSharedUDPLogPlugin(ctx context.Context) (*shared.UDPLogPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -348,6 +355,7 @@ func (r *GatewayPluginUDPLogResourceModel) ToSharedUDPLogPlugin(ctx context.Cont
 		}
 	}
 	out := shared.UDPLogPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
