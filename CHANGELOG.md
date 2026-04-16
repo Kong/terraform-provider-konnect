@@ -4,6 +4,10 @@
 > Released 2026/??/??
 
 # Features
+* Add support for new Gateway 3.14 plugins:
+  * `konnect_gateway_plugin_ai_a2a_proxy`
+  * `konnect_gateway_plugin_ai_custom_guardrail`
+  * `konnect_gateway_plugin_metering_and_billing`
 * Add support for `konnect_identity_auth_server`, `konnect_identity_auth_server_scope`, `konnect_identity_auth_server_claim`, `konnect_identity_auth_server_client`
 * Add `konnect_cloud_gateway_network` data source
 
