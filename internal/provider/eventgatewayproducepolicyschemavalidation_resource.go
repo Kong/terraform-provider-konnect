@@ -82,13 +82,7 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 									`* reject - rejects a batch for topic partition. Only available for produce.` + "\n" +
 									`* mark - marks a record with kong/server header and client ID value` + "\n" +
 									`  to help to identify the clients violating schema.` + "\n" +
-									`must be one of ["reject", "mark"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"reject",
-										"mark",
-									),
-								},
+									`possible known values include one of ["reject", "mark"]`,
 							},
 							"schema_registry": schema.SingleNestedAttribute{
 								Optional: true,
@@ -108,13 +102,7 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 									`* reject - rejects a batch for topic partition. Only available for produce.` + "\n" +
 									`* mark - marks a record with kong/server header and client ID value` + "\n" +
 									`  to help to identify the clients violating schema.` + "\n" +
-									`must be one of ["reject", "mark"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"reject",
-										"mark",
-									),
-								},
+									`possible known values include one of ["reject", "mark"]`,
 							},
 						},
 						Description: `The configuration of the produce schema validation policy when using a schema registry.`,
@@ -133,13 +121,7 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 									`* reject - rejects a batch for topic partition. Only available for produce.` + "\n" +
 									`* mark - marks a record with kong/server header and client ID value` + "\n" +
 									`  to help to identify the clients violating schema.` + "\n" +
-									`must be one of ["reject", "mark"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"reject",
-										"mark",
-									),
-								},
+									`possible known values include one of ["reject", "mark"]`,
 							},
 							"schema_registry": schema.SingleNestedAttribute{
 								Optional: true,
@@ -159,13 +141,7 @@ func (r *EventGatewayProducePolicySchemaValidationResource) Schema(ctx context.C
 									`* reject - rejects a batch for topic partition. Only available for produce.` + "\n" +
 									`* mark - marks a record with kong/server header and client ID value` + "\n" +
 									`  to help to identify the clients violating schema.` + "\n" +
-									`must be one of ["reject", "mark"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"reject",
-										"mark",
-									),
-								},
+									`possible known values include one of ["reject", "mark"]`,
 							},
 						},
 						Description: `The configuration of the produce schema validation policy when using JSON parsing without schema.`,

@@ -107,8 +107,8 @@ Optional:
 - `allow_all_conversation_history` (Boolean) If true, will ignore all previous chat prompts from the conversation history. Default: false
 - `allow_patterns` (List of String) Array of valid regex patterns, or valid questions from the 'user' role in chat.
 - `deny_patterns` (List of String) Array of invalid regex patterns, or invalid questions from the 'user' role in chat.
-- `genai_category` (String) Generative AI category of the request. Default: "text/generation"; must be one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation"]
-- `llm_format` (String) LLM input and output format and schema to use. Default: "openai"; must be one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]
+- `genai_category` (String) Generative AI category of the request. possible known values include one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation"]; Default: "text/generation"
+- `llm_format` (String) LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]; Default: "openai"
 - `match_all_roles` (Boolean) If true, will match all roles in addition to 'user' role in conversation history. Default: false
 - `max_request_body_size` (Number) max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 1048576
 
@@ -190,7 +190,7 @@ import {
   to = konnect_gateway_plugin_ai_prompt_guard.my_konnect_gateway_plugin_ai_prompt_guard
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

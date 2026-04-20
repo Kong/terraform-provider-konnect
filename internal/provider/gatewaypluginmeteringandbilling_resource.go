@@ -112,13 +112,9 @@ func (r *GatewayPluginMeteringAndBillingResource) Schema(ctx context.Context, re
 								"source": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Where to find this attribute in the request. Not Null; must be one of ["header", "query"]`,
+									Description: `Where to find this attribute in the request. possible known values include one of ["header", "query"]; Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
-										stringvalidator.OneOf(
-											"header",
-											"query",
-										),
 									},
 								},
 							},
@@ -155,10 +151,7 @@ func (r *GatewayPluginMeteringAndBillingResource) Schema(ctx context.Context, re
 								Computed:    true,
 								Optional:    true,
 								Default:     int64default.StaticInt64(1),
-								Description: `The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of [-1, 1]`,
-								Validators: []validator.Int64{
-									int64validator.OneOf(-1, 1),
-								},
+								Description: `The number of of queue delivery timers. -1 indicates unlimited. possible known values include one of [-1, 1]; Default: 1`,
 							},
 							"initial_retry_delay": schema.Float64Attribute{
 								Computed:    true,
@@ -234,15 +227,7 @@ func (r *GatewayPluginMeteringAndBillingResource) Schema(ctx context.Context, re
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(`consumer`),
-								Description: `Where to find the customer identifier in the request. Default: "consumer"; must be one of ["application", "consumer", "header", "query"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"application",
-										"consumer",
-										"header",
-										"query",
-									),
-								},
+								Description: `Where to find the customer identifier in the request. possible known values include one of ["application", "consumer", "header", "query"]; Default: "consumer"`,
 							},
 						},
 						Description: `The subject identifies who gets billed for each request. Choose where the plugin should look for the customer identifier.`,

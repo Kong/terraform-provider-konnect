@@ -75,26 +75,16 @@ const (
 func (e AppAuthStrategyOpenIDConnectResponseProviderType) ToPointer() *AppAuthStrategyOpenIDConnectResponseProviderType {
 	return &e
 }
-func (e *AppAuthStrategyOpenIDConnectResponseProviderType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AppAuthStrategyOpenIDConnectResponseProviderType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "auth0", "azureAd", "curity", "okta", "http":
+			return true
+		}
 	}
-	switch v {
-	case "auth0":
-		fallthrough
-	case "azureAd":
-		fallthrough
-	case "curity":
-		fallthrough
-	case "okta":
-		fallthrough
-	case "http":
-		*e = AppAuthStrategyOpenIDConnectResponseProviderType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AppAuthStrategyOpenIDConnectResponseProviderType: %v", v)
-	}
+	return false
 }
 
 type AppAuthStrategyOpenIDConnectResponseDcrProvider struct {
@@ -331,26 +321,16 @@ const (
 func (e ProviderType) ToPointer() *ProviderType {
 	return &e
 }
-func (e *ProviderType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ProviderType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "auth0", "azureAd", "curity", "okta", "http":
+			return true
+		}
 	}
-	switch v {
-	case "auth0":
-		fallthrough
-	case "azureAd":
-		fallthrough
-	case "curity":
-		fallthrough
-	case "okta":
-		fallthrough
-	case "http":
-		*e = ProviderType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ProviderType: %v", v)
-	}
+	return false
 }
 
 type DcrProvider struct {

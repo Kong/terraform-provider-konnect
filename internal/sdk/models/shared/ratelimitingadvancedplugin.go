@@ -138,32 +138,16 @@ const (
 func (e CompoundIdentifier) ToPointer() *CompoundIdentifier {
 	return &e
 }
-func (e *CompoundIdentifier) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CompoundIdentifier) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "consumer", "consumer-group", "credential", "header", "ip", "path", "route", "service":
+			return true
+		}
 	}
-	switch v {
-	case "consumer":
-		fallthrough
-	case "consumer-group":
-		fallthrough
-	case "credential":
-		fallthrough
-	case "header":
-		fallthrough
-	case "ip":
-		fallthrough
-	case "path":
-		fallthrough
-	case "route":
-		fallthrough
-	case "service":
-		*e = CompoundIdentifier(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CompoundIdentifier: %v", v)
-	}
+	return false
 }
 
 // RateLimitingAdvancedPluginIdentifier - The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Note if `identifier` is `consumer-group`, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate.
@@ -183,32 +167,16 @@ const (
 func (e RateLimitingAdvancedPluginIdentifier) ToPointer() *RateLimitingAdvancedPluginIdentifier {
 	return &e
 }
-func (e *RateLimitingAdvancedPluginIdentifier) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RateLimitingAdvancedPluginIdentifier) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "consumer", "consumer-group", "credential", "header", "ip", "path", "route", "service":
+			return true
+		}
 	}
-	switch v {
-	case "consumer":
-		fallthrough
-	case "consumer-group":
-		fallthrough
-	case "credential":
-		fallthrough
-	case "header":
-		fallthrough
-	case "ip":
-		fallthrough
-	case "path":
-		fallthrough
-	case "route":
-		fallthrough
-	case "service":
-		*e = RateLimitingAdvancedPluginIdentifier(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RateLimitingAdvancedPluginIdentifier: %v", v)
-	}
+	return false
 }
 
 // RateLimitingAdvancedPluginAuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
@@ -223,22 +191,16 @@ const (
 func (e RateLimitingAdvancedPluginAuthProvider) ToPointer() *RateLimitingAdvancedPluginAuthProvider {
 	return &e
 }
-func (e *RateLimitingAdvancedPluginAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RateLimitingAdvancedPluginAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = RateLimitingAdvancedPluginAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RateLimitingAdvancedPluginAuthProvider: %v", v)
-	}
+	return false
 }
 
 // RateLimitingAdvancedPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -464,22 +426,16 @@ const (
 func (e RateLimitingAdvancedPluginSentinelRole) ToPointer() *RateLimitingAdvancedPluginSentinelRole {
 	return &e
 }
-func (e *RateLimitingAdvancedPluginSentinelRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RateLimitingAdvancedPluginSentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "master":
-		fallthrough
-	case "slave":
-		*e = RateLimitingAdvancedPluginSentinelRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RateLimitingAdvancedPluginSentinelRole: %v", v)
-	}
+	return false
 }
 
 type RateLimitingAdvancedPluginRedis struct {
@@ -715,22 +671,16 @@ const (
 func (e RateLimitingAdvancedPluginStrategy) ToPointer() *RateLimitingAdvancedPluginStrategy {
 	return &e
 }
-func (e *RateLimitingAdvancedPluginStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RateLimitingAdvancedPluginStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "cluster", "local", "redis":
+			return true
+		}
 	}
-	switch v {
-	case "cluster":
-		fallthrough
-	case "local":
-		fallthrough
-	case "redis":
-		*e = RateLimitingAdvancedPluginStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RateLimitingAdvancedPluginStrategy: %v", v)
-	}
+	return false
 }
 
 type Throttling struct {
@@ -794,20 +744,16 @@ const (
 func (e RateLimitingAdvancedPluginWindowType) ToPointer() *RateLimitingAdvancedPluginWindowType {
 	return &e
 }
-func (e *RateLimitingAdvancedPluginWindowType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RateLimitingAdvancedPluginWindowType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "fixed", "sliding":
+			return true
+		}
 	}
-	switch v {
-	case "fixed":
-		fallthrough
-	case "sliding":
-		*e = RateLimitingAdvancedPluginWindowType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RateLimitingAdvancedPluginWindowType: %v", v)
-	}
+	return false
 }
 
 type RateLimitingAdvancedPluginConfig struct {
@@ -1069,24 +1015,16 @@ const (
 func (e RateLimitingAdvancedPluginProtocols) ToPointer() *RateLimitingAdvancedPluginProtocols {
 	return &e
 }
-func (e *RateLimitingAdvancedPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RateLimitingAdvancedPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = RateLimitingAdvancedPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RateLimitingAdvancedPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // RateLimitingAdvancedPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

@@ -143,13 +143,13 @@ Optional:
 - `allow_masking` (Boolean) Allow to masking the request/response instead of blocking it. Streaming will be disabled if this is enabled. Default: false
 - `custom_metrics` (Map of String) A list of custom metrics to be recorded.
 - `functions` (Map of String) Custom functions to be used in expression templates.
-- `guarding_mode` (String) The guardrail mode to use for the request. Default: "INPUT"; must be one of ["BOTH", "INPUT", "OUTPUT"]
+- `guarding_mode` (String) The guardrail mode to use for the request. possible known values include one of ["BOTH", "INPUT", "OUTPUT"]; Default: "INPUT"
 - `metrics` (Attributes) (see [below for nested schema](#nestedatt--config--metrics))
 - `params` (Map of String) Parameters to be used in the guardrail service request. Keys are the parameter name and values can be either Lua expressions in the form `$(some_lua_expression)`or string. For expression, it will be evaluated as the value for the corresponding key. For string, it will be attempted to be parsed as string in JSON format, otherwise it will be used as is.
 - `response_buffer_size` (Number) The amount of bytes receiving from upstream to be buffered before sending to the guardrail service. This only applies to the response content guard. Default: 100
 - `ssl_verify` (Boolean) Whether to verify SSL certificate when Kong makes request to guardrail service. Default: true
 - `stop_on_error` (Boolean) Stop processing if an error occurs. Default: true
-- `text_source` (String) Select where to pick the 'text' for the guardrail service request. Default: "last_message"; must be one of ["concatenate_all_content", "concatenate_user_content", "last_message"]
+- `text_source` (String) Select where to pick the 'text' for the guardrail service request. possible known values include one of ["concatenate_all_content", "concatenate_user_content", "last_message"]; Default: "last_message"
 - `timeout` (Number) Connection timeout with the guardrail service. Default: 10000
 
 <a id="nestedatt--config--request"></a>
@@ -171,7 +171,7 @@ Optional:
 
 Optional:
 
-- `location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. Default: "header"; must be one of ["body", "header", "query"]
+- `location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "header", "query"]; Default: "header"
 - `name` (String) Specify name here.
 - `value` (String) Specify the full token value for 'name'.
 
@@ -274,7 +274,7 @@ import {
   to = konnect_gateway_plugin_ai_custom_guardrail.my_konnect_gateway_plugin_ai_custom_guardrail
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

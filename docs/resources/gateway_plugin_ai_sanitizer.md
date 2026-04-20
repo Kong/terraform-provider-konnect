@@ -123,8 +123,8 @@ Optional:
 - `keepalive_timeout` (Number) The keepalive timeout for the established http connnection. Default: 60000
 - `port` (Number) The port of the sanitizer. Default: 8080
 - `recover_redacted` (Boolean) Whether to recover redacted data. This doesn't apply to the redacted output. Default: true
-- `redact_type` (String) What value to be used to redacted to. Default: "placeholder"; must be one of ["placeholder", "synthetic"]
-- `sanitization_mode` (String) The sanitization mode to use for the request. Default: "INPUT"; must be one of ["BOTH", "INPUT", "OUTPUT"]
+- `redact_type` (String) What value to be used to redacted to. possible known values include one of ["placeholder", "synthetic"]; Default: "placeholder"
+- `sanitization_mode` (String) The sanitization mode to use for the request. possible known values include one of ["BOTH", "INPUT", "OUTPUT"]; Default: "INPUT"
 - `scheme` (String) The protocol can be http and https. Default: "http"
 - `skip_logging_sanitized_items` (Boolean) Whether to log sanitized items in the Kong log plugins. Turn it on if you want to hide sensitive data from logs. Default: false
 - `stop_on_error` (Boolean) Stop processing if an error occurs. Default: true
@@ -218,7 +218,7 @@ import {
   to = konnect_gateway_plugin_ai_sanitizer.my_konnect_gateway_plugin_ai_sanitizer
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

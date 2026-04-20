@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -102,13 +101,7 @@ func (r *APIPublicationResource) Schema(ctx context.Context, req resource.Schema
 				MarkdownDescription: `The visibility of the API in the portal.` + "\n" +
 					`Public API publications do not require authentication to view and retrieve information about them.` + "\n" +
 					`Private API publications require authentication to retrieve information about them.` + "\n" +
-					`Default: "private"; must be one of ["public", "private"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"public",
-						"private",
-					),
-				},
+					`possible known values include one of ["public", "private"]; Default: "private"`,
 			},
 			"warnings": schema.ListAttribute{
 				Computed: true,

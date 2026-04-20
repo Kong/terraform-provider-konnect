@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -133,20 +131,16 @@ const (
 func (e AiLlmAsJudgePluginParamLocation) ToPointer() *AiLlmAsJudgePluginParamLocation {
 	return &e
 }
-func (e *AiLlmAsJudgePluginParamLocation) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiLlmAsJudgePluginParamLocation) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "body", "query":
+			return true
+		}
 	}
-	switch v {
-	case "body":
-		fallthrough
-	case "query":
-		*e = AiLlmAsJudgePluginParamLocation(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiLlmAsJudgePluginParamLocation: %v", v)
-	}
+	return false
 }
 
 type AiLlmAsJudgePluginAuth struct {
@@ -448,26 +442,16 @@ const (
 func (e AiLlmAsJudgePluginEmbeddingInputType) ToPointer() *AiLlmAsJudgePluginEmbeddingInputType {
 	return &e
 }
-func (e *AiLlmAsJudgePluginEmbeddingInputType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiLlmAsJudgePluginEmbeddingInputType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "classification", "clustering", "image", "search_document", "search_query":
+			return true
+		}
 	}
-	switch v {
-	case "classification":
-		fallthrough
-	case "clustering":
-		fallthrough
-	case "image":
-		fallthrough
-	case "search_document":
-		fallthrough
-	case "search_query":
-		*e = AiLlmAsJudgePluginEmbeddingInputType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiLlmAsJudgePluginEmbeddingInputType: %v", v)
-	}
+	return false
 }
 
 type AiLlmAsJudgePluginCohere struct {
@@ -644,22 +628,16 @@ const (
 func (e AiLlmAsJudgePluginLlama2Format) ToPointer() *AiLlmAsJudgePluginLlama2Format {
 	return &e
 }
-func (e *AiLlmAsJudgePluginLlama2Format) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiLlmAsJudgePluginLlama2Format) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ollama", "openai", "raw":
+			return true
+		}
 	}
-	switch v {
-	case "ollama":
-		fallthrough
-	case "openai":
-		fallthrough
-	case "raw":
-		*e = AiLlmAsJudgePluginLlama2Format(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiLlmAsJudgePluginLlama2Format: %v", v)
-	}
+	return false
 }
 
 // AiLlmAsJudgePluginMistralFormat - If using mistral provider, select the upstream message format.
@@ -673,20 +651,16 @@ const (
 func (e AiLlmAsJudgePluginMistralFormat) ToPointer() *AiLlmAsJudgePluginMistralFormat {
 	return &e
 }
-func (e *AiLlmAsJudgePluginMistralFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiLlmAsJudgePluginMistralFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ollama", "openai":
+			return true
+		}
 	}
-	switch v {
-	case "ollama":
-		fallthrough
-	case "openai":
-		*e = AiLlmAsJudgePluginMistralFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiLlmAsJudgePluginMistralFormat: %v", v)
-	}
+	return false
 }
 
 // AiLlmAsJudgePluginOptions - Key/value settings for the model
@@ -912,48 +886,16 @@ const (
 func (e AiLlmAsJudgePluginProvider) ToPointer() *AiLlmAsJudgePluginProvider {
 	return &e
 }
-func (e *AiLlmAsJudgePluginProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiLlmAsJudgePluginProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "databricks", "deepseek", "gemini", "huggingface", "llama2", "mistral", "ollama", "openai", "vllm", "xai":
+			return true
+		}
 	}
-	switch v {
-	case "anthropic":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "bedrock":
-		fallthrough
-	case "cerebras":
-		fallthrough
-	case "cohere":
-		fallthrough
-	case "dashscope":
-		fallthrough
-	case "databricks":
-		fallthrough
-	case "deepseek":
-		fallthrough
-	case "gemini":
-		fallthrough
-	case "huggingface":
-		fallthrough
-	case "llama2":
-		fallthrough
-	case "mistral":
-		fallthrough
-	case "ollama":
-		fallthrough
-	case "openai":
-		fallthrough
-	case "vllm":
-		fallthrough
-	case "xai":
-		*e = AiLlmAsJudgePluginProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiLlmAsJudgePluginProvider: %v", v)
-	}
+	return false
 }
 
 type AiLlmAsJudgePluginModel struct {
@@ -1030,46 +972,16 @@ const (
 func (e AiLlmAsJudgePluginRouteType) ToPointer() *AiLlmAsJudgePluginRouteType {
 	return &e
 }
-func (e *AiLlmAsJudgePluginRouteType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiLlmAsJudgePluginRouteType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime", "video/v1/videos/generations":
+			return true
+		}
 	}
-	switch v {
-	case "audio/v1/audio/speech":
-		fallthrough
-	case "audio/v1/audio/transcriptions":
-		fallthrough
-	case "audio/v1/audio/translations":
-		fallthrough
-	case "image/v1/images/edits":
-		fallthrough
-	case "image/v1/images/generations":
-		fallthrough
-	case "llm/v1/assistants":
-		fallthrough
-	case "llm/v1/batches":
-		fallthrough
-	case "llm/v1/chat":
-		fallthrough
-	case "llm/v1/completions":
-		fallthrough
-	case "llm/v1/embeddings":
-		fallthrough
-	case "llm/v1/files":
-		fallthrough
-	case "llm/v1/responses":
-		fallthrough
-	case "preserve":
-		fallthrough
-	case "realtime/v1/realtime":
-		fallthrough
-	case "video/v1/videos/generations":
-		*e = AiLlmAsJudgePluginRouteType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiLlmAsJudgePluginRouteType: %v", v)
-	}
+	return false
 }
 
 type Llm struct {
@@ -1334,24 +1246,16 @@ const (
 func (e AiLlmAsJudgePluginProtocols) ToPointer() *AiLlmAsJudgePluginProtocols {
 	return &e
 }
-func (e *AiLlmAsJudgePluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiLlmAsJudgePluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = AiLlmAsJudgePluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiLlmAsJudgePluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AiLlmAsJudgePluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

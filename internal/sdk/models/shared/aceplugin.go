@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -133,20 +131,16 @@ const (
 func (e MatchPolicy) ToPointer() *MatchPolicy {
 	return &e
 }
-func (e *MatchPolicy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MatchPolicy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "if_present", "required":
+			return true
+		}
 	}
-	switch v {
-	case "if_present":
-		fallthrough
-	case "required":
-		*e = MatchPolicy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MatchPolicy: %v", v)
-	}
+	return false
 }
 
 // AcePluginAuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
@@ -161,22 +155,16 @@ const (
 func (e AcePluginAuthProvider) ToPointer() *AcePluginAuthProvider {
 	return &e
 }
-func (e *AcePluginAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AcePluginAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = AcePluginAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AcePluginAuthProvider: %v", v)
-	}
+	return false
 }
 
 // AcePluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -378,22 +366,16 @@ const (
 func (e AcePluginSentinelRole) ToPointer() *AcePluginSentinelRole {
 	return &e
 }
-func (e *AcePluginSentinelRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AcePluginSentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "master":
-		fallthrough
-	case "slave":
-		*e = AcePluginSentinelRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AcePluginSentinelRole: %v", v)
-	}
+	return false
 }
 
 type AcePluginRedis struct {
@@ -691,24 +673,16 @@ const (
 func (e AcePluginProtocols) ToPointer() *AcePluginProtocols {
 	return &e
 }
-func (e *AcePluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AcePluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = AcePluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AcePluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AcePluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

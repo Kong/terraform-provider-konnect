@@ -5,7 +5,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -13,7 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_mapplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/mapplanmodifier"
@@ -100,14 +98,7 @@ func (r *ServerlessCloudGatewayResource) Schema(ctx context.Context, req resourc
 							stringplanmodifier.RequiresReplaceIfConfigured(),
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `The control plane region. must be one of ["us", "eu", "au"]; Requires replacement if changed.`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"us",
-								"eu",
-								"au",
-							),
-						},
+						Description: `The control plane region. possible known values include one of ["us", "eu", "au"]; Requires replacement if changed.`,
 					},
 				},
 				Description: `Requires replacement if changed.`,

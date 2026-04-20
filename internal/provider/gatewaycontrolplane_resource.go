@@ -5,14 +5,12 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/boolplanmodifier"
@@ -58,13 +56,7 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 		Attributes: map[string]schema.Attribute{
 			"auth_type": schema.StringAttribute{
 				Optional:    true,
-				Description: `The auth type value of the cluster associated with the Runtime Group. must be one of ["pinned_client_certs", "pki_client_certs"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"pinned_client_certs",
-						"pki_client_certs",
-					),
-				},
+				Description: `The auth type value of the cluster associated with the Runtime Group. possible known values include one of ["pinned_client_certs", "pki_client_certs"]`,
 			},
 			"cloud_gateway": schema.BoolAttribute{
 				Optional: true,
@@ -78,17 +70,7 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Description: `The ClusterType value of the cluster associated with the Control Plane. must be one of ["CLUSTER_TYPE_CONTROL_PLANE", "CLUSTER_TYPE_K8S_INGRESS_CONTROLLER", "CLUSTER_TYPE_CONTROL_PLANE_GROUP", "CLUSTER_TYPE_SERVERLESS", "CLUSTER_TYPE_HYBRID", "CLUSTER_TYPE_SERVERLESS_V1"]; Requires replacement if changed.`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"CLUSTER_TYPE_CONTROL_PLANE",
-						"CLUSTER_TYPE_K8S_INGRESS_CONTROLLER",
-						"CLUSTER_TYPE_CONTROL_PLANE_GROUP",
-						"CLUSTER_TYPE_SERVERLESS",
-						"CLUSTER_TYPE_HYBRID",
-						"CLUSTER_TYPE_SERVERLESS_V1",
-					),
-				},
+				Description: `The ClusterType value of the cluster associated with the Control Plane. possible known values include one of ["CLUSTER_TYPE_CONTROL_PLANE", "CLUSTER_TYPE_K8S_INGRESS_CONTROLLER", "CLUSTER_TYPE_CONTROL_PLANE_GROUP", "CLUSTER_TYPE_SERVERLESS", "CLUSTER_TYPE_HYBRID", "CLUSTER_TYPE_SERVERLESS_V1"]; Requires replacement if changed.`,
 			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,

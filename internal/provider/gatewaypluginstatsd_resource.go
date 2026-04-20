@@ -134,14 +134,7 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`custom_id`),
-						Description: `Default: "custom_id"; must be one of ["consumer_id", "custom_id", "username"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"consumer_id",
-								"custom_id",
-								"username",
-							),
-						},
+						Description: `possible known values include one of ["consumer_id", "custom_id", "username"]; Default: "custom_id"`,
 					},
 					"flush_timeout": schema.Float64Attribute{
 						Optional: true,
@@ -169,38 +162,14 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 								"consumer_identifier": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Authenticated user detail. must be one of ["consumer_id", "custom_id", "username"]`,
-									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"consumer_id",
-											"custom_id",
-											"username",
-										),
-									},
+									Description: `Authenticated user detail. possible known values include one of ["consumer_id", "custom_id", "username"]`,
 								},
 								"name": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `StatsD metric’s name. Not Null; must be one of ["cache_datastore_hits_total", "cache_datastore_misses_total", "kong_latency", "latency", "request_count", "request_per_user", "request_size", "response_size", "shdict_usage", "status_count", "status_count_per_user", "status_count_per_user_per_route", "status_count_per_workspace", "unique_users", "upstream_latency"]`,
+									Description: `StatsD metric’s name. possible known values include one of ["cache_datastore_hits_total", "cache_datastore_misses_total", "kong_latency", "latency", "request_count", "request_per_user", "request_size", "response_size", "shdict_usage", "status_count", "status_count_per_user", "status_count_per_user_per_route", "status_count_per_workspace", "unique_users", "upstream_latency"]; Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
-										stringvalidator.OneOf(
-											"cache_datastore_hits_total",
-											"cache_datastore_misses_total",
-											"kong_latency",
-											"latency",
-											"request_count",
-											"request_per_user",
-											"request_size",
-											"response_size",
-											"shdict_usage",
-											"status_count",
-											"status_count_per_user",
-											"status_count_per_user_per_route",
-											"status_count_per_workspace",
-											"unique_users",
-											"upstream_latency",
-										),
 									},
 								},
 								"sample_rate": schema.Float64Attribute{
@@ -211,42 +180,20 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 								"service_identifier": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Service detail. must be one of ["service_host", "service_id", "service_name", "service_name_or_host"]`,
-									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"service_host",
-											"service_id",
-											"service_name",
-											"service_name_or_host",
-										),
-									},
+									Description: `Service detail. possible known values include one of ["service_host", "service_id", "service_name", "service_name_or_host"]`,
 								},
 								"stat_type": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Determines what sort of event a metric represents. Not Null; must be one of ["counter", "gauge", "histogram", "meter", "set", "timer"]`,
+									Description: `Determines what sort of event a metric represents. possible known values include one of ["counter", "gauge", "histogram", "meter", "set", "timer"]; Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
-										stringvalidator.OneOf(
-											"counter",
-											"gauge",
-											"histogram",
-											"meter",
-											"set",
-											"timer",
-										),
 									},
 								},
 								"workspace_identifier": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Workspace detail. must be one of ["workspace_id", "workspace_name"]`,
-									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"workspace_id",
-											"workspace_name",
-										),
-									},
+									Description: `Workspace detail. possible known values include one of ["workspace_id", "workspace_name"]`,
 								},
 							},
 						},
@@ -275,10 +222,7 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 								Computed:    true,
 								Optional:    true,
 								Default:     int64default.StaticInt64(1),
-								Description: `The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of [-1, 1]`,
-								Validators: []validator.Int64{
-									int64validator.OneOf(-1, 1),
-								},
+								Description: `The number of of queue delivery timers. -1 indicates unlimited. possible known values include one of [-1, 1]; Default: 1`,
 							},
 							"initial_retry_delay": schema.Float64Attribute{
 								Computed:    true,
@@ -347,28 +291,12 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`service_name_or_host`),
-						Description: `Default: "service_name_or_host"; must be one of ["service_host", "service_id", "service_name", "service_name_or_host"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"service_host",
-								"service_id",
-								"service_name",
-								"service_name_or_host",
-							),
-						},
+						Description: `possible known values include one of ["service_host", "service_id", "service_name", "service_name_or_host"]; Default: "service_name_or_host"`,
 					},
 					"tag_style": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `must be one of ["dogstatsd", "influxdb", "librato", "signalfx"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"dogstatsd",
-								"influxdb",
-								"librato",
-								"signalfx",
-							),
-						},
+						Description: `possible known values include one of ["dogstatsd", "influxdb", "librato", "signalfx"]`,
 					},
 					"udp_packet_size": schema.Float64Attribute{
 						Computed:    true,
@@ -389,13 +317,7 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`workspace_id`),
-						Description: `Default: "workspace_id"; must be one of ["workspace_id", "workspace_name"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"workspace_id",
-								"workspace_name",
-							),
-						},
+						Description: `possible known values include one of ["workspace_id", "workspace_name"]; Default: "workspace_id"`,
 					},
 				},
 			},

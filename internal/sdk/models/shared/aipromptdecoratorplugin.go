@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -137,28 +135,16 @@ const (
 func (e LlmFormat) ToPointer() *LlmFormat {
 	return &e
 }
-func (e *LlmFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *LlmFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai":
+			return true
+		}
 	}
-	switch v {
-	case "anthropic":
-		fallthrough
-	case "bedrock":
-		fallthrough
-	case "cohere":
-		fallthrough
-	case "gemini":
-		fallthrough
-	case "huggingface":
-		fallthrough
-	case "openai":
-		*e = LlmFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for LlmFormat: %v", v)
-	}
+	return false
 }
 
 type Role string
@@ -172,22 +158,16 @@ const (
 func (e Role) ToPointer() *Role {
 	return &e
 }
-func (e *Role) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Role) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "assistant", "system", "user":
+			return true
+		}
 	}
-	switch v {
-	case "assistant":
-		fallthrough
-	case "system":
-		fallthrough
-	case "user":
-		*e = Role(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Role: %v", v)
-	}
+	return false
 }
 
 type AiPromptDecoratorPluginAppend struct {
@@ -231,22 +211,16 @@ const (
 func (e AiPromptDecoratorPluginRole) ToPointer() *AiPromptDecoratorPluginRole {
 	return &e
 }
-func (e *AiPromptDecoratorPluginRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiPromptDecoratorPluginRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "assistant", "system", "user":
+			return true
+		}
 	}
-	switch v {
-	case "assistant":
-		fallthrough
-	case "system":
-		fallthrough
-	case "user":
-		*e = AiPromptDecoratorPluginRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiPromptDecoratorPluginRole: %v", v)
-	}
+	return false
 }
 
 type Prepend struct {
@@ -409,24 +383,16 @@ const (
 func (e AiPromptDecoratorPluginProtocols) ToPointer() *AiPromptDecoratorPluginProtocols {
 	return &e
 }
-func (e *AiPromptDecoratorPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiPromptDecoratorPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = AiPromptDecoratorPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiPromptDecoratorPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AiPromptDecoratorPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

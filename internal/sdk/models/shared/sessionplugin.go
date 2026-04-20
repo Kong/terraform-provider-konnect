@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -133,22 +131,16 @@ const (
 func (e Bind) ToPointer() *Bind {
 	return &e
 }
-func (e *Bind) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Bind) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ip", "scheme", "user-agent":
+			return true
+		}
 	}
-	switch v {
-	case "ip":
-		fallthrough
-	case "scheme":
-		fallthrough
-	case "user-agent":
-		*e = Bind(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Bind: %v", v)
-	}
+	return false
 }
 
 // CookieSameSite - Determines whether and how a cookie may be sent with cross-site requests.
@@ -164,24 +156,16 @@ const (
 func (e CookieSameSite) ToPointer() *CookieSameSite {
 	return &e
 }
-func (e *CookieSameSite) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CookieSameSite) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Default", "Lax", "None", "Strict":
+			return true
+		}
 	}
-	switch v {
-	case "Default":
-		fallthrough
-	case "Lax":
-		fallthrough
-	case "None":
-		fallthrough
-	case "Strict":
-		*e = CookieSameSite(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CookieSameSite: %v", v)
-	}
+	return false
 }
 
 type SessionPluginLogoutMethods string
@@ -195,22 +179,16 @@ const (
 func (e SessionPluginLogoutMethods) ToPointer() *SessionPluginLogoutMethods {
 	return &e
 }
-func (e *SessionPluginLogoutMethods) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SessionPluginLogoutMethods) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "DELETE", "GET", "POST":
+			return true
+		}
 	}
-	switch v {
-	case "DELETE":
-		fallthrough
-	case "GET":
-		fallthrough
-	case "POST":
-		*e = SessionPluginLogoutMethods(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SessionPluginLogoutMethods: %v", v)
-	}
+	return false
 }
 
 type RequestHeaders string
@@ -228,30 +206,16 @@ const (
 func (e RequestHeaders) ToPointer() *RequestHeaders {
 	return &e
 }
-func (e *RequestHeaders) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestHeaders) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "absolute-timeout", "audience", "id", "idling-timeout", "rolling-timeout", "subject", "timeout":
+			return true
+		}
 	}
-	switch v {
-	case "absolute-timeout":
-		fallthrough
-	case "audience":
-		fallthrough
-	case "id":
-		fallthrough
-	case "idling-timeout":
-		fallthrough
-	case "rolling-timeout":
-		fallthrough
-	case "subject":
-		fallthrough
-	case "timeout":
-		*e = RequestHeaders(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RequestHeaders: %v", v)
-	}
+	return false
 }
 
 type SessionPluginResponseHeaders string
@@ -269,30 +233,16 @@ const (
 func (e SessionPluginResponseHeaders) ToPointer() *SessionPluginResponseHeaders {
 	return &e
 }
-func (e *SessionPluginResponseHeaders) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SessionPluginResponseHeaders) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "absolute-timeout", "audience", "id", "idling-timeout", "rolling-timeout", "subject", "timeout":
+			return true
+		}
 	}
-	switch v {
-	case "absolute-timeout":
-		fallthrough
-	case "audience":
-		fallthrough
-	case "id":
-		fallthrough
-	case "idling-timeout":
-		fallthrough
-	case "rolling-timeout":
-		fallthrough
-	case "subject":
-		fallthrough
-	case "timeout":
-		*e = SessionPluginResponseHeaders(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SessionPluginResponseHeaders: %v", v)
-	}
+	return false
 }
 
 // SessionPluginStorage - Determines where the session data is stored. `kong`: Stores encrypted session data into Kong's current database strategy; the cookie will not contain any session data. `cookie`: Stores encrypted session data within the cookie itself.
@@ -306,20 +256,16 @@ const (
 func (e SessionPluginStorage) ToPointer() *SessionPluginStorage {
 	return &e
 }
-func (e *SessionPluginStorage) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SessionPluginStorage) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "cookie", "kong":
+			return true
+		}
 	}
-	switch v {
-	case "cookie":
-		fallthrough
-	case "kong":
-		*e = SessionPluginStorage(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SessionPluginStorage: %v", v)
-	}
+	return false
 }
 
 type SessionPluginConfig struct {
@@ -588,36 +534,16 @@ const (
 func (e SessionPluginProtocols) ToPointer() *SessionPluginProtocols {
 	return &e
 }
-func (e *SessionPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SessionPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = SessionPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SessionPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // SessionPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

@@ -5,14 +5,12 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/int64planmodifier"
@@ -71,17 +69,7 @@ func (r *CloudGatewayCustomDomainResource) Schema(ctx context.Context, req resou
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `Set of control-plane geos supported for deploying cloud-gateways configurations. must be one of ["us", "eu", "au", "me", "in", "sg"]; Requires replacement if changed.`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"us",
-						"eu",
-						"au",
-						"me",
-						"in",
-						"sg",
-					),
-				},
+				Description: `Set of control-plane geos supported for deploying cloud-gateways configurations. possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Requires replacement if changed.`,
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required: true,
@@ -132,13 +120,7 @@ func (r *CloudGatewayCustomDomainResource) Schema(ctx context.Context, req resou
 					`This feature is currently in beta and is subject to change.` + "\n" +
 					`` + "\n" +
 					`Kind of the custom domain based on Cloud Gateway deployment.` + "\n" +
-					`Default: "dedicated.v0"; must be one of ["dedicated.v0", "serverless.v1"]; Requires replacement if changed.`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"dedicated.v0",
-						"serverless.v1",
-					),
-				},
+					`possible known values include one of ["dedicated.v0", "serverless.v1"]; Default: "dedicated.v0"; Requires replacement if changed.`,
 			},
 			"sni_id": schema.StringAttribute{
 				Computed: true,

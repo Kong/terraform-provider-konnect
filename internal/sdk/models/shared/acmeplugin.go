@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -166,20 +164,16 @@ const (
 func (e CertType) ToPointer() *CertType {
 	return &e
 }
-func (e *CertType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CertType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ecc", "rsa":
+			return true
+		}
 	}
-	switch v {
-	case "ecc":
-		fallthrough
-	case "rsa":
-		*e = CertType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CertType: %v", v)
-	}
+	return false
 }
 
 // RsaKeySize - RSA private key size for the certificate. The possible values are 2048, 3072, or 4096.
@@ -194,22 +188,16 @@ const (
 func (e RsaKeySize) ToPointer() *RsaKeySize {
 	return &e
 }
-func (e *RsaKeySize) UnmarshalJSON(data []byte) error {
-	var v int64
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RsaKeySize) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case 2048, 3072, 4096:
+			return true
+		}
 	}
-	switch v {
-	case 2048:
-		fallthrough
-	case 3072:
-		fallthrough
-	case 4096:
-		*e = RsaKeySize(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RsaKeySize: %v", v)
-	}
+	return false
 }
 
 // Storage - The backend storage type to use. In DB-less mode and Konnect, `kong` storage is unavailable. In hybrid mode and Konnect, `shm` storage is unavailable. `shm` storage does not persist during Kong restarts and does not work for Kong running on different machines, so consider using one of `kong`, `redis`, `consul`, or `vault` in production.
@@ -226,26 +214,16 @@ const (
 func (e Storage) ToPointer() *Storage {
 	return &e
 }
-func (e *Storage) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Storage) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "consul", "kong", "redis", "shm", "vault":
+			return true
+		}
 	}
-	switch v {
-	case "consul":
-		fallthrough
-	case "kong":
-		fallthrough
-	case "redis":
-		fallthrough
-	case "shm":
-		fallthrough
-	case "vault":
-		*e = Storage(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Storage: %v", v)
-	}
+	return false
 }
 
 type Consul struct {
@@ -328,22 +306,16 @@ const (
 func (e AcmePluginAuthProvider) ToPointer() *AcmePluginAuthProvider {
 	return &e
 }
-func (e *AcmePluginAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AcmePluginAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = AcmePluginAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AcmePluginAuthProvider: %v", v)
-	}
+	return false
 }
 
 // AcmePluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -649,20 +621,16 @@ const (
 func (e AcmePluginAuthMethod) ToPointer() *AcmePluginAuthMethod {
 	return &e
 }
-func (e *AcmePluginAuthMethod) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AcmePluginAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "kubernetes", "token":
+			return true
+		}
 	}
-	switch v {
-	case "kubernetes":
-		fallthrough
-	case "token":
-		*e = AcmePluginAuthMethod(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AcmePluginAuthMethod: %v", v)
-	}
+	return false
 }
 
 type AcmePluginVault struct {
@@ -1011,24 +979,16 @@ const (
 func (e AcmePluginProtocols) ToPointer() *AcmePluginProtocols {
 	return &e
 }
-func (e *AcmePluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AcmePluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = AcmePluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AcmePluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AcmePlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.

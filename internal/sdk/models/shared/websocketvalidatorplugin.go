@@ -469,20 +469,16 @@ const (
 func (e WebsocketValidatorPluginProtocols) ToPointer() *WebsocketValidatorPluginProtocols {
 	return &e
 }
-func (e *WebsocketValidatorPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *WebsocketValidatorPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = WebsocketValidatorPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for WebsocketValidatorPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // WebsocketValidatorPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

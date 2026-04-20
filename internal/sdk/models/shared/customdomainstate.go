@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // CustomDomainState - State of the custom domain.
 type CustomDomainState string
 
@@ -22,26 +17,14 @@ const (
 func (e CustomDomainState) ToPointer() *CustomDomainState {
 	return &e
 }
-func (e *CustomDomainState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CustomDomainState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "created", "initializing", "ready", "terminating", "terminated", "error":
+			return true
+		}
 	}
-	switch v {
-	case "created":
-		fallthrough
-	case "initializing":
-		fallthrough
-	case "ready":
-		fallthrough
-	case "terminating":
-		fallthrough
-	case "terminated":
-		fallthrough
-	case "error":
-		*e = CustomDomainState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CustomDomainState: %v", v)
-	}
+	return false
 }

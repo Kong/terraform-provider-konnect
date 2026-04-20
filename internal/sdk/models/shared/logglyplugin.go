@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -138,32 +136,16 @@ const (
 func (e ClientErrorsSeverity) ToPointer() *ClientErrorsSeverity {
 	return &e
 }
-func (e *ClientErrorsSeverity) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ClientErrorsSeverity) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "alert", "crit", "debug", "emerg", "err", "info", "notice", "warning":
+			return true
+		}
 	}
-	switch v {
-	case "alert":
-		fallthrough
-	case "crit":
-		fallthrough
-	case "debug":
-		fallthrough
-	case "emerg":
-		fallthrough
-	case "err":
-		fallthrough
-	case "info":
-		fallthrough
-	case "notice":
-		fallthrough
-	case "warning":
-		*e = ClientErrorsSeverity(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ClientErrorsSeverity: %v", v)
-	}
+	return false
 }
 
 type LogLevel string
@@ -182,32 +164,16 @@ const (
 func (e LogLevel) ToPointer() *LogLevel {
 	return &e
 }
-func (e *LogLevel) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *LogLevel) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "alert", "crit", "debug", "emerg", "err", "info", "notice", "warning":
+			return true
+		}
 	}
-	switch v {
-	case "alert":
-		fallthrough
-	case "crit":
-		fallthrough
-	case "debug":
-		fallthrough
-	case "emerg":
-		fallthrough
-	case "err":
-		fallthrough
-	case "info":
-		fallthrough
-	case "notice":
-		fallthrough
-	case "warning":
-		*e = LogLevel(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for LogLevel: %v", v)
-	}
+	return false
 }
 
 type ServerErrorsSeverity string
@@ -226,32 +192,16 @@ const (
 func (e ServerErrorsSeverity) ToPointer() *ServerErrorsSeverity {
 	return &e
 }
-func (e *ServerErrorsSeverity) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ServerErrorsSeverity) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "alert", "crit", "debug", "emerg", "err", "info", "notice", "warning":
+			return true
+		}
 	}
-	switch v {
-	case "alert":
-		fallthrough
-	case "crit":
-		fallthrough
-	case "debug":
-		fallthrough
-	case "emerg":
-		fallthrough
-	case "err":
-		fallthrough
-	case "info":
-		fallthrough
-	case "notice":
-		fallthrough
-	case "warning":
-		*e = ServerErrorsSeverity(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ServerErrorsSeverity: %v", v)
-	}
+	return false
 }
 
 type SuccessfulSeverity string
@@ -270,32 +220,16 @@ const (
 func (e SuccessfulSeverity) ToPointer() *SuccessfulSeverity {
 	return &e
 }
-func (e *SuccessfulSeverity) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SuccessfulSeverity) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "alert", "crit", "debug", "emerg", "err", "info", "notice", "warning":
+			return true
+		}
 	}
-	switch v {
-	case "alert":
-		fallthrough
-	case "crit":
-		fallthrough
-	case "debug":
-		fallthrough
-	case "emerg":
-		fallthrough
-	case "err":
-		fallthrough
-	case "info":
-		fallthrough
-	case "notice":
-		fallthrough
-	case "warning":
-		*e = SuccessfulSeverity(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SuccessfulSeverity: %v", v)
-	}
+	return false
 }
 
 type LogglyPluginConfig struct {
@@ -437,36 +371,16 @@ const (
 func (e LogglyPluginProtocols) ToPointer() *LogglyPluginProtocols {
 	return &e
 }
-func (e *LogglyPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *LogglyPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = LogglyPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for LogglyPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // LogglyPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

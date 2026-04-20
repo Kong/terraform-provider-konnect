@@ -151,21 +151,7 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 				Computed:    true,
 				Optional:    true,
 				Default:     stringdefault.StaticString(`http`),
-				Description: `The protocol used to communicate with the upstream. Default: "http"; must be one of ["grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"grpc",
-						"grpcs",
-						"http",
-						"https",
-						"tcp",
-						"tls",
-						"tls_passthrough",
-						"udp",
-						"ws",
-						"wss",
-					),
-				},
+				Description: `The protocol used to communicate with the upstream. possible known values include one of ["grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss"]; Default: "http"`,
 			},
 			"read_timeout": schema.Int64Attribute{
 				Computed:    true,

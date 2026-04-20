@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // EncryptionRecordPart - * key - encrypt the record key
 // * value - encrypt the record value
 type EncryptionRecordPart string
@@ -19,18 +14,14 @@ const (
 func (e EncryptionRecordPart) ToPointer() *EncryptionRecordPart {
 	return &e
 }
-func (e *EncryptionRecordPart) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *EncryptionRecordPart) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "key", "value":
+			return true
+		}
 	}
-	switch v {
-	case "key":
-		fallthrough
-	case "value":
-		*e = EncryptionRecordPart(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for EncryptionRecordPart: %v", v)
-	}
+	return false
 }

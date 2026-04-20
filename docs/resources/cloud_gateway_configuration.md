@@ -47,19 +47,19 @@ resource "konnect_cloud_gateway_configuration" "my_cloudgatewayconfiguration" {
 
 ### Required
 
-- `control_plane_geo` (String) Set of control-plane geos supported for deploying cloud-gateways configurations. must be one of ["us", "eu", "au", "me", "in", "sg"]
+- `control_plane_geo` (String) Set of control-plane geos supported for deploying cloud-gateways configurations. possible known values include one of ["us", "eu", "au", "me", "in", "sg"]
 - `control_plane_id` (String)
 - `dataplane_groups` (Attributes Set) List of data-plane groups that describe where to deploy instances, along with how many instances. (see [below for nested schema](#nestedatt--dataplane_groups))
 
 ### Optional
 
-- `api_access` (String) Type of API access data-plane groups will support for a configuration. must be one of ["private", "public", "private+public"]
+- `api_access` (String) Type of API access data-plane groups will support for a configuration. possible known values include one of ["private", "public", "private+public"]
 - `kind` (String) **Pre-release Feature**
 This feature is currently in beta and is subject to change.
 
 Kind of the Cloud Gateway deployment. If serverless.v1 is specified, the following fields
 should be omitted (will be ignored if provided): autoscale, cloud_gateway_network_id, version.
-Default: "dedicated.v0"; must be one of ["dedicated.v0", "serverless.v1"]
+possible known values include one of ["dedicated.v0", "serverless.v1"]; Default: "dedicated.v0"
 - `version` (String) Supported gateway version. For serverless.v1 kind of cloud gateways, this field should be omitted.
 
 ### Read-Only
@@ -77,7 +77,7 @@ Optional:
 - `autoscale` (Attributes) (see [below for nested schema](#nestedatt--dataplane_groups--autoscale))
 - `cloud_gateway_network_id` (String) The network ID to operate on. For serverless.v1 kind of cloud gateways, this field should be omitted.
 - `environment` (Attributes List) Array of environment variables to set for a data-plane group. (see [below for nested schema](#nestedatt--dataplane_groups--environment))
-- `provider` (String) Name of cloud provider. Not Null; must be one of ["aws", "azure", "gcp"]
+- `provider` (String) Name of cloud provider. possible known values include one of ["aws", "azure", "gcp"]; Not Null
 - `region` (String) Region ID for cloud provider region. Not Null
 
 Read-Only:
@@ -115,7 +115,7 @@ Read-Only:
 
 Optional:
 
-- `instance_type` (String) Instance type name to indicate capacity. Not Null; must be one of ["small", "medium", "large"]
+- `instance_type` (String) Instance type name to indicate capacity. possible known values include one of ["small", "medium", "large"]; Not Null
 - `kind` (String) Not Null; must be "static"
 - `requested_instances` (Number) Number of data-planes the deployment target will contain. Not Null
 

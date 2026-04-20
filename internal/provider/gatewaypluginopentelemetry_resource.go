@@ -118,22 +118,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`preserve`),
-						Description: `Default: "preserve"; must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "ignore", "instana", "jaeger", "ot", "preserve", "w3c"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"aws",
-								"b3",
-								"b3-single",
-								"datadog",
-								"gcp",
-								"ignore",
-								"instana",
-								"jaeger",
-								"ot",
-								"preserve",
-								"w3c",
-							),
-						},
+						Description: `possible known values include one of ["aws", "b3", "b3-single", "datadog", "gcp", "ignore", "instana", "jaeger", "ot", "preserve", "w3c"]; Default: "preserve"`,
 					},
 					"headers": schema.MapAttribute{
 						Optional:    true,
@@ -212,20 +197,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(`w3c`),
-								Description: `The default header format to use when extractors did not match any format in the incoming headers and ` + "`" + `inject` + "`" + ` is configured with the value: ` + "`" + `preserve` + "`" + `. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in ` + "`" + `extract` + "`" + `. Default: "w3c"; must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "w3c"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"aws",
-										"b3",
-										"b3-single",
-										"datadog",
-										"gcp",
-										"instana",
-										"jaeger",
-										"ot",
-										"w3c",
-									),
-								},
+								Description: `The default header format to use when extractors did not match any format in the incoming headers and ` + "`" + `inject` + "`" + ` is configured with the value: ` + "`" + `preserve` + "`" + `. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in ` + "`" + `extract` + "`" + `. possible known values include one of ["aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "w3c"]; Default: "w3c"`,
 							},
 							"extract": schema.ListAttribute{
 								Optional:    true,
@@ -247,10 +219,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 								Computed:    true,
 								Optional:    true,
 								Default:     int64default.StaticInt64(1),
-								Description: `The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of [-1, 1]`,
-								Validators: []validator.Int64{
-									int64validator.OneOf(-1, 1),
-								},
+								Description: `The number of of queue delivery timers. -1 indicates unlimited. possible known values include one of [-1, 1]; Default: 1`,
 							},
 							"initial_retry_delay": schema.Float64Attribute{
 								Computed:    true,
@@ -333,13 +302,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`parent_drop_probability_fallback`),
-						Description: `The sampling strategy to use for OTLP ` + "`" + `traces` + "`" + `. Set ` + "`" + `parent_drop_probability_fallback` + "`" + ` if you want parent-based sampling when the parent span contains a ` + "`" + `false` + "`" + ` sampled flag, and fallback to probability-based sampling otherwise. Set ` + "`" + `parent_probability_fallback` + "`" + ` if you want parent-based sampling when the parent span contains a valid sampled flag (` + "`" + `true` + "`" + ` or ` + "`" + `false` + "`" + `), and fallback to probability-based sampling otherwise. Default: "parent_drop_probability_fallback"; must be one of ["parent_drop_probability_fallback", "parent_probability_fallback"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"parent_drop_probability_fallback",
-								"parent_probability_fallback",
-							),
-						},
+						Description: `The sampling strategy to use for OTLP ` + "`" + `traces` + "`" + `. Set ` + "`" + `parent_drop_probability_fallback` + "`" + ` if you want parent-based sampling when the parent span contains a ` + "`" + `false` + "`" + ` sampled flag, and fallback to probability-based sampling otherwise. Set ` + "`" + `parent_probability_fallback` + "`" + ` if you want parent-based sampling when the parent span contains a valid sampled flag (` + "`" + `true` + "`" + ` or ` + "`" + `false` + "`" + `), and fallback to probability-based sampling otherwise. possible known values include one of ["parent_drop_probability_fallback", "parent_probability_fallback"]; Default: "parent_drop_probability_fallback"`,
 					},
 					"send_timeout": schema.Int64Attribute{
 						Computed:    true,

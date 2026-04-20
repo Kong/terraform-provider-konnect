@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -21,24 +19,16 @@ const (
 func (e ResourceType) ToPointer() *ResourceType {
 	return &e
 }
-func (e *ResourceType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ResourceType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "topic", "group", "transactional_id", "cluster":
+			return true
+		}
 	}
-	switch v {
-	case "topic":
-		fallthrough
-	case "group":
-		fallthrough
-	case "transactional_id":
-		fallthrough
-	case "cluster":
-		*e = ResourceType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ResourceType: %v", v)
-	}
+	return false
 }
 
 // Action - How to handle the request if the rule matches
@@ -52,20 +42,16 @@ const (
 func (e Action) ToPointer() *Action {
 	return &e
 }
-func (e *Action) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Action) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "allow", "deny":
+			return true
+		}
 	}
-	switch v {
-	case "allow":
-		fallthrough
-	case "deny":
-		*e = Action(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Action: %v", v)
-	}
+	return false
 }
 
 // EventGatewayACLRule - A Kafka ACL rule to apply to virtual cluster traffic

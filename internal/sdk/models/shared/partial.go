@@ -20,20 +20,16 @@ const (
 func (e PartialModelParamLocation) ToPointer() *PartialModelParamLocation {
 	return &e
 }
-func (e *PartialModelParamLocation) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PartialModelParamLocation) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "body", "query":
+			return true
+		}
 	}
-	switch v {
-	case "body":
-		fallthrough
-	case "query":
-		*e = PartialModelParamLocation(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PartialModelParamLocation: %v", v)
-	}
+	return false
 }
 
 type PartialModelAuth struct {
@@ -335,26 +331,16 @@ const (
 func (e PartialModelEmbeddingInputType) ToPointer() *PartialModelEmbeddingInputType {
 	return &e
 }
-func (e *PartialModelEmbeddingInputType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PartialModelEmbeddingInputType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "classification", "clustering", "image", "search_document", "search_query":
+			return true
+		}
 	}
-	switch v {
-	case "classification":
-		fallthrough
-	case "clustering":
-		fallthrough
-	case "image":
-		fallthrough
-	case "search_document":
-		fallthrough
-	case "search_query":
-		*e = PartialModelEmbeddingInputType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PartialModelEmbeddingInputType: %v", v)
-	}
+	return false
 }
 
 type PartialModelCohere struct {
@@ -531,22 +517,16 @@ const (
 func (e PartialModelLlama2Format) ToPointer() *PartialModelLlama2Format {
 	return &e
 }
-func (e *PartialModelLlama2Format) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PartialModelLlama2Format) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ollama", "openai", "raw":
+			return true
+		}
 	}
-	switch v {
-	case "ollama":
-		fallthrough
-	case "openai":
-		fallthrough
-	case "raw":
-		*e = PartialModelLlama2Format(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PartialModelLlama2Format: %v", v)
-	}
+	return false
 }
 
 // PartialModelMistralFormat - If using mistral provider, select the upstream message format.
@@ -560,20 +540,16 @@ const (
 func (e PartialModelMistralFormat) ToPointer() *PartialModelMistralFormat {
 	return &e
 }
-func (e *PartialModelMistralFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PartialModelMistralFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ollama", "openai":
+			return true
+		}
 	}
-	switch v {
-	case "ollama":
-		fallthrough
-	case "openai":
-		*e = PartialModelMistralFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PartialModelMistralFormat: %v", v)
-	}
+	return false
 }
 
 // PartialModelOptions - Key/value settings for the model
@@ -799,48 +775,16 @@ const (
 func (e PartialModelProvider) ToPointer() *PartialModelProvider {
 	return &e
 }
-func (e *PartialModelProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PartialModelProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "databricks", "deepseek", "gemini", "huggingface", "llama2", "mistral", "ollama", "openai", "vllm", "xai":
+			return true
+		}
 	}
-	switch v {
-	case "anthropic":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "bedrock":
-		fallthrough
-	case "cerebras":
-		fallthrough
-	case "cohere":
-		fallthrough
-	case "dashscope":
-		fallthrough
-	case "databricks":
-		fallthrough
-	case "deepseek":
-		fallthrough
-	case "gemini":
-		fallthrough
-	case "huggingface":
-		fallthrough
-	case "llama2":
-		fallthrough
-	case "mistral":
-		fallthrough
-	case "ollama":
-		fallthrough
-	case "openai":
-		fallthrough
-	case "vllm":
-		fallthrough
-	case "xai":
-		*e = PartialModelProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PartialModelProvider: %v", v)
-	}
+	return false
 }
 
 type PartialModelModel struct {
@@ -917,46 +861,16 @@ const (
 func (e PartialModelRouteType) ToPointer() *PartialModelRouteType {
 	return &e
 }
-func (e *PartialModelRouteType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PartialModelRouteType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime", "video/v1/videos/generations":
+			return true
+		}
 	}
-	switch v {
-	case "audio/v1/audio/speech":
-		fallthrough
-	case "audio/v1/audio/transcriptions":
-		fallthrough
-	case "audio/v1/audio/translations":
-		fallthrough
-	case "image/v1/images/edits":
-		fallthrough
-	case "image/v1/images/generations":
-		fallthrough
-	case "llm/v1/assistants":
-		fallthrough
-	case "llm/v1/batches":
-		fallthrough
-	case "llm/v1/chat":
-		fallthrough
-	case "llm/v1/completions":
-		fallthrough
-	case "llm/v1/embeddings":
-		fallthrough
-	case "llm/v1/files":
-		fallthrough
-	case "llm/v1/responses":
-		fallthrough
-	case "preserve":
-		fallthrough
-	case "realtime/v1/realtime":
-		fallthrough
-	case "video/v1/videos/generations":
-		*e = PartialModelRouteType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PartialModelRouteType: %v", v)
-	}
+	return false
 }
 
 type PartialModelConfig struct {
@@ -1117,20 +1031,16 @@ const (
 func (e PartialEmbeddingsParamLocation) ToPointer() *PartialEmbeddingsParamLocation {
 	return &e
 }
-func (e *PartialEmbeddingsParamLocation) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PartialEmbeddingsParamLocation) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "body", "query":
+			return true
+		}
 	}
-	switch v {
-	case "body":
-		fallthrough
-	case "query":
-		*e = PartialEmbeddingsParamLocation(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PartialEmbeddingsParamLocation: %v", v)
-	}
+	return false
 }
 
 type PartialEmbeddingsAuth struct {
@@ -1572,30 +1482,16 @@ const (
 func (e PartialEmbeddingsProvider) ToPointer() *PartialEmbeddingsProvider {
 	return &e
 }
-func (e *PartialEmbeddingsProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PartialEmbeddingsProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai":
+			return true
+		}
 	}
-	switch v {
-	case "azure":
-		fallthrough
-	case "bedrock":
-		fallthrough
-	case "gemini":
-		fallthrough
-	case "huggingface":
-		fallthrough
-	case "mistral":
-		fallthrough
-	case "ollama":
-		fallthrough
-	case "openai":
-		*e = PartialEmbeddingsProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PartialEmbeddingsProvider: %v", v)
-	}
+	return false
 }
 
 type PartialEmbeddingsModel struct {
@@ -1753,20 +1649,16 @@ const (
 func (e PartialVectordbDistanceMetric) ToPointer() *PartialVectordbDistanceMetric {
 	return &e
 }
-func (e *PartialVectordbDistanceMetric) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PartialVectordbDistanceMetric) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "cosine", "euclidean":
+			return true
+		}
 	}
-	switch v {
-	case "cosine":
-		fallthrough
-	case "euclidean":
-		*e = PartialVectordbDistanceMetric(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PartialVectordbDistanceMetric: %v", v)
-	}
+	return false
 }
 
 // PartialVectordbSslVersion - the ssl version to use for the pgvector database
@@ -1781,22 +1673,16 @@ const (
 func (e PartialVectordbSslVersion) ToPointer() *PartialVectordbSslVersion {
 	return &e
 }
-func (e *PartialVectordbSslVersion) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PartialVectordbSslVersion) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "tlsv1_2", "tlsv1_3":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "tlsv1_2":
-		fallthrough
-	case "tlsv1_3":
-		*e = PartialVectordbSslVersion(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PartialVectordbSslVersion: %v", v)
-	}
+	return false
 }
 
 type PartialVectordbPgvector struct {
@@ -1933,22 +1819,16 @@ const (
 func (e PartialVectordbAuthProvider) ToPointer() *PartialVectordbAuthProvider {
 	return &e
 }
-func (e *PartialVectordbAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PartialVectordbAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = PartialVectordbAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PartialVectordbAuthProvider: %v", v)
-	}
+	return false
 }
 
 // PartialVectordbCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -2150,22 +2030,16 @@ const (
 func (e PartialVectordbSentinelRole) ToPointer() *PartialVectordbSentinelRole {
 	return &e
 }
-func (e *PartialVectordbSentinelRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PartialVectordbSentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "master":
-		fallthrough
-	case "slave":
-		*e = PartialVectordbSentinelRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PartialVectordbSentinelRole: %v", v)
-	}
+	return false
 }
 
 type PartialVectordbRedis struct {
@@ -2391,20 +2265,16 @@ const (
 func (e PartialVectordbStrategy) ToPointer() *PartialVectordbStrategy {
 	return &e
 }
-func (e *PartialVectordbStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PartialVectordbStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "pgvector", "redis":
+			return true
+		}
 	}
-	switch v {
-	case "pgvector":
-		fallthrough
-	case "redis":
-		*e = PartialVectordbStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PartialVectordbStrategy: %v", v)
-	}
+	return false
 }
 
 type PartialVectordbConfig struct {
@@ -2558,22 +2428,16 @@ const (
 func (e PartialRedisEeAuthProvider) ToPointer() *PartialRedisEeAuthProvider {
 	return &e
 }
-func (e *PartialRedisEeAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PartialRedisEeAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = PartialRedisEeAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PartialRedisEeAuthProvider: %v", v)
-	}
+	return false
 }
 
 // PartialRedisEeCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -2775,22 +2639,16 @@ const (
 func (e PartialRedisEeSentinelRole) ToPointer() *PartialRedisEeSentinelRole {
 	return &e
 }
-func (e *PartialRedisEeSentinelRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PartialRedisEeSentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "master":
-		fallthrough
-	case "slave":
-		*e = PartialRedisEeSentinelRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PartialRedisEeSentinelRole: %v", v)
-	}
+	return false
 }
 
 type PartialRedisEeConfig struct {
@@ -3090,22 +2948,16 @@ const (
 func (e PartialRedisCeAuthProvider) ToPointer() *PartialRedisCeAuthProvider {
 	return &e
 }
-func (e *PartialRedisCeAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PartialRedisCeAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = PartialRedisCeAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PartialRedisCeAuthProvider: %v", v)
-	}
+	return false
 }
 
 // PartialRedisCeCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.

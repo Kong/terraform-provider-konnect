@@ -93,7 +93,7 @@ resource "konnect_gateway_plugin_correlation_id" "my_gatewayplugincorrelationid"
 Optional:
 
 - `echo_downstream` (Boolean) Whether to echo the header back to downstream (the client). Default: false
-- `generator` (String) The generator to use for the correlation ID. Accepted values are `uuid`, `uuid#counter`, and `tracker`. See [Generators](#generators). Default: "uuid#counter"; must be one of ["tracker", "uuid", "uuid#counter"]
+- `generator` (String) The generator to use for the correlation ID. Accepted values are `uuid`, `uuid#counter`, and `tracker`. See [Generators](#generators). possible known values include one of ["tracker", "uuid", "uuid#counter"]; Default: "uuid#counter"
 - `header_name` (String) The HTTP header name to use for the correlation ID. Default: "Kong-Request-ID"
 
 
@@ -166,7 +166,7 @@ import {
   to = konnect_gateway_plugin_correlation_id.my_konnect_gateway_plugin_correlation_id
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // NetworkState - State of the network.
 type NetworkState string
 
@@ -22,26 +17,14 @@ const (
 func (e NetworkState) ToPointer() *NetworkState {
 	return &e
 }
-func (e *NetworkState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *NetworkState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "created", "initializing", "offline", "ready", "terminating", "terminated":
+			return true
+		}
 	}
-	switch v {
-	case "created":
-		fallthrough
-	case "initializing":
-		fallthrough
-	case "offline":
-		fallthrough
-	case "ready":
-		fallthrough
-	case "terminating":
-		fallthrough
-	case "terminated":
-		*e = NetworkState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for NetworkState: %v", v)
-	}
+	return false
 }

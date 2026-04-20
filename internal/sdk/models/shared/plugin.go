@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -147,36 +145,16 @@ const (
 func (e Protocols) ToPointer() *Protocols {
 	return &e
 }
-func (e *Protocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Protocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = Protocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Protocols: %v", v)
-	}
+	return false
 }
 
 // Route - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.

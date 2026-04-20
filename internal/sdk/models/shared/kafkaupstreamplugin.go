@@ -134,22 +134,16 @@ const (
 func (e KafkaUpstreamPluginMechanism) ToPointer() *KafkaUpstreamPluginMechanism {
 	return &e
 }
-func (e *KafkaUpstreamPluginMechanism) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaUpstreamPluginMechanism) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "PLAIN", "SCRAM-SHA-256", "SCRAM-SHA-512":
+			return true
+		}
 	}
-	switch v {
-	case "PLAIN":
-		fallthrough
-	case "SCRAM-SHA-256":
-		fallthrough
-	case "SCRAM-SHA-512":
-		*e = KafkaUpstreamPluginMechanism(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaUpstreamPluginMechanism: %v", v)
-	}
+	return false
 }
 
 // KafkaUpstreamPluginStrategy - The authentication strategy for the plugin, the only option for the value is `sasl`.
@@ -279,22 +273,16 @@ const (
 func (e KafkaUpstreamPluginProducerRequestAcks) ToPointer() *KafkaUpstreamPluginProducerRequestAcks {
 	return &e
 }
-func (e *KafkaUpstreamPluginProducerRequestAcks) UnmarshalJSON(data []byte) error {
-	var v int64
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaUpstreamPluginProducerRequestAcks) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case -1, 0, 1:
+			return true
+		}
 	}
-	switch v {
-	case -1:
-		fallthrough
-	case 0:
-		fallthrough
-	case 1:
-		*e = KafkaUpstreamPluginProducerRequestAcks(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaUpstreamPluginProducerRequestAcks: %v", v)
-	}
+	return false
 }
 
 type KafkaUpstreamPluginBasic struct {
@@ -339,22 +327,16 @@ const (
 func (e KafkaUpstreamPluginMode) ToPointer() *KafkaUpstreamPluginMode {
 	return &e
 }
-func (e *KafkaUpstreamPluginMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaUpstreamPluginMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "basic", "none", "oauth2":
+			return true
+		}
 	}
-	switch v {
-	case "basic":
-		fallthrough
-	case "none":
-		fallthrough
-	case "oauth2":
-		*e = KafkaUpstreamPluginMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaUpstreamPluginMode: %v", v)
-	}
+	return false
 }
 
 // KafkaUpstreamPluginGrantType - The OAuth grant type to be used.
@@ -368,20 +350,16 @@ const (
 func (e KafkaUpstreamPluginGrantType) ToPointer() *KafkaUpstreamPluginGrantType {
 	return &e
 }
-func (e *KafkaUpstreamPluginGrantType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaUpstreamPluginGrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_credentials", "password":
+			return true
+		}
 	}
-	switch v {
-	case "client_credentials":
-		fallthrough
-	case "password":
-		*e = KafkaUpstreamPluginGrantType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaUpstreamPluginGrantType: %v", v)
-	}
+	return false
 }
 
 type KafkaUpstreamPluginOauth2 struct {
@@ -504,24 +482,16 @@ const (
 func (e KafkaUpstreamPluginAuthMethod) ToPointer() *KafkaUpstreamPluginAuthMethod {
 	return &e
 }
-func (e *KafkaUpstreamPluginAuthMethod) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaUpstreamPluginAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none":
+			return true
+		}
 	}
-	switch v {
-	case "client_secret_basic":
-		fallthrough
-	case "client_secret_jwt":
-		fallthrough
-	case "client_secret_post":
-		fallthrough
-	case "none":
-		*e = KafkaUpstreamPluginAuthMethod(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaUpstreamPluginAuthMethod: %v", v)
-	}
+	return false
 }
 
 // KafkaUpstreamPluginClientSecretJwtAlg - The algorithm to use with JWT when using `client_secret_jwt` authentication.
@@ -535,20 +505,16 @@ const (
 func (e KafkaUpstreamPluginClientSecretJwtAlg) ToPointer() *KafkaUpstreamPluginClientSecretJwtAlg {
 	return &e
 }
-func (e *KafkaUpstreamPluginClientSecretJwtAlg) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaUpstreamPluginClientSecretJwtAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "HS256", "HS512":
+			return true
+		}
 	}
-	switch v {
-	case "HS256":
-		fallthrough
-	case "HS512":
-		*e = KafkaUpstreamPluginClientSecretJwtAlg(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaUpstreamPluginClientSecretJwtAlg: %v", v)
-	}
+	return false
 }
 
 type KafkaUpstreamPluginOauth2Client struct {
@@ -1187,24 +1153,16 @@ const (
 func (e KafkaUpstreamPluginProtocols) ToPointer() *KafkaUpstreamPluginProtocols {
 	return &e
 }
-func (e *KafkaUpstreamPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaUpstreamPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = KafkaUpstreamPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaUpstreamPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // KafkaUpstreamPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

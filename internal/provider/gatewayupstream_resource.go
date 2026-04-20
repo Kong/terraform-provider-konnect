@@ -83,16 +83,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 				Computed:    true,
 				Optional:    true,
 				Default:     stringdefault.StaticString(`round-robin`),
-				Description: `Which load balancing algorithm to use. Default: "round-robin"; must be one of ["consistent-hashing", "latency", "least-connections", "round-robin", "sticky-sessions"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"consistent-hashing",
-						"latency",
-						"least-connections",
-						"round-robin",
-						"sticky-sessions",
-					),
-				},
+				Description: `Which load balancing algorithm to use. possible known values include one of ["consistent-hashing", "latency", "least-connections", "round-robin", "sticky-sessions"]; Default: "round-robin"`,
 			},
 			"client_certificate": schema.SingleNestedAttribute{
 				Computed: true,
@@ -124,19 +115,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 				Computed:    true,
 				Optional:    true,
 				Default:     stringdefault.StaticString(`none`),
-				Description: `What to use as hashing input if the primary ` + "`" + `hash_on` + "`" + ` does not return a hash (eg. header is missing, or no Consumer identified). Not available if ` + "`" + `hash_on` + "`" + ` is set to ` + "`" + `cookie` + "`" + `. Default: "none"; must be one of ["consumer", "cookie", "header", "ip", "none", "path", "query_arg", "uri_capture"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"consumer",
-						"cookie",
-						"header",
-						"ip",
-						"none",
-						"path",
-						"query_arg",
-						"uri_capture",
-					),
-				},
+				Description: `What to use as hashing input if the primary ` + "`" + `hash_on` + "`" + ` does not return a hash (eg. header is missing, or no Consumer identified). Not available if ` + "`" + `hash_on` + "`" + ` is set to ` + "`" + `cookie` + "`" + `. possible known values include one of ["consumer", "cookie", "header", "ip", "none", "path", "query_arg", "uri_capture"]; Default: "none"`,
 			},
 			"hash_fallback_header": schema.StringAttribute{
 				Optional:    true,
@@ -160,19 +139,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 				Computed:    true,
 				Optional:    true,
 				Default:     stringdefault.StaticString(`none`),
-				Description: `What to use as hashing input. Using ` + "`" + `none` + "`" + ` results in a weighted-round-robin scheme with no hashing. Default: "none"; must be one of ["consumer", "cookie", "header", "ip", "none", "path", "query_arg", "uri_capture"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"consumer",
-						"cookie",
-						"header",
-						"ip",
-						"none",
-						"path",
-						"query_arg",
-						"uri_capture",
-					),
-				},
+				Description: `What to use as hashing input. Using ` + "`" + `none` + "`" + ` results in a weighted-round-robin scheme with no hashing. possible known values include one of ["consumer", "cookie", "header", "ip", "none", "path", "query_arg", "uri_capture"]; Default: "none"`,
 			},
 			"hash_on_cookie": schema.StringAttribute{
 				Optional:    true,
@@ -290,16 +257,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(`http`),
-								Description: `Default: "http"; must be one of ["grpc", "grpcs", "http", "https", "tcp"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"grpc",
-										"grpcs",
-										"http",
-										"https",
-										"tcp",
-									),
-								},
+								Description: `possible known values include one of ["grpc", "grpcs", "http", "https", "tcp"]; Default: "http"`,
 							},
 							"unhealthy": schema.SingleNestedAttribute{
 								Computed: true,
@@ -411,16 +369,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(`http`),
-								Description: `Default: "http"; must be one of ["grpc", "grpcs", "http", "https", "tcp"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"grpc",
-										"grpcs",
-										"http",
-										"https",
-										"tcp",
-									),
-								},
+								Description: `possible known values include one of ["grpc", "grpcs", "http", "https", "tcp"]; Default: "http"`,
 							},
 							"unhealthy": schema.SingleNestedAttribute{
 								Computed: true,

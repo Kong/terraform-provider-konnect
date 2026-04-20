@@ -42,7 +42,7 @@ DCR support for application registration is currently in development.
 - `visibility` (String) The visibility of the API in the portal.
 Public API publications do not require authentication to view and retrieve information about them.
 Private API publications require authentication to retrieve information about them.
-Default: "private"; must be one of ["public", "private"]
+possible known values include one of ["public", "private"]; Default: "private"
 
 ### Read-Only
 
@@ -60,7 +60,7 @@ In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.
 import {
   to = konnect_api_publication.my_konnect_api_publication
   id = jsonencode({
-    api_id = "9f5061ce-78f6-4452-9108-ad7c02821fd5"
+    api_id    = "9f5061ce-78f6-4452-9108-ad7c02821fd5"
     portal_id = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
   })
 }

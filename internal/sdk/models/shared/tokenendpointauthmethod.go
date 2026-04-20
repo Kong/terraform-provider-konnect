@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // TokenEndpointAuthMethod - Requested authentication method for OAuth 2.0 endpoints.
 type TokenEndpointAuthMethod string
 
@@ -18,18 +13,14 @@ const (
 func (e TokenEndpointAuthMethod) ToPointer() *TokenEndpointAuthMethod {
 	return &e
 }
-func (e *TokenEndpointAuthMethod) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TokenEndpointAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_post", "none":
+			return true
+		}
 	}
-	switch v {
-	case "client_secret_post":
-		fallthrough
-	case "none":
-		*e = TokenEndpointAuthMethod(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TokenEndpointAuthMethod: %v", v)
-	}
+	return false
 }

@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -19,20 +17,16 @@ const (
 func (e UpdateControlPlaneRequestAuthType) ToPointer() *UpdateControlPlaneRequestAuthType {
 	return &e
 }
-func (e *UpdateControlPlaneRequestAuthType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UpdateControlPlaneRequestAuthType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "pinned_client_certs", "pki_client_certs":
+			return true
+		}
 	}
-	switch v {
-	case "pinned_client_certs":
-		fallthrough
-	case "pki_client_certs":
-		*e = UpdateControlPlaneRequestAuthType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for UpdateControlPlaneRequestAuthType: %v", v)
-	}
+	return false
 }
 
 // UpdateControlPlaneRequest - The request schema for the update control plane request.

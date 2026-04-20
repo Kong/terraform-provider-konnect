@@ -141,14 +141,7 @@ func (r *GatewayPluginForwardProxyResource) Schema(ctx context.Context, req reso
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`append`),
-						Description: `Determines how to handle headers when forwarding the request. Default: "append"; must be one of ["append", "delete", "transparent"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"append",
-								"delete",
-								"transparent",
-							),
-						},
+						Description: `Determines how to handle headers when forwarding the request. possible known values include one of ["append", "delete", "transparent"]; Default: "append"`,
 					},
 				},
 			},

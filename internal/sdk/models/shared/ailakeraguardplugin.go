@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -134,22 +132,16 @@ const (
 func (e AiLakeraGuardPluginGuardingMode) ToPointer() *AiLakeraGuardPluginGuardingMode {
 	return &e
 }
-func (e *AiLakeraGuardPluginGuardingMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiLakeraGuardPluginGuardingMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "BOTH", "INPUT", "OUTPUT":
+			return true
+		}
 	}
-	switch v {
-	case "BOTH":
-		fallthrough
-	case "INPUT":
-		fallthrough
-	case "OUTPUT":
-		*e = AiLakeraGuardPluginGuardingMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiLakeraGuardPluginGuardingMode: %v", v)
-	}
+	return false
 }
 
 // AiLakeraGuardPluginTextSource - Select where to pick the 'text' for the Lakera Guard request (when text/generation is selected).
@@ -164,22 +156,16 @@ const (
 func (e AiLakeraGuardPluginTextSource) ToPointer() *AiLakeraGuardPluginTextSource {
 	return &e
 }
-func (e *AiLakeraGuardPluginTextSource) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiLakeraGuardPluginTextSource) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "concatenate_all_content", "concatenate_user_content", "last_message":
+			return true
+		}
 	}
-	switch v {
-	case "concatenate_all_content":
-		fallthrough
-	case "concatenate_user_content":
-		fallthrough
-	case "last_message":
-		*e = AiLakeraGuardPluginTextSource(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiLakeraGuardPluginTextSource: %v", v)
-	}
+	return false
 }
 
 type AiLakeraGuardPluginConfig struct {
@@ -371,24 +357,16 @@ const (
 func (e AiLakeraGuardPluginProtocols) ToPointer() *AiLakeraGuardPluginProtocols {
 	return &e
 }
-func (e *AiLakeraGuardPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiLakeraGuardPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = AiLakeraGuardPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiLakeraGuardPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AiLakeraGuardPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

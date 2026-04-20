@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // CustomDomainKind - **Pre-release Feature**
 // This feature is currently in beta and is subject to change.
 //
@@ -21,18 +16,14 @@ const (
 func (e CustomDomainKind) ToPointer() *CustomDomainKind {
 	return &e
 }
-func (e *CustomDomainKind) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CustomDomainKind) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "dedicated.v0", "serverless.v1":
+			return true
+		}
 	}
-	switch v {
-	case "dedicated.v0":
-		fallthrough
-	case "serverless.v1":
-		*e = CustomDomainKind(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CustomDomainKind: %v", v)
-	}
+	return false
 }

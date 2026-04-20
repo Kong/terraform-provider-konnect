@@ -107,7 +107,7 @@ resource "konnect_gateway_plugin_ai_lakera_guard" "my_gatewaypluginailakeraguard
 Optional:
 
 - `api_key` (String) API key for the Lakera Guard subscription.
-- `guarding_mode` (String) The guardrail mode to use for the request. Default: "INPUT"; must be one of ["BOTH", "INPUT", "OUTPUT"]
+- `guarding_mode` (String) The guardrail mode to use for the request. possible known values include one of ["BOTH", "INPUT", "OUTPUT"]; Default: "INPUT"
 - `lakera_service_url` (String) The guard-operation URL of the Lakera Guard service. Defaults to the SaaS /v2/guard endpoint. It can be set to a locally hosted instance of Lakera Guard. Default: "https://api.lakera.ai/v2/guard"
 - `log_blocked_content` (Boolean) Whether to log prompts and responses that are blocked by the guardrail. Default: false
 - `project_id` (String) Project ID to apply filters from. If null, it will use the subscription's default project.
@@ -116,7 +116,7 @@ Optional:
 - `response_failure_message` (String) The message to return when a failure occurs on the response phase. Default: "Response was filtered by Lakera Guard"
 - `reveal_failure_categories` (Boolean) Whether to reveal failure categories in the response to the caller. They will always be written to the gateway logs, even if set to false. Default: false
 - `stop_on_error` (Boolean) Stop processing if an error occurs. Default: true
-- `text_source` (String) Select where to pick the 'text' for the Lakera Guard request (when text/generation is selected). Default: "concatenate_all_content"; must be one of ["concatenate_all_content", "concatenate_user_content", "last_message"]
+- `text_source` (String) Select where to pick the 'text' for the Lakera Guard request (when text/generation is selected). possible known values include one of ["concatenate_all_content", "concatenate_user_content", "last_message"]; Default: "concatenate_all_content"
 - `timeout` (Number) Connection timeout with the Lakera Guard service. Default: 10000
 - `verify_ssl` (Boolean) Whether to verify the SSL certificate of the configured Lakera Guard endpoint. Default: true
 
@@ -198,7 +198,7 @@ import {
   to = konnect_gateway_plugin_ai_lakera_guard.my_konnect_gateway_plugin_ai_lakera_guard
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

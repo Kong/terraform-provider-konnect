@@ -7,12 +7,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/listplanmodifier"
@@ -80,14 +78,7 @@ func (r *APISpecificationResource) Schema(ctx context.Context, req resource.Sche
 			"type": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `The type of specification being stored. This allows us to render the specification correctly. must be one of ["oas2", "oas3", "asyncapi"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"oas2",
-						"oas3",
-						"asyncapi",
-					),
-				},
+				Description: `The type of specification being stored. This allows us to render the specification correctly. possible known values include one of ["oas2", "oas3", "asyncapi"]`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

@@ -147,20 +147,7 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`b3`),
-						Description: `Allows specifying the type of header to be added to requests with no pre-existing tracing headers and when ` + "`" + `config.header_type` + "`" + ` is set to ` + "`" + `"preserve"` + "`" + `. When ` + "`" + `header_type` + "`" + ` is set to any other value, ` + "`" + `default_header_type` + "`" + ` is ignored. Default: "b3"; must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "w3c"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"aws",
-								"b3",
-								"b3-single",
-								"datadog",
-								"gcp",
-								"instana",
-								"jaeger",
-								"ot",
-								"w3c",
-							),
-						},
+						Description: `Allows specifying the type of header to be added to requests with no pre-existing tracing headers and when ` + "`" + `config.header_type` + "`" + ` is set to ` + "`" + `"preserve"` + "`" + `. When ` + "`" + `header_type` + "`" + ` is set to any other value, ` + "`" + `default_header_type` + "`" + ` is ignored. possible known values include one of ["aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "w3c"]; Default: "b3"`,
 					},
 					"default_service_name": schema.StringAttribute{
 						Optional:    true,
@@ -170,22 +157,7 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`preserve`),
-						Description: `All HTTP requests going through the plugin are tagged with a tracing HTTP request. This property codifies what kind of tracing header the plugin expects on incoming requests. Default: "preserve"; must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "ignore", "instana", "jaeger", "ot", "preserve", "w3c"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"aws",
-								"b3",
-								"b3-single",
-								"datadog",
-								"gcp",
-								"ignore",
-								"instana",
-								"jaeger",
-								"ot",
-								"preserve",
-								"w3c",
-							),
-						},
+						Description: `All HTTP requests going through the plugin are tagged with a tracing HTTP request. This property codifies what kind of tracing header the plugin expects on incoming requests. possible known values include one of ["aws", "b3", "b3-single", "datadog", "gcp", "ignore", "instana", "jaeger", "ot", "preserve", "w3c"]; Default: "preserve"`,
 					},
 					"http_endpoint": schema.StringAttribute{
 						Optional:    true,
@@ -198,13 +170,7 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`method`),
-						Description: `Specify whether to include the HTTP path in the span name. Default: "method"; must be one of ["method", "method_path"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"method",
-								"method_path",
-							),
-						},
+						Description: `Specify whether to include the HTTP path in the span name. possible known values include one of ["method", "method_path"]; Default: "method"`,
 					},
 					"include_credential": schema.BoolAttribute{
 						Computed:    true,
@@ -222,13 +188,7 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`annotations`),
-						Description: `Specify whether to include the duration of each phase as an annotation or a tag. Default: "annotations"; must be one of ["annotations", "tags"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"annotations",
-								"tags",
-							),
-						},
+						Description: `Specify whether to include the duration of each phase as an annotation or a tag. possible known values include one of ["annotations", "tags"]; Default: "annotations"`,
 					},
 					"propagation": schema.SingleNestedAttribute{
 						Computed: true,
@@ -243,20 +203,7 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(`b3`),
-								Description: `The default header format to use when extractors did not match any format in the incoming headers and ` + "`" + `inject` + "`" + ` is configured with the value: ` + "`" + `preserve` + "`" + `. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in ` + "`" + `extract` + "`" + `. Default: "b3"; must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "w3c"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"aws",
-										"b3",
-										"b3-single",
-										"datadog",
-										"gcp",
-										"instana",
-										"jaeger",
-										"ot",
-										"w3c",
-									),
-								},
+								Description: `The default header format to use when extractors did not match any format in the incoming headers and ` + "`" + `inject` + "`" + ` is configured with the value: ` + "`" + `preserve` + "`" + `. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in ` + "`" + `extract` + "`" + `. possible known values include one of ["aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "w3c"]; Default: "b3"`,
 							},
 							"extract": schema.ListAttribute{
 								Optional:    true,
@@ -288,10 +235,7 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 								Computed:    true,
 								Optional:    true,
 								Default:     int64default.StaticInt64(1),
-								Description: `The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of [-1, 1]`,
-								Validators: []validator.Int64{
-									int64validator.OneOf(-1, 1),
-								},
+								Description: `The number of of queue delivery timers. -1 indicates unlimited. possible known values include one of [-1, 1]; Default: 1`,
 							},
 							"initial_retry_delay": schema.Float64Attribute{
 								Computed:    true,
@@ -412,10 +356,7 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 						Computed:    true,
 						Optional:    true,
 						Default:     int64default.StaticInt64(16),
-						Description: `The length in bytes of each request's Trace ID. Default: 16; must be one of [8, 16]`,
-						Validators: []validator.Int64{
-							int64validator.OneOf(8, 16),
-						},
+						Description: `The length in bytes of each request's Trace ID. possible known values include one of [8, 16]; Default: 16`,
 					},
 				},
 			},

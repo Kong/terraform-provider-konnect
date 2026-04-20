@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // PrivateDNSState - The current state of the Private DNS attachment. Possible values:
 // - `created` - The attachment has been created but is not attached to Private DNS.
 // - `initializing` - The attachment is in the process of being initialized and is setting up necessary resources.
@@ -30,28 +25,14 @@ const (
 func (e PrivateDNSState) ToPointer() *PrivateDNSState {
 	return &e
 }
-func (e *PrivateDNSState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PrivateDNSState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "created", "initializing", "pending-association", "ready", "error", "terminating", "terminated":
+			return true
+		}
 	}
-	switch v {
-	case "created":
-		fallthrough
-	case "initializing":
-		fallthrough
-	case "pending-association":
-		fallthrough
-	case "ready":
-		fallthrough
-	case "error":
-		fallthrough
-	case "terminating":
-		fallthrough
-	case "terminated":
-		*e = PrivateDNSState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PrivateDNSState: %v", v)
-	}
+	return false
 }

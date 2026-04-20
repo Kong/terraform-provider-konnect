@@ -115,7 +115,7 @@ Optional:
 
 - `allow_partial_chain` (Boolean) Allow certificate verification with only an intermediate certificate. When this is enabled, you don't need to upload the full chain to Kong Certificates. Default: false
 - `anonymous` (String) An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request fails with an authentication failure `4xx`. Note that this value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
-- `authenticated_group_by` (String) Certificate property to use as the authenticated group. Valid values are `CN` (Common Name) or `DN` (Distinguished Name). Once `skip_consumer_lookup` is applied, any client with a valid certificate can access the Service/API. To restrict usage to only some of the authenticated users, also add the ACL plugin (not covered here) and create allowed or denied groups of users. Default: "CN"; must be one of ["CN", "DN"]
+- `authenticated_group_by` (String) Certificate property to use as the authenticated group. Valid values are `CN` (Common Name) or `DN` (Distinguished Name). Once `skip_consumer_lookup` is applied, any client with a valid certificate can access the Service/API. To restrict usage to only some of the authenticated users, also add the ACL plugin (not covered here) and create allowed or denied groups of users. possible known values include one of ["CN", "DN"]; Default: "CN"
 - `cache_ttl` (Number) Cache expiry time in seconds. Default: 60
 - `cert_cache_ttl` (Number) The length of time in seconds between refreshes of the revocation check status cache. Default: 60000
 - `consumer_by` (List of String) Whether to match the subject name of the client-supplied certificate against consumer's `username` and/or `custom_id` attribute. If set to `[]` (the empty array), then auto-matching is disabled. Default: ["custom_id","username"]
@@ -125,7 +125,7 @@ Optional:
 - `http_timeout` (Number) HTTP timeout threshold in milliseconds when communicating with the OCSP server or downloading CRL. Default: 30000
 - `https_proxy_host` (String) A string representing a host name, such as example.com.
 - `https_proxy_port` (Number) An integer representing a port number between 0 and 65535, inclusive.
-- `revocation_check_mode` (String) Controls client certificate revocation check behavior. If set to `SKIP`, no revocation check is performed. If set to `IGNORE_CA_ERROR`, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to `STRICT`, the plugin only treats the certificate as valid when it's able to verify the revocation status. Default: "IGNORE_CA_ERROR"; must be one of ["IGNORE_CA_ERROR", "SKIP", "STRICT"]
+- `revocation_check_mode` (String) Controls client certificate revocation check behavior. If set to `SKIP`, no revocation check is performed. If set to `IGNORE_CA_ERROR`, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to `STRICT`, the plugin only treats the certificate as valid when it's able to verify the revocation status. possible known values include one of ["IGNORE_CA_ERROR", "SKIP", "STRICT"]; Default: "IGNORE_CA_ERROR"
 - `san_dirname_matcher` (List of String) Specifies a list of Subject Alternative Name (SAN) DirectoryName attributes to use for consumer lookup. Applicable only when `skip_consumer_lookup` is false. Supported formats: OID, Long Name, or Short Name. Examples: `commonName` (Long Name), `CN` (Short Name), `2.5.4.3` (OID). If left empty (default), all attributes present in the SAN DirectoryName extension are used. The matcher is case sensitive. Default: []
 - `send_ca_dn` (Boolean) Sends the distinguished names (DN) of the configured CA list in the TLS handshake message. Default: false
 - `skip_consumer_lookup` (Boolean) Skip consumer lookup once certificate is trusted against the configured CA list. Default: false
@@ -193,7 +193,7 @@ import {
   to = konnect_gateway_plugin_mtls_auth.my_konnect_gateway_plugin_mtls_auth
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

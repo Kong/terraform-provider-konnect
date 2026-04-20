@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -157,22 +155,16 @@ const (
 func (e ProxyCacheAdvancedPluginAuthProvider) ToPointer() *ProxyCacheAdvancedPluginAuthProvider {
 	return &e
 }
-func (e *ProxyCacheAdvancedPluginAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ProxyCacheAdvancedPluginAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = ProxyCacheAdvancedPluginAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ProxyCacheAdvancedPluginAuthProvider: %v", v)
-	}
+	return false
 }
 
 // ProxyCacheAdvancedPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -374,22 +366,16 @@ const (
 func (e ProxyCacheAdvancedPluginSentinelRole) ToPointer() *ProxyCacheAdvancedPluginSentinelRole {
 	return &e
 }
-func (e *ProxyCacheAdvancedPluginSentinelRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ProxyCacheAdvancedPluginSentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "master":
-		fallthrough
-	case "slave":
-		*e = ProxyCacheAdvancedPluginSentinelRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ProxyCacheAdvancedPluginSentinelRole: %v", v)
-	}
+	return false
 }
 
 type ProxyCacheAdvancedPluginRedis struct {
@@ -617,26 +603,16 @@ const (
 func (e ProxyCacheAdvancedPluginRequestMethod) ToPointer() *ProxyCacheAdvancedPluginRequestMethod {
 	return &e
 }
-func (e *ProxyCacheAdvancedPluginRequestMethod) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ProxyCacheAdvancedPluginRequestMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "GET", "HEAD", "PATCH", "POST", "PUT":
+			return true
+		}
 	}
-	switch v {
-	case "GET":
-		fallthrough
-	case "HEAD":
-		fallthrough
-	case "PATCH":
-		fallthrough
-	case "POST":
-		fallthrough
-	case "PUT":
-		*e = ProxyCacheAdvancedPluginRequestMethod(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ProxyCacheAdvancedPluginRequestMethod: %v", v)
-	}
+	return false
 }
 
 // ProxyCacheAdvancedPluginResponseHeaders - Caching related diagnostic headers that should be included in cached responses
@@ -689,20 +665,16 @@ const (
 func (e ProxyCacheAdvancedPluginStrategy) ToPointer() *ProxyCacheAdvancedPluginStrategy {
 	return &e
 }
-func (e *ProxyCacheAdvancedPluginStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ProxyCacheAdvancedPluginStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "memory", "redis":
+			return true
+		}
 	}
-	switch v {
-	case "memory":
-		fallthrough
-	case "redis":
-		*e = ProxyCacheAdvancedPluginStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ProxyCacheAdvancedPluginStrategy: %v", v)
-	}
+	return false
 }
 
 type ProxyCacheAdvancedPluginConfig struct {
@@ -901,24 +873,16 @@ const (
 func (e ProxyCacheAdvancedPluginProtocols) ToPointer() *ProxyCacheAdvancedPluginProtocols {
 	return &e
 }
-func (e *ProxyCacheAdvancedPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ProxyCacheAdvancedPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = ProxyCacheAdvancedPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ProxyCacheAdvancedPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // ProxyCacheAdvancedPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

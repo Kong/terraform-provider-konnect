@@ -350,11 +350,11 @@ Optional:
 - `acls` (Attributes) Optional ACL rules. Deny rules take precedence over allow rules. (see [below for nested schema](#nestedatt--config--acls))
 - `balancer` (Attributes) (see [below for nested schema](#nestedatt--config--balancer))
 - `embeddings` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings))
-- `genai_category` (String) Generative AI category of the request. Default: "text/generation"; must be one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation"]
-- `llm_format` (String) LLM input and output format and schema to use. Default: "openai"; must be one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]
+- `genai_category` (String) Generative AI category of the request. possible known values include one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation"]; Default: "text/generation"
+- `llm_format` (String) LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]; Default: "openai"
 - `max_request_body_size` (Number) max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 1048576
 - `model_name_header` (Boolean) Display the model name selected in the X-Kong-LLM-Model response header. Default: true
-- `response_streaming` (String) Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events. Default: "allow"; must be one of ["allow", "always", "deny"]
+- `response_streaming` (String) Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events. possible known values include one of ["allow", "always", "deny"]; Default: "allow"
 - `vectordb` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb))
 
 <a id="nestedatt--config--targets"></a>
@@ -366,7 +366,7 @@ Optional:
 - `description` (String) The semantic description of the target, required if using semantic load balancing. Specially, setting this to 'CATCHALL' will indicate such target to be used when no other targets match the semantic threshold. Only used by ai-proxy-advanced.
 - `logging` (Attributes) (see [below for nested schema](#nestedatt--config--targets--logging))
 - `model` (Attributes) Not Null (see [below for nested schema](#nestedatt--config--targets--model))
-- `route_type` (String) The model's operation implementation, for this provider. Not Null; must be one of ["audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime", "video/v1/videos/generations"]
+- `route_type` (String) The model's operation implementation, for this provider. possible known values include one of ["audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime", "video/v1/videos/generations"]; Not Null
 - `weight` (Number) The weight this target gets within the upstream loadbalancer (1-65535). Only used by ai-proxy-advanced. Default: 100
 
 <a id="nestedatt--config--targets--auth"></a>
@@ -387,7 +387,7 @@ Optional:
 - `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models. Default: false
 - `header_name` (String) If AI model requires authentication via Authorization or API key header, specify its name here.
 - `header_value` (String) Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
-- `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. must be one of ["body", "query"]
+- `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
 - `param_name` (String) If AI model requires authentication via query parameter, specify its name here.
 - `param_value` (String) Specify the full parameter value for 'param_name'.
 
@@ -409,7 +409,7 @@ Optional:
 - `model_alias` (String) The model name parameter from the request that this model should map to.
 - `name` (String) Model name to execute.
 - `options` (Attributes) Key/value settings for the model (see [below for nested schema](#nestedatt--config--targets--model--options))
-- `provider` (String) AI provider request format - Kong translates requests to and from the specified backend compatible formats. Not Null; must be one of ["anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "databricks", "deepseek", "gemini", "huggingface", "llama2", "mistral", "ollama", "openai", "vllm", "xai"]
+- `provider` (String) AI provider request format - Kong translates requests to and from the specified backend compatible formats. possible known values include one of ["anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "databricks", "deepseek", "gemini", "huggingface", "llama2", "mistral", "ollama", "openai", "vllm", "xai"]; Not Null
 
 <a id="nestedatt--config--targets--model--options"></a>
 ### Nested Schema for `config.targets.model.options`
@@ -428,9 +428,9 @@ Optional:
 - `gemini` (Attributes) (see [below for nested schema](#nestedatt--config--targets--model--options--gemini))
 - `huggingface` (Attributes) (see [below for nested schema](#nestedatt--config--targets--model--options--huggingface))
 - `input_cost` (Number) Defines the cost per 1M tokens in your prompt.
-- `llama2_format` (String) If using llama2 provider, select the upstream message format. must be one of ["ollama", "openai", "raw"]
+- `llama2_format` (String) If using llama2 provider, select the upstream message format. possible known values include one of ["ollama", "openai", "raw"]
 - `max_tokens` (Number) Defines the max_tokens, if using chat or completion models.
-- `mistral_format` (String) If using mistral provider, select the upstream message format. must be one of ["ollama", "openai"]
+- `mistral_format` (String) If using mistral provider, select the upstream message format. possible known values include one of ["ollama", "openai"]
 - `output_cost` (Number) Defines the cost per 1M tokens in the output of the AI.
 - `temperature` (Number) Defines the matching temperature, if using chat or completion models.
 - `top_k` (Number) Defines the top-k most likely tokens, if supported.
@@ -459,7 +459,7 @@ Optional:
 
 Optional:
 
-- `embedding_input_type` (String) The purpose of the input text to calculate embedding vectors. Default: "classification"; must be one of ["classification", "clustering", "image", "search_document", "search_query"]
+- `embedding_input_type` (String) The purpose of the input text to calculate embedding vectors. possible known values include one of ["classification", "clustering", "image", "search_document", "search_query"]; Default: "classification"
 - `wait_for_model` (Boolean) Wait for the model if it is not ready
 
 
@@ -525,7 +525,7 @@ Optional:
 Optional:
 
 - `key` (String) Helper key used by some types: consumer (id|username), consumer_group (id|name), header (header name).
-- `type` (String) The attribute to match against. Not Null; must be one of ["consumer", "consumer_group", "header", "ip", "model", "path", "provider"]
+- `type` (String) The attribute to match against. possible known values include one of ["consumer", "consumer_group", "header", "ip", "model", "path", "provider"]; Not Null
 - `values` (List of String) Allowed values for the selected type. Not Null
 
 
@@ -543,7 +543,7 @@ Optional:
 Optional:
 
 - `key` (String) Helper key used by some types: consumer (id|username), consumer_group (id|name), header (header name).
-- `type` (String) The attribute to match against. Not Null; must be one of ["consumer", "consumer_group", "header", "ip", "model", "path", "provider"]
+- `type` (String) The attribute to match against. possible known values include one of ["consumer", "consumer_group", "header", "ip", "model", "path", "provider"]; Not Null
 - `values` (List of String) Allowed values for the selected type. Not Null
 
 
@@ -554,17 +554,17 @@ Optional:
 
 Optional:
 
-- `algorithm` (String) Which load balancing algorithm to use. Default: "round-robin"; must be one of ["consistent-hashing", "least-connections", "lowest-latency", "lowest-usage", "priority", "round-robin", "semantic"]
+- `algorithm` (String) Which load balancing algorithm to use. possible known values include one of ["consistent-hashing", "least-connections", "lowest-latency", "lowest-usage", "priority", "round-robin", "semantic"]; Default: "round-robin"
 - `connect_timeout` (Number) Default: 60000
 - `fail_timeout` (Number) The period of time (in milliseconds) the target will be considered unavailable after the number of unsuccessful attempts reaches `max_fails`. Default: 10000
 - `failover_criteria` (List of String) Specifies in which cases an upstream response should be failover to the next target. Each option in the array is equivalent to the function of http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream. Default: ["error","timeout"]
 - `hash_on_header` (String) The header to use for consistent-hashing. Default: "X-Kong-LLM-Request-ID"
-- `latency_strategy` (String) What metrics to use for latency. Available values are: `tpot` (time-per-output-token) and `e2e`. Default: "tpot"; must be one of ["e2e", "tpot"]
+- `latency_strategy` (String) What metrics to use for latency. Available values are: `tpot` (time-per-output-token) and `e2e`. possible known values include one of ["e2e", "tpot"]; Default: "tpot"
 - `max_fails` (Number) Number of unsuccessful attempts to communicate with a target that should occur in the duration defined by `fail_timeout` before the target is considered unavailable. The zero value disables the circuit breaker. What is considered an unsuccessful attempt is defined by `failover_criteria`. Note the cases of `error`, `timeout` and `invalid_header` are always considered unsuccessful attempts, while the cases of `http_403` and `http_404` are never considered unsuccessful attempts. Default: 0
 - `read_timeout` (Number) Default: 60000
 - `retries` (Number) The number of retries to execute upon failure to proxy. Default: 5
 - `slots` (Number) The number of slots in the load balancer algorithm. Default: 10000
-- `tokens_count_strategy` (String) What tokens to use for usage calculation. Available values are: `total_tokens` `prompt_tokens`, `completion_tokens` and `cost`. Default: "total-tokens"; must be one of ["completion-tokens", "cost", "llm-accuracy", "prompt-tokens", "total-tokens"]
+- `tokens_count_strategy` (String) What tokens to use for usage calculation. Available values are: `total_tokens` `prompt_tokens`, `completion_tokens` and `cost`. possible known values include one of ["completion-tokens", "cost", "llm-accuracy", "prompt-tokens", "total-tokens"]; Default: "total-tokens"
 - `write_timeout` (Number) Default: 60000
 
 
@@ -585,7 +585,7 @@ Optional:
 Required:
 
 - `name` (String) Model name to execute.
-- `provider` (String) AI provider format to use for embeddings API. must be one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai"]
+- `provider` (String) AI provider format to use for embeddings API. possible known values include one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai"]
 
 Optional:
 
@@ -667,7 +667,7 @@ Optional:
 - `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models. Default: false
 - `header_name` (String) If AI model requires authentication via Authorization or API key header, specify its name here.
 - `header_value` (String) Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
-- `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. must be one of ["body", "query"]
+- `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
 - `param_name` (String) If AI model requires authentication via query parameter, specify its name here.
 - `param_value` (String) Specify the full parameter value for 'param_name'.
 
@@ -679,8 +679,8 @@ Optional:
 Required:
 
 - `dimensions` (Number) the desired dimensionality for the vectors
-- `distance_metric` (String) the distance metric to use for vector searches. must be one of ["cosine", "euclidean"]
-- `strategy` (String) which vector database driver to use. must be one of ["pgvector", "redis"]
+- `distance_metric` (String) the distance metric to use for vector searches. possible known values include one of ["cosine", "euclidean"]
+- `strategy` (String) which vector database driver to use. possible known values include one of ["pgvector", "redis"]
 
 Optional:
 
@@ -702,7 +702,7 @@ Optional:
 - `ssl_cert_key` (String) the path of ssl cert key to use for the pgvector database
 - `ssl_required` (Boolean) whether ssl is required for the pgvector database. Default: false
 - `ssl_verify` (Boolean) whether to verify ssl for the pgvector database. Default: true
-- `ssl_version` (String) the ssl version to use for the pgvector database. Default: "tlsv1_2"; must be one of ["any", "tlsv1_2", "tlsv1_3"]
+- `ssl_version` (String) the ssl version to use for the pgvector database. possible known values include one of ["any", "tlsv1_2", "tlsv1_3"]; Default: "tlsv1_2"
 - `timeout` (Number) the timeout of the pgvector database. Default: 5000
 - `user` (String) the user of the pgvector database. Default: "postgres"
 
@@ -728,7 +728,7 @@ Optional:
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--vectordb--redis--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
+- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
@@ -740,7 +740,7 @@ Optional:
 
 Optional:
 
-- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]
 - `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 - `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
 - `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
@@ -852,7 +852,7 @@ import {
   to = konnect_gateway_plugin_ai_proxy_advanced.my_konnect_gateway_plugin_ai_proxy_advanced
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

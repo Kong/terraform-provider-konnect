@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -39,62 +37,16 @@ const (
 func (e JWTAlgorithm) ToPointer() *JWTAlgorithm {
 	return &e
 }
-func (e *JWTAlgorithm) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *JWTAlgorithm) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ES256", "ES256K", "ES384", "ES512", "ESB256", "ESB320", "ESB384", "ESB512", "ESP256", "ESP384", "ESP512", "Ed25519", "Ed448", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512":
+			return true
+		}
 	}
-	switch v {
-	case "ES256":
-		fallthrough
-	case "ES256K":
-		fallthrough
-	case "ES384":
-		fallthrough
-	case "ES512":
-		fallthrough
-	case "ESB256":
-		fallthrough
-	case "ESB320":
-		fallthrough
-	case "ESB384":
-		fallthrough
-	case "ESB512":
-		fallthrough
-	case "ESP256":
-		fallthrough
-	case "ESP384":
-		fallthrough
-	case "ESP512":
-		fallthrough
-	case "Ed25519":
-		fallthrough
-	case "Ed448":
-		fallthrough
-	case "EdDSA":
-		fallthrough
-	case "HS256":
-		fallthrough
-	case "HS384":
-		fallthrough
-	case "HS512":
-		fallthrough
-	case "PS256":
-		fallthrough
-	case "PS384":
-		fallthrough
-	case "PS512":
-		fallthrough
-	case "RS256":
-		fallthrough
-	case "RS384":
-		fallthrough
-	case "RS512":
-		*e = JWTAlgorithm(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for JWTAlgorithm: %v", v)
-	}
+	return false
 }
 
 type JWTConsumer struct {

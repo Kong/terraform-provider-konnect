@@ -127,13 +127,7 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 								"scope": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `must be one of ["cp", "realm"]`,
-									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"cp",
-											"realm",
-										),
-									},
+									Description: `possible known values include one of ["cp", "realm"]`,
 								},
 							},
 						},

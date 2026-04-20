@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -133,20 +131,16 @@ const (
 func (e AutoOffsetReset) ToPointer() *AutoOffsetReset {
 	return &e
 }
-func (e *AutoOffsetReset) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AutoOffsetReset) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "earliest", "latest":
+			return true
+		}
 	}
-	switch v {
-	case "earliest":
-		fallthrough
-	case "latest":
-		*e = AutoOffsetReset(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AutoOffsetReset: %v", v)
-	}
+	return false
 }
 
 type ConfluentConsumePluginBootstrapServers struct {
@@ -192,20 +186,16 @@ const (
 func (e CommitStrategy) ToPointer() *CommitStrategy {
 	return &e
 }
-func (e *CommitStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CommitStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "auto", "off":
+			return true
+		}
 	}
-	switch v {
-	case "auto":
-		fallthrough
-	case "off":
-		*e = CommitStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CommitStrategy: %v", v)
-	}
+	return false
 }
 
 // MessageDeserializer - The deserializer to use for the consumed messages.
@@ -219,20 +209,16 @@ const (
 func (e MessageDeserializer) ToPointer() *MessageDeserializer {
 	return &e
 }
-func (e *MessageDeserializer) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MessageDeserializer) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "json", "noop":
+			return true
+		}
 	}
-	switch v {
-	case "json":
-		fallthrough
-	case "noop":
-		*e = MessageDeserializer(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MessageDeserializer: %v", v)
-	}
+	return false
 }
 
 // ConfluentConsumePluginMode - The mode of operation for the plugin.
@@ -247,22 +233,16 @@ const (
 func (e ConfluentConsumePluginMode) ToPointer() *ConfluentConsumePluginMode {
 	return &e
 }
-func (e *ConfluentConsumePluginMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ConfluentConsumePluginMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "http-get", "server-sent-events", "websocket":
+			return true
+		}
 	}
-	switch v {
-	case "http-get":
-		fallthrough
-	case "server-sent-events":
-		fallthrough
-	case "websocket":
-		*e = ConfluentConsumePluginMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ConfluentConsumePluginMode: %v", v)
-	}
+	return false
 }
 
 type ConfluentConsumePluginBasic struct {
@@ -307,22 +287,16 @@ const (
 func (e ConfluentConsumePluginConfigMode) ToPointer() *ConfluentConsumePluginConfigMode {
 	return &e
 }
-func (e *ConfluentConsumePluginConfigMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ConfluentConsumePluginConfigMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "basic", "none", "oauth2":
+			return true
+		}
 	}
-	switch v {
-	case "basic":
-		fallthrough
-	case "none":
-		fallthrough
-	case "oauth2":
-		*e = ConfluentConsumePluginConfigMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ConfluentConsumePluginConfigMode: %v", v)
-	}
+	return false
 }
 
 // ConfluentConsumePluginGrantType - The OAuth grant type to be used.
@@ -336,20 +310,16 @@ const (
 func (e ConfluentConsumePluginGrantType) ToPointer() *ConfluentConsumePluginGrantType {
 	return &e
 }
-func (e *ConfluentConsumePluginGrantType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ConfluentConsumePluginGrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_credentials", "password":
+			return true
+		}
 	}
-	switch v {
-	case "client_credentials":
-		fallthrough
-	case "password":
-		*e = ConfluentConsumePluginGrantType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ConfluentConsumePluginGrantType: %v", v)
-	}
+	return false
 }
 
 type ConfluentConsumePluginOauth2 struct {
@@ -472,24 +442,16 @@ const (
 func (e ConfluentConsumePluginAuthMethod) ToPointer() *ConfluentConsumePluginAuthMethod {
 	return &e
 }
-func (e *ConfluentConsumePluginAuthMethod) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ConfluentConsumePluginAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none":
+			return true
+		}
 	}
-	switch v {
-	case "client_secret_basic":
-		fallthrough
-	case "client_secret_jwt":
-		fallthrough
-	case "client_secret_post":
-		fallthrough
-	case "none":
-		*e = ConfluentConsumePluginAuthMethod(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ConfluentConsumePluginAuthMethod: %v", v)
-	}
+	return false
 }
 
 // ConfluentConsumePluginClientSecretJwtAlg - The algorithm to use with JWT when using `client_secret_jwt` authentication.
@@ -503,20 +465,16 @@ const (
 func (e ConfluentConsumePluginClientSecretJwtAlg) ToPointer() *ConfluentConsumePluginClientSecretJwtAlg {
 	return &e
 }
-func (e *ConfluentConsumePluginClientSecretJwtAlg) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ConfluentConsumePluginClientSecretJwtAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "HS256", "HS512":
+			return true
+		}
 	}
-	switch v {
-	case "HS256":
-		fallthrough
-	case "HS512":
-		*e = ConfluentConsumePluginClientSecretJwtAlg(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ConfluentConsumePluginClientSecretJwtAlg: %v", v)
-	}
+	return false
 }
 
 type ConfluentConsumePluginOauth2Client struct {
@@ -819,22 +777,16 @@ const (
 func (e ConfluentConsumePluginConfigTopicsMode) ToPointer() *ConfluentConsumePluginConfigTopicsMode {
 	return &e
 }
-func (e *ConfluentConsumePluginConfigTopicsMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ConfluentConsumePluginConfigTopicsMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "basic", "none", "oauth2":
+			return true
+		}
 	}
-	switch v {
-	case "basic":
-		fallthrough
-	case "none":
-		fallthrough
-	case "oauth2":
-		*e = ConfluentConsumePluginConfigTopicsMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ConfluentConsumePluginConfigTopicsMode: %v", v)
-	}
+	return false
 }
 
 // ConfluentConsumePluginConfigGrantType - The OAuth grant type to be used.
@@ -848,20 +800,16 @@ const (
 func (e ConfluentConsumePluginConfigGrantType) ToPointer() *ConfluentConsumePluginConfigGrantType {
 	return &e
 }
-func (e *ConfluentConsumePluginConfigGrantType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ConfluentConsumePluginConfigGrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_credentials", "password":
+			return true
+		}
 	}
-	switch v {
-	case "client_credentials":
-		fallthrough
-	case "password":
-		*e = ConfluentConsumePluginConfigGrantType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ConfluentConsumePluginConfigGrantType: %v", v)
-	}
+	return false
 }
 
 type ConfluentConsumePluginConfigOauth2 struct {
@@ -984,24 +932,16 @@ const (
 func (e ConfluentConsumePluginConfigAuthMethod) ToPointer() *ConfluentConsumePluginConfigAuthMethod {
 	return &e
 }
-func (e *ConfluentConsumePluginConfigAuthMethod) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ConfluentConsumePluginConfigAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none":
+			return true
+		}
 	}
-	switch v {
-	case "client_secret_basic":
-		fallthrough
-	case "client_secret_jwt":
-		fallthrough
-	case "client_secret_post":
-		fallthrough
-	case "none":
-		*e = ConfluentConsumePluginConfigAuthMethod(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ConfluentConsumePluginConfigAuthMethod: %v", v)
-	}
+	return false
 }
 
 // ConfluentConsumePluginConfigClientSecretJwtAlg - The algorithm to use with JWT when using `client_secret_jwt` authentication.
@@ -1015,20 +955,16 @@ const (
 func (e ConfluentConsumePluginConfigClientSecretJwtAlg) ToPointer() *ConfluentConsumePluginConfigClientSecretJwtAlg {
 	return &e
 }
-func (e *ConfluentConsumePluginConfigClientSecretJwtAlg) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ConfluentConsumePluginConfigClientSecretJwtAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "HS256", "HS512":
+			return true
+		}
 	}
-	switch v {
-	case "HS256":
-		fallthrough
-	case "HS512":
-		*e = ConfluentConsumePluginConfigClientSecretJwtAlg(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ConfluentConsumePluginConfigClientSecretJwtAlg: %v", v)
-	}
+	return false
 }
 
 type ConfluentConsumePluginConfigOauth2Client struct {
@@ -1526,28 +1462,16 @@ const (
 func (e ConfluentConsumePluginProtocols) ToPointer() *ConfluentConsumePluginProtocols {
 	return &e
 }
-func (e *ConfluentConsumePluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ConfluentConsumePluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = ConfluentConsumePluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ConfluentConsumePluginProtocols: %v", v)
-	}
+	return false
 }
 
 // ConfluentConsumePluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
@@ -20,20 +18,16 @@ const (
 func (e ListPortalsResponseDefaultAPIVisibility) ToPointer() *ListPortalsResponseDefaultAPIVisibility {
 	return &e
 }
-func (e *ListPortalsResponseDefaultAPIVisibility) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ListPortalsResponseDefaultAPIVisibility) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "public", "private":
+			return true
+		}
 	}
-	switch v {
-	case "public":
-		fallthrough
-	case "private":
-		*e = ListPortalsResponseDefaultAPIVisibility(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ListPortalsResponseDefaultAPIVisibility: %v", v)
-	}
+	return false
 }
 
 // ListPortalsResponseDefaultPageVisibility - The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.
@@ -47,20 +41,16 @@ const (
 func (e ListPortalsResponseDefaultPageVisibility) ToPointer() *ListPortalsResponseDefaultPageVisibility {
 	return &e
 }
-func (e *ListPortalsResponseDefaultPageVisibility) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ListPortalsResponseDefaultPageVisibility) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "public", "private":
+			return true
+		}
 	}
-	switch v {
-	case "public":
-		fallthrough
-	case "private":
-		*e = ListPortalsResponseDefaultPageVisibility(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ListPortalsResponseDefaultPageVisibility: %v", v)
-	}
+	return false
 }
 
 type Portal struct {

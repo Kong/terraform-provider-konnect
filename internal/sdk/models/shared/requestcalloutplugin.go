@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -157,22 +155,16 @@ const (
 func (e RequestCalloutPluginAuthProvider) ToPointer() *RequestCalloutPluginAuthProvider {
 	return &e
 }
-func (e *RequestCalloutPluginAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestCalloutPluginAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = RequestCalloutPluginAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RequestCalloutPluginAuthProvider: %v", v)
-	}
+	return false
 }
 
 // RequestCalloutPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -374,22 +366,16 @@ const (
 func (e RequestCalloutPluginSentinelRole) ToPointer() *RequestCalloutPluginSentinelRole {
 	return &e
 }
-func (e *RequestCalloutPluginSentinelRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestCalloutPluginSentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "master":
-		fallthrough
-	case "slave":
-		*e = RequestCalloutPluginSentinelRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RequestCalloutPluginSentinelRole: %v", v)
-	}
+	return false
 }
 
 type RequestCalloutPluginRedis struct {
@@ -616,22 +602,16 @@ const (
 func (e RequestCalloutPluginStrategy) ToPointer() *RequestCalloutPluginStrategy {
 	return &e
 }
-func (e *RequestCalloutPluginStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestCalloutPluginStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "memory", "off", "redis":
+			return true
+		}
 	}
-	switch v {
-	case "memory":
-		fallthrough
-	case "off":
-		fallthrough
-	case "redis":
-		*e = RequestCalloutPluginStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RequestCalloutPluginStrategy: %v", v)
-	}
+	return false
 }
 
 // Cache - Plugin global caching configuration.
@@ -760,22 +740,16 @@ const (
 func (e OnError) ToPointer() *OnError {
 	return &e
 }
-func (e *OnError) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OnError) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "continue", "fail", "retry":
+			return true
+		}
 	}
-	switch v {
-	case "continue":
-		fallthrough
-	case "fail":
-		fallthrough
-	case "retry":
-		*e = OnError(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for OnError: %v", v)
-	}
+	return false
 }
 
 // Error - The error handling policy the plugin will apply to TCP and HTTP errors.
@@ -1548,24 +1522,16 @@ const (
 func (e RequestCalloutPluginProtocols) ToPointer() *RequestCalloutPluginProtocols {
 	return &e
 }
-func (e *RequestCalloutPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestCalloutPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = RequestCalloutPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RequestCalloutPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // RequestCalloutPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

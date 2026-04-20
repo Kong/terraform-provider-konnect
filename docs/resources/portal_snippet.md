@@ -36,11 +36,11 @@ resource "konnect_portal_snippet" "my_portalsnippet" {
 ### Optional
 
 - `description` (String)
-- `status` (String) Whether the resource is visible on a given portal. Defaults to unpublished. must be one of ["published", "unpublished"]
+- `status` (String) Whether the resource is visible on a given portal. Defaults to unpublished. possible known values include one of ["published", "unpublished"]
 - `title` (String) The display title of a snippet in a portal.
 - `visibility` (String) Whether a snippet is publicly accessible to non-authenticated users.
 If not provided, the default_page_visibility value of the portal will be used.
-must be one of ["public", "private"]
+possible known values include one of ["public", "private"]
 
 ### Read-Only
 
@@ -58,7 +58,7 @@ In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.
 import {
   to = konnect_portal_snippet.my_konnect_portal_snippet
   id = jsonencode({
-    id = "ebbac5b0-ac89-45c3-9d2e-c4542c657e79"
+    id        = "ebbac5b0-ac89-45c3-9d2e-c4542c657e79"
     portal_id = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
   })
 }

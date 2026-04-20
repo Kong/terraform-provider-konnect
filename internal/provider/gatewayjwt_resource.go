@@ -7,7 +7,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -16,7 +15,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/int64planmodifier"
@@ -67,34 +65,7 @@ func (r *GatewayJWTResource) Schema(ctx context.Context, req resource.SchemaRequ
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `Default: "HS256"; must be one of ["ES256", "ES256K", "ES384", "ES512", "ESB256", "ESB320", "ESB384", "ESB512", "ESP256", "ESP384", "ESP512", "Ed25519", "Ed448", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512"]; Requires replacement if changed.`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"ES256",
-						"ES256K",
-						"ES384",
-						"ES512",
-						"ESB256",
-						"ESB320",
-						"ESB384",
-						"ESB512",
-						"ESP256",
-						"ESP384",
-						"ESP512",
-						"Ed25519",
-						"Ed448",
-						"EdDSA",
-						"HS256",
-						"HS384",
-						"HS512",
-						"PS256",
-						"PS384",
-						"PS512",
-						"RS256",
-						"RS384",
-						"RS512",
-					),
-				},
+				Description: `possible known values include one of ["ES256", "ES256K", "ES384", "ES512", "ESB256", "ESB320", "ESB384", "ESB512", "ESP256", "ESP384", "ESP512", "Ed25519", "Ed448", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512"]; Default: "HS256"; Requires replacement if changed.`,
 			},
 			"consumer_id": schema.StringAttribute{
 				Required: true,

@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -25,24 +23,16 @@ const (
 func (e State) ToPointer() *State {
 	return &e
 }
-func (e *State) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *State) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "initializing", "ready", "error", "terminating":
+			return true
+		}
 	}
-	switch v {
-	case "initializing":
-		fallthrough
-	case "ready":
-		fallthrough
-	case "error":
-		fallthrough
-	case "terminating":
-		*e = State(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for State: %v", v)
-	}
+	return false
 }
 
 // StateMetadata - Metadata describing the state of the managed cache add-on in the data-plane group.

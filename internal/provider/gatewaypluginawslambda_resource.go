@@ -120,10 +120,7 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`v1`),
-						Description: `Identifier to select the IMDS protocol version to use: ` + "`" + `v1` + "`" + ` or ` + "`" + `v2` + "`" + `. Default: "v1"; must be one of ["v1", "v2"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf("v1", "v2"),
-						},
+						Description: `Identifier to select the IMDS protocol version to use: ` + "`" + `v1` + "`" + ` or ` + "`" + `v2` + "`" + `. possible known values include one of ["v1", "v2"]; Default: "v1"`,
 					},
 					"aws_key": schema.StringAttribute{
 						Optional:    true,
@@ -157,13 +154,7 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`1.0`),
-						Description: `An optional value that defines which version will be used to generate the AWS API Gateway compatible payload. The default will be ` + "`" + `1.0` + "`" + `. Default: "1.0"; must be one of ["1.0", "2.0"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"1.0",
-								"2.0",
-							),
-						},
+						Description: `An optional value that defines which version will be used to generate the AWS API Gateway compatible payload. The default will be ` + "`" + `1.0` + "`" + `. possible known values include one of ["1.0", "2.0"]; Default: "1.0"`,
 					},
 					"base64_encode_body": schema.BoolAttribute{
 						Computed:    true,
@@ -181,13 +172,7 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`legacy`),
-						Description: `An optional value that defines whether Kong should send empty arrays (returned by Lambda function) as ` + "`" + `[]` + "`" + ` arrays or ` + "`" + `{}` + "`" + ` objects in JSON responses. The value ` + "`" + `legacy` + "`" + ` means Kong will send empty arrays as ` + "`" + `{}` + "`" + ` objects in response. Default: "legacy"; must be one of ["correct", "legacy"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"correct",
-								"legacy",
-							),
-						},
+						Description: `An optional value that defines whether Kong should send empty arrays (returned by Lambda function) as ` + "`" + `[]` + "`" + ` arrays or ` + "`" + `{}` + "`" + ` objects in JSON responses. The value ` + "`" + `legacy` + "`" + ` means Kong will send empty arrays as ` + "`" + `{}` + "`" + ` objects in response. possible known values include one of ["correct", "legacy"]; Default: "legacy"`,
 					},
 					"forward_request_body": schema.BoolAttribute{
 						Computed:    true,
@@ -225,14 +210,7 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`RequestResponse`),
-						Description: `The InvocationType to use when invoking the function. Available types are RequestResponse, Event, DryRun. Default: "RequestResponse"; must be one of ["DryRun", "Event", "RequestResponse"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"DryRun",
-								"Event",
-								"RequestResponse",
-							),
-						},
+						Description: `The InvocationType to use when invoking the function. Available types are RequestResponse, Event, DryRun. possible known values include one of ["DryRun", "Event", "RequestResponse"]; Default: "RequestResponse"`,
 					},
 					"is_proxy_integration": schema.BoolAttribute{
 						Computed:    true,
@@ -250,13 +228,7 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`Tail`),
-						Description: `The LogType to use when invoking the function. By default, None and Tail are supported. Default: "Tail"; must be one of ["None", "Tail"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"None",
-								"Tail",
-							),
-						},
+						Description: `The LogType to use when invoking the function. By default, None and Tail are supported. possible known values include one of ["None", "Tail"]; Default: "Tail"`,
 					},
 					"port": schema.Int64Attribute{
 						Computed:    true,

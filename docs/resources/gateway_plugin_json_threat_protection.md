@@ -98,7 +98,7 @@ Optional:
 
 - `allow_duplicate_object_entry_name` (Boolean) Allow or disallow duplicate object entry name. Default: true
 - `allow_non_json_requests` (Boolean) Allow non-json requests to bypass the rules. Default: false
-- `enforcement_mode` (String) Enforcement mode of the security policy. Default: "block"; must be one of ["block", "log_only"]
+- `enforcement_mode` (String) Enforcement mode of the security policy. possible known values include one of ["block", "log_only"]; Default: "block"
 - `error_message` (String) The response message when validation fails. Default: "Bad Request"
 - `error_status_code` (Number) The response status code when validation fails. Default: 400
 - `max_array_element_count` (Number) Max number of elements in an array. -1 means unlimited. Default: -1
@@ -170,7 +170,7 @@ import {
   to = konnect_gateway_plugin_json_threat_protection.my_konnect_gateway_plugin_json_threat_protection
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

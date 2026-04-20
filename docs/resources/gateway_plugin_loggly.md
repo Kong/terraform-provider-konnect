@@ -107,13 +107,13 @@ Required:
 
 Optional:
 
-- `client_errors_severity` (String) Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
+- `client_errors_severity` (String) possible known values include one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]; Default: "info"
 - `custom_fields_by_lua` (Map of String) Lua code as a key-value map
 - `host` (String) A string representing a host name, such as example.com. Default: "logs-01.loggly.com"
-- `log_level` (String) Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
+- `log_level` (String) possible known values include one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]; Default: "info"
 - `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 514
-- `server_errors_severity` (String) Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
-- `successful_severity` (String) Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
+- `server_errors_severity` (String) possible known values include one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]; Default: "info"
+- `successful_severity` (String) possible known values include one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]; Default: "info"
 - `tags` (List of String) Default: ["kong"]
 - `timeout` (Number) Default: 10000
 
@@ -187,7 +187,7 @@ import {
   to = konnect_gateway_plugin_loggly.my_konnect_gateway_plugin_loggly
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

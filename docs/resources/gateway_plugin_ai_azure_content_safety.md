@@ -122,15 +122,15 @@ Optional:
 - `blocklist_names` (List of String) Use these configured blocklists (in Azure Content Services) when inspecting content.
 - `categories` (Attributes List) Array of categories, and their thresholds, to measure on. (see [below for nested schema](#nestedatt--config--categories))
 - `content_safety_key` (String) If `azure_use_managed_identity` is true, set the API key to call Content Safety.
-- `guarding_mode` (String) The guard mode to use for the request. Default: "INPUT"; must be one of ["BOTH", "INPUT", "OUTPUT"]
+- `guarding_mode` (String) The guard mode to use for the request. possible known values include one of ["BOTH", "INPUT", "OUTPUT"]; Default: "INPUT"
 - `halt_on_blocklist_hit` (Boolean) Tells Azure to reject the request if any blocklist filter is hit. Default: true
 - `log_blocked_content` (Boolean) Whether to log prompts and responses that are blocked by the guardrail. Default: false
-- `output_type` (String) See https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/content-filter#content-filtering-categories. Default: "FourSeverityLevels"; must be one of ["EightSeverityLevels", "FourSeverityLevels"]
+- `output_type` (String) See https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/content-filter#content-filtering-categories. possible known values include one of ["EightSeverityLevels", "FourSeverityLevels"]; Default: "FourSeverityLevels"
 - `response_buffer_size` (Number) The amount of bytes receiving from upstream to be buffered before sending to the guardrails service. This only applies to the response content guard. Default: 100
 - `reveal_failure_reason` (Boolean) Set true to tell the caller why their request was rejected, if so. Default: true
 - `ssl_verify` (Boolean) Whether to verify the certificate presented by the Azure Content Safety service when using HTTPS. Default: true
 - `stop_on_error` (Boolean) Stop processing if an error occurs. Default: true
-- `text_source` (String) Select where to pick the 'text' for the Azure Content Services request. Default: "concatenate_all_content"; must be one of ["concatenate_all_content", "concatenate_user_content"]
+- `text_source` (String) Select where to pick the 'text' for the Azure Content Services request. possible known values include one of ["concatenate_all_content", "concatenate_user_content"]; Default: "concatenate_all_content"
 
 <a id="nestedatt--config--categories"></a>
 ### Nested Schema for `config.categories`
@@ -203,7 +203,7 @@ import {
   to = konnect_gateway_plugin_ai_azure_content_safety.my_konnect_gateway_plugin_ai_azure_content_safety
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

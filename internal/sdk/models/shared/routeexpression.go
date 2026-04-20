@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -22,26 +20,16 @@ const (
 func (e RouteExpressionHTTPSRedirectStatusCode) ToPointer() *RouteExpressionHTTPSRedirectStatusCode {
 	return &e
 }
-func (e *RouteExpressionHTTPSRedirectStatusCode) UnmarshalJSON(data []byte) error {
-	var v int64
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RouteExpressionHTTPSRedirectStatusCode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case 301, 302, 307, 308, 426:
+			return true
+		}
 	}
-	switch v {
-	case 301:
-		fallthrough
-	case 302:
-		fallthrough
-	case 307:
-		fallthrough
-	case 308:
-		fallthrough
-	case 426:
-		*e = RouteExpressionHTTPSRedirectStatusCode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RouteExpressionHTTPSRedirectStatusCode: %v", v)
-	}
+	return false
 }
 
 // RouteExpressionPathHandling - Controls how the Service path, Route path and requested path are combined when sending a request to the upstream. See above for a detailed description of each behavior.
@@ -55,20 +43,16 @@ const (
 func (e RouteExpressionPathHandling) ToPointer() *RouteExpressionPathHandling {
 	return &e
 }
-func (e *RouteExpressionPathHandling) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RouteExpressionPathHandling) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "v0", "v1":
+			return true
+		}
 	}
-	switch v {
-	case "v0":
-		fallthrough
-	case "v1":
-		*e = RouteExpressionPathHandling(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RouteExpressionPathHandling: %v", v)
-	}
+	return false
 }
 
 // RouteExpressionProtocols - A string representing a protocol, such as HTTP or HTTPS.
@@ -90,36 +74,16 @@ const (
 func (e RouteExpressionProtocols) ToPointer() *RouteExpressionProtocols {
 	return &e
 }
-func (e *RouteExpressionProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RouteExpressionProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = RouteExpressionProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RouteExpressionProtocols: %v", v)
-	}
+	return false
 }
 
 // RouteExpressionService - The Service this Route is associated to. This is where the Route proxies traffic to.

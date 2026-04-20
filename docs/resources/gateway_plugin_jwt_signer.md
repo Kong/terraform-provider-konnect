@@ -443,7 +443,7 @@ Optional:
 - `access_token_scopes_claim` (List of String) Specify the claim in an access token to verify against values of `config.access_token_scopes_required`. Default: ["scope"]
 - `access_token_scopes_required` (List of String) Specify the required values (or scopes) that are checked by a claim specified by `config.access_token_scopes_claim`.
 - `access_token_signing` (Boolean) Quickly turn access token signing or re-signing off and on as needed. If turned off, the plugin will not send the signed or resigned token to the upstream. Default: true
-- `access_token_signing_algorithm` (String) When this plugin sets the upstream header as specified with `config.access_token_upstream_header`, re-signs the original access token using the private keys of the JWT Signer plugin. Specify the algorithm that is used to sign the token. The `config.access_token_issuer` specifies which `keyset` is used to sign the new token issued by Kong using the specified signing algorithm. Default: "RS256"; must be one of ["ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS512"]
+- `access_token_signing_algorithm` (String) When this plugin sets the upstream header as specified with `config.access_token_upstream_header`, re-signs the original access token using the private keys of the JWT Signer plugin. Specify the algorithm that is used to sign the token. The `config.access_token_issuer` specifies which `keyset` is used to sign the new token issued by Kong using the specified signing algorithm. possible known values include one of ["ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS512"]; Default: "RS256"
 - `access_token_subject_claim` (List of String) Specify the claim in an access token to verify against values of `config.access_token_subjects_allowed`. Default: ["sub"]
 - `access_token_subjects_allowed` (List of String) The subjects allowed to be present in the access token claim specified by `config.access_token_subject_claim`.
 - `access_token_upstream_header` (String) Removes the `config.access_token_request_header` from the request after reading its value. With `config.access_token_upstream_header`, you can specify the upstream header where the plugin adds the Kong signed token. If you don't specify a value, such as use `null` or `""` (empty string), the plugin does not even try to sign or re-sign the token. Default: "Authorization:Bearer"
@@ -502,7 +502,7 @@ Optional:
 - `channel_token_scopes_claim` (List of String) Specify the claim in a channel token to verify against values of `config.channel_token_scopes_required`. This supports nested claims. Default: ["scope"]
 - `channel_token_scopes_required` (List of String) Specify the required values (or scopes) that are checked by a claim specified by `config.channel_token_scopes_claim`.
 - `channel_token_signing` (Boolean) Quickly turn channel token signing or re-signing off and on as needed. If turned off, the plugin will not send the signed or resigned token to the upstream. Default: true
-- `channel_token_signing_algorithm` (String) When this plugin sets the upstream header as specified with `config.channel_token_upstream_header`, it also re-signs the original channel token using private keys of this plugin. Specify the algorithm that is used to sign the token. Default: "RS256"; must be one of ["ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS512"]
+- `channel_token_signing_algorithm` (String) When this plugin sets the upstream header as specified with `config.channel_token_upstream_header`, it also re-signs the original channel token using private keys of this plugin. Specify the algorithm that is used to sign the token. possible known values include one of ["ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS512"]; Default: "RS256"
 - `channel_token_subject_claim` (List of String) Specify the claim in a channel token to verify against values of `config.channel_token_subjects_allowed`. Default: ["sub"]
 - `channel_token_subjects_allowed` (List of String) The subjects allowed to be present in the channel token claim specified by `config.channel_token_subject_claim`.
 - `channel_token_upstream_header` (String) This plugin removes the `config.channel_token_request_header` from the request after reading its value.
@@ -642,7 +642,7 @@ import {
   to = konnect_gateway_plugin_jwt_signer.my_konnect_gateway_plugin_jwt_signer
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

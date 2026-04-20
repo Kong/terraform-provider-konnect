@@ -142,7 +142,7 @@ Optional:
 
 - `ack_timeout` (Number) When using a non-DIRECT guaranteed delivery mode, this property sets the log message acknowledgement timeout (waiting time). Default: 2000
 - `custom_fields_by_lua` (Map of String) A key-value map that dynamically modifies log fields using Lua code.
-- `delivery_mode` (String) Sets the log message delivery mode. Default: "DIRECT"; must be one of ["DIRECT", "PERSISTENT"]
+- `delivery_mode` (String) Sets the log message delivery mode. possible known values include one of ["DIRECT", "PERSISTENT"]; Default: "DIRECT"
 - `dmq_eligible` (Boolean) Sets the dead message queue (DMQ) eligible property on the log message. Default: false
 - `priority` (Number) Sets the log message priority. Default: 4
 - `sender_id` (String) Allows the application to set the sender identifier.
@@ -156,7 +156,7 @@ Optional:
 Optional:
 
 - `name` (String) The name of the destination. You can use `$(uri_captures['<capture-identifier>'])` in this field to capture the name from a regex request URI (replace `<capture-identifier>` with a real value; for example `$(uri_captures['queue'])` when the matched route has a path `~/(?<queue>[a-z]+)`). Not Null
-- `type` (String) The type of the destination. Default: "QUEUE"; must be one of ["QUEUE", "TOPIC"]
+- `type` (String) The type of the destination. possible known values include one of ["QUEUE", "TOPIC"]; Default: "QUEUE"
 
 
 
@@ -191,7 +191,7 @@ Optional:
 - `id_token` (String) The OpenID Connect ID token used with `OAUTH2` authentication scheme when connecting to an event broker.
 - `id_token_header` (String) Specifies the header that contains id token for the `OAUTH2` authentication scheme when connecting to an event broker. This header takes precedence over the `id_token` field.
 - `password` (String) The password used with `BASIC` authentication scheme when connecting to an event broker.
-- `scheme` (String) The client authentication scheme used when connection to an event broker. Default: "BASIC"; must be one of ["BASIC", "NONE", "OAUTH2"]
+- `scheme` (String) The client authentication scheme used when connection to an event broker. possible known values include one of ["BASIC", "NONE", "OAUTH2"]; Default: "BASIC"
 - `username` (String) The username used with `BASIC` authentication scheme when connecting to an event broker.
 
 
@@ -258,7 +258,7 @@ import {
   to = konnect_gateway_plugin_solace_log.my_konnect_gateway_plugin_solace_log
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

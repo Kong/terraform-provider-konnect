@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -138,30 +136,16 @@ const (
 func (e Identifier) ToPointer() *Identifier {
 	return &e
 }
-func (e *Identifier) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Identifier) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "consumer", "consumer-group", "credential", "header", "ip", "path", "service":
+			return true
+		}
 	}
-	switch v {
-	case "consumer":
-		fallthrough
-	case "consumer-group":
-		fallthrough
-	case "credential":
-		fallthrough
-	case "header":
-		fallthrough
-	case "ip":
-		fallthrough
-	case "path":
-		fallthrough
-	case "service":
-		*e = Identifier(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Identifier: %v", v)
-	}
+	return false
 }
 
 // AiRateLimitingAdvancedPluginLlmFormat - LLM input and output format and schema to use
@@ -179,28 +163,16 @@ const (
 func (e AiRateLimitingAdvancedPluginLlmFormat) ToPointer() *AiRateLimitingAdvancedPluginLlmFormat {
 	return &e
 }
-func (e *AiRateLimitingAdvancedPluginLlmFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRateLimitingAdvancedPluginLlmFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai":
+			return true
+		}
 	}
-	switch v {
-	case "anthropic":
-		fallthrough
-	case "bedrock":
-		fallthrough
-	case "cohere":
-		fallthrough
-	case "gemini":
-		fallthrough
-	case "huggingface":
-		fallthrough
-	case "openai":
-		*e = AiRateLimitingAdvancedPluginLlmFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRateLimitingAdvancedPluginLlmFormat: %v", v)
-	}
+	return false
 }
 
 // AiRateLimitingAdvancedPluginName - The LLM provider to which the rate limit applies.
@@ -223,38 +195,16 @@ const (
 func (e AiRateLimitingAdvancedPluginName) ToPointer() *AiRateLimitingAdvancedPluginName {
 	return &e
 }
-func (e *AiRateLimitingAdvancedPluginName) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRateLimitingAdvancedPluginName) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "anthropic", "azure", "bedrock", "cohere", "customCost", "gemini", "huggingface", "llama2", "mistral", "openai", "requestPrompt":
+			return true
+		}
 	}
-	switch v {
-	case "anthropic":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "bedrock":
-		fallthrough
-	case "cohere":
-		fallthrough
-	case "customCost":
-		fallthrough
-	case "gemini":
-		fallthrough
-	case "huggingface":
-		fallthrough
-	case "llama2":
-		fallthrough
-	case "mistral":
-		fallthrough
-	case "openai":
-		fallthrough
-	case "requestPrompt":
-		*e = AiRateLimitingAdvancedPluginName(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRateLimitingAdvancedPluginName: %v", v)
-	}
+	return false
 }
 
 type LlmProviders struct {
@@ -311,24 +261,16 @@ const (
 func (e AiRateLimitingAdvancedPluginTokensCountStrategy) ToPointer() *AiRateLimitingAdvancedPluginTokensCountStrategy {
 	return &e
 }
-func (e *AiRateLimitingAdvancedPluginTokensCountStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRateLimitingAdvancedPluginTokensCountStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "completion_tokens", "cost", "prompt_tokens", "total_tokens":
+			return true
+		}
 	}
-	switch v {
-	case "completion_tokens":
-		fallthrough
-	case "cost":
-		fallthrough
-	case "prompt_tokens":
-		fallthrough
-	case "total_tokens":
-		*e = AiRateLimitingAdvancedPluginTokensCountStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRateLimitingAdvancedPluginTokensCountStrategy: %v", v)
-	}
+	return false
 }
 
 type AiRateLimitingAdvancedPluginLimits struct {
@@ -388,30 +330,16 @@ const (
 func (e AiRateLimitingAdvancedPluginType) ToPointer() *AiRateLimitingAdvancedPluginType {
 	return &e
 }
-func (e *AiRateLimitingAdvancedPluginType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRateLimitingAdvancedPluginType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "consumer", "consumer_group", "header", "ip", "model", "path", "provider":
+			return true
+		}
 	}
-	switch v {
-	case "consumer":
-		fallthrough
-	case "consumer_group":
-		fallthrough
-	case "header":
-		fallthrough
-	case "ip":
-		fallthrough
-	case "model":
-		fallthrough
-	case "path":
-		fallthrough
-	case "provider":
-		*e = AiRateLimitingAdvancedPluginType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRateLimitingAdvancedPluginType: %v", v)
-	}
+	return false
 }
 
 type Match struct {
@@ -475,20 +403,16 @@ const (
 func (e AiRateLimitingAdvancedPluginWindowType) ToPointer() *AiRateLimitingAdvancedPluginWindowType {
 	return &e
 }
-func (e *AiRateLimitingAdvancedPluginWindowType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRateLimitingAdvancedPluginWindowType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "fixed", "sliding":
+			return true
+		}
 	}
-	switch v {
-	case "fixed":
-		fallthrough
-	case "sliding":
-		*e = AiRateLimitingAdvancedPluginWindowType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRateLimitingAdvancedPluginWindowType: %v", v)
-	}
+	return false
 }
 
 type Policies struct {
@@ -553,22 +477,16 @@ const (
 func (e AuthProvider) ToPointer() *AuthProvider {
 	return &e
 }
-func (e *AuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = AuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AuthProvider: %v", v)
-	}
+	return false
 }
 
 // AiRateLimitingAdvancedPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -770,22 +688,16 @@ const (
 func (e SentinelRole) ToPointer() *SentinelRole {
 	return &e
 }
-func (e *SentinelRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "master":
-		fallthrough
-	case "slave":
-		*e = SentinelRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SentinelRole: %v", v)
-	}
+	return false
 }
 
 type Redis struct {
@@ -1012,22 +924,16 @@ const (
 func (e Strategy) ToPointer() *Strategy {
 	return &e
 }
-func (e *Strategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Strategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "cluster", "local", "redis":
+			return true
+		}
 	}
-	switch v {
-	case "cluster":
-		fallthrough
-	case "local":
-		fallthrough
-	case "redis":
-		*e = Strategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Strategy: %v", v)
-	}
+	return false
 }
 
 // TokensCountStrategy - What tokens to use for cost calculation. Available values are: `total_tokens` `prompt_tokens`, `completion_tokens` or `cost`.
@@ -1043,24 +949,16 @@ const (
 func (e TokensCountStrategy) ToPointer() *TokensCountStrategy {
 	return &e
 }
-func (e *TokensCountStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TokensCountStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "completion_tokens", "cost", "prompt_tokens", "total_tokens":
+			return true
+		}
 	}
-	switch v {
-	case "completion_tokens":
-		fallthrough
-	case "cost":
-		fallthrough
-	case "prompt_tokens":
-		fallthrough
-	case "total_tokens":
-		*e = TokensCountStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TokensCountStrategy: %v", v)
-	}
+	return false
 }
 
 // WindowType - Sets the time window type to either `sliding` (default) or `fixed`. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters.
@@ -1074,20 +972,16 @@ const (
 func (e WindowType) ToPointer() *WindowType {
 	return &e
 }
-func (e *WindowType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *WindowType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "fixed", "sliding":
+			return true
+		}
 	}
-	switch v {
-	case "fixed":
-		fallthrough
-	case "sliding":
-		*e = WindowType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for WindowType: %v", v)
-	}
+	return false
 }
 
 type AiRateLimitingAdvancedPluginConfig struct {
@@ -1359,24 +1253,16 @@ const (
 func (e AiRateLimitingAdvancedPluginProtocols) ToPointer() *AiRateLimitingAdvancedPluginProtocols {
 	return &e
 }
-func (e *AiRateLimitingAdvancedPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRateLimitingAdvancedPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = AiRateLimitingAdvancedPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRateLimitingAdvancedPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AiRateLimitingAdvancedPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

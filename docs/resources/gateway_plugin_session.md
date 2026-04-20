@@ -126,7 +126,7 @@ Optional:
 - `cookie_http_only` (Boolean) Applies the `HttpOnly` tag so that the cookie is sent only to a server. Default: true
 - `cookie_name` (String) The name of the cookie. Default: "session"
 - `cookie_path` (String) The resource in the host where the cookie is available. Default: "/"
-- `cookie_same_site` (String) Determines whether and how a cookie may be sent with cross-site requests. Default: "Strict"; must be one of ["Default", "Lax", "None", "Strict"]
+- `cookie_same_site` (String) Determines whether and how a cookie may be sent with cross-site requests. possible known values include one of ["Default", "Lax", "None", "Strict"]; Default: "Strict"
 - `cookie_secure` (Boolean) Applies the Secure directive so that the cookie may be sent to the server only with an encrypted request over the HTTPS protocol. Default: true
 - `hash_subject` (Boolean) Whether to hash or not the subject when store_metadata is enabled. Default: false
 - `idling_timeout` (Number) The session cookie idle time, in seconds. Default: 900
@@ -143,7 +143,7 @@ Optional:
 - `rolling_timeout` (Number) The session cookie rolling timeout, in seconds. Specifies how long the session can be used until it needs to be renewed. Default: 3600
 - `secret` (String) The secret that is used in keyed HMAC generation.
 - `stale_ttl` (Number) The duration, in seconds, after which an old cookie is discarded, starting from the moment when the session becomes outdated and is replaced by a new one. Default: 10
-- `storage` (String) Determines where the session data is stored. `kong`: Stores encrypted session data into Kong's current database strategy; the cookie will not contain any session data. `cookie`: Stores encrypted session data within the cookie itself. Default: "cookie"; must be one of ["cookie", "kong"]
+- `storage` (String) Determines where the session data is stored. `kong`: Stores encrypted session data into Kong's current database strategy; the cookie will not contain any session data. `cookie`: Stores encrypted session data within the cookie itself. possible known values include one of ["cookie", "kong"]; Default: "cookie"
 - `store_metadata` (Boolean) Whether to also store metadata of sessions, such as collecting data of sessions for a specific audience belonging to a specific subject. Default: false
 
 
@@ -208,7 +208,7 @@ import {
   to = konnect_gateway_plugin_session.my_konnect_gateway_plugin_session
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

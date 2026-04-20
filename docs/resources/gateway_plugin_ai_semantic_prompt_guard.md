@@ -234,8 +234,8 @@ Required:
 
 Optional:
 
-- `genai_category` (String) Generative AI category of the request. Default: "text/generation"; must be one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation"]
-- `llm_format` (String) LLM input and output format and schema to use. Default: "openai"; must be one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]
+- `genai_category` (String) Generative AI category of the request. possible known values include one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation"]; Default: "text/generation"
+- `llm_format` (String) LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]; Default: "openai"
 - `max_request_body_size` (Number) max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 1048576
 - `rules` (Attributes) (see [below for nested schema](#nestedatt--config--rules))
 - `search` (Attributes) (see [below for nested schema](#nestedatt--config--search))
@@ -257,7 +257,7 @@ Optional:
 Required:
 
 - `name` (String) Model name to execute.
-- `provider` (String) AI provider format to use for embeddings API. must be one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai"]
+- `provider` (String) AI provider format to use for embeddings API. possible known values include one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai"]
 
 Optional:
 
@@ -339,7 +339,7 @@ Optional:
 - `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models. Default: false
 - `header_name` (String) If AI model requires authentication via Authorization or API key header, specify its name here.
 - `header_value` (String) Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
-- `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. must be one of ["body", "query"]
+- `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
 - `param_name` (String) If AI model requires authentication via query parameter, specify its name here.
 - `param_value` (String) Specify the full parameter value for 'param_name'.
 
@@ -351,8 +351,8 @@ Optional:
 Required:
 
 - `dimensions` (Number) the desired dimensionality for the vectors
-- `distance_metric` (String) the distance metric to use for vector searches. must be one of ["cosine", "euclidean"]
-- `strategy` (String) which vector database driver to use. must be one of ["pgvector", "redis"]
+- `distance_metric` (String) the distance metric to use for vector searches. possible known values include one of ["cosine", "euclidean"]
+- `strategy` (String) which vector database driver to use. possible known values include one of ["pgvector", "redis"]
 
 Optional:
 
@@ -374,7 +374,7 @@ Optional:
 - `ssl_cert_key` (String) the path of ssl cert key to use for the pgvector database
 - `ssl_required` (Boolean) whether ssl is required for the pgvector database. Default: false
 - `ssl_verify` (Boolean) whether to verify ssl for the pgvector database. Default: true
-- `ssl_version` (String) the ssl version to use for the pgvector database. Default: "tlsv1_2"; must be one of ["any", "tlsv1_2", "tlsv1_3"]
+- `ssl_version` (String) the ssl version to use for the pgvector database. possible known values include one of ["any", "tlsv1_2", "tlsv1_3"]; Default: "tlsv1_2"
 - `timeout` (Number) the timeout of the pgvector database. Default: 5000
 - `user` (String) the user of the pgvector database. Default: "postgres"
 
@@ -400,7 +400,7 @@ Optional:
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--vectordb--redis--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
+- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
@@ -412,7 +412,7 @@ Optional:
 
 Optional:
 
-- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]
 - `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 - `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
 - `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
@@ -544,7 +544,7 @@ import {
   to = konnect_gateway_plugin_ai_semantic_prompt_guard.my_konnect_gateway_plugin_ai_semantic_prompt_guard
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

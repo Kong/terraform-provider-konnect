@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
@@ -23,26 +21,16 @@ const (
 func (e ConfigurationDataPlaneGroupState) ToPointer() *ConfigurationDataPlaneGroupState {
 	return &e
 }
-func (e *ConfigurationDataPlaneGroupState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ConfigurationDataPlaneGroupState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "created", "initializing", "ready", "terminating", "terminated":
+			return true
+		}
 	}
-	switch v {
-	case "created":
-		fallthrough
-	case "initializing":
-		fallthrough
-	case "ready":
-		fallthrough
-	case "terminating":
-		fallthrough
-	case "terminated":
-		*e = ConfigurationDataPlaneGroupState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ConfigurationDataPlaneGroupState: %v", v)
-	}
+	return false
 }
 
 // ConfigurationDataPlaneGroupStateMetadata - Metadata describing the backing state of the dataplane group and why it may be in an erroneous state.

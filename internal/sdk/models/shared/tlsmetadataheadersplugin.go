@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -201,22 +199,16 @@ const (
 func (e TLSMetadataHeadersPluginProtocols) ToPointer() *TLSMetadataHeadersPluginProtocols {
 	return &e
 }
-func (e *TLSMetadataHeadersPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TLSMetadataHeadersPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpcs", "https", "tls":
+			return true
+		}
 	}
-	switch v {
-	case "grpcs":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tls":
-		*e = TLSMetadataHeadersPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TLSMetadataHeadersPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // TLSMetadataHeadersPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -135,24 +133,16 @@ const (
 func (e NameidFormat) ToPointer() *NameidFormat {
 	return &e
 }
-func (e *NameidFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *NameidFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "EmailAddress", "Persistent", "Transient", "Unspecified":
+			return true
+		}
 	}
-	switch v {
-	case "EmailAddress":
-		fallthrough
-	case "Persistent":
-		fallthrough
-	case "Transient":
-		fallthrough
-	case "Unspecified":
-		*e = NameidFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for NameidFormat: %v", v)
-	}
+	return false
 }
 
 // SamlPluginAuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
@@ -167,22 +157,16 @@ const (
 func (e SamlPluginAuthProvider) ToPointer() *SamlPluginAuthProvider {
 	return &e
 }
-func (e *SamlPluginAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SamlPluginAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = SamlPluginAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SamlPluginAuthProvider: %v", v)
-	}
+	return false
 }
 
 // SamlPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -384,22 +368,16 @@ const (
 func (e SamlPluginSentinelRole) ToPointer() *SamlPluginSentinelRole {
 	return &e
 }
-func (e *SamlPluginSentinelRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SamlPluginSentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "master":
-		fallthrough
-	case "slave":
-		*e = SamlPluginSentinelRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SamlPluginSentinelRole: %v", v)
-	}
+	return false
 }
 
 type SamlPluginRedis struct {
@@ -643,20 +621,16 @@ const (
 func (e RequestDigestAlgorithm) ToPointer() *RequestDigestAlgorithm {
 	return &e
 }
-func (e *RequestDigestAlgorithm) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestDigestAlgorithm) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SHA1", "SHA256":
+			return true
+		}
 	}
-	switch v {
-	case "SHA1":
-		fallthrough
-	case "SHA256":
-		*e = RequestDigestAlgorithm(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RequestDigestAlgorithm: %v", v)
-	}
+	return false
 }
 
 // RequestSignatureAlgorithm - The signature algorithm for signing Authn requests. Options available are: - `SHA256` - `SHA384` - `SHA512`
@@ -671,22 +645,16 @@ const (
 func (e RequestSignatureAlgorithm) ToPointer() *RequestSignatureAlgorithm {
 	return &e
 }
-func (e *RequestSignatureAlgorithm) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestSignatureAlgorithm) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SHA256", "SHA384", "SHA512":
+			return true
+		}
 	}
-	switch v {
-	case "SHA256":
-		fallthrough
-	case "SHA384":
-		fallthrough
-	case "SHA512":
-		*e = RequestSignatureAlgorithm(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RequestSignatureAlgorithm: %v", v)
-	}
+	return false
 }
 
 // ResponseDigestAlgorithm - The algorithm for verifying digest in SAML responses: - `SHA256` - `SHA1`
@@ -700,20 +668,16 @@ const (
 func (e ResponseDigestAlgorithm) ToPointer() *ResponseDigestAlgorithm {
 	return &e
 }
-func (e *ResponseDigestAlgorithm) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ResponseDigestAlgorithm) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SHA1", "SHA256":
+			return true
+		}
 	}
-	switch v {
-	case "SHA1":
-		fallthrough
-	case "SHA256":
-		*e = ResponseDigestAlgorithm(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ResponseDigestAlgorithm: %v", v)
-	}
+	return false
 }
 
 // ResponseSignatureAlgorithm - The algorithm for validating signatures in SAML responses. Options available are: - `SHA256` - `SHA384` - `SHA512`
@@ -728,22 +692,16 @@ const (
 func (e ResponseSignatureAlgorithm) ToPointer() *ResponseSignatureAlgorithm {
 	return &e
 }
-func (e *ResponseSignatureAlgorithm) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ResponseSignatureAlgorithm) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "SHA256", "SHA384", "SHA512":
+			return true
+		}
 	}
-	switch v {
-	case "SHA256":
-		fallthrough
-	case "SHA384":
-		fallthrough
-	case "SHA512":
-		*e = ResponseSignatureAlgorithm(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ResponseSignatureAlgorithm: %v", v)
-	}
+	return false
 }
 
 // SamlPluginSessionCookieSameSite - Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
@@ -759,24 +717,16 @@ const (
 func (e SamlPluginSessionCookieSameSite) ToPointer() *SamlPluginSessionCookieSameSite {
 	return &e
 }
-func (e *SamlPluginSessionCookieSameSite) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SamlPluginSessionCookieSameSite) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Default", "Lax", "None", "Strict":
+			return true
+		}
 	}
-	switch v {
-	case "Default":
-		fallthrough
-	case "Lax":
-		fallthrough
-	case "None":
-		fallthrough
-	case "Strict":
-		*e = SamlPluginSessionCookieSameSite(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SamlPluginSessionCookieSameSite: %v", v)
-	}
+	return false
 }
 
 type SamlPluginSessionRequestHeaders string
@@ -794,30 +744,16 @@ const (
 func (e SamlPluginSessionRequestHeaders) ToPointer() *SamlPluginSessionRequestHeaders {
 	return &e
 }
-func (e *SamlPluginSessionRequestHeaders) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SamlPluginSessionRequestHeaders) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "absolute-timeout", "audience", "id", "idling-timeout", "rolling-timeout", "subject", "timeout":
+			return true
+		}
 	}
-	switch v {
-	case "absolute-timeout":
-		fallthrough
-	case "audience":
-		fallthrough
-	case "id":
-		fallthrough
-	case "idling-timeout":
-		fallthrough
-	case "rolling-timeout":
-		fallthrough
-	case "subject":
-		fallthrough
-	case "timeout":
-		*e = SamlPluginSessionRequestHeaders(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SamlPluginSessionRequestHeaders: %v", v)
-	}
+	return false
 }
 
 type SamlPluginSessionResponseHeaders string
@@ -835,30 +771,16 @@ const (
 func (e SamlPluginSessionResponseHeaders) ToPointer() *SamlPluginSessionResponseHeaders {
 	return &e
 }
-func (e *SamlPluginSessionResponseHeaders) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SamlPluginSessionResponseHeaders) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "absolute-timeout", "audience", "id", "idling-timeout", "rolling-timeout", "subject", "timeout":
+			return true
+		}
 	}
-	switch v {
-	case "absolute-timeout":
-		fallthrough
-	case "audience":
-		fallthrough
-	case "id":
-		fallthrough
-	case "idling-timeout":
-		fallthrough
-	case "rolling-timeout":
-		fallthrough
-	case "subject":
-		fallthrough
-	case "timeout":
-		*e = SamlPluginSessionResponseHeaders(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SamlPluginSessionResponseHeaders: %v", v)
-	}
+	return false
 }
 
 // SamlPluginSessionStorage - The session storage for session data: - `cookie`: stores session data with the session cookie. The session cannot be invalidated or revoked without changing the session secret, but is stateless, and doesn't require a database. - `memcached`: stores session data in memcached - `redis`: stores session data in Redis
@@ -874,24 +796,16 @@ const (
 func (e SamlPluginSessionStorage) ToPointer() *SamlPluginSessionStorage {
 	return &e
 }
-func (e *SamlPluginSessionStorage) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SamlPluginSessionStorage) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "cookie", "memcache", "memcached", "redis":
+			return true
+		}
 	}
-	switch v {
-	case "cookie":
-		fallthrough
-	case "memcache":
-		fallthrough
-	case "memcached":
-		fallthrough
-	case "redis":
-		*e = SamlPluginSessionStorage(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SamlPluginSessionStorage: %v", v)
-	}
+	return false
 }
 
 type SamlPluginConfig struct {
@@ -1286,24 +1200,16 @@ const (
 func (e SamlPluginProtocols) ToPointer() *SamlPluginProtocols {
 	return &e
 }
-func (e *SamlPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SamlPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = SamlPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SamlPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // SamlPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -164,22 +162,16 @@ const (
 func (e AiAzureContentSafetyPluginGuardingMode) ToPointer() *AiAzureContentSafetyPluginGuardingMode {
 	return &e
 }
-func (e *AiAzureContentSafetyPluginGuardingMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiAzureContentSafetyPluginGuardingMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "BOTH", "INPUT", "OUTPUT":
+			return true
+		}
 	}
-	switch v {
-	case "BOTH":
-		fallthrough
-	case "INPUT":
-		fallthrough
-	case "OUTPUT":
-		*e = AiAzureContentSafetyPluginGuardingMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiAzureContentSafetyPluginGuardingMode: %v", v)
-	}
+	return false
 }
 
 // OutputType - See https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/content-filter#content-filtering-categories
@@ -193,20 +185,16 @@ const (
 func (e OutputType) ToPointer() *OutputType {
 	return &e
 }
-func (e *OutputType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OutputType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "EightSeverityLevels", "FourSeverityLevels":
+			return true
+		}
 	}
-	switch v {
-	case "EightSeverityLevels":
-		fallthrough
-	case "FourSeverityLevels":
-		*e = OutputType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for OutputType: %v", v)
-	}
+	return false
 }
 
 // AiAzureContentSafetyPluginTextSource - Select where to pick the 'text' for the Azure Content Services request.
@@ -220,20 +208,16 @@ const (
 func (e AiAzureContentSafetyPluginTextSource) ToPointer() *AiAzureContentSafetyPluginTextSource {
 	return &e
 }
-func (e *AiAzureContentSafetyPluginTextSource) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiAzureContentSafetyPluginTextSource) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "concatenate_all_content", "concatenate_user_content":
+			return true
+		}
 	}
-	switch v {
-	case "concatenate_all_content":
-		fallthrough
-	case "concatenate_user_content":
-		*e = AiAzureContentSafetyPluginTextSource(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiAzureContentSafetyPluginTextSource: %v", v)
-	}
+	return false
 }
 
 type AiAzureContentSafetyPluginConfig struct {
@@ -424,24 +408,16 @@ const (
 func (e AiAzureContentSafetyPluginProtocols) ToPointer() *AiAzureContentSafetyPluginProtocols {
 	return &e
 }
-func (e *AiAzureContentSafetyPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiAzureContentSafetyPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = AiAzureContentSafetyPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiAzureContentSafetyPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AiAzureContentSafetyPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -134,22 +132,16 @@ const (
 func (e BasicAuthPluginAuthProvider) ToPointer() *BasicAuthPluginAuthProvider {
 	return &e
 }
-func (e *BasicAuthPluginAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *BasicAuthPluginAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = BasicAuthPluginAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for BasicAuthPluginAuthProvider: %v", v)
-	}
+	return false
 }
 
 // BasicAuthPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -393,24 +385,16 @@ const (
 func (e BasicAuthPluginStrategy) ToPointer() *BasicAuthPluginStrategy {
 	return &e
 }
-func (e *BasicAuthPluginStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *BasicAuthPluginStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "cluster", "memory", "off", "redis":
+			return true
+		}
 	}
-	switch v {
-	case "cluster":
-		fallthrough
-	case "memory":
-		fallthrough
-	case "off":
-		fallthrough
-	case "redis":
-		*e = BasicAuthPluginStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for BasicAuthPluginStrategy: %v", v)
-	}
+	return false
 }
 
 type BruteForceProtection struct {
@@ -508,28 +492,16 @@ const (
 func (e BasicAuthPluginProtocols) ToPointer() *BasicAuthPluginProtocols {
 	return &e
 }
-func (e *BasicAuthPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *BasicAuthPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = BasicAuthPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for BasicAuthPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // BasicAuthPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

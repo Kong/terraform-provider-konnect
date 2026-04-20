@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -135,26 +133,16 @@ const (
 func (e Algorithms) ToPointer() *Algorithms {
 	return &e
 }
-func (e *Algorithms) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Algorithms) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "hmac-sha1", "hmac-sha224", "hmac-sha256", "hmac-sha384", "hmac-sha512":
+			return true
+		}
 	}
-	switch v {
-	case "hmac-sha1":
-		fallthrough
-	case "hmac-sha224":
-		fallthrough
-	case "hmac-sha256":
-		fallthrough
-	case "hmac-sha384":
-		fallthrough
-	case "hmac-sha512":
-		*e = Algorithms(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Algorithms: %v", v)
-	}
+	return false
 }
 
 type HmacAuthPluginConfig struct {
@@ -248,28 +236,16 @@ const (
 func (e HmacAuthPluginProtocols) ToPointer() *HmacAuthPluginProtocols {
 	return &e
 }
-func (e *HmacAuthPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *HmacAuthPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = HmacAuthPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for HmacAuthPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // HmacAuthPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

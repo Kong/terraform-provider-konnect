@@ -383,7 +383,7 @@ Optional:
 
 Optional:
 
-- `algorithm` (String) Signing algorithm. Not Null; must be one of ["ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512"]
+- `algorithm` (String) Signing algorithm. possible known values include one of ["ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512"]; Not Null
 - `expires_in` (Number) Seconds until token expires (for exp claim). Default: 300
 - `input` (String) jwt_sign node input
 - `inputs` (Attributes) jwt_sign node inputs (see [below for nested schema](#nestedatt--config--nodes--jwt_sign--inputs))
@@ -457,7 +457,7 @@ Optional:
 
 Optional:
 
-- `content_type` (String) The expected mime type of the property value. When set to `application/json`, SET operations will JSON-encode input data before writing it, and GET operations will JSON-decode output data after reading it. Otherwise, this setting has no effect. must be one of ["application/json", "application/octet-stream", "text/plain"]
+- `content_type` (String) The expected mime type of the property value. When set to `application/json`, SET operations will JSON-encode input data before writing it, and GET operations will JSON-decode output data after reading it. Otherwise, this setting has no effect. possible known values include one of ["application/json", "application/octet-stream", "text/plain"]
 - `input` (String) Property input source. When connected, this node operates in SET mode and writes input data to the property. Otherwise, the node operates in GET mode and reads the property.
 - `name` (String) A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid `snake_case` or `kebab-case`.
 - `output` (String) Property output. This can be connected regardless of whether the node is operating in GET mode or SET mode.
@@ -507,7 +507,7 @@ Optional:
 
 - `memory` (Attributes) (see [below for nested schema](#nestedatt--config--resources--cache--memory))
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--resources--cache--redis))
-- `strategy` (String) The backing data store in which to hold cache entities. Accepted values are: `memory` and `redis`. must be one of ["memory", "redis"]
+- `strategy` (String) The backing data store in which to hold cache entities. Accepted values are: `memory` and `redis`. possible known values include one of ["memory", "redis"]
 
 <a id="nestedatt--config--resources--cache--memory"></a>
 ### Nested Schema for `config.resources.cache.memory`
@@ -538,7 +538,7 @@ Optional:
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--resources--cache--redis--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
+- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
@@ -550,7 +550,7 @@ Optional:
 
 Optional:
 
-- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]
 - `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 - `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
 - `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
@@ -663,7 +663,7 @@ import {
   to = konnect_gateway_plugin_datakit.my_konnect_gateway_plugin_datakit
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

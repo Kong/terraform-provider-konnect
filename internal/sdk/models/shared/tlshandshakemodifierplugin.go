@@ -180,22 +180,16 @@ const (
 func (e TLSHandshakeModifierPluginProtocols) ToPointer() *TLSHandshakeModifierPluginProtocols {
 	return &e
 }
-func (e *TLSHandshakeModifierPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TLSHandshakeModifierPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpcs", "https", "tls":
+			return true
+		}
 	}
-	switch v {
-	case "grpcs":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tls":
-		*e = TLSHandshakeModifierPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TLSHandshakeModifierPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // TLSHandshakeModifierPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

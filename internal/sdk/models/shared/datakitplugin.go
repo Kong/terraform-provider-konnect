@@ -3,7 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
@@ -289,22 +288,16 @@ const (
 func (e NodesContentType) ToPointer() *NodesContentType {
 	return &e
 }
-func (e *NodesContentType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *NodesContentType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "application/json", "application/octet-stream", "text/plain":
+			return true
+		}
 	}
-	switch v {
-	case "application/json":
-		fallthrough
-	case "application/octet-stream":
-		fallthrough
-	case "text/plain":
-		*e = NodesContentType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for NodesContentType: %v", v)
-	}
+	return false
 }
 
 // Property - Get or set a property
@@ -394,42 +387,16 @@ const (
 func (e AllowedAlgorithms) ToPointer() *AllowedAlgorithms {
 	return &e
 }
-func (e *AllowedAlgorithms) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AllowedAlgorithms) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512":
+			return true
+		}
 	}
-	switch v {
-	case "ES256":
-		fallthrough
-	case "ES384":
-		fallthrough
-	case "ES512":
-		fallthrough
-	case "EdDSA":
-		fallthrough
-	case "HS256":
-		fallthrough
-	case "HS384":
-		fallthrough
-	case "HS512":
-		fallthrough
-	case "PS256":
-		fallthrough
-	case "PS384":
-		fallthrough
-	case "PS512":
-		fallthrough
-	case "RS256":
-		fallthrough
-	case "RS384":
-		fallthrough
-	case "RS512":
-		*e = AllowedAlgorithms(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AllowedAlgorithms: %v", v)
-	}
+	return false
 }
 
 // DatakitPluginNodesConfig9Inputs - jwt_verify node inputs
@@ -655,42 +622,16 @@ const (
 func (e NodesAlgorithm) ToPointer() *NodesAlgorithm {
 	return &e
 }
-func (e *NodesAlgorithm) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *NodesAlgorithm) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512":
+			return true
+		}
 	}
-	switch v {
-	case "ES256":
-		fallthrough
-	case "ES384":
-		fallthrough
-	case "ES512":
-		fallthrough
-	case "EdDSA":
-		fallthrough
-	case "HS256":
-		fallthrough
-	case "HS384":
-		fallthrough
-	case "HS512":
-		fallthrough
-	case "PS256":
-		fallthrough
-	case "PS384":
-		fallthrough
-	case "PS512":
-		fallthrough
-	case "RS256":
-		fallthrough
-	case "RS384":
-		fallthrough
-	case "RS512":
-		*e = NodesAlgorithm(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for NodesAlgorithm: %v", v)
-	}
+	return false
 }
 
 // DatakitPluginNodesConfigInputs - jwt_sign node inputs
@@ -2160,22 +2101,16 @@ const (
 func (e DatakitPluginAuthProvider) ToPointer() *DatakitPluginAuthProvider {
 	return &e
 }
-func (e *DatakitPluginAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DatakitPluginAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = DatakitPluginAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for DatakitPluginAuthProvider: %v", v)
-	}
+	return false
 }
 
 // DatakitPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -2377,22 +2312,16 @@ const (
 func (e DatakitPluginSentinelRole) ToPointer() *DatakitPluginSentinelRole {
 	return &e
 }
-func (e *DatakitPluginSentinelRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DatakitPluginSentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "master":
-		fallthrough
-	case "slave":
-		*e = DatakitPluginSentinelRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for DatakitPluginSentinelRole: %v", v)
-	}
+	return false
 }
 
 type DatakitPluginRedis struct {
@@ -2618,20 +2547,16 @@ const (
 func (e DatakitPluginStrategy) ToPointer() *DatakitPluginStrategy {
 	return &e
 }
-func (e *DatakitPluginStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DatakitPluginStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "memory", "redis":
+			return true
+		}
 	}
-	switch v {
-	case "memory":
-		fallthrough
-	case "redis":
-		*e = DatakitPluginStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for DatakitPluginStrategy: %v", v)
-	}
+	return false
 }
 
 type DatakitPluginCache struct {
@@ -2799,24 +2724,16 @@ const (
 func (e DatakitPluginProtocols) ToPointer() *DatakitPluginProtocols {
 	return &e
 }
-func (e *DatakitPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DatakitPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = DatakitPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for DatakitPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // DatakitPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

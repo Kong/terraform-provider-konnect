@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -133,20 +131,16 @@ const (
 func (e CostStrategy) ToPointer() *CostStrategy {
 	return &e
 }
-func (e *CostStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CostStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "default", "node_quantifier":
+			return true
+		}
 	}
-	switch v {
-	case "default":
-		fallthrough
-	case "node_quantifier":
-		*e = CostStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CostStrategy: %v", v)
-	}
+	return false
 }
 
 // GraphqlRateLimitingAdvancedPluginIdentifier - How to define the rate limit key. Can be `ip`, `credential`, `consumer`.
@@ -161,22 +155,16 @@ const (
 func (e GraphqlRateLimitingAdvancedPluginIdentifier) ToPointer() *GraphqlRateLimitingAdvancedPluginIdentifier {
 	return &e
 }
-func (e *GraphqlRateLimitingAdvancedPluginIdentifier) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GraphqlRateLimitingAdvancedPluginIdentifier) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "consumer", "credential", "ip":
+			return true
+		}
 	}
-	switch v {
-	case "consumer":
-		fallthrough
-	case "credential":
-		fallthrough
-	case "ip":
-		*e = GraphqlRateLimitingAdvancedPluginIdentifier(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GraphqlRateLimitingAdvancedPluginIdentifier: %v", v)
-	}
+	return false
 }
 
 // GraphqlRateLimitingAdvancedPluginAuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
@@ -191,22 +179,16 @@ const (
 func (e GraphqlRateLimitingAdvancedPluginAuthProvider) ToPointer() *GraphqlRateLimitingAdvancedPluginAuthProvider {
 	return &e
 }
-func (e *GraphqlRateLimitingAdvancedPluginAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GraphqlRateLimitingAdvancedPluginAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = GraphqlRateLimitingAdvancedPluginAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GraphqlRateLimitingAdvancedPluginAuthProvider: %v", v)
-	}
+	return false
 }
 
 // GraphqlRateLimitingAdvancedPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -408,22 +390,16 @@ const (
 func (e GraphqlRateLimitingAdvancedPluginSentinelRole) ToPointer() *GraphqlRateLimitingAdvancedPluginSentinelRole {
 	return &e
 }
-func (e *GraphqlRateLimitingAdvancedPluginSentinelRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GraphqlRateLimitingAdvancedPluginSentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "master":
-		fallthrough
-	case "slave":
-		*e = GraphqlRateLimitingAdvancedPluginSentinelRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GraphqlRateLimitingAdvancedPluginSentinelRole: %v", v)
-	}
+	return false
 }
 
 type GraphqlRateLimitingAdvancedPluginRedis struct {
@@ -649,20 +625,16 @@ const (
 func (e GraphqlRateLimitingAdvancedPluginStrategy) ToPointer() *GraphqlRateLimitingAdvancedPluginStrategy {
 	return &e
 }
-func (e *GraphqlRateLimitingAdvancedPluginStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GraphqlRateLimitingAdvancedPluginStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "cluster", "redis":
+			return true
+		}
 	}
-	switch v {
-	case "cluster":
-		fallthrough
-	case "redis":
-		*e = GraphqlRateLimitingAdvancedPluginStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GraphqlRateLimitingAdvancedPluginStrategy: %v", v)
-	}
+	return false
 }
 
 // GraphqlRateLimitingAdvancedPluginWindowType - Sets the time window to either `sliding` or `fixed`.
@@ -676,20 +648,16 @@ const (
 func (e GraphqlRateLimitingAdvancedPluginWindowType) ToPointer() *GraphqlRateLimitingAdvancedPluginWindowType {
 	return &e
 }
-func (e *GraphqlRateLimitingAdvancedPluginWindowType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GraphqlRateLimitingAdvancedPluginWindowType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "fixed", "sliding":
+			return true
+		}
 	}
-	switch v {
-	case "fixed":
-		fallthrough
-	case "sliding":
-		*e = GraphqlRateLimitingAdvancedPluginWindowType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GraphqlRateLimitingAdvancedPluginWindowType: %v", v)
-	}
+	return false
 }
 
 type GraphqlRateLimitingAdvancedPluginConfig struct {
@@ -866,24 +834,16 @@ const (
 func (e GraphqlRateLimitingAdvancedPluginProtocols) ToPointer() *GraphqlRateLimitingAdvancedPluginProtocols {
 	return &e
 }
-func (e *GraphqlRateLimitingAdvancedPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GraphqlRateLimitingAdvancedPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = GraphqlRateLimitingAdvancedPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GraphqlRateLimitingAdvancedPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // GraphqlRateLimitingAdvancedPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

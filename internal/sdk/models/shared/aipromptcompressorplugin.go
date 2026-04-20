@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -171,20 +169,16 @@ const (
 func (e CompressorType) ToPointer() *CompressorType {
 	return &e
 }
-func (e *CompressorType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CompressorType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "rate", "target_token":
+			return true
+		}
 	}
-	switch v {
-	case "rate":
-		fallthrough
-	case "target_token":
-		*e = CompressorType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CompressorType: %v", v)
-	}
+	return false
 }
 
 type MessageType string
@@ -198,22 +192,16 @@ const (
 func (e MessageType) ToPointer() *MessageType {
 	return &e
 }
-func (e *MessageType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MessageType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "assistant", "system", "user":
+			return true
+		}
 	}
-	switch v {
-	case "assistant":
-		fallthrough
-	case "system":
-		fallthrough
-	case "user":
-		*e = MessageType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MessageType: %v", v)
-	}
+	return false
 }
 
 type AiPromptCompressorPluginConfig struct {
@@ -359,24 +347,16 @@ const (
 func (e AiPromptCompressorPluginProtocols) ToPointer() *AiPromptCompressorPluginProtocols {
 	return &e
 }
-func (e *AiPromptCompressorPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiPromptCompressorPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = AiPromptCompressorPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiPromptCompressorPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AiPromptCompressorPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

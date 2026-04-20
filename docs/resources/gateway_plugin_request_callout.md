@@ -296,7 +296,7 @@ Optional:
 - `error_response_code` (Number) The error code to respond with if `on_error` is `fail` or if `retries` is achieved. Default: 400
 - `error_response_msg` (String) The error mesasge to respond with if `on_error` is set to `fail` or if `retries` is achieved. Templating with Lua expressions is supported. Default: "service callout error"
 - `http_statuses` (List of Number) The list of HTTP status codes considered errors under the error handling policy.
-- `on_error` (String) Default: "fail"; must be one of ["continue", "fail", "retry"]
+- `on_error` (String) possible known values include one of ["continue", "fail", "retry"]; Default: "fail"
 - `retries` (Number) The number of retries the plugin will attempt on TCP and HTTP errors if `on_error` is set to `retry`. Default: 2
 
 
@@ -387,7 +387,7 @@ Optional:
 - `cache_ttl` (Number) TTL in seconds of cache entities. Default: 300
 - `memory` (Attributes) (see [below for nested schema](#nestedatt--config--cache--memory))
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--cache--redis))
-- `strategy` (String) The backing data store in which to hold cache entities. Accepted values are: `off`, `memory`, and `redis`. Default: "off"; must be one of ["memory", "off", "redis"]
+- `strategy` (String) The backing data store in which to hold cache entities. Accepted values are: `off`, `memory`, and `redis`. possible known values include one of ["memory", "off", "redis"]; Default: "off"
 
 <a id="nestedatt--config--cache--memory"></a>
 ### Nested Schema for `config.cache.memory`
@@ -418,7 +418,7 @@ Optional:
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--cache--redis--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
+- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
@@ -430,7 +430,7 @@ Optional:
 
 Optional:
 
-- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]
 - `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 - `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
 - `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
@@ -581,7 +581,7 @@ import {
   to = konnect_gateway_plugin_request_callout.my_konnect_gateway_plugin_request_callout
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

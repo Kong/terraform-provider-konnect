@@ -26,7 +26,7 @@ resource "konnect_cloud_gateway_custom_domain" "my_cloudgatewaycustomdomain" {
 
 ### Required
 
-- `control_plane_geo` (String) Set of control-plane geos supported for deploying cloud-gateways configurations. must be one of ["us", "eu", "au", "me", "in", "sg"]; Requires replacement if changed.
+- `control_plane_geo` (String) Set of control-plane geos supported for deploying cloud-gateways configurations. possible known values include one of ["us", "eu", "au", "me", "in", "sg"]; Requires replacement if changed.
 - `control_plane_id` (String) Requires replacement if changed.
 - `domain` (String) Domain name of the custom domain. Requires replacement if changed.
 
@@ -36,7 +36,7 @@ resource "konnect_cloud_gateway_custom_domain" "my_cloudgatewaycustomdomain" {
 This feature is currently in beta and is subject to change.
 
 Kind of the custom domain based on Cloud Gateway deployment.
-Default: "dedicated.v0"; must be one of ["dedicated.v0", "serverless.v1"]; Requires replacement if changed.
+possible known values include one of ["dedicated.v0", "serverless.v1"]; Default: "dedicated.v0"; Requires replacement if changed.
 
 ### Read-Only
 

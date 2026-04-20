@@ -103,14 +103,7 @@ func (r *GatewayPluginAiLakeraGuardResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`INPUT`),
-						Description: `The guardrail mode to use for the request. Default: "INPUT"; must be one of ["BOTH", "INPUT", "OUTPUT"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"BOTH",
-								"INPUT",
-								"OUTPUT",
-							),
-						},
+						Description: `The guardrail mode to use for the request. possible known values include one of ["BOTH", "INPUT", "OUTPUT"]; Default: "INPUT"`,
 					},
 					"lakera_service_url": schema.StringAttribute{
 						Computed:    true,
@@ -162,14 +155,7 @@ func (r *GatewayPluginAiLakeraGuardResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`concatenate_all_content`),
-						Description: `Select where to pick the 'text' for the Lakera Guard request (when text/generation is selected). Default: "concatenate_all_content"; must be one of ["concatenate_all_content", "concatenate_user_content", "last_message"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"concatenate_all_content",
-								"concatenate_user_content",
-								"last_message",
-							),
-						},
+						Description: `Select where to pick the 'text' for the Lakera Guard request (when text/generation is selected). possible known values include one of ["concatenate_all_content", "concatenate_user_content", "last_message"]; Default: "concatenate_all_content"`,
 					},
 					"timeout": schema.Float64Attribute{
 						Computed:    true,

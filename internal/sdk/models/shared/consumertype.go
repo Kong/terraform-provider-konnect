@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // ConsumerType - Type of the consumer.
 type ConsumerType string
 
@@ -20,22 +15,14 @@ const (
 func (e ConsumerType) ToPointer() *ConsumerType {
 	return &e
 }
-func (e *ConsumerType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ConsumerType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "proxy", "developer", "admin", "application":
+			return true
+		}
 	}
-	switch v {
-	case "proxy":
-		fallthrough
-	case "developer":
-		fallthrough
-	case "admin":
-		fallthrough
-	case "application":
-		*e = ConsumerType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ConsumerType: %v", v)
-	}
+	return false
 }

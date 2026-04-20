@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -165,20 +163,16 @@ const (
 func (e EnforcementMode) ToPointer() *EnforcementMode {
 	return &e
 }
-func (e *EnforcementMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *EnforcementMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "block", "log_only":
+			return true
+		}
 	}
-	switch v {
-	case "block":
-		fallthrough
-	case "log_only":
-		*e = EnforcementMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for EnforcementMode: %v", v)
-	}
+	return false
 }
 
 type InjectionTypes string
@@ -196,30 +190,16 @@ const (
 func (e InjectionTypes) ToPointer() *InjectionTypes {
 	return &e
 }
-func (e *InjectionTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *InjectionTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "java_exception", "js", "sql", "sql_low_sensitivity", "ssi", "xpath_abbreviated", "xpath_extended":
+			return true
+		}
 	}
-	switch v {
-	case "java_exception":
-		fallthrough
-	case "js":
-		fallthrough
-	case "sql":
-		fallthrough
-	case "sql_low_sensitivity":
-		fallthrough
-	case "ssi":
-		fallthrough
-	case "xpath_abbreviated":
-		fallthrough
-	case "xpath_extended":
-		*e = InjectionTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for InjectionTypes: %v", v)
-	}
+	return false
 }
 
 type Locations string
@@ -235,26 +215,16 @@ const (
 func (e Locations) ToPointer() *Locations {
 	return &e
 }
-func (e *Locations) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Locations) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "body", "headers", "path", "path_and_query", "query":
+			return true
+		}
 	}
-	switch v {
-	case "body":
-		fallthrough
-	case "headers":
-		fallthrough
-	case "path":
-		fallthrough
-	case "path_and_query":
-		fallthrough
-	case "query":
-		*e = Locations(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Locations: %v", v)
-	}
+	return false
 }
 
 type InjectionProtectionPluginConfig struct {
@@ -337,24 +307,16 @@ const (
 func (e InjectionProtectionPluginProtocols) ToPointer() *InjectionProtectionPluginProtocols {
 	return &e
 }
-func (e *InjectionProtectionPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *InjectionProtectionPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = InjectionProtectionPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for InjectionProtectionPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // InjectionProtectionPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

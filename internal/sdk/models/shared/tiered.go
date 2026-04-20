@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -31,30 +29,16 @@ const (
 func (e Tier) ToPointer() *Tier {
 	return &e
 }
-func (e *Tier) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Tier) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "micro", "small", "medium", "large", "xlarge", "2xlarge", "4xlarge":
+			return true
+		}
 	}
-	switch v {
-	case "micro":
-		fallthrough
-	case "small":
-		fallthrough
-	case "medium":
-		fallthrough
-	case "large":
-		fallthrough
-	case "xlarge":
-		fallthrough
-	case "2xlarge":
-		fallthrough
-	case "4xlarge":
-		*e = Tier(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Tier: %v", v)
-	}
+	return false
 }
 
 // Tiered - Capacity tiers with pre-configured size and performance characteristics.

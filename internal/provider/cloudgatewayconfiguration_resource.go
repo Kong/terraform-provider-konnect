@@ -64,28 +64,11 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 			"api_access": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Type of API access data-plane groups will support for a configuration. must be one of ["private", "public", "private+public"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"private",
-						"public",
-						"private+public",
-					),
-				},
+				Description: `Type of API access data-plane groups will support for a configuration. possible known values include one of ["private", "public", "private+public"]`,
 			},
 			"control_plane_geo": schema.StringAttribute{
 				Required:    true,
-				Description: `Set of control-plane geos supported for deploying cloud-gateways configurations. must be one of ["us", "eu", "au", "me", "in", "sg"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"us",
-						"eu",
-						"au",
-						"me",
-						"in",
-						"sg",
-					),
-				},
+				Description: `Set of control-plane geos supported for deploying cloud-gateways configurations. possible known values include one of ["us", "eu", "au", "me", "in", "sg"]`,
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required: true,
@@ -152,14 +135,9 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 										"instance_type": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `Instance type name to indicate capacity. Not Null; must be one of ["small", "medium", "large"]`,
+											Description: `Instance type name to indicate capacity. possible known values include one of ["small", "medium", "large"]; Not Null`,
 											Validators: []validator.String{
 												speakeasy_stringvalidators.NotNull(),
-												stringvalidator.OneOf(
-													"small",
-													"medium",
-													"large",
-												),
 											},
 										},
 										"kind": schema.StringAttribute{
@@ -255,14 +233,9 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 						"provider": schema.StringAttribute{
 							Computed:    true,
 							Optional:    true,
-							Description: `Name of cloud provider. Not Null; must be one of ["aws", "azure", "gcp"]`,
+							Description: `Name of cloud provider. possible known values include one of ["aws", "azure", "gcp"]; Not Null`,
 							Validators: []validator.String{
 								speakeasy_stringvalidators.NotNull(),
-								stringvalidator.OneOf(
-									"aws",
-									"azure",
-									"gcp",
-								),
 							},
 						},
 						"region": schema.StringAttribute{
@@ -307,13 +280,7 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 					`` + "\n" +
 					`Kind of the Cloud Gateway deployment. If serverless.v1 is specified, the following fields` + "\n" +
 					`should be omitted (will be ignored if provided): autoscale, cloud_gateway_network_id, version.` + "\n" +
-					`Default: "dedicated.v0"; must be one of ["dedicated.v0", "serverless.v1"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"dedicated.v0",
-						"serverless.v1",
-					),
-				},
+					`possible known values include one of ["dedicated.v0", "serverless.v1"]; Default: "dedicated.v0"`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

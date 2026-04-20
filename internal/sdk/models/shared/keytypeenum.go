@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type KeyTypeEnum string
 
 const (
@@ -17,18 +12,14 @@ const (
 func (e KeyTypeEnum) ToPointer() *KeyTypeEnum {
 	return &e
 }
-func (e *KeyTypeEnum) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KeyTypeEnum) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "legacy", "new":
+			return true
+		}
 	}
-	switch v {
-	case "legacy":
-		fallthrough
-	case "new":
-		*e = KeyTypeEnum(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KeyTypeEnum: %v", v)
-	}
+	return false
 }

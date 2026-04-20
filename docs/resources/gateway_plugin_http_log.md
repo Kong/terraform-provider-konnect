@@ -118,12 +118,12 @@ Required:
 
 Optional:
 
-- `content_type` (String) Indicates the type of data sent. The only available option is `application/json`. Default: "application/json"; must be one of ["application/json", "application/json; charset=utf-8"]
+- `content_type` (String) Indicates the type of data sent. The only available option is `application/json`. possible known values include one of ["application/json", "application/json; charset=utf-8"]; Default: "application/json"
 - `custom_fields_by_lua` (Map of String) Lua code as a key-value map
 - `flush_timeout` (Number) Optional time in seconds. If `queue_size` > 1, this is the max idle time before sending a log with less than `queue_size` records.
 - `headers` (Map of String) An optional table of headers included in the HTTP message to the upstream server. Values are indexed by header name, and each header name accepts a single string.
 - `keepalive` (Number) An optional value in milliseconds that defines how long an idle connection will live before being closed. Default: 60000
-- `method` (String) An optional method used to send data to the HTTP server. Supported values are `POST` (default), `PUT`, and `PATCH`. Default: "POST"; must be one of ["PATCH", "POST", "PUT"]
+- `method` (String) An optional method used to send data to the HTTP server. Supported values are `POST` (default), `PUT`, and `PATCH`. possible known values include one of ["PATCH", "POST", "PUT"]; Default: "POST"
 - `queue` (Attributes) (see [below for nested schema](#nestedatt--config--queue))
 - `queue_size` (Number) Maximum number of log entries to be sent on each message to the upstream server.
 - `retry_count` (Number) Number of times to retry when sending data to the upstream server.
@@ -135,7 +135,7 @@ Optional:
 
 Optional:
 
-- `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of [-1, 1]
+- `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. possible known values include one of [-1, 1]; Default: 1
 - `initial_retry_delay` (Number) Time in seconds before the initial retry is made for a failing batch.
 - `max_batch_size` (Number) Maximum number of entries that can be processed at a time. Default: 1
 - `max_bytes` (Number) Maximum number of bytes that can be waiting on a queue, requires string content.
@@ -215,7 +215,7 @@ import {
   to = konnect_gateway_plugin_http_log.my_konnect_gateway_plugin_http_log
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

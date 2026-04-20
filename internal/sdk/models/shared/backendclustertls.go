@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -18,20 +16,16 @@ const (
 func (e TLSVersions) ToPointer() *TLSVersions {
 	return &e
 }
-func (e *TLSVersions) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TLSVersions) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "tls12", "tls13":
+			return true
+		}
 	}
-	switch v {
-	case "tls12":
-		fallthrough
-	case "tls13":
-		*e = TLSVersions(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TLSVersions: %v", v)
-	}
+	return false
 }
 
 // ClientIdentity - Client mTLS configuration.

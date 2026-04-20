@@ -41,7 +41,7 @@ resource "konnect_centralized_consumer" "my_centralizedconsumer" {
 If `consumer_groups` are provided on the Consumer object _and_ on the Realm, the Consumer will be placed in all defined consumer groups.
 - `custom_id` (String) Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database.
 - `tags` (List of String)
-- `type` (String) Type of the consumer. Default: "proxy"; must be one of ["proxy", "developer", "admin", "application"]
+- `type` (String) Type of the consumer. possible known values include one of ["proxy", "developer", "admin", "application"]; Default: "proxy"
 
 ### Read-Only
 
@@ -59,7 +59,7 @@ In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.
 import {
   to = konnect_centralized_consumer.my_konnect_centralized_consumer
   id = jsonencode({
-    id = "..."
+    id       = "..."
     realm_id = "..."
   })
 }

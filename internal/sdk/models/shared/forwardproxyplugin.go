@@ -158,22 +158,16 @@ const (
 func (e XHeaders) ToPointer() *XHeaders {
 	return &e
 }
-func (e *XHeaders) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *XHeaders) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "append", "delete", "transparent":
+			return true
+		}
 	}
-	switch v {
-	case "append":
-		fallthrough
-	case "delete":
-		fallthrough
-	case "transparent":
-		*e = XHeaders(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for XHeaders: %v", v)
-	}
+	return false
 }
 
 type ForwardProxyPluginConfig struct {
@@ -308,24 +302,16 @@ const (
 func (e ForwardProxyPluginProtocols) ToPointer() *ForwardProxyPluginProtocols {
 	return &e
 }
-func (e *ForwardProxyPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ForwardProxyPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = ForwardProxyPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ForwardProxyPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // ForwardProxyPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

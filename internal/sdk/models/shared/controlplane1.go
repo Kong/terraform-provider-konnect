@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
@@ -24,28 +22,16 @@ const (
 func (e ControlPlaneClusterType) ToPointer() *ControlPlaneClusterType {
 	return &e
 }
-func (e *ControlPlaneClusterType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ControlPlaneClusterType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "CLUSTER_TYPE_CONTROL_PLANE", "CLUSTER_TYPE_K8S_INGRESS_CONTROLLER", "CLUSTER_TYPE_CONTROL_PLANE_GROUP", "CLUSTER_TYPE_SERVERLESS", "CLUSTER_TYPE_HYBRID", "CLUSTER_TYPE_SERVERLESS_V1":
+			return true
+		}
 	}
-	switch v {
-	case "CLUSTER_TYPE_CONTROL_PLANE":
-		fallthrough
-	case "CLUSTER_TYPE_K8S_INGRESS_CONTROLLER":
-		fallthrough
-	case "CLUSTER_TYPE_CONTROL_PLANE_GROUP":
-		fallthrough
-	case "CLUSTER_TYPE_SERVERLESS":
-		fallthrough
-	case "CLUSTER_TYPE_HYBRID":
-		fallthrough
-	case "CLUSTER_TYPE_SERVERLESS_V1":
-		*e = ControlPlaneClusterType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ControlPlaneClusterType: %v", v)
-	}
+	return false
 }
 
 // ControlPlaneAuthType - The auth type value of the cluster associated with the Runtime Group.
@@ -59,20 +45,16 @@ const (
 func (e ControlPlaneAuthType) ToPointer() *ControlPlaneAuthType {
 	return &e
 }
-func (e *ControlPlaneAuthType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ControlPlaneAuthType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "pinned_client_certs", "pki_client_certs":
+			return true
+		}
 	}
-	switch v {
-	case "pinned_client_certs":
-		fallthrough
-	case "pki_client_certs":
-		*e = ControlPlaneAuthType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ControlPlaneAuthType: %v", v)
-	}
+	return false
 }
 
 // ControlPlaneConfig - CP configuration object for related access endpoints.

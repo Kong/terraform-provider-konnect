@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -26,36 +24,16 @@ const (
 func (e Name) ToPointer() *Name {
 	return &e
 }
-func (e *Name) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Name) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "all", "alter", "alter_configs", "create", "delete", "describe", "describe_configs", "idempotent_write", "read", "write":
+			return true
+		}
 	}
-	switch v {
-	case "all":
-		fallthrough
-	case "alter":
-		fallthrough
-	case "alter_configs":
-		fallthrough
-	case "create":
-		fallthrough
-	case "delete":
-		fallthrough
-	case "describe":
-		fallthrough
-	case "describe_configs":
-		fallthrough
-	case "idempotent_write":
-		fallthrough
-	case "read":
-		fallthrough
-	case "write":
-		*e = Name(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Name: %v", v)
-	}
+	return false
 }
 
 // EventGatewayACLOperation - An Event Gateway operation to match against in an ACL rule.

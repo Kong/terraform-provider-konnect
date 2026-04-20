@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -189,24 +187,16 @@ const (
 func (e StandardWebhooksPluginProtocols) ToPointer() *StandardWebhooksPluginProtocols {
 	return &e
 }
-func (e *StandardWebhooksPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *StandardWebhooksPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = StandardWebhooksPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for StandardWebhooksPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // StandardWebhooksPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

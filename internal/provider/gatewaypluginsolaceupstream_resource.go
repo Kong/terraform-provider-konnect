@@ -107,13 +107,7 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(`DIRECT`),
-								Description: `Sets the message delivery mode. Default: "DIRECT"; must be one of ["DIRECT", "PERSISTENT"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"DIRECT",
-										"PERSISTENT",
-									),
-								},
+								Description: `Sets the message delivery mode. possible known values include one of ["DIRECT", "PERSISTENT"]; Default: "DIRECT"`,
 							},
 							"destinations": schema.ListNestedAttribute{
 								Required: true,
@@ -134,13 +128,7 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 											Computed:    true,
 											Optional:    true,
 											Default:     stringdefault.StaticString(`QUEUE`),
-											Description: `The type of the destination. Default: "QUEUE"; must be one of ["QUEUE", "TOPIC"]`,
-											Validators: []validator.String{
-												stringvalidator.OneOf(
-													"QUEUE",
-													"TOPIC",
-												),
-											},
+											Description: `The type of the destination. possible known values include one of ["QUEUE", "TOPIC"]; Default: "QUEUE"`,
 										},
 									},
 								},
@@ -332,14 +320,7 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 										Computed:    true,
 										Optional:    true,
 										Default:     stringdefault.StaticString(`BASIC`),
-										Description: `The client authentication scheme used when connection to an event broker. Default: "BASIC"; must be one of ["BASIC", "NONE", "OAUTH2"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"BASIC",
-												"NONE",
-												"OAUTH2",
-											),
-										},
+										Description: `The client authentication scheme used when connection to an event broker. possible known values include one of ["BASIC", "NONE", "OAUTH2"]; Default: "BASIC"`,
 									},
 									"username": schema.StringAttribute{
 										Optional:    true,

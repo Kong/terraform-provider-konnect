@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -225,22 +223,16 @@ const (
 func (e UpstreamOauthPluginAuthProvider) ToPointer() *UpstreamOauthPluginAuthProvider {
 	return &e
 }
-func (e *UpstreamOauthPluginAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UpstreamOauthPluginAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = UpstreamOauthPluginAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for UpstreamOauthPluginAuthProvider: %v", v)
-	}
+	return false
 }
 
 // UpstreamOauthPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -442,22 +434,16 @@ const (
 func (e UpstreamOauthPluginSentinelRole) ToPointer() *UpstreamOauthPluginSentinelRole {
 	return &e
 }
-func (e *UpstreamOauthPluginSentinelRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UpstreamOauthPluginSentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "master":
-		fallthrough
-	case "slave":
-		*e = UpstreamOauthPluginSentinelRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for UpstreamOauthPluginSentinelRole: %v", v)
-	}
+	return false
 }
 
 type UpstreamOauthPluginRedis struct {
@@ -683,20 +669,16 @@ const (
 func (e UpstreamOauthPluginStrategy) ToPointer() *UpstreamOauthPluginStrategy {
 	return &e
 }
-func (e *UpstreamOauthPluginStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UpstreamOauthPluginStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "memory", "redis":
+			return true
+		}
 	}
-	switch v {
-	case "memory":
-		fallthrough
-	case "redis":
-		*e = UpstreamOauthPluginStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for UpstreamOauthPluginStrategy: %v", v)
-	}
+	return false
 }
 
 type UpstreamOauthPluginCache struct {
@@ -769,24 +751,16 @@ const (
 func (e AuthMethod) ToPointer() *AuthMethod {
 	return &e
 }
-func (e *AuthMethod) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none":
+			return true
+		}
 	}
-	switch v {
-	case "client_secret_basic":
-		fallthrough
-	case "client_secret_jwt":
-		fallthrough
-	case "client_secret_post":
-		fallthrough
-	case "none":
-		*e = AuthMethod(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AuthMethod: %v", v)
-	}
+	return false
 }
 
 // ClientSecretJwtAlg - The algorithm to use with JWT when using `client_secret_jwt` authentication.
@@ -800,20 +774,16 @@ const (
 func (e ClientSecretJwtAlg) ToPointer() *ClientSecretJwtAlg {
 	return &e
 }
-func (e *ClientSecretJwtAlg) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ClientSecretJwtAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "HS256", "HS512":
+			return true
+		}
 	}
-	switch v {
-	case "HS256":
-		fallthrough
-	case "HS512":
-		*e = ClientSecretJwtAlg(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ClientSecretJwtAlg: %v", v)
-	}
+	return false
 }
 
 type UpstreamOauthPluginClient struct {
@@ -940,20 +910,16 @@ const (
 func (e UpstreamOauthPluginGrantType) ToPointer() *UpstreamOauthPluginGrantType {
 	return &e
 }
-func (e *UpstreamOauthPluginGrantType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UpstreamOauthPluginGrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_credentials", "password":
+			return true
+		}
 	}
-	switch v {
-	case "client_credentials":
-		fallthrough
-	case "password":
-		*e = UpstreamOauthPluginGrantType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for UpstreamOauthPluginGrantType: %v", v)
-	}
+	return false
 }
 
 type Oauth struct {
@@ -1164,24 +1130,16 @@ const (
 func (e UpstreamOauthPluginProtocols) ToPointer() *UpstreamOauthPluginProtocols {
 	return &e
 }
-func (e *UpstreamOauthPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UpstreamOauthPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = UpstreamOauthPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for UpstreamOauthPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // UpstreamOauthPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -18,20 +16,16 @@ const (
 func (e ForwardToClusterBySNIConfigType) ToPointer() *ForwardToClusterBySNIConfigType {
 	return &e
 }
-func (e *ForwardToClusterBySNIConfigType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ForwardToClusterBySNIConfigType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "per_cluster_suffix", "shared_suffix":
+			return true
+		}
 	}
-	switch v {
-	case "per_cluster_suffix":
-		fallthrough
-	case "shared_suffix":
-		*e = ForwardToClusterBySNIConfigType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ForwardToClusterBySNIConfigType: %v", v)
-	}
+	return false
 }
 
 // BrokerHostFormat - Configures DNS names assigned to brokers in virtual clusters.

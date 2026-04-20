@@ -122,7 +122,7 @@ Optional:
 - `gcp_oauth_token_url` (String) Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.
 - `gcp_service_account_json` (String) Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT` or from the instance/container metadata service.
 - `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models. Default: false
-- `guarding_mode` (String) The guardrail mode to use for the request. Default: "INPUT"; must be one of ["BOTH", "INPUT", "OUTPUT"]
+- `guarding_mode` (String) The guardrail mode to use for the request. possible known values include one of ["BOTH", "INPUT", "OUTPUT"]; Default: "INPUT"
 - `log_blocked_content` (Boolean) Whether to log prompts and responses that are blocked by the guardrail. Default: false
 - `request_failure_message` (String) The message to return when a failure occurs on the request phase. Default: "Request was filtered by GCP Model Armor"
 - `response_buffer_size` (Number) The amount of bytes receiving from upstream to be buffered before sending to the model armor service. This only applies to the response content guard. Default: 100
@@ -130,7 +130,7 @@ Optional:
 - `reveal_failure_categories` (Boolean) Whether to reveal failure categories in the response to the caller. Default: false
 - `source_language` (String) Source language (ISO code) to use when 'enable_multi_language_detection' is enabled.
 - `stop_on_error` (Boolean) Stop processing if an error occurs. Default: true
-- `text_source` (String) Select where to pick the 'text' for the GCP Model Armor Services request. Default: "last_message"; must be one of ["concatenate_all_content", "concatenate_user_content", "last_message"]
+- `text_source` (String) Select where to pick the 'text' for the GCP Model Armor Services request. possible known values include one of ["concatenate_all_content", "concatenate_user_content", "last_message"]; Default: "last_message"
 - `timeout` (Number) Connection timeout with the GCP Model Armor service. Default: 10000
 
 
@@ -211,7 +211,7 @@ import {
   to = konnect_gateway_plugin_ai_gcp_model_armor.my_konnect_gateway_plugin_ai_gcp_model_armor
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

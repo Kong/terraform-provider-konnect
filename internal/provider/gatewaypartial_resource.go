@@ -11,7 +11,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/float64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -176,13 +175,7 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 									"param_location": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. must be one of ["body", "query"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"body",
-												"query",
-											),
-										},
+										Description: `Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
 									},
 									"param_name": schema.StringAttribute{
 										Optional:    true,
@@ -377,18 +370,9 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 									"provider": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `AI provider format to use for embeddings API. Not Null; must be one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai"]`,
+										Description: `AI provider format to use for embeddings API. possible known values include one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai"]; Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf(
-												"azure",
-												"bedrock",
-												"gemini",
-												"huggingface",
-												"mistral",
-												"ollama",
-												"openai",
-											),
 										},
 									},
 								},
@@ -534,13 +518,7 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 									"param_location": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. must be one of ["body", "query"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"body",
-												"query",
-											),
-										},
+										Description: `Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
 									},
 									"param_name": schema.StringAttribute{
 										Optional:    true,
@@ -744,16 +722,7 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 														Computed:    true,
 														Optional:    true,
 														Default:     stringdefault.StaticString(`classification`),
-														Description: `The purpose of the input text to calculate embedding vectors. Default: "classification"; must be one of ["classification", "clustering", "image", "search_document", "search_query"]`,
-														Validators: []validator.String{
-															stringvalidator.OneOf(
-																"classification",
-																"clustering",
-																"image",
-																"search_document",
-																"search_query",
-															),
-														},
+														Description: `The purpose of the input text to calculate embedding vectors. possible known values include one of ["classification", "clustering", "image", "search_document", "search_query"]; Default: "classification"`,
 													},
 													"wait_for_model": schema.BoolAttribute{
 														Optional:    true,
@@ -848,14 +817,7 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 											"llama2_format": schema.StringAttribute{
 												Computed:    true,
 												Optional:    true,
-												Description: `If using llama2 provider, select the upstream message format. must be one of ["ollama", "openai", "raw"]`,
-												Validators: []validator.String{
-													stringvalidator.OneOf(
-														"ollama",
-														"openai",
-														"raw",
-													),
-												},
+												Description: `If using llama2 provider, select the upstream message format. possible known values include one of ["ollama", "openai", "raw"]`,
 											},
 											"max_tokens": schema.Int64Attribute{
 												Optional:    true,
@@ -864,13 +826,7 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 											"mistral_format": schema.StringAttribute{
 												Computed:    true,
 												Optional:    true,
-												Description: `If using mistral provider, select the upstream message format. must be one of ["ollama", "openai"]`,
-												Validators: []validator.String{
-													stringvalidator.OneOf(
-														"ollama",
-														"openai",
-													),
-												},
+												Description: `If using mistral provider, select the upstream message format. possible known values include one of ["ollama", "openai"]`,
 											},
 											"output_cost": schema.Float64Attribute{
 												Optional:    true,
@@ -911,27 +867,9 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 									"provider": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `AI provider request format - Kong translates requests to and from the specified backend compatible formats. Not Null; must be one of ["anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "databricks", "deepseek", "gemini", "huggingface", "llama2", "mistral", "ollama", "openai", "vllm", "xai"]`,
+										Description: `AI provider request format - Kong translates requests to and from the specified backend compatible formats. possible known values include one of ["anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "databricks", "deepseek", "gemini", "huggingface", "llama2", "mistral", "ollama", "openai", "vllm", "xai"]; Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
-											stringvalidator.OneOf(
-												"anthropic",
-												"azure",
-												"bedrock",
-												"cerebras",
-												"cohere",
-												"dashscope",
-												"databricks",
-												"deepseek",
-												"gemini",
-												"huggingface",
-												"llama2",
-												"mistral",
-												"ollama",
-												"openai",
-												"vllm",
-												"xai",
-											),
 										},
 									},
 								},
@@ -943,26 +881,9 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 							"route_type": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The model's operation implementation, for this provider. Not Null; must be one of ["audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime", "video/v1/videos/generations"]`,
+								Description: `The model's operation implementation, for this provider. possible known values include one of ["audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime", "video/v1/videos/generations"]; Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
-									stringvalidator.OneOf(
-										"audio/v1/audio/speech",
-										"audio/v1/audio/transcriptions",
-										"audio/v1/audio/translations",
-										"image/v1/images/edits",
-										"image/v1/images/generations",
-										"llm/v1/assistants",
-										"llm/v1/batches",
-										"llm/v1/chat",
-										"llm/v1/completions",
-										"llm/v1/embeddings",
-										"llm/v1/files",
-										"llm/v1/responses",
-										"preserve",
-										"realtime/v1/realtime",
-										"video/v1/videos/generations",
-									),
 								},
 							},
 							"weight": schema.Int64Attribute{
@@ -1049,14 +970,7 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 									"auth_provider": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"aws",
-												"azure",
-												"gcp",
-											),
-										},
+										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
 									},
 									"aws_access_key_id": schema.StringAttribute{
 										Optional:    true,
@@ -1230,14 +1144,7 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 									"auth_provider": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"aws",
-												"azure",
-												"gcp",
-											),
-										},
+										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
 									},
 									"aws_access_key_id": schema.StringAttribute{
 										Optional:    true,
@@ -1436,14 +1343,7 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 							"sentinel_role": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"any",
-										"master",
-										"slave",
-									),
-								},
+								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
 							},
 							"sentinel_username": schema.StringAttribute{
 								Computed:    true,
@@ -1535,13 +1435,9 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 							"distance_metric": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `the distance metric to use for vector searches. Not Null; must be one of ["cosine", "euclidean"]`,
+								Description: `the distance metric to use for vector searches. possible known values include one of ["cosine", "euclidean"]; Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
-									stringvalidator.OneOf(
-										"cosine",
-										"euclidean",
-									),
 								},
 							},
 							"pgvector": schema.SingleNestedAttribute{
@@ -1614,14 +1510,7 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 										Computed:    true,
 										Optional:    true,
 										Default:     stringdefault.StaticString(`tlsv1_2`),
-										Description: `the ssl version to use for the pgvector database. Default: "tlsv1_2"; must be one of ["any", "tlsv1_2", "tlsv1_3"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"any",
-												"tlsv1_2",
-												"tlsv1_3",
-											),
-										},
+										Description: `the ssl version to use for the pgvector database. possible known values include one of ["any", "tlsv1_2", "tlsv1_3"]; Default: "tlsv1_2"`,
 									},
 									"timeout": schema.Float64Attribute{
 										Computed:    true,
@@ -1715,14 +1604,7 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 											"auth_provider": schema.StringAttribute{
 												Computed:    true,
 												Optional:    true,
-												Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
-												Validators: []validator.String{
-													stringvalidator.OneOf(
-														"aws",
-														"azure",
-														"gcp",
-													),
-												},
+												Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
 											},
 											"aws_access_key_id": schema.StringAttribute{
 												Optional:    true,
@@ -1916,14 +1798,7 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 									"sentinel_role": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"any",
-												"master",
-												"slave",
-											),
-										},
+										Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
 									},
 									"sentinel_username": schema.StringAttribute{
 										Optional:    true,
@@ -1954,13 +1829,9 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 							"strategy": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `which vector database driver to use. Not Null; must be one of ["pgvector", "redis"]`,
+								Description: `which vector database driver to use. possible known values include one of ["pgvector", "redis"]; Not Null`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
-									stringvalidator.OneOf(
-										"pgvector",
-										"redis",
-									),
 								},
 							},
 							"threshold": schema.Float64Attribute{

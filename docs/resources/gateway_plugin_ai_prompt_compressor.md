@@ -113,7 +113,7 @@ Required:
 
 Optional:
 
-- `compressor_type` (String) What compression type to use to compress with. Default: "rate"; must be one of ["rate", "target_token"]
+- `compressor_type` (String) What compression type to use to compress with. possible known values include one of ["rate", "target_token"]; Default: "rate"
 - `compressor_url` (String) The url of the compressor. Default: "http://localhost:8080"
 - `keepalive_timeout` (Number) The keepalive timeout for the established http connnection. Default: 60000
 - `log_text_data` (Boolean) Log the text data. Default: false
@@ -209,7 +209,7 @@ import {
   to = konnect_gateway_plugin_ai_prompt_compressor.my_konnect_gateway_plugin_ai_prompt_compressor
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

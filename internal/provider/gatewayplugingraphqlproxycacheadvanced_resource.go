@@ -253,14 +253,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 									"auth_provider": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"aws",
-												"azure",
-												"gcp",
-											),
-										},
+										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
 									},
 									"aws_access_key_id": schema.StringAttribute{
 										Optional:    true,
@@ -454,14 +447,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 							"sentinel_role": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"any",
-										"master",
-										"slave",
-									),
-								},
+								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
 							},
 							"sentinel_username": schema.StringAttribute{
 								Optional:    true,
@@ -493,13 +479,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`memory`),
-						Description: `The backing data store in which to hold cached entities. Accepted value is ` + "`" + `memory` + "`" + `. Default: "memory"; must be one of ["memory", "redis"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"memory",
-								"redis",
-							),
-						},
+						Description: `The backing data store in which to hold cached entities. Accepted value is ` + "`" + `memory` + "`" + `. possible known values include one of ["memory", "redis"]; Default: "memory"`,
 					},
 					"vary_headers": schema.ListAttribute{
 						Optional:    true,

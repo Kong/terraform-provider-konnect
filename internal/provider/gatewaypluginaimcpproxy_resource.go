@@ -92,26 +92,13 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`consumer`),
-						Description: `The type of attributes that ACL is evaluated with. Should only be configured on listener modes, not conversion-only. Default: "consumer"; must be one of ["consumer", "oauth_access_token"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"consumer",
-								"oauth_access_token",
-							),
-						},
+						Description: `The type of attributes that ACL is evaluated with. Should only be configured on listener modes, not conversion-only. possible known values include one of ["consumer", "oauth_access_token"]; Default: "consumer"`,
 					},
 					"consumer_identifier": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`username`),
-						Description: `Which subject type entries in ACL lists refer to for per-consumer matching. Should only be configured on listener modes, not conversion-only. Default: "username"; must be one of ["consumer_id", "custom_id", "username"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"consumer_id",
-								"custom_id",
-								"username",
-							),
-						},
+						Description: `Which subject type entries in ACL lists refer to for per-consumer matching. Should only be configured on listener modes, not conversion-only. possible known values include one of ["consumer_id", "custom_id", "username"]; Default: "username"`,
 					},
 					"default_acl": schema.ListNestedAttribute{
 						Optional: true,
@@ -178,15 +165,7 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 					},
 					"mode": schema.StringAttribute{
 						Required:    true,
-						Description: `The mode of the MCP proxy. Possible values are: 'passthrough-listener', 'conversion-listener', 'conversion-only', 'listener'. must be one of ["conversion-listener", "conversion-only", "listener", "passthrough-listener"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"conversion-listener",
-								"conversion-only",
-								"listener",
-								"passthrough-listener",
-							),
-						},
+						Description: `The mode of the MCP proxy. Possible values are: 'passthrough-listener', 'conversion-listener', 'conversion-only', 'listener'. possible known values include one of ["conversion-listener", "conversion-only", "listener", "passthrough-listener"]`,
 					},
 					"server": schema.SingleNestedAttribute{
 						Computed: true,
@@ -444,14 +423,7 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 													"auth_provider": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
-														Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
-														Validators: []validator.String{
-															stringvalidator.OneOf(
-																"aws",
-																"azure",
-																"gcp",
-															),
-														},
+														Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
 													},
 													"aws_access_key_id": schema.StringAttribute{
 														Optional:    true,
@@ -645,14 +617,7 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 											"sentinel_role": schema.StringAttribute{
 												Computed:    true,
 												Optional:    true,
-												Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]`,
-												Validators: []validator.String{
-													stringvalidator.OneOf(
-														"any",
-														"master",
-														"slave",
-													),
-												},
+												Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
 											},
 											"sentinel_username": schema.StringAttribute{
 												Optional:    true,
@@ -689,13 +654,7 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 									"strategy": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `The strategy for the session. If the value is 'client', the session is encrypted into MCP session id assigned to the client. If the value is not 'client', the session is stored in the configured database. must be one of ["client", "redis"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"client",
-												"redis",
-											),
-										},
+										Description: `The strategy for the session. If the value is 'client', the session is encrypted into MCP session id assigned to the client. If the value is not 'client', the session is stored in the configured database. possible known values include one of ["client", "redis"]`,
 									},
 								},
 								Description: `Enable managed session when Kong responds as MCP server in listener or conversion-listener modes. This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.`,
@@ -799,16 +758,7 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 								"method": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The method of the exported API, which must be one of the route's method. By default, Kong will extract the method from API configuration. If the configured method is not exactly matched, this field is required. must be one of ["DELETE", "GET", "PATCH", "POST", "PUT"]`,
-									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"DELETE",
-											"GET",
-											"PATCH",
-											"POST",
-											"PUT",
-										),
-									},
+									Description: `The method of the exported API, which must be one of the route's method. By default, Kong will extract the method from API configuration. If the configured method is not exactly matched, this field is required. possible known values include one of ["DELETE", "GET", "PATCH", "POST", "PUT"]`,
 								},
 								"name": schema.StringAttribute{
 									Optional:    true,
@@ -876,13 +826,7 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 								"scheme": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The scheme of the exported API, which must be one of the route's scheme. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it. must be one of ["http", "https"]`,
-									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"http",
-											"https",
-										),
-									},
+									Description: `The scheme of the exported API, which must be one of the route's scheme. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it. possible known values include one of ["http", "https"]`,
 								},
 							},
 						},
