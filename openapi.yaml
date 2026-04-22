@@ -33650,8 +33650,6 @@ components:
           properties:
             logging:
               type: object
-              default: null
-              nullable: true
               properties:
                 log_payloads:
                   description: 'If enabled, logs request/response bodies to Kong log plugin(s) output. Requires log_statistics to be enabled.'
@@ -33665,7 +33663,7 @@ components:
                   description: Maximum size in bytes for logged request/response payloads. Payloads exceeding this size will be truncated.
                   type: integer
                   default: 1048576
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
             max_request_body_size:
               description: Maximum size of request body to parse for A2A metadata. Set to 0 for unlimited.
               type: integer
