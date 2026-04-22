@@ -46936,7 +46936,7 @@ components:
                       ssl_verify:
                         description: Whether to verify the TLS certificate when making HTTPS requests.
                         type: boolean
-                        default: false
+                        default: true
                       timeout:
                         description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
                         type: integer
@@ -51109,7 +51109,7 @@ components:
             channel_token_endpoints_ssl_verify:
               description: 'Whether to verify the TLS certificate if any of `channel_token_introspection_endpoint`, `channel_token_jwks_uri`, or `channel_token_keyset` is an HTTPS URI.'
               type: boolean
-              default: true
+              default: false
             channel_token_expiry_claim:
               description: Specify the expiry claim in a channel token to verify if the default `exp` is not used.
               type: array
