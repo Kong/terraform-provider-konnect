@@ -428,8 +428,8 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 					"access_token_endpoints_ssl_verify": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Whether to verify the TLS certificate if any of ` + "`" + `access_token_introspection_endpoint` + "`" + `, ` + "`" + `access_token_jwks_uri` + "`" + `, or ` + "`" + `access_token_keyset` + "`" + ` is an HTTPS URI. Default: true`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Whether to verify the TLS certificate if any of ` + "`" + `access_token_introspection_endpoint` + "`" + `, ` + "`" + `access_token_jwks_uri` + "`" + `, or ` + "`" + `access_token_keyset` + "`" + ` is an HTTPS URI. Default: false`,
 					},
 					"access_token_expiry_claim": schema.ListAttribute{
 						Computed:    true,

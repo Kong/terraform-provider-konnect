@@ -125,8 +125,8 @@ func (r *GatewayPluginForwardProxyResource) Schema(ctx context.Context, req reso
 					"https_verify": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Whether the server certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate. Default: true`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Whether the server certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate. Default: false`,
 					},
 					"proxy_scheme": schema.StringAttribute{
 						Computed:    true,

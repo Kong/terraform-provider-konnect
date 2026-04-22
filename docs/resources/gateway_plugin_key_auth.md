@@ -17,7 +17,7 @@ resource "konnect_gateway_plugin_key_auth" "my_gatewaypluginkeyauth" {
   condition = "...my_condition..."
   config = {
     anonymous        = "...my_anonymous..."
-    hide_credentials = true
+    hide_credentials = false
     identity_realms = [
       {
         id     = "...my_id..."
@@ -103,7 +103,7 @@ resource "konnect_gateway_plugin_key_auth" "my_gatewaypluginkeyauth" {
 Optional:
 
 - `anonymous` (String) An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`.
-- `hide_credentials` (Boolean) An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin strips the credential from the request. Default: true
+- `hide_credentials` (Boolean) An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin strips the credential from the request. Default: false
 - `identity_realms` (Attributes List) A configuration of Konnect Identity Realms that indicate where to source a consumer from. (see [below for nested schema](#nestedatt--config--identity_realms))
 - `key_in_body` (Boolean) If enabled, the plugin reads the request body. Supported MIME types: `application/www-form-urlencoded`, `application/json`, and `multipart/form-data`. Default: false
 - `key_in_header` (Boolean) If enabled (default), the plugin reads the request header and tries to find the key in it. Default: true

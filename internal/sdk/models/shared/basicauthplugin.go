@@ -450,7 +450,7 @@ type BasicAuthPluginConfig struct {
 	Anonymous            *string               `default:"null" json:"anonymous"`
 	BruteForceProtection *BruteForceProtection `json:"brute_force_protection,omitempty"`
 	// An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin will strip the credential from the request (i.e. the `Authorization` header) before proxying it.
-	HideCredentials *bool `default:"true" json:"hide_credentials"`
+	HideCredentials *bool `default:"false" json:"hide_credentials"`
 	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
 	Realm *string `default:"service" json:"realm"`
 }

@@ -2871,8 +2871,8 @@ func (s *Plugins) UpdateAcmePlugin(ctx context.Context, request operations.Updat
 
 }
 
-// DeleteAia2aproxyPlugin - Delete a AiA2AProxy plugin
-// Delete a AiA2AProxy plugin
+// DeleteAia2aproxyPlugin - Delete a AiA2aProxy plugin
+// Delete a AiA2aProxy plugin
 func (s *Plugins) DeleteAia2aproxyPlugin(ctx context.Context, request operations.DeleteAia2aproxyPluginRequest, opts ...operations.Option) (*operations.DeleteAia2aproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -3074,8 +3074,8 @@ func (s *Plugins) DeleteAia2aproxyPlugin(ctx context.Context, request operations
 
 }
 
-// GetAia2aproxyPlugin - Get a AiA2AProxy plugin
-// Get a AiA2AProxy plugin
+// GetAia2aproxyPlugin - Get a AiA2aProxy plugin
+// Get a AiA2aProxy plugin
 func (s *Plugins) GetAia2aproxyPlugin(ctx context.Context, request operations.GetAia2aproxyPluginRequest, opts ...operations.Option) (*operations.GetAia2aproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -3248,12 +3248,12 @@ func (s *Plugins) GetAia2aproxyPlugin(ctx context.Context, request operations.Ge
 				return nil, err
 			}
 
-			var out shared.AiA2AProxyPlugin
+			var out shared.AiA2aProxyPlugin
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.AiA2AProxyPlugin = &out
+			res.AiA2aProxyPlugin = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -3296,8 +3296,8 @@ func (s *Plugins) GetAia2aproxyPlugin(ctx context.Context, request operations.Ge
 
 }
 
-// UpdateAia2aproxyPlugin - Update a AiA2AProxy plugin
-// Update a AiA2AProxy plugin
+// UpdateAia2aproxyPlugin - Update a AiA2aProxy plugin
+// Update a AiA2aProxy plugin
 func (s *Plugins) UpdateAia2aproxyPlugin(ctx context.Context, request operations.UpdateAia2aproxyPluginRequest, opts ...operations.Option) (*operations.UpdateAia2aproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -3331,7 +3331,7 @@ func (s *Plugins) UpdateAia2aproxyPlugin(ctx context.Context, request operations
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiA2AProxyPlugin", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiA2aProxyPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -3477,12 +3477,12 @@ func (s *Plugins) UpdateAia2aproxyPlugin(ctx context.Context, request operations
 				return nil, err
 			}
 
-			var out shared.AiA2AProxyPlugin
+			var out shared.AiA2aProxyPlugin
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.AiA2AProxyPlugin = &out
+			res.AiA2aProxyPlugin = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -73968,8 +73968,8 @@ func (s *Plugins) CreateAcmePlugin(ctx context.Context, request operations.Creat
 
 }
 
-// CreateAia2aproxyPlugin - Create a AiA2AProxy plugin
-// Create a AiA2AProxy plugin
+// CreateAia2aproxyPlugin - Create a AiA2aProxy plugin
+// Create a AiA2aProxy plugin
 func (s *Plugins) CreateAia2aproxyPlugin(ctx context.Context, request operations.CreateAia2aproxyPluginRequest, opts ...operations.Option) (*operations.CreateAia2aproxyPluginResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
@@ -74003,7 +74003,7 @@ func (s *Plugins) CreateAia2aproxyPlugin(ctx context.Context, request operations
 		OAuth2Scopes:     nil,
 		SecuritySource:   s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiA2AProxyPlugin", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "AiA2aProxyPlugin", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -74149,12 +74149,12 @@ func (s *Plugins) CreateAia2aproxyPlugin(ctx context.Context, request operations
 				return nil, err
 			}
 
-			var out shared.AiA2AProxyPlugin
+			var out shared.AiA2aProxyPlugin
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.AiA2AProxyPlugin = &out
+			res.AiA2aProxyPlugin = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

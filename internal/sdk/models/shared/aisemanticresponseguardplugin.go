@@ -905,7 +905,7 @@ type AiSemanticResponseGuardPluginPgvector struct {
 	// whether ssl is required for the pgvector database
 	SslRequired *bool `default:"false" json:"ssl_required"`
 	// whether to verify ssl for the pgvector database
-	SslVerify *bool `default:"true" json:"ssl_verify"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// the ssl version to use for the pgvector database
 	SslVersion *AiSemanticResponseGuardPluginSslVersion `default:"tlsv1_2" json:"ssl_version"`
 	// the timeout of the pgvector database

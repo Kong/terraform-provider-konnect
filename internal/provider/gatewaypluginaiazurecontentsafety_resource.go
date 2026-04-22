@@ -198,8 +198,8 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 					"ssl_verify": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Whether to verify the certificate presented by the Azure Content Safety service when using HTTPS. Default: true`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Whether to verify the certificate presented by the Azure Content Safety service when using HTTPS. Default: false`,
 					},
 					"stop_on_error": schema.BoolAttribute{
 						Computed:    true,

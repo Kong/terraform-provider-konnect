@@ -136,7 +136,7 @@ type AzureFunctionsPluginConfig struct {
 	// Use of HTTPS to connect with the Azure Functions server.
 	HTTPS *bool `default:"true" json:"https"`
 	// Set to `true` to authenticate the Azure Functions server.
-	HTTPSVerify *bool `default:"true" json:"https_verify"`
+	HTTPSVerify *bool `default:"false" json:"https_verify"`
 	// Time in milliseconds during which an idle connection to the Azure Functions server lives before being closed.
 	Keepalive *float64 `default:"60000" json:"keepalive"`
 	// Route prefix to use.

@@ -22,7 +22,7 @@ resource "konnect_gateway_plugin_azure_functions" "my_gatewaypluginazurefunction
     functionname = "...my_functionname..."
     hostdomain   = "azurewebsites.net"
     https        = true
-    https_verify = true
+    https_verify = false
     keepalive    = 60000
     routeprefix  = "api"
     timeout      = 600000
@@ -108,7 +108,7 @@ Optional:
 - `clientid` (String) The `clientid` to access the Azure resources. If provided, it is injected as the `x-functions-clientid` header.
 - `hostdomain` (String) The domain where the function resides. Default: "azurewebsites.net"
 - `https` (Boolean) Use of HTTPS to connect with the Azure Functions server. Default: true
-- `https_verify` (Boolean) Set to `true` to authenticate the Azure Functions server. Default: true
+- `https_verify` (Boolean) Set to `true` to authenticate the Azure Functions server. Default: false
 - `keepalive` (Number) Time in milliseconds during which an idle connection to the Azure Functions server lives before being closed. Default: 60000
 - `routeprefix` (String) Route prefix to use. Default: "api"
 - `timeout` (Number) Timeout in milliseconds before closing a connection to the Azure Functions server. Default: 600000

@@ -80,7 +80,7 @@ resource "konnect_gateway_plugin_solace_upstream" "my_gatewaypluginsolaceupstrea
       properties = {
         key = "value"
       }
-      ssl_validate_certificate = true
+      ssl_validate_certificate = false
       vpn_name                 = "...my_vpn_name..."
     }
   }
@@ -229,7 +229,7 @@ Optional:
 - `generate_sender_id` (Boolean) When enabled, a sender id is automatically included (if not already present) in the Solace-defined fields for each message sent. Default: true
 - `generate_sequence_number` (Boolean) When enabled, a sequence number is automatically included (if not already present) in the Solace-defined fields for each message sent. Default: true
 - `properties` (Map of String) Additional Solace session properties (each setting needs to have `SESSION_` prefix).
-- `ssl_validate_certificate` (Boolean) Indicates whether the API should validate server certificates with the trusted certificates. Default: true
+- `ssl_validate_certificate` (Boolean) Indicates whether the API should validate server certificates with the trusted certificates. Default: false
 - `vpn_name` (String) The name of the Message VPN to attempt to join when connecting to an event broker.
 
 <a id="nestedatt--config--session--authentication"></a>

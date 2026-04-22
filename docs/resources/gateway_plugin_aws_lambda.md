@@ -42,7 +42,7 @@ resource "konnect_gateway_plugin_aws_lambda" "my_gatewaypluginawslambda" {
     proxy_url                             = "...my_proxy_url..."
     qualifier                             = "...my_qualifier..."
     skip_large_bodies                     = true
-    ssl_verify                            = true
+    ssl_verify                            = false
     timeout                               = 60000
     unhandled_status                      = 115
   }
@@ -144,7 +144,7 @@ Optional:
 - `proxy_url` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
 - `qualifier` (String) The qualifier to use when invoking the function.
 - `skip_large_bodies` (Boolean) An optional value that defines whether Kong should send large bodies that are buffered to disk. Default: true
-- `ssl_verify` (Boolean) Set to `true` to verify the TLS certificate when connecting to AWS services. Default: true
+- `ssl_verify` (Boolean) Set to `true` to verify the TLS certificate when connecting to AWS services. Default: false
 - `timeout` (Number) An optional timeout in milliseconds when invoking the function. Default: 60000
 - `unhandled_status` (Number) The response status code to use (instead of the default 200, 202, or 204) in the case of an Unhandled Function Error.
 

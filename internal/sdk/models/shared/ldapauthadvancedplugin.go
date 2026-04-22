@@ -174,7 +174,7 @@ type LdapAuthAdvancedPluginConfig struct {
 	// An optional string to use as part of the Authorization header. By default, a valid Authorization header looks like this: `Authorization: ldap base64(username:password)`. If `header_type` is set to "basic", then the Authorization header would be `Authorization: basic base64(username:password)`. Note that `header_type` can take any string, not just `'ldap'` and `'basic'`.
 	HeaderType *string `default:"ldap" json:"header_type"`
 	// An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request.
-	HideCredentials *bool `default:"true" json:"hide_credentials"`
+	HideCredentials *bool `default:"false" json:"hide_credentials"`
 	// An optional value in milliseconds that defines how long an idle connection to LDAP server will live before being closed.
 	Keepalive *float64 `default:"60000" json:"keepalive"`
 	// Host on which the LDAP server is running.
@@ -194,7 +194,7 @@ type LdapAuthAdvancedPluginConfig struct {
 	// An optional timeout in milliseconds when waiting for connection with LDAP server.
 	Timeout *float64 `default:"10000" json:"timeout"`
 	// Set to `true` to authenticate LDAP server. The server certificate will be verified according to the CA certificates specified by the `lua_ssl_trusted_certificate` directive.
-	VerifyLdapHost *bool `default:"true" json:"verify_ldap_host"`
+	VerifyLdapHost *bool `default:"false" json:"verify_ldap_host"`
 }
 
 func (l LdapAuthAdvancedPluginConfig) MarshalJSON() ([]byte, error) {

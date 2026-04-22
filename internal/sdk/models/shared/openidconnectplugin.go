@@ -2868,7 +2868,7 @@ type OpenidConnectPluginConfig struct {
 	// The groups (`groups_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
 	GroupsRequired []string `json:"groups_required"`
 	// Remove the credentials used for authentication from the request. If multiple credentials are sent with the same request, the plugin will remove those that were used for successful authentication.
-	HideCredentials *bool `default:"true" json:"hide_credentials"`
+	HideCredentials *bool `default:"false" json:"hide_credentials"`
 	// The HTTP proxy.
 	HTTPProxy *string `default:"null" json:"http_proxy"`
 	// The HTTP proxy authorization.
@@ -3059,9 +3059,9 @@ type OpenidConnectPluginConfig struct {
 	// The memcached unix socket path.
 	SessionMemcachedSocket *string `default:"null" json:"session_memcached_socket"`
 	// If set to true, uses SSL to connect to memcached
-	SessionMemcachedSsl *bool `default:"null" json:"session_memcached_ssl"`
+	SessionMemcachedSsl *bool `default:"false" json:"session_memcached_ssl"`
 	// If set to true, verifies the validity of the memcached server SSL certificate
-	SessionMemcachedSslVerify *bool `default:"true" json:"session_memcached_ssl_verify"`
+	SessionMemcachedSslVerify *bool `default:"false" json:"session_memcached_ssl_verify"`
 	// Enables or disables persistent sessions.
 	SessionRemember *bool `default:"false" json:"session_remember"`
 	// Limits how long the persistent session can be renewed in seconds, until re-authentication is required. 0 disables the checks.
@@ -3083,7 +3083,7 @@ type OpenidConnectPluginConfig struct {
 	// Configures whether or not session metadata should be stored. This metadata includes information about the active sessions for a specific audience belonging to a specific subject.
 	SessionStoreMetadata *bool `default:"false" json:"session_store_metadata"`
 	// Verify identity provider server certificate. If set to `true`, the plugin uses the CA certificate set in the `kong.conf` config parameter `lua_ssl_trusted_certificate`.
-	SslVerify *bool `default:"true" json:"ssl_verify"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Network IO timeout in milliseconds.
 	Timeout *float64 `default:"10000" json:"timeout"`
 	// ID of the Certificate entity representing the client certificate to use for mTLS client authentication for connections between Kong and the Auth Server.
@@ -3178,6 +3178,8 @@ type OpenidConnectPluginConfig struct {
 	VerifyParameters *bool `default:"false" json:"verify_parameters"`
 	// Verify signature of tokens.
 	VerifySignature *bool `default:"true" json:"verify_signature"`
+	// The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
+	ConsumerClaim []string `json:"consumer_claim"`
 }
 
 func (o OpenidConnectPluginConfig) MarshalJSON() ([]byte, error) {
@@ -4799,6 +4801,13 @@ func (o *OpenidConnectPluginConfig) GetVerifySignature() *bool {
 		return nil
 	}
 	return o.VerifySignature
+}
+
+func (o *OpenidConnectPluginConfig) GetConsumerClaim() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerClaim
 }
 
 type OpenidConnectPluginProtocols string

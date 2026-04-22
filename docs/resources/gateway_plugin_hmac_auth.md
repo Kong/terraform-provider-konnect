@@ -24,7 +24,7 @@ resource "konnect_gateway_plugin_hmac_auth" "my_gatewaypluginhmacauth" {
     enforce_headers = [
       "..."
     ]
-    hide_credentials      = true
+    hide_credentials      = false
     realm                 = "...my_realm..."
     validate_request_body = false
   }
@@ -100,7 +100,7 @@ Optional:
 - `anonymous` (String) An optional string (Consumer UUID or username) value to use as an “anonymous” consumer if authentication fails.
 - `clock_skew` (Number) Clock skew in seconds to prevent replay attacks. Default: 300
 - `enforce_headers` (List of String) A list of headers that the client should at least use for HTTP signature creation. Default: []
-- `hide_credentials` (Boolean) An optional boolean value telling the plugin to show or hide the credential from the upstream service. Default: true
+- `hide_credentials` (Boolean) An optional boolean value telling the plugin to show or hide the credential from the upstream service. Default: false
 - `realm` (String) When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
 - `validate_request_body` (Boolean) A boolean value telling the plugin to enable body validation. Default: false
 

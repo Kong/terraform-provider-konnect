@@ -284,8 +284,8 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 					"ssl_verify": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Set to ` + "`" + `true` + "`" + ` to verify the TLS certificate when connecting to AWS services. Default: true`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Set to ` + "`" + `true` + "`" + ` to verify the TLS certificate when connecting to AWS services. Default: false`,
 					},
 					"timeout": schema.Float64Attribute{
 						Computed:    true,

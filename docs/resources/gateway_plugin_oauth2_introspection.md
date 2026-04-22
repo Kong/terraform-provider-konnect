@@ -25,7 +25,7 @@ resource "konnect_gateway_plugin_oauth2_introspection" "my_gatewaypluginoauth2in
     custom_introspection_headers = {
       key = "value"
     }
-    hide_credentials   = true
+    hide_credentials   = false
     introspect_request = false
     introspection_url  = "...my_introspection_url..."
     keepalive          = 60000
@@ -111,7 +111,7 @@ Optional:
 - `consumer_by` (String) A string indicating whether to associate OAuth2 `username` or `client_id` with the consumer's username. OAuth2 `username` is mapped to a consumer's `username` field, while an OAuth2 `client_id` maps to a consumer's `custom_id`. Default: "username"; must be one of ["client_id", "username"]
 - `custom_claims_forward` (List of String) A list of custom claims to be forwarded from the introspection response to the upstream request. Claims are forwarded in headers with prefix `X-Credential-{claim-name}`. Default: []
 - `custom_introspection_headers` (Map of String) A list of custom headers to be added in the introspection request.
-- `hide_credentials` (Boolean) An optional boolean value telling the plugin to hide the credential to the upstream API server. It will be removed by Kong before proxying the request. Default: true
+- `hide_credentials` (Boolean) An optional boolean value telling the plugin to hide the credential to the upstream API server. It will be removed by Kong before proxying the request. Default: false
 - `introspect_request` (Boolean) A boolean indicating whether to forward information about the current downstream request to the introspect endpoint. If true, headers `X-Request-Path` and `X-Request-Http-Method` will be inserted into the introspect request. Default: false
 - `keepalive` (Number) An optional value in milliseconds that defines how long an idle connection lives before being closed. Default: 60000
 - `run_on_preflight` (Boolean) A boolean value that indicates whether the plugin should run (and try to authenticate) on `OPTIONS` preflight requests. If set to `false`, then `OPTIONS` requests will always be allowed. Default: true

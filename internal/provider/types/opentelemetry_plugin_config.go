@@ -8,6 +8,7 @@ import (
 
 type OpentelemetryPluginConfig struct {
 	AccessLogs                   *AccessLogs                 `tfsdk:"access_logs"`
+	AccessLogsEndpoint           types.String                `tfsdk:"access_logs_endpoint"`
 	BatchFlushDelay              types.Int64                 `tfsdk:"batch_flush_delay"`
 	BatchSpanCount               types.Int64                 `tfsdk:"batch_span_count"`
 	ConnectTimeout               types.Int64                 `tfsdk:"connect_timeout"`

@@ -11,7 +11,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginAiA2aProxyResourceModel) RefreshFromSharedAiA2AProxyPlugin(ctx context.Context, resp *shared.AiA2AProxyPlugin) diag.Diagnostics {
+func (r *GatewayPluginAiA2aProxyResourceModel) RefreshFromSharedAiA2aProxyPlugin(ctx context.Context, resp *shared.AiA2aProxyPlugin) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	if resp != nil {
@@ -19,7 +19,7 @@ func (r *GatewayPluginAiA2aProxyResourceModel) RefreshFromSharedAiA2AProxyPlugin
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
-			r.Config = &tfTypes.AiA2AProxyPluginConfig{}
+			r.Config = &tfTypes.AiA2aProxyPluginConfig{}
 			if resp.Config.Logging == nil {
 				r.Config.Logging = nil
 			} else {
@@ -108,8 +108,8 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsCreateAia2aproxyPlugi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	aiA2AProxyPlugin, aiA2AProxyPluginDiags := r.ToSharedAiA2AProxyPlugin(ctx)
-	diags.Append(aiA2AProxyPluginDiags...)
+	aiA2aProxyPlugin, aiA2aProxyPluginDiags := r.ToSharedAiA2aProxyPlugin(ctx)
+	diags.Append(aiA2aProxyPluginDiags...)
 
 	if diags.HasError() {
 		return nil, diags
@@ -117,7 +117,7 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsCreateAia2aproxyPlugi
 
 	out := operations.CreateAia2aproxyPluginRequest{
 		ControlPlaneID:   controlPlaneID,
-		AiA2AProxyPlugin: *aiA2AProxyPlugin,
+		AiA2aProxyPlugin: *aiA2aProxyPlugin,
 	}
 
 	return &out, diags
@@ -166,8 +166,8 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsUpdateAia2aproxyPlugi
 	var controlPlaneID string
 	controlPlaneID = r.ControlPlaneID.ValueString()
 
-	aiA2AProxyPlugin, aiA2AProxyPluginDiags := r.ToSharedAiA2AProxyPlugin(ctx)
-	diags.Append(aiA2AProxyPluginDiags...)
+	aiA2aProxyPlugin, aiA2aProxyPluginDiags := r.ToSharedAiA2aProxyPlugin(ctx)
+	diags.Append(aiA2aProxyPluginDiags...)
 
 	if diags.HasError() {
 		return nil, diags
@@ -176,13 +176,13 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToOperationsUpdateAia2aproxyPlugi
 	out := operations.UpdateAia2aproxyPluginRequest{
 		PluginID:         pluginID,
 		ControlPlaneID:   controlPlaneID,
-		AiA2AProxyPlugin: *aiA2AProxyPlugin,
+		AiA2aProxyPlugin: *aiA2aProxyPlugin,
 	}
 
 	return &out, diags
 }
 
-func (r *GatewayPluginAiA2aProxyResourceModel) ToSharedAiA2AProxyPlugin(ctx context.Context) (*shared.AiA2AProxyPlugin, diag.Diagnostics) {
+func (r *GatewayPluginAiA2aProxyResourceModel) ToSharedAiA2aProxyPlugin(ctx context.Context) (*shared.AiA2aProxyPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	condition := new(string)
@@ -215,36 +215,36 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToSharedAiA2AProxyPlugin(ctx cont
 	} else {
 		instanceName = nil
 	}
-	var ordering *shared.AiA2AProxyPluginOrdering
+	var ordering *shared.AiA2aProxyPluginOrdering
 	if r.Ordering != nil {
-		var after *shared.AiA2AProxyPluginAfter
+		var after *shared.AiA2aProxyPluginAfter
 		if r.Ordering.After != nil {
 			access := make([]string, 0, len(r.Ordering.After.Access))
 			for accessIndex := range r.Ordering.After.Access {
 				access = append(access, r.Ordering.After.Access[accessIndex].ValueString())
 			}
-			after = &shared.AiA2AProxyPluginAfter{
+			after = &shared.AiA2aProxyPluginAfter{
 				Access: access,
 			}
 		}
-		var before *shared.AiA2AProxyPluginBefore
+		var before *shared.AiA2aProxyPluginBefore
 		if r.Ordering.Before != nil {
 			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for accessIndex1 := range r.Ordering.Before.Access {
 				access1 = append(access1, r.Ordering.Before.Access[accessIndex1].ValueString())
 			}
-			before = &shared.AiA2AProxyPluginBefore{
+			before = &shared.AiA2aProxyPluginBefore{
 				Access: access1,
 			}
 		}
-		ordering = &shared.AiA2AProxyPluginOrdering{
+		ordering = &shared.AiA2aProxyPluginOrdering{
 			After:  after,
 			Before: before,
 		}
 	}
-	var partials []shared.AiA2AProxyPluginPartials
+	var partials []shared.AiA2aProxyPluginPartials
 	if r.Partials != nil {
-		partials = make([]shared.AiA2AProxyPluginPartials, 0, len(r.Partials))
+		partials = make([]shared.AiA2aProxyPluginPartials, 0, len(r.Partials))
 		for partialsIndex := range r.Partials {
 			id1 := new(string)
 			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
@@ -264,7 +264,7 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToSharedAiA2AProxyPlugin(ctx cont
 			} else {
 				path = nil
 			}
-			partials = append(partials, shared.AiA2AProxyPluginPartials{
+			partials = append(partials, shared.AiA2aProxyPluginPartials{
 				ID:   id1,
 				Name: name,
 				Path: path,
@@ -284,7 +284,7 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToSharedAiA2AProxyPlugin(ctx cont
 	} else {
 		updatedAt = nil
 	}
-	var config *shared.AiA2AProxyPluginConfig
+	var config *shared.AiA2aProxyPluginConfig
 	if r.Config != nil {
 		var logging *shared.Logging
 		if r.Config.Logging != nil {
@@ -318,16 +318,16 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToSharedAiA2AProxyPlugin(ctx cont
 		} else {
 			maxRequestBodySize = nil
 		}
-		config = &shared.AiA2AProxyPluginConfig{
+		config = &shared.AiA2aProxyPluginConfig{
 			Logging:            logging,
 			MaxRequestBodySize: maxRequestBodySize,
 		}
 	}
-	protocols := make([]shared.AiA2AProxyPluginProtocols, 0, len(r.Protocols))
+	protocols := make([]shared.AiA2aProxyPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.AiA2AProxyPluginProtocols(protocolsItem.ValueString()))
+		protocols = append(protocols, shared.AiA2aProxyPluginProtocols(protocolsItem.ValueString()))
 	}
-	var route *shared.AiA2AProxyPluginRoute
+	var route *shared.AiA2aProxyPluginRoute
 	if r.Route != nil {
 		id2 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
@@ -335,11 +335,11 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToSharedAiA2AProxyPlugin(ctx cont
 		} else {
 			id2 = nil
 		}
-		route = &shared.AiA2AProxyPluginRoute{
+		route = &shared.AiA2aProxyPluginRoute{
 			ID: id2,
 		}
 	}
-	var service *shared.AiA2AProxyPluginService
+	var service *shared.AiA2aProxyPluginService
 	if r.Service != nil {
 		id3 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
@@ -347,11 +347,11 @@ func (r *GatewayPluginAiA2aProxyResourceModel) ToSharedAiA2AProxyPlugin(ctx cont
 		} else {
 			id3 = nil
 		}
-		service = &shared.AiA2AProxyPluginService{
+		service = &shared.AiA2aProxyPluginService{
 			ID: id3,
 		}
 	}
-	out := shared.AiA2AProxyPlugin{
+	out := shared.AiA2aProxyPlugin{
 		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,

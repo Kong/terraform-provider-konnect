@@ -50,8 +50,8 @@ type GetAia2aproxyPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// AiA2AProxy plugin
-	AiA2AProxyPlugin *shared.AiA2AProxyPlugin
+	// AiA2aProxy plugin
+	AiA2aProxyPlugin *shared.AiA2aProxyPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
@@ -88,11 +88,11 @@ func (g *GetAia2aproxyPluginResponse) GetRawResponse() *http.Response {
 	return g.RawResponse
 }
 
-func (g *GetAia2aproxyPluginResponse) GetAiA2AProxyPlugin() *shared.AiA2AProxyPlugin {
+func (g *GetAia2aproxyPluginResponse) GetAiA2aProxyPlugin() *shared.AiA2aProxyPlugin {
 	if g == nil {
 		return nil
 	}
-	return g.AiA2AProxyPlugin
+	return g.AiA2aProxyPlugin
 }
 
 func (g *GetAia2aproxyPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {

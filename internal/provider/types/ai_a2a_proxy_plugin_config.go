@@ -6,7 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type AiA2AProxyPluginConfig struct {
+type AiA2aProxyPluginConfig struct {
 	Logging            *Logging    `tfsdk:"logging"`
 	MaxRequestBodySize types.Int64 `tfsdk:"max_request_body_size"`
 }

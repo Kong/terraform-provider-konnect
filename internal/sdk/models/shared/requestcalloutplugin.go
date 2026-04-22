@@ -970,7 +970,7 @@ type HTTPOpts struct {
 	// The SNI used in the callout request. Defaults to host if omitted.
 	SslServerName *string `default:"null" json:"ssl_server_name"`
 	// If set to `true`, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your callout API. You may also need to configure `lua_ssl_verify_depth` accordingly.
-	SslVerify *bool `default:"true" json:"ssl_verify"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Socket timeouts in milliseconds. All or none must be set.
 	Timeouts *Timeouts `json:"timeouts"`
 }

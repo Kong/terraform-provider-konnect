@@ -28,7 +28,7 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     access_token_consumer_claim = [
       "..."
     ]
-    access_token_endpoints_ssl_verify = true
+    access_token_endpoints_ssl_verify = false
     access_token_expiry_claim = [
       "..."
     ]
@@ -398,7 +398,7 @@ Optional:
 - `access_token_audiences_allowed` (List of String) The audiences allowed to be present in the access token claim specified by `config.access_token_audience_claim`.
 - `access_token_consumer_by` (List of String) When the plugin tries to apply an access token to a Kong consumer mapping, it tries to find a matching Kong consumer from properties defined using this configuration parameter. The parameter can take an array of values. Valid values are `id`, `username`, and `custom_id`. Default: ["custom_id","username"]
 - `access_token_consumer_claim` (List of String) When you set a value for this parameter, the plugin tries to map an arbitrary claim specified with this configuration parameter (for example, `sub` or `username`) in an access token to Kong consumer entity.
-- `access_token_endpoints_ssl_verify` (Boolean) Whether to verify the TLS certificate if any of `access_token_introspection_endpoint`, `access_token_jwks_uri`, or `access_token_keyset` is an HTTPS URI. Default: true
+- `access_token_endpoints_ssl_verify` (Boolean) Whether to verify the TLS certificate if any of `access_token_introspection_endpoint`, `access_token_jwks_uri`, or `access_token_keyset` is an HTTPS URI. Default: false
 - `access_token_expiry_claim` (List of String) Specify the expiry claim in an access token to verify if the default `exp` is not used. Default: ["exp"]
 - `access_token_introspection_audience_claim` (List of String) Specify the claim in an access token introspection to verify against values of `config.access_token_introspection_audiences_allowed`. Default: ["aud"]
 - `access_token_introspection_audiences_allowed` (List of String) The audiences allowed to be present in the access token introspection claim specified by `config.access_token_introspection_audience_claim`.

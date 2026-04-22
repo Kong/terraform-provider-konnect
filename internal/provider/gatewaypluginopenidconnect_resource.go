@@ -675,6 +675,11 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						ElementType: types.StringType,
 						Description: `Consumer fields used for mapping: - ` + "`" + `id` + "`" + `: try to find the matching Consumer by ` + "`" + `id` + "`" + ` - ` + "`" + `username` + "`" + `: try to find the matching Consumer by ` + "`" + `username` + "`" + ` - ` + "`" + `custom_id` + "`" + `: try to find the matching Consumer by ` + "`" + `custom_id` + "`" + `. Default: ["custom_id","username"]`,
 					},
+					"consumer_claim": schema.ListAttribute{
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.`,
+					},
 					"consumer_claims": schema.ListAttribute{
 						Optional: true,
 						ElementType: types.ListType{
@@ -875,8 +880,8 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"hide_credentials": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Remove the credentials used for authentication from the request. If multiple credentials are sent with the same request, the plugin will remove those that were used for successful authentication. Default: true`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Remove the credentials used for authentication from the request. If multiple credentials are sent with the same request, the plugin will remove those that were used for successful authentication. Default: false`,
 					},
 					"http_proxy": schema.StringAttribute{
 						Optional:    true,
@@ -1752,14 +1757,16 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Description: `The memcached unix socket path.`,
 					},
 					"session_memcached_ssl": schema.BoolAttribute{
+						Computed:    true,
 						Optional:    true,
-						Description: `If set to true, uses SSL to connect to memcached`,
+						Default:     booldefault.StaticBool(false),
+						Description: `If set to true, uses SSL to connect to memcached. Default: false`,
 					},
 					"session_memcached_ssl_verify": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `If set to true, verifies the validity of the memcached server SSL certificate. Default: true`,
+						Default:     booldefault.StaticBool(false),
+						Description: `If set to true, verifies the validity of the memcached server SSL certificate. Default: false`,
 					},
 					"session_remember": schema.BoolAttribute{
 						Computed:    true,
@@ -1828,8 +1835,8 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"ssl_verify": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Verify identity provider server certificate. If set to ` + "`" + `true` + "`" + `, the plugin uses the CA certificate set in the ` + "`" + `kong.conf` + "`" + ` config parameter ` + "`" + `lua_ssl_trusted_certificate` + "`" + `. Default: true`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Verify identity provider server certificate. If set to ` + "`" + `true` + "`" + `, the plugin uses the CA certificate set in the ` + "`" + `kong.conf` + "`" + ` config parameter ` + "`" + `lua_ssl_trusted_certificate` + "`" + `. Default: false`,
 					},
 					"timeout": schema.Float64Attribute{
 						Computed:    true,

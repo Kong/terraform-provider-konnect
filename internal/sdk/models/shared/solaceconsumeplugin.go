@@ -486,7 +486,7 @@ type Session struct {
 	// Additional Solace session properties (each setting needs to have `SESSION_` prefix).
 	Properties map[string]string `json:"properties,omitempty"`
 	// Indicates whether the API should validate server certificates with the trusted certificates.
-	SslValidateCertificate *bool `default:"true" json:"ssl_validate_certificate"`
+	SslValidateCertificate *bool `default:"false" json:"ssl_validate_certificate"`
 	// The name of the Message VPN to attempt to join when connecting to an event broker.
 	VpnName *string `default:"null" json:"vpn_name"`
 }

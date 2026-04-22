@@ -83,7 +83,7 @@ resource "konnect_gateway_plugin_kafka_log" "my_gatewaypluginkafkalog" {
             https_proxy_authorization = "...my_https_proxy_authorization..."
             keep_alive                = true
             no_proxy                  = "...my_no_proxy..."
-            ssl_verify                = true
+            ssl_verify                = false
             timeout                   = 10000
           }
         }
@@ -103,7 +103,7 @@ resource "konnect_gateway_plugin_kafka_log" "my_gatewaypluginkafkalog" {
     security = {
       certificate_id = "...my_certificate_id..."
       ssl            = false
-      ssl_verify     = true
+      ssl_verify     = false
     }
     timeout = 10000
     topic   = "...my_topic..."
@@ -297,7 +297,7 @@ Optional:
 - `https_proxy_authorization` (String) The `Proxy-Authorization` header value to be used with `https_proxy`.
 - `keep_alive` (Boolean) Whether to use keepalive connections to the IdP. Default: true
 - `no_proxy` (String) A comma-separated list of hosts that should not be proxied.
-- `ssl_verify` (Boolean) Whether to verify the certificate presented by the IdP when using HTTPS. Default: true
+- `ssl_verify` (Boolean) Whether to verify the certificate presented by the IdP when using HTTPS. Default: false
 - `timeout` (Number) Network I/O timeout for requests to the IdP in milliseconds. Default: 10000
 
 
@@ -329,7 +329,7 @@ Optional:
 
 - `certificate_id` (String) UUID of certificate entity for mTLS authentication.
 - `ssl` (Boolean) Enables TLS.
-- `ssl_verify` (Boolean) When using TLS, this option enables verification of the certificate presented by the server. Default: true
+- `ssl_verify` (Boolean) When using TLS, this option enables verification of the certificate presented by the server. Default: false
 
 
 

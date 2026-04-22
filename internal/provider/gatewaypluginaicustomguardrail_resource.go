@@ -207,8 +207,8 @@ func (r *GatewayPluginAiCustomGuardrailResource) Schema(ctx context.Context, req
 					"ssl_verify": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Whether to verify SSL certificate when Kong makes request to guardrail service. Default: true`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Whether to verify SSL certificate when Kong makes request to guardrail service. Default: false`,
 					},
 					"stop_on_error": schema.BoolAttribute{
 						Computed:    true,

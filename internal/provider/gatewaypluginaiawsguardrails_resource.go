@@ -145,8 +145,8 @@ func (r *GatewayPluginAiAwsGuardrailsResource) Schema(ctx context.Context, req r
 					"ssl_verify": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Verify TLS certificate when connecting to the bedrock service. Default: true`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Verify TLS certificate when connecting to the bedrock service. Default: false`,
 					},
 					"stop_on_error": schema.BoolAttribute{
 						Computed:    true,

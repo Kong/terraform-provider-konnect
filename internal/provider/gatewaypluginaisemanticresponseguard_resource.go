@@ -537,8 +537,8 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Schema(ctx context.Contex
 									"ssl_verify": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Default:     booldefault.StaticBool(true),
-										Description: `whether to verify ssl for the pgvector database. Default: true`,
+										Default:     booldefault.StaticBool(false),
+										Description: `whether to verify ssl for the pgvector database. Default: false`,
 									},
 									"ssl_version": schema.StringAttribute{
 										Computed:    true,

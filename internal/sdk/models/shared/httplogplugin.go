@@ -313,7 +313,7 @@ type HTTPLogPluginConfig struct {
 	// Number of times to retry when sending data to the upstream server.
 	RetryCount *int64 `default:"null" json:"retry_count"`
 	// When using TLS, this option enables verification of the certificate presented by the server.
-	SslVerify *bool `default:"true" json:"ssl_verify"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// An optional timeout in milliseconds when sending data to the upstream server.
 	Timeout *float64 `default:"10000" json:"timeout"`
 }

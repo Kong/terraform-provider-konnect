@@ -109,8 +109,8 @@ func (r *GatewayPluginAzureFunctionsResource) Schema(ctx context.Context, req re
 					"https_verify": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Set to ` + "`" + `true` + "`" + ` to authenticate the Azure Functions server. Default: true`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Set to ` + "`" + `true` + "`" + ` to authenticate the Azure Functions server. Default: false`,
 					},
 					"keepalive": schema.Float64Attribute{
 						Computed:    true,

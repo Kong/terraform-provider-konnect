@@ -134,7 +134,7 @@ type LdapAuthPluginConfig struct {
 	// An optional string to use as part of the Authorization header
 	HeaderType *string `default:"ldap" json:"header_type"`
 	// An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request.
-	HideCredentials *bool `default:"true" json:"hide_credentials"`
+	HideCredentials *bool `default:"false" json:"hide_credentials"`
 	// An optional value in milliseconds that defines how long an idle connection to LDAP server will live before being closed.
 	Keepalive *float64 `default:"60000" json:"keepalive"`
 	// A string representing a host name, such as example.com.
@@ -150,7 +150,7 @@ type LdapAuthPluginConfig struct {
 	// An optional timeout in milliseconds when waiting for connection with LDAP server.
 	Timeout *float64 `default:"10000" json:"timeout"`
 	// Set to `true` to authenticate LDAP server. The server certificate will be verified according to the CA certificates specified by the `lua_ssl_trusted_certificate` directive.
-	VerifyLdapHost *bool `default:"true" json:"verify_ldap_host"`
+	VerifyLdapHost *bool `default:"false" json:"verify_ldap_host"`
 }
 
 func (l LdapAuthPluginConfig) MarshalJSON() ([]byte, error) {

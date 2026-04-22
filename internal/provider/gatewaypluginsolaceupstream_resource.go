@@ -402,8 +402,8 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 							"ssl_validate_certificate": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     booldefault.StaticBool(true),
-								Description: `Indicates whether the API should validate server certificates with the trusted certificates. Default: true`,
+								Default:     booldefault.StaticBool(false),
+								Description: `Indicates whether the API should validate server certificates with the trusted certificates. Default: false`,
 							},
 							"vpn_name": schema.StringAttribute{
 								Optional:    true,

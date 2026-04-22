@@ -32,6 +32,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 				}
 				r.Config.AccessLogs.Endpoint = types.StringPointerValue(resp.Config.AccessLogs.Endpoint)
 			}
+			r.Config.AccessLogsEndpoint = types.StringPointerValue(resp.Config.AccessLogsEndpoint)
 			r.Config.BatchFlushDelay = types.Int64PointerValue(resp.Config.BatchFlushDelay)
 			r.Config.BatchSpanCount = types.Int64PointerValue(resp.Config.BatchSpanCount)
 			r.Config.ConnectTimeout = types.Int64PointerValue(resp.Config.ConnectTimeout)
@@ -654,6 +655,12 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ct
 		} else {
 			tracesEndpoint = nil
 		}
+		accessLogsEndpoint := new(string)
+		if !r.Config.AccessLogsEndpoint.IsUnknown() && !r.Config.AccessLogsEndpoint.IsNull() {
+			*accessLogsEndpoint = r.Config.AccessLogsEndpoint.ValueString()
+		} else {
+			accessLogsEndpoint = nil
+		}
 		config = &shared.OpentelemetryPluginConfig{
 			AccessLogs:                   accessLogs,
 			BatchFlushDelay:              batchFlushDelay,
@@ -672,6 +679,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin(ct
 			SamplingStrategy:             samplingStrategy,
 			SendTimeout:                  sendTimeout,
 			TracesEndpoint:               tracesEndpoint,
+			AccessLogsEndpoint:           accessLogsEndpoint,
 		}
 	}
 	var consumer *shared.OpentelemetryPluginConsumer

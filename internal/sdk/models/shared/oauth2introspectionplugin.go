@@ -173,7 +173,7 @@ type Oauth2IntrospectionPluginConfig struct {
 	// A list of custom headers to be added in the introspection request.
 	CustomIntrospectionHeaders map[string]string `json:"custom_introspection_headers,omitempty"`
 	// An optional boolean value telling the plugin to hide the credential to the upstream API server. It will be removed by Kong before proxying the request.
-	HideCredentials *bool `default:"true" json:"hide_credentials"`
+	HideCredentials *bool `default:"false" json:"hide_credentials"`
 	// A boolean indicating whether to forward information about the current downstream request to the introspect endpoint. If true, headers `X-Request-Path` and `X-Request-Http-Method` will be inserted into the introspect request.
 	IntrospectRequest *bool `default:"false" json:"introspect_request"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.

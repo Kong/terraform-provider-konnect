@@ -106,8 +106,8 @@ func (r *GatewayPluginLdapAuthResource) Schema(ctx context.Context, req resource
 					"hide_credentials": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request. Default: true`,
+						Default:     booldefault.StaticBool(false),
+						Description: `An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request. Default: false`,
 					},
 					"keepalive": schema.Float64Attribute{
 						Computed:    true,
@@ -153,8 +153,8 @@ func (r *GatewayPluginLdapAuthResource) Schema(ctx context.Context, req resource
 					"verify_ldap_host": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Set to ` + "`" + `true` + "`" + ` to authenticate LDAP server. The server certificate will be verified according to the CA certificates specified by the ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` directive. Default: true`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Set to ` + "`" + `true` + "`" + ` to authenticate LDAP server. The server certificate will be verified according to the CA certificates specified by the ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` directive. Default: false`,
 					},
 				},
 			},

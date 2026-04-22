@@ -284,6 +284,14 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		for _, v := range resp.Config.ConsumerBy {
 			r.Config.ConsumerBy = append(r.Config.ConsumerBy, types.StringValue(string(v)))
 		}
+		if resp.Config.ConsumerClaim != nil {
+			r.Config.ConsumerClaim = make([]types.String, 0, len(resp.Config.ConsumerClaim))
+			for _, v := range resp.Config.ConsumerClaim {
+				r.Config.ConsumerClaim = append(r.Config.ConsumerClaim, types.StringValue(v))
+			}
+		} else {
+			r.Config.ConsumerClaim = nil
+		}
 		if resp.Config.ConsumerClaims != nil {
 			r.Config.ConsumerClaims = nil
 			for _, consumerClaimsItem := range resp.Config.ConsumerClaims {
@@ -3590,6 +3598,13 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		verifySignature = nil
 	}
+	var consumerClaim []string
+	if r.Config.ConsumerClaim != nil {
+		consumerClaim = make([]string, 0, len(r.Config.ConsumerClaim))
+		for consumerClaimIndex := range r.Config.ConsumerClaim {
+			consumerClaim = append(consumerClaim, r.Config.ConsumerClaim[consumerClaimIndex].ValueString())
+		}
+	}
 	config := shared.OpenidConnectPluginConfig{
 		Anonymous:                              anonymous,
 		Audience:                               audience,
@@ -3821,6 +3836,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		VerifyNonce:                        verifyNonce,
 		VerifyParameters:                   verifyParameters,
 		VerifySignature:                    verifySignature,
+		ConsumerClaim:                      consumerClaim,
 	}
 	protocols := make([]shared.OpenidConnectPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {

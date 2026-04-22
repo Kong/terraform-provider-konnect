@@ -593,8 +593,8 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 												"ssl_verify": schema.BoolAttribute{
 													Computed:    true,
 													Optional:    true,
-													Default:     booldefault.StaticBool(true),
-													Description: `If set to ` + "`" + `true` + "`" + `, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your callout API. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: true`,
+													Default:     booldefault.StaticBool(false),
+													Description: `If set to ` + "`" + `true` + "`" + `, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your callout API. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: false`,
 												},
 												"timeouts": schema.SingleNestedAttribute{
 													Computed: true,

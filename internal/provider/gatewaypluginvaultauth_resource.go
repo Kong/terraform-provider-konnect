@@ -103,8 +103,8 @@ func (r *GatewayPluginVaultAuthResource) Schema(ctx context.Context, req resourc
 					"hide_credentials": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `An optional boolean value telling the plugin to show or hide the credential from the upstream service. If ` + "`" + `true` + "`" + `, the plugin will strip the credential from the request (i.e. the header or querystring containing the key) before proxying it. Default: true`,
+						Default:     booldefault.StaticBool(false),
+						Description: `An optional boolean value telling the plugin to show or hide the credential from the upstream service. If ` + "`" + `true` + "`" + `, the plugin will strip the credential from the request (i.e. the header or querystring containing the key) before proxying it. Default: false`,
 					},
 					"run_on_preflight": schema.BoolAttribute{
 						Computed:    true,

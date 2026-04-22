@@ -1399,7 +1399,7 @@ type Call struct {
 	// A string representing an SNI (server name indication) value for TLS.
 	SslServerName *string `default:"null" json:"ssl_server_name"`
 	// Whether to verify the TLS certificate when making HTTPS requests.
-	SslVerify *bool `default:"true" json:"ssl_verify"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	Timeout *int64 `default:"null" json:"timeout"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
@@ -2437,7 +2437,7 @@ type DatakitPluginRedis struct {
 	// If set to true, uses SSL to connect to Redis.
 	Ssl *bool `default:"false" json:"ssl"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
-	SslVerify *bool `default:"true" json:"ssl_verify"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 	Username *string `default:"null" json:"username"`
 }

@@ -313,7 +313,7 @@ type AwsLambdaPluginConfig struct {
 	// An optional value that defines whether Kong should send large bodies that are buffered to disk
 	SkipLargeBodies *bool `default:"true" json:"skip_large_bodies"`
 	// Set to `true` to verify the TLS certificate when connecting to AWS services.
-	SslVerify *bool `default:"true" json:"ssl_verify"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// An optional timeout in milliseconds when invoking the function.
 	Timeout *float64 `default:"60000" json:"timeout"`
 	// The response status code to use (instead of the default 200, 202, or 204) in the case of an Unhandled Function Error.

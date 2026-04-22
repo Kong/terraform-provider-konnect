@@ -117,8 +117,8 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 					"hide_credentials": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `An optional boolean value telling the plugin to hide the credential to the upstream API server. It will be removed by Kong before proxying the request. Default: true`,
+						Default:     booldefault.StaticBool(false),
+						Description: `An optional boolean value telling the plugin to hide the credential to the upstream API server. It will be removed by Kong before proxying the request. Default: false`,
 					},
 					"introspect_request": schema.BoolAttribute{
 						Computed:    true,

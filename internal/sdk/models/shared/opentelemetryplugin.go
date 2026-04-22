@@ -653,6 +653,8 @@ type OpentelemetryPluginConfig struct {
 	SendTimeout *int64 `default:"5000" json:"send_timeout"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
 	TracesEndpoint *string `default:"null" json:"traces_endpoint"`
+	// An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.
+	AccessLogsEndpoint *string `default:"null" json:"access_logs_endpoint"`
 }
 
 func (o OpentelemetryPluginConfig) MarshalJSON() ([]byte, error) {
@@ -783,6 +785,13 @@ func (o *OpentelemetryPluginConfig) GetTracesEndpoint() *string {
 		return nil
 	}
 	return o.TracesEndpoint
+}
+
+func (o *OpentelemetryPluginConfig) GetAccessLogsEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AccessLogsEndpoint
 }
 
 // OpentelemetryPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.

@@ -106,7 +106,7 @@ resource "konnect_gateway_plugin_ai_rag_injector" "my_gatewaypluginairaginjector
         ssl_cert     = "...my_ssl_cert..."
         ssl_cert_key = "...my_ssl_cert_key..."
         ssl_required = false
-        ssl_verify   = true
+        ssl_verify   = false
         ssl_version  = "tlsv1_2"
         timeout      = 5000
         user         = "postgres"
@@ -155,7 +155,7 @@ resource "konnect_gateway_plugin_ai_rag_injector" "my_gatewaypluginairaginjector
         sentinel_username = "...my_sentinel_username..."
         server_name       = "...my_server_name..."
         ssl               = false
-        ssl_verify        = true
+        ssl_verify        = false
         username          = "...my_username..."
       }
       strategy  = "redis"
@@ -389,7 +389,7 @@ Optional:
 - `ssl_cert` (String) the path of ssl cert to use for the pgvector database
 - `ssl_cert_key` (String) the path of ssl cert key to use for the pgvector database
 - `ssl_required` (Boolean) whether ssl is required for the pgvector database. Default: false
-- `ssl_verify` (Boolean) whether to verify ssl for the pgvector database. Default: true
+- `ssl_verify` (Boolean) whether to verify ssl for the pgvector database. Default: false
 - `ssl_version` (String) the ssl version to use for the pgvector database. Default: "tlsv1_2"; must be one of ["any", "tlsv1_2", "tlsv1_3"]
 - `timeout` (Number) the timeout of the pgvector database. Default: 5000
 - `user` (String) the user of the pgvector database. Default: "postgres"
@@ -420,7 +420,7 @@ Optional:
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
-- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: false
 - `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 
 <a id="nestedatt--config--vectordb--redis--cloud_authentication"></a>

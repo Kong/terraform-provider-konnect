@@ -54,7 +54,7 @@ resource "konnect_gateway_plugin_ai_custom_guardrail" "my_gatewaypluginaicustomg
       block_message = "...my_block_message..."
     }
     response_buffer_size = 100
-    ssl_verify           = true
+    ssl_verify           = false
     stop_on_error        = true
     text_source          = "last_message"
     timeout              = 10000
@@ -147,7 +147,7 @@ Optional:
 - `metrics` (Attributes) (see [below for nested schema](#nestedatt--config--metrics))
 - `params` (Map of String) Parameters to be used in the guardrail service request. Keys are the parameter name and values can be either Lua expressions in the form `$(some_lua_expression)`or string. For expression, it will be evaluated as the value for the corresponding key. For string, it will be attempted to be parsed as string in JSON format, otherwise it will be used as is.
 - `response_buffer_size` (Number) The amount of bytes receiving from upstream to be buffered before sending to the guardrail service. This only applies to the response content guard. Default: 100
-- `ssl_verify` (Boolean) Whether to verify SSL certificate when Kong makes request to guardrail service. Default: true
+- `ssl_verify` (Boolean) Whether to verify SSL certificate when Kong makes request to guardrail service. Default: false
 - `stop_on_error` (Boolean) Stop processing if an error occurs. Default: true
 - `text_source` (String) Select where to pick the 'text' for the guardrail service request. Default: "last_message"; must be one of ["concatenate_all_content", "concatenate_user_content", "last_message"]
 - `timeout` (Number) Connection timeout with the guardrail service. Default: 10000

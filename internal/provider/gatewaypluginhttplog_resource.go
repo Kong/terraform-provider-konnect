@@ -220,8 +220,8 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 					"ssl_verify": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `When using TLS, this option enables verification of the certificate presented by the server. Default: true`,
+						Default:     booldefault.StaticBool(false),
+						Description: `When using TLS, this option enables verification of the certificate presented by the server. Default: false`,
 					},
 					"timeout": schema.Float64Attribute{
 						Computed:    true,

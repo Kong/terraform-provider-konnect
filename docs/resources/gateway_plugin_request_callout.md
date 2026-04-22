@@ -111,7 +111,7 @@ resource "konnect_gateway_plugin_request_callout" "my_gatewaypluginrequestcallou
               https_proxy   = "...my_https_proxy..."
             }
             ssl_server_name = "...my_ssl_server_name..."
-            ssl_verify      = true
+            ssl_verify      = false
             timeouts = {
               connect = 396369045
               read    = 2097982023
@@ -316,7 +316,7 @@ Optional:
 
 - `proxy` (Attributes) Proxy settings. (see [below for nested schema](#nestedatt--config--callouts--request--http_opts--proxy))
 - `ssl_server_name` (String) The SNI used in the callout request. Defaults to host if omitted.
-- `ssl_verify` (Boolean) If set to `true`, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your callout API. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: true
+- `ssl_verify` (Boolean) If set to `true`, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your callout API. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: false
 - `timeouts` (Attributes) Socket timeouts in milliseconds. All or none must be set. (see [below for nested schema](#nestedatt--config--callouts--request--http_opts--timeouts))
 
 <a id="nestedatt--config--callouts--request--http_opts--proxy"></a>

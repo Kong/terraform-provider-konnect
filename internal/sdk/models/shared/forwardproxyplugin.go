@@ -192,7 +192,7 @@ type ForwardProxyPluginConfig struct {
 	// An integer representing a port number between 0 and 65535, inclusive.
 	HTTPSProxyPort *int64 `default:"null" json:"https_proxy_port"`
 	// Whether the server certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate.
-	HTTPSVerify *bool `default:"true" json:"https_verify"`
+	HTTPSVerify *bool `default:"false" json:"https_verify"`
 	// The proxy scheme to use when connecting. Only `http` is supported.
 	ProxyScheme *ProxyScheme `default:"http" json:"proxy_scheme"`
 	// Determines how to handle headers when forwarding the request.

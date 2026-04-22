@@ -39,7 +39,7 @@ resource "konnect_gateway_plugin_mtls_auth" "my_gatewaypluginmtlsauth" {
     ]
     send_ca_dn           = false
     skip_consumer_lookup = false
-    ssl_verify           = true
+    ssl_verify           = false
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 8
@@ -129,7 +129,7 @@ Optional:
 - `san_dirname_matcher` (List of String) Specifies a list of Subject Alternative Name (SAN) DirectoryName attributes to use for consumer lookup. Applicable only when `skip_consumer_lookup` is false. Supported formats: OID, Long Name, or Short Name. Examples: `commonName` (Long Name), `CN` (Short Name), `2.5.4.3` (OID). If left empty (default), all attributes present in the SAN DirectoryName extension are used. The matcher is case sensitive. Default: []
 - `send_ca_dn` (Boolean) Sends the distinguished names (DN) of the configured CA list in the TLS handshake message. Default: false
 - `skip_consumer_lookup` (Boolean) Skip consumer lookup once certificate is trusted against the configured CA list. Default: false
-- `ssl_verify` (Boolean) This option enables verification of the certificate presented by the server of the OCSP responder's URL and by the server of the CRL Distribution Point. Default: true
+- `ssl_verify` (Boolean) This option enables verification of the certificate presented by the server of the OCSP responder's URL and by the server of the CRL Distribution Point. Default: false
 
 
 <a id="nestedatt--ordering"></a>

@@ -48,6 +48,7 @@ type OpenidConnectPluginConfig struct {
 	ClusterCacheRedis                            *PartialVectordbRedis             `tfsdk:"cluster_cache_redis"`
 	ClusterCacheStrategy                         types.String                      `tfsdk:"cluster_cache_strategy"`
 	ConsumerBy                                   []types.String                    `tfsdk:"consumer_by"`
+	ConsumerClaim                                []types.String                    `tfsdk:"consumer_claim"`
 	ConsumerClaims                               [][]types.String                  `tfsdk:"consumer_claims"`
 	ConsumerGroupsClaim                          []types.String                    `tfsdk:"consumer_groups_claim"`
 	ConsumerGroupsOptional                       types.Bool                        `tfsdk:"consumer_groups_optional"`

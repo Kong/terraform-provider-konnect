@@ -105,8 +105,8 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 					"hide_credentials": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `An optional boolean value telling the plugin to show or hide the credential from the upstream service. If ` + "`" + `true` + "`" + `, the plugin strips the credential from the request. Default: true`,
+						Default:     booldefault.StaticBool(false),
+						Description: `An optional boolean value telling the plugin to show or hide the credential from the upstream service. If ` + "`" + `true` + "`" + `, the plugin strips the credential from the request. Default: false`,
 					},
 					"identity_realms": schema.ListNestedAttribute{
 						Computed: true,

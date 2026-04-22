@@ -13,7 +13,7 @@ type UpdateAia2aproxyPluginRequest struct {
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID   string                  `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	AiA2AProxyPlugin shared.AiA2AProxyPlugin `request:"mediaType=application/json"`
+	AiA2aProxyPlugin shared.AiA2aProxyPlugin `request:"mediaType=application/json"`
 }
 
 func (u UpdateAia2aproxyPluginRequest) MarshalJSON() ([]byte, error) {
@@ -21,7 +21,7 @@ func (u UpdateAia2aproxyPluginRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateAia2aproxyPluginRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "AiA2AProxyPlugin"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"PluginId", "controlPlaneId", "AiA2aProxyPlugin"}); err != nil {
 		return err
 	}
 	return nil
@@ -41,11 +41,11 @@ func (u *UpdateAia2aproxyPluginRequest) GetControlPlaneID() string {
 	return u.ControlPlaneID
 }
 
-func (u *UpdateAia2aproxyPluginRequest) GetAiA2AProxyPlugin() shared.AiA2AProxyPlugin {
+func (u *UpdateAia2aproxyPluginRequest) GetAiA2aProxyPlugin() shared.AiA2aProxyPlugin {
 	if u == nil {
-		return shared.AiA2AProxyPlugin{}
+		return shared.AiA2aProxyPlugin{}
 	}
-	return u.AiA2AProxyPlugin
+	return u.AiA2aProxyPlugin
 }
 
 // #region class-body-updateaia2aproxypluginrequest
@@ -58,8 +58,8 @@ type UpdateAia2aproxyPluginResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// AiA2AProxy plugin
-	AiA2AProxyPlugin *shared.AiA2AProxyPlugin
+	// AiA2aProxy plugin
+	AiA2aProxyPlugin *shared.AiA2aProxyPlugin
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
@@ -96,11 +96,11 @@ func (u *UpdateAia2aproxyPluginResponse) GetRawResponse() *http.Response {
 	return u.RawResponse
 }
 
-func (u *UpdateAia2aproxyPluginResponse) GetAiA2AProxyPlugin() *shared.AiA2AProxyPlugin {
+func (u *UpdateAia2aproxyPluginResponse) GetAiA2aProxyPlugin() *shared.AiA2aProxyPlugin {
 	if u == nil {
 		return nil
 	}
-	return u.AiA2AProxyPlugin
+	return u.AiA2aProxyPlugin
 }
 
 func (u *UpdateAia2aproxyPluginResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {

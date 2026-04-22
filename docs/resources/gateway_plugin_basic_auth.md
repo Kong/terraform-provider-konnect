@@ -45,7 +45,7 @@ resource "konnect_gateway_plugin_basic_auth" "my_gatewaypluginbasicauth" {
       }
       strategy = "off"
     }
-    hide_credentials = true
+    hide_credentials = false
     realm            = "service"
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
@@ -118,7 +118,7 @@ Optional:
 
 - `anonymous` (String) An optional string (Consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`. Please note that this value must refer to the Consumer `id` or `username` attribute, and **not** its `custom_id`.
 - `brute_force_protection` (Attributes) (see [below for nested schema](#nestedatt--config--brute_force_protection))
-- `hide_credentials` (Boolean) An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin will strip the credential from the request (i.e. the `Authorization` header) before proxying it. Default: true
+- `hide_credentials` (Boolean) An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin will strip the credential from the request (i.e. the `Authorization` header) before proxying it. Default: false
 - `realm` (String) When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value. Default: "service"
 
 <a id="nestedatt--config--brute_force_protection"></a>

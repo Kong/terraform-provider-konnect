@@ -618,8 +618,8 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 													"ssl_verify": schema.BoolAttribute{
 														Computed:    true,
 														Optional:    true,
-														Default:     booldefault.StaticBool(true),
-														Description: `Whether to verify the certificate presented by the IdP when using HTTPS. Default: true`,
+														Default:     booldefault.StaticBool(false),
+														Description: `Whether to verify the certificate presented by the IdP when using HTTPS. Default: false`,
 													},
 													"timeout": schema.Int64Attribute{
 														Computed:    true,
@@ -712,8 +712,8 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 							"ssl_verify": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     booldefault.StaticBool(true),
-								Description: `When using TLS, this option enables verification of the certificate presented by the server. Default: true`,
+								Default:     booldefault.StaticBool(false),
+								Description: `When using TLS, this option enables verification of the certificate presented by the server. Default: false`,
 							},
 						},
 					},

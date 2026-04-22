@@ -167,6 +167,9 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     consumer_by = [
       "id"
     ]
+    consumer_claim = [
+      "..."
+    ]
     consumer_claims = [
       [
         # ...
@@ -236,7 +239,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     groups_required = [
       "..."
     ]
-    hide_credentials          = true
+    hide_credentials          = false
     http_proxy                = "...my_http_proxy..."
     http_proxy_authorization  = "...my_http_proxy_authorization..."
     http_version              = 2.54
@@ -429,8 +432,8 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     session_memcached_port            = 11211
     session_memcached_prefix          = "...my_session_memcached_prefix..."
     session_memcached_socket          = "...my_session_memcached_socket..."
-    session_memcached_ssl             = true
-    session_memcached_ssl_verify      = true
+    session_memcached_ssl             = false
+    session_memcached_ssl_verify      = false
     session_remember                  = false
     session_remember_absolute_timeout = 2592000
     session_remember_cookie_name      = "remember"
@@ -445,7 +448,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     session_secret                = "...my_session_secret..."
     session_storage               = "cookie"
     session_store_metadata        = false
-    ssl_verify                    = true
+    ssl_verify                    = false
     timeout                       = 10000
     tls_client_auth_cert_id       = "...my_tls_client_auth_cert_id..."
     tls_client_auth_ssl_verify    = true
@@ -684,6 +687,7 @@ Optional:
 - `cluster_cache_redis` (Attributes) (see [below for nested schema](#nestedatt--config--cluster_cache_redis))
 - `cluster_cache_strategy` (String) The strategy to use for the cluster cache. If set, the plugin will share cache with nodes configured with the same strategy backend. Currentlly only introspection cache is shared. Default: "off"; must be one of ["off", "redis"]
 - `consumer_by` (List of String) Consumer fields used for mapping: - `id`: try to find the matching Consumer by `id` - `username`: try to find the matching Consumer by `username` - `custom_id`: try to find the matching Consumer by `custom_id`. Default: ["custom_id","username"]
+- `consumer_claim` (List of String) The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
 - `consumer_claims` (List of List of String) The claims used for consumer mapping. Each entry represents a claim path inside the token payload. The paths are evaluated in order, and the first matching claim is used.
 - `consumer_groups_claim` (List of String) The claim used for consumer groups mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
 - `consumer_groups_optional` (Boolean) Do not terminate the request if consumer groups mapping fails. Default: false
@@ -718,7 +722,7 @@ Optional:
 - `forbidden_redirect_uri` (List of String) Where to redirect the client on forbidden requests.
 - `groups_claim` (List of String) The claim that contains the groups. If multiple values are set, it means the claim is inside a nested object of the token payload. Default: ["groups"]
 - `groups_required` (List of String) The groups (`groups_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
-- `hide_credentials` (Boolean) Remove the credentials used for authentication from the request. If multiple credentials are sent with the same request, the plugin will remove those that were used for successful authentication. Default: true
+- `hide_credentials` (Boolean) Remove the credentials used for authentication from the request. If multiple credentials are sent with the same request, the plugin will remove those that were used for successful authentication. Default: false
 - `http_proxy` (String) The HTTP proxy.
 - `http_proxy_authorization` (String) The HTTP proxy authorization.
 - `http_version` (Number) The HTTP version used for the requests by this plugin: - `1.1`: HTTP 1.1 (the default) - `1.0`: HTTP 1.0.
@@ -815,8 +819,8 @@ Default: false
 - `session_memcached_port` (Number) The memcached port. Default: 11211
 - `session_memcached_prefix` (String) The memcached session key prefix.
 - `session_memcached_socket` (String) The memcached unix socket path.
-- `session_memcached_ssl` (Boolean) If set to true, uses SSL to connect to memcached
-- `session_memcached_ssl_verify` (Boolean) If set to true, verifies the validity of the memcached server SSL certificate. Default: true
+- `session_memcached_ssl` (Boolean) If set to true, uses SSL to connect to memcached. Default: false
+- `session_memcached_ssl_verify` (Boolean) If set to true, verifies the validity of the memcached server SSL certificate. Default: false
 - `session_remember` (Boolean) Enables or disables persistent sessions. Default: false
 - `session_remember_absolute_timeout` (Number) Limits how long the persistent session can be renewed in seconds, until re-authentication is required. 0 disables the checks. Default: 2592000
 - `session_remember_cookie_name` (String) Persistent session cookie name. Use with the `remember` configuration parameter. Default: "remember"
@@ -827,7 +831,7 @@ Default: false
 - `session_secret` (String) The session secret.
 - `session_storage` (String) The session storage for session data: - `cookie`: stores session data with the session cookie (the session cannot be invalidated or revoked without changing session secret, but is stateless, and doesn't require a database) - `memcache`: stores session data in memcached - `redis`: stores session data in Redis. Default: "cookie"; must be one of ["cookie", "memcache", "memcached", "redis"]
 - `session_store_metadata` (Boolean) Configures whether or not session metadata should be stored. This metadata includes information about the active sessions for a specific audience belonging to a specific subject. Default: false
-- `ssl_verify` (Boolean) Verify identity provider server certificate. If set to `true`, the plugin uses the CA certificate set in the `kong.conf` config parameter `lua_ssl_trusted_certificate`. Default: true
+- `ssl_verify` (Boolean) Verify identity provider server certificate. If set to `true`, the plugin uses the CA certificate set in the `kong.conf` config parameter `lua_ssl_trusted_certificate`. Default: false
 - `timeout` (Number) Network IO timeout in milliseconds. Default: 10000
 - `tls_client_auth_cert_id` (String) ID of the Certificate entity representing the client certificate to use for mTLS client authentication for connections between Kong and the Auth Server.
 - `tls_client_auth_ssl_verify` (Boolean) Verify identity provider server certificate during mTLS client authentication. Default: true

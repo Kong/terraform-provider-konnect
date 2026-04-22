@@ -167,7 +167,7 @@ type HmacAuthPluginConfig struct {
 	// A list of headers that the client should at least use for HTTP signature creation.
 	EnforceHeaders []string `json:"enforce_headers,omitempty"`
 	// An optional boolean value telling the plugin to show or hide the credential from the upstream service.
-	HideCredentials *bool `default:"true" json:"hide_credentials"`
+	HideCredentials *bool `default:"false" json:"hide_credentials"`
 	// When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
 	Realm *string `default:"null" json:"realm"`
 	// A boolean value telling the plugin to enable body validation.

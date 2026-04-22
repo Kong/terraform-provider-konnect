@@ -28,7 +28,7 @@ resource "konnect_gateway_plugin_ai_aws_guardrails" "my_gatewaypluginaiawsguardr
     guardrails_version    = "...my_guardrails_version..."
     log_blocked_content   = false
     response_buffer_size  = 100
-    ssl_verify            = true
+    ssl_verify            = false
     stop_on_error         = true
     text_source           = "concatenate_all_content"
     timeout               = 10000
@@ -124,7 +124,7 @@ Optional:
 - `guarding_mode` (String) The guardrail mode to use for the request. Default: "INPUT"; must be one of ["BOTH", "INPUT", "OUTPUT"]
 - `log_blocked_content` (Boolean) Whether to log prompts and responses that are blocked by the guardrail. Default: false
 - `response_buffer_size` (Number) The amount of bytes receiving from upstream to be buffered before sending to the guardrails service. This only applies to the response content guard. Default: 100
-- `ssl_verify` (Boolean) Verify TLS certificate when connecting to the bedrock service. Default: true
+- `ssl_verify` (Boolean) Verify TLS certificate when connecting to the bedrock service. Default: false
 - `stop_on_error` (Boolean) Stop processing if an error occurs. Default: true
 - `text_source` (String) Select where to pick the 'text' for the Content Guard Services request. Default: "concatenate_all_content"; must be one of ["concatenate_all_content", "concatenate_user_content"]
 - `timeout` (Number) Connection timeout with the bedrock service. Default: 10000

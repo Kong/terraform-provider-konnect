@@ -454,7 +454,7 @@ type JwtSignerPluginConfig struct {
 	// When you set a value for this parameter, the plugin tries to map an arbitrary claim specified with this configuration parameter (for example, `sub` or `username`) in an access token to Kong consumer entity.
 	AccessTokenConsumerClaim []string `json:"access_token_consumer_claim"`
 	// Whether to verify the TLS certificate if any of `access_token_introspection_endpoint`, `access_token_jwks_uri`, or `access_token_keyset` is an HTTPS URI.
-	AccessTokenEndpointsSslVerify *bool `default:"true" json:"access_token_endpoints_ssl_verify"`
+	AccessTokenEndpointsSslVerify *bool `default:"false" json:"access_token_endpoints_ssl_verify"`
 	// Specify the expiry claim in an access token to verify if the default `exp` is not used.
 	AccessTokenExpiryClaim []string `json:"access_token_expiry_claim,omitempty"`
 	// Specify the claim in an access token introspection to verify against values of `config.access_token_introspection_audiences_allowed`.

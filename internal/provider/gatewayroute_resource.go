@@ -172,11 +172,14 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				Description: `When matching a Route via one of the ` + "`" + `hosts` + "`" + ` domain names, use the request ` + "`" + `Host` + "`" + ` header in the upstream request headers. If set to ` + "`" + `false` + "`" + `, the upstream ` + "`" + `Host` + "`" + ` header will be that of the Service's ` + "`" + `host` + "`" + `. Default: false`,
 			},
 			"protocols": schema.ListAttribute{
-				Computed:    true,
-				Optional:    true,
-				Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{types.StringValue("https")})),
+				Computed: true,
+				Optional: true,
+				Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
+					types.StringValue("http"),
+					types.StringValue("https"),
+				})),
 				ElementType: types.StringType,
-				Description: `An array of the protocols this Route should allow. See the [Route Object](#route-object) section for a list of accepted protocols. When set to only ` + "`" + `"https"` + "`" + `, HTTP requests are answered with an upgrade error. When set to only ` + "`" + `"http"` + "`" + `, HTTPS requests are answered with an error. Default: ["https"]`,
+				Description: `An array of the protocols this Route should allow. See the [Route Object](#route-object) section for a list of accepted protocols. When set to only ` + "`" + `"https"` + "`" + `, HTTP requests are answered with an upgrade error. When set to only ` + "`" + `"http"` + "`" + `, HTTPS requests are answered with an error. Default: ["http","https"]`,
 			},
 			"regex_priority": schema.Int64Attribute{
 				Computed:    true,

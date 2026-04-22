@@ -133,7 +133,7 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
                 https_proxy_authorization = "...my_https_proxy_authorization..."
                 keep_alive                = true
                 no_proxy                  = "...my_no_proxy..."
-                ssl_verify                = true
+                ssl_verify                = false
                 timeout                   = 10000
               }
             }
@@ -315,7 +315,7 @@ Optional:
 - `https_proxy_authorization` (String) The `Proxy-Authorization` header value to be used with `https_proxy`.
 - `keep_alive` (Boolean) Whether to use keepalive connections to the IdP. Default: true
 - `no_proxy` (String) A comma-separated list of hosts that should not be proxied.
-- `ssl_verify` (Boolean) Whether to verify the certificate presented by the IdP when using HTTPS. Default: true
+- `ssl_verify` (Boolean) Whether to verify the certificate presented by the IdP when using HTTPS. Default: false
 - `timeout` (Number) Network I/O timeout for requests to the IdP in milliseconds. Default: 10000
 
 

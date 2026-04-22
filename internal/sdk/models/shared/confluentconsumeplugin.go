@@ -539,7 +539,7 @@ type ConfluentConsumePluginOauth2Client struct {
 	// A comma-separated list of hosts that should not be proxied.
 	NoProxy *string `default:"null" json:"no_proxy"`
 	// Whether to verify the certificate presented by the IdP when using HTTPS.
-	SslVerify *bool `default:"true" json:"ssl_verify"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Network I/O timeout for requests to the IdP in milliseconds.
 	Timeout *int64 `default:"10000" json:"timeout"`
 }
@@ -756,7 +756,7 @@ func (c *ConfluentConsumePluginSchemaRegistry) GetConfluent() *ConfluentConsumeP
 
 type ConfluentConsumePluginSecurity struct {
 	// Enables verification of the certificate presented by the server.
-	SslVerify *bool `default:"true" json:"ssl_verify"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 }
 
 func (c ConfluentConsumePluginSecurity) MarshalJSON() ([]byte, error) {
@@ -1051,7 +1051,7 @@ type ConfluentConsumePluginConfigOauth2Client struct {
 	// A comma-separated list of hosts that should not be proxied.
 	NoProxy *string `default:"null" json:"no_proxy"`
 	// Whether to verify the certificate presented by the IdP when using HTTPS.
-	SslVerify *bool `default:"true" json:"ssl_verify"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Network I/O timeout for requests to the IdP in milliseconds.
 	Timeout *int64 `default:"10000" json:"timeout"`
 }

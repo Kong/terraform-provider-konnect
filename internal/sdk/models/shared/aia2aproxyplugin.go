@@ -8,22 +8,22 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-type AiA2AProxyPluginAfter struct {
+type AiA2aProxyPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (a AiA2AProxyPluginAfter) MarshalJSON() ([]byte, error) {
+func (a AiA2aProxyPluginAfter) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(a, "", false)
 }
 
-func (a *AiA2AProxyPluginAfter) UnmarshalJSON(data []byte) error {
+func (a *AiA2aProxyPluginAfter) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AiA2AProxyPluginAfter) GetAccess() []string {
+func (a *AiA2aProxyPluginAfter) GetAccess() []string {
 	if a == nil {
 		return nil
 	}
@@ -33,22 +33,22 @@ func (a *AiA2AProxyPluginAfter) GetAccess() []string {
 // #region class-body-aia2aproxypluginafter
 // #endregion class-body-aia2aproxypluginafter
 
-type AiA2AProxyPluginBefore struct {
+type AiA2aProxyPluginBefore struct {
 	Access []string `json:"access,omitempty"`
 }
 
-func (a AiA2AProxyPluginBefore) MarshalJSON() ([]byte, error) {
+func (a AiA2aProxyPluginBefore) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(a, "", false)
 }
 
-func (a *AiA2AProxyPluginBefore) UnmarshalJSON(data []byte) error {
+func (a *AiA2aProxyPluginBefore) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AiA2AProxyPluginBefore) GetAccess() []string {
+func (a *AiA2aProxyPluginBefore) GetAccess() []string {
 	if a == nil {
 		return nil
 	}
@@ -58,30 +58,30 @@ func (a *AiA2AProxyPluginBefore) GetAccess() []string {
 // #region class-body-aia2aproxypluginbefore
 // #endregion class-body-aia2aproxypluginbefore
 
-type AiA2AProxyPluginOrdering struct {
-	After  *AiA2AProxyPluginAfter  `json:"after,omitempty"`
-	Before *AiA2AProxyPluginBefore `json:"before,omitempty"`
+type AiA2aProxyPluginOrdering struct {
+	After  *AiA2aProxyPluginAfter  `json:"after,omitempty"`
+	Before *AiA2aProxyPluginBefore `json:"before,omitempty"`
 }
 
-func (a AiA2AProxyPluginOrdering) MarshalJSON() ([]byte, error) {
+func (a AiA2aProxyPluginOrdering) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(a, "", false)
 }
 
-func (a *AiA2AProxyPluginOrdering) UnmarshalJSON(data []byte) error {
+func (a *AiA2aProxyPluginOrdering) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AiA2AProxyPluginOrdering) GetAfter() *AiA2AProxyPluginAfter {
+func (a *AiA2aProxyPluginOrdering) GetAfter() *AiA2aProxyPluginAfter {
 	if a == nil {
 		return nil
 	}
 	return a.After
 }
 
-func (a *AiA2AProxyPluginOrdering) GetBefore() *AiA2AProxyPluginBefore {
+func (a *AiA2aProxyPluginOrdering) GetBefore() *AiA2aProxyPluginBefore {
 	if a == nil {
 		return nil
 	}
@@ -91,7 +91,7 @@ func (a *AiA2AProxyPluginOrdering) GetBefore() *AiA2AProxyPluginBefore {
 // #region class-body-aia2aproxypluginordering
 // #endregion class-body-aia2aproxypluginordering
 
-type AiA2AProxyPluginPartials struct {
+type AiA2aProxyPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
@@ -99,32 +99,32 @@ type AiA2AProxyPluginPartials struct {
 	Path *string `json:"path,omitempty"`
 }
 
-func (a AiA2AProxyPluginPartials) MarshalJSON() ([]byte, error) {
+func (a AiA2aProxyPluginPartials) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(a, "", false)
 }
 
-func (a *AiA2AProxyPluginPartials) UnmarshalJSON(data []byte) error {
+func (a *AiA2aProxyPluginPartials) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AiA2AProxyPluginPartials) GetID() *string {
+func (a *AiA2aProxyPluginPartials) GetID() *string {
 	if a == nil {
 		return nil
 	}
 	return a.ID
 }
 
-func (a *AiA2AProxyPluginPartials) GetName() *string {
+func (a *AiA2aProxyPluginPartials) GetName() *string {
 	if a == nil {
 		return nil
 	}
 	return a.Name
 }
 
-func (a *AiA2AProxyPluginPartials) GetPath() *string {
+func (a *AiA2aProxyPluginPartials) GetPath() *string {
 	if a == nil {
 		return nil
 	}
@@ -175,31 +175,31 @@ func (l *Logging) GetMaxPayloadSize() *int64 {
 	return l.MaxPayloadSize
 }
 
-type AiA2AProxyPluginConfig struct {
-	Logging *Logging `json:"logging,omitempty"`
+type AiA2aProxyPluginConfig struct {
+	Logging *Logging `json:"logging"`
 	// Maximum size of request body to parse for A2A metadata. Set to 0 for unlimited.
 	MaxRequestBodySize *int64 `default:"1048576" json:"max_request_body_size"`
 }
 
-func (a AiA2AProxyPluginConfig) MarshalJSON() ([]byte, error) {
+func (a AiA2aProxyPluginConfig) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(a, "", false)
 }
 
-func (a *AiA2AProxyPluginConfig) UnmarshalJSON(data []byte) error {
+func (a *AiA2aProxyPluginConfig) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AiA2AProxyPluginConfig) GetLogging() *Logging {
+func (a *AiA2aProxyPluginConfig) GetLogging() *Logging {
 	if a == nil {
 		return nil
 	}
 	return a.Logging
 }
 
-func (a *AiA2AProxyPluginConfig) GetMaxRequestBodySize() *int64 {
+func (a *AiA2aProxyPluginConfig) GetMaxRequestBodySize() *int64 {
 	if a == nil {
 		return nil
 	}
@@ -209,19 +209,19 @@ func (a *AiA2AProxyPluginConfig) GetMaxRequestBodySize() *int64 {
 // #region class-body-aia2aproxypluginconfig
 // #endregion class-body-aia2aproxypluginconfig
 
-type AiA2AProxyPluginProtocols string
+type AiA2aProxyPluginProtocols string
 
 const (
-	AiA2AProxyPluginProtocolsGrpc  AiA2AProxyPluginProtocols = "grpc"
-	AiA2AProxyPluginProtocolsGrpcs AiA2AProxyPluginProtocols = "grpcs"
-	AiA2AProxyPluginProtocolsHTTP  AiA2AProxyPluginProtocols = "http"
-	AiA2AProxyPluginProtocolsHTTPS AiA2AProxyPluginProtocols = "https"
+	AiA2aProxyPluginProtocolsGrpc  AiA2aProxyPluginProtocols = "grpc"
+	AiA2aProxyPluginProtocolsGrpcs AiA2aProxyPluginProtocols = "grpcs"
+	AiA2aProxyPluginProtocolsHTTP  AiA2aProxyPluginProtocols = "http"
+	AiA2aProxyPluginProtocolsHTTPS AiA2aProxyPluginProtocols = "https"
 )
 
-func (e AiA2AProxyPluginProtocols) ToPointer() *AiA2AProxyPluginProtocols {
+func (e AiA2aProxyPluginProtocols) ToPointer() *AiA2aProxyPluginProtocols {
 	return &e
 }
-func (e *AiA2AProxyPluginProtocols) UnmarshalJSON(data []byte) error {
+func (e *AiA2aProxyPluginProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -234,30 +234,30 @@ func (e *AiA2AProxyPluginProtocols) UnmarshalJSON(data []byte) error {
 	case "http":
 		fallthrough
 	case "https":
-		*e = AiA2AProxyPluginProtocols(v)
+		*e = AiA2aProxyPluginProtocols(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for AiA2AProxyPluginProtocols: %v", v)
+		return fmt.Errorf("invalid value for AiA2aProxyPluginProtocols: %v", v)
 	}
 }
 
-// AiA2AProxyPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-type AiA2AProxyPluginRoute struct {
+// AiA2aProxyPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+type AiA2aProxyPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (a AiA2AProxyPluginRoute) MarshalJSON() ([]byte, error) {
+func (a AiA2aProxyPluginRoute) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(a, "", false)
 }
 
-func (a *AiA2AProxyPluginRoute) UnmarshalJSON(data []byte) error {
+func (a *AiA2aProxyPluginRoute) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AiA2AProxyPluginRoute) GetID() *string {
+func (a *AiA2aProxyPluginRoute) GetID() *string {
 	if a == nil {
 		return nil
 	}
@@ -267,23 +267,23 @@ func (a *AiA2AProxyPluginRoute) GetID() *string {
 // #region class-body-aia2aproxypluginroute
 // #endregion class-body-aia2aproxypluginroute
 
-// AiA2AProxyPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-type AiA2AProxyPluginService struct {
+// AiA2aProxyPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+type AiA2aProxyPluginService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (a AiA2AProxyPluginService) MarshalJSON() ([]byte, error) {
+func (a AiA2aProxyPluginService) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(a, "", false)
 }
 
-func (a *AiA2AProxyPluginService) UnmarshalJSON(data []byte) error {
+func (a *AiA2aProxyPluginService) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AiA2AProxyPluginService) GetID() *string {
+func (a *AiA2aProxyPluginService) GetID() *string {
 	if a == nil {
 		return nil
 	}
@@ -293,8 +293,8 @@ func (a *AiA2AProxyPluginService) GetID() *string {
 // #region class-body-aia2aproxypluginservice
 // #endregion class-body-aia2aproxypluginservice
 
-// AiA2AProxyPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
-type AiA2AProxyPlugin struct {
+// AiA2aProxyPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
+type AiA2aProxyPlugin struct {
 	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
@@ -307,122 +307,122 @@ type AiA2AProxyPlugin struct {
 	InstanceName *string `default:"null" json:"instance_name"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	name     string                    `const:"ai-a2a-proxy" json:"name"`
-	Ordering *AiA2AProxyPluginOrdering `json:"ordering"`
+	Ordering *AiA2aProxyPluginOrdering `json:"ordering"`
 	// A list of partials to be used by the plugin.
-	Partials []AiA2AProxyPluginPartials `json:"partials"`
+	Partials []AiA2aProxyPluginPartials `json:"partials"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                  `json:"updated_at,omitempty"`
-	Config    *AiA2AProxyPluginConfig `json:"config"`
+	Config    *AiA2aProxyPluginConfig `json:"config"`
 	// A set of strings representing HTTP protocols.
-	Protocols []AiA2AProxyPluginProtocols `json:"protocols"`
+	Protocols []AiA2aProxyPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *AiA2AProxyPluginRoute `json:"route"`
+	Route *AiA2aProxyPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *AiA2AProxyPluginService `json:"service"`
+	Service *AiA2aProxyPluginService `json:"service"`
 }
 
-func (a AiA2AProxyPlugin) MarshalJSON() ([]byte, error) {
+func (a AiA2aProxyPlugin) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(a, "", false)
 }
 
-func (a *AiA2AProxyPlugin) UnmarshalJSON(data []byte) error {
+func (a *AiA2aProxyPlugin) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AiA2AProxyPlugin) GetCondition() *string {
+func (a *AiA2aProxyPlugin) GetCondition() *string {
 	if a == nil {
 		return nil
 	}
 	return a.Condition
 }
 
-func (a *AiA2AProxyPlugin) GetCreatedAt() *int64 {
+func (a *AiA2aProxyPlugin) GetCreatedAt() *int64 {
 	if a == nil {
 		return nil
 	}
 	return a.CreatedAt
 }
 
-func (a *AiA2AProxyPlugin) GetEnabled() *bool {
+func (a *AiA2aProxyPlugin) GetEnabled() *bool {
 	if a == nil {
 		return nil
 	}
 	return a.Enabled
 }
 
-func (a *AiA2AProxyPlugin) GetID() *string {
+func (a *AiA2aProxyPlugin) GetID() *string {
 	if a == nil {
 		return nil
 	}
 	return a.ID
 }
 
-func (a *AiA2AProxyPlugin) GetInstanceName() *string {
+func (a *AiA2aProxyPlugin) GetInstanceName() *string {
 	if a == nil {
 		return nil
 	}
 	return a.InstanceName
 }
 
-func (a *AiA2AProxyPlugin) GetName() string {
+func (a *AiA2aProxyPlugin) GetName() string {
 	return "ai-a2a-proxy"
 }
 
-func (a *AiA2AProxyPlugin) GetOrdering() *AiA2AProxyPluginOrdering {
+func (a *AiA2aProxyPlugin) GetOrdering() *AiA2aProxyPluginOrdering {
 	if a == nil {
 		return nil
 	}
 	return a.Ordering
 }
 
-func (a *AiA2AProxyPlugin) GetPartials() []AiA2AProxyPluginPartials {
+func (a *AiA2aProxyPlugin) GetPartials() []AiA2aProxyPluginPartials {
 	if a == nil {
 		return nil
 	}
 	return a.Partials
 }
 
-func (a *AiA2AProxyPlugin) GetTags() []string {
+func (a *AiA2aProxyPlugin) GetTags() []string {
 	if a == nil {
 		return nil
 	}
 	return a.Tags
 }
 
-func (a *AiA2AProxyPlugin) GetUpdatedAt() *int64 {
+func (a *AiA2aProxyPlugin) GetUpdatedAt() *int64 {
 	if a == nil {
 		return nil
 	}
 	return a.UpdatedAt
 }
 
-func (a *AiA2AProxyPlugin) GetConfig() *AiA2AProxyPluginConfig {
+func (a *AiA2aProxyPlugin) GetConfig() *AiA2aProxyPluginConfig {
 	if a == nil {
 		return nil
 	}
 	return a.Config
 }
 
-func (a *AiA2AProxyPlugin) GetProtocols() []AiA2AProxyPluginProtocols {
+func (a *AiA2aProxyPlugin) GetProtocols() []AiA2aProxyPluginProtocols {
 	if a == nil {
 		return nil
 	}
 	return a.Protocols
 }
 
-func (a *AiA2AProxyPlugin) GetRoute() *AiA2AProxyPluginRoute {
+func (a *AiA2aProxyPlugin) GetRoute() *AiA2aProxyPluginRoute {
 	if a == nil {
 		return nil
 	}
 	return a.Route
 }
 
-func (a *AiA2AProxyPlugin) GetService() *AiA2AProxyPluginService {
+func (a *AiA2aProxyPlugin) GetService() *AiA2aProxyPluginService {
 	if a == nil {
 		return nil
 	}

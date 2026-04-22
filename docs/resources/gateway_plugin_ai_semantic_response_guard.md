@@ -94,7 +94,7 @@ resource "konnect_gateway_plugin_ai_semantic_response_guard" "my_gatewaypluginai
         ssl_cert     = "...my_ssl_cert..."
         ssl_cert_key = "...my_ssl_cert_key..."
         ssl_required = false
-        ssl_verify   = true
+        ssl_verify   = false
         ssl_version  = "tlsv1_2"
         timeout      = 5000
         user         = "postgres"
@@ -369,7 +369,7 @@ Optional:
 - `ssl_cert` (String) the path of ssl cert to use for the pgvector database
 - `ssl_cert_key` (String) the path of ssl cert key to use for the pgvector database
 - `ssl_required` (Boolean) whether ssl is required for the pgvector database. Default: false
-- `ssl_verify` (Boolean) whether to verify ssl for the pgvector database. Default: true
+- `ssl_verify` (Boolean) whether to verify ssl for the pgvector database. Default: false
 - `ssl_version` (String) the ssl version to use for the pgvector database. Default: "tlsv1_2"; must be one of ["any", "tlsv1_2", "tlsv1_3"]
 - `timeout` (Number) the timeout of the pgvector database. Default: 5000
 - `user` (String) the user of the pgvector database. Default: "postgres"

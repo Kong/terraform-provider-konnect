@@ -22,7 +22,7 @@ resource "konnect_gateway_plugin_forward_proxy" "my_gatewaypluginforwardproxy" {
     http_proxy_port  = 61130
     https_proxy_host = "...my_https_proxy_host..."
     https_proxy_port = 38011
-    https_verify     = true
+    https_verify     = false
     proxy_scheme     = "http"
     x_headers        = "append"
   }
@@ -106,7 +106,7 @@ by basic authentication.
 - `http_proxy_port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 - `https_proxy_host` (String) A string representing a host name, such as example.com.
 - `https_proxy_port` (Number) An integer representing a port number between 0 and 65535, inclusive.
-- `https_verify` (Boolean) Whether the server certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate. Default: true
+- `https_verify` (Boolean) Whether the server certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate. Default: false
 - `proxy_scheme` (String) The proxy scheme to use when connecting. Only `http` is supported. Default: "http"; must be "http"
 - `x_headers` (String) Determines how to handle headers when forwarding the request. Default: "append"; must be one of ["append", "delete", "transparent"]
 

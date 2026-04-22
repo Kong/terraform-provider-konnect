@@ -43,7 +43,7 @@ type GatewayPluginAiA2aProxyResource struct {
 // GatewayPluginAiA2aProxyResourceModel describes the resource data model.
 type GatewayPluginAiA2aProxyResourceModel struct {
 	Condition      types.String                    `tfsdk:"condition"`
-	Config         *tfTypes.AiA2AProxyPluginConfig `tfsdk:"config"`
+	Config         *tfTypes.AiA2aProxyPluginConfig `tfsdk:"config"`
 	ControlPlaneID types.String                    `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                     `tfsdk:"created_at"`
 	Enabled        types.Bool                      `tfsdk:"enabled"`
@@ -90,6 +90,11 @@ func (r *GatewayPluginAiA2aProxyResource) Schema(ctx context.Context, req resour
 					"logging": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"log_payloads":     types.BoolType,
+							"log_statistics":   types.BoolType,
+							"max_payload_size": types.Int64Type,
+						})),
 						Attributes: map[string]schema.Attribute{
 							"log_payloads": schema.BoolAttribute{
 								Computed:    true,
@@ -335,11 +340,11 @@ func (r *GatewayPluginAiA2aProxyResource) Create(ctx context.Context, req resour
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AiA2AProxyPlugin != nil) {
+	if !(res.AiA2aProxyPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAiA2AProxyPlugin(ctx, res.AiA2AProxyPlugin)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiA2aProxyPlugin(ctx, res.AiA2aProxyPlugin)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -399,11 +404,11 @@ func (r *GatewayPluginAiA2aProxyResource) Read(ctx context.Context, req resource
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AiA2AProxyPlugin != nil) {
+	if !(res.AiA2aProxyPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAiA2AProxyPlugin(ctx, res.AiA2AProxyPlugin)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiA2aProxyPlugin(ctx, res.AiA2aProxyPlugin)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -449,11 +454,11 @@ func (r *GatewayPluginAiA2aProxyResource) Update(ctx context.Context, req resour
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.AiA2AProxyPlugin != nil) {
+	if !(res.AiA2aProxyPlugin != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAiA2AProxyPlugin(ctx, res.AiA2AProxyPlugin)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiA2aProxyPlugin(ctx, res.AiA2aProxyPlugin)...)
 
 	if resp.Diagnostics.HasError() {
 		return

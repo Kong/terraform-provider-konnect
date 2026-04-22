@@ -132,7 +132,7 @@ type TCPLogPluginConfig struct {
 	// The port to send data to on the upstream server.
 	Port int64 `json:"port"`
 	// When using TLS, this option enables verification of the certificate presented by the server.
-	SslVerify *bool `default:"true" json:"ssl_verify"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// An optional timeout in milliseconds when sending data to the upstream server.
 	Timeout *float64 `default:"10000" json:"timeout"`
 	// Indicates whether to perform a TLS handshake against the remote server.

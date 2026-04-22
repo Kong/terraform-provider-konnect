@@ -21,7 +21,7 @@ resource "konnect_gateway_plugin_ldap_auth" "my_gatewaypluginldapauth" {
     base_dn          = "...my_base_dn..."
     cache_ttl        = 60
     header_type      = "ldap"
-    hide_credentials = true
+    hide_credentials = false
     keepalive        = 60000
     ldap_host        = "...my_ldap_host..."
     ldap_port        = 389
@@ -29,7 +29,7 @@ resource "konnect_gateway_plugin_ldap_auth" "my_gatewaypluginldapauth" {
     realm            = "...my_realm..."
     start_tls        = false
     timeout          = 10000
-    verify_ldap_host = true
+    verify_ldap_host = false
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 3
@@ -108,14 +108,14 @@ Optional:
 - `anonymous` (String) An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request fails with an authentication failure `4xx`.
 - `cache_ttl` (Number) Cache expiry time in seconds. Default: 60
 - `header_type` (String) An optional string to use as part of the Authorization header. Default: "ldap"
-- `hide_credentials` (Boolean) An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request. Default: true
+- `hide_credentials` (Boolean) An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request. Default: false
 - `keepalive` (Number) An optional value in milliseconds that defines how long an idle connection to LDAP server will live before being closed. Default: 60000
 - `ldap_port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 389
 - `ldaps` (Boolean) Set to `true` to connect using the LDAPS protocol (LDAP over TLS).  When `ldaps` is configured, you must use port 636. If the `ldap` setting is enabled, ensure the `start_tls` setting is disabled. Default: false
 - `realm` (String) When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
 - `start_tls` (Boolean) Set it to `true` to issue StartTLS (Transport Layer Security) extended operation over `ldap` connection. If the `start_tls` setting is enabled, ensure the `ldaps` setting is disabled. Default: false
 - `timeout` (Number) An optional timeout in milliseconds when waiting for connection with LDAP server. Default: 10000
-- `verify_ldap_host` (Boolean) Set to `true` to authenticate LDAP server. The server certificate will be verified according to the CA certificates specified by the `lua_ssl_trusted_certificate` directive. Default: true
+- `verify_ldap_host` (Boolean) Set to `true` to authenticate LDAP server. The server certificate will be verified according to the CA certificates specified by the `lua_ssl_trusted_certificate` directive. Default: false
 
 
 <a id="nestedatt--ordering"></a>

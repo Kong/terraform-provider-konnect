@@ -407,7 +407,7 @@ type AiCustomGuardrailPluginConfig struct {
 	// The amount of bytes receiving from upstream to be buffered before sending to the guardrail service. This only applies to the response content guard.
 	ResponseBufferSize *float64 `default:"100" json:"response_buffer_size"`
 	// Whether to verify SSL certificate when Kong makes request to guardrail service.
-	SslVerify *bool `default:"true" json:"ssl_verify"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// Stop processing if an error occurs.
 	StopOnError *bool `default:"true" json:"stop_on_error"`
 	// Select where to pick the 'text' for the guardrail service request.
