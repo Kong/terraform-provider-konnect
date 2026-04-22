@@ -6545,14 +6545,14 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - Plugins
-  '/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#AiA2AProxy':
+  '/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#AiA2aProxy':
     delete:
       x-speakeasy-entity-operation:
         terraform-datasource: null
         terraform-resource: GatewayPluginAiA2aProxy#delete
       operationId: delete-aia2aproxy-plugin
-      summary: Delete a AiA2AProxy plugin
-      description: Delete a AiA2AProxy plugin
+      summary: Delete a AiA2aProxy plugin
+      description: Delete a AiA2aProxy plugin
       responses:
         '204':
           description: Successfully deleted Plugin or the resource didn't exist
@@ -6565,15 +6565,15 @@ paths:
         terraform-datasource: null
         terraform-resource: GatewayPluginAiA2aProxy#read
       operationId: get-aia2aproxy-plugin
-      summary: Get a AiA2AProxy plugin
-      description: Get a AiA2AProxy plugin
+      summary: Get a AiA2aProxy plugin
+      description: Get a AiA2aProxy plugin
       responses:
         '200':
-          description: AiA2AProxy plugin
+          description: AiA2aProxy plugin
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AiA2AProxyPlugin'
+                $ref: '#/components/schemas/AiA2aProxyPlugin'
         '401':
           $ref: '#/components/responses/HTTP401Error'
         '404':
@@ -6588,21 +6588,21 @@ paths:
         terraform-datasource: null
         terraform-resource: GatewayPluginAiA2aProxy#update
       operationId: update-aia2aproxy-plugin
-      summary: Update a AiA2AProxy plugin
-      description: Update a AiA2AProxy plugin
+      summary: Update a AiA2aProxy plugin
+      description: Update a AiA2aProxy plugin
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AiA2AProxyPlugin'
+              $ref: '#/components/schemas/AiA2aProxyPlugin'
       responses:
         '200':
-          description: AiA2AProxy plugin
+          description: AiA2aProxy plugin
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AiA2AProxyPlugin'
+                $ref: '#/components/schemas/AiA2aProxyPlugin'
         '401':
           $ref: '#/components/responses/HTTP401Error'
       tags:
@@ -13322,7 +13322,7 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - Plugins
-  '/v2/control-planes/{controlPlaneId}/core-entities/plugins#AiA2AProxy':
+  '/v2/control-planes/{controlPlaneId}/core-entities/plugins#AiA2aProxy':
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
     post:
@@ -13330,21 +13330,21 @@ paths:
         terraform-datasource: null
         terraform-resource: GatewayPluginAiA2aProxy#create
       operationId: create-aia2aproxy-plugin
-      summary: Create a AiA2AProxy plugin
-      description: Create a AiA2AProxy plugin
+      summary: Create a AiA2aProxy plugin
+      description: Create a AiA2aProxy plugin
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AiA2AProxyPlugin'
+              $ref: '#/components/schemas/AiA2aProxyPlugin'
       responses:
         '201':
-          description: Created AiA2AProxy plugin
+          description: Created AiA2aProxy plugin
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AiA2AProxyPlugin'
+                $ref: '#/components/schemas/AiA2aProxyPlugin'
         '401':
           $ref: '#/components/responses/HTTP401Error'
       tags:
@@ -33117,7 +33117,7 @@ components:
                     ssl_verify:
                       description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
                       type: boolean
-                      default: true
+                      default: false
                     username:
                       description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
                       type: string
@@ -33503,7 +33503,7 @@ components:
                     ssl_verify:
                       description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
                       type: boolean
-                      default: true
+                      default: false
                     timeout:
                       description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
                       type: integer
@@ -33636,11 +33636,11 @@ components:
             - https
       required:
         - config
-    AiA2AProxyPlugin:
+    AiA2aProxyPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
-        - $ref: '#/components/schemas/AiA2AProxyPluginConfig'
-    AiA2AProxyPluginConfig:
+        - $ref: '#/components/schemas/AiA2aProxyPluginConfig'
+    AiA2aProxyPluginConfig:
       x-speakeasy-entity: GatewayPluginAiA2aProxy
       properties:
         config:
@@ -33650,6 +33650,8 @@ components:
           properties:
             logging:
               type: object
+              default: null
+              nullable: true
               properties:
                 log_payloads:
                   description: 'If enabled, logs request/response bodies to Kong log plugin(s) output. Requires log_statistics to be enabled.'
@@ -33663,7 +33665,7 @@ components:
                   description: Maximum size in bytes for logged request/response payloads. Payloads exceeding this size will be truncated.
                   type: integer
                   default: 1048576
-              x-speakeasy-param-computed: true
+              x-speakeasy-param-computed: false
             max_request_body_size:
               description: Maximum size of request body to parse for A2A metadata. Set to 0 for unlimited.
               type: integer
@@ -33785,7 +33787,7 @@ components:
             ssl_verify:
               description: Verify TLS certificate when connecting to the bedrock service.
               type: boolean
-              default: true
+              default: false
             stop_on_error:
               description: Stop processing if an error occurs
               type: boolean
@@ -33977,7 +33979,7 @@ components:
             ssl_verify:
               description: Whether to verify the certificate presented by the Azure Content Safety service when using HTTPS.
               type: boolean
-              default: true
+              default: false
             stop_on_error:
               description: Stop processing if an error occurs
               type: boolean
@@ -34190,7 +34192,7 @@ components:
             ssl_verify:
               description: Whether to verify SSL certificate when Kong makes request to guardrail service.
               type: boolean
-              default: true
+              default: false
             stop_on_error:
               description: Stop processing if an error occurs.
               type: boolean
@@ -36050,7 +36052,7 @@ components:
                         ssl_verify:
                           description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
                           type: boolean
-                          default: true
+                          default: false
                         username:
                           description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
                           type: string
@@ -37859,7 +37861,7 @@ components:
                     ssl_verify:
                       description: whether to verify ssl for the pgvector database
                       type: boolean
-                      default: true
+                      default: false
                     ssl_version:
                       description: the ssl version to use for the pgvector database
                       type: string
@@ -38129,7 +38131,7 @@ components:
                     ssl_verify:
                       description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
                       type: boolean
-                      default: true
+                      default: false
                     username:
                       description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
                       type: string
@@ -39222,7 +39224,7 @@ components:
                     ssl_verify:
                       description: whether to verify ssl for the pgvector database
                       type: boolean
-                      default: true
+                      default: false
                     ssl_version:
                       description: the ssl version to use for the pgvector database
                       type: string
@@ -39492,7 +39494,7 @@ components:
                     ssl_verify:
                       description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
                       type: boolean
-                      default: true
+                      default: false
                     username:
                       description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
                       type: string
@@ -40053,7 +40055,7 @@ components:
                 ssl_verify:
                   description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
                   type: boolean
-                  default: true
+                  default: false
                 username:
                   description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
                   type: string
@@ -41916,7 +41918,7 @@ components:
                     ssl_verify:
                       description: whether to verify ssl for the pgvector database
                       type: boolean
-                      default: true
+                      default: false
                     ssl_version:
                       description: the ssl version to use for the pgvector database
                       type: string
@@ -42186,7 +42188,7 @@ components:
                     ssl_verify:
                       description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
                       type: boolean
-                      default: true
+                      default: false
                     username:
                       description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
                       type: string
@@ -42704,7 +42706,7 @@ components:
                     ssl_verify:
                       description: whether to verify ssl for the pgvector database
                       type: boolean
-                      default: true
+                      default: false
                     ssl_version:
                       description: the ssl version to use for the pgvector database
                       type: string
@@ -42974,7 +42976,7 @@ components:
                     ssl_verify:
                       description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
                       type: boolean
-                      default: true
+                      default: false
                     username:
                       description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
                       type: string
@@ -43478,7 +43480,7 @@ components:
                     ssl_verify:
                       description: whether to verify ssl for the pgvector database
                       type: boolean
-                      default: true
+                      default: false
                     ssl_version:
                       description: the ssl version to use for the pgvector database
                       type: string
@@ -44063,7 +44065,7 @@ components:
             ssl_verify:
               description: Set to `true` to verify the TLS certificate when connecting to AWS services.
               type: boolean
-              default: true
+              default: false
             timeout:
               description: An optional timeout in milliseconds when invoking the function.
               type: number
@@ -44169,7 +44171,7 @@ components:
             https_verify:
               description: Set to `true` to authenticate the Azure Functions server.
               type: boolean
-              default: true
+              default: false
             keepalive:
               description: Time in milliseconds during which an idle connection to the Azure Functions server lives before being closed.
               type: number
@@ -44481,7 +44483,7 @@ components:
             hide_credentials:
               description: 'An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin will strip the credential from the request (i.e. the `Authorization` header) before proxying it.'
               type: boolean
-              default: true
+              default: false
             realm:
               description: When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
               type: string
@@ -45217,7 +45219,7 @@ components:
                             ssl_verify:
                               description: Whether to verify the certificate presented by the IdP when using HTTPS.
                               type: boolean
-                              default: true
+                              default: false
                             timeout:
                               description: Network I/O timeout for requests to the IdP in milliseconds.
                               type: integer
@@ -45254,7 +45256,7 @@ components:
                 ssl_verify:
                   description: Enables verification of the certificate presented by the server.
                   type: boolean
-                  default: true
+                  default: false
               x-speakeasy-param-computed: false
             timeout:
               description: Socket timeout in milliseconds.
@@ -45455,7 +45457,7 @@ components:
                                   ssl_verify:
                                     description: Whether to verify the certificate presented by the IdP when using HTTPS.
                                     type: boolean
-                                    default: true
+                                    default: false
                                   timeout:
                                     description: Network I/O timeout for requests to the IdP in milliseconds.
                                     type: integer
@@ -46936,7 +46938,7 @@ components:
                       ssl_verify:
                         description: Whether to verify the TLS certificate when making HTTPS requests.
                         type: boolean
-                        default: true
+                        default: false
                       timeout:
                         description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
                         type: integer
@@ -47878,7 +47880,7 @@ components:
                         ssl_verify:
                           description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
                           type: boolean
-                          default: true
+                          default: false
                         username:
                           description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
                           type: string
@@ -48248,7 +48250,7 @@ components:
             https_verify:
               description: Whether the server certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate.
               type: boolean
-              default: true
+              default: false
             proxy_scheme:
               description: The proxy scheme to use when connecting. Only `http` is supported.
               type: string
@@ -48650,7 +48652,7 @@ components:
                 ssl_verify:
                   description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
                   type: boolean
-                  default: true
+                  default: false
                 username:
                   description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
                   type: string
@@ -49029,7 +49031,7 @@ components:
                 ssl_verify:
                   description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
                   type: boolean
-                  default: true
+                  default: false
                 username:
                   description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
                   type: string
@@ -49584,7 +49586,7 @@ components:
             hide_credentials:
               description: An optional boolean value telling the plugin to show or hide the credential from the upstream service.
               type: boolean
-              default: true
+              default: false
             realm:
               description: When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
               type: string
@@ -49766,7 +49768,7 @@ components:
             ssl_verify:
               description: 'When using TLS, this option enables verification of the certificate presented by the server.'
               type: boolean
-              default: true
+              default: false
             timeout:
               description: An optional timeout in milliseconds when sending data to the upstream server.
               type: number
@@ -50695,7 +50697,7 @@ components:
             access_token_endpoints_ssl_verify:
               description: 'Whether to verify the TLS certificate if any of `access_token_introspection_endpoint`, `access_token_jwks_uri`, or `access_token_keyset` is an HTTPS URI.'
               type: boolean
-              default: true
+              default: false
             access_token_expiry_claim:
               description: Specify the expiry claim in an access token to verify if the default `exp` is not used.
               type: array
@@ -52236,7 +52238,7 @@ components:
                                   ssl_verify:
                                     description: Whether to verify the certificate presented by the IdP when using HTTPS.
                                     type: boolean
-                                    default: true
+                                    default: false
                                   timeout:
                                     description: Network I/O timeout for requests to the IdP in milliseconds.
                                     type: integer
@@ -52643,7 +52645,7 @@ components:
                             ssl_verify:
                               description: Whether to verify the certificate presented by the IdP when using HTTPS.
                               type: boolean
-                              default: true
+                              default: false
                             timeout:
                               description: Network I/O timeout for requests to the IdP in milliseconds.
                               type: integer
@@ -52728,7 +52730,7 @@ components:
                 ssl_verify:
                   description: 'When using TLS, this option enables verification of the certificate presented by the server.'
                   type: boolean
-                  default: true
+                  default: false
               x-speakeasy-param-computed: false
             timeout:
               description: Socket timeout in milliseconds.
@@ -53447,7 +53449,7 @@ components:
             hide_credentials:
               description: 'An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin strips the credential from the request.'
               type: boolean
-              default: true
+              default: false
             identity_realms:
               description: A configuration of Konnect Identity Realms that indicate where to source a consumer from.
               type: array
@@ -53700,7 +53702,7 @@ components:
             hide_credentials:
               description: An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request.
               type: boolean
-              default: true
+              default: false
             keepalive:
               description: An optional value in milliseconds that defines how long an idle connection to LDAP server will live before being closed.
               type: number
@@ -53745,7 +53747,7 @@ components:
             verify_ldap_host:
               description: Set to `true` to authenticate LDAP server. The server certificate will be verified according to the CA certificates specified by the `lua_ssl_trusted_certificate` directive.
               type: boolean
-              default: true
+              default: false
           required:
             - attribute
             - base_dn
@@ -53828,7 +53830,7 @@ components:
             hide_credentials:
               description: An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request.
               type: boolean
-              default: true
+              default: false
             keepalive:
               description: An optional value in milliseconds that defines how long an idle connection to LDAP server will live before being closed.
               type: number
@@ -53863,7 +53865,7 @@ components:
             verify_ldap_host:
               description: Set to `true` to authenticate LDAP server. The server certificate will be verified according to the CA certificates specified by the `lua_ssl_trusted_certificate` directive.
               type: boolean
-              default: true
+              default: false
           required:
             - attribute
             - base_dn
@@ -54588,7 +54590,7 @@ components:
             ssl_verify:
               description: This option enables verification of the certificate presented by the server of the OCSP responder's URL and by the server of the CRL Distribution Point.
               type: boolean
-              default: true
+              default: false
           required:
             - ca_certificates
         name:
@@ -54804,7 +54806,7 @@ components:
             hide_credentials:
               description: An optional boolean value telling the plugin to hide the credential to the upstream API server. It will be removed by Kong before proxying the request.
               type: boolean
-              default: true
+              default: false
             introspect_request:
               description: 'A boolean indicating whether to forward information about the current downstream request to the introspect endpoint. If true, headers `X-Request-Path` and `X-Request-Http-Method` will be inserted into the introspect request.'
               type: boolean
@@ -55960,7 +55962,7 @@ components:
             hide_credentials:
               description: 'Remove the credentials used for authentication from the request. If multiple credentials are sent with the same request, the plugin will remove those that were used for successful authentication.'
               type: boolean
-              default: true
+              default: false
             http_proxy:
               description: The HTTP proxy.
               type: string
@@ -56884,13 +56886,11 @@ components:
             session_memcached_ssl:
               description: 'If set to true, uses SSL to connect to memcached'
               type: boolean
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
+              default: false
             session_memcached_ssl_verify:
               description: 'If set to true, verifies the validity of the memcached server SSL certificate'
               type: boolean
-              default: true
+              default: false
             session_remember:
               description: Enables or disables persistent sessions.
               type: boolean
@@ -56970,7 +56970,7 @@ components:
             ssl_verify:
               description: 'Verify identity provider server certificate. If set to `true`, the plugin uses the CA certificate set in the `kong.conf` config parameter `lua_ssl_trusted_certificate`.'
               type: boolean
-              default: true
+              default: false
             timeout:
               description: Network IO timeout in milliseconds.
               type: number
@@ -57396,6 +57396,14 @@ components:
               description: Verify signature of tokens.
               type: boolean
               default: true
+            consumer_claim:
+              description: 'The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.'
+              type: array
+              items:
+                type: string
+              default: null
+              nullable: true
+              x-speakeasy-param-computed: false
           required:
             - issuer
         name:
@@ -57719,6 +57727,13 @@ components:
               minimum: 0
             traces_endpoint:
               description: 'A string representing a URL, such as https://example.com/path/to/resource?q=search.'
+              type: string
+              default: null
+              nullable: true
+              x-referenceable: true
+              x-speakeasy-param-computed: false
+            access_logs_endpoint:
+              description: 'An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.'
               type: string
               default: null
               nullable: true
@@ -58777,7 +58792,7 @@ components:
             ssl_verify:
               description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
               type: boolean
-              default: true
+              default: false
             timeout:
               description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
               type: integer
@@ -59076,7 +59091,7 @@ components:
             ssl_verify:
               description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
               type: boolean
-              default: true
+              default: false
             username:
               description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
               type: string
@@ -59203,7 +59218,7 @@ components:
                 ssl_verify:
                   description: whether to verify ssl for the pgvector database
                   type: boolean
-                  default: true
+                  default: false
                 ssl_version:
                   description: the ssl version to use for the pgvector database
                   type: string
@@ -59473,7 +59488,7 @@ components:
                 ssl_verify:
                   description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
                   type: boolean
-                  default: true
+                  default: false
                 username:
                   description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
                   type: string
@@ -60422,7 +60437,7 @@ components:
                 ssl_verify:
                   description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
                   type: boolean
-                  default: true
+                  default: false
                 username:
                   description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
                   type: string
@@ -62091,7 +62106,7 @@ components:
                           ssl_verify:
                             description: 'If set to `true`, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your callout API. You may also need to configure `lua_ssl_verify_depth` accordingly.'
                             type: boolean
-                            default: true
+                            default: false
                           timeouts:
                             description: Socket timeouts in milliseconds. All or none must be set.
                             type: object
@@ -63309,7 +63324,7 @@ components:
                 ssl_verify:
                   description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
                   type: boolean
-                  default: true
+                  default: false
                 timeout:
                   description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
                   type: integer
@@ -63945,6 +63960,7 @@ components:
             type: string
             x-speakeasy-unknown-values: allow
           default:
+            - http
             - https
           minLength: 1
           nullable: true
@@ -64110,6 +64126,7 @@ components:
             type: string
             x-speakeasy-unknown-values: allow
           default:
+            - http
             - https
           minLength: 1
           nullable: true
@@ -64630,7 +64647,7 @@ components:
                 ssl_verify:
                   description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
                   type: boolean
-                  default: true
+                  default: false
                 username:
                   description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
                   type: string
@@ -65369,7 +65386,7 @@ components:
                 ssl_verify:
                   description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
                   type: boolean
-                  default: true
+                  default: false
                 username:
                   description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
                   type: string
@@ -65883,7 +65900,7 @@ components:
                 ssl_validate_certificate:
                   description: Indicates whether the API should validate server certificates with the trusted certificates.
                   type: boolean
-                  default: true
+                  default: false
                 vpn_name:
                   description: The name of the Message VPN to attempt to join when connecting to an event broker.
                   type: string
@@ -66157,7 +66174,7 @@ components:
                 ssl_validate_certificate:
                   description: Indicates whether the API should validate server certificates with the trusted certificates.
                   type: boolean
-                  default: true
+                  default: false
                 vpn_name:
                   description: The name of the Message VPN to attempt to join when connecting to an event broker.
                   type: string
@@ -66502,7 +66519,7 @@ components:
                 ssl_validate_certificate:
                   description: Indicates whether the API should validate server certificates with the trusted certificates.
                   type: boolean
-                  default: true
+                  default: false
                 vpn_name:
                   description: The name of the Message VPN to attempt to join when connecting to an event broker.
                   type: string
@@ -67454,7 +67471,7 @@ components:
             ssl_verify:
               description: 'When using TLS, this option enables verification of the certificate presented by the server.'
               type: boolean
-              default: true
+              default: false
             timeout:
               description: An optional timeout in milliseconds when sending data to the upstream server.
               type: number
@@ -69055,7 +69072,7 @@ components:
             hide_credentials:
               description: 'An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin will strip the credential from the request (i.e. the header or querystring containing the key) before proxying it.'
               type: boolean
-              default: true
+              default: false
             run_on_preflight:
               description: 'A boolean value that indicates whether the plugin should run (and try to authenticate) on `OPTIONS` preflight requests. If set to `false`, then `OPTIONS` requests will always be allowed.'
               type: boolean
