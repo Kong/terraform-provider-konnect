@@ -572,7 +572,7 @@ type JwtSignerPluginConfig struct {
 	// When you set a value for this parameter, the plugin tries to map an arbitrary claim specified with this configuration parameter. Kong consumers have an `id`, a `username`, and a `custom_id`. If this parameter is enabled but the mapping fails, such as when there's a non-existent Kong consumer, the plugin responds with `403 Forbidden`.
 	ChannelTokenConsumerClaim []string `json:"channel_token_consumer_claim"`
 	// Whether to verify the TLS certificate if any of `channel_token_introspection_endpoint`, `channel_token_jwks_uri`, or `channel_token_keyset` is an HTTPS URI.
-	ChannelTokenEndpointsSslVerify *bool `default:"true" json:"channel_token_endpoints_ssl_verify"`
+	ChannelTokenEndpointsSslVerify *bool `default:"false" json:"channel_token_endpoints_ssl_verify"`
 	// Specify the expiry claim in a channel token to verify if the default `exp` is not used.
 	ChannelTokenExpiryClaim []string `json:"channel_token_expiry_claim,omitempty"`
 	// Specify the claim in a channel token introspection to verify against values of `config.channel_token_introspection_audiences_allowed`.

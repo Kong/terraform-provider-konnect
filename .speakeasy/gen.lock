@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 09b5351d9e800172b13c2bb9780414f3
+  docChecksum: 117f570e69e044b0dde5a8ea0b0b7f0a
   docVersion: 2.0.0
   speakeasyVersion: 1.759.2
   generationVersion: 2.869.23
   releaseVersion: 3.13.0
   configChecksum: b5623595e10a9f0547ce745841d122d9
 persistentEdits:
-  generation_id: 57b0966e-4836-4c06-8958-a2ebc269306a
-  pristine_commit_hash: fd381c596e984271888b4ded0eaa845a5051d4c4
-  pristine_tree_hash: 43f03c7d747e9649c8129f8042640958ac103f79
+  generation_id: e47db3b1-1bd4-4e32-b640-9ee423813a35
+  pristine_commit_hash: 72960efbeae3bf0801bd1666226beb127af44123
+  pristine_tree_hash: b273406a6ed58078376c6ff228ae4b2911b45814
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -1488,8 +1488,8 @@ trackedFiles:
     pristine_git_object: c3c33d11afe5fda45da47890d06d28a553deac18
   examples/resources/konnect_gateway_plugin_jwt_signer/resource.tf:
     id: f8410164457d
-    last_write_checksum: sha1:ace4d3f69d9ab530400288bf0c061f42faa1d629
-    pristine_git_object: 9419dde1e07821cdc9dd3e0057faa84ea733ddd8
+    last_write_checksum: sha1:23b5d769dc26ce4cb7feccdeda151140b4944c9c
+    pristine_git_object: feb31bb3d666b2dcab0090ddd0bf5852471c2952
   examples/resources/konnect_gateway_plugin_kafka_consume/import-by-string-id.tf:
     id: 241b0a157d39
     last_write_checksum: sha1:be60f87e2ce44c4be9f42bc8e537d709a3909939
@@ -3556,8 +3556,8 @@ trackedFiles:
     pristine_git_object: 74cf7cb76011034159b160847c2cc10a2afc3666
   internal/provider/gatewayplugindatakit_resource.go:
     id: 43d9d744243d
-    last_write_checksum: sha1:cf514a71d5de6a1f3b07509b16f787affb4e1b62
-    pristine_git_object: c0faf9545c4be2bd26cc6998e920f7a0a6d0793e
+    last_write_checksum: sha1:cd89595021cacb3892b24e6d9429daf28a238463
+    pristine_git_object: 6e9c89968193de2273f67bc3474e9d2a45ead1b6
   internal/provider/gatewayplugindatakit_resource_sdk.go:
     id: 2be800bda759
     last_write_checksum: sha1:0802c539d8d29f400f8d1f4d826157a0542da095
@@ -3700,8 +3700,8 @@ trackedFiles:
     pristine_git_object: 53ac8feac527b81cf660aadf0bcc4d6600908141
   internal/provider/gatewaypluginjwtsigner_resource.go:
     id: c536cff27282
-    last_write_checksum: sha1:359ef75d341b202649f74e3656d66d3673596a40
-    pristine_git_object: 46f3951dc2e3d42ef9eb9076bd4c957ca1156100
+    last_write_checksum: sha1:3191fd965259acc32fcb56ef48a6b93eed7bb78f
+    pristine_git_object: 2b1fc3eb620d38f49596d24ba1d0b3f70f3dbdc1
   internal/provider/gatewaypluginjwtsigner_resource_sdk.go:
     id: 1b749c8b4965
     last_write_checksum: sha1:70c71dc7e136accc736575c7dcb9a57f481f0872
@@ -11032,8 +11032,8 @@ trackedFiles:
     pristine_git_object: d719a69cad72bd6fd5c1ce1153acab1b4405d77d
   internal/sdk/models/shared/datakitplugin.go:
     id: 432829e4cc62
-    last_write_checksum: sha1:070d3e516744f0c9c8a4356e4b69a485ccc6ab7d
-    pristine_git_object: cdf2bd7d86c18ae88d51a25d91a37c13cab26dfa
+    last_write_checksum: sha1:214d8bfa23b63d86145b412075a97011f4539807
+    pristine_git_object: 68004a829eb46554631e9a73db431f2f924107f6
   internal/sdk/models/shared/dataplaneclientcertificate.go:
     id: ae73e1356c39
     last_write_checksum: sha1:2da46bb5e335078268501f13815845d0a7a2626f
@@ -11428,8 +11428,8 @@ trackedFiles:
     pristine_git_object: 00496d0ad413c370a79e92d3a2164099feef0167
   internal/sdk/models/shared/jwtsignerplugin.go:
     id: 9686dd0e165f
-    last_write_checksum: sha1:1820d8b3c09096af54cd1a4c561b8f46cddfbefb
-    pristine_git_object: 9634fbb78ee7028523ae7cd80c8c1963e9edd075
+    last_write_checksum: sha1:c7ea9d01bca2150d21e4fc2cb86f35aa688a9001
+    pristine_git_object: ce18448bd571245c0a5ed1025129681e2ecaa24e
   internal/sdk/models/shared/jwtwithoutparents.go:
     id: 05e3eb4b89f1
     last_write_checksum: sha1:e419b27e9d7c7dce51b0a3388bc1e73a107ab1fc

@@ -1399,7 +1399,7 @@ type Call struct {
 	// A string representing an SNI (server name indication) value for TLS.
 	SslServerName *string `default:"null" json:"ssl_server_name"`
 	// Whether to verify the TLS certificate when making HTTPS requests.
-	SslVerify *bool `default:"false" json:"ssl_verify"`
+	SslVerify *bool `default:"true" json:"ssl_verify"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	Timeout *int64 `default:"null" json:"timeout"`
 	//lint:ignore U1000 accessed via reflection for JSON marshaling

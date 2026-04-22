@@ -278,7 +278,7 @@ Optional:
 - `output` (String) call node output
 - `outputs` (Attributes) call node outputs (see [below for nested schema](#nestedatt--config--nodes--call--outputs))
 - `ssl_server_name` (String) A string representing an SNI (server name indication) value for TLS.
-- `ssl_verify` (Boolean) Whether to verify the TLS certificate when making HTTPS requests. Default: false
+- `ssl_verify` (Boolean) Whether to verify the TLS certificate when making HTTPS requests. Default: true
 - `timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 - `url` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
 

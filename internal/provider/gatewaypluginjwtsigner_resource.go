@@ -809,8 +809,8 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 					"channel_token_endpoints_ssl_verify": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `Whether to verify the TLS certificate if any of ` + "`" + `channel_token_introspection_endpoint` + "`" + `, ` + "`" + `channel_token_jwks_uri` + "`" + `, or ` + "`" + `channel_token_keyset` + "`" + ` is an HTTPS URI. Default: true`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Whether to verify the TLS certificate if any of ` + "`" + `channel_token_introspection_endpoint` + "`" + `, ` + "`" + `channel_token_jwks_uri` + "`" + `, or ` + "`" + `channel_token_keyset` + "`" + ` is an HTTPS URI. Default: false`,
 					},
 					"channel_token_expiry_claim": schema.ListAttribute{
 						Computed:    true,

@@ -163,7 +163,7 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     channel_token_consumer_claim = [
       "..."
     ]
-    channel_token_endpoints_ssl_verify = true
+    channel_token_endpoints_ssl_verify = false
     channel_token_expiry_claim = [
       "..."
     ]
@@ -457,7 +457,7 @@ Optional:
 - `channel_token_audiences_allowed` (List of String) The audiences allowed to be present in the channel token claim specified by `config.channel_token_audience_claim`.
 - `channel_token_consumer_by` (List of String) When the plugin tries to do channel token to Kong consumer mapping, it tries to find a matching Kong consumer from properties defined using this configuration parameter. The parameter can take an array of valid values: `id`, `username`, and `custom_id`. Default: ["custom_id","username"]
 - `channel_token_consumer_claim` (List of String) When you set a value for this parameter, the plugin tries to map an arbitrary claim specified with this configuration parameter. Kong consumers have an `id`, a `username`, and a `custom_id`. If this parameter is enabled but the mapping fails, such as when there's a non-existent Kong consumer, the plugin responds with `403 Forbidden`.
-- `channel_token_endpoints_ssl_verify` (Boolean) Whether to verify the TLS certificate if any of `channel_token_introspection_endpoint`, `channel_token_jwks_uri`, or `channel_token_keyset` is an HTTPS URI. Default: true
+- `channel_token_endpoints_ssl_verify` (Boolean) Whether to verify the TLS certificate if any of `channel_token_introspection_endpoint`, `channel_token_jwks_uri`, or `channel_token_keyset` is an HTTPS URI. Default: false
 - `channel_token_expiry_claim` (List of String) Specify the expiry claim in a channel token to verify if the default `exp` is not used. Default: ["exp"]
 - `channel_token_introspection_audience_claim` (List of String) Specify the claim in a channel token introspection to verify against values of `config.channel_token_introspection_audiences_allowed`. Default: ["aud"]
 - `channel_token_introspection_audiences_allowed` (List of String) The audiences allowed to be present in the channel token introspection claim specified by `config.channel_token_introspection_audience_claim`.
