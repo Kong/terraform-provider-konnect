@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 4e3b17ae1460c58bb194d41ad74eedad
+  docChecksum: 09b5351d9e800172b13c2bb9780414f3
   docVersion: 2.0.0
   speakeasyVersion: 1.759.2
   generationVersion: 2.869.23
   releaseVersion: 3.13.0
   configChecksum: b5623595e10a9f0547ce745841d122d9
 persistentEdits:
-  generation_id: 10670c7e-0cbf-40d4-b450-cb18ea19cc1a
-  pristine_commit_hash: d608a5a91e9cbb1062546523c1b17023886c7983
-  pristine_tree_hash: 7ac09ec98891556fe942d87fe5de9ffcc56310b2
+  generation_id: 57b0966e-4836-4c06-8958-a2ebc269306a
+  pristine_commit_hash: fd381c596e984271888b4ded0eaa845a5051d4c4
+  pristine_tree_hash: 43f03c7d747e9649c8129f8042640958ac103f79
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -1380,8 +1380,8 @@ trackedFiles:
     pristine_git_object: 9842a7c66bcea6a610ba952ff0936980905bc3e3
   examples/resources/konnect_gateway_plugin_header_cert_auth/resource.tf:
     id: 938fffb3d09e
-    last_write_checksum: sha1:ff5bb6358b72412a57d30be5ccb40e690ed48241
-    pristine_git_object: b6038c3d5a668cb136e369b8c959b55bfce6b7ab
+    last_write_checksum: sha1:429945a7482511b106fa41895f9a9a39dea59ca6
+    pristine_git_object: c8ee309417f56dd79f2b13e1109fe70377837f72
   examples/resources/konnect_gateway_plugin_hmac_auth/import-by-string-id.tf:
     id: 67d0c46a85f9
     last_write_checksum: sha1:c1217755dacbc063cba1991d5a6e0a9e88800131
@@ -3628,8 +3628,8 @@ trackedFiles:
     pristine_git_object: 98bd92a08a46bf058c5a196f2d27d8d496403b87
   internal/provider/gatewaypluginheadercertauth_resource.go:
     id: c80be5ca3e4b
-    last_write_checksum: sha1:a0b354dd665b10efebf831d9f90a6ff7236514e7
-    pristine_git_object: 00f139340f2908a33f780bb3bf082653a7bfc20a
+    last_write_checksum: sha1:915cf6f3d44a9afeba3ab1fd265ce6d38f77ca44
+    pristine_git_object: 63285f7a78853535a390f7574915cc406c051de7
   internal/provider/gatewaypluginheadercertauth_resource_sdk.go:
     id: c728c63314cc
     last_write_checksum: sha1:42ded5145936b89c61b05d82a07e0e4024ee4a7d
@@ -11312,8 +11312,8 @@ trackedFiles:
     pristine_git_object: 6ee979c8629a5e27ed3b63633a78ff78ca3f268f
   internal/sdk/models/shared/headercertauthplugin.go:
     id: 2c9cf3cad358
-    last_write_checksum: sha1:ce2ef639d4e462c3f44f7e7c5151195cf2a053e9
-    pristine_git_object: ae82b21bc781ea890886401dc75a990d768f1d15
+    last_write_checksum: sha1:85feeaadad551e7422c4027db453a42004ece4ca
+    pristine_git_object: 4c831436001164f07c88413da8753389a8aa5e4a
   internal/sdk/models/shared/hmacauth.go:
     id: 2452d3e329a5
     last_write_checksum: sha1:71ec7e080c22ed61ac213714ba25fc19994d3247
@@ -16996,7 +16996,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "header-cert-auth", "ordering": null, "partials": null, "tags": null, "config": {"allow_partial_chain": false, "anonymous": null, "authenticated_group_by": "CN", "ca_certificates": ["<value 1>"], "cache_ttl": 60, "cert_cache_ttl": 60000, "certificate_header_format": "url_encoded", "certificate_header_name": "<value>", "consumer_by": ["custom_id", "username"], "default_consumer": null, "http_proxy_host": null, "http_proxy_port": null, "http_timeout": 30000, "https_proxy_host": null, "https_proxy_port": null, "revocation_check_mode": "IGNORE_CA_ERROR", "secure_source": true, "skip_consumer_lookup": false, "ssl_verify": true}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "header-cert-auth", "ordering": null, "partials": null, "tags": null, "config": {"allow_partial_chain": false, "anonymous": null, "authenticated_group_by": "CN", "ca_certificates": ["<value 1>"], "cache_ttl": 60, "cert_cache_ttl": 60000, "certificate_header_format": "url_encoded", "certificate_header_name": "<value>", "consumer_by": ["custom_id", "username"], "default_consumer": null, "http_proxy_host": null, "http_proxy_port": null, "http_timeout": 30000, "https_proxy_host": null, "https_proxy_port": null, "revocation_check_mode": "IGNORE_CA_ERROR", "secure_source": true, "skip_consumer_lookup": false, "ssl_verify": false}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 259492}
   update-headercertauth-plugin:
@@ -17018,10 +17018,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "header-cert-auth", "ordering": null, "partials": null, "tags": null, "config": {"allow_partial_chain": false, "anonymous": null, "authenticated_group_by": "CN", "ca_certificates": [], "cache_ttl": 60, "cert_cache_ttl": 60000, "certificate_header_format": "base64_encoded", "certificate_header_name": "<value>", "consumer_by": ["custom_id", "username"], "default_consumer": null, "http_proxy_host": null, "http_proxy_port": null, "http_timeout": 30000, "https_proxy_host": null, "https_proxy_port": null, "revocation_check_mode": "IGNORE_CA_ERROR", "secure_source": true, "skip_consumer_lookup": false, "ssl_verify": true}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "header-cert-auth", "ordering": null, "partials": null, "tags": null, "config": {"allow_partial_chain": false, "anonymous": null, "authenticated_group_by": "CN", "ca_certificates": [], "cache_ttl": 60, "cert_cache_ttl": 60000, "certificate_header_format": "base64_encoded", "certificate_header_name": "<value>", "consumer_by": ["custom_id", "username"], "default_consumer": null, "http_proxy_host": null, "http_proxy_port": null, "http_timeout": 30000, "https_proxy_host": null, "https_proxy_port": null, "revocation_check_mode": "IGNORE_CA_ERROR", "secure_source": true, "skip_consumer_lookup": false, "ssl_verify": false}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "header-cert-auth", "ordering": null, "partials": null, "tags": null, "config": {"allow_partial_chain": false, "anonymous": null, "authenticated_group_by": "CN", "ca_certificates": [], "cache_ttl": 60, "cert_cache_ttl": 60000, "certificate_header_format": "base64_encoded", "certificate_header_name": "<value>", "consumer_by": ["custom_id", "username"], "default_consumer": null, "http_proxy_host": null, "http_proxy_port": null, "http_timeout": 30000, "https_proxy_host": null, "https_proxy_port": null, "revocation_check_mode": "IGNORE_CA_ERROR", "secure_source": true, "skip_consumer_lookup": false, "ssl_verify": true}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "header-cert-auth", "ordering": null, "partials": null, "tags": null, "config": {"allow_partial_chain": false, "anonymous": null, "authenticated_group_by": "CN", "ca_certificates": [], "cache_ttl": 60, "cert_cache_ttl": 60000, "certificate_header_format": "base64_encoded", "certificate_header_name": "<value>", "consumer_by": ["custom_id", "username"], "default_consumer": null, "http_proxy_host": null, "http_proxy_port": null, "http_timeout": 30000, "https_proxy_host": null, "https_proxy_port": null, "revocation_check_mode": "IGNORE_CA_ERROR", "secure_source": true, "skip_consumer_lookup": false, "ssl_verify": false}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 134724}
   delete-hmacauth-plugin:
@@ -21344,10 +21344,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "header-cert-auth", "ordering": null, "partials": null, "tags": null, "config": {"allow_partial_chain": false, "anonymous": null, "authenticated_group_by": "CN", "ca_certificates": ["<value 1>"], "cache_ttl": 60, "cert_cache_ttl": 60000, "certificate_header_format": "url_encoded", "certificate_header_name": "<value>", "consumer_by": ["custom_id", "username"], "default_consumer": null, "http_proxy_host": null, "http_proxy_port": null, "http_timeout": 30000, "https_proxy_host": null, "https_proxy_port": null, "revocation_check_mode": "IGNORE_CA_ERROR", "secure_source": true, "skip_consumer_lookup": false, "ssl_verify": true}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "header-cert-auth", "ordering": null, "partials": null, "tags": null, "config": {"allow_partial_chain": false, "anonymous": null, "authenticated_group_by": "CN", "ca_certificates": ["<value 1>"], "cache_ttl": 60, "cert_cache_ttl": 60000, "certificate_header_format": "url_encoded", "certificate_header_name": "<value>", "consumer_by": ["custom_id", "username"], "default_consumer": null, "http_proxy_host": null, "http_proxy_port": null, "http_timeout": 30000, "https_proxy_host": null, "https_proxy_port": null, "revocation_check_mode": "IGNORE_CA_ERROR", "secure_source": true, "skip_consumer_lookup": false, "ssl_verify": false}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "header-cert-auth", "ordering": null, "partials": null, "tags": null, "config": {"allow_partial_chain": false, "anonymous": null, "authenticated_group_by": "CN", "ca_certificates": ["<value 1>"], "cache_ttl": 60, "cert_cache_ttl": 60000, "certificate_header_format": "url_encoded", "certificate_header_name": "<value>", "consumer_by": ["custom_id", "username"], "default_consumer": null, "http_proxy_host": null, "http_proxy_port": null, "http_timeout": 30000, "https_proxy_host": null, "https_proxy_port": null, "revocation_check_mode": "IGNORE_CA_ERROR", "secure_source": true, "skip_consumer_lookup": false, "ssl_verify": true}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "header-cert-auth", "ordering": null, "partials": null, "tags": null, "config": {"allow_partial_chain": false, "anonymous": null, "authenticated_group_by": "CN", "ca_certificates": ["<value 1>"], "cache_ttl": 60, "cert_cache_ttl": 60000, "certificate_header_format": "url_encoded", "certificate_header_name": "<value>", "consumer_by": ["custom_id", "username"], "default_consumer": null, "http_proxy_host": null, "http_proxy_port": null, "http_timeout": 30000, "https_proxy_host": null, "https_proxy_port": null, "revocation_check_mode": "IGNORE_CA_ERROR", "secure_source": true, "skip_consumer_lookup": false, "ssl_verify": false}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 250071}
   create-hmacauth-plugin:

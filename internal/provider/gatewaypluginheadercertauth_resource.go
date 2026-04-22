@@ -199,8 +199,8 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 					"ssl_verify": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     booldefault.StaticBool(true),
-						Description: `This option enables verification of the certificate presented by the server of the OCSP responder's URL and by the server of the CRL Distribution Point. Default: true`,
+						Default:     booldefault.StaticBool(false),
+						Description: `This option enables verification of the certificate presented by the server of the OCSP responder's URL and by the server of the CRL Distribution Point. Default: false`,
 					},
 				},
 			},

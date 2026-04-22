@@ -270,7 +270,7 @@ type HeaderCertAuthPluginConfig struct {
 	// Skip consumer lookup once certificate is trusted against the configured CA list.
 	SkipConsumerLookup *bool `default:"false" json:"skip_consumer_lookup"`
 	// This option enables verification of the certificate presented by the server of the OCSP responder's URL and by the server of the CRL Distribution Point.
-	SslVerify *bool `default:"true" json:"ssl_verify"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 }
 
 func (h HeaderCertAuthPluginConfig) MarshalJSON() ([]byte, error) {
