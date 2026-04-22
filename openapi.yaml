@@ -49490,7 +49490,7 @@ components:
             ssl_verify:
               description: This option enables verification of the certificate presented by the server of the OCSP responder's URL and by the server of the CRL Distribution Point.
               type: boolean
-              default: true
+              default: false
           required:
             - ca_certificates
             - certificate_header_format
