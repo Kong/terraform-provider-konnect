@@ -176,7 +176,7 @@ func (l *Logging) GetMaxPayloadSize() *int64 {
 }
 
 type AiA2aProxyPluginConfig struct {
-	Logging *Logging `json:"logging"`
+	Logging *Logging `json:"logging,omitempty"`
 	// Maximum size of request body to parse for A2A metadata. Set to 0 for unlimited.
 	MaxRequestBodySize *int64 `default:"1048576" json:"max_request_body_size"`
 }

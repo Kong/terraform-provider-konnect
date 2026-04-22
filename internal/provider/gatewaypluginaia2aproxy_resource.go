@@ -90,11 +90,6 @@ func (r *GatewayPluginAiA2aProxyResource) Schema(ctx context.Context, req resour
 					"logging": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
-						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-							"log_payloads":     types.BoolType,
-							"log_statistics":   types.BoolType,
-							"max_payload_size": types.Int64Type,
-						})),
 						Attributes: map[string]schema.Attribute{
 							"log_payloads": schema.BoolAttribute{
 								Computed:    true,
