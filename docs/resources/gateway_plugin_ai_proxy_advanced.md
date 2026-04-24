@@ -14,7 +14,36 @@ GatewayPluginAiProxyAdvanced Resource
 
 ```terraform
 resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadvanced" {
+  condition = "...my_condition..."
   config = {
+    acls = {
+      allow = [
+        {
+          match = [
+            {
+              key  = "...my_key..."
+              type = "path"
+              values = [
+                "..."
+              ]
+            }
+          ]
+        }
+      ]
+      deny = [
+        {
+          match = [
+            {
+              key  = "...my_key..."
+              type = "path"
+              values = [
+                "..."
+              ]
+            }
+          ]
+        }
+      ]
+    }
     balancer = {
       algorithm       = "round-robin"
       connect_timeout = 60000
@@ -40,6 +69,8 @@ resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadva
         azure_client_secret        = "...my_azure_client_secret..."
         azure_tenant_id            = "...my_azure_tenant_id..."
         azure_use_managed_identity = false
+        gcp_metadata_url           = "...my_gcp_metadata_url..."
+        gcp_oauth_token_url        = "...my_gcp_oauth_token_url..."
         gcp_service_account_json   = "...my_gcp_service_account_json..."
         gcp_use_service_account    = false
         header_name                = "...my_header_name..."
@@ -61,6 +92,8 @@ resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadva
             aws_region                 = "...my_aws_region..."
             aws_role_session_name      = "...my_aws_role_session_name..."
             aws_sts_endpoint_url       = "...my_aws_sts_endpoint_url..."
+            batch_bucket_prefix        = "...my_batch_bucket_prefix..."
+            batch_role_arn             = "...my_batch_role_arn..."
             embeddings_normalize       = false
             performance_config_latency = "...my_performance_config_latency..."
             video_output_s3_uri        = "...my_video_output_s3_uri..."
@@ -76,7 +109,7 @@ resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadva
           }
           upstream_url = "...my_upstream_url..."
         }
-        provider = "gemini"
+        provider = "huggingface"
       }
     }
     genai_category        = "text/generation"
@@ -94,6 +127,8 @@ resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadva
           azure_client_secret        = "...my_azure_client_secret..."
           azure_tenant_id            = "...my_azure_tenant_id..."
           azure_use_managed_identity = false
+          gcp_metadata_url           = "...my_gcp_metadata_url..."
+          gcp_oauth_token_url        = "...my_gcp_oauth_token_url..."
           gcp_service_account_json   = "...my_gcp_service_account_json..."
           gcp_use_service_account    = false
           header_name                = "...my_header_name..."
@@ -108,7 +143,8 @@ resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadva
           log_statistics = false
         }
         model = {
-          name = "...my_name..."
+          model_alias = "...my_model_alias..."
+          name        = "...my_name..."
           options = {
             anthropic_version   = "...my_anthropic_version..."
             azure_api_version   = "2023-05-15"
@@ -119,6 +155,8 @@ resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadva
               aws_region                 = "...my_aws_region..."
               aws_role_session_name      = "...my_aws_role_session_name..."
               aws_sts_endpoint_url       = "...my_aws_sts_endpoint_url..."
+              batch_bucket_prefix        = "...my_batch_bucket_prefix..."
+              batch_role_arn             = "...my_batch_role_arn..."
               embeddings_normalize       = false
               performance_config_latency = "...my_performance_config_latency..."
               video_output_s3_uri        = "...my_video_output_s3_uri..."
@@ -129,6 +167,9 @@ resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadva
             }
             dashscope = {
               international = true
+            }
+            databricks = {
+              workspace_instance_id = "...my_workspace_instance_id..."
             }
             embeddings_dimensions = 6
             gemini = {
@@ -152,7 +193,7 @@ resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadva
             upstream_path  = "...my_upstream_path..."
             upstream_url   = "...my_upstream_url..."
           }
-          provider = "cerebras"
+          provider = "cohere"
         }
         route_type = "llm/v1/assistants"
         weight     = 100
@@ -282,6 +323,7 @@ resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadva
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -305,6 +347,7 @@ Required:
 
 Optional:
 
+- `acls` (Attributes) Optional ACL rules. Deny rules take precedence over allow rules. (see [below for nested schema](#nestedatt--config--acls))
 - `balancer` (Attributes) (see [below for nested schema](#nestedatt--config--balancer))
 - `embeddings` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings))
 - `genai_category` (String) Generative AI category of the request. Default: "text/generation"; must be one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation"]
@@ -338,6 +381,8 @@ Optional:
 - `azure_client_secret` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
 - `azure_tenant_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
 - `azure_use_managed_identity` (Boolean) Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models. Default: false
+- `gcp_metadata_url` (String) Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.
+- `gcp_oauth_token_url` (String) Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.
 - `gcp_service_account_json` (String) Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
 - `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models. Default: false
 - `header_name` (String) If AI model requires authentication via Authorization or API key header, specify its name here.
@@ -361,9 +406,10 @@ Optional:
 
 Optional:
 
+- `model_alias` (String) The model name parameter from the request that this model should map to.
 - `name` (String) Model name to execute.
 - `options` (Attributes) Key/value settings for the model (see [below for nested schema](#nestedatt--config--targets--model--options))
-- `provider` (String) AI provider request format - Kong translates requests to and from the specified backend compatible formats. Not Null; must be one of ["anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "gemini", "huggingface", "llama2", "mistral", "openai", "xai"]
+- `provider` (String) AI provider request format - Kong translates requests to and from the specified backend compatible formats. Not Null; must be one of ["anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "databricks", "deepseek", "gemini", "huggingface", "llama2", "mistral", "ollama", "openai", "vllm", "xai"]
 
 <a id="nestedatt--config--targets--model--options"></a>
 ### Nested Schema for `config.targets.model.options`
@@ -377,6 +423,7 @@ Optional:
 - `bedrock` (Attributes) (see [below for nested schema](#nestedatt--config--targets--model--options--bedrock))
 - `cohere` (Attributes) (see [below for nested schema](#nestedatt--config--targets--model--options--cohere))
 - `dashscope` (Attributes) (see [below for nested schema](#nestedatt--config--targets--model--options--dashscope))
+- `databricks` (Attributes) (see [below for nested schema](#nestedatt--config--targets--model--options--databricks))
 - `embeddings_dimensions` (Number) If using embeddings models, set the number of dimensions to generate.
 - `gemini` (Attributes) (see [below for nested schema](#nestedatt--config--targets--model--options--gemini))
 - `huggingface` (Attributes) (see [below for nested schema](#nestedatt--config--targets--model--options--huggingface))
@@ -400,6 +447,8 @@ Optional:
 - `aws_region` (String) If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
 - `aws_role_session_name` (String) If using AWS providers (Bedrock), set the identifier of the assumed role session.
 - `aws_sts_endpoint_url` (String) If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
+- `batch_bucket_prefix` (String) S3 URI prefix (s3://bucket/prefix/) where Bedrock will get input files from and store results to for native batch API.
+- `batch_role_arn` (String) AWS role arn used for calling batch API. Try to get the value from request if ommited.
 - `embeddings_normalize` (Boolean) If using AWS providers (Bedrock), set to true to normalize the embeddings. Default: false
 - `performance_config_latency` (String) Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
 - `video_output_s3_uri` (String) S3 URI (s3://bucket/prefix) where Bedrock will store generated video files. Required for video generation.
@@ -424,6 +473,14 @@ It is recommended to set this to `true` when using international version of dash
 Default: true
 
 
+<a id="nestedatt--config--targets--model--options--databricks"></a>
+### Nested Schema for `config.targets.model.options.databricks`
+
+Optional:
+
+- `workspace_instance_id` (String) Workspace Instance ID ('dbc-xxx-yyy') for Databricks model serving.
+
+
 <a id="nestedatt--config--targets--model--options--gemini"></a>
 ### Nested Schema for `config.targets.model.options.gemini`
 
@@ -443,6 +500,51 @@ Optional:
 - `use_cache` (Boolean) Use the cache layer on the inference API
 - `wait_for_model` (Boolean) Wait for the model if it is not ready
 
+
+
+
+
+<a id="nestedatt--config--acls"></a>
+### Nested Schema for `config.acls`
+
+Optional:
+
+- `allow` (Attributes List) Requests matching any allow rule are permitted unless also matched by a deny rule. (see [below for nested schema](#nestedatt--config--acls--allow))
+- `deny` (Attributes List) Requests matching any deny rule are blocked. Deny rules take precedence over allow rules. (see [below for nested schema](#nestedatt--config--acls--deny))
+
+<a id="nestedatt--config--acls--allow"></a>
+### Nested Schema for `config.acls.allow`
+
+Optional:
+
+- `match` (Attributes List) All conditions must match for the rule to apply (logical AND). Not Null (see [below for nested schema](#nestedatt--config--acls--allow--match))
+
+<a id="nestedatt--config--acls--allow--match"></a>
+### Nested Schema for `config.acls.allow.match`
+
+Optional:
+
+- `key` (String) Helper key used by some types: consumer (id|username), consumer_group (id|name), header (header name).
+- `type` (String) The attribute to match against. Not Null; must be one of ["consumer", "consumer_group", "header", "ip", "model", "path", "provider"]
+- `values` (List of String) Allowed values for the selected type. Not Null
+
+
+
+<a id="nestedatt--config--acls--deny"></a>
+### Nested Schema for `config.acls.deny`
+
+Optional:
+
+- `match` (Attributes List) All conditions must match for the rule to apply (logical AND). Not Null (see [below for nested schema](#nestedatt--config--acls--deny--match))
+
+<a id="nestedatt--config--acls--deny--match"></a>
+### Nested Schema for `config.acls.deny.match`
+
+Optional:
+
+- `key` (String) Helper key used by some types: consumer (id|username), consumer_group (id|name), header (header name).
+- `type` (String) The attribute to match against. Not Null; must be one of ["consumer", "consumer_group", "header", "ip", "model", "path", "provider"]
+- `values` (List of String) Allowed values for the selected type. Not Null
 
 
 
@@ -483,7 +585,7 @@ Optional:
 Required:
 
 - `name` (String) Model name to execute.
-- `provider` (String) AI provider format to use for embeddings API. must be one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "openai"]
+- `provider` (String) AI provider format to use for embeddings API. must be one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai"]
 
 Optional:
 
@@ -519,6 +621,8 @@ Optional:
 - `aws_region` (String) If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
 - `aws_role_session_name` (String) If using AWS providers (Bedrock), set the identifier of the assumed role session.
 - `aws_sts_endpoint_url` (String) If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
+- `batch_bucket_prefix` (String) S3 URI prefix (s3://bucket/prefix/) where Bedrock will get input files from and store results to for native batch API.
+- `batch_role_arn` (String) AWS role arn used for calling batch API. Try to get the value from request if ommited.
 - `embeddings_normalize` (Boolean) If using AWS providers (Bedrock), set to true to normalize the embeddings. Default: false
 - `performance_config_latency` (String) Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
 - `video_output_s3_uri` (String) S3 URI (s3://bucket/prefix) where Bedrock will store generated video files. Required for video generation.
@@ -557,6 +661,8 @@ Optional:
 - `azure_client_secret` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
 - `azure_tenant_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
 - `azure_use_managed_identity` (Boolean) Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models. Default: false
+- `gcp_metadata_url` (String) Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.
+- `gcp_oauth_token_url` (String) Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.
 - `gcp_service_account_json` (String) Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
 - `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models. Default: false
 - `header_name` (String) If AI model requires authentication via Authorization or API key header, specify its name here.
@@ -580,7 +686,7 @@ Optional:
 
 - `pgvector` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb--pgvector))
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb--redis))
-- `threshold` (Number) the default similarity threshold for accepting semantic search results (float)
+- `threshold` (Number) the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.
 
 <a id="nestedatt--config--vectordb--pgvector"></a>
 ### Nested Schema for `config.vectordb.pgvector`

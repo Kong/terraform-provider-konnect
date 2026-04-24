@@ -9,6 +9,9 @@ type Nodes struct {
 	Exit      *Exit       `queryParam:"inline" tfsdk:"exit"`
 	Jq        *Jq         `queryParam:"inline" tfsdk:"jq"`
 	JSONToXML *JSONToXML  `queryParam:"inline" tfsdk:"json_to_xml"`
+	JwtDecode *JwtDecode  `queryParam:"inline" tfsdk:"jwt_decode"`
+	JwtSign   *JwtSign    `queryParam:"inline" tfsdk:"jwt_sign"`
+	JwtVerify *JwtVerify  `queryParam:"inline" tfsdk:"jwt_verify"`
 	Property  *Property   `queryParam:"inline" tfsdk:"property"`
 	Static    *Static     `queryParam:"inline" tfsdk:"static"`
 	XMLToJSON *XMLToJSON  `queryParam:"inline" tfsdk:"xml_to_json"`

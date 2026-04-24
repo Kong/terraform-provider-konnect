@@ -44,6 +44,7 @@ type GatewayPluginAiPromptDecoratorResource struct {
 
 // GatewayPluginAiPromptDecoratorResourceModel describes the resource data model.
 type GatewayPluginAiPromptDecoratorResourceModel struct {
+	Condition      types.String                           `tfsdk:"condition"`
 	Config         *tfTypes.AiPromptDecoratorPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                           `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.Set                           `tfsdk:"consumer_group"`
@@ -69,6 +70,13 @@ func (r *GatewayPluginAiPromptDecoratorResource) Schema(ctx context.Context, req
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginAiPromptDecorator Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,

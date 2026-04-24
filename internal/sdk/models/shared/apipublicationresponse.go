@@ -22,6 +22,8 @@ type APIPublicationResponse struct {
 	// Private API publications require authentication to retrieve information about them.
 	//
 	Visibility *APIPublicationVisibility `default:"private" json:"visibility"`
+	// Informational warnings (e.g. incompatible fields stripped for ACE). Empty if none.
+	Warnings []string `json:"warnings,omitempty"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`
 	// An ISO-8601 timestamp representation of entity update date.
@@ -58,6 +60,13 @@ func (a *APIPublicationResponse) GetVisibility() *APIPublicationVisibility {
 		return nil
 	}
 	return a.Visibility
+}
+
+func (a *APIPublicationResponse) GetWarnings() []string {
+	if a == nil {
+		return nil
+	}
+	return a.Warnings
 }
 
 func (a *APIPublicationResponse) GetCreatedAt() time.Time {

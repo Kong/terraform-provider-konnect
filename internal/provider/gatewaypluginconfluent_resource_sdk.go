@@ -15,6 +15,7 @@ func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(c
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.ConfluentPluginConfig{}
 		if resp.Config.AllowedTopics != nil {
 			r.Config.AllowedTopics = make([]types.String, 0, len(resp.Config.AllowedTopics))
@@ -344,6 +345,12 @@ func (r *GatewayPluginConfluentResourceModel) ToOperationsUpdateConfluentPluginR
 func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx context.Context) (*shared.ConfluentPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -945,6 +952,7 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin(ctx contex
 		}
 	}
 	out := shared.ConfluentPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

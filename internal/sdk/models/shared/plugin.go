@@ -227,6 +227,8 @@ func (p *PluginService) GetID() *string {
 
 // A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type Plugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// The configuration properties for the Plugin which can be found on the plugins documentation page in the [Kong Hub](https://docs.konghq.com/hub/).
 	Config map[string]any `json:"config,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
@@ -265,6 +267,13 @@ func (p *Plugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (p *Plugin) GetCondition() *string {
+	if p == nil {
+		return nil
+	}
+	return p.Condition
 }
 
 func (p *Plugin) GetConfig() map[string]any {

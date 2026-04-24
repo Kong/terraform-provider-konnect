@@ -14,6 +14,7 @@ GatewayPluginLdapAuthAdvanced Resource
 
 ```terraform
 resource "konnect_gateway_plugin_ldap_auth_advanced" "my_gatewaypluginldapauthadvanced" {
+  condition = "...my_condition..."
   config = {
     anonymous = ""
     attribute = "...my_attribute..."
@@ -93,6 +94,7 @@ resource "konnect_gateway_plugin_ldap_auth_advanced" "my_gatewaypluginldapauthad
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).

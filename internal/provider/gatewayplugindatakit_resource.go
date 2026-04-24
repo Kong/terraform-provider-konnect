@@ -17,6 +17,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
@@ -47,6 +48,7 @@ type GatewayPluginDatakitResource struct {
 
 // GatewayPluginDatakitResourceModel describes the resource data model.
 type GatewayPluginDatakitResourceModel struct {
+	Condition      types.String                 `tfsdk:"condition"`
 	Config         *tfTypes.DatakitPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                 `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.Set                 `tfsdk:"consumer_group"`
@@ -72,6 +74,13 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginDatakit Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -156,6 +165,9 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											path.MatchRelative().AtParent().AtName("exit"),
 											path.MatchRelative().AtParent().AtName("jq"),
 											path.MatchRelative().AtParent().AtName("json_to_xml"),
+											path.MatchRelative().AtParent().AtName("jwt_decode"),
+											path.MatchRelative().AtParent().AtName("jwt_sign"),
+											path.MatchRelative().AtParent().AtName("jwt_verify"),
 											path.MatchRelative().AtParent().AtName("property"),
 											path.MatchRelative().AtParent().AtName("static"),
 											path.MatchRelative().AtParent().AtName("xml_to_json"),
@@ -275,6 +287,9 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											path.MatchRelative().AtParent().AtName("exit"),
 											path.MatchRelative().AtParent().AtName("jq"),
 											path.MatchRelative().AtParent().AtName("json_to_xml"),
+											path.MatchRelative().AtParent().AtName("jwt_decode"),
+											path.MatchRelative().AtParent().AtName("jwt_sign"),
+											path.MatchRelative().AtParent().AtName("jwt_verify"),
 											path.MatchRelative().AtParent().AtName("property"),
 											path.MatchRelative().AtParent().AtName("static"),
 											path.MatchRelative().AtParent().AtName("xml_to_json"),
@@ -391,9 +406,10 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											Computed: true,
 											Optional: true,
 											Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-												"body":    types.StringType,
-												"headers": types.StringType,
-												"status":  types.StringType,
+												"body":     types.StringType,
+												"headers":  types.StringType,
+												"raw_body": types.StringType,
+												"status":   types.StringType,
 											})),
 											Attributes: map[string]schema.Attribute{
 												"body": schema.StringAttribute{
@@ -406,6 +422,13 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 												"headers": schema.StringAttribute{
 													Optional:    true,
 													Description: `HTTP response headers`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+												"raw_body": schema.StringAttribute{
+													Optional:    true,
+													Description: `The raw, non-decoded HTTP response body`,
 													Validators: []validator.String{
 														stringvalidator.UTF8LengthBetween(1, 255),
 													},
@@ -425,8 +448,10 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											Description: `A string representing an SNI (server name indication) value for TLS.`,
 										},
 										"ssl_verify": schema.BoolAttribute{
+											Computed:    true,
 											Optional:    true,
-											Description: `Whether to verify the TLS certificate when making HTTPS requests.`,
+											Default:     booldefault.StaticBool(true),
+											Description: `Whether to verify the TLS certificate when making HTTPS requests. Default: true`,
 										},
 										"timeout": schema.Int64Attribute{
 											Optional:    true,
@@ -448,6 +473,9 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											path.MatchRelative().AtParent().AtName("exit"),
 											path.MatchRelative().AtParent().AtName("jq"),
 											path.MatchRelative().AtParent().AtName("json_to_xml"),
+											path.MatchRelative().AtParent().AtName("jwt_decode"),
+											path.MatchRelative().AtParent().AtName("jwt_sign"),
+											path.MatchRelative().AtParent().AtName("jwt_verify"),
 											path.MatchRelative().AtParent().AtName("property"),
 											path.MatchRelative().AtParent().AtName("static"),
 											path.MatchRelative().AtParent().AtName("xml_to_json"),
@@ -517,6 +545,9 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											path.MatchRelative().AtParent().AtName("call"),
 											path.MatchRelative().AtParent().AtName("jq"),
 											path.MatchRelative().AtParent().AtName("json_to_xml"),
+											path.MatchRelative().AtParent().AtName("jwt_decode"),
+											path.MatchRelative().AtParent().AtName("jwt_sign"),
+											path.MatchRelative().AtParent().AtName("jwt_verify"),
 											path.MatchRelative().AtParent().AtName("property"),
 											path.MatchRelative().AtParent().AtName("static"),
 											path.MatchRelative().AtParent().AtName("xml_to_json"),
@@ -570,6 +601,9 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											path.MatchRelative().AtParent().AtName("call"),
 											path.MatchRelative().AtParent().AtName("exit"),
 											path.MatchRelative().AtParent().AtName("json_to_xml"),
+											path.MatchRelative().AtParent().AtName("jwt_decode"),
+											path.MatchRelative().AtParent().AtName("jwt_sign"),
+											path.MatchRelative().AtParent().AtName("jwt_verify"),
 											path.MatchRelative().AtParent().AtName("property"),
 											path.MatchRelative().AtParent().AtName("static"),
 											path.MatchRelative().AtParent().AtName("xml_to_json"),
@@ -641,6 +675,373 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											path.MatchRelative().AtParent().AtName("call"),
 											path.MatchRelative().AtParent().AtName("exit"),
 											path.MatchRelative().AtParent().AtName("jq"),
+											path.MatchRelative().AtParent().AtName("jwt_decode"),
+											path.MatchRelative().AtParent().AtName("jwt_sign"),
+											path.MatchRelative().AtParent().AtName("jwt_verify"),
+											path.MatchRelative().AtParent().AtName("property"),
+											path.MatchRelative().AtParent().AtName("static"),
+											path.MatchRelative().AtParent().AtName("xml_to_json"),
+										}...),
+									},
+								},
+								"jwt_decode": schema.SingleNestedAttribute{
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"input": schema.StringAttribute{
+											Optional:    true,
+											Description: `JWT token (with or without Bearer prefix)`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"name": schema.StringAttribute{
+											Optional:    true,
+											Description: `A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid ` + "`" + `snake_case` + "`" + ` or ` + "`" + `kebab-case` + "`" + `.`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"output": schema.StringAttribute{
+											Optional:    true,
+											Description: `jwt_decode node output`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"outputs": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+												"header":    types.StringType,
+												"payload":   types.StringType,
+												"signature": types.StringType,
+											})),
+											Attributes: map[string]schema.Attribute{
+												"header": schema.StringAttribute{
+													Optional:    true,
+													Description: `Decoded JWT header (alg, kid, typ)`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+												"payload": schema.StringAttribute{
+													Optional:    true,
+													Description: `Decoded JWT payload (claims)`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+												"signature": schema.StringAttribute{
+													Optional:    true,
+													Description: `Raw signature (base64url encoded)`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+											},
+											Description: `jwt_decode node outputs`,
+										},
+									},
+									Description: `Decode JWT without signature verification`,
+									Validators: []validator.Object{
+										objectvalidator.ConflictsWith(path.Expressions{
+											path.MatchRelative().AtParent().AtName("branch"),
+											path.MatchRelative().AtParent().AtName("cache"),
+											path.MatchRelative().AtParent().AtName("call"),
+											path.MatchRelative().AtParent().AtName("exit"),
+											path.MatchRelative().AtParent().AtName("jq"),
+											path.MatchRelative().AtParent().AtName("json_to_xml"),
+											path.MatchRelative().AtParent().AtName("jwt_sign"),
+											path.MatchRelative().AtParent().AtName("jwt_verify"),
+											path.MatchRelative().AtParent().AtName("property"),
+											path.MatchRelative().AtParent().AtName("static"),
+											path.MatchRelative().AtParent().AtName("xml_to_json"),
+										}...),
+									},
+								},
+								"jwt_sign": schema.SingleNestedAttribute{
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"algorithm": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Description: `Signing algorithm. Not Null; must be one of ["ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512"]`,
+											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
+												stringvalidator.OneOf(
+													"ES256",
+													"ES384",
+													"ES512",
+													"EdDSA",
+													"HS256",
+													"HS384",
+													"HS512",
+													"PS256",
+													"PS384",
+													"PS512",
+													"RS256",
+													"RS384",
+													"RS512",
+												),
+											},
+										},
+										"expires_in": schema.Int64Attribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     int64default.StaticInt64(300),
+											Description: `Seconds until token expires (for exp claim). Default: 300`,
+										},
+										"input": schema.StringAttribute{
+											Optional:    true,
+											Description: `jwt_sign node input`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"inputs": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+												"claims": types.StringType,
+												"key":    types.StringType,
+											})),
+											Attributes: map[string]schema.Attribute{
+												"claims": schema.StringAttribute{
+													Optional:    true,
+													Description: `Dynamic claims to include`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+												"key": schema.StringAttribute{
+													Optional:    true,
+													Description: `Signing key (PEM, JWK JSON string, or HMAC secret)`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+											},
+											Description: `jwt_sign node inputs`,
+										},
+										"kid": schema.StringAttribute{
+											Optional:    true,
+											Description: `Key ID for header`,
+										},
+										"name": schema.StringAttribute{
+											Optional:    true,
+											Description: `A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid ` + "`" + `snake_case` + "`" + ` or ` + "`" + `kebab-case` + "`" + `.`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"not_before": schema.Int64Attribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     int64default.StaticInt64(0),
+											Description: `Seconds until token becomes valid (for nbf claim). Default: 0`,
+										},
+										"output": schema.StringAttribute{
+											Optional:    true,
+											Description: `jwt_sign node output`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"outputs": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+												"claims": types.StringType,
+												"header": types.StringType,
+												"token":  types.StringType,
+											})),
+											Attributes: map[string]schema.Attribute{
+												"claims": schema.StringAttribute{
+													Optional:    true,
+													Description: `Complete claims used`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+												"header": schema.StringAttribute{
+													Optional:    true,
+													Description: `JWT header`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+												"token": schema.StringAttribute{
+													Optional:    true,
+													Description: `Signed JWT`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+											},
+											Description: `jwt_sign node outputs`,
+										},
+										"static_claims": schema.MapAttribute{
+											Computed:    true,
+											Optional:    true,
+											ElementType: types.StringType,
+											Description: `Static claims always included`,
+										},
+										"typ": schema.StringAttribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     stringdefault.StaticString(`JWT`),
+											Description: `Token type for header. Default: "JWT"`,
+										},
+									},
+									Description: `Create and sign a JWT`,
+									Validators: []validator.Object{
+										objectvalidator.ConflictsWith(path.Expressions{
+											path.MatchRelative().AtParent().AtName("branch"),
+											path.MatchRelative().AtParent().AtName("cache"),
+											path.MatchRelative().AtParent().AtName("call"),
+											path.MatchRelative().AtParent().AtName("exit"),
+											path.MatchRelative().AtParent().AtName("jq"),
+											path.MatchRelative().AtParent().AtName("json_to_xml"),
+											path.MatchRelative().AtParent().AtName("jwt_decode"),
+											path.MatchRelative().AtParent().AtName("jwt_verify"),
+											path.MatchRelative().AtParent().AtName("property"),
+											path.MatchRelative().AtParent().AtName("static"),
+											path.MatchRelative().AtParent().AtName("xml_to_json"),
+										}...),
+									},
+								},
+								"jwt_verify": schema.SingleNestedAttribute{
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"allowed_algorithms": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
+											ElementType: types.StringType,
+											Description: `Allowed signing algorithms (empty = any supported). Default: []`,
+										},
+										"audiences": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
+											ElementType: types.StringType,
+											Description: `Allowed audiences (empty = any). Default: []`,
+										},
+										"input": schema.StringAttribute{
+											Optional:    true,
+											Description: `jwt_verify node input`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"inputs": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+												"key":   types.StringType,
+												"token": types.StringType,
+											})),
+											Attributes: map[string]schema.Attribute{
+												"key": schema.StringAttribute{
+													Optional:    true,
+													Description: `Verification key: JWKS, JWK, PEM string, or HMAC secret`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+												"token": schema.StringAttribute{
+													Optional:    true,
+													Description: `JWT token (with or without Bearer prefix)`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+											},
+											Description: `jwt_verify node inputs`,
+										},
+										"issuers": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
+											ElementType: types.StringType,
+											Description: `Allowed issuers (empty = any). Default: []`,
+										},
+										"leeway": schema.Int64Attribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     int64default.StaticInt64(0),
+											Description: `Allowed clock skew in seconds for exp/nbf validation. Default: 0`,
+										},
+										"name": schema.StringAttribute{
+											Optional:    true,
+											Description: `A label that uniquely identifies the node within the plugin configuration so that it can be used for input/output connections. Must be valid ` + "`" + `snake_case` + "`" + ` or ` + "`" + `kebab-case` + "`" + `.`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"output": schema.StringAttribute{
+											Optional:    true,
+											Description: `jwt_verify node output`,
+											Validators: []validator.String{
+												stringvalidator.UTF8LengthBetween(1, 255),
+											},
+										},
+										"outputs": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+												"claims": types.StringType,
+												"header": types.StringType,
+											})),
+											Attributes: map[string]schema.Attribute{
+												"claims": schema.StringAttribute{
+													Optional:    true,
+													Description: `JWT payload claims`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+												"header": schema.StringAttribute{
+													Optional:    true,
+													Description: `JWT header`,
+													Validators: []validator.String{
+														stringvalidator.UTF8LengthBetween(1, 255),
+													},
+												},
+											},
+											Description: `jwt_verify node outputs`,
+										},
+										"required_claims": schema.ListAttribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
+											ElementType: types.StringType,
+											Description: `Claims that must be present. Default: []`,
+										},
+										"validate_exp": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     booldefault.StaticBool(true),
+											Description: `Validate expiration claim. Default: true`,
+										},
+										"validate_nbf": schema.BoolAttribute{
+											Computed:    true,
+											Optional:    true,
+											Default:     booldefault.StaticBool(true),
+											Description: `Validate not-before claim. Default: true`,
+										},
+									},
+									Description: `Verify JWT signature and validate claims`,
+									Validators: []validator.Object{
+										objectvalidator.ConflictsWith(path.Expressions{
+											path.MatchRelative().AtParent().AtName("branch"),
+											path.MatchRelative().AtParent().AtName("cache"),
+											path.MatchRelative().AtParent().AtName("call"),
+											path.MatchRelative().AtParent().AtName("exit"),
+											path.MatchRelative().AtParent().AtName("jq"),
+											path.MatchRelative().AtParent().AtName("json_to_xml"),
+											path.MatchRelative().AtParent().AtName("jwt_decode"),
+											path.MatchRelative().AtParent().AtName("jwt_sign"),
 											path.MatchRelative().AtParent().AtName("property"),
 											path.MatchRelative().AtParent().AtName("static"),
 											path.MatchRelative().AtParent().AtName("xml_to_json"),
@@ -702,6 +1103,9 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											path.MatchRelative().AtParent().AtName("exit"),
 											path.MatchRelative().AtParent().AtName("jq"),
 											path.MatchRelative().AtParent().AtName("json_to_xml"),
+											path.MatchRelative().AtParent().AtName("jwt_decode"),
+											path.MatchRelative().AtParent().AtName("jwt_sign"),
+											path.MatchRelative().AtParent().AtName("jwt_verify"),
 											path.MatchRelative().AtParent().AtName("static"),
 											path.MatchRelative().AtParent().AtName("xml_to_json"),
 										}...),
@@ -748,6 +1152,9 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											path.MatchRelative().AtParent().AtName("exit"),
 											path.MatchRelative().AtParent().AtName("jq"),
 											path.MatchRelative().AtParent().AtName("json_to_xml"),
+											path.MatchRelative().AtParent().AtName("jwt_decode"),
+											path.MatchRelative().AtParent().AtName("jwt_sign"),
+											path.MatchRelative().AtParent().AtName("jwt_verify"),
 											path.MatchRelative().AtParent().AtName("property"),
 											path.MatchRelative().AtParent().AtName("xml_to_json"),
 										}...),
@@ -826,6 +1233,9 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											path.MatchRelative().AtParent().AtName("exit"),
 											path.MatchRelative().AtParent().AtName("jq"),
 											path.MatchRelative().AtParent().AtName("json_to_xml"),
+											path.MatchRelative().AtParent().AtName("jwt_decode"),
+											path.MatchRelative().AtParent().AtName("jwt_sign"),
+											path.MatchRelative().AtParent().AtName("jwt_verify"),
 											path.MatchRelative().AtParent().AtName("property"),
 											path.MatchRelative().AtParent().AtName("static"),
 										}...),

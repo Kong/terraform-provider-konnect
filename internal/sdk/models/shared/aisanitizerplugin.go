@@ -298,6 +298,8 @@ func (e *SanitizationMode) UnmarshalJSON(data []byte) error {
 }
 
 type AiSanitizerPluginConfig struct {
+	// If false, will ignore all previous chat messages from the conversation history.
+	AllowAllConversationHistory *bool `default:"true" json:"allow_all_conversation_history"`
 	// List of types to be anonymized
 	Anonymize []Anonymize `json:"anonymize,omitempty"`
 	// Whether to block requests containing PII data
@@ -335,6 +337,13 @@ func (a *AiSanitizerPluginConfig) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AiSanitizerPluginConfig) GetAllowAllConversationHistory() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.AllowAllConversationHistory
 }
 
 func (a *AiSanitizerPluginConfig) GetAnonymize() []Anonymize {
@@ -554,6 +563,8 @@ func (a *AiSanitizerPluginService) GetID() *string {
 
 // AiSanitizerPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type AiSanitizerPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -593,6 +604,13 @@ func (a *AiSanitizerPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AiSanitizerPlugin) GetCondition() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Condition
 }
 
 func (a *AiSanitizerPlugin) GetCreatedAt() *int64 {

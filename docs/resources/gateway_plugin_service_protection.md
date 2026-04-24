@@ -14,6 +14,7 @@ GatewayPluginServiceProtection Resource
 
 ```terraform
 resource "konnect_gateway_plugin_service_protection" "my_gatewaypluginserviceprotection" {
+  condition = "...my_condition..."
   config = {
     dictionary_name     = "kong_rate_limiting_counters"
     disable_penalty     = false
@@ -127,6 +128,7 @@ resource "konnect_gateway_plugin_service_protection" "my_gatewaypluginservicepro
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).

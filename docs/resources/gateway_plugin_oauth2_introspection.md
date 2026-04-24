@@ -14,6 +14,7 @@ GatewayPluginOauth2Introspection Resource
 
 ```terraform
 resource "konnect_gateway_plugin_oauth2_introspection" "my_gatewaypluginoauth2introspection" {
+  condition = "...my_condition..."
   config = {
     anonymous           = ""
     authorization_value = "...my_authorization_value..."
@@ -83,6 +84,7 @@ resource "konnect_gateway_plugin_oauth2_introspection" "my_gatewaypluginoauth2in
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).

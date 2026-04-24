@@ -45,6 +45,7 @@ type GatewayPluginMtlsAuthResource struct {
 
 // GatewayPluginMtlsAuthResourceModel describes the resource data model.
 type GatewayPluginMtlsAuthResourceModel struct {
+	Condition      types.String                  `tfsdk:"condition"`
 	Config         *tfTypes.MtlsAuthPluginConfig `tfsdk:"config"`
 	ControlPlaneID types.String                  `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                   `tfsdk:"created_at"`
@@ -68,6 +69,13 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginMtlsAuth Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -162,6 +170,13 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 							),
 						},
 					},
+					"san_dirname_matcher": schema.ListAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
+						ElementType: types.StringType,
+						Description: `Specifies a list of Subject Alternative Name (SAN) DirectoryName attributes to use for consumer lookup. Applicable only when ` + "`" + `skip_consumer_lookup` + "`" + ` is false. Supported formats: OID, Long Name, or Short Name. Examples: ` + "`" + `commonName` + "`" + ` (Long Name), ` + "`" + `CN` + "`" + ` (Short Name), ` + "`" + `2.5.4.3` + "`" + ` (OID). If left empty (default), all attributes present in the SAN DirectoryName extension are used. The matcher is case sensitive. Default: []`,
+					},
 					"send_ca_dn": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -175,8 +190,10 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 						Description: `Skip consumer lookup once certificate is trusted against the configured CA list. Default: false`,
 					},
 					"ssl_verify": schema.BoolAttribute{
+						Computed:    true,
 						Optional:    true,
-						Description: `This option enables verification of the certificate presented by the server of the OCSP responder's URL and by the server of the CRL Distribution Point.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `This option enables verification of the certificate presented by the server of the OCSP responder's URL and by the server of the CRL Distribution Point. Default: false`,
 					},
 				},
 			},
@@ -292,7 +309,7 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 					types.StringValue("https"),
 				})),
 				ElementType: types.StringType,
-				Description: `A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]`,
+				Description: `A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls. Default: ["grpc","grpcs","http","https"]`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,

@@ -43,6 +43,7 @@ type GatewayPluginAiAwsGuardrailsResource struct {
 
 // GatewayPluginAiAwsGuardrailsResourceModel describes the resource data model.
 type GatewayPluginAiAwsGuardrailsResourceModel struct {
+	Condition      types.String                         `tfsdk:"condition"`
 	Config         *tfTypes.AiAwsGuardrailsPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                         `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.Set                         `tfsdk:"consumer_group"`
@@ -68,6 +69,13 @@ func (r *GatewayPluginAiAwsGuardrailsResource) Schema(ctx context.Context, req r
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginAiAwsGuardrails Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -122,6 +130,12 @@ func (r *GatewayPluginAiAwsGuardrailsResource) Schema(ctx context.Context, req r
 						Required:    true,
 						Description: `The guardrail version used in the request to apply the guardrail. Note that the value of this field must match the pattern ` + "`" + `(([1-9][0-9]{0,7})|(DRAFT))` + "`" + ` according to the AWS documentation https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_ApplyGuardrail.html#API_runtime_ApplyGuardrail_RequestSyntax.`,
 					},
+					"log_blocked_content": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `Whether to log prompts and responses that are blocked by the guardrail. Default: false`,
+					},
 					"response_buffer_size": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
@@ -129,8 +143,10 @@ func (r *GatewayPluginAiAwsGuardrailsResource) Schema(ctx context.Context, req r
 						Description: `The amount of bytes receiving from upstream to be buffered before sending to the guardrails service. This only applies to the response content guard. Default: 100`,
 					},
 					"ssl_verify": schema.BoolAttribute{
+						Computed:    true,
 						Optional:    true,
-						Description: `Verify TLS certificate when connecting to the bedrock service.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Verify TLS certificate when connecting to the bedrock service. Default: false`,
 					},
 					"stop_on_error": schema.BoolAttribute{
 						Computed:    true,

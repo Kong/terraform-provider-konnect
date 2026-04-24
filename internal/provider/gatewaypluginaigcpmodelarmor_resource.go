@@ -43,6 +43,7 @@ type GatewayPluginAiGcpModelArmorResource struct {
 
 // GatewayPluginAiGcpModelArmorResourceModel describes the resource data model.
 type GatewayPluginAiGcpModelArmorResourceModel struct {
+	Condition      types.String                         `tfsdk:"condition"`
 	Config         *tfTypes.AiGcpModelArmorPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                         `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.Set                         `tfsdk:"consumer_group"`
@@ -68,6 +69,13 @@ func (r *GatewayPluginAiGcpModelArmorResource) Schema(ctx context.Context, req r
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginAiGcpModelArmor Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -76,6 +84,14 @@ func (r *GatewayPluginAiGcpModelArmorResource) Schema(ctx context.Context, req r
 						Optional:    true,
 						Default:     booldefault.StaticBool(false),
 						Description: `Enables multi-language detection mode. Must be used with 'source_language'. Default: false`,
+					},
+					"gcp_metadata_url": schema.StringAttribute{
+						Optional:    true,
+						Description: `Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.`,
+					},
+					"gcp_oauth_token_url": schema.StringAttribute{
+						Optional:    true,
+						Description: `Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.`,
 					},
 					"gcp_service_account_json": schema.StringAttribute{
 						Optional:    true,
@@ -103,6 +119,12 @@ func (r *GatewayPluginAiGcpModelArmorResource) Schema(ctx context.Context, req r
 					"location_id": schema.StringAttribute{
 						Required:    true,
 						Description: `GCP Location ID for the GCP Model Armor subscription.`,
+					},
+					"log_blocked_content": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `Whether to log prompts and responses that are blocked by the guardrail. Default: false`,
 					},
 					"project_id": schema.StringAttribute{
 						Required:    true,

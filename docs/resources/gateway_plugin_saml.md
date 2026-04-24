@@ -14,6 +14,7 @@ GatewayPluginSaml Resource
 
 ```terraform
 resource "konnect_gateway_plugin_saml" "my_gatewaypluginsaml" {
+  condition = "...my_condition..."
   config = {
     anonymous               = "...my_anonymous..."
     assertion_consumer_path = "...my_assertion_consumer_path..."
@@ -159,6 +160,7 @@ resource "konnect_gateway_plugin_saml" "my_gatewaypluginsaml" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).

@@ -15,6 +15,7 @@ func (r *GatewayPluginFileLogResourceModel) RefreshFromSharedFileLogPlugin(ctx c
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.FileLogPluginConfig{}
 		if len(resp.Config.CustomFieldsByLua) > 0 {
 			r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
@@ -185,6 +186,12 @@ func (r *GatewayPluginFileLogResourceModel) ToOperationsUpdateFilelogPluginReque
 func (r *GatewayPluginFileLogResourceModel) ToSharedFileLogPlugin(ctx context.Context) (*shared.FileLogPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -340,6 +347,7 @@ func (r *GatewayPluginFileLogResourceModel) ToSharedFileLogPlugin(ctx context.Co
 		}
 	}
 	out := shared.FileLogPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

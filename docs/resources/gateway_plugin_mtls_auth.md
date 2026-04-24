@@ -14,6 +14,7 @@ GatewayPluginMtlsAuth Resource
 
 ```terraform
 resource "konnect_gateway_plugin_mtls_auth" "my_gatewaypluginmtlsauth" {
+  condition = "...my_condition..."
   config = {
     allow_partial_chain    = false
     anonymous              = "...my_anonymous..."
@@ -33,9 +34,12 @@ resource "konnect_gateway_plugin_mtls_auth" "my_gatewaypluginmtlsauth" {
     https_proxy_host      = "...my_https_proxy_host..."
     https_proxy_port      = 17238
     revocation_check_mode = "IGNORE_CA_ERROR"
-    send_ca_dn            = false
-    skip_consumer_lookup  = false
-    ssl_verify            = false
+    san_dirname_matcher = [
+      "..."
+    ]
+    send_ca_dn           = false
+    skip_consumer_lookup = false
+    ssl_verify           = false
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 8
@@ -62,7 +66,7 @@ resource "konnect_gateway_plugin_mtls_auth" "my_gatewaypluginmtlsauth" {
     }
   ]
   protocols = [
-    "http"
+    "ws"
   ]
   route = {
     id = "...my_id..."
@@ -87,13 +91,14 @@ resource "konnect_gateway_plugin_mtls_auth" "my_gatewaypluginmtlsauth" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
-- `protocols` (Set of String) A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]
+- `protocols` (Set of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls. Default: ["grpc","grpcs","http","https"]
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
@@ -121,9 +126,10 @@ Optional:
 - `https_proxy_host` (String) A string representing a host name, such as example.com.
 - `https_proxy_port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 - `revocation_check_mode` (String) Controls client certificate revocation check behavior. If set to `SKIP`, no revocation check is performed. If set to `IGNORE_CA_ERROR`, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to `STRICT`, the plugin only treats the certificate as valid when it's able to verify the revocation status. Default: "IGNORE_CA_ERROR"; must be one of ["IGNORE_CA_ERROR", "SKIP", "STRICT"]
+- `san_dirname_matcher` (List of String) Specifies a list of Subject Alternative Name (SAN) DirectoryName attributes to use for consumer lookup. Applicable only when `skip_consumer_lookup` is false. Supported formats: OID, Long Name, or Short Name. Examples: `commonName` (Long Name), `CN` (Short Name), `2.5.4.3` (OID). If left empty (default), all attributes present in the SAN DirectoryName extension are used. The matcher is case sensitive. Default: []
 - `send_ca_dn` (Boolean) Sends the distinguished names (DN) of the configured CA list in the TLS handshake message. Default: false
 - `skip_consumer_lookup` (Boolean) Skip consumer lookup once certificate is trusted against the configured CA list. Default: false
-- `ssl_verify` (Boolean) This option enables verification of the certificate presented by the server of the OCSP responder's URL and by the server of the CRL Distribution Point.
+- `ssl_verify` (Boolean) This option enables verification of the certificate presented by the server of the OCSP responder's URL and by the server of the CRL Distribution Point. Default: false
 
 
 <a id="nestedatt--ordering"></a>

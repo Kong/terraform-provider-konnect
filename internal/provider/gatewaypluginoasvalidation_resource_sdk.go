@@ -15,6 +15,7 @@ func (r *GatewayPluginOasValidationResourceModel) RefreshFromSharedOasValidation
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.OasValidationPluginConfig{}
 		r.Config.AllowedHeaderParameters = types.StringPointerValue(resp.Config.AllowedHeaderParameters)
 		r.Config.APISpec = types.StringValue(resp.Config.APISpec)
@@ -193,6 +194,12 @@ func (r *GatewayPluginOasValidationResourceModel) ToOperationsUpdateOasvalidatio
 func (r *GatewayPluginOasValidationResourceModel) ToSharedOasValidationPlugin(ctx context.Context) (*shared.OasValidationPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -438,6 +445,7 @@ func (r *GatewayPluginOasValidationResourceModel) ToSharedOasValidationPlugin(ct
 		}
 	}
 	out := shared.OasValidationPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

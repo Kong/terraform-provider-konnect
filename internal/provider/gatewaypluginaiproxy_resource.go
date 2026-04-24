@@ -45,6 +45,7 @@ type GatewayPluginAiProxyResource struct {
 
 // GatewayPluginAiProxyResourceModel describes the resource data model.
 type GatewayPluginAiProxyResourceModel struct {
+	Condition      types.String                 `tfsdk:"condition"`
 	Config         *tfTypes.AiProxyPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                 `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.Set                 `tfsdk:"consumer_group"`
@@ -70,6 +71,13 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginAiProxy Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -84,6 +92,8 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 							"azure_client_secret":        types.StringType,
 							"azure_tenant_id":            types.StringType,
 							"azure_use_managed_identity": types.BoolType,
+							"gcp_metadata_url":           types.StringType,
+							"gcp_oauth_token_url":        types.StringType,
 							"gcp_service_account_json":   types.StringType,
 							"gcp_use_service_account":    types.BoolType,
 							"header_name":                types.StringType,
@@ -124,6 +134,14 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 								Optional:    true,
 								Default:     booldefault.StaticBool(false),
 								Description: `Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models. Default: false`,
+							},
+							"gcp_metadata_url": schema.StringAttribute{
+								Optional:    true,
+								Description: `Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.`,
+							},
+							"gcp_oauth_token_url": schema.StringAttribute{
+								Optional:    true,
+								Description: `Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.`,
 							},
 							"gcp_service_account_json": schema.StringAttribute{
 								Optional:    true,
@@ -227,6 +245,10 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 					"model": schema.SingleNestedAttribute{
 						Required: true,
 						Attributes: map[string]schema.Attribute{
+							"model_alias": schema.StringAttribute{
+								Optional:    true,
+								Description: `The model name parameter from the request that this model should map to.`,
+							},
 							"name": schema.StringAttribute{
 								Optional:    true,
 								Description: `Model name to execute.`,
@@ -245,6 +267,8 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 											`aws_region`:                 types.StringType,
 											`aws_role_session_name`:      types.StringType,
 											`aws_sts_endpoint_url`:       types.StringType,
+											`batch_bucket_prefix`:        types.StringType,
+											`batch_role_arn`:             types.StringType,
 											`embeddings_normalize`:       types.BoolType,
 											`performance_config_latency`: types.StringType,
 											`video_output_s3_uri`:        types.StringType,
@@ -259,6 +283,11 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 									"dashscope": types.ObjectType{
 										AttrTypes: map[string]attr.Type{
 											`international`: types.BoolType,
+										},
+									},
+									"databricks": types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`workspace_instance_id`: types.StringType,
 										},
 									},
 									"embeddings_dimensions": types.Int64Type,
@@ -314,6 +343,8 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 											"aws_region":                 types.StringType,
 											"aws_role_session_name":      types.StringType,
 											"aws_sts_endpoint_url":       types.StringType,
+											"batch_bucket_prefix":        types.StringType,
+											"batch_role_arn":             types.StringType,
 											"embeddings_normalize":       types.BoolType,
 											"performance_config_latency": types.StringType,
 											"video_output_s3_uri":        types.StringType,
@@ -334,6 +365,14 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 											"aws_sts_endpoint_url": schema.StringAttribute{
 												Optional:    true,
 												Description: `If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.`,
+											},
+											"batch_bucket_prefix": schema.StringAttribute{
+												Optional:    true,
+												Description: `S3 URI prefix (s3://bucket/prefix/) where Bedrock will get input files from and store results to for native batch API.`,
+											},
+											"batch_role_arn": schema.StringAttribute{
+												Optional:    true,
+												Description: `AWS role arn used for calling batch API. Try to get the value from request if ommited.`,
 											},
 											"embeddings_normalize": schema.BoolAttribute{
 												Computed:    true,
@@ -394,6 +433,19 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 												MarkdownDescription: `Two Dashscope endpoints are available, and the international endpoint will be used when this is set to ` + "`" + `true` + "`" + `.` + "\n" +
 													`It is recommended to set this to ` + "`" + `true` + "`" + ` when using international version of dashscope.` + "\n" +
 													`Default: true`,
+											},
+										},
+									},
+									"databricks": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+											"workspace_instance_id": types.StringType,
+										})),
+										Attributes: map[string]schema.Attribute{
+											"workspace_instance_id": schema.StringAttribute{
+												Optional:    true,
+												Description: `Workspace Instance ID ('dbc-xxx-yyy') for Databricks model serving.`,
 											},
 										},
 									},
@@ -516,7 +568,7 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 							},
 							"provider": schema.StringAttribute{
 								Required:    true,
-								Description: `AI provider request format - Kong translates requests to and from the specified backend compatible formats. must be one of ["anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "gemini", "huggingface", "llama2", "mistral", "openai", "xai"]`,
+								Description: `AI provider request format - Kong translates requests to and from the specified backend compatible formats. must be one of ["anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "databricks", "deepseek", "gemini", "huggingface", "llama2", "mistral", "ollama", "openai", "vllm", "xai"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
 										"anthropic",
@@ -525,11 +577,15 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 										"cerebras",
 										"cohere",
 										"dashscope",
+										"databricks",
+										"deepseek",
 										"gemini",
 										"huggingface",
 										"llama2",
 										"mistral",
+										"ollama",
 										"openai",
+										"vllm",
 										"xai",
 									),
 								},

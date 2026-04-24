@@ -264,7 +264,9 @@ func (r *EventGatewayBackendClusterResource) Schema(ctx context.Context, req res
 								},
 							},
 						},
-						Description: `Client mTLS configuration.`,
+						MarkdownDescription: `Client mTLS configuration.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `1.1` + "`" + `**.`,
 					},
 					"enabled": schema.BoolAttribute{
 						Required:    true,

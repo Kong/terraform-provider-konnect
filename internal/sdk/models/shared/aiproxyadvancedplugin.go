@@ -122,6 +122,255 @@ func (a *AiProxyAdvancedPluginPartials) GetPath() *string {
 	return a.Path
 }
 
+// AiProxyAdvancedPluginType - The attribute to match against.
+type AiProxyAdvancedPluginType string
+
+const (
+	AiProxyAdvancedPluginTypeConsumer      AiProxyAdvancedPluginType = "consumer"
+	AiProxyAdvancedPluginTypeConsumerGroup AiProxyAdvancedPluginType = "consumer_group"
+	AiProxyAdvancedPluginTypeHeader        AiProxyAdvancedPluginType = "header"
+	AiProxyAdvancedPluginTypeIP            AiProxyAdvancedPluginType = "ip"
+	AiProxyAdvancedPluginTypeModel         AiProxyAdvancedPluginType = "model"
+	AiProxyAdvancedPluginTypePath          AiProxyAdvancedPluginType = "path"
+	AiProxyAdvancedPluginTypeProvider      AiProxyAdvancedPluginType = "provider"
+)
+
+func (e AiProxyAdvancedPluginType) ToPointer() *AiProxyAdvancedPluginType {
+	return &e
+}
+func (e *AiProxyAdvancedPluginType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "consumer":
+		fallthrough
+	case "consumer_group":
+		fallthrough
+	case "header":
+		fallthrough
+	case "ip":
+		fallthrough
+	case "model":
+		fallthrough
+	case "path":
+		fallthrough
+	case "provider":
+		*e = AiProxyAdvancedPluginType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AiProxyAdvancedPluginType: %v", v)
+	}
+}
+
+// AiProxyAdvancedPluginConfigMatch - Single match condition (e.g. user or model value).
+type AiProxyAdvancedPluginConfigMatch struct {
+	// Helper key used by some types: consumer (id|username), consumer_group (id|name), header (header name).
+	Key *string `default:"null" json:"key"`
+	// The attribute to match against.
+	Type AiProxyAdvancedPluginType `json:"type"`
+	// Allowed values for the selected type.
+	Values []string `json:"values"`
+}
+
+func (a AiProxyAdvancedPluginConfigMatch) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginConfigMatch) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"type", "values"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiProxyAdvancedPluginConfigMatch) GetKey() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Key
+}
+
+func (a *AiProxyAdvancedPluginConfigMatch) GetType() AiProxyAdvancedPluginType {
+	if a == nil {
+		return AiProxyAdvancedPluginType("")
+	}
+	return a.Type
+}
+
+func (a *AiProxyAdvancedPluginConfigMatch) GetValues() []string {
+	if a == nil {
+		return []string{}
+	}
+	return a.Values
+}
+
+// AiProxyAdvancedPluginAllow - ACL rule composed of one or more match conditions.
+type AiProxyAdvancedPluginAllow struct {
+	// All conditions must match for the rule to apply (logical AND).
+	Match []AiProxyAdvancedPluginConfigMatch `json:"match"`
+}
+
+func (a AiProxyAdvancedPluginAllow) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginAllow) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"match"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiProxyAdvancedPluginAllow) GetMatch() []AiProxyAdvancedPluginConfigMatch {
+	if a == nil {
+		return []AiProxyAdvancedPluginConfigMatch{}
+	}
+	return a.Match
+}
+
+// AiProxyAdvancedPluginConfigType - The attribute to match against.
+type AiProxyAdvancedPluginConfigType string
+
+const (
+	AiProxyAdvancedPluginConfigTypeConsumer      AiProxyAdvancedPluginConfigType = "consumer"
+	AiProxyAdvancedPluginConfigTypeConsumerGroup AiProxyAdvancedPluginConfigType = "consumer_group"
+	AiProxyAdvancedPluginConfigTypeHeader        AiProxyAdvancedPluginConfigType = "header"
+	AiProxyAdvancedPluginConfigTypeIP            AiProxyAdvancedPluginConfigType = "ip"
+	AiProxyAdvancedPluginConfigTypeModel         AiProxyAdvancedPluginConfigType = "model"
+	AiProxyAdvancedPluginConfigTypePath          AiProxyAdvancedPluginConfigType = "path"
+	AiProxyAdvancedPluginConfigTypeProvider      AiProxyAdvancedPluginConfigType = "provider"
+)
+
+func (e AiProxyAdvancedPluginConfigType) ToPointer() *AiProxyAdvancedPluginConfigType {
+	return &e
+}
+func (e *AiProxyAdvancedPluginConfigType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "consumer":
+		fallthrough
+	case "consumer_group":
+		fallthrough
+	case "header":
+		fallthrough
+	case "ip":
+		fallthrough
+	case "model":
+		fallthrough
+	case "path":
+		fallthrough
+	case "provider":
+		*e = AiProxyAdvancedPluginConfigType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AiProxyAdvancedPluginConfigType: %v", v)
+	}
+}
+
+// AiProxyAdvancedPluginMatch - Single match condition (e.g. user or model value).
+type AiProxyAdvancedPluginMatch struct {
+	// Helper key used by some types: consumer (id|username), consumer_group (id|name), header (header name).
+	Key *string `default:"null" json:"key"`
+	// The attribute to match against.
+	Type AiProxyAdvancedPluginConfigType `json:"type"`
+	// Allowed values for the selected type.
+	Values []string `json:"values"`
+}
+
+func (a AiProxyAdvancedPluginMatch) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginMatch) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"type", "values"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiProxyAdvancedPluginMatch) GetKey() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Key
+}
+
+func (a *AiProxyAdvancedPluginMatch) GetType() AiProxyAdvancedPluginConfigType {
+	if a == nil {
+		return AiProxyAdvancedPluginConfigType("")
+	}
+	return a.Type
+}
+
+func (a *AiProxyAdvancedPluginMatch) GetValues() []string {
+	if a == nil {
+		return []string{}
+	}
+	return a.Values
+}
+
+// Deny - ACL rule composed of one or more match conditions.
+type Deny struct {
+	// All conditions must match for the rule to apply (logical AND).
+	Match []AiProxyAdvancedPluginMatch `json:"match"`
+}
+
+func (d Deny) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *Deny) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"match"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *Deny) GetMatch() []AiProxyAdvancedPluginMatch {
+	if d == nil {
+		return []AiProxyAdvancedPluginMatch{}
+	}
+	return d.Match
+}
+
+// Acls - Optional ACL rules. Deny rules take precedence over allow rules.
+type Acls struct {
+	// Requests matching any allow rule are permitted unless also matched by a deny rule.
+	Allow []AiProxyAdvancedPluginAllow `json:"allow"`
+	// Requests matching any deny rule are blocked. Deny rules take precedence over allow rules.
+	Deny []Deny `json:"deny"`
+}
+
+func (a Acls) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *Acls) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *Acls) GetAllow() []AiProxyAdvancedPluginAllow {
+	if a == nil {
+		return nil
+	}
+	return a.Allow
+}
+
+func (a *Acls) GetDeny() []Deny {
+	if a == nil {
+		return nil
+	}
+	return a.Deny
+}
+
 // AiProxyAdvancedPluginAlgorithm - Which load balancing algorithm to use.
 type AiProxyAdvancedPluginAlgorithm string
 
@@ -441,6 +690,10 @@ type AiProxyAdvancedPluginAuth struct {
 	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
 	AzureUseManagedIdentity *bool `default:"false" json:"azure_use_managed_identity"`
+	// Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.
+	GcpMetadataURL *string `default:"null" json:"gcp_metadata_url"`
+	// Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.
+	GcpOauthTokenURL *string `default:"null" json:"gcp_oauth_token_url"`
 	// Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
 	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
 	// Use service account auth for GCP-based providers and models.
@@ -515,6 +768,20 @@ func (a *AiProxyAdvancedPluginAuth) GetAzureUseManagedIdentity() *bool {
 		return nil
 	}
 	return a.AzureUseManagedIdentity
+}
+
+func (a *AiProxyAdvancedPluginAuth) GetGcpMetadataURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.GcpMetadataURL
+}
+
+func (a *AiProxyAdvancedPluginAuth) GetGcpOauthTokenURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.GcpOauthTokenURL
 }
 
 func (a *AiProxyAdvancedPluginAuth) GetGcpServiceAccountJSON() *string {
@@ -616,6 +883,10 @@ type AiProxyAdvancedPluginBedrock struct {
 	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
 	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 	AwsStsEndpointURL *string `default:"null" json:"aws_sts_endpoint_url"`
+	// S3 URI prefix (s3://bucket/prefix/) where Bedrock will get input files from and store results to for native batch API.
+	BatchBucketPrefix *string `default:"null" json:"batch_bucket_prefix"`
+	// AWS role arn used for calling batch API. Try to get the value from request if ommited.
+	BatchRoleArn *string `default:"null" json:"batch_role_arn"`
 	// If using AWS providers (Bedrock), set to true to normalize the embeddings.
 	EmbeddingsNormalize *bool `default:"false" json:"embeddings_normalize"`
 	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
@@ -661,6 +932,20 @@ func (a *AiProxyAdvancedPluginBedrock) GetAwsStsEndpointURL() *string {
 		return nil
 	}
 	return a.AwsStsEndpointURL
+}
+
+func (a *AiProxyAdvancedPluginBedrock) GetBatchBucketPrefix() *string {
+	if a == nil {
+		return nil
+	}
+	return a.BatchBucketPrefix
+}
+
+func (a *AiProxyAdvancedPluginBedrock) GetBatchRoleArn() *string {
+	if a == nil {
+		return nil
+	}
+	return a.BatchRoleArn
 }
 
 func (a *AiProxyAdvancedPluginBedrock) GetEmbeddingsNormalize() *bool {
@@ -822,6 +1107,7 @@ const (
 	AiProxyAdvancedPluginProviderGemini      AiProxyAdvancedPluginProvider = "gemini"
 	AiProxyAdvancedPluginProviderHuggingface AiProxyAdvancedPluginProvider = "huggingface"
 	AiProxyAdvancedPluginProviderMistral     AiProxyAdvancedPluginProvider = "mistral"
+	AiProxyAdvancedPluginProviderOllama      AiProxyAdvancedPluginProvider = "ollama"
 	AiProxyAdvancedPluginProviderOpenai      AiProxyAdvancedPluginProvider = "openai"
 )
 
@@ -843,6 +1129,8 @@ func (e *AiProxyAdvancedPluginProvider) UnmarshalJSON(data []byte) error {
 	case "huggingface":
 		fallthrough
 	case "mistral":
+		fallthrough
+	case "ollama":
 		fallthrough
 	case "openai":
 		*e = AiProxyAdvancedPluginProvider(v)
@@ -1076,6 +1364,10 @@ type AiProxyAdvancedPluginConfigAuth struct {
 	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
 	AzureUseManagedIdentity *bool `default:"false" json:"azure_use_managed_identity"`
+	// Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.
+	GcpMetadataURL *string `default:"null" json:"gcp_metadata_url"`
+	// Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.
+	GcpOauthTokenURL *string `default:"null" json:"gcp_oauth_token_url"`
 	// Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
 	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
 	// Use service account auth for GCP-based providers and models.
@@ -1150,6 +1442,20 @@ func (a *AiProxyAdvancedPluginConfigAuth) GetAzureUseManagedIdentity() *bool {
 		return nil
 	}
 	return a.AzureUseManagedIdentity
+}
+
+func (a *AiProxyAdvancedPluginConfigAuth) GetGcpMetadataURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.GcpMetadataURL
+}
+
+func (a *AiProxyAdvancedPluginConfigAuth) GetGcpOauthTokenURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.GcpOauthTokenURL
 }
 
 func (a *AiProxyAdvancedPluginConfigAuth) GetGcpServiceAccountJSON() *string {
@@ -1242,6 +1548,10 @@ type AiProxyAdvancedPluginConfigBedrock struct {
 	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
 	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 	AwsStsEndpointURL *string `default:"null" json:"aws_sts_endpoint_url"`
+	// S3 URI prefix (s3://bucket/prefix/) where Bedrock will get input files from and store results to for native batch API.
+	BatchBucketPrefix *string `default:"null" json:"batch_bucket_prefix"`
+	// AWS role arn used for calling batch API. Try to get the value from request if ommited.
+	BatchRoleArn *string `default:"null" json:"batch_role_arn"`
 	// If using AWS providers (Bedrock), set to true to normalize the embeddings.
 	EmbeddingsNormalize *bool `default:"false" json:"embeddings_normalize"`
 	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
@@ -1287,6 +1597,20 @@ func (a *AiProxyAdvancedPluginConfigBedrock) GetAwsStsEndpointURL() *string {
 		return nil
 	}
 	return a.AwsStsEndpointURL
+}
+
+func (a *AiProxyAdvancedPluginConfigBedrock) GetBatchBucketPrefix() *string {
+	if a == nil {
+		return nil
+	}
+	return a.BatchBucketPrefix
+}
+
+func (a *AiProxyAdvancedPluginConfigBedrock) GetBatchRoleArn() *string {
+	if a == nil {
+		return nil
+	}
+	return a.BatchRoleArn
 }
 
 func (a *AiProxyAdvancedPluginConfigBedrock) GetEmbeddingsNormalize() *bool {
@@ -1401,6 +1725,29 @@ func (a *AiProxyAdvancedPluginDashscope) GetInternational() *bool {
 		return nil
 	}
 	return a.International
+}
+
+type AiProxyAdvancedPluginDatabricks struct {
+	// Workspace Instance ID ('dbc-xxx-yyy') for Databricks model serving.
+	WorkspaceInstanceID *string `default:"null" json:"workspace_instance_id"`
+}
+
+func (a AiProxyAdvancedPluginDatabricks) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginDatabricks) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiProxyAdvancedPluginDatabricks) GetWorkspaceInstanceID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.WorkspaceInstanceID
 }
 
 type AiProxyAdvancedPluginConfigGemini struct {
@@ -1555,6 +1902,7 @@ type AiProxyAdvancedPluginConfigOptions struct {
 	Bedrock       *AiProxyAdvancedPluginConfigBedrock `json:"bedrock"`
 	Cohere        *AiProxyAdvancedPluginCohere        `json:"cohere"`
 	Dashscope     *AiProxyAdvancedPluginDashscope     `json:"dashscope"`
+	Databricks    *AiProxyAdvancedPluginDatabricks    `json:"databricks"`
 	// If using embeddings models, set the number of dimensions to generate.
 	EmbeddingsDimensions *int64                                  `default:"null" json:"embeddings_dimensions"`
 	Gemini               *AiProxyAdvancedPluginConfigGemini      `json:"gemini"`
@@ -1639,6 +1987,13 @@ func (a *AiProxyAdvancedPluginConfigOptions) GetDashscope() *AiProxyAdvancedPlug
 		return nil
 	}
 	return a.Dashscope
+}
+
+func (a *AiProxyAdvancedPluginConfigOptions) GetDatabricks() *AiProxyAdvancedPluginDatabricks {
+	if a == nil {
+		return nil
+	}
+	return a.Databricks
 }
 
 func (a *AiProxyAdvancedPluginConfigOptions) GetEmbeddingsDimensions() *int64 {
@@ -1742,11 +2097,15 @@ const (
 	AiProxyAdvancedPluginConfigProviderCerebras    AiProxyAdvancedPluginConfigProvider = "cerebras"
 	AiProxyAdvancedPluginConfigProviderCohere      AiProxyAdvancedPluginConfigProvider = "cohere"
 	AiProxyAdvancedPluginConfigProviderDashscope   AiProxyAdvancedPluginConfigProvider = "dashscope"
+	AiProxyAdvancedPluginConfigProviderDatabricks  AiProxyAdvancedPluginConfigProvider = "databricks"
+	AiProxyAdvancedPluginConfigProviderDeepseek    AiProxyAdvancedPluginConfigProvider = "deepseek"
 	AiProxyAdvancedPluginConfigProviderGemini      AiProxyAdvancedPluginConfigProvider = "gemini"
 	AiProxyAdvancedPluginConfigProviderHuggingface AiProxyAdvancedPluginConfigProvider = "huggingface"
 	AiProxyAdvancedPluginConfigProviderLlama2      AiProxyAdvancedPluginConfigProvider = "llama2"
 	AiProxyAdvancedPluginConfigProviderMistral     AiProxyAdvancedPluginConfigProvider = "mistral"
+	AiProxyAdvancedPluginConfigProviderOllama      AiProxyAdvancedPluginConfigProvider = "ollama"
 	AiProxyAdvancedPluginConfigProviderOpenai      AiProxyAdvancedPluginConfigProvider = "openai"
+	AiProxyAdvancedPluginConfigProviderVllm        AiProxyAdvancedPluginConfigProvider = "vllm"
 	AiProxyAdvancedPluginConfigProviderXai         AiProxyAdvancedPluginConfigProvider = "xai"
 )
 
@@ -1771,6 +2130,10 @@ func (e *AiProxyAdvancedPluginConfigProvider) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "dashscope":
 		fallthrough
+	case "databricks":
+		fallthrough
+	case "deepseek":
+		fallthrough
 	case "gemini":
 		fallthrough
 	case "huggingface":
@@ -1779,7 +2142,11 @@ func (e *AiProxyAdvancedPluginConfigProvider) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "mistral":
 		fallthrough
+	case "ollama":
+		fallthrough
 	case "openai":
+		fallthrough
+	case "vllm":
 		fallthrough
 	case "xai":
 		*e = AiProxyAdvancedPluginConfigProvider(v)
@@ -1790,6 +2157,8 @@ func (e *AiProxyAdvancedPluginConfigProvider) UnmarshalJSON(data []byte) error {
 }
 
 type AiProxyAdvancedPluginConfigModel struct {
+	// The model name parameter from the request that this model should map to.
+	ModelAlias *string `default:"null" json:"model_alias"`
 	// Model name to execute.
 	Name *string `default:"null" json:"name"`
 	// Key/value settings for the model
@@ -1807,6 +2176,13 @@ func (a *AiProxyAdvancedPluginConfigModel) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AiProxyAdvancedPluginConfigModel) GetModelAlias() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ModelAlias
 }
 
 func (a *AiProxyAdvancedPluginConfigModel) GetName() *string {
@@ -2644,7 +3020,7 @@ type Vectordb struct {
 	Redis          *AiProxyAdvancedPluginRedis `json:"redis"`
 	// which vector database driver to use
 	Strategy AiProxyAdvancedPluginStrategy `json:"strategy"`
-	// the default similarity threshold for accepting semantic search results (float)
+	// the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.
 	Threshold *float64 `default:"null" json:"threshold"`
 }
 
@@ -2702,6 +3078,8 @@ func (v *Vectordb) GetThreshold() *float64 {
 }
 
 type AiProxyAdvancedPluginConfig struct {
+	// Optional ACL rules. Deny rules take precedence over allow rules.
+	Acls       *Acls       `json:"acls"`
 	Balancer   *Balancer   `json:"balancer"`
 	Embeddings *Embeddings `json:"embeddings"`
 	// Generative AI category of the request
@@ -2727,6 +3105,13 @@ func (a *AiProxyAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AiProxyAdvancedPluginConfig) GetAcls() *Acls {
+	if a == nil {
+		return nil
+	}
+	return a.Acls
 }
 
 func (a *AiProxyAdvancedPluginConfig) GetBalancer() *Balancer {
@@ -2924,6 +3309,8 @@ func (a *AiProxyAdvancedPluginService) GetID() *string {
 
 // AiProxyAdvancedPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type AiProxyAdvancedPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -2963,6 +3350,13 @@ func (a *AiProxyAdvancedPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AiProxyAdvancedPlugin) GetCondition() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Condition
 }
 
 func (a *AiProxyAdvancedPlugin) GetCreatedAt() *int64 {

@@ -83,7 +83,9 @@ Optional:
 
 - `allow_plaintext` (Boolean) If false, only TLS connections are allowed. If true, both TLS and plaintext connections are allowed. Default: false
 - `client_authentication` (Attributes) Configures mutual TLS (mTLS) client certificate verification. When set, the gateway
-requests or requires clients to present a certificate during the TLS handshake. (see [below for nested schema](#nestedatt--config--client_authentication))
+requests or requires clients to present a certificate during the TLS handshake.
+
+**Requires a minimum runtime version of `1.1`**. (see [below for nested schema](#nestedatt--config--client_authentication))
 - `versions` (Attributes) A range of TLS versions. (see [below for nested schema](#nestedatt--config--versions))
 
 <a id="nestedatt--config--certificates"></a>
@@ -114,6 +116,8 @@ Optional:
 
 - `principal_mapping` (String) An expression that extracts a principal identifier from a verified client certificate.
 This expression must evaluate to a string.
+
+**Requires a minimum runtime version of `1.1`**.
 
 <a id="nestedatt--config--client_authentication--tls_trust_bundles"></a>
 ### Nested Schema for `config.client_authentication.tls_trust_bundles`

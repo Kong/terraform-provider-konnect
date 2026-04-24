@@ -44,6 +44,7 @@ type GatewayPluginJwtSignerResource struct {
 
 // GatewayPluginJwtSignerResourceModel describes the resource data model.
 type GatewayPluginJwtSignerResourceModel struct {
+	Condition      types.String                   `tfsdk:"condition"`
 	Config         *tfTypes.JwtSignerPluginConfig `tfsdk:"config"`
 	ControlPlaneID types.String                   `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                    `tfsdk:"created_at"`
@@ -67,6 +68,13 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginJwtSigner Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
@@ -418,8 +426,10 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 						Description: `When you set a value for this parameter, the plugin tries to map an arbitrary claim specified with this configuration parameter (for example, ` + "`" + `sub` + "`" + ` or ` + "`" + `username` + "`" + `) in an access token to Kong consumer entity.`,
 					},
 					"access_token_endpoints_ssl_verify": schema.BoolAttribute{
+						Computed:    true,
 						Optional:    true,
-						Description: `Whether to verify the TLS certificate if any of ` + "`" + `access_token_introspection_endpoint` + "`" + `, ` + "`" + `access_token_jwks_uri` + "`" + `, or ` + "`" + `access_token_keyset` + "`" + ` is an HTTPS URI.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Whether to verify the TLS certificate if any of ` + "`" + `access_token_introspection_endpoint` + "`" + `, ` + "`" + `access_token_jwks_uri` + "`" + `, or ` + "`" + `access_token_keyset` + "`" + ` is an HTTPS URI. Default: false`,
 					},
 					"access_token_expiry_claim": schema.ListAttribute{
 						Computed:    true,
@@ -797,8 +807,10 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 						Description: `When you set a value for this parameter, the plugin tries to map an arbitrary claim specified with this configuration parameter. Kong consumers have an ` + "`" + `id` + "`" + `, a ` + "`" + `username` + "`" + `, and a ` + "`" + `custom_id` + "`" + `. If this parameter is enabled but the mapping fails, such as when there's a non-existent Kong consumer, the plugin responds with ` + "`" + `403 Forbidden` + "`" + `.`,
 					},
 					"channel_token_endpoints_ssl_verify": schema.BoolAttribute{
+						Computed:    true,
 						Optional:    true,
-						Description: `Whether to verify the TLS certificate if any of ` + "`" + `channel_token_introspection_endpoint` + "`" + `, ` + "`" + `channel_token_jwks_uri` + "`" + `, or ` + "`" + `channel_token_keyset` + "`" + ` is an HTTPS URI.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `Whether to verify the TLS certificate if any of ` + "`" + `channel_token_introspection_endpoint` + "`" + `, ` + "`" + `channel_token_jwks_uri` + "`" + `, or ` + "`" + `channel_token_keyset` + "`" + ` is an HTTPS URI. Default: false`,
 					},
 					"channel_token_expiry_claim": schema.ListAttribute{
 						Computed:    true,

@@ -229,6 +229,10 @@ type AiRagInjectorPluginAuth struct {
 	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
 	AzureUseManagedIdentity *bool `default:"false" json:"azure_use_managed_identity"`
+	// Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.
+	GcpMetadataURL *string `default:"null" json:"gcp_metadata_url"`
+	// Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.
+	GcpOauthTokenURL *string `default:"null" json:"gcp_oauth_token_url"`
 	// Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
 	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
 	// Use service account auth for GCP-based providers and models.
@@ -303,6 +307,20 @@ func (a *AiRagInjectorPluginAuth) GetAzureUseManagedIdentity() *bool {
 		return nil
 	}
 	return a.AzureUseManagedIdentity
+}
+
+func (a *AiRagInjectorPluginAuth) GetGcpMetadataURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.GcpMetadataURL
+}
+
+func (a *AiRagInjectorPluginAuth) GetGcpOauthTokenURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.GcpOauthTokenURL
 }
 
 func (a *AiRagInjectorPluginAuth) GetGcpServiceAccountJSON() *string {
@@ -404,6 +422,10 @@ type AiRagInjectorPluginBedrock struct {
 	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
 	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 	AwsStsEndpointURL *string `default:"null" json:"aws_sts_endpoint_url"`
+	// S3 URI prefix (s3://bucket/prefix/) where Bedrock will get input files from and store results to for native batch API.
+	BatchBucketPrefix *string `default:"null" json:"batch_bucket_prefix"`
+	// AWS role arn used for calling batch API. Try to get the value from request if ommited.
+	BatchRoleArn *string `default:"null" json:"batch_role_arn"`
 	// If using AWS providers (Bedrock), set to true to normalize the embeddings.
 	EmbeddingsNormalize *bool `default:"false" json:"embeddings_normalize"`
 	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
@@ -449,6 +471,20 @@ func (a *AiRagInjectorPluginBedrock) GetAwsStsEndpointURL() *string {
 		return nil
 	}
 	return a.AwsStsEndpointURL
+}
+
+func (a *AiRagInjectorPluginBedrock) GetBatchBucketPrefix() *string {
+	if a == nil {
+		return nil
+	}
+	return a.BatchBucketPrefix
+}
+
+func (a *AiRagInjectorPluginBedrock) GetBatchRoleArn() *string {
+	if a == nil {
+		return nil
+	}
+	return a.BatchRoleArn
 }
 
 func (a *AiRagInjectorPluginBedrock) GetEmbeddingsNormalize() *bool {
@@ -610,6 +646,7 @@ const (
 	AiRagInjectorPluginProviderGemini      AiRagInjectorPluginProvider = "gemini"
 	AiRagInjectorPluginProviderHuggingface AiRagInjectorPluginProvider = "huggingface"
 	AiRagInjectorPluginProviderMistral     AiRagInjectorPluginProvider = "mistral"
+	AiRagInjectorPluginProviderOllama      AiRagInjectorPluginProvider = "ollama"
 	AiRagInjectorPluginProviderOpenai      AiRagInjectorPluginProvider = "openai"
 )
 
@@ -631,6 +668,8 @@ func (e *AiRagInjectorPluginProvider) UnmarshalJSON(data []byte) error {
 	case "huggingface":
 		fallthrough
 	case "mistral":
+		fallthrough
+	case "ollama":
 		fallthrough
 	case "openai":
 		*e = AiRagInjectorPluginProvider(v)
@@ -1474,7 +1513,7 @@ type AiRagInjectorPluginVectordb struct {
 	Redis          *AiRagInjectorPluginRedis         `json:"redis"`
 	// which vector database driver to use
 	Strategy AiRagInjectorPluginStrategy `json:"strategy"`
-	// the default similarity threshold for accepting semantic search results (float)
+	// the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.
 	Threshold *float64 `default:"null" json:"threshold"`
 }
 
@@ -1784,6 +1823,8 @@ func (a *AiRagInjectorPluginService) GetID() *string {
 
 // AiRagInjectorPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type AiRagInjectorPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -1823,6 +1864,13 @@ func (a *AiRagInjectorPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AiRagInjectorPlugin) GetCondition() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Condition
 }
 
 func (a *AiRagInjectorPlugin) GetCreatedAt() *int64 {

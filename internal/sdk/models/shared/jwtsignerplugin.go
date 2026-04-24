@@ -454,7 +454,7 @@ type JwtSignerPluginConfig struct {
 	// When you set a value for this parameter, the plugin tries to map an arbitrary claim specified with this configuration parameter (for example, `sub` or `username`) in an access token to Kong consumer entity.
 	AccessTokenConsumerClaim []string `json:"access_token_consumer_claim"`
 	// Whether to verify the TLS certificate if any of `access_token_introspection_endpoint`, `access_token_jwks_uri`, or `access_token_keyset` is an HTTPS URI.
-	AccessTokenEndpointsSslVerify *bool `default:"null" json:"access_token_endpoints_ssl_verify"`
+	AccessTokenEndpointsSslVerify *bool `default:"false" json:"access_token_endpoints_ssl_verify"`
 	// Specify the expiry claim in an access token to verify if the default `exp` is not used.
 	AccessTokenExpiryClaim []string `json:"access_token_expiry_claim,omitempty"`
 	// Specify the claim in an access token introspection to verify against values of `config.access_token_introspection_audiences_allowed`.
@@ -572,7 +572,7 @@ type JwtSignerPluginConfig struct {
 	// When you set a value for this parameter, the plugin tries to map an arbitrary claim specified with this configuration parameter. Kong consumers have an `id`, a `username`, and a `custom_id`. If this parameter is enabled but the mapping fails, such as when there's a non-existent Kong consumer, the plugin responds with `403 Forbidden`.
 	ChannelTokenConsumerClaim []string `json:"channel_token_consumer_claim"`
 	// Whether to verify the TLS certificate if any of `channel_token_introspection_endpoint`, `channel_token_jwks_uri`, or `channel_token_keyset` is an HTTPS URI.
-	ChannelTokenEndpointsSslVerify *bool `default:"null" json:"channel_token_endpoints_ssl_verify"`
+	ChannelTokenEndpointsSslVerify *bool `default:"false" json:"channel_token_endpoints_ssl_verify"`
 	// Specify the expiry claim in a channel token to verify if the default `exp` is not used.
 	ChannelTokenExpiryClaim []string `json:"channel_token_expiry_claim,omitempty"`
 	// Specify the claim in a channel token introspection to verify against values of `config.channel_token_introspection_audiences_allowed`.
@@ -1914,6 +1914,8 @@ func (j *JwtSignerPluginService) GetID() *string {
 
 // JwtSignerPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type JwtSignerPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -1949,6 +1951,13 @@ func (j *JwtSignerPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (j *JwtSignerPlugin) GetCondition() *string {
+	if j == nil {
+		return nil
+	}
+	return j.Condition
 }
 
 func (j *JwtSignerPlugin) GetCreatedAt() *int64 {

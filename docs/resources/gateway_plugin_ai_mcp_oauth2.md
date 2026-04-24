@@ -14,6 +14,7 @@ GatewayPluginAiMcpOauth2 Resource
 
 ```terraform
 resource "konnect_gateway_plugin_ai_mcp_oauth2" "my_gatewaypluginaimcpoauth2" {
+  condition = "...my_condition..."
   config = {
     args = {
       key = "value"
@@ -33,6 +34,20 @@ resource "konnect_gateway_plugin_ai_mcp_oauth2" "my_gatewaypluginaimcpoauth2" {
     client_id     = "...my_client_id..."
     client_jwk    = "...my_client_jwk..."
     client_secret = "...my_client_secret..."
+    consumer_by = [
+      "custom_id"
+    ]
+    consumer_claim = [
+      "..."
+    ]
+    consumer_groups_claim = [
+      "..."
+    ]
+    consumer_groups_optional = false
+    consumer_optional        = false
+    credential_claim = [
+      "..."
+    ]
     headers = {
       key = "value"
     }
@@ -44,11 +59,18 @@ resource "konnect_gateway_plugin_ai_mcp_oauth2" "my_gatewaypluginaimcpoauth2" {
     insecure_relaxed_audience_validation = false
     introspection_endpoint               = "...my_introspection_endpoint..."
     introspection_format                 = "base64"
+    jwks_cache_ttl                       = 3600
+    jwks_endpoint                        = "...my_jwks_endpoint..."
+    jwt_claims_leeway                    = 0
     keepalive                            = true
     max_request_body_size                = 1048576
+    metadata_cache_ttl                   = 3600
+    metadata_discovery_endpoint          = "...my_metadata_discovery_endpoint..."
+    metadata_discovery_retry             = 3
     metadata_endpoint                    = "...my_metadata_endpoint..."
     mtls_introspection_endpoint          = "...my_mtls_introspection_endpoint..."
     no_proxy                             = "...my_no_proxy..."
+    passthrough_credentials              = false
     resource                             = "...my_resource..."
     scopes_supported = [
       "..."
@@ -58,6 +80,40 @@ resource "konnect_gateway_plugin_ai_mcp_oauth2" "my_gatewaypluginaimcpoauth2" {
     tls_client_auth_cert       = "...my_tls_client_auth_cert..."
     tls_client_auth_key        = "...my_tls_client_auth_key..."
     tls_client_auth_ssl_verify = true
+    token_exchange = {
+      cache = {
+        enabled = true
+        ttl     = 3600
+      }
+      client_auth   = "client_secret_basic"
+      client_id     = "...my_client_id..."
+      client_secret = "...my_client_secret..."
+      enabled       = false
+      request = {
+        actor_token        = "...my_actor_token..."
+        actor_token_header = "...my_actor_token_header..."
+        actor_token_source = "none"
+        actor_token_type   = "urn:ietf:params:oauth:token-type:access_token"
+        audience = [
+          "..."
+        ]
+        requested_token_type = "urn:ietf:params:oauth:token-type:access_token"
+        resource             = "...my_resource..."
+        scopes = [
+          "..."
+        ]
+        subject_token_type = "urn:ietf:params:oauth:token-type:access_token"
+      }
+      token_endpoint = "...my_token_endpoint..."
+    }
+    upstream_headers = [
+      {
+        header = "...my_header..."
+        path = [
+          "..."
+        ]
+      }
+    ]
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 6
@@ -109,6 +165,7 @@ resource "konnect_gateway_plugin_ai_mcp_oauth2" "my_gatewaypluginaimcpoauth2" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
@@ -127,19 +184,24 @@ resource "konnect_gateway_plugin_ai_mcp_oauth2" "my_gatewaypluginaimcpoauth2" {
 Required:
 
 - `authorization_servers` (List of String)
-- `client_id` (String) The client ID for authentication.
-- `introspection_endpoint` (String) The introspection endpoint URL.
 - `resource` (String) The resource identifier.
 
 Optional:
 
 - `args` (Map of String) Additional arguments to send in the POST body.
 - `cache_introspection` (Boolean) If enabled, the plugin will cache the introspection response for the access token. This can improve performance by reducing the number of introspection requests to the authorization server. Default: true
-- `claim_to_header` (Attributes List) (see [below for nested schema](#nestedatt--config--claim_to_header))
+- `claim_to_header` (Attributes List) Map top-level token claims to upstream headers. Mutually exclusive with upstream_headers. (see [below for nested schema](#nestedatt--config--claim_to_header))
 - `client_alg` (String) The client JWT signing algorithm. must be one of ["ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512"]
 - `client_auth` (String) The client authentication method. must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]
+- `client_id` (String) The client ID for authentication.
 - `client_jwk` (String) The client JWK for private_key_jwt authentication.
 - `client_secret` (String) The client secret for authentication.
+- `consumer_by` (List of String) Consumer fields used for mapping: - `id`: try to find the matching Consumer by `id` - `username`: try to find the matching Consumer by `username` - `custom_id`: try to find the matching Consumer by `custom_id`. Default: ["custom_id","username"]
+- `consumer_claim` (List of String) The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
+- `consumer_groups_claim` (List of String) The claim used for consumer groups mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
+- `consumer_groups_optional` (Boolean) Do not terminate the request if consumer groups mapping fails. Default: false
+- `consumer_optional` (Boolean) Do not terminate the request if consumer mapping fails. Default: false
+- `credential_claim` (List of String) The claim used to derive virtual credentials (e.g. to be consumed by the rate-limiting plugin), in case the consumer mapping is not used. If multiple values are set, it means the claim is inside a nested object of the token payload. Default: ["sub"]
 - `headers` (Map of String) Additional headers for the introspection request.
 - `http_proxy` (String) HTTP proxy to use.
 - `http_proxy_authorization` (String) HTTP proxy authorization header.
@@ -147,18 +209,28 @@ Optional:
 - `https_proxy` (String) HTTPS proxy to use.
 - `https_proxy_authorization` (String) HTTPS proxy authorization header.
 - `insecure_relaxed_audience_validation` (Boolean) If enabled, the plugin will not validate the audience of the access token. Disable it if the authorization server does not correctly set the audience claim according to RFC 8707 and MCP specification. Default: false
+- `introspection_endpoint` (String) The Token Introspection Endpoint. If not provided, the plugin will attempt to use JWKS to verify the token. If the token is opaque, this field must be provided.
 - `introspection_format` (String) Controls introspection response format. must be one of ["base64", "base64url", "string"]
+- `jwks_cache_ttl` (Number) The cache TTL in seconds for JWKS. Default: 3600
+- `jwks_endpoint` (String) The JWKS endpoint URL for fetching the authorization server's public keys. If not provided, the plugin will attempt to discover it from the authorization server metadata.
+- `jwt_claims_leeway` (Number) The leeway in seconds for JWT claims validation (exp, nbf). This allows tokens that are slightly expired or not yet valid due to clock skew. Default: 0
 - `keepalive` (Boolean) Enable HTTP keepalive for requests. Default: true
 - `max_request_body_size` (Number) max allowed body size allowed to be handled as MCP request. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 1048576
+- `metadata_cache_ttl` (Number) The cache TTL in seconds for discovered authorization server metadata. Default: 3600
+- `metadata_discovery_endpoint` (String) Custom OAuth 2.0 authorization server metadata discovery URL. If provided, the plugin will use this URL directly instead of trying standard well-known discovery paths. The custom endpoint URL should end with either '/.well-known/openid-configuration' or '/.well-known/oauth-authorization-server'.
+- `metadata_discovery_retry` (Number) The number of retry attempts for metadata discovery requests per URL. Default: 3
 - `metadata_endpoint` (String) The path for OAuth 2.0 Protected Resource Metadata. Default to $resource/.well-known/oauth-protected-resource. For example, if the configured resource is https://api.example.com/mcp, the metadata endpoint is /mcp/.well-known/oauth-protected-resource.
 - `mtls_introspection_endpoint` (String) The mTLS alias for the introspection endpoint.
 - `no_proxy` (String) Comma-separated list of hosts to exclude from proxy.
+- `passthrough_credentials` (Boolean) Keep the credentials used for authentication in the request. If multiple credentials are sent with the same request, the plugin will keep those that were used for successful authentication. Default: false
 - `scopes_supported` (List of String)
 - `ssl_verify` (Boolean) Verify the SSL certificate. Default: true
 - `timeout` (Number) Network I/O timeout in milliseconds. Default: 10000
 - `tls_client_auth_cert` (String) PEM-encoded client certificate for mTLS.
 - `tls_client_auth_key` (String) PEM-encoded private key for mTLS.
 - `tls_client_auth_ssl_verify` (Boolean) Verify server certificate in mTLS. Default: true
+- `token_exchange` (Attributes) Configuration details about token exchange that should happen before reaching upstream MCP server (see [below for nested schema](#nestedatt--config--token_exchange))
+- `upstream_headers` (Attributes List) Map token claims to upstream headers using path-based access. Each entry specifies a header name and a path (array of strings) to traverse the token claims. Mutually exclusive with claim_to_header. (see [below for nested schema](#nestedatt--config--upstream_headers))
 
 <a id="nestedatt--config--claim_to_header"></a>
 ### Nested Schema for `config.claim_to_header`
@@ -167,6 +239,57 @@ Optional:
 
 - `claim` (String) The claim name to be used in the access token. Not Null
 - `header` (String) The HTTP header name to be used for forwarding the claim value to the upstream. Not Null
+
+
+<a id="nestedatt--config--token_exchange"></a>
+### Nested Schema for `config.token_exchange`
+
+Required:
+
+- `token_endpoint` (String) The token exchange endopint.
+
+Optional:
+
+- `cache` (Attributes) (see [below for nested schema](#nestedatt--config--token_exchange--cache))
+- `client_auth` (String) The type of authentication method to use with the exchange endpoint. Use 'inherit' to use the same client_id, and secret as in introspection_endpoint. Default: "client_secret_basic"; must be one of ["client_secret_basic", "client_secret_post", "inherit", "none"]
+- `client_id` (String) The client ID for authentication.
+- `client_secret` (String) The client secret for authentication.
+- `enabled` (Boolean) Whether Token Exchange should be enabled. Default: false
+- `request` (Attributes) (see [below for nested schema](#nestedatt--config--token_exchange--request))
+
+<a id="nestedatt--config--token_exchange--cache"></a>
+### Nested Schema for `config.token_exchange.cache`
+
+Optional:
+
+- `enabled` (Boolean) Whether to cache exchanged token. Default: true
+- `ttl` (Number) The default cache TTL to store exchanged token. If the exchange endpoint does not provide 'expires_in' data when token is exchanged this TTL value will be used to cache it. Default: 3600
+
+
+<a id="nestedatt--config--token_exchange--request"></a>
+### Nested Schema for `config.token_exchange.request`
+
+Optional:
+
+- `actor_token` (String) Static actor token value (when source is config).
+- `actor_token_header` (String) Header name containing actor token (when source is header).
+- `actor_token_source` (String) Where to obtain actor token. Default: "none"; must be one of ["config", "header", "none"]
+- `actor_token_type` (String) The token type identifier of actor token. Default: "urn:ietf:params:oauth:token-type:access_token"
+- `audience` (List of String) Audiences used in the token exchange request.
+- `requested_token_type` (String) The desired output token type. Default: "urn:ietf:params:oauth:token-type:access_token"
+- `resource` (String) The absolute URI of target MCP service where token will be used.
+- `scopes` (List of String) Scopes used in the token exchange request.
+- `subject_token_type` (String) The type of token to be exchanged. Default: "urn:ietf:params:oauth:token-type:access_token"
+
+
+
+<a id="nestedatt--config--upstream_headers"></a>
+### Nested Schema for `config.upstream_headers`
+
+Optional:
+
+- `header` (String) The name of the header. Not Null
+- `path` (List of String) The path of the header value. Not Null
 
 
 

@@ -15,6 +15,7 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) RefreshFromSharedAiMcpOauth2Plug
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.AiMcpOauth2PluginConfig{}
 		if resp.Config.Args != nil {
 			r.Config.Args = make(map[string]types.String, len(resp.Config.Args))
@@ -51,9 +52,35 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) RefreshFromSharedAiMcpOauth2Plug
 		} else {
 			r.Config.ClientAuth = types.StringNull()
 		}
-		r.Config.ClientID = types.StringValue(resp.Config.ClientID)
+		r.Config.ClientID = types.StringPointerValue(resp.Config.ClientID)
 		r.Config.ClientJwk = types.StringPointerValue(resp.Config.ClientJwk)
 		r.Config.ClientSecret = types.StringPointerValue(resp.Config.ClientSecret)
+		r.Config.ConsumerBy = make([]types.String, 0, len(resp.Config.ConsumerBy))
+		for _, v := range resp.Config.ConsumerBy {
+			r.Config.ConsumerBy = append(r.Config.ConsumerBy, types.StringValue(string(v)))
+		}
+		if resp.Config.ConsumerClaim != nil {
+			r.Config.ConsumerClaim = make([]types.String, 0, len(resp.Config.ConsumerClaim))
+			for _, v := range resp.Config.ConsumerClaim {
+				r.Config.ConsumerClaim = append(r.Config.ConsumerClaim, types.StringValue(v))
+			}
+		} else {
+			r.Config.ConsumerClaim = nil
+		}
+		if resp.Config.ConsumerGroupsClaim != nil {
+			r.Config.ConsumerGroupsClaim = make([]types.String, 0, len(resp.Config.ConsumerGroupsClaim))
+			for _, v := range resp.Config.ConsumerGroupsClaim {
+				r.Config.ConsumerGroupsClaim = append(r.Config.ConsumerGroupsClaim, types.StringValue(v))
+			}
+		} else {
+			r.Config.ConsumerGroupsClaim = nil
+		}
+		r.Config.ConsumerGroupsOptional = types.BoolPointerValue(resp.Config.ConsumerGroupsOptional)
+		r.Config.ConsumerOptional = types.BoolPointerValue(resp.Config.ConsumerOptional)
+		r.Config.CredentialClaim = make([]types.String, 0, len(resp.Config.CredentialClaim))
+		for _, v := range resp.Config.CredentialClaim {
+			r.Config.CredentialClaim = append(r.Config.CredentialClaim, types.StringValue(v))
+		}
 		if resp.Config.Headers != nil {
 			r.Config.Headers = make(map[string]types.String, len(resp.Config.Headers))
 			for key1, value1 := range resp.Config.Headers {
@@ -66,17 +93,24 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) RefreshFromSharedAiMcpOauth2Plug
 		r.Config.HTTPSProxy = types.StringPointerValue(resp.Config.HTTPSProxy)
 		r.Config.HTTPSProxyAuthorization = types.StringPointerValue(resp.Config.HTTPSProxyAuthorization)
 		r.Config.InsecureRelaxedAudienceValidation = types.BoolPointerValue(resp.Config.InsecureRelaxedAudienceValidation)
-		r.Config.IntrospectionEndpoint = types.StringValue(resp.Config.IntrospectionEndpoint)
+		r.Config.IntrospectionEndpoint = types.StringPointerValue(resp.Config.IntrospectionEndpoint)
 		if resp.Config.IntrospectionFormat != nil {
 			r.Config.IntrospectionFormat = types.StringValue(string(*resp.Config.IntrospectionFormat))
 		} else {
 			r.Config.IntrospectionFormat = types.StringNull()
 		}
+		r.Config.JwksCacheTTL = types.Int64PointerValue(resp.Config.JwksCacheTTL)
+		r.Config.JwksEndpoint = types.StringPointerValue(resp.Config.JwksEndpoint)
+		r.Config.JwtClaimsLeeway = types.Int64PointerValue(resp.Config.JwtClaimsLeeway)
 		r.Config.Keepalive = types.BoolPointerValue(resp.Config.Keepalive)
 		r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
+		r.Config.MetadataCacheTTL = types.Int64PointerValue(resp.Config.MetadataCacheTTL)
+		r.Config.MetadataDiscoveryEndpoint = types.StringPointerValue(resp.Config.MetadataDiscoveryEndpoint)
+		r.Config.MetadataDiscoveryRetry = types.Int64PointerValue(resp.Config.MetadataDiscoveryRetry)
 		r.Config.MetadataEndpoint = types.StringPointerValue(resp.Config.MetadataEndpoint)
 		r.Config.MtlsIntrospectionEndpoint = types.StringPointerValue(resp.Config.MtlsIntrospectionEndpoint)
 		r.Config.NoProxy = types.StringPointerValue(resp.Config.NoProxy)
+		r.Config.PassthroughCredentials = types.BoolPointerValue(resp.Config.PassthroughCredentials)
 		r.Config.Resource = types.StringValue(resp.Config.Resource)
 		if resp.Config.ScopesSupported != nil {
 			r.Config.ScopesSupported = make([]types.String, 0, len(resp.Config.ScopesSupported))
@@ -91,6 +125,76 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) RefreshFromSharedAiMcpOauth2Plug
 		r.Config.TLSClientAuthCert = types.StringPointerValue(resp.Config.TLSClientAuthCert)
 		r.Config.TLSClientAuthKey = types.StringPointerValue(resp.Config.TLSClientAuthKey)
 		r.Config.TLSClientAuthSslVerify = types.BoolPointerValue(resp.Config.TLSClientAuthSslVerify)
+		if resp.Config.TokenExchange == nil {
+			r.Config.TokenExchange = nil
+		} else {
+			r.Config.TokenExchange = &tfTypes.TokenExchange{}
+			if resp.Config.TokenExchange.Cache == nil {
+				r.Config.TokenExchange.Cache = nil
+			} else {
+				r.Config.TokenExchange.Cache = &tfTypes.AiMcpOauth2PluginCache{}
+				r.Config.TokenExchange.Cache.Enabled = types.BoolPointerValue(resp.Config.TokenExchange.Cache.Enabled)
+				r.Config.TokenExchange.Cache.TTL = types.Int64PointerValue(resp.Config.TokenExchange.Cache.TTL)
+			}
+			if resp.Config.TokenExchange.ClientAuth != nil {
+				r.Config.TokenExchange.ClientAuth = types.StringValue(string(*resp.Config.TokenExchange.ClientAuth))
+			} else {
+				r.Config.TokenExchange.ClientAuth = types.StringNull()
+			}
+			r.Config.TokenExchange.ClientID = types.StringPointerValue(resp.Config.TokenExchange.ClientID)
+			r.Config.TokenExchange.ClientSecret = types.StringPointerValue(resp.Config.TokenExchange.ClientSecret)
+			r.Config.TokenExchange.Enabled = types.BoolPointerValue(resp.Config.TokenExchange.Enabled)
+			if resp.Config.TokenExchange.Request == nil {
+				r.Config.TokenExchange.Request = nil
+			} else {
+				r.Config.TokenExchange.Request = &tfTypes.AiMcpOauth2PluginRequest{}
+				r.Config.TokenExchange.Request.ActorToken = types.StringPointerValue(resp.Config.TokenExchange.Request.ActorToken)
+				r.Config.TokenExchange.Request.ActorTokenHeader = types.StringPointerValue(resp.Config.TokenExchange.Request.ActorTokenHeader)
+				if resp.Config.TokenExchange.Request.ActorTokenSource != nil {
+					r.Config.TokenExchange.Request.ActorTokenSource = types.StringValue(string(*resp.Config.TokenExchange.Request.ActorTokenSource))
+				} else {
+					r.Config.TokenExchange.Request.ActorTokenSource = types.StringNull()
+				}
+				r.Config.TokenExchange.Request.ActorTokenType = types.StringPointerValue(resp.Config.TokenExchange.Request.ActorTokenType)
+				if resp.Config.TokenExchange.Request.Audience != nil {
+					r.Config.TokenExchange.Request.Audience = make([]types.String, 0, len(resp.Config.TokenExchange.Request.Audience))
+					for _, v := range resp.Config.TokenExchange.Request.Audience {
+						r.Config.TokenExchange.Request.Audience = append(r.Config.TokenExchange.Request.Audience, types.StringValue(v))
+					}
+				} else {
+					r.Config.TokenExchange.Request.Audience = nil
+				}
+				r.Config.TokenExchange.Request.RequestedTokenType = types.StringPointerValue(resp.Config.TokenExchange.Request.RequestedTokenType)
+				r.Config.TokenExchange.Request.Resource = types.StringPointerValue(resp.Config.TokenExchange.Request.Resource)
+				if resp.Config.TokenExchange.Request.Scopes != nil {
+					r.Config.TokenExchange.Request.Scopes = make([]types.String, 0, len(resp.Config.TokenExchange.Request.Scopes))
+					for _, v := range resp.Config.TokenExchange.Request.Scopes {
+						r.Config.TokenExchange.Request.Scopes = append(r.Config.TokenExchange.Request.Scopes, types.StringValue(v))
+					}
+				} else {
+					r.Config.TokenExchange.Request.Scopes = nil
+				}
+				r.Config.TokenExchange.Request.SubjectTokenType = types.StringPointerValue(resp.Config.TokenExchange.Request.SubjectTokenType)
+			}
+			r.Config.TokenExchange.TokenEndpoint = types.StringValue(resp.Config.TokenExchange.TokenEndpoint)
+		}
+		if resp.Config.UpstreamHeaders != nil {
+			r.Config.UpstreamHeaders = []tfTypes.UpstreamHeaders{}
+
+			for _, upstreamHeadersItem := range resp.Config.UpstreamHeaders {
+				var upstreamHeaders tfTypes.UpstreamHeaders
+
+				upstreamHeaders.Header = types.StringValue(upstreamHeadersItem.Header)
+				upstreamHeaders.Path = make([]types.String, 0, len(upstreamHeadersItem.Path))
+				for _, v := range upstreamHeadersItem.Path {
+					upstreamHeaders.Path = append(upstreamHeaders.Path, types.StringValue(v))
+				}
+
+				r.Config.UpstreamHeaders = append(r.Config.UpstreamHeaders, upstreamHeaders)
+			}
+		} else {
+			r.Config.UpstreamHeaders = nil
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -246,6 +350,12 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToOperationsUpdateAimcpoauth2Plu
 func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx context.Context) (*shared.AiMcpOauth2Plugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -387,9 +497,12 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 	} else {
 		clientAuth = nil
 	}
-	var clientID string
-	clientID = r.Config.ClientID.ValueString()
-
+	clientID := new(string)
+	if !r.Config.ClientID.IsUnknown() && !r.Config.ClientID.IsNull() {
+		*clientID = r.Config.ClientID.ValueString()
+	} else {
+		clientID = nil
+	}
 	clientJwk := new(string)
 	if !r.Config.ClientJwk.IsUnknown() && !r.Config.ClientJwk.IsNull() {
 		*clientJwk = r.Config.ClientJwk.ValueString()
@@ -401,6 +514,40 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 		*clientSecret = r.Config.ClientSecret.ValueString()
 	} else {
 		clientSecret = nil
+	}
+	consumerBy := make([]shared.ConsumerBy, 0, len(r.Config.ConsumerBy))
+	for _, consumerByItem := range r.Config.ConsumerBy {
+		consumerBy = append(consumerBy, shared.ConsumerBy(consumerByItem.ValueString()))
+	}
+	var consumerClaim []string
+	if r.Config.ConsumerClaim != nil {
+		consumerClaim = make([]string, 0, len(r.Config.ConsumerClaim))
+		for consumerClaimIndex := range r.Config.ConsumerClaim {
+			consumerClaim = append(consumerClaim, r.Config.ConsumerClaim[consumerClaimIndex].ValueString())
+		}
+	}
+	var consumerGroupsClaim []string
+	if r.Config.ConsumerGroupsClaim != nil {
+		consumerGroupsClaim = make([]string, 0, len(r.Config.ConsumerGroupsClaim))
+		for consumerGroupsClaimIndex := range r.Config.ConsumerGroupsClaim {
+			consumerGroupsClaim = append(consumerGroupsClaim, r.Config.ConsumerGroupsClaim[consumerGroupsClaimIndex].ValueString())
+		}
+	}
+	consumerGroupsOptional := new(bool)
+	if !r.Config.ConsumerGroupsOptional.IsUnknown() && !r.Config.ConsumerGroupsOptional.IsNull() {
+		*consumerGroupsOptional = r.Config.ConsumerGroupsOptional.ValueBool()
+	} else {
+		consumerGroupsOptional = nil
+	}
+	consumerOptional := new(bool)
+	if !r.Config.ConsumerOptional.IsUnknown() && !r.Config.ConsumerOptional.IsNull() {
+		*consumerOptional = r.Config.ConsumerOptional.ValueBool()
+	} else {
+		consumerOptional = nil
+	}
+	credentialClaim := make([]string, 0, len(r.Config.CredentialClaim))
+	for credentialClaimIndex := range r.Config.CredentialClaim {
+		credentialClaim = append(credentialClaim, r.Config.CredentialClaim[credentialClaimIndex].ValueString())
 	}
 	var headers map[string]string
 	if r.Config.Headers != nil {
@@ -448,14 +595,35 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 	} else {
 		insecureRelaxedAudienceValidation = nil
 	}
-	var introspectionEndpoint string
-	introspectionEndpoint = r.Config.IntrospectionEndpoint.ValueString()
-
+	introspectionEndpoint := new(string)
+	if !r.Config.IntrospectionEndpoint.IsUnknown() && !r.Config.IntrospectionEndpoint.IsNull() {
+		*introspectionEndpoint = r.Config.IntrospectionEndpoint.ValueString()
+	} else {
+		introspectionEndpoint = nil
+	}
 	introspectionFormat := new(shared.IntrospectionFormat)
 	if !r.Config.IntrospectionFormat.IsUnknown() && !r.Config.IntrospectionFormat.IsNull() {
 		*introspectionFormat = shared.IntrospectionFormat(r.Config.IntrospectionFormat.ValueString())
 	} else {
 		introspectionFormat = nil
+	}
+	jwksCacheTTL := new(int64)
+	if !r.Config.JwksCacheTTL.IsUnknown() && !r.Config.JwksCacheTTL.IsNull() {
+		*jwksCacheTTL = r.Config.JwksCacheTTL.ValueInt64()
+	} else {
+		jwksCacheTTL = nil
+	}
+	jwksEndpoint := new(string)
+	if !r.Config.JwksEndpoint.IsUnknown() && !r.Config.JwksEndpoint.IsNull() {
+		*jwksEndpoint = r.Config.JwksEndpoint.ValueString()
+	} else {
+		jwksEndpoint = nil
+	}
+	jwtClaimsLeeway := new(int64)
+	if !r.Config.JwtClaimsLeeway.IsUnknown() && !r.Config.JwtClaimsLeeway.IsNull() {
+		*jwtClaimsLeeway = r.Config.JwtClaimsLeeway.ValueInt64()
+	} else {
+		jwtClaimsLeeway = nil
 	}
 	keepalive := new(bool)
 	if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
@@ -468,6 +636,24 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 		*maxRequestBodySize = r.Config.MaxRequestBodySize.ValueInt64()
 	} else {
 		maxRequestBodySize = nil
+	}
+	metadataCacheTTL := new(int64)
+	if !r.Config.MetadataCacheTTL.IsUnknown() && !r.Config.MetadataCacheTTL.IsNull() {
+		*metadataCacheTTL = r.Config.MetadataCacheTTL.ValueInt64()
+	} else {
+		metadataCacheTTL = nil
+	}
+	metadataDiscoveryEndpoint := new(string)
+	if !r.Config.MetadataDiscoveryEndpoint.IsUnknown() && !r.Config.MetadataDiscoveryEndpoint.IsNull() {
+		*metadataDiscoveryEndpoint = r.Config.MetadataDiscoveryEndpoint.ValueString()
+	} else {
+		metadataDiscoveryEndpoint = nil
+	}
+	metadataDiscoveryRetry := new(int64)
+	if !r.Config.MetadataDiscoveryRetry.IsUnknown() && !r.Config.MetadataDiscoveryRetry.IsNull() {
+		*metadataDiscoveryRetry = r.Config.MetadataDiscoveryRetry.ValueInt64()
+	} else {
+		metadataDiscoveryRetry = nil
 	}
 	metadataEndpoint := new(string)
 	if !r.Config.MetadataEndpoint.IsUnknown() && !r.Config.MetadataEndpoint.IsNull() {
@@ -486,6 +672,12 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 		*noProxy = r.Config.NoProxy.ValueString()
 	} else {
 		noProxy = nil
+	}
+	passthroughCredentials := new(bool)
+	if !r.Config.PassthroughCredentials.IsUnknown() && !r.Config.PassthroughCredentials.IsNull() {
+		*passthroughCredentials = r.Config.PassthroughCredentials.ValueBool()
+	} else {
+		passthroughCredentials = nil
 	}
 	var resource string
 	resource = r.Config.Resource.ValueString()
@@ -527,6 +719,151 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 	} else {
 		tlsClientAuthSslVerify = nil
 	}
+	var tokenExchange *shared.TokenExchange
+	if r.Config.TokenExchange != nil {
+		var cache *shared.AiMcpOauth2PluginCache
+		if r.Config.TokenExchange.Cache != nil {
+			enabled1 := new(bool)
+			if !r.Config.TokenExchange.Cache.Enabled.IsUnknown() && !r.Config.TokenExchange.Cache.Enabled.IsNull() {
+				*enabled1 = r.Config.TokenExchange.Cache.Enabled.ValueBool()
+			} else {
+				enabled1 = nil
+			}
+			ttl := new(int64)
+			if !r.Config.TokenExchange.Cache.TTL.IsUnknown() && !r.Config.TokenExchange.Cache.TTL.IsNull() {
+				*ttl = r.Config.TokenExchange.Cache.TTL.ValueInt64()
+			} else {
+				ttl = nil
+			}
+			cache = &shared.AiMcpOauth2PluginCache{
+				Enabled: enabled1,
+				TTL:     ttl,
+			}
+		}
+		clientAuth1 := new(shared.AiMcpOauth2PluginClientAuth)
+		if !r.Config.TokenExchange.ClientAuth.IsUnknown() && !r.Config.TokenExchange.ClientAuth.IsNull() {
+			*clientAuth1 = shared.AiMcpOauth2PluginClientAuth(r.Config.TokenExchange.ClientAuth.ValueString())
+		} else {
+			clientAuth1 = nil
+		}
+		clientId1 := new(string)
+		if !r.Config.TokenExchange.ClientID.IsUnknown() && !r.Config.TokenExchange.ClientID.IsNull() {
+			*clientId1 = r.Config.TokenExchange.ClientID.ValueString()
+		} else {
+			clientId1 = nil
+		}
+		clientSecret1 := new(string)
+		if !r.Config.TokenExchange.ClientSecret.IsUnknown() && !r.Config.TokenExchange.ClientSecret.IsNull() {
+			*clientSecret1 = r.Config.TokenExchange.ClientSecret.ValueString()
+		} else {
+			clientSecret1 = nil
+		}
+		enabled2 := new(bool)
+		if !r.Config.TokenExchange.Enabled.IsUnknown() && !r.Config.TokenExchange.Enabled.IsNull() {
+			*enabled2 = r.Config.TokenExchange.Enabled.ValueBool()
+		} else {
+			enabled2 = nil
+		}
+		var request *shared.AiMcpOauth2PluginRequest
+		if r.Config.TokenExchange.Request != nil {
+			actorToken := new(string)
+			if !r.Config.TokenExchange.Request.ActorToken.IsUnknown() && !r.Config.TokenExchange.Request.ActorToken.IsNull() {
+				*actorToken = r.Config.TokenExchange.Request.ActorToken.ValueString()
+			} else {
+				actorToken = nil
+			}
+			actorTokenHeader := new(string)
+			if !r.Config.TokenExchange.Request.ActorTokenHeader.IsUnknown() && !r.Config.TokenExchange.Request.ActorTokenHeader.IsNull() {
+				*actorTokenHeader = r.Config.TokenExchange.Request.ActorTokenHeader.ValueString()
+			} else {
+				actorTokenHeader = nil
+			}
+			actorTokenSource := new(shared.ActorTokenSource)
+			if !r.Config.TokenExchange.Request.ActorTokenSource.IsUnknown() && !r.Config.TokenExchange.Request.ActorTokenSource.IsNull() {
+				*actorTokenSource = shared.ActorTokenSource(r.Config.TokenExchange.Request.ActorTokenSource.ValueString())
+			} else {
+				actorTokenSource = nil
+			}
+			actorTokenType := new(string)
+			if !r.Config.TokenExchange.Request.ActorTokenType.IsUnknown() && !r.Config.TokenExchange.Request.ActorTokenType.IsNull() {
+				*actorTokenType = r.Config.TokenExchange.Request.ActorTokenType.ValueString()
+			} else {
+				actorTokenType = nil
+			}
+			var audience []string
+			if r.Config.TokenExchange.Request.Audience != nil {
+				audience = make([]string, 0, len(r.Config.TokenExchange.Request.Audience))
+				for audienceIndex := range r.Config.TokenExchange.Request.Audience {
+					audience = append(audience, r.Config.TokenExchange.Request.Audience[audienceIndex].ValueString())
+				}
+			}
+			requestedTokenType := new(string)
+			if !r.Config.TokenExchange.Request.RequestedTokenType.IsUnknown() && !r.Config.TokenExchange.Request.RequestedTokenType.IsNull() {
+				*requestedTokenType = r.Config.TokenExchange.Request.RequestedTokenType.ValueString()
+			} else {
+				requestedTokenType = nil
+			}
+			resource1 := new(string)
+			if !r.Config.TokenExchange.Request.Resource.IsUnknown() && !r.Config.TokenExchange.Request.Resource.IsNull() {
+				*resource1 = r.Config.TokenExchange.Request.Resource.ValueString()
+			} else {
+				resource1 = nil
+			}
+			var scopes []string
+			if r.Config.TokenExchange.Request.Scopes != nil {
+				scopes = make([]string, 0, len(r.Config.TokenExchange.Request.Scopes))
+				for scopesIndex := range r.Config.TokenExchange.Request.Scopes {
+					scopes = append(scopes, r.Config.TokenExchange.Request.Scopes[scopesIndex].ValueString())
+				}
+			}
+			subjectTokenType := new(string)
+			if !r.Config.TokenExchange.Request.SubjectTokenType.IsUnknown() && !r.Config.TokenExchange.Request.SubjectTokenType.IsNull() {
+				*subjectTokenType = r.Config.TokenExchange.Request.SubjectTokenType.ValueString()
+			} else {
+				subjectTokenType = nil
+			}
+			request = &shared.AiMcpOauth2PluginRequest{
+				ActorToken:         actorToken,
+				ActorTokenHeader:   actorTokenHeader,
+				ActorTokenSource:   actorTokenSource,
+				ActorTokenType:     actorTokenType,
+				Audience:           audience,
+				RequestedTokenType: requestedTokenType,
+				Resource:           resource1,
+				Scopes:             scopes,
+				SubjectTokenType:   subjectTokenType,
+			}
+		}
+		var tokenEndpoint string
+		tokenEndpoint = r.Config.TokenExchange.TokenEndpoint.ValueString()
+
+		tokenExchange = &shared.TokenExchange{
+			Cache:         cache,
+			ClientAuth:    clientAuth1,
+			ClientID:      clientId1,
+			ClientSecret:  clientSecret1,
+			Enabled:       enabled2,
+			Request:       request,
+			TokenEndpoint: tokenEndpoint,
+		}
+	}
+	var upstreamHeaders []shared.UpstreamHeaders
+	if r.Config.UpstreamHeaders != nil {
+		upstreamHeaders = make([]shared.UpstreamHeaders, 0, len(r.Config.UpstreamHeaders))
+		for upstreamHeadersIndex := range r.Config.UpstreamHeaders {
+			var header1 string
+			header1 = r.Config.UpstreamHeaders[upstreamHeadersIndex].Header.ValueString()
+
+			path1 := make([]string, 0, len(r.Config.UpstreamHeaders[upstreamHeadersIndex].Path))
+			for pathIndex := range r.Config.UpstreamHeaders[upstreamHeadersIndex].Path {
+				path1 = append(path1, r.Config.UpstreamHeaders[upstreamHeadersIndex].Path[pathIndex].ValueString())
+			}
+			upstreamHeaders = append(upstreamHeaders, shared.UpstreamHeaders{
+				Header: header1,
+				Path:   path1,
+			})
+		}
+	}
 	config := shared.AiMcpOauth2PluginConfig{
 		Args:                              args,
 		AuthorizationServers:              authorizationServers,
@@ -537,6 +874,12 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 		ClientID:                          clientID,
 		ClientJwk:                         clientJwk,
 		ClientSecret:                      clientSecret,
+		ConsumerBy:                        consumerBy,
+		ConsumerClaim:                     consumerClaim,
+		ConsumerGroupsClaim:               consumerGroupsClaim,
+		ConsumerGroupsOptional:            consumerGroupsOptional,
+		ConsumerOptional:                  consumerOptional,
+		CredentialClaim:                   credentialClaim,
 		Headers:                           headers,
 		HTTPProxy:                         httpProxy,
 		HTTPProxyAuthorization:            httpProxyAuthorization,
@@ -546,11 +889,18 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 		InsecureRelaxedAudienceValidation: insecureRelaxedAudienceValidation,
 		IntrospectionEndpoint:             introspectionEndpoint,
 		IntrospectionFormat:               introspectionFormat,
+		JwksCacheTTL:                      jwksCacheTTL,
+		JwksEndpoint:                      jwksEndpoint,
+		JwtClaimsLeeway:                   jwtClaimsLeeway,
 		Keepalive:                         keepalive,
 		MaxRequestBodySize:                maxRequestBodySize,
+		MetadataCacheTTL:                  metadataCacheTTL,
+		MetadataDiscoveryEndpoint:         metadataDiscoveryEndpoint,
+		MetadataDiscoveryRetry:            metadataDiscoveryRetry,
 		MetadataEndpoint:                  metadataEndpoint,
 		MtlsIntrospectionEndpoint:         mtlsIntrospectionEndpoint,
 		NoProxy:                           noProxy,
+		PassthroughCredentials:            passthroughCredentials,
 		Resource:                          resource,
 		ScopesSupported:                   scopesSupported,
 		SslVerify:                         sslVerify,
@@ -558,6 +908,8 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 		TLSClientAuthCert:                 tlsClientAuthCert,
 		TLSClientAuthKey:                  tlsClientAuthKey,
 		TLSClientAuthSslVerify:            tlsClientAuthSslVerify,
+		TokenExchange:                     tokenExchange,
+		UpstreamHeaders:                   upstreamHeaders,
 	}
 	protocols := make([]shared.AiMcpOauth2PluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
@@ -588,6 +940,7 @@ func (r *GatewayPluginAiMcpOauth2ResourceModel) ToSharedAiMcpOauth2Plugin(ctx co
 		}
 	}
 	out := shared.AiMcpOauth2Plugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

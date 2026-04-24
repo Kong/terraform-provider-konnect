@@ -14,6 +14,7 @@ GatewayPluginKafkaConsume Resource
 
 ```terraform
 resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
+  condition = "...my_condition..."
   config = {
     authentication = {
       mechanism = "SCRAM-SHA-512"
@@ -194,6 +195,7 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true

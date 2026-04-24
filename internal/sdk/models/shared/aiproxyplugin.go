@@ -164,6 +164,10 @@ type Auth struct {
 	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
 	AzureUseManagedIdentity *bool `default:"false" json:"azure_use_managed_identity"`
+	// Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.
+	GcpMetadataURL *string `default:"null" json:"gcp_metadata_url"`
+	// Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.
+	GcpOauthTokenURL *string `default:"null" json:"gcp_oauth_token_url"`
 	// Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
 	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
 	// Use service account auth for GCP-based providers and models.
@@ -238,6 +242,20 @@ func (a *Auth) GetAzureUseManagedIdentity() *bool {
 		return nil
 	}
 	return a.AzureUseManagedIdentity
+}
+
+func (a *Auth) GetGcpMetadataURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.GcpMetadataURL
+}
+
+func (a *Auth) GetGcpOauthTokenURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.GcpOauthTokenURL
 }
 
 func (a *Auth) GetGcpServiceAccountJSON() *string {
@@ -408,6 +426,10 @@ type Bedrock struct {
 	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
 	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 	AwsStsEndpointURL *string `default:"null" json:"aws_sts_endpoint_url"`
+	// S3 URI prefix (s3://bucket/prefix/) where Bedrock will get input files from and store results to for native batch API.
+	BatchBucketPrefix *string `default:"null" json:"batch_bucket_prefix"`
+	// AWS role arn used for calling batch API. Try to get the value from request if ommited.
+	BatchRoleArn *string `default:"null" json:"batch_role_arn"`
 	// If using AWS providers (Bedrock), set to true to normalize the embeddings.
 	EmbeddingsNormalize *bool `default:"false" json:"embeddings_normalize"`
 	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
@@ -453,6 +475,20 @@ func (b *Bedrock) GetAwsStsEndpointURL() *string {
 		return nil
 	}
 	return b.AwsStsEndpointURL
+}
+
+func (b *Bedrock) GetBatchBucketPrefix() *string {
+	if b == nil {
+		return nil
+	}
+	return b.BatchBucketPrefix
+}
+
+func (b *Bedrock) GetBatchRoleArn() *string {
+	if b == nil {
+		return nil
+	}
+	return b.BatchRoleArn
 }
 
 func (b *Bedrock) GetEmbeddingsNormalize() *bool {
@@ -567,6 +603,29 @@ func (d *Dashscope) GetInternational() *bool {
 		return nil
 	}
 	return d.International
+}
+
+type Databricks struct {
+	// Workspace Instance ID ('dbc-xxx-yyy') for Databricks model serving.
+	WorkspaceInstanceID *string `default:"null" json:"workspace_instance_id"`
+}
+
+func (d Databricks) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *Databricks) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *Databricks) GetWorkspaceInstanceID() *string {
+	if d == nil {
+		return nil
+	}
+	return d.WorkspaceInstanceID
 }
 
 type Gemini struct {
@@ -717,10 +776,11 @@ type OptionsObj struct {
 	// Deployment ID for Azure OpenAI instances.
 	AzureDeploymentID *string `default:"null" json:"azure_deployment_id"`
 	// Instance name for Azure OpenAI hosted models.
-	AzureInstance *string    `default:"null" json:"azure_instance"`
-	Bedrock       *Bedrock   `json:"bedrock"`
-	Cohere        *Cohere    `json:"cohere"`
-	Dashscope     *Dashscope `json:"dashscope"`
+	AzureInstance *string     `default:"null" json:"azure_instance"`
+	Bedrock       *Bedrock    `json:"bedrock"`
+	Cohere        *Cohere     `json:"cohere"`
+	Dashscope     *Dashscope  `json:"dashscope"`
+	Databricks    *Databricks `json:"databricks"`
 	// If using embeddings models, set the number of dimensions to generate.
 	EmbeddingsDimensions *int64       `default:"null" json:"embeddings_dimensions"`
 	Gemini               *Gemini      `json:"gemini"`
@@ -805,6 +865,13 @@ func (o *OptionsObj) GetDashscope() *Dashscope {
 		return nil
 	}
 	return o.Dashscope
+}
+
+func (o *OptionsObj) GetDatabricks() *Databricks {
+	if o == nil {
+		return nil
+	}
+	return o.Databricks
 }
 
 func (o *OptionsObj) GetEmbeddingsDimensions() *int64 {
@@ -908,11 +975,15 @@ const (
 	ProviderCerebras    Provider = "cerebras"
 	ProviderCohere      Provider = "cohere"
 	ProviderDashscope   Provider = "dashscope"
+	ProviderDatabricks  Provider = "databricks"
+	ProviderDeepseek    Provider = "deepseek"
 	ProviderGemini      Provider = "gemini"
 	ProviderHuggingface Provider = "huggingface"
 	ProviderLlama2      Provider = "llama2"
 	ProviderMistral     Provider = "mistral"
+	ProviderOllama      Provider = "ollama"
 	ProviderOpenai      Provider = "openai"
+	ProviderVllm        Provider = "vllm"
 	ProviderXai         Provider = "xai"
 )
 
@@ -937,6 +1008,10 @@ func (e *Provider) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "dashscope":
 		fallthrough
+	case "databricks":
+		fallthrough
+	case "deepseek":
+		fallthrough
 	case "gemini":
 		fallthrough
 	case "huggingface":
@@ -945,7 +1020,11 @@ func (e *Provider) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "mistral":
 		fallthrough
+	case "ollama":
+		fallthrough
 	case "openai":
+		fallthrough
+	case "vllm":
 		fallthrough
 	case "xai":
 		*e = Provider(v)
@@ -956,6 +1035,8 @@ func (e *Provider) UnmarshalJSON(data []byte) error {
 }
 
 type Model struct {
+	// The model name parameter from the request that this model should map to.
+	ModelAlias *string `default:"null" json:"model_alias"`
 	// Model name to execute.
 	Name *string `default:"null" json:"name"`
 	// Key/value settings for the model
@@ -973,6 +1054,13 @@ func (m *Model) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (m *Model) GetModelAlias() *string {
+	if m == nil {
+		return nil
+	}
+	return m.ModelAlias
 }
 
 func (m *Model) GetName() *string {
@@ -1316,6 +1404,8 @@ func (a *AiProxyPluginService) GetID() *string {
 
 // AiProxyPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type AiProxyPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -1355,6 +1445,13 @@ func (a *AiProxyPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AiProxyPlugin) GetCondition() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Condition
 }
 
 func (a *AiProxyPlugin) GetCreatedAt() *int64 {

@@ -21,6 +21,7 @@ type MtlsAuthPluginConfig struct {
 	HTTPSProxyHost       types.String   `tfsdk:"https_proxy_host"`
 	HTTPSProxyPort       types.Int64    `tfsdk:"https_proxy_port"`
 	RevocationCheckMode  types.String   `tfsdk:"revocation_check_mode"`
+	SanDirnameMatcher    []types.String `tfsdk:"san_dirname_matcher"`
 	SendCaDn             types.Bool     `tfsdk:"send_ca_dn"`
 	SkipConsumerLookup   types.Bool     `tfsdk:"skip_consumer_lookup"`
 	SslVerify            types.Bool     `tfsdk:"ssl_verify"`

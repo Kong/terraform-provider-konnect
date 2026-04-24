@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -46,6 +47,7 @@ type GatewayPluginAiMcpProxyResource struct {
 
 // GatewayPluginAiMcpProxyResourceModel describes the resource data model.
 type GatewayPluginAiMcpProxyResourceModel struct {
+	Condition      types.String                    `tfsdk:"condition"`
 	Config         *tfTypes.AiMcpProxyPluginConfig `tfsdk:"config"`
 	ControlPlaneID types.String                    `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                     `tfsdk:"created_at"`
@@ -69,14 +71,40 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginAiMcpProxy Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
+					"access_token_claim_field": schema.StringAttribute{
+						Optional:    true,
+						Description: `The claim in the OAuth2 access token to use as the subject for ACL evaluation when 'acl_attribute_type' is set to 'oauth_access_token'. Nested claim can be fetched by using a jq filter starts with dot, e.g., ".user.email": https://jqlang.org/manual/#object-identifier-index.`,
+						Validators: []validator.String{
+							stringvalidator.UTF8LengthAtLeast(1),
+						},
+					},
+					"acl_attribute_type": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     stringdefault.StaticString(`consumer`),
+						Description: `The type of attributes that ACL is evaluated with. Should only be configured on listener modes, not conversion-only. Default: "consumer"; must be one of ["consumer", "oauth_access_token"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"consumer",
+								"oauth_access_token",
+							),
+						},
+					},
 					"consumer_identifier": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`username`),
-						Description: `Which subject type entries in ACL lists refer to for per-consumer matching. Default: "username"; must be one of ["consumer_id", "custom_id", "username"]`,
+						Description: `Which subject type entries in ACL lists refer to for per-consumer matching. Should only be configured on listener modes, not conversion-only. Default: "username"; must be one of ["consumer_id", "custom_id", "username"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"consumer_id",
@@ -95,12 +123,12 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 								"allow": schema.ListAttribute{
 									Optional:    true,
 									ElementType: types.StringType,
-									Description: `Subjects explicitly allowed to access this scope. If ` + "`" + `include_consumer_groups` + "`" + ` is true, Consumer Group names are allowed here.`,
+									Description: `Subjects (e.g. Consumer name, Consumer Groups, or Claim values depending on configuration) explicitly allowed to access this scope.`,
 								},
 								"deny": schema.ListAttribute{
 									Optional:    true,
 									ElementType: types.StringType,
-									Description: `Subjects explicitly denied from this scope. ` + "`" + `deny` + "`" + ` takes precedence over ` + "`" + `allow` + "`" + `. If ` + "`" + `include_consumer_groups` + "`" + ` is true, Consumer Group names are allowed here.`,
+									Description: `Subjects (e.g. Consumer name, Consumer Groups, or Claim values depending on configuration) explicitly denied from this scope. ` + "`" + `deny` + "`" + ` takes precedence over ` + "`" + `allow` + "`" + `.`,
 								},
 								"scope": schema.StringAttribute{
 									Computed:    true,
@@ -116,7 +144,7 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 						Computed:    true,
 						Optional:    true,
 						Default:     booldefault.StaticBool(false),
-						Description: `If enabled (true), allows Consumer Group names to be used in default and per-primitive ACL. Default: false`,
+						Description: `If enabled (true), allows Consumer Group names to be used in default and per-primitive ACL. Should only be configured on listener modes, not conversion-only. Default: false`,
 					},
 					"logging": schema.SingleNestedAttribute{
 						Computed: true,
@@ -165,8 +193,77 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 						Optional: true,
 						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
 							"forward_client_headers": types.BoolType,
-							"tag":                    types.StringType,
-							"timeout":                types.Float64Type,
+							"session": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									`client`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`secrets`: types.ListType{
+												ElemType: types.StringType,
+											},
+										},
+									},
+									`managed`: types.BoolType,
+									`redis`: types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`cloud_authentication`: types.ObjectType{
+												AttrTypes: map[string]attr.Type{
+													`auth_provider`:            types.StringType,
+													`aws_access_key_id`:        types.StringType,
+													`aws_assume_role_arn`:      types.StringType,
+													`aws_cache_name`:           types.StringType,
+													`aws_is_serverless`:        types.BoolType,
+													`aws_region`:               types.StringType,
+													`aws_role_session_name`:    types.StringType,
+													`aws_secret_access_key`:    types.StringType,
+													`azure_client_id`:          types.StringType,
+													`azure_client_secret`:      types.StringType,
+													`azure_tenant_id`:          types.StringType,
+													`gcp_service_account_json`: types.StringType,
+												},
+											},
+											`cluster_max_redirections`: types.Int64Type,
+											`cluster_nodes`: types.ListType{
+												ElemType: types.ObjectType{
+													AttrTypes: map[string]attr.Type{
+														`ip`:   types.StringType,
+														`port`: types.Int64Type,
+													},
+												},
+											},
+											`connect_timeout`:       types.Int64Type,
+											`connection_is_proxied`: types.BoolType,
+											`database`:              types.Int64Type,
+											`host`:                  types.StringType,
+											`keepalive_backlog`:     types.Int64Type,
+											`keepalive_pool_size`:   types.Int64Type,
+											`password`:              types.StringType,
+											`port`:                  types.Int64Type,
+											`read_timeout`:          types.Int64Type,
+											`send_timeout`:          types.Int64Type,
+											`sentinel_master`:       types.StringType,
+											`sentinel_nodes`: types.ListType{
+												ElemType: types.ObjectType{
+													AttrTypes: map[string]attr.Type{
+														`host`: types.StringType,
+														`port`: types.Int64Type,
+													},
+												},
+											},
+											`sentinel_password`: types.StringType,
+											`sentinel_role`:     types.StringType,
+											`sentinel_username`: types.StringType,
+											`server_name`:       types.StringType,
+											`ssl`:               types.BoolType,
+											`ssl_verify`:        types.BoolType,
+											`username`:          types.StringType,
+										},
+									},
+									`session_ttl`: types.Float64Type,
+									`strategy`:    types.StringType,
+								},
+							},
+							"tag":     types.StringType,
+							"timeout": types.Float64Type,
 						})),
 						Attributes: map[string]schema.Attribute{
 							"forward_client_headers": schema.BoolAttribute{
@@ -174,6 +271,434 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 								Optional:    true,
 								Default:     booldefault.StaticBool(true),
 								Description: `Whether to forward the client request headers to the upstream server when calling the tools. Default: true`,
+							},
+							"session": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"client": types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`secrets`: types.ListType{
+												ElemType: types.StringType,
+											},
+										},
+									},
+									"managed": types.BoolType,
+									"redis": types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`cloud_authentication`: types.ObjectType{
+												AttrTypes: map[string]attr.Type{
+													`auth_provider`:            types.StringType,
+													`aws_access_key_id`:        types.StringType,
+													`aws_assume_role_arn`:      types.StringType,
+													`aws_cache_name`:           types.StringType,
+													`aws_is_serverless`:        types.BoolType,
+													`aws_region`:               types.StringType,
+													`aws_role_session_name`:    types.StringType,
+													`aws_secret_access_key`:    types.StringType,
+													`azure_client_id`:          types.StringType,
+													`azure_client_secret`:      types.StringType,
+													`azure_tenant_id`:          types.StringType,
+													`gcp_service_account_json`: types.StringType,
+												},
+											},
+											`cluster_max_redirections`: types.Int64Type,
+											`cluster_nodes`: types.ListType{
+												ElemType: types.ObjectType{
+													AttrTypes: map[string]attr.Type{
+														`ip`:   types.StringType,
+														`port`: types.Int64Type,
+													},
+												},
+											},
+											`connect_timeout`:       types.Int64Type,
+											`connection_is_proxied`: types.BoolType,
+											`database`:              types.Int64Type,
+											`host`:                  types.StringType,
+											`keepalive_backlog`:     types.Int64Type,
+											`keepalive_pool_size`:   types.Int64Type,
+											`password`:              types.StringType,
+											`port`:                  types.Int64Type,
+											`read_timeout`:          types.Int64Type,
+											`send_timeout`:          types.Int64Type,
+											`sentinel_master`:       types.StringType,
+											`sentinel_nodes`: types.ListType{
+												ElemType: types.ObjectType{
+													AttrTypes: map[string]attr.Type{
+														`host`: types.StringType,
+														`port`: types.Int64Type,
+													},
+												},
+											},
+											`sentinel_password`: types.StringType,
+											`sentinel_role`:     types.StringType,
+											`sentinel_username`: types.StringType,
+											`server_name`:       types.StringType,
+											`ssl`:               types.BoolType,
+											`ssl_verify`:        types.BoolType,
+											`username`:          types.StringType,
+										},
+									},
+									"session_ttl": types.Float64Type,
+									"strategy":    types.StringType,
+								})),
+								Attributes: map[string]schema.Attribute{
+									"client": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+											"secrets": types.ListType{
+												ElemType: types.StringType,
+											},
+										})),
+										Attributes: map[string]schema.Attribute{
+											"secrets": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `The secrets that are used in session encryption. Required when the strategy is 'client'. The first secret is used for encryption, while all secrets are used for decryption to support key rotation.`,
+											},
+										},
+										Description: `The configuration for client-side session storage.`,
+									},
+									"managed": schema.BoolAttribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     booldefault.StaticBool(true),
+										Description: `If enabled, Kong will maintain managed sessions with the MCP server. Default: true`,
+									},
+									"redis": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+											"cloud_authentication": types.ObjectType{
+												AttrTypes: map[string]attr.Type{
+													`auth_provider`:            types.StringType,
+													`aws_access_key_id`:        types.StringType,
+													`aws_assume_role_arn`:      types.StringType,
+													`aws_cache_name`:           types.StringType,
+													`aws_is_serverless`:        types.BoolType,
+													`aws_region`:               types.StringType,
+													`aws_role_session_name`:    types.StringType,
+													`aws_secret_access_key`:    types.StringType,
+													`azure_client_id`:          types.StringType,
+													`azure_client_secret`:      types.StringType,
+													`azure_tenant_id`:          types.StringType,
+													`gcp_service_account_json`: types.StringType,
+												},
+											},
+											"cluster_max_redirections": types.Int64Type,
+											"cluster_nodes": types.ListType{
+												ElemType: types.ObjectType{
+													AttrTypes: map[string]attr.Type{
+														`ip`:   types.StringType,
+														`port`: types.Int64Type,
+													},
+												},
+											},
+											"connect_timeout":       types.Int64Type,
+											"connection_is_proxied": types.BoolType,
+											"database":              types.Int64Type,
+											"host":                  types.StringType,
+											"keepalive_backlog":     types.Int64Type,
+											"keepalive_pool_size":   types.Int64Type,
+											"password":              types.StringType,
+											"port":                  types.Int64Type,
+											"read_timeout":          types.Int64Type,
+											"send_timeout":          types.Int64Type,
+											"sentinel_master":       types.StringType,
+											"sentinel_nodes": types.ListType{
+												ElemType: types.ObjectType{
+													AttrTypes: map[string]attr.Type{
+														`host`: types.StringType,
+														`port`: types.Int64Type,
+													},
+												},
+											},
+											"sentinel_password": types.StringType,
+											"sentinel_role":     types.StringType,
+											"sentinel_username": types.StringType,
+											"server_name":       types.StringType,
+											"ssl":               types.BoolType,
+											"ssl_verify":        types.BoolType,
+											"username":          types.StringType,
+										})),
+										Attributes: map[string]schema.Attribute{
+											"cloud_authentication": schema.SingleNestedAttribute{
+												Computed: true,
+												Optional: true,
+												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+													"auth_provider":            types.StringType,
+													"aws_access_key_id":        types.StringType,
+													"aws_assume_role_arn":      types.StringType,
+													"aws_cache_name":           types.StringType,
+													"aws_is_serverless":        types.BoolType,
+													"aws_region":               types.StringType,
+													"aws_role_session_name":    types.StringType,
+													"aws_secret_access_key":    types.StringType,
+													"azure_client_id":          types.StringType,
+													"azure_client_secret":      types.StringType,
+													"azure_tenant_id":          types.StringType,
+													"gcp_service_account_json": types.StringType,
+												})),
+												Attributes: map[string]schema.Attribute{
+													"auth_provider": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
+														Validators: []validator.String{
+															stringvalidator.OneOf(
+																"aws",
+																"azure",
+																"gcp",
+															),
+														},
+													},
+													"aws_access_key_id": schema.StringAttribute{
+														Optional:    true,
+														Description: `AWS Access Key ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+													},
+													"aws_assume_role_arn": schema.StringAttribute{
+														Optional:    true,
+														Description: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.`,
+													},
+													"aws_cache_name": schema.StringAttribute{
+														Optional:    true,
+														Description: `The name of the AWS Elasticache cluster when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+													},
+													"aws_is_serverless": schema.BoolAttribute{
+														Computed:    true,
+														Optional:    true,
+														Default:     booldefault.StaticBool(true),
+														Description: `This flag specifies whether the cluster is serverless when auth_provider is set to ` + "`" + `aws` + "`" + `. Default: true`,
+													},
+													"aws_region": schema.StringAttribute{
+														Optional:    true,
+														Description: `The region of the AWS ElastiCache cluster when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+													},
+													"aws_role_session_name": schema.StringAttribute{
+														Optional:    true,
+														Description: `The session name for the temporary credentials when assuming the IAM role.`,
+													},
+													"aws_secret_access_key": schema.StringAttribute{
+														Optional:    true,
+														Description: `AWS Secret Access Key to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
+													},
+													"azure_client_id": schema.StringAttribute{
+														Optional:    true,
+														Description: `Azure Client ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+													},
+													"azure_client_secret": schema.StringAttribute{
+														Optional:    true,
+														Description: `Azure Client Secret to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+													},
+													"azure_tenant_id": schema.StringAttribute{
+														Optional:    true,
+														Description: `Azure Tenant ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
+													},
+													"gcp_service_account_json": schema.StringAttribute{
+														Optional:    true,
+														Description: `GCP Service Account JSON to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `gcp` + "`" + `.`,
+													},
+												},
+												Description: `Cloud auth related configs for connecting to a Cloud Provider's Redis instance.`,
+											},
+											"cluster_max_redirections": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(5),
+												Description: `Maximum retry attempts for redirection. Default: 5`,
+											},
+											"cluster_nodes": schema.ListNestedAttribute{
+												Optional: true,
+												NestedObject: schema.NestedAttributeObject{
+													Validators: []validator.Object{
+														speakeasy_objectvalidators.NotNull(),
+													},
+													Attributes: map[string]schema.Attribute{
+														"ip": schema.StringAttribute{
+															Computed:    true,
+															Optional:    true,
+															Default:     stringdefault.StaticString(`127.0.0.1`),
+															Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+														},
+														"port": schema.Int64Attribute{
+															Computed:    true,
+															Optional:    true,
+															Default:     int64default.StaticInt64(6379),
+															Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+															Validators: []validator.Int64{
+																int64validator.Between(0, 65535),
+															},
+														},
+													},
+												},
+												Description: `Cluster addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.`,
+											},
+											"connect_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"connection_is_proxied": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+											},
+											"database": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(0),
+												Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+											},
+											"host": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     stringdefault.StaticString(`127.0.0.1`),
+												Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+											},
+											"keepalive_backlog": schema.Int64Attribute{
+												Optional:    true,
+												Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `keepalive_pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `keepalive_pool_size` + "`" + `.`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"keepalive_pool_size": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(256),
+												Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `keepalive_pool_size` + "`" + ` nor ` + "`" + `keepalive_backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `keepalive_pool_size` + "`" + ` isn't specified but ` + "`" + `keepalive_backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+												Validators: []validator.Int64{
+													int64validator.Between(1, 2147483646),
+												},
+											},
+											"password": schema.StringAttribute{
+												Optional:    true,
+												Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
+											},
+											"port": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(6379),
+												Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 65535),
+												},
+											},
+											"read_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"send_timeout": schema.Int64Attribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     int64default.StaticInt64(2000),
+												Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+												Validators: []validator.Int64{
+													int64validator.Between(0, 2147483646),
+												},
+											},
+											"sentinel_master": schema.StringAttribute{
+												Optional:    true,
+												Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
+											},
+											"sentinel_nodes": schema.ListNestedAttribute{
+												Optional: true,
+												NestedObject: schema.NestedAttributeObject{
+													Validators: []validator.Object{
+														speakeasy_objectvalidators.NotNull(),
+													},
+													Attributes: map[string]schema.Attribute{
+														"host": schema.StringAttribute{
+															Computed:    true,
+															Optional:    true,
+															Default:     stringdefault.StaticString(`127.0.0.1`),
+															Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+														},
+														"port": schema.Int64Attribute{
+															Computed:    true,
+															Optional:    true,
+															Default:     int64default.StaticInt64(6379),
+															Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+															Validators: []validator.Int64{
+																int64validator.Between(0, 65535),
+															},
+														},
+													},
+												},
+												Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
+											},
+											"sentinel_password": schema.StringAttribute{
+												Optional:    true,
+												Description: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.`,
+											},
+											"sentinel_role": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]`,
+												Validators: []validator.String{
+													stringvalidator.OneOf(
+														"any",
+														"master",
+														"slave",
+													),
+												},
+											},
+											"sentinel_username": schema.StringAttribute{
+												Optional:    true,
+												Description: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.`,
+											},
+											"server_name": schema.StringAttribute{
+												Optional:    true,
+												Description: `A string representing an SNI (server name indication) value for TLS.`,
+											},
+											"ssl": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If set to true, uses SSL to connect to Redis. Default: false`,
+											},
+											"ssl_verify": schema.BoolAttribute{
+												Computed:    true,
+												Optional:    true,
+												Default:     booldefault.StaticBool(false),
+												Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: false`,
+											},
+											"username": schema.StringAttribute{
+												Optional:    true,
+												Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
+											},
+										},
+									},
+									"session_ttl": schema.Float64Attribute{
+										Computed:    true,
+										Optional:    true,
+										Default:     float64default.StaticFloat64(86400),
+										Description: `The time-to-live (TTL) for each session in seconds. Default: 86400`,
+									},
+									"strategy": schema.StringAttribute{
+										Computed:    true,
+										Optional:    true,
+										Description: `The strategy for the session. If the value is 'client', the session is encrypted into MCP session id assigned to the client. If the value is not 'client', the session is stored in the configured database. must be one of ["client", "redis"]`,
+										Validators: []validator.String{
+											stringvalidator.OneOf(
+												"client",
+												"redis",
+											),
+										},
+									},
+								},
+								Description: `Enable managed session when Kong responds as MCP server in listener or conversion-listener modes. This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.`,
 							},
 							"tag": schema.StringAttribute{
 								Optional:    true,
@@ -209,12 +734,12 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 										"allow": schema.ListAttribute{
 											Optional:    true,
 											ElementType: types.StringType,
-											Description: `Subjects explicitly allowed to use this primitive. If ` + "`" + `include_consumer_groups` + "`" + ` is true, Consumer Group names are allowed here.`,
+											Description: `Subjects (e.g. Consumer name, Consumer Groups, or Claim values depending on configuration) explicitly allowed to use this primitive.`,
 										},
 										"deny": schema.ListAttribute{
 											Optional:    true,
 											ElementType: types.StringType,
-											Description: `Subjects explicitly denied from using this primitive. ` + "`" + `deny` + "`" + ` takes precedence over ` + "`" + `allow` + "`" + `. If ` + "`" + `include_consumer_groups` + "`" + ` is true, Consumer Group names are allowed here.`,
+											Description: `Subjects (e.g. Consumer name, Consumer Groups, or Claim values depending on configuration) explicitly denied from using this primitive. ` + "`" + `deny` + "`" + ` takes precedence over ` + "`" + `allow` + "`" + `.`,
 										},
 									},
 									Description: `Optional per-primitive ACL. ` + "`" + `deny` + "`" + ` has higher precedence than ` + "`" + `allow` + "`" + `.`,
@@ -269,12 +794,12 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 								},
 								"host": schema.StringAttribute{
 									Optional:    true,
-									Description: `The host of the exported API. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.`,
+									Description: `The host of the exported API, which must match the route's hosts. It should be the route's host. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.`,
 								},
 								"method": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The method of the exported API. By default, Kong will extract the method from API configuration. If the configured method is not exactly matched, this field is required. must be one of ["DELETE", "GET", "PATCH", "POST", "PUT"]`,
+									Description: `The method of the exported API, which must be one of the route's method. By default, Kong will extract the method from API configuration. If the configured method is not exactly matched, this field is required. must be one of ["DELETE", "GET", "PATCH", "POST", "PUT"]`,
 									Validators: []validator.String{
 										stringvalidator.OneOf(
 											"DELETE",
@@ -325,11 +850,11 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 											},
 										},
 									},
-									Description: `The API parameters specification defined in OpenAPI. For example, '[{"name": "city", "in": "query", "description": "Name of the city to get the weather for", "required": true, "schema": {"type": "string"}}]'.See https://swagger.io/docs/specification/v3_0/describing-parameters/ for more details.`,
+									Description: `The API parameters specification defined in OpenAPI JSON format. For example, '[{"name": "city", "in": "query", "description": "Name of the city to get the weather for", "required": true, "schema": {"type": "string"}}]'.See https://swagger.io/docs/specification/v3_0/describing-parameters/ for more details.`,
 								},
 								"path": schema.StringAttribute{
 									Optional:    true,
-									Description: `The path of the exported API. By default, Kong will extract the path from API configuration. If the configured path is not exactly matched, this field is required. Paths not starting with '/' are treated as relative paths.`,
+									Description: `The path of the exported API, which must match the route's paths. Path not starting with '/' are treated as relative path and the route path will be added as the prefix. If the upstream path is different from the route one, to match the route's path, use relative path and strip_path to strip the added prefix. Relative path is unsupported when the route path is regex. By default, Kong will extract the path from API configuration.`,
 								},
 								"query": schema.MapAttribute{
 									Optional: true,
@@ -341,17 +866,17 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 								"request_body": schema.StringAttribute{
 									CustomType:  jsontypes.NormalizedType{},
 									Optional:    true,
-									Description: `The API requestBody specification defined in OpenAPI. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details. Parsed as JSON.`,
+									Description: `The API requestBody specification defined in OpenAPI JSON format. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details. Note that ` + "`" + `$ref` + "`" + ` is not supported so we need to inline the schema. Parsed as JSON.`,
 								},
 								"responses": schema.StringAttribute{
 									CustomType:  jsontypes.NormalizedType{},
 									Optional:    true,
-									Description: `The API responses specification defined in OpenAPI. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details.Only one non-error (status code < 400) responses are supported. Parsed as JSON.`,
+									Description: `The API responses specification defined in OpenAPI JSON format. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details.Only one non-error (status code < 400) response is supported. Note that ` + "`" + `$ref` + "`" + ` is not supported. Parsed as JSON.`,
 								},
 								"scheme": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it. must be one of ["http", "https"]`,
+									Description: `The scheme of the exported API, which must be one of the route's scheme. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it. must be one of ["http", "https"]`,
 									Validators: []validator.String{
 										stringvalidator.OneOf(
 											"http",

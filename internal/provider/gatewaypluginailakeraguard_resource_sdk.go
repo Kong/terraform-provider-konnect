@@ -15,6 +15,7 @@ func (r *GatewayPluginAiLakeraGuardResourceModel) RefreshFromSharedAiLakeraGuard
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
@@ -26,6 +27,7 @@ func (r *GatewayPluginAiLakeraGuardResourceModel) RefreshFromSharedAiLakeraGuard
 				r.Config.GuardingMode = types.StringNull()
 			}
 			r.Config.LakeraServiceURL = types.StringPointerValue(resp.Config.LakeraServiceURL)
+			r.Config.LogBlockedContent = types.BoolPointerValue(resp.Config.LogBlockedContent)
 			r.Config.ProjectID = types.StringPointerValue(resp.Config.ProjectID)
 			r.Config.RequestFailureMessage = types.StringPointerValue(resp.Config.RequestFailureMessage)
 			r.Config.ResponseBufferSize = types.Float64PointerValue(resp.Config.ResponseBufferSize)
@@ -207,6 +209,12 @@ func (r *GatewayPluginAiLakeraGuardResourceModel) ToOperationsUpdateAilakeraguar
 func (r *GatewayPluginAiLakeraGuardResourceModel) ToSharedAiLakeraGuardPlugin(ctx context.Context) (*shared.AiLakeraGuardPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -320,6 +328,12 @@ func (r *GatewayPluginAiLakeraGuardResourceModel) ToSharedAiLakeraGuardPlugin(ct
 		} else {
 			lakeraServiceURL = nil
 		}
+		logBlockedContent := new(bool)
+		if !r.Config.LogBlockedContent.IsUnknown() && !r.Config.LogBlockedContent.IsNull() {
+			*logBlockedContent = r.Config.LogBlockedContent.ValueBool()
+		} else {
+			logBlockedContent = nil
+		}
 		projectID := new(string)
 		if !r.Config.ProjectID.IsUnknown() && !r.Config.ProjectID.IsNull() {
 			*projectID = r.Config.ProjectID.ValueString()
@@ -378,6 +392,7 @@ func (r *GatewayPluginAiLakeraGuardResourceModel) ToSharedAiLakeraGuardPlugin(ct
 			APIKey:                  apiKey,
 			GuardingMode:            guardingMode,
 			LakeraServiceURL:        lakeraServiceURL,
+			LogBlockedContent:       logBlockedContent,
 			ProjectID:               projectID,
 			RequestFailureMessage:   requestFailureMessage,
 			ResponseBufferSize:      responseBufferSize,
@@ -442,6 +457,7 @@ func (r *GatewayPluginAiLakeraGuardResourceModel) ToSharedAiLakeraGuardPlugin(ct
 		}
 	}
 	out := shared.AiLakeraGuardPlugin{
+		Condition:     condition,
 		CreatedAt:     createdAt,
 		Enabled:       enabled,
 		ID:            id,

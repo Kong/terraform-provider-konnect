@@ -115,7 +115,9 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Schema(ctx context.Context
 							"principal_mapping": schema.StringAttribute{
 								Optional: true,
 								MarkdownDescription: `An expression that extracts a principal identifier from a verified client certificate.` + "\n" +
-									`This expression must evaluate to a string.`,
+									`This expression must evaluate to a string.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.1` + "`" + `**.`,
 							},
 							"tls_trust_bundles": schema.ListNestedAttribute{
 								Required: true,
@@ -139,7 +141,9 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Schema(ctx context.Context
 							},
 						},
 						MarkdownDescription: `Configures mutual TLS (mTLS) client certificate verification. When set, the gateway` + "\n" +
-							`requests or requires clients to present a certificate during the TLS handshake.`,
+							`requests or requires clients to present a certificate during the TLS handshake.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `1.1` + "`" + `**.`,
 					},
 					"versions": schema.SingleNestedAttribute{
 						Optional: true,

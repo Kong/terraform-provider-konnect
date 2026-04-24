@@ -98,8 +98,10 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 							},
 						},
 						"client_certificate": schema.SingleNestedAttribute{
-							Optional:    true,
-							Description: `Client certificate (mTLS) authentication scheme for the virtual cluster.`,
+							Optional: true,
+							MarkdownDescription: `Client certificate (mTLS) authentication scheme for the virtual cluster.` + "\n" +
+								`` + "\n" +
+								`**Requires a minimum runtime version of ` + "`" + `1.1` + "`" + `**.`,
 							Validators: []validator.Object{
 								objectvalidator.ConflictsWith(path.Expressions{
 									path.MatchRelative().AtParent().AtName("anonymous"),

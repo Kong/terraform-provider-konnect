@@ -14,6 +14,7 @@ GatewayPluginHeaderCertAuth Resource
 
 ```terraform
 resource "konnect_gateway_plugin_header_cert_auth" "my_gatewaypluginheadercertauth" {
+  condition = "...my_condition..."
   config = {
     allow_partial_chain    = false
     anonymous              = "...my_anonymous..."
@@ -37,7 +38,7 @@ resource "konnect_gateway_plugin_header_cert_auth" "my_gatewaypluginheadercertau
     revocation_check_mode = "IGNORE_CA_ERROR"
     secure_source         = true
     skip_consumer_lookup  = false
-    ssl_verify            = true
+    ssl_verify            = false
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 5
@@ -89,6 +90,7 @@ resource "konnect_gateway_plugin_header_cert_auth" "my_gatewaypluginheadercertau
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
@@ -127,7 +129,7 @@ Optional:
 - `revocation_check_mode` (String) Controls client certificate revocation check behavior. If set to `SKIP`, no revocation check is performed. If set to `IGNORE_CA_ERROR`, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to `STRICT`, the plugin only treats the certificate as valid when it's able to verify the revocation status. Default: "IGNORE_CA_ERROR"; must be one of ["IGNORE_CA_ERROR", "SKIP", "STRICT"]
 - `secure_source` (Boolean) Whether to secure the source of the request. If set to `true`, the plugin will only allow requests from trusted IPs (configured by the `trusted_ips` config option). Default: true
 - `skip_consumer_lookup` (Boolean) Skip consumer lookup once certificate is trusted against the configured CA list. Default: false
-- `ssl_verify` (Boolean) This option enables verification of the certificate presented by the server of the OCSP responder's URL and by the server of the CRL Distribution Point.
+- `ssl_verify` (Boolean) This option enables verification of the certificate presented by the server of the OCSP responder's URL and by the server of the CRL Distribution Point. Default: false
 
 
 <a id="nestedatt--ordering"></a>

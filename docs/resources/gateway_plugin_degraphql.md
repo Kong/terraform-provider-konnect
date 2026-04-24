@@ -14,6 +14,7 @@ GatewayPluginDegraphql Resource
 
 ```terraform
 resource "konnect_gateway_plugin_degraphql" "my_gatewayplugindegraphql" {
+  condition = "...my_condition..."
   config = {
     graphql_server_path = "/graphql"
   }
@@ -66,6 +67,7 @@ resource "konnect_gateway_plugin_degraphql" "my_gatewayplugindegraphql" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true

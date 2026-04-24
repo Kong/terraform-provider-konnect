@@ -14,6 +14,7 @@ GatewayPluginOpa Resource
 
 ```terraform
 resource "konnect_gateway_plugin_opa" "my_gatewaypluginopa" {
+  condition = "...my_condition..."
   config = {
     include_body_in_opa_input             = false
     include_consumer_in_opa_input         = false
@@ -77,6 +78,7 @@ resource "konnect_gateway_plugin_opa" "my_gatewaypluginopa" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).

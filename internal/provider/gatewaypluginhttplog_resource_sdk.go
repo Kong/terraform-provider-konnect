@@ -15,6 +15,7 @@ func (r *GatewayPluginHTTPLogResourceModel) RefreshFromSharedHTTPLogPlugin(ctx c
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.HTTPLogPluginConfig{}
 		if resp.Config.ContentType != nil {
 			r.Config.ContentType = types.StringValue(string(*resp.Config.ContentType))
@@ -223,6 +224,12 @@ func (r *GatewayPluginHTTPLogResourceModel) ToOperationsUpdateHttplogPluginReque
 func (r *GatewayPluginHTTPLogResourceModel) ToSharedHTTPLogPlugin(ctx context.Context) (*shared.HTTPLogPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -503,6 +510,7 @@ func (r *GatewayPluginHTTPLogResourceModel) ToSharedHTTPLogPlugin(ctx context.Co
 		}
 	}
 	out := shared.HTTPLogPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

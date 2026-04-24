@@ -15,6 +15,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.RequestCalloutPluginConfig{}
 		if resp.Config.Cache == nil {
 			r.Config.Cache = nil
@@ -30,7 +31,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			if resp.Config.Cache.Redis == nil {
 				r.Config.Cache.Redis = nil
 			} else {
-				r.Config.Cache.Redis = &tfTypes.AcePluginRedis{}
+				r.Config.Cache.Redis = &tfTypes.PartialVectordbRedis{}
 				if resp.Config.Cache.Redis.CloudAuthentication == nil {
 					r.Config.Cache.Redis.CloudAuthentication = nil
 				} else {
@@ -126,7 +127,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				callouts.DependsOn = append(callouts.DependsOn, types.StringValue(v))
 			}
 			callouts.Name = types.StringValue(calloutsItem.Name)
-			callouts.Request = &tfTypes.Request{}
+			callouts.Request = &tfTypes.RequestCalloutPluginRequest{}
 			if calloutsItem.Request.Body == nil {
 				callouts.Request.Body = nil
 			} else {
@@ -215,7 +216,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 			if calloutsItem.Response == nil {
 				callouts.Response = nil
 			} else {
-				callouts.Response = &tfTypes.Response{}
+				callouts.Response = &tfTypes.RequestCalloutPluginResponse{}
 				if calloutsItem.Response.Body == nil {
 					callouts.Response.Body = nil
 				} else {
@@ -444,6 +445,12 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToOperationsUpdateRequestcall
 func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(ctx context.Context) (*shared.RequestCalloutPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -1077,7 +1084,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 		var url string
 		url = r.Config.Callouts[calloutsIndex].Request.URL.ValueString()
 
-		request := shared.Request{
+		request := shared.RequestCalloutPluginRequest{
 			Body:     body,
 			ByLua:    byLua,
 			Error:    error,
@@ -1087,7 +1094,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 			Query:    query,
 			URL:      url,
 		}
-		var response *shared.Response
+		var response *shared.RequestCalloutPluginResponse
 		if r.Config.Callouts[calloutsIndex].Response != nil {
 			var body1 *shared.RequestCalloutPluginBody
 			if r.Config.Callouts[calloutsIndex].Response.Body != nil {
@@ -1126,7 +1133,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 					Store: store1,
 				}
 			}
-			response = &shared.Response{
+			response = &shared.RequestCalloutPluginResponse{
 				Body:    body1,
 				ByLua:   byLua1,
 				Headers: headers1,
@@ -1289,6 +1296,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 		}
 	}
 	out := shared.RequestCalloutPlugin{
+		Condition:     condition,
 		CreatedAt:     createdAt,
 		Enabled:       enabled,
 		ID:            id,

@@ -14,7 +14,14 @@ GatewayPluginOpentelemetry Resource
 
 ```terraform
 resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" {
+  condition = "...my_condition..."
   config = {
+    access_logs = {
+      custom_attributes_by_lua = {
+        key = "value"
+      }
+      endpoint = "...my_endpoint..."
+    }
     access_logs_endpoint = "...my_access_logs_endpoint..."
     batch_flush_delay    = 7
     batch_span_count     = 5
@@ -26,6 +33,7 @@ resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" 
     http_response_header_for_traceid = "...my_http_response_header_for_traceid..."
     logs_endpoint                    = "...my_logs_endpoint..."
     metrics = {
+      enable_ai_metrics              = false
       enable_bandwidth_metrics       = false
       enable_consumer_attribute      = false
       enable_latency_metrics         = false
@@ -117,6 +125,7 @@ resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" 
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -136,6 +145,7 @@ resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" 
 
 Optional:
 
+- `access_logs` (Attributes) (see [below for nested schema](#nestedatt--config--access_logs))
 - `access_logs_endpoint` (String) An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.
 - `batch_flush_delay` (Number) The delay, in seconds, between two consecutive batches.
 - `batch_span_count` (Number) The number of spans to be sent in a single batch.
@@ -154,11 +164,21 @@ Optional:
 - `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 5000
 - `traces_endpoint` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
 
+<a id="nestedatt--config--access_logs"></a>
+### Nested Schema for `config.access_logs`
+
+Optional:
+
+- `custom_attributes_by_lua` (Map of String) A key-value map that dynamically modifies access log fields using Lua code.
+- `endpoint` (String) An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.
+
+
 <a id="nestedatt--config--metrics"></a>
 ### Nested Schema for `config.metrics`
 
 Optional:
 
+- `enable_ai_metrics` (Boolean) A boolean value that determines if AI metrics should be collected. If enabled, `gen_ai.*`, `mcp.*`, `kong.gen_ai.*`, `kong.gen_ai.a2a.*` and `kong.mcp.*` metrics will be exported. To enable latency metrics for AI metrics, `enable_latency_metrics` must also be set to `true`. To enable `error.type` attribute for AI metrics, `enable_request_metrics` must also be set to `true`. Default: false
 - `enable_bandwidth_metrics` (Boolean) A boolean value that determines if bandwidth metrics should be collected. If enabled, `http.server.request.size` and `http.server.response.size` metrics will be exported. Default: false
 - `enable_consumer_attribute` (Boolean) A boolean value that determines if `http.server.request.count`, `http.server.request.size` and `http.server.response.size` metrics should fill in the consumer attribute when available. Default: false
 - `enable_latency_metrics` (Boolean) A boolean value that determines if latency metrics should be collected. If enabled, `kong.latency.total`, `kong.latency.internal` and `kong.latency.upstream` metrics will be exported. Default: false

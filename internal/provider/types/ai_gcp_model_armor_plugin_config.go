@@ -8,10 +8,13 @@ import (
 
 type AiGcpModelArmorPluginConfig struct {
 	EnableMultiLanguageDetection types.Bool    `tfsdk:"enable_multi_language_detection"`
+	GcpMetadataURL               types.String  `tfsdk:"gcp_metadata_url"`
+	GcpOauthTokenURL             types.String  `tfsdk:"gcp_oauth_token_url"`
 	GcpServiceAccountJSON        types.String  `tfsdk:"gcp_service_account_json"`
 	GcpUseServiceAccount         types.Bool    `tfsdk:"gcp_use_service_account"`
 	GuardingMode                 types.String  `tfsdk:"guarding_mode"`
 	LocationID                   types.String  `tfsdk:"location_id"`
+	LogBlockedContent            types.Bool    `tfsdk:"log_blocked_content"`
 	ProjectID                    types.String  `tfsdk:"project_id"`
 	RequestFailureMessage        types.String  `tfsdk:"request_failure_message"`
 	ResponseBufferSize           types.Float64 `tfsdk:"response_buffer_size"`

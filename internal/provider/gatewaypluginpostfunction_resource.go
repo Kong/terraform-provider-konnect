@@ -42,6 +42,7 @@ type GatewayPluginPostFunctionResource struct {
 
 // GatewayPluginPostFunctionResourceModel describes the resource data model.
 type GatewayPluginPostFunctionResourceModel struct {
+	Condition      types.String                      `tfsdk:"condition"`
 	Config         *tfTypes.PostFunctionPluginConfig `tfsdk:"config"`
 	ControlPlaneID types.String                      `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                       `tfsdk:"created_at"`
@@ -65,6 +66,13 @@ func (r *GatewayPluginPostFunctionResource) Schema(ctx context.Context, req reso
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginPostFunction Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,

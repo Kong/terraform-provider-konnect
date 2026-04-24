@@ -46,6 +46,7 @@ type GatewayPluginAiSanitizerResource struct {
 
 // GatewayPluginAiSanitizerResourceModel describes the resource data model.
 type GatewayPluginAiSanitizerResourceModel struct {
+	Condition      types.String                     `tfsdk:"condition"`
 	Config         *tfTypes.AiSanitizerPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                     `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.Set                     `tfsdk:"consumer_group"`
@@ -71,10 +72,18 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginAiSanitizer Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
 				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"allow_all_conversation_history": types.BoolType,
 					"anonymize": types.ListType{
 						ElemType: types.StringType,
 					},
@@ -100,6 +109,12 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 					"timeout":                      types.Float64Type,
 				})),
 				Attributes: map[string]schema.Attribute{
+					"allow_all_conversation_history": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(true),
+						Description: `If false, will ignore all previous chat messages from the conversation history. Default: true`,
+					},
 					"anonymize": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,

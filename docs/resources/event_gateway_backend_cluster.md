@@ -129,7 +129,9 @@ Optional:
 
 - `ca_bundle` (String) A literal value or a reference to an existing secret as a template string expression.
 The value is stored and returned by the API as-is, not treated as sensitive information.
-- `client_identity` (Attributes) Client mTLS configuration. (see [below for nested schema](#nestedatt--tls--client_identity))
+- `client_identity` (Attributes) Client mTLS configuration.
+
+**Requires a minimum runtime version of `1.1`**. (see [below for nested schema](#nestedatt--tls--client_identity))
 - `insecure_skip_verify` (Boolean) If true, skip certificate verification. It's not secure to use for production. Default: false
 - `tls_versions` (List of String) List of supported TLS versions. Default: ["tls12","tls13"]
 

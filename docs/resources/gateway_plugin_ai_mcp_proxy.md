@@ -14,8 +14,11 @@ GatewayPluginAiMcpProxy Resource
 
 ```terraform
 resource "konnect_gateway_plugin_ai_mcp_proxy" "my_gatewaypluginaimcpproxy" {
+  condition = "...my_condition..."
   config = {
-    consumer_identifier = "username"
+    access_token_claim_field = "...my_access_token_claim_field..."
+    acl_attribute_type       = "consumer"
+    consumer_identifier      = "username"
     default_acl = [
       {
         allow = [
@@ -37,8 +40,65 @@ resource "konnect_gateway_plugin_ai_mcp_proxy" "my_gatewaypluginaimcpproxy" {
     mode                  = "passthrough-listener"
     server = {
       forward_client_headers = true
-      tag                    = "...my_tag..."
-      timeout                = 10000
+      session = {
+        client = {
+          secrets = [
+            "..."
+          ]
+        }
+        managed = true
+        redis = {
+          cloud_authentication = {
+            auth_provider            = "azure"
+            aws_access_key_id        = "...my_aws_access_key_id..."
+            aws_assume_role_arn      = "...my_aws_assume_role_arn..."
+            aws_cache_name           = "...my_aws_cache_name..."
+            aws_is_serverless        = true
+            aws_region               = "...my_aws_region..."
+            aws_role_session_name    = "...my_aws_role_session_name..."
+            aws_secret_access_key    = "...my_aws_secret_access_key..."
+            azure_client_id          = "...my_azure_client_id..."
+            azure_client_secret      = "...my_azure_client_secret..."
+            azure_tenant_id          = "...my_azure_tenant_id..."
+            gcp_service_account_json = "...my_gcp_service_account_json..."
+          }
+          cluster_max_redirections = 5
+          cluster_nodes = [
+            {
+              ip   = "127.0.0.1"
+              port = 6379
+            }
+          ]
+          connect_timeout       = 2000
+          connection_is_proxied = false
+          database              = 0
+          host                  = "127.0.0.1"
+          keepalive_backlog     = 354648205
+          keepalive_pool_size   = 256
+          password              = "...my_password..."
+          port                  = 6379
+          read_timeout          = 2000
+          send_timeout          = 2000
+          sentinel_master       = "...my_sentinel_master..."
+          sentinel_nodes = [
+            {
+              host = "127.0.0.1"
+              port = 6379
+            }
+          ]
+          sentinel_password = "...my_sentinel_password..."
+          sentinel_role     = "any"
+          sentinel_username = "...my_sentinel_username..."
+          server_name       = "...my_server_name..."
+          ssl               = false
+          ssl_verify        = false
+          username          = "...my_username..."
+        }
+        session_ttl = 86400
+        strategy    = "client"
+      }
+      tag     = "...my_tag..."
+      timeout = 10000
     }
     tools = [
       {
@@ -139,6 +199,7 @@ resource "konnect_gateway_plugin_ai_mcp_proxy" "my_gatewaypluginaimcpproxy" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
@@ -160,9 +221,11 @@ Required:
 
 Optional:
 
-- `consumer_identifier` (String) Which subject type entries in ACL lists refer to for per-consumer matching. Default: "username"; must be one of ["consumer_id", "custom_id", "username"]
+- `access_token_claim_field` (String) The claim in the OAuth2 access token to use as the subject for ACL evaluation when 'acl_attribute_type' is set to 'oauth_access_token'. Nested claim can be fetched by using a jq filter starts with dot, e.g., ".user.email": https://jqlang.org/manual/#object-identifier-index.
+- `acl_attribute_type` (String) The type of attributes that ACL is evaluated with. Should only be configured on listener modes, not conversion-only. Default: "consumer"; must be one of ["consumer", "oauth_access_token"]
+- `consumer_identifier` (String) Which subject type entries in ACL lists refer to for per-consumer matching. Should only be configured on listener modes, not conversion-only. Default: "username"; must be one of ["consumer_id", "custom_id", "username"]
 - `default_acl` (Attributes List) Optional list of default ACL rules keyed by scope (for example: tools). (see [below for nested schema](#nestedatt--config--default_acl))
-- `include_consumer_groups` (Boolean) If enabled (true), allows Consumer Group names to be used in default and per-primitive ACL. Default: false
+- `include_consumer_groups` (Boolean) If enabled (true), allows Consumer Group names to be used in default and per-primitive ACL. Should only be configured on listener modes, not conversion-only. Default: false
 - `logging` (Attributes) (see [below for nested schema](#nestedatt--config--logging))
 - `max_request_body_size` (Number) max allowed body size allowed to be handled as MCP request. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 1048576
 - `server` (Attributes) (see [below for nested schema](#nestedatt--config--server))
@@ -173,8 +236,8 @@ Optional:
 
 Optional:
 
-- `allow` (List of String) Subjects explicitly allowed to access this scope. If `include_consumer_groups` is true, Consumer Group names are allowed here.
-- `deny` (List of String) Subjects explicitly denied from this scope. `deny` takes precedence over `allow`. If `include_consumer_groups` is true, Consumer Group names are allowed here.
+- `allow` (List of String) Subjects (e.g. Consumer name, Consumer Groups, or Claim values depending on configuration) explicitly allowed to access this scope.
+- `deny` (List of String) Subjects (e.g. Consumer name, Consumer Groups, or Claim values depending on configuration) explicitly denied from this scope. `deny` takes precedence over `allow`.
 - `scope` (String) Scope for this default ACL entry (for example: 'tools'). Defaults to 'tools'. Default: "tools"
 
 
@@ -194,8 +257,95 @@ Optional:
 Optional:
 
 - `forward_client_headers` (Boolean) Whether to forward the client request headers to the upstream server when calling the tools. Default: true
+- `session` (Attributes) Enable managed session when Kong responds as MCP server in listener or conversion-listener modes. This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers. (see [below for nested schema](#nestedatt--config--server--session))
 - `tag` (String) The tag of the MCP server. This is used to filter the exported MCP tools. The field should contain exactly one tag.
 - `timeout` (Number) The timeout for calling the tools in milliseconds. Default: 10000
+
+<a id="nestedatt--config--server--session"></a>
+### Nested Schema for `config.server.session`
+
+Optional:
+
+- `client` (Attributes) The configuration for client-side session storage. (see [below for nested schema](#nestedatt--config--server--session--client))
+- `managed` (Boolean) If enabled, Kong will maintain managed sessions with the MCP server. Default: true
+- `redis` (Attributes) (see [below for nested schema](#nestedatt--config--server--session--redis))
+- `session_ttl` (Number) The time-to-live (TTL) for each session in seconds. Default: 86400
+- `strategy` (String) The strategy for the session. If the value is 'client', the session is encrypted into MCP session id assigned to the client. If the value is not 'client', the session is stored in the configured database. must be one of ["client", "redis"]
+
+<a id="nestedatt--config--server--session--client"></a>
+### Nested Schema for `config.server.session.client`
+
+Optional:
+
+- `secrets` (List of String) The secrets that are used in session encryption. Required when the strategy is 'client'. The first secret is used for encryption, while all secrets are used for decryption to support key rotation.
+
+
+<a id="nestedatt--config--server--session--redis"></a>
+### Nested Schema for `config.server.session.redis`
+
+Optional:
+
+- `cloud_authentication` (Attributes) Cloud auth related configs for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--config--server--session--redis--cloud_authentication))
+- `cluster_max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
+- `cluster_nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--server--session--redis--cluster_nodes))
+- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address. Default: false
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
+- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `keepalive_backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
+- `keepalive_pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
+- `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+- `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--server--session--redis--sentinel_nodes))
+- `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
+- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
+- `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
+- `server_name` (String) A string representing an SNI (server name indication) value for TLS.
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: false
+- `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
+
+<a id="nestedatt--config--server--session--redis--cloud_authentication"></a>
+### Nested Schema for `config.server.session.redis.cloud_authentication`
+
+Optional:
+
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]
+- `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
+- `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
+- `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
+- `aws_is_serverless` (Boolean) This flag specifies whether the cluster is serverless when auth_provider is set to `aws`. Default: true
+- `aws_region` (String) The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
+- `aws_role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
+- `aws_secret_access_key` (String) AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
+- `azure_client_id` (String) Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
+- `azure_client_secret` (String) Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
+- `azure_tenant_id` (String) Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
+- `gcp_service_account_json` (String) GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
+
+
+<a id="nestedatt--config--server--session--redis--cluster_nodes"></a>
+### Nested Schema for `config.server.session.redis.cluster_nodes`
+
+Optional:
+
+- `ip` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+<a id="nestedatt--config--server--session--redis--sentinel_nodes"></a>
+### Nested Schema for `config.server.session.redis.sentinel_nodes`
+
+Optional:
+
+- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+
+
+
 
 
 <a id="nestedatt--config--tools"></a>
@@ -207,23 +357,23 @@ Optional:
 - `annotations` (Attributes) (see [below for nested schema](#nestedatt--config--tools--annotations))
 - `description` (String) The description of the MCP tool. This is used to provide information about the tool's functionality and usage. Not Null
 - `headers` (Map of List of String) The headers of the exported API. By default, Kong will extract the headers from API configuration. If the configured headers are not exactly matched, this field is required.
-- `host` (String) The host of the exported API. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.
-- `method` (String) The method of the exported API. By default, Kong will extract the method from API configuration. If the configured method is not exactly matched, this field is required. must be one of ["DELETE", "GET", "PATCH", "POST", "PUT"]
+- `host` (String) The host of the exported API, which must match the route's hosts. It should be the route's host. By default, Kong will extract the host from API configuration. If the configured host is wildcard, this field is required.
+- `method` (String) The method of the exported API, which must be one of the route's method. By default, Kong will extract the method from API configuration. If the configured method is not exactly matched, this field is required. must be one of ["DELETE", "GET", "PATCH", "POST", "PUT"]
 - `name` (String) Tool identifier. In passthrough-listener mode, used to match remote MCP Server tools for ACL enforcement. In other modes, it is also used as the tool name (overrides tools.annotations.title if present).
-- `parameters` (Attributes List) The API parameters specification defined in OpenAPI. For example, '[{"name": "city", "in": "query", "description": "Name of the city to get the weather for", "required": true, "schema": {"type": "string"}}]'.See https://swagger.io/docs/specification/v3_0/describing-parameters/ for more details. (see [below for nested schema](#nestedatt--config--tools--parameters))
-- `path` (String) The path of the exported API. By default, Kong will extract the path from API configuration. If the configured path is not exactly matched, this field is required. Paths not starting with '/' are treated as relative paths.
+- `parameters` (Attributes List) The API parameters specification defined in OpenAPI JSON format. For example, '[{"name": "city", "in": "query", "description": "Name of the city to get the weather for", "required": true, "schema": {"type": "string"}}]'.See https://swagger.io/docs/specification/v3_0/describing-parameters/ for more details. (see [below for nested schema](#nestedatt--config--tools--parameters))
+- `path` (String) The path of the exported API, which must match the route's paths. Path not starting with '/' are treated as relative path and the route path will be added as the prefix. If the upstream path is different from the route one, to match the route's path, use relative path and strip_path to strip the added prefix. Relative path is unsupported when the route path is regex. By default, Kong will extract the path from API configuration.
 - `query` (Map of List of String) The query arguments of the exported API. If the generated query arguments are not exactly matched, this field is required.
-- `request_body` (String) The API requestBody specification defined in OpenAPI. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details. Parsed as JSON.
-- `responses` (String) The API responses specification defined in OpenAPI. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"description":"Successful response","content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details.Only one non-error (status code < 400) responses are supported. Parsed as JSON.
-- `scheme` (String) The scheme of the exported API. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it. must be one of ["http", "https"]
+- `request_body` (String) The API requestBody specification defined in OpenAPI JSON format. For example, '{"content":{"application/x-www-form-urlencoded":{"schema":{"type":"object","properties":{"color":{"type":"array","items":{"type":"string"}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-request-body/describing-request-body/ for more details. Note that `$ref` is not supported so we need to inline the schema. Parsed as JSON.
+- `responses` (String) The API responses specification defined in OpenAPI JSON format. This specification will be used to validate the upstream response and map it back to the structuredOutput. For example, '{"200":{"content":{"application/json":{"schema":{"type":"object","properties":{"result":{"type":"string"}}}}}}}'.See https://swagger.io/docs/specification/v3_0/describing-responses/ for more details.Only one non-error (status code < 400) response is supported. Note that `$ref` is not supported. Parsed as JSON.
+- `scheme` (String) The scheme of the exported API, which must be one of the route's scheme. By default, Kong will extract the scheme from API configuration. If the configured scheme is not expected, this field can be used to override it. must be one of ["http", "https"]
 
 <a id="nestedatt--config--tools--acl"></a>
 ### Nested Schema for `config.tools.acl`
 
 Optional:
 
-- `allow` (List of String) Subjects explicitly allowed to use this primitive. If `include_consumer_groups` is true, Consumer Group names are allowed here.
-- `deny` (List of String) Subjects explicitly denied from using this primitive. `deny` takes precedence over `allow`. If `include_consumer_groups` is true, Consumer Group names are allowed here.
+- `allow` (List of String) Subjects (e.g. Consumer name, Consumer Groups, or Claim values depending on configuration) explicitly allowed to use this primitive.
+- `deny` (List of String) Subjects (e.g. Consumer name, Consumer Groups, or Claim values depending on configuration) explicitly denied from using this primitive. `deny` takes precedence over `allow`.
 
 
 <a id="nestedatt--config--tools--annotations"></a>

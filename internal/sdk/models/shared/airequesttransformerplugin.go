@@ -164,6 +164,10 @@ type AiRequestTransformerPluginAuth struct {
 	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
 	AzureUseManagedIdentity *bool `default:"false" json:"azure_use_managed_identity"`
+	// Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.
+	GcpMetadataURL *string `default:"null" json:"gcp_metadata_url"`
+	// Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.
+	GcpOauthTokenURL *string `default:"null" json:"gcp_oauth_token_url"`
 	// Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
 	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
 	// Use service account auth for GCP-based providers and models.
@@ -238,6 +242,20 @@ func (a *AiRequestTransformerPluginAuth) GetAzureUseManagedIdentity() *bool {
 		return nil
 	}
 	return a.AzureUseManagedIdentity
+}
+
+func (a *AiRequestTransformerPluginAuth) GetGcpMetadataURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.GcpMetadataURL
+}
+
+func (a *AiRequestTransformerPluginAuth) GetGcpOauthTokenURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.GcpOauthTokenURL
 }
 
 func (a *AiRequestTransformerPluginAuth) GetGcpServiceAccountJSON() *string {
@@ -330,6 +348,10 @@ type AiRequestTransformerPluginBedrock struct {
 	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
 	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 	AwsStsEndpointURL *string `default:"null" json:"aws_sts_endpoint_url"`
+	// S3 URI prefix (s3://bucket/prefix/) where Bedrock will get input files from and store results to for native batch API.
+	BatchBucketPrefix *string `default:"null" json:"batch_bucket_prefix"`
+	// AWS role arn used for calling batch API. Try to get the value from request if ommited.
+	BatchRoleArn *string `default:"null" json:"batch_role_arn"`
 	// If using AWS providers (Bedrock), set to true to normalize the embeddings.
 	EmbeddingsNormalize *bool `default:"false" json:"embeddings_normalize"`
 	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
@@ -375,6 +397,20 @@ func (a *AiRequestTransformerPluginBedrock) GetAwsStsEndpointURL() *string {
 		return nil
 	}
 	return a.AwsStsEndpointURL
+}
+
+func (a *AiRequestTransformerPluginBedrock) GetBatchBucketPrefix() *string {
+	if a == nil {
+		return nil
+	}
+	return a.BatchBucketPrefix
+}
+
+func (a *AiRequestTransformerPluginBedrock) GetBatchRoleArn() *string {
+	if a == nil {
+		return nil
+	}
+	return a.BatchRoleArn
 }
 
 func (a *AiRequestTransformerPluginBedrock) GetEmbeddingsNormalize() *bool {
@@ -489,6 +525,29 @@ func (a *AiRequestTransformerPluginDashscope) GetInternational() *bool {
 		return nil
 	}
 	return a.International
+}
+
+type AiRequestTransformerPluginDatabricks struct {
+	// Workspace Instance ID ('dbc-xxx-yyy') for Databricks model serving.
+	WorkspaceInstanceID *string `default:"null" json:"workspace_instance_id"`
+}
+
+func (a AiRequestTransformerPluginDatabricks) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRequestTransformerPluginDatabricks) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiRequestTransformerPluginDatabricks) GetWorkspaceInstanceID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.WorkspaceInstanceID
 }
 
 type AiRequestTransformerPluginGemini struct {
@@ -639,10 +698,11 @@ type AiRequestTransformerPluginOptions struct {
 	// Deployment ID for Azure OpenAI instances.
 	AzureDeploymentID *string `default:"null" json:"azure_deployment_id"`
 	// Instance name for Azure OpenAI hosted models.
-	AzureInstance *string                              `default:"null" json:"azure_instance"`
-	Bedrock       *AiRequestTransformerPluginBedrock   `json:"bedrock"`
-	Cohere        *AiRequestTransformerPluginCohere    `json:"cohere"`
-	Dashscope     *AiRequestTransformerPluginDashscope `json:"dashscope"`
+	AzureInstance *string                               `default:"null" json:"azure_instance"`
+	Bedrock       *AiRequestTransformerPluginBedrock    `json:"bedrock"`
+	Cohere        *AiRequestTransformerPluginCohere     `json:"cohere"`
+	Dashscope     *AiRequestTransformerPluginDashscope  `json:"dashscope"`
+	Databricks    *AiRequestTransformerPluginDatabricks `json:"databricks"`
 	// If using embeddings models, set the number of dimensions to generate.
 	EmbeddingsDimensions *int64                                 `default:"null" json:"embeddings_dimensions"`
 	Gemini               *AiRequestTransformerPluginGemini      `json:"gemini"`
@@ -727,6 +787,13 @@ func (a *AiRequestTransformerPluginOptions) GetDashscope() *AiRequestTransformer
 		return nil
 	}
 	return a.Dashscope
+}
+
+func (a *AiRequestTransformerPluginOptions) GetDatabricks() *AiRequestTransformerPluginDatabricks {
+	if a == nil {
+		return nil
+	}
+	return a.Databricks
 }
 
 func (a *AiRequestTransformerPluginOptions) GetEmbeddingsDimensions() *int64 {
@@ -830,11 +897,15 @@ const (
 	AiRequestTransformerPluginProviderCerebras    AiRequestTransformerPluginProvider = "cerebras"
 	AiRequestTransformerPluginProviderCohere      AiRequestTransformerPluginProvider = "cohere"
 	AiRequestTransformerPluginProviderDashscope   AiRequestTransformerPluginProvider = "dashscope"
+	AiRequestTransformerPluginProviderDatabricks  AiRequestTransformerPluginProvider = "databricks"
+	AiRequestTransformerPluginProviderDeepseek    AiRequestTransformerPluginProvider = "deepseek"
 	AiRequestTransformerPluginProviderGemini      AiRequestTransformerPluginProvider = "gemini"
 	AiRequestTransformerPluginProviderHuggingface AiRequestTransformerPluginProvider = "huggingface"
 	AiRequestTransformerPluginProviderLlama2      AiRequestTransformerPluginProvider = "llama2"
 	AiRequestTransformerPluginProviderMistral     AiRequestTransformerPluginProvider = "mistral"
+	AiRequestTransformerPluginProviderOllama      AiRequestTransformerPluginProvider = "ollama"
 	AiRequestTransformerPluginProviderOpenai      AiRequestTransformerPluginProvider = "openai"
+	AiRequestTransformerPluginProviderVllm        AiRequestTransformerPluginProvider = "vllm"
 	AiRequestTransformerPluginProviderXai         AiRequestTransformerPluginProvider = "xai"
 )
 
@@ -859,6 +930,10 @@ func (e *AiRequestTransformerPluginProvider) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "dashscope":
 		fallthrough
+	case "databricks":
+		fallthrough
+	case "deepseek":
+		fallthrough
 	case "gemini":
 		fallthrough
 	case "huggingface":
@@ -867,7 +942,11 @@ func (e *AiRequestTransformerPluginProvider) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "mistral":
 		fallthrough
+	case "ollama":
+		fallthrough
 	case "openai":
+		fallthrough
+	case "vllm":
 		fallthrough
 	case "xai":
 		*e = AiRequestTransformerPluginProvider(v)
@@ -878,6 +957,8 @@ func (e *AiRequestTransformerPluginProvider) UnmarshalJSON(data []byte) error {
 }
 
 type AiRequestTransformerPluginModel struct {
+	// The model name parameter from the request that this model should map to.
+	ModelAlias *string `default:"null" json:"model_alias"`
 	// Model name to execute.
 	Name *string `default:"null" json:"name"`
 	// Key/value settings for the model
@@ -895,6 +976,13 @@ func (a *AiRequestTransformerPluginModel) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AiRequestTransformerPluginModel) GetModelAlias() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ModelAlias
 }
 
 func (a *AiRequestTransformerPluginModel) GetName() *string {
@@ -1264,6 +1352,8 @@ func (a *AiRequestTransformerPluginService) GetID() *string {
 
 // AiRequestTransformerPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type AiRequestTransformerPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -1301,6 +1391,13 @@ func (a *AiRequestTransformerPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AiRequestTransformerPlugin) GetCondition() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Condition
 }
 
 func (a *AiRequestTransformerPlugin) GetCreatedAt() *int64 {

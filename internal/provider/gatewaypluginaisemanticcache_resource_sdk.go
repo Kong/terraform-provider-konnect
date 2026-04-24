@@ -15,14 +15,15 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) RefreshFromSharedAiSemanticC
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.AiSemanticCachePluginConfig{}
 		r.Config.CacheControl = types.BoolPointerValue(resp.Config.CacheControl)
 		r.Config.CacheTTL = types.Int64PointerValue(resp.Config.CacheTTL)
-		r.Config.Embeddings = &tfTypes.Embeddings{}
+		r.Config.Embeddings = &tfTypes.PartialEmbeddingsConfig{}
 		if resp.Config.Embeddings.Auth == nil {
 			r.Config.Embeddings.Auth = nil
 		} else {
-			r.Config.Embeddings.Auth = &tfTypes.AiLlmAsJudgePluginAuth{}
+			r.Config.Embeddings.Auth = &tfTypes.PartialEmbeddingsAuth{}
 			r.Config.Embeddings.Auth.AllowOverride = types.BoolPointerValue(resp.Config.Embeddings.Auth.AllowOverride)
 			r.Config.Embeddings.Auth.AwsAccessKeyID = types.StringPointerValue(resp.Config.Embeddings.Auth.AwsAccessKeyID)
 			r.Config.Embeddings.Auth.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Embeddings.Auth.AwsSecretAccessKey)
@@ -30,6 +31,8 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) RefreshFromSharedAiSemanticC
 			r.Config.Embeddings.Auth.AzureClientSecret = types.StringPointerValue(resp.Config.Embeddings.Auth.AzureClientSecret)
 			r.Config.Embeddings.Auth.AzureTenantID = types.StringPointerValue(resp.Config.Embeddings.Auth.AzureTenantID)
 			r.Config.Embeddings.Auth.AzureUseManagedIdentity = types.BoolPointerValue(resp.Config.Embeddings.Auth.AzureUseManagedIdentity)
+			r.Config.Embeddings.Auth.GcpMetadataURL = types.StringPointerValue(resp.Config.Embeddings.Auth.GcpMetadataURL)
+			r.Config.Embeddings.Auth.GcpOauthTokenURL = types.StringPointerValue(resp.Config.Embeddings.Auth.GcpOauthTokenURL)
 			r.Config.Embeddings.Auth.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.Embeddings.Auth.GcpServiceAccountJSON)
 			r.Config.Embeddings.Auth.GcpUseServiceAccount = types.BoolPointerValue(resp.Config.Embeddings.Auth.GcpUseServiceAccount)
 			r.Config.Embeddings.Auth.HeaderName = types.StringPointerValue(resp.Config.Embeddings.Auth.HeaderName)
@@ -42,16 +45,16 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) RefreshFromSharedAiSemanticC
 			r.Config.Embeddings.Auth.ParamName = types.StringPointerValue(resp.Config.Embeddings.Auth.ParamName)
 			r.Config.Embeddings.Auth.ParamValue = types.StringPointerValue(resp.Config.Embeddings.Auth.ParamValue)
 		}
-		r.Config.Embeddings.Model = &tfTypes.AiProxyAdvancedPluginModel{}
+		r.Config.Embeddings.Model = &tfTypes.PartialEmbeddingsModel{}
 		r.Config.Embeddings.Model.Name = types.StringValue(resp.Config.Embeddings.Model.Name)
 		if resp.Config.Embeddings.Model.Options == nil {
 			r.Config.Embeddings.Model.Options = nil
 		} else {
-			r.Config.Embeddings.Model.Options = &tfTypes.AiProxyAdvancedPluginOptions{}
+			r.Config.Embeddings.Model.Options = &tfTypes.PartialEmbeddingsOptions{}
 			if resp.Config.Embeddings.Model.Options.Azure == nil {
 				r.Config.Embeddings.Model.Options.Azure = nil
 			} else {
-				r.Config.Embeddings.Model.Options.Azure = &tfTypes.Azure{}
+				r.Config.Embeddings.Model.Options.Azure = &tfTypes.PartialEmbeddingsAzure{}
 				r.Config.Embeddings.Model.Options.Azure.APIVersion = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.APIVersion)
 				r.Config.Embeddings.Model.Options.Azure.DeploymentID = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.DeploymentID)
 				r.Config.Embeddings.Model.Options.Azure.Instance = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.Instance)
@@ -59,11 +62,13 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) RefreshFromSharedAiSemanticC
 			if resp.Config.Embeddings.Model.Options.Bedrock == nil {
 				r.Config.Embeddings.Model.Options.Bedrock = nil
 			} else {
-				r.Config.Embeddings.Model.Options.Bedrock = &tfTypes.AiLlmAsJudgePluginBedrock{}
+				r.Config.Embeddings.Model.Options.Bedrock = &tfTypes.PartialEmbeddingsBedrock{}
 				r.Config.Embeddings.Model.Options.Bedrock.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsAssumeRoleArn)
 				r.Config.Embeddings.Model.Options.Bedrock.AwsRegion = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsRegion)
 				r.Config.Embeddings.Model.Options.Bedrock.AwsRoleSessionName = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsRoleSessionName)
 				r.Config.Embeddings.Model.Options.Bedrock.AwsStsEndpointURL = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsStsEndpointURL)
+				r.Config.Embeddings.Model.Options.Bedrock.BatchBucketPrefix = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.BatchBucketPrefix)
+				r.Config.Embeddings.Model.Options.Bedrock.BatchRoleArn = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.BatchRoleArn)
 				r.Config.Embeddings.Model.Options.Bedrock.EmbeddingsNormalize = types.BoolPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.EmbeddingsNormalize)
 				r.Config.Embeddings.Model.Options.Bedrock.PerformanceConfigLatency = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.PerformanceConfigLatency)
 				r.Config.Embeddings.Model.Options.Bedrock.VideoOutputS3URI = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.VideoOutputS3URI)
@@ -71,7 +76,7 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) RefreshFromSharedAiSemanticC
 			if resp.Config.Embeddings.Model.Options.Gemini == nil {
 				r.Config.Embeddings.Model.Options.Gemini = nil
 			} else {
-				r.Config.Embeddings.Model.Options.Gemini = &tfTypes.AiProxyAdvancedPluginGemini{}
+				r.Config.Embeddings.Model.Options.Gemini = &tfTypes.PartialEmbeddingsGemini{}
 				r.Config.Embeddings.Model.Options.Gemini.APIEndpoint = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Gemini.APIEndpoint)
 				r.Config.Embeddings.Model.Options.Gemini.LocationID = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Gemini.LocationID)
 				r.Config.Embeddings.Model.Options.Gemini.ProjectID = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Gemini.ProjectID)
@@ -79,7 +84,7 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) RefreshFromSharedAiSemanticC
 			if resp.Config.Embeddings.Model.Options.Huggingface == nil {
 				r.Config.Embeddings.Model.Options.Huggingface = nil
 			} else {
-				r.Config.Embeddings.Model.Options.Huggingface = &tfTypes.AiLlmAsJudgePluginHuggingface{}
+				r.Config.Embeddings.Model.Options.Huggingface = &tfTypes.PartialEmbeddingsHuggingface{}
 				r.Config.Embeddings.Model.Options.Huggingface.UseCache = types.BoolPointerValue(resp.Config.Embeddings.Model.Options.Huggingface.UseCache)
 				r.Config.Embeddings.Model.Options.Huggingface.WaitForModel = types.BoolPointerValue(resp.Config.Embeddings.Model.Options.Huggingface.WaitForModel)
 			}
@@ -97,13 +102,13 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) RefreshFromSharedAiSemanticC
 		}
 		r.Config.MessageCountback = types.Float64PointerValue(resp.Config.MessageCountback)
 		r.Config.StopOnFailure = types.BoolPointerValue(resp.Config.StopOnFailure)
-		r.Config.Vectordb = &tfTypes.Vectordb{}
+		r.Config.Vectordb = &tfTypes.PartialVectordbConfig{}
 		r.Config.Vectordb.Dimensions = types.Int64Value(resp.Config.Vectordb.Dimensions)
 		r.Config.Vectordb.DistanceMetric = types.StringValue(string(resp.Config.Vectordb.DistanceMetric))
 		if resp.Config.Vectordb.Pgvector == nil {
 			r.Config.Vectordb.Pgvector = nil
 		} else {
-			r.Config.Vectordb.Pgvector = &tfTypes.Pgvector{}
+			r.Config.Vectordb.Pgvector = &tfTypes.PartialVectordbPgvector{}
 			r.Config.Vectordb.Pgvector.Database = types.StringPointerValue(resp.Config.Vectordb.Pgvector.Database)
 			r.Config.Vectordb.Pgvector.Host = types.StringPointerValue(resp.Config.Vectordb.Pgvector.Host)
 			r.Config.Vectordb.Pgvector.Password = types.StringPointerValue(resp.Config.Vectordb.Pgvector.Password)
@@ -124,7 +129,7 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) RefreshFromSharedAiSemanticC
 		if resp.Config.Vectordb.Redis == nil {
 			r.Config.Vectordb.Redis = nil
 		} else {
-			r.Config.Vectordb.Redis = &tfTypes.AcePluginRedis{}
+			r.Config.Vectordb.Redis = &tfTypes.PartialVectordbRedis{}
 			if resp.Config.Vectordb.Redis.CloudAuthentication == nil {
 				r.Config.Vectordb.Redis.CloudAuthentication = nil
 			} else {
@@ -367,6 +372,12 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToOperationsUpdateAisemantic
 func (r *GatewayPluginAiSemanticCacheResourceModel) ToSharedAiSemanticCachePlugin(ctx context.Context) (*shared.AiSemanticCachePlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -516,6 +527,18 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToSharedAiSemanticCachePlugi
 		} else {
 			azureUseManagedIdentity = nil
 		}
+		gcpMetadataURL := new(string)
+		if !r.Config.Embeddings.Auth.GcpMetadataURL.IsUnknown() && !r.Config.Embeddings.Auth.GcpMetadataURL.IsNull() {
+			*gcpMetadataURL = r.Config.Embeddings.Auth.GcpMetadataURL.ValueString()
+		} else {
+			gcpMetadataURL = nil
+		}
+		gcpOauthTokenURL := new(string)
+		if !r.Config.Embeddings.Auth.GcpOauthTokenURL.IsUnknown() && !r.Config.Embeddings.Auth.GcpOauthTokenURL.IsNull() {
+			*gcpOauthTokenURL = r.Config.Embeddings.Auth.GcpOauthTokenURL.ValueString()
+		} else {
+			gcpOauthTokenURL = nil
+		}
 		gcpServiceAccountJSON := new(string)
 		if !r.Config.Embeddings.Auth.GcpServiceAccountJSON.IsUnknown() && !r.Config.Embeddings.Auth.GcpServiceAccountJSON.IsNull() {
 			*gcpServiceAccountJSON = r.Config.Embeddings.Auth.GcpServiceAccountJSON.ValueString()
@@ -566,6 +589,8 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToSharedAiSemanticCachePlugi
 			AzureClientSecret:       azureClientSecret,
 			AzureTenantID:           azureTenantID,
 			AzureUseManagedIdentity: azureUseManagedIdentity,
+			GcpMetadataURL:          gcpMetadataURL,
+			GcpOauthTokenURL:        gcpOauthTokenURL,
 			GcpServiceAccountJSON:   gcpServiceAccountJSON,
 			GcpUseServiceAccount:    gcpUseServiceAccount,
 			HeaderName:              headerName,
@@ -632,6 +657,18 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToSharedAiSemanticCachePlugi
 			} else {
 				awsStsEndpointURL = nil
 			}
+			batchBucketPrefix := new(string)
+			if !r.Config.Embeddings.Model.Options.Bedrock.BatchBucketPrefix.IsUnknown() && !r.Config.Embeddings.Model.Options.Bedrock.BatchBucketPrefix.IsNull() {
+				*batchBucketPrefix = r.Config.Embeddings.Model.Options.Bedrock.BatchBucketPrefix.ValueString()
+			} else {
+				batchBucketPrefix = nil
+			}
+			batchRoleArn := new(string)
+			if !r.Config.Embeddings.Model.Options.Bedrock.BatchRoleArn.IsUnknown() && !r.Config.Embeddings.Model.Options.Bedrock.BatchRoleArn.IsNull() {
+				*batchRoleArn = r.Config.Embeddings.Model.Options.Bedrock.BatchRoleArn.ValueString()
+			} else {
+				batchRoleArn = nil
+			}
 			embeddingsNormalize := new(bool)
 			if !r.Config.Embeddings.Model.Options.Bedrock.EmbeddingsNormalize.IsUnknown() && !r.Config.Embeddings.Model.Options.Bedrock.EmbeddingsNormalize.IsNull() {
 				*embeddingsNormalize = r.Config.Embeddings.Model.Options.Bedrock.EmbeddingsNormalize.ValueBool()
@@ -655,6 +692,8 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToSharedAiSemanticCachePlugi
 				AwsRegion:                awsRegion,
 				AwsRoleSessionName:       awsRoleSessionName,
 				AwsStsEndpointURL:        awsStsEndpointURL,
+				BatchBucketPrefix:        batchBucketPrefix,
+				BatchRoleArn:             batchRoleArn,
 				EmbeddingsNormalize:      embeddingsNormalize,
 				PerformanceConfigLatency: performanceConfigLatency,
 				VideoOutputS3URI:         videoOutputS3URI,
@@ -1219,6 +1258,7 @@ func (r *GatewayPluginAiSemanticCacheResourceModel) ToSharedAiSemanticCachePlugi
 		}
 	}
 	out := shared.AiSemanticCachePlugin{
+		Condition:     condition,
 		CreatedAt:     createdAt,
 		Enabled:       enabled,
 		ID:            id,

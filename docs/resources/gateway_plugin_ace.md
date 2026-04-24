@@ -14,6 +14,7 @@ GatewayPluginAce Resource
 
 ```terraform
 resource "konnect_gateway_plugin_ace" "my_gatewaypluginace" {
+  condition = "...my_condition..."
   config = {
     anonymous    = "...my_anonymous..."
     match_policy = "if_present"
@@ -117,6 +118,7 @@ resource "konnect_gateway_plugin_ace" "my_gatewaypluginace" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true

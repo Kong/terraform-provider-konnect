@@ -48,6 +48,7 @@ type GatewayPluginConfluentResource struct {
 
 // GatewayPluginConfluentResourceModel describes the resource data model.
 type GatewayPluginConfluentResourceModel struct {
+	Condition      types.String                   `tfsdk:"condition"`
 	Config         *tfTypes.ConfluentPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                   `tfsdk:"consumer"`
 	ControlPlaneID types.String                   `tfsdk:"control_plane_id"`
@@ -72,6 +73,13 @@ func (r *GatewayPluginConfluentResource) Schema(ctx context.Context, req resourc
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginConfluent Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{

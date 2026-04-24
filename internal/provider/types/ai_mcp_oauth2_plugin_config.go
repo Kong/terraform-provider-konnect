@@ -16,6 +16,12 @@ type AiMcpOauth2PluginConfig struct {
 	ClientID                          types.String            `tfsdk:"client_id"`
 	ClientJwk                         types.String            `tfsdk:"client_jwk"`
 	ClientSecret                      types.String            `tfsdk:"client_secret"`
+	ConsumerBy                        []types.String          `tfsdk:"consumer_by"`
+	ConsumerClaim                     []types.String          `tfsdk:"consumer_claim"`
+	ConsumerGroupsClaim               []types.String          `tfsdk:"consumer_groups_claim"`
+	ConsumerGroupsOptional            types.Bool              `tfsdk:"consumer_groups_optional"`
+	ConsumerOptional                  types.Bool              `tfsdk:"consumer_optional"`
+	CredentialClaim                   []types.String          `tfsdk:"credential_claim"`
 	Headers                           map[string]types.String `tfsdk:"headers"`
 	HTTPProxy                         types.String            `tfsdk:"http_proxy"`
 	HTTPProxyAuthorization            types.String            `tfsdk:"http_proxy_authorization"`
@@ -25,11 +31,18 @@ type AiMcpOauth2PluginConfig struct {
 	InsecureRelaxedAudienceValidation types.Bool              `tfsdk:"insecure_relaxed_audience_validation"`
 	IntrospectionEndpoint             types.String            `tfsdk:"introspection_endpoint"`
 	IntrospectionFormat               types.String            `tfsdk:"introspection_format"`
+	JwksCacheTTL                      types.Int64             `tfsdk:"jwks_cache_ttl"`
+	JwksEndpoint                      types.String            `tfsdk:"jwks_endpoint"`
+	JwtClaimsLeeway                   types.Int64             `tfsdk:"jwt_claims_leeway"`
 	Keepalive                         types.Bool              `tfsdk:"keepalive"`
 	MaxRequestBodySize                types.Int64             `tfsdk:"max_request_body_size"`
+	MetadataCacheTTL                  types.Int64             `tfsdk:"metadata_cache_ttl"`
+	MetadataDiscoveryEndpoint         types.String            `tfsdk:"metadata_discovery_endpoint"`
+	MetadataDiscoveryRetry            types.Int64             `tfsdk:"metadata_discovery_retry"`
 	MetadataEndpoint                  types.String            `tfsdk:"metadata_endpoint"`
 	MtlsIntrospectionEndpoint         types.String            `tfsdk:"mtls_introspection_endpoint"`
 	NoProxy                           types.String            `tfsdk:"no_proxy"`
+	PassthroughCredentials            types.Bool              `tfsdk:"passthrough_credentials"`
 	Resource                          types.String            `tfsdk:"resource"`
 	ScopesSupported                   []types.String          `tfsdk:"scopes_supported"`
 	SslVerify                         types.Bool              `tfsdk:"ssl_verify"`
@@ -37,4 +50,6 @@ type AiMcpOauth2PluginConfig struct {
 	TLSClientAuthCert                 types.String            `tfsdk:"tls_client_auth_cert"`
 	TLSClientAuthKey                  types.String            `tfsdk:"tls_client_auth_key"`
 	TLSClientAuthSslVerify            types.Bool              `tfsdk:"tls_client_auth_ssl_verify"`
+	TokenExchange                     *TokenExchange          `tfsdk:"token_exchange"`
+	UpstreamHeaders                   []UpstreamHeaders       `tfsdk:"upstream_headers"`
 }

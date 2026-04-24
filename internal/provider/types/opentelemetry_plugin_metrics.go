@@ -7,6 +7,7 @@ import (
 )
 
 type OpentelemetryPluginMetrics struct {
+	EnableAiMetrics             types.Bool    `tfsdk:"enable_ai_metrics"`
 	EnableBandwidthMetrics      types.Bool    `tfsdk:"enable_bandwidth_metrics"`
 	EnableConsumerAttribute     types.Bool    `tfsdk:"enable_consumer_attribute"`
 	EnableLatencyMetrics        types.Bool    `tfsdk:"enable_latency_metrics"`
