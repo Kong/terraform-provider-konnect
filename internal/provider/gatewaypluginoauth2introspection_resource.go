@@ -93,13 +93,7 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`username`),
-						Description: `A string indicating whether to associate OAuth2 ` + "`" + `username` + "`" + ` or ` + "`" + `client_id` + "`" + ` with the consumer's username. OAuth2 ` + "`" + `username` + "`" + ` is mapped to a consumer's ` + "`" + `username` + "`" + ` field, while an OAuth2 ` + "`" + `client_id` + "`" + ` maps to a consumer's ` + "`" + `custom_id` + "`" + `. Default: "username"; must be one of ["client_id", "username"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"client_id",
-								"username",
-							),
-						},
+						Description: `A string indicating whether to associate OAuth2 ` + "`" + `username` + "`" + ` or ` + "`" + `client_id` + "`" + ` with the consumer's username. OAuth2 ` + "`" + `username` + "`" + ` is mapped to a consumer's ` + "`" + `username` + "`" + ` field, while an OAuth2 ` + "`" + `client_id` + "`" + ` maps to a consumer's ` + "`" + `custom_id` + "`" + `. possible known values include one of ["client_id", "username"]; Default: "username"`,
 					},
 					"custom_claims_forward": schema.ListAttribute{
 						Computed:    true,

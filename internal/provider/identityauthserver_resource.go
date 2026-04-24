@@ -119,17 +119,7 @@ func (r *IdentityAuthServerResource) Schema(ctx context.Context, req resource.Sc
 				Computed:    true,
 				Optional:    true,
 				Default:     stringdefault.StaticString(`RS256`),
-				Description: `Algorithm used in the key signing process. Default: "RS256"; must be one of ["RS256", "RS384", "RS512", "PS256", "PS384", "PS512"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"RS256",
-						"RS384",
-						"RS512",
-						"PS256",
-						"PS384",
-						"PS512",
-					),
-				},
+				Description: `Algorithm used in the key signing process. possible known values include one of ["RS256", "RS384", "RS512", "PS256", "PS384", "PS512"]; Default: "RS256"`,
 			},
 			"trusted_origins": schema.ListAttribute{
 				Computed:    true,

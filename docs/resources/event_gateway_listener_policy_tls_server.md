@@ -19,12 +19,12 @@ resource "konnect_event_gateway_listener_policy_tls_server" "my_eventgatewaylist
     certificates = [
       {
         certificate = "...my_certificate..."
-        key         = "$${vault.env['MY_ENV_VAR']}"
+        key         = "$$${vault.env['MY_ENV_VAR']}"
       }
     ]
     client_authentication = {
       mode              = "requested"
-      principal_mapping = "$${context.certificate.subject['CN'] ? context.certificate.subject['CN'] : context.certificate.sans.uri[0]}"
+      principal_mapping = "$$${context.certificate.subject['CN'] ? context.certificate.subject['CN'] : context.certificate.sans.uri[0]}"
       tls_trust_bundles = [
         {
           id = "4207e6bd-68dd-4f60-bac1-adbb586553d5"
@@ -107,7 +107,7 @@ Required:
 
 - `mode` (String) * required - Reject TLS connections without a valid client certificate.
 * requested - Request a client certificate during the TLS handshake, but allow connections without one (falls back to other configured authentication methods). If a certificate is presented but cannot be verified, the connection is closed.
-must be one of ["required", "requested"]
+possible known values include one of ["required", "requested"]
 - `tls_trust_bundles` (Attributes List) TLS trust bundles contain CA certificate bundles used to verify client certificates.
 All bundles are merged into a single trust store; a client certificate is accepted if it
 chains to any trusted CA across all bundles. (see [below for nested schema](#nestedatt--config--client_authentication--tls_trust_bundles))
@@ -133,8 +133,8 @@ Required:
 
 Optional:
 
-- `max` (String) Maximum TLS version to use. Default: "TLSv1.3"; must be one of ["TLSv1.2", "TLSv1.3"]
-- `min` (String) Minimum TLS version to use. Default: "TLSv1.2"; must be one of ["TLSv1.2", "TLSv1.3"]
+- `max` (String) Maximum TLS version to use. possible known values include one of ["TLSv1.2", "TLSv1.3"]; Default: "TLSv1.3"
+- `min` (String) Minimum TLS version to use. possible known values include one of ["TLSv1.2", "TLSv1.3"]; Default: "TLSv1.2"
 
 ## Import
 
@@ -146,8 +146,8 @@ In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.
 import {
   to = konnect_event_gateway_listener_policy_tls_server.my_konnect_event_gateway_listener_policy_tls_server
   id = jsonencode({
-    gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    gateway_id  = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id          = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     listener_id = "..."
   })
 }

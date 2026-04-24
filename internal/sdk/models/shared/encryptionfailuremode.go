@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // EncryptionFailureMode - Describes how to handle failing encryption or decryption.
 // Use `error` if the record should be rejected if encryption or decryption fails.
 // Use `passthrough` to ignore encryption or decryption failure and continue proxying the record.
@@ -20,18 +15,14 @@ const (
 func (e EncryptionFailureMode) ToPointer() *EncryptionFailureMode {
 	return &e
 }
-func (e *EncryptionFailureMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *EncryptionFailureMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "error", "passthrough":
+			return true
+		}
 	}
-	switch v {
-	case "error":
-		fallthrough
-	case "passthrough":
-		*e = EncryptionFailureMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for EncryptionFailureMode: %v", v)
-	}
+	return false
 }

@@ -168,7 +168,7 @@ Optional:
 - `content_encoding` (String) Sets the HTTP Content-Encoding applied to the Solace message payload (for example, gzip). If unset, the request Content-Encoding header is used when available.
 - `content_type` (String) Sets the HTTP Content-Type applied to the Solace message payload. If unset, the request Content-Type header is used when available.
 - `default_content` (String) When not using `forward_method`, `forward_uri`, `forward_headers`, `forward_body` or `forward_body_raw_only`, this sets the message content.
-- `delivery_mode` (String) Sets the message delivery mode. Default: "DIRECT"; must be one of ["DIRECT", "PERSISTENT"]
+- `delivery_mode` (String) Sets the message delivery mode. possible known values include one of ["DIRECT", "PERSISTENT"]; Default: "DIRECT"
 - `dmq_eligible` (Boolean) Sets the dead message queue (DMQ) eligible property on the message. Default: false
 - `forward_body` (Boolean) Include the request body and the body arguments in the message. Default: false
 - `forward_body_raw_only` (Boolean) Forward only the raw request body without wrapping it in a JSON payload or adding extra fields. Default: false
@@ -189,7 +189,7 @@ Optional:
 Optional:
 
 - `name` (String) The name of the destination. You can use $(uri_captures['<capture-identifier>']) in this field (replace `<capture-identifier>` with a real value, for example `$uri_captures[’queue’]` when the matched route has a path `~/(?<queue>[a-z]+)`). Not Null
-- `type` (String) The type of the destination. Default: "QUEUE"; must be one of ["QUEUE", "TOPIC"]
+- `type` (String) The type of the destination. possible known values include one of ["QUEUE", "TOPIC"]; Default: "QUEUE"
 
 
 <a id="nestedatt--config--message--user_properties"></a>
@@ -243,7 +243,7 @@ Optional:
 - `id_token` (String) The OpenID Connect ID token used with `OAUTH2` authentication scheme when connecting to an event broker.
 - `id_token_header` (String) Specifies the header that contains id token for the `OAUTH2` authentication scheme when connecting to an event broker. This header takes precedence over the `id_token` field.
 - `password` (String) The password used with `BASIC` authentication scheme when connecting to an event broker.
-- `scheme` (String) The client authentication scheme used when connection to an event broker. Default: "BASIC"; must be one of ["BASIC", "NONE", "OAUTH2"]
+- `scheme` (String) The client authentication scheme used when connection to an event broker. possible known values include one of ["BASIC", "NONE", "OAUTH2"]; Default: "BASIC"
 - `username` (String) The username used with `BASIC` authentication scheme when connecting to an event broker.
 
 
@@ -310,7 +310,7 @@ import {
   to = konnect_gateway_plugin_solace_upstream.my_konnect_gateway_plugin_solace_upstream
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

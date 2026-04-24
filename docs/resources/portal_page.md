@@ -43,11 +43,11 @@ This enables nested page structures like `/slug1/slug2/slug3`.
 - `parent_page_id` (String) Pages may be rendered as a tree of files.
 
 Specify the `id` of another page as the `parent_page_id` to add some hierarchy to your pages.
-- `status` (String) Whether the resource is visible on a given portal. Defaults to unpublished. must be one of ["published", "unpublished"]
+- `status` (String) Whether the resource is visible on a given portal. Defaults to unpublished. possible known values include one of ["published", "unpublished"]
 - `title` (String) The title of a page in a portal.
 - `visibility` (String) Whether a page is publicly accessible to non-authenticated users.
 If not provided, the default_page_visibility value of the portal will be used.
-must be one of ["public", "private"]
+possible known values include one of ["public", "private"]
 
 ### Read-Only
 
@@ -65,7 +65,7 @@ In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.
 import {
   to = konnect_portal_page.my_konnect_portal_page
   id = jsonencode({
-    id = "ebbac5b0-ac89-45c3-9d2e-c4542c657e79"
+    id        = "ebbac5b0-ac89-45c3-9d2e-c4542c657e79"
     portal_id = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
   })
 }

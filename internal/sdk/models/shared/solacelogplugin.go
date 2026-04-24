@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -133,20 +131,16 @@ const (
 func (e DeliveryMode) ToPointer() *DeliveryMode {
 	return &e
 }
-func (e *DeliveryMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DeliveryMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "DIRECT", "PERSISTENT":
+			return true
+		}
 	}
-	switch v {
-	case "DIRECT":
-		fallthrough
-	case "PERSISTENT":
-		*e = DeliveryMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for DeliveryMode: %v", v)
-	}
+	return false
 }
 
 // SolaceLogPluginType - The type of the destination.
@@ -160,20 +154,16 @@ const (
 func (e SolaceLogPluginType) ToPointer() *SolaceLogPluginType {
 	return &e
 }
-func (e *SolaceLogPluginType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SolaceLogPluginType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "QUEUE", "TOPIC":
+			return true
+		}
 	}
-	switch v {
-	case "QUEUE":
-		fallthrough
-	case "TOPIC":
-		*e = SolaceLogPluginType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SolaceLogPluginType: %v", v)
-	}
+	return false
 }
 
 type SolaceLogPluginDestinations struct {
@@ -325,22 +315,16 @@ const (
 func (e SolaceLogPluginScheme) ToPointer() *SolaceLogPluginScheme {
 	return &e
 }
-func (e *SolaceLogPluginScheme) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SolaceLogPluginScheme) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "BASIC", "NONE", "OAUTH2":
+			return true
+		}
 	}
-	switch v {
-	case "BASIC":
-		fallthrough
-	case "NONE":
-		fallthrough
-	case "OAUTH2":
-		*e = SolaceLogPluginScheme(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SolaceLogPluginScheme: %v", v)
-	}
+	return false
 }
 
 // SolaceLogPluginAuthentication - Session authentication related configuration.
@@ -590,28 +574,16 @@ const (
 func (e SolaceLogPluginProtocols) ToPointer() *SolaceLogPluginProtocols {
 	return &e
 }
-func (e *SolaceLogPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SolaceLogPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = SolaceLogPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SolaceLogPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // SolaceLogPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

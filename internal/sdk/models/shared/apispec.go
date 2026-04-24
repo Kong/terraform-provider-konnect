@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -20,22 +18,16 @@ const (
 func (e APISpecAPISpecType) ToPointer() *APISpecAPISpecType {
 	return &e
 }
-func (e *APISpecAPISpecType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *APISpecAPISpecType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "oas2", "oas3", "asyncapi":
+			return true
+		}
 	}
-	switch v {
-	case "oas2":
-		fallthrough
-	case "oas3":
-		fallthrough
-	case "asyncapi":
-		*e = APISpecAPISpecType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for APISpecAPISpecType: %v", v)
-	}
+	return false
 }
 
 type APISpec struct {

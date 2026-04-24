@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // LogFormat - The output format of each log messages.
 type LogFormat string
 
@@ -19,20 +14,14 @@ const (
 func (e LogFormat) ToPointer() *LogFormat {
 	return &e
 }
-func (e *LogFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *LogFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "cef", "json", "cps":
+			return true
+		}
 	}
-	switch v {
-	case "cef":
-		fallthrough
-	case "json":
-		fallthrough
-	case "cps":
-		*e = LogFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for LogFormat: %v", v)
-	}
+	return false
 }

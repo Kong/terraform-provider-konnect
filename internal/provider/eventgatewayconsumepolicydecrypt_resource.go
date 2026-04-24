@@ -79,13 +79,7 @@ func (r *EventGatewayConsumePolicyDecryptResource) Schema(ctx context.Context, r
 						MarkdownDescription: `Describes how to handle failing encryption or decryption.` + "\n" +
 							`Use ` + "`" + `error` + "`" + ` if the record should be rejected if encryption or decryption fails.` + "\n" +
 							`Use ` + "`" + `passthrough` + "`" + ` to ignore encryption or decryption failure and continue proxying the record.` + "\n" +
-							`must be one of ["error", "passthrough"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"error",
-								"passthrough",
-							),
-						},
+							`possible known values include one of ["error", "passthrough"]`,
 					},
 					"key_sources": schema.ListNestedAttribute{
 						Required: true,

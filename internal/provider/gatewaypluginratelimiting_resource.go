@@ -168,18 +168,7 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`consumer`),
-						Description: `The entity that is used when aggregating the limits. Default: "consumer"; must be one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "service"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"consumer",
-								"consumer-group",
-								"credential",
-								"header",
-								"ip",
-								"path",
-								"service",
-							),
-						},
+						Description: `The entity that is used when aggregating the limits. possible known values include one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "service"]; Default: "consumer"`,
 					},
 					"minute": schema.Float64Attribute{
 						Optional:    true,
@@ -197,14 +186,7 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`local`),
-						Description: `The rate-limiting policies to use for retrieving and incrementing the limits. Default: "local"; must be one of ["cluster", "local", "redis"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"cluster",
-								"local",
-								"redis",
-							),
-						},
+						Description: `The rate-limiting policies to use for retrieving and incrementing the limits. possible known values include one of ["cluster", "local", "redis"]; Default: "local"`,
 					},
 					"redis": schema.SingleNestedAttribute{
 						Computed: true,
@@ -231,14 +213,7 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 									"auth_provider": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"aws",
-												"azure",
-												"gcp",
-											),
-										},
+										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
 									},
 									"aws_access_key_id": schema.StringAttribute{
 										Optional:    true,

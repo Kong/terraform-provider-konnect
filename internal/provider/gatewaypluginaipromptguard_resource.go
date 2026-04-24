@@ -113,34 +113,13 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`text/generation`),
-						Description: `Generative AI category of the request. Default: "text/generation"; must be one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"audio/speech",
-								"audio/transcription",
-								"image/generation",
-								"realtime/generation",
-								"text/embeddings",
-								"text/generation",
-								"video/generation",
-							),
-						},
+						Description: `Generative AI category of the request. possible known values include one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation"]; Default: "text/generation"`,
 					},
 					"llm_format": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`openai`),
-						Description: `LLM input and output format and schema to use. Default: "openai"; must be one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"anthropic",
-								"bedrock",
-								"cohere",
-								"gemini",
-								"huggingface",
-								"openai",
-							),
-						},
+						Description: `LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]; Default: "openai"`,
 					},
 					"match_all_roles": schema.BoolAttribute{
 						Computed:    true,

@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -19,20 +17,16 @@ const (
 func (e BackendClusterAuthenticationSaslScramSensitiveDataAwareAlgorithm) ToPointer() *BackendClusterAuthenticationSaslScramSensitiveDataAwareAlgorithm {
 	return &e
 }
-func (e *BackendClusterAuthenticationSaslScramSensitiveDataAwareAlgorithm) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *BackendClusterAuthenticationSaslScramSensitiveDataAwareAlgorithm) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "sha256", "sha512":
+			return true
+		}
 	}
-	switch v {
-	case "sha256":
-		fallthrough
-	case "sha512":
-		*e = BackendClusterAuthenticationSaslScramSensitiveDataAwareAlgorithm(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for BackendClusterAuthenticationSaslScramSensitiveDataAwareAlgorithm: %v", v)
-	}
+	return false
 }
 
 // BackendClusterAuthenticationSaslScramSensitiveDataAware - SASL/SCRAM authentication scheme for the backend cluster without requiring sensitive password data.

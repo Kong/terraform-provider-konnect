@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -167,24 +165,16 @@ const (
 func (e AiRagInjectorPluginConsumerIdentifier) ToPointer() *AiRagInjectorPluginConsumerIdentifier {
 	return &e
 }
-func (e *AiRagInjectorPluginConsumerIdentifier) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRagInjectorPluginConsumerIdentifier) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "consumer_group", "consumer_id", "custom_id", "username":
+			return true
+		}
 	}
-	switch v {
-	case "consumer_group":
-		fallthrough
-	case "consumer_id":
-		fallthrough
-	case "custom_id":
-		fallthrough
-	case "username":
-		*e = AiRagInjectorPluginConsumerIdentifier(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRagInjectorPluginConsumerIdentifier: %v", v)
-	}
+	return false
 }
 
 // AiRagInjectorPluginParamLocation - Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
@@ -198,20 +188,16 @@ const (
 func (e AiRagInjectorPluginParamLocation) ToPointer() *AiRagInjectorPluginParamLocation {
 	return &e
 }
-func (e *AiRagInjectorPluginParamLocation) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRagInjectorPluginParamLocation) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "body", "query":
+			return true
+		}
 	}
-	switch v {
-	case "body":
-		fallthrough
-	case "query":
-		*e = AiRagInjectorPluginParamLocation(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRagInjectorPluginParamLocation: %v", v)
-	}
+	return false
 }
 
 type AiRagInjectorPluginAuth struct {
@@ -653,30 +639,16 @@ const (
 func (e AiRagInjectorPluginProvider) ToPointer() *AiRagInjectorPluginProvider {
 	return &e
 }
-func (e *AiRagInjectorPluginProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRagInjectorPluginProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai":
+			return true
+		}
 	}
-	switch v {
-	case "azure":
-		fallthrough
-	case "bedrock":
-		fallthrough
-	case "gemini":
-		fallthrough
-	case "huggingface":
-		fallthrough
-	case "mistral":
-		fallthrough
-	case "ollama":
-		fallthrough
-	case "openai":
-		*e = AiRagInjectorPluginProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRagInjectorPluginProvider: %v", v)
-	}
+	return false
 }
 
 type AiRagInjectorPluginModel struct {
@@ -761,20 +733,16 @@ const (
 func (e FilterMode) ToPointer() *FilterMode {
 	return &e
 }
-func (e *FilterMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *FilterMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "compatible", "strict":
+			return true
+		}
 	}
-	switch v {
-	case "compatible":
-		fallthrough
-	case "strict":
-		*e = FilterMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for FilterMode: %v", v)
-	}
+	return false
 }
 
 // GlobalACLConfig - Global ACL configuration for all RAG operations
@@ -821,22 +789,16 @@ const (
 func (e InjectAsRole) ToPointer() *InjectAsRole {
 	return &e
 }
-func (e *InjectAsRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *InjectAsRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "assistant", "system", "user":
+			return true
+		}
 	}
-	switch v {
-	case "assistant":
-		fallthrough
-	case "system":
-		fallthrough
-	case "user":
-		*e = InjectAsRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for InjectAsRole: %v", v)
-	}
+	return false
 }
 
 // AiRagInjectorPluginDistanceMetric - the distance metric to use for vector searches
@@ -850,20 +812,16 @@ const (
 func (e AiRagInjectorPluginDistanceMetric) ToPointer() *AiRagInjectorPluginDistanceMetric {
 	return &e
 }
-func (e *AiRagInjectorPluginDistanceMetric) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRagInjectorPluginDistanceMetric) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "cosine", "euclidean":
+			return true
+		}
 	}
-	switch v {
-	case "cosine":
-		fallthrough
-	case "euclidean":
-		*e = AiRagInjectorPluginDistanceMetric(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRagInjectorPluginDistanceMetric: %v", v)
-	}
+	return false
 }
 
 // AiRagInjectorPluginSslVersion - the ssl version to use for the pgvector database
@@ -878,22 +836,16 @@ const (
 func (e AiRagInjectorPluginSslVersion) ToPointer() *AiRagInjectorPluginSslVersion {
 	return &e
 }
-func (e *AiRagInjectorPluginSslVersion) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRagInjectorPluginSslVersion) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "tlsv1_2", "tlsv1_3":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "tlsv1_2":
-		fallthrough
-	case "tlsv1_3":
-		*e = AiRagInjectorPluginSslVersion(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRagInjectorPluginSslVersion: %v", v)
-	}
+	return false
 }
 
 type AiRagInjectorPluginPgvector struct {
@@ -1030,22 +982,16 @@ const (
 func (e AiRagInjectorPluginAuthProvider) ToPointer() *AiRagInjectorPluginAuthProvider {
 	return &e
 }
-func (e *AiRagInjectorPluginAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRagInjectorPluginAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = AiRagInjectorPluginAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRagInjectorPluginAuthProvider: %v", v)
-	}
+	return false
 }
 
 // AiRagInjectorPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -1247,22 +1193,16 @@ const (
 func (e AiRagInjectorPluginSentinelRole) ToPointer() *AiRagInjectorPluginSentinelRole {
 	return &e
 }
-func (e *AiRagInjectorPluginSentinelRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRagInjectorPluginSentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "master":
-		fallthrough
-	case "slave":
-		*e = AiRagInjectorPluginSentinelRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRagInjectorPluginSentinelRole: %v", v)
-	}
+	return false
 }
 
 type AiRagInjectorPluginRedis struct {
@@ -1488,20 +1428,16 @@ const (
 func (e AiRagInjectorPluginStrategy) ToPointer() *AiRagInjectorPluginStrategy {
 	return &e
 }
-func (e *AiRagInjectorPluginStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRagInjectorPluginStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "pgvector", "redis":
+			return true
+		}
 	}
-	switch v {
-	case "pgvector":
-		fallthrough
-	case "redis":
-		*e = AiRagInjectorPluginStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRagInjectorPluginStrategy: %v", v)
-	}
+	return false
 }
 
 type AiRagInjectorPluginVectordb struct {
@@ -1755,24 +1691,16 @@ const (
 func (e AiRagInjectorPluginProtocols) ToPointer() *AiRagInjectorPluginProtocols {
 	return &e
 }
-func (e *AiRagInjectorPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRagInjectorPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = AiRagInjectorPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRagInjectorPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AiRagInjectorPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

@@ -82,17 +82,17 @@ Required:
 
 Required:
 
-- `action` (String) How to handle the request if the rule matches. must be one of ["allow", "deny"]
+- `action` (String) How to handle the request if the rule matches. possible known values include one of ["allow", "deny"]
 - `operations` (Attributes List) Types of Kafka operations to match against. Note that not every operation can apply to every resource type. (see [below for nested schema](#nestedatt--config--rules--operations))
 - `resource_names` (Attributes List) If any of these entries match, the resource name matches for this rule. A maximum of 50 entries are allowed. (see [below for nested schema](#nestedatt--config--rules--resource_names))
-- `resource_type` (String) This rule applies to access only for type of resource. must be one of ["topic", "group", "transactional_id", "cluster"]
+- `resource_type` (String) This rule applies to access only for type of resource. possible known values include one of ["topic", "group", "transactional_id", "cluster"]
 
 <a id="nestedatt--config--rules--operations"></a>
 ### Nested Schema for `config.rules.operations`
 
 Required:
 
-- `name` (String) must be one of ["all", "alter", "alter_configs", "create", "delete", "describe", "describe_configs", "idempotent_write", "read", "write"]
+- `name` (String) possible known values include one of ["all", "alter", "alter_configs", "create", "delete", "describe", "describe_configs", "idempotent_write", "read", "write"]
 
 
 <a id="nestedatt--config--rules--resource_names"></a>
@@ -113,8 +113,8 @@ In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.
 import {
   to = konnect_event_gateway_cluster_policy_acls.my_konnect_event_gateway_cluster_policy_acls
   id = jsonencode({
-    gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    gateway_id         = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id                 = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     virtual_cluster_id = "..."
   })
 }

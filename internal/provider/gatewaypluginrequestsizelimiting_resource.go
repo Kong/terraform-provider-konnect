@@ -100,14 +100,7 @@ func (r *GatewayPluginRequestSizeLimitingResource) Schema(ctx context.Context, r
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`megabytes`),
-						Description: `Size unit can be set either in ` + "`" + `bytes` + "`" + `, ` + "`" + `kilobytes` + "`" + `, or ` + "`" + `megabytes` + "`" + ` (default). This configuration is not available in versions prior to Kong Gateway 1.3 and Kong Gateway (OSS) 2.0. Default: "megabytes"; must be one of ["bytes", "kilobytes", "megabytes"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"bytes",
-								"kilobytes",
-								"megabytes",
-							),
-						},
+						Description: `Size unit can be set either in ` + "`" + `bytes` + "`" + `, ` + "`" + `kilobytes` + "`" + `, or ` + "`" + `megabytes` + "`" + ` (default). This configuration is not available in versions prior to Kong Gateway 1.3 and Kong Gateway (OSS) 2.0. possible known values include one of ["bytes", "kilobytes", "megabytes"]; Default: "megabytes"`,
 					},
 				},
 			},

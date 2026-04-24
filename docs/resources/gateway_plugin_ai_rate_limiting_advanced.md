@@ -202,8 +202,8 @@ Optional:
 - `error_message` (String) Set a custom error message to return when the rate limit is exceeded. Default: "AI token rate limit exceeded for provider(s): "
 - `header_name` (String) A string representing an HTTP header name.
 - `hide_client_headers` (Boolean) Optionally hide informative response headers that would otherwise provide information about the current status of limits and counters. Default: false
-- `identifier` (String) The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`. Note if `identifier` is `consumer-group`, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate. Default: "consumer"; must be one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "service"]
-- `llm_format` (String) LLM input and output format and schema to use. must be one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]
+- `identifier` (String) The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`. Note if `identifier` is `consumer-group`, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate. possible known values include one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "service"]; Default: "consumer"
+- `llm_format` (String) LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]
 - `llm_providers` (Attributes List) The provider config. Takes an array of `name`, `limit` and `window size` values. Mutually exclusive with `policies`. (see [below for nested schema](#nestedatt--config--llm_providers))
 - `namespace` (String) The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `dictionary_name`, need to be the same.
 - `path` (String) A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
@@ -211,10 +211,10 @@ Optional:
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--redis))
 - `request_prompt_count_function` (String) If defined, it use custom function to count requests for the request prompt provider
 - `retry_after_jitter_max` (Number) The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header. Default: 0
-- `strategy` (String) The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local`, `redis` and `cluster`. Default: "local"; must be one of ["cluster", "local", "redis"]
+- `strategy` (String) The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local`, `redis` and `cluster`. possible known values include one of ["cluster", "local", "redis"]; Default: "local"
 - `sync_rate` (Number) How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 will sync the counters in the specified number of seconds. The minimum allowed interval is 0.02 seconds (20ms).
-- `tokens_count_strategy` (String) What tokens to use for cost calculation. Available values are: `total_tokens` `prompt_tokens`, `completion_tokens` or `cost`. Default: "total_tokens"; must be one of ["completion_tokens", "cost", "prompt_tokens", "total_tokens"]
-- `window_type` (String) Sets the time window type to either `sliding` (default) or `fixed`. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters. Default: "sliding"; must be one of ["fixed", "sliding"]
+- `tokens_count_strategy` (String) What tokens to use for cost calculation. Available values are: `total_tokens` `prompt_tokens`, `completion_tokens` or `cost`. possible known values include one of ["completion_tokens", "cost", "prompt_tokens", "total_tokens"]; Default: "total_tokens"
+- `window_type` (String) Sets the time window type to either `sliding` (default) or `fixed`. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters. possible known values include one of ["fixed", "sliding"]; Default: "sliding"
 
 <a id="nestedatt--config--llm_providers"></a>
 ### Nested Schema for `config.llm_providers`
@@ -222,7 +222,7 @@ Optional:
 Optional:
 
 - `limit` (List of Number) One or more requests-per-window limits to apply. There must be a matching number of window limits and sizes specified. Not Null
-- `name` (String) The LLM provider to which the rate limit applies. Not Null; must be one of ["anthropic", "azure", "bedrock", "cohere", "customCost", "gemini", "huggingface", "llama2", "mistral", "openai", "requestPrompt"]
+- `name` (String) The LLM provider to which the rate limit applies. possible known values include one of ["anthropic", "azure", "bedrock", "cohere", "customCost", "gemini", "huggingface", "llama2", "mistral", "openai", "requestPrompt"]; Not Null
 - `window_size` (List of Number) One or more window sizes to apply a limit to (defined in seconds). There must be a matching number of window limits and sizes specified. Not Null
 
 
@@ -234,7 +234,7 @@ Optional:
 - `id` (String) UUID reference to a reusable ai_rate_limiting_policies DAO entity. Mutually exclusive with inline limits.
 - `limits` (Attributes List) Rate limits to enforce when this policy matches. (see [below for nested schema](#nestedatt--config--policies--limits))
 - `match` (Attributes List) Array of match conditions (AND logic). If omitted, this policy acts as a fallback for unmatched requests. (see [below for nested schema](#nestedatt--config--policies--match))
-- `window_type` (String) The time window type for this policy. Default: "sliding"; must be one of ["fixed", "sliding"]
+- `window_type` (String) The time window type for this policy. possible known values include one of ["fixed", "sliding"]; Default: "sliding"
 
 <a id="nestedatt--config--policies--limits"></a>
 ### Nested Schema for `config.policies.limits`
@@ -242,7 +242,7 @@ Optional:
 Optional:
 
 - `limit` (Number) The rate limit threshold for this window. Not Null
-- `tokens_count_strategy` (String) What to count for this limit. Supported strategies: total_tokens, prompt_tokens, completion_tokens, cost. Default: "total_tokens"; must be one of ["completion_tokens", "cost", "prompt_tokens", "total_tokens"]
+- `tokens_count_strategy` (String) What to count for this limit. Supported strategies: total_tokens, prompt_tokens, completion_tokens, cost. possible known values include one of ["completion_tokens", "cost", "prompt_tokens", "total_tokens"]; Default: "total_tokens"
 - `window_size` (Number) The window size in seconds. Not Null
 
 
@@ -253,7 +253,7 @@ Optional:
 
 - `key` (String) Sub-key for consumer (id|username|custom_id), consumer_group (id|name), or header (header name).
 - `partition_by` (Boolean) If true, the matched value contributes to the composite rate limit counter key. Default: false
-- `type` (String) The attribute to match against. Not Null; must be one of ["consumer", "consumer_group", "header", "ip", "model", "path", "provider"]
+- `type` (String) The attribute to match against. possible known values include one of ["consumer", "consumer_group", "header", "ip", "model", "path", "provider"]; Not Null
 - `values` (List of String) Values to match. If omitted, matches any value of this type.
 
 
@@ -279,7 +279,7 @@ Optional:
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--redis--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
+- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
@@ -291,7 +291,7 @@ Optional:
 
 Optional:
 
-- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]
 - `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 - `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
 - `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
@@ -402,7 +402,7 @@ import {
   to = konnect_gateway_plugin_ai_rate_limiting_advanced.my_konnect_gateway_plugin_ai_rate_limiting_advanced
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

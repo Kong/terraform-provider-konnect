@@ -111,15 +111,7 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`consumer_group`),
-						Description: `The type of consumer identifier used for ACL checks. Default: "consumer_group"; must be one of ["consumer_group", "consumer_id", "custom_id", "username"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"consumer_group",
-								"consumer_id",
-								"custom_id",
-								"username",
-							),
-						},
+						Description: `The type of consumer identifier used for ACL checks. possible known values include one of ["consumer_group", "consumer_id", "custom_id", "username"]; Default: "consumer_group"`,
 					},
 					"embeddings": schema.SingleNestedAttribute{
 						Required: true,
@@ -207,13 +199,7 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 									"param_location": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. must be one of ["body", "query"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"body",
-												"query",
-											),
-										},
+										Description: `Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
 									},
 									"param_name": schema.StringAttribute{
 										Optional:    true,
@@ -402,18 +388,7 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 									},
 									"provider": schema.StringAttribute{
 										Required:    true,
-										Description: `AI provider format to use for embeddings API. must be one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"azure",
-												"bedrock",
-												"gemini",
-												"huggingface",
-												"mistral",
-												"ollama",
-												"openai",
-											),
-										},
+										Description: `AI provider format to use for embeddings API. possible known values include one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai"]`,
 									},
 								},
 							},
@@ -429,13 +404,7 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`compatible`),
-						Description: `Defines how the plugin behaves when a filter is invalid. Set to ` + "`" + `compatible` + "`" + ` to ignore invalid filters, or ` + "`" + `strict` + "`" + ` to raise an error. This can be overridden per request. Default: "compatible"; must be one of ["compatible", "strict"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"compatible",
-								"strict",
-							),
-						},
+						Description: `Defines how the plugin behaves when a filter is invalid. Set to ` + "`" + `compatible` + "`" + ` to ignore invalid filters, or ` + "`" + `strict` + "`" + ` to raise an error. This can be overridden per request. possible known values include one of ["compatible", "strict"]; Default: "compatible"`,
 					},
 					"global_acl_config": schema.SingleNestedAttribute{
 						Computed: true,
@@ -470,14 +439,7 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`user`),
-						Description: `Default: "user"; must be one of ["assistant", "system", "user"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"assistant",
-								"system",
-								"user",
-							),
-						},
+						Description: `possible known values include one of ["assistant", "system", "user"]; Default: "user"`,
 					},
 					"inject_template": schema.StringAttribute{
 						Computed: true,
@@ -516,13 +478,7 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 							},
 							"distance_metric": schema.StringAttribute{
 								Required:    true,
-								Description: `the distance metric to use for vector searches. must be one of ["cosine", "euclidean"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"cosine",
-										"euclidean",
-									),
-								},
+								Description: `the distance metric to use for vector searches. possible known values include one of ["cosine", "euclidean"]`,
 							},
 							"pgvector": schema.SingleNestedAttribute{
 								Computed: true,
@@ -594,14 +550,7 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 										Computed:    true,
 										Optional:    true,
 										Default:     stringdefault.StaticString(`tlsv1_2`),
-										Description: `the ssl version to use for the pgvector database. Default: "tlsv1_2"; must be one of ["any", "tlsv1_2", "tlsv1_3"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"any",
-												"tlsv1_2",
-												"tlsv1_3",
-											),
-										},
+										Description: `the ssl version to use for the pgvector database. possible known values include one of ["any", "tlsv1_2", "tlsv1_3"]; Default: "tlsv1_2"`,
 									},
 									"timeout": schema.Float64Attribute{
 										Computed:    true,
@@ -695,14 +644,7 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 											"auth_provider": schema.StringAttribute{
 												Computed:    true,
 												Optional:    true,
-												Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
-												Validators: []validator.String{
-													stringvalidator.OneOf(
-														"aws",
-														"azure",
-														"gcp",
-													),
-												},
+												Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
 											},
 											"aws_access_key_id": schema.StringAttribute{
 												Optional:    true,
@@ -896,14 +838,7 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 									"sentinel_role": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"any",
-												"master",
-												"slave",
-											),
-										},
+										Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
 									},
 									"sentinel_username": schema.StringAttribute{
 										Optional:    true,
@@ -933,13 +868,7 @@ func (r *GatewayPluginAiRagInjectorResource) Schema(ctx context.Context, req res
 							},
 							"strategy": schema.StringAttribute{
 								Required:    true,
-								Description: `which vector database driver to use. must be one of ["pgvector", "redis"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"pgvector",
-										"redis",
-									),
-								},
+								Description: `which vector database driver to use. possible known values include one of ["pgvector", "redis"]`,
 							},
 							"threshold": schema.Float64Attribute{
 								Optional:    true,

@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // V2AppearanceFontName - The name of the font to render in the browser.
 type V2AppearanceFontName string
 
@@ -34,50 +29,14 @@ const (
 func (e V2AppearanceFontName) ToPointer() *V2AppearanceFontName {
 	return &e
 }
-func (e *V2AppearanceFontName) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *V2AppearanceFontName) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Roboto", "Inter", "Open Sans", "Lato", "Slabo 27px", "Slabo 13px", "Oswald", "Source Sans Pro", "Montserrat", "Raleway", "PT Sans", "Lora", "Roboto Mono", "Inconsolata", "Source Code Pro", "PT Mono", "Ubuntu Mono", "IBM Plex Mono":
+			return true
+		}
 	}
-	switch v {
-	case "Roboto":
-		fallthrough
-	case "Inter":
-		fallthrough
-	case "Open Sans":
-		fallthrough
-	case "Lato":
-		fallthrough
-	case "Slabo 27px":
-		fallthrough
-	case "Slabo 13px":
-		fallthrough
-	case "Oswald":
-		fallthrough
-	case "Source Sans Pro":
-		fallthrough
-	case "Montserrat":
-		fallthrough
-	case "Raleway":
-		fallthrough
-	case "PT Sans":
-		fallthrough
-	case "Lora":
-		fallthrough
-	case "Roboto Mono":
-		fallthrough
-	case "Inconsolata":
-		fallthrough
-	case "Source Code Pro":
-		fallthrough
-	case "PT Mono":
-		fallthrough
-	case "Ubuntu Mono":
-		fallthrough
-	case "IBM Plex Mono":
-		*e = V2AppearanceFontName(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for V2AppearanceFontName: %v", v)
-	}
+	return false
 }

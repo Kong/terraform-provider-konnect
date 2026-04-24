@@ -94,7 +94,7 @@ Optional:
 
 - `allowed_payload_size` (Number) Allowed request payload size in megabytes. Default is `128` megabytes (128000000 bytes). Default: 128
 - `require_content_length` (Boolean) Set to `true` to ensure a valid `Content-Length` header exists before reading the request body. Default: false
-- `size_unit` (String) Size unit can be set either in `bytes`, `kilobytes`, or `megabytes` (default). This configuration is not available in versions prior to Kong Gateway 1.3 and Kong Gateway (OSS) 2.0. Default: "megabytes"; must be one of ["bytes", "kilobytes", "megabytes"]
+- `size_unit` (String) Size unit can be set either in `bytes`, `kilobytes`, or `megabytes` (default). This configuration is not available in versions prior to Kong Gateway 1.3 and Kong Gateway (OSS) 2.0. possible known values include one of ["bytes", "kilobytes", "megabytes"]; Default: "megabytes"
 
 
 <a id="nestedatt--consumer"></a>
@@ -166,7 +166,7 @@ import {
   to = konnect_gateway_plugin_request_size_limiting.my_konnect_gateway_plugin_request_size_limiting
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

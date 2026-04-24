@@ -107,15 +107,7 @@ func (r *CentralizedConsumerResource) Schema(ctx context.Context, req resource.S
 				Computed:    true,
 				Optional:    true,
 				Default:     stringdefault.StaticString(`proxy`),
-				Description: `Type of the consumer. Default: "proxy"; must be one of ["proxy", "developer", "admin", "application"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"proxy",
-						"developer",
-						"admin",
-						"application",
-					),
-				},
+				Description: `Type of the consumer. possible known values include one of ["proxy", "developer", "admin", "application"]; Default: "proxy"`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

@@ -93,10 +93,7 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`CN`),
-						Description: `Certificate property to use as the authenticated group. Valid values are ` + "`" + `CN` + "`" + ` (Common Name) or ` + "`" + `DN` + "`" + ` (Distinguished Name). Once ` + "`" + `skip_consumer_lookup` + "`" + ` is applied, any client with a valid certificate can access the Service/API. To restrict usage to only some of the authenticated users, also add the ACL plugin (not covered here) and create allowed or denied groups of users. Default: "CN"; must be one of ["CN", "DN"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf("CN", "DN"),
-						},
+						Description: `Certificate property to use as the authenticated group. Valid values are ` + "`" + `CN` + "`" + ` (Common Name) or ` + "`" + `DN` + "`" + ` (Distinguished Name). Once ` + "`" + `skip_consumer_lookup` + "`" + ` is applied, any client with a valid certificate can access the Service/API. To restrict usage to only some of the authenticated users, also add the ACL plugin (not covered here) and create allowed or denied groups of users. possible known values include one of ["CN", "DN"]; Default: "CN"`,
 					},
 					"ca_certificates": schema.ListAttribute{
 						Required:    true,
@@ -161,14 +158,7 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`IGNORE_CA_ERROR`),
-						Description: `Controls client certificate revocation check behavior. If set to ` + "`" + `SKIP` + "`" + `, no revocation check is performed. If set to ` + "`" + `IGNORE_CA_ERROR` + "`" + `, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to ` + "`" + `STRICT` + "`" + `, the plugin only treats the certificate as valid when it's able to verify the revocation status. Default: "IGNORE_CA_ERROR"; must be one of ["IGNORE_CA_ERROR", "SKIP", "STRICT"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"IGNORE_CA_ERROR",
-								"SKIP",
-								"STRICT",
-							),
-						},
+						Description: `Controls client certificate revocation check behavior. If set to ` + "`" + `SKIP` + "`" + `, no revocation check is performed. If set to ` + "`" + `IGNORE_CA_ERROR` + "`" + `, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to ` + "`" + `STRICT` + "`" + `, the plugin only treats the certificate as valid when it's able to verify the revocation status. possible known values include one of ["IGNORE_CA_ERROR", "SKIP", "STRICT"]; Default: "IGNORE_CA_ERROR"`,
 					},
 					"san_dirname_matcher": schema.ListAttribute{
 						Computed:    true,

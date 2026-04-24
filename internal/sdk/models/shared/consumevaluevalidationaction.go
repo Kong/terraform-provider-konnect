@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // ConsumeValueValidationAction - Defines a behavior when record value is not valid.
 //   - mark - marks a record with kong/server header and client ID value
 //     to help to identify the clients violating schema.
@@ -21,18 +16,14 @@ const (
 func (e ConsumeValueValidationAction) ToPointer() *ConsumeValueValidationAction {
 	return &e
 }
-func (e *ConsumeValueValidationAction) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ConsumeValueValidationAction) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "mark", "skip":
+			return true
+		}
 	}
-	switch v {
-	case "mark":
-		fallthrough
-	case "skip":
-		*e = ConsumeValueValidationAction(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ConsumeValueValidationAction: %v", v)
-	}
+	return false
 }

@@ -119,27 +119,27 @@ resource "konnect_gateway_plugin_aws_lambda" "my_gatewaypluginawslambda" {
 Optional:
 
 - `aws_assume_role_arn` (String) The target AWS IAM role ARN used to invoke the Lambda function.
-- `aws_imds_protocol_version` (String) Identifier to select the IMDS protocol version to use: `v1` or `v2`. Default: "v1"; must be one of ["v1", "v2"]
+- `aws_imds_protocol_version` (String) Identifier to select the IMDS protocol version to use: `v1` or `v2`. possible known values include one of ["v1", "v2"]; Default: "v1"
 - `aws_key` (String) The AWS key credential to be used when invoking the function.
 - `aws_region` (String) A string representing a host name, such as example.com.
 - `aws_role_session_name` (String) The identifier of the assumed role session. Default: "kong"
 - `aws_secret` (String) The AWS secret credential to be used when invoking the function.
 - `aws_sts_endpoint_url` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
 - `awsgateway_compatible` (Boolean) An optional value that defines whether the plugin should wrap requests into the Amazon API gateway. Default: false
-- `awsgateway_compatible_payload_version` (String) An optional value that defines which version will be used to generate the AWS API Gateway compatible payload. The default will be `1.0`. Default: "1.0"; must be one of ["1.0", "2.0"]
+- `awsgateway_compatible_payload_version` (String) An optional value that defines which version will be used to generate the AWS API Gateway compatible payload. The default will be `1.0`. possible known values include one of ["1.0", "2.0"]; Default: "1.0"
 - `base64_encode_body` (Boolean) An optional value that Base64-encodes the request body. Default: true
 - `disable_https` (Boolean) Default: false
-- `empty_arrays_mode` (String) An optional value that defines whether Kong should send empty arrays (returned by Lambda function) as `[]` arrays or `{}` objects in JSON responses. The value `legacy` means Kong will send empty arrays as `{}` objects in response. Default: "legacy"; must be one of ["correct", "legacy"]
+- `empty_arrays_mode` (String) An optional value that defines whether Kong should send empty arrays (returned by Lambda function) as `[]` arrays or `{}` objects in JSON responses. The value `legacy` means Kong will send empty arrays as `{}` objects in response. possible known values include one of ["correct", "legacy"]; Default: "legacy"
 - `forward_request_body` (Boolean) An optional value that defines whether the request body is sent in the request_body field of the JSON-encoded request. If the body arguments can be parsed, they are sent in the separate request_body_args field of the request. Default: false
 - `forward_request_headers` (Boolean) An optional value that defines whether the original HTTP request headers are sent as a map in the request_headers field of the JSON-encoded request. Default: false
 - `forward_request_method` (Boolean) An optional value that defines whether the original HTTP request method verb is sent in the request_method field of the JSON-encoded request. Default: false
 - `forward_request_uri` (Boolean) An optional value that defines whether the original HTTP request URI is sent in the request_uri field of the JSON-encoded request. Default: false
 - `function_name` (String) The AWS Lambda function to invoke. Both function name and function ARN (including partial) are supported.
 - `host` (String) A string representing a host name, such as example.com.
-- `invocation_type` (String) The InvocationType to use when invoking the function. Available types are RequestResponse, Event, DryRun. Default: "RequestResponse"; must be one of ["DryRun", "Event", "RequestResponse"]
+- `invocation_type` (String) The InvocationType to use when invoking the function. Available types are RequestResponse, Event, DryRun. possible known values include one of ["DryRun", "Event", "RequestResponse"]; Default: "RequestResponse"
 - `is_proxy_integration` (Boolean) An optional value that defines whether the response format to receive from the Lambda to this format. Default: false
 - `keepalive` (Number) An optional value in milliseconds that defines how long an idle connection lives before being closed. Default: 60000
-- `log_type` (String) The LogType to use when invoking the function. By default, None and Tail are supported. Default: "Tail"; must be one of ["None", "Tail"]
+- `log_type` (String) The LogType to use when invoking the function. By default, None and Tail are supported. possible known values include one of ["None", "Tail"]; Default: "Tail"
 - `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 443
 - `proxy_url` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
 - `qualifier` (String) The qualifier to use when invoking the function.
@@ -218,7 +218,7 @@ import {
   to = konnect_gateway_plugin_aws_lambda.my_konnect_gateway_plugin_aws_lambda
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

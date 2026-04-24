@@ -765,24 +765,9 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 										"algorithm": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `Signing algorithm. Not Null; must be one of ["ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512"]`,
+											Description: `Signing algorithm. possible known values include one of ["ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512"]; Not Null`,
 											Validators: []validator.String{
 												speakeasy_stringvalidators.NotNull(),
-												stringvalidator.OneOf(
-													"ES256",
-													"ES384",
-													"ES512",
-													"EdDSA",
-													"HS256",
-													"HS384",
-													"HS512",
-													"PS256",
-													"PS384",
-													"PS512",
-													"RS256",
-													"RS384",
-													"RS512",
-												),
 											},
 										},
 										"expires_in": schema.Int64Attribute{
@@ -1054,14 +1039,7 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 										"content_type": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `The expected mime type of the property value. When set to ` + "`" + `application/json` + "`" + `, SET operations will JSON-encode input data before writing it, and GET operations will JSON-decode output data after reading it. Otherwise, this setting has no effect. must be one of ["application/json", "application/octet-stream", "text/plain"]`,
-											Validators: []validator.String{
-												stringvalidator.OneOf(
-													"application/json",
-													"application/octet-stream",
-													"text/plain",
-												),
-											},
+											Description: `The expected mime type of the property value. When set to ` + "`" + `application/json` + "`" + `, SET operations will JSON-encode input data before writing it, and GET operations will JSON-decode output data after reading it. Otherwise, this setting has no effect. possible known values include one of ["application/json", "application/octet-stream", "text/plain"]`,
 										},
 										"input": schema.StringAttribute{
 											Optional:    true,
@@ -1478,14 +1456,7 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 													"auth_provider": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
-														Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
-														Validators: []validator.String{
-															stringvalidator.OneOf(
-																"aws",
-																"azure",
-																"gcp",
-															),
-														},
+														Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
 													},
 													"aws_access_key_id": schema.StringAttribute{
 														Optional:    true,
@@ -1679,14 +1650,7 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 											"sentinel_role": schema.StringAttribute{
 												Computed:    true,
 												Optional:    true,
-												Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]`,
-												Validators: []validator.String{
-													stringvalidator.OneOf(
-														"any",
-														"master",
-														"slave",
-													),
-												},
+												Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
 											},
 											"sentinel_username": schema.StringAttribute{
 												Optional:    true,
@@ -1717,13 +1681,7 @@ func (r *GatewayPluginDatakitResource) Schema(ctx context.Context, req resource.
 									"strategy": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `The backing data store in which to hold cache entities. Accepted values are: ` + "`" + `memory` + "`" + ` and ` + "`" + `redis` + "`" + `. must be one of ["memory", "redis"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"memory",
-												"redis",
-											),
-										},
+										Description: `The backing data store in which to hold cache entities. Accepted values are: ` + "`" + `memory` + "`" + ` and ` + "`" + `redis` + "`" + `. possible known values include one of ["memory", "redis"]`,
 									},
 								},
 							},

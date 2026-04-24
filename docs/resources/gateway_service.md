@@ -69,7 +69,7 @@ resource "konnect_gateway_service" "my_gatewayservice" {
 - `name` (String) The Service name.
 - `path` (String) The path to be used in requests to the upstream server.
 - `port` (Number) The upstream server port. Default: 80
-- `protocol` (String) The protocol used to communicate with the upstream. Default: "http"; must be one of ["grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss"]
+- `protocol` (String) The protocol used to communicate with the upstream. possible known values include one of ["grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss"]; Default: "http"
 - `read_timeout` (Number) The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server. Default: 60000
 - `retries` (Number) The number of retries to execute upon failure to proxy. Default: 5
 - `tags` (List of String) An optional set of strings associated with the Service for grouping and filtering.
@@ -106,7 +106,7 @@ import {
   to = konnect_gateway_service.my_konnect_gateway_service
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "7fca84d6-7d37-4a74-a7b0-93e576089a41"
+    id               = "7fca84d6-7d37-4a74-a7b0-93e576089a41"
   })
 }
 ```

@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // ProduceKeyValidationAction - Defines a behavior when record key is not valid.
 //   - reject - rejects a batch for topic partition. Only available for produce.
 //   - mark - marks a record with kong/server header and client ID value
@@ -21,18 +16,14 @@ const (
 func (e ProduceKeyValidationAction) ToPointer() *ProduceKeyValidationAction {
 	return &e
 }
-func (e *ProduceKeyValidationAction) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ProduceKeyValidationAction) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "reject", "mark":
+			return true
+		}
 	}
-	switch v {
-	case "reject":
-		fallthrough
-	case "mark":
-		*e = ProduceKeyValidationAction(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ProduceKeyValidationAction: %v", v)
-	}
+	return false
 }

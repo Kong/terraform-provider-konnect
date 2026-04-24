@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -133,22 +131,16 @@ const (
 func (e JSONTypes) ToPointer() *JSONTypes {
 	return &e
 }
-func (e *JSONTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *JSONTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "boolean", "number", "string":
+			return true
+		}
 	}
-	switch v {
-	case "boolean":
-		fallthrough
-	case "number":
-		fallthrough
-	case "string":
-		*e = JSONTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for JSONTypes: %v", v)
-	}
+	return false
 }
 
 type RequestTransformerAdvancedPluginAdd struct {
@@ -230,22 +222,16 @@ const (
 func (e RequestTransformerAdvancedPluginJSONTypes) ToPointer() *RequestTransformerAdvancedPluginJSONTypes {
 	return &e
 }
-func (e *RequestTransformerAdvancedPluginJSONTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestTransformerAdvancedPluginJSONTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "boolean", "number", "string":
+			return true
+		}
 	}
-	switch v {
-	case "boolean":
-		fallthrough
-	case "number":
-		fallthrough
-	case "string":
-		*e = RequestTransformerAdvancedPluginJSONTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RequestTransformerAdvancedPluginJSONTypes: %v", v)
-	}
+	return false
 }
 
 type RequestTransformerAdvancedPluginAppend struct {
@@ -381,22 +367,16 @@ const (
 func (e RequestTransformerAdvancedPluginConfigJSONTypes) ToPointer() *RequestTransformerAdvancedPluginConfigJSONTypes {
 	return &e
 }
-func (e *RequestTransformerAdvancedPluginConfigJSONTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestTransformerAdvancedPluginConfigJSONTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "boolean", "number", "string":
+			return true
+		}
 	}
-	switch v {
-	case "boolean":
-		fallthrough
-	case "number":
-		fallthrough
-	case "string":
-		*e = RequestTransformerAdvancedPluginConfigJSONTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RequestTransformerAdvancedPluginConfigJSONTypes: %v", v)
-	}
+	return false
 }
 
 type RequestTransformerAdvancedPluginReplace struct {
@@ -591,24 +571,16 @@ const (
 func (e RequestTransformerAdvancedPluginProtocols) ToPointer() *RequestTransformerAdvancedPluginProtocols {
 	return &e
 }
-func (e *RequestTransformerAdvancedPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestTransformerAdvancedPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = RequestTransformerAdvancedPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RequestTransformerAdvancedPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // RequestTransformerAdvancedPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

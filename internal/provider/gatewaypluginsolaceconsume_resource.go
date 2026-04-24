@@ -86,13 +86,7 @@ func (r *GatewayPluginSolaceConsumeResource) Schema(ctx context.Context, req res
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(`CLIENT`),
-								Description: `Controls how acknowledgments are generated for received Guaranteed messages. When set to ` + "`" + `AUTO` + "`" + `, the messages are positively acknowledged upon receiving them. When set to 'CLIENT', the messages are positively or negatively acknowledged by Kong regarding to client delivery status. Default: "CLIENT"; must be one of ["AUTO", "CLIENT"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"AUTO",
-										"CLIENT",
-									),
-								},
+								Description: `Controls how acknowledgments are generated for received Guaranteed messages. When set to ` + "`" + `AUTO` + "`" + `, the messages are positively acknowledged upon receiving them. When set to 'CLIENT', the messages are positively or negatively acknowledged by Kong regarding to client delivery status. possible known values include one of ["AUTO", "CLIENT"]; Default: "CLIENT"`,
 							},
 							"binds": schema.ListNestedAttribute{
 								Required: true,
@@ -166,15 +160,7 @@ func (r *GatewayPluginSolaceConsumeResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`POLLING`),
-						Description: `The mode of operation for the plugin. The ` + "`" + `AUTO` + "`" + ` determines the mode automatically from the client request. Default: "POLLING"; must be one of ["AUTO", "POLLING", "SERVER-SENT-EVENTS", "WEBSOCKET"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"AUTO",
-								"POLLING",
-								"SERVER-SENT-EVENTS",
-								"WEBSOCKET",
-							),
-						},
+						Description: `The mode of operation for the plugin. The ` + "`" + `AUTO` + "`" + ` determines the mode automatically from the client request. possible known values include one of ["AUTO", "POLLING", "SERVER-SENT-EVENTS", "WEBSOCKET"]; Default: "POLLING"`,
 					},
 					"polling": schema.SingleNestedAttribute{
 						Computed: true,
@@ -240,14 +226,7 @@ func (r *GatewayPluginSolaceConsumeResource) Schema(ctx context.Context, req res
 										Computed:    true,
 										Optional:    true,
 										Default:     stringdefault.StaticString(`BASIC`),
-										Description: `The client authentication scheme used when connection to an event broker. Default: "BASIC"; must be one of ["BASIC", "NONE", "OAUTH2"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"BASIC",
-												"NONE",
-												"OAUTH2",
-											),
-										},
+										Description: `The client authentication scheme used when connection to an event broker. possible known values include one of ["BASIC", "NONE", "OAUTH2"]; Default: "BASIC"`,
 									},
 									"username": schema.StringAttribute{
 										Optional:    true,

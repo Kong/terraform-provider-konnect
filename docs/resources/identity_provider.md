@@ -36,7 +36,7 @@ resource "konnect_identity_provider" "my_identityprovider" {
 Only one identity provider can be active at a time, such as SAML or OIDC.
 Default: false
 - `login_path` (String) The path used for initiating login requests with the identity provider.
-- `type` (String) Specifies the type of identity provider. must be one of ["oidc", "saml"]; Requires replacement if changed.
+- `type` (String) Specifies the type of identity provider. possible known values include one of ["oidc", "saml"]; Requires replacement if changed.
 
 ### Read-Only
 

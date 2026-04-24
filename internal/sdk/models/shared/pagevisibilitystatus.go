@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // PageVisibilityStatus - Whether a page is publicly accessible to non-authenticated users.
 // If not provided, the default_page_visibility value of the portal will be used.
 type PageVisibilityStatus string
@@ -19,18 +14,14 @@ const (
 func (e PageVisibilityStatus) ToPointer() *PageVisibilityStatus {
 	return &e
 }
-func (e *PageVisibilityStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PageVisibilityStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "public", "private":
+			return true
+		}
 	}
-	switch v {
-	case "public":
-		fallthrough
-	case "private":
-		*e = PageVisibilityStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PageVisibilityStatus: %v", v)
-	}
+	return false
 }

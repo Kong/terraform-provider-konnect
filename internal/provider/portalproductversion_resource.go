@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -193,13 +192,7 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 			},
 			"publish_status": schema.StringAttribute{
 				Required:    true,
-				Description: `Publication status of the API product version on the portal. must be one of ["published", "unpublished"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"published",
-						"unpublished",
-					),
-				},
+				Description: `Publication status of the API product version on the portal. possible known values include one of ["published", "unpublished"]`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

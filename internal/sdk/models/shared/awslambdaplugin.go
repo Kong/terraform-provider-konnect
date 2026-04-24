@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -133,20 +131,16 @@ const (
 func (e AwsImdsProtocolVersion) ToPointer() *AwsImdsProtocolVersion {
 	return &e
 }
-func (e *AwsImdsProtocolVersion) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AwsImdsProtocolVersion) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "v1", "v2":
+			return true
+		}
 	}
-	switch v {
-	case "v1":
-		fallthrough
-	case "v2":
-		*e = AwsImdsProtocolVersion(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AwsImdsProtocolVersion: %v", v)
-	}
+	return false
 }
 
 // AwsgatewayCompatiblePayloadVersion - An optional value that defines which version will be used to generate the AWS API Gateway compatible payload. The default will be `1.0`.
@@ -160,20 +154,16 @@ const (
 func (e AwsgatewayCompatiblePayloadVersion) ToPointer() *AwsgatewayCompatiblePayloadVersion {
 	return &e
 }
-func (e *AwsgatewayCompatiblePayloadVersion) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AwsgatewayCompatiblePayloadVersion) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "1.0", "2.0":
+			return true
+		}
 	}
-	switch v {
-	case "1.0":
-		fallthrough
-	case "2.0":
-		*e = AwsgatewayCompatiblePayloadVersion(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AwsgatewayCompatiblePayloadVersion: %v", v)
-	}
+	return false
 }
 
 // EmptyArraysMode - An optional value that defines whether Kong should send empty arrays (returned by Lambda function) as `[]` arrays or `{}` objects in JSON responses. The value `legacy` means Kong will send empty arrays as `{}` objects in response
@@ -187,20 +177,16 @@ const (
 func (e EmptyArraysMode) ToPointer() *EmptyArraysMode {
 	return &e
 }
-func (e *EmptyArraysMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *EmptyArraysMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "correct", "legacy":
+			return true
+		}
 	}
-	switch v {
-	case "correct":
-		fallthrough
-	case "legacy":
-		*e = EmptyArraysMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for EmptyArraysMode: %v", v)
-	}
+	return false
 }
 
 // The InvocationType to use when invoking the function. Available types are RequestResponse, Event, DryRun.
@@ -215,22 +201,16 @@ const (
 func (e InvocationType) ToPointer() *InvocationType {
 	return &e
 }
-func (e *InvocationType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *InvocationType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "DryRun", "Event", "RequestResponse":
+			return true
+		}
 	}
-	switch v {
-	case "DryRun":
-		fallthrough
-	case "Event":
-		fallthrough
-	case "RequestResponse":
-		*e = InvocationType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for InvocationType: %v", v)
-	}
+	return false
 }
 
 // The LogType to use when invoking the function. By default, None and Tail are supported.
@@ -244,20 +224,16 @@ const (
 func (e LogType) ToPointer() *LogType {
 	return &e
 }
-func (e *LogType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *LogType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "None", "Tail":
+			return true
+		}
 	}
-	switch v {
-	case "None":
-		fallthrough
-	case "Tail":
-		*e = LogType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for LogType: %v", v)
-	}
+	return false
 }
 
 type AwsLambdaPluginConfig struct {
@@ -569,24 +545,16 @@ const (
 func (e AwsLambdaPluginProtocols) ToPointer() *AwsLambdaPluginProtocols {
 	return &e
 }
-func (e *AwsLambdaPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AwsLambdaPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = AwsLambdaPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AwsLambdaPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AwsLambdaPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

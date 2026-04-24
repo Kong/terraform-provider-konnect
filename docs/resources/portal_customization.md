@@ -101,7 +101,7 @@ Optional:
 - `external` (Boolean) When clicked, open the link in a new window. Not Null
 - `path` (String) The absolute path of a page in a portal with a leading slash. Not Null
 - `title` (String) The link display text. Not Null
-- `visibility` (String) Whether a menu item is public or private. Private menu items are only accessible to authenticated users. Not Null; must be one of ["public", "private"]
+- `visibility` (String) Whether a menu item is public or private. Private menu items are only accessible to authenticated users. possible known values include one of ["public", "private"]; Not Null
 
 
 <a id="nestedatt--menu--footer_sections"></a>
@@ -120,7 +120,7 @@ Optional:
 - `external` (Boolean) When clicked, open the link in a new window. Not Null
 - `path` (String) The absolute path of a page in a portal with a leading slash. Not Null
 - `title` (String) The link display text. Not Null
-- `visibility` (String) Whether a menu item is public or private. Private menu items are only accessible to authenticated users. Not Null; must be one of ["public", "private"]
+- `visibility` (String) Whether a menu item is public or private. Private menu items are only accessible to authenticated users. possible known values include one of ["public", "private"]; Not Null
 
 
 
@@ -132,7 +132,7 @@ Optional:
 - `external` (Boolean) When clicked, open the link in a new window. Not Null
 - `path` (String) The absolute path of a page in a portal with a leading slash. Not Null
 - `title` (String) The link display text. Not Null
-- `visibility` (String) Whether a menu item is public or private. Private menu items are only accessible to authenticated users. Not Null; must be one of ["public", "private"]
+- `visibility` (String) Whether a menu item is public or private. Private menu items are only accessible to authenticated users. possible known values include one of ["public", "private"]; Not Null
 
 
 
@@ -156,7 +156,7 @@ Optional:
 Optional:
 
 - `colors` (Attributes) (see [below for nested schema](#nestedatt--theme--colors))
-- `mode` (String) must be one of ["light", "dark", "system"]
+- `mode` (String) possible known values include one of ["light", "dark", "system"]
 - `name` (String)
 
 <a id="nestedatt--theme--colors"></a>

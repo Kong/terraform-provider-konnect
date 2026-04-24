@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -173,38 +171,16 @@ const (
 func (e HeaderType) ToPointer() *HeaderType {
 	return &e
 }
-func (e *HeaderType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *HeaderType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "b3", "b3-single", "datadog", "gcp", "ignore", "instana", "jaeger", "ot", "preserve", "w3c":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "b3":
-		fallthrough
-	case "b3-single":
-		fallthrough
-	case "datadog":
-		fallthrough
-	case "gcp":
-		fallthrough
-	case "ignore":
-		fallthrough
-	case "instana":
-		fallthrough
-	case "jaeger":
-		fallthrough
-	case "ot":
-		fallthrough
-	case "preserve":
-		fallthrough
-	case "w3c":
-		*e = HeaderType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for HeaderType: %v", v)
-	}
+	return false
 }
 
 type OpentelemetryPluginMetrics struct {
@@ -311,34 +287,16 @@ const (
 func (e DefaultFormat) ToPointer() *DefaultFormat {
 	return &e
 }
-func (e *DefaultFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DefaultFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "w3c":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "b3":
-		fallthrough
-	case "b3-single":
-		fallthrough
-	case "datadog":
-		fallthrough
-	case "gcp":
-		fallthrough
-	case "instana":
-		fallthrough
-	case "jaeger":
-		fallthrough
-	case "ot":
-		fallthrough
-	case "w3c":
-		*e = DefaultFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for DefaultFormat: %v", v)
-	}
+	return false
 }
 
 type Extract string
@@ -357,32 +315,16 @@ const (
 func (e Extract) ToPointer() *Extract {
 	return &e
 }
-func (e *Extract) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Extract) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "b3", "datadog", "gcp", "instana", "jaeger", "ot", "w3c":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "b3":
-		fallthrough
-	case "datadog":
-		fallthrough
-	case "gcp":
-		fallthrough
-	case "instana":
-		fallthrough
-	case "jaeger":
-		fallthrough
-	case "ot":
-		fallthrough
-	case "w3c":
-		*e = Extract(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Extract: %v", v)
-	}
+	return false
 }
 
 type Inject string
@@ -403,36 +345,16 @@ const (
 func (e Inject) ToPointer() *Inject {
 	return &e
 }
-func (e *Inject) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Inject) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "preserve", "w3c":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "b3":
-		fallthrough
-	case "b3-single":
-		fallthrough
-	case "datadog":
-		fallthrough
-	case "gcp":
-		fallthrough
-	case "instana":
-		fallthrough
-	case "jaeger":
-		fallthrough
-	case "ot":
-		fallthrough
-	case "preserve":
-		fallthrough
-	case "w3c":
-		*e = Inject(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Inject: %v", v)
-	}
+	return false
 }
 
 type Propagation struct {
@@ -496,20 +418,16 @@ const (
 func (e OpentelemetryPluginConcurrencyLimit) ToPointer() *OpentelemetryPluginConcurrencyLimit {
 	return &e
 }
-func (e *OpentelemetryPluginConcurrencyLimit) UnmarshalJSON(data []byte) error {
-	var v int64
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OpentelemetryPluginConcurrencyLimit) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case -1, 1:
+			return true
+		}
 	}
-	switch v {
-	case -1:
-		fallthrough
-	case 1:
-		*e = OpentelemetryPluginConcurrencyLimit(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for OpentelemetryPluginConcurrencyLimit: %v", v)
-	}
+	return false
 }
 
 type OpentelemetryPluginQueue struct {
@@ -609,20 +527,16 @@ const (
 func (e SamplingStrategy) ToPointer() *SamplingStrategy {
 	return &e
 }
-func (e *SamplingStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SamplingStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "parent_drop_probability_fallback", "parent_probability_fallback":
+			return true
+		}
 	}
-	switch v {
-	case "parent_drop_probability_fallback":
-		fallthrough
-	case "parent_probability_fallback":
-		*e = SamplingStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SamplingStrategy: %v", v)
-	}
+	return false
 }
 
 type OpentelemetryPluginConfig struct {
@@ -836,36 +750,16 @@ const (
 func (e OpentelemetryPluginProtocols) ToPointer() *OpentelemetryPluginProtocols {
 	return &e
 }
-func (e *OpentelemetryPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OpentelemetryPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = OpentelemetryPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for OpentelemetryPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // OpentelemetryPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

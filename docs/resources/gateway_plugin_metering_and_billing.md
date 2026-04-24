@@ -138,7 +138,7 @@ Optional:
 
 - `event_property_name` (String) The property name in the usage event data payload. Not Null
 - `look_up_value_in` (String) The header name or query parameter that contains the value, e.g 'x-department-id'. Not Null
-- `source` (String) Where to find this attribute in the request. Not Null; must be one of ["header", "query"]
+- `source` (String) Where to find this attribute in the request. possible known values include one of ["header", "query"]; Not Null
 
 
 <a id="nestedatt--config--queue"></a>
@@ -146,7 +146,7 @@ Optional:
 
 Optional:
 
-- `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of [-1, 1]
+- `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. possible known values include one of [-1, 1]; Default: 1
 - `initial_retry_delay` (Number) Time in seconds before the initial retry is made for a failing batch.
 - `max_batch_size` (Number) Maximum number of entries that can be processed at a time. Default: 1
 - `max_bytes` (Number) Maximum number of bytes that can be waiting on a queue, requires string content.
@@ -162,7 +162,7 @@ Optional:
 Optional:
 
 - `field` (String) The header name, query parameter, consumer field, or application field that contains the customer identifier, e.g. 'x-customer-id'
-- `look_up_value_in` (String) Where to find the customer identifier in the request. Default: "consumer"; must be one of ["application", "consumer", "header", "query"]
+- `look_up_value_in` (String) Where to find the customer identifier in the request. possible known values include one of ["application", "consumer", "header", "query"]; Default: "consumer"
 
 
 
@@ -235,7 +235,7 @@ import {
   to = konnect_gateway_plugin_metering_and_billing.my_konnect_gateway_plugin_metering_and_billing
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

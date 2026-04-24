@@ -126,40 +126,12 @@ func (r *GatewayPluginAiMcpOauth2Resource) Schema(ctx context.Context, req resou
 					"client_alg": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The client JWT signing algorithm. must be one of ["ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"ES256",
-								"ES384",
-								"ES512",
-								"EdDSA",
-								"HS256",
-								"HS384",
-								"HS512",
-								"PS256",
-								"PS384",
-								"PS512",
-								"RS256",
-								"RS384",
-								"RS512",
-							),
-						},
+						Description: `The client JWT signing algorithm. possible known values include one of ["ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512"]`,
 					},
 					"client_auth": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The client authentication method. must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"client_secret_basic",
-								"client_secret_jwt",
-								"client_secret_post",
-								"none",
-								"private_key_jwt",
-								"self_signed_tls_client_auth",
-								"tls_client_auth",
-							),
-						},
+						Description: `The client authentication method. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]`,
 					},
 					"client_id": schema.StringAttribute{
 						Optional:    true,
@@ -251,14 +223,7 @@ func (r *GatewayPluginAiMcpOauth2Resource) Schema(ctx context.Context, req resou
 					"introspection_format": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Controls introspection response format. must be one of ["base64", "base64url", "string"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"base64",
-								"base64url",
-								"string",
-							),
-						},
+						Description: `Controls introspection response format. possible known values include one of ["base64", "base64url", "string"]`,
 					},
 					"jwks_cache_ttl": schema.Int64Attribute{
 						Computed:    true,
@@ -416,15 +381,7 @@ func (r *GatewayPluginAiMcpOauth2Resource) Schema(ctx context.Context, req resou
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(`client_secret_basic`),
-								Description: `The type of authentication method to use with the exchange endpoint. Use 'inherit' to use the same client_id, and secret as in introspection_endpoint. Default: "client_secret_basic"; must be one of ["client_secret_basic", "client_secret_post", "inherit", "none"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"client_secret_basic",
-										"client_secret_post",
-										"inherit",
-										"none",
-									),
-								},
+								Description: `The type of authentication method to use with the exchange endpoint. Use 'inherit' to use the same client_id, and secret as in introspection_endpoint. possible known values include one of ["client_secret_basic", "client_secret_post", "inherit", "none"]; Default: "client_secret_basic"`,
 							},
 							"client_id": schema.StringAttribute{
 								Optional:    true,
@@ -471,14 +428,7 @@ func (r *GatewayPluginAiMcpOauth2Resource) Schema(ctx context.Context, req resou
 										Computed:    true,
 										Optional:    true,
 										Default:     stringdefault.StaticString(`none`),
-										Description: `Where to obtain actor token. Default: "none"; must be one of ["config", "header", "none"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"config",
-												"header",
-												"none",
-											),
-										},
+										Description: `Where to obtain actor token. possible known values include one of ["config", "header", "none"]; Default: "none"`,
 									},
 									"actor_token_type": schema.StringAttribute{
 										Computed:    true,

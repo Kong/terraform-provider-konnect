@@ -190,26 +190,13 @@ func (r *GatewayPluginAiSanitizerResource) Schema(ctx context.Context, req resou
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`placeholder`),
-						Description: `What value to be used to redacted to. Default: "placeholder"; must be one of ["placeholder", "synthetic"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"placeholder",
-								"synthetic",
-							),
-						},
+						Description: `What value to be used to redacted to. possible known values include one of ["placeholder", "synthetic"]; Default: "placeholder"`,
 					},
 					"sanitization_mode": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`INPUT`),
-						Description: `The sanitization mode to use for the request. Default: "INPUT"; must be one of ["BOTH", "INPUT", "OUTPUT"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"BOTH",
-								"INPUT",
-								"OUTPUT",
-							),
-						},
+						Description: `The sanitization mode to use for the request. possible known values include one of ["BOTH", "INPUT", "OUTPUT"]; Default: "INPUT"`,
 					},
 					"scheme": schema.StringAttribute{
 						Computed:    true,

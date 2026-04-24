@@ -52,9 +52,9 @@ In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.
 import {
   to = konnect_gateway_basic_auth.my_konnect_gateway_basic_auth
   id = jsonencode({
-    consumer_id = ""
+    consumer_id      = ""
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "80db1b58-ca7c-4d21-b92a-64eb07725872"
+    id               = "80db1b58-ca7c-4d21-b92a-64eb07725872"
   })
 }
 ```

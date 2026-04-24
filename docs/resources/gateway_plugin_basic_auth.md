@@ -127,7 +127,7 @@ Optional:
 Optional:
 
 - `redis` (Attributes) Redis configuration (see [below for nested schema](#nestedatt--config--brute_force_protection--redis))
-- `strategy` (String) The brute force protection strategy to use for retrieving and incrementing the limits. Available values are: `cluster`, `redis`, `memory`, and `off`. Default: "off"; must be one of ["cluster", "memory", "off", "redis"]
+- `strategy` (String) The brute force protection strategy to use for retrieving and incrementing the limits. Available values are: `cluster`, `redis`, `memory`, and `off`. possible known values include one of ["cluster", "memory", "off", "redis"]; Default: "off"
 
 <a id="nestedatt--config--brute_force_protection--redis"></a>
 ### Nested Schema for `config.brute_force_protection.redis`
@@ -150,7 +150,7 @@ Optional:
 
 Optional:
 
-- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]
 - `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 - `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
 - `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
@@ -228,7 +228,7 @@ import {
   to = konnect_gateway_plugin_basic_auth.my_konnect_gateway_plugin_basic_auth
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

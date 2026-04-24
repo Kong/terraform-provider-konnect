@@ -42,22 +42,16 @@ const (
 func (e AuthStrategyKeyAuthUnit) ToPointer() *AuthStrategyKeyAuthUnit {
 	return &e
 }
-func (e *AuthStrategyKeyAuthUnit) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AuthStrategyKeyAuthUnit) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "days", "weeks", "years":
+			return true
+		}
 	}
-	switch v {
-	case "days":
-		fallthrough
-	case "weeks":
-		fallthrough
-	case "years":
-		*e = AuthStrategyKeyAuthUnit(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AuthStrategyKeyAuthUnit: %v", v)
-	}
+	return false
 }
 
 // AuthStrategyKeyAuthTTL - Default maximum Time-To-Live for keys created under this strategy.

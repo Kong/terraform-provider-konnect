@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -25,20 +23,16 @@ const (
 func (e BootstrapPort) ToPointer() *BootstrapPort {
 	return &e
 }
-func (e *BootstrapPort) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *BootstrapPort) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "none", "at_start":
+			return true
+		}
 	}
-	switch v {
-	case "none":
-		fallthrough
-	case "at_start":
-		*e = BootstrapPort(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for BootstrapPort: %v", v)
-	}
+	return false
 }
 
 // ForwardToClusterByPortMappingConfig - The configuration to forward request to `destination` and rewrite ports accordingly.

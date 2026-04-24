@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -133,20 +131,16 @@ const (
 func (e ParamLocation) ToPointer() *ParamLocation {
 	return &e
 }
-func (e *ParamLocation) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ParamLocation) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "body", "query":
+			return true
+		}
 	}
-	switch v {
-	case "body":
-		fallthrough
-	case "query":
-		*e = ParamLocation(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ParamLocation: %v", v)
-	}
+	return false
 }
 
 type Auth struct {
@@ -322,28 +316,16 @@ const (
 func (e AiProxyPluginGenaiCategory) ToPointer() *AiProxyPluginGenaiCategory {
 	return &e
 }
-func (e *AiProxyPluginGenaiCategory) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiProxyPluginGenaiCategory) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "audio/speech", "audio/transcription", "image/generation", "text/embeddings", "text/generation", "video/generation":
+			return true
+		}
 	}
-	switch v {
-	case "audio/speech":
-		fallthrough
-	case "audio/transcription":
-		fallthrough
-	case "image/generation":
-		fallthrough
-	case "text/embeddings":
-		fallthrough
-	case "text/generation":
-		fallthrough
-	case "video/generation":
-		*e = AiProxyPluginGenaiCategory(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiProxyPluginGenaiCategory: %v", v)
-	}
+	return false
 }
 
 // AiProxyPluginLlmFormat - LLM input and output format and schema to use
@@ -361,28 +343,16 @@ const (
 func (e AiProxyPluginLlmFormat) ToPointer() *AiProxyPluginLlmFormat {
 	return &e
 }
-func (e *AiProxyPluginLlmFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiProxyPluginLlmFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai":
+			return true
+		}
 	}
-	switch v {
-	case "anthropic":
-		fallthrough
-	case "bedrock":
-		fallthrough
-	case "cohere":
-		fallthrough
-	case "gemini":
-		fallthrough
-	case "huggingface":
-		fallthrough
-	case "openai":
-		*e = AiProxyPluginLlmFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiProxyPluginLlmFormat: %v", v)
-	}
+	return false
 }
 
 type AiProxyPluginLogging struct {
@@ -526,26 +496,16 @@ const (
 func (e EmbeddingInputType) ToPointer() *EmbeddingInputType {
 	return &e
 }
-func (e *EmbeddingInputType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *EmbeddingInputType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "classification", "clustering", "image", "search_document", "search_query":
+			return true
+		}
 	}
-	switch v {
-	case "classification":
-		fallthrough
-	case "clustering":
-		fallthrough
-	case "image":
-		fallthrough
-	case "search_document":
-		fallthrough
-	case "search_query":
-		*e = EmbeddingInputType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for EmbeddingInputType: %v", v)
-	}
+	return false
 }
 
 type Cohere struct {
@@ -722,22 +682,16 @@ const (
 func (e Llama2Format) ToPointer() *Llama2Format {
 	return &e
 }
-func (e *Llama2Format) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Llama2Format) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ollama", "openai", "raw":
+			return true
+		}
 	}
-	switch v {
-	case "ollama":
-		fallthrough
-	case "openai":
-		fallthrough
-	case "raw":
-		*e = Llama2Format(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Llama2Format: %v", v)
-	}
+	return false
 }
 
 // MistralFormat - If using mistral provider, select the upstream message format.
@@ -751,20 +705,16 @@ const (
 func (e MistralFormat) ToPointer() *MistralFormat {
 	return &e
 }
-func (e *MistralFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MistralFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ollama", "openai":
+			return true
+		}
 	}
-	switch v {
-	case "ollama":
-		fallthrough
-	case "openai":
-		*e = MistralFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MistralFormat: %v", v)
-	}
+	return false
 }
 
 // OptionsObj - Key/value settings for the model
@@ -990,48 +940,16 @@ const (
 func (e Provider) ToPointer() *Provider {
 	return &e
 }
-func (e *Provider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Provider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "databricks", "deepseek", "gemini", "huggingface", "llama2", "mistral", "ollama", "openai", "vllm", "xai":
+			return true
+		}
 	}
-	switch v {
-	case "anthropic":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "bedrock":
-		fallthrough
-	case "cerebras":
-		fallthrough
-	case "cohere":
-		fallthrough
-	case "dashscope":
-		fallthrough
-	case "databricks":
-		fallthrough
-	case "deepseek":
-		fallthrough
-	case "gemini":
-		fallthrough
-	case "huggingface":
-		fallthrough
-	case "llama2":
-		fallthrough
-	case "mistral":
-		fallthrough
-	case "ollama":
-		fallthrough
-	case "openai":
-		fallthrough
-	case "vllm":
-		fallthrough
-	case "xai":
-		*e = Provider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Provider: %v", v)
-	}
+	return false
 }
 
 type Model struct {
@@ -1096,22 +1014,16 @@ const (
 func (e ResponseStreaming) ToPointer() *ResponseStreaming {
 	return &e
 }
-func (e *ResponseStreaming) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ResponseStreaming) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "allow", "always", "deny":
+			return true
+		}
 	}
-	switch v {
-	case "allow":
-		fallthrough
-	case "always":
-		fallthrough
-	case "deny":
-		*e = ResponseStreaming(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ResponseStreaming: %v", v)
-	}
+	return false
 }
 
 // RouteType - The model's operation implementation, for this provider.
@@ -1138,46 +1050,16 @@ const (
 func (e RouteType) ToPointer() *RouteType {
 	return &e
 }
-func (e *RouteType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RouteType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime", "video/v1/videos/generations":
+			return true
+		}
 	}
-	switch v {
-	case "audio/v1/audio/speech":
-		fallthrough
-	case "audio/v1/audio/transcriptions":
-		fallthrough
-	case "audio/v1/audio/translations":
-		fallthrough
-	case "image/v1/images/edits":
-		fallthrough
-	case "image/v1/images/generations":
-		fallthrough
-	case "llm/v1/assistants":
-		fallthrough
-	case "llm/v1/batches":
-		fallthrough
-	case "llm/v1/chat":
-		fallthrough
-	case "llm/v1/completions":
-		fallthrough
-	case "llm/v1/embeddings":
-		fallthrough
-	case "llm/v1/files":
-		fallthrough
-	case "llm/v1/responses":
-		fallthrough
-	case "preserve":
-		fallthrough
-	case "realtime/v1/realtime":
-		fallthrough
-	case "video/v1/videos/generations":
-		*e = RouteType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RouteType: %v", v)
-	}
+	return false
 }
 
 type AiProxyPluginConfig struct {
@@ -1332,28 +1214,16 @@ const (
 func (e AiProxyPluginProtocols) ToPointer() *AiProxyPluginProtocols {
 	return &e
 }
-func (e *AiProxyPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiProxyPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = AiProxyPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiProxyPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AiProxyPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

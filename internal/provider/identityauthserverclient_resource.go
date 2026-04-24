@@ -175,13 +175,7 @@ func (r *IdentityAuthServerClientResource) Schema(ctx context.Context, req resou
 				Computed:    true,
 				Optional:    true,
 				Default:     stringdefault.StaticString(`client_secret_post`),
-				Description: `Requested authentication method for OAuth 2.0 endpoints. Default: "client_secret_post"; must be one of ["client_secret_post", "none"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"client_secret_post",
-						"none",
-					),
-				},
+				Description: `Requested authentication method for OAuth 2.0 endpoints. possible known values include one of ["client_secret_post", "none"]; Default: "client_secret_post"`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

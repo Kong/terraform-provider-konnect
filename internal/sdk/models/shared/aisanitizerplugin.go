@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -150,56 +148,16 @@ const (
 func (e Anonymize) ToPointer() *Anonymize {
 	return &e
 }
-func (e *Anonymize) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Anonymize) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "all", "all_and_credentials", "bank", "credentials", "creditcard", "crypto", "custom", "date", "domain", "driverlicense", "email", "general", "ip", "medical", "nationalid", "nrp", "passport", "phone", "ssn", "url":
+			return true
+		}
 	}
-	switch v {
-	case "all":
-		fallthrough
-	case "all_and_credentials":
-		fallthrough
-	case "bank":
-		fallthrough
-	case "credentials":
-		fallthrough
-	case "creditcard":
-		fallthrough
-	case "crypto":
-		fallthrough
-	case "custom":
-		fallthrough
-	case "date":
-		fallthrough
-	case "domain":
-		fallthrough
-	case "driverlicense":
-		fallthrough
-	case "email":
-		fallthrough
-	case "general":
-		fallthrough
-	case "ip":
-		fallthrough
-	case "medical":
-		fallthrough
-	case "nationalid":
-		fallthrough
-	case "nrp":
-		fallthrough
-	case "passport":
-		fallthrough
-	case "phone":
-		fallthrough
-	case "ssn":
-		fallthrough
-	case "url":
-		*e = Anonymize(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Anonymize: %v", v)
-	}
+	return false
 }
 
 type CustomPatterns struct {
@@ -251,20 +209,16 @@ const (
 func (e RedactType) ToPointer() *RedactType {
 	return &e
 }
-func (e *RedactType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RedactType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "placeholder", "synthetic":
+			return true
+		}
 	}
-	switch v {
-	case "placeholder":
-		fallthrough
-	case "synthetic":
-		*e = RedactType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RedactType: %v", v)
-	}
+	return false
 }
 
 // SanitizationMode - The sanitization mode to use for the request
@@ -279,22 +233,16 @@ const (
 func (e SanitizationMode) ToPointer() *SanitizationMode {
 	return &e
 }
-func (e *SanitizationMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SanitizationMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "BOTH", "INPUT", "OUTPUT":
+			return true
+		}
 	}
-	switch v {
-	case "BOTH":
-		fallthrough
-	case "INPUT":
-		fallthrough
-	case "OUTPUT":
-		*e = SanitizationMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SanitizationMode: %v", v)
-	}
+	return false
 }
 
 type AiSanitizerPluginConfig struct {
@@ -495,24 +443,16 @@ const (
 func (e AiSanitizerPluginProtocols) ToPointer() *AiSanitizerPluginProtocols {
 	return &e
 }
-func (e *AiSanitizerPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiSanitizerPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = AiSanitizerPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiSanitizerPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AiSanitizerPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

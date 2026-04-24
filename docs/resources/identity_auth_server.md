@@ -43,7 +43,7 @@ resource "konnect_identity_auth_server" "my_identityauthserver" {
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-- `signing_algorithm` (String) Algorithm used in the key signing process. Default: "RS256"; must be one of ["RS256", "RS384", "RS512", "PS256", "PS384", "PS512"]
+- `signing_algorithm` (String) Algorithm used in the key signing process. possible known values include one of ["RS256", "RS384", "RS512", "PS256", "PS384", "PS512"]; Default: "RS256"
 - `trusted_origins` (List of String) A list or trusted origins to apply the CORS header on for the auth server
 
 ### Read-Only

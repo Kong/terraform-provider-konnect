@@ -191,8 +191,8 @@ Optional:
 - `args` (Map of String) Additional arguments to send in the POST body.
 - `cache_introspection` (Boolean) If enabled, the plugin will cache the introspection response for the access token. This can improve performance by reducing the number of introspection requests to the authorization server. Default: true
 - `claim_to_header` (Attributes List) Map top-level token claims to upstream headers. Mutually exclusive with upstream_headers. (see [below for nested schema](#nestedatt--config--claim_to_header))
-- `client_alg` (String) The client JWT signing algorithm. must be one of ["ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512"]
-- `client_auth` (String) The client authentication method. must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]
+- `client_alg` (String) The client JWT signing algorithm. possible known values include one of ["ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512"]
+- `client_auth` (String) The client authentication method. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]
 - `client_id` (String) The client ID for authentication.
 - `client_jwk` (String) The client JWK for private_key_jwt authentication.
 - `client_secret` (String) The client secret for authentication.
@@ -210,7 +210,7 @@ Optional:
 - `https_proxy_authorization` (String) HTTPS proxy authorization header.
 - `insecure_relaxed_audience_validation` (Boolean) If enabled, the plugin will not validate the audience of the access token. Disable it if the authorization server does not correctly set the audience claim according to RFC 8707 and MCP specification. Default: false
 - `introspection_endpoint` (String) The Token Introspection Endpoint. If not provided, the plugin will attempt to use JWKS to verify the token. If the token is opaque, this field must be provided.
-- `introspection_format` (String) Controls introspection response format. must be one of ["base64", "base64url", "string"]
+- `introspection_format` (String) Controls introspection response format. possible known values include one of ["base64", "base64url", "string"]
 - `jwks_cache_ttl` (Number) The cache TTL in seconds for JWKS. Default: 3600
 - `jwks_endpoint` (String) The JWKS endpoint URL for fetching the authorization server's public keys. If not provided, the plugin will attempt to discover it from the authorization server metadata.
 - `jwt_claims_leeway` (Number) The leeway in seconds for JWT claims validation (exp, nbf). This allows tokens that are slightly expired or not yet valid due to clock skew. Default: 0
@@ -251,7 +251,7 @@ Required:
 Optional:
 
 - `cache` (Attributes) (see [below for nested schema](#nestedatt--config--token_exchange--cache))
-- `client_auth` (String) The type of authentication method to use with the exchange endpoint. Use 'inherit' to use the same client_id, and secret as in introspection_endpoint. Default: "client_secret_basic"; must be one of ["client_secret_basic", "client_secret_post", "inherit", "none"]
+- `client_auth` (String) The type of authentication method to use with the exchange endpoint. Use 'inherit' to use the same client_id, and secret as in introspection_endpoint. possible known values include one of ["client_secret_basic", "client_secret_post", "inherit", "none"]; Default: "client_secret_basic"
 - `client_id` (String) The client ID for authentication.
 - `client_secret` (String) The client secret for authentication.
 - `enabled` (Boolean) Whether Token Exchange should be enabled. Default: false
@@ -273,7 +273,7 @@ Optional:
 
 - `actor_token` (String) Static actor token value (when source is config).
 - `actor_token_header` (String) Header name containing actor token (when source is header).
-- `actor_token_source` (String) Where to obtain actor token. Default: "none"; must be one of ["config", "header", "none"]
+- `actor_token_source` (String) Where to obtain actor token. possible known values include one of ["config", "header", "none"]; Default: "none"
 - `actor_token_type` (String) The token type identifier of actor token. Default: "urn:ietf:params:oauth:token-type:access_token"
 - `audience` (List of String) Audiences used in the token exchange request.
 - `requested_token_type` (String) The desired output token type. Default: "urn:ietf:params:oauth:token-type:access_token"
@@ -354,7 +354,7 @@ import {
   to = konnect_gateway_plugin_ai_mcp_oauth2.my_konnect_gateway_plugin_ai_mcp_oauth2
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

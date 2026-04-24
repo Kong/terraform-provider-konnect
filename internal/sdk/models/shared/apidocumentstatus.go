@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // APIDocumentStatus - If `status=published` the document will be visible in your live portal
 type APIDocumentStatus string
 
@@ -18,18 +13,14 @@ const (
 func (e APIDocumentStatus) ToPointer() *APIDocumentStatus {
 	return &e
 }
-func (e *APIDocumentStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *APIDocumentStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "published", "unpublished":
+			return true
+		}
 	}
-	switch v {
-	case "published":
-		fallthrough
-	case "unpublished":
-		*e = APIDocumentStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for APIDocumentStatus: %v", v)
-	}
+	return false
 }

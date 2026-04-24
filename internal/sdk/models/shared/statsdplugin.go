@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -133,22 +131,16 @@ const (
 func (e ConsumerIdentifierDefault) ToPointer() *ConsumerIdentifierDefault {
 	return &e
 }
-func (e *ConsumerIdentifierDefault) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ConsumerIdentifierDefault) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "consumer_id", "custom_id", "username":
+			return true
+		}
 	}
-	switch v {
-	case "consumer_id":
-		fallthrough
-	case "custom_id":
-		fallthrough
-	case "username":
-		*e = ConsumerIdentifierDefault(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ConsumerIdentifierDefault: %v", v)
-	}
+	return false
 }
 
 // StatsdPluginConsumerIdentifier - Authenticated user detail.
@@ -163,22 +155,16 @@ const (
 func (e StatsdPluginConsumerIdentifier) ToPointer() *StatsdPluginConsumerIdentifier {
 	return &e
 }
-func (e *StatsdPluginConsumerIdentifier) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *StatsdPluginConsumerIdentifier) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "consumer_id", "custom_id", "username":
+			return true
+		}
 	}
-	switch v {
-	case "consumer_id":
-		fallthrough
-	case "custom_id":
-		fallthrough
-	case "username":
-		*e = StatsdPluginConsumerIdentifier(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for StatsdPluginConsumerIdentifier: %v", v)
-	}
+	return false
 }
 
 // StatsdPluginName - StatsD metric’s name.
@@ -205,46 +191,16 @@ const (
 func (e StatsdPluginName) ToPointer() *StatsdPluginName {
 	return &e
 }
-func (e *StatsdPluginName) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *StatsdPluginName) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "cache_datastore_hits_total", "cache_datastore_misses_total", "kong_latency", "latency", "request_count", "request_per_user", "request_size", "response_size", "shdict_usage", "status_count", "status_count_per_user", "status_count_per_user_per_route", "status_count_per_workspace", "unique_users", "upstream_latency":
+			return true
+		}
 	}
-	switch v {
-	case "cache_datastore_hits_total":
-		fallthrough
-	case "cache_datastore_misses_total":
-		fallthrough
-	case "kong_latency":
-		fallthrough
-	case "latency":
-		fallthrough
-	case "request_count":
-		fallthrough
-	case "request_per_user":
-		fallthrough
-	case "request_size":
-		fallthrough
-	case "response_size":
-		fallthrough
-	case "shdict_usage":
-		fallthrough
-	case "status_count":
-		fallthrough
-	case "status_count_per_user":
-		fallthrough
-	case "status_count_per_user_per_route":
-		fallthrough
-	case "status_count_per_workspace":
-		fallthrough
-	case "unique_users":
-		fallthrough
-	case "upstream_latency":
-		*e = StatsdPluginName(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for StatsdPluginName: %v", v)
-	}
+	return false
 }
 
 // ServiceIdentifier - Service detail.
@@ -260,24 +216,16 @@ const (
 func (e ServiceIdentifier) ToPointer() *ServiceIdentifier {
 	return &e
 }
-func (e *ServiceIdentifier) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ServiceIdentifier) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "service_host", "service_id", "service_name", "service_name_or_host":
+			return true
+		}
 	}
-	switch v {
-	case "service_host":
-		fallthrough
-	case "service_id":
-		fallthrough
-	case "service_name":
-		fallthrough
-	case "service_name_or_host":
-		*e = ServiceIdentifier(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ServiceIdentifier: %v", v)
-	}
+	return false
 }
 
 // StatsdPluginStatType - Determines what sort of event a metric represents.
@@ -295,28 +243,16 @@ const (
 func (e StatsdPluginStatType) ToPointer() *StatsdPluginStatType {
 	return &e
 }
-func (e *StatsdPluginStatType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *StatsdPluginStatType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "counter", "gauge", "histogram", "meter", "set", "timer":
+			return true
+		}
 	}
-	switch v {
-	case "counter":
-		fallthrough
-	case "gauge":
-		fallthrough
-	case "histogram":
-		fallthrough
-	case "meter":
-		fallthrough
-	case "set":
-		fallthrough
-	case "timer":
-		*e = StatsdPluginStatType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for StatsdPluginStatType: %v", v)
-	}
+	return false
 }
 
 // WorkspaceIdentifier - Workspace detail.
@@ -330,20 +266,16 @@ const (
 func (e WorkspaceIdentifier) ToPointer() *WorkspaceIdentifier {
 	return &e
 }
-func (e *WorkspaceIdentifier) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *WorkspaceIdentifier) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "workspace_id", "workspace_name":
+			return true
+		}
 	}
-	switch v {
-	case "workspace_id":
-		fallthrough
-	case "workspace_name":
-		*e = WorkspaceIdentifier(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for WorkspaceIdentifier: %v", v)
-	}
+	return false
 }
 
 type StatsdPluginMetrics struct {
@@ -425,20 +357,16 @@ const (
 func (e StatsdPluginConcurrencyLimit) ToPointer() *StatsdPluginConcurrencyLimit {
 	return &e
 }
-func (e *StatsdPluginConcurrencyLimit) UnmarshalJSON(data []byte) error {
-	var v int64
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *StatsdPluginConcurrencyLimit) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case -1, 1:
+			return true
+		}
 	}
-	switch v {
-	case -1:
-		fallthrough
-	case 1:
-		*e = StatsdPluginConcurrencyLimit(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for StatsdPluginConcurrencyLimit: %v", v)
-	}
+	return false
 }
 
 type StatsdPluginQueue struct {
@@ -539,24 +467,16 @@ const (
 func (e ServiceIdentifierDefault) ToPointer() *ServiceIdentifierDefault {
 	return &e
 }
-func (e *ServiceIdentifierDefault) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ServiceIdentifierDefault) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "service_host", "service_id", "service_name", "service_name_or_host":
+			return true
+		}
 	}
-	switch v {
-	case "service_host":
-		fallthrough
-	case "service_id":
-		fallthrough
-	case "service_name":
-		fallthrough
-	case "service_name_or_host":
-		*e = ServiceIdentifierDefault(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ServiceIdentifierDefault: %v", v)
-	}
+	return false
 }
 
 type TagStyle string
@@ -571,24 +491,16 @@ const (
 func (e TagStyle) ToPointer() *TagStyle {
 	return &e
 }
-func (e *TagStyle) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TagStyle) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "dogstatsd", "influxdb", "librato", "signalfx":
+			return true
+		}
 	}
-	switch v {
-	case "dogstatsd":
-		fallthrough
-	case "influxdb":
-		fallthrough
-	case "librato":
-		fallthrough
-	case "signalfx":
-		*e = TagStyle(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TagStyle: %v", v)
-	}
+	return false
 }
 
 type WorkspaceIdentifierDefault string
@@ -601,20 +513,16 @@ const (
 func (e WorkspaceIdentifierDefault) ToPointer() *WorkspaceIdentifierDefault {
 	return &e
 }
-func (e *WorkspaceIdentifierDefault) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *WorkspaceIdentifierDefault) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "workspace_id", "workspace_name":
+			return true
+		}
 	}
-	switch v {
-	case "workspace_id":
-		fallthrough
-	case "workspace_name":
-		*e = WorkspaceIdentifierDefault(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for WorkspaceIdentifierDefault: %v", v)
-	}
+	return false
 }
 
 type StatsdPluginConfig struct {
@@ -806,36 +714,16 @@ const (
 func (e StatsdPluginProtocols) ToPointer() *StatsdPluginProtocols {
 	return &e
 }
-func (e *StatsdPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *StatsdPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = StatsdPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for StatsdPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // StatsdPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -139,34 +137,16 @@ const (
 func (e Methods) ToPointer() *Methods {
 	return &e
 }
-func (e *Methods) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Methods) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "CONNECT", "DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT", "TRACE":
+			return true
+		}
 	}
-	switch v {
-	case "CONNECT":
-		fallthrough
-	case "DELETE":
-		fallthrough
-	case "GET":
-		fallthrough
-	case "HEAD":
-		fallthrough
-	case "OPTIONS":
-		fallthrough
-	case "PATCH":
-		fallthrough
-	case "POST":
-		fallthrough
-	case "PUT":
-		fallthrough
-	case "TRACE":
-		*e = Methods(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Methods: %v", v)
-	}
+	return false
 }
 
 type CorsPluginConfig struct {
@@ -276,24 +256,16 @@ const (
 func (e CorsPluginProtocols) ToPointer() *CorsPluginProtocols {
 	return &e
 }
-func (e *CorsPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CorsPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = CorsPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CorsPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // CorsPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

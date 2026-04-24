@@ -191,14 +191,7 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 											"auth_provider": schema.StringAttribute{
 												Computed:    true,
 												Optional:    true,
-												Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
-												Validators: []validator.String{
-													stringvalidator.OneOf(
-														"aws",
-														"azure",
-														"gcp",
-													),
-												},
+												Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
 											},
 											"aws_access_key_id": schema.StringAttribute{
 												Optional:    true,
@@ -392,14 +385,7 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 									"sentinel_role": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"any",
-												"master",
-												"slave",
-											),
-										},
+										Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
 									},
 									"sentinel_username": schema.StringAttribute{
 										Optional:    true,
@@ -431,13 +417,7 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(`memory`),
-								Description: `The method Kong should use to cache tokens issued by the IdP. Default: "memory"; must be one of ["memory", "redis"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"memory",
-										"redis",
-									),
-								},
+								Description: `The method Kong should use to cache tokens issued by the IdP. possible known values include one of ["memory", "redis"]; Default: "memory"`,
 							},
 						},
 					},
@@ -449,27 +429,13 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(`client_secret_post`),
-								Description: `The authentication method used in client requests to the IdP. Supported values are: ` + "`" + `client_secret_basic` + "`" + ` to send ` + "`" + `client_id` + "`" + ` and ` + "`" + `client_secret` + "`" + ` in the ` + "`" + `Authorization: Basic` + "`" + ` header, ` + "`" + `client_secret_post` + "`" + ` to send ` + "`" + `client_id` + "`" + ` and ` + "`" + `client_secret` + "`" + ` as part of the request body, or ` + "`" + `client_secret_jwt` + "`" + ` to send a JWT signed with the ` + "`" + `client_secret` + "`" + ` using the client assertion as part of the body. Default: "client_secret_post"; must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"client_secret_basic",
-										"client_secret_jwt",
-										"client_secret_post",
-										"none",
-									),
-								},
+								Description: `The authentication method used in client requests to the IdP. Supported values are: ` + "`" + `client_secret_basic` + "`" + ` to send ` + "`" + `client_id` + "`" + ` and ` + "`" + `client_secret` + "`" + ` in the ` + "`" + `Authorization: Basic` + "`" + ` header, ` + "`" + `client_secret_post` + "`" + ` to send ` + "`" + `client_id` + "`" + ` and ` + "`" + `client_secret` + "`" + ` as part of the request body, or ` + "`" + `client_secret_jwt` + "`" + ` to send a JWT signed with the ` + "`" + `client_secret` + "`" + ` using the client assertion as part of the body. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none"]; Default: "client_secret_post"`,
 							},
 							"client_secret_jwt_alg": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(`HS512`),
-								Description: `The algorithm to use with JWT when using ` + "`" + `client_secret_jwt` + "`" + ` authentication. Default: "HS512"; must be one of ["HS256", "HS512"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"HS256",
-										"HS512",
-									),
-								},
+								Description: `The algorithm to use with JWT when using ` + "`" + `client_secret_jwt` + "`" + ` authentication. possible known values include one of ["HS256", "HS512"]; Default: "HS512"`,
 							},
 							"http_proxy": schema.StringAttribute{
 								Optional:    true,
@@ -541,13 +507,7 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(`client_credentials`),
-								Description: `The OAuth grant type to be used. Default: "client_credentials"; must be one of ["client_credentials", "password"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"client_credentials",
-										"password",
-									),
-								},
+								Description: `The OAuth grant type to be used. possible known values include one of ["client_credentials", "password"]; Default: "client_credentials"`,
 							},
 							"password": schema.StringAttribute{
 								Optional:    true,

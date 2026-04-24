@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 	"time"
 )
@@ -19,20 +17,16 @@ const (
 func (e Status) ToPointer() *Status {
 	return &e
 }
-func (e *Status) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Status) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "unpublished", "published":
+			return true
+		}
 	}
-	switch v {
-	case "unpublished":
-		fallthrough
-	case "published":
-		*e = Status(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Status: %v", v)
-	}
+	return false
 }
 
 type APIProductDocumentMetadata struct {

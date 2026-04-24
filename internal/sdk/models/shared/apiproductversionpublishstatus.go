@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 type APIProductVersionPublishStatus string
 
 const (
@@ -17,18 +12,14 @@ const (
 func (e APIProductVersionPublishStatus) ToPointer() *APIProductVersionPublishStatus {
 	return &e
 }
-func (e *APIProductVersionPublishStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *APIProductVersionPublishStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "published", "unpublished":
+			return true
+		}
 	}
-	switch v {
-	case "published":
-		fallthrough
-	case "unpublished":
-		*e = APIProductVersionPublishStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for APIProductVersionPublishStatus: %v", v)
-	}
+	return false
 }

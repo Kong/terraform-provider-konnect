@@ -108,7 +108,7 @@ by basic authentication.
 - `https_proxy_port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 - `https_verify` (Boolean) Whether the server certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate. Default: false
 - `proxy_scheme` (String) The proxy scheme to use when connecting. Only `http` is supported. Default: "http"; must be "http"
-- `x_headers` (String) Determines how to handle headers when forwarding the request. Default: "append"; must be one of ["append", "delete", "transparent"]
+- `x_headers` (String) Determines how to handle headers when forwarding the request. possible known values include one of ["append", "delete", "transparent"]; Default: "append"
 
 
 <a id="nestedatt--consumer"></a>
@@ -180,7 +180,7 @@ import {
   to = konnect_gateway_plugin_forward_proxy.my_konnect_gateway_plugin_forward_proxy
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

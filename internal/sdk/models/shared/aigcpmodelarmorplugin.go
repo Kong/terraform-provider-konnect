@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -134,22 +132,16 @@ const (
 func (e AiGcpModelArmorPluginGuardingMode) ToPointer() *AiGcpModelArmorPluginGuardingMode {
 	return &e
 }
-func (e *AiGcpModelArmorPluginGuardingMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiGcpModelArmorPluginGuardingMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "BOTH", "INPUT", "OUTPUT":
+			return true
+		}
 	}
-	switch v {
-	case "BOTH":
-		fallthrough
-	case "INPUT":
-		fallthrough
-	case "OUTPUT":
-		*e = AiGcpModelArmorPluginGuardingMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiGcpModelArmorPluginGuardingMode: %v", v)
-	}
+	return false
 }
 
 // AiGcpModelArmorPluginTextSource - Select where to pick the 'text' for the GCP Model Armor Services request.
@@ -164,22 +156,16 @@ const (
 func (e AiGcpModelArmorPluginTextSource) ToPointer() *AiGcpModelArmorPluginTextSource {
 	return &e
 }
-func (e *AiGcpModelArmorPluginTextSource) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiGcpModelArmorPluginTextSource) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "concatenate_all_content", "concatenate_user_content", "last_message":
+			return true
+		}
 	}
-	switch v {
-	case "concatenate_all_content":
-		fallthrough
-	case "concatenate_user_content":
-		fallthrough
-	case "last_message":
-		*e = AiGcpModelArmorPluginTextSource(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiGcpModelArmorPluginTextSource: %v", v)
-	}
+	return false
 }
 
 type AiGcpModelArmorPluginConfig struct {
@@ -416,24 +402,16 @@ const (
 func (e AiGcpModelArmorPluginProtocols) ToPointer() *AiGcpModelArmorPluginProtocols {
 	return &e
 }
-func (e *AiGcpModelArmorPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiGcpModelArmorPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = AiGcpModelArmorPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiGcpModelArmorPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AiGcpModelArmorPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

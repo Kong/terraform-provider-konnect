@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -133,20 +131,16 @@ const (
 func (e AiSemanticPromptGuardPluginParamLocation) ToPointer() *AiSemanticPromptGuardPluginParamLocation {
 	return &e
 }
-func (e *AiSemanticPromptGuardPluginParamLocation) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiSemanticPromptGuardPluginParamLocation) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "body", "query":
+			return true
+		}
 	}
-	switch v {
-	case "body":
-		fallthrough
-	case "query":
-		*e = AiSemanticPromptGuardPluginParamLocation(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiSemanticPromptGuardPluginParamLocation: %v", v)
-	}
+	return false
 }
 
 type AiSemanticPromptGuardPluginAuth struct {
@@ -588,30 +582,16 @@ const (
 func (e AiSemanticPromptGuardPluginProvider) ToPointer() *AiSemanticPromptGuardPluginProvider {
 	return &e
 }
-func (e *AiSemanticPromptGuardPluginProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiSemanticPromptGuardPluginProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai":
+			return true
+		}
 	}
-	switch v {
-	case "azure":
-		fallthrough
-	case "bedrock":
-		fallthrough
-	case "gemini":
-		fallthrough
-	case "huggingface":
-		fallthrough
-	case "mistral":
-		fallthrough
-	case "ollama":
-		fallthrough
-	case "openai":
-		*e = AiSemanticPromptGuardPluginProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiSemanticPromptGuardPluginProvider: %v", v)
-	}
+	return false
 }
 
 type AiSemanticPromptGuardPluginModel struct {
@@ -701,30 +681,16 @@ const (
 func (e AiSemanticPromptGuardPluginGenaiCategory) ToPointer() *AiSemanticPromptGuardPluginGenaiCategory {
 	return &e
 }
-func (e *AiSemanticPromptGuardPluginGenaiCategory) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiSemanticPromptGuardPluginGenaiCategory) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation":
+			return true
+		}
 	}
-	switch v {
-	case "audio/speech":
-		fallthrough
-	case "audio/transcription":
-		fallthrough
-	case "image/generation":
-		fallthrough
-	case "realtime/generation":
-		fallthrough
-	case "text/embeddings":
-		fallthrough
-	case "text/generation":
-		fallthrough
-	case "video/generation":
-		*e = AiSemanticPromptGuardPluginGenaiCategory(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiSemanticPromptGuardPluginGenaiCategory: %v", v)
-	}
+	return false
 }
 
 // AiSemanticPromptGuardPluginLlmFormat - LLM input and output format and schema to use
@@ -742,28 +708,16 @@ const (
 func (e AiSemanticPromptGuardPluginLlmFormat) ToPointer() *AiSemanticPromptGuardPluginLlmFormat {
 	return &e
 }
-func (e *AiSemanticPromptGuardPluginLlmFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiSemanticPromptGuardPluginLlmFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai":
+			return true
+		}
 	}
-	switch v {
-	case "anthropic":
-		fallthrough
-	case "bedrock":
-		fallthrough
-	case "cohere":
-		fallthrough
-	case "gemini":
-		fallthrough
-	case "huggingface":
-		fallthrough
-	case "openai":
-		*e = AiSemanticPromptGuardPluginLlmFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiSemanticPromptGuardPluginLlmFormat: %v", v)
-	}
+	return false
 }
 
 type Rules struct {
@@ -859,20 +813,16 @@ const (
 func (e AiSemanticPromptGuardPluginDistanceMetric) ToPointer() *AiSemanticPromptGuardPluginDistanceMetric {
 	return &e
 }
-func (e *AiSemanticPromptGuardPluginDistanceMetric) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiSemanticPromptGuardPluginDistanceMetric) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "cosine", "euclidean":
+			return true
+		}
 	}
-	switch v {
-	case "cosine":
-		fallthrough
-	case "euclidean":
-		*e = AiSemanticPromptGuardPluginDistanceMetric(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiSemanticPromptGuardPluginDistanceMetric: %v", v)
-	}
+	return false
 }
 
 // AiSemanticPromptGuardPluginSslVersion - the ssl version to use for the pgvector database
@@ -887,22 +837,16 @@ const (
 func (e AiSemanticPromptGuardPluginSslVersion) ToPointer() *AiSemanticPromptGuardPluginSslVersion {
 	return &e
 }
-func (e *AiSemanticPromptGuardPluginSslVersion) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiSemanticPromptGuardPluginSslVersion) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "tlsv1_2", "tlsv1_3":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "tlsv1_2":
-		fallthrough
-	case "tlsv1_3":
-		*e = AiSemanticPromptGuardPluginSslVersion(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiSemanticPromptGuardPluginSslVersion: %v", v)
-	}
+	return false
 }
 
 type AiSemanticPromptGuardPluginPgvector struct {
@@ -1039,22 +983,16 @@ const (
 func (e AiSemanticPromptGuardPluginAuthProvider) ToPointer() *AiSemanticPromptGuardPluginAuthProvider {
 	return &e
 }
-func (e *AiSemanticPromptGuardPluginAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiSemanticPromptGuardPluginAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = AiSemanticPromptGuardPluginAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiSemanticPromptGuardPluginAuthProvider: %v", v)
-	}
+	return false
 }
 
 // AiSemanticPromptGuardPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -1256,22 +1194,16 @@ const (
 func (e AiSemanticPromptGuardPluginSentinelRole) ToPointer() *AiSemanticPromptGuardPluginSentinelRole {
 	return &e
 }
-func (e *AiSemanticPromptGuardPluginSentinelRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiSemanticPromptGuardPluginSentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "master":
-		fallthrough
-	case "slave":
-		*e = AiSemanticPromptGuardPluginSentinelRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiSemanticPromptGuardPluginSentinelRole: %v", v)
-	}
+	return false
 }
 
 type AiSemanticPromptGuardPluginRedis struct {
@@ -1497,20 +1429,16 @@ const (
 func (e AiSemanticPromptGuardPluginStrategy) ToPointer() *AiSemanticPromptGuardPluginStrategy {
 	return &e
 }
-func (e *AiSemanticPromptGuardPluginStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiSemanticPromptGuardPluginStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "pgvector", "redis":
+			return true
+		}
 	}
-	switch v {
-	case "pgvector":
-		fallthrough
-	case "redis":
-		*e = AiSemanticPromptGuardPluginStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiSemanticPromptGuardPluginStrategy: %v", v)
-	}
+	return false
 }
 
 type AiSemanticPromptGuardPluginVectordb struct {
@@ -1710,24 +1638,16 @@ const (
 func (e AiSemanticPromptGuardPluginProtocols) ToPointer() *AiSemanticPromptGuardPluginProtocols {
 	return &e
 }
-func (e *AiSemanticPromptGuardPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiSemanticPromptGuardPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = AiSemanticPromptGuardPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiSemanticPromptGuardPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AiSemanticPromptGuardPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

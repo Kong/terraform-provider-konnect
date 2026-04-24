@@ -133,20 +133,16 @@ const (
 func (e AckMode) ToPointer() *AckMode {
 	return &e
 }
-func (e *AckMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AckMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "AUTO", "CLIENT":
+			return true
+		}
 	}
-	switch v {
-	case "AUTO":
-		fallthrough
-	case "CLIENT":
-		*e = AckMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AckMode: %v", v)
-	}
+	return false
 }
 
 // SolaceConsumePluginType - The type of object to which this Flow is bound.
@@ -304,24 +300,16 @@ const (
 func (e SolaceConsumePluginMode) ToPointer() *SolaceConsumePluginMode {
 	return &e
 }
-func (e *SolaceConsumePluginMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SolaceConsumePluginMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "AUTO", "POLLING", "SERVER-SENT-EVENTS", "WEBSOCKET":
+			return true
+		}
 	}
-	switch v {
-	case "AUTO":
-		fallthrough
-	case "POLLING":
-		fallthrough
-	case "SERVER-SENT-EVENTS":
-		fallthrough
-	case "WEBSOCKET":
-		*e = SolaceConsumePluginMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SolaceConsumePluginMode: %v", v)
-	}
+	return false
 }
 
 // Polling - The `POLLING` mode related configuration settings.
@@ -360,22 +348,16 @@ const (
 func (e SolaceConsumePluginScheme) ToPointer() *SolaceConsumePluginScheme {
 	return &e
 }
-func (e *SolaceConsumePluginScheme) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SolaceConsumePluginScheme) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "BASIC", "NONE", "OAUTH2":
+			return true
+		}
 	}
-	switch v {
-	case "BASIC":
-		fallthrough
-	case "NONE":
-		fallthrough
-	case "OAUTH2":
-		*e = SolaceConsumePluginScheme(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SolaceConsumePluginScheme: %v", v)
-	}
+	return false
 }
 
 // SolaceConsumePluginAuthentication - Session authentication related configuration.
@@ -692,24 +674,16 @@ const (
 func (e SolaceConsumePluginProtocols) ToPointer() *SolaceConsumePluginProtocols {
 	return &e
 }
-func (e *SolaceConsumePluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SolaceConsumePluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = SolaceConsumePluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SolaceConsumePluginProtocols: %v", v)
-	}
+	return false
 }
 
 // SolaceConsumePluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -24,30 +22,16 @@ const (
 func (e Rule) ToPointer() *Rule {
 	return &e
 }
-func (e *Rule) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Rule) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "min_length", "min_digits", "min_lowercase", "min_uppercase", "min_symbols", "min_items", "min":
+			return true
+		}
 	}
-	switch v {
-	case "min_length":
-		fallthrough
-	case "min_digits":
-		fallthrough
-	case "min_lowercase":
-		fallthrough
-	case "min_uppercase":
-		fallthrough
-	case "min_symbols":
-		fallthrough
-	case "min_items":
-		fallthrough
-	case "min":
-		*e = Rule(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Rule: %v", v)
-	}
+	return false
 }
 
 type InvalidParameterMinimumLength struct {

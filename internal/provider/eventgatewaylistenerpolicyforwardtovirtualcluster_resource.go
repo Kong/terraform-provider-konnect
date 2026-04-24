@@ -87,13 +87,7 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Schema(ctx c
 									`Additionally, it offsets all ports by one, so for example, if there are 3 brokers (id=1, id=2, id=3)` + "\n" +
 									`then we will use 4 ports: 9092 (bootstrap), 9093 (id=1), 9094 (id=2), 9095 (id=3)` + "\n" +
 									`With ` + "`" + `none` + "`" + ` we will use 3 ports: 9092 (id=1), 9093 (id=2), 9094 (id=3).` + "\n" +
-									`Default: "at_start"; must be one of ["none", "at_start"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"none",
-										"at_start",
-									),
-								},
+									`possible known values include one of ["none", "at_start"]; Default: "at_start"`,
 							},
 							"destination": schema.SingleNestedAttribute{
 								Required: true,
@@ -155,13 +149,7 @@ func (r *EventGatewayListenerPolicyForwardToVirtualClusterResource) Schema(ctx c
 										Computed:    true,
 										Optional:    true,
 										Default:     stringdefault.StaticString(`per_cluster_suffix`),
-										Description: `Default: "per_cluster_suffix"; must be one of ["per_cluster_suffix", "shared_suffix"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"per_cluster_suffix",
-												"shared_suffix",
-											),
-										},
+										Description: `possible known values include one of ["per_cluster_suffix", "shared_suffix"]; Default: "per_cluster_suffix"`,
 									},
 								},
 								MarkdownDescription: `Configures DNS names assigned to brokers in virtual clusters.` + "\n" +

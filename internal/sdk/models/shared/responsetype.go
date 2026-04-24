@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // ResponseType - OAuth 2.0 response type
 type ResponseType string
 
@@ -20,22 +15,14 @@ const (
 func (e ResponseType) ToPointer() *ResponseType {
 	return &e
 }
-func (e *ResponseType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ResponseType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "none", "token", "code", "id_token":
+			return true
+		}
 	}
-	switch v {
-	case "none":
-		fallthrough
-	case "token":
-		fallthrough
-	case "code":
-		fallthrough
-	case "id_token":
-		*e = ResponseType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ResponseType: %v", v)
-	}
+	return false
 }

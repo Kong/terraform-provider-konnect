@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -133,20 +131,16 @@ const (
 func (e Source) ToPointer() *Source {
 	return &e
 }
-func (e *Source) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Source) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "header", "query":
+			return true
+		}
 	}
-	switch v {
-	case "header":
-		fallthrough
-	case "query":
-		*e = Source(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Source: %v", v)
-	}
+	return false
 }
 
 type Attributes struct {
@@ -201,20 +195,16 @@ const (
 func (e MeteringAndBillingPluginConcurrencyLimit) ToPointer() *MeteringAndBillingPluginConcurrencyLimit {
 	return &e
 }
-func (e *MeteringAndBillingPluginConcurrencyLimit) UnmarshalJSON(data []byte) error {
-	var v int64
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeteringAndBillingPluginConcurrencyLimit) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case -1, 1:
+			return true
+		}
 	}
-	switch v {
-	case -1:
-		fallthrough
-	case 1:
-		*e = MeteringAndBillingPluginConcurrencyLimit(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeteringAndBillingPluginConcurrencyLimit: %v", v)
-	}
+	return false
 }
 
 type MeteringAndBillingPluginQueue struct {
@@ -316,24 +306,16 @@ const (
 func (e LookUpValueIn) ToPointer() *LookUpValueIn {
 	return &e
 }
-func (e *LookUpValueIn) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *LookUpValueIn) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "application", "consumer", "header", "query":
+			return true
+		}
 	}
-	switch v {
-	case "application":
-		fallthrough
-	case "consumer":
-		fallthrough
-	case "header":
-		fallthrough
-	case "query":
-		*e = LookUpValueIn(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for LookUpValueIn: %v", v)
-	}
+	return false
 }
 
 // Subject - The subject identifies who gets billed for each request. Choose where the plugin should look for the customer identifier.
@@ -514,36 +496,16 @@ const (
 func (e MeteringAndBillingPluginProtocols) ToPointer() *MeteringAndBillingPluginProtocols {
 	return &e
 }
-func (e *MeteringAndBillingPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MeteringAndBillingPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = MeteringAndBillingPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MeteringAndBillingPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // MeteringAndBillingPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // CpRegion - The control plane region.
 type CpRegion string
 
@@ -19,20 +14,14 @@ const (
 func (e CpRegion) ToPointer() *CpRegion {
 	return &e
 }
-func (e *CpRegion) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CpRegion) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "us", "eu", "au":
+			return true
+		}
 	}
-	switch v {
-	case "us":
-		fallthrough
-	case "eu":
-		fallthrough
-	case "au":
-		*e = CpRegion(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CpRegion: %v", v)
-	}
+	return false
 }

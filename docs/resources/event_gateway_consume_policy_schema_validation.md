@@ -68,7 +68,7 @@ Required:
 - `type` (String) How to validate the schema and parse the record.
 * confluent_schema_registry - validates against confluent schema registry.
 * json - simple JSON parsing without the schema.
-must be one of ["confluent_schema_registry", "json"]
+possible known values include one of ["confluent_schema_registry", "json"]
 
 Optional:
 
@@ -76,13 +76,13 @@ Optional:
 * mark - marks a record with kong/server header and client ID value
   to help to identify the clients violating schema.
 * skip - skips delivering a record.
-must be one of ["mark", "skip"]
+possible known values include one of ["mark", "skip"]
 - `schema_registry` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry))
 - `value_validation_action` (String) Defines a behavior when record value is not valid.
 * mark - marks a record with kong/server header and client ID value
   to help to identify the clients violating schema.
 * skip - skips delivering a record.
-must be one of ["mark", "skip"]
+possible known values include one of ["mark", "skip"]
 
 <a id="nestedatt--config--schema_registry"></a>
 ### Nested Schema for `config.schema_registry`
@@ -101,8 +101,8 @@ In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.
 import {
   to = konnect_event_gateway_consume_policy_schema_validation.my_konnect_event_gateway_consume_policy_schema_validation
   id = jsonencode({
-    gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    gateway_id         = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id                 = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     virtual_cluster_id = "..."
   })
 }

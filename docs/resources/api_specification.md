@@ -30,7 +30,7 @@ resource "konnect_api_specification" "my_apispecification" {
 
 ### Optional
 
-- `type` (String) The type of specification being stored. This allows us to render the specification correctly. must be one of ["oas2", "oas3", "asyncapi"]
+- `type` (String) The type of specification being stored. This allows us to render the specification correctly. possible known values include one of ["oas2", "oas3", "asyncapi"]
 
 ### Read-Only
 
@@ -57,7 +57,7 @@ import {
   to = konnect_api_specification.my_konnect_api_specification
   id = jsonencode({
     api_id = "9f5061ce-78f6-4452-9108-ad7c02821fd5"
-    id = "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+    id     = "d32d905a-ed33-46a3-a093-d8f536af9a8a"
   })
 }
 ```

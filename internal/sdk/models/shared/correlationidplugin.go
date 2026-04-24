@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -134,22 +132,16 @@ const (
 func (e Generator) ToPointer() *Generator {
 	return &e
 }
-func (e *Generator) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Generator) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "tracker", "uuid", "uuid#counter":
+			return true
+		}
 	}
-	switch v {
-	case "tracker":
-		fallthrough
-	case "uuid":
-		fallthrough
-	case "uuid#counter":
-		*e = Generator(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Generator: %v", v)
-	}
+	return false
 }
 
 type CorrelationIDPluginConfig struct {
@@ -228,24 +220,16 @@ const (
 func (e CorrelationIDPluginProtocols) ToPointer() *CorrelationIDPluginProtocols {
 	return &e
 }
-func (e *CorrelationIDPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CorrelationIDPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = CorrelationIDPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CorrelationIDPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // CorrelationIDPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

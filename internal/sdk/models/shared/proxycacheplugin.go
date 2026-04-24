@@ -158,26 +158,16 @@ const (
 func (e RequestMethod) ToPointer() *RequestMethod {
 	return &e
 }
-func (e *RequestMethod) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "GET", "HEAD", "PATCH", "POST", "PUT":
+			return true
+		}
 	}
-	switch v {
-	case "GET":
-		fallthrough
-	case "HEAD":
-		fallthrough
-	case "PATCH":
-		fallthrough
-	case "POST":
-		fallthrough
-	case "PUT":
-		*e = RequestMethod(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RequestMethod: %v", v)
-	}
+	return false
 }
 
 // ResponseHeaders - Caching related diagnostic headers that should be included in cached responses
@@ -428,36 +418,16 @@ const (
 func (e ProxyCachePluginProtocols) ToPointer() *ProxyCachePluginProtocols {
 	return &e
 }
-func (e *ProxyCachePluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ProxyCachePluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = ProxyCachePluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ProxyCachePluginProtocols: %v", v)
-	}
+	return false
 }
 
 // ProxyCachePluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

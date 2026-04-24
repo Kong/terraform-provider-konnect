@@ -97,13 +97,7 @@ func (r *APIProductDocumentResource) Schema(ctx context.Context, req resource.Sc
 			},
 			"status": schema.StringAttribute{
 				Required:    true,
-				Description: `must be one of ["published", "unpublished"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"published",
-						"unpublished",
-					),
-				},
+				Description: `possible known values include one of ["published", "unpublished"]`,
 			},
 			"title": schema.StringAttribute{
 				Required:    true,
