@@ -44,6 +44,7 @@ type GatewayPluginAiPromptDecoratorResource struct {
 
 // GatewayPluginAiPromptDecoratorResourceModel describes the resource data model.
 type GatewayPluginAiPromptDecoratorResourceModel struct {
+	Condition      types.String                           `tfsdk:"condition"`
 	Config         *tfTypes.AiPromptDecoratorPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                           `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.Set                           `tfsdk:"consumer_group"`
@@ -69,6 +70,13 @@ func (r *GatewayPluginAiPromptDecoratorResource) Schema(ctx context.Context, req
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginAiPromptDecorator Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
@@ -101,17 +109,7 @@ func (r *GatewayPluginAiPromptDecoratorResource) Schema(ctx context.Context, req
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`openai`),
-						Description: `LLM input and output format and schema to use. Default: "openai"; must be one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"anthropic",
-								"bedrock",
-								"cohere",
-								"gemini",
-								"huggingface",
-								"openai",
-							),
-						},
+						Description: `LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]; Default: "openai"`,
 					},
 					"max_request_body_size": schema.Int64Attribute{
 						Computed:    true,
@@ -161,14 +159,7 @@ func (r *GatewayPluginAiPromptDecoratorResource) Schema(ctx context.Context, req
 											Computed:    true,
 											Optional:    true,
 											Default:     stringdefault.StaticString(`system`),
-											Description: `Default: "system"; must be one of ["assistant", "system", "user"]`,
-											Validators: []validator.String{
-												stringvalidator.OneOf(
-													"assistant",
-													"system",
-													"user",
-												),
-											},
+											Description: `possible known values include one of ["assistant", "system", "user"]; Default: "system"`,
 										},
 									},
 								},
@@ -194,14 +185,7 @@ func (r *GatewayPluginAiPromptDecoratorResource) Schema(ctx context.Context, req
 											Computed:    true,
 											Optional:    true,
 											Default:     stringdefault.StaticString(`system`),
-											Description: `Default: "system"; must be one of ["assistant", "system", "user"]`,
-											Validators: []validator.String{
-												stringvalidator.OneOf(
-													"assistant",
-													"system",
-													"user",
-												),
-											},
+											Description: `possible known values include one of ["assistant", "system", "user"]; Default: "system"`,
 										},
 									},
 								},

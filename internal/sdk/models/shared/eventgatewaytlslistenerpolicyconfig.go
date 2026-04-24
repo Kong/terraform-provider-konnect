@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -20,24 +18,22 @@ const (
 func (e EventGatewayTLSListenerPolicyConfigMode) ToPointer() *EventGatewayTLSListenerPolicyConfigMode {
 	return &e
 }
-func (e *EventGatewayTLSListenerPolicyConfigMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *EventGatewayTLSListenerPolicyConfigMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "required", "requested":
+			return true
+		}
 	}
-	switch v {
-	case "required":
-		fallthrough
-	case "requested":
-		*e = EventGatewayTLSListenerPolicyConfigMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for EventGatewayTLSListenerPolicyConfigMode: %v", v)
-	}
+	return false
 }
 
 // EventGatewayTLSListenerPolicyConfigClientAuthentication - Configures mutual TLS (mTLS) client certificate verification. When set, the gateway
 // requests or requires clients to present a certificate during the TLS handshake.
+//
+// **Requires a minimum runtime version of `1.1`**.
 type EventGatewayTLSListenerPolicyConfigClientAuthentication struct {
 	// * required - Reject TLS connections without a valid client certificate.
 	// * requested - Request a client certificate during the TLS handshake, but allow connections without one (falls back to other configured authentication methods). If a certificate is presented but cannot be verified, the connection is closed.
@@ -51,6 +47,7 @@ type EventGatewayTLSListenerPolicyConfigClientAuthentication struct {
 	// An expression that extracts a principal identifier from a verified client certificate.
 	// This expression must evaluate to a string.
 	//
+	// **Requires a minimum runtime version of `1.1`**.
 	PrincipalMapping *string `json:"principal_mapping,omitempty"`
 }
 
@@ -96,6 +93,7 @@ type EventGatewayTLSListenerPolicyConfig struct {
 	// Configures mutual TLS (mTLS) client certificate verification. When set, the gateway
 	// requests or requires clients to present a certificate during the TLS handshake.
 	//
+	// **Requires a minimum runtime version of `1.1`**.
 	ClientAuthentication *EventGatewayTLSListenerPolicyConfigClientAuthentication `json:"client_authentication,omitempty"`
 }
 

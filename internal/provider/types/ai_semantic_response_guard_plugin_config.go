@@ -7,7 +7,7 @@ import (
 )
 
 type AiSemanticResponseGuardPluginConfig struct {
-	Embeddings    *Embeddings                            `tfsdk:"embeddings"`
+	Embeddings    *PartialEmbeddingsConfig               `tfsdk:"embeddings"`
 	GenaiCategory types.String                           `tfsdk:"genai_category"`
 	LlmFormat     types.String                           `tfsdk:"llm_format"`
 	Rules         *AiSemanticResponseGuardPluginRules    `tfsdk:"rules"`

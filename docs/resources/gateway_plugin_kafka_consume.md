@@ -14,6 +14,7 @@ GatewayPluginKafkaConsume Resource
 
 ```terraform
 resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
+  condition = "...my_condition..."
   config = {
     authentication = {
       mechanism = "SCRAM-SHA-512"
@@ -194,6 +195,7 @@ resource "konnect_gateway_plugin_kafka_consume" "my_gatewaypluginkafkaconsume" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
@@ -217,15 +219,15 @@ Required:
 Optional:
 
 - `authentication` (Attributes) (see [below for nested schema](#nestedatt--config--authentication))
-- `auto_offset_reset` (String) The offset to start from when there is no initial offset in the consumer group. Default: "latest"; must be one of ["earliest", "latest"]
+- `auto_offset_reset` (String) The offset to start from when there is no initial offset in the consumer group. possible known values include one of ["earliest", "latest"]; Default: "latest"
 - `cluster_name` (String) An identifier for the Kafka cluster.
-- `commit_strategy` (String) The strategy to use for committing offsets. Default: "auto"; must be one of ["auto", "off"]
+- `commit_strategy` (String) The strategy to use for committing offsets. possible known values include one of ["auto", "off"]; Default: "auto"
 - `dlq_topic` (String) The topic to use for the Dead Letter Queue.
 - `enable_dlq` (Boolean) Enables Dead Letter Queue. When enabled, if the message doesn't conform to the schema (from Schema Registry) or there's an error in the `message_by_lua_functions`, it will be forwarded to `dlq_topic` that can be processed later.
 - `enforce_latest_offset_reset` (Boolean) When true, 'latest' offset reset behaves correctly (starts from end). When false (default), maintains backwards compatibility where 'latest' acts like 'earliest'. Default: false
 - `message_by_lua_functions` (List of String) The Lua functions that manipulates the message being sent to the client.
-- `message_deserializer` (String) The deserializer to use for the consumed messages. Default: "noop"; must be one of ["json", "noop"]
-- `mode` (String) The mode of operation for the plugin. Default: "http-get"; must be one of ["http-get", "server-sent-events", "websocket"]
+- `message_deserializer` (String) The deserializer to use for the consumed messages. possible known values include one of ["json", "noop"]; Default: "noop"
+- `mode` (String) The mode of operation for the plugin. possible known values include one of ["http-get", "server-sent-events", "websocket"]; Default: "http-get"
 - `schema_registry` (Attributes) The plugin-global schema registry configuration. (see [below for nested schema](#nestedatt--config--schema_registry))
 - `security` (Attributes) (see [below for nested schema](#nestedatt--config--security))
 
@@ -269,7 +271,7 @@ Optional:
 Optional:
 
 - `basic` (Attributes) (see [below for nested schema](#nestedatt--config--topics--schema_registry--confluent--authentication--basic))
-- `mode` (String) Authentication mode to use with the schema registry. Default: "none"; must be one of ["basic", "none", "oauth2"]
+- `mode` (String) Authentication mode to use with the schema registry. possible known values include one of ["basic", "none", "oauth2"]; Default: "none"
 - `oauth2` (Attributes) (see [below for nested schema](#nestedatt--config--topics--schema_registry--confluent--authentication--oauth2))
 - `oauth2_client` (Attributes) (see [below for nested schema](#nestedatt--config--topics--schema_registry--confluent--authentication--oauth2_client))
 
@@ -290,7 +292,7 @@ Optional:
 - `audience` (List of String) List of audiences passed to the IdP when obtaining a new token. Default: []
 - `client_id` (String) The client ID for the application registration in the IdP.
 - `client_secret` (String) The client secret for the application registration in the IdP.
-- `grant_type` (String) The OAuth grant type to be used. Default: "client_credentials"; must be one of ["client_credentials", "password"]
+- `grant_type` (String) The OAuth grant type to be used. possible known values include one of ["client_credentials", "password"]; Default: "client_credentials"
 - `password` (String) The password to use if `config.oauth.grant_type` is set to `password`.
 - `scopes` (List of String) List of scopes to request from the IdP when obtaining a new token. Default: ["openid"]
 - `token_endpoint` (String) The token endpoint URI. Not Null
@@ -304,8 +306,8 @@ Optional:
 
 Optional:
 
-- `auth_method` (String) The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body. Default: "client_secret_post"; must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none"]
-- `client_secret_jwt_alg` (String) The algorithm to use with JWT when using `client_secret_jwt` authentication. Default: "HS512"; must be one of ["HS256", "HS512"]
+- `auth_method` (String) The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none"]; Default: "client_secret_post"
+- `client_secret_jwt_alg` (String) The algorithm to use with JWT when using `client_secret_jwt` authentication. possible known values include one of ["HS256", "HS512"]; Default: "HS512"
 - `http_proxy` (String) The proxy to use when making HTTP requests to the IdP.
 - `http_proxy_authorization` (String) The `Proxy-Authorization` header value to be used with `http_proxy`.
 - `http_version` (Number) The HTTP version used for requests made by this plugin. Supported values: `1.1` for HTTP 1.1 and `1.0` for HTTP 1.0.
@@ -326,7 +328,7 @@ Optional:
 
 Optional:
 
-- `mechanism` (String) The SASL authentication mechanism.  Supported options: `PLAIN` or `SCRAM-SHA-256`. must be one of ["PLAIN", "SCRAM-SHA-256", "SCRAM-SHA-512"]
+- `mechanism` (String) The SASL authentication mechanism.  Supported options: `PLAIN` or `SCRAM-SHA-256`. possible known values include one of ["PLAIN", "SCRAM-SHA-256", "SCRAM-SHA-512"]
 - `password` (String) Password for SASL authentication.
 - `strategy` (String) The authentication strategy for the plugin, the only option for the value is `sasl`. must be "sasl"
 - `tokenauth` (Boolean) Enable this to indicate `DelegationToken` authentication
@@ -356,7 +358,7 @@ Optional:
 Optional:
 
 - `basic` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication--basic))
-- `mode` (String) Authentication mode to use with the schema registry. Default: "none"; must be one of ["basic", "none", "oauth2"]
+- `mode` (String) Authentication mode to use with the schema registry. possible known values include one of ["basic", "none", "oauth2"]; Default: "none"
 - `oauth2` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication--oauth2))
 - `oauth2_client` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication--oauth2_client))
 
@@ -377,7 +379,7 @@ Optional:
 - `audience` (List of String) List of audiences passed to the IdP when obtaining a new token. Default: []
 - `client_id` (String) The client ID for the application registration in the IdP.
 - `client_secret` (String) The client secret for the application registration in the IdP.
-- `grant_type` (String) The OAuth grant type to be used. Default: "client_credentials"; must be one of ["client_credentials", "password"]
+- `grant_type` (String) The OAuth grant type to be used. possible known values include one of ["client_credentials", "password"]; Default: "client_credentials"
 - `password` (String) The password to use if `config.oauth.grant_type` is set to `password`.
 - `scopes` (List of String) List of scopes to request from the IdP when obtaining a new token. Default: ["openid"]
 - `token_endpoint` (String) The token endpoint URI. Not Null
@@ -391,8 +393,8 @@ Optional:
 
 Optional:
 
-- `auth_method` (String) The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body. Default: "client_secret_post"; must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none"]
-- `client_secret_jwt_alg` (String) The algorithm to use with JWT when using `client_secret_jwt` authentication. Default: "HS512"; must be one of ["HS256", "HS512"]
+- `auth_method` (String) The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none"]; Default: "client_secret_post"
+- `client_secret_jwt_alg` (String) The algorithm to use with JWT when using `client_secret_jwt` authentication. possible known values include one of ["HS256", "HS512"]; Default: "HS512"
 - `http_proxy` (String) The proxy to use when making HTTP requests to the IdP.
 - `http_proxy_authorization` (String) The `Proxy-Authorization` header value to be used with `http_proxy`.
 - `http_version` (Number) The HTTP version used for requests made by this plugin. Supported values: `1.1` for HTTP 1.1 and `1.0` for HTTP 1.0.
@@ -479,7 +481,7 @@ import {
   to = konnect_gateway_plugin_kafka_consume.my_konnect_gateway_plugin_kafka_consume
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

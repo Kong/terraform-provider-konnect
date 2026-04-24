@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -19,20 +17,16 @@ const (
 func (e Min) ToPointer() *Min {
 	return &e
 }
-func (e *Min) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Min) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "TLSv1.2", "TLSv1.3":
+			return true
+		}
 	}
-	switch v {
-	case "TLSv1.2":
-		fallthrough
-	case "TLSv1.3":
-		*e = Min(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Min: %v", v)
-	}
+	return false
 }
 
 // Max - Maximum TLS version to use.
@@ -46,20 +40,16 @@ const (
 func (e Max) ToPointer() *Max {
 	return &e
 }
-func (e *Max) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Max) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "TLSv1.2", "TLSv1.3":
+			return true
+		}
 	}
-	switch v {
-	case "TLSv1.2":
-		fallthrough
-	case "TLSv1.3":
-		*e = Max(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Max: %v", v)
-	}
+	return false
 }
 
 // TLSVersionRange - A range of TLS versions.

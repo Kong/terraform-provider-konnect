@@ -15,6 +15,7 @@ func (r *GatewayPluginMockingResourceModel) RefreshFromSharedMockingPlugin(ctx c
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
@@ -198,6 +199,12 @@ func (r *GatewayPluginMockingResourceModel) ToOperationsUpdateMockingPluginReque
 func (r *GatewayPluginMockingResourceModel) ToSharedMockingPlugin(ctx context.Context) (*shared.MockingPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -408,6 +415,7 @@ func (r *GatewayPluginMockingResourceModel) ToSharedMockingPlugin(ctx context.Co
 		}
 	}
 	out := shared.MockingPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

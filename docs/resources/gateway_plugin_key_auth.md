@@ -14,6 +14,7 @@ GatewayPluginKeyAuth Resource
 
 ```terraform
 resource "konnect_gateway_plugin_key_auth" "my_gatewaypluginkeyauth" {
+  condition = "...my_condition..."
   config = {
     anonymous        = "...my_anonymous..."
     hide_credentials = false
@@ -82,6 +83,7 @@ resource "konnect_gateway_plugin_key_auth" "my_gatewaypluginkeyauth" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
@@ -117,7 +119,7 @@ Optional:
 
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `region` (String)
-- `scope` (String) must be one of ["cp", "realm"]
+- `scope` (String) possible known values include one of ["cp", "realm"]
 
 
 
@@ -182,7 +184,7 @@ import {
   to = konnect_gateway_plugin_key_auth.my_konnect_gateway_plugin_key_auth
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

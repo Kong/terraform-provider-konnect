@@ -15,6 +15,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) RefreshFromSharedKafkaConsumePl
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.KafkaConsumePluginConfig{}
 		if resp.Config.Authentication == nil {
 			r.Config.Authentication = nil
@@ -426,6 +427,12 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsUpdateKafkaconsumeP
 func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx context.Context) (*shared.KafkaConsumePlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -1146,6 +1153,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx 
 		}
 	}
 	out := shared.KafkaConsumePlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

@@ -45,6 +45,7 @@ type GatewayPluginServiceProtectionResource struct {
 
 // GatewayPluginServiceProtectionResourceModel describes the resource data model.
 type GatewayPluginServiceProtectionResourceModel struct {
+	Condition      types.String                           `tfsdk:"condition"`
 	Config         *tfTypes.ServiceProtectionPluginConfig `tfsdk:"config"`
 	ControlPlaneID types.String                           `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                            `tfsdk:"created_at"`
@@ -67,6 +68,13 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginServiceProtection Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -193,14 +201,7 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 									"auth_provider": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"aws",
-												"azure",
-												"gcp",
-											),
-										},
+										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
 									},
 									"aws_access_key_id": schema.StringAttribute{
 										Optional:    true,
@@ -394,14 +395,7 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 							"sentinel_role": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"any",
-										"master",
-										"slave",
-									),
-								},
+								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
 							},
 							"sentinel_username": schema.StringAttribute{
 								Optional:    true,
@@ -439,14 +433,7 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`local`),
-						Description: `The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: ` + "`" + `local` + "`" + `, ` + "`" + `redis` + "`" + ` and ` + "`" + `cluster` + "`" + `. Default: "local"; must be one of ["cluster", "local", "redis"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"cluster",
-								"local",
-								"redis",
-							),
-						},
+						Description: `The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: ` + "`" + `local` + "`" + `, ` + "`" + `redis` + "`" + ` and ` + "`" + `cluster` + "`" + `. possible known values include one of ["cluster", "local", "redis"]; Default: "local"`,
 					},
 					"sync_rate": schema.Float64Attribute{
 						Optional:    true,
@@ -461,13 +448,7 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`sliding`),
-						Description: `Sets the time window type to either ` + "`" + `sliding` + "`" + ` (default) or ` + "`" + `fixed` + "`" + `. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters. Default: "sliding"; must be one of ["fixed", "sliding"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"fixed",
-								"sliding",
-							),
-						},
+						Description: `Sets the time window type to either ` + "`" + `sliding` + "`" + ` (default) or ` + "`" + `fixed` + "`" + `. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters. possible known values include one of ["fixed", "sliding"]; Default: "sliding"`,
 					},
 				},
 			},

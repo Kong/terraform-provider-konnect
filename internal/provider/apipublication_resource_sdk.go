@@ -31,6 +31,10 @@ func (r *APIPublicationResourceModel) RefreshFromSharedAPIPublicationResponse(ct
 		} else {
 			r.Visibility = types.StringNull()
 		}
+		r.Warnings = make([]types.String, 0, len(resp.Warnings))
+		for _, v := range resp.Warnings {
+			r.Warnings = append(r.Warnings, types.StringValue(v))
+		}
 	}
 
 	return diags

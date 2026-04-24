@@ -14,7 +14,14 @@ GatewayPluginOpentelemetry Resource
 
 ```terraform
 resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" {
+  condition = "...my_condition..."
   config = {
+    access_logs = {
+      custom_attributes_by_lua = {
+        key = "value"
+      }
+      endpoint = "...my_endpoint..."
+    }
     access_logs_endpoint = "...my_access_logs_endpoint..."
     batch_flush_delay    = 7
     batch_span_count     = 5
@@ -26,6 +33,7 @@ resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" 
     http_response_header_for_traceid = "...my_http_response_header_for_traceid..."
     logs_endpoint                    = "...my_logs_endpoint..."
     metrics = {
+      enable_ai_metrics              = false
       enable_bandwidth_metrics       = false
       enable_consumer_attribute      = false
       enable_latency_metrics         = false
@@ -117,6 +125,7 @@ resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" 
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -136,11 +145,12 @@ resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" 
 
 Optional:
 
+- `access_logs` (Attributes) (see [below for nested schema](#nestedatt--config--access_logs))
 - `access_logs_endpoint` (String) An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.
 - `batch_flush_delay` (Number) The delay, in seconds, between two consecutive batches.
 - `batch_span_count` (Number) The number of spans to be sent in a single batch.
 - `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 1000
-- `header_type` (String) Default: "preserve"; must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "ignore", "instana", "jaeger", "ot", "preserve", "w3c"]
+- `header_type` (String) possible known values include one of ["aws", "b3", "b3-single", "datadog", "gcp", "ignore", "instana", "jaeger", "ot", "preserve", "w3c"]; Default: "preserve"
 - `headers` (Map of String) The custom headers to be added in the HTTP request sent to the OTLP server. This setting is useful for adding the authentication headers (token) for the APM backend.
 - `http_response_header_for_traceid` (String)
 - `logs_endpoint` (String) An HTTP URL endpoint where internal logs are exported.
@@ -150,15 +160,25 @@ Optional:
 - `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 5000
 - `resource_attributes` (Map of String)
 - `sampling_rate` (Number) Tracing sampling rate for configuring the probability-based sampler. When set, this value supersedes the global `tracing_sampling_rate` setting from kong.conf.
-- `sampling_strategy` (String) The sampling strategy to use for OTLP `traces`. Set `parent_drop_probability_fallback` if you want parent-based sampling when the parent span contains a `false` sampled flag, and fallback to probability-based sampling otherwise. Set `parent_probability_fallback` if you want parent-based sampling when the parent span contains a valid sampled flag (`true` or `false`), and fallback to probability-based sampling otherwise. Default: "parent_drop_probability_fallback"; must be one of ["parent_drop_probability_fallback", "parent_probability_fallback"]
+- `sampling_strategy` (String) The sampling strategy to use for OTLP `traces`. Set `parent_drop_probability_fallback` if you want parent-based sampling when the parent span contains a `false` sampled flag, and fallback to probability-based sampling otherwise. Set `parent_probability_fallback` if you want parent-based sampling when the parent span contains a valid sampled flag (`true` or `false`), and fallback to probability-based sampling otherwise. possible known values include one of ["parent_drop_probability_fallback", "parent_probability_fallback"]; Default: "parent_drop_probability_fallback"
 - `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 5000
 - `traces_endpoint` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
+
+<a id="nestedatt--config--access_logs"></a>
+### Nested Schema for `config.access_logs`
+
+Optional:
+
+- `custom_attributes_by_lua` (Map of String) A key-value map that dynamically modifies access log fields using Lua code.
+- `endpoint` (String) An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.
+
 
 <a id="nestedatt--config--metrics"></a>
 ### Nested Schema for `config.metrics`
 
 Optional:
 
+- `enable_ai_metrics` (Boolean) A boolean value that determines if AI metrics should be collected. If enabled, `gen_ai.*`, `mcp.*`, `kong.gen_ai.*`, `kong.gen_ai.a2a.*` and `kong.mcp.*` metrics will be exported. To enable latency metrics for AI metrics, `enable_latency_metrics` must also be set to `true`. To enable `error.type` attribute for AI metrics, `enable_request_metrics` must also be set to `true`. Default: false
 - `enable_bandwidth_metrics` (Boolean) A boolean value that determines if bandwidth metrics should be collected. If enabled, `http.server.request.size` and `http.server.response.size` metrics will be exported. Default: false
 - `enable_consumer_attribute` (Boolean) A boolean value that determines if `http.server.request.count`, `http.server.request.size` and `http.server.response.size` metrics should fill in the consumer attribute when available. Default: false
 - `enable_latency_metrics` (Boolean) A boolean value that determines if latency metrics should be collected. If enabled, `kong.latency.total`, `kong.latency.internal` and `kong.latency.upstream` metrics will be exported. Default: false
@@ -174,7 +194,7 @@ Optional:
 Optional:
 
 - `clear` (List of String) Header names to clear after context extraction. This allows to extract the context from a certain header and then remove it from the request, useful when extraction and injection are performed on different header formats and the original header should not be sent to the upstream. If left empty, no headers are cleared.
-- `default_format` (String) The default header format to use when extractors did not match any format in the incoming headers and `inject` is configured with the value: `preserve`. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in `extract`. Default: "w3c"; must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "w3c"]
+- `default_format` (String) The default header format to use when extractors did not match any format in the incoming headers and `inject` is configured with the value: `preserve`. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in `extract`. possible known values include one of ["aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "w3c"]; Default: "w3c"
 - `extract` (List of String) Header formats used to extract tracing context from incoming requests. If multiple values are specified, the first one found will be used for extraction. If left empty, Kong will not extract any tracing context information from incoming requests and generate a trace with no parent and a new trace ID.
 - `inject` (List of String) Header formats used to inject tracing context. The value `preserve` will use the same header format as the incoming request. If multiple values are specified, all of them will be used during injection. If left empty, Kong will not inject any tracing context information in outgoing requests.
 
@@ -184,7 +204,7 @@ Optional:
 
 Optional:
 
-- `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of [-1, 1]
+- `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. possible known values include one of [-1, 1]; Default: 1
 - `initial_retry_delay` (Number) Time in seconds before the initial retry is made for a failing batch.
 - `max_batch_size` (Number) Maximum number of entries that can be processed at a time. Default: 200
 - `max_bytes` (Number) Maximum number of bytes that can be waiting on a queue, requires string content.
@@ -264,7 +284,7 @@ import {
   to = konnect_gateway_plugin_opentelemetry.my_konnect_gateway_plugin_opentelemetry
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

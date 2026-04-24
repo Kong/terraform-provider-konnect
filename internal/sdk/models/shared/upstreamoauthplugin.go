@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -225,22 +223,16 @@ const (
 func (e UpstreamOauthPluginAuthProvider) ToPointer() *UpstreamOauthPluginAuthProvider {
 	return &e
 }
-func (e *UpstreamOauthPluginAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UpstreamOauthPluginAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = UpstreamOauthPluginAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for UpstreamOauthPluginAuthProvider: %v", v)
-	}
+	return false
 }
 
 // UpstreamOauthPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -442,22 +434,16 @@ const (
 func (e UpstreamOauthPluginSentinelRole) ToPointer() *UpstreamOauthPluginSentinelRole {
 	return &e
 }
-func (e *UpstreamOauthPluginSentinelRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UpstreamOauthPluginSentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "master":
-		fallthrough
-	case "slave":
-		*e = UpstreamOauthPluginSentinelRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for UpstreamOauthPluginSentinelRole: %v", v)
-	}
+	return false
 }
 
 type UpstreamOauthPluginRedis struct {
@@ -683,20 +669,16 @@ const (
 func (e UpstreamOauthPluginStrategy) ToPointer() *UpstreamOauthPluginStrategy {
 	return &e
 }
-func (e *UpstreamOauthPluginStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UpstreamOauthPluginStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "memory", "redis":
+			return true
+		}
 	}
-	switch v {
-	case "memory":
-		fallthrough
-	case "redis":
-		*e = UpstreamOauthPluginStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for UpstreamOauthPluginStrategy: %v", v)
-	}
+	return false
 }
 
 type UpstreamOauthPluginCache struct {
@@ -769,24 +751,16 @@ const (
 func (e AuthMethod) ToPointer() *AuthMethod {
 	return &e
 }
-func (e *AuthMethod) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none":
+			return true
+		}
 	}
-	switch v {
-	case "client_secret_basic":
-		fallthrough
-	case "client_secret_jwt":
-		fallthrough
-	case "client_secret_post":
-		fallthrough
-	case "none":
-		*e = AuthMethod(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AuthMethod: %v", v)
-	}
+	return false
 }
 
 // ClientSecretJwtAlg - The algorithm to use with JWT when using `client_secret_jwt` authentication.
@@ -800,23 +774,19 @@ const (
 func (e ClientSecretJwtAlg) ToPointer() *ClientSecretJwtAlg {
 	return &e
 }
-func (e *ClientSecretJwtAlg) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ClientSecretJwtAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "HS256", "HS512":
+			return true
+		}
 	}
-	switch v {
-	case "HS256":
-		fallthrough
-	case "HS512":
-		*e = ClientSecretJwtAlg(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ClientSecretJwtAlg: %v", v)
-	}
+	return false
 }
 
-type Client struct {
+type UpstreamOauthPluginClient struct {
 	// The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body.
 	AuthMethod *AuthMethod `default:"client_secret_post" json:"auth_method"`
 	// The algorithm to use with JWT when using `client_secret_jwt` authentication.
@@ -841,119 +811,115 @@ type Client struct {
 	Timeout *int64 `default:"10000" json:"timeout"`
 }
 
-func (c Client) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
+func (u UpstreamOauthPluginClient) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
 }
 
-func (c *Client) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+func (u *UpstreamOauthPluginClient) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *Client) GetAuthMethod() *AuthMethod {
-	if c == nil {
+func (u *UpstreamOauthPluginClient) GetAuthMethod() *AuthMethod {
+	if u == nil {
 		return nil
 	}
-	return c.AuthMethod
+	return u.AuthMethod
 }
 
-func (c *Client) GetClientSecretJwtAlg() *ClientSecretJwtAlg {
-	if c == nil {
+func (u *UpstreamOauthPluginClient) GetClientSecretJwtAlg() *ClientSecretJwtAlg {
+	if u == nil {
 		return nil
 	}
-	return c.ClientSecretJwtAlg
+	return u.ClientSecretJwtAlg
 }
 
-func (c *Client) GetHTTPProxy() *string {
-	if c == nil {
+func (u *UpstreamOauthPluginClient) GetHTTPProxy() *string {
+	if u == nil {
 		return nil
 	}
-	return c.HTTPProxy
+	return u.HTTPProxy
 }
 
-func (c *Client) GetHTTPProxyAuthorization() *string {
-	if c == nil {
+func (u *UpstreamOauthPluginClient) GetHTTPProxyAuthorization() *string {
+	if u == nil {
 		return nil
 	}
-	return c.HTTPProxyAuthorization
+	return u.HTTPProxyAuthorization
 }
 
-func (c *Client) GetHTTPVersion() *float64 {
-	if c == nil {
+func (u *UpstreamOauthPluginClient) GetHTTPVersion() *float64 {
+	if u == nil {
 		return nil
 	}
-	return c.HTTPVersion
+	return u.HTTPVersion
 }
 
-func (c *Client) GetHTTPSProxy() *string {
-	if c == nil {
+func (u *UpstreamOauthPluginClient) GetHTTPSProxy() *string {
+	if u == nil {
 		return nil
 	}
-	return c.HTTPSProxy
+	return u.HTTPSProxy
 }
 
-func (c *Client) GetHTTPSProxyAuthorization() *string {
-	if c == nil {
+func (u *UpstreamOauthPluginClient) GetHTTPSProxyAuthorization() *string {
+	if u == nil {
 		return nil
 	}
-	return c.HTTPSProxyAuthorization
+	return u.HTTPSProxyAuthorization
 }
 
-func (c *Client) GetKeepAlive() *bool {
-	if c == nil {
+func (u *UpstreamOauthPluginClient) GetKeepAlive() *bool {
+	if u == nil {
 		return nil
 	}
-	return c.KeepAlive
+	return u.KeepAlive
 }
 
-func (c *Client) GetNoProxy() *string {
-	if c == nil {
+func (u *UpstreamOauthPluginClient) GetNoProxy() *string {
+	if u == nil {
 		return nil
 	}
-	return c.NoProxy
+	return u.NoProxy
 }
 
-func (c *Client) GetSslVerify() *bool {
-	if c == nil {
+func (u *UpstreamOauthPluginClient) GetSslVerify() *bool {
+	if u == nil {
 		return nil
 	}
-	return c.SslVerify
+	return u.SslVerify
 }
 
-func (c *Client) GetTimeout() *int64 {
-	if c == nil {
+func (u *UpstreamOauthPluginClient) GetTimeout() *int64 {
+	if u == nil {
 		return nil
 	}
-	return c.Timeout
+	return u.Timeout
 }
 
-// GrantType - The OAuth grant type to be used.
-type GrantType string
+// UpstreamOauthPluginGrantType - The OAuth grant type to be used.
+type UpstreamOauthPluginGrantType string
 
 const (
-	GrantTypeClientCredentials GrantType = "client_credentials"
-	GrantTypePassword          GrantType = "password"
+	UpstreamOauthPluginGrantTypeClientCredentials UpstreamOauthPluginGrantType = "client_credentials"
+	UpstreamOauthPluginGrantTypePassword          UpstreamOauthPluginGrantType = "password"
 )
 
-func (e GrantType) ToPointer() *GrantType {
+func (e UpstreamOauthPluginGrantType) ToPointer() *UpstreamOauthPluginGrantType {
 	return &e
 }
-func (e *GrantType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UpstreamOauthPluginGrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_credentials", "password":
+			return true
+		}
 	}
-	switch v {
-	case "client_credentials":
-		fallthrough
-	case "password":
-		*e = GrantType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GrantType: %v", v)
-	}
+	return false
 }
 
 type Oauth struct {
@@ -964,7 +930,7 @@ type Oauth struct {
 	// The client secret for the application registration in the IdP.
 	ClientSecret *string `default:"null" json:"client_secret"`
 	// The OAuth grant type to be used.
-	GrantType *GrantType `default:"client_credentials" json:"grant_type"`
+	GrantType *UpstreamOauthPluginGrantType `default:"client_credentials" json:"grant_type"`
 	// The password to use if `config.oauth.grant_type` is set to `password`.
 	Password *string `default:"null" json:"password"`
 	// List of scopes to request from the IdP when obtaining a new token.
@@ -1011,7 +977,7 @@ func (o *Oauth) GetClientSecret() *string {
 	return o.ClientSecret
 }
 
-func (o *Oauth) GetGrantType() *GrantType {
+func (o *Oauth) GetGrantType() *UpstreamOauthPluginGrantType {
 	if o == nil {
 		return nil
 	}
@@ -1061,10 +1027,10 @@ func (o *Oauth) GetUsername() *string {
 }
 
 type UpstreamOauthPluginConfig struct {
-	Behavior *Behavior                 `json:"behavior"`
-	Cache    *UpstreamOauthPluginCache `json:"cache,omitempty"`
-	Client   *Client                   `json:"client,omitempty"`
-	Oauth    Oauth                     `json:"oauth"`
+	Behavior *Behavior                  `json:"behavior"`
+	Cache    *UpstreamOauthPluginCache  `json:"cache,omitempty"`
+	Client   *UpstreamOauthPluginClient `json:"client,omitempty"`
+	Oauth    Oauth                      `json:"oauth"`
 }
 
 func (u UpstreamOauthPluginConfig) MarshalJSON() ([]byte, error) {
@@ -1092,7 +1058,7 @@ func (u *UpstreamOauthPluginConfig) GetCache() *UpstreamOauthPluginCache {
 	return u.Cache
 }
 
-func (u *UpstreamOauthPluginConfig) GetClient() *Client {
+func (u *UpstreamOauthPluginConfig) GetClient() *UpstreamOauthPluginClient {
 	if u == nil {
 		return nil
 	}
@@ -1164,24 +1130,16 @@ const (
 func (e UpstreamOauthPluginProtocols) ToPointer() *UpstreamOauthPluginProtocols {
 	return &e
 }
-func (e *UpstreamOauthPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UpstreamOauthPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = UpstreamOauthPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for UpstreamOauthPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // UpstreamOauthPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -1232,6 +1190,8 @@ func (u *UpstreamOauthPluginService) GetID() *string {
 
 // UpstreamOauthPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type UpstreamOauthPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -1271,6 +1231,13 @@ func (u *UpstreamOauthPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (u *UpstreamOauthPlugin) GetCondition() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Condition
 }
 
 func (u *UpstreamOauthPlugin) GetCreatedAt() *int64 {

@@ -45,6 +45,7 @@ type GatewayPluginOauth2IntrospectionResource struct {
 
 // GatewayPluginOauth2IntrospectionResourceModel describes the resource data model.
 type GatewayPluginOauth2IntrospectionResourceModel struct {
+	Condition      types.String                             `tfsdk:"condition"`
 	Config         *tfTypes.Oauth2IntrospectionPluginConfig `tfsdk:"config"`
 	ControlPlaneID types.String                             `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                              `tfsdk:"created_at"`
@@ -68,6 +69,13 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginOauth2Introspection Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -85,13 +93,7 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`username`),
-						Description: `A string indicating whether to associate OAuth2 ` + "`" + `username` + "`" + ` or ` + "`" + `client_id` + "`" + ` with the consumer's username. OAuth2 ` + "`" + `username` + "`" + ` is mapped to a consumer's ` + "`" + `username` + "`" + ` field, while an OAuth2 ` + "`" + `client_id` + "`" + ` maps to a consumer's ` + "`" + `custom_id` + "`" + `. Default: "username"; must be one of ["client_id", "username"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"client_id",
-								"username",
-							),
-						},
+						Description: `A string indicating whether to associate OAuth2 ` + "`" + `username` + "`" + ` or ` + "`" + `client_id` + "`" + ` with the consumer's username. OAuth2 ` + "`" + `username` + "`" + ` is mapped to a consumer's ` + "`" + `username` + "`" + ` field, while an OAuth2 ` + "`" + `client_id` + "`" + ` maps to a consumer's ` + "`" + `custom_id` + "`" + `. possible known values include one of ["client_id", "username"]; Default: "username"`,
 					},
 					"custom_claims_forward": schema.ListAttribute{
 						Computed:    true,

@@ -14,6 +14,7 @@ GatewayPluginOauth2Introspection Resource
 
 ```terraform
 resource "konnect_gateway_plugin_oauth2_introspection" "my_gatewaypluginoauth2introspection" {
+  condition = "...my_condition..."
   config = {
     anonymous           = ""
     authorization_value = "...my_authorization_value..."
@@ -83,6 +84,7 @@ resource "konnect_gateway_plugin_oauth2_introspection" "my_gatewaypluginoauth2in
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
@@ -106,7 +108,7 @@ Required:
 Optional:
 
 - `anonymous` (String) An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request fails with an authentication failure `4xx`. Note that this value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`. Default: ""
-- `consumer_by` (String) A string indicating whether to associate OAuth2 `username` or `client_id` with the consumer's username. OAuth2 `username` is mapped to a consumer's `username` field, while an OAuth2 `client_id` maps to a consumer's `custom_id`. Default: "username"; must be one of ["client_id", "username"]
+- `consumer_by` (String) A string indicating whether to associate OAuth2 `username` or `client_id` with the consumer's username. OAuth2 `username` is mapped to a consumer's `username` field, while an OAuth2 `client_id` maps to a consumer's `custom_id`. possible known values include one of ["client_id", "username"]; Default: "username"
 - `custom_claims_forward` (List of String) A list of custom claims to be forwarded from the introspection response to the upstream request. Claims are forwarded in headers with prefix `X-Credential-{claim-name}`. Default: []
 - `custom_introspection_headers` (Map of String) A list of custom headers to be added in the introspection request.
 - `hide_credentials` (Boolean) An optional boolean value telling the plugin to hide the credential to the upstream API server. It will be removed by Kong before proxying the request. Default: false
@@ -179,7 +181,7 @@ import {
   to = konnect_gateway_plugin_oauth2_introspection.my_konnect_gateway_plugin_oauth2_introspection
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

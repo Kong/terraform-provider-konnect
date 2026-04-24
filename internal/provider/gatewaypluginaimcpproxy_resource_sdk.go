@@ -17,7 +17,14 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.AiMcpProxyPluginConfig{}
+		r.Config.AccessTokenClaimField = types.StringPointerValue(resp.Config.AccessTokenClaimField)
+		if resp.Config.ACLAttributeType != nil {
+			r.Config.ACLAttributeType = types.StringValue(string(*resp.Config.ACLAttributeType))
+		} else {
+			r.Config.ACLAttributeType = types.StringNull()
+		}
 		if resp.Config.ConsumerIdentifier != nil {
 			r.Config.ConsumerIdentifier = types.StringValue(string(*resp.Config.ConsumerIdentifier))
 		} else {
@@ -56,7 +63,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 		if resp.Config.Logging == nil {
 			r.Config.Logging = nil
 		} else {
-			r.Config.Logging = &tfTypes.Logging{}
+			r.Config.Logging = &tfTypes.AiMcpProxyPluginLogging{}
 			r.Config.Logging.LogAudits = types.BoolPointerValue(resp.Config.Logging.LogAudits)
 			r.Config.Logging.LogPayloads = types.BoolPointerValue(resp.Config.Logging.LogPayloads)
 			r.Config.Logging.LogStatistics = types.BoolPointerValue(resp.Config.Logging.LogStatistics)
@@ -68,6 +75,108 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 		} else {
 			r.Config.Server = &tfTypes.Server{}
 			r.Config.Server.ForwardClientHeaders = types.BoolPointerValue(resp.Config.Server.ForwardClientHeaders)
+			if resp.Config.Server.Session == nil {
+				r.Config.Server.Session = nil
+			} else {
+				r.Config.Server.Session = &tfTypes.AiMcpProxyPluginSession{}
+				if resp.Config.Server.Session.Client == nil {
+					r.Config.Server.Session.Client = nil
+				} else {
+					r.Config.Server.Session.Client = &tfTypes.AiMcpProxyPluginClient{}
+					if resp.Config.Server.Session.Client.Secrets != nil {
+						r.Config.Server.Session.Client.Secrets = make([]types.String, 0, len(resp.Config.Server.Session.Client.Secrets))
+						for _, v := range resp.Config.Server.Session.Client.Secrets {
+							r.Config.Server.Session.Client.Secrets = append(r.Config.Server.Session.Client.Secrets, types.StringValue(v))
+						}
+					} else {
+						r.Config.Server.Session.Client.Secrets = nil
+					}
+				}
+				r.Config.Server.Session.Managed = types.BoolPointerValue(resp.Config.Server.Session.Managed)
+				if resp.Config.Server.Session.Redis == nil {
+					r.Config.Server.Session.Redis = nil
+				} else {
+					r.Config.Server.Session.Redis = &tfTypes.PartialVectordbRedis{}
+					if resp.Config.Server.Session.Redis.CloudAuthentication == nil {
+						r.Config.Server.Session.Redis.CloudAuthentication = nil
+					} else {
+						r.Config.Server.Session.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+						if resp.Config.Server.Session.Redis.CloudAuthentication.AuthProvider != nil {
+							r.Config.Server.Session.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Server.Session.Redis.CloudAuthentication.AuthProvider))
+						} else {
+							r.Config.Server.Session.Redis.CloudAuthentication.AuthProvider = types.StringNull()
+						}
+						r.Config.Server.Session.Redis.CloudAuthentication.AwsAccessKeyID = types.StringPointerValue(resp.Config.Server.Session.Redis.CloudAuthentication.AwsAccessKeyID)
+						r.Config.Server.Session.Redis.CloudAuthentication.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Server.Session.Redis.CloudAuthentication.AwsAssumeRoleArn)
+						r.Config.Server.Session.Redis.CloudAuthentication.AwsCacheName = types.StringPointerValue(resp.Config.Server.Session.Redis.CloudAuthentication.AwsCacheName)
+						r.Config.Server.Session.Redis.CloudAuthentication.AwsIsServerless = types.BoolPointerValue(resp.Config.Server.Session.Redis.CloudAuthentication.AwsIsServerless)
+						r.Config.Server.Session.Redis.CloudAuthentication.AwsRegion = types.StringPointerValue(resp.Config.Server.Session.Redis.CloudAuthentication.AwsRegion)
+						r.Config.Server.Session.Redis.CloudAuthentication.AwsRoleSessionName = types.StringPointerValue(resp.Config.Server.Session.Redis.CloudAuthentication.AwsRoleSessionName)
+						r.Config.Server.Session.Redis.CloudAuthentication.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Server.Session.Redis.CloudAuthentication.AwsSecretAccessKey)
+						r.Config.Server.Session.Redis.CloudAuthentication.AzureClientID = types.StringPointerValue(resp.Config.Server.Session.Redis.CloudAuthentication.AzureClientID)
+						r.Config.Server.Session.Redis.CloudAuthentication.AzureClientSecret = types.StringPointerValue(resp.Config.Server.Session.Redis.CloudAuthentication.AzureClientSecret)
+						r.Config.Server.Session.Redis.CloudAuthentication.AzureTenantID = types.StringPointerValue(resp.Config.Server.Session.Redis.CloudAuthentication.AzureTenantID)
+						r.Config.Server.Session.Redis.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.Server.Session.Redis.CloudAuthentication.GcpServiceAccountJSON)
+					}
+					r.Config.Server.Session.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Server.Session.Redis.ClusterMaxRedirections)
+					if resp.Config.Server.Session.Redis.ClusterNodes != nil {
+						r.Config.Server.Session.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+
+						for _, clusterNodesItem := range resp.Config.Server.Session.Redis.ClusterNodes {
+							var clusterNodes tfTypes.PartialRedisEeClusterNodes
+
+							clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
+							clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
+
+							r.Config.Server.Session.Redis.ClusterNodes = append(r.Config.Server.Session.Redis.ClusterNodes, clusterNodes)
+						}
+					} else {
+						r.Config.Server.Session.Redis.ClusterNodes = nil
+					}
+					r.Config.Server.Session.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Server.Session.Redis.ConnectTimeout)
+					r.Config.Server.Session.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Server.Session.Redis.ConnectionIsProxied)
+					r.Config.Server.Session.Redis.Database = types.Int64PointerValue(resp.Config.Server.Session.Redis.Database)
+					r.Config.Server.Session.Redis.Host = types.StringPointerValue(resp.Config.Server.Session.Redis.Host)
+					r.Config.Server.Session.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Server.Session.Redis.KeepaliveBacklog)
+					r.Config.Server.Session.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Server.Session.Redis.KeepalivePoolSize)
+					r.Config.Server.Session.Redis.Password = types.StringPointerValue(resp.Config.Server.Session.Redis.Password)
+					r.Config.Server.Session.Redis.Port = types.Int64PointerValue(resp.Config.Server.Session.Redis.Port)
+					r.Config.Server.Session.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Server.Session.Redis.ReadTimeout)
+					r.Config.Server.Session.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Server.Session.Redis.SendTimeout)
+					r.Config.Server.Session.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Server.Session.Redis.SentinelMaster)
+					if resp.Config.Server.Session.Redis.SentinelNodes != nil {
+						r.Config.Server.Session.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+
+						for _, sentinelNodesItem := range resp.Config.Server.Session.Redis.SentinelNodes {
+							var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+
+							sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
+							sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+
+							r.Config.Server.Session.Redis.SentinelNodes = append(r.Config.Server.Session.Redis.SentinelNodes, sentinelNodes)
+						}
+					} else {
+						r.Config.Server.Session.Redis.SentinelNodes = nil
+					}
+					r.Config.Server.Session.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Server.Session.Redis.SentinelPassword)
+					if resp.Config.Server.Session.Redis.SentinelRole != nil {
+						r.Config.Server.Session.Redis.SentinelRole = types.StringValue(string(*resp.Config.Server.Session.Redis.SentinelRole))
+					} else {
+						r.Config.Server.Session.Redis.SentinelRole = types.StringNull()
+					}
+					r.Config.Server.Session.Redis.SentinelUsername = types.StringPointerValue(resp.Config.Server.Session.Redis.SentinelUsername)
+					r.Config.Server.Session.Redis.ServerName = types.StringPointerValue(resp.Config.Server.Session.Redis.ServerName)
+					r.Config.Server.Session.Redis.Ssl = types.BoolPointerValue(resp.Config.Server.Session.Redis.Ssl)
+					r.Config.Server.Session.Redis.SslVerify = types.BoolPointerValue(resp.Config.Server.Session.Redis.SslVerify)
+					r.Config.Server.Session.Redis.Username = types.StringPointerValue(resp.Config.Server.Session.Redis.Username)
+				}
+				r.Config.Server.Session.SessionTTL = types.Float64PointerValue(resp.Config.Server.Session.SessionTTL)
+				if resp.Config.Server.Session.Strategy != nil {
+					r.Config.Server.Session.Strategy = types.StringValue(string(*resp.Config.Server.Session.Strategy))
+				} else {
+					r.Config.Server.Session.Strategy = types.StringNull()
+				}
+			}
 			r.Config.Server.Tag = types.StringPointerValue(resp.Config.Server.Tag)
 			r.Config.Server.Timeout = types.Float64PointerValue(resp.Config.Server.Timeout)
 		}
@@ -341,6 +450,12 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToOperationsUpdateAimcpproxyPlugi
 func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx context.Context) (*shared.AiMcpProxyPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -434,6 +549,18 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 	} else {
 		updatedAt = nil
 	}
+	accessTokenClaimField := new(string)
+	if !r.Config.AccessTokenClaimField.IsUnknown() && !r.Config.AccessTokenClaimField.IsNull() {
+		*accessTokenClaimField = r.Config.AccessTokenClaimField.ValueString()
+	} else {
+		accessTokenClaimField = nil
+	}
+	aclAttributeType := new(shared.ACLAttributeType)
+	if !r.Config.ACLAttributeType.IsUnknown() && !r.Config.ACLAttributeType.IsNull() {
+		*aclAttributeType = shared.ACLAttributeType(r.Config.ACLAttributeType.ValueString())
+	} else {
+		aclAttributeType = nil
+	}
 	consumerIdentifier := new(shared.ConsumerIdentifier)
 	if !r.Config.ConsumerIdentifier.IsUnknown() && !r.Config.ConsumerIdentifier.IsNull() {
 		*consumerIdentifier = shared.ConsumerIdentifier(r.Config.ConsumerIdentifier.ValueString())
@@ -477,7 +604,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 	} else {
 		includeConsumerGroups = nil
 	}
-	var logging *shared.Logging
+	var logging *shared.AiMcpProxyPluginLogging
 	if r.Config.Logging != nil {
 		logAudits := new(bool)
 		if !r.Config.Logging.LogAudits.IsUnknown() && !r.Config.Logging.LogAudits.IsNull() {
@@ -497,7 +624,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 		} else {
 			logStatistics = nil
 		}
-		logging = &shared.Logging{
+		logging = &shared.AiMcpProxyPluginLogging{
 			LogAudits:     logAudits,
 			LogPayloads:   logPayloads,
 			LogStatistics: logStatistics,
@@ -518,6 +645,321 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 		} else {
 			forwardClientHeaders = nil
 		}
+		var session *shared.AiMcpProxyPluginSession
+		if r.Config.Server.Session != nil {
+			var client *shared.AiMcpProxyPluginClient
+			if r.Config.Server.Session.Client != nil {
+				var secrets []string
+				if r.Config.Server.Session.Client.Secrets != nil {
+					secrets = make([]string, 0, len(r.Config.Server.Session.Client.Secrets))
+					for secretsIndex := range r.Config.Server.Session.Client.Secrets {
+						secrets = append(secrets, r.Config.Server.Session.Client.Secrets[secretsIndex].ValueString())
+					}
+				}
+				client = &shared.AiMcpProxyPluginClient{
+					Secrets: secrets,
+				}
+			}
+			managed := new(bool)
+			if !r.Config.Server.Session.Managed.IsUnknown() && !r.Config.Server.Session.Managed.IsNull() {
+				*managed = r.Config.Server.Session.Managed.ValueBool()
+			} else {
+				managed = nil
+			}
+			var redis *shared.AiMcpProxyPluginRedis
+			if r.Config.Server.Session.Redis != nil {
+				var cloudAuthentication *shared.AiMcpProxyPluginCloudAuthentication
+				if r.Config.Server.Session.Redis.CloudAuthentication != nil {
+					authProvider := new(shared.AiMcpProxyPluginAuthProvider)
+					if !r.Config.Server.Session.Redis.CloudAuthentication.AuthProvider.IsUnknown() && !r.Config.Server.Session.Redis.CloudAuthentication.AuthProvider.IsNull() {
+						*authProvider = shared.AiMcpProxyPluginAuthProvider(r.Config.Server.Session.Redis.CloudAuthentication.AuthProvider.ValueString())
+					} else {
+						authProvider = nil
+					}
+					awsAccessKeyID := new(string)
+					if !r.Config.Server.Session.Redis.CloudAuthentication.AwsAccessKeyID.IsUnknown() && !r.Config.Server.Session.Redis.CloudAuthentication.AwsAccessKeyID.IsNull() {
+						*awsAccessKeyID = r.Config.Server.Session.Redis.CloudAuthentication.AwsAccessKeyID.ValueString()
+					} else {
+						awsAccessKeyID = nil
+					}
+					awsAssumeRoleArn := new(string)
+					if !r.Config.Server.Session.Redis.CloudAuthentication.AwsAssumeRoleArn.IsUnknown() && !r.Config.Server.Session.Redis.CloudAuthentication.AwsAssumeRoleArn.IsNull() {
+						*awsAssumeRoleArn = r.Config.Server.Session.Redis.CloudAuthentication.AwsAssumeRoleArn.ValueString()
+					} else {
+						awsAssumeRoleArn = nil
+					}
+					awsCacheName := new(string)
+					if !r.Config.Server.Session.Redis.CloudAuthentication.AwsCacheName.IsUnknown() && !r.Config.Server.Session.Redis.CloudAuthentication.AwsCacheName.IsNull() {
+						*awsCacheName = r.Config.Server.Session.Redis.CloudAuthentication.AwsCacheName.ValueString()
+					} else {
+						awsCacheName = nil
+					}
+					awsIsServerless := new(bool)
+					if !r.Config.Server.Session.Redis.CloudAuthentication.AwsIsServerless.IsUnknown() && !r.Config.Server.Session.Redis.CloudAuthentication.AwsIsServerless.IsNull() {
+						*awsIsServerless = r.Config.Server.Session.Redis.CloudAuthentication.AwsIsServerless.ValueBool()
+					} else {
+						awsIsServerless = nil
+					}
+					awsRegion := new(string)
+					if !r.Config.Server.Session.Redis.CloudAuthentication.AwsRegion.IsUnknown() && !r.Config.Server.Session.Redis.CloudAuthentication.AwsRegion.IsNull() {
+						*awsRegion = r.Config.Server.Session.Redis.CloudAuthentication.AwsRegion.ValueString()
+					} else {
+						awsRegion = nil
+					}
+					awsRoleSessionName := new(string)
+					if !r.Config.Server.Session.Redis.CloudAuthentication.AwsRoleSessionName.IsUnknown() && !r.Config.Server.Session.Redis.CloudAuthentication.AwsRoleSessionName.IsNull() {
+						*awsRoleSessionName = r.Config.Server.Session.Redis.CloudAuthentication.AwsRoleSessionName.ValueString()
+					} else {
+						awsRoleSessionName = nil
+					}
+					awsSecretAccessKey := new(string)
+					if !r.Config.Server.Session.Redis.CloudAuthentication.AwsSecretAccessKey.IsUnknown() && !r.Config.Server.Session.Redis.CloudAuthentication.AwsSecretAccessKey.IsNull() {
+						*awsSecretAccessKey = r.Config.Server.Session.Redis.CloudAuthentication.AwsSecretAccessKey.ValueString()
+					} else {
+						awsSecretAccessKey = nil
+					}
+					azureClientID := new(string)
+					if !r.Config.Server.Session.Redis.CloudAuthentication.AzureClientID.IsUnknown() && !r.Config.Server.Session.Redis.CloudAuthentication.AzureClientID.IsNull() {
+						*azureClientID = r.Config.Server.Session.Redis.CloudAuthentication.AzureClientID.ValueString()
+					} else {
+						azureClientID = nil
+					}
+					azureClientSecret := new(string)
+					if !r.Config.Server.Session.Redis.CloudAuthentication.AzureClientSecret.IsUnknown() && !r.Config.Server.Session.Redis.CloudAuthentication.AzureClientSecret.IsNull() {
+						*azureClientSecret = r.Config.Server.Session.Redis.CloudAuthentication.AzureClientSecret.ValueString()
+					} else {
+						azureClientSecret = nil
+					}
+					azureTenantID := new(string)
+					if !r.Config.Server.Session.Redis.CloudAuthentication.AzureTenantID.IsUnknown() && !r.Config.Server.Session.Redis.CloudAuthentication.AzureTenantID.IsNull() {
+						*azureTenantID = r.Config.Server.Session.Redis.CloudAuthentication.AzureTenantID.ValueString()
+					} else {
+						azureTenantID = nil
+					}
+					gcpServiceAccountJSON := new(string)
+					if !r.Config.Server.Session.Redis.CloudAuthentication.GcpServiceAccountJSON.IsUnknown() && !r.Config.Server.Session.Redis.CloudAuthentication.GcpServiceAccountJSON.IsNull() {
+						*gcpServiceAccountJSON = r.Config.Server.Session.Redis.CloudAuthentication.GcpServiceAccountJSON.ValueString()
+					} else {
+						gcpServiceAccountJSON = nil
+					}
+					cloudAuthentication = &shared.AiMcpProxyPluginCloudAuthentication{
+						AuthProvider:          authProvider,
+						AwsAccessKeyID:        awsAccessKeyID,
+						AwsAssumeRoleArn:      awsAssumeRoleArn,
+						AwsCacheName:          awsCacheName,
+						AwsIsServerless:       awsIsServerless,
+						AwsRegion:             awsRegion,
+						AwsRoleSessionName:    awsRoleSessionName,
+						AwsSecretAccessKey:    awsSecretAccessKey,
+						AzureClientID:         azureClientID,
+						AzureClientSecret:     azureClientSecret,
+						AzureTenantID:         azureTenantID,
+						GcpServiceAccountJSON: gcpServiceAccountJSON,
+					}
+				}
+				clusterMaxRedirections := new(int64)
+				if !r.Config.Server.Session.Redis.ClusterMaxRedirections.IsUnknown() && !r.Config.Server.Session.Redis.ClusterMaxRedirections.IsNull() {
+					*clusterMaxRedirections = r.Config.Server.Session.Redis.ClusterMaxRedirections.ValueInt64()
+				} else {
+					clusterMaxRedirections = nil
+				}
+				var clusterNodes []shared.AiMcpProxyPluginClusterNodes
+				if r.Config.Server.Session.Redis.ClusterNodes != nil {
+					clusterNodes = make([]shared.AiMcpProxyPluginClusterNodes, 0, len(r.Config.Server.Session.Redis.ClusterNodes))
+					for clusterNodesIndex := range r.Config.Server.Session.Redis.ClusterNodes {
+						ip := new(string)
+						if !r.Config.Server.Session.Redis.ClusterNodes[clusterNodesIndex].IP.IsUnknown() && !r.Config.Server.Session.Redis.ClusterNodes[clusterNodesIndex].IP.IsNull() {
+							*ip = r.Config.Server.Session.Redis.ClusterNodes[clusterNodesIndex].IP.ValueString()
+						} else {
+							ip = nil
+						}
+						port := new(int64)
+						if !r.Config.Server.Session.Redis.ClusterNodes[clusterNodesIndex].Port.IsUnknown() && !r.Config.Server.Session.Redis.ClusterNodes[clusterNodesIndex].Port.IsNull() {
+							*port = r.Config.Server.Session.Redis.ClusterNodes[clusterNodesIndex].Port.ValueInt64()
+						} else {
+							port = nil
+						}
+						clusterNodes = append(clusterNodes, shared.AiMcpProxyPluginClusterNodes{
+							IP:   ip,
+							Port: port,
+						})
+					}
+				}
+				connectTimeout := new(int64)
+				if !r.Config.Server.Session.Redis.ConnectTimeout.IsUnknown() && !r.Config.Server.Session.Redis.ConnectTimeout.IsNull() {
+					*connectTimeout = r.Config.Server.Session.Redis.ConnectTimeout.ValueInt64()
+				} else {
+					connectTimeout = nil
+				}
+				connectionIsProxied := new(bool)
+				if !r.Config.Server.Session.Redis.ConnectionIsProxied.IsUnknown() && !r.Config.Server.Session.Redis.ConnectionIsProxied.IsNull() {
+					*connectionIsProxied = r.Config.Server.Session.Redis.ConnectionIsProxied.ValueBool()
+				} else {
+					connectionIsProxied = nil
+				}
+				database := new(int64)
+				if !r.Config.Server.Session.Redis.Database.IsUnknown() && !r.Config.Server.Session.Redis.Database.IsNull() {
+					*database = r.Config.Server.Session.Redis.Database.ValueInt64()
+				} else {
+					database = nil
+				}
+				host := new(string)
+				if !r.Config.Server.Session.Redis.Host.IsUnknown() && !r.Config.Server.Session.Redis.Host.IsNull() {
+					*host = r.Config.Server.Session.Redis.Host.ValueString()
+				} else {
+					host = nil
+				}
+				keepaliveBacklog := new(int64)
+				if !r.Config.Server.Session.Redis.KeepaliveBacklog.IsUnknown() && !r.Config.Server.Session.Redis.KeepaliveBacklog.IsNull() {
+					*keepaliveBacklog = r.Config.Server.Session.Redis.KeepaliveBacklog.ValueInt64()
+				} else {
+					keepaliveBacklog = nil
+				}
+				keepalivePoolSize := new(int64)
+				if !r.Config.Server.Session.Redis.KeepalivePoolSize.IsUnknown() && !r.Config.Server.Session.Redis.KeepalivePoolSize.IsNull() {
+					*keepalivePoolSize = r.Config.Server.Session.Redis.KeepalivePoolSize.ValueInt64()
+				} else {
+					keepalivePoolSize = nil
+				}
+				password := new(string)
+				if !r.Config.Server.Session.Redis.Password.IsUnknown() && !r.Config.Server.Session.Redis.Password.IsNull() {
+					*password = r.Config.Server.Session.Redis.Password.ValueString()
+				} else {
+					password = nil
+				}
+				port1 := new(int64)
+				if !r.Config.Server.Session.Redis.Port.IsUnknown() && !r.Config.Server.Session.Redis.Port.IsNull() {
+					*port1 = r.Config.Server.Session.Redis.Port.ValueInt64()
+				} else {
+					port1 = nil
+				}
+				readTimeout := new(int64)
+				if !r.Config.Server.Session.Redis.ReadTimeout.IsUnknown() && !r.Config.Server.Session.Redis.ReadTimeout.IsNull() {
+					*readTimeout = r.Config.Server.Session.Redis.ReadTimeout.ValueInt64()
+				} else {
+					readTimeout = nil
+				}
+				sendTimeout := new(int64)
+				if !r.Config.Server.Session.Redis.SendTimeout.IsUnknown() && !r.Config.Server.Session.Redis.SendTimeout.IsNull() {
+					*sendTimeout = r.Config.Server.Session.Redis.SendTimeout.ValueInt64()
+				} else {
+					sendTimeout = nil
+				}
+				sentinelMaster := new(string)
+				if !r.Config.Server.Session.Redis.SentinelMaster.IsUnknown() && !r.Config.Server.Session.Redis.SentinelMaster.IsNull() {
+					*sentinelMaster = r.Config.Server.Session.Redis.SentinelMaster.ValueString()
+				} else {
+					sentinelMaster = nil
+				}
+				var sentinelNodes []shared.AiMcpProxyPluginSentinelNodes
+				if r.Config.Server.Session.Redis.SentinelNodes != nil {
+					sentinelNodes = make([]shared.AiMcpProxyPluginSentinelNodes, 0, len(r.Config.Server.Session.Redis.SentinelNodes))
+					for sentinelNodesIndex := range r.Config.Server.Session.Redis.SentinelNodes {
+						host1 := new(string)
+						if !r.Config.Server.Session.Redis.SentinelNodes[sentinelNodesIndex].Host.IsUnknown() && !r.Config.Server.Session.Redis.SentinelNodes[sentinelNodesIndex].Host.IsNull() {
+							*host1 = r.Config.Server.Session.Redis.SentinelNodes[sentinelNodesIndex].Host.ValueString()
+						} else {
+							host1 = nil
+						}
+						port2 := new(int64)
+						if !r.Config.Server.Session.Redis.SentinelNodes[sentinelNodesIndex].Port.IsUnknown() && !r.Config.Server.Session.Redis.SentinelNodes[sentinelNodesIndex].Port.IsNull() {
+							*port2 = r.Config.Server.Session.Redis.SentinelNodes[sentinelNodesIndex].Port.ValueInt64()
+						} else {
+							port2 = nil
+						}
+						sentinelNodes = append(sentinelNodes, shared.AiMcpProxyPluginSentinelNodes{
+							Host: host1,
+							Port: port2,
+						})
+					}
+				}
+				sentinelPassword := new(string)
+				if !r.Config.Server.Session.Redis.SentinelPassword.IsUnknown() && !r.Config.Server.Session.Redis.SentinelPassword.IsNull() {
+					*sentinelPassword = r.Config.Server.Session.Redis.SentinelPassword.ValueString()
+				} else {
+					sentinelPassword = nil
+				}
+				sentinelRole := new(shared.AiMcpProxyPluginSentinelRole)
+				if !r.Config.Server.Session.Redis.SentinelRole.IsUnknown() && !r.Config.Server.Session.Redis.SentinelRole.IsNull() {
+					*sentinelRole = shared.AiMcpProxyPluginSentinelRole(r.Config.Server.Session.Redis.SentinelRole.ValueString())
+				} else {
+					sentinelRole = nil
+				}
+				sentinelUsername := new(string)
+				if !r.Config.Server.Session.Redis.SentinelUsername.IsUnknown() && !r.Config.Server.Session.Redis.SentinelUsername.IsNull() {
+					*sentinelUsername = r.Config.Server.Session.Redis.SentinelUsername.ValueString()
+				} else {
+					sentinelUsername = nil
+				}
+				serverName := new(string)
+				if !r.Config.Server.Session.Redis.ServerName.IsUnknown() && !r.Config.Server.Session.Redis.ServerName.IsNull() {
+					*serverName = r.Config.Server.Session.Redis.ServerName.ValueString()
+				} else {
+					serverName = nil
+				}
+				ssl := new(bool)
+				if !r.Config.Server.Session.Redis.Ssl.IsUnknown() && !r.Config.Server.Session.Redis.Ssl.IsNull() {
+					*ssl = r.Config.Server.Session.Redis.Ssl.ValueBool()
+				} else {
+					ssl = nil
+				}
+				sslVerify := new(bool)
+				if !r.Config.Server.Session.Redis.SslVerify.IsUnknown() && !r.Config.Server.Session.Redis.SslVerify.IsNull() {
+					*sslVerify = r.Config.Server.Session.Redis.SslVerify.ValueBool()
+				} else {
+					sslVerify = nil
+				}
+				username := new(string)
+				if !r.Config.Server.Session.Redis.Username.IsUnknown() && !r.Config.Server.Session.Redis.Username.IsNull() {
+					*username = r.Config.Server.Session.Redis.Username.ValueString()
+				} else {
+					username = nil
+				}
+				redis = &shared.AiMcpProxyPluginRedis{
+					CloudAuthentication:    cloudAuthentication,
+					ClusterMaxRedirections: clusterMaxRedirections,
+					ClusterNodes:           clusterNodes,
+					ConnectTimeout:         connectTimeout,
+					ConnectionIsProxied:    connectionIsProxied,
+					Database:               database,
+					Host:                   host,
+					KeepaliveBacklog:       keepaliveBacklog,
+					KeepalivePoolSize:      keepalivePoolSize,
+					Password:               password,
+					Port:                   port1,
+					ReadTimeout:            readTimeout,
+					SendTimeout:            sendTimeout,
+					SentinelMaster:         sentinelMaster,
+					SentinelNodes:          sentinelNodes,
+					SentinelPassword:       sentinelPassword,
+					SentinelRole:           sentinelRole,
+					SentinelUsername:       sentinelUsername,
+					ServerName:             serverName,
+					Ssl:                    ssl,
+					SslVerify:              sslVerify,
+					Username:               username,
+				}
+			}
+			sessionTTL := new(float64)
+			if !r.Config.Server.Session.SessionTTL.IsUnknown() && !r.Config.Server.Session.SessionTTL.IsNull() {
+				*sessionTTL = r.Config.Server.Session.SessionTTL.ValueFloat64()
+			} else {
+				sessionTTL = nil
+			}
+			strategy := new(shared.AiMcpProxyPluginStrategy)
+			if !r.Config.Server.Session.Strategy.IsUnknown() && !r.Config.Server.Session.Strategy.IsNull() {
+				*strategy = shared.AiMcpProxyPluginStrategy(r.Config.Server.Session.Strategy.ValueString())
+			} else {
+				strategy = nil
+			}
+			session = &shared.AiMcpProxyPluginSession{
+				Client:     client,
+				Managed:    managed,
+				Redis:      redis,
+				SessionTTL: sessionTTL,
+				Strategy:   strategy,
+			}
+		}
 		tag := new(string)
 		if !r.Config.Server.Tag.IsUnknown() && !r.Config.Server.Tag.IsNull() {
 			*tag = r.Config.Server.Tag.ValueString()
@@ -532,6 +974,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 		}
 		server = &shared.Server{
 			ForwardClientHeaders: forwardClientHeaders,
+			Session:              session,
 			Tag:                  tag,
 			Timeout:              timeout,
 		}
@@ -615,11 +1058,11 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 					headers[headersKey] = headersInst
 				}
 			}
-			host := new(string)
+			host2 := new(string)
 			if !r.Config.Tools[toolsIndex].Host.IsUnknown() && !r.Config.Tools[toolsIndex].Host.IsNull() {
-				*host = r.Config.Tools[toolsIndex].Host.ValueString()
+				*host2 = r.Config.Tools[toolsIndex].Host.ValueString()
 			} else {
-				host = nil
+				host2 = nil
 			}
 			method := new(shared.AiMcpProxyPluginMethod)
 			if !r.Config.Tools[toolsIndex].Method.IsUnknown() && !r.Config.Tools[toolsIndex].Method.IsNull() {
@@ -718,7 +1161,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 				Annotations: annotations,
 				Description: description,
 				Headers:     headers,
-				Host:        host,
+				Host:        host2,
 				Method:      method,
 				Name:        name1,
 				Parameters:  parameters,
@@ -731,6 +1174,8 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 		}
 	}
 	config := shared.AiMcpProxyPluginConfig{
+		AccessTokenClaimField: accessTokenClaimField,
+		ACLAttributeType:      aclAttributeType,
 		ConsumerIdentifier:    consumerIdentifier,
 		DefaultACL:            defaultACL,
 		IncludeConsumerGroups: includeConsumerGroups,
@@ -769,6 +1214,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 		}
 	}
 	out := shared.AiMcpProxyPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

@@ -14,22 +14,26 @@ GatewayPluginSolaceUpstream Resource
 
 ```terraform
 resource "konnect_gateway_plugin_solace_upstream" "my_gatewaypluginsolaceupstream" {
+  condition = "...my_condition..."
   config = {
     message = {
-      ack_timeout     = 2000
-      default_content = "...my_default_content..."
-      delivery_mode   = "DIRECT"
+      ack_timeout      = 2000
+      content_encoding = "...my_content_encoding..."
+      content_type     = "...my_content_type..."
+      default_content  = "...my_default_content..."
+      delivery_mode    = "DIRECT"
       destinations = [
         {
           name = "...my_name..."
           type = "QUEUE"
         }
       ]
-      dmq_eligible    = false
-      forward_body    = false
-      forward_headers = false
-      forward_method  = false
-      forward_uri     = false
+      dmq_eligible          = false
+      forward_body          = false
+      forward_body_raw_only = false
+      forward_headers       = false
+      forward_method        = false
+      forward_uri           = false
       functions = [
         "..."
       ]
@@ -38,6 +42,22 @@ resource "konnect_gateway_plugin_solace_upstream" "my_gatewaypluginsolaceupstrea
       tracing         = false
       tracing_sampled = false
       ttl             = 0
+      user_properties = {
+        headers = {
+          exclude_headers = [
+            "..."
+          ]
+          include_headers = [
+            "..."
+          ]
+          mappings = {
+            key = "value"
+          }
+        }
+        predefined_properties = {
+          key = "value"
+        }
+      }
     }
     session = {
       authentication = {
@@ -114,6 +134,7 @@ resource "konnect_gateway_plugin_solace_upstream" "my_gatewaypluginsolaceupstrea
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
@@ -144,10 +165,13 @@ Required:
 Optional:
 
 - `ack_timeout` (Number) When using a non-DIRECT guaranteed delivery mode, this property sets the message acknowledgement timeout in milliseconds (waiting time). Default: 2000
-- `default_content` (String) When not using `forward_method`, `forward_uri`, `forward_headers` or `forward_body`, this sets the message content.
-- `delivery_mode` (String) Sets the message delivery mode. Default: "DIRECT"; must be one of ["DIRECT", "PERSISTENT"]
+- `content_encoding` (String) Sets the HTTP Content-Encoding applied to the Solace message payload (for example, gzip). If unset, the request Content-Encoding header is used when available.
+- `content_type` (String) Sets the HTTP Content-Type applied to the Solace message payload. If unset, the request Content-Type header is used when available.
+- `default_content` (String) When not using `forward_method`, `forward_uri`, `forward_headers`, `forward_body` or `forward_body_raw_only`, this sets the message content.
+- `delivery_mode` (String) Sets the message delivery mode. possible known values include one of ["DIRECT", "PERSISTENT"]; Default: "DIRECT"
 - `dmq_eligible` (Boolean) Sets the dead message queue (DMQ) eligible property on the message. Default: false
 - `forward_body` (Boolean) Include the request body and the body arguments in the message. Default: false
+- `forward_body_raw_only` (Boolean) Forward only the raw request body without wrapping it in a JSON payload or adding extra fields. Default: false
 - `forward_headers` (Boolean) Include the request headers in the message. Default: false
 - `forward_method` (Boolean) Include the request method in the message. Default: false
 - `forward_uri` (Boolean) Include the request URI and the URI arguments (as in, query arguments) in the message. Default: false
@@ -157,6 +181,7 @@ Optional:
 - `tracing` (Boolean) Enable or disable the tracing propagation. This is primarily used for distributed tracing and message correlation, especially in debugging or tracking message flows across multiple systems. Default: false
 - `tracing_sampled` (Boolean) Forcibly turn on the tracing on all the messages for distributed tracing (tracing needs to be enabled as well). Default: false
 - `ttl` (Number) Sets the time to live (TTL) in milliseconds for the message. Setting the time to live to zero disables the TTL for the message. Default: 0
+- `user_properties` (Attributes) User defined properties to be included in the message. Separate static properties from header mappings. (see [below for nested schema](#nestedatt--config--message--user_properties))
 
 <a id="nestedatt--config--message--destinations"></a>
 ### Nested Schema for `config.message.destinations`
@@ -164,7 +189,26 @@ Optional:
 Optional:
 
 - `name` (String) The name of the destination. You can use $(uri_captures['<capture-identifier>']) in this field (replace `<capture-identifier>` with a real value, for example `$uri_captures[’queue’]` when the matched route has a path `~/(?<queue>[a-z]+)`). Not Null
-- `type` (String) The type of the destination. Default: "QUEUE"; must be one of ["QUEUE", "TOPIC"]
+- `type` (String) The type of the destination. possible known values include one of ["QUEUE", "TOPIC"]; Default: "QUEUE"
+
+
+<a id="nestedatt--config--message--user_properties"></a>
+### Nested Schema for `config.message.user_properties`
+
+Optional:
+
+- `headers` (Attributes) Header settings for user properties (mapping, inclusion and exclusion). (see [below for nested schema](#nestedatt--config--message--user_properties--headers))
+- `predefined_properties` (Map of String) Predefined user properties to set on every message (key = property name, value = property value).
+
+<a id="nestedatt--config--message--user_properties--headers"></a>
+### Nested Schema for `config.message.user_properties.headers`
+
+Optional:
+
+- `exclude_headers` (List of String) Headers that must not be forwarded into user properties. This is used to exclude sensitive headers such as authorization from being forwarded as user properties, or to avoid duplication when a header is mapped to a user property but you don't want the original header to be included as well.
+- `include_headers` (List of String) Headers to include as user properties even without explicit mapping.
+- `mappings` (Map of String) Header-to-user_property mapping (key = HTTP header name, value = target user property name).
+
 
 
 
@@ -199,7 +243,7 @@ Optional:
 - `id_token` (String) The OpenID Connect ID token used with `OAUTH2` authentication scheme when connecting to an event broker.
 - `id_token_header` (String) Specifies the header that contains id token for the `OAUTH2` authentication scheme when connecting to an event broker. This header takes precedence over the `id_token` field.
 - `password` (String) The password used with `BASIC` authentication scheme when connecting to an event broker.
-- `scheme` (String) The client authentication scheme used when connection to an event broker. Default: "BASIC"; must be one of ["BASIC", "NONE", "OAUTH2"]
+- `scheme` (String) The client authentication scheme used when connection to an event broker. possible known values include one of ["BASIC", "NONE", "OAUTH2"]; Default: "BASIC"
 - `username` (String) The username used with `BASIC` authentication scheme when connecting to an event broker.
 
 
@@ -266,7 +310,7 @@ import {
   to = konnect_gateway_plugin_solace_upstream.my_konnect_gateway_plugin_solace_upstream
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

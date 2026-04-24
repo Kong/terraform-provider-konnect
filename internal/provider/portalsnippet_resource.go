@@ -97,13 +97,7 @@ func (r *PortalSnippetResource) Schema(ctx context.Context, req resource.SchemaR
 			"status": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Description: `Whether the resource is visible on a given portal. Defaults to unpublished. must be one of ["published", "unpublished"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"published",
-						"unpublished",
-					),
-				},
+				Description: `Whether the resource is visible on a given portal. Defaults to unpublished. possible known values include one of ["published", "unpublished"]`,
 			},
 			"title": schema.StringAttribute{
 				Computed:    true,
@@ -125,13 +119,7 @@ func (r *PortalSnippetResource) Schema(ctx context.Context, req resource.SchemaR
 				Optional: true,
 				MarkdownDescription: `Whether a snippet is publicly accessible to non-authenticated users.` + "\n" +
 					`If not provided, the default_page_visibility value of the portal will be used.` + "\n" +
-					`must be one of ["public", "private"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"public",
-						"private",
-					),
-				},
+					`possible known values include one of ["public", "private"]`,
 			},
 		},
 	}

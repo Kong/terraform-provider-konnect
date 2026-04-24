@@ -45,6 +45,7 @@ type GatewayPluginRequestValidatorResource struct {
 
 // GatewayPluginRequestValidatorResourceModel describes the resource data model.
 type GatewayPluginRequestValidatorResourceModel struct {
+	Condition      types.String                          `tfsdk:"condition"`
 	Config         *tfTypes.RequestValidatorPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                          `tfsdk:"consumer"`
 	ControlPlaneID types.String                          `tfsdk:"control_plane_id"`
@@ -69,6 +70,13 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginRequestValidator Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
@@ -125,14 +133,9 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 								"in": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The location of the parameter. Not Null; must be one of ["header", "path", "query"]`,
+									Description: `The location of the parameter. possible known values include one of ["header", "path", "query"]; Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
-										stringvalidator.OneOf(
-											"header",
-											"path",
-											"query",
-										),
 									},
 								},
 								"name": schema.StringAttribute{
@@ -158,18 +161,7 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 								"style": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Required when ` + "`" + `schema` + "`" + ` and ` + "`" + `explode` + "`" + ` are set. Describes how the parameter value will be deserialized depending on the type of the parameter value. must be one of ["deepObject", "form", "label", "matrix", "pipeDelimited", "simple", "spaceDelimited"]`,
-									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"deepObject",
-											"form",
-											"label",
-											"matrix",
-											"pipeDelimited",
-											"simple",
-											"spaceDelimited",
-										),
-									},
+									Description: `Required when ` + "`" + `schema` + "`" + ` and ` + "`" + `explode` + "`" + ` are set. Describes how the parameter value will be deserialized depending on the type of the parameter value. possible known values include one of ["deepObject", "form", "label", "matrix", "pipeDelimited", "simple", "spaceDelimited"]`,
 								},
 							},
 						},
@@ -185,17 +177,7 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`kong`),
-						Description: `Which validator to use. Supported values are ` + "`" + `kong` + "`" + ` (default) for using Kong's own schema validator, or ` + "`" + `draft4` + "`" + `, ` + "`" + `draft7` + "`" + `, ` + "`" + `draft201909` + "`" + `, and ` + "`" + `draft202012` + "`" + ` for using their respective JSON Schema Draft compliant validators. Default: "kong"; must be one of ["draft201909", "draft202012", "draft4", "draft6", "draft7", "kong"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"draft201909",
-								"draft202012",
-								"draft4",
-								"draft6",
-								"draft7",
-								"kong",
-							),
-						},
+						Description: `Which validator to use. Supported values are ` + "`" + `kong` + "`" + ` (default) for using Kong's own schema validator, or ` + "`" + `draft4` + "`" + `, ` + "`" + `draft7` + "`" + `, ` + "`" + `draft201909` + "`" + `, and ` + "`" + `draft202012` + "`" + ` for using their respective JSON Schema Draft compliant validators. possible known values include one of ["draft201909", "draft202012", "draft4", "draft6", "draft7", "kong"]; Default: "kong"`,
 					},
 				},
 			},

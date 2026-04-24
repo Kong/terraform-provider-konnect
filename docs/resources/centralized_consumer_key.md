@@ -36,7 +36,7 @@ resource "konnect_centralized_consumer_key" "my_centralizedconsumerkey" {
 
 - `secret` (String, Sensitive) secret to be created. Must be unique within the realm. If not specified a secret will be automatically generated. Requires replacement if changed.
 - `tags` (List of String) Requires replacement if changed.
-- `type` (String) Default: "legacy"; must be one of ["new", "legacy"]; Requires replacement if changed.
+- `type` (String) possible known values include one of ["new", "legacy"]; Default: "legacy"; Requires replacement if changed.
 
 ### Read-Only
 
@@ -55,8 +55,8 @@ import {
   to = konnect_centralized_consumer_key.my_konnect_centralized_consumer_key
   id = jsonencode({
     consumer_id = "..."
-    id = "..."
-    realm_id = "..."
+    id          = "..."
+    realm_id    = "..."
   })
 }
 ```

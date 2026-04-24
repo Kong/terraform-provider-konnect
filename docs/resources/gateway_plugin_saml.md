@@ -14,6 +14,7 @@ GatewayPluginSaml Resource
 
 ```terraform
 resource "konnect_gateway_plugin_saml" "my_gatewaypluginsaml" {
+  condition = "...my_condition..."
   config = {
     anonymous               = "...my_anonymous..."
     assertion_consumer_path = "...my_assertion_consumer_path..."
@@ -159,6 +160,7 @@ resource "konnect_gateway_plugin_saml" "my_gatewaypluginsaml" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
@@ -185,22 +187,22 @@ Optional:
 
 - `anonymous` (String) An optional string (consumer UUID or username) value to use as an “anonymous” consumer. If not set, a Kong Consumer must exist for the SAML IdP user credentials, mapping the username format to the Kong Consumer username.
 - `idp_certificate` (String) The public certificate provided by the IdP. This is used to validate responses from the IdP.  Only include the contents of the certificate. Do not include the header (`BEGIN CERTIFICATE`) and footer (`END CERTIFICATE`) lines.
-- `nameid_format` (String) The requested `NameId` format. Options available are: - `Unspecified` - `EmailAddress` - `Persistent` - `Transient`. Default: "EmailAddress"; must be one of ["EmailAddress", "Persistent", "Transient", "Unspecified"]
+- `nameid_format` (String) The requested `NameId` format. Options available are: - `Unspecified` - `EmailAddress` - `Persistent` - `Transient`. possible known values include one of ["EmailAddress", "Persistent", "Transient", "Unspecified"]; Default: "EmailAddress"
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--redis))
-- `request_digest_algorithm` (String) The digest algorithm for Authn requests: - `SHA256` - `SHA1`. Default: "SHA256"; must be one of ["SHA1", "SHA256"]
-- `request_signature_algorithm` (String) The signature algorithm for signing Authn requests. Options available are: - `SHA256` - `SHA384` - `SHA512`. Default: "SHA256"; must be one of ["SHA256", "SHA384", "SHA512"]
+- `request_digest_algorithm` (String) The digest algorithm for Authn requests: - `SHA256` - `SHA1`. possible known values include one of ["SHA1", "SHA256"]; Default: "SHA256"
+- `request_signature_algorithm` (String) The signature algorithm for signing Authn requests. Options available are: - `SHA256` - `SHA384` - `SHA512`. possible known values include one of ["SHA256", "SHA384", "SHA512"]; Default: "SHA256"
 - `request_signing_certificate` (String) The certificate for signing requests.
 - `request_signing_key` (String) The private key for signing requests.  If this parameter is set, requests sent to the IdP are signed.  The `request_signing_certificate` parameter must be set as well.
-- `response_digest_algorithm` (String) The algorithm for verifying digest in SAML responses: - `SHA256` - `SHA1`. Default: "SHA256"; must be one of ["SHA1", "SHA256"]
+- `response_digest_algorithm` (String) The algorithm for verifying digest in SAML responses: - `SHA256` - `SHA1`. possible known values include one of ["SHA1", "SHA256"]; Default: "SHA256"
 - `response_encryption_key` (String) The private encryption key required to decrypt encrypted assertions.
-- `response_signature_algorithm` (String) The algorithm for validating signatures in SAML responses. Options available are: - `SHA256` - `SHA384` - `SHA512`. Default: "SHA256"; must be one of ["SHA256", "SHA384", "SHA512"]
+- `response_signature_algorithm` (String) The algorithm for validating signatures in SAML responses. Options available are: - `SHA256` - `SHA384` - `SHA512`. possible known values include one of ["SHA256", "SHA384", "SHA512"]; Default: "SHA256"
 - `session_absolute_timeout` (Number) The session cookie absolute timeout in seconds. Specifies how long the session can be used until it is no longer valid. Default: 86400
 - `session_audience` (String) The session audience, for example "my-application". Default: "default"
 - `session_cookie_domain` (String) The session cookie domain flag.
 - `session_cookie_http_only` (Boolean) Forbids JavaScript from accessing the cookie, for example, through the `Document.cookie` property. Default: true
 - `session_cookie_name` (String) The session cookie name. Default: "session"
 - `session_cookie_path` (String) A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes). Default: "/"
-- `session_cookie_same_site` (String) Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. Default: "Lax"; must be one of ["Default", "Lax", "None", "Strict"]
+- `session_cookie_same_site` (String) Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. possible known values include one of ["Default", "Lax", "None", "Strict"]; Default: "Lax"
 - `session_cookie_secure` (Boolean) The cookie is only sent to the server when a request is made with the https:scheme (except on localhost), and therefore is more resistant to man-in-the-middle attacks.
 - `session_enforce_same_subject` (Boolean) When set to `true`, audiences are forced to share the same subject. Default: false
 - `session_hash_storage_key` (Boolean) When set to `true`, the storage key (session ID) is hashed for extra security. Hashing the storage key means it is impossible to decrypt data from the storage without a cookie. Default: false
@@ -217,7 +219,7 @@ Optional:
 - `session_request_headers` (List of String)
 - `session_response_headers` (List of String)
 - `session_rolling_timeout` (Number) The session cookie absolute timeout in seconds. Specifies how long the session can be used until it is no longer valid. Default: 3600
-- `session_storage` (String) The session storage for session data: - `cookie`: stores session data with the session cookie. The session cannot be invalidated or revoked without changing the session secret, but is stateless, and doesn't require a database. - `memcached`: stores session data in memcached - `redis`: stores session data in Redis. Default: "cookie"; must be one of ["cookie", "memcache", "memcached", "redis"]
+- `session_storage` (String) The session storage for session data: - `cookie`: stores session data with the session cookie. The session cannot be invalidated or revoked without changing the session secret, but is stateless, and doesn't require a database. - `memcached`: stores session data in memcached - `redis`: stores session data in Redis. possible known values include one of ["cookie", "memcache", "memcached", "redis"]; Default: "cookie"
 - `session_store_metadata` (Boolean) Configures whether or not session metadata should be stored. This includes information about the active sessions for the `specific_audience` belonging to a specific subject. Default: false
 - `validate_assertion_signature` (Boolean) Enable signature validation for SAML responses. Default: true
 
@@ -243,7 +245,7 @@ Optional:
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--redis--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
+- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `socket` (String) The Redis unix socket path.
@@ -256,7 +258,7 @@ Optional:
 
 Optional:
 
-- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]
 - `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 - `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
 - `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
@@ -351,7 +353,7 @@ import {
   to = konnect_gateway_plugin_saml.my_konnect_gateway_plugin_saml
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

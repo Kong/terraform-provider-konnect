@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -23,28 +21,16 @@ const (
 func (e CreateControlPlaneRequestClusterType) ToPointer() *CreateControlPlaneRequestClusterType {
 	return &e
 }
-func (e *CreateControlPlaneRequestClusterType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CreateControlPlaneRequestClusterType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "CLUSTER_TYPE_CONTROL_PLANE", "CLUSTER_TYPE_K8S_INGRESS_CONTROLLER", "CLUSTER_TYPE_CONTROL_PLANE_GROUP", "CLUSTER_TYPE_SERVERLESS", "CLUSTER_TYPE_HYBRID", "CLUSTER_TYPE_SERVERLESS_V1":
+			return true
+		}
 	}
-	switch v {
-	case "CLUSTER_TYPE_CONTROL_PLANE":
-		fallthrough
-	case "CLUSTER_TYPE_K8S_INGRESS_CONTROLLER":
-		fallthrough
-	case "CLUSTER_TYPE_CONTROL_PLANE_GROUP":
-		fallthrough
-	case "CLUSTER_TYPE_SERVERLESS":
-		fallthrough
-	case "CLUSTER_TYPE_HYBRID":
-		fallthrough
-	case "CLUSTER_TYPE_SERVERLESS_V1":
-		*e = CreateControlPlaneRequestClusterType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CreateControlPlaneRequestClusterType: %v", v)
-	}
+	return false
 }
 
 // AuthType - The auth type value of the cluster associated with the Runtime Group.
@@ -58,20 +44,16 @@ const (
 func (e AuthType) ToPointer() *AuthType {
 	return &e
 }
-func (e *AuthType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AuthType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "pinned_client_certs", "pki_client_certs":
+			return true
+		}
 	}
-	switch v {
-	case "pinned_client_certs":
-		fallthrough
-	case "pki_client_certs":
-		*e = AuthType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AuthType: %v", v)
-	}
+	return false
 }
 
 // CreateControlPlaneRequest - The request schema for the create control plane request.

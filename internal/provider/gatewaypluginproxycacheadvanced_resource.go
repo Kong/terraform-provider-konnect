@@ -45,6 +45,7 @@ type GatewayPluginProxyCacheAdvancedResource struct {
 
 // GatewayPluginProxyCacheAdvancedResourceModel describes the resource data model.
 type GatewayPluginProxyCacheAdvancedResourceModel struct {
+	Condition      types.String                            `tfsdk:"condition"`
 	Config         *tfTypes.ProxyCacheAdvancedPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                            `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.Set                            `tfsdk:"consumer_group"`
@@ -70,6 +71,13 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Schema(ctx context.Context, re
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginProxyCacheAdvanced Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -200,14 +208,7 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Schema(ctx context.Context, re
 									"auth_provider": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"aws",
-												"azure",
-												"gcp",
-											),
-										},
+										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
 									},
 									"aws_access_key_id": schema.StringAttribute{
 										Optional:    true,
@@ -401,14 +402,7 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Schema(ctx context.Context, re
 							"sentinel_role": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"any",
-										"master",
-										"slave",
-									),
-								},
+								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
 							},
 							"sentinel_username": schema.StringAttribute{
 								Optional:    true,
@@ -493,13 +487,7 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Schema(ctx context.Context, re
 					},
 					"strategy": schema.StringAttribute{
 						Required:    true,
-						Description: `The backing data store in which to hold cache entities. Accepted values are: ` + "`" + `memory` + "`" + ` and ` + "`" + `redis` + "`" + `. must be one of ["memory", "redis"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"memory",
-								"redis",
-							),
-						},
+						Description: `The backing data store in which to hold cache entities. Accepted values are: ` + "`" + `memory` + "`" + ` and ` + "`" + `redis` + "`" + `. possible known values include one of ["memory", "redis"]`,
 					},
 					"vary_headers": schema.ListAttribute{
 						Optional:    true,

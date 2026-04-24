@@ -45,6 +45,7 @@ type GatewayPluginSolaceUpstreamResource struct {
 
 // GatewayPluginSolaceUpstreamResourceModel describes the resource data model.
 type GatewayPluginSolaceUpstreamResourceModel struct {
+	Condition      types.String                        `tfsdk:"condition"`
 	Config         *tfTypes.SolaceUpstreamPluginConfig `tfsdk:"config"`
 	ControlPlaneID types.String                        `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                         `tfsdk:"created_at"`
@@ -68,6 +69,13 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginSolaceUpstream Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -83,21 +91,23 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 									int64validator.Between(1, 100000),
 								},
 							},
+							"content_encoding": schema.StringAttribute{
+								Optional:    true,
+								Description: `Sets the HTTP Content-Encoding applied to the Solace message payload (for example, gzip). If unset, the request Content-Encoding header is used when available.`,
+							},
+							"content_type": schema.StringAttribute{
+								Optional:    true,
+								Description: `Sets the HTTP Content-Type applied to the Solace message payload. If unset, the request Content-Type header is used when available.`,
+							},
 							"default_content": schema.StringAttribute{
 								Optional:    true,
-								Description: `When not using ` + "`" + `forward_method` + "`" + `, ` + "`" + `forward_uri` + "`" + `, ` + "`" + `forward_headers` + "`" + ` or ` + "`" + `forward_body` + "`" + `, this sets the message content.`,
+								Description: `When not using ` + "`" + `forward_method` + "`" + `, ` + "`" + `forward_uri` + "`" + `, ` + "`" + `forward_headers` + "`" + `, ` + "`" + `forward_body` + "`" + ` or ` + "`" + `forward_body_raw_only` + "`" + `, this sets the message content.`,
 							},
 							"delivery_mode": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(`DIRECT`),
-								Description: `Sets the message delivery mode. Default: "DIRECT"; must be one of ["DIRECT", "PERSISTENT"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"DIRECT",
-										"PERSISTENT",
-									),
-								},
+								Description: `Sets the message delivery mode. possible known values include one of ["DIRECT", "PERSISTENT"]; Default: "DIRECT"`,
 							},
 							"destinations": schema.ListNestedAttribute{
 								Required: true,
@@ -118,13 +128,7 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 											Computed:    true,
 											Optional:    true,
 											Default:     stringdefault.StaticString(`QUEUE`),
-											Description: `The type of the destination. Default: "QUEUE"; must be one of ["QUEUE", "TOPIC"]`,
-											Validators: []validator.String{
-												stringvalidator.OneOf(
-													"QUEUE",
-													"TOPIC",
-												),
-											},
+											Description: `The type of the destination. possible known values include one of ["QUEUE", "TOPIC"]; Default: "QUEUE"`,
 										},
 									},
 								},
@@ -141,6 +145,12 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 								Optional:    true,
 								Default:     booldefault.StaticBool(false),
 								Description: `Include the request body and the body arguments in the message. Default: false`,
+							},
+							"forward_body_raw_only": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `Forward only the raw request body without wrapping it in a JSON payload or adding extra fields. Default: false`,
 							},
 							"forward_headers": schema.BoolAttribute{
 								Computed:    true,
@@ -196,6 +206,69 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 								Default:     int64default.StaticInt64(0),
 								Description: `Sets the time to live (TTL) in milliseconds for the message. Setting the time to live to zero disables the TTL for the message. Default: 0`,
 							},
+							"user_properties": schema.SingleNestedAttribute{
+								Computed: true,
+								Optional: true,
+								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+									"headers": types.ObjectType{
+										AttrTypes: map[string]attr.Type{
+											`exclude_headers`: types.ListType{
+												ElemType: types.StringType,
+											},
+											`include_headers`: types.ListType{
+												ElemType: types.StringType,
+											},
+											`mappings`: types.MapType{
+												ElemType: types.StringType,
+											},
+										},
+									},
+									"predefined_properties": types.MapType{
+										ElemType: types.StringType,
+									},
+								})),
+								Attributes: map[string]schema.Attribute{
+									"headers": schema.SingleNestedAttribute{
+										Computed: true,
+										Optional: true,
+										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+											"exclude_headers": types.ListType{
+												ElemType: types.StringType,
+											},
+											"include_headers": types.ListType{
+												ElemType: types.StringType,
+											},
+											"mappings": types.MapType{
+												ElemType: types.StringType,
+											},
+										})),
+										Attributes: map[string]schema.Attribute{
+											"exclude_headers": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Headers that must not be forwarded into user properties. This is used to exclude sensitive headers such as authorization from being forwarded as user properties, or to avoid duplication when a header is mapped to a user property but you don't want the original header to be included as well.`,
+											},
+											"include_headers": schema.ListAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Headers to include as user properties even without explicit mapping.`,
+											},
+											"mappings": schema.MapAttribute{
+												Optional:    true,
+												ElementType: types.StringType,
+												Description: `Header-to-user_property mapping (key = HTTP header name, value = target user property name).`,
+											},
+										},
+										Description: `Header settings for user properties (mapping, inclusion and exclusion).`,
+									},
+									"predefined_properties": schema.MapAttribute{
+										Optional:    true,
+										ElementType: types.StringType,
+										Description: `Predefined user properties to set on every message (key = property name, value = property value).`,
+									},
+								},
+								Description: `User defined properties to be included in the message. Separate static properties from header mappings.`,
+							},
 						},
 						Description: `The message related configuration.`,
 					},
@@ -247,14 +320,7 @@ func (r *GatewayPluginSolaceUpstreamResource) Schema(ctx context.Context, req re
 										Computed:    true,
 										Optional:    true,
 										Default:     stringdefault.StaticString(`BASIC`),
-										Description: `The client authentication scheme used when connection to an event broker. Default: "BASIC"; must be one of ["BASIC", "NONE", "OAUTH2"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"BASIC",
-												"NONE",
-												"OAUTH2",
-											),
-										},
+										Description: `The client authentication scheme used when connection to an event broker. possible known values include one of ["BASIC", "NONE", "OAUTH2"]; Default: "BASIC"`,
 									},
 									"username": schema.StringAttribute{
 										Optional:    true,

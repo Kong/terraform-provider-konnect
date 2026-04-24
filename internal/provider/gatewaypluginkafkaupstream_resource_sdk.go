@@ -15,6 +15,7 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) RefreshFromSharedKafkaUpstream
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.KafkaUpstreamPluginConfig{}
 		if resp.Config.AllowedTopics != nil {
 			r.Config.AllowedTopics = make([]types.String, 0, len(resp.Config.AllowedTopics))
@@ -360,6 +361,12 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToOperationsUpdateKafkaupstrea
 func (r *GatewayPluginKafkaUpstreamResourceModel) ToSharedKafkaUpstreamPlugin(ctx context.Context) (*shared.KafkaUpstreamPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -994,6 +1001,7 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToSharedKafkaUpstreamPlugin(ct
 		}
 	}
 	out := shared.KafkaUpstreamPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

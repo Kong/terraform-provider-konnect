@@ -104,7 +104,7 @@ Optional:
 
 Optional:
 
-- `unit` (String) Not Null; must be one of ["days", "weeks", "years"]; Requires replacement if changed.
+- `unit` (String) possible known values include one of ["days", "weeks", "years"]; Not Null; Requires replacement if changed.
 - `value` (Number) Not Null; Requires replacement if changed.
 
 

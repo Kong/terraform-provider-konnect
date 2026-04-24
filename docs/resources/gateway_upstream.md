@@ -103,14 +103,14 @@ resource "konnect_gateway_upstream" "my_gatewayupstream" {
 
 ### Optional
 
-- `algorithm` (String) Which load balancing algorithm to use. Default: "round-robin"; must be one of ["consistent-hashing", "latency", "least-connections", "round-robin", "sticky-sessions"]
+- `algorithm` (String) Which load balancing algorithm to use. possible known values include one of ["consistent-hashing", "latency", "least-connections", "round-robin", "sticky-sessions"]; Default: "round-robin"
 - `client_certificate` (Attributes) If set, the certificate to be used as client certificate while TLS handshaking to the upstream server. (see [below for nested schema](#nestedatt--client_certificate))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `hash_fallback` (String) What to use as hashing input if the primary `hash_on` does not return a hash (eg. header is missing, or no Consumer identified). Not available if `hash_on` is set to `cookie`. Default: "none"; must be one of ["consumer", "cookie", "header", "ip", "none", "path", "query_arg", "uri_capture"]
+- `hash_fallback` (String) What to use as hashing input if the primary `hash_on` does not return a hash (eg. header is missing, or no Consumer identified). Not available if `hash_on` is set to `cookie`. possible known values include one of ["consumer", "cookie", "header", "ip", "none", "path", "query_arg", "uri_capture"]; Default: "none"
 - `hash_fallback_header` (String) The header name to take the value from as hash input. Only required when `hash_fallback` is set to `header`.
 - `hash_fallback_query_arg` (String) The name of the query string argument to take the value from as hash input. Only required when `hash_fallback` is set to `query_arg`.
 - `hash_fallback_uri_capture` (String) The name of the route URI capture to take the value from as hash input. Only required when `hash_fallback` is set to `uri_capture`.
-- `hash_on` (String) What to use as hashing input. Using `none` results in a weighted-round-robin scheme with no hashing. Default: "none"; must be one of ["consumer", "cookie", "header", "ip", "none", "path", "query_arg", "uri_capture"]
+- `hash_on` (String) What to use as hashing input. Using `none` results in a weighted-round-robin scheme with no hashing. possible known values include one of ["consumer", "cookie", "header", "ip", "none", "path", "query_arg", "uri_capture"]; Default: "none"
 - `hash_on_cookie` (String) The cookie name to take the value from as hash input. Only required when `hash_on` or `hash_fallback` is set to `cookie`. If the specified cookie is not in the request, Kong will generate a value and set the cookie in the response.
 - `hash_on_cookie_path` (String) The cookie path to set in the response headers. Only required when `hash_on` or `hash_fallback` is set to `cookie`. Default: "/"
 - `hash_on_header` (String) The header name to take the value from as hash input. Only required when `hash_on` is set to `header`.
@@ -155,7 +155,7 @@ Optional:
 - `https_sni` (String) A string representing an SNI (server name indication) value for TLS.
 - `https_verify_certificate` (Boolean) Default: true
 - `timeout` (Number) Default: 1
-- `type` (String) Default: "http"; must be one of ["grpc", "grpcs", "http", "https", "tcp"]
+- `type` (String) possible known values include one of ["grpc", "grpcs", "http", "https", "tcp"]; Default: "http"
 - `unhealthy` (Attributes) (see [below for nested schema](#nestedatt--healthchecks--active--unhealthy))
 
 <a id="nestedatt--healthchecks--active--healthy"></a>
@@ -187,7 +187,7 @@ Optional:
 Optional:
 
 - `healthy` (Attributes) (see [below for nested schema](#nestedatt--healthchecks--passive--healthy))
-- `type` (String) Default: "http"; must be one of ["grpc", "grpcs", "http", "https", "tcp"]
+- `type` (String) possible known values include one of ["grpc", "grpcs", "http", "https", "tcp"]; Default: "http"
 - `unhealthy` (Attributes) (see [below for nested schema](#nestedatt--healthchecks--passive--unhealthy))
 
 <a id="nestedatt--healthchecks--passive--healthy"></a>
@@ -220,7 +220,7 @@ import {
   to = konnect_gateway_upstream.my_konnect_gateway_upstream
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "426d620c-7058-4ae6-aacc-f85a3204a2c5"
+    id               = "426d620c-7058-4ae6-aacc-f85a3204a2c5"
   })
 }
 ```

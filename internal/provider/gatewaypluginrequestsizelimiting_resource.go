@@ -43,6 +43,7 @@ type GatewayPluginRequestSizeLimitingResource struct {
 
 // GatewayPluginRequestSizeLimitingResourceModel describes the resource data model.
 type GatewayPluginRequestSizeLimitingResourceModel struct {
+	Condition      types.String                             `tfsdk:"condition"`
 	Config         *tfTypes.RequestSizeLimitingPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                             `tfsdk:"consumer"`
 	ControlPlaneID types.String                             `tfsdk:"control_plane_id"`
@@ -67,6 +68,13 @@ func (r *GatewayPluginRequestSizeLimitingResource) Schema(ctx context.Context, r
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginRequestSizeLimiting Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
@@ -92,14 +100,7 @@ func (r *GatewayPluginRequestSizeLimitingResource) Schema(ctx context.Context, r
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`megabytes`),
-						Description: `Size unit can be set either in ` + "`" + `bytes` + "`" + `, ` + "`" + `kilobytes` + "`" + `, or ` + "`" + `megabytes` + "`" + ` (default). This configuration is not available in versions prior to Kong Gateway 1.3 and Kong Gateway (OSS) 2.0. Default: "megabytes"; must be one of ["bytes", "kilobytes", "megabytes"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"bytes",
-								"kilobytes",
-								"megabytes",
-							),
-						},
+						Description: `Size unit can be set either in ` + "`" + `bytes` + "`" + `, ` + "`" + `kilobytes` + "`" + `, or ` + "`" + `megabytes` + "`" + ` (default). This configuration is not available in versions prior to Kong Gateway 1.3 and Kong Gateway (OSS) 2.0. possible known values include one of ["bytes", "kilobytes", "megabytes"]; Default: "megabytes"`,
 					},
 				},
 			},

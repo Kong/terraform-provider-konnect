@@ -44,6 +44,7 @@ type GatewayPluginGraphqlProxyCacheAdvancedResource struct {
 
 // GatewayPluginGraphqlProxyCacheAdvancedResourceModel describes the resource data model.
 type GatewayPluginGraphqlProxyCacheAdvancedResourceModel struct {
+	Condition      types.String                                   `tfsdk:"condition"`
 	Config         *tfTypes.GraphqlProxyCacheAdvancedPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                                   `tfsdk:"consumer"`
 	ControlPlaneID types.String                                   `tfsdk:"control_plane_id"`
@@ -68,6 +69,13 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginGraphqlProxyCacheAdvanced Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
@@ -245,14 +253,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 									"auth_provider": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"aws",
-												"azure",
-												"gcp",
-											),
-										},
+										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
 									},
 									"aws_access_key_id": schema.StringAttribute{
 										Optional:    true,
@@ -446,14 +447,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 							"sentinel_role": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"any",
-										"master",
-										"slave",
-									),
-								},
+								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
 							},
 							"sentinel_username": schema.StringAttribute{
 								Optional:    true,
@@ -485,13 +479,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`memory`),
-						Description: `The backing data store in which to hold cached entities. Accepted value is ` + "`" + `memory` + "`" + `. Default: "memory"; must be one of ["memory", "redis"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"memory",
-								"redis",
-							),
-						},
+						Description: `The backing data store in which to hold cached entities. Accepted value is ` + "`" + `memory` + "`" + `. possible known values include one of ["memory", "redis"]; Default: "memory"`,
 					},
 					"vary_headers": schema.ListAttribute{
 						Optional:    true,

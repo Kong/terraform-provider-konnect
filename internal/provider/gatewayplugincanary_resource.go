@@ -45,6 +45,7 @@ type GatewayPluginCanaryResource struct {
 
 // GatewayPluginCanaryResourceModel describes the resource data model.
 type GatewayPluginCanaryResourceModel struct {
+	Condition      types.String                `tfsdk:"condition"`
 	Config         *tfTypes.CanaryPluginConfig `tfsdk:"config"`
 	ControlPlaneID types.String                `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                 `tfsdk:"created_at"`
@@ -68,6 +69,13 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginCanary Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
@@ -115,17 +123,7 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 							`* ` + "`" + `allow` + "`" + `: Allows the specified groups to access the canary release.` + "\n" +
 							`* ` + "`" + `deny` + "`" + `: Denies the specified groups from accessing the canary release.` + "\n" +
 							`* ` + "`" + `header` + "`" + `: The hash will be based on the specified header value.` + "\n" +
-							`Default: "consumer"; must be one of ["allow", "consumer", "deny", "header", "ip", "none"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"allow",
-								"consumer",
-								"deny",
-								"header",
-								"ip",
-								"none",
-							),
-						},
+							`possible known values include one of ["allow", "consumer", "deny", "header", "ip", "none"]; Default: "consumer"`,
 					},
 					"hash_header": schema.StringAttribute{
 						Optional:    true,

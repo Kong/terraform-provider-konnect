@@ -44,6 +44,7 @@ type GatewayPluginJSONThreatProtectionResource struct {
 
 // GatewayPluginJSONThreatProtectionResourceModel describes the resource data model.
 type GatewayPluginJSONThreatProtectionResourceModel struct {
+	Condition      types.String                              `tfsdk:"condition"`
 	Config         *tfTypes.JSONThreatProtectionPluginConfig `tfsdk:"config"`
 	ControlPlaneID types.String                              `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                               `tfsdk:"created_at"`
@@ -67,11 +68,19 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginJSONThreatProtection Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
 				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
 					"allow_duplicate_object_entry_name": types.BoolType,
+					"allow_non_json_requests":           types.BoolType,
 					"enforcement_mode":                  types.StringType,
 					"error_message":                     types.StringType,
 					"error_status_code":                 types.Int64Type,
@@ -89,17 +98,17 @@ func (r *GatewayPluginJSONThreatProtectionResource) Schema(ctx context.Context, 
 						Default:     booldefault.StaticBool(true),
 						Description: `Allow or disallow duplicate object entry name. Default: true`,
 					},
+					"allow_non_json_requests": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `Allow non-json requests to bypass the rules. Default: false`,
+					},
 					"enforcement_mode": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`block`),
-						Description: `Enforcement mode of the security policy. Default: "block"; must be one of ["block", "log_only"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"block",
-								"log_only",
-							),
-						},
+						Description: `Enforcement mode of the security policy. possible known values include one of ["block", "log_only"]; Default: "block"`,
 					},
 					"error_message": schema.StringAttribute{
 						Computed:    true,

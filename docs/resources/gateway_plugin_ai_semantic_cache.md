@@ -14,6 +14,7 @@ GatewayPluginAiSemanticCache Resource
 
 ```terraform
 resource "konnect_gateway_plugin_ai_semantic_cache" "my_gatewaypluginaisemanticcache" {
+  condition = "...my_condition..."
   config = {
     cache_control = false
     cache_ttl     = 300
@@ -26,6 +27,8 @@ resource "konnect_gateway_plugin_ai_semantic_cache" "my_gatewaypluginaisemanticc
         azure_client_secret        = "...my_azure_client_secret..."
         azure_tenant_id            = "...my_azure_tenant_id..."
         azure_use_managed_identity = false
+        gcp_metadata_url           = "...my_gcp_metadata_url..."
+        gcp_oauth_token_url        = "...my_gcp_oauth_token_url..."
         gcp_service_account_json   = "...my_gcp_service_account_json..."
         gcp_use_service_account    = false
         header_name                = "...my_header_name..."
@@ -47,6 +50,8 @@ resource "konnect_gateway_plugin_ai_semantic_cache" "my_gatewaypluginaisemanticc
             aws_region                 = "...my_aws_region..."
             aws_role_session_name      = "...my_aws_role_session_name..."
             aws_sts_endpoint_url       = "...my_aws_sts_endpoint_url..."
+            batch_bucket_prefix        = "...my_batch_bucket_prefix..."
+            batch_role_arn             = "...my_batch_role_arn..."
             embeddings_normalize       = false
             performance_config_latency = "...my_performance_config_latency..."
             video_output_s3_uri        = "...my_video_output_s3_uri..."
@@ -62,7 +67,7 @@ resource "konnect_gateway_plugin_ai_semantic_cache" "my_gatewaypluginaisemanticc
           }
           upstream_url = "...my_upstream_url..."
         }
-        provider = "bedrock"
+        provider = "gemini"
       }
     }
     exact_caching            = false
@@ -196,6 +201,7 @@ resource "konnect_gateway_plugin_ai_semantic_cache" "my_gatewaypluginaisemanticc
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -226,7 +232,7 @@ Optional:
 - `ignore_assistant_prompts` (Boolean) Ignore and discard any assistant prompts when Vectorizing the request. Default: false
 - `ignore_system_prompts` (Boolean) Ignore and discard any system prompts when Vectorizing the request. Default: false
 - `ignore_tool_prompts` (Boolean) Ignore and discard any tool prompts when Vectorizing the request. Default: false
-- `llm_format` (String) LLM input and output format and schema to use. Default: "openai"; must be one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]
+- `llm_format` (String) LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]; Default: "openai"
 - `message_countback` (Number) Number of messages in the chat history to Vectorize/Cache. Default: 1
 - `stop_on_failure` (Boolean) Halt the LLM request process in case of a caching system failure. Default: false
 
@@ -247,7 +253,7 @@ Optional:
 Required:
 
 - `name` (String) Model name to execute.
-- `provider` (String) AI provider format to use for embeddings API. must be one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "openai"]
+- `provider` (String) AI provider format to use for embeddings API. possible known values include one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai"]
 
 Optional:
 
@@ -283,6 +289,8 @@ Optional:
 - `aws_region` (String) If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
 - `aws_role_session_name` (String) If using AWS providers (Bedrock), set the identifier of the assumed role session.
 - `aws_sts_endpoint_url` (String) If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
+- `batch_bucket_prefix` (String) S3 URI prefix (s3://bucket/prefix/) where Bedrock will get input files from and store results to for native batch API.
+- `batch_role_arn` (String) AWS role arn used for calling batch API. Try to get the value from request if ommited.
 - `embeddings_normalize` (Boolean) If using AWS providers (Bedrock), set to true to normalize the embeddings. Default: false
 - `performance_config_latency` (String) Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
 - `video_output_s3_uri` (String) S3 URI (s3://bucket/prefix) where Bedrock will store generated video files. Required for video generation.
@@ -321,11 +329,13 @@ Optional:
 - `azure_client_secret` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
 - `azure_tenant_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
 - `azure_use_managed_identity` (Boolean) Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models. Default: false
+- `gcp_metadata_url` (String) Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.
+- `gcp_oauth_token_url` (String) Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.
 - `gcp_service_account_json` (String) Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
 - `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models. Default: false
 - `header_name` (String) If AI model requires authentication via Authorization or API key header, specify its name here.
 - `header_value` (String) Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
-- `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. must be one of ["body", "query"]
+- `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
 - `param_name` (String) If AI model requires authentication via query parameter, specify its name here.
 - `param_value` (String) Specify the full parameter value for 'param_name'.
 
@@ -337,14 +347,14 @@ Optional:
 Required:
 
 - `dimensions` (Number) the desired dimensionality for the vectors
-- `distance_metric` (String) the distance metric to use for vector searches. must be one of ["cosine", "euclidean"]
-- `strategy` (String) which vector database driver to use. must be one of ["pgvector", "redis"]
+- `distance_metric` (String) the distance metric to use for vector searches. possible known values include one of ["cosine", "euclidean"]
+- `strategy` (String) which vector database driver to use. possible known values include one of ["pgvector", "redis"]
 
 Optional:
 
 - `pgvector` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb--pgvector))
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb--redis))
-- `threshold` (Number) the default similarity threshold for accepting semantic search results (float)
+- `threshold` (Number) the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.
 
 <a id="nestedatt--config--vectordb--pgvector"></a>
 ### Nested Schema for `config.vectordb.pgvector`
@@ -360,7 +370,7 @@ Optional:
 - `ssl_cert_key` (String) the path of ssl cert key to use for the pgvector database
 - `ssl_required` (Boolean) whether ssl is required for the pgvector database. Default: false
 - `ssl_verify` (Boolean) whether to verify ssl for the pgvector database. Default: false
-- `ssl_version` (String) the ssl version to use for the pgvector database. Default: "tlsv1_2"; must be one of ["any", "tlsv1_2", "tlsv1_3"]
+- `ssl_version` (String) the ssl version to use for the pgvector database. possible known values include one of ["any", "tlsv1_2", "tlsv1_3"]; Default: "tlsv1_2"
 - `timeout` (Number) the timeout of the pgvector database. Default: 5000
 - `user` (String) the user of the pgvector database. Default: "postgres"
 
@@ -386,7 +396,7 @@ Optional:
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--vectordb--redis--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
+- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
@@ -398,7 +408,7 @@ Optional:
 
 Optional:
 
-- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]
 - `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 - `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
 - `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
@@ -510,7 +520,7 @@ import {
   to = konnect_gateway_plugin_ai_semantic_cache.my_konnect_gateway_plugin_ai_semantic_cache
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

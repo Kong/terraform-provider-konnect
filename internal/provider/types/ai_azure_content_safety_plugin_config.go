@@ -18,6 +18,7 @@ type AiAzureContentSafetyPluginConfig struct {
 	ContentSafetyURL        types.String   `tfsdk:"content_safety_url"`
 	GuardingMode            types.String   `tfsdk:"guarding_mode"`
 	HaltOnBlocklistHit      types.Bool     `tfsdk:"halt_on_blocklist_hit"`
+	LogBlockedContent       types.Bool     `tfsdk:"log_blocked_content"`
 	OutputType              types.String   `tfsdk:"output_type"`
 	ResponseBufferSize      types.Float64  `tfsdk:"response_buffer_size"`
 	RevealFailureReason     types.Bool     `tfsdk:"reveal_failure_reason"`

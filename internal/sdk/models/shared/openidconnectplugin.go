@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -139,34 +137,16 @@ const (
 func (e AuthMethods) ToPointer() *AuthMethods {
 	return &e
 }
-func (e *AuthMethods) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AuthMethods) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "authorization_code", "bearer", "client_credentials", "introspection", "kong_oauth2", "password", "refresh_token", "session", "userinfo":
+			return true
+		}
 	}
-	switch v {
-	case "authorization_code":
-		fallthrough
-	case "bearer":
-		fallthrough
-	case "client_credentials":
-		fallthrough
-	case "introspection":
-		fallthrough
-	case "kong_oauth2":
-		fallthrough
-	case "password":
-		fallthrough
-	case "refresh_token":
-		fallthrough
-	case "session":
-		fallthrough
-	case "userinfo":
-		*e = AuthMethods(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AuthMethods: %v", v)
-	}
+	return false
 }
 
 // AuthorizationCookieSameSite - Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
@@ -182,24 +162,16 @@ const (
 func (e AuthorizationCookieSameSite) ToPointer() *AuthorizationCookieSameSite {
 	return &e
 }
-func (e *AuthorizationCookieSameSite) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AuthorizationCookieSameSite) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Default", "Lax", "None", "Strict":
+			return true
+		}
 	}
-	switch v {
-	case "Default":
-		fallthrough
-	case "Lax":
-		fallthrough
-	case "None":
-		fallthrough
-	case "Strict":
-		*e = AuthorizationCookieSameSite(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AuthorizationCookieSameSite: %v", v)
-	}
+	return false
 }
 
 type BearerTokenParamType string
@@ -214,24 +186,16 @@ const (
 func (e BearerTokenParamType) ToPointer() *BearerTokenParamType {
 	return &e
 }
-func (e *BearerTokenParamType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *BearerTokenParamType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "body", "cookie", "header", "query":
+			return true
+		}
 	}
-	switch v {
-	case "body":
-		fallthrough
-	case "cookie":
-		fallthrough
-	case "header":
-		fallthrough
-	case "query":
-		*e = BearerTokenParamType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for BearerTokenParamType: %v", v)
-	}
+	return false
 }
 
 type OpenidConnectPluginClientAlg string
@@ -255,42 +219,16 @@ const (
 func (e OpenidConnectPluginClientAlg) ToPointer() *OpenidConnectPluginClientAlg {
 	return &e
 }
-func (e *OpenidConnectPluginClientAlg) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OpenidConnectPluginClientAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512":
+			return true
+		}
 	}
-	switch v {
-	case "ES256":
-		fallthrough
-	case "ES384":
-		fallthrough
-	case "ES512":
-		fallthrough
-	case "EdDSA":
-		fallthrough
-	case "HS256":
-		fallthrough
-	case "HS384":
-		fallthrough
-	case "HS512":
-		fallthrough
-	case "PS256":
-		fallthrough
-	case "PS384":
-		fallthrough
-	case "PS512":
-		fallthrough
-	case "RS256":
-		fallthrough
-	case "RS384":
-		fallthrough
-	case "RS512":
-		*e = OpenidConnectPluginClientAlg(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for OpenidConnectPluginClientAlg: %v", v)
-	}
+	return false
 }
 
 type OpenidConnectPluginClientAuth string
@@ -308,30 +246,16 @@ const (
 func (e OpenidConnectPluginClientAuth) ToPointer() *OpenidConnectPluginClientAuth {
 	return &e
 }
-func (e *OpenidConnectPluginClientAuth) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OpenidConnectPluginClientAuth) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth":
+			return true
+		}
 	}
-	switch v {
-	case "client_secret_basic":
-		fallthrough
-	case "client_secret_jwt":
-		fallthrough
-	case "client_secret_post":
-		fallthrough
-	case "none":
-		fallthrough
-	case "private_key_jwt":
-		fallthrough
-	case "self_signed_tls_client_auth":
-		fallthrough
-	case "tls_client_auth":
-		*e = OpenidConnectPluginClientAuth(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for OpenidConnectPluginClientAuth: %v", v)
-	}
+	return false
 }
 
 type ClientCredentialsParamType string
@@ -345,22 +269,16 @@ const (
 func (e ClientCredentialsParamType) ToPointer() *ClientCredentialsParamType {
 	return &e
 }
-func (e *ClientCredentialsParamType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ClientCredentialsParamType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "body", "header", "query":
+			return true
+		}
 	}
-	switch v {
-	case "body":
-		fallthrough
-	case "header":
-		fallthrough
-	case "query":
-		*e = ClientCredentialsParamType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ClientCredentialsParamType: %v", v)
-	}
+	return false
 }
 
 type ClientJwk struct {
@@ -589,22 +507,16 @@ const (
 func (e OpenidConnectPluginAuthProvider) ToPointer() *OpenidConnectPluginAuthProvider {
 	return &e
 }
-func (e *OpenidConnectPluginAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OpenidConnectPluginAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = OpenidConnectPluginAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for OpenidConnectPluginAuthProvider: %v", v)
-	}
+	return false
 }
 
 // OpenidConnectPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -806,22 +718,16 @@ const (
 func (e OpenidConnectPluginSentinelRole) ToPointer() *OpenidConnectPluginSentinelRole {
 	return &e
 }
-func (e *OpenidConnectPluginSentinelRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OpenidConnectPluginSentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "master":
-		fallthrough
-	case "slave":
-		*e = OpenidConnectPluginSentinelRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for OpenidConnectPluginSentinelRole: %v", v)
-	}
+	return false
 }
 
 type ClusterCacheRedis struct {
@@ -1047,20 +953,16 @@ const (
 func (e ClusterCacheStrategy) ToPointer() *ClusterCacheStrategy {
 	return &e
 }
-func (e *ClusterCacheStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ClusterCacheStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "off", "redis":
+			return true
+		}
 	}
-	switch v {
-	case "off":
-		fallthrough
-	case "redis":
-		*e = ClusterCacheStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ClusterCacheStrategy: %v", v)
-	}
+	return false
 }
 
 type OpenidConnectPluginConsumerBy string
@@ -1074,22 +976,16 @@ const (
 func (e OpenidConnectPluginConsumerBy) ToPointer() *OpenidConnectPluginConsumerBy {
 	return &e
 }
-func (e *OpenidConnectPluginConsumerBy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OpenidConnectPluginConsumerBy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "custom_id", "id", "username":
+			return true
+		}
 	}
-	switch v {
-	case "custom_id":
-		fallthrough
-	case "id":
-		fallthrough
-	case "username":
-		*e = OpenidConnectPluginConsumerBy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for OpenidConnectPluginConsumerBy: %v", v)
-	}
+	return false
 }
 
 type DisableSession string
@@ -1109,34 +1005,48 @@ const (
 func (e DisableSession) ToPointer() *DisableSession {
 	return &e
 }
-func (e *DisableSession) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DisableSession) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "authorization_code", "bearer", "client_credentials", "introspection", "kong_oauth2", "password", "refresh_token", "session", "userinfo":
+			return true
+		}
+	}
+	return false
+}
+
+type DownstreamHeaders struct {
+	// The name of the header.
+	Header string `json:"header"`
+	// The path of the header value.
+	Path []string `json:"path"`
+}
+
+func (d DownstreamHeaders) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DownstreamHeaders) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"header", "path"}); err != nil {
 		return err
 	}
-	switch v {
-	case "authorization_code":
-		fallthrough
-	case "bearer":
-		fallthrough
-	case "client_credentials":
-		fallthrough
-	case "introspection":
-		fallthrough
-	case "kong_oauth2":
-		fallthrough
-	case "password":
-		fallthrough
-	case "refresh_token":
-		fallthrough
-	case "session":
-		fallthrough
-	case "userinfo":
-		*e = DisableSession(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for DisableSession: %v", v)
+	return nil
+}
+
+func (d *DownstreamHeaders) GetHeader() string {
+	if d == nil {
+		return ""
 	}
+	return d.Header
+}
+
+func (d *DownstreamHeaders) GetPath() []string {
+	if d == nil {
+		return []string{}
+	}
+	return d.Path
 }
 
 type IDTokenParamType string
@@ -1150,22 +1060,16 @@ const (
 func (e IDTokenParamType) ToPointer() *IDTokenParamType {
 	return &e
 }
-func (e *IDTokenParamType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *IDTokenParamType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "body", "header", "query":
+			return true
+		}
 	}
-	switch v {
-	case "body":
-		fallthrough
-	case "header":
-		fallthrough
-	case "query":
-		*e = IDTokenParamType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for IDTokenParamType: %v", v)
-	}
+	return false
 }
 
 type IgnoreSignature string
@@ -1183,30 +1087,16 @@ const (
 func (e IgnoreSignature) ToPointer() *IgnoreSignature {
 	return &e
 }
-func (e *IgnoreSignature) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *IgnoreSignature) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "authorization_code", "client_credentials", "introspection", "password", "refresh_token", "session", "userinfo":
+			return true
+		}
 	}
-	switch v {
-	case "authorization_code":
-		fallthrough
-	case "client_credentials":
-		fallthrough
-	case "introspection":
-		fallthrough
-	case "password":
-		fallthrough
-	case "refresh_token":
-		fallthrough
-	case "session":
-		fallthrough
-	case "userinfo":
-		*e = IgnoreSignature(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for IgnoreSignature: %v", v)
-	}
+	return false
 }
 
 // IntrospectionAccept - The value of `Accept` header for introspection requests: - `application/json`: introspection response as JSON - `application/token-introspection+jwt`: introspection response as JWT (from the current IETF draft document) - `application/jwt`: introspection response as JWT (from the obsolete IETF draft document).
@@ -1221,22 +1111,16 @@ const (
 func (e IntrospectionAccept) ToPointer() *IntrospectionAccept {
 	return &e
 }
-func (e *IntrospectionAccept) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *IntrospectionAccept) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "application/json", "application/jwt", "application/token-introspection+jwt":
+			return true
+		}
 	}
-	switch v {
-	case "application/json":
-		fallthrough
-	case "application/jwt":
-		fallthrough
-	case "application/token-introspection+jwt":
-		*e = IntrospectionAccept(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for IntrospectionAccept: %v", v)
-	}
+	return false
 }
 
 // IntrospectionEndpointAuthMethod - The introspection endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
@@ -1255,30 +1139,16 @@ const (
 func (e IntrospectionEndpointAuthMethod) ToPointer() *IntrospectionEndpointAuthMethod {
 	return &e
 }
-func (e *IntrospectionEndpointAuthMethod) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *IntrospectionEndpointAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth":
+			return true
+		}
 	}
-	switch v {
-	case "client_secret_basic":
-		fallthrough
-	case "client_secret_jwt":
-		fallthrough
-	case "client_secret_post":
-		fallthrough
-	case "none":
-		fallthrough
-	case "private_key_jwt":
-		fallthrough
-	case "self_signed_tls_client_auth":
-		fallthrough
-	case "tls_client_auth":
-		*e = IntrospectionEndpointAuthMethod(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for IntrospectionEndpointAuthMethod: %v", v)
-	}
+	return false
 }
 
 // LoginAction - What to do after successful login: - `upstream`: proxy request to upstream service - `response`: terminate request with a response - `redirect`: redirect to a different location.
@@ -1293,22 +1163,16 @@ const (
 func (e LoginAction) ToPointer() *LoginAction {
 	return &e
 }
-func (e *LoginAction) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *LoginAction) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "redirect", "response", "upstream":
+			return true
+		}
 	}
-	switch v {
-	case "redirect":
-		fallthrough
-	case "response":
-		fallthrough
-	case "upstream":
-		*e = LoginAction(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for LoginAction: %v", v)
-	}
+	return false
 }
 
 type LoginMethods string
@@ -1328,34 +1192,16 @@ const (
 func (e LoginMethods) ToPointer() *LoginMethods {
 	return &e
 }
-func (e *LoginMethods) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *LoginMethods) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "authorization_code", "bearer", "client_credentials", "introspection", "kong_oauth2", "password", "refresh_token", "session", "userinfo":
+			return true
+		}
 	}
-	switch v {
-	case "authorization_code":
-		fallthrough
-	case "bearer":
-		fallthrough
-	case "client_credentials":
-		fallthrough
-	case "introspection":
-		fallthrough
-	case "kong_oauth2":
-		fallthrough
-	case "password":
-		fallthrough
-	case "refresh_token":
-		fallthrough
-	case "session":
-		fallthrough
-	case "userinfo":
-		*e = LoginMethods(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for LoginMethods: %v", v)
-	}
+	return false
 }
 
 // LoginRedirectMode - Where to place `login_tokens` when using `redirect` `login_action`: - `query`: place tokens in query string - `fragment`: place tokens in url fragment (not readable by servers).
@@ -1369,20 +1215,16 @@ const (
 func (e LoginRedirectMode) ToPointer() *LoginRedirectMode {
 	return &e
 }
-func (e *LoginRedirectMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *LoginRedirectMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "fragment", "query":
+			return true
+		}
 	}
-	switch v {
-	case "fragment":
-		fallthrough
-	case "query":
-		*e = LoginRedirectMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for LoginRedirectMode: %v", v)
-	}
+	return false
 }
 
 type LoginTokens string
@@ -1398,26 +1240,16 @@ const (
 func (e LoginTokens) ToPointer() *LoginTokens {
 	return &e
 }
-func (e *LoginTokens) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *LoginTokens) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "access_token", "id_token", "introspection", "refresh_token", "tokens":
+			return true
+		}
 	}
-	switch v {
-	case "access_token":
-		fallthrough
-	case "id_token":
-		fallthrough
-	case "introspection":
-		fallthrough
-	case "refresh_token":
-		fallthrough
-	case "tokens":
-		*e = LoginTokens(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for LoginTokens: %v", v)
-	}
+	return false
 }
 
 type LogoutMethods string
@@ -1431,22 +1263,16 @@ const (
 func (e LogoutMethods) ToPointer() *LogoutMethods {
 	return &e
 }
-func (e *LogoutMethods) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *LogoutMethods) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "DELETE", "GET", "POST":
+			return true
+		}
 	}
-	switch v {
-	case "DELETE":
-		fallthrough
-	case "GET":
-		fallthrough
-	case "POST":
-		*e = LogoutMethods(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for LogoutMethods: %v", v)
-	}
+	return false
 }
 
 type PasswordParamType string
@@ -1460,22 +1286,16 @@ const (
 func (e PasswordParamType) ToPointer() *PasswordParamType {
 	return &e
 }
-func (e *PasswordParamType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PasswordParamType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "body", "header", "query":
+			return true
+		}
 	}
-	switch v {
-	case "body":
-		fallthrough
-	case "header":
-		fallthrough
-	case "query":
-		*e = PasswordParamType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PasswordParamType: %v", v)
-	}
+	return false
 }
 
 // ProofOfPossessionDpop - Enable Demonstrating Proof-of-Possession (DPoP). If set to strict, all request are verified despite the presence of the DPoP key claim (cnf.jkt). If set to optional, only tokens bound with DPoP's key are verified with the proof.
@@ -1490,22 +1310,16 @@ const (
 func (e ProofOfPossessionDpop) ToPointer() *ProofOfPossessionDpop {
 	return &e
 }
-func (e *ProofOfPossessionDpop) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ProofOfPossessionDpop) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "off", "optional", "strict":
+			return true
+		}
 	}
-	switch v {
-	case "off":
-		fallthrough
-	case "optional":
-		fallthrough
-	case "strict":
-		*e = ProofOfPossessionDpop(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ProofOfPossessionDpop: %v", v)
-	}
+	return false
 }
 
 // ProofOfPossessionMtls - Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401.
@@ -1520,22 +1334,16 @@ const (
 func (e ProofOfPossessionMtls) ToPointer() *ProofOfPossessionMtls {
 	return &e
 }
-func (e *ProofOfPossessionMtls) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ProofOfPossessionMtls) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "off", "optional", "strict":
+			return true
+		}
 	}
-	switch v {
-	case "off":
-		fallthrough
-	case "optional":
-		fallthrough
-	case "strict":
-		*e = ProofOfPossessionMtls(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ProofOfPossessionMtls: %v", v)
-	}
+	return false
 }
 
 // PushedAuthorizationRequestEndpointAuthMethod - The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
@@ -1554,30 +1362,16 @@ const (
 func (e PushedAuthorizationRequestEndpointAuthMethod) ToPointer() *PushedAuthorizationRequestEndpointAuthMethod {
 	return &e
 }
-func (e *PushedAuthorizationRequestEndpointAuthMethod) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PushedAuthorizationRequestEndpointAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth":
+			return true
+		}
 	}
-	switch v {
-	case "client_secret_basic":
-		fallthrough
-	case "client_secret_jwt":
-		fallthrough
-	case "client_secret_post":
-		fallthrough
-	case "none":
-		fallthrough
-	case "private_key_jwt":
-		fallthrough
-	case "self_signed_tls_client_auth":
-		fallthrough
-	case "tls_client_auth":
-		*e = PushedAuthorizationRequestEndpointAuthMethod(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PushedAuthorizationRequestEndpointAuthMethod: %v", v)
-	}
+	return false
 }
 
 // OpenidConnectPluginConfigAuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
@@ -1592,22 +1386,16 @@ const (
 func (e OpenidConnectPluginConfigAuthProvider) ToPointer() *OpenidConnectPluginConfigAuthProvider {
 	return &e
 }
-func (e *OpenidConnectPluginConfigAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OpenidConnectPluginConfigAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = OpenidConnectPluginConfigAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for OpenidConnectPluginConfigAuthProvider: %v", v)
-	}
+	return false
 }
 
 // OpenidConnectPluginConfigCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -1809,22 +1597,16 @@ const (
 func (e OpenidConnectPluginConfigSentinelRole) ToPointer() *OpenidConnectPluginConfigSentinelRole {
 	return &e
 }
-func (e *OpenidConnectPluginConfigSentinelRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OpenidConnectPluginConfigSentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "master":
-		fallthrough
-	case "slave":
-		*e = OpenidConnectPluginConfigSentinelRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for OpenidConnectPluginConfigSentinelRole: %v", v)
-	}
+	return false
 }
 
 type OpenidConnectPluginRedis struct {
@@ -2068,22 +1850,16 @@ const (
 func (e RefreshTokenParamType) ToPointer() *RefreshTokenParamType {
 	return &e
 }
-func (e *RefreshTokenParamType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RefreshTokenParamType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "body", "header", "query":
+			return true
+		}
 	}
-	switch v {
-	case "body":
-		fallthrough
-	case "header":
-		fallthrough
-	case "query":
-		*e = RefreshTokenParamType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RefreshTokenParamType: %v", v)
-	}
+	return false
 }
 
 // ResponseMode - Response mode passed to the authorization endpoint: - `query`: for parameters in query string - `form_post`: for parameters in request body - `fragment`: for parameters in uri fragment (rarely useful as the plugin itself cannot read it) - `query.jwt`, `form_post.jwt`, `fragment.jwt`: similar to `query`, `form_post` and `fragment` but the parameters are encoded in a JWT - `jwt`: shortcut that indicates the default encoding for the requested response type.
@@ -2102,30 +1878,16 @@ const (
 func (e ResponseMode) ToPointer() *ResponseMode {
 	return &e
 }
-func (e *ResponseMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ResponseMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "form_post", "form_post.jwt", "fragment", "fragment.jwt", "jwt", "query", "query.jwt":
+			return true
+		}
 	}
-	switch v {
-	case "form_post":
-		fallthrough
-	case "form_post.jwt":
-		fallthrough
-	case "fragment":
-		fallthrough
-	case "fragment.jwt":
-		fallthrough
-	case "jwt":
-		fallthrough
-	case "query":
-		fallthrough
-	case "query.jwt":
-		*e = ResponseMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ResponseMode: %v", v)
-	}
+	return false
 }
 
 // RevocationEndpointAuthMethod - The revocation endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
@@ -2144,30 +1906,16 @@ const (
 func (e RevocationEndpointAuthMethod) ToPointer() *RevocationEndpointAuthMethod {
 	return &e
 }
-func (e *RevocationEndpointAuthMethod) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RevocationEndpointAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth":
+			return true
+		}
 	}
-	switch v {
-	case "client_secret_basic":
-		fallthrough
-	case "client_secret_jwt":
-		fallthrough
-	case "client_secret_post":
-		fallthrough
-	case "none":
-		fallthrough
-	case "private_key_jwt":
-		fallthrough
-	case "self_signed_tls_client_auth":
-		fallthrough
-	case "tls_client_auth":
-		*e = RevocationEndpointAuthMethod(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RevocationEndpointAuthMethod: %v", v)
-	}
+	return false
 }
 
 type SessionBind string
@@ -2181,22 +1929,16 @@ const (
 func (e SessionBind) ToPointer() *SessionBind {
 	return &e
 }
-func (e *SessionBind) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SessionBind) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ip", "scheme", "user-agent":
+			return true
+		}
 	}
-	switch v {
-	case "ip":
-		fallthrough
-	case "scheme":
-		fallthrough
-	case "user-agent":
-		*e = SessionBind(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SessionBind: %v", v)
-	}
+	return false
 }
 
 // SessionCookieSameSite - Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
@@ -2212,24 +1954,16 @@ const (
 func (e SessionCookieSameSite) ToPointer() *SessionCookieSameSite {
 	return &e
 }
-func (e *SessionCookieSameSite) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SessionCookieSameSite) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "Default", "Lax", "None", "Strict":
+			return true
+		}
 	}
-	switch v {
-	case "Default":
-		fallthrough
-	case "Lax":
-		fallthrough
-	case "None":
-		fallthrough
-	case "Strict":
-		*e = SessionCookieSameSite(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SessionCookieSameSite: %v", v)
-	}
+	return false
 }
 
 type SessionRequestHeaders string
@@ -2247,30 +1981,16 @@ const (
 func (e SessionRequestHeaders) ToPointer() *SessionRequestHeaders {
 	return &e
 }
-func (e *SessionRequestHeaders) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SessionRequestHeaders) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "absolute-timeout", "audience", "id", "idling-timeout", "rolling-timeout", "subject", "timeout":
+			return true
+		}
 	}
-	switch v {
-	case "absolute-timeout":
-		fallthrough
-	case "audience":
-		fallthrough
-	case "id":
-		fallthrough
-	case "idling-timeout":
-		fallthrough
-	case "rolling-timeout":
-		fallthrough
-	case "subject":
-		fallthrough
-	case "timeout":
-		*e = SessionRequestHeaders(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SessionRequestHeaders: %v", v)
-	}
+	return false
 }
 
 type SessionResponseHeaders string
@@ -2288,30 +2008,16 @@ const (
 func (e SessionResponseHeaders) ToPointer() *SessionResponseHeaders {
 	return &e
 }
-func (e *SessionResponseHeaders) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SessionResponseHeaders) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "absolute-timeout", "audience", "id", "idling-timeout", "rolling-timeout", "subject", "timeout":
+			return true
+		}
 	}
-	switch v {
-	case "absolute-timeout":
-		fallthrough
-	case "audience":
-		fallthrough
-	case "id":
-		fallthrough
-	case "idling-timeout":
-		fallthrough
-	case "rolling-timeout":
-		fallthrough
-	case "subject":
-		fallthrough
-	case "timeout":
-		*e = SessionResponseHeaders(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SessionResponseHeaders: %v", v)
-	}
+	return false
 }
 
 // SessionStorage - The session storage for session data: - `cookie`: stores session data with the session cookie (the session cannot be invalidated or revoked without changing session secret, but is stateless, and doesn't require a database) - `memcache`: stores session data in memcached - `redis`: stores session data in Redis.
@@ -2327,66 +2033,249 @@ const (
 func (e SessionStorage) ToPointer() *SessionStorage {
 	return &e
 }
-func (e *SessionStorage) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SessionStorage) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "cookie", "memcache", "memcached", "redis":
+			return true
+		}
 	}
-	switch v {
-	case "cookie":
-		fallthrough
-	case "memcache":
-		fallthrough
-	case "memcached":
-		fallthrough
-	case "redis":
-		*e = SessionStorage(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SessionStorage: %v", v)
-	}
+	return false
 }
 
-// TokenEndpointAuthMethod - The token endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
-type TokenEndpointAuthMethod string
+// OpenidConnectPluginTokenEndpointAuthMethod - The token endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
+type OpenidConnectPluginTokenEndpointAuthMethod string
 
 const (
-	TokenEndpointAuthMethodClientSecretBasic       TokenEndpointAuthMethod = "client_secret_basic"
-	TokenEndpointAuthMethodClientSecretJwt         TokenEndpointAuthMethod = "client_secret_jwt"
-	TokenEndpointAuthMethodClientSecretPost        TokenEndpointAuthMethod = "client_secret_post"
-	TokenEndpointAuthMethodNone                    TokenEndpointAuthMethod = "none"
-	TokenEndpointAuthMethodPrivateKeyJwt           TokenEndpointAuthMethod = "private_key_jwt"
-	TokenEndpointAuthMethodSelfSignedTLSClientAuth TokenEndpointAuthMethod = "self_signed_tls_client_auth"
-	TokenEndpointAuthMethodTLSClientAuth           TokenEndpointAuthMethod = "tls_client_auth"
+	OpenidConnectPluginTokenEndpointAuthMethodClientSecretBasic       OpenidConnectPluginTokenEndpointAuthMethod = "client_secret_basic"
+	OpenidConnectPluginTokenEndpointAuthMethodClientSecretJwt         OpenidConnectPluginTokenEndpointAuthMethod = "client_secret_jwt"
+	OpenidConnectPluginTokenEndpointAuthMethodClientSecretPost        OpenidConnectPluginTokenEndpointAuthMethod = "client_secret_post"
+	OpenidConnectPluginTokenEndpointAuthMethodNone                    OpenidConnectPluginTokenEndpointAuthMethod = "none"
+	OpenidConnectPluginTokenEndpointAuthMethodPrivateKeyJwt           OpenidConnectPluginTokenEndpointAuthMethod = "private_key_jwt"
+	OpenidConnectPluginTokenEndpointAuthMethodSelfSignedTLSClientAuth OpenidConnectPluginTokenEndpointAuthMethod = "self_signed_tls_client_auth"
+	OpenidConnectPluginTokenEndpointAuthMethodTLSClientAuth           OpenidConnectPluginTokenEndpointAuthMethod = "tls_client_auth"
 )
 
-func (e TokenEndpointAuthMethod) ToPointer() *TokenEndpointAuthMethod {
+func (e OpenidConnectPluginTokenEndpointAuthMethod) ToPointer() *OpenidConnectPluginTokenEndpointAuthMethod {
 	return &e
 }
-func (e *TokenEndpointAuthMethod) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OpenidConnectPluginTokenEndpointAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth":
+			return true
+		}
+	}
+	return false
+}
+
+// OpenidConnectPluginCache - Cache support for token exchange
+type OpenidConnectPluginCache struct {
+	// Whether to enable caching.
+	Enabled *bool `default:"true" json:"enabled"`
+	// Cache ttl in seconds used when caching exchanged tokens, use it to override `conf.cache_ttl`. Token expiry will be used if shorter than this value.
+	TTL *int64 `default:"null" json:"ttl"`
+}
+
+func (o OpenidConnectPluginCache) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpenidConnectPluginCache) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
 		return err
 	}
-	switch v {
-	case "client_secret_basic":
-		fallthrough
-	case "client_secret_jwt":
-		fallthrough
-	case "client_secret_post":
-		fallthrough
-	case "none":
-		fallthrough
-	case "private_key_jwt":
-		fallthrough
-	case "self_signed_tls_client_auth":
-		fallthrough
-	case "tls_client_auth":
-		*e = TokenEndpointAuthMethod(v)
+	return nil
+}
+
+func (o *OpenidConnectPluginCache) GetEnabled() *bool {
+	if o == nil {
 		return nil
-	default:
-		return fmt.Errorf("invalid value for TokenEndpointAuthMethod: %v", v)
 	}
+	return o.Enabled
+}
+
+func (o *OpenidConnectPluginCache) GetTTL() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.TTL
+}
+
+// OpenidConnectPluginRequest - Parameters used in the token exchange request.
+type OpenidConnectPluginRequest struct {
+	// Audiences used in the token exchange request. Values defined here override those defined in `config.audience`.
+	Audience []string `json:"audience"`
+	// Use empty audiences. Use this field to override audiences defined in `config.audience`.
+	EmptyAudience *bool `default:"false" json:"empty_audience"`
+	// Use empty scopes. Use this field to override scopes defined in `config.scopes`.
+	EmptyScopes *bool `default:"false" json:"empty_scopes"`
+	// Scopes used in the token exchange request. Values defined here override those defined in `config.scopes`.
+	Scopes []string `json:"scopes"`
+}
+
+func (o OpenidConnectPluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpenidConnectPluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OpenidConnectPluginRequest) GetAudience() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Audience
+}
+
+func (o *OpenidConnectPluginRequest) GetEmptyAudience() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EmptyAudience
+}
+
+func (o *OpenidConnectPluginRequest) GetEmptyScopes() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EmptyScopes
+}
+
+func (o *OpenidConnectPluginRequest) GetScopes() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Scopes
+}
+
+// Conditions - A tokens will only be exchange when it matches all these criteria. To exchanging tokens issued from a different issuer, conditions must not be defined; On the contrary, to exchange tokens issued from the target issuer itself, conditions must be defined.
+type Conditions struct {
+	HasAudience     []string `json:"has_audience"`
+	HasScopes       []string `json:"has_scopes"`
+	MissingAudience []string `json:"missing_audience"`
+	MissingScopes   []string `json:"missing_scopes"`
+}
+
+func (c Conditions) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *Conditions) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *Conditions) GetHasAudience() []string {
+	if c == nil {
+		return nil
+	}
+	return c.HasAudience
+}
+
+func (c *Conditions) GetHasScopes() []string {
+	if c == nil {
+		return nil
+	}
+	return c.HasScopes
+}
+
+func (c *Conditions) GetMissingAudience() []string {
+	if c == nil {
+		return nil
+	}
+	return c.MissingAudience
+}
+
+func (c *Conditions) GetMissingScopes() []string {
+	if c == nil {
+		return nil
+	}
+	return c.MissingScopes
+}
+
+type SubjectTokenIssuers struct {
+	// A tokens will only be exchange when it matches all these criteria. To exchanging tokens issued from a different issuer, conditions must not be defined; On the contrary, to exchange tokens issued from the target issuer itself, conditions must be defined.
+	Conditions *Conditions `json:"conditions"`
+	// Tokens of whose iss claim matches this value will be exchanged.
+	Issuer string `json:"issuer"`
+}
+
+func (s SubjectTokenIssuers) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SubjectTokenIssuers) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"issuer"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *SubjectTokenIssuers) GetConditions() *Conditions {
+	if s == nil {
+		return nil
+	}
+	return s.Conditions
+}
+
+func (s *SubjectTokenIssuers) GetIssuer() string {
+	if s == nil {
+		return ""
+	}
+	return s.Issuer
+}
+
+// OpenidConnectPluginTokenExchange - Details on how to accept tokens from other identity providers.
+type OpenidConnectPluginTokenExchange struct {
+	// Cache support for token exchange
+	Cache *OpenidConnectPluginCache `json:"cache"`
+	// Parameters used in the token exchange request.
+	Request *OpenidConnectPluginRequest `json:"request"`
+	// Trusted token issuers from which the upstream may accept tokens to be exchanged. If a JWT bearer matches all the conditions of a subject token issuer item, the token will be exchanged.
+	SubjectTokenIssuers []SubjectTokenIssuers `json:"subject_token_issuers"`
+}
+
+func (o OpenidConnectPluginTokenExchange) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpenidConnectPluginTokenExchange) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"subject_token_issuers"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *OpenidConnectPluginTokenExchange) GetCache() *OpenidConnectPluginCache {
+	if o == nil {
+		return nil
+	}
+	return o.Cache
+}
+
+func (o *OpenidConnectPluginTokenExchange) GetRequest() *OpenidConnectPluginRequest {
+	if o == nil {
+		return nil
+	}
+	return o.Request
+}
+
+func (o *OpenidConnectPluginTokenExchange) GetSubjectTokenIssuers() []SubjectTokenIssuers {
+	if o == nil {
+		return []SubjectTokenIssuers{}
+	}
+	return o.SubjectTokenIssuers
 }
 
 type TokenHeadersGrants string
@@ -2401,24 +2290,48 @@ const (
 func (e TokenHeadersGrants) ToPointer() *TokenHeadersGrants {
 	return &e
 }
-func (e *TokenHeadersGrants) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TokenHeadersGrants) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "authorization_code", "client_credentials", "password", "refresh_token":
+			return true
+		}
+	}
+	return false
+}
+
+type OpenidConnectPluginUpstreamHeaders struct {
+	// The name of the header.
+	Header string `json:"header"`
+	// The path of the header value.
+	Path []string `json:"path"`
+}
+
+func (o OpenidConnectPluginUpstreamHeaders) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(o, "", false)
+}
+
+func (o *OpenidConnectPluginUpstreamHeaders) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"header", "path"}); err != nil {
 		return err
 	}
-	switch v {
-	case "authorization_code":
-		fallthrough
-	case "client_credentials":
-		fallthrough
-	case "password":
-		fallthrough
-	case "refresh_token":
-		*e = TokenHeadersGrants(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TokenHeadersGrants: %v", v)
+	return nil
+}
+
+func (o *OpenidConnectPluginUpstreamHeaders) GetHeader() string {
+	if o == nil {
+		return ""
 	}
+	return o.Header
+}
+
+func (o *OpenidConnectPluginUpstreamHeaders) GetPath() []string {
+	if o == nil {
+		return []string{}
+	}
+	return o.Path
 }
 
 // UserinfoAccept - The value of `Accept` header for user info requests: - `application/json`: user info response as JSON - `application/jwt`: user info response as JWT (from the obsolete IETF draft document).
@@ -2432,20 +2345,16 @@ const (
 func (e UserinfoAccept) ToPointer() *UserinfoAccept {
 	return &e
 }
-func (e *UserinfoAccept) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UserinfoAccept) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "application/json", "application/jwt":
+			return true
+		}
 	}
-	switch v {
-	case "application/json":
-		fallthrough
-	case "application/jwt":
-		*e = UserinfoAccept(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for UserinfoAccept: %v", v)
-	}
+	return false
 }
 
 type OpenidConnectPluginConfig struct {
@@ -2491,7 +2400,7 @@ type OpenidConnectPluginConfig struct {
 	ByUsernameIgnoreCase *bool `default:"false" json:"by_username_ignore_case"`
 	// Cache the introspection endpoint requests.
 	CacheIntrospection *bool `default:"true" json:"cache_introspection"`
-	// Cache the token exchange endpoint requests.
+	// Cache the legacy token exchange endpoint requests.
 	CacheTokenExchange *bool `default:"true" json:"cache_token_exchange"`
 	// Cache the token endpoint requests.
 	CacheTokens *bool `default:"true" json:"cache_tokens"`
@@ -2530,8 +2439,8 @@ type OpenidConnectPluginConfig struct {
 	ClusterCacheStrategy *ClusterCacheStrategy `default:"off" json:"cluster_cache_strategy"`
 	// Consumer fields used for mapping: - `id`: try to find the matching Consumer by `id` - `username`: try to find the matching Consumer by `username` - `custom_id`: try to find the matching Consumer by `custom_id`.
 	ConsumerBy []OpenidConnectPluginConsumerBy `json:"consumer_by,omitempty"`
-	// The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
-	ConsumerClaim []string `json:"consumer_claim"`
+	// The claims used for consumer mapping. Each entry represents a claim path inside the token payload. The paths are evaluated in order, and the first matching claim is used.
+	ConsumerClaims [][]string `json:"consumer_claims"`
 	// The claim used for consumer groups mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	ConsumerGroupsClaim []string `json:"consumer_groups_claim"`
 	// Do not terminate the request if consumer groups mapping fails.
@@ -2554,7 +2463,9 @@ type OpenidConnectPluginConfig struct {
 	DownstreamAccessTokenHeader *string `default:"null" json:"downstream_access_token_header"`
 	// The downstream access token JWK header.
 	DownstreamAccessTokenJwkHeader *string `default:"null" json:"downstream_access_token_jwk_header"`
-	// The downstream header claims. If multiple values are set, it means the claim is inside a nested object of the token payload.
+	// The downstream claim to header mappings.
+	DownstreamHeaders []DownstreamHeaders `json:"downstream_headers"`
+	// The downstream header claims. Only top level claims are supported.
 	DownstreamHeadersClaims []string `json:"downstream_headers_claims"`
 	// The downstream header names for the claim values.
 	DownstreamHeadersNames []string `json:"downstream_headers_names"`
@@ -2646,6 +2557,8 @@ type OpenidConnectPluginConfig struct {
 	Issuer string `json:"issuer"`
 	// The issuers allowed to be present in the tokens (`iss` claim).
 	IssuersAllowed []string `json:"issuers_allowed"`
+	// Overrides the `jwks_uri` returned by discovery. Use when the IdP exposes a non-standard JWKS endpoint.
+	JwksEndpoint *string `default:"null" json:"jwks_endpoint"`
 	// The claim to match against the JWT session cookie.
 	JwtSessionClaim *string `default:"sid" json:"jwt_session_claim"`
 	// The name of the JWT session cookie.
@@ -2822,8 +2735,10 @@ type OpenidConnectPluginConfig struct {
 	// The token endpoint. If set it overrides the value in `token_endpoint` returned by the discovery endpoint.
 	TokenEndpoint *string `default:"null" json:"token_endpoint"`
 	// The token endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate
-	TokenEndpointAuthMethod *TokenEndpointAuthMethod `json:"token_endpoint_auth_method,omitempty"`
-	// The token exchange endpoint.
+	TokenEndpointAuthMethod *OpenidConnectPluginTokenEndpointAuthMethod `json:"token_endpoint_auth_method,omitempty"`
+	// Details on how to accept tokens from other identity providers.
+	TokenExchange *OpenidConnectPluginTokenExchange `json:"token_exchange"`
+	// Endpoint used to perform the legacy token exchange.
 	TokenExchangeEndpoint *string `default:"null" json:"token_exchange_endpoint"`
 	// Extra headers passed from the client to the token endpoint.
 	TokenHeadersClient []string `json:"token_headers_client"`
@@ -2855,6 +2770,8 @@ type OpenidConnectPluginConfig struct {
 	UpstreamAccessTokenHeader *string `default:"authorization:bearer" json:"upstream_access_token_header"`
 	// The upstream access token JWK header.
 	UpstreamAccessTokenJwkHeader *string `default:"null" json:"upstream_access_token_jwk_header"`
+	// The upstream claim to header mappings.
+	UpstreamHeaders []OpenidConnectPluginUpstreamHeaders `json:"upstream_headers"`
 	// The upstream header claims. Only top level claims are supported.
 	UpstreamHeadersClaims []string `json:"upstream_headers_claims"`
 	// The upstream header names for the claim values.
@@ -2901,6 +2818,8 @@ type OpenidConnectPluginConfig struct {
 	VerifyParameters *bool `default:"false" json:"verify_parameters"`
 	// Verify signature of tokens.
 	VerifySignature *bool `default:"true" json:"verify_signature"`
+	// The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
+	ConsumerClaim []string `json:"consumer_claim"`
 }
 
 func (o OpenidConnectPluginConfig) MarshalJSON() ([]byte, error) {
@@ -3201,11 +3120,11 @@ func (o *OpenidConnectPluginConfig) GetConsumerBy() []OpenidConnectPluginConsume
 	return o.ConsumerBy
 }
 
-func (o *OpenidConnectPluginConfig) GetConsumerClaim() []string {
+func (o *OpenidConnectPluginConfig) GetConsumerClaims() [][]string {
 	if o == nil {
 		return nil
 	}
-	return o.ConsumerClaim
+	return o.ConsumerClaims
 }
 
 func (o *OpenidConnectPluginConfig) GetConsumerGroupsClaim() []string {
@@ -3283,6 +3202,13 @@ func (o *OpenidConnectPluginConfig) GetDownstreamAccessTokenJwkHeader() *string 
 		return nil
 	}
 	return o.DownstreamAccessTokenJwkHeader
+}
+
+func (o *OpenidConnectPluginConfig) GetDownstreamHeaders() []DownstreamHeaders {
+	if o == nil {
+		return nil
+	}
+	return o.DownstreamHeaders
 }
 
 func (o *OpenidConnectPluginConfig) GetDownstreamHeadersClaims() []string {
@@ -3605,6 +3531,13 @@ func (o *OpenidConnectPluginConfig) GetIssuersAllowed() []string {
 		return nil
 	}
 	return o.IssuersAllowed
+}
+
+func (o *OpenidConnectPluginConfig) GetJwksEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.JwksEndpoint
 }
 
 func (o *OpenidConnectPluginConfig) GetJwtSessionClaim() *string {
@@ -4216,11 +4149,18 @@ func (o *OpenidConnectPluginConfig) GetTokenEndpoint() *string {
 	return o.TokenEndpoint
 }
 
-func (o *OpenidConnectPluginConfig) GetTokenEndpointAuthMethod() *TokenEndpointAuthMethod {
+func (o *OpenidConnectPluginConfig) GetTokenEndpointAuthMethod() *OpenidConnectPluginTokenEndpointAuthMethod {
 	if o == nil {
 		return nil
 	}
 	return o.TokenEndpointAuthMethod
+}
+
+func (o *OpenidConnectPluginConfig) GetTokenExchange() *OpenidConnectPluginTokenExchange {
+	if o == nil {
+		return nil
+	}
+	return o.TokenExchange
 }
 
 func (o *OpenidConnectPluginConfig) GetTokenExchangeEndpoint() *string {
@@ -4333,6 +4273,13 @@ func (o *OpenidConnectPluginConfig) GetUpstreamAccessTokenJwkHeader() *string {
 		return nil
 	}
 	return o.UpstreamAccessTokenJwkHeader
+}
+
+func (o *OpenidConnectPluginConfig) GetUpstreamHeaders() []OpenidConnectPluginUpstreamHeaders {
+	if o == nil {
+		return nil
+	}
+	return o.UpstreamHeaders
 }
 
 func (o *OpenidConnectPluginConfig) GetUpstreamHeadersClaims() []string {
@@ -4496,6 +4443,13 @@ func (o *OpenidConnectPluginConfig) GetVerifySignature() *bool {
 	return o.VerifySignature
 }
 
+func (o *OpenidConnectPluginConfig) GetConsumerClaim() []string {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerClaim
+}
+
 type OpenidConnectPluginProtocols string
 
 const (
@@ -4503,29 +4457,23 @@ const (
 	OpenidConnectPluginProtocolsGrpcs OpenidConnectPluginProtocols = "grpcs"
 	OpenidConnectPluginProtocolsHTTP  OpenidConnectPluginProtocols = "http"
 	OpenidConnectPluginProtocolsHTTPS OpenidConnectPluginProtocols = "https"
+	OpenidConnectPluginProtocolsWs    OpenidConnectPluginProtocols = "ws"
+	OpenidConnectPluginProtocolsWss   OpenidConnectPluginProtocols = "wss"
 )
 
 func (e OpenidConnectPluginProtocols) ToPointer() *OpenidConnectPluginProtocols {
 	return &e
 }
-func (e *OpenidConnectPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OpenidConnectPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = OpenidConnectPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for OpenidConnectPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // OpenidConnectPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -4576,6 +4524,8 @@ func (o *OpenidConnectPluginService) GetID() *string {
 
 // OpenidConnectPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type OpenidConnectPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -4594,7 +4544,7 @@ type OpenidConnectPlugin struct {
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64                    `json:"updated_at,omitempty"`
 	Config    OpenidConnectPluginConfig `json:"config"`
-	// A set of strings representing HTTP protocols.
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []OpenidConnectPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *OpenidConnectPluginRoute `json:"route"`
@@ -4611,6 +4561,13 @@ func (o *OpenidConnectPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (o *OpenidConnectPlugin) GetCondition() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Condition
 }
 
 func (o *OpenidConnectPlugin) GetCreatedAt() *int64 {

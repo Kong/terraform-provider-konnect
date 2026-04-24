@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // VisibilityStatus - Whether the resource is publicly accessible to non-authenticated users.
 type VisibilityStatus string
 
@@ -18,18 +13,14 @@ const (
 func (e VisibilityStatus) ToPointer() *VisibilityStatus {
 	return &e
 }
-func (e *VisibilityStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *VisibilityStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "public", "private":
+			return true
+		}
 	}
-	switch v {
-	case "public":
-		fallthrough
-	case "private":
-		*e = VisibilityStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for VisibilityStatus: %v", v)
-	}
+	return false
 }

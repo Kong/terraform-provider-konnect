@@ -14,6 +14,7 @@ GatewayPluginStatsdAdvanced Resource
 
 ```terraform
 resource "konnect_gateway_plugin_statsd_advanced" "my_gatewaypluginstatsdadvanced" {
+  condition = "...my_condition..."
   config = {
     allow_status_codes = [
       "..."
@@ -100,6 +101,7 @@ resource "konnect_gateway_plugin_statsd_advanced" "my_gatewaypluginstatsdadvance
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -120,29 +122,29 @@ resource "konnect_gateway_plugin_statsd_advanced" "my_gatewaypluginstatsdadvance
 Optional:
 
 - `allow_status_codes` (List of String) List of status code ranges that are allowed to be logged in metrics.
-- `consumer_identifier_default` (String) The default consumer identifier for metrics. This will take effect when a metric's consumer identifier is omitted. Allowed values are `custom_id`, `consumer_id`, `username`. Default: "custom_id"; must be one of ["consumer_id", "custom_id", "username"]
+- `consumer_identifier_default` (String) The default consumer identifier for metrics. This will take effect when a metric's consumer identifier is omitted. Allowed values are `custom_id`, `consumer_id`, `username`. possible known values include one of ["consumer_id", "custom_id", "username"]; Default: "custom_id"
 - `host` (String) A string representing a host name, such as example.com. Default: "localhost"
 - `hostname_in_prefix` (Boolean) Include the `hostname` in the `prefix` for each metric name. Default: false
 - `metrics` (Attributes List) List of Metrics to be logged. (see [below for nested schema](#nestedatt--config--metrics))
 - `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 8125
 - `prefix` (String) String to prefix to each metric's name. Default: "kong"
 - `queue` (Attributes) (see [below for nested schema](#nestedatt--config--queue))
-- `service_identifier_default` (String) The default service identifier for metrics. This will take effect when a metric's service identifier is omitted. Allowed values are `service_name_or_host`, `service_id`, `service_name`, `service_host`. Default: "service_name_or_host"; must be one of ["service_host", "service_id", "service_name", "service_name_or_host"]
+- `service_identifier_default` (String) The default service identifier for metrics. This will take effect when a metric's service identifier is omitted. Allowed values are `service_name_or_host`, `service_id`, `service_name`, `service_host`. possible known values include one of ["service_host", "service_id", "service_name", "service_name_or_host"]; Default: "service_name_or_host"
 - `udp_packet_size` (Number) Combine UDP packet up to the size configured. If zero (0), don't combine the UDP packet. Must be a number between 0 and 65507 (inclusive). Default: 0
 - `use_tcp` (Boolean) Use TCP instead of UDP. Default: false
-- `workspace_identifier_default` (String) The default workspace identifier for metrics. This will take effect when a metric's workspace identifier is omitted. Allowed values are `workspace_id`, `workspace_name`. Default: "workspace_id"; must be one of ["workspace_id", "workspace_name"]
+- `workspace_identifier_default` (String) The default workspace identifier for metrics. This will take effect when a metric's workspace identifier is omitted. Allowed values are `workspace_id`, `workspace_name`. possible known values include one of ["workspace_id", "workspace_name"]; Default: "workspace_id"
 
 <a id="nestedatt--config--metrics"></a>
 ### Nested Schema for `config.metrics`
 
 Optional:
 
-- `consumer_identifier` (String) must be one of ["consumer_id", "custom_id", "username"]
-- `name` (String) Not Null; must be one of ["cache_datastore_hits_total", "cache_datastore_misses_total", "kong_latency", "latency", "request_count", "request_per_user", "request_size", "response_size", "shdict_usage", "status_count", "status_count_per_user", "status_count_per_user_per_route", "status_count_per_workspace", "unique_users", "upstream_latency"]
+- `consumer_identifier` (String) possible known values include one of ["consumer_id", "custom_id", "username"]
+- `name` (String) possible known values include one of ["cache_datastore_hits_total", "cache_datastore_misses_total", "kong_latency", "latency", "request_count", "request_per_user", "request_size", "response_size", "shdict_usage", "status_count", "status_count_per_user", "status_count_per_user_per_route", "status_count_per_workspace", "unique_users", "upstream_latency"]; Not Null
 - `sample_rate` (Number)
-- `service_identifier` (String) must be one of ["service_host", "service_id", "service_name", "service_name_or_host"]
-- `stat_type` (String) Not Null; must be one of ["counter", "gauge", "histogram", "meter", "set", "timer"]
-- `workspace_identifier` (String) must be one of ["workspace_id", "workspace_name"]
+- `service_identifier` (String) possible known values include one of ["service_host", "service_id", "service_name", "service_name_or_host"]
+- `stat_type` (String) possible known values include one of ["counter", "gauge", "histogram", "meter", "set", "timer"]; Not Null
+- `workspace_identifier` (String) possible known values include one of ["workspace_id", "workspace_name"]
 
 
 <a id="nestedatt--config--queue"></a>
@@ -150,7 +152,7 @@ Optional:
 
 Optional:
 
-- `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of [-1, 1]
+- `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. possible known values include one of [-1, 1]; Default: 1
 - `initial_retry_delay` (Number) Time in seconds before the initial retry is made for a failing batch.
 - `max_batch_size` (Number) Maximum number of entries that can be processed at a time. Default: 1
 - `max_bytes` (Number) Maximum number of bytes that can be waiting on a queue, requires string content.
@@ -230,7 +232,7 @@ import {
   to = konnect_gateway_plugin_statsd_advanced.my_konnect_gateway_plugin_statsd_advanced
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

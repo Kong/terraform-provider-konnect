@@ -15,6 +15,7 @@ func (r *GatewayPluginJweDecryptResourceModel) RefreshFromSharedJweDecryptPlugin
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.JweDecryptPluginConfig{}
 		r.Config.ForwardHeaderName = types.StringPointerValue(resp.Config.ForwardHeaderName)
 		r.Config.KeySets = make([]types.String, 0, len(resp.Config.KeySets))
@@ -178,6 +179,12 @@ func (r *GatewayPluginJweDecryptResourceModel) ToOperationsUpdateJwedecryptPlugi
 func (r *GatewayPluginJweDecryptResourceModel) ToSharedJweDecryptPlugin(ctx context.Context) (*shared.JweDecryptPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -328,6 +335,7 @@ func (r *GatewayPluginJweDecryptResourceModel) ToSharedJweDecryptPlugin(ctx cont
 		}
 	}
 	out := shared.JweDecryptPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

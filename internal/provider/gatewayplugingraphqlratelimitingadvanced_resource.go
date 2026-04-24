@@ -45,6 +45,7 @@ type GatewayPluginGraphqlRateLimitingAdvancedResource struct {
 
 // GatewayPluginGraphqlRateLimitingAdvancedResourceModel describes the resource data model.
 type GatewayPluginGraphqlRateLimitingAdvancedResourceModel struct {
+	Condition      types.String                                     `tfsdk:"condition"`
 	Config         *tfTypes.GraphqlRateLimitingAdvancedPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                                     `tfsdk:"consumer"`
 	ControlPlaneID types.String                                     `tfsdk:"control_plane_id"`
@@ -69,6 +70,13 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginGraphqlRateLimitingAdvanced Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -76,13 +84,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`default`),
-						Description: `Strategy to use to evaluate query costs. Either ` + "`" + `default` + "`" + ` or ` + "`" + `node_quantifier` + "`" + `. Default: "default"; must be one of ["default", "node_quantifier"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"default",
-								"node_quantifier",
-							),
-						},
+						Description: `Strategy to use to evaluate query costs. Either ` + "`" + `default` + "`" + ` or ` + "`" + `node_quantifier` + "`" + `. possible known values include one of ["default", "node_quantifier"]; Default: "default"`,
 					},
 					"dictionary_name": schema.StringAttribute{
 						Computed:    true,
@@ -100,14 +102,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`consumer`),
-						Description: `How to define the rate limit key. Can be ` + "`" + `ip` + "`" + `, ` + "`" + `credential` + "`" + `, ` + "`" + `consumer` + "`" + `. Default: "consumer"; must be one of ["consumer", "credential", "ip"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"consumer",
-								"credential",
-								"ip",
-							),
-						},
+						Description: `How to define the rate limit key. Can be ` + "`" + `ip` + "`" + `, ` + "`" + `credential` + "`" + `, ` + "`" + `consumer` + "`" + `. possible known values include one of ["consumer", "credential", "ip"]; Default: "consumer"`,
 					},
 					"limit": schema.ListAttribute{
 						Required:    true,
@@ -208,14 +203,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 									"auth_provider": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"aws",
-												"azure",
-												"gcp",
-											),
-										},
+										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
 									},
 									"aws_access_key_id": schema.StringAttribute{
 										Optional:    true,
@@ -409,14 +397,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 							"sentinel_role": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"any",
-										"master",
-										"slave",
-									),
-								},
+								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
 							},
 							"sentinel_username": schema.StringAttribute{
 								Optional:    true,
@@ -454,13 +435,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`cluster`),
-						Description: `The rate-limiting strategy to use for retrieving and incrementing the limits. Default: "cluster"; must be one of ["cluster", "redis"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"cluster",
-								"redis",
-							),
-						},
+						Description: `The rate-limiting strategy to use for retrieving and incrementing the limits. possible known values include one of ["cluster", "redis"]; Default: "cluster"`,
 					},
 					"sync_rate": schema.Float64Attribute{
 						Required:    true,
@@ -475,13 +450,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`sliding`),
-						Description: `Sets the time window to either ` + "`" + `sliding` + "`" + ` or ` + "`" + `fixed` + "`" + `. Default: "sliding"; must be one of ["fixed", "sliding"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"fixed",
-								"sliding",
-							),
-						},
+						Description: `Sets the time window to either ` + "`" + `sliding` + "`" + ` or ` + "`" + `fixed` + "`" + `. possible known values include one of ["fixed", "sliding"]; Default: "sliding"`,
 					},
 				},
 			},

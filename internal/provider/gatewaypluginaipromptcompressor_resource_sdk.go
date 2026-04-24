@@ -15,6 +15,7 @@ func (r *GatewayPluginAiPromptCompressorResourceModel) RefreshFromSharedAiPrompt
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.AiPromptCompressorPluginConfig{}
 		r.Config.CompressionRanges = []tfTypes.CompressionRanges{}
 
@@ -208,6 +209,12 @@ func (r *GatewayPluginAiPromptCompressorResourceModel) ToOperationsUpdateAipromp
 func (r *GatewayPluginAiPromptCompressorResourceModel) ToSharedAiPromptCompressorPlugin(ctx context.Context) (*shared.AiPromptCompressorPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -421,6 +428,7 @@ func (r *GatewayPluginAiPromptCompressorResourceModel) ToSharedAiPromptCompresso
 		}
 	}
 	out := shared.AiPromptCompressorPlugin{
+		Condition:     condition,
 		CreatedAt:     createdAt,
 		Enabled:       enabled,
 		ID:            id,

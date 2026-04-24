@@ -44,6 +44,7 @@ type GatewayPluginBasicAuthResource struct {
 
 // GatewayPluginBasicAuthResourceModel describes the resource data model.
 type GatewayPluginBasicAuthResourceModel struct {
+	Condition      types.String                   `tfsdk:"condition"`
 	Config         *tfTypes.BasicAuthPluginConfig `tfsdk:"config"`
 	ControlPlaneID types.String                   `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                    `tfsdk:"created_at"`
@@ -67,6 +68,13 @@ func (r *GatewayPluginBasicAuthResource) Schema(ctx context.Context, req resourc
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginBasicAuth Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
@@ -143,14 +151,7 @@ func (r *GatewayPluginBasicAuthResource) Schema(ctx context.Context, req resourc
 											"auth_provider": schema.StringAttribute{
 												Computed:    true,
 												Optional:    true,
-												Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
-												Validators: []validator.String{
-													stringvalidator.OneOf(
-														"aws",
-														"azure",
-														"gcp",
-													),
-												},
+												Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
 											},
 											"aws_access_key_id": schema.StringAttribute{
 												Optional:    true,
@@ -260,15 +261,7 @@ func (r *GatewayPluginBasicAuthResource) Schema(ctx context.Context, req resourc
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(`off`),
-								Description: `The brute force protection strategy to use for retrieving and incrementing the limits. Available values are: ` + "`" + `cluster` + "`" + `, ` + "`" + `redis` + "`" + `, ` + "`" + `memory` + "`" + `, and ` + "`" + `off` + "`" + `. Default: "off"; must be one of ["cluster", "memory", "off", "redis"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"cluster",
-										"memory",
-										"off",
-										"redis",
-									),
-								},
+								Description: `The brute force protection strategy to use for retrieving and incrementing the limits. Available values are: ` + "`" + `cluster` + "`" + `, ` + "`" + `redis` + "`" + `, ` + "`" + `memory` + "`" + `, and ` + "`" + `off` + "`" + `. possible known values include one of ["cluster", "memory", "off", "redis"]; Default: "off"`,
 							},
 						},
 					},

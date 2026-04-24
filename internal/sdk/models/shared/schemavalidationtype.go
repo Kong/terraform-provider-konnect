@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // SchemaValidationType - How to validate the schema and parse the record.
 // * confluent_schema_registry - validates against confluent schema registry.
 // * json - simple JSON parsing without the schema.
@@ -20,18 +15,14 @@ const (
 func (e SchemaValidationType) ToPointer() *SchemaValidationType {
 	return &e
 }
-func (e *SchemaValidationType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SchemaValidationType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "confluent_schema_registry", "json":
+			return true
+		}
 	}
-	switch v {
-	case "confluent_schema_registry":
-		fallthrough
-	case "json":
-		*e = SchemaValidationType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SchemaValidationType: %v", v)
-	}
+	return false
 }

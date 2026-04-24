@@ -14,6 +14,7 @@ GatewayPluginRequestValidator Resource
 
 ```terraform
 resource "konnect_gateway_plugin_request_validator" "my_gatewaypluginrequestvalidator" {
+  condition = "...my_condition..."
   config = {
     allowed_content_types = [
       "..."
@@ -85,6 +86,7 @@ resource "konnect_gateway_plugin_request_validator" "my_gatewaypluginrequestvali
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -109,7 +111,7 @@ Optional:
 - `content_type_parameter_validation` (Boolean) Determines whether to enable parameters validation of request content-type. Default: true
 - `parameter_schema` (Attributes List) Array of parameter validator specification. One of `body_schema` or `parameter_schema` must be specified. (see [below for nested schema](#nestedatt--config--parameter_schema))
 - `verbose_response` (Boolean) If enabled, the plugin returns more verbose and detailed validation errors. Default: false
-- `version` (String) Which validator to use. Supported values are `kong` (default) for using Kong's own schema validator, or `draft4`, `draft7`, `draft201909`, and `draft202012` for using their respective JSON Schema Draft compliant validators. Default: "kong"; must be one of ["draft201909", "draft202012", "draft4", "draft6", "draft7", "kong"]
+- `version` (String) Which validator to use. Supported values are `kong` (default) for using Kong's own schema validator, or `draft4`, `draft7`, `draft201909`, and `draft202012` for using their respective JSON Schema Draft compliant validators. possible known values include one of ["draft201909", "draft202012", "draft4", "draft6", "draft7", "kong"]; Default: "kong"
 
 <a id="nestedatt--config--parameter_schema"></a>
 ### Nested Schema for `config.parameter_schema`
@@ -117,11 +119,11 @@ Optional:
 Optional:
 
 - `explode` (Boolean) Required when `schema` and `style` are set. When `explode` is `true`, parameter values of type `array` or `object` generate separate parameters for each value of the array or key-value pair of the map. For other types of parameters, this property has no effect.
-- `in` (String) The location of the parameter. Not Null; must be one of ["header", "path", "query"]
+- `in` (String) The location of the parameter. possible known values include one of ["header", "path", "query"]; Not Null
 - `name` (String) The name of the parameter. Parameter names are case-sensitive, and correspond to the parameter name used by the `in` property. If `in` is `path`, the `name` field MUST correspond to the named capture group from the configured `route`. Not Null
 - `required` (Boolean) Determines whether this parameter is mandatory. Not Null
 - `schema` (String) Required when `style` and `explode` are set. This is the schema defining the type used for the parameter. It is validated using `draft4` for JSON Schema draft 4 compliant validator. In addition to being a valid JSON Schema, the parameter schema MUST have a top-level `type` property to enable proper deserialization before validating.
-- `style` (String) Required when `schema` and `explode` are set. Describes how the parameter value will be deserialized depending on the type of the parameter value. must be one of ["deepObject", "form", "label", "matrix", "pipeDelimited", "simple", "spaceDelimited"]
+- `style` (String) Required when `schema` and `explode` are set. Describes how the parameter value will be deserialized depending on the type of the parameter value. possible known values include one of ["deepObject", "form", "label", "matrix", "pipeDelimited", "simple", "spaceDelimited"]
 
 
 
@@ -194,7 +196,7 @@ import {
   to = konnect_gateway_plugin_request_validator.my_konnect_gateway_plugin_request_validator
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

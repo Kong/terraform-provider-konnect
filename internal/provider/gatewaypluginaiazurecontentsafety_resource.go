@@ -45,6 +45,7 @@ type GatewayPluginAiAzureContentSafetyResource struct {
 
 // GatewayPluginAiAzureContentSafetyResourceModel describes the resource data model.
 type GatewayPluginAiAzureContentSafetyResourceModel struct {
+	Condition      types.String                              `tfsdk:"condition"`
 	Config         *tfTypes.AiAzureContentSafetyPluginConfig `tfsdk:"config"`
 	ControlPlaneID types.String                              `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                               `tfsdk:"created_at"`
@@ -68,6 +69,13 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginAiAzureContentSafety Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -142,14 +150,7 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`INPUT`),
-						Description: `The guard mode to use for the request. Default: "INPUT"; must be one of ["BOTH", "INPUT", "OUTPUT"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"BOTH",
-								"INPUT",
-								"OUTPUT",
-							),
-						},
+						Description: `The guard mode to use for the request. possible known values include one of ["BOTH", "INPUT", "OUTPUT"]; Default: "INPUT"`,
 					},
 					"halt_on_blocklist_hit": schema.BoolAttribute{
 						Computed:    true,
@@ -157,17 +158,17 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 						Default:     booldefault.StaticBool(true),
 						Description: `Tells Azure to reject the request if any blocklist filter is hit. Default: true`,
 					},
+					"log_blocked_content": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `Whether to log prompts and responses that are blocked by the guardrail. Default: false`,
+					},
 					"output_type": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`FourSeverityLevels`),
-						Description: `See https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/content-filter#content-filtering-categories. Default: "FourSeverityLevels"; must be one of ["EightSeverityLevels", "FourSeverityLevels"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"EightSeverityLevels",
-								"FourSeverityLevels",
-							),
-						},
+						Description: `See https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/content-filter#content-filtering-categories. possible known values include one of ["EightSeverityLevels", "FourSeverityLevels"]; Default: "FourSeverityLevels"`,
 					},
 					"response_buffer_size": schema.Float64Attribute{
 						Computed:    true,
@@ -197,13 +198,7 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`concatenate_all_content`),
-						Description: `Select where to pick the 'text' for the Azure Content Services request. Default: "concatenate_all_content"; must be one of ["concatenate_all_content", "concatenate_user_content"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"concatenate_all_content",
-								"concatenate_user_content",
-							),
-						},
+						Description: `Select where to pick the 'text' for the Azure Content Services request. possible known values include one of ["concatenate_all_content", "concatenate_user_content"]; Default: "concatenate_all_content"`,
 					},
 				},
 			},

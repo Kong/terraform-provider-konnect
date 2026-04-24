@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -19,22 +17,16 @@ const (
 func (e PortalCustomizationMode) ToPointer() *PortalCustomizationMode {
 	return &e
 }
-func (e *PortalCustomizationMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PortalCustomizationMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "light", "dark", "system":
+			return true
+		}
 	}
-	switch v {
-	case "light":
-		fallthrough
-	case "dark":
-		fallthrough
-	case "system":
-		*e = PortalCustomizationMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PortalCustomizationMode: %v", v)
-	}
+	return false
 }
 
 type Colors struct {

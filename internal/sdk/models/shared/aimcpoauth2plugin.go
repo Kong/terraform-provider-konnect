@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -188,42 +186,16 @@ const (
 func (e ClientAlg) ToPointer() *ClientAlg {
 	return &e
 }
-func (e *ClientAlg) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ClientAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512":
+			return true
+		}
 	}
-	switch v {
-	case "ES256":
-		fallthrough
-	case "ES384":
-		fallthrough
-	case "ES512":
-		fallthrough
-	case "EdDSA":
-		fallthrough
-	case "HS256":
-		fallthrough
-	case "HS384":
-		fallthrough
-	case "HS512":
-		fallthrough
-	case "PS256":
-		fallthrough
-	case "PS384":
-		fallthrough
-	case "PS512":
-		fallthrough
-	case "RS256":
-		fallthrough
-	case "RS384":
-		fallthrough
-	case "RS512":
-		*e = ClientAlg(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ClientAlg: %v", v)
-	}
+	return false
 }
 
 // ClientAuth - The client authentication method.
@@ -242,30 +214,39 @@ const (
 func (e ClientAuth) ToPointer() *ClientAuth {
 	return &e
 }
-func (e *ClientAuth) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ClientAuth) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth":
+			return true
+		}
 	}
-	switch v {
-	case "client_secret_basic":
-		fallthrough
-	case "client_secret_jwt":
-		fallthrough
-	case "client_secret_post":
-		fallthrough
-	case "none":
-		fallthrough
-	case "private_key_jwt":
-		fallthrough
-	case "self_signed_tls_client_auth":
-		fallthrough
-	case "tls_client_auth":
-		*e = ClientAuth(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ClientAuth: %v", v)
+	return false
+}
+
+type ConsumerBy string
+
+const (
+	ConsumerByCustomID ConsumerBy = "custom_id"
+	ConsumerByID       ConsumerBy = "id"
+	ConsumerByUsername ConsumerBy = "username"
+)
+
+func (e ConsumerBy) ToPointer() *ConsumerBy {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ConsumerBy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "custom_id", "id", "username":
+			return true
+		}
 	}
+	return false
 }
 
 // IntrospectionFormat - Controls introspection response format.
@@ -280,22 +261,306 @@ const (
 func (e IntrospectionFormat) ToPointer() *IntrospectionFormat {
 	return &e
 }
-func (e *IntrospectionFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *IntrospectionFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "base64", "base64url", "string":
+			return true
+		}
+	}
+	return false
+}
+
+type AiMcpOauth2PluginCache struct {
+	// Whether to cache exchanged token
+	Enabled *bool `default:"true" json:"enabled"`
+	// The default cache TTL to store exchanged token. If the exchange endpoint does not provide 'expires_in' data when token is exchanged this TTL value will be used to cache it.
+	TTL *int64 `default:"3600" json:"ttl"`
+}
+
+func (a AiMcpOauth2PluginCache) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiMcpOauth2PluginCache) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
-	switch v {
-	case "base64":
-		fallthrough
-	case "base64url":
-		fallthrough
-	case "string":
-		*e = IntrospectionFormat(v)
+	return nil
+}
+
+func (a *AiMcpOauth2PluginCache) GetEnabled() *bool {
+	if a == nil {
 		return nil
-	default:
-		return fmt.Errorf("invalid value for IntrospectionFormat: %v", v)
 	}
+	return a.Enabled
+}
+
+func (a *AiMcpOauth2PluginCache) GetTTL() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.TTL
+}
+
+// #region class-body-aimcpoauth2plugincache
+// #endregion class-body-aimcpoauth2plugincache
+
+// AiMcpOauth2PluginClientAuth - The type of authentication method to use with the exchange endpoint. Use 'inherit' to use the same client_id, and secret as in introspection_endpoint.
+type AiMcpOauth2PluginClientAuth string
+
+const (
+	AiMcpOauth2PluginClientAuthClientSecretBasic AiMcpOauth2PluginClientAuth = "client_secret_basic"
+	AiMcpOauth2PluginClientAuthClientSecretPost  AiMcpOauth2PluginClientAuth = "client_secret_post"
+	AiMcpOauth2PluginClientAuthInherit           AiMcpOauth2PluginClientAuth = "inherit"
+	AiMcpOauth2PluginClientAuthNone              AiMcpOauth2PluginClientAuth = "none"
+)
+
+func (e AiMcpOauth2PluginClientAuth) ToPointer() *AiMcpOauth2PluginClientAuth {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiMcpOauth2PluginClientAuth) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_post", "inherit", "none":
+			return true
+		}
+	}
+	return false
+}
+
+// ActorTokenSource - Where to obtain actor token.
+type ActorTokenSource string
+
+const (
+	ActorTokenSourceConfig ActorTokenSource = "config"
+	ActorTokenSourceHeader ActorTokenSource = "header"
+	ActorTokenSourceNone   ActorTokenSource = "none"
+)
+
+func (e ActorTokenSource) ToPointer() *ActorTokenSource {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ActorTokenSource) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "config", "header", "none":
+			return true
+		}
+	}
+	return false
+}
+
+type AiMcpOauth2PluginRequest struct {
+	// Static actor token value (when source is config).
+	ActorToken *string `default:"null" json:"actor_token"`
+	// Header name containing actor token (when source is header).
+	ActorTokenHeader *string `default:"null" json:"actor_token_header"`
+	// Where to obtain actor token.
+	ActorTokenSource *ActorTokenSource `default:"none" json:"actor_token_source"`
+	// The token type identifier of actor token.
+	ActorTokenType *string `default:"urn:ietf:params:oauth:token-type:access_token" json:"actor_token_type"`
+	// Audiences used in the token exchange request.
+	Audience []string `json:"audience"`
+	// The desired output token type.
+	RequestedTokenType *string `default:"urn:ietf:params:oauth:token-type:access_token" json:"requested_token_type"`
+	// The absolute URI of target MCP service where token will be used.
+	Resource *string `default:"null" json:"resource"`
+	// Scopes used in the token exchange request.
+	Scopes []string `json:"scopes"`
+	// The type of token to be exchanged.
+	SubjectTokenType *string `default:"urn:ietf:params:oauth:token-type:access_token" json:"subject_token_type"`
+}
+
+func (a AiMcpOauth2PluginRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiMcpOauth2PluginRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiMcpOauth2PluginRequest) GetActorToken() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ActorToken
+}
+
+func (a *AiMcpOauth2PluginRequest) GetActorTokenHeader() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ActorTokenHeader
+}
+
+func (a *AiMcpOauth2PluginRequest) GetActorTokenSource() *ActorTokenSource {
+	if a == nil {
+		return nil
+	}
+	return a.ActorTokenSource
+}
+
+func (a *AiMcpOauth2PluginRequest) GetActorTokenType() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ActorTokenType
+}
+
+func (a *AiMcpOauth2PluginRequest) GetAudience() []string {
+	if a == nil {
+		return nil
+	}
+	return a.Audience
+}
+
+func (a *AiMcpOauth2PluginRequest) GetRequestedTokenType() *string {
+	if a == nil {
+		return nil
+	}
+	return a.RequestedTokenType
+}
+
+func (a *AiMcpOauth2PluginRequest) GetResource() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Resource
+}
+
+func (a *AiMcpOauth2PluginRequest) GetScopes() []string {
+	if a == nil {
+		return nil
+	}
+	return a.Scopes
+}
+
+func (a *AiMcpOauth2PluginRequest) GetSubjectTokenType() *string {
+	if a == nil {
+		return nil
+	}
+	return a.SubjectTokenType
+}
+
+// #region class-body-aimcpoauth2pluginrequest
+// #endregion class-body-aimcpoauth2pluginrequest
+
+// TokenExchange - Configuration details about token exchange that should happen before reaching upstream MCP server
+type TokenExchange struct {
+	Cache *AiMcpOauth2PluginCache `json:"cache"`
+	// The type of authentication method to use with the exchange endpoint. Use 'inherit' to use the same client_id, and secret as in introspection_endpoint.
+	ClientAuth *AiMcpOauth2PluginClientAuth `default:"client_secret_basic" json:"client_auth"`
+	// The client ID for authentication.
+	ClientID *string `default:"null" json:"client_id"`
+	// The client secret for authentication.
+	ClientSecret *string `default:"null" json:"client_secret"`
+	// Whether Token Exchange should be enabled
+	Enabled *bool                     `default:"false" json:"enabled"`
+	Request *AiMcpOauth2PluginRequest `json:"request"`
+	// The token exchange endopint.
+	TokenEndpoint string `json:"token_endpoint"`
+}
+
+func (t TokenExchange) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TokenExchange) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"token_endpoint"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (t *TokenExchange) GetCache() *AiMcpOauth2PluginCache {
+	if t == nil {
+		return nil
+	}
+	return t.Cache
+}
+
+func (t *TokenExchange) GetClientAuth() *AiMcpOauth2PluginClientAuth {
+	if t == nil {
+		return nil
+	}
+	return t.ClientAuth
+}
+
+func (t *TokenExchange) GetClientID() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ClientID
+}
+
+func (t *TokenExchange) GetClientSecret() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ClientSecret
+}
+
+func (t *TokenExchange) GetEnabled() *bool {
+	if t == nil {
+		return nil
+	}
+	return t.Enabled
+}
+
+func (t *TokenExchange) GetRequest() *AiMcpOauth2PluginRequest {
+	if t == nil {
+		return nil
+	}
+	return t.Request
+}
+
+func (t *TokenExchange) GetTokenEndpoint() string {
+	if t == nil {
+		return ""
+	}
+	return t.TokenEndpoint
+}
+
+type UpstreamHeaders struct {
+	// The name of the header.
+	Header string `json:"header"`
+	// The path of the header value.
+	Path []string `json:"path"`
+}
+
+func (u UpstreamHeaders) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UpstreamHeaders) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"header", "path"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (u *UpstreamHeaders) GetHeader() string {
+	if u == nil {
+		return ""
+	}
+	return u.Header
+}
+
+func (u *UpstreamHeaders) GetPath() []string {
+	if u == nil {
+		return []string{}
+	}
+	return u.Path
 }
 
 // AiMcpOauth2PluginConfig - The configuration for MCP authorization in OAuth2. If this is enabled, make sure the configured metadata_endpoint is also covered by the same route so the authorization can be applied correctly.
@@ -304,18 +569,31 @@ type AiMcpOauth2PluginConfig struct {
 	Args                 map[string]string `json:"args,omitempty"`
 	AuthorizationServers []string          `json:"authorization_servers"`
 	// If enabled, the plugin will cache the introspection response for the access token. This can improve performance by reducing the number of introspection requests to the authorization server.
-	CacheIntrospection *bool           `default:"true" json:"cache_introspection"`
-	ClaimToHeader      []ClaimToHeader `json:"claim_to_header"`
+	CacheIntrospection *bool `default:"true" json:"cache_introspection"`
+	// Map top-level token claims to upstream headers. Mutually exclusive with upstream_headers.
+	ClaimToHeader []ClaimToHeader `json:"claim_to_header"`
 	// The client JWT signing algorithm.
 	ClientAlg *ClientAlg `json:"client_alg,omitempty"`
 	// The client authentication method.
 	ClientAuth *ClientAuth `json:"client_auth,omitempty"`
 	// The client ID for authentication.
-	ClientID string `json:"client_id"`
+	ClientID *string `default:"null" json:"client_id"`
 	// The client JWK for private_key_jwt authentication.
 	ClientJwk *string `default:"null" json:"client_jwk"`
 	// The client secret for authentication.
 	ClientSecret *string `default:"null" json:"client_secret"`
+	// Consumer fields used for mapping: - `id`: try to find the matching Consumer by `id` - `username`: try to find the matching Consumer by `username` - `custom_id`: try to find the matching Consumer by `custom_id`.
+	ConsumerBy []ConsumerBy `json:"consumer_by,omitempty"`
+	// The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
+	ConsumerClaim []string `json:"consumer_claim"`
+	// The claim used for consumer groups mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
+	ConsumerGroupsClaim []string `json:"consumer_groups_claim"`
+	// Do not terminate the request if consumer groups mapping fails.
+	ConsumerGroupsOptional *bool `default:"false" json:"consumer_groups_optional"`
+	// Do not terminate the request if consumer mapping fails.
+	ConsumerOptional *bool `default:"false" json:"consumer_optional"`
+	// The claim used to derive virtual credentials (e.g. to be consumed by the rate-limiting plugin), in case the consumer mapping is not used. If multiple values are set, it means the claim is inside a nested object of the token payload.
+	CredentialClaim []string `json:"credential_claim,omitempty"`
 	// Additional headers for the introspection request.
 	Headers map[string]string `json:"headers,omitempty"`
 	// HTTP proxy to use.
@@ -330,20 +608,34 @@ type AiMcpOauth2PluginConfig struct {
 	HTTPSProxyAuthorization *string `default:"null" json:"https_proxy_authorization"`
 	// If enabled, the plugin will not validate the audience of the access token. Disable it if the authorization server does not correctly set the audience claim according to RFC 8707 and MCP specification.
 	InsecureRelaxedAudienceValidation *bool `default:"false" json:"insecure_relaxed_audience_validation"`
-	// The introspection endpoint URL.
-	IntrospectionEndpoint string `json:"introspection_endpoint"`
+	// The Token Introspection Endpoint. If not provided, the plugin will attempt to use JWKS to verify the token. If the token is opaque, this field must be provided.
+	IntrospectionEndpoint *string `default:"null" json:"introspection_endpoint"`
 	// Controls introspection response format.
 	IntrospectionFormat *IntrospectionFormat `json:"introspection_format,omitempty"`
+	// The cache TTL in seconds for JWKS.
+	JwksCacheTTL *int64 `default:"3600" json:"jwks_cache_ttl"`
+	// The JWKS endpoint URL for fetching the authorization server's public keys. If not provided, the plugin will attempt to discover it from the authorization server metadata.
+	JwksEndpoint *string `default:"null" json:"jwks_endpoint"`
+	// The leeway in seconds for JWT claims validation (exp, nbf). This allows tokens that are slightly expired or not yet valid due to clock skew.
+	JwtClaimsLeeway *int64 `default:"0" json:"jwt_claims_leeway"`
 	// Enable HTTP keepalive for requests.
 	Keepalive *bool `default:"true" json:"keepalive"`
 	// max allowed body size allowed to be handled as MCP request. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
 	MaxRequestBodySize *int64 `default:"1048576" json:"max_request_body_size"`
+	// The cache TTL in seconds for discovered authorization server metadata.
+	MetadataCacheTTL *int64 `default:"3600" json:"metadata_cache_ttl"`
+	// Custom OAuth 2.0 authorization server metadata discovery URL. If provided, the plugin will use this URL directly instead of trying standard well-known discovery paths. The custom endpoint URL should end with either '/.well-known/openid-configuration' or '/.well-known/oauth-authorization-server'.
+	MetadataDiscoveryEndpoint *string `default:"null" json:"metadata_discovery_endpoint"`
+	// The number of retry attempts for metadata discovery requests per URL.
+	MetadataDiscoveryRetry *int64 `default:"3" json:"metadata_discovery_retry"`
 	// The path for OAuth 2.0 Protected Resource Metadata. Default to $resource/.well-known/oauth-protected-resource. For example, if the configured resource is https://api.example.com/mcp, the metadata endpoint is /mcp/.well-known/oauth-protected-resource.
 	MetadataEndpoint *string `default:"null" json:"metadata_endpoint"`
 	// The mTLS alias for the introspection endpoint.
 	MtlsIntrospectionEndpoint *string `default:"null" json:"mtls_introspection_endpoint"`
 	// Comma-separated list of hosts to exclude from proxy.
 	NoProxy *string `default:"null" json:"no_proxy"`
+	// Keep the credentials used for authentication in the request. If multiple credentials are sent with the same request, the plugin will keep those that were used for successful authentication.
+	PassthroughCredentials *bool `default:"false" json:"passthrough_credentials"`
 	// The resource identifier.
 	Resource        string   `json:"resource"`
 	ScopesSupported []string `json:"scopes_supported"`
@@ -357,6 +649,10 @@ type AiMcpOauth2PluginConfig struct {
 	TLSClientAuthKey *string `default:"null" json:"tls_client_auth_key"`
 	// Verify server certificate in mTLS.
 	TLSClientAuthSslVerify *bool `default:"true" json:"tls_client_auth_ssl_verify"`
+	// Configuration details about token exchange that should happen before reaching upstream MCP server
+	TokenExchange *TokenExchange `json:"token_exchange"`
+	// Map token claims to upstream headers using path-based access. Each entry specifies a header name and a path (array of strings) to traverse the token claims. Mutually exclusive with claim_to_header.
+	UpstreamHeaders []UpstreamHeaders `json:"upstream_headers"`
 }
 
 func (a AiMcpOauth2PluginConfig) MarshalJSON() ([]byte, error) {
@@ -364,7 +660,7 @@ func (a AiMcpOauth2PluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiMcpOauth2PluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"authorization_servers", "client_id", "introspection_endpoint", "resource"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"authorization_servers", "resource"}); err != nil {
 		return err
 	}
 	return nil
@@ -412,9 +708,9 @@ func (a *AiMcpOauth2PluginConfig) GetClientAuth() *ClientAuth {
 	return a.ClientAuth
 }
 
-func (a *AiMcpOauth2PluginConfig) GetClientID() string {
+func (a *AiMcpOauth2PluginConfig) GetClientID() *string {
 	if a == nil {
-		return ""
+		return nil
 	}
 	return a.ClientID
 }
@@ -431,6 +727,48 @@ func (a *AiMcpOauth2PluginConfig) GetClientSecret() *string {
 		return nil
 	}
 	return a.ClientSecret
+}
+
+func (a *AiMcpOauth2PluginConfig) GetConsumerBy() []ConsumerBy {
+	if a == nil {
+		return nil
+	}
+	return a.ConsumerBy
+}
+
+func (a *AiMcpOauth2PluginConfig) GetConsumerClaim() []string {
+	if a == nil {
+		return nil
+	}
+	return a.ConsumerClaim
+}
+
+func (a *AiMcpOauth2PluginConfig) GetConsumerGroupsClaim() []string {
+	if a == nil {
+		return nil
+	}
+	return a.ConsumerGroupsClaim
+}
+
+func (a *AiMcpOauth2PluginConfig) GetConsumerGroupsOptional() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.ConsumerGroupsOptional
+}
+
+func (a *AiMcpOauth2PluginConfig) GetConsumerOptional() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.ConsumerOptional
+}
+
+func (a *AiMcpOauth2PluginConfig) GetCredentialClaim() []string {
+	if a == nil {
+		return nil
+	}
+	return a.CredentialClaim
 }
 
 func (a *AiMcpOauth2PluginConfig) GetHeaders() map[string]string {
@@ -482,9 +820,9 @@ func (a *AiMcpOauth2PluginConfig) GetInsecureRelaxedAudienceValidation() *bool {
 	return a.InsecureRelaxedAudienceValidation
 }
 
-func (a *AiMcpOauth2PluginConfig) GetIntrospectionEndpoint() string {
+func (a *AiMcpOauth2PluginConfig) GetIntrospectionEndpoint() *string {
 	if a == nil {
-		return ""
+		return nil
 	}
 	return a.IntrospectionEndpoint
 }
@@ -494,6 +832,27 @@ func (a *AiMcpOauth2PluginConfig) GetIntrospectionFormat() *IntrospectionFormat 
 		return nil
 	}
 	return a.IntrospectionFormat
+}
+
+func (a *AiMcpOauth2PluginConfig) GetJwksCacheTTL() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.JwksCacheTTL
+}
+
+func (a *AiMcpOauth2PluginConfig) GetJwksEndpoint() *string {
+	if a == nil {
+		return nil
+	}
+	return a.JwksEndpoint
+}
+
+func (a *AiMcpOauth2PluginConfig) GetJwtClaimsLeeway() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.JwtClaimsLeeway
 }
 
 func (a *AiMcpOauth2PluginConfig) GetKeepalive() *bool {
@@ -508,6 +867,27 @@ func (a *AiMcpOauth2PluginConfig) GetMaxRequestBodySize() *int64 {
 		return nil
 	}
 	return a.MaxRequestBodySize
+}
+
+func (a *AiMcpOauth2PluginConfig) GetMetadataCacheTTL() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.MetadataCacheTTL
+}
+
+func (a *AiMcpOauth2PluginConfig) GetMetadataDiscoveryEndpoint() *string {
+	if a == nil {
+		return nil
+	}
+	return a.MetadataDiscoveryEndpoint
+}
+
+func (a *AiMcpOauth2PluginConfig) GetMetadataDiscoveryRetry() *int64 {
+	if a == nil {
+		return nil
+	}
+	return a.MetadataDiscoveryRetry
 }
 
 func (a *AiMcpOauth2PluginConfig) GetMetadataEndpoint() *string {
@@ -529,6 +909,13 @@ func (a *AiMcpOauth2PluginConfig) GetNoProxy() *string {
 		return nil
 	}
 	return a.NoProxy
+}
+
+func (a *AiMcpOauth2PluginConfig) GetPassthroughCredentials() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.PassthroughCredentials
 }
 
 func (a *AiMcpOauth2PluginConfig) GetResource() string {
@@ -580,6 +967,20 @@ func (a *AiMcpOauth2PluginConfig) GetTLSClientAuthSslVerify() *bool {
 	return a.TLSClientAuthSslVerify
 }
 
+func (a *AiMcpOauth2PluginConfig) GetTokenExchange() *TokenExchange {
+	if a == nil {
+		return nil
+	}
+	return a.TokenExchange
+}
+
+func (a *AiMcpOauth2PluginConfig) GetUpstreamHeaders() []UpstreamHeaders {
+	if a == nil {
+		return nil
+	}
+	return a.UpstreamHeaders
+}
+
 // #region class-body-aimcpoauth2pluginconfig
 // #endregion class-body-aimcpoauth2pluginconfig
 
@@ -595,24 +996,16 @@ const (
 func (e AiMcpOauth2PluginProtocols) ToPointer() *AiMcpOauth2PluginProtocols {
 	return &e
 }
-func (e *AiMcpOauth2PluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiMcpOauth2PluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = AiMcpOauth2PluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiMcpOauth2PluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AiMcpOauth2PluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -669,6 +1062,8 @@ func (a *AiMcpOauth2PluginService) GetID() *string {
 
 // AiMcpOauth2Plugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type AiMcpOauth2Plugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -705,6 +1100,13 @@ func (a *AiMcpOauth2Plugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AiMcpOauth2Plugin) GetCondition() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Condition
 }
 
 func (a *AiMcpOauth2Plugin) GetCreatedAt() *int64 {

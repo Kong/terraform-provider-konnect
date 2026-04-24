@@ -45,6 +45,7 @@ type GatewayPluginAiSemanticResponseGuardResource struct {
 
 // GatewayPluginAiSemanticResponseGuardResourceModel describes the resource data model.
 type GatewayPluginAiSemanticResponseGuardResourceModel struct {
+	Condition      types.String                                 `tfsdk:"condition"`
 	Config         *tfTypes.AiSemanticResponseGuardPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                                 `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.Set                                 `tfsdk:"consumer_group"`
@@ -70,6 +71,13 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Schema(ctx context.Contex
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginAiSemanticResponseGuard Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -87,6 +95,8 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Schema(ctx context.Contex
 									"azure_client_secret":        types.StringType,
 									"azure_tenant_id":            types.StringType,
 									"azure_use_managed_identity": types.BoolType,
+									"gcp_metadata_url":           types.StringType,
+									"gcp_oauth_token_url":        types.StringType,
 									"gcp_service_account_json":   types.StringType,
 									"gcp_use_service_account":    types.BoolType,
 									"header_name":                types.StringType,
@@ -128,6 +138,14 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Schema(ctx context.Contex
 										Default:     booldefault.StaticBool(false),
 										Description: `Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models. Default: false`,
 									},
+									"gcp_metadata_url": schema.StringAttribute{
+										Optional:    true,
+										Description: `Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.`,
+									},
+									"gcp_oauth_token_url": schema.StringAttribute{
+										Optional:    true,
+										Description: `Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.`,
+									},
 									"gcp_service_account_json": schema.StringAttribute{
 										Optional:    true,
 										Description: `Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable ` + "`" + `GCP_SERVICE_ACCOUNT` + "`" + `.`,
@@ -149,13 +167,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Schema(ctx context.Contex
 									"param_location": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. must be one of ["body", "query"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"body",
-												"query",
-											),
-										},
+										Description: `Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
 									},
 									"param_name": schema.StringAttribute{
 										Optional:    true,
@@ -191,6 +203,8 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Schema(ctx context.Contex
 													`aws_region`:                 types.StringType,
 													`aws_role_session_name`:      types.StringType,
 													`aws_sts_endpoint_url`:       types.StringType,
+													`batch_bucket_prefix`:        types.StringType,
+													`batch_role_arn`:             types.StringType,
 													`embeddings_normalize`:       types.BoolType,
 													`performance_config_latency`: types.StringType,
 													`video_output_s3_uri`:        types.StringType,
@@ -245,6 +259,8 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Schema(ctx context.Contex
 													"aws_region":                 types.StringType,
 													"aws_role_session_name":      types.StringType,
 													"aws_sts_endpoint_url":       types.StringType,
+													"batch_bucket_prefix":        types.StringType,
+													"batch_role_arn":             types.StringType,
 													"embeddings_normalize":       types.BoolType,
 													"performance_config_latency": types.StringType,
 													"video_output_s3_uri":        types.StringType,
@@ -265,6 +281,14 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Schema(ctx context.Contex
 													"aws_sts_endpoint_url": schema.StringAttribute{
 														Optional:    true,
 														Description: `If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.`,
+													},
+													"batch_bucket_prefix": schema.StringAttribute{
+														Optional:    true,
+														Description: `S3 URI prefix (s3://bucket/prefix/) where Bedrock will get input files from and store results to for native batch API.`,
+													},
+													"batch_role_arn": schema.StringAttribute{
+														Optional:    true,
+														Description: `AWS role arn used for calling batch API. Try to get the value from request if ommited.`,
 													},
 													"embeddings_normalize": schema.BoolAttribute{
 														Computed:    true,
@@ -332,17 +356,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Schema(ctx context.Contex
 									},
 									"provider": schema.StringAttribute{
 										Required:    true,
-										Description: `AI provider format to use for embeddings API. must be one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "openai"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"azure",
-												"bedrock",
-												"gemini",
-												"huggingface",
-												"mistral",
-												"openai",
-											),
-										},
+										Description: `AI provider format to use for embeddings API. possible known values include one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai"]`,
 									},
 								},
 							},
@@ -352,34 +366,13 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Schema(ctx context.Contex
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`text/generation`),
-						Description: `Generative AI category of the request. Default: "text/generation"; must be one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"audio/speech",
-								"audio/transcription",
-								"image/generation",
-								"realtime/generation",
-								"text/embeddings",
-								"text/generation",
-								"video/generation",
-							),
-						},
+						Description: `Generative AI category of the request. possible known values include one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation"]; Default: "text/generation"`,
 					},
 					"llm_format": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`openai`),
-						Description: `LLM input and output format and schema to use. Default: "openai"; must be one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"anthropic",
-								"bedrock",
-								"cohere",
-								"gemini",
-								"huggingface",
-								"openai",
-							),
-						},
+						Description: `LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]; Default: "openai"`,
 					},
 					"rules": schema.SingleNestedAttribute{
 						Computed: true,
@@ -435,13 +428,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Schema(ctx context.Contex
 							},
 							"distance_metric": schema.StringAttribute{
 								Required:    true,
-								Description: `the distance metric to use for vector searches. must be one of ["cosine", "euclidean"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"cosine",
-										"euclidean",
-									),
-								},
+								Description: `the distance metric to use for vector searches. possible known values include one of ["cosine", "euclidean"]`,
 							},
 							"pgvector": schema.SingleNestedAttribute{
 								Computed: true,
@@ -513,14 +500,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Schema(ctx context.Contex
 										Computed:    true,
 										Optional:    true,
 										Default:     stringdefault.StaticString(`tlsv1_2`),
-										Description: `the ssl version to use for the pgvector database. Default: "tlsv1_2"; must be one of ["any", "tlsv1_2", "tlsv1_3"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"any",
-												"tlsv1_2",
-												"tlsv1_3",
-											),
-										},
+										Description: `the ssl version to use for the pgvector database. possible known values include one of ["any", "tlsv1_2", "tlsv1_3"]; Default: "tlsv1_2"`,
 									},
 									"timeout": schema.Float64Attribute{
 										Computed:    true,
@@ -561,14 +541,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Schema(ctx context.Contex
 											"auth_provider": schema.StringAttribute{
 												Computed:    true,
 												Optional:    true,
-												Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
-												Validators: []validator.String{
-													stringvalidator.OneOf(
-														"aws",
-														"azure",
-														"gcp",
-													),
-												},
+												Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
 											},
 											"aws_access_key_id": schema.StringAttribute{
 												Optional:    true,
@@ -762,14 +735,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Schema(ctx context.Contex
 									"sentinel_role": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"any",
-												"master",
-												"slave",
-											),
-										},
+										Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
 									},
 									"sentinel_username": schema.StringAttribute{
 										Optional:    true,
@@ -799,17 +765,11 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Schema(ctx context.Contex
 							},
 							"strategy": schema.StringAttribute{
 								Required:    true,
-								Description: `which vector database driver to use. must be one of ["pgvector", "redis"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"pgvector",
-										"redis",
-									),
-								},
+								Description: `which vector database driver to use. possible known values include one of ["pgvector", "redis"]`,
 							},
 							"threshold": schema.Float64Attribute{
 								Optional:    true,
-								Description: `the default similarity threshold for accepting semantic search results (float)`,
+								Description: `the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.`,
 							},
 						},
 					},

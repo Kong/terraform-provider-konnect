@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -27,22 +25,16 @@ const (
 func (e VirtualClusterAuthenticationOauthBearerMediation) ToPointer() *VirtualClusterAuthenticationOauthBearerMediation {
 	return &e
 }
-func (e *VirtualClusterAuthenticationOauthBearerMediation) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *VirtualClusterAuthenticationOauthBearerMediation) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "passthrough", "validate_forward", "terminate":
+			return true
+		}
 	}
-	switch v {
-	case "passthrough":
-		fallthrough
-	case "validate_forward":
-		fallthrough
-	case "terminate":
-		*e = VirtualClusterAuthenticationOauthBearerMediation(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for VirtualClusterAuthenticationOauthBearerMediation: %v", v)
-	}
+	return false
 }
 
 // VirtualClusterAuthenticationOauthBearer - Oauth Bearer authentication scheme for the virtual cluster.

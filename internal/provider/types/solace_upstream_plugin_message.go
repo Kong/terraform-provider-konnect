@@ -7,19 +7,23 @@ import (
 )
 
 type SolaceUpstreamPluginMessage struct {
-	AckTimeout     types.Int64    `tfsdk:"ack_timeout"`
-	DefaultContent types.String   `tfsdk:"default_content"`
-	DeliveryMode   types.String   `tfsdk:"delivery_mode"`
-	Destinations   []Binds        `tfsdk:"destinations"`
-	DmqEligible    types.Bool     `tfsdk:"dmq_eligible"`
-	ForwardBody    types.Bool     `tfsdk:"forward_body"`
-	ForwardHeaders types.Bool     `tfsdk:"forward_headers"`
-	ForwardMethod  types.Bool     `tfsdk:"forward_method"`
-	ForwardURI     types.Bool     `tfsdk:"forward_uri"`
-	Functions      []types.String `tfsdk:"functions"`
-	Priority       types.Int64    `tfsdk:"priority"`
-	SenderID       types.String   `tfsdk:"sender_id"`
-	Tracing        types.Bool     `tfsdk:"tracing"`
-	TracingSampled types.Bool     `tfsdk:"tracing_sampled"`
-	TTL            types.Int64    `tfsdk:"ttl"`
+	AckTimeout         types.Int64     `tfsdk:"ack_timeout"`
+	ContentEncoding    types.String    `tfsdk:"content_encoding"`
+	ContentType        types.String    `tfsdk:"content_type"`
+	DefaultContent     types.String    `tfsdk:"default_content"`
+	DeliveryMode       types.String    `tfsdk:"delivery_mode"`
+	Destinations       []Binds         `tfsdk:"destinations"`
+	DmqEligible        types.Bool      `tfsdk:"dmq_eligible"`
+	ForwardBody        types.Bool      `tfsdk:"forward_body"`
+	ForwardBodyRawOnly types.Bool      `tfsdk:"forward_body_raw_only"`
+	ForwardHeaders     types.Bool      `tfsdk:"forward_headers"`
+	ForwardMethod      types.Bool      `tfsdk:"forward_method"`
+	ForwardURI         types.Bool      `tfsdk:"forward_uri"`
+	Functions          []types.String  `tfsdk:"functions"`
+	Priority           types.Int64     `tfsdk:"priority"`
+	SenderID           types.String    `tfsdk:"sender_id"`
+	Tracing            types.Bool      `tfsdk:"tracing"`
+	TracingSampled     types.Bool      `tfsdk:"tracing_sampled"`
+	TTL                types.Int64     `tfsdk:"ttl"`
+	UserProperties     *UserProperties `tfsdk:"user_properties"`
 }

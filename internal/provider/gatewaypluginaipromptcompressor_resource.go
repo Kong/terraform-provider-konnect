@@ -46,6 +46,7 @@ type GatewayPluginAiPromptCompressorResource struct {
 
 // GatewayPluginAiPromptCompressorResourceModel describes the resource data model.
 type GatewayPluginAiPromptCompressorResourceModel struct {
+	Condition      types.String                            `tfsdk:"condition"`
 	Config         *tfTypes.AiPromptCompressorPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                            `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.Set                            `tfsdk:"consumer_group"`
@@ -71,6 +72,13 @@ func (r *GatewayPluginAiPromptCompressorResource) Schema(ctx context.Context, re
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginAiPromptCompressor Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -113,13 +121,7 @@ func (r *GatewayPluginAiPromptCompressorResource) Schema(ctx context.Context, re
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`rate`),
-						Description: `What compression type to use to compress with. Default: "rate"; must be one of ["rate", "target_token"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"rate",
-								"target_token",
-							),
-						},
+						Description: `What compression type to use to compress with. possible known values include one of ["rate", "target_token"]; Default: "rate"`,
 					},
 					"compressor_url": schema.StringAttribute{
 						Computed:    true,

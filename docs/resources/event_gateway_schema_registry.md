@@ -18,7 +18,7 @@ resource "konnect_event_gateway_schema_registry" "my_eventgatewayschemaregistry"
     config = {
       authentication = {
         basic = {
-          password = "$${vault.env['MY_ENV_VAR']}"
+          password = "$$${vault.env['MY_ENV_VAR']}"
           username = "...my_username..."
         }
       }
@@ -81,7 +81,7 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 Required:
 
 - `endpoint` (String) The endpoint of the Confluent schema registry.
-- `schema_type` (String) The format of the message. must be one of ["avro", "json"]
+- `schema_type` (String) The format of the message. possible known values include one of ["avro", "json"]
 
 Optional:
 
@@ -124,7 +124,7 @@ import {
   to = konnect_event_gateway_schema_registry.my_konnect_event_gateway_schema_registry
   id = jsonencode({
     gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "..."
+    id         = "..."
   })
 }
 ```

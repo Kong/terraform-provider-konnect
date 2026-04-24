@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -20,22 +18,16 @@ const (
 func (e InvalidParameterMaximumLengthRule) ToPointer() *InvalidParameterMaximumLengthRule {
 	return &e
 }
-func (e *InvalidParameterMaximumLengthRule) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *InvalidParameterMaximumLengthRule) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "max_length", "max_items", "max":
+			return true
+		}
 	}
-	switch v {
-	case "max_length":
-		fallthrough
-	case "max_items":
-		fallthrough
-	case "max":
-		*e = InvalidParameterMaximumLengthRule(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for InvalidParameterMaximumLengthRule: %v", v)
-	}
+	return false
 }
 
 type InvalidParameterMaximumLength struct {

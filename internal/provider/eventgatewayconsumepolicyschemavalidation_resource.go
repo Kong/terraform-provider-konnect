@@ -78,13 +78,7 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 							`* mark - marks a record with kong/server header and client ID value` + "\n" +
 							`  to help to identify the clients violating schema.` + "\n" +
 							`* skip - skips delivering a record.` + "\n" +
-							`must be one of ["mark", "skip"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"mark",
-								"skip",
-							),
-						},
+							`possible known values include one of ["mark", "skip"]`,
 					},
 					"schema_registry": schema.SingleNestedAttribute{
 						Optional: true,
@@ -103,13 +97,7 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 						MarkdownDescription: `How to validate the schema and parse the record.` + "\n" +
 							`* confluent_schema_registry - validates against confluent schema registry.` + "\n" +
 							`* json - simple JSON parsing without the schema.` + "\n" +
-							`must be one of ["confluent_schema_registry", "json"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"confluent_schema_registry",
-								"json",
-							),
-						},
+							`possible known values include one of ["confluent_schema_registry", "json"]`,
 					},
 					"value_validation_action": schema.StringAttribute{
 						Optional: true,
@@ -117,13 +105,7 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 							`* mark - marks a record with kong/server header and client ID value` + "\n" +
 							`  to help to identify the clients violating schema.` + "\n" +
 							`* skip - skips delivering a record.` + "\n" +
-							`must be one of ["mark", "skip"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"mark",
-								"skip",
-							),
-						},
+							`possible known values include one of ["mark", "skip"]`,
 					},
 				},
 				Description: `The configuration of the schema validation policy.`,

@@ -14,6 +14,7 @@ GatewayPluginGraphqlRateLimitingAdvanced Resource
 
 ```terraform
 resource "konnect_gateway_plugin_graphql_rate_limiting_advanced" "my_gatewayplugingraphqlratelimitingadvanced" {
+  condition = "...my_condition..."
   config = {
     cost_strategy       = "default"
     dictionary_name     = "kong_rate_limiting_counters"
@@ -133,6 +134,7 @@ resource "konnect_gateway_plugin_graphql_rate_limiting_advanced" "my_gatewayplug
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
@@ -157,17 +159,17 @@ Required:
 
 Optional:
 
-- `cost_strategy` (String) Strategy to use to evaluate query costs. Either `default` or `node_quantifier`. Default: "default"; must be one of ["default", "node_quantifier"]
+- `cost_strategy` (String) Strategy to use to evaluate query costs. Either `default` or `node_quantifier`. possible known values include one of ["default", "node_quantifier"]; Default: "default"
 - `dictionary_name` (String) The shared dictionary where counters will be stored until the next sync cycle. Default: "kong_rate_limiting_counters"
 - `hide_client_headers` (Boolean) Optionally hide informative response headers. Available options: `true` or `false`. Default: false
-- `identifier` (String) How to define the rate limit key. Can be `ip`, `credential`, `consumer`. Default: "consumer"; must be one of ["consumer", "credential", "ip"]
+- `identifier` (String) How to define the rate limit key. Can be `ip`, `credential`, `consumer`. possible known values include one of ["consumer", "credential", "ip"]; Default: "consumer"
 - `max_cost` (Number) A defined maximum cost per query. 0 means unlimited. Default: 0
 - `namespace` (String) The rate limiting namespace to use for this plugin instance. This namespace is used to share rate limiting counters across different instances. If it is not provided, a random UUID is generated. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `window_size`, `dictionary_name`, need to be the same.
 - `pass_all_downstream_headers` (Boolean) pass all downstream headers to the upstream graphql server in introspection request. Default: false
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--redis))
 - `score_factor` (Number) A scoring factor to multiply (or divide) the cost. The `score_factor` must always be greater than 0. Default: 1
-- `strategy` (String) The rate-limiting strategy to use for retrieving and incrementing the limits. Default: "cluster"; must be one of ["cluster", "redis"]
-- `window_type` (String) Sets the time window to either `sliding` or `fixed`. Default: "sliding"; must be one of ["fixed", "sliding"]
+- `strategy` (String) The rate-limiting strategy to use for retrieving and incrementing the limits. possible known values include one of ["cluster", "redis"]; Default: "cluster"
+- `window_type` (String) Sets the time window to either `sliding` or `fixed`. possible known values include one of ["fixed", "sliding"]; Default: "sliding"
 
 <a id="nestedatt--config--redis"></a>
 ### Nested Schema for `config.redis`
@@ -190,7 +192,7 @@ Optional:
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--redis--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
+- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
@@ -202,7 +204,7 @@ Optional:
 
 Optional:
 
-- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]
 - `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 - `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
 - `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
@@ -305,7 +307,7 @@ import {
   to = konnect_gateway_plugin_graphql_rate_limiting_advanced.my_konnect_gateway_plugin_graphql_rate_limiting_advanced
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

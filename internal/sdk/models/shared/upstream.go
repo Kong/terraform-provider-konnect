@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -22,26 +20,16 @@ const (
 func (e UpstreamAlgorithm) ToPointer() *UpstreamAlgorithm {
 	return &e
 }
-func (e *UpstreamAlgorithm) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UpstreamAlgorithm) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "consistent-hashing", "latency", "least-connections", "round-robin", "sticky-sessions":
+			return true
+		}
 	}
-	switch v {
-	case "consistent-hashing":
-		fallthrough
-	case "latency":
-		fallthrough
-	case "least-connections":
-		fallthrough
-	case "round-robin":
-		fallthrough
-	case "sticky-sessions":
-		*e = UpstreamAlgorithm(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for UpstreamAlgorithm: %v", v)
-	}
+	return false
 }
 
 // UpstreamClientCertificate - If set, the certificate to be used as client certificate while TLS handshaking to the upstream server.
@@ -84,32 +72,16 @@ const (
 func (e HashFallback) ToPointer() *HashFallback {
 	return &e
 }
-func (e *HashFallback) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *HashFallback) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "consumer", "cookie", "header", "ip", "none", "path", "query_arg", "uri_capture":
+			return true
+		}
 	}
-	switch v {
-	case "consumer":
-		fallthrough
-	case "cookie":
-		fallthrough
-	case "header":
-		fallthrough
-	case "ip":
-		fallthrough
-	case "none":
-		fallthrough
-	case "path":
-		fallthrough
-	case "query_arg":
-		fallthrough
-	case "uri_capture":
-		*e = HashFallback(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for HashFallback: %v", v)
-	}
+	return false
 }
 
 // HashOn - What to use as hashing input. Using `none` results in a weighted-round-robin scheme with no hashing.
@@ -129,32 +101,16 @@ const (
 func (e HashOn) ToPointer() *HashOn {
 	return &e
 }
-func (e *HashOn) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *HashOn) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "consumer", "cookie", "header", "ip", "none", "path", "query_arg", "uri_capture":
+			return true
+		}
 	}
-	switch v {
-	case "consumer":
-		fallthrough
-	case "cookie":
-		fallthrough
-	case "header":
-		fallthrough
-	case "ip":
-		fallthrough
-	case "none":
-		fallthrough
-	case "path":
-		fallthrough
-	case "query_arg":
-		fallthrough
-	case "uri_capture":
-		*e = HashOn(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for HashOn: %v", v)
-	}
+	return false
 }
 
 type Healthy struct {
@@ -208,26 +164,16 @@ const (
 func (e UpstreamType) ToPointer() *UpstreamType {
 	return &e
 }
-func (e *UpstreamType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UpstreamType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "tcp":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tcp":
-		*e = UpstreamType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for UpstreamType: %v", v)
-	}
+	return false
 }
 
 type Unhealthy struct {
@@ -416,26 +362,16 @@ const (
 func (e UpstreamHealthchecksType) ToPointer() *UpstreamHealthchecksType {
 	return &e
 }
-func (e *UpstreamHealthchecksType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UpstreamHealthchecksType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "tcp":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tcp":
-		*e = UpstreamHealthchecksType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for UpstreamHealthchecksType: %v", v)
-	}
+	return false
 }
 
 type UpstreamUnhealthy struct {

@@ -45,6 +45,7 @@ type GatewayPluginSolaceLogResource struct {
 
 // GatewayPluginSolaceLogResourceModel describes the resource data model.
 type GatewayPluginSolaceLogResourceModel struct {
+	Condition      types.String                   `tfsdk:"condition"`
 	Config         *tfTypes.SolaceLogPluginConfig `tfsdk:"config"`
 	ControlPlaneID types.String                   `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                    `tfsdk:"created_at"`
@@ -68,6 +69,13 @@ func (r *GatewayPluginSolaceLogResource) Schema(ctx context.Context, req resourc
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginSolaceLog Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -92,13 +100,7 @@ func (r *GatewayPluginSolaceLogResource) Schema(ctx context.Context, req resourc
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(`DIRECT`),
-								Description: `Sets the log message delivery mode. Default: "DIRECT"; must be one of ["DIRECT", "PERSISTENT"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"DIRECT",
-										"PERSISTENT",
-									),
-								},
+								Description: `Sets the log message delivery mode. possible known values include one of ["DIRECT", "PERSISTENT"]; Default: "DIRECT"`,
 							},
 							"destinations": schema.ListNestedAttribute{
 								Required: true,
@@ -119,13 +121,7 @@ func (r *GatewayPluginSolaceLogResource) Schema(ctx context.Context, req resourc
 											Computed:    true,
 											Optional:    true,
 											Default:     stringdefault.StaticString(`QUEUE`),
-											Description: `The type of the destination. Default: "QUEUE"; must be one of ["QUEUE", "TOPIC"]`,
-											Validators: []validator.String{
-												stringvalidator.OneOf(
-													"QUEUE",
-													"TOPIC",
-												),
-											},
+											Description: `The type of the destination. possible known values include one of ["QUEUE", "TOPIC"]; Default: "QUEUE"`,
 										},
 									},
 								},
@@ -219,14 +215,7 @@ func (r *GatewayPluginSolaceLogResource) Schema(ctx context.Context, req resourc
 										Computed:    true,
 										Optional:    true,
 										Default:     stringdefault.StaticString(`BASIC`),
-										Description: `The client authentication scheme used when connection to an event broker. Default: "BASIC"; must be one of ["BASIC", "NONE", "OAUTH2"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"BASIC",
-												"NONE",
-												"OAUTH2",
-											),
-										},
+										Description: `The client authentication scheme used when connection to an event broker. possible known values include one of ["BASIC", "NONE", "OAUTH2"]; Default: "BASIC"`,
 									},
 									"username": schema.StringAttribute{
 										Optional:    true,

@@ -14,9 +14,10 @@ GatewayPluginHmacAuth Resource
 
 ```terraform
 resource "konnect_gateway_plugin_hmac_auth" "my_gatewaypluginhmacauth" {
+  condition = "...my_condition..."
   config = {
     algorithms = [
-      "hmac-sha256"
+      "hmac-sha224"
     ]
     anonymous  = "...my_anonymous..."
     clock_skew = 300
@@ -76,6 +77,7 @@ resource "konnect_gateway_plugin_hmac_auth" "my_gatewaypluginhmacauth" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
@@ -94,7 +96,7 @@ resource "konnect_gateway_plugin_hmac_auth" "my_gatewaypluginhmacauth" {
 
 Optional:
 
-- `algorithms` (List of String) A list of HMAC digest algorithms that the user wants to support. Allowed values are `hmac-sha1`, `hmac-sha256`, `hmac-sha384`, and `hmac-sha512`. Default: ["hmac-sha1","hmac-sha256","hmac-sha384","hmac-sha512"]
+- `algorithms` (List of String) A list of HMAC digest algorithms that the user wants to support. Allowed values are `hmac-sha224`, `hmac-sha256`, `hmac-sha384`, `hmac-sha512`, and `hmac-sha1` (disabled by default, and not available in FIPS mode). Default: ["hmac-sha224","hmac-sha256","hmac-sha384","hmac-sha512"]
 - `anonymous` (String) An optional string (Consumer UUID or username) value to use as an “anonymous” consumer if authentication fails.
 - `clock_skew` (Number) Clock skew in seconds to prevent replay attacks. Default: 300
 - `enforce_headers` (List of String) A list of headers that the client should at least use for HTTP signature creation. Default: []
@@ -164,7 +166,7 @@ import {
   to = konnect_gateway_plugin_hmac_auth.my_konnect_gateway_plugin_hmac_auth
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // V2PortalTheme - Select a pre-existing default theme or specify 'custom' to use custom_theme variables.
 type V2PortalTheme string
 
@@ -19,20 +14,14 @@ const (
 func (e V2PortalTheme) ToPointer() *V2PortalTheme {
 	return &e
 }
-func (e *V2PortalTheme) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *V2PortalTheme) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "mint_rocket", "dark_mode", "custom":
+			return true
+		}
 	}
-	switch v {
-	case "mint_rocket":
-		fallthrough
-	case "dark_mode":
-		fallthrough
-	case "custom":
-		*e = V2PortalTheme(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for V2PortalTheme: %v", v)
-	}
+	return false
 }

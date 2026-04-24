@@ -14,6 +14,7 @@ GatewayPluginAcme Resource
 
 ```terraform
 resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
+  condition = "...my_condition..."
   config = {
     account_email = "...my_account_email..."
     account_key = {
@@ -139,6 +140,7 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
@@ -161,7 +163,7 @@ Optional:
 - `account_key` (Attributes) The private key associated with the account. (see [below for nested schema](#nestedatt--config--account_key))
 - `allow_any_domain` (Boolean) If set to `true`, the plugin allows all domains and ignores any values in the `domains` list. Default: false
 - `api_uri` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search. Default: "https://acme-v02.api.letsencrypt.org/directory"
-- `cert_type` (String) The certificate type to create. The possible values are `rsa` for RSA certificate or `ecc` for EC certificate. Default: "rsa"; must be one of ["ecc", "rsa"]
+- `cert_type` (String) The certificate type to create. The possible values are `rsa` for RSA certificate or `ecc` for EC certificate. possible known values include one of ["ecc", "rsa"]; Default: "rsa"
 - `domains` (List of String) An array of strings representing hosts. A valid host is a string containing one or more labels separated by periods, with at most one wildcard label ('*')
 - `eab_hmac_key` (String) External account binding (EAB) base64-encoded URL string of the HMAC key. You usually don't need to set this unless it is explicitly required by the CA.
 - `eab_kid` (String) External account binding (EAB) key id. You usually don't need to set this unless it is explicitly required by the CA.
@@ -171,8 +173,8 @@ new certificate and a renewal certificate.
 Default: 5
 - `preferred_chain` (String) A string value that specifies the preferred certificate chain to use when generating certificates.
 - `renew_threshold_days` (Number) Days remaining to renew the certificate before it expires. Default: 14
-- `rsa_key_size` (Number) RSA private key size for the certificate. The possible values are 2048, 3072, or 4096. Default: 4096; must be one of [2048, 3072, 4096]
-- `storage` (String) The backend storage type to use. In DB-less mode and Konnect, `kong` storage is unavailable. In hybrid mode and Konnect, `shm` storage is unavailable. `shm` storage does not persist during Kong restarts and does not work for Kong running on different machines, so consider using one of `kong`, `redis`, `consul`, or `vault` in production. Default: "shm"; must be one of ["consul", "kong", "redis", "shm", "vault"]
+- `rsa_key_size` (Number) RSA private key size for the certificate. The possible values are 2048, 3072, or 4096. possible known values include one of [2048, 3072, 4096]; Default: 4096
+- `storage` (String) The backend storage type to use. In DB-less mode and Konnect, `kong` storage is unavailable. In hybrid mode and Konnect, `shm` storage is unavailable. `shm` storage does not persist during Kong restarts and does not work for Kong running on different machines, so consider using one of `kong`, `redis`, `consul`, or `vault` in production. possible known values include one of ["consul", "kong", "redis", "shm", "vault"]; Default: "shm"
 - `storage_config` (Attributes) (see [below for nested schema](#nestedatt--config--storage_config))
 - `tos_accepted` (Boolean) If you are using Let's Encrypt, you must set this to `true` to agree the terms of service. Default: false
 
@@ -234,7 +236,7 @@ Optional:
 
 Optional:
 
-- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]
 - `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 - `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
 - `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
@@ -271,7 +273,7 @@ Optional:
 
 Optional:
 
-- `auth_method` (String) Auth Method, default to token, can be 'token' or 'kubernetes'. Default: "token"; must be one of ["kubernetes", "token"]
+- `auth_method` (String) Auth Method, default to token, can be 'token' or 'kubernetes'. possible known values include one of ["kubernetes", "token"]; Default: "token"
 - `auth_path` (String) Vault's authentication path to use.
 - `auth_role` (String) The role to try and assign.
 - `host` (String) A string representing a host name, such as example.com.
@@ -332,7 +334,7 @@ import {
   to = konnect_gateway_plugin_acme.my_konnect_gateway_plugin_acme
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

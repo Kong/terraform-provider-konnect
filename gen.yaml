@@ -30,11 +30,12 @@ generation:
     skipResponseBodyAssertions: false
   baseServerURL: ""
 terraform:
-  version: 3.13.0
+  version: 3.14.0
   additionalActions: []
   additionalDataSources: []
   additionalDependencies:
     github.com/Kong/shared-speakeasy/hclbuilder: v0.0.1
+    github.com/hashicorp/terraform-plugin-testing: v1.15.0
   additionalEphemeralResources: []
   additionalFunctions: []
   additionalListResources: []
@@ -62,6 +63,7 @@ terraform:
     - env: KONNECT_SERVER_URL
       providerAttribute: server_url
   excludeEmptyObjectSchemas: false
+  forwardCompatibleEnumsByDefault: false
   imports:
     option: openapi
     paths:
@@ -74,6 +76,7 @@ terraform:
   inferUnionDiscriminators: false
   packageName: konnect
   preApplyUnionDiscriminators: false
+  providerTypeNameOverride: ""
   respectRequiredFields: true
   respectTitlesForPrimitiveUnionMembers: false
   unionStrategy: populated-fields

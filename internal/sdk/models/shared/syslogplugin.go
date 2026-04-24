@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -138,32 +136,16 @@ const (
 func (e SyslogPluginClientErrorsSeverity) ToPointer() *SyslogPluginClientErrorsSeverity {
 	return &e
 }
-func (e *SyslogPluginClientErrorsSeverity) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SyslogPluginClientErrorsSeverity) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "alert", "crit", "debug", "emerg", "err", "info", "notice", "warning":
+			return true
+		}
 	}
-	switch v {
-	case "alert":
-		fallthrough
-	case "crit":
-		fallthrough
-	case "debug":
-		fallthrough
-	case "emerg":
-		fallthrough
-	case "err":
-		fallthrough
-	case "info":
-		fallthrough
-	case "notice":
-		fallthrough
-	case "warning":
-		*e = SyslogPluginClientErrorsSeverity(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SyslogPluginClientErrorsSeverity: %v", v)
-	}
+	return false
 }
 
 // Facility - The facility is used by the operating system to decide how to handle each log message.
@@ -195,56 +177,16 @@ const (
 func (e Facility) ToPointer() *Facility {
 	return &e
 }
-func (e *Facility) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Facility) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "auth", "authpriv", "cron", "daemon", "ftp", "kern", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7", "lpr", "mail", "news", "syslog", "user", "uucp":
+			return true
+		}
 	}
-	switch v {
-	case "auth":
-		fallthrough
-	case "authpriv":
-		fallthrough
-	case "cron":
-		fallthrough
-	case "daemon":
-		fallthrough
-	case "ftp":
-		fallthrough
-	case "kern":
-		fallthrough
-	case "local0":
-		fallthrough
-	case "local1":
-		fallthrough
-	case "local2":
-		fallthrough
-	case "local3":
-		fallthrough
-	case "local4":
-		fallthrough
-	case "local5":
-		fallthrough
-	case "local6":
-		fallthrough
-	case "local7":
-		fallthrough
-	case "lpr":
-		fallthrough
-	case "mail":
-		fallthrough
-	case "news":
-		fallthrough
-	case "syslog":
-		fallthrough
-	case "user":
-		fallthrough
-	case "uucp":
-		*e = Facility(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Facility: %v", v)
-	}
+	return false
 }
 
 type SyslogPluginLogLevel string
@@ -263,32 +205,16 @@ const (
 func (e SyslogPluginLogLevel) ToPointer() *SyslogPluginLogLevel {
 	return &e
 }
-func (e *SyslogPluginLogLevel) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SyslogPluginLogLevel) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "alert", "crit", "debug", "emerg", "err", "info", "notice", "warning":
+			return true
+		}
 	}
-	switch v {
-	case "alert":
-		fallthrough
-	case "crit":
-		fallthrough
-	case "debug":
-		fallthrough
-	case "emerg":
-		fallthrough
-	case "err":
-		fallthrough
-	case "info":
-		fallthrough
-	case "notice":
-		fallthrough
-	case "warning":
-		*e = SyslogPluginLogLevel(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SyslogPluginLogLevel: %v", v)
-	}
+	return false
 }
 
 type SyslogPluginServerErrorsSeverity string
@@ -307,32 +233,16 @@ const (
 func (e SyslogPluginServerErrorsSeverity) ToPointer() *SyslogPluginServerErrorsSeverity {
 	return &e
 }
-func (e *SyslogPluginServerErrorsSeverity) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SyslogPluginServerErrorsSeverity) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "alert", "crit", "debug", "emerg", "err", "info", "notice", "warning":
+			return true
+		}
 	}
-	switch v {
-	case "alert":
-		fallthrough
-	case "crit":
-		fallthrough
-	case "debug":
-		fallthrough
-	case "emerg":
-		fallthrough
-	case "err":
-		fallthrough
-	case "info":
-		fallthrough
-	case "notice":
-		fallthrough
-	case "warning":
-		*e = SyslogPluginServerErrorsSeverity(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SyslogPluginServerErrorsSeverity: %v", v)
-	}
+	return false
 }
 
 type SyslogPluginSuccessfulSeverity string
@@ -351,32 +261,16 @@ const (
 func (e SyslogPluginSuccessfulSeverity) ToPointer() *SyslogPluginSuccessfulSeverity {
 	return &e
 }
-func (e *SyslogPluginSuccessfulSeverity) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SyslogPluginSuccessfulSeverity) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "alert", "crit", "debug", "emerg", "err", "info", "notice", "warning":
+			return true
+		}
 	}
-	switch v {
-	case "alert":
-		fallthrough
-	case "crit":
-		fallthrough
-	case "debug":
-		fallthrough
-	case "emerg":
-		fallthrough
-	case "err":
-		fallthrough
-	case "info":
-		fallthrough
-	case "notice":
-		fallthrough
-	case "warning":
-		*e = SyslogPluginSuccessfulSeverity(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SyslogPluginSuccessfulSeverity: %v", v)
-	}
+	return false
 }
 
 type SyslogPluginConfig struct {
@@ -485,36 +379,16 @@ const (
 func (e SyslogPluginProtocols) ToPointer() *SyslogPluginProtocols {
 	return &e
 }
-func (e *SyslogPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SyslogPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = SyslogPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SyslogPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // SyslogPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -565,6 +439,8 @@ func (s *SyslogPluginService) GetID() *string {
 
 // SyslogPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type SyslogPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -602,6 +478,13 @@ func (s *SyslogPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (s *SyslogPlugin) GetCondition() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Condition
 }
 
 func (s *SyslogPlugin) GetCreatedAt() *int64 {

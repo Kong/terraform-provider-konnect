@@ -226,8 +226,10 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewGatewayPluginACLResource,
 		NewGatewayPluginAceResource,
 		NewGatewayPluginAcmeResource,
+		NewGatewayPluginAiA2aProxyResource,
 		NewGatewayPluginAiAwsGuardrailsResource,
 		NewGatewayPluginAiAzureContentSafetyResource,
+		NewGatewayPluginAiCustomGuardrailResource,
 		NewGatewayPluginAiGcpModelArmorResource,
 		NewGatewayPluginAiLakeraGuardResource,
 		NewGatewayPluginAiLlmAsJudgeResource,
@@ -284,6 +286,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewGatewayPluginLdapAuthResource,
 		NewGatewayPluginLdapAuthAdvancedResource,
 		NewGatewayPluginLogglyResource,
+		NewGatewayPluginMeteringAndBillingResource,
 		NewGatewayPluginMockingResource,
 		NewGatewayPluginMtlsAuthResource,
 		NewGatewayPluginOasValidationResource,
@@ -338,6 +341,10 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewGatewayTargetResource,
 		NewGatewayUpstreamResource,
 		NewGatewayVaultResource,
+		NewIdentityAuthServerResource,
+		NewIdentityAuthServerClaimResource,
+		NewIdentityAuthServerClientResource,
+		NewIdentityAuthServerScopeResource,
 		NewIdentityProviderResource,
 		NewIntegrationInstanceResource,
 		NewIntegrationInstanceAuthConfigResource,
@@ -370,6 +377,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 
 func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
+		NewCloudGatewayNetworkDataSource,
 		NewCloudGatewayProviderAccountListDataSource,
 		NewGatewayControlPlaneDataSource,
 		NewGatewayControlPlaneListDataSource,

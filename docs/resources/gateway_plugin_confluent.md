@@ -14,6 +14,7 @@ GatewayPluginConfluent Resource
 
 ```terraform
 resource "konnect_gateway_plugin_confluent" "my_gatewaypluginconfluent" {
+  condition = "...my_condition..."
   config = {
     allowed_topics = [
       "..."
@@ -163,6 +164,7 @@ resource "konnect_gateway_plugin_confluent" "my_gatewaypluginconfluent" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
@@ -203,7 +205,7 @@ Optional:
 - `producer_async` (Boolean) Flag to enable asynchronous mode. Default: true
 - `producer_async_buffering_limits_messages_in_memory` (Number) Maximum number of messages that can be buffered in memory in asynchronous mode. Default: 50000
 - `producer_async_flush_timeout` (Number) Maximum time interval in milliseconds between buffer flushes in asynchronous mode. Default: 1000
-- `producer_request_acks` (Number) The number of acknowledgments the producer requires the leader to have received before considering a request complete. Allowed values: 0 for no acknowledgments; 1 for only the leader; and -1 for the full ISR (In-Sync Replica set). Default: 1; must be one of [-1, 0, 1]
+- `producer_request_acks` (Number) The number of acknowledgments the producer requires the leader to have received before considering a request complete. Allowed values: 0 for no acknowledgments; 1 for only the leader; and -1 for the full ISR (In-Sync Replica set). possible known values include one of [-1, 0, 1]; Default: 1
 - `producer_request_limits_bytes_per_request` (Number) Maximum size of a Produce request in bytes. Default: 1048576
 - `producer_request_limits_messages_per_request` (Number) Maximum number of messages to include into a single producer request. Default: 200
 - `producer_request_retries_backoff_timeout` (Number) Backoff interval between retry attempts in milliseconds. Default: 100
@@ -248,7 +250,7 @@ Optional:
 Optional:
 
 - `basic` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication--basic))
-- `mode` (String) Authentication mode to use with the schema registry. Default: "none"; must be one of ["basic", "none", "oauth2"]
+- `mode` (String) Authentication mode to use with the schema registry. possible known values include one of ["basic", "none", "oauth2"]; Default: "none"
 - `oauth2` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication--oauth2))
 - `oauth2_client` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry--confluent--authentication--oauth2_client))
 
@@ -269,7 +271,7 @@ Optional:
 - `audience` (List of String) List of audiences passed to the IdP when obtaining a new token. Default: []
 - `client_id` (String) The client ID for the application registration in the IdP.
 - `client_secret` (String) The client secret for the application registration in the IdP.
-- `grant_type` (String) The OAuth grant type to be used. Default: "client_credentials"; must be one of ["client_credentials", "password"]
+- `grant_type` (String) The OAuth grant type to be used. possible known values include one of ["client_credentials", "password"]; Default: "client_credentials"
 - `password` (String) The password to use if `config.oauth.grant_type` is set to `password`.
 - `scopes` (List of String) List of scopes to request from the IdP when obtaining a new token. Default: ["openid"]
 - `token_endpoint` (String) The token endpoint URI. Not Null
@@ -283,8 +285,8 @@ Optional:
 
 Optional:
 
-- `auth_method` (String) The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body. Default: "client_secret_post"; must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none"]
-- `client_secret_jwt_alg` (String) The algorithm to use with JWT when using `client_secret_jwt` authentication. Default: "HS512"; must be one of ["HS256", "HS512"]
+- `auth_method` (String) The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none"]; Default: "client_secret_post"
+- `client_secret_jwt_alg` (String) The algorithm to use with JWT when using `client_secret_jwt` authentication. possible known values include one of ["HS256", "HS512"]; Default: "HS512"
 - `http_proxy` (String) The proxy to use when making HTTP requests to the IdP.
 - `http_proxy_authorization` (String) The `Proxy-Authorization` header value to be used with `http_proxy`.
 - `http_version` (Number) The HTTP version used for requests made by this plugin. Supported values: `1.1` for HTTP 1.1 and `1.0` for HTTP 1.0.
@@ -395,7 +397,7 @@ import {
   to = konnect_gateway_plugin_confluent.my_konnect_gateway_plugin_confluent
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

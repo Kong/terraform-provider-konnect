@@ -14,6 +14,7 @@ GatewayPluginAppDynamics Resource
 
 ```terraform
 resource "konnect_gateway_plugin_app_dynamics" "my_gatewaypluginappdynamics" {
+  condition = "...my_condition..."
   config = {
     key = jsonencode("value")
   }
@@ -69,6 +70,7 @@ resource "konnect_gateway_plugin_app_dynamics" "my_gatewaypluginappdynamics" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `config` (Map of String)
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -152,7 +154,7 @@ import {
   to = konnect_gateway_plugin_app_dynamics.my_konnect_gateway_plugin_app_dynamics
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

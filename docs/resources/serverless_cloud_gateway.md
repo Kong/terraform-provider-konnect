@@ -53,7 +53,7 @@ Required:
 
 - `id` (String) ID of the serverless cloud gateway CP. Requires replacement if changed.
 - `prefix` (String) The prefix of the serverless cloud gateway CP. Requires replacement if changed.
-- `region` (String) The control plane region. must be one of ["us", "eu", "au"]; Requires replacement if changed.
+- `region` (String) The control plane region. possible known values include one of ["us", "eu", "au"]; Requires replacement if changed.
 
 ## Import
 

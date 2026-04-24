@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -134,22 +132,16 @@ const (
 func (e AiLakeraGuardPluginGuardingMode) ToPointer() *AiLakeraGuardPluginGuardingMode {
 	return &e
 }
-func (e *AiLakeraGuardPluginGuardingMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiLakeraGuardPluginGuardingMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "BOTH", "INPUT", "OUTPUT":
+			return true
+		}
 	}
-	switch v {
-	case "BOTH":
-		fallthrough
-	case "INPUT":
-		fallthrough
-	case "OUTPUT":
-		*e = AiLakeraGuardPluginGuardingMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiLakeraGuardPluginGuardingMode: %v", v)
-	}
+	return false
 }
 
 // AiLakeraGuardPluginTextSource - Select where to pick the 'text' for the Lakera Guard request (when text/generation is selected).
@@ -164,22 +156,16 @@ const (
 func (e AiLakeraGuardPluginTextSource) ToPointer() *AiLakeraGuardPluginTextSource {
 	return &e
 }
-func (e *AiLakeraGuardPluginTextSource) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiLakeraGuardPluginTextSource) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "concatenate_all_content", "concatenate_user_content", "last_message":
+			return true
+		}
 	}
-	switch v {
-	case "concatenate_all_content":
-		fallthrough
-	case "concatenate_user_content":
-		fallthrough
-	case "last_message":
-		*e = AiLakeraGuardPluginTextSource(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiLakeraGuardPluginTextSource: %v", v)
-	}
+	return false
 }
 
 type AiLakeraGuardPluginConfig struct {
@@ -189,6 +175,8 @@ type AiLakeraGuardPluginConfig struct {
 	GuardingMode *AiLakeraGuardPluginGuardingMode `default:"INPUT" json:"guarding_mode"`
 	// The guard-operation URL of the Lakera Guard service. Defaults to the SaaS /v2/guard endpoint. It can be set to a locally hosted instance of Lakera Guard.
 	LakeraServiceURL *string `default:"https://api.lakera.ai/v2/guard" json:"lakera_service_url"`
+	// Whether to log prompts and responses that are blocked by the guardrail.
+	LogBlockedContent *bool `default:"false" json:"log_blocked_content"`
 	// Project ID to apply filters from. If null, it will use the subscription's default project.
 	ProjectID *string `default:"null" json:"project_id"`
 	// The message to return when a failure occurs on the request phase.
@@ -239,6 +227,13 @@ func (a *AiLakeraGuardPluginConfig) GetLakeraServiceURL() *string {
 		return nil
 	}
 	return a.LakeraServiceURL
+}
+
+func (a *AiLakeraGuardPluginConfig) GetLogBlockedContent() *bool {
+	if a == nil {
+		return nil
+	}
+	return a.LogBlockedContent
 }
 
 func (a *AiLakeraGuardPluginConfig) GetProjectID() *string {
@@ -362,24 +357,16 @@ const (
 func (e AiLakeraGuardPluginProtocols) ToPointer() *AiLakeraGuardPluginProtocols {
 	return &e
 }
-func (e *AiLakeraGuardPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiLakeraGuardPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = AiLakeraGuardPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiLakeraGuardPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AiLakeraGuardPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -430,6 +417,8 @@ func (a *AiLakeraGuardPluginService) GetID() *string {
 
 // AiLakeraGuardPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type AiLakeraGuardPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -469,6 +458,13 @@ func (a *AiLakeraGuardPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AiLakeraGuardPlugin) GetCondition() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Condition
 }
 
 func (a *AiLakeraGuardPlugin) GetCreatedAt() *int64 {

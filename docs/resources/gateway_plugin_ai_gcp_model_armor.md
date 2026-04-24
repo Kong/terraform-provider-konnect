@@ -14,12 +14,16 @@ GatewayPluginAiGcpModelArmor Resource
 
 ```terraform
 resource "konnect_gateway_plugin_ai_gcp_model_armor" "my_gatewaypluginaigcpmodelarmor" {
+  condition = "...my_condition..."
   config = {
     enable_multi_language_detection = false
+    gcp_metadata_url                = "...my_gcp_metadata_url..."
+    gcp_oauth_token_url             = "...my_gcp_oauth_token_url..."
     gcp_service_account_json        = "...my_gcp_service_account_json..."
     gcp_use_service_account         = false
     guarding_mode                   = "INPUT"
     location_id                     = "...my_location_id..."
+    log_blocked_content             = false
     project_id                      = "...my_project_id..."
     request_failure_message         = "Request was filtered by GCP Model Armor"
     response_buffer_size            = 100
@@ -87,6 +91,7 @@ resource "konnect_gateway_plugin_ai_gcp_model_armor" "my_gatewaypluginaigcpmodel
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -113,16 +118,19 @@ Required:
 Optional:
 
 - `enable_multi_language_detection` (Boolean) Enables multi-language detection mode. Must be used with 'source_language'. Default: false
+- `gcp_metadata_url` (String) Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.
+- `gcp_oauth_token_url` (String) Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.
 - `gcp_service_account_json` (String) Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT` or from the instance/container metadata service.
 - `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models. Default: false
-- `guarding_mode` (String) The guardrail mode to use for the request. Default: "INPUT"; must be one of ["BOTH", "INPUT", "OUTPUT"]
+- `guarding_mode` (String) The guardrail mode to use for the request. possible known values include one of ["BOTH", "INPUT", "OUTPUT"]; Default: "INPUT"
+- `log_blocked_content` (Boolean) Whether to log prompts and responses that are blocked by the guardrail. Default: false
 - `request_failure_message` (String) The message to return when a failure occurs on the request phase. Default: "Request was filtered by GCP Model Armor"
 - `response_buffer_size` (Number) The amount of bytes receiving from upstream to be buffered before sending to the model armor service. This only applies to the response content guard. Default: 100
 - `response_failure_message` (String) The message to return when a failure occurs on the response phase. Default: "Response was filtered by GCP Model Armor"
 - `reveal_failure_categories` (Boolean) Whether to reveal failure categories in the response to the caller. Default: false
 - `source_language` (String) Source language (ISO code) to use when 'enable_multi_language_detection' is enabled.
 - `stop_on_error` (Boolean) Stop processing if an error occurs. Default: true
-- `text_source` (String) Select where to pick the 'text' for the GCP Model Armor Services request. Default: "last_message"; must be one of ["concatenate_all_content", "concatenate_user_content", "last_message"]
+- `text_source` (String) Select where to pick the 'text' for the GCP Model Armor Services request. possible known values include one of ["concatenate_all_content", "concatenate_user_content", "last_message"]; Default: "last_message"
 - `timeout` (Number) Connection timeout with the GCP Model Armor service. Default: 10000
 
 
@@ -203,7 +211,7 @@ import {
   to = konnect_gateway_plugin_ai_gcp_model_armor.my_konnect_gateway_plugin_ai_gcp_model_armor
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

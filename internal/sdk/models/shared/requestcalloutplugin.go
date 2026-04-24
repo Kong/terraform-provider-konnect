@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -157,22 +155,16 @@ const (
 func (e RequestCalloutPluginAuthProvider) ToPointer() *RequestCalloutPluginAuthProvider {
 	return &e
 }
-func (e *RequestCalloutPluginAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestCalloutPluginAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = RequestCalloutPluginAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RequestCalloutPluginAuthProvider: %v", v)
-	}
+	return false
 }
 
 // RequestCalloutPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -374,22 +366,16 @@ const (
 func (e RequestCalloutPluginSentinelRole) ToPointer() *RequestCalloutPluginSentinelRole {
 	return &e
 }
-func (e *RequestCalloutPluginSentinelRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestCalloutPluginSentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "master":
-		fallthrough
-	case "slave":
-		*e = RequestCalloutPluginSentinelRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RequestCalloutPluginSentinelRole: %v", v)
-	}
+	return false
 }
 
 type RequestCalloutPluginRedis struct {
@@ -616,22 +602,16 @@ const (
 func (e RequestCalloutPluginStrategy) ToPointer() *RequestCalloutPluginStrategy {
 	return &e
 }
-func (e *RequestCalloutPluginStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestCalloutPluginStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "memory", "off", "redis":
+			return true
+		}
 	}
-	switch v {
-	case "memory":
-		fallthrough
-	case "off":
-		fallthrough
-	case "redis":
-		*e = RequestCalloutPluginStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RequestCalloutPluginStrategy: %v", v)
-	}
+	return false
 }
 
 // Cache - Plugin global caching configuration.
@@ -760,22 +740,16 @@ const (
 func (e OnError) ToPointer() *OnError {
 	return &e
 }
-func (e *OnError) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OnError) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "continue", "fail", "retry":
+			return true
+		}
 	}
-	switch v {
-	case "continue":
-		fallthrough
-	case "fail":
-		fallthrough
-	case "retry":
-		*e = OnError(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for OnError: %v", v)
-	}
+	return false
 }
 
 // Error - The error handling policy the plugin will apply to TCP and HTTP errors.
@@ -1047,8 +1021,8 @@ func (r *RequestCalloutPluginQuery) GetForward() *bool {
 	return r.Forward
 }
 
-// Request - The customizations for the callout request.
-type Request struct {
+// RequestCalloutPluginRequest - The customizations for the callout request.
+type RequestCalloutPluginRequest struct {
 	// Callout request body customizations.
 	Body *RequestCalloutPluginConfigBody `json:"body"`
 	// Lua code that executes before the callout request is made. **Warning** can impact system behavior. Standard Lua sandboxing restrictions apply.
@@ -1067,67 +1041,67 @@ type Request struct {
 	URL string `json:"url"`
 }
 
-func (r Request) MarshalJSON() ([]byte, error) {
+func (r RequestCalloutPluginRequest) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(r, "", false)
 }
 
-func (r *Request) UnmarshalJSON(data []byte) error {
+func (r *RequestCalloutPluginRequest) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"url"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *Request) GetBody() *RequestCalloutPluginConfigBody {
+func (r *RequestCalloutPluginRequest) GetBody() *RequestCalloutPluginConfigBody {
 	if r == nil {
 		return nil
 	}
 	return r.Body
 }
 
-func (r *Request) GetByLua() *string {
+func (r *RequestCalloutPluginRequest) GetByLua() *string {
 	if r == nil {
 		return nil
 	}
 	return r.ByLua
 }
 
-func (r *Request) GetError() *Error {
+func (r *RequestCalloutPluginRequest) GetError() *Error {
 	if r == nil {
 		return nil
 	}
 	return r.Error
 }
 
-func (r *Request) GetHeaders() *RequestCalloutPluginConfigCalloutsHeaders {
+func (r *RequestCalloutPluginRequest) GetHeaders() *RequestCalloutPluginConfigCalloutsHeaders {
 	if r == nil {
 		return nil
 	}
 	return r.Headers
 }
 
-func (r *Request) GetHTTPOpts() *HTTPOpts {
+func (r *RequestCalloutPluginRequest) GetHTTPOpts() *HTTPOpts {
 	if r == nil {
 		return nil
 	}
 	return r.HTTPOpts
 }
 
-func (r *Request) GetMethod() *string {
+func (r *RequestCalloutPluginRequest) GetMethod() *string {
 	if r == nil {
 		return nil
 	}
 	return r.Method
 }
 
-func (r *Request) GetQuery() *RequestCalloutPluginQuery {
+func (r *RequestCalloutPluginRequest) GetQuery() *RequestCalloutPluginQuery {
 	if r == nil {
 		return nil
 	}
 	return r.Query
 }
 
-func (r *Request) GetURL() string {
+func (r *RequestCalloutPluginRequest) GetURL() string {
 	if r == nil {
 		return ""
 	}
@@ -1190,8 +1164,8 @@ func (r *RequestCalloutPluginConfigHeaders) GetStore() *bool {
 	return r.Store
 }
 
-// Response - Configurations of callout response handling.
-type Response struct {
+// RequestCalloutPluginResponse - Configurations of callout response handling.
+type RequestCalloutPluginResponse struct {
 	Body *RequestCalloutPluginBody `json:"body"`
 	// Lua code that executes after the callout response is received, before caching takes place. Can produce side effects. Standard Lua sandboxing restrictions apply.
 	ByLua *string `default:"null" json:"by_lua"`
@@ -1199,32 +1173,32 @@ type Response struct {
 	Headers *RequestCalloutPluginConfigHeaders `json:"headers"`
 }
 
-func (r Response) MarshalJSON() ([]byte, error) {
+func (r RequestCalloutPluginResponse) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(r, "", false)
 }
 
-func (r *Response) UnmarshalJSON(data []byte) error {
+func (r *RequestCalloutPluginResponse) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *Response) GetBody() *RequestCalloutPluginBody {
+func (r *RequestCalloutPluginResponse) GetBody() *RequestCalloutPluginBody {
 	if r == nil {
 		return nil
 	}
 	return r.Body
 }
 
-func (r *Response) GetByLua() *string {
+func (r *RequestCalloutPluginResponse) GetByLua() *string {
 	if r == nil {
 		return nil
 	}
 	return r.ByLua
 }
 
-func (r *Response) GetHeaders() *RequestCalloutPluginConfigHeaders {
+func (r *RequestCalloutPluginResponse) GetHeaders() *RequestCalloutPluginConfigHeaders {
 	if r == nil {
 		return nil
 	}
@@ -1239,9 +1213,9 @@ type Callouts struct {
 	// A string identifier for a callout. A callout object is referenceable via its name in the `kong.ctx.shared.callouts.<name>`
 	Name string `json:"name"`
 	// The customizations for the callout request.
-	Request Request `json:"request"`
+	Request RequestCalloutPluginRequest `json:"request"`
 	// Configurations of callout response handling.
-	Response *Response `json:"response"`
+	Response *RequestCalloutPluginResponse `json:"response"`
 }
 
 func (c Callouts) MarshalJSON() ([]byte, error) {
@@ -1276,14 +1250,14 @@ func (c *Callouts) GetName() string {
 	return c.Name
 }
 
-func (c *Callouts) GetRequest() Request {
+func (c *Callouts) GetRequest() RequestCalloutPluginRequest {
 	if c == nil {
-		return Request{}
+		return RequestCalloutPluginRequest{}
 	}
 	return c.Request
 }
 
-func (c *Callouts) GetResponse() *Response {
+func (c *Callouts) GetResponse() *RequestCalloutPluginResponse {
 	if c == nil {
 		return nil
 	}
@@ -1548,24 +1522,16 @@ const (
 func (e RequestCalloutPluginProtocols) ToPointer() *RequestCalloutPluginProtocols {
 	return &e
 }
-func (e *RequestCalloutPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestCalloutPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = RequestCalloutPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RequestCalloutPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // RequestCalloutPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -1616,6 +1582,8 @@ func (r *RequestCalloutPluginService) GetID() *string {
 
 // RequestCalloutPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type RequestCalloutPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -1655,6 +1623,13 @@ func (r *RequestCalloutPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (r *RequestCalloutPlugin) GetCondition() *string {
+	if r == nil {
+		return nil
+	}
+	return r.Condition
 }
 
 func (r *RequestCalloutPlugin) GetCreatedAt() *int64 {

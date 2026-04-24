@@ -14,6 +14,7 @@ GatewayPluginRateLimiting Resource
 
 ```terraform
 resource "konnect_gateway_plugin_rate_limiting" "my_gatewaypluginratelimiting" {
+  condition = "...my_condition..."
   config = {
     day                 = 2.06
     error_code          = 429
@@ -111,6 +112,7 @@ resource "konnect_gateway_plugin_rate_limiting" "my_gatewaypluginratelimiting" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
@@ -138,11 +140,11 @@ Optional:
 - `header_name` (String) A string representing an HTTP header name.
 - `hide_client_headers` (Boolean) Optionally hide informative response headers. Default: false
 - `hour` (Number) The number of HTTP requests that can be made per hour.
-- `limit_by` (String) The entity that is used when aggregating the limits. Default: "consumer"; must be one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "service"]
+- `limit_by` (String) The entity that is used when aggregating the limits. possible known values include one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "service"]; Default: "consumer"
 - `minute` (Number) The number of HTTP requests that can be made per minute.
 - `month` (Number) The number of HTTP requests that can be made per month.
 - `path` (String) A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
-- `policy` (String) The rate-limiting policies to use for retrieving and incrementing the limits. Default: "local"; must be one of ["cluster", "local", "redis"]
+- `policy` (String) The rate-limiting policies to use for retrieving and incrementing the limits. possible known values include one of ["cluster", "local", "redis"]; Default: "local"
 - `redis` (Attributes) Redis configuration (see [below for nested schema](#nestedatt--config--redis))
 - `second` (Number) The number of HTTP requests that can be made per second.
 - `sync_rate` (Number) How often to sync counter data to the central data store. A value of -1 results in synchronous behavior. Default: -1
@@ -169,7 +171,7 @@ Optional:
 
 Optional:
 
-- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]
 - `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 - `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
 - `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
@@ -262,7 +264,7 @@ import {
   to = konnect_gateway_plugin_rate_limiting.my_konnect_gateway_plugin_rate_limiting
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

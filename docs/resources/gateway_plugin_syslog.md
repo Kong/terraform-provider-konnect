@@ -14,6 +14,7 @@ GatewayPluginSyslog Resource
 
 ```terraform
 resource "konnect_gateway_plugin_syslog" "my_gatewaypluginsyslog" {
+  condition = "...my_condition..."
   config = {
     client_errors_severity = "info"
     custom_fields_by_lua = {
@@ -76,6 +77,7 @@ resource "konnect_gateway_plugin_syslog" "my_gatewaypluginsyslog" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -95,12 +97,12 @@ resource "konnect_gateway_plugin_syslog" "my_gatewaypluginsyslog" {
 
 Optional:
 
-- `client_errors_severity` (String) Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
+- `client_errors_severity` (String) possible known values include one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]; Default: "info"
 - `custom_fields_by_lua` (Map of String) Lua code as a key-value map
-- `facility` (String) The facility is used by the operating system to decide how to handle each log message. Default: "user"; must be one of ["auth", "authpriv", "cron", "daemon", "ftp", "kern", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7", "lpr", "mail", "news", "syslog", "user", "uucp"]
-- `log_level` (String) Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
-- `server_errors_severity` (String) Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
-- `successful_severity` (String) Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
+- `facility` (String) The facility is used by the operating system to decide how to handle each log message. possible known values include one of ["auth", "authpriv", "cron", "daemon", "ftp", "kern", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7", "lpr", "mail", "news", "syslog", "user", "uucp"]; Default: "user"
+- `log_level` (String) possible known values include one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]; Default: "info"
+- `server_errors_severity` (String) possible known values include one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]; Default: "info"
+- `successful_severity` (String) possible known values include one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]; Default: "info"
 
 
 <a id="nestedatt--consumer"></a>
@@ -172,7 +174,7 @@ import {
   to = konnect_gateway_plugin_syslog.my_konnect_gateway_plugin_syslog
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

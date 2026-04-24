@@ -15,6 +15,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.AiRequestTransformerPluginConfig{}
 		r.Config.HTTPProxyHost = types.StringPointerValue(resp.Config.HTTPProxyHost)
 		r.Config.HTTPProxyPort = types.Int64PointerValue(resp.Config.HTTPProxyPort)
@@ -26,7 +27,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 		if resp.Config.Llm.Auth == nil {
 			r.Config.Llm.Auth = nil
 		} else {
-			r.Config.Llm.Auth = &tfTypes.AiLlmAsJudgePluginAuth{}
+			r.Config.Llm.Auth = &tfTypes.PartialEmbeddingsAuth{}
 			r.Config.Llm.Auth.AllowOverride = types.BoolPointerValue(resp.Config.Llm.Auth.AllowOverride)
 			r.Config.Llm.Auth.AwsAccessKeyID = types.StringPointerValue(resp.Config.Llm.Auth.AwsAccessKeyID)
 			r.Config.Llm.Auth.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Llm.Auth.AwsSecretAccessKey)
@@ -34,6 +35,8 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 			r.Config.Llm.Auth.AzureClientSecret = types.StringPointerValue(resp.Config.Llm.Auth.AzureClientSecret)
 			r.Config.Llm.Auth.AzureTenantID = types.StringPointerValue(resp.Config.Llm.Auth.AzureTenantID)
 			r.Config.Llm.Auth.AzureUseManagedIdentity = types.BoolPointerValue(resp.Config.Llm.Auth.AzureUseManagedIdentity)
+			r.Config.Llm.Auth.GcpMetadataURL = types.StringPointerValue(resp.Config.Llm.Auth.GcpMetadataURL)
+			r.Config.Llm.Auth.GcpOauthTokenURL = types.StringPointerValue(resp.Config.Llm.Auth.GcpOauthTokenURL)
 			r.Config.Llm.Auth.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.Llm.Auth.GcpServiceAccountJSON)
 			r.Config.Llm.Auth.GcpUseServiceAccount = types.BoolPointerValue(resp.Config.Llm.Auth.GcpUseServiceAccount)
 			r.Config.Llm.Auth.HeaderName = types.StringPointerValue(resp.Config.Llm.Auth.HeaderName)
@@ -50,16 +53,17 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 		if resp.Config.Llm.Logging == nil {
 			r.Config.Llm.Logging = nil
 		} else {
-			r.Config.Llm.Logging = &tfTypes.AiLlmAsJudgePluginLogging{}
+			r.Config.Llm.Logging = &tfTypes.PartialModelLogging{}
 			r.Config.Llm.Logging.LogPayloads = types.BoolPointerValue(resp.Config.Llm.Logging.LogPayloads)
 			r.Config.Llm.Logging.LogStatistics = types.BoolPointerValue(resp.Config.Llm.Logging.LogStatistics)
 		}
-		r.Config.Llm.Model = &tfTypes.AiLlmAsJudgePluginModel{}
+		r.Config.Llm.Model = &tfTypes.PartialModelModel{}
+		r.Config.Llm.Model.ModelAlias = types.StringPointerValue(resp.Config.Llm.Model.ModelAlias)
 		r.Config.Llm.Model.Name = types.StringPointerValue(resp.Config.Llm.Model.Name)
 		if resp.Config.Llm.Model.Options == nil {
 			r.Config.Llm.Model.Options = nil
 		} else {
-			r.Config.Llm.Model.Options = &tfTypes.AiLlmAsJudgePluginOptions{}
+			r.Config.Llm.Model.Options = &tfTypes.PartialModelOptions{}
 			r.Config.Llm.Model.Options.AnthropicVersion = types.StringPointerValue(resp.Config.Llm.Model.Options.AnthropicVersion)
 			r.Config.Llm.Model.Options.AzureAPIVersion = types.StringPointerValue(resp.Config.Llm.Model.Options.AzureAPIVersion)
 			r.Config.Llm.Model.Options.AzureDeploymentID = types.StringPointerValue(resp.Config.Llm.Model.Options.AzureDeploymentID)
@@ -67,11 +71,13 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 			if resp.Config.Llm.Model.Options.Bedrock == nil {
 				r.Config.Llm.Model.Options.Bedrock = nil
 			} else {
-				r.Config.Llm.Model.Options.Bedrock = &tfTypes.AiLlmAsJudgePluginBedrock{}
+				r.Config.Llm.Model.Options.Bedrock = &tfTypes.PartialEmbeddingsBedrock{}
 				r.Config.Llm.Model.Options.Bedrock.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.AwsAssumeRoleArn)
 				r.Config.Llm.Model.Options.Bedrock.AwsRegion = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.AwsRegion)
 				r.Config.Llm.Model.Options.Bedrock.AwsRoleSessionName = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.AwsRoleSessionName)
 				r.Config.Llm.Model.Options.Bedrock.AwsStsEndpointURL = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.AwsStsEndpointURL)
+				r.Config.Llm.Model.Options.Bedrock.BatchBucketPrefix = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.BatchBucketPrefix)
+				r.Config.Llm.Model.Options.Bedrock.BatchRoleArn = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.BatchRoleArn)
 				r.Config.Llm.Model.Options.Bedrock.EmbeddingsNormalize = types.BoolPointerValue(resp.Config.Llm.Model.Options.Bedrock.EmbeddingsNormalize)
 				r.Config.Llm.Model.Options.Bedrock.PerformanceConfigLatency = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.PerformanceConfigLatency)
 				r.Config.Llm.Model.Options.Bedrock.VideoOutputS3URI = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.VideoOutputS3URI)
@@ -79,7 +85,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 			if resp.Config.Llm.Model.Options.Cohere == nil {
 				r.Config.Llm.Model.Options.Cohere = nil
 			} else {
-				r.Config.Llm.Model.Options.Cohere = &tfTypes.AiLlmAsJudgePluginCohere{}
+				r.Config.Llm.Model.Options.Cohere = &tfTypes.PartialModelCohere{}
 				if resp.Config.Llm.Model.Options.Cohere.EmbeddingInputType != nil {
 					r.Config.Llm.Model.Options.Cohere.EmbeddingInputType = types.StringValue(string(*resp.Config.Llm.Model.Options.Cohere.EmbeddingInputType))
 				} else {
@@ -90,14 +96,20 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 			if resp.Config.Llm.Model.Options.Dashscope == nil {
 				r.Config.Llm.Model.Options.Dashscope = nil
 			} else {
-				r.Config.Llm.Model.Options.Dashscope = &tfTypes.AiLlmAsJudgePluginDashscope{}
+				r.Config.Llm.Model.Options.Dashscope = &tfTypes.PartialModelDashscope{}
 				r.Config.Llm.Model.Options.Dashscope.International = types.BoolPointerValue(resp.Config.Llm.Model.Options.Dashscope.International)
+			}
+			if resp.Config.Llm.Model.Options.Databricks == nil {
+				r.Config.Llm.Model.Options.Databricks = nil
+			} else {
+				r.Config.Llm.Model.Options.Databricks = &tfTypes.PartialModelDatabricks{}
+				r.Config.Llm.Model.Options.Databricks.WorkspaceInstanceID = types.StringPointerValue(resp.Config.Llm.Model.Options.Databricks.WorkspaceInstanceID)
 			}
 			r.Config.Llm.Model.Options.EmbeddingsDimensions = types.Int64PointerValue(resp.Config.Llm.Model.Options.EmbeddingsDimensions)
 			if resp.Config.Llm.Model.Options.Gemini == nil {
 				r.Config.Llm.Model.Options.Gemini = nil
 			} else {
-				r.Config.Llm.Model.Options.Gemini = &tfTypes.AiLlmAsJudgePluginGemini{}
+				r.Config.Llm.Model.Options.Gemini = &tfTypes.PartialModelGemini{}
 				r.Config.Llm.Model.Options.Gemini.APIEndpoint = types.StringPointerValue(resp.Config.Llm.Model.Options.Gemini.APIEndpoint)
 				r.Config.Llm.Model.Options.Gemini.EndpointID = types.StringPointerValue(resp.Config.Llm.Model.Options.Gemini.EndpointID)
 				r.Config.Llm.Model.Options.Gemini.LocationID = types.StringPointerValue(resp.Config.Llm.Model.Options.Gemini.LocationID)
@@ -106,7 +118,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 			if resp.Config.Llm.Model.Options.Huggingface == nil {
 				r.Config.Llm.Model.Options.Huggingface = nil
 			} else {
-				r.Config.Llm.Model.Options.Huggingface = &tfTypes.AiLlmAsJudgePluginHuggingface{}
+				r.Config.Llm.Model.Options.Huggingface = &tfTypes.PartialEmbeddingsHuggingface{}
 				r.Config.Llm.Model.Options.Huggingface.UseCache = types.BoolPointerValue(resp.Config.Llm.Model.Options.Huggingface.UseCache)
 				r.Config.Llm.Model.Options.Huggingface.WaitForModel = types.BoolPointerValue(resp.Config.Llm.Model.Options.Huggingface.WaitForModel)
 			}
@@ -296,6 +308,12 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToOperationsUpdateAireq
 func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransformerPlugin(ctx context.Context) (*shared.AiRequestTransformerPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -469,6 +487,18 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 		} else {
 			azureUseManagedIdentity = nil
 		}
+		gcpMetadataURL := new(string)
+		if !r.Config.Llm.Auth.GcpMetadataURL.IsUnknown() && !r.Config.Llm.Auth.GcpMetadataURL.IsNull() {
+			*gcpMetadataURL = r.Config.Llm.Auth.GcpMetadataURL.ValueString()
+		} else {
+			gcpMetadataURL = nil
+		}
+		gcpOauthTokenURL := new(string)
+		if !r.Config.Llm.Auth.GcpOauthTokenURL.IsUnknown() && !r.Config.Llm.Auth.GcpOauthTokenURL.IsNull() {
+			*gcpOauthTokenURL = r.Config.Llm.Auth.GcpOauthTokenURL.ValueString()
+		} else {
+			gcpOauthTokenURL = nil
+		}
 		gcpServiceAccountJSON := new(string)
 		if !r.Config.Llm.Auth.GcpServiceAccountJSON.IsUnknown() && !r.Config.Llm.Auth.GcpServiceAccountJSON.IsNull() {
 			*gcpServiceAccountJSON = r.Config.Llm.Auth.GcpServiceAccountJSON.ValueString()
@@ -519,6 +549,8 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 			AzureClientSecret:       azureClientSecret,
 			AzureTenantID:           azureTenantID,
 			AzureUseManagedIdentity: azureUseManagedIdentity,
+			GcpMetadataURL:          gcpMetadataURL,
+			GcpOauthTokenURL:        gcpOauthTokenURL,
 			GcpServiceAccountJSON:   gcpServiceAccountJSON,
 			GcpUseServiceAccount:    gcpUseServiceAccount,
 			HeaderName:              headerName,
@@ -552,6 +584,12 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 			LogPayloads:   logPayloads,
 			LogStatistics: logStatistics,
 		}
+	}
+	modelAlias := new(string)
+	if !r.Config.Llm.Model.ModelAlias.IsUnknown() && !r.Config.Llm.Model.ModelAlias.IsNull() {
+		*modelAlias = r.Config.Llm.Model.ModelAlias.ValueString()
+	} else {
+		modelAlias = nil
 	}
 	name1 := new(string)
 	if !r.Config.Llm.Model.Name.IsUnknown() && !r.Config.Llm.Model.Name.IsNull() {
@@ -611,6 +649,18 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 			} else {
 				awsStsEndpointURL = nil
 			}
+			batchBucketPrefix := new(string)
+			if !r.Config.Llm.Model.Options.Bedrock.BatchBucketPrefix.IsUnknown() && !r.Config.Llm.Model.Options.Bedrock.BatchBucketPrefix.IsNull() {
+				*batchBucketPrefix = r.Config.Llm.Model.Options.Bedrock.BatchBucketPrefix.ValueString()
+			} else {
+				batchBucketPrefix = nil
+			}
+			batchRoleArn := new(string)
+			if !r.Config.Llm.Model.Options.Bedrock.BatchRoleArn.IsUnknown() && !r.Config.Llm.Model.Options.Bedrock.BatchRoleArn.IsNull() {
+				*batchRoleArn = r.Config.Llm.Model.Options.Bedrock.BatchRoleArn.ValueString()
+			} else {
+				batchRoleArn = nil
+			}
 			embeddingsNormalize := new(bool)
 			if !r.Config.Llm.Model.Options.Bedrock.EmbeddingsNormalize.IsUnknown() && !r.Config.Llm.Model.Options.Bedrock.EmbeddingsNormalize.IsNull() {
 				*embeddingsNormalize = r.Config.Llm.Model.Options.Bedrock.EmbeddingsNormalize.ValueBool()
@@ -634,6 +684,8 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 				AwsRegion:                awsRegion,
 				AwsRoleSessionName:       awsRoleSessionName,
 				AwsStsEndpointURL:        awsStsEndpointURL,
+				BatchBucketPrefix:        batchBucketPrefix,
+				BatchRoleArn:             batchRoleArn,
 				EmbeddingsNormalize:      embeddingsNormalize,
 				PerformanceConfigLatency: performanceConfigLatency,
 				VideoOutputS3URI:         videoOutputS3URI,
@@ -668,6 +720,18 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 			}
 			dashscope = &shared.AiRequestTransformerPluginDashscope{
 				International: international,
+			}
+		}
+		var databricks *shared.AiRequestTransformerPluginDatabricks
+		if r.Config.Llm.Model.Options.Databricks != nil {
+			workspaceInstanceID := new(string)
+			if !r.Config.Llm.Model.Options.Databricks.WorkspaceInstanceID.IsUnknown() && !r.Config.Llm.Model.Options.Databricks.WorkspaceInstanceID.IsNull() {
+				*workspaceInstanceID = r.Config.Llm.Model.Options.Databricks.WorkspaceInstanceID.ValueString()
+			} else {
+				workspaceInstanceID = nil
+			}
+			databricks = &shared.AiRequestTransformerPluginDatabricks{
+				WorkspaceInstanceID: workspaceInstanceID,
 			}
 		}
 		embeddingsDimensions := new(int64)
@@ -796,6 +860,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 			Bedrock:              bedrock,
 			Cohere:               cohere,
 			Dashscope:            dashscope,
+			Databricks:           databricks,
 			EmbeddingsDimensions: embeddingsDimensions,
 			Gemini:               gemini,
 			Huggingface:          huggingface,
@@ -813,9 +878,10 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 	}
 	provider := shared.AiRequestTransformerPluginProvider(r.Config.Llm.Model.Provider.ValueString())
 	model := shared.AiRequestTransformerPluginModel{
-		Name:     name1,
-		Options:  optionsVar,
-		Provider: provider,
+		ModelAlias: modelAlias,
+		Name:       name1,
+		Options:    optionsVar,
+		Provider:   provider,
 	}
 	routeType := shared.AiRequestTransformerPluginRouteType(r.Config.Llm.RouteType.ValueString())
 	weight := new(int64)
@@ -900,6 +966,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 		}
 	}
 	out := shared.AiRequestTransformerPlugin{
+		Condition:     condition,
 		CreatedAt:     createdAt,
 		Enabled:       enabled,
 		ID:            id,

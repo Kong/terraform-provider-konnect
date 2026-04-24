@@ -48,6 +48,7 @@ type GatewayPluginAcmeResource struct {
 
 // GatewayPluginAcmeResourceModel describes the resource data model.
 type GatewayPluginAcmeResourceModel struct {
+	Condition      types.String                `tfsdk:"condition"`
 	Config         *tfTypes.AcmePluginConfig   `tfsdk:"config"`
 	ControlPlaneID types.String                `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                 `tfsdk:"created_at"`
@@ -69,6 +70,13 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginAcme Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -111,13 +119,7 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`rsa`),
-						Description: `The certificate type to create. The possible values are ` + "`" + `rsa` + "`" + ` for RSA certificate or ` + "`" + `ecc` + "`" + ` for EC certificate. Default: "rsa"; must be one of ["ecc", "rsa"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"ecc",
-								"rsa",
-							),
-						},
+						Description: `The certificate type to create. The possible values are ` + "`" + `rsa` + "`" + ` for RSA certificate or ` + "`" + `ecc` + "`" + ` for EC certificate. possible known values include one of ["ecc", "rsa"]; Default: "rsa"`,
 					},
 					"domains": schema.ListAttribute{
 						Optional:    true,
@@ -160,29 +162,13 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 						Computed:    true,
 						Optional:    true,
 						Default:     int64default.StaticInt64(4096),
-						Description: `RSA private key size for the certificate. The possible values are 2048, 3072, or 4096. Default: 4096; must be one of [2048, 3072, 4096]`,
-						Validators: []validator.Int64{
-							int64validator.OneOf(
-								2048,
-								3072,
-								4096,
-							),
-						},
+						Description: `RSA private key size for the certificate. The possible values are 2048, 3072, or 4096. possible known values include one of [2048, 3072, 4096]; Default: 4096`,
 					},
 					"storage": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`shm`),
-						Description: `The backend storage type to use. In DB-less mode and Konnect, ` + "`" + `kong` + "`" + ` storage is unavailable. In hybrid mode and Konnect, ` + "`" + `shm` + "`" + ` storage is unavailable. ` + "`" + `shm` + "`" + ` storage does not persist during Kong restarts and does not work for Kong running on different machines, so consider using one of ` + "`" + `kong` + "`" + `, ` + "`" + `redis` + "`" + `, ` + "`" + `consul` + "`" + `, or ` + "`" + `vault` + "`" + ` in production. Default: "shm"; must be one of ["consul", "kong", "redis", "shm", "vault"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"consul",
-								"kong",
-								"redis",
-								"shm",
-								"vault",
-							),
-						},
+						Description: `The backend storage type to use. In DB-less mode and Konnect, ` + "`" + `kong` + "`" + ` storage is unavailable. In hybrid mode and Konnect, ` + "`" + `shm` + "`" + ` storage is unavailable. ` + "`" + `shm` + "`" + ` storage does not persist during Kong restarts and does not work for Kong running on different machines, so consider using one of ` + "`" + `kong` + "`" + `, ` + "`" + `redis` + "`" + `, ` + "`" + `consul` + "`" + `, or ` + "`" + `vault` + "`" + ` in production. possible known values include one of ["consul", "kong", "redis", "shm", "vault"]; Default: "shm"`,
 					},
 					"storage_config": schema.SingleNestedAttribute{
 						Computed: true,
@@ -367,14 +353,7 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 											"auth_provider": schema.StringAttribute{
 												Computed:    true,
 												Optional:    true,
-												Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
-												Validators: []validator.String{
-													stringvalidator.OneOf(
-														"aws",
-														"azure",
-														"gcp",
-													),
-												},
+												Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
 											},
 											"aws_access_key_id": schema.StringAttribute{
 												Optional:    true,
@@ -539,13 +518,7 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 										Computed:    true,
 										Optional:    true,
 										Default:     stringdefault.StaticString(`token`),
-										Description: `Auth Method, default to token, can be 'token' or 'kubernetes'. Default: "token"; must be one of ["kubernetes", "token"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"kubernetes",
-												"token",
-											),
-										},
+										Description: `Auth Method, default to token, can be 'token' or 'kubernetes'. possible known values include one of ["kubernetes", "token"]; Default: "token"`,
 									},
 									"auth_path": schema.StringAttribute{
 										Optional:    true,

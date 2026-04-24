@@ -15,6 +15,7 @@ func (r *GatewayPluginLogglyResourceModel) RefreshFromSharedLogglyPlugin(ctx con
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.LogglyPluginConfig{}
 		if resp.Config.ClientErrorsSeverity != nil {
 			r.Config.ClientErrorsSeverity = types.StringValue(string(*resp.Config.ClientErrorsSeverity))
@@ -211,6 +212,12 @@ func (r *GatewayPluginLogglyResourceModel) ToOperationsUpdateLogglyPluginRequest
 func (r *GatewayPluginLogglyResourceModel) ToSharedLogglyPlugin(ctx context.Context) (*shared.LogglyPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -416,6 +423,7 @@ func (r *GatewayPluginLogglyResourceModel) ToSharedLogglyPlugin(ctx context.Cont
 		}
 	}
 	out := shared.LogglyPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

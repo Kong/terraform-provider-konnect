@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -133,20 +131,16 @@ const (
 func (e AuthenticatedGroupBy) ToPointer() *AuthenticatedGroupBy {
 	return &e
 }
-func (e *AuthenticatedGroupBy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AuthenticatedGroupBy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "CN", "DN":
+			return true
+		}
 	}
-	switch v {
-	case "CN":
-		fallthrough
-	case "DN":
-		*e = AuthenticatedGroupBy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AuthenticatedGroupBy: %v", v)
-	}
+	return false
 }
 
 // CertificateHeaderFormat - Format of the certificate header. Supported formats: `base64_encoded`, `url_encoded`.
@@ -160,46 +154,38 @@ const (
 func (e CertificateHeaderFormat) ToPointer() *CertificateHeaderFormat {
 	return &e
 }
-func (e *CertificateHeaderFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CertificateHeaderFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "base64_encoded", "url_encoded":
+			return true
+		}
 	}
-	switch v {
-	case "base64_encoded":
-		fallthrough
-	case "url_encoded":
-		*e = CertificateHeaderFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CertificateHeaderFormat: %v", v)
-	}
+	return false
 }
 
-type ConsumerBy string
+type HeaderCertAuthPluginConsumerBy string
 
 const (
-	ConsumerByCustomID ConsumerBy = "custom_id"
-	ConsumerByUsername ConsumerBy = "username"
+	HeaderCertAuthPluginConsumerByCustomID HeaderCertAuthPluginConsumerBy = "custom_id"
+	HeaderCertAuthPluginConsumerByUsername HeaderCertAuthPluginConsumerBy = "username"
 )
 
-func (e ConsumerBy) ToPointer() *ConsumerBy {
+func (e HeaderCertAuthPluginConsumerBy) ToPointer() *HeaderCertAuthPluginConsumerBy {
 	return &e
 }
-func (e *ConsumerBy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *HeaderCertAuthPluginConsumerBy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "custom_id", "username":
+			return true
+		}
 	}
-	switch v {
-	case "custom_id":
-		fallthrough
-	case "username":
-		*e = ConsumerBy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ConsumerBy: %v", v)
-	}
+	return false
 }
 
 // RevocationCheckMode - Controls client certificate revocation check behavior. If set to `SKIP`, no revocation check is performed. If set to `IGNORE_CA_ERROR`, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to `STRICT`, the plugin only treats the certificate as valid when it's able to verify the revocation status.
@@ -214,22 +200,16 @@ const (
 func (e RevocationCheckMode) ToPointer() *RevocationCheckMode {
 	return &e
 }
-func (e *RevocationCheckMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RevocationCheckMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "IGNORE_CA_ERROR", "SKIP", "STRICT":
+			return true
+		}
 	}
-	switch v {
-	case "IGNORE_CA_ERROR":
-		fallthrough
-	case "SKIP":
-		fallthrough
-	case "STRICT":
-		*e = RevocationCheckMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RevocationCheckMode: %v", v)
-	}
+	return false
 }
 
 type HeaderCertAuthPluginConfig struct {
@@ -250,7 +230,7 @@ type HeaderCertAuthPluginConfig struct {
 	// Name of the header that contains the certificate, received from the WAF or other L7 downstream proxy.
 	CertificateHeaderName string `json:"certificate_header_name"`
 	// Whether to match the subject name of the client-supplied certificate against consumer's `username` and/or `custom_id` attribute. If set to `[]` (the empty array), then auto-matching is disabled.
-	ConsumerBy []ConsumerBy `json:"consumer_by,omitempty"`
+	ConsumerBy []HeaderCertAuthPluginConsumerBy `json:"consumer_by,omitempty"`
 	// The UUID or username of the consumer to use when a trusted client certificate is presented but no consumer matches. Note that this value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
 	DefaultConsumer *string `default:"null" json:"default_consumer"`
 	// A string representing a host name, such as example.com.
@@ -270,7 +250,7 @@ type HeaderCertAuthPluginConfig struct {
 	// Skip consumer lookup once certificate is trusted against the configured CA list.
 	SkipConsumerLookup *bool `default:"false" json:"skip_consumer_lookup"`
 	// This option enables verification of the certificate presented by the server of the OCSP responder's URL and by the server of the CRL Distribution Point.
-	SslVerify *bool `default:"null" json:"ssl_verify"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 }
 
 func (h HeaderCertAuthPluginConfig) MarshalJSON() ([]byte, error) {
@@ -340,7 +320,7 @@ func (h *HeaderCertAuthPluginConfig) GetCertificateHeaderName() string {
 	return h.CertificateHeaderName
 }
 
-func (h *HeaderCertAuthPluginConfig) GetConsumerBy() []ConsumerBy {
+func (h *HeaderCertAuthPluginConfig) GetConsumerBy() []HeaderCertAuthPluginConsumerBy {
 	if h == nil {
 		return nil
 	}
@@ -429,24 +409,16 @@ const (
 func (e HeaderCertAuthPluginProtocols) ToPointer() *HeaderCertAuthPluginProtocols {
 	return &e
 }
-func (e *HeaderCertAuthPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *HeaderCertAuthPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = HeaderCertAuthPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for HeaderCertAuthPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // HeaderCertAuthPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -497,6 +469,8 @@ func (h *HeaderCertAuthPluginService) GetID() *string {
 
 // HeaderCertAuthPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type HeaderCertAuthPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -532,6 +506,13 @@ func (h *HeaderCertAuthPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (h *HeaderCertAuthPlugin) GetCondition() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Condition
 }
 
 func (h *HeaderCertAuthPlugin) GetCreatedAt() *int64 {

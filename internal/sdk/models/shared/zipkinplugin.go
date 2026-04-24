@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -140,34 +138,16 @@ const (
 func (e DefaultHeaderType) ToPointer() *DefaultHeaderType {
 	return &e
 }
-func (e *DefaultHeaderType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DefaultHeaderType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "w3c":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "b3":
-		fallthrough
-	case "b3-single":
-		fallthrough
-	case "datadog":
-		fallthrough
-	case "gcp":
-		fallthrough
-	case "instana":
-		fallthrough
-	case "jaeger":
-		fallthrough
-	case "ot":
-		fallthrough
-	case "w3c":
-		*e = DefaultHeaderType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for DefaultHeaderType: %v", v)
-	}
+	return false
 }
 
 // ZipkinPluginHeaderType - All HTTP requests going through the plugin are tagged with a tracing HTTP request. This property codifies what kind of tracing header the plugin expects on incoming requests
@@ -190,38 +170,16 @@ const (
 func (e ZipkinPluginHeaderType) ToPointer() *ZipkinPluginHeaderType {
 	return &e
 }
-func (e *ZipkinPluginHeaderType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ZipkinPluginHeaderType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "b3", "b3-single", "datadog", "gcp", "ignore", "instana", "jaeger", "ot", "preserve", "w3c":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "b3":
-		fallthrough
-	case "b3-single":
-		fallthrough
-	case "datadog":
-		fallthrough
-	case "gcp":
-		fallthrough
-	case "ignore":
-		fallthrough
-	case "instana":
-		fallthrough
-	case "jaeger":
-		fallthrough
-	case "ot":
-		fallthrough
-	case "preserve":
-		fallthrough
-	case "w3c":
-		*e = ZipkinPluginHeaderType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ZipkinPluginHeaderType: %v", v)
-	}
+	return false
 }
 
 // HTTPSpanName - Specify whether to include the HTTP path in the span name.
@@ -235,20 +193,16 @@ const (
 func (e HTTPSpanName) ToPointer() *HTTPSpanName {
 	return &e
 }
-func (e *HTTPSpanName) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *HTTPSpanName) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "method", "method_path":
+			return true
+		}
 	}
-	switch v {
-	case "method":
-		fallthrough
-	case "method_path":
-		*e = HTTPSpanName(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for HTTPSpanName: %v", v)
-	}
+	return false
 }
 
 // PhaseDurationFlavor - Specify whether to include the duration of each phase as an annotation or a tag.
@@ -262,20 +216,16 @@ const (
 func (e PhaseDurationFlavor) ToPointer() *PhaseDurationFlavor {
 	return &e
 }
-func (e *PhaseDurationFlavor) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *PhaseDurationFlavor) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "annotations", "tags":
+			return true
+		}
 	}
-	switch v {
-	case "annotations":
-		fallthrough
-	case "tags":
-		*e = PhaseDurationFlavor(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for PhaseDurationFlavor: %v", v)
-	}
+	return false
 }
 
 // ZipkinPluginDefaultFormat - The default header format to use when extractors did not match any format in the incoming headers and `inject` is configured with the value: `preserve`. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in `extract`.
@@ -296,34 +246,16 @@ const (
 func (e ZipkinPluginDefaultFormat) ToPointer() *ZipkinPluginDefaultFormat {
 	return &e
 }
-func (e *ZipkinPluginDefaultFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ZipkinPluginDefaultFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "w3c":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "b3":
-		fallthrough
-	case "b3-single":
-		fallthrough
-	case "datadog":
-		fallthrough
-	case "gcp":
-		fallthrough
-	case "instana":
-		fallthrough
-	case "jaeger":
-		fallthrough
-	case "ot":
-		fallthrough
-	case "w3c":
-		*e = ZipkinPluginDefaultFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ZipkinPluginDefaultFormat: %v", v)
-	}
+	return false
 }
 
 type ZipkinPluginExtract string
@@ -342,32 +274,16 @@ const (
 func (e ZipkinPluginExtract) ToPointer() *ZipkinPluginExtract {
 	return &e
 }
-func (e *ZipkinPluginExtract) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ZipkinPluginExtract) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "b3", "datadog", "gcp", "instana", "jaeger", "ot", "w3c":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "b3":
-		fallthrough
-	case "datadog":
-		fallthrough
-	case "gcp":
-		fallthrough
-	case "instana":
-		fallthrough
-	case "jaeger":
-		fallthrough
-	case "ot":
-		fallthrough
-	case "w3c":
-		*e = ZipkinPluginExtract(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ZipkinPluginExtract: %v", v)
-	}
+	return false
 }
 
 type ZipkinPluginInject string
@@ -388,36 +304,16 @@ const (
 func (e ZipkinPluginInject) ToPointer() *ZipkinPluginInject {
 	return &e
 }
-func (e *ZipkinPluginInject) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ZipkinPluginInject) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "preserve", "w3c":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "b3":
-		fallthrough
-	case "b3-single":
-		fallthrough
-	case "datadog":
-		fallthrough
-	case "gcp":
-		fallthrough
-	case "instana":
-		fallthrough
-	case "jaeger":
-		fallthrough
-	case "ot":
-		fallthrough
-	case "preserve":
-		fallthrough
-	case "w3c":
-		*e = ZipkinPluginInject(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ZipkinPluginInject: %v", v)
-	}
+	return false
 }
 
 type ZipkinPluginPropagation struct {
@@ -481,20 +377,16 @@ const (
 func (e ZipkinPluginConcurrencyLimit) ToPointer() *ZipkinPluginConcurrencyLimit {
 	return &e
 }
-func (e *ZipkinPluginConcurrencyLimit) UnmarshalJSON(data []byte) error {
-	var v int64
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ZipkinPluginConcurrencyLimit) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case -1, 1:
+			return true
+		}
 	}
-	switch v {
-	case -1:
-		fallthrough
-	case 1:
-		*e = ZipkinPluginConcurrencyLimit(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ZipkinPluginConcurrencyLimit: %v", v)
-	}
+	return false
 }
 
 type ZipkinPluginQueue struct {
@@ -624,20 +516,16 @@ const (
 func (e TraceidByteCount) ToPointer() *TraceidByteCount {
 	return &e
 }
-func (e *TraceidByteCount) UnmarshalJSON(data []byte) error {
-	var v int64
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TraceidByteCount) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case 8, 16:
+			return true
+		}
 	}
-	switch v {
-	case 8:
-		fallthrough
-	case 16:
-		*e = TraceidByteCount(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TraceidByteCount: %v", v)
-	}
+	return false
 }
 
 type ZipkinPluginConfig struct {
@@ -855,36 +743,16 @@ const (
 func (e ZipkinPluginProtocols) ToPointer() *ZipkinPluginProtocols {
 	return &e
 }
-func (e *ZipkinPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ZipkinPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = ZipkinPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ZipkinPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // ZipkinPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -935,6 +803,8 @@ func (z *ZipkinPluginService) GetID() *string {
 
 // ZipkinPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type ZipkinPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -972,6 +842,13 @@ func (z *ZipkinPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (z *ZipkinPlugin) GetCondition() *string {
+	if z == nil {
+		return nil
+	}
+	return z.Condition
 }
 
 func (z *ZipkinPlugin) GetCreatedAt() *int64 {

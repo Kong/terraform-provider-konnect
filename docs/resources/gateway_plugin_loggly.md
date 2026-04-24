@@ -14,6 +14,7 @@ GatewayPluginLoggly Resource
 
 ```terraform
 resource "konnect_gateway_plugin_loggly" "my_gatewaypluginloggly" {
+  condition = "...my_condition..."
   config = {
     client_errors_severity = "info"
     custom_fields_by_lua = {
@@ -83,6 +84,7 @@ resource "konnect_gateway_plugin_loggly" "my_gatewaypluginloggly" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
@@ -105,13 +107,13 @@ Required:
 
 Optional:
 
-- `client_errors_severity` (String) Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
+- `client_errors_severity` (String) possible known values include one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]; Default: "info"
 - `custom_fields_by_lua` (Map of String) Lua code as a key-value map
 - `host` (String) A string representing a host name, such as example.com. Default: "logs-01.loggly.com"
-- `log_level` (String) Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
+- `log_level` (String) possible known values include one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]; Default: "info"
 - `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 514
-- `server_errors_severity` (String) Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
-- `successful_severity` (String) Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
+- `server_errors_severity` (String) possible known values include one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]; Default: "info"
+- `successful_severity` (String) possible known values include one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]; Default: "info"
 - `tags` (List of String) Default: ["kong"]
 - `timeout` (Number) Default: 10000
 
@@ -185,7 +187,7 @@ import {
   to = konnect_gateway_plugin_loggly.my_konnect_gateway_plugin_loggly
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

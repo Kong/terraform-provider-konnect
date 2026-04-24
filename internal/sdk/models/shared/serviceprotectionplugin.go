@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -134,22 +132,16 @@ const (
 func (e ServiceProtectionPluginAuthProvider) ToPointer() *ServiceProtectionPluginAuthProvider {
 	return &e
 }
-func (e *ServiceProtectionPluginAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ServiceProtectionPluginAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = ServiceProtectionPluginAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ServiceProtectionPluginAuthProvider: %v", v)
-	}
+	return false
 }
 
 // ServiceProtectionPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -351,22 +343,16 @@ const (
 func (e ServiceProtectionPluginSentinelRole) ToPointer() *ServiceProtectionPluginSentinelRole {
 	return &e
 }
-func (e *ServiceProtectionPluginSentinelRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ServiceProtectionPluginSentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "master":
-		fallthrough
-	case "slave":
-		*e = ServiceProtectionPluginSentinelRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ServiceProtectionPluginSentinelRole: %v", v)
-	}
+	return false
 }
 
 type ServiceProtectionPluginRedis struct {
@@ -593,22 +579,16 @@ const (
 func (e ServiceProtectionPluginStrategy) ToPointer() *ServiceProtectionPluginStrategy {
 	return &e
 }
-func (e *ServiceProtectionPluginStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ServiceProtectionPluginStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "cluster", "local", "redis":
+			return true
+		}
 	}
-	switch v {
-	case "cluster":
-		fallthrough
-	case "local":
-		fallthrough
-	case "redis":
-		*e = ServiceProtectionPluginStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ServiceProtectionPluginStrategy: %v", v)
-	}
+	return false
 }
 
 // ServiceProtectionPluginWindowType - Sets the time window type to either `sliding` (default) or `fixed`. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters.
@@ -622,20 +602,16 @@ const (
 func (e ServiceProtectionPluginWindowType) ToPointer() *ServiceProtectionPluginWindowType {
 	return &e
 }
-func (e *ServiceProtectionPluginWindowType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ServiceProtectionPluginWindowType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "fixed", "sliding":
+			return true
+		}
 	}
-	switch v {
-	case "fixed":
-		fallthrough
-	case "sliding":
-		*e = ServiceProtectionPluginWindowType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ServiceProtectionPluginWindowType: %v", v)
-	}
+	return false
 }
 
 type ServiceProtectionPluginConfig struct {
@@ -789,24 +765,16 @@ const (
 func (e ServiceProtectionPluginProtocols) ToPointer() *ServiceProtectionPluginProtocols {
 	return &e
 }
-func (e *ServiceProtectionPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ServiceProtectionPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = ServiceProtectionPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ServiceProtectionPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // ServiceProtectionPluginService - If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
@@ -834,6 +802,8 @@ func (s *ServiceProtectionPluginService) GetID() *string {
 
 // ServiceProtectionPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type ServiceProtectionPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -867,6 +837,13 @@ func (s *ServiceProtectionPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (s *ServiceProtectionPlugin) GetCondition() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Condition
 }
 
 func (s *ServiceProtectionPlugin) GetCreatedAt() *int64 {

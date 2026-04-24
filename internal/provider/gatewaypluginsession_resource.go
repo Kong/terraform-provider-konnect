@@ -44,6 +44,7 @@ type GatewayPluginSessionResource struct {
 
 // GatewayPluginSessionResourceModel describes the resource data model.
 type GatewayPluginSessionResourceModel struct {
+	Condition      types.String                 `tfsdk:"condition"`
 	Config         *tfTypes.SessionPluginConfig `tfsdk:"config"`
 	ControlPlaneID types.String                 `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                  `tfsdk:"created_at"`
@@ -67,6 +68,13 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginSession Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
@@ -150,15 +158,7 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`Strict`),
-						Description: `Determines whether and how a cookie may be sent with cross-site requests. Default: "Strict"; must be one of ["Default", "Lax", "None", "Strict"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"Default",
-								"Lax",
-								"None",
-								"Strict",
-							),
-						},
+						Description: `Determines whether and how a cookie may be sent with cross-site requests. possible known values include one of ["Default", "Lax", "None", "Strict"]; Default: "Strict"`,
 					},
 					"cookie_secure": schema.BoolAttribute{
 						Computed:    true,
@@ -260,13 +260,7 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`cookie`),
-						Description: `Determines where the session data is stored. ` + "`" + `kong` + "`" + `: Stores encrypted session data into Kong's current database strategy; the cookie will not contain any session data. ` + "`" + `cookie` + "`" + `: Stores encrypted session data within the cookie itself. Default: "cookie"; must be one of ["cookie", "kong"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"cookie",
-								"kong",
-							),
-						},
+						Description: `Determines where the session data is stored. ` + "`" + `kong` + "`" + `: Stores encrypted session data into Kong's current database strategy; the cookie will not contain any session data. ` + "`" + `cookie` + "`" + `: Stores encrypted session data within the cookie itself. possible known values include one of ["cookie", "kong"]; Default: "cookie"`,
 					},
 					"store_metadata": schema.BoolAttribute{
 						Computed:    true,

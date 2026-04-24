@@ -17,6 +17,7 @@ func (r *GatewayPluginAcmeResourceModel) RefreshFromSharedAcmePlugin(ctx context
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.AcmePluginConfig{}
 		r.Config.AccountEmail = types.StringValue(resp.Config.AccountEmail)
 		if resp.Config.AccountKey == nil {
@@ -293,6 +294,12 @@ func (r *GatewayPluginAcmeResourceModel) ToOperationsUpdateAcmePluginRequest(ctx
 func (r *GatewayPluginAcmeResourceModel) ToSharedAcmePlugin(ctx context.Context) (*shared.AcmePlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -852,6 +859,7 @@ func (r *GatewayPluginAcmeResourceModel) ToSharedAcmePlugin(ctx context.Context)
 		protocols = append(protocols, shared.AcmePluginProtocols(protocolsItem.ValueString()))
 	}
 	out := shared.AcmePlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

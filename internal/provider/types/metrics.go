@@ -7,9 +7,7 @@ import (
 )
 
 type Metrics struct {
-	ConsumerIdentifier types.String   `tfsdk:"consumer_identifier"`
-	Name               types.String   `tfsdk:"name"`
-	SampleRate         types.Float64  `tfsdk:"sample_rate"`
-	StatType           types.String   `tfsdk:"stat_type"`
-	Tags               []types.String `tfsdk:"tags"`
+	BlockDetail types.String `tfsdk:"block_detail"`
+	BlockReason types.String `tfsdk:"block_reason"`
+	Masked      types.String `tfsdk:"masked"`
 }

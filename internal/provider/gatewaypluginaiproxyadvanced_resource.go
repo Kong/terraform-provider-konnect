@@ -28,6 +28,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/listvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
@@ -48,6 +49,7 @@ type GatewayPluginAiProxyAdvancedResource struct {
 
 // GatewayPluginAiProxyAdvancedResourceModel describes the resource data model.
 type GatewayPluginAiProxyAdvancedResourceModel struct {
+	Condition      types.String                         `tfsdk:"condition"`
 	Config         *tfTypes.AiProxyAdvancedPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                         `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.Set                         `tfsdk:"consumer_group"`
@@ -73,9 +75,153 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginAiProxyAdvanced Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
+					"acls": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+							"allow": types.ListType{
+								ElemType: types.ObjectType{
+									AttrTypes: map[string]attr.Type{
+										`match`: types.ListType{
+											ElemType: types.ObjectType{
+												AttrTypes: map[string]attr.Type{
+													`key`:  types.StringType,
+													`type`: types.StringType,
+													`values`: types.ListType{
+														ElemType: types.StringType,
+													},
+												},
+											},
+										},
+									},
+								},
+							},
+							"deny": types.ListType{
+								ElemType: types.ObjectType{
+									AttrTypes: map[string]attr.Type{
+										`match`: types.ListType{
+											ElemType: types.ObjectType{
+												AttrTypes: map[string]attr.Type{
+													`key`:  types.StringType,
+													`type`: types.StringType,
+													`values`: types.ListType{
+														ElemType: types.StringType,
+													},
+												},
+											},
+										},
+									},
+								},
+							},
+						})),
+						Attributes: map[string]schema.Attribute{
+							"allow": schema.ListNestedAttribute{
+								Optional: true,
+								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+									Attributes: map[string]schema.Attribute{
+										"match": schema.ListNestedAttribute{
+											Computed: true,
+											Optional: true,
+											NestedObject: schema.NestedAttributeObject{
+												Validators: []validator.Object{
+													speakeasy_objectvalidators.NotNull(),
+												},
+												Attributes: map[string]schema.Attribute{
+													"key": schema.StringAttribute{
+														Optional:    true,
+														Description: `Helper key used by some types: consumer (id|username), consumer_group (id|name), header (header name).`,
+													},
+													"type": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The attribute to match against. possible known values include one of ["consumer", "consumer_group", "header", "ip", "model", "path", "provider"]; Not Null`,
+														Validators: []validator.String{
+															speakeasy_stringvalidators.NotNull(),
+														},
+													},
+													"values": schema.ListAttribute{
+														Computed:    true,
+														Optional:    true,
+														ElementType: types.StringType,
+														Description: `Allowed values for the selected type. Not Null`,
+														Validators: []validator.List{
+															speakeasy_listvalidators.NotNull(),
+														},
+													},
+												},
+											},
+											Description: `All conditions must match for the rule to apply (logical AND). Not Null`,
+											Validators: []validator.List{
+												speakeasy_listvalidators.NotNull(),
+											},
+										},
+									},
+								},
+								Description: `Requests matching any allow rule are permitted unless also matched by a deny rule.`,
+							},
+							"deny": schema.ListNestedAttribute{
+								Optional: true,
+								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
+									Attributes: map[string]schema.Attribute{
+										"match": schema.ListNestedAttribute{
+											Computed: true,
+											Optional: true,
+											NestedObject: schema.NestedAttributeObject{
+												Validators: []validator.Object{
+													speakeasy_objectvalidators.NotNull(),
+												},
+												Attributes: map[string]schema.Attribute{
+													"key": schema.StringAttribute{
+														Optional:    true,
+														Description: `Helper key used by some types: consumer (id|username), consumer_group (id|name), header (header name).`,
+													},
+													"type": schema.StringAttribute{
+														Computed:    true,
+														Optional:    true,
+														Description: `The attribute to match against. possible known values include one of ["consumer", "consumer_group", "header", "ip", "model", "path", "provider"]; Not Null`,
+														Validators: []validator.String{
+															speakeasy_stringvalidators.NotNull(),
+														},
+													},
+													"values": schema.ListAttribute{
+														Computed:    true,
+														Optional:    true,
+														ElementType: types.StringType,
+														Description: `Allowed values for the selected type. Not Null`,
+														Validators: []validator.List{
+															speakeasy_listvalidators.NotNull(),
+														},
+													},
+												},
+											},
+											Description: `All conditions must match for the rule to apply (logical AND). Not Null`,
+											Validators: []validator.List{
+												speakeasy_listvalidators.NotNull(),
+											},
+										},
+									},
+								},
+								Description: `Requests matching any deny rule are blocked. Deny rules take precedence over allow rules.`,
+							},
+						},
+						Description: `Optional ACL rules. Deny rules take precedence over allow rules.`,
+					},
 					"balancer": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
@@ -100,18 +246,7 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(`round-robin`),
-								Description: `Which load balancing algorithm to use. Default: "round-robin"; must be one of ["consistent-hashing", "least-connections", "lowest-latency", "lowest-usage", "priority", "round-robin", "semantic"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"consistent-hashing",
-										"least-connections",
-										"lowest-latency",
-										"lowest-usage",
-										"priority",
-										"round-robin",
-										"semantic",
-									),
-								},
+								Description: `Which load balancing algorithm to use. possible known values include one of ["consistent-hashing", "least-connections", "lowest-latency", "lowest-usage", "priority", "round-robin", "semantic"]; Default: "round-robin"`,
 							},
 							"connect_timeout": schema.Int64Attribute{
 								Computed:    true,
@@ -151,13 +286,7 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(`tpot`),
-								Description: `What metrics to use for latency. Available values are: ` + "`" + `tpot` + "`" + ` (time-per-output-token) and ` + "`" + `e2e` + "`" + `. Default: "tpot"; must be one of ["e2e", "tpot"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"e2e",
-										"tpot",
-									),
-								},
+								Description: `What metrics to use for latency. Available values are: ` + "`" + `tpot` + "`" + ` (time-per-output-token) and ` + "`" + `e2e` + "`" + `. possible known values include one of ["e2e", "tpot"]; Default: "tpot"`,
 							},
 							"max_fails": schema.Int64Attribute{
 								Computed:    true,
@@ -199,16 +328,7 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(`total-tokens`),
-								Description: `What tokens to use for usage calculation. Available values are: ` + "`" + `total_tokens` + "`" + ` ` + "`" + `prompt_tokens` + "`" + `, ` + "`" + `completion_tokens` + "`" + ` and ` + "`" + `cost` + "`" + `. Default: "total-tokens"; must be one of ["completion-tokens", "cost", "llm-accuracy", "prompt-tokens", "total-tokens"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"completion-tokens",
-										"cost",
-										"llm-accuracy",
-										"prompt-tokens",
-										"total-tokens",
-									),
-								},
+								Description: `What tokens to use for usage calculation. Available values are: ` + "`" + `total_tokens` + "`" + ` ` + "`" + `prompt_tokens` + "`" + `, ` + "`" + `completion_tokens` + "`" + ` and ` + "`" + `cost` + "`" + `. possible known values include one of ["completion-tokens", "cost", "llm-accuracy", "prompt-tokens", "total-tokens"]; Default: "total-tokens"`,
 							},
 							"write_timeout": schema.Int64Attribute{
 								Computed:    true,
@@ -234,6 +354,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 									`azure_client_secret`:        types.StringType,
 									`azure_tenant_id`:            types.StringType,
 									`azure_use_managed_identity`: types.BoolType,
+									`gcp_metadata_url`:           types.StringType,
+									`gcp_oauth_token_url`:        types.StringType,
 									`gcp_service_account_json`:   types.StringType,
 									`gcp_use_service_account`:    types.BoolType,
 									`header_name`:                types.StringType,
@@ -261,6 +383,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 													`aws_region`:                 types.StringType,
 													`aws_role_session_name`:      types.StringType,
 													`aws_sts_endpoint_url`:       types.StringType,
+													`batch_bucket_prefix`:        types.StringType,
+													`batch_role_arn`:             types.StringType,
 													`embeddings_normalize`:       types.BoolType,
 													`performance_config_latency`: types.StringType,
 													`video_output_s3_uri`:        types.StringType,
@@ -298,6 +422,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 									"azure_client_secret":        types.StringType,
 									"azure_tenant_id":            types.StringType,
 									"azure_use_managed_identity": types.BoolType,
+									"gcp_metadata_url":           types.StringType,
+									"gcp_oauth_token_url":        types.StringType,
 									"gcp_service_account_json":   types.StringType,
 									"gcp_use_service_account":    types.BoolType,
 									"header_name":                types.StringType,
@@ -339,6 +465,14 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 										Default:     booldefault.StaticBool(false),
 										Description: `Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models. Default: false`,
 									},
+									"gcp_metadata_url": schema.StringAttribute{
+										Optional:    true,
+										Description: `Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.`,
+									},
+									"gcp_oauth_token_url": schema.StringAttribute{
+										Optional:    true,
+										Description: `Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.`,
+									},
 									"gcp_service_account_json": schema.StringAttribute{
 										Optional:    true,
 										Description: `Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable ` + "`" + `GCP_SERVICE_ACCOUNT` + "`" + `.`,
@@ -360,13 +494,7 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 									"param_location": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. must be one of ["body", "query"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"body",
-												"query",
-											),
-										},
+										Description: `Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
 									},
 									"param_name": schema.StringAttribute{
 										Optional:    true,
@@ -402,6 +530,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 													`aws_region`:                 types.StringType,
 													`aws_role_session_name`:      types.StringType,
 													`aws_sts_endpoint_url`:       types.StringType,
+													`batch_bucket_prefix`:        types.StringType,
+													`batch_role_arn`:             types.StringType,
 													`embeddings_normalize`:       types.BoolType,
 													`performance_config_latency`: types.StringType,
 													`video_output_s3_uri`:        types.StringType,
@@ -456,6 +586,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 													"aws_region":                 types.StringType,
 													"aws_role_session_name":      types.StringType,
 													"aws_sts_endpoint_url":       types.StringType,
+													"batch_bucket_prefix":        types.StringType,
+													"batch_role_arn":             types.StringType,
 													"embeddings_normalize":       types.BoolType,
 													"performance_config_latency": types.StringType,
 													"video_output_s3_uri":        types.StringType,
@@ -476,6 +608,14 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 													"aws_sts_endpoint_url": schema.StringAttribute{
 														Optional:    true,
 														Description: `If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.`,
+													},
+													"batch_bucket_prefix": schema.StringAttribute{
+														Optional:    true,
+														Description: `S3 URI prefix (s3://bucket/prefix/) where Bedrock will get input files from and store results to for native batch API.`,
+													},
+													"batch_role_arn": schema.StringAttribute{
+														Optional:    true,
+														Description: `AWS role arn used for calling batch API. Try to get the value from request if ommited.`,
 													},
 													"embeddings_normalize": schema.BoolAttribute{
 														Computed:    true,
@@ -543,17 +683,7 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 									},
 									"provider": schema.StringAttribute{
 										Required:    true,
-										Description: `AI provider format to use for embeddings API. must be one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "openai"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"azure",
-												"bedrock",
-												"gemini",
-												"huggingface",
-												"mistral",
-												"openai",
-											),
-										},
+										Description: `AI provider format to use for embeddings API. possible known values include one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai"]`,
 									},
 								},
 							},
@@ -563,34 +693,13 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`text/generation`),
-						Description: `Generative AI category of the request. Default: "text/generation"; must be one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"audio/speech",
-								"audio/transcription",
-								"image/generation",
-								"realtime/generation",
-								"text/embeddings",
-								"text/generation",
-								"video/generation",
-							),
-						},
+						Description: `Generative AI category of the request. possible known values include one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation"]; Default: "text/generation"`,
 					},
 					"llm_format": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`openai`),
-						Description: `LLM input and output format and schema to use. Default: "openai"; must be one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"anthropic",
-								"bedrock",
-								"cohere",
-								"gemini",
-								"huggingface",
-								"openai",
-							),
-						},
+						Description: `LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]; Default: "openai"`,
 					},
 					"max_request_body_size": schema.Int64Attribute{
 						Computed:    true,
@@ -608,14 +717,7 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`allow`),
-						Description: `Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events. Default: "allow"; must be one of ["allow", "always", "deny"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"allow",
-								"always",
-								"deny",
-							),
-						},
+						Description: `Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events. possible known values include one of ["allow", "always", "deny"]; Default: "allow"`,
 					},
 					"targets": schema.ListNestedAttribute{
 						Required: true,
@@ -635,6 +737,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 										"azure_client_secret":        types.StringType,
 										"azure_tenant_id":            types.StringType,
 										"azure_use_managed_identity": types.BoolType,
+										"gcp_metadata_url":           types.StringType,
+										"gcp_oauth_token_url":        types.StringType,
 										"gcp_service_account_json":   types.StringType,
 										"gcp_use_service_account":    types.BoolType,
 										"header_name":                types.StringType,
@@ -676,6 +780,14 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 											Default:     booldefault.StaticBool(false),
 											Description: `Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models. Default: false`,
 										},
+										"gcp_metadata_url": schema.StringAttribute{
+											Optional:    true,
+											Description: `Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.`,
+										},
+										"gcp_oauth_token_url": schema.StringAttribute{
+											Optional:    true,
+											Description: `Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.`,
+										},
 										"gcp_service_account_json": schema.StringAttribute{
 											Optional:    true,
 											Description: `Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable ` + "`" + `GCP_SERVICE_ACCOUNT` + "`" + `.`,
@@ -697,13 +809,7 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 										"param_location": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. must be one of ["body", "query"]`,
-											Validators: []validator.String{
-												stringvalidator.OneOf(
-													"body",
-													"query",
-												),
-											},
+											Description: `Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
 										},
 										"param_name": schema.StringAttribute{
 											Optional:    true,
@@ -745,6 +851,10 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
+										"model_alias": schema.StringAttribute{
+											Optional:    true,
+											Description: `The model name parameter from the request that this model should map to.`,
+										},
 										"name": schema.StringAttribute{
 											Optional:    true,
 											Description: `Model name to execute.`,
@@ -763,6 +873,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 														`aws_region`:                 types.StringType,
 														`aws_role_session_name`:      types.StringType,
 														`aws_sts_endpoint_url`:       types.StringType,
+														`batch_bucket_prefix`:        types.StringType,
+														`batch_role_arn`:             types.StringType,
 														`embeddings_normalize`:       types.BoolType,
 														`performance_config_latency`: types.StringType,
 														`video_output_s3_uri`:        types.StringType,
@@ -777,6 +889,11 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 												"dashscope": types.ObjectType{
 													AttrTypes: map[string]attr.Type{
 														`international`: types.BoolType,
+													},
+												},
+												"databricks": types.ObjectType{
+													AttrTypes: map[string]attr.Type{
+														`workspace_instance_id`: types.StringType,
 													},
 												},
 												"embeddings_dimensions": types.Int64Type,
@@ -832,6 +949,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 														"aws_region":                 types.StringType,
 														"aws_role_session_name":      types.StringType,
 														"aws_sts_endpoint_url":       types.StringType,
+														"batch_bucket_prefix":        types.StringType,
+														"batch_role_arn":             types.StringType,
 														"embeddings_normalize":       types.BoolType,
 														"performance_config_latency": types.StringType,
 														"video_output_s3_uri":        types.StringType,
@@ -852,6 +971,14 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 														"aws_sts_endpoint_url": schema.StringAttribute{
 															Optional:    true,
 															Description: `If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.`,
+														},
+														"batch_bucket_prefix": schema.StringAttribute{
+															Optional:    true,
+															Description: `S3 URI prefix (s3://bucket/prefix/) where Bedrock will get input files from and store results to for native batch API.`,
+														},
+														"batch_role_arn": schema.StringAttribute{
+															Optional:    true,
+															Description: `AWS role arn used for calling batch API. Try to get the value from request if ommited.`,
 														},
 														"embeddings_normalize": schema.BoolAttribute{
 															Computed:    true,
@@ -881,16 +1008,7 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 															Computed:    true,
 															Optional:    true,
 															Default:     stringdefault.StaticString(`classification`),
-															Description: `The purpose of the input text to calculate embedding vectors. Default: "classification"; must be one of ["classification", "clustering", "image", "search_document", "search_query"]`,
-															Validators: []validator.String{
-																stringvalidator.OneOf(
-																	"classification",
-																	"clustering",
-																	"image",
-																	"search_document",
-																	"search_query",
-																),
-															},
+															Description: `The purpose of the input text to calculate embedding vectors. possible known values include one of ["classification", "clustering", "image", "search_document", "search_query"]; Default: "classification"`,
 														},
 														"wait_for_model": schema.BoolAttribute{
 															Optional:    true,
@@ -912,6 +1030,19 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 															MarkdownDescription: `Two Dashscope endpoints are available, and the international endpoint will be used when this is set to ` + "`" + `true` + "`" + `.` + "\n" +
 																`It is recommended to set this to ` + "`" + `true` + "`" + ` when using international version of dashscope.` + "\n" +
 																`Default: true`,
+														},
+													},
+												},
+												"databricks": schema.SingleNestedAttribute{
+													Computed: true,
+													Optional: true,
+													Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+														"workspace_instance_id": types.StringType,
+													})),
+													Attributes: map[string]schema.Attribute{
+														"workspace_instance_id": schema.StringAttribute{
+															Optional:    true,
+															Description: `Workspace Instance ID ('dbc-xxx-yyy') for Databricks model serving.`,
 														},
 													},
 												},
@@ -972,14 +1103,7 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 												"llama2_format": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `If using llama2 provider, select the upstream message format. must be one of ["ollama", "openai", "raw"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"ollama",
-															"openai",
-															"raw",
-														),
-													},
+													Description: `If using llama2 provider, select the upstream message format. possible known values include one of ["ollama", "openai", "raw"]`,
 												},
 												"max_tokens": schema.Int64Attribute{
 													Optional:    true,
@@ -988,13 +1112,7 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 												"mistral_format": schema.StringAttribute{
 													Computed:    true,
 													Optional:    true,
-													Description: `If using mistral provider, select the upstream message format. must be one of ["ollama", "openai"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"ollama",
-															"openai",
-														),
-													},
+													Description: `If using mistral provider, select the upstream message format. possible known values include one of ["ollama", "openai"]`,
 												},
 												"output_cost": schema.Float64Attribute{
 													Optional:    true,
@@ -1035,23 +1153,9 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 										"provider": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Description: `AI provider request format - Kong translates requests to and from the specified backend compatible formats. Not Null; must be one of ["anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "gemini", "huggingface", "llama2", "mistral", "openai", "xai"]`,
+											Description: `AI provider request format - Kong translates requests to and from the specified backend compatible formats. possible known values include one of ["anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "databricks", "deepseek", "gemini", "huggingface", "llama2", "mistral", "ollama", "openai", "vllm", "xai"]; Not Null`,
 											Validators: []validator.String{
 												speakeasy_stringvalidators.NotNull(),
-												stringvalidator.OneOf(
-													"anthropic",
-													"azure",
-													"bedrock",
-													"cerebras",
-													"cohere",
-													"dashscope",
-													"gemini",
-													"huggingface",
-													"llama2",
-													"mistral",
-													"openai",
-													"xai",
-												),
 											},
 										},
 									},
@@ -1063,26 +1167,9 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 								"route_type": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The model's operation implementation, for this provider. Not Null; must be one of ["audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime", "video/v1/videos/generations"]`,
+									Description: `The model's operation implementation, for this provider. possible known values include one of ["audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime", "video/v1/videos/generations"]; Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
-										stringvalidator.OneOf(
-											"audio/v1/audio/speech",
-											"audio/v1/audio/transcriptions",
-											"audio/v1/audio/translations",
-											"image/v1/images/edits",
-											"image/v1/images/generations",
-											"llm/v1/assistants",
-											"llm/v1/batches",
-											"llm/v1/chat",
-											"llm/v1/completions",
-											"llm/v1/embeddings",
-											"llm/v1/files",
-											"llm/v1/responses",
-											"preserve",
-											"realtime/v1/realtime",
-											"video/v1/videos/generations",
-										),
 									},
 								},
 								"weight": schema.Int64Attribute{
@@ -1184,13 +1271,7 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 							},
 							"distance_metric": schema.StringAttribute{
 								Required:    true,
-								Description: `the distance metric to use for vector searches. must be one of ["cosine", "euclidean"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"cosine",
-										"euclidean",
-									),
-								},
+								Description: `the distance metric to use for vector searches. possible known values include one of ["cosine", "euclidean"]`,
 							},
 							"pgvector": schema.SingleNestedAttribute{
 								Computed: true,
@@ -1262,14 +1343,7 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 										Computed:    true,
 										Optional:    true,
 										Default:     stringdefault.StaticString(`tlsv1_2`),
-										Description: `the ssl version to use for the pgvector database. Default: "tlsv1_2"; must be one of ["any", "tlsv1_2", "tlsv1_3"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"any",
-												"tlsv1_2",
-												"tlsv1_3",
-											),
-										},
+										Description: `the ssl version to use for the pgvector database. possible known values include one of ["any", "tlsv1_2", "tlsv1_3"]; Default: "tlsv1_2"`,
 									},
 									"timeout": schema.Float64Attribute{
 										Computed:    true,
@@ -1363,14 +1437,7 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 											"auth_provider": schema.StringAttribute{
 												Computed:    true,
 												Optional:    true,
-												Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
-												Validators: []validator.String{
-													stringvalidator.OneOf(
-														"aws",
-														"azure",
-														"gcp",
-													),
-												},
+												Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
 											},
 											"aws_access_key_id": schema.StringAttribute{
 												Optional:    true,
@@ -1564,14 +1631,7 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 									"sentinel_role": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"any",
-												"master",
-												"slave",
-											),
-										},
+										Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
 									},
 									"sentinel_username": schema.StringAttribute{
 										Optional:    true,
@@ -1601,17 +1661,11 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 							},
 							"strategy": schema.StringAttribute{
 								Required:    true,
-								Description: `which vector database driver to use. must be one of ["pgvector", "redis"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"pgvector",
-										"redis",
-									),
-								},
+								Description: `which vector database driver to use. possible known values include one of ["pgvector", "redis"]`,
 							},
 							"threshold": schema.Float64Attribute{
 								Optional:    true,
-								Description: `the default similarity threshold for accepting semantic search results (float)`,
+								Description: `the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.`,
 							},
 						},
 					},

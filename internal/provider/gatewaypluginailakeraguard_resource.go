@@ -43,6 +43,7 @@ type GatewayPluginAiLakeraGuardResource struct {
 
 // GatewayPluginAiLakeraGuardResourceModel describes the resource data model.
 type GatewayPluginAiLakeraGuardResourceModel struct {
+	Condition      types.String                       `tfsdk:"condition"`
 	Config         *tfTypes.AiLakeraGuardPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                       `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.Set                       `tfsdk:"consumer_group"`
@@ -68,6 +69,13 @@ func (r *GatewayPluginAiLakeraGuardResource) Schema(ctx context.Context, req res
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginAiLakeraGuard Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
@@ -75,6 +83,7 @@ func (r *GatewayPluginAiLakeraGuardResource) Schema(ctx context.Context, req res
 					"api_key":                   types.StringType,
 					"guarding_mode":             types.StringType,
 					"lakera_service_url":        types.StringType,
+					"log_blocked_content":       types.BoolType,
 					"project_id":                types.StringType,
 					"request_failure_message":   types.StringType,
 					"response_buffer_size":      types.Float64Type,
@@ -94,20 +103,19 @@ func (r *GatewayPluginAiLakeraGuardResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`INPUT`),
-						Description: `The guardrail mode to use for the request. Default: "INPUT"; must be one of ["BOTH", "INPUT", "OUTPUT"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"BOTH",
-								"INPUT",
-								"OUTPUT",
-							),
-						},
+						Description: `The guardrail mode to use for the request. possible known values include one of ["BOTH", "INPUT", "OUTPUT"]; Default: "INPUT"`,
 					},
 					"lakera_service_url": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`https://api.lakera.ai/v2/guard`),
 						Description: `The guard-operation URL of the Lakera Guard service. Defaults to the SaaS /v2/guard endpoint. It can be set to a locally hosted instance of Lakera Guard. Default: "https://api.lakera.ai/v2/guard"`,
+					},
+					"log_blocked_content": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Default:     booldefault.StaticBool(false),
+						Description: `Whether to log prompts and responses that are blocked by the guardrail. Default: false`,
 					},
 					"project_id": schema.StringAttribute{
 						Optional:    true,
@@ -147,14 +155,7 @@ func (r *GatewayPluginAiLakeraGuardResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`concatenate_all_content`),
-						Description: `Select where to pick the 'text' for the Lakera Guard request (when text/generation is selected). Default: "concatenate_all_content"; must be one of ["concatenate_all_content", "concatenate_user_content", "last_message"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"concatenate_all_content",
-								"concatenate_user_content",
-								"last_message",
-							),
-						},
+						Description: `Select where to pick the 'text' for the Lakera Guard request (when text/generation is selected). possible known values include one of ["concatenate_all_content", "concatenate_user_content", "last_message"]; Default: "concatenate_all_content"`,
 					},
 					"timeout": schema.Float64Attribute{
 						Computed:    true,

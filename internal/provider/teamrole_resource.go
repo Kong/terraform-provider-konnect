@@ -7,13 +7,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
@@ -66,42 +64,14 @@ func (r *TeamRoleResource) Schema(ctx context.Context, req resource.SchemaReques
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `Region of the team. must be one of ["us", "eu", "au", "me", "in", "sg", "*"]; Requires replacement if changed.`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"us",
-						"eu",
-						"au",
-						"me",
-						"in",
-						"sg",
-						"*",
-					),
-				},
+				Description: `Region of the team. possible known values include one of ["us", "eu", "au", "me", "in", "sg", "*"]; Requires replacement if changed.`,
 			},
 			"entity_type_name": schema.StringAttribute{
 				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Description: `The type of entity. must be one of ["APIs", "API Products", "Application Auth Strategies", "Audit Logs", "Control Planes", "Dashboards", "DCR Providers", "Identity", "Mesh Control Planes", "Networks", "Portals", "Reports", "Service Hub"]; Requires replacement if changed.`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"APIs",
-						"API Products",
-						"Application Auth Strategies",
-						"Audit Logs",
-						"Control Planes",
-						"Dashboards",
-						"DCR Providers",
-						"Identity",
-						"Mesh Control Planes",
-						"Networks",
-						"Portals",
-						"Reports",
-						"Service Hub",
-					),
-				},
+				Description: `The type of entity. possible known values include one of ["APIs", "API Products", "Application Auth Strategies", "Audit Logs", "Control Planes", "Dashboards", "DCR Providers", "Identity", "Mesh Control Planes", "Networks", "Portals", "Reports", "Service Hub"]; Requires replacement if changed.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -112,49 +82,7 @@ func (r *TeamRoleResource) Schema(ctx context.Context, req resource.SchemaReques
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Description: `The desired role. must be one of ["Admin", "Appearance Maintainer", "Application Registration", "Certificate Admin", "Cloud Gateway Cluster Admin", "Cloud Gateway Cluster Viewer", "Consumer Admin", "Connector", "Creator", "Debug Session Creator", "Deployer", "Discovery Admin", "Discovery Viewer", "Editor", "Gateway Service Admin", "Integration Admin", "Integration Viewer", "Key Admin", "Maintainer", "Network Admin", "Network Creator", "Network Viewer", "Plugin Admin", "Plugins Admin", "Product Publisher", "Publisher", "Route Admin", "SNI Admin", "Scorecard Admin", "Scorecard Viewer", "Service Admin", "Service Creator", "Service Viewer", "Upstream Admin", "Vault Admin", "Viewer", "Registration Approver", "Content Editor"]; Requires replacement if changed.`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"Admin",
-						"Appearance Maintainer",
-						"Application Registration",
-						"Certificate Admin",
-						"Cloud Gateway Cluster Admin",
-						"Cloud Gateway Cluster Viewer",
-						"Consumer Admin",
-						"Connector",
-						"Creator",
-						"Debug Session Creator",
-						"Deployer",
-						"Discovery Admin",
-						"Discovery Viewer",
-						"Editor",
-						"Gateway Service Admin",
-						"Integration Admin",
-						"Integration Viewer",
-						"Key Admin",
-						"Maintainer",
-						"Network Admin",
-						"Network Creator",
-						"Network Viewer",
-						"Plugin Admin",
-						"Plugins Admin",
-						"Product Publisher",
-						"Publisher",
-						"Route Admin",
-						"SNI Admin",
-						"Scorecard Admin",
-						"Scorecard Viewer",
-						"Service Admin",
-						"Service Creator",
-						"Service Viewer",
-						"Upstream Admin",
-						"Vault Admin",
-						"Viewer",
-						"Registration Approver",
-						"Content Editor",
-					),
-				},
+				Description: `The desired role. possible known values include one of ["Admin", "Appearance Maintainer", "Application Registration", "Certificate Admin", "Cloud Gateway Cluster Admin", "Cloud Gateway Cluster Viewer", "Consumer Admin", "Connector", "Creator", "Debug Session Creator", "Deployer", "Discovery Admin", "Discovery Viewer", "Editor", "Gateway Service Admin", "Integration Admin", "Integration Viewer", "Key Admin", "Maintainer", "Network Admin", "Network Creator", "Network Viewer", "Plugin Admin", "Plugins Admin", "Product Publisher", "Publisher", "Route Admin", "SNI Admin", "Scorecard Admin", "Scorecard Viewer", "Service Admin", "Service Creator", "Service Viewer", "Upstream Admin", "Vault Admin", "Viewer", "Registration Approver", "Content Editor"]; Requires replacement if changed.`,
 			},
 			"team_id": schema.StringAttribute{
 				Required: true,

@@ -15,6 +15,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) RefreshFromSharedServicePr
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.ServiceProtectionPluginConfig{}
 		r.Config.DictionaryName = types.StringPointerValue(resp.Config.DictionaryName)
 		r.Config.DisablePenalty = types.BoolPointerValue(resp.Config.DisablePenalty)
@@ -30,7 +31,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) RefreshFromSharedServicePr
 		if resp.Config.Redis == nil {
 			r.Config.Redis = nil
 		} else {
-			r.Config.Redis = &tfTypes.AcePluginRedis{}
+			r.Config.Redis = &tfTypes.PartialVectordbRedis{}
 			if resp.Config.Redis.CloudAuthentication == nil {
 				r.Config.Redis.CloudAuthentication = nil
 			} else {
@@ -269,6 +270,12 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsUpdateServicep
 func (r *GatewayPluginServiceProtectionResourceModel) ToSharedServiceProtectionPlugin(ctx context.Context) (*shared.ServiceProtectionPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -743,6 +750,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToSharedServiceProtectionP
 		}
 	}
 	out := shared.ServiceProtectionPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

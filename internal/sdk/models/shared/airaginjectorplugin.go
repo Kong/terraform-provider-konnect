@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -167,24 +165,16 @@ const (
 func (e AiRagInjectorPluginConsumerIdentifier) ToPointer() *AiRagInjectorPluginConsumerIdentifier {
 	return &e
 }
-func (e *AiRagInjectorPluginConsumerIdentifier) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRagInjectorPluginConsumerIdentifier) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "consumer_group", "consumer_id", "custom_id", "username":
+			return true
+		}
 	}
-	switch v {
-	case "consumer_group":
-		fallthrough
-	case "consumer_id":
-		fallthrough
-	case "custom_id":
-		fallthrough
-	case "username":
-		*e = AiRagInjectorPluginConsumerIdentifier(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRagInjectorPluginConsumerIdentifier: %v", v)
-	}
+	return false
 }
 
 // AiRagInjectorPluginParamLocation - Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
@@ -198,20 +188,16 @@ const (
 func (e AiRagInjectorPluginParamLocation) ToPointer() *AiRagInjectorPluginParamLocation {
 	return &e
 }
-func (e *AiRagInjectorPluginParamLocation) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRagInjectorPluginParamLocation) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "body", "query":
+			return true
+		}
 	}
-	switch v {
-	case "body":
-		fallthrough
-	case "query":
-		*e = AiRagInjectorPluginParamLocation(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRagInjectorPluginParamLocation: %v", v)
-	}
+	return false
 }
 
 type AiRagInjectorPluginAuth struct {
@@ -229,6 +215,10 @@ type AiRagInjectorPluginAuth struct {
 	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
 	AzureUseManagedIdentity *bool `default:"false" json:"azure_use_managed_identity"`
+	// Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.
+	GcpMetadataURL *string `default:"null" json:"gcp_metadata_url"`
+	// Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.
+	GcpOauthTokenURL *string `default:"null" json:"gcp_oauth_token_url"`
 	// Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
 	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
 	// Use service account auth for GCP-based providers and models.
@@ -303,6 +293,20 @@ func (a *AiRagInjectorPluginAuth) GetAzureUseManagedIdentity() *bool {
 		return nil
 	}
 	return a.AzureUseManagedIdentity
+}
+
+func (a *AiRagInjectorPluginAuth) GetGcpMetadataURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.GcpMetadataURL
+}
+
+func (a *AiRagInjectorPluginAuth) GetGcpOauthTokenURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.GcpOauthTokenURL
 }
 
 func (a *AiRagInjectorPluginAuth) GetGcpServiceAccountJSON() *string {
@@ -404,6 +408,10 @@ type AiRagInjectorPluginBedrock struct {
 	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
 	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 	AwsStsEndpointURL *string `default:"null" json:"aws_sts_endpoint_url"`
+	// S3 URI prefix (s3://bucket/prefix/) where Bedrock will get input files from and store results to for native batch API.
+	BatchBucketPrefix *string `default:"null" json:"batch_bucket_prefix"`
+	// AWS role arn used for calling batch API. Try to get the value from request if ommited.
+	BatchRoleArn *string `default:"null" json:"batch_role_arn"`
 	// If using AWS providers (Bedrock), set to true to normalize the embeddings.
 	EmbeddingsNormalize *bool `default:"false" json:"embeddings_normalize"`
 	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
@@ -449,6 +457,20 @@ func (a *AiRagInjectorPluginBedrock) GetAwsStsEndpointURL() *string {
 		return nil
 	}
 	return a.AwsStsEndpointURL
+}
+
+func (a *AiRagInjectorPluginBedrock) GetBatchBucketPrefix() *string {
+	if a == nil {
+		return nil
+	}
+	return a.BatchBucketPrefix
+}
+
+func (a *AiRagInjectorPluginBedrock) GetBatchRoleArn() *string {
+	if a == nil {
+		return nil
+	}
+	return a.BatchRoleArn
 }
 
 func (a *AiRagInjectorPluginBedrock) GetEmbeddingsNormalize() *bool {
@@ -610,34 +632,23 @@ const (
 	AiRagInjectorPluginProviderGemini      AiRagInjectorPluginProvider = "gemini"
 	AiRagInjectorPluginProviderHuggingface AiRagInjectorPluginProvider = "huggingface"
 	AiRagInjectorPluginProviderMistral     AiRagInjectorPluginProvider = "mistral"
+	AiRagInjectorPluginProviderOllama      AiRagInjectorPluginProvider = "ollama"
 	AiRagInjectorPluginProviderOpenai      AiRagInjectorPluginProvider = "openai"
 )
 
 func (e AiRagInjectorPluginProvider) ToPointer() *AiRagInjectorPluginProvider {
 	return &e
 }
-func (e *AiRagInjectorPluginProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRagInjectorPluginProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai":
+			return true
+		}
 	}
-	switch v {
-	case "azure":
-		fallthrough
-	case "bedrock":
-		fallthrough
-	case "gemini":
-		fallthrough
-	case "huggingface":
-		fallthrough
-	case "mistral":
-		fallthrough
-	case "openai":
-		*e = AiRagInjectorPluginProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRagInjectorPluginProvider: %v", v)
-	}
+	return false
 }
 
 type AiRagInjectorPluginModel struct {
@@ -722,20 +733,16 @@ const (
 func (e FilterMode) ToPointer() *FilterMode {
 	return &e
 }
-func (e *FilterMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *FilterMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "compatible", "strict":
+			return true
+		}
 	}
-	switch v {
-	case "compatible":
-		fallthrough
-	case "strict":
-		*e = FilterMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for FilterMode: %v", v)
-	}
+	return false
 }
 
 // GlobalACLConfig - Global ACL configuration for all RAG operations
@@ -782,22 +789,16 @@ const (
 func (e InjectAsRole) ToPointer() *InjectAsRole {
 	return &e
 }
-func (e *InjectAsRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *InjectAsRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "assistant", "system", "user":
+			return true
+		}
 	}
-	switch v {
-	case "assistant":
-		fallthrough
-	case "system":
-		fallthrough
-	case "user":
-		*e = InjectAsRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for InjectAsRole: %v", v)
-	}
+	return false
 }
 
 // AiRagInjectorPluginDistanceMetric - the distance metric to use for vector searches
@@ -811,20 +812,16 @@ const (
 func (e AiRagInjectorPluginDistanceMetric) ToPointer() *AiRagInjectorPluginDistanceMetric {
 	return &e
 }
-func (e *AiRagInjectorPluginDistanceMetric) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRagInjectorPluginDistanceMetric) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "cosine", "euclidean":
+			return true
+		}
 	}
-	switch v {
-	case "cosine":
-		fallthrough
-	case "euclidean":
-		*e = AiRagInjectorPluginDistanceMetric(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRagInjectorPluginDistanceMetric: %v", v)
-	}
+	return false
 }
 
 // AiRagInjectorPluginSslVersion - the ssl version to use for the pgvector database
@@ -839,22 +836,16 @@ const (
 func (e AiRagInjectorPluginSslVersion) ToPointer() *AiRagInjectorPluginSslVersion {
 	return &e
 }
-func (e *AiRagInjectorPluginSslVersion) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRagInjectorPluginSslVersion) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "tlsv1_2", "tlsv1_3":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "tlsv1_2":
-		fallthrough
-	case "tlsv1_3":
-		*e = AiRagInjectorPluginSslVersion(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRagInjectorPluginSslVersion: %v", v)
-	}
+	return false
 }
 
 type AiRagInjectorPluginPgvector struct {
@@ -991,22 +982,16 @@ const (
 func (e AiRagInjectorPluginAuthProvider) ToPointer() *AiRagInjectorPluginAuthProvider {
 	return &e
 }
-func (e *AiRagInjectorPluginAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRagInjectorPluginAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = AiRagInjectorPluginAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRagInjectorPluginAuthProvider: %v", v)
-	}
+	return false
 }
 
 // AiRagInjectorPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -1208,22 +1193,16 @@ const (
 func (e AiRagInjectorPluginSentinelRole) ToPointer() *AiRagInjectorPluginSentinelRole {
 	return &e
 }
-func (e *AiRagInjectorPluginSentinelRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRagInjectorPluginSentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "master":
-		fallthrough
-	case "slave":
-		*e = AiRagInjectorPluginSentinelRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRagInjectorPluginSentinelRole: %v", v)
-	}
+	return false
 }
 
 type AiRagInjectorPluginRedis struct {
@@ -1449,20 +1428,16 @@ const (
 func (e AiRagInjectorPluginStrategy) ToPointer() *AiRagInjectorPluginStrategy {
 	return &e
 }
-func (e *AiRagInjectorPluginStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRagInjectorPluginStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "pgvector", "redis":
+			return true
+		}
 	}
-	switch v {
-	case "pgvector":
-		fallthrough
-	case "redis":
-		*e = AiRagInjectorPluginStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRagInjectorPluginStrategy: %v", v)
-	}
+	return false
 }
 
 type AiRagInjectorPluginVectordb struct {
@@ -1474,7 +1449,7 @@ type AiRagInjectorPluginVectordb struct {
 	Redis          *AiRagInjectorPluginRedis         `json:"redis"`
 	// which vector database driver to use
 	Strategy AiRagInjectorPluginStrategy `json:"strategy"`
-	// the default similarity threshold for accepting semantic search results (float)
+	// the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.
 	Threshold *float64 `default:"null" json:"threshold"`
 }
 
@@ -1716,24 +1691,16 @@ const (
 func (e AiRagInjectorPluginProtocols) ToPointer() *AiRagInjectorPluginProtocols {
 	return &e
 }
-func (e *AiRagInjectorPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRagInjectorPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = AiRagInjectorPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRagInjectorPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AiRagInjectorPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -1784,6 +1751,8 @@ func (a *AiRagInjectorPluginService) GetID() *string {
 
 // AiRagInjectorPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type AiRagInjectorPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -1823,6 +1792,13 @@ func (a *AiRagInjectorPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AiRagInjectorPlugin) GetCondition() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Condition
 }
 
 func (a *AiRagInjectorPlugin) GetCreatedAt() *int64 {

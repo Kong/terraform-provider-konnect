@@ -14,6 +14,7 @@ GatewayPluginAiLlmAsJudge Resource
 
 ```terraform
 resource "konnect_gateway_plugin_ai_llm_as_judge" "my_gatewaypluginaillmasjudge" {
+  condition = "...my_condition..."
   config = {
     http_proxy_host          = "...my_http_proxy_host..."
     http_proxy_port          = 8774
@@ -33,6 +34,8 @@ resource "konnect_gateway_plugin_ai_llm_as_judge" "my_gatewaypluginaillmasjudge"
         azure_client_secret        = "...my_azure_client_secret..."
         azure_tenant_id            = "...my_azure_tenant_id..."
         azure_use_managed_identity = false
+        gcp_metadata_url           = "...my_gcp_metadata_url..."
+        gcp_oauth_token_url        = "...my_gcp_oauth_token_url..."
         gcp_service_account_json   = "...my_gcp_service_account_json..."
         gcp_use_service_account    = false
         header_name                = "...my_header_name..."
@@ -47,7 +50,8 @@ resource "konnect_gateway_plugin_ai_llm_as_judge" "my_gatewaypluginaillmasjudge"
         log_statistics = false
       }
       model = {
-        name = "...my_name..."
+        model_alias = "...my_model_alias..."
+        name        = "...my_name..."
         options = {
           anthropic_version   = "...my_anthropic_version..."
           azure_api_version   = "2023-05-15"
@@ -58,6 +62,8 @@ resource "konnect_gateway_plugin_ai_llm_as_judge" "my_gatewaypluginaillmasjudge"
             aws_region                 = "...my_aws_region..."
             aws_role_session_name      = "...my_aws_role_session_name..."
             aws_sts_endpoint_url       = "...my_aws_sts_endpoint_url..."
+            batch_bucket_prefix        = "...my_batch_bucket_prefix..."
+            batch_role_arn             = "...my_batch_role_arn..."
             embeddings_normalize       = false
             performance_config_latency = "...my_performance_config_latency..."
             video_output_s3_uri        = "...my_video_output_s3_uri..."
@@ -68,6 +74,9 @@ resource "konnect_gateway_plugin_ai_llm_as_judge" "my_gatewaypluginaillmasjudge"
           }
           dashscope = {
             international = true
+          }
+          databricks = {
+            workspace_instance_id = "...my_workspace_instance_id..."
           }
           embeddings_dimensions = 3
           gemini = {
@@ -91,7 +100,7 @@ resource "konnect_gateway_plugin_ai_llm_as_judge" "my_gatewaypluginaillmasjudge"
           upstream_path  = "...my_upstream_path..."
           upstream_url   = "...my_upstream_url..."
         }
-        provider = "dashscope"
+        provider = "deepseek"
       }
       route_type = "llm/v1/embeddings"
       weight     = 100
@@ -156,6 +165,7 @@ resource "konnect_gateway_plugin_ai_llm_as_judge" "my_gatewaypluginaillmasjudge"
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -198,7 +208,7 @@ Optional:
 Required:
 
 - `model` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model))
-- `route_type` (String) The model's operation implementation, for this provider. must be one of ["audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime", "video/v1/videos/generations"]
+- `route_type` (String) The model's operation implementation, for this provider. possible known values include one of ["audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime", "video/v1/videos/generations"]
 
 Optional:
 
@@ -212,10 +222,11 @@ Optional:
 
 Required:
 
-- `provider` (String) AI provider request format - Kong translates requests to and from the specified backend compatible formats. must be one of ["anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "gemini", "huggingface", "llama2", "mistral", "openai", "xai"]
+- `provider` (String) AI provider request format - Kong translates requests to and from the specified backend compatible formats. possible known values include one of ["anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "databricks", "deepseek", "gemini", "huggingface", "llama2", "mistral", "ollama", "openai", "vllm", "xai"]
 
 Optional:
 
+- `model_alias` (String) The model name parameter from the request that this model should map to.
 - `name` (String) Model name to execute.
 - `options` (Attributes) Key/value settings for the model (see [below for nested schema](#nestedatt--config--llm--model--options))
 
@@ -231,13 +242,14 @@ Optional:
 - `bedrock` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model--options--bedrock))
 - `cohere` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model--options--cohere))
 - `dashscope` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model--options--dashscope))
+- `databricks` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model--options--databricks))
 - `embeddings_dimensions` (Number) If using embeddings models, set the number of dimensions to generate.
 - `gemini` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model--options--gemini))
 - `huggingface` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model--options--huggingface))
 - `input_cost` (Number) Defines the cost per 1M tokens in your prompt.
-- `llama2_format` (String) If using llama2 provider, select the upstream message format. must be one of ["ollama", "openai", "raw"]
+- `llama2_format` (String) If using llama2 provider, select the upstream message format. possible known values include one of ["ollama", "openai", "raw"]
 - `max_tokens` (Number) Defines the max_tokens, if using chat or completion models.
-- `mistral_format` (String) If using mistral provider, select the upstream message format. must be one of ["ollama", "openai"]
+- `mistral_format` (String) If using mistral provider, select the upstream message format. possible known values include one of ["ollama", "openai"]
 - `output_cost` (Number) Defines the cost per 1M tokens in the output of the AI.
 - `temperature` (Number) Defines the matching temperature, if using chat or completion models.
 - `top_k` (Number) Defines the top-k most likely tokens, if supported.
@@ -254,6 +266,8 @@ Optional:
 - `aws_region` (String) If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
 - `aws_role_session_name` (String) If using AWS providers (Bedrock), set the identifier of the assumed role session.
 - `aws_sts_endpoint_url` (String) If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
+- `batch_bucket_prefix` (String) S3 URI prefix (s3://bucket/prefix/) where Bedrock will get input files from and store results to for native batch API.
+- `batch_role_arn` (String) AWS role arn used for calling batch API. Try to get the value from request if ommited.
 - `embeddings_normalize` (Boolean) If using AWS providers (Bedrock), set to true to normalize the embeddings. Default: false
 - `performance_config_latency` (String) Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
 - `video_output_s3_uri` (String) S3 URI (s3://bucket/prefix) where Bedrock will store generated video files. Required for video generation.
@@ -264,7 +278,7 @@ Optional:
 
 Optional:
 
-- `embedding_input_type` (String) The purpose of the input text to calculate embedding vectors. Default: "classification"; must be one of ["classification", "clustering", "image", "search_document", "search_query"]
+- `embedding_input_type` (String) The purpose of the input text to calculate embedding vectors. possible known values include one of ["classification", "clustering", "image", "search_document", "search_query"]; Default: "classification"
 - `wait_for_model` (Boolean) Wait for the model if it is not ready
 
 
@@ -276,6 +290,14 @@ Optional:
 - `international` (Boolean) Two Dashscope endpoints are available, and the international endpoint will be used when this is set to `true`.
 It is recommended to set this to `true` when using international version of dashscope.
 Default: true
+
+
+<a id="nestedatt--config--llm--model--options--databricks"></a>
+### Nested Schema for `config.llm.model.options.databricks`
+
+Optional:
+
+- `workspace_instance_id` (String) Workspace Instance ID ('dbc-xxx-yyy') for Databricks model serving.
 
 
 <a id="nestedatt--config--llm--model--options--gemini"></a>
@@ -312,11 +334,13 @@ Optional:
 - `azure_client_secret` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
 - `azure_tenant_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
 - `azure_use_managed_identity` (Boolean) Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models. Default: false
+- `gcp_metadata_url` (String) Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.
+- `gcp_oauth_token_url` (String) Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.
 - `gcp_service_account_json` (String) Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
 - `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models. Default: false
 - `header_name` (String) If AI model requires authentication via Authorization or API key header, specify its name here.
 - `header_value` (String) Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
-- `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. must be one of ["body", "query"]
+- `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
 - `param_name` (String) If AI model requires authentication via query parameter, specify its name here.
 - `param_value` (String) Specify the full parameter value for 'param_name'.
 
@@ -409,7 +433,7 @@ import {
   to = konnect_gateway_plugin_ai_llm_as_judge.my_konnect_gateway_plugin_ai_llm_as_judge
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

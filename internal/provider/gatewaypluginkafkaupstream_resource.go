@@ -48,6 +48,7 @@ type GatewayPluginKafkaUpstreamResource struct {
 
 // GatewayPluginKafkaUpstreamResourceModel describes the resource data model.
 type GatewayPluginKafkaUpstreamResourceModel struct {
+	Condition      types.String                       `tfsdk:"condition"`
 	Config         *tfTypes.KafkaUpstreamPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                       `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
@@ -72,6 +73,13 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginKafkaUpstream Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -87,14 +95,7 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 							"mechanism": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The SASL authentication mechanism.  Supported options: ` + "`" + `PLAIN` + "`" + `, ` + "`" + `SCRAM-SHA-256` + "`" + `, or ` + "`" + `SCRAM-SHA-512` + "`" + `. must be one of ["PLAIN", "SCRAM-SHA-256", "SCRAM-SHA-512"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"PLAIN",
-										"SCRAM-SHA-256",
-										"SCRAM-SHA-512",
-									),
-								},
+								Description: `The SASL authentication mechanism.  Supported options: ` + "`" + `PLAIN` + "`" + `, ` + "`" + `SCRAM-SHA-256` + "`" + `, or ` + "`" + `SCRAM-SHA-512` + "`" + `. possible known values include one of ["PLAIN", "SCRAM-SHA-256", "SCRAM-SHA-512"]`,
 							},
 							"password": schema.StringAttribute{
 								Optional:    true,
@@ -218,10 +219,7 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						Default:     int64default.StaticInt64(1),
-						Description: `The number of acknowledgments the producer requires the leader to have received before considering a request complete. Allowed values: 0 for no acknowledgments; 1 for only the leader; and -1 for the full ISR (In-Sync Replica set). Default: 1; must be one of [-1, 0, 1]`,
-						Validators: []validator.Int64{
-							int64validator.OneOf(-1, 0, 1),
-						},
+						Description: `The number of acknowledgments the producer requires the leader to have received before considering a request complete. Allowed values: 0 for no acknowledgments; 1 for only the leader; and -1 for the full ISR (In-Sync Replica set). possible known values include one of [-1, 0, 1]; Default: 1`,
 					},
 					"producer_request_limits_bytes_per_request": schema.Int64Attribute{
 						Computed:    true,
@@ -406,14 +404,7 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 												Computed:    true,
 												Optional:    true,
 												Default:     stringdefault.StaticString(`none`),
-												Description: `Authentication mode to use with the schema registry. Default: "none"; must be one of ["basic", "none", "oauth2"]`,
-												Validators: []validator.String{
-													stringvalidator.OneOf(
-														"basic",
-														"none",
-														"oauth2",
-													),
-												},
+												Description: `Authentication mode to use with the schema registry. possible known values include one of ["basic", "none", "oauth2"]; Default: "none"`,
 											},
 											"oauth2": schema.SingleNestedAttribute{
 												Computed: true,
@@ -458,13 +449,7 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 														Computed:    true,
 														Optional:    true,
 														Default:     stringdefault.StaticString(`client_credentials`),
-														Description: `The OAuth grant type to be used. Default: "client_credentials"; must be one of ["client_credentials", "password"]`,
-														Validators: []validator.String{
-															stringvalidator.OneOf(
-																"client_credentials",
-																"password",
-															),
-														},
+														Description: `The OAuth grant type to be used. possible known values include one of ["client_credentials", "password"]; Default: "client_credentials"`,
 													},
 													"password": schema.StringAttribute{
 														Optional:    true,
@@ -522,27 +507,13 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 														Computed:    true,
 														Optional:    true,
 														Default:     stringdefault.StaticString(`client_secret_post`),
-														Description: `The authentication method used in client requests to the IdP. Supported values are: ` + "`" + `client_secret_basic` + "`" + ` to send ` + "`" + `client_id` + "`" + ` and ` + "`" + `client_secret` + "`" + ` in the ` + "`" + `Authorization: Basic` + "`" + ` header, ` + "`" + `client_secret_post` + "`" + ` to send ` + "`" + `client_id` + "`" + ` and ` + "`" + `client_secret` + "`" + ` as part of the request body, or ` + "`" + `client_secret_jwt` + "`" + ` to send a JWT signed with the ` + "`" + `client_secret` + "`" + ` using the client assertion as part of the body. Default: "client_secret_post"; must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none"]`,
-														Validators: []validator.String{
-															stringvalidator.OneOf(
-																"client_secret_basic",
-																"client_secret_jwt",
-																"client_secret_post",
-																"none",
-															),
-														},
+														Description: `The authentication method used in client requests to the IdP. Supported values are: ` + "`" + `client_secret_basic` + "`" + ` to send ` + "`" + `client_id` + "`" + ` and ` + "`" + `client_secret` + "`" + ` in the ` + "`" + `Authorization: Basic` + "`" + ` header, ` + "`" + `client_secret_post` + "`" + ` to send ` + "`" + `client_id` + "`" + ` and ` + "`" + `client_secret` + "`" + ` as part of the request body, or ` + "`" + `client_secret_jwt` + "`" + ` to send a JWT signed with the ` + "`" + `client_secret` + "`" + ` using the client assertion as part of the body. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none"]; Default: "client_secret_post"`,
 													},
 													"client_secret_jwt_alg": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
 														Default:     stringdefault.StaticString(`HS512`),
-														Description: `The algorithm to use with JWT when using ` + "`" + `client_secret_jwt` + "`" + ` authentication. Default: "HS512"; must be one of ["HS256", "HS512"]`,
-														Validators: []validator.String{
-															stringvalidator.OneOf(
-																"HS256",
-																"HS512",
-															),
-														},
+														Description: `The algorithm to use with JWT when using ` + "`" + `client_secret_jwt` + "`" + ` authentication. possible known values include one of ["HS256", "HS512"]; Default: "HS512"`,
 													},
 													"http_proxy": schema.StringAttribute{
 														Optional:    true,

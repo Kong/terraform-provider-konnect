@@ -14,6 +14,7 @@ GatewayPluginOpenidConnect Resource
 
 ```terraform
 resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect" {
+  condition = "...my_condition..."
   config = {
     anonymous = "...my_anonymous..."
     audience = [
@@ -169,6 +170,11 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     consumer_claim = [
       "..."
     ]
+    consumer_claims = [
+      [
+        # ...
+      ]
+    ]
     consumer_groups_claim = [
       "..."
     ]
@@ -192,6 +198,14 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     ]
     downstream_access_token_header     = "...my_downstream_access_token_header..."
     downstream_access_token_jwk_header = "...my_downstream_access_token_jwk_header..."
+    downstream_headers = [
+      {
+        header = "...my_header..."
+        path = [
+          "..."
+        ]
+      }
+    ]
     downstream_headers_claims = [
       "..."
     ]
@@ -270,6 +284,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     issuers_allowed = [
       "..."
     ]
+    jwks_endpoint      = "...my_jwks_endpoint..."
     jwt_session_claim  = "sid"
     jwt_session_cookie = "...my_jwt_session_cookie..."
     keepalive          = true
@@ -440,7 +455,42 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     token_cache_key_include_scope = false
     token_endpoint                = "...my_token_endpoint..."
     token_endpoint_auth_method    = "client_secret_post"
-    token_exchange_endpoint       = "...my_token_exchange_endpoint..."
+    token_exchange = {
+      cache = {
+        enabled = true
+        ttl     = 10
+      }
+      request = {
+        audience = [
+          "..."
+        ]
+        empty_audience = false
+        empty_scopes   = false
+        scopes = [
+          "..."
+        ]
+      }
+      subject_token_issuers = [
+        {
+          conditions = {
+            has_audience = [
+              "..."
+            ]
+            has_scopes = [
+              "..."
+            ]
+            missing_audience = [
+              "..."
+            ]
+            missing_scopes = [
+              "..."
+            ]
+          }
+          issuer = "...my_issuer..."
+        }
+      ]
+    }
+    token_exchange_endpoint = "...my_token_exchange_endpoint..."
     token_headers_client = [
       "..."
     ]
@@ -476,6 +526,14 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     ]
     upstream_access_token_header     = "authorization:bearer"
     upstream_access_token_jwk_header = "...my_upstream_access_token_jwk_header..."
+    upstream_headers = [
+      {
+        header = "...my_header..."
+        path = [
+          "..."
+        ]
+      }
+    ]
     upstream_headers_claims = [
       "..."
     ]
@@ -541,7 +599,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     }
   ]
   protocols = [
-    "http"
+    "https"
   ]
   route = {
     id = "...my_id..."
@@ -566,13 +624,14 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `instance_name` (String) A unique string representing a UTF-8 encoded name.
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `partials` (Attributes List) A list of partials to be used by the plugin. (see [below for nested schema](#nestedatt--partials))
-- `protocols` (Set of String) A set of strings representing HTTP protocols. Default: ["grpc","grpcs","http","https"]
+- `protocols` (Set of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls. Default: ["grpc","grpcs","http","https"]
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
@@ -597,7 +656,7 @@ Optional:
 - `authorization_cookie_http_only` (Boolean) Forbids JavaScript from accessing the cookie, for example, through the `Document.cookie` property. Default: true
 - `authorization_cookie_name` (String) The authorization cookie name. Default: "authorization"
 - `authorization_cookie_path` (String) The authorization cookie Path flag. Default: "/"
-- `authorization_cookie_same_site` (String) Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. Default: "Default"; must be one of ["Default", "Lax", "None", "Strict"]
+- `authorization_cookie_same_site` (String) Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. possible known values include one of ["Default", "Lax", "None", "Strict"]; Default: "Default"
 - `authorization_cookie_secure` (Boolean) Cookie is only sent to the server when a request is made with the https: scheme (except on localhost), and therefore is more resistant to man-in-the-middle attacks.
 - `authorization_endpoint` (String) The authorization endpoint. If set it overrides the value in `authorization_endpoint` returned by the discovery endpoint.
 - `authorization_query_args_client` (List of String) Extra query arguments passed from the client to the authorization endpoint.
@@ -608,7 +667,7 @@ Optional:
 - `bearer_token_param_type` (List of String) Where to look for the bearer token: - `header`: search the `Authorization`, `access-token`, and `x-access-token` HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`. Default: ["body","header","query"]
 - `by_username_ignore_case` (Boolean) If `consumer_by` is set to `username`, specify whether `username` can match consumers case-insensitively. Default: false
 - `cache_introspection` (Boolean) Cache the introspection endpoint requests. Default: true
-- `cache_token_exchange` (Boolean) Cache the token exchange endpoint requests. Default: true
+- `cache_token_exchange` (Boolean) Cache the legacy token exchange endpoint requests. Default: true
 - `cache_tokens` (Boolean) Cache the token endpoint requests. Default: true
 - `cache_tokens_salt` (String) Salt used for generating the cache key that is used for caching the token endpoint requests.
 - `cache_ttl` (Number) The default cache ttl in seconds that is used in case the cached object does not specify the expiry. Default: 3600
@@ -626,9 +685,10 @@ Optional:
 - `client_jwk` (Attributes List) The JWK used for the private_key_jwt authentication. (see [below for nested schema](#nestedatt--config--client_jwk))
 - `client_secret` (List of String) The client secret.
 - `cluster_cache_redis` (Attributes) (see [below for nested schema](#nestedatt--config--cluster_cache_redis))
-- `cluster_cache_strategy` (String) The strategy to use for the cluster cache. If set, the plugin will share cache with nodes configured with the same strategy backend. Currentlly only introspection cache is shared. Default: "off"; must be one of ["off", "redis"]
+- `cluster_cache_strategy` (String) The strategy to use for the cluster cache. If set, the plugin will share cache with nodes configured with the same strategy backend. Currentlly only introspection cache is shared. possible known values include one of ["off", "redis"]; Default: "off"
 - `consumer_by` (List of String) Consumer fields used for mapping: - `id`: try to find the matching Consumer by `id` - `username`: try to find the matching Consumer by `username` - `custom_id`: try to find the matching Consumer by `custom_id`. Default: ["custom_id","username"]
 - `consumer_claim` (List of String) The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
+- `consumer_claims` (List of List of String) The claims used for consumer mapping. Each entry represents a claim path inside the token payload. The paths are evaluated in order, and the first matching claim is used.
 - `consumer_groups_claim` (List of String) The claim used for consumer groups mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
 - `consumer_groups_optional` (Boolean) Do not terminate the request if consumer groups mapping fails. Default: false
 - `consumer_optional` (Boolean) Do not terminate the request if consumer mapping fails. Default: false
@@ -640,7 +700,8 @@ Optional:
 - `domains` (List of String) The allowed values for the `hd` claim.
 - `downstream_access_token_header` (String) The downstream access token header.
 - `downstream_access_token_jwk_header` (String) The downstream access token JWK header.
-- `downstream_headers_claims` (List of String) The downstream header claims. If multiple values are set, it means the claim is inside a nested object of the token payload.
+- `downstream_headers` (Attributes List) The downstream claim to header mappings. (see [below for nested schema](#nestedatt--config--downstream_headers))
+- `downstream_headers_claims` (List of String) The downstream header claims. Only top level claims are supported.
 - `downstream_headers_names` (List of String) The downstream header names for the claim values.
 - `downstream_id_token_header` (String) The downstream id token header.
 - `downstream_id_token_jwk_header` (String) The downstream id token JWK header.
@@ -671,10 +732,10 @@ Optional:
 - `id_token_param_type` (List of String) Where to look for the id token: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body. Default: ["body","header","query"]
 - `ignore_signature` (List of String) Skip the token signature verification on certain grants: - `password`: OAuth password grant - `client_credentials`: OAuth client credentials grant - `authorization_code`: authorization code flow - `refresh_token`: OAuth refresh token grant - `session`: session cookie authentication - `introspection`: OAuth introspection - `userinfo`: OpenID Connect user info endpoint authentication. Default: []
 - `introspect_jwt_tokens` (Boolean) Specifies whether to introspect the JWT access tokens (can be used to check for revocations). Default: false
-- `introspection_accept` (String) The value of `Accept` header for introspection requests: - `application/json`: introspection response as JSON - `application/token-introspection+jwt`: introspection response as JWT (from the current IETF draft document) - `application/jwt`: introspection response as JWT (from the obsolete IETF draft document). Default: "application/json"; must be one of ["application/json", "application/jwt", "application/token-introspection+jwt"]
+- `introspection_accept` (String) The value of `Accept` header for introspection requests: - `application/json`: introspection response as JSON - `application/token-introspection+jwt`: introspection response as JWT (from the current IETF draft document) - `application/jwt`: introspection response as JWT (from the obsolete IETF draft document). possible known values include one of ["application/json", "application/jwt", "application/token-introspection+jwt"]; Default: "application/json"
 - `introspection_check_active` (Boolean) Check that the introspection response has an `active` claim with a value of `true`. Default: true
 - `introspection_endpoint` (String) The introspection endpoint. If set it overrides the value in `introspection_endpoint` returned by the discovery endpoint.
-- `introspection_endpoint_auth_method` (String) The introspection endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate. must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]
+- `introspection_endpoint_auth_method` (String) The introspection endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]
 - `introspection_headers_client` (List of String) Extra headers passed from the client to the introspection endpoint.
 - `introspection_headers_names` (List of String) Extra header names passed to the introspection endpoint.
 - `introspection_headers_values` (List of String) Extra header values passed to the introspection endpoint.
@@ -685,13 +746,14 @@ Optional:
 - `introspection_post_args_values` (List of String) Extra post argument values passed to the introspection endpoint.
 - `introspection_token_param_name` (String) Designate token's parameter name for introspection. Default: "token"
 - `issuers_allowed` (List of String) The issuers allowed to be present in the tokens (`iss` claim).
+- `jwks_endpoint` (String) Overrides the `jwks_uri` returned by discovery. Use when the IdP exposes a non-standard JWKS endpoint.
 - `jwt_session_claim` (String) The claim to match against the JWT session cookie. Default: "sid"
 - `jwt_session_cookie` (String) The name of the JWT session cookie.
 - `keepalive` (Boolean) Use keepalive with the HTTP client. Default: true
 - `leeway` (Number) Defines leeway time (in seconds) for `auth_time`, `exp`, `iat`, and `nbf` claims. Default: 0
-- `login_action` (String) What to do after successful login: - `upstream`: proxy request to upstream service - `response`: terminate request with a response - `redirect`: redirect to a different location. Default: "upstream"; must be one of ["redirect", "response", "upstream"]
+- `login_action` (String) What to do after successful login: - `upstream`: proxy request to upstream service - `response`: terminate request with a response - `redirect`: redirect to a different location. possible known values include one of ["redirect", "response", "upstream"]; Default: "upstream"
 - `login_methods` (List of String) Enable login functionality with specified grants. Default: ["authorization_code"]
-- `login_redirect_mode` (String) Where to place `login_tokens` when using `redirect` `login_action`: - `query`: place tokens in query string - `fragment`: place tokens in url fragment (not readable by servers). Default: "fragment"; must be one of ["fragment", "query"]
+- `login_redirect_mode` (String) Where to place `login_tokens` when using `redirect` `login_action`: - `query`: place tokens in query string - `fragment`: place tokens in url fragment (not readable by servers). possible known values include one of ["fragment", "query"]; Default: "fragment"
 - `login_redirect_uri` (List of String) Where to redirect the client when `login_action` is set to `redirect`.
 - `login_tokens` (List of String) What tokens to include in `response` body or `redirect` query string or fragment: - `id_token`: include id token - `access_token`: include access token - `refresh_token`: include refresh token - `tokens`: include the full token endpoint response - `introspection`: include introspection response. Default: ["id_token"]
 - `logout_methods` (List of String) The request methods that can activate the logout: - `POST`: HTTP POST method - `GET`: HTTP GET method - `DELETE`: HTTP DELETE method. Default: ["DELETE","POST"]
@@ -713,10 +775,10 @@ Default: false
 - `password_param_type` (List of String) Where to look for the username and password: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body. Default: ["body","header","query"]
 - `preserve_query_args` (Boolean) With this parameter, you can preserve request query arguments even when doing authorization code flow. Default: false
 - `proof_of_possession_auth_methods_validation` (Boolean) If set to true, only the auth_methods that are compatible with Proof of Possession (PoP) can be configured when PoP is enabled. If set to false, all auth_methods will be configurable and PoP checks will be silently skipped for those auth_methods that are not compatible with PoP. Default: true
-- `proof_of_possession_dpop` (String) Enable Demonstrating Proof-of-Possession (DPoP). If set to strict, all request are verified despite the presence of the DPoP key claim (cnf.jkt). If set to optional, only tokens bound with DPoP's key are verified with the proof. Default: "off"; must be one of ["off", "optional", "strict"]
-- `proof_of_possession_mtls` (String) Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401. Default: "off"; must be one of ["off", "optional", "strict"]
+- `proof_of_possession_dpop` (String) Enable Demonstrating Proof-of-Possession (DPoP). If set to strict, all request are verified despite the presence of the DPoP key claim (cnf.jkt). If set to optional, only tokens bound with DPoP's key are verified with the proof. possible known values include one of ["off", "optional", "strict"]; Default: "off"
+- `proof_of_possession_mtls` (String) Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401. possible known values include one of ["off", "optional", "strict"]; Default: "off"
 - `pushed_authorization_request_endpoint` (String) The pushed authorization endpoint. If set it overrides the value in `pushed_authorization_request_endpoint` returned by the discovery endpoint.
-- `pushed_authorization_request_endpoint_auth_method` (String) The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate. must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]
+- `pushed_authorization_request_endpoint_auth_method` (String) The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]
 - `redirect_uri` (List of String) The redirect URI passed to the authorization and token endpoints.
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--redis))
 - `rediscovery_lifetime` (Number) Specifies how long (in seconds) the plugin waits between discovery attempts. Discovery is still triggered on an as-needed basis. Default: 30
@@ -727,11 +789,11 @@ Default: false
 - `require_pushed_authorization_requests` (Boolean) Forcibly enable or disable the pushed authorization requests. When not set the value is determined through the discovery using the value of `require_pushed_authorization_requests` (which defaults to `false`).
 - `require_signed_request_object` (Boolean) Forcibly enable or disable the usage of signed request object on authorization or pushed authorization endpoint. When not set the value is determined through the discovery using the value of `require_signed_request_object`, and enabled automatically (in case the `require_signed_request_object` is missing, the feature will not be enabled).
 - `resolve_distributed_claims` (Boolean) Distributed claims are represented by the `_claim_names` and `_claim_sources` members of the JSON object containing the claims. If this parameter is set to `true`, the plugin explicitly resolves these distributed claims. Default: false
-- `response_mode` (String) Response mode passed to the authorization endpoint: - `query`: for parameters in query string - `form_post`: for parameters in request body - `fragment`: for parameters in uri fragment (rarely useful as the plugin itself cannot read it) - `query.jwt`, `form_post.jwt`, `fragment.jwt`: similar to `query`, `form_post` and `fragment` but the parameters are encoded in a JWT - `jwt`: shortcut that indicates the default encoding for the requested response type. Default: "query"; must be one of ["form_post", "form_post.jwt", "fragment", "fragment.jwt", "jwt", "query", "query.jwt"]
+- `response_mode` (String) Response mode passed to the authorization endpoint: - `query`: for parameters in query string - `form_post`: for parameters in request body - `fragment`: for parameters in uri fragment (rarely useful as the plugin itself cannot read it) - `query.jwt`, `form_post.jwt`, `fragment.jwt`: similar to `query`, `form_post` and `fragment` but the parameters are encoded in a JWT - `jwt`: shortcut that indicates the default encoding for the requested response type. possible known values include one of ["form_post", "form_post.jwt", "fragment", "fragment.jwt", "jwt", "query", "query.jwt"]; Default: "query"
 - `response_type` (List of String) The response type passed to the authorization endpoint. Default: ["code"]
 - `reverify` (Boolean) Specifies whether to always verify tokens stored in the session. Default: false
 - `revocation_endpoint` (String) The revocation endpoint. If set it overrides the value in `revocation_endpoint` returned by the discovery endpoint.
-- `revocation_endpoint_auth_method` (String) The revocation endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate. must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]
+- `revocation_endpoint_auth_method` (String) The revocation endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]
 - `revocation_token_param_name` (String) Designate token's parameter name for revocation. Default: "token"
 - `roles_claim` (List of String) The claim that contains the roles. If multiple values are set, it means the claim is inside a nested object of the token payload. Default: ["roles"]
 - `roles_required` (List of String) The roles (`roles_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
@@ -747,7 +809,7 @@ Default: false
 - `session_cookie_http_only` (Boolean) Forbids JavaScript from accessing the cookie, for example, through the `Document.cookie` property. Default: true
 - `session_cookie_name` (String) The session cookie name. Default: "session"
 - `session_cookie_path` (String) The session cookie Path flag. Default: "/"
-- `session_cookie_same_site` (String) Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. Default: "Lax"; must be one of ["Default", "Lax", "None", "Strict"]
+- `session_cookie_same_site` (String) Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. possible known values include one of ["Default", "Lax", "None", "Strict"]; Default: "Lax"
 - `session_cookie_secure` (Boolean) Cookie is only sent to the server when a request is made with the https: scheme (except on localhost), and therefore is more resistant to man-in-the-middle attacks.
 - `session_enforce_same_subject` (Boolean) When set to `true`, audiences are forced to share the same subject. Default: false
 - `session_hash_storage_key` (Boolean) When set to `true`, the storage key (session ID) is hashed for extra security. Hashing the storage key means it is impossible to decrypt data from the storage without a cookie. Default: false
@@ -767,7 +829,7 @@ Default: false
 - `session_response_headers` (List of String) Set of headers to send to downstream, use id, audience, subject, timeout, idling-timeout, rolling-timeout, absolute-timeout. E.g. `[ "id", "timeout" ]` will set Session-Id and Session-Timeout response headers.
 - `session_rolling_timeout` (Number) Specifies how long the session can be used in seconds until it needs to be renewed. 0 disables the checks and rolling. Default: 3600
 - `session_secret` (String) The session secret.
-- `session_storage` (String) The session storage for session data: - `cookie`: stores session data with the session cookie (the session cannot be invalidated or revoked without changing session secret, but is stateless, and doesn't require a database) - `memcache`: stores session data in memcached - `redis`: stores session data in Redis. Default: "cookie"; must be one of ["cookie", "memcache", "memcached", "redis"]
+- `session_storage` (String) The session storage for session data: - `cookie`: stores session data with the session cookie (the session cannot be invalidated or revoked without changing session secret, but is stateless, and doesn't require a database) - `memcache`: stores session data in memcached - `redis`: stores session data in Redis. possible known values include one of ["cookie", "memcache", "memcached", "redis"]; Default: "cookie"
 - `session_store_metadata` (Boolean) Configures whether or not session metadata should be stored. This metadata includes information about the active sessions for a specific audience belonging to a specific subject. Default: false
 - `ssl_verify` (Boolean) Verify identity provider server certificate. If set to `true`, the plugin uses the CA certificate set in the `kong.conf` config parameter `lua_ssl_trusted_certificate`. Default: false
 - `timeout` (Number) Network IO timeout in milliseconds. Default: 10000
@@ -775,8 +837,9 @@ Default: false
 - `tls_client_auth_ssl_verify` (Boolean) Verify identity provider server certificate during mTLS client authentication. Default: true
 - `token_cache_key_include_scope` (Boolean) Include the scope in the token cache key, so token with different scopes are considered diffrent tokens. Default: false
 - `token_endpoint` (String) The token endpoint. If set it overrides the value in `token_endpoint` returned by the discovery endpoint.
-- `token_endpoint_auth_method` (String) The token endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate. must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]
-- `token_exchange_endpoint` (String) The token exchange endpoint.
+- `token_endpoint_auth_method` (String) The token endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]
+- `token_exchange` (Attributes) Details on how to accept tokens from other identity providers. (see [below for nested schema](#nestedatt--config--token_exchange))
+- `token_exchange_endpoint` (String) Endpoint used to perform the legacy token exchange.
 - `token_headers_client` (List of String) Extra headers passed from the client to the token endpoint.
 - `token_headers_grants` (List of String) Enable the sending of the token endpoint response headers only with certain grants: - `password`: with OAuth password grant - `client_credentials`: with OAuth client credentials grant - `authorization_code`: with authorization code flow - `refresh_token` with refresh token grant.
 - `token_headers_names` (List of String) Extra header names passed to the token endpoint.
@@ -792,6 +855,7 @@ Default: false
 - `unexpected_redirect_uri` (List of String) Where to redirect the client when unexpected errors happen with the requests.
 - `upstream_access_token_header` (String) The upstream access token header. Default: "authorization:bearer"
 - `upstream_access_token_jwk_header` (String) The upstream access token JWK header.
+- `upstream_headers` (Attributes List) The upstream claim to header mappings. (see [below for nested schema](#nestedatt--config--upstream_headers))
 - `upstream_headers_claims` (List of String) The upstream header claims. Only top level claims are supported.
 - `upstream_headers_names` (List of String) The upstream header names for the claim values.
 - `upstream_id_token_header` (String) The upstream id token header.
@@ -802,7 +866,7 @@ Default: false
 - `upstream_session_id_header` (String) The upstream session id header.
 - `upstream_user_info_header` (String) The upstream user info header.
 - `upstream_user_info_jwt_header` (String) The upstream user info JWT header (in case the user info returns a JWT response).
-- `userinfo_accept` (String) The value of `Accept` header for user info requests: - `application/json`: user info response as JSON - `application/jwt`: user info response as JWT (from the obsolete IETF draft document). Default: "application/json"; must be one of ["application/json", "application/jwt"]
+- `userinfo_accept` (String) The value of `Accept` header for user info requests: - `application/json`: user info response as JSON - `application/jwt`: user info response as JWT (from the obsolete IETF draft document). possible known values include one of ["application/json", "application/jwt"]; Default: "application/json"
 - `userinfo_endpoint` (String) The user info endpoint. If set it overrides the value in `userinfo_endpoint` returned by the discovery endpoint.
 - `userinfo_headers_client` (List of String) Extra headers passed from the client to the user info endpoint.
 - `userinfo_headers_names` (List of String) Extra header names passed to the user info endpoint.
@@ -869,7 +933,7 @@ Optional:
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--cluster_cache_redis--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
+- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
@@ -881,7 +945,7 @@ Optional:
 
 Optional:
 
-- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]
 - `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 - `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
 - `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
@@ -914,6 +978,15 @@ Optional:
 
 
 
+<a id="nestedatt--config--downstream_headers"></a>
+### Nested Schema for `config.downstream_headers`
+
+Optional:
+
+- `header` (String) The name of the header. Not Null
+- `path` (List of String) The path of the header value. Not Null
+
+
 <a id="nestedatt--config--redis"></a>
 ### Nested Schema for `config.redis`
 
@@ -936,7 +1009,7 @@ Optional:
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--redis--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
+- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `socket` (String) The Redis unix socket path.
@@ -949,7 +1022,7 @@ Optional:
 
 Optional:
 
-- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]
 - `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 - `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
 - `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
@@ -980,6 +1053,68 @@ Optional:
 - `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
 - `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
 
+
+
+<a id="nestedatt--config--token_exchange"></a>
+### Nested Schema for `config.token_exchange`
+
+Required:
+
+- `subject_token_issuers` (Attributes List) Trusted token issuers from which the upstream may accept tokens to be exchanged. If a JWT bearer matches all the conditions of a subject token issuer item, the token will be exchanged. (see [below for nested schema](#nestedatt--config--token_exchange--subject_token_issuers))
+
+Optional:
+
+- `cache` (Attributes) Cache support for token exchange (see [below for nested schema](#nestedatt--config--token_exchange--cache))
+- `request` (Attributes) Parameters used in the token exchange request. (see [below for nested schema](#nestedatt--config--token_exchange--request))
+
+<a id="nestedatt--config--token_exchange--subject_token_issuers"></a>
+### Nested Schema for `config.token_exchange.subject_token_issuers`
+
+Optional:
+
+- `conditions` (Attributes) A tokens will only be exchange when it matches all these criteria. To exchanging tokens issued from a different issuer, conditions must not be defined; On the contrary, to exchange tokens issued from the target issuer itself, conditions must be defined. (see [below for nested schema](#nestedatt--config--token_exchange--subject_token_issuers--conditions))
+- `issuer` (String) Tokens of whose iss claim matches this value will be exchanged. Not Null
+
+<a id="nestedatt--config--token_exchange--subject_token_issuers--conditions"></a>
+### Nested Schema for `config.token_exchange.subject_token_issuers.conditions`
+
+Optional:
+
+- `has_audience` (List of String)
+- `has_scopes` (List of String)
+- `missing_audience` (List of String)
+- `missing_scopes` (List of String)
+
+
+
+<a id="nestedatt--config--token_exchange--cache"></a>
+### Nested Schema for `config.token_exchange.cache`
+
+Optional:
+
+- `enabled` (Boolean) Whether to enable caching. Default: true
+- `ttl` (Number) Cache ttl in seconds used when caching exchanged tokens, use it to override `conf.cache_ttl`. Token expiry will be used if shorter than this value.
+
+
+<a id="nestedatt--config--token_exchange--request"></a>
+### Nested Schema for `config.token_exchange.request`
+
+Optional:
+
+- `audience` (List of String) Audiences used in the token exchange request. Values defined here override those defined in `config.audience`.
+- `empty_audience` (Boolean) Use empty audiences. Use this field to override audiences defined in `config.audience`. Default: false
+- `empty_scopes` (Boolean) Use empty scopes. Use this field to override scopes defined in `config.scopes`. Default: false
+- `scopes` (List of String) Scopes used in the token exchange request. Values defined here override those defined in `config.scopes`.
+
+
+
+<a id="nestedatt--config--upstream_headers"></a>
+### Nested Schema for `config.upstream_headers`
+
+Optional:
+
+- `header` (String) The name of the header. Not Null
+- `path` (List of String) The path of the header value. Not Null
 
 
 
@@ -1044,7 +1179,7 @@ import {
   to = konnect_gateway_plugin_openid_connect.my_konnect_gateway_plugin_openid_connect
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

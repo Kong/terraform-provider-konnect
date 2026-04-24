@@ -15,6 +15,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.OpenidConnectPluginConfig{}
 		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
 		if resp.Config.Audience != nil {
@@ -200,7 +201,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		if resp.Config.ClusterCacheRedis == nil {
 			r.Config.ClusterCacheRedis = nil
 		} else {
-			r.Config.ClusterCacheRedis = &tfTypes.AcePluginRedis{}
+			r.Config.ClusterCacheRedis = &tfTypes.PartialVectordbRedis{}
 			if resp.Config.ClusterCacheRedis.CloudAuthentication == nil {
 				r.Config.ClusterCacheRedis.CloudAuthentication = nil
 			} else {
@@ -291,6 +292,19 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		} else {
 			r.Config.ConsumerClaim = nil
 		}
+		if resp.Config.ConsumerClaims != nil {
+			r.Config.ConsumerClaims = nil
+			for _, consumerClaimsItem := range resp.Config.ConsumerClaims {
+				var consumerClaims []types.String
+				consumerClaims = make([]types.String, 0, len(consumerClaimsItem))
+				for _, v := range consumerClaimsItem {
+					consumerClaims = append(consumerClaims, types.StringValue(v))
+				}
+				r.Config.ConsumerClaims = append(r.Config.ConsumerClaims, consumerClaims)
+			}
+		} else {
+			r.Config.ConsumerClaims = nil
+		}
 		if resp.Config.ConsumerGroupsClaim != nil {
 			r.Config.ConsumerGroupsClaim = make([]types.String, 0, len(resp.Config.ConsumerGroupsClaim))
 			for _, v := range resp.Config.ConsumerGroupsClaim {
@@ -340,6 +354,23 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		}
 		r.Config.DownstreamAccessTokenHeader = types.StringPointerValue(resp.Config.DownstreamAccessTokenHeader)
 		r.Config.DownstreamAccessTokenJwkHeader = types.StringPointerValue(resp.Config.DownstreamAccessTokenJwkHeader)
+		if resp.Config.DownstreamHeaders != nil {
+			r.Config.DownstreamHeaders = []tfTypes.UpstreamHeaders{}
+
+			for _, downstreamHeadersItem := range resp.Config.DownstreamHeaders {
+				var downstreamHeaders tfTypes.UpstreamHeaders
+
+				downstreamHeaders.Header = types.StringValue(downstreamHeadersItem.Header)
+				downstreamHeaders.Path = make([]types.String, 0, len(downstreamHeadersItem.Path))
+				for _, v := range downstreamHeadersItem.Path {
+					downstreamHeaders.Path = append(downstreamHeaders.Path, types.StringValue(v))
+				}
+
+				r.Config.DownstreamHeaders = append(r.Config.DownstreamHeaders, downstreamHeaders)
+			}
+		} else {
+			r.Config.DownstreamHeaders = nil
+		}
 		if resp.Config.DownstreamHeadersClaims != nil {
 			r.Config.DownstreamHeadersClaims = make([]types.String, 0, len(resp.Config.DownstreamHeadersClaims))
 			for _, v := range resp.Config.DownstreamHeadersClaims {
@@ -494,6 +525,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		} else {
 			r.Config.IssuersAllowed = nil
 		}
+		r.Config.JwksEndpoint = types.StringPointerValue(resp.Config.JwksEndpoint)
 		r.Config.JwtSessionClaim = types.StringPointerValue(resp.Config.JwtSessionClaim)
 		r.Config.JwtSessionCookie = types.StringPointerValue(resp.Config.JwtSessionCookie)
 		r.Config.Keepalive = types.BoolPointerValue(resp.Config.Keepalive)
@@ -787,6 +819,87 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		} else {
 			r.Config.TokenEndpointAuthMethod = types.StringNull()
 		}
+		if resp.Config.TokenExchange == nil {
+			r.Config.TokenExchange = nil
+		} else {
+			r.Config.TokenExchange = &tfTypes.OpenidConnectPluginTokenExchange{}
+			if resp.Config.TokenExchange.Cache == nil {
+				r.Config.TokenExchange.Cache = nil
+			} else {
+				r.Config.TokenExchange.Cache = &tfTypes.OpenidConnectPluginCache{}
+				r.Config.TokenExchange.Cache.Enabled = types.BoolPointerValue(resp.Config.TokenExchange.Cache.Enabled)
+				r.Config.TokenExchange.Cache.TTL = types.Int64PointerValue(resp.Config.TokenExchange.Cache.TTL)
+			}
+			if resp.Config.TokenExchange.Request == nil {
+				r.Config.TokenExchange.Request = nil
+			} else {
+				r.Config.TokenExchange.Request = &tfTypes.OpenidConnectPluginRequest{}
+				if resp.Config.TokenExchange.Request.Audience != nil {
+					r.Config.TokenExchange.Request.Audience = make([]types.String, 0, len(resp.Config.TokenExchange.Request.Audience))
+					for _, v := range resp.Config.TokenExchange.Request.Audience {
+						r.Config.TokenExchange.Request.Audience = append(r.Config.TokenExchange.Request.Audience, types.StringValue(v))
+					}
+				} else {
+					r.Config.TokenExchange.Request.Audience = nil
+				}
+				r.Config.TokenExchange.Request.EmptyAudience = types.BoolPointerValue(resp.Config.TokenExchange.Request.EmptyAudience)
+				r.Config.TokenExchange.Request.EmptyScopes = types.BoolPointerValue(resp.Config.TokenExchange.Request.EmptyScopes)
+				if resp.Config.TokenExchange.Request.Scopes != nil {
+					r.Config.TokenExchange.Request.Scopes = make([]types.String, 0, len(resp.Config.TokenExchange.Request.Scopes))
+					for _, v := range resp.Config.TokenExchange.Request.Scopes {
+						r.Config.TokenExchange.Request.Scopes = append(r.Config.TokenExchange.Request.Scopes, types.StringValue(v))
+					}
+				} else {
+					r.Config.TokenExchange.Request.Scopes = nil
+				}
+			}
+			r.Config.TokenExchange.SubjectTokenIssuers = []tfTypes.SubjectTokenIssuers{}
+
+			for _, subjectTokenIssuersItem := range resp.Config.TokenExchange.SubjectTokenIssuers {
+				var subjectTokenIssuers tfTypes.SubjectTokenIssuers
+
+				if subjectTokenIssuersItem.Conditions == nil {
+					subjectTokenIssuers.Conditions = nil
+				} else {
+					subjectTokenIssuers.Conditions = &tfTypes.Conditions{}
+					if subjectTokenIssuersItem.Conditions.HasAudience != nil {
+						subjectTokenIssuers.Conditions.HasAudience = make([]types.String, 0, len(subjectTokenIssuersItem.Conditions.HasAudience))
+						for _, v := range subjectTokenIssuersItem.Conditions.HasAudience {
+							subjectTokenIssuers.Conditions.HasAudience = append(subjectTokenIssuers.Conditions.HasAudience, types.StringValue(v))
+						}
+					} else {
+						subjectTokenIssuers.Conditions.HasAudience = nil
+					}
+					if subjectTokenIssuersItem.Conditions.HasScopes != nil {
+						subjectTokenIssuers.Conditions.HasScopes = make([]types.String, 0, len(subjectTokenIssuersItem.Conditions.HasScopes))
+						for _, v := range subjectTokenIssuersItem.Conditions.HasScopes {
+							subjectTokenIssuers.Conditions.HasScopes = append(subjectTokenIssuers.Conditions.HasScopes, types.StringValue(v))
+						}
+					} else {
+						subjectTokenIssuers.Conditions.HasScopes = nil
+					}
+					if subjectTokenIssuersItem.Conditions.MissingAudience != nil {
+						subjectTokenIssuers.Conditions.MissingAudience = make([]types.String, 0, len(subjectTokenIssuersItem.Conditions.MissingAudience))
+						for _, v := range subjectTokenIssuersItem.Conditions.MissingAudience {
+							subjectTokenIssuers.Conditions.MissingAudience = append(subjectTokenIssuers.Conditions.MissingAudience, types.StringValue(v))
+						}
+					} else {
+						subjectTokenIssuers.Conditions.MissingAudience = nil
+					}
+					if subjectTokenIssuersItem.Conditions.MissingScopes != nil {
+						subjectTokenIssuers.Conditions.MissingScopes = make([]types.String, 0, len(subjectTokenIssuersItem.Conditions.MissingScopes))
+						for _, v := range subjectTokenIssuersItem.Conditions.MissingScopes {
+							subjectTokenIssuers.Conditions.MissingScopes = append(subjectTokenIssuers.Conditions.MissingScopes, types.StringValue(v))
+						}
+					} else {
+						subjectTokenIssuers.Conditions.MissingScopes = nil
+					}
+				}
+				subjectTokenIssuers.Issuer = types.StringValue(subjectTokenIssuersItem.Issuer)
+
+				r.Config.TokenExchange.SubjectTokenIssuers = append(r.Config.TokenExchange.SubjectTokenIssuers, subjectTokenIssuers)
+			}
+		}
 		r.Config.TokenExchangeEndpoint = types.StringPointerValue(resp.Config.TokenExchangeEndpoint)
 		if resp.Config.TokenHeadersClient != nil {
 			r.Config.TokenHeadersClient = make([]types.String, 0, len(resp.Config.TokenHeadersClient))
@@ -873,6 +986,23 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		}
 		r.Config.UpstreamAccessTokenHeader = types.StringPointerValue(resp.Config.UpstreamAccessTokenHeader)
 		r.Config.UpstreamAccessTokenJwkHeader = types.StringPointerValue(resp.Config.UpstreamAccessTokenJwkHeader)
+		if resp.Config.UpstreamHeaders != nil {
+			r.Config.UpstreamHeaders = []tfTypes.UpstreamHeaders{}
+
+			for _, upstreamHeadersItem := range resp.Config.UpstreamHeaders {
+				var upstreamHeaders tfTypes.UpstreamHeaders
+
+				upstreamHeaders.Header = types.StringValue(upstreamHeadersItem.Header)
+				upstreamHeaders.Path = make([]types.String, 0, len(upstreamHeadersItem.Path))
+				for _, v := range upstreamHeadersItem.Path {
+					upstreamHeaders.Path = append(upstreamHeaders.Path, types.StringValue(v))
+				}
+
+				r.Config.UpstreamHeaders = append(r.Config.UpstreamHeaders, upstreamHeaders)
+			}
+		} else {
+			r.Config.UpstreamHeaders = nil
+		}
 		if resp.Config.UpstreamHeadersClaims != nil {
 			r.Config.UpstreamHeadersClaims = make([]types.String, 0, len(resp.Config.UpstreamHeadersClaims))
 			for _, v := range resp.Config.UpstreamHeadersClaims {
@@ -1111,6 +1241,12 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToOperationsUpdateOpenidconnec
 func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ctx context.Context) (*shared.OpenidConnectPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -1898,11 +2034,15 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	for _, consumerByItem := range r.Config.ConsumerBy {
 		consumerBy = append(consumerBy, shared.OpenidConnectPluginConsumerBy(consumerByItem.ValueString()))
 	}
-	var consumerClaim []string
-	if r.Config.ConsumerClaim != nil {
-		consumerClaim = make([]string, 0, len(r.Config.ConsumerClaim))
-		for consumerClaimIndex := range r.Config.ConsumerClaim {
-			consumerClaim = append(consumerClaim, r.Config.ConsumerClaim[consumerClaimIndex].ValueString())
+	var consumerClaims [][]string
+	if r.Config.ConsumerClaims != nil {
+		consumerClaims = make([][]string, 0, len(r.Config.ConsumerClaims))
+		for consumerClaimsIndex := range r.Config.ConsumerClaims {
+			consumerClaimsTmp := make([]string, 0, len(r.Config.ConsumerClaims[consumerClaimsIndex]))
+			for index := range r.Config.ConsumerClaims[consumerClaimsIndex] {
+				consumerClaimsTmp = append(consumerClaimsTmp, r.Config.ConsumerClaims[consumerClaimsIndex][index].ValueString())
+			}
+			consumerClaims = append(consumerClaims, consumerClaimsTmp)
 		}
 	}
 	var consumerGroupsClaim []string
@@ -1973,6 +2113,23 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		*downstreamAccessTokenJwkHeader = r.Config.DownstreamAccessTokenJwkHeader.ValueString()
 	} else {
 		downstreamAccessTokenJwkHeader = nil
+	}
+	var downstreamHeaders []shared.DownstreamHeaders
+	if r.Config.DownstreamHeaders != nil {
+		downstreamHeaders = make([]shared.DownstreamHeaders, 0, len(r.Config.DownstreamHeaders))
+		for downstreamHeadersIndex := range r.Config.DownstreamHeaders {
+			var header string
+			header = r.Config.DownstreamHeaders[downstreamHeadersIndex].Header.ValueString()
+
+			path1 := make([]string, 0, len(r.Config.DownstreamHeaders[downstreamHeadersIndex].Path))
+			for pathIndex := range r.Config.DownstreamHeaders[downstreamHeadersIndex].Path {
+				path1 = append(path1, r.Config.DownstreamHeaders[downstreamHeadersIndex].Path[pathIndex].ValueString())
+			}
+			downstreamHeaders = append(downstreamHeaders, shared.DownstreamHeaders{
+				Header: header,
+				Path:   path1,
+			})
+		}
 	}
 	var downstreamHeadersClaims []string
 	if r.Config.DownstreamHeadersClaims != nil {
@@ -2253,6 +2410,12 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		for issuersAllowedIndex := range r.Config.IssuersAllowed {
 			issuersAllowed = append(issuersAllowed, r.Config.IssuersAllowed[issuersAllowedIndex].ValueString())
 		}
+	}
+	jwksEndpoint := new(string)
+	if !r.Config.JwksEndpoint.IsUnknown() && !r.Config.JwksEndpoint.IsNull() {
+		*jwksEndpoint = r.Config.JwksEndpoint.ValueString()
+	} else {
+		jwksEndpoint = nil
 	}
 	jwtSessionClaim := new(string)
 	if !r.Config.JwtSessionClaim.IsUnknown() && !r.Config.JwtSessionClaim.IsNull() {
@@ -3051,11 +3214,120 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		tokenEndpoint = nil
 	}
-	tokenEndpointAuthMethod := new(shared.TokenEndpointAuthMethod)
+	tokenEndpointAuthMethod := new(shared.OpenidConnectPluginTokenEndpointAuthMethod)
 	if !r.Config.TokenEndpointAuthMethod.IsUnknown() && !r.Config.TokenEndpointAuthMethod.IsNull() {
-		*tokenEndpointAuthMethod = shared.TokenEndpointAuthMethod(r.Config.TokenEndpointAuthMethod.ValueString())
+		*tokenEndpointAuthMethod = shared.OpenidConnectPluginTokenEndpointAuthMethod(r.Config.TokenEndpointAuthMethod.ValueString())
 	} else {
 		tokenEndpointAuthMethod = nil
+	}
+	var tokenExchange *shared.OpenidConnectPluginTokenExchange
+	if r.Config.TokenExchange != nil {
+		var cache *shared.OpenidConnectPluginCache
+		if r.Config.TokenExchange.Cache != nil {
+			enabled1 := new(bool)
+			if !r.Config.TokenExchange.Cache.Enabled.IsUnknown() && !r.Config.TokenExchange.Cache.Enabled.IsNull() {
+				*enabled1 = r.Config.TokenExchange.Cache.Enabled.ValueBool()
+			} else {
+				enabled1 = nil
+			}
+			ttl := new(int64)
+			if !r.Config.TokenExchange.Cache.TTL.IsUnknown() && !r.Config.TokenExchange.Cache.TTL.IsNull() {
+				*ttl = r.Config.TokenExchange.Cache.TTL.ValueInt64()
+			} else {
+				ttl = nil
+			}
+			cache = &shared.OpenidConnectPluginCache{
+				Enabled: enabled1,
+				TTL:     ttl,
+			}
+		}
+		var request *shared.OpenidConnectPluginRequest
+		if r.Config.TokenExchange.Request != nil {
+			var audience1 []string
+			if r.Config.TokenExchange.Request.Audience != nil {
+				audience1 = make([]string, 0, len(r.Config.TokenExchange.Request.Audience))
+				for audienceIndex1 := range r.Config.TokenExchange.Request.Audience {
+					audience1 = append(audience1, r.Config.TokenExchange.Request.Audience[audienceIndex1].ValueString())
+				}
+			}
+			emptyAudience := new(bool)
+			if !r.Config.TokenExchange.Request.EmptyAudience.IsUnknown() && !r.Config.TokenExchange.Request.EmptyAudience.IsNull() {
+				*emptyAudience = r.Config.TokenExchange.Request.EmptyAudience.ValueBool()
+			} else {
+				emptyAudience = nil
+			}
+			emptyScopes := new(bool)
+			if !r.Config.TokenExchange.Request.EmptyScopes.IsUnknown() && !r.Config.TokenExchange.Request.EmptyScopes.IsNull() {
+				*emptyScopes = r.Config.TokenExchange.Request.EmptyScopes.ValueBool()
+			} else {
+				emptyScopes = nil
+			}
+			var scopes1 []string
+			if r.Config.TokenExchange.Request.Scopes != nil {
+				scopes1 = make([]string, 0, len(r.Config.TokenExchange.Request.Scopes))
+				for scopesIndex1 := range r.Config.TokenExchange.Request.Scopes {
+					scopes1 = append(scopes1, r.Config.TokenExchange.Request.Scopes[scopesIndex1].ValueString())
+				}
+			}
+			request = &shared.OpenidConnectPluginRequest{
+				Audience:      audience1,
+				EmptyAudience: emptyAudience,
+				EmptyScopes:   emptyScopes,
+				Scopes:        scopes1,
+			}
+		}
+		subjectTokenIssuers := make([]shared.SubjectTokenIssuers, 0, len(r.Config.TokenExchange.SubjectTokenIssuers))
+		for subjectTokenIssuersIndex := range r.Config.TokenExchange.SubjectTokenIssuers {
+			var conditions *shared.Conditions
+			if r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions != nil {
+				var hasAudience []string
+				if r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasAudience != nil {
+					hasAudience = make([]string, 0, len(r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasAudience))
+					for hasAudienceIndex := range r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasAudience {
+						hasAudience = append(hasAudience, r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasAudience[hasAudienceIndex].ValueString())
+					}
+				}
+				var hasScopes []string
+				if r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasScopes != nil {
+					hasScopes = make([]string, 0, len(r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasScopes))
+					for hasScopesIndex := range r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasScopes {
+						hasScopes = append(hasScopes, r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.HasScopes[hasScopesIndex].ValueString())
+					}
+				}
+				var missingAudience []string
+				if r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingAudience != nil {
+					missingAudience = make([]string, 0, len(r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingAudience))
+					for missingAudienceIndex := range r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingAudience {
+						missingAudience = append(missingAudience, r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingAudience[missingAudienceIndex].ValueString())
+					}
+				}
+				var missingScopes []string
+				if r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingScopes != nil {
+					missingScopes = make([]string, 0, len(r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingScopes))
+					for missingScopesIndex := range r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingScopes {
+						missingScopes = append(missingScopes, r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Conditions.MissingScopes[missingScopesIndex].ValueString())
+					}
+				}
+				conditions = &shared.Conditions{
+					HasAudience:     hasAudience,
+					HasScopes:       hasScopes,
+					MissingAudience: missingAudience,
+					MissingScopes:   missingScopes,
+				}
+			}
+			var issuer2 string
+			issuer2 = r.Config.TokenExchange.SubjectTokenIssuers[subjectTokenIssuersIndex].Issuer.ValueString()
+
+			subjectTokenIssuers = append(subjectTokenIssuers, shared.SubjectTokenIssuers{
+				Conditions: conditions,
+				Issuer:     issuer2,
+			})
+		}
+		tokenExchange = &shared.OpenidConnectPluginTokenExchange{
+			Cache:               cache,
+			Request:             request,
+			SubjectTokenIssuers: subjectTokenIssuers,
+		}
 	}
 	tokenExchangeEndpoint := new(string)
 	if !r.Config.TokenExchangeEndpoint.IsUnknown() && !r.Config.TokenExchangeEndpoint.IsNull() {
@@ -3162,6 +3434,23 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		*upstreamAccessTokenJwkHeader = r.Config.UpstreamAccessTokenJwkHeader.ValueString()
 	} else {
 		upstreamAccessTokenJwkHeader = nil
+	}
+	var upstreamHeaders []shared.OpenidConnectPluginUpstreamHeaders
+	if r.Config.UpstreamHeaders != nil {
+		upstreamHeaders = make([]shared.OpenidConnectPluginUpstreamHeaders, 0, len(r.Config.UpstreamHeaders))
+		for upstreamHeadersIndex := range r.Config.UpstreamHeaders {
+			var header1 string
+			header1 = r.Config.UpstreamHeaders[upstreamHeadersIndex].Header.ValueString()
+
+			path2 := make([]string, 0, len(r.Config.UpstreamHeaders[upstreamHeadersIndex].Path))
+			for pathIndex1 := range r.Config.UpstreamHeaders[upstreamHeadersIndex].Path {
+				path2 = append(path2, r.Config.UpstreamHeaders[upstreamHeadersIndex].Path[pathIndex1].ValueString())
+			}
+			upstreamHeaders = append(upstreamHeaders, shared.OpenidConnectPluginUpstreamHeaders{
+				Header: header1,
+				Path:   path2,
+			})
+		}
 	}
 	var upstreamHeadersClaims []string
 	if r.Config.UpstreamHeadersClaims != nil {
@@ -3309,6 +3598,13 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		verifySignature = nil
 	}
+	var consumerClaim []string
+	if r.Config.ConsumerClaim != nil {
+		consumerClaim = make([]string, 0, len(r.Config.ConsumerClaim))
+		for consumerClaimIndex := range r.Config.ConsumerClaim {
+			consumerClaim = append(consumerClaim, r.Config.ConsumerClaim[consumerClaimIndex].ValueString())
+		}
+	}
 	config := shared.OpenidConnectPluginConfig{
 		Anonymous:                              anonymous,
 		Audience:                               audience,
@@ -3351,7 +3647,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		ClusterCacheRedis:                      clusterCacheRedis,
 		ClusterCacheStrategy:                   clusterCacheStrategy,
 		ConsumerBy:                             consumerBy,
-		ConsumerClaim:                          consumerClaim,
+		ConsumerClaims:                         consumerClaims,
 		ConsumerGroupsClaim:                    consumerGroupsClaim,
 		ConsumerGroupsOptional:                 consumerGroupsOptional,
 		ConsumerOptional:                       consumerOptional,
@@ -3363,6 +3659,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		Domains:                                domains,
 		DownstreamAccessTokenHeader:            downstreamAccessTokenHeader,
 		DownstreamAccessTokenJwkHeader:         downstreamAccessTokenJwkHeader,
+		DownstreamHeaders:                      downstreamHeaders,
 		DownstreamHeadersClaims:                downstreamHeadersClaims,
 		DownstreamHeadersNames:                 downstreamHeadersNames,
 		DownstreamIDTokenHeader:                downstreamIDTokenHeader,
@@ -3409,6 +3706,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		IntrospectionTokenParamName:            introspectionTokenParamName,
 		Issuer:                                 issuer1,
 		IssuersAllowed:                         issuersAllowed,
+		JwksEndpoint:                           jwksEndpoint,
 		JwtSessionClaim:                        jwtSessionClaim,
 		JwtSessionCookie:                       jwtSessionCookie,
 		Keepalive:                              keepalive,
@@ -3497,6 +3795,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		TokenCacheKeyIncludeScope:          tokenCacheKeyIncludeScope,
 		TokenEndpoint:                      tokenEndpoint,
 		TokenEndpointAuthMethod:            tokenEndpointAuthMethod,
+		TokenExchange:                      tokenExchange,
 		TokenExchangeEndpoint:              tokenExchangeEndpoint,
 		TokenHeadersClient:                 tokenHeadersClient,
 		TokenHeadersGrants:                 tokenHeadersGrants,
@@ -3513,6 +3812,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		UnexpectedRedirectURI:              unexpectedRedirectURI,
 		UpstreamAccessTokenHeader:          upstreamAccessTokenHeader,
 		UpstreamAccessTokenJwkHeader:       upstreamAccessTokenJwkHeader,
+		UpstreamHeaders:                    upstreamHeaders,
 		UpstreamHeadersClaims:              upstreamHeadersClaims,
 		UpstreamHeadersNames:               upstreamHeadersNames,
 		UpstreamIDTokenHeader:              upstreamIDTokenHeader,
@@ -3536,6 +3836,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		VerifyNonce:                        verifyNonce,
 		VerifyParameters:                   verifyParameters,
 		VerifySignature:                    verifySignature,
+		ConsumerClaim:                      consumerClaim,
 	}
 	protocols := make([]shared.OpenidConnectPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
@@ -3566,6 +3867,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		}
 	}
 	out := shared.OpenidConnectPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

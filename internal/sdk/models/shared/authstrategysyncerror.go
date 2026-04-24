@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -20,24 +18,16 @@ const (
 func (e Value) ToPointer() *Value {
 	return &e
 }
-func (e *Value) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Value) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "plugin_sync_error_comm", "plugin_sync_error_unknown", "plugin_sync_error_fatal", "plugin_sync_error_updating_plugin_refs":
+			return true
+		}
 	}
-	switch v {
-	case "plugin_sync_error_comm":
-		fallthrough
-	case "plugin_sync_error_unknown":
-		fallthrough
-	case "plugin_sync_error_fatal":
-		fallthrough
-	case "plugin_sync_error_updating_plugin_refs":
-		*e = Value(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Value: %v", v)
-	}
+	return false
 }
 
 type Details struct {

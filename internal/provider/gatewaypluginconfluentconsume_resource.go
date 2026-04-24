@@ -48,6 +48,7 @@ type GatewayPluginConfluentConsumeResource struct {
 
 // GatewayPluginConfluentConsumeResourceModel describes the resource data model.
 type GatewayPluginConfluentConsumeResourceModel struct {
+	Condition      types.String                          `tfsdk:"condition"`
 	Config         *tfTypes.ConfluentConsumePluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                          `tfsdk:"consumer"`
 	ControlPlaneID types.String                          `tfsdk:"control_plane_id"`
@@ -72,6 +73,13 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginConfluentConsume Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -79,13 +87,7 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`earliest`),
-						Description: `The offset to start from when there is no initial offset in the consumer group. Default: "earliest"; must be one of ["earliest", "latest"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"earliest",
-								"latest",
-							),
-						},
+						Description: `The offset to start from when there is no initial offset in the consumer group. possible known values include one of ["earliest", "latest"]; Default: "earliest"`,
 					},
 					"bootstrap_servers": schema.ListNestedAttribute{
 						Optional: true,
@@ -131,13 +133,7 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`auto`),
-						Description: `The strategy to use for committing offsets. Default: "auto"; must be one of ["auto", "off"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"auto",
-								"off",
-							),
-						},
+						Description: `The strategy to use for committing offsets. possible known values include one of ["auto", "off"]; Default: "auto"`,
 					},
 					"confluent_cloud_api_key": schema.StringAttribute{
 						Optional:    true,
@@ -182,26 +178,13 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`noop`),
-						Description: `The deserializer to use for the consumed messages. Default: "noop"; must be one of ["json", "noop"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"json",
-								"noop",
-							),
-						},
+						Description: `The deserializer to use for the consumed messages. possible known values include one of ["json", "noop"]; Default: "noop"`,
 					},
 					"mode": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`http-get`),
-						Description: `The mode of operation for the plugin. Default: "http-get"; must be one of ["http-get", "server-sent-events", "websocket"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"http-get",
-								"server-sent-events",
-								"websocket",
-							),
-						},
+						Description: `The mode of operation for the plugin. possible known values include one of ["http-get", "server-sent-events", "websocket"]; Default: "http-get"`,
 					},
 					"schema_registry": schema.SingleNestedAttribute{
 						Computed: true,
@@ -391,14 +374,7 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 												Computed:    true,
 												Optional:    true,
 												Default:     stringdefault.StaticString(`none`),
-												Description: `Authentication mode to use with the schema registry. Default: "none"; must be one of ["basic", "none", "oauth2"]`,
-												Validators: []validator.String{
-													stringvalidator.OneOf(
-														"basic",
-														"none",
-														"oauth2",
-													),
-												},
+												Description: `Authentication mode to use with the schema registry. possible known values include one of ["basic", "none", "oauth2"]; Default: "none"`,
 											},
 											"oauth2": schema.SingleNestedAttribute{
 												Computed: true,
@@ -443,13 +419,7 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 														Computed:    true,
 														Optional:    true,
 														Default:     stringdefault.StaticString(`client_credentials`),
-														Description: `The OAuth grant type to be used. Default: "client_credentials"; must be one of ["client_credentials", "password"]`,
-														Validators: []validator.String{
-															stringvalidator.OneOf(
-																"client_credentials",
-																"password",
-															),
-														},
+														Description: `The OAuth grant type to be used. possible known values include one of ["client_credentials", "password"]; Default: "client_credentials"`,
 													},
 													"password": schema.StringAttribute{
 														Optional:    true,
@@ -503,27 +473,13 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 														Computed:    true,
 														Optional:    true,
 														Default:     stringdefault.StaticString(`client_secret_post`),
-														Description: `The authentication method used in client requests to the IdP. Supported values are: ` + "`" + `client_secret_basic` + "`" + ` to send ` + "`" + `client_id` + "`" + ` and ` + "`" + `client_secret` + "`" + ` in the ` + "`" + `Authorization: Basic` + "`" + ` header, ` + "`" + `client_secret_post` + "`" + ` to send ` + "`" + `client_id` + "`" + ` and ` + "`" + `client_secret` + "`" + ` as part of the request body, or ` + "`" + `client_secret_jwt` + "`" + ` to send a JWT signed with the ` + "`" + `client_secret` + "`" + ` using the client assertion as part of the body. Default: "client_secret_post"; must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none"]`,
-														Validators: []validator.String{
-															stringvalidator.OneOf(
-																"client_secret_basic",
-																"client_secret_jwt",
-																"client_secret_post",
-																"none",
-															),
-														},
+														Description: `The authentication method used in client requests to the IdP. Supported values are: ` + "`" + `client_secret_basic` + "`" + ` to send ` + "`" + `client_id` + "`" + ` and ` + "`" + `client_secret` + "`" + ` in the ` + "`" + `Authorization: Basic` + "`" + ` header, ` + "`" + `client_secret_post` + "`" + ` to send ` + "`" + `client_id` + "`" + ` and ` + "`" + `client_secret` + "`" + ` as part of the request body, or ` + "`" + `client_secret_jwt` + "`" + ` to send a JWT signed with the ` + "`" + `client_secret` + "`" + ` using the client assertion as part of the body. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none"]; Default: "client_secret_post"`,
 													},
 													"client_secret_jwt_alg": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
 														Default:     stringdefault.StaticString(`HS512`),
-														Description: `The algorithm to use with JWT when using ` + "`" + `client_secret_jwt` + "`" + ` authentication. Default: "HS512"; must be one of ["HS256", "HS512"]`,
-														Validators: []validator.String{
-															stringvalidator.OneOf(
-																"HS256",
-																"HS512",
-															),
-														},
+														Description: `The algorithm to use with JWT when using ` + "`" + `client_secret_jwt` + "`" + ` authentication. possible known values include one of ["HS256", "HS512"]; Default: "HS512"`,
 													},
 													"http_proxy": schema.StringAttribute{
 														Optional:    true,
@@ -831,14 +787,7 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 															Computed:    true,
 															Optional:    true,
 															Default:     stringdefault.StaticString(`none`),
-															Description: `Authentication mode to use with the schema registry. Default: "none"; must be one of ["basic", "none", "oauth2"]`,
-															Validators: []validator.String{
-																stringvalidator.OneOf(
-																	"basic",
-																	"none",
-																	"oauth2",
-																),
-															},
+															Description: `Authentication mode to use with the schema registry. possible known values include one of ["basic", "none", "oauth2"]; Default: "none"`,
 														},
 														"oauth2": schema.SingleNestedAttribute{
 															Computed: true,
@@ -883,13 +832,7 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 																	Computed:    true,
 																	Optional:    true,
 																	Default:     stringdefault.StaticString(`client_credentials`),
-																	Description: `The OAuth grant type to be used. Default: "client_credentials"; must be one of ["client_credentials", "password"]`,
-																	Validators: []validator.String{
-																		stringvalidator.OneOf(
-																			"client_credentials",
-																			"password",
-																		),
-																	},
+																	Description: `The OAuth grant type to be used. possible known values include one of ["client_credentials", "password"]; Default: "client_credentials"`,
 																},
 																"password": schema.StringAttribute{
 																	Optional:    true,
@@ -947,27 +890,13 @@ func (r *GatewayPluginConfluentConsumeResource) Schema(ctx context.Context, req 
 																	Computed:    true,
 																	Optional:    true,
 																	Default:     stringdefault.StaticString(`client_secret_post`),
-																	Description: `The authentication method used in client requests to the IdP. Supported values are: ` + "`" + `client_secret_basic` + "`" + ` to send ` + "`" + `client_id` + "`" + ` and ` + "`" + `client_secret` + "`" + ` in the ` + "`" + `Authorization: Basic` + "`" + ` header, ` + "`" + `client_secret_post` + "`" + ` to send ` + "`" + `client_id` + "`" + ` and ` + "`" + `client_secret` + "`" + ` as part of the request body, or ` + "`" + `client_secret_jwt` + "`" + ` to send a JWT signed with the ` + "`" + `client_secret` + "`" + ` using the client assertion as part of the body. Default: "client_secret_post"; must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none"]`,
-																	Validators: []validator.String{
-																		stringvalidator.OneOf(
-																			"client_secret_basic",
-																			"client_secret_jwt",
-																			"client_secret_post",
-																			"none",
-																		),
-																	},
+																	Description: `The authentication method used in client requests to the IdP. Supported values are: ` + "`" + `client_secret_basic` + "`" + ` to send ` + "`" + `client_id` + "`" + ` and ` + "`" + `client_secret` + "`" + ` in the ` + "`" + `Authorization: Basic` + "`" + ` header, ` + "`" + `client_secret_post` + "`" + ` to send ` + "`" + `client_id` + "`" + ` and ` + "`" + `client_secret` + "`" + ` as part of the request body, or ` + "`" + `client_secret_jwt` + "`" + ` to send a JWT signed with the ` + "`" + `client_secret` + "`" + ` using the client assertion as part of the body. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none"]; Default: "client_secret_post"`,
 																},
 																"client_secret_jwt_alg": schema.StringAttribute{
 																	Computed:    true,
 																	Optional:    true,
 																	Default:     stringdefault.StaticString(`HS512`),
-																	Description: `The algorithm to use with JWT when using ` + "`" + `client_secret_jwt` + "`" + ` authentication. Default: "HS512"; must be one of ["HS256", "HS512"]`,
-																	Validators: []validator.String{
-																		stringvalidator.OneOf(
-																			"HS256",
-																			"HS512",
-																		),
-																	},
+																	Description: `The algorithm to use with JWT when using ` + "`" + `client_secret_jwt` + "`" + ` authentication. possible known values include one of ["HS256", "HS512"]; Default: "HS512"`,
 																},
 																"http_proxy": schema.StringAttribute{
 																	Optional:    true,

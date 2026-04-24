@@ -33,6 +33,7 @@ type AwsLambdaPluginConfig struct {
 	ProxyURL                           types.String  `tfsdk:"proxy_url"`
 	Qualifier                          types.String  `tfsdk:"qualifier"`
 	SkipLargeBodies                    types.Bool    `tfsdk:"skip_large_bodies"`
+	SslVerify                          types.Bool    `tfsdk:"ssl_verify"`
 	Timeout                            types.Float64 `tfsdk:"timeout"`
 	UnhandledStatus                    types.Int64   `tfsdk:"unhandled_status"`
 }

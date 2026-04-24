@@ -15,6 +15,7 @@ func (r *GatewayPluginAzureFunctionsResourceModel) RefreshFromSharedAzureFunctio
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.AzureFunctionsPluginConfig{}
 		r.Config.Apikey = types.StringPointerValue(resp.Config.Apikey)
 		r.Config.Appname = types.StringValue(resp.Config.Appname)
@@ -187,6 +188,12 @@ func (r *GatewayPluginAzureFunctionsResourceModel) ToOperationsUpdateAzurefuncti
 func (r *GatewayPluginAzureFunctionsResourceModel) ToSharedAzureFunctionsPlugin(ctx context.Context) (*shared.AzureFunctionsPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -387,6 +394,7 @@ func (r *GatewayPluginAzureFunctionsResourceModel) ToSharedAzureFunctionsPlugin(
 		}
 	}
 	out := shared.AzureFunctionsPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

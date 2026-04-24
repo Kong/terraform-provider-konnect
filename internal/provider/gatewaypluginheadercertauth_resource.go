@@ -45,6 +45,7 @@ type GatewayPluginHeaderCertAuthResource struct {
 
 // GatewayPluginHeaderCertAuthResourceModel describes the resource data model.
 type GatewayPluginHeaderCertAuthResourceModel struct {
+	Condition      types.String                        `tfsdk:"condition"`
 	Config         *tfTypes.HeaderCertAuthPluginConfig `tfsdk:"config"`
 	ControlPlaneID types.String                        `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                         `tfsdk:"created_at"`
@@ -68,6 +69,13 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginHeaderCertAuth Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -85,10 +93,7 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`CN`),
-						Description: `Certificate property to use as the authenticated group. Valid values are ` + "`" + `CN` + "`" + ` (Common Name) or ` + "`" + `DN` + "`" + ` (Distinguished Name). Once ` + "`" + `skip_consumer_lookup` + "`" + ` is applied, any client with a valid certificate can access the Service/API. To restrict usage to only some of the authenticated users, also add the ACL plugin (not covered here) and create allowed or denied groups of users. Default: "CN"; must be one of ["CN", "DN"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf("CN", "DN"),
-						},
+						Description: `Certificate property to use as the authenticated group. Valid values are ` + "`" + `CN` + "`" + ` (Common Name) or ` + "`" + `DN` + "`" + ` (Distinguished Name). Once ` + "`" + `skip_consumer_lookup` + "`" + ` is applied, any client with a valid certificate can access the Service/API. To restrict usage to only some of the authenticated users, also add the ACL plugin (not covered here) and create allowed or denied groups of users. possible known values include one of ["CN", "DN"]; Default: "CN"`,
 					},
 					"ca_certificates": schema.ListAttribute{
 						Required:    true,
@@ -109,13 +114,7 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 					},
 					"certificate_header_format": schema.StringAttribute{
 						Required:    true,
-						Description: `Format of the certificate header. Supported formats: ` + "`" + `base64_encoded` + "`" + `, ` + "`" + `url_encoded` + "`" + `. must be one of ["base64_encoded", "url_encoded"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"base64_encoded",
-								"url_encoded",
-							),
-						},
+						Description: `Format of the certificate header. Supported formats: ` + "`" + `base64_encoded` + "`" + `, ` + "`" + `url_encoded` + "`" + `. possible known values include one of ["base64_encoded", "url_encoded"]`,
 					},
 					"certificate_header_name": schema.StringAttribute{
 						Required:    true,
@@ -167,14 +166,7 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`IGNORE_CA_ERROR`),
-						Description: `Controls client certificate revocation check behavior. If set to ` + "`" + `SKIP` + "`" + `, no revocation check is performed. If set to ` + "`" + `IGNORE_CA_ERROR` + "`" + `, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to ` + "`" + `STRICT` + "`" + `, the plugin only treats the certificate as valid when it's able to verify the revocation status. Default: "IGNORE_CA_ERROR"; must be one of ["IGNORE_CA_ERROR", "SKIP", "STRICT"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"IGNORE_CA_ERROR",
-								"SKIP",
-								"STRICT",
-							),
-						},
+						Description: `Controls client certificate revocation check behavior. If set to ` + "`" + `SKIP` + "`" + `, no revocation check is performed. If set to ` + "`" + `IGNORE_CA_ERROR` + "`" + `, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to ` + "`" + `STRICT` + "`" + `, the plugin only treats the certificate as valid when it's able to verify the revocation status. possible known values include one of ["IGNORE_CA_ERROR", "SKIP", "STRICT"]; Default: "IGNORE_CA_ERROR"`,
 					},
 					"secure_source": schema.BoolAttribute{
 						Computed:    true,
@@ -189,8 +181,10 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 						Description: `Skip consumer lookup once certificate is trusted against the configured CA list. Default: false`,
 					},
 					"ssl_verify": schema.BoolAttribute{
+						Computed:    true,
 						Optional:    true,
-						Description: `This option enables verification of the certificate presented by the server of the OCSP responder's URL and by the server of the CRL Distribution Point.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `This option enables verification of the certificate presented by the server of the OCSP responder's URL and by the server of the CRL Distribution Point. Default: false`,
 					},
 				},
 			},

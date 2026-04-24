@@ -180,22 +180,16 @@ const (
 func (e TLSHandshakeModifierPluginProtocols) ToPointer() *TLSHandshakeModifierPluginProtocols {
 	return &e
 }
-func (e *TLSHandshakeModifierPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TLSHandshakeModifierPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpcs", "https", "tls":
+			return true
+		}
 	}
-	switch v {
-	case "grpcs":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tls":
-		*e = TLSHandshakeModifierPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TLSHandshakeModifierPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // TLSHandshakeModifierPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -246,6 +240,8 @@ func (t *TLSHandshakeModifierPluginService) GetID() *string {
 
 // TLSHandshakeModifierPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type TLSHandshakeModifierPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -281,6 +277,13 @@ func (t *TLSHandshakeModifierPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (t *TLSHandshakeModifierPlugin) GetCondition() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Condition
 }
 
 func (t *TLSHandshakeModifierPlugin) GetCreatedAt() *int64 {

@@ -52,9 +52,9 @@ In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.
 import {
   to = konnect_gateway_hmac_auth.my_konnect_gateway_hmac_auth
   id = jsonencode({
-    consumer_id = ""
+    consumer_id      = ""
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "70e7b00b-72f2-471b-a5ce-9c4171775360"
+    id               = "70e7b00b-72f2-471b-a5ce-9c4171775360"
   })
 }
 ```

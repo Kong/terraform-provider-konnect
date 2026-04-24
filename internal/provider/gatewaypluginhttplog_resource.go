@@ -46,6 +46,7 @@ type GatewayPluginHTTPLogResource struct {
 
 // GatewayPluginHTTPLogResourceModel describes the resource data model.
 type GatewayPluginHTTPLogResourceModel struct {
+	Condition      types.String                 `tfsdk:"condition"`
 	Config         *tfTypes.HTTPLogPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                 `tfsdk:"consumer"`
 	ControlPlaneID types.String                 `tfsdk:"control_plane_id"`
@@ -70,6 +71,13 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginHTTPLog Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -77,13 +85,7 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`application/json`),
-						Description: `Indicates the type of data sent. The only available option is ` + "`" + `application/json` + "`" + `. Default: "application/json"; must be one of ["application/json", "application/json; charset=utf-8"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"application/json",
-								"application/json; charset=utf-8",
-							),
-						},
+						Description: `Indicates the type of data sent. The only available option is ` + "`" + `application/json` + "`" + `. possible known values include one of ["application/json", "application/json; charset=utf-8"]; Default: "application/json"`,
 					},
 					"custom_fields_by_lua": schema.MapAttribute{
 						Optional:    true,
@@ -113,14 +115,7 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`POST`),
-						Description: `An optional method used to send data to the HTTP server. Supported values are ` + "`" + `POST` + "`" + ` (default), ` + "`" + `PUT` + "`" + `, and ` + "`" + `PATCH` + "`" + `. Default: "POST"; must be one of ["PATCH", "POST", "PUT"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"PATCH",
-								"POST",
-								"PUT",
-							),
-						},
+						Description: `An optional method used to send data to the HTTP server. Supported values are ` + "`" + `POST` + "`" + ` (default), ` + "`" + `PUT` + "`" + `, and ` + "`" + `PATCH` + "`" + `. possible known values include one of ["PATCH", "POST", "PUT"]; Default: "POST"`,
 					},
 					"queue": schema.SingleNestedAttribute{
 						Computed: true,
@@ -140,10 +135,7 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 								Computed:    true,
 								Optional:    true,
 								Default:     int64default.StaticInt64(1),
-								Description: `The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of [-1, 1]`,
-								Validators: []validator.Int64{
-									int64validator.OneOf(-1, 1),
-								},
+								Description: `The number of of queue delivery timers. -1 indicates unlimited. possible known values include one of [-1, 1]; Default: 1`,
 							},
 							"initial_retry_delay": schema.Float64Attribute{
 								Computed:    true,
@@ -210,8 +202,10 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 						Description: `Number of times to retry when sending data to the upstream server.`,
 					},
 					"ssl_verify": schema.BoolAttribute{
+						Computed:    true,
 						Optional:    true,
-						Description: `When using TLS, this option enables verification of the certificate presented by the server.`,
+						Default:     booldefault.StaticBool(false),
+						Description: `When using TLS, this option enables verification of the certificate presented by the server. Default: false`,
 					},
 					"timeout": schema.Float64Attribute{
 						Computed:    true,

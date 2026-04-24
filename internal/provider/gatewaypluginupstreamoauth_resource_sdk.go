@@ -15,6 +15,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.UpstreamOauthPluginConfig{}
 		if resp.Config.Behavior == nil {
 			r.Config.Behavior = nil
@@ -45,7 +46,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 			if resp.Config.Cache.Redis == nil {
 				r.Config.Cache.Redis = nil
 			} else {
-				r.Config.Cache.Redis = &tfTypes.AcePluginRedis{}
+				r.Config.Cache.Redis = &tfTypes.PartialVectordbRedis{}
 				if resp.Config.Cache.Redis.CloudAuthentication == nil {
 					r.Config.Cache.Redis.CloudAuthentication = nil
 				} else {
@@ -351,6 +352,12 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToOperationsUpdateUpstreamoaut
 func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ctx context.Context) (*shared.UpstreamOauthPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -803,7 +810,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 			Strategy:      strategy,
 		}
 	}
-	var client *shared.Client
+	var client *shared.UpstreamOauthPluginClient
 	if r.Config.Client != nil {
 		authMethod := new(shared.AuthMethod)
 		if !r.Config.Client.AuthMethod.IsUnknown() && !r.Config.Client.AuthMethod.IsNull() {
@@ -871,7 +878,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 		} else {
 			timeout = nil
 		}
-		client = &shared.Client{
+		client = &shared.UpstreamOauthPluginClient{
 			AuthMethod:              authMethod,
 			ClientSecretJwtAlg:      clientSecretJwtAlg,
 			HTTPProxy:               httpProxy,
@@ -901,9 +908,9 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 	} else {
 		clientSecret = nil
 	}
-	grantType := new(shared.GrantType)
+	grantType := new(shared.UpstreamOauthPluginGrantType)
 	if !r.Config.Oauth.GrantType.IsUnknown() && !r.Config.Oauth.GrantType.IsNull() {
-		*grantType = shared.GrantType(r.Config.Oauth.GrantType.ValueString())
+		*grantType = shared.UpstreamOauthPluginGrantType(r.Config.Oauth.GrantType.ValueString())
 	} else {
 		grantType = nil
 	}
@@ -1014,6 +1021,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin(ct
 		}
 	}
 	out := shared.UpstreamOauthPlugin{
+		Condition:     condition,
 		CreatedAt:     createdAt,
 		Enabled:       enabled,
 		ID:            id,

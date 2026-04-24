@@ -15,6 +15,7 @@ func (r *GatewayPluginConfluentConsumeResourceModel) RefreshFromSharedConfluentC
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.ConfluentConsumePluginConfig{}
 		if resp.Config.AutoOffsetReset != nil {
 			r.Config.AutoOffsetReset = types.StringValue(string(*resp.Config.AutoOffsetReset))
@@ -423,6 +424,12 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToOperationsUpdateConfluent
 func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlugin(ctx context.Context) (*shared.ConfluentConsumePlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -1146,6 +1153,7 @@ func (r *GatewayPluginConfluentConsumeResourceModel) ToSharedConfluentConsumePlu
 		}
 	}
 	out := shared.ConfluentConsumePlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

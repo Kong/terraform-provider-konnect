@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -133,20 +131,16 @@ const (
 func (e AiSemanticResponseGuardPluginParamLocation) ToPointer() *AiSemanticResponseGuardPluginParamLocation {
 	return &e
 }
-func (e *AiSemanticResponseGuardPluginParamLocation) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiSemanticResponseGuardPluginParamLocation) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "body", "query":
+			return true
+		}
 	}
-	switch v {
-	case "body":
-		fallthrough
-	case "query":
-		*e = AiSemanticResponseGuardPluginParamLocation(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiSemanticResponseGuardPluginParamLocation: %v", v)
-	}
+	return false
 }
 
 type AiSemanticResponseGuardPluginAuth struct {
@@ -164,6 +158,10 @@ type AiSemanticResponseGuardPluginAuth struct {
 	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
 	AzureUseManagedIdentity *bool `default:"false" json:"azure_use_managed_identity"`
+	// Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.
+	GcpMetadataURL *string `default:"null" json:"gcp_metadata_url"`
+	// Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.
+	GcpOauthTokenURL *string `default:"null" json:"gcp_oauth_token_url"`
 	// Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
 	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
 	// Use service account auth for GCP-based providers and models.
@@ -238,6 +236,20 @@ func (a *AiSemanticResponseGuardPluginAuth) GetAzureUseManagedIdentity() *bool {
 		return nil
 	}
 	return a.AzureUseManagedIdentity
+}
+
+func (a *AiSemanticResponseGuardPluginAuth) GetGcpMetadataURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.GcpMetadataURL
+}
+
+func (a *AiSemanticResponseGuardPluginAuth) GetGcpOauthTokenURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.GcpOauthTokenURL
 }
 
 func (a *AiSemanticResponseGuardPluginAuth) GetGcpServiceAccountJSON() *string {
@@ -339,6 +351,10 @@ type AiSemanticResponseGuardPluginBedrock struct {
 	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
 	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 	AwsStsEndpointURL *string `default:"null" json:"aws_sts_endpoint_url"`
+	// S3 URI prefix (s3://bucket/prefix/) where Bedrock will get input files from and store results to for native batch API.
+	BatchBucketPrefix *string `default:"null" json:"batch_bucket_prefix"`
+	// AWS role arn used for calling batch API. Try to get the value from request if ommited.
+	BatchRoleArn *string `default:"null" json:"batch_role_arn"`
 	// If using AWS providers (Bedrock), set to true to normalize the embeddings.
 	EmbeddingsNormalize *bool `default:"false" json:"embeddings_normalize"`
 	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
@@ -384,6 +400,20 @@ func (a *AiSemanticResponseGuardPluginBedrock) GetAwsStsEndpointURL() *string {
 		return nil
 	}
 	return a.AwsStsEndpointURL
+}
+
+func (a *AiSemanticResponseGuardPluginBedrock) GetBatchBucketPrefix() *string {
+	if a == nil {
+		return nil
+	}
+	return a.BatchBucketPrefix
+}
+
+func (a *AiSemanticResponseGuardPluginBedrock) GetBatchRoleArn() *string {
+	if a == nil {
+		return nil
+	}
+	return a.BatchRoleArn
 }
 
 func (a *AiSemanticResponseGuardPluginBedrock) GetEmbeddingsNormalize() *bool {
@@ -545,34 +575,23 @@ const (
 	AiSemanticResponseGuardPluginProviderGemini      AiSemanticResponseGuardPluginProvider = "gemini"
 	AiSemanticResponseGuardPluginProviderHuggingface AiSemanticResponseGuardPluginProvider = "huggingface"
 	AiSemanticResponseGuardPluginProviderMistral     AiSemanticResponseGuardPluginProvider = "mistral"
+	AiSemanticResponseGuardPluginProviderOllama      AiSemanticResponseGuardPluginProvider = "ollama"
 	AiSemanticResponseGuardPluginProviderOpenai      AiSemanticResponseGuardPluginProvider = "openai"
 )
 
 func (e AiSemanticResponseGuardPluginProvider) ToPointer() *AiSemanticResponseGuardPluginProvider {
 	return &e
 }
-func (e *AiSemanticResponseGuardPluginProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiSemanticResponseGuardPluginProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai":
+			return true
+		}
 	}
-	switch v {
-	case "azure":
-		fallthrough
-	case "bedrock":
-		fallthrough
-	case "gemini":
-		fallthrough
-	case "huggingface":
-		fallthrough
-	case "mistral":
-		fallthrough
-	case "openai":
-		*e = AiSemanticResponseGuardPluginProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiSemanticResponseGuardPluginProvider: %v", v)
-	}
+	return false
 }
 
 type AiSemanticResponseGuardPluginModel struct {
@@ -662,30 +681,16 @@ const (
 func (e AiSemanticResponseGuardPluginGenaiCategory) ToPointer() *AiSemanticResponseGuardPluginGenaiCategory {
 	return &e
 }
-func (e *AiSemanticResponseGuardPluginGenaiCategory) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiSemanticResponseGuardPluginGenaiCategory) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation":
+			return true
+		}
 	}
-	switch v {
-	case "audio/speech":
-		fallthrough
-	case "audio/transcription":
-		fallthrough
-	case "image/generation":
-		fallthrough
-	case "realtime/generation":
-		fallthrough
-	case "text/embeddings":
-		fallthrough
-	case "text/generation":
-		fallthrough
-	case "video/generation":
-		*e = AiSemanticResponseGuardPluginGenaiCategory(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiSemanticResponseGuardPluginGenaiCategory: %v", v)
-	}
+	return false
 }
 
 // AiSemanticResponseGuardPluginLlmFormat - LLM input and output format and schema to use
@@ -703,28 +708,16 @@ const (
 func (e AiSemanticResponseGuardPluginLlmFormat) ToPointer() *AiSemanticResponseGuardPluginLlmFormat {
 	return &e
 }
-func (e *AiSemanticResponseGuardPluginLlmFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiSemanticResponseGuardPluginLlmFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai":
+			return true
+		}
 	}
-	switch v {
-	case "anthropic":
-		fallthrough
-	case "bedrock":
-		fallthrough
-	case "cohere":
-		fallthrough
-	case "gemini":
-		fallthrough
-	case "huggingface":
-		fallthrough
-	case "openai":
-		*e = AiSemanticResponseGuardPluginLlmFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiSemanticResponseGuardPluginLlmFormat: %v", v)
-	}
+	return false
 }
 
 type AiSemanticResponseGuardPluginRules struct {
@@ -802,20 +795,16 @@ const (
 func (e AiSemanticResponseGuardPluginDistanceMetric) ToPointer() *AiSemanticResponseGuardPluginDistanceMetric {
 	return &e
 }
-func (e *AiSemanticResponseGuardPluginDistanceMetric) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiSemanticResponseGuardPluginDistanceMetric) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "cosine", "euclidean":
+			return true
+		}
 	}
-	switch v {
-	case "cosine":
-		fallthrough
-	case "euclidean":
-		*e = AiSemanticResponseGuardPluginDistanceMetric(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiSemanticResponseGuardPluginDistanceMetric: %v", v)
-	}
+	return false
 }
 
 // AiSemanticResponseGuardPluginSslVersion - the ssl version to use for the pgvector database
@@ -830,22 +819,16 @@ const (
 func (e AiSemanticResponseGuardPluginSslVersion) ToPointer() *AiSemanticResponseGuardPluginSslVersion {
 	return &e
 }
-func (e *AiSemanticResponseGuardPluginSslVersion) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiSemanticResponseGuardPluginSslVersion) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "tlsv1_2", "tlsv1_3":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "tlsv1_2":
-		fallthrough
-	case "tlsv1_3":
-		*e = AiSemanticResponseGuardPluginSslVersion(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiSemanticResponseGuardPluginSslVersion: %v", v)
-	}
+	return false
 }
 
 type AiSemanticResponseGuardPluginPgvector struct {
@@ -982,22 +965,16 @@ const (
 func (e AiSemanticResponseGuardPluginAuthProvider) ToPointer() *AiSemanticResponseGuardPluginAuthProvider {
 	return &e
 }
-func (e *AiSemanticResponseGuardPluginAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiSemanticResponseGuardPluginAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = AiSemanticResponseGuardPluginAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiSemanticResponseGuardPluginAuthProvider: %v", v)
-	}
+	return false
 }
 
 // AiSemanticResponseGuardPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -1199,22 +1176,16 @@ const (
 func (e AiSemanticResponseGuardPluginSentinelRole) ToPointer() *AiSemanticResponseGuardPluginSentinelRole {
 	return &e
 }
-func (e *AiSemanticResponseGuardPluginSentinelRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiSemanticResponseGuardPluginSentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "master":
-		fallthrough
-	case "slave":
-		*e = AiSemanticResponseGuardPluginSentinelRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiSemanticResponseGuardPluginSentinelRole: %v", v)
-	}
+	return false
 }
 
 type AiSemanticResponseGuardPluginRedis struct {
@@ -1440,20 +1411,16 @@ const (
 func (e AiSemanticResponseGuardPluginStrategy) ToPointer() *AiSemanticResponseGuardPluginStrategy {
 	return &e
 }
-func (e *AiSemanticResponseGuardPluginStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiSemanticResponseGuardPluginStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "pgvector", "redis":
+			return true
+		}
 	}
-	switch v {
-	case "pgvector":
-		fallthrough
-	case "redis":
-		*e = AiSemanticResponseGuardPluginStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiSemanticResponseGuardPluginStrategy: %v", v)
-	}
+	return false
 }
 
 type AiSemanticResponseGuardPluginVectordb struct {
@@ -1465,7 +1432,7 @@ type AiSemanticResponseGuardPluginVectordb struct {
 	Redis          *AiSemanticResponseGuardPluginRedis         `json:"redis,omitempty"`
 	// which vector database driver to use
 	Strategy AiSemanticResponseGuardPluginStrategy `json:"strategy"`
-	// the default similarity threshold for accepting semantic search results (float)
+	// the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.
 	Threshold *float64 `default:"null" json:"threshold"`
 }
 
@@ -1644,24 +1611,16 @@ const (
 func (e AiSemanticResponseGuardPluginProtocols) ToPointer() *AiSemanticResponseGuardPluginProtocols {
 	return &e
 }
-func (e *AiSemanticResponseGuardPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiSemanticResponseGuardPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = AiSemanticResponseGuardPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiSemanticResponseGuardPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AiSemanticResponseGuardPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -1712,6 +1671,8 @@ func (a *AiSemanticResponseGuardPluginService) GetID() *string {
 
 // AiSemanticResponseGuardPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type AiSemanticResponseGuardPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -1751,6 +1712,13 @@ func (a *AiSemanticResponseGuardPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AiSemanticResponseGuardPlugin) GetCondition() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Condition
 }
 
 func (a *AiSemanticResponseGuardPlugin) GetCreatedAt() *int64 {

@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -133,20 +131,16 @@ const (
 func (e MtlsAuthPluginAuthenticatedGroupBy) ToPointer() *MtlsAuthPluginAuthenticatedGroupBy {
 	return &e
 }
-func (e *MtlsAuthPluginAuthenticatedGroupBy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MtlsAuthPluginAuthenticatedGroupBy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "CN", "DN":
+			return true
+		}
 	}
-	switch v {
-	case "CN":
-		fallthrough
-	case "DN":
-		*e = MtlsAuthPluginAuthenticatedGroupBy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MtlsAuthPluginAuthenticatedGroupBy: %v", v)
-	}
+	return false
 }
 
 type MtlsAuthPluginConsumerBy string
@@ -159,20 +153,16 @@ const (
 func (e MtlsAuthPluginConsumerBy) ToPointer() *MtlsAuthPluginConsumerBy {
 	return &e
 }
-func (e *MtlsAuthPluginConsumerBy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MtlsAuthPluginConsumerBy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "custom_id", "username":
+			return true
+		}
 	}
-	switch v {
-	case "custom_id":
-		fallthrough
-	case "username":
-		*e = MtlsAuthPluginConsumerBy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MtlsAuthPluginConsumerBy: %v", v)
-	}
+	return false
 }
 
 // MtlsAuthPluginRevocationCheckMode - Controls client certificate revocation check behavior. If set to `SKIP`, no revocation check is performed. If set to `IGNORE_CA_ERROR`, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to `STRICT`, the plugin only treats the certificate as valid when it's able to verify the revocation status.
@@ -187,22 +177,16 @@ const (
 func (e MtlsAuthPluginRevocationCheckMode) ToPointer() *MtlsAuthPluginRevocationCheckMode {
 	return &e
 }
-func (e *MtlsAuthPluginRevocationCheckMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MtlsAuthPluginRevocationCheckMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "IGNORE_CA_ERROR", "SKIP", "STRICT":
+			return true
+		}
 	}
-	switch v {
-	case "IGNORE_CA_ERROR":
-		fallthrough
-	case "SKIP":
-		fallthrough
-	case "STRICT":
-		*e = MtlsAuthPluginRevocationCheckMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MtlsAuthPluginRevocationCheckMode: %v", v)
-	}
+	return false
 }
 
 type MtlsAuthPluginConfig struct {
@@ -234,12 +218,14 @@ type MtlsAuthPluginConfig struct {
 	HTTPSProxyPort *int64 `default:"null" json:"https_proxy_port"`
 	// Controls client certificate revocation check behavior. If set to `SKIP`, no revocation check is performed. If set to `IGNORE_CA_ERROR`, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to `STRICT`, the plugin only treats the certificate as valid when it's able to verify the revocation status.
 	RevocationCheckMode *MtlsAuthPluginRevocationCheckMode `default:"IGNORE_CA_ERROR" json:"revocation_check_mode"`
+	// Specifies a list of Subject Alternative Name (SAN) DirectoryName attributes to use for consumer lookup. Applicable only when `skip_consumer_lookup` is false. Supported formats: OID, Long Name, or Short Name. Examples: `commonName` (Long Name), `CN` (Short Name), `2.5.4.3` (OID). If left empty (default), all attributes present in the SAN DirectoryName extension are used. The matcher is case sensitive.
+	SanDirnameMatcher []string `json:"san_dirname_matcher,omitempty"`
 	// Sends the distinguished names (DN) of the configured CA list in the TLS handshake message.
 	SendCaDn *bool `default:"false" json:"send_ca_dn"`
 	// Skip consumer lookup once certificate is trusted against the configured CA list.
 	SkipConsumerLookup *bool `default:"false" json:"skip_consumer_lookup"`
 	// This option enables verification of the certificate presented by the server of the OCSP responder's URL and by the server of the CRL Distribution Point.
-	SslVerify *bool `default:"null" json:"ssl_verify"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 }
 
 func (m MtlsAuthPluginConfig) MarshalJSON() ([]byte, error) {
@@ -351,6 +337,13 @@ func (m *MtlsAuthPluginConfig) GetRevocationCheckMode() *MtlsAuthPluginRevocatio
 	return m.RevocationCheckMode
 }
 
+func (m *MtlsAuthPluginConfig) GetSanDirnameMatcher() []string {
+	if m == nil {
+		return nil
+	}
+	return m.SanDirnameMatcher
+}
+
 func (m *MtlsAuthPluginConfig) GetSendCaDn() *bool {
 	if m == nil {
 		return nil
@@ -379,29 +372,23 @@ const (
 	MtlsAuthPluginProtocolsGrpcs MtlsAuthPluginProtocols = "grpcs"
 	MtlsAuthPluginProtocolsHTTP  MtlsAuthPluginProtocols = "http"
 	MtlsAuthPluginProtocolsHTTPS MtlsAuthPluginProtocols = "https"
+	MtlsAuthPluginProtocolsWs    MtlsAuthPluginProtocols = "ws"
+	MtlsAuthPluginProtocolsWss   MtlsAuthPluginProtocols = "wss"
 )
 
 func (e MtlsAuthPluginProtocols) ToPointer() *MtlsAuthPluginProtocols {
 	return &e
 }
-func (e *MtlsAuthPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MtlsAuthPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = MtlsAuthPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MtlsAuthPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // MtlsAuthPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -452,6 +439,8 @@ func (m *MtlsAuthPluginService) GetID() *string {
 
 // MtlsAuthPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type MtlsAuthPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -470,7 +459,7 @@ type MtlsAuthPlugin struct {
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64               `json:"updated_at,omitempty"`
 	Config    MtlsAuthPluginConfig `json:"config"`
-	// A set of strings representing HTTP protocols.
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []MtlsAuthPluginProtocols `json:"protocols"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 	Route *MtlsAuthPluginRoute `json:"route"`
@@ -487,6 +476,13 @@ func (m *MtlsAuthPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (m *MtlsAuthPlugin) GetCondition() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Condition
 }
 
 func (m *MtlsAuthPlugin) GetCreatedAt() *int64 {

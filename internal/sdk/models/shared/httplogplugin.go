@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -133,20 +131,16 @@ const (
 func (e ContentType) ToPointer() *ContentType {
 	return &e
 }
-func (e *ContentType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ContentType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "application/json", "application/json; charset=utf-8":
+			return true
+		}
 	}
-	switch v {
-	case "application/json":
-		fallthrough
-	case "application/json; charset=utf-8":
-		*e = ContentType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ContentType: %v", v)
-	}
+	return false
 }
 
 // Method - An optional method used to send data to the HTTP server. Supported values are `POST` (default), `PUT`, and `PATCH`.
@@ -161,22 +155,16 @@ const (
 func (e Method) ToPointer() *Method {
 	return &e
 }
-func (e *Method) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Method) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "PATCH", "POST", "PUT":
+			return true
+		}
 	}
-	switch v {
-	case "PATCH":
-		fallthrough
-	case "POST":
-		fallthrough
-	case "PUT":
-		*e = Method(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Method: %v", v)
-	}
+	return false
 }
 
 // HTTPLogPluginConcurrencyLimit - The number of of queue delivery timers. -1 indicates unlimited.
@@ -190,20 +178,16 @@ const (
 func (e HTTPLogPluginConcurrencyLimit) ToPointer() *HTTPLogPluginConcurrencyLimit {
 	return &e
 }
-func (e *HTTPLogPluginConcurrencyLimit) UnmarshalJSON(data []byte) error {
-	var v int64
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *HTTPLogPluginConcurrencyLimit) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case -1, 1:
+			return true
+		}
 	}
-	switch v {
-	case -1:
-		fallthrough
-	case 1:
-		*e = HTTPLogPluginConcurrencyLimit(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for HTTPLogPluginConcurrencyLimit: %v", v)
-	}
+	return false
 }
 
 type HTTPLogPluginQueue struct {
@@ -313,7 +297,7 @@ type HTTPLogPluginConfig struct {
 	// Number of times to retry when sending data to the upstream server.
 	RetryCount *int64 `default:"null" json:"retry_count"`
 	// When using TLS, this option enables verification of the certificate presented by the server.
-	SslVerify *bool `default:"null" json:"ssl_verify"`
+	SslVerify *bool `default:"false" json:"ssl_verify"`
 	// An optional timeout in milliseconds when sending data to the upstream server.
 	Timeout *float64 `default:"10000" json:"timeout"`
 }
@@ -455,36 +439,16 @@ const (
 func (e HTTPLogPluginProtocols) ToPointer() *HTTPLogPluginProtocols {
 	return &e
 }
-func (e *HTTPLogPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *HTTPLogPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = HTTPLogPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for HTTPLogPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // HTTPLogPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -535,6 +499,8 @@ func (h *HTTPLogPluginService) GetID() *string {
 
 // HTTPLogPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type HTTPLogPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -572,6 +538,13 @@ func (h *HTTPLogPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (h *HTTPLogPlugin) GetCondition() *string {
+	if h == nil {
+		return nil
+	}
+	return h.Condition
 }
 
 func (h *HTTPLogPlugin) GetCreatedAt() *int64 {

@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -166,22 +164,16 @@ const (
 func (e ProducerRequestAcks) ToPointer() *ProducerRequestAcks {
 	return &e
 }
-func (e *ProducerRequestAcks) UnmarshalJSON(data []byte) error {
-	var v int64
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ProducerRequestAcks) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case -1, 0, 1:
+			return true
+		}
 	}
-	switch v {
-	case -1:
-		fallthrough
-	case 0:
-		fallthrough
-	case 1:
-		*e = ProducerRequestAcks(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ProducerRequestAcks: %v", v)
-	}
+	return false
 }
 
 type Basic struct {
@@ -226,22 +218,16 @@ const (
 func (e ConfluentPluginMode) ToPointer() *ConfluentPluginMode {
 	return &e
 }
-func (e *ConfluentPluginMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ConfluentPluginMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "basic", "none", "oauth2":
+			return true
+		}
 	}
-	switch v {
-	case "basic":
-		fallthrough
-	case "none":
-		fallthrough
-	case "oauth2":
-		*e = ConfluentPluginMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ConfluentPluginMode: %v", v)
-	}
+	return false
 }
 
 // ConfluentPluginGrantType - The OAuth grant type to be used.
@@ -255,20 +241,16 @@ const (
 func (e ConfluentPluginGrantType) ToPointer() *ConfluentPluginGrantType {
 	return &e
 }
-func (e *ConfluentPluginGrantType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ConfluentPluginGrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_credentials", "password":
+			return true
+		}
 	}
-	switch v {
-	case "client_credentials":
-		fallthrough
-	case "password":
-		*e = ConfluentPluginGrantType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ConfluentPluginGrantType: %v", v)
-	}
+	return false
 }
 
 type Oauth2 struct {
@@ -391,24 +373,16 @@ const (
 func (e ConfluentPluginAuthMethod) ToPointer() *ConfluentPluginAuthMethod {
 	return &e
 }
-func (e *ConfluentPluginAuthMethod) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ConfluentPluginAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none":
+			return true
+		}
 	}
-	switch v {
-	case "client_secret_basic":
-		fallthrough
-	case "client_secret_jwt":
-		fallthrough
-	case "client_secret_post":
-		fallthrough
-	case "none":
-		*e = ConfluentPluginAuthMethod(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ConfluentPluginAuthMethod: %v", v)
-	}
+	return false
 }
 
 // ConfluentPluginClientSecretJwtAlg - The algorithm to use with JWT when using `client_secret_jwt` authentication.
@@ -422,20 +396,16 @@ const (
 func (e ConfluentPluginClientSecretJwtAlg) ToPointer() *ConfluentPluginClientSecretJwtAlg {
 	return &e
 }
-func (e *ConfluentPluginClientSecretJwtAlg) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ConfluentPluginClientSecretJwtAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "HS256", "HS512":
+			return true
+		}
 	}
-	switch v {
-	case "HS256":
-		fallthrough
-	case "HS512":
-		*e = ConfluentPluginClientSecretJwtAlg(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ConfluentPluginClientSecretJwtAlg: %v", v)
-	}
+	return false
 }
 
 type Oauth2Client struct {
@@ -1084,24 +1054,16 @@ const (
 func (e ConfluentPluginProtocols) ToPointer() *ConfluentPluginProtocols {
 	return &e
 }
-func (e *ConfluentPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ConfluentPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = ConfluentPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ConfluentPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // ConfluentPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -1152,6 +1114,8 @@ func (c *ConfluentPluginService) GetID() *string {
 
 // ConfluentPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type ConfluentPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -1189,6 +1153,13 @@ func (c *ConfluentPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (c *ConfluentPlugin) GetCondition() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Condition
 }
 
 func (c *ConfluentPlugin) GetCreatedAt() *int64 {

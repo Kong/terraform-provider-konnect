@@ -14,6 +14,7 @@ GatewayPluginRateLimitingAdvanced Resource
 
 ```terraform
 resource "konnect_gateway_plugin_rate_limiting_advanced" "my_gatewaypluginratelimitingadvanced" {
+  condition = "...my_condition..."
   config = {
     compound_identifier = [
       "header"
@@ -153,6 +154,7 @@ resource "konnect_gateway_plugin_rate_limiting_advanced" "my_gatewaypluginrateli
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -186,16 +188,16 @@ Optional:
 - `error_message` (String) Set a custom error message to return when the rate limit is exceeded. Default: "API rate limit exceeded"
 - `header_name` (String) A string representing an HTTP header name.
 - `hide_client_headers` (Boolean) Optionally hide informative response headers that would otherwise provide information about the current status of limits and counters. Default: false
-- `identifier` (String) The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Note if `identifier` is `consumer-group`, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate. Default: "consumer"; must be one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "route", "service"]
+- `identifier` (String) The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Note if `identifier` is `consumer-group`, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate. possible known values include one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "route", "service"]; Default: "consumer"
 - `lock_dictionary_name` (String) The shared dictionary where concurrency control locks are stored. The default shared dictionary is `kong_locks`. The shared dictionary should be declare in nginx-kong.conf. Default: "kong_locks"
 - `namespace` (String) Specifies the rate-limiting namespace for this plugin instance. A namespace acts as a logical grouping for configuration and counter data used by the rate-limiting algorithm. Namespaces define how and where counter data is stored and synchronized. When multiple plugin instances share the same namespace, they also share the same rate-limiting counters and synchronization configuration. Conversely, using different namespaces ensures that each plugin instance maintains its own independent counters.
 - `path` (String) A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--redis))
 - `retry_after_jitter_max` (Number) The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header. Default: 0
-- `strategy` (String) The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local`, `redis` and `cluster`. Default: "local"; must be one of ["cluster", "local", "redis"]
+- `strategy` (String) The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local`, `redis` and `cluster`. possible known values include one of ["cluster", "local", "redis"]; Default: "local"
 - `sync_rate` (Number) How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 will sync the counters in the specified number of seconds. The minimum allowed interval is 0.02 seconds (20ms).
 - `throttling` (Attributes) (see [below for nested schema](#nestedatt--config--throttling))
-- `window_type` (String) Sets the time window type to either `sliding` (default) or `fixed`. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters. Default: "sliding"; must be one of ["fixed", "sliding"]
+- `window_type` (String) Sets the time window type to either `sliding` (default) or `fixed`. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters. possible known values include one of ["fixed", "sliding"]; Default: "sliding"
 
 <a id="nestedatt--config--redis"></a>
 ### Nested Schema for `config.redis`
@@ -219,7 +221,7 @@ Optional:
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--redis--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
+- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
@@ -231,7 +233,7 @@ Optional:
 
 Optional:
 
-- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]
 - `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 - `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
 - `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
@@ -353,7 +355,7 @@ import {
   to = konnect_gateway_plugin_rate_limiting_advanced.my_konnect_gateway_plugin_rate_limiting_advanced
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

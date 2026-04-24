@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -18,20 +16,16 @@ const (
 func (e AuthStrategyClientCredentialsCredentialType) ToPointer() *AuthStrategyClientCredentialsCredentialType {
 	return &e
 }
-func (e *AuthStrategyClientCredentialsCredentialType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AuthStrategyClientCredentialsCredentialType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_credentials", "self_managed_client_credentials":
+			return true
+		}
 	}
-	switch v {
-	case "client_credentials":
-		fallthrough
-	case "self_managed_client_credentials":
-		*e = AuthStrategyClientCredentialsCredentialType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AuthStrategyClientCredentialsCredentialType: %v", v)
-	}
+	return false
 }
 
 // AuthStrategyClientCredentials - Client Credential Auth strategy that the application uses.

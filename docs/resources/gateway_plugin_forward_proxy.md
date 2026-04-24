@@ -14,6 +14,7 @@ GatewayPluginForwardProxy Resource
 
 ```terraform
 resource "konnect_gateway_plugin_forward_proxy" "my_gatewaypluginforwardproxy" {
+  condition = "...my_condition..."
   config = {
     auth_password    = "...my_auth_password..."
     auth_username    = "...my_auth_username..."
@@ -77,6 +78,7 @@ resource "konnect_gateway_plugin_forward_proxy" "my_gatewaypluginforwardproxy" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -106,7 +108,7 @@ by basic authentication.
 - `https_proxy_port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 - `https_verify` (Boolean) Whether the server certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate. Default: false
 - `proxy_scheme` (String) The proxy scheme to use when connecting. Only `http` is supported. Default: "http"; must be "http"
-- `x_headers` (String) Determines how to handle headers when forwarding the request. Default: "append"; must be one of ["append", "delete", "transparent"]
+- `x_headers` (String) Determines how to handle headers when forwarding the request. possible known values include one of ["append", "delete", "transparent"]; Default: "append"
 
 
 <a id="nestedatt--consumer"></a>
@@ -178,7 +180,7 @@ import {
   to = konnect_gateway_plugin_forward_proxy.my_konnect_gateway_plugin_forward_proxy
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

@@ -46,6 +46,7 @@ type GatewayPluginOpentelemetryResource struct {
 
 // GatewayPluginOpentelemetryResourceModel describes the resource data model.
 type GatewayPluginOpentelemetryResourceModel struct {
+	Condition      types.String                       `tfsdk:"condition"`
 	Config         *tfTypes.OpentelemetryPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                       `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
@@ -70,10 +71,32 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginOpentelemetry Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
+					"access_logs": schema.SingleNestedAttribute{
+						Computed: true,
+						Optional: true,
+						Attributes: map[string]schema.Attribute{
+							"custom_attributes_by_lua": schema.MapAttribute{
+								Optional:    true,
+								ElementType: types.StringType,
+								Description: `A key-value map that dynamically modifies access log fields using Lua code.`,
+							},
+							"endpoint": schema.StringAttribute{
+								Optional:    true,
+								Description: `An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.`,
+							},
+						},
+					},
 					"access_logs_endpoint": schema.StringAttribute{
 						Optional:    true,
 						Description: `An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.`,
@@ -99,22 +122,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`preserve`),
-						Description: `Default: "preserve"; must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "ignore", "instana", "jaeger", "ot", "preserve", "w3c"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"aws",
-								"b3",
-								"b3-single",
-								"datadog",
-								"gcp",
-								"ignore",
-								"instana",
-								"jaeger",
-								"ot",
-								"preserve",
-								"w3c",
-							),
-						},
+						Description: `possible known values include one of ["aws", "b3", "b3-single", "datadog", "gcp", "ignore", "instana", "jaeger", "ot", "preserve", "w3c"]; Default: "preserve"`,
 					},
 					"headers": schema.MapAttribute{
 						Optional:    true,
@@ -132,6 +140,12 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
+							"enable_ai_metrics": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
+								Default:     booldefault.StaticBool(false),
+								Description: `A boolean value that determines if AI metrics should be collected. If enabled, ` + "`" + `gen_ai.*` + "`" + `, ` + "`" + `mcp.*` + "`" + `, ` + "`" + `kong.gen_ai.*` + "`" + `, ` + "`" + `kong.gen_ai.a2a.*` + "`" + ` and ` + "`" + `kong.mcp.*` + "`" + ` metrics will be exported. To enable latency metrics for AI metrics, ` + "`" + `enable_latency_metrics` + "`" + ` must also be set to ` + "`" + `true` + "`" + `. To enable ` + "`" + `error.type` + "`" + ` attribute for AI metrics, ` + "`" + `enable_request_metrics` + "`" + ` must also be set to ` + "`" + `true` + "`" + `. Default: false`,
+							},
 							"enable_bandwidth_metrics": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
@@ -187,20 +201,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(`w3c`),
-								Description: `The default header format to use when extractors did not match any format in the incoming headers and ` + "`" + `inject` + "`" + ` is configured with the value: ` + "`" + `preserve` + "`" + `. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in ` + "`" + `extract` + "`" + `. Default: "w3c"; must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "w3c"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"aws",
-										"b3",
-										"b3-single",
-										"datadog",
-										"gcp",
-										"instana",
-										"jaeger",
-										"ot",
-										"w3c",
-									),
-								},
+								Description: `The default header format to use when extractors did not match any format in the incoming headers and ` + "`" + `inject` + "`" + ` is configured with the value: ` + "`" + `preserve` + "`" + `. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in ` + "`" + `extract` + "`" + `. possible known values include one of ["aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "w3c"]; Default: "w3c"`,
 							},
 							"extract": schema.ListAttribute{
 								Optional:    true,
@@ -222,10 +223,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 								Computed:    true,
 								Optional:    true,
 								Default:     int64default.StaticInt64(1),
-								Description: `The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of [-1, 1]`,
-								Validators: []validator.Int64{
-									int64validator.OneOf(-1, 1),
-								},
+								Description: `The number of of queue delivery timers. -1 indicates unlimited. possible known values include one of [-1, 1]; Default: 1`,
 							},
 							"initial_retry_delay": schema.Float64Attribute{
 								Computed:    true,
@@ -308,13 +306,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`parent_drop_probability_fallback`),
-						Description: `The sampling strategy to use for OTLP ` + "`" + `traces` + "`" + `. Set ` + "`" + `parent_drop_probability_fallback` + "`" + ` if you want parent-based sampling when the parent span contains a ` + "`" + `false` + "`" + ` sampled flag, and fallback to probability-based sampling otherwise. Set ` + "`" + `parent_probability_fallback` + "`" + ` if you want parent-based sampling when the parent span contains a valid sampled flag (` + "`" + `true` + "`" + ` or ` + "`" + `false` + "`" + `), and fallback to probability-based sampling otherwise. Default: "parent_drop_probability_fallback"; must be one of ["parent_drop_probability_fallback", "parent_probability_fallback"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"parent_drop_probability_fallback",
-								"parent_probability_fallback",
-							),
-						},
+						Description: `The sampling strategy to use for OTLP ` + "`" + `traces` + "`" + `. Set ` + "`" + `parent_drop_probability_fallback` + "`" + ` if you want parent-based sampling when the parent span contains a ` + "`" + `false` + "`" + ` sampled flag, and fallback to probability-based sampling otherwise. Set ` + "`" + `parent_probability_fallback` + "`" + ` if you want parent-based sampling when the parent span contains a valid sampled flag (` + "`" + `true` + "`" + ` or ` + "`" + `false` + "`" + `), and fallback to probability-based sampling otherwise. possible known values include one of ["parent_drop_probability_fallback", "parent_probability_fallback"]; Default: "parent_drop_probability_fallback"`,
 					},
 					"send_timeout": schema.Int64Attribute{
 						Computed:    true,

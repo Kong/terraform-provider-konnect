@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -122,6 +120,38 @@ func (o *OpentelemetryPluginPartials) GetPath() *string {
 	return o.Path
 }
 
+type AccessLogs struct {
+	// A key-value map that dynamically modifies access log fields using Lua code.
+	CustomAttributesByLua map[string]string `json:"custom_attributes_by_lua,omitempty"`
+	// An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.
+	Endpoint *string `default:"null" json:"endpoint"`
+}
+
+func (a AccessLogs) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AccessLogs) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AccessLogs) GetCustomAttributesByLua() map[string]string {
+	if a == nil {
+		return nil
+	}
+	return a.CustomAttributesByLua
+}
+
+func (a *AccessLogs) GetEndpoint() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Endpoint
+}
+
 type HeaderType string
 
 const (
@@ -141,41 +171,21 @@ const (
 func (e HeaderType) ToPointer() *HeaderType {
 	return &e
 }
-func (e *HeaderType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *HeaderType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "b3", "b3-single", "datadog", "gcp", "ignore", "instana", "jaeger", "ot", "preserve", "w3c":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "b3":
-		fallthrough
-	case "b3-single":
-		fallthrough
-	case "datadog":
-		fallthrough
-	case "gcp":
-		fallthrough
-	case "ignore":
-		fallthrough
-	case "instana":
-		fallthrough
-	case "jaeger":
-		fallthrough
-	case "ot":
-		fallthrough
-	case "preserve":
-		fallthrough
-	case "w3c":
-		*e = HeaderType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for HeaderType: %v", v)
-	}
+	return false
 }
 
 type OpentelemetryPluginMetrics struct {
+	// A boolean value that determines if AI metrics should be collected. If enabled, `gen_ai.*`, `mcp.*`, `kong.gen_ai.*`, `kong.gen_ai.a2a.*` and `kong.mcp.*` metrics will be exported. To enable latency metrics for AI metrics, `enable_latency_metrics` must also be set to `true`. To enable `error.type` attribute for AI metrics, `enable_request_metrics` must also be set to `true`.
+	EnableAiMetrics *bool `default:"false" json:"enable_ai_metrics"`
 	// A boolean value that determines if bandwidth metrics should be collected. If enabled, `http.server.request.size` and `http.server.response.size` metrics will be exported.
 	EnableBandwidthMetrics *bool `default:"false" json:"enable_bandwidth_metrics"`
 	// A boolean value that determines if `http.server.request.count`, `http.server.request.size` and `http.server.response.size` metrics should fill in the consumer attribute when available.
@@ -201,6 +211,13 @@ func (o *OpentelemetryPluginMetrics) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (o *OpentelemetryPluginMetrics) GetEnableAiMetrics() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.EnableAiMetrics
 }
 
 func (o *OpentelemetryPluginMetrics) GetEnableBandwidthMetrics() *bool {
@@ -270,34 +287,16 @@ const (
 func (e DefaultFormat) ToPointer() *DefaultFormat {
 	return &e
 }
-func (e *DefaultFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DefaultFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "w3c":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "b3":
-		fallthrough
-	case "b3-single":
-		fallthrough
-	case "datadog":
-		fallthrough
-	case "gcp":
-		fallthrough
-	case "instana":
-		fallthrough
-	case "jaeger":
-		fallthrough
-	case "ot":
-		fallthrough
-	case "w3c":
-		*e = DefaultFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for DefaultFormat: %v", v)
-	}
+	return false
 }
 
 type Extract string
@@ -316,32 +315,16 @@ const (
 func (e Extract) ToPointer() *Extract {
 	return &e
 }
-func (e *Extract) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Extract) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "b3", "datadog", "gcp", "instana", "jaeger", "ot", "w3c":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "b3":
-		fallthrough
-	case "datadog":
-		fallthrough
-	case "gcp":
-		fallthrough
-	case "instana":
-		fallthrough
-	case "jaeger":
-		fallthrough
-	case "ot":
-		fallthrough
-	case "w3c":
-		*e = Extract(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Extract: %v", v)
-	}
+	return false
 }
 
 type Inject string
@@ -362,36 +345,16 @@ const (
 func (e Inject) ToPointer() *Inject {
 	return &e
 }
-func (e *Inject) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Inject) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "preserve", "w3c":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "b3":
-		fallthrough
-	case "b3-single":
-		fallthrough
-	case "datadog":
-		fallthrough
-	case "gcp":
-		fallthrough
-	case "instana":
-		fallthrough
-	case "jaeger":
-		fallthrough
-	case "ot":
-		fallthrough
-	case "preserve":
-		fallthrough
-	case "w3c":
-		*e = Inject(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Inject: %v", v)
-	}
+	return false
 }
 
 type Propagation struct {
@@ -455,20 +418,16 @@ const (
 func (e OpentelemetryPluginConcurrencyLimit) ToPointer() *OpentelemetryPluginConcurrencyLimit {
 	return &e
 }
-func (e *OpentelemetryPluginConcurrencyLimit) UnmarshalJSON(data []byte) error {
-	var v int64
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OpentelemetryPluginConcurrencyLimit) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case -1, 1:
+			return true
+		}
 	}
-	switch v {
-	case -1:
-		fallthrough
-	case 1:
-		*e = OpentelemetryPluginConcurrencyLimit(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for OpentelemetryPluginConcurrencyLimit: %v", v)
-	}
+	return false
 }
 
 type OpentelemetryPluginQueue struct {
@@ -568,25 +527,20 @@ const (
 func (e SamplingStrategy) ToPointer() *SamplingStrategy {
 	return &e
 }
-func (e *SamplingStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SamplingStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "parent_drop_probability_fallback", "parent_probability_fallback":
+			return true
+		}
 	}
-	switch v {
-	case "parent_drop_probability_fallback":
-		fallthrough
-	case "parent_probability_fallback":
-		*e = SamplingStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SamplingStrategy: %v", v)
-	}
+	return false
 }
 
 type OpentelemetryPluginConfig struct {
-	// An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.
-	AccessLogsEndpoint *string `default:"null" json:"access_logs_endpoint"`
+	AccessLogs *AccessLogs `json:"access_logs,omitempty"`
 	// The delay, in seconds, between two consecutive batches.
 	BatchFlushDelay *int64 `default:"null" json:"batch_flush_delay"`
 	// The number of spans to be sent in a single batch.
@@ -613,6 +567,8 @@ type OpentelemetryPluginConfig struct {
 	SendTimeout *int64 `default:"5000" json:"send_timeout"`
 	// A string representing a URL, such as https://example.com/path/to/resource?q=search.
 	TracesEndpoint *string `default:"null" json:"traces_endpoint"`
+	// An HTTP URL endpoint where access logs (e.g. request/response, route/service, latency, etc.) are exported.
+	AccessLogsEndpoint *string `default:"null" json:"access_logs_endpoint"`
 }
 
 func (o OpentelemetryPluginConfig) MarshalJSON() ([]byte, error) {
@@ -626,11 +582,11 @@ func (o *OpentelemetryPluginConfig) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *OpentelemetryPluginConfig) GetAccessLogsEndpoint() *string {
+func (o *OpentelemetryPluginConfig) GetAccessLogs() *AccessLogs {
 	if o == nil {
 		return nil
 	}
-	return o.AccessLogsEndpoint
+	return o.AccessLogs
 }
 
 func (o *OpentelemetryPluginConfig) GetBatchFlushDelay() *int64 {
@@ -745,6 +701,13 @@ func (o *OpentelemetryPluginConfig) GetTracesEndpoint() *string {
 	return o.TracesEndpoint
 }
 
+func (o *OpentelemetryPluginConfig) GetAccessLogsEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AccessLogsEndpoint
+}
+
 // OpentelemetryPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 type OpentelemetryPluginConsumer struct {
 	ID *string `json:"id,omitempty"`
@@ -787,36 +750,16 @@ const (
 func (e OpentelemetryPluginProtocols) ToPointer() *OpentelemetryPluginProtocols {
 	return &e
 }
-func (e *OpentelemetryPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *OpentelemetryPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = OpentelemetryPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for OpentelemetryPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // OpentelemetryPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -867,6 +810,8 @@ func (o *OpentelemetryPluginService) GetID() *string {
 
 // OpentelemetryPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type OpentelemetryPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -904,6 +849,13 @@ func (o *OpentelemetryPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (o *OpentelemetryPlugin) GetCondition() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Condition
 }
 
 func (o *OpentelemetryPlugin) GetCreatedAt() *int64 {

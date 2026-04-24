@@ -17,6 +17,7 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.DatakitPluginConfig{}
 		r.Config.Debug = types.BoolPointerValue(resp.Config.Debug)
 		r.Config.Nodes = []tfTypes.Nodes{}
@@ -103,6 +104,7 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 					nodes.Call.Outputs = &tfTypes.DatakitPluginNodesOutputs{}
 					nodes.Call.Outputs.Body = types.StringPointerValue(nodesItem.Call.Outputs.Body)
 					nodes.Call.Outputs.Headers = types.StringPointerValue(nodesItem.Call.Outputs.Headers)
+					nodes.Call.Outputs.RawBody = types.StringPointerValue(nodesItem.Call.Outputs.RawBody)
 					nodes.Call.Outputs.Status = types.StringPointerValue(nodesItem.Call.Outputs.Status)
 				}
 				nodes.Call.SslServerName = types.StringPointerValue(nodesItem.Call.SslServerName)
@@ -153,6 +155,91 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 				nodes.JSONToXML.RootElementName = types.StringPointerValue(nodesItem.JSONToXML.RootElementName)
 				nodes.JSONToXML.TextBlockName = types.StringPointerValue(nodesItem.JSONToXML.TextBlockName)
 			}
+			if nodesItem.JwtDecode != nil {
+				nodes.JwtDecode = &tfTypes.JwtDecode{}
+				nodes.JwtDecode.Input = types.StringPointerValue(nodesItem.JwtDecode.Input)
+				nodes.JwtDecode.Name = types.StringPointerValue(nodesItem.JwtDecode.Name)
+				nodes.JwtDecode.Output = types.StringPointerValue(nodesItem.JwtDecode.Output)
+				if nodesItem.JwtDecode.Outputs == nil {
+					nodes.JwtDecode.Outputs = nil
+				} else {
+					nodes.JwtDecode.Outputs = &tfTypes.DatakitPluginNodesConfigOutputs{}
+					nodes.JwtDecode.Outputs.Header = types.StringPointerValue(nodesItem.JwtDecode.Outputs.Header)
+					nodes.JwtDecode.Outputs.Payload = types.StringPointerValue(nodesItem.JwtDecode.Outputs.Payload)
+					nodes.JwtDecode.Outputs.Signature = types.StringPointerValue(nodesItem.JwtDecode.Outputs.Signature)
+				}
+			}
+			if nodesItem.JwtSign != nil {
+				nodes.JwtSign = &tfTypes.JwtSign{}
+				nodes.JwtSign.Algorithm = types.StringValue(string(nodesItem.JwtSign.Algorithm))
+				nodes.JwtSign.ExpiresIn = types.Int64PointerValue(nodesItem.JwtSign.ExpiresIn)
+				nodes.JwtSign.Input = types.StringPointerValue(nodesItem.JwtSign.Input)
+				if nodesItem.JwtSign.Inputs == nil {
+					nodes.JwtSign.Inputs = nil
+				} else {
+					nodes.JwtSign.Inputs = &tfTypes.DatakitPluginNodesConfigInputs{}
+					nodes.JwtSign.Inputs.Claims = types.StringPointerValue(nodesItem.JwtSign.Inputs.Claims)
+					nodes.JwtSign.Inputs.Key = types.StringPointerValue(nodesItem.JwtSign.Inputs.Key)
+				}
+				nodes.JwtSign.Kid = types.StringPointerValue(nodesItem.JwtSign.Kid)
+				nodes.JwtSign.Name = types.StringPointerValue(nodesItem.JwtSign.Name)
+				nodes.JwtSign.NotBefore = types.Int64PointerValue(nodesItem.JwtSign.NotBefore)
+				nodes.JwtSign.Output = types.StringPointerValue(nodesItem.JwtSign.Output)
+				if nodesItem.JwtSign.Outputs == nil {
+					nodes.JwtSign.Outputs = nil
+				} else {
+					nodes.JwtSign.Outputs = &tfTypes.DatakitPluginNodesConfig8Outputs{}
+					nodes.JwtSign.Outputs.Claims = types.StringPointerValue(nodesItem.JwtSign.Outputs.Claims)
+					nodes.JwtSign.Outputs.Header = types.StringPointerValue(nodesItem.JwtSign.Outputs.Header)
+					nodes.JwtSign.Outputs.Token = types.StringPointerValue(nodesItem.JwtSign.Outputs.Token)
+				}
+				if len(nodesItem.JwtSign.StaticClaims) > 0 {
+					nodes.JwtSign.StaticClaims = make(map[string]types.String, len(nodesItem.JwtSign.StaticClaims))
+					for key2, value2 := range nodesItem.JwtSign.StaticClaims {
+						nodes.JwtSign.StaticClaims[key2] = types.StringValue(value2)
+					}
+				}
+				nodes.JwtSign.Typ = types.StringPointerValue(nodesItem.JwtSign.Typ)
+			}
+			if nodesItem.JwtVerify != nil {
+				nodes.JwtVerify = &tfTypes.JwtVerify{}
+				nodes.JwtVerify.AllowedAlgorithms = make([]types.String, 0, len(nodesItem.JwtVerify.AllowedAlgorithms))
+				for _, v := range nodesItem.JwtVerify.AllowedAlgorithms {
+					nodes.JwtVerify.AllowedAlgorithms = append(nodes.JwtVerify.AllowedAlgorithms, types.StringValue(string(v)))
+				}
+				nodes.JwtVerify.Audiences = make([]types.String, 0, len(nodesItem.JwtVerify.Audiences))
+				for _, v := range nodesItem.JwtVerify.Audiences {
+					nodes.JwtVerify.Audiences = append(nodes.JwtVerify.Audiences, types.StringValue(v))
+				}
+				nodes.JwtVerify.Input = types.StringPointerValue(nodesItem.JwtVerify.Input)
+				if nodesItem.JwtVerify.Inputs == nil {
+					nodes.JwtVerify.Inputs = nil
+				} else {
+					nodes.JwtVerify.Inputs = &tfTypes.DatakitPluginNodesConfig9Inputs{}
+					nodes.JwtVerify.Inputs.Key = types.StringPointerValue(nodesItem.JwtVerify.Inputs.Key)
+					nodes.JwtVerify.Inputs.Token = types.StringPointerValue(nodesItem.JwtVerify.Inputs.Token)
+				}
+				nodes.JwtVerify.Issuers = make([]types.String, 0, len(nodesItem.JwtVerify.Issuers))
+				for _, v := range nodesItem.JwtVerify.Issuers {
+					nodes.JwtVerify.Issuers = append(nodes.JwtVerify.Issuers, types.StringValue(v))
+				}
+				nodes.JwtVerify.Leeway = types.Int64PointerValue(nodesItem.JwtVerify.Leeway)
+				nodes.JwtVerify.Name = types.StringPointerValue(nodesItem.JwtVerify.Name)
+				nodes.JwtVerify.Output = types.StringPointerValue(nodesItem.JwtVerify.Output)
+				if nodesItem.JwtVerify.Outputs == nil {
+					nodes.JwtVerify.Outputs = nil
+				} else {
+					nodes.JwtVerify.Outputs = &tfTypes.DatakitPluginNodesConfig9Outputs{}
+					nodes.JwtVerify.Outputs.Claims = types.StringPointerValue(nodesItem.JwtVerify.Outputs.Claims)
+					nodes.JwtVerify.Outputs.Header = types.StringPointerValue(nodesItem.JwtVerify.Outputs.Header)
+				}
+				nodes.JwtVerify.RequiredClaims = make([]types.String, 0, len(nodesItem.JwtVerify.RequiredClaims))
+				for _, v := range nodesItem.JwtVerify.RequiredClaims {
+					nodes.JwtVerify.RequiredClaims = append(nodes.JwtVerify.RequiredClaims, types.StringValue(v))
+				}
+				nodes.JwtVerify.ValidateExp = types.BoolPointerValue(nodesItem.JwtVerify.ValidateExp)
+				nodes.JwtVerify.ValidateNbf = types.BoolPointerValue(nodesItem.JwtVerify.ValidateNbf)
+			}
 			if nodesItem.Property != nil {
 				nodes.Property = &tfTypes.Property{}
 				if nodesItem.Property.ContentType != nil {
@@ -171,8 +258,8 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 				nodes.Static.Output = types.StringPointerValue(nodesItem.Static.Output)
 				if nodesItem.Static.Outputs != nil {
 					nodes.Static.Outputs = make(map[string]types.String, len(nodesItem.Static.Outputs))
-					for key2, value2 := range nodesItem.Static.Outputs {
-						nodes.Static.Outputs[key2] = types.StringValue(value2)
+					for key3, value3 := range nodesItem.Static.Outputs {
+						nodes.Static.Outputs[key3] = types.StringValue(value3)
 					}
 				}
 				valuesResult, _ := json.Marshal(nodesItem.Static.Values)
@@ -210,7 +297,7 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 				if resp.Config.Resources.Cache.Redis == nil {
 					r.Config.Resources.Cache.Redis = nil
 				} else {
-					r.Config.Resources.Cache.Redis = &tfTypes.AcePluginRedis{}
+					r.Config.Resources.Cache.Redis = &tfTypes.PartialVectordbRedis{}
 					if resp.Config.Resources.Cache.Redis.CloudAuthentication == nil {
 						r.Config.Resources.Cache.Redis.CloudAuthentication = nil
 					} else {
@@ -292,8 +379,8 @@ func (r *GatewayPluginDatakitResourceModel) RefreshFromSharedDatakitPlugin(ctx c
 			}
 			if resp.Config.Resources.Vault != nil {
 				r.Config.Resources.Vault = make(map[string]types.String, len(resp.Config.Resources.Vault))
-				for key3, value3 := range resp.Config.Resources.Vault {
-					r.Config.Resources.Vault[key3] = types.StringValue(value3)
+				for key4, value4 := range resp.Config.Resources.Vault {
+					r.Config.Resources.Vault[key4] = types.StringValue(value4)
 				}
 			}
 		}
@@ -464,6 +551,12 @@ func (r *GatewayPluginDatakitResourceModel) ToOperationsUpdateDatakitPluginReque
 func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Context) (*shared.DatakitPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -832,6 +925,12 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 				} else {
 					headers1 = nil
 				}
+				rawBody := new(string)
+				if !r.Config.Nodes[nodesItem].Call.Outputs.RawBody.IsUnknown() && !r.Config.Nodes[nodesItem].Call.Outputs.RawBody.IsNull() {
+					*rawBody = r.Config.Nodes[nodesItem].Call.Outputs.RawBody.ValueString()
+				} else {
+					rawBody = nil
+				}
 				status := new(string)
 				if !r.Config.Nodes[nodesItem].Call.Outputs.Status.IsUnknown() && !r.Config.Nodes[nodesItem].Call.Outputs.Status.IsNull() {
 					*status = r.Config.Nodes[nodesItem].Call.Outputs.Status.ValueString()
@@ -841,6 +940,7 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 				outputs2 = &shared.DatakitPluginNodesOutputs{
 					Body:    body1,
 					Headers: headers1,
+					RawBody: rawBody,
 					Status:  status,
 				}
 			}
@@ -1049,6 +1149,283 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 				JSONToXML: &jsonToXML,
 			})
 		}
+		if r.Config.Nodes[nodesItem].JwtDecode != nil {
+			input6 := new(string)
+			if !r.Config.Nodes[nodesItem].JwtDecode.Input.IsUnknown() && !r.Config.Nodes[nodesItem].JwtDecode.Input.IsNull() {
+				*input6 = r.Config.Nodes[nodesItem].JwtDecode.Input.ValueString()
+			} else {
+				input6 = nil
+			}
+			name7 := new(string)
+			if !r.Config.Nodes[nodesItem].JwtDecode.Name.IsUnknown() && !r.Config.Nodes[nodesItem].JwtDecode.Name.IsNull() {
+				*name7 = r.Config.Nodes[nodesItem].JwtDecode.Name.ValueString()
+			} else {
+				name7 = nil
+			}
+			output5 := new(string)
+			if !r.Config.Nodes[nodesItem].JwtDecode.Output.IsUnknown() && !r.Config.Nodes[nodesItem].JwtDecode.Output.IsNull() {
+				*output5 = r.Config.Nodes[nodesItem].JwtDecode.Output.ValueString()
+			} else {
+				output5 = nil
+			}
+			var outputs3 *shared.DatakitPluginNodesConfigOutputs
+			if r.Config.Nodes[nodesItem].JwtDecode.Outputs != nil {
+				header := new(string)
+				if !r.Config.Nodes[nodesItem].JwtDecode.Outputs.Header.IsUnknown() && !r.Config.Nodes[nodesItem].JwtDecode.Outputs.Header.IsNull() {
+					*header = r.Config.Nodes[nodesItem].JwtDecode.Outputs.Header.ValueString()
+				} else {
+					header = nil
+				}
+				payload := new(string)
+				if !r.Config.Nodes[nodesItem].JwtDecode.Outputs.Payload.IsUnknown() && !r.Config.Nodes[nodesItem].JwtDecode.Outputs.Payload.IsNull() {
+					*payload = r.Config.Nodes[nodesItem].JwtDecode.Outputs.Payload.ValueString()
+				} else {
+					payload = nil
+				}
+				signature := new(string)
+				if !r.Config.Nodes[nodesItem].JwtDecode.Outputs.Signature.IsUnknown() && !r.Config.Nodes[nodesItem].JwtDecode.Outputs.Signature.IsNull() {
+					*signature = r.Config.Nodes[nodesItem].JwtDecode.Outputs.Signature.ValueString()
+				} else {
+					signature = nil
+				}
+				outputs3 = &shared.DatakitPluginNodesConfigOutputs{
+					Header:    header,
+					Payload:   payload,
+					Signature: signature,
+				}
+			}
+			jwtDecode := shared.JwtDecode{
+				Input:   input6,
+				Name:    name7,
+				Output:  output5,
+				Outputs: outputs3,
+			}
+			nodes = append(nodes, shared.Nodes{
+				JwtDecode: &jwtDecode,
+			})
+		}
+		if r.Config.Nodes[nodesItem].JwtSign != nil {
+			algorithm := shared.NodesAlgorithm(r.Config.Nodes[nodesItem].JwtSign.Algorithm.ValueString())
+			expiresIn := new(int64)
+			if !r.Config.Nodes[nodesItem].JwtSign.ExpiresIn.IsUnknown() && !r.Config.Nodes[nodesItem].JwtSign.ExpiresIn.IsNull() {
+				*expiresIn = r.Config.Nodes[nodesItem].JwtSign.ExpiresIn.ValueInt64()
+			} else {
+				expiresIn = nil
+			}
+			input7 := new(string)
+			if !r.Config.Nodes[nodesItem].JwtSign.Input.IsUnknown() && !r.Config.Nodes[nodesItem].JwtSign.Input.IsNull() {
+				*input7 = r.Config.Nodes[nodesItem].JwtSign.Input.ValueString()
+			} else {
+				input7 = nil
+			}
+			var inputs5 *shared.DatakitPluginNodesConfigInputs
+			if r.Config.Nodes[nodesItem].JwtSign.Inputs != nil {
+				claims := new(string)
+				if !r.Config.Nodes[nodesItem].JwtSign.Inputs.Claims.IsUnknown() && !r.Config.Nodes[nodesItem].JwtSign.Inputs.Claims.IsNull() {
+					*claims = r.Config.Nodes[nodesItem].JwtSign.Inputs.Claims.ValueString()
+				} else {
+					claims = nil
+				}
+				key1 := new(string)
+				if !r.Config.Nodes[nodesItem].JwtSign.Inputs.Key.IsUnknown() && !r.Config.Nodes[nodesItem].JwtSign.Inputs.Key.IsNull() {
+					*key1 = r.Config.Nodes[nodesItem].JwtSign.Inputs.Key.ValueString()
+				} else {
+					key1 = nil
+				}
+				inputs5 = &shared.DatakitPluginNodesConfigInputs{
+					Claims: claims,
+					Key:    key1,
+				}
+			}
+			kid := new(string)
+			if !r.Config.Nodes[nodesItem].JwtSign.Kid.IsUnknown() && !r.Config.Nodes[nodesItem].JwtSign.Kid.IsNull() {
+				*kid = r.Config.Nodes[nodesItem].JwtSign.Kid.ValueString()
+			} else {
+				kid = nil
+			}
+			name8 := new(string)
+			if !r.Config.Nodes[nodesItem].JwtSign.Name.IsUnknown() && !r.Config.Nodes[nodesItem].JwtSign.Name.IsNull() {
+				*name8 = r.Config.Nodes[nodesItem].JwtSign.Name.ValueString()
+			} else {
+				name8 = nil
+			}
+			notBefore := new(int64)
+			if !r.Config.Nodes[nodesItem].JwtSign.NotBefore.IsUnknown() && !r.Config.Nodes[nodesItem].JwtSign.NotBefore.IsNull() {
+				*notBefore = r.Config.Nodes[nodesItem].JwtSign.NotBefore.ValueInt64()
+			} else {
+				notBefore = nil
+			}
+			output6 := new(string)
+			if !r.Config.Nodes[nodesItem].JwtSign.Output.IsUnknown() && !r.Config.Nodes[nodesItem].JwtSign.Output.IsNull() {
+				*output6 = r.Config.Nodes[nodesItem].JwtSign.Output.ValueString()
+			} else {
+				output6 = nil
+			}
+			var outputs4 *shared.DatakitPluginNodesConfig8Outputs
+			if r.Config.Nodes[nodesItem].JwtSign.Outputs != nil {
+				claims1 := new(string)
+				if !r.Config.Nodes[nodesItem].JwtSign.Outputs.Claims.IsUnknown() && !r.Config.Nodes[nodesItem].JwtSign.Outputs.Claims.IsNull() {
+					*claims1 = r.Config.Nodes[nodesItem].JwtSign.Outputs.Claims.ValueString()
+				} else {
+					claims1 = nil
+				}
+				header1 := new(string)
+				if !r.Config.Nodes[nodesItem].JwtSign.Outputs.Header.IsUnknown() && !r.Config.Nodes[nodesItem].JwtSign.Outputs.Header.IsNull() {
+					*header1 = r.Config.Nodes[nodesItem].JwtSign.Outputs.Header.ValueString()
+				} else {
+					header1 = nil
+				}
+				token := new(string)
+				if !r.Config.Nodes[nodesItem].JwtSign.Outputs.Token.IsUnknown() && !r.Config.Nodes[nodesItem].JwtSign.Outputs.Token.IsNull() {
+					*token = r.Config.Nodes[nodesItem].JwtSign.Outputs.Token.ValueString()
+				} else {
+					token = nil
+				}
+				outputs4 = &shared.DatakitPluginNodesConfig8Outputs{
+					Claims: claims1,
+					Header: header1,
+					Token:  token,
+				}
+			}
+			staticClaims := make(map[string]string)
+			for staticClaimsKey := range r.Config.Nodes[nodesItem].JwtSign.StaticClaims {
+				var staticClaimsInst string
+				staticClaimsInst = r.Config.Nodes[nodesItem].JwtSign.StaticClaims[staticClaimsKey].ValueString()
+
+				staticClaims[staticClaimsKey] = staticClaimsInst
+			}
+			typ := new(string)
+			if !r.Config.Nodes[nodesItem].JwtSign.Typ.IsUnknown() && !r.Config.Nodes[nodesItem].JwtSign.Typ.IsNull() {
+				*typ = r.Config.Nodes[nodesItem].JwtSign.Typ.ValueString()
+			} else {
+				typ = nil
+			}
+			jwtSign := shared.JwtSign{
+				Algorithm:    algorithm,
+				ExpiresIn:    expiresIn,
+				Input:        input7,
+				Inputs:       inputs5,
+				Kid:          kid,
+				Name:         name8,
+				NotBefore:    notBefore,
+				Output:       output6,
+				Outputs:      outputs4,
+				StaticClaims: staticClaims,
+				Typ:          typ,
+			}
+			nodes = append(nodes, shared.Nodes{
+				JwtSign: &jwtSign,
+			})
+		}
+		if r.Config.Nodes[nodesItem].JwtVerify != nil {
+			allowedAlgorithms := make([]shared.AllowedAlgorithms, 0, len(r.Config.Nodes[nodesItem].JwtVerify.AllowedAlgorithms))
+			for _, allowedAlgorithmsItem := range r.Config.Nodes[nodesItem].JwtVerify.AllowedAlgorithms {
+				allowedAlgorithms = append(allowedAlgorithms, shared.AllowedAlgorithms(allowedAlgorithmsItem.ValueString()))
+			}
+			audiences := make([]string, 0, len(r.Config.Nodes[nodesItem].JwtVerify.Audiences))
+			for audiencesIndex := range r.Config.Nodes[nodesItem].JwtVerify.Audiences {
+				audiences = append(audiences, r.Config.Nodes[nodesItem].JwtVerify.Audiences[audiencesIndex].ValueString())
+			}
+			input8 := new(string)
+			if !r.Config.Nodes[nodesItem].JwtVerify.Input.IsUnknown() && !r.Config.Nodes[nodesItem].JwtVerify.Input.IsNull() {
+				*input8 = r.Config.Nodes[nodesItem].JwtVerify.Input.ValueString()
+			} else {
+				input8 = nil
+			}
+			var inputs6 *shared.DatakitPluginNodesConfig9Inputs
+			if r.Config.Nodes[nodesItem].JwtVerify.Inputs != nil {
+				key2 := new(string)
+				if !r.Config.Nodes[nodesItem].JwtVerify.Inputs.Key.IsUnknown() && !r.Config.Nodes[nodesItem].JwtVerify.Inputs.Key.IsNull() {
+					*key2 = r.Config.Nodes[nodesItem].JwtVerify.Inputs.Key.ValueString()
+				} else {
+					key2 = nil
+				}
+				token1 := new(string)
+				if !r.Config.Nodes[nodesItem].JwtVerify.Inputs.Token.IsUnknown() && !r.Config.Nodes[nodesItem].JwtVerify.Inputs.Token.IsNull() {
+					*token1 = r.Config.Nodes[nodesItem].JwtVerify.Inputs.Token.ValueString()
+				} else {
+					token1 = nil
+				}
+				inputs6 = &shared.DatakitPluginNodesConfig9Inputs{
+					Key:   key2,
+					Token: token1,
+				}
+			}
+			issuers := make([]string, 0, len(r.Config.Nodes[nodesItem].JwtVerify.Issuers))
+			for issuersIndex := range r.Config.Nodes[nodesItem].JwtVerify.Issuers {
+				issuers = append(issuers, r.Config.Nodes[nodesItem].JwtVerify.Issuers[issuersIndex].ValueString())
+			}
+			leeway := new(int64)
+			if !r.Config.Nodes[nodesItem].JwtVerify.Leeway.IsUnknown() && !r.Config.Nodes[nodesItem].JwtVerify.Leeway.IsNull() {
+				*leeway = r.Config.Nodes[nodesItem].JwtVerify.Leeway.ValueInt64()
+			} else {
+				leeway = nil
+			}
+			name9 := new(string)
+			if !r.Config.Nodes[nodesItem].JwtVerify.Name.IsUnknown() && !r.Config.Nodes[nodesItem].JwtVerify.Name.IsNull() {
+				*name9 = r.Config.Nodes[nodesItem].JwtVerify.Name.ValueString()
+			} else {
+				name9 = nil
+			}
+			output7 := new(string)
+			if !r.Config.Nodes[nodesItem].JwtVerify.Output.IsUnknown() && !r.Config.Nodes[nodesItem].JwtVerify.Output.IsNull() {
+				*output7 = r.Config.Nodes[nodesItem].JwtVerify.Output.ValueString()
+			} else {
+				output7 = nil
+			}
+			var outputs5 *shared.DatakitPluginNodesConfig9Outputs
+			if r.Config.Nodes[nodesItem].JwtVerify.Outputs != nil {
+				claims2 := new(string)
+				if !r.Config.Nodes[nodesItem].JwtVerify.Outputs.Claims.IsUnknown() && !r.Config.Nodes[nodesItem].JwtVerify.Outputs.Claims.IsNull() {
+					*claims2 = r.Config.Nodes[nodesItem].JwtVerify.Outputs.Claims.ValueString()
+				} else {
+					claims2 = nil
+				}
+				header2 := new(string)
+				if !r.Config.Nodes[nodesItem].JwtVerify.Outputs.Header.IsUnknown() && !r.Config.Nodes[nodesItem].JwtVerify.Outputs.Header.IsNull() {
+					*header2 = r.Config.Nodes[nodesItem].JwtVerify.Outputs.Header.ValueString()
+				} else {
+					header2 = nil
+				}
+				outputs5 = &shared.DatakitPluginNodesConfig9Outputs{
+					Claims: claims2,
+					Header: header2,
+				}
+			}
+			requiredClaims := make([]string, 0, len(r.Config.Nodes[nodesItem].JwtVerify.RequiredClaims))
+			for requiredClaimsIndex := range r.Config.Nodes[nodesItem].JwtVerify.RequiredClaims {
+				requiredClaims = append(requiredClaims, r.Config.Nodes[nodesItem].JwtVerify.RequiredClaims[requiredClaimsIndex].ValueString())
+			}
+			validateExp := new(bool)
+			if !r.Config.Nodes[nodesItem].JwtVerify.ValidateExp.IsUnknown() && !r.Config.Nodes[nodesItem].JwtVerify.ValidateExp.IsNull() {
+				*validateExp = r.Config.Nodes[nodesItem].JwtVerify.ValidateExp.ValueBool()
+			} else {
+				validateExp = nil
+			}
+			validateNbf := new(bool)
+			if !r.Config.Nodes[nodesItem].JwtVerify.ValidateNbf.IsUnknown() && !r.Config.Nodes[nodesItem].JwtVerify.ValidateNbf.IsNull() {
+				*validateNbf = r.Config.Nodes[nodesItem].JwtVerify.ValidateNbf.ValueBool()
+			} else {
+				validateNbf = nil
+			}
+			jwtVerify := shared.JwtVerify{
+				AllowedAlgorithms: allowedAlgorithms,
+				Audiences:         audiences,
+				Input:             input8,
+				Inputs:            inputs6,
+				Issuers:           issuers,
+				Leeway:            leeway,
+				Name:              name9,
+				Output:            output7,
+				Outputs:           outputs5,
+				RequiredClaims:    requiredClaims,
+				ValidateExp:       validateExp,
+				ValidateNbf:       validateNbf,
+			}
+			nodes = append(nodes, shared.Nodes{
+				JwtVerify: &jwtVerify,
+			})
+		}
 		if r.Config.Nodes[nodesItem].Property != nil {
 			contentType := new(shared.NodesContentType)
 			if !r.Config.Nodes[nodesItem].Property.ContentType.IsUnknown() && !r.Config.Nodes[nodesItem].Property.ContentType.IsNull() {
@@ -1056,32 +1433,32 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 			} else {
 				contentType = nil
 			}
-			input6 := new(string)
+			input9 := new(string)
 			if !r.Config.Nodes[nodesItem].Property.Input.IsUnknown() && !r.Config.Nodes[nodesItem].Property.Input.IsNull() {
-				*input6 = r.Config.Nodes[nodesItem].Property.Input.ValueString()
+				*input9 = r.Config.Nodes[nodesItem].Property.Input.ValueString()
 			} else {
-				input6 = nil
+				input9 = nil
 			}
-			name7 := new(string)
+			name10 := new(string)
 			if !r.Config.Nodes[nodesItem].Property.Name.IsUnknown() && !r.Config.Nodes[nodesItem].Property.Name.IsNull() {
-				*name7 = r.Config.Nodes[nodesItem].Property.Name.ValueString()
+				*name10 = r.Config.Nodes[nodesItem].Property.Name.ValueString()
 			} else {
-				name7 = nil
+				name10 = nil
 			}
-			output5 := new(string)
+			output8 := new(string)
 			if !r.Config.Nodes[nodesItem].Property.Output.IsUnknown() && !r.Config.Nodes[nodesItem].Property.Output.IsNull() {
-				*output5 = r.Config.Nodes[nodesItem].Property.Output.ValueString()
+				*output8 = r.Config.Nodes[nodesItem].Property.Output.ValueString()
 			} else {
-				output5 = nil
+				output8 = nil
 			}
 			var property1 string
 			property1 = r.Config.Nodes[nodesItem].Property.Property.ValueString()
 
 			property := shared.Property{
 				ContentType: contentType,
-				Input:       input6,
-				Name:        name7,
-				Output:      output5,
+				Input:       input9,
+				Name:        name10,
+				Output:      output8,
 				Property:    property1,
 			}
 			nodes = append(nodes, shared.Nodes{
@@ -1089,34 +1466,34 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 			})
 		}
 		if r.Config.Nodes[nodesItem].Static != nil {
-			name8 := new(string)
+			name11 := new(string)
 			if !r.Config.Nodes[nodesItem].Static.Name.IsUnknown() && !r.Config.Nodes[nodesItem].Static.Name.IsNull() {
-				*name8 = r.Config.Nodes[nodesItem].Static.Name.ValueString()
+				*name11 = r.Config.Nodes[nodesItem].Static.Name.ValueString()
 			} else {
-				name8 = nil
+				name11 = nil
 			}
-			output6 := new(string)
+			output9 := new(string)
 			if !r.Config.Nodes[nodesItem].Static.Output.IsUnknown() && !r.Config.Nodes[nodesItem].Static.Output.IsNull() {
-				*output6 = r.Config.Nodes[nodesItem].Static.Output.ValueString()
+				*output9 = r.Config.Nodes[nodesItem].Static.Output.ValueString()
 			} else {
-				output6 = nil
+				output9 = nil
 			}
-			var outputs3 map[string]string
+			var outputs6 map[string]string
 			if r.Config.Nodes[nodesItem].Static.Outputs != nil {
-				outputs3 = make(map[string]string)
+				outputs6 = make(map[string]string)
 				for outputsKey := range r.Config.Nodes[nodesItem].Static.Outputs {
 					var outputsInst string
 					outputsInst = r.Config.Nodes[nodesItem].Static.Outputs[outputsKey].ValueString()
 
-					outputs3[outputsKey] = outputsInst
+					outputs6[outputsKey] = outputsInst
 				}
 			}
 			var values interface{}
 			_ = json.Unmarshal([]byte(r.Config.Nodes[nodesItem].Static.Values.ValueString()), &values)
 			static := shared.Static{
-				Name:    name8,
-				Output:  output6,
-				Outputs: outputs3,
+				Name:    name11,
+				Output:  output9,
+				Outputs: outputs6,
 				Values:  values,
 			}
 			nodes = append(nodes, shared.Nodes{
@@ -1136,23 +1513,23 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 			} else {
 				attributesNamePrefix1 = nil
 			}
-			input7 := new(string)
+			input10 := new(string)
 			if !r.Config.Nodes[nodesItem].XMLToJSON.Input.IsUnknown() && !r.Config.Nodes[nodesItem].XMLToJSON.Input.IsNull() {
-				*input7 = r.Config.Nodes[nodesItem].XMLToJSON.Input.ValueString()
+				*input10 = r.Config.Nodes[nodesItem].XMLToJSON.Input.ValueString()
 			} else {
-				input7 = nil
+				input10 = nil
 			}
-			name9 := new(string)
+			name12 := new(string)
 			if !r.Config.Nodes[nodesItem].XMLToJSON.Name.IsUnknown() && !r.Config.Nodes[nodesItem].XMLToJSON.Name.IsNull() {
-				*name9 = r.Config.Nodes[nodesItem].XMLToJSON.Name.ValueString()
+				*name12 = r.Config.Nodes[nodesItem].XMLToJSON.Name.ValueString()
 			} else {
-				name9 = nil
+				name12 = nil
 			}
-			output7 := new(string)
+			output10 := new(string)
 			if !r.Config.Nodes[nodesItem].XMLToJSON.Output.IsUnknown() && !r.Config.Nodes[nodesItem].XMLToJSON.Output.IsNull() {
-				*output7 = r.Config.Nodes[nodesItem].XMLToJSON.Output.ValueString()
+				*output10 = r.Config.Nodes[nodesItem].XMLToJSON.Output.ValueString()
 			} else {
-				output7 = nil
+				output10 = nil
 			}
 			recognizeType := new(bool)
 			if !r.Config.Nodes[nodesItem].XMLToJSON.RecognizeType.IsUnknown() && !r.Config.Nodes[nodesItem].XMLToJSON.RecognizeType.IsNull() {
@@ -1181,9 +1558,9 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 			xmlToJSON := shared.XMLToJSON{
 				AttributesBlockName:  attributesBlockName1,
 				AttributesNamePrefix: attributesNamePrefix1,
-				Input:                input7,
-				Name:                 name9,
-				Output:               output7,
+				Input:                input10,
+				Name:                 name12,
+				Output:               output10,
 				RecognizeType:        recognizeType,
 				TextAsProperty:       textAsProperty,
 				TextBlockName:        textBlockName1,
@@ -1569,6 +1946,7 @@ func (r *GatewayPluginDatakitResourceModel) ToSharedDatakitPlugin(ctx context.Co
 		}
 	}
 	out := shared.DatakitPlugin{
+		Condition:     condition,
 		CreatedAt:     createdAt,
 		Enabled:       enabled,
 		ID:            id,

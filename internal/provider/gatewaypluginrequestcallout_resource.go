@@ -46,6 +46,7 @@ type GatewayPluginRequestCalloutResource struct {
 
 // GatewayPluginRequestCalloutResourceModel describes the resource data model.
 type GatewayPluginRequestCalloutResourceModel struct {
+	Condition      types.String                        `tfsdk:"condition"`
 	Config         *tfTypes.RequestCalloutPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                        `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.Set                        `tfsdk:"consumer_group"`
@@ -71,6 +72,13 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginRequestCallout Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Required: true,
 				Attributes: map[string]schema.Attribute{
@@ -121,14 +129,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 											"auth_provider": schema.StringAttribute{
 												Computed:    true,
 												Optional:    true,
-												Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
-												Validators: []validator.String{
-													stringvalidator.OneOf(
-														"aws",
-														"azure",
-														"gcp",
-													),
-												},
+												Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
 											},
 											"aws_access_key_id": schema.StringAttribute{
 												Optional:    true,
@@ -322,14 +323,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 									"sentinel_role": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"any",
-												"master",
-												"slave",
-											),
-										},
+										Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
 									},
 									"sentinel_username": schema.StringAttribute{
 										Optional:    true,
@@ -361,14 +355,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(`off`),
-								Description: `The backing data store in which to hold cache entities. Accepted values are: ` + "`" + `off` + "`" + `, ` + "`" + `memory` + "`" + `, and ` + "`" + `redis` + "`" + `. Default: "off"; must be one of ["memory", "off", "redis"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"memory",
-										"off",
-										"redis",
-									),
-								},
+								Description: `The backing data store in which to hold cache entities. Accepted values are: ` + "`" + `off` + "`" + `, ` + "`" + `memory` + "`" + `, and ` + "`" + `redis` + "`" + `. possible known values include one of ["memory", "off", "redis"]; Default: "off"`,
 							},
 						},
 						Description: `Plugin global caching configuration.`,
@@ -484,14 +471,7 @@ func (r *GatewayPluginRequestCalloutResource) Schema(ctx context.Context, req re
 													Computed:    true,
 													Optional:    true,
 													Default:     stringdefault.StaticString(`fail`),
-													Description: `Default: "fail"; must be one of ["continue", "fail", "retry"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"continue",
-															"fail",
-															"retry",
-														),
-													},
+													Description: `possible known values include one of ["continue", "fail", "retry"]; Default: "fail"`,
 												},
 												"retries": schema.Int64Attribute{
 													Computed:    true,

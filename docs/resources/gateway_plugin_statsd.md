@@ -14,6 +14,7 @@ GatewayPluginStatsd Resource
 
 ```terraform
 resource "konnect_gateway_plugin_statsd" "my_gatewaypluginstatsd" {
+  condition = "...my_condition..."
   config = {
     allow_status_codes = [
       "..."
@@ -104,6 +105,7 @@ resource "konnect_gateway_plugin_statsd" "my_gatewaypluginstatsd" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -124,7 +126,7 @@ resource "konnect_gateway_plugin_statsd" "my_gatewaypluginstatsd" {
 Optional:
 
 - `allow_status_codes` (List of String) List of status code ranges that are allowed to be logged in metrics.
-- `consumer_identifier_default` (String) Default: "custom_id"; must be one of ["consumer_id", "custom_id", "username"]
+- `consumer_identifier_default` (String) possible known values include one of ["consumer_id", "custom_id", "username"]; Default: "custom_id"
 - `flush_timeout` (Number)
 - `host` (String) The IP address or hostname of StatsD server to send data to. Default: "localhost"
 - `hostname_in_prefix` (Boolean) Default: false
@@ -134,23 +136,23 @@ Optional:
 - `queue` (Attributes) (see [below for nested schema](#nestedatt--config--queue))
 - `queue_size` (Number)
 - `retry_count` (Number)
-- `service_identifier_default` (String) Default: "service_name_or_host"; must be one of ["service_host", "service_id", "service_name", "service_name_or_host"]
-- `tag_style` (String) must be one of ["dogstatsd", "influxdb", "librato", "signalfx"]
+- `service_identifier_default` (String) possible known values include one of ["service_host", "service_id", "service_name", "service_name_or_host"]; Default: "service_name_or_host"
+- `tag_style` (String) possible known values include one of ["dogstatsd", "influxdb", "librato", "signalfx"]
 - `udp_packet_size` (Number) Default: 0
 - `use_tcp` (Boolean) Default: false
-- `workspace_identifier_default` (String) Default: "workspace_id"; must be one of ["workspace_id", "workspace_name"]
+- `workspace_identifier_default` (String) possible known values include one of ["workspace_id", "workspace_name"]; Default: "workspace_id"
 
 <a id="nestedatt--config--metrics"></a>
 ### Nested Schema for `config.metrics`
 
 Optional:
 
-- `consumer_identifier` (String) Authenticated user detail. must be one of ["consumer_id", "custom_id", "username"]
-- `name` (String) StatsD metric’s name. Not Null; must be one of ["cache_datastore_hits_total", "cache_datastore_misses_total", "kong_latency", "latency", "request_count", "request_per_user", "request_size", "response_size", "shdict_usage", "status_count", "status_count_per_user", "status_count_per_user_per_route", "status_count_per_workspace", "unique_users", "upstream_latency"]
+- `consumer_identifier` (String) Authenticated user detail. possible known values include one of ["consumer_id", "custom_id", "username"]
+- `name` (String) StatsD metric’s name. possible known values include one of ["cache_datastore_hits_total", "cache_datastore_misses_total", "kong_latency", "latency", "request_count", "request_per_user", "request_size", "response_size", "shdict_usage", "status_count", "status_count_per_user", "status_count_per_user_per_route", "status_count_per_workspace", "unique_users", "upstream_latency"]; Not Null
 - `sample_rate` (Number) Sampling rate
-- `service_identifier` (String) Service detail. must be one of ["service_host", "service_id", "service_name", "service_name_or_host"]
-- `stat_type` (String) Determines what sort of event a metric represents. Not Null; must be one of ["counter", "gauge", "histogram", "meter", "set", "timer"]
-- `workspace_identifier` (String) Workspace detail. must be one of ["workspace_id", "workspace_name"]
+- `service_identifier` (String) Service detail. possible known values include one of ["service_host", "service_id", "service_name", "service_name_or_host"]
+- `stat_type` (String) Determines what sort of event a metric represents. possible known values include one of ["counter", "gauge", "histogram", "meter", "set", "timer"]; Not Null
+- `workspace_identifier` (String) Workspace detail. possible known values include one of ["workspace_id", "workspace_name"]
 
 
 <a id="nestedatt--config--queue"></a>
@@ -158,7 +160,7 @@ Optional:
 
 Optional:
 
-- `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of [-1, 1]
+- `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. possible known values include one of [-1, 1]; Default: 1
 - `initial_retry_delay` (Number) Time in seconds before the initial retry is made for a failing batch.
 - `max_batch_size` (Number) Maximum number of entries that can be processed at a time. Default: 1
 - `max_bytes` (Number) Maximum number of bytes that can be waiting on a queue, requires string content.
@@ -238,7 +240,7 @@ import {
   to = konnect_gateway_plugin_statsd.my_konnect_gateway_plugin_statsd
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -21,20 +19,16 @@ const (
 func (e CreateAPIProductVersionDTOPublishStatus) ToPointer() *CreateAPIProductVersionDTOPublishStatus {
 	return &e
 }
-func (e *CreateAPIProductVersionDTOPublishStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CreateAPIProductVersionDTOPublishStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "unpublished", "published":
+			return true
+		}
 	}
-	switch v {
-	case "unpublished":
-		fallthrough
-	case "published":
-		*e = CreateAPIProductVersionDTOPublishStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CreateAPIProductVersionDTOPublishStatus: %v", v)
-	}
+	return false
 }
 
 // CreateAPIProductVersionDTO - The request schema to create a version of an API product.

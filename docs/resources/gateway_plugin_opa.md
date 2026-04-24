@@ -14,6 +14,7 @@ GatewayPluginOpa Resource
 
 ```terraform
 resource "konnect_gateway_plugin_opa" "my_gatewaypluginopa" {
+  condition = "...my_condition..."
   config = {
     include_body_in_opa_input             = false
     include_consumer_in_opa_input         = false
@@ -77,6 +78,7 @@ resource "konnect_gateway_plugin_opa" "my_gatewaypluginopa" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
 - `id` (String) A string representing a UUID (universally unique identifier).
@@ -106,7 +108,7 @@ Optional:
 - `include_uri_captures_in_opa_input` (Boolean) If set to true, the regex capture groups captured on the Kong Gateway Route's path field in the current request (if any) are included as input to OPA. Default: false
 - `opa_host` (String) A string representing a host name, such as example.com. Default: "localhost"
 - `opa_port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 8181
-- `opa_protocol` (String) The protocol to use when talking to Open Policy Agent (OPA) server. Allowed protocols are `http` and `https`. Default: "http"; must be one of ["http", "https"]
+- `opa_protocol` (String) The protocol to use when talking to Open Policy Agent (OPA) server. Allowed protocols are `http` and `https`. possible known values include one of ["http", "https"]; Default: "http"
 - `ssl_verify` (Boolean) If set to true, the OPA certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate. Default: true
 
 
@@ -171,7 +173,7 @@ import {
   to = konnect_gateway_plugin_opa.my_konnect_gateway_plugin_opa
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

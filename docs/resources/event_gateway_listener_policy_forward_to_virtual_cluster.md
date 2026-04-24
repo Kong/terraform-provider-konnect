@@ -99,7 +99,7 @@ IDs in the cluster.
 Additionally, it offsets all ports by one, so for example, if there are 3 brokers (id=1, id=2, id=3)
 then we will use 4 ports: 9092 (bootstrap), 9093 (id=1), 9094 (id=2), 9095 (id=3)
 With `none` we will use 3 ports: 9092 (id=1), 9093 (id=2), 9094 (id=3).
-Default: "at_start"; must be one of ["none", "at_start"]
+possible known values include one of ["none", "at_start"]; Default: "at_start"
 - `min_broker_id` (Number) The lowest broker node ID in the cluster. Default: 0
 
 <a id="nestedatt--config--port_mapping--destination"></a>
@@ -121,7 +121,9 @@ behind loadbalancer listening on different port.
 - `broker_host_format` (Attributes) Configures DNS names assigned to brokers in virtual clusters.
 
 - `per_cluster_suffix` is the default and allocates one level in the hierarchy for virtual clusters: `broker-{node_id}.{virtual_cluster}.{sni_suffix}`
-- `shared_suffix` puts all brokers from every virtual clusters into the same level: `broker-{node_id}-{virtual_cluster}.{sni_suffix}`. This makes it easier to manage certificates for this listener. (see [below for nested schema](#nestedatt--config--sni--broker_host_format))
+- `shared_suffix` puts all brokers from every virtual clusters into the same level: `broker-{node_id}-{virtual_cluster}.{sni_suffix}`. This makes it easier to manage certificates for this listener.
+
+**Requires a minimum runtime version of `1.1`**. (see [below for nested schema](#nestedatt--config--sni--broker_host_format))
 - `sni_suffix` (String) Optional suffix for TLS SNI validation.
 
 This suffix is concatenated with the virtual cluster "dns.label" label to form the base name for the SNI.
@@ -141,7 +143,7 @@ while `keg.example.com` is not.
 
 Optional:
 
-- `type` (String) Default: "per_cluster_suffix"; must be one of ["per_cluster_suffix", "shared_suffix"]
+- `type` (String) possible known values include one of ["per_cluster_suffix", "shared_suffix"]; Default: "per_cluster_suffix"
 
 ## Import
 
@@ -153,8 +155,8 @@ In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.
 import {
   to = konnect_event_gateway_listener_policy_forward_to_virtual_cluster.my_konnect_event_gateway_listener_policy_forward_to_virtual_cluster
   id = jsonencode({
-    gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    gateway_id  = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id          = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     listener_id = "..."
   })
 }

@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // VirtualClusterACLMode - Configures whether or not ACL policies are enforced on the gateway.
 //   - `enforce_on_gateway` means the gateway enforces its own ACL policies for this virtual cluster
 //     and does not forward ACL-related commands to the backend cluster.
@@ -22,18 +17,14 @@ const (
 func (e VirtualClusterACLMode) ToPointer() *VirtualClusterACLMode {
 	return &e
 }
-func (e *VirtualClusterACLMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *VirtualClusterACLMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "enforce_on_gateway", "passthrough":
+			return true
+		}
 	}
-	switch v {
-	case "enforce_on_gateway":
-		fallthrough
-	case "passthrough":
-		*e = VirtualClusterACLMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for VirtualClusterACLMode: %v", v)
-	}
+	return false
 }

@@ -14,6 +14,7 @@ GatewayPluginJwt Resource
 
 ```terraform
 resource "konnect_gateway_plugin_jwt" "my_gatewaypluginjwt" {
+  condition = "...my_condition..."
   config = {
     anonymous = "...my_anonymous..."
     claims_to_verify = [
@@ -83,6 +84,7 @@ resource "konnect_gateway_plugin_jwt" "my_gatewaypluginjwt" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
@@ -174,7 +176,7 @@ import {
   to = konnect_gateway_plugin_jwt.my_konnect_gateway_plugin_jwt
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

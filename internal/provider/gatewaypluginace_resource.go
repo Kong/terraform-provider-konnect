@@ -45,6 +45,7 @@ type GatewayPluginAceResource struct {
 
 // GatewayPluginAceResourceModel describes the resource data model.
 type GatewayPluginAceResourceModel struct {
+	Condition      types.String                `tfsdk:"condition"`
 	Config         *tfTypes.AcePluginConfig    `tfsdk:"config"`
 	ControlPlaneID types.String                `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                 `tfsdk:"created_at"`
@@ -68,6 +69,13 @@ func (r *GatewayPluginAceResource) Schema(ctx context.Context, req resource.Sche
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginAce Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
@@ -144,13 +152,7 @@ func (r *GatewayPluginAceResource) Schema(ctx context.Context, req resource.Sche
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`if_present`),
-						Description: `Determines how the ACE plugin will behave when a request doesn't match an existing operation from an API or API package in Dev Portal. The ` + "`" + `required` + "`" + ` setting requires every incoming request to match a defined operation. If a request doesn't match, ACE rejects the request outright with a 404. The ` + "`" + `if_present` + "`" + ` setting makes the ACE plugin only engage with a request when it matches an operation, allowing a request to still be processed by other plugins with a lower priority than ACE. Default: "if_present"; must be one of ["if_present", "required"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"if_present",
-								"required",
-							),
-						},
+						Description: `Determines how the ACE plugin will behave when a request doesn't match an existing operation from an API or API package in Dev Portal. The ` + "`" + `required` + "`" + ` setting requires every incoming request to match a defined operation. If a request doesn't match, ACE rejects the request outright with a 404. The ` + "`" + `if_present` + "`" + ` setting makes the ACE plugin only engage with a request when it matches an operation, allowing a request to still be processed by other plugins with a lower priority than ACE. possible known values include one of ["if_present", "required"]; Default: "if_present"`,
 					},
 					"rate_limiting": schema.SingleNestedAttribute{
 						Computed: true,
@@ -292,14 +294,7 @@ func (r *GatewayPluginAceResource) Schema(ctx context.Context, req resource.Sche
 											"auth_provider": schema.StringAttribute{
 												Computed:    true,
 												Optional:    true,
-												Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
-												Validators: []validator.String{
-													stringvalidator.OneOf(
-														"aws",
-														"azure",
-														"gcp",
-													),
-												},
+												Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
 											},
 											"aws_access_key_id": schema.StringAttribute{
 												Optional:    true,
@@ -493,14 +488,7 @@ func (r *GatewayPluginAceResource) Schema(ctx context.Context, req resource.Sche
 									"sentinel_role": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"any",
-												"master",
-												"slave",
-											),
-										},
+										Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
 									},
 									"sentinel_username": schema.StringAttribute{
 										Optional:    true,

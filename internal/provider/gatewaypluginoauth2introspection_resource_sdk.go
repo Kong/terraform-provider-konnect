@@ -15,6 +15,7 @@ func (r *GatewayPluginOauth2IntrospectionResourceModel) RefreshFromSharedOauth2I
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.Oauth2IntrospectionPluginConfig{}
 		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
 		r.Config.AuthorizationValue = types.StringValue(resp.Config.AuthorizationValue)
@@ -196,6 +197,12 @@ func (r *GatewayPluginOauth2IntrospectionResourceModel) ToOperationsUpdateOauth2
 func (r *GatewayPluginOauth2IntrospectionResourceModel) ToSharedOauth2IntrospectionPlugin(ctx context.Context) (*shared.Oauth2IntrospectionPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -404,6 +411,7 @@ func (r *GatewayPluginOauth2IntrospectionResourceModel) ToSharedOauth2Introspect
 		}
 	}
 	out := shared.Oauth2IntrospectionPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

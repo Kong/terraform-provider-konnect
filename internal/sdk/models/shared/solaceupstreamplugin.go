@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -133,20 +131,16 @@ const (
 func (e SolaceUpstreamPluginDeliveryMode) ToPointer() *SolaceUpstreamPluginDeliveryMode {
 	return &e
 }
-func (e *SolaceUpstreamPluginDeliveryMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SolaceUpstreamPluginDeliveryMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "DIRECT", "PERSISTENT":
+			return true
+		}
 	}
-	switch v {
-	case "DIRECT":
-		fallthrough
-	case "PERSISTENT":
-		*e = SolaceUpstreamPluginDeliveryMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SolaceUpstreamPluginDeliveryMode: %v", v)
-	}
+	return false
 }
 
 // SolaceUpstreamPluginType - The type of the destination.
@@ -160,20 +154,16 @@ const (
 func (e SolaceUpstreamPluginType) ToPointer() *SolaceUpstreamPluginType {
 	return &e
 }
-func (e *SolaceUpstreamPluginType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SolaceUpstreamPluginType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "QUEUE", "TOPIC":
+			return true
+		}
 	}
-	switch v {
-	case "QUEUE":
-		fallthrough
-	case "TOPIC":
-		*e = SolaceUpstreamPluginType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SolaceUpstreamPluginType: %v", v)
-	}
+	return false
 }
 
 type SolaceUpstreamPluginDestinations struct {
@@ -208,11 +198,90 @@ func (s *SolaceUpstreamPluginDestinations) GetType() *SolaceUpstreamPluginType {
 	return s.Type
 }
 
+// SolaceUpstreamPluginHeaders - Header settings for user properties (mapping, inclusion and exclusion).
+type SolaceUpstreamPluginHeaders struct {
+	// Headers that must not be forwarded into user properties. This is used to exclude sensitive headers such as authorization from being forwarded as user properties, or to avoid duplication when a header is mapped to a user property but you don't want the original header to be included as well.
+	ExcludeHeaders []string `json:"exclude_headers"`
+	// Headers to include as user properties even without explicit mapping.
+	IncludeHeaders []string `json:"include_headers"`
+	// Header-to-user_property mapping (key = HTTP header name, value = target user property name).
+	Mappings map[string]string `json:"mappings,omitempty"`
+}
+
+func (s SolaceUpstreamPluginHeaders) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SolaceUpstreamPluginHeaders) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *SolaceUpstreamPluginHeaders) GetExcludeHeaders() []string {
+	if s == nil {
+		return nil
+	}
+	return s.ExcludeHeaders
+}
+
+func (s *SolaceUpstreamPluginHeaders) GetIncludeHeaders() []string {
+	if s == nil {
+		return nil
+	}
+	return s.IncludeHeaders
+}
+
+func (s *SolaceUpstreamPluginHeaders) GetMappings() map[string]string {
+	if s == nil {
+		return nil
+	}
+	return s.Mappings
+}
+
+// UserProperties - User defined properties to be included in the message. Separate static properties from header mappings.
+type UserProperties struct {
+	// Header settings for user properties (mapping, inclusion and exclusion).
+	Headers *SolaceUpstreamPluginHeaders `json:"headers"`
+	// Predefined user properties to set on every message (key = property name, value = property value).
+	PredefinedProperties map[string]string `json:"predefined_properties,omitempty"`
+}
+
+func (u UserProperties) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(u, "", false)
+}
+
+func (u *UserProperties) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (u *UserProperties) GetHeaders() *SolaceUpstreamPluginHeaders {
+	if u == nil {
+		return nil
+	}
+	return u.Headers
+}
+
+func (u *UserProperties) GetPredefinedProperties() map[string]string {
+	if u == nil {
+		return nil
+	}
+	return u.PredefinedProperties
+}
+
 // SolaceUpstreamPluginMessage - The message related configuration.
 type SolaceUpstreamPluginMessage struct {
 	// When using a non-DIRECT guaranteed delivery mode, this property sets the message acknowledgement timeout in milliseconds (waiting time).
 	AckTimeout *int64 `default:"2000" json:"ack_timeout"`
-	// When not using `forward_method`, `forward_uri`, `forward_headers` or `forward_body`, this sets the message content.
+	// Sets the HTTP Content-Encoding applied to the Solace message payload (for example, gzip). If unset, the request Content-Encoding header is used when available.
+	ContentEncoding *string `default:"null" json:"content_encoding"`
+	// Sets the HTTP Content-Type applied to the Solace message payload. If unset, the request Content-Type header is used when available.
+	ContentType *string `default:"null" json:"content_type"`
+	// When not using `forward_method`, `forward_uri`, `forward_headers`, `forward_body` or `forward_body_raw_only`, this sets the message content.
 	DefaultContent *string `default:"null" json:"default_content"`
 	// Sets the message delivery mode.
 	DeliveryMode *SolaceUpstreamPluginDeliveryMode `default:"DIRECT" json:"delivery_mode"`
@@ -222,6 +291,8 @@ type SolaceUpstreamPluginMessage struct {
 	DmqEligible *bool `default:"false" json:"dmq_eligible"`
 	// Include the request body and the body arguments in the message.
 	ForwardBody *bool `default:"false" json:"forward_body"`
+	// Forward only the raw request body without wrapping it in a JSON payload or adding extra fields.
+	ForwardBodyRawOnly *bool `default:"false" json:"forward_body_raw_only"`
 	// Include the request headers in the message.
 	ForwardHeaders *bool `default:"false" json:"forward_headers"`
 	// Include the request method in the message.
@@ -240,6 +311,8 @@ type SolaceUpstreamPluginMessage struct {
 	TracingSampled *bool `default:"false" json:"tracing_sampled"`
 	// Sets the time to live (TTL) in milliseconds for the message. Setting the time to live to zero disables the TTL for the message.
 	TTL *int64 `default:"0" json:"ttl"`
+	// User defined properties to be included in the message. Separate static properties from header mappings.
+	UserProperties *UserProperties `json:"user_properties"`
 }
 
 func (s SolaceUpstreamPluginMessage) MarshalJSON() ([]byte, error) {
@@ -258,6 +331,20 @@ func (s *SolaceUpstreamPluginMessage) GetAckTimeout() *int64 {
 		return nil
 	}
 	return s.AckTimeout
+}
+
+func (s *SolaceUpstreamPluginMessage) GetContentEncoding() *string {
+	if s == nil {
+		return nil
+	}
+	return s.ContentEncoding
+}
+
+func (s *SolaceUpstreamPluginMessage) GetContentType() *string {
+	if s == nil {
+		return nil
+	}
+	return s.ContentType
 }
 
 func (s *SolaceUpstreamPluginMessage) GetDefaultContent() *string {
@@ -293,6 +380,13 @@ func (s *SolaceUpstreamPluginMessage) GetForwardBody() *bool {
 		return nil
 	}
 	return s.ForwardBody
+}
+
+func (s *SolaceUpstreamPluginMessage) GetForwardBodyRawOnly() *bool {
+	if s == nil {
+		return nil
+	}
+	return s.ForwardBodyRawOnly
 }
 
 func (s *SolaceUpstreamPluginMessage) GetForwardHeaders() *bool {
@@ -358,6 +452,13 @@ func (s *SolaceUpstreamPluginMessage) GetTTL() *int64 {
 	return s.TTL
 }
 
+func (s *SolaceUpstreamPluginMessage) GetUserProperties() *UserProperties {
+	if s == nil {
+		return nil
+	}
+	return s.UserProperties
+}
+
 // SolaceUpstreamPluginScheme - The client authentication scheme used when connection to an event broker.
 type SolaceUpstreamPluginScheme string
 
@@ -370,22 +471,16 @@ const (
 func (e SolaceUpstreamPluginScheme) ToPointer() *SolaceUpstreamPluginScheme {
 	return &e
 }
-func (e *SolaceUpstreamPluginScheme) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SolaceUpstreamPluginScheme) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "BASIC", "NONE", "OAUTH2":
+			return true
+		}
 	}
-	switch v {
-	case "BASIC":
-		fallthrough
-	case "NONE":
-		fallthrough
-	case "OAUTH2":
-		*e = SolaceUpstreamPluginScheme(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SolaceUpstreamPluginScheme: %v", v)
-	}
+	return false
 }
 
 // SolaceUpstreamPluginAuthentication - Session authentication related configuration.
@@ -633,24 +728,16 @@ const (
 func (e SolaceUpstreamPluginProtocols) ToPointer() *SolaceUpstreamPluginProtocols {
 	return &e
 }
-func (e *SolaceUpstreamPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SolaceUpstreamPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = SolaceUpstreamPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SolaceUpstreamPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // SolaceUpstreamPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -701,6 +788,8 @@ func (s *SolaceUpstreamPluginService) GetID() *string {
 
 // SolaceUpstreamPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type SolaceUpstreamPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -736,6 +825,13 @@ func (s *SolaceUpstreamPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (s *SolaceUpstreamPlugin) GetCondition() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Condition
 }
 
 func (s *SolaceUpstreamPlugin) GetCreatedAt() *int64 {

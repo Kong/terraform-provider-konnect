@@ -14,6 +14,7 @@ GatewayPluginAce Resource
 
 ```terraform
 resource "konnect_gateway_plugin_ace" "my_gatewaypluginace" {
+  condition = "...my_condition..."
   config = {
     anonymous    = "...my_anonymous..."
     match_policy = "if_present"
@@ -117,6 +118,7 @@ resource "konnect_gateway_plugin_ace" "my_gatewaypluginace" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied. Default: true
@@ -136,7 +138,7 @@ resource "konnect_gateway_plugin_ace" "my_gatewaypluginace" {
 Optional:
 
 - `anonymous` (String) An optional string (consumer UUID or username) value to use as an `anonymous` consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`. When set, the plugin will skip ACE processing for requests that are already authenticated by other plugins with higher priority.
-- `match_policy` (String) Determines how the ACE plugin will behave when a request doesn't match an existing operation from an API or API package in Dev Portal. The `required` setting requires every incoming request to match a defined operation. If a request doesn't match, ACE rejects the request outright with a 404. The `if_present` setting makes the ACE plugin only engage with a request when it matches an operation, allowing a request to still be processed by other plugins with a lower priority than ACE. Default: "if_present"; must be one of ["if_present", "required"]
+- `match_policy` (String) Determines how the ACE plugin will behave when a request doesn't match an existing operation from an API or API package in Dev Portal. The `required` setting requires every incoming request to match a defined operation. If a request doesn't match, ACE rejects the request outright with a 404. The `if_present` setting makes the ACE plugin only engage with a request when it matches an operation, allowing a request to still be processed by other plugins with a lower priority than ACE. possible known values include one of ["if_present", "required"]; Default: "if_present"
 - `rate_limiting` (Attributes) (see [below for nested schema](#nestedatt--config--rate_limiting))
 
 <a id="nestedatt--config--rate_limiting"></a>
@@ -168,7 +170,7 @@ Optional:
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--rate_limiting--redis--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
+- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
@@ -180,7 +182,7 @@ Optional:
 
 Optional:
 
-- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]
 - `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 - `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
 - `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
@@ -276,7 +278,7 @@ import {
   to = konnect_gateway_plugin_ace.my_konnect_gateway_plugin_ace
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

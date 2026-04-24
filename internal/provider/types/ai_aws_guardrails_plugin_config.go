@@ -17,6 +17,7 @@ type AiAwsGuardrailsPluginConfig struct {
 	GuardingMode       types.String  `tfsdk:"guarding_mode"`
 	GuardrailsID       types.String  `tfsdk:"guardrails_id"`
 	GuardrailsVersion  types.String  `tfsdk:"guardrails_version"`
+	LogBlockedContent  types.Bool    `tfsdk:"log_blocked_content"`
 	ResponseBufferSize types.Float64 `tfsdk:"response_buffer_size"`
 	SslVerify          types.Bool    `tfsdk:"ssl_verify"`
 	StopOnError        types.Bool    `tfsdk:"stop_on_error"`

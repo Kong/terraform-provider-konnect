@@ -14,7 +14,9 @@ GatewayPluginAiSanitizer Resource
 
 ```terraform
 resource "konnect_gateway_plugin_ai_sanitizer" "my_gatewaypluginaisanitizer" {
+  condition = "...my_condition..."
   config = {
+    allow_all_conversation_history = true
     anonymize = [
       "ssn"
     ]
@@ -92,6 +94,7 @@ resource "konnect_gateway_plugin_ai_sanitizer" "my_gatewaypluginaisanitizer" {
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
@@ -112,6 +115,7 @@ resource "konnect_gateway_plugin_ai_sanitizer" "my_gatewaypluginaisanitizer" {
 
 Optional:
 
+- `allow_all_conversation_history` (Boolean) If false, will ignore all previous chat messages from the conversation history. Default: true
 - `anonymize` (List of String) List of types to be anonymized. Default: ["all_and_credentials"]
 - `block_if_detected` (Boolean) Whether to block requests containing PII data. Default: false
 - `custom_patterns` (Attributes List) List of custom patterns to be used for anonymization (see [below for nested schema](#nestedatt--config--custom_patterns))
@@ -119,8 +123,8 @@ Optional:
 - `keepalive_timeout` (Number) The keepalive timeout for the established http connnection. Default: 60000
 - `port` (Number) The port of the sanitizer. Default: 8080
 - `recover_redacted` (Boolean) Whether to recover redacted data. This doesn't apply to the redacted output. Default: true
-- `redact_type` (String) What value to be used to redacted to. Default: "placeholder"; must be one of ["placeholder", "synthetic"]
-- `sanitization_mode` (String) The sanitization mode to use for the request. Default: "INPUT"; must be one of ["BOTH", "INPUT", "OUTPUT"]
+- `redact_type` (String) What value to be used to redacted to. possible known values include one of ["placeholder", "synthetic"]; Default: "placeholder"
+- `sanitization_mode` (String) The sanitization mode to use for the request. possible known values include one of ["BOTH", "INPUT", "OUTPUT"]; Default: "INPUT"
 - `scheme` (String) The protocol can be http and https. Default: "http"
 - `skip_logging_sanitized_items` (Boolean) Whether to log sanitized items in the Kong log plugins. Turn it on if you want to hide sensitive data from logs. Default: false
 - `stop_on_error` (Boolean) Stop processing if an error occurs. Default: true
@@ -214,7 +218,7 @@ import {
   to = konnect_gateway_plugin_ai_sanitizer.my_konnect_gateway_plugin_ai_sanitizer
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

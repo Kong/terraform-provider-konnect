@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -133,22 +131,16 @@ const (
 func (e AccessTokenConsumerBy) ToPointer() *AccessTokenConsumerBy {
 	return &e
 }
-func (e *AccessTokenConsumerBy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AccessTokenConsumerBy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "custom_id", "id", "username":
+			return true
+		}
 	}
-	switch v {
-	case "custom_id":
-		fallthrough
-	case "id":
-		fallthrough
-	case "username":
-		*e = AccessTokenConsumerBy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AccessTokenConsumerBy: %v", v)
-	}
+	return false
 }
 
 type AccessTokenIntrospectionConsumerBy string
@@ -162,22 +154,16 @@ const (
 func (e AccessTokenIntrospectionConsumerBy) ToPointer() *AccessTokenIntrospectionConsumerBy {
 	return &e
 }
-func (e *AccessTokenIntrospectionConsumerBy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AccessTokenIntrospectionConsumerBy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "custom_id", "id", "username":
+			return true
+		}
 	}
-	switch v {
-	case "custom_id":
-		fallthrough
-	case "id":
-		fallthrough
-	case "username":
-		*e = AccessTokenIntrospectionConsumerBy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AccessTokenIntrospectionConsumerBy: %v", v)
-	}
+	return false
 }
 
 // AccessTokenJwksURIClientCertificate - The client certificate that will be used to authenticate Kong if `access_token_jwks_uri` is an https uri that requires mTLS Auth.
@@ -247,40 +233,16 @@ const (
 func (e AccessTokenSigningAlgorithm) ToPointer() *AccessTokenSigningAlgorithm {
 	return &e
 }
-func (e *AccessTokenSigningAlgorithm) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AccessTokenSigningAlgorithm) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS512":
+			return true
+		}
 	}
-	switch v {
-	case "ES256":
-		fallthrough
-	case "ES384":
-		fallthrough
-	case "ES512":
-		fallthrough
-	case "EdDSA":
-		fallthrough
-	case "HS256":
-		fallthrough
-	case "HS384":
-		fallthrough
-	case "HS512":
-		fallthrough
-	case "PS256":
-		fallthrough
-	case "PS384":
-		fallthrough
-	case "PS512":
-		fallthrough
-	case "RS256":
-		fallthrough
-	case "RS512":
-		*e = AccessTokenSigningAlgorithm(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AccessTokenSigningAlgorithm: %v", v)
-	}
+	return false
 }
 
 type ChannelTokenConsumerBy string
@@ -294,22 +256,16 @@ const (
 func (e ChannelTokenConsumerBy) ToPointer() *ChannelTokenConsumerBy {
 	return &e
 }
-func (e *ChannelTokenConsumerBy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ChannelTokenConsumerBy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "custom_id", "id", "username":
+			return true
+		}
 	}
-	switch v {
-	case "custom_id":
-		fallthrough
-	case "id":
-		fallthrough
-	case "username":
-		*e = ChannelTokenConsumerBy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ChannelTokenConsumerBy: %v", v)
-	}
+	return false
 }
 
 type ChannelTokenIntrospectionConsumerBy string
@@ -323,22 +279,16 @@ const (
 func (e ChannelTokenIntrospectionConsumerBy) ToPointer() *ChannelTokenIntrospectionConsumerBy {
 	return &e
 }
-func (e *ChannelTokenIntrospectionConsumerBy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ChannelTokenIntrospectionConsumerBy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "custom_id", "id", "username":
+			return true
+		}
 	}
-	switch v {
-	case "custom_id":
-		fallthrough
-	case "id":
-		fallthrough
-	case "username":
-		*e = ChannelTokenIntrospectionConsumerBy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ChannelTokenIntrospectionConsumerBy: %v", v)
-	}
+	return false
 }
 
 // ChannelTokenJwksURIClientCertificate - The client certificate that will be used to authenticate Kong if `channel_token_jwks_uri` is an https uri that requires mTLS Auth.
@@ -408,40 +358,16 @@ const (
 func (e ChannelTokenSigningAlgorithm) ToPointer() *ChannelTokenSigningAlgorithm {
 	return &e
 }
-func (e *ChannelTokenSigningAlgorithm) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ChannelTokenSigningAlgorithm) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS512":
+			return true
+		}
 	}
-	switch v {
-	case "ES256":
-		fallthrough
-	case "ES384":
-		fallthrough
-	case "ES512":
-		fallthrough
-	case "EdDSA":
-		fallthrough
-	case "HS256":
-		fallthrough
-	case "HS384":
-		fallthrough
-	case "HS512":
-		fallthrough
-	case "PS256":
-		fallthrough
-	case "PS384":
-		fallthrough
-	case "PS512":
-		fallthrough
-	case "RS256":
-		fallthrough
-	case "RS512":
-		*e = ChannelTokenSigningAlgorithm(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ChannelTokenSigningAlgorithm: %v", v)
-	}
+	return false
 }
 
 type JwtSignerPluginConfig struct {
@@ -454,7 +380,7 @@ type JwtSignerPluginConfig struct {
 	// When you set a value for this parameter, the plugin tries to map an arbitrary claim specified with this configuration parameter (for example, `sub` or `username`) in an access token to Kong consumer entity.
 	AccessTokenConsumerClaim []string `json:"access_token_consumer_claim"`
 	// Whether to verify the TLS certificate if any of `access_token_introspection_endpoint`, `access_token_jwks_uri`, or `access_token_keyset` is an HTTPS URI.
-	AccessTokenEndpointsSslVerify *bool `default:"null" json:"access_token_endpoints_ssl_verify"`
+	AccessTokenEndpointsSslVerify *bool `default:"false" json:"access_token_endpoints_ssl_verify"`
 	// Specify the expiry claim in an access token to verify if the default `exp` is not used.
 	AccessTokenExpiryClaim []string `json:"access_token_expiry_claim,omitempty"`
 	// Specify the claim in an access token introspection to verify against values of `config.access_token_introspection_audiences_allowed`.
@@ -572,7 +498,7 @@ type JwtSignerPluginConfig struct {
 	// When you set a value for this parameter, the plugin tries to map an arbitrary claim specified with this configuration parameter. Kong consumers have an `id`, a `username`, and a `custom_id`. If this parameter is enabled but the mapping fails, such as when there's a non-existent Kong consumer, the plugin responds with `403 Forbidden`.
 	ChannelTokenConsumerClaim []string `json:"channel_token_consumer_claim"`
 	// Whether to verify the TLS certificate if any of `channel_token_introspection_endpoint`, `channel_token_jwks_uri`, or `channel_token_keyset` is an HTTPS URI.
-	ChannelTokenEndpointsSslVerify *bool `default:"null" json:"channel_token_endpoints_ssl_verify"`
+	ChannelTokenEndpointsSslVerify *bool `default:"false" json:"channel_token_endpoints_ssl_verify"`
 	// Specify the expiry claim in a channel token to verify if the default `exp` is not used.
 	ChannelTokenExpiryClaim []string `json:"channel_token_expiry_claim,omitempty"`
 	// Specify the claim in a channel token introspection to verify against values of `config.channel_token_introspection_audiences_allowed`.
@@ -1846,24 +1772,16 @@ const (
 func (e JwtSignerPluginProtocols) ToPointer() *JwtSignerPluginProtocols {
 	return &e
 }
-func (e *JwtSignerPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *JwtSignerPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = JwtSignerPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for JwtSignerPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // JwtSignerPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -1914,6 +1832,8 @@ func (j *JwtSignerPluginService) GetID() *string {
 
 // JwtSignerPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type JwtSignerPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -1949,6 +1869,13 @@ func (j *JwtSignerPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (j *JwtSignerPlugin) GetCondition() *string {
+	if j == nil {
+		return nil
+	}
+	return j.Condition
 }
 
 func (j *JwtSignerPlugin) GetCreatedAt() *int64 {

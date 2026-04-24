@@ -14,6 +14,7 @@ GatewayPluginUpstreamOauth Resource
 
 ```terraform
 resource "konnect_gateway_plugin_upstream_oauth" "my_gatewaypluginupstreamoauth" {
+  condition = "...my_condition..."
   config = {
     behavior = {
       idp_error_response_body_template = "{ \"code\": \"{{status}}\", \"message\": \"{{message}}\" }"
@@ -170,6 +171,7 @@ resource "konnect_gateway_plugin_upstream_oauth" "my_gatewaypluginupstreamoauth"
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -209,7 +211,7 @@ Optional:
 - `audience` (List of String) List of audiences passed to the IdP when obtaining a new token. Default: []
 - `client_id` (String) The client ID for the application registration in the IdP.
 - `client_secret` (String) The client secret for the application registration in the IdP.
-- `grant_type` (String) The OAuth grant type to be used. Default: "client_credentials"; must be one of ["client_credentials", "password"]
+- `grant_type` (String) The OAuth grant type to be used. possible known values include one of ["client_credentials", "password"]; Default: "client_credentials"
 - `password` (String) The password to use if `config.oauth.grant_type` is set to `password`.
 - `scopes` (List of String) List of scopes to request from the IdP when obtaining a new token. Default: []
 - `token_headers` (Map of String) Extra headers to be passed in the token endpoint request.
@@ -239,7 +241,7 @@ Optional:
 - `eagerly_expire` (Number) The number of seconds to eagerly expire a cached token. By default, a cached token expires 5 seconds before its lifetime as defined in `expires_in`. Default: 5
 - `memory` (Attributes) (see [below for nested schema](#nestedatt--config--cache--memory))
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--cache--redis))
-- `strategy` (String) The method Kong should use to cache tokens issued by the IdP. Default: "memory"; must be one of ["memory", "redis"]
+- `strategy` (String) The method Kong should use to cache tokens issued by the IdP. possible known values include one of ["memory", "redis"]; Default: "memory"
 
 <a id="nestedatt--config--cache--memory"></a>
 ### Nested Schema for `config.cache.memory`
@@ -270,7 +272,7 @@ Optional:
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--cache--redis--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
+- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
@@ -282,7 +284,7 @@ Optional:
 
 Optional:
 
-- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]
 - `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 - `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
 - `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
@@ -321,8 +323,8 @@ Optional:
 
 Optional:
 
-- `auth_method` (String) The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body. Default: "client_secret_post"; must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none"]
-- `client_secret_jwt_alg` (String) The algorithm to use with JWT when using `client_secret_jwt` authentication. Default: "HS512"; must be one of ["HS256", "HS512"]
+- `auth_method` (String) The authentication method used in client requests to the IdP. Supported values are: `client_secret_basic` to send `client_id` and `client_secret` in the `Authorization: Basic` header, `client_secret_post` to send `client_id` and `client_secret` as part of the request body, or `client_secret_jwt` to send a JWT signed with the `client_secret` using the client assertion as part of the body. possible known values include one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none"]; Default: "client_secret_post"
+- `client_secret_jwt_alg` (String) The algorithm to use with JWT when using `client_secret_jwt` authentication. possible known values include one of ["HS256", "HS512"]; Default: "HS512"
 - `http_proxy` (String) The proxy to use when making HTTP requests to the IdP.
 - `http_proxy_authorization` (String) The `Proxy-Authorization` header value to be used with `http_proxy`.
 - `http_version` (Number) The HTTP version used for requests made by this plugin. Supported values: `1.1` for HTTP 1.1 and `1.0` for HTTP 1.0.
@@ -412,7 +414,7 @@ import {
   to = konnect_gateway_plugin_upstream_oauth.my_konnect_gateway_plugin_upstream_oauth
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

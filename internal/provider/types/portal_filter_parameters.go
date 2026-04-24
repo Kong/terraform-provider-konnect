@@ -7,16 +7,16 @@ import (
 )
 
 type PortalFilterParameters struct {
-	AuthenticationEnabled            types.Bool         `queryParam:"name=authentication_enabled" tfsdk:"authentication_enabled"`
-	AutoApproveApplications          types.Bool         `queryParam:"name=auto_approve_applications" tfsdk:"auto_approve_applications"`
-	AutoApproveDevelopers            types.Bool         `queryParam:"name=auto_approve_developers" tfsdk:"auto_approve_developers"`
-	CanonicalDomain                  *StringFieldFilter `queryParam:"name=canonical_domain" tfsdk:"canonical_domain"`
-	DefaultAPIVisibility             *StringFieldFilter `queryParam:"name=default_api_visibility" tfsdk:"default_api_visibility"`
-	DefaultApplicationAuthStrategyID *ClusterType       `queryParam:"name=default_application_auth_strategy_id" tfsdk:"default_application_auth_strategy_id"`
-	DefaultDomain                    *StringFieldFilter `queryParam:"name=default_domain" tfsdk:"default_domain"`
-	DefaultPageVisibility            *StringFieldFilter `queryParam:"name=default_page_visibility" tfsdk:"default_page_visibility"`
-	Description                      *StringFieldFilter `queryParam:"name=description" tfsdk:"description"`
-	ID                               *ClusterType       `queryParam:"name=id" tfsdk:"id"`
-	Name                             *StringFieldFilter `queryParam:"name=name" tfsdk:"name"`
-	RbacEnabled                      types.Bool         `queryParam:"name=rbac_enabled" tfsdk:"rbac_enabled"`
+	AuthenticationEnabled            types.Bool                              `queryParam:"name=authentication_enabled" tfsdk:"authentication_enabled"`
+	AutoApproveApplications          types.Bool                              `queryParam:"name=auto_approve_applications" tfsdk:"auto_approve_applications"`
+	AutoApproveDevelopers            types.Bool                              `queryParam:"name=auto_approve_developers" tfsdk:"auto_approve_developers"`
+	CanonicalDomain                  *CloudGatewaysStringFieldFilterOverride `queryParam:"name=canonical_domain" tfsdk:"canonical_domain"`
+	DefaultAPIVisibility             *CloudGatewaysStringFieldFilterOverride `queryParam:"name=default_api_visibility" tfsdk:"default_api_visibility"`
+	DefaultApplicationAuthStrategyID *ClusterType                            `queryParam:"name=default_application_auth_strategy_id" tfsdk:"default_application_auth_strategy_id"`
+	DefaultDomain                    *CloudGatewaysStringFieldFilterOverride `queryParam:"name=default_domain" tfsdk:"default_domain"`
+	DefaultPageVisibility            *CloudGatewaysStringFieldFilterOverride `queryParam:"name=default_page_visibility" tfsdk:"default_page_visibility"`
+	Description                      *CloudGatewaysStringFieldFilterOverride `queryParam:"name=description" tfsdk:"description"`
+	ID                               *ClusterType                            `queryParam:"name=id" tfsdk:"id"`
+	Name                             *CloudGatewaysStringFieldFilterOverride `queryParam:"name=name" tfsdk:"name"`
+	RbacEnabled                      types.Bool                              `queryParam:"name=rbac_enabled" tfsdk:"rbac_enabled"`
 }

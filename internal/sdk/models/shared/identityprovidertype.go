@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // IdentityProviderType - Specifies the type of identity provider.
 type IdentityProviderType string
 
@@ -18,18 +13,14 @@ const (
 func (e IdentityProviderType) ToPointer() *IdentityProviderType {
 	return &e
 }
-func (e *IdentityProviderType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *IdentityProviderType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "oidc", "saml":
+			return true
+		}
 	}
-	switch v {
-	case "oidc":
-		fallthrough
-	case "saml":
-		*e = IdentityProviderType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for IdentityProviderType: %v", v)
-	}
+	return false
 }

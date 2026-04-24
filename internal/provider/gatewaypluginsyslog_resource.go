@@ -42,6 +42,7 @@ type GatewayPluginSyslogResource struct {
 
 // GatewayPluginSyslogResourceModel describes the resource data model.
 type GatewayPluginSyslogResourceModel struct {
+	Condition      types.String                `tfsdk:"condition"`
 	Config         *tfTypes.SyslogPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                `tfsdk:"consumer"`
 	ControlPlaneID types.String                `tfsdk:"control_plane_id"`
@@ -66,6 +67,13 @@ func (r *GatewayPluginSyslogResource) Schema(ctx context.Context, req resource.S
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginSyslog Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
@@ -84,19 +92,7 @@ func (r *GatewayPluginSyslogResource) Schema(ctx context.Context, req resource.S
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`info`),
-						Description: `Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"alert",
-								"crit",
-								"debug",
-								"emerg",
-								"err",
-								"info",
-								"notice",
-								"warning",
-							),
-						},
+						Description: `possible known values include one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]; Default: "info"`,
 					},
 					"custom_fields_by_lua": schema.MapAttribute{
 						Optional:    true,
@@ -107,85 +103,25 @@ func (r *GatewayPluginSyslogResource) Schema(ctx context.Context, req resource.S
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`user`),
-						Description: `The facility is used by the operating system to decide how to handle each log message. Default: "user"; must be one of ["auth", "authpriv", "cron", "daemon", "ftp", "kern", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7", "lpr", "mail", "news", "syslog", "user", "uucp"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"auth",
-								"authpriv",
-								"cron",
-								"daemon",
-								"ftp",
-								"kern",
-								"local0",
-								"local1",
-								"local2",
-								"local3",
-								"local4",
-								"local5",
-								"local6",
-								"local7",
-								"lpr",
-								"mail",
-								"news",
-								"syslog",
-								"user",
-								"uucp",
-							),
-						},
+						Description: `The facility is used by the operating system to decide how to handle each log message. possible known values include one of ["auth", "authpriv", "cron", "daemon", "ftp", "kern", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7", "lpr", "mail", "news", "syslog", "user", "uucp"]; Default: "user"`,
 					},
 					"log_level": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`info`),
-						Description: `Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"alert",
-								"crit",
-								"debug",
-								"emerg",
-								"err",
-								"info",
-								"notice",
-								"warning",
-							),
-						},
+						Description: `possible known values include one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]; Default: "info"`,
 					},
 					"server_errors_severity": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`info`),
-						Description: `Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"alert",
-								"crit",
-								"debug",
-								"emerg",
-								"err",
-								"info",
-								"notice",
-								"warning",
-							),
-						},
+						Description: `possible known values include one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]; Default: "info"`,
 					},
 					"successful_severity": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`info`),
-						Description: `Default: "info"; must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"alert",
-								"crit",
-								"debug",
-								"emerg",
-								"err",
-								"info",
-								"notice",
-								"warning",
-							),
-						},
+						Description: `possible known values include one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]; Default: "info"`,
 					},
 				},
 			},

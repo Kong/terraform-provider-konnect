@@ -134,22 +134,16 @@ const (
 func (e Mechanism) ToPointer() *Mechanism {
 	return &e
 }
-func (e *Mechanism) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Mechanism) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "PLAIN", "SCRAM-SHA-256", "SCRAM-SHA-512":
+			return true
+		}
 	}
-	switch v {
-	case "PLAIN":
-		fallthrough
-	case "SCRAM-SHA-256":
-		fallthrough
-	case "SCRAM-SHA-512":
-		*e = Mechanism(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Mechanism: %v", v)
-	}
+	return false
 }
 
 // KafkaConsumePluginStrategy - The authentication strategy for the plugin, the only option for the value is `sasl`.
@@ -246,20 +240,16 @@ const (
 func (e KafkaConsumePluginAutoOffsetReset) ToPointer() *KafkaConsumePluginAutoOffsetReset {
 	return &e
 }
-func (e *KafkaConsumePluginAutoOffsetReset) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaConsumePluginAutoOffsetReset) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "earliest", "latest":
+			return true
+		}
 	}
-	switch v {
-	case "earliest":
-		fallthrough
-	case "latest":
-		*e = KafkaConsumePluginAutoOffsetReset(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaConsumePluginAutoOffsetReset: %v", v)
-	}
+	return false
 }
 
 type KafkaConsumePluginBootstrapServers struct {
@@ -305,20 +295,16 @@ const (
 func (e KafkaConsumePluginCommitStrategy) ToPointer() *KafkaConsumePluginCommitStrategy {
 	return &e
 }
-func (e *KafkaConsumePluginCommitStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaConsumePluginCommitStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "auto", "off":
+			return true
+		}
 	}
-	switch v {
-	case "auto":
-		fallthrough
-	case "off":
-		*e = KafkaConsumePluginCommitStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaConsumePluginCommitStrategy: %v", v)
-	}
+	return false
 }
 
 // KafkaConsumePluginMessageDeserializer - The deserializer to use for the consumed messages.
@@ -332,20 +318,16 @@ const (
 func (e KafkaConsumePluginMessageDeserializer) ToPointer() *KafkaConsumePluginMessageDeserializer {
 	return &e
 }
-func (e *KafkaConsumePluginMessageDeserializer) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaConsumePluginMessageDeserializer) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "json", "noop":
+			return true
+		}
 	}
-	switch v {
-	case "json":
-		fallthrough
-	case "noop":
-		*e = KafkaConsumePluginMessageDeserializer(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaConsumePluginMessageDeserializer: %v", v)
-	}
+	return false
 }
 
 // KafkaConsumePluginMode - The mode of operation for the plugin.
@@ -360,22 +342,16 @@ const (
 func (e KafkaConsumePluginMode) ToPointer() *KafkaConsumePluginMode {
 	return &e
 }
-func (e *KafkaConsumePluginMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaConsumePluginMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "http-get", "server-sent-events", "websocket":
+			return true
+		}
 	}
-	switch v {
-	case "http-get":
-		fallthrough
-	case "server-sent-events":
-		fallthrough
-	case "websocket":
-		*e = KafkaConsumePluginMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaConsumePluginMode: %v", v)
-	}
+	return false
 }
 
 type KafkaConsumePluginBasic struct {
@@ -420,22 +396,16 @@ const (
 func (e KafkaConsumePluginConfigMode) ToPointer() *KafkaConsumePluginConfigMode {
 	return &e
 }
-func (e *KafkaConsumePluginConfigMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaConsumePluginConfigMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "basic", "none", "oauth2":
+			return true
+		}
 	}
-	switch v {
-	case "basic":
-		fallthrough
-	case "none":
-		fallthrough
-	case "oauth2":
-		*e = KafkaConsumePluginConfigMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaConsumePluginConfigMode: %v", v)
-	}
+	return false
 }
 
 // KafkaConsumePluginGrantType - The OAuth grant type to be used.
@@ -449,20 +419,16 @@ const (
 func (e KafkaConsumePluginGrantType) ToPointer() *KafkaConsumePluginGrantType {
 	return &e
 }
-func (e *KafkaConsumePluginGrantType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaConsumePluginGrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_credentials", "password":
+			return true
+		}
 	}
-	switch v {
-	case "client_credentials":
-		fallthrough
-	case "password":
-		*e = KafkaConsumePluginGrantType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaConsumePluginGrantType: %v", v)
-	}
+	return false
 }
 
 type KafkaConsumePluginOauth2 struct {
@@ -585,24 +551,16 @@ const (
 func (e KafkaConsumePluginAuthMethod) ToPointer() *KafkaConsumePluginAuthMethod {
 	return &e
 }
-func (e *KafkaConsumePluginAuthMethod) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaConsumePluginAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none":
+			return true
+		}
 	}
-	switch v {
-	case "client_secret_basic":
-		fallthrough
-	case "client_secret_jwt":
-		fallthrough
-	case "client_secret_post":
-		fallthrough
-	case "none":
-		*e = KafkaConsumePluginAuthMethod(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaConsumePluginAuthMethod: %v", v)
-	}
+	return false
 }
 
 // KafkaConsumePluginClientSecretJwtAlg - The algorithm to use with JWT when using `client_secret_jwt` authentication.
@@ -616,20 +574,16 @@ const (
 func (e KafkaConsumePluginClientSecretJwtAlg) ToPointer() *KafkaConsumePluginClientSecretJwtAlg {
 	return &e
 }
-func (e *KafkaConsumePluginClientSecretJwtAlg) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaConsumePluginClientSecretJwtAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "HS256", "HS512":
+			return true
+		}
 	}
-	switch v {
-	case "HS256":
-		fallthrough
-	case "HS512":
-		*e = KafkaConsumePluginClientSecretJwtAlg(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaConsumePluginClientSecretJwtAlg: %v", v)
-	}
+	return false
 }
 
 type KafkaConsumePluginOauth2Client struct {
@@ -950,22 +904,16 @@ const (
 func (e KafkaConsumePluginConfigTopicsMode) ToPointer() *KafkaConsumePluginConfigTopicsMode {
 	return &e
 }
-func (e *KafkaConsumePluginConfigTopicsMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaConsumePluginConfigTopicsMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "basic", "none", "oauth2":
+			return true
+		}
 	}
-	switch v {
-	case "basic":
-		fallthrough
-	case "none":
-		fallthrough
-	case "oauth2":
-		*e = KafkaConsumePluginConfigTopicsMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaConsumePluginConfigTopicsMode: %v", v)
-	}
+	return false
 }
 
 // KafkaConsumePluginConfigGrantType - The OAuth grant type to be used.
@@ -979,20 +927,16 @@ const (
 func (e KafkaConsumePluginConfigGrantType) ToPointer() *KafkaConsumePluginConfigGrantType {
 	return &e
 }
-func (e *KafkaConsumePluginConfigGrantType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaConsumePluginConfigGrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_credentials", "password":
+			return true
+		}
 	}
-	switch v {
-	case "client_credentials":
-		fallthrough
-	case "password":
-		*e = KafkaConsumePluginConfigGrantType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaConsumePluginConfigGrantType: %v", v)
-	}
+	return false
 }
 
 type KafkaConsumePluginConfigOauth2 struct {
@@ -1115,24 +1059,16 @@ const (
 func (e KafkaConsumePluginConfigAuthMethod) ToPointer() *KafkaConsumePluginConfigAuthMethod {
 	return &e
 }
-func (e *KafkaConsumePluginConfigAuthMethod) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaConsumePluginConfigAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none":
+			return true
+		}
 	}
-	switch v {
-	case "client_secret_basic":
-		fallthrough
-	case "client_secret_jwt":
-		fallthrough
-	case "client_secret_post":
-		fallthrough
-	case "none":
-		*e = KafkaConsumePluginConfigAuthMethod(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaConsumePluginConfigAuthMethod: %v", v)
-	}
+	return false
 }
 
 // KafkaConsumePluginConfigClientSecretJwtAlg - The algorithm to use with JWT when using `client_secret_jwt` authentication.
@@ -1146,20 +1082,16 @@ const (
 func (e KafkaConsumePluginConfigClientSecretJwtAlg) ToPointer() *KafkaConsumePluginConfigClientSecretJwtAlg {
 	return &e
 }
-func (e *KafkaConsumePluginConfigClientSecretJwtAlg) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaConsumePluginConfigClientSecretJwtAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "HS256", "HS512":
+			return true
+		}
 	}
-	switch v {
-	case "HS256":
-		fallthrough
-	case "HS512":
-		*e = KafkaConsumePluginConfigClientSecretJwtAlg(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaConsumePluginConfigClientSecretJwtAlg: %v", v)
-	}
+	return false
 }
 
 type KafkaConsumePluginConfigOauth2Client struct {
@@ -1603,28 +1535,16 @@ const (
 func (e KafkaConsumePluginProtocols) ToPointer() *KafkaConsumePluginProtocols {
 	return &e
 }
-func (e *KafkaConsumePluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaConsumePluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = KafkaConsumePluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaConsumePluginProtocols: %v", v)
-	}
+	return false
 }
 
 // KafkaConsumePluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -1652,6 +1572,8 @@ func (k *KafkaConsumePluginRoute) GetID() *string {
 
 // KafkaConsumePlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type KafkaConsumePlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -1687,6 +1609,13 @@ func (k *KafkaConsumePlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (k *KafkaConsumePlugin) GetCondition() *string {
+	if k == nil {
+		return nil
+	}
+	return k.Condition
 }
 
 func (k *KafkaConsumePlugin) GetCreatedAt() *int64 {

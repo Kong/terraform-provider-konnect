@@ -3,36 +3,30 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-// Algorithm - The algorithm used for SASL/SCRAM authentication.
-type Algorithm string
+// BackendClusterAuthenticationSaslScramAlgorithm - The algorithm used for SASL/SCRAM authentication.
+type BackendClusterAuthenticationSaslScramAlgorithm string
 
 const (
-	AlgorithmSha256 Algorithm = "sha256"
-	AlgorithmSha512 Algorithm = "sha512"
+	BackendClusterAuthenticationSaslScramAlgorithmSha256 BackendClusterAuthenticationSaslScramAlgorithm = "sha256"
+	BackendClusterAuthenticationSaslScramAlgorithmSha512 BackendClusterAuthenticationSaslScramAlgorithm = "sha512"
 )
 
-func (e Algorithm) ToPointer() *Algorithm {
+func (e BackendClusterAuthenticationSaslScramAlgorithm) ToPointer() *BackendClusterAuthenticationSaslScramAlgorithm {
 	return &e
 }
-func (e *Algorithm) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *BackendClusterAuthenticationSaslScramAlgorithm) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "sha256", "sha512":
+			return true
+		}
 	}
-	switch v {
-	case "sha256":
-		fallthrough
-	case "sha512":
-		*e = Algorithm(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Algorithm: %v", v)
-	}
+	return false
 }
 
 // BackendClusterAuthenticationSaslScram - SASL/SCRAM authentication scheme for the backend cluster.
@@ -40,7 +34,7 @@ type BackendClusterAuthenticationSaslScram struct {
 	//lint:ignore U1000 accessed via reflection for JSON marshaling
 	type_ string `const:"sasl_scram" json:"type"`
 	// The algorithm used for SASL/SCRAM authentication.
-	Algorithm Algorithm `json:"algorithm"`
+	Algorithm BackendClusterAuthenticationSaslScramAlgorithm `json:"algorithm"`
 	// A literal value or a reference to an existing secret as a template string expression.
 	// The value is stored and returned by the API as-is, not treated as sensitive information.
 	//
@@ -67,9 +61,9 @@ func (b *BackendClusterAuthenticationSaslScram) GetType() string {
 	return "sasl_scram"
 }
 
-func (b *BackendClusterAuthenticationSaslScram) GetAlgorithm() Algorithm {
+func (b *BackendClusterAuthenticationSaslScram) GetAlgorithm() BackendClusterAuthenticationSaslScramAlgorithm {
 	if b == nil {
-		return Algorithm("")
+		return BackendClusterAuthenticationSaslScramAlgorithm("")
 	}
 	return b.Algorithm
 }

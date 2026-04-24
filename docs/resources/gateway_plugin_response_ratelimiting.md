@@ -14,6 +14,7 @@ GatewayPluginResponseRatelimiting Resource
 
 ```terraform
 resource "konnect_gateway_plugin_response_ratelimiting" "my_gatewaypluginresponseratelimiting" {
+  condition = "...my_condition..."
   config = {
     block_on_first_violation = false
     fault_tolerant           = true
@@ -109,6 +110,7 @@ resource "konnect_gateway_plugin_response_ratelimiting" "my_gatewaypluginrespons
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
@@ -132,9 +134,9 @@ Optional:
 - `fault_tolerant` (Boolean) A boolean value that determines if the requests should be proxied even if Kong has troubles connecting a third-party datastore. If `true`, requests will be proxied anyway, effectively disabling the rate-limiting function until the datastore is working again. If `false`, then the clients will see `500` errors. Default: true
 - `header_name` (String) The name of the response header used to increment the counters. Default: "x-kong-limit"
 - `hide_client_headers` (Boolean) Optionally hide informative response headers. Default: false
-- `limit_by` (String) The entity that will be used when aggregating the limits: `consumer`, `credential`, `ip`. If the `consumer` or the `credential` cannot be determined, the system will always fallback to `ip`. Default: "consumer"; must be one of ["consumer", "credential", "ip"]
+- `limit_by` (String) The entity that will be used when aggregating the limits: `consumer`, `credential`, `ip`. If the `consumer` or the `credential` cannot be determined, the system will always fallback to `ip`. possible known values include one of ["consumer", "credential", "ip"]; Default: "consumer"
 - `limits` (Attributes Map) A map that defines rate limits for the plugin. (see [below for nested schema](#nestedatt--config--limits))
-- `policy` (String) The rate-limiting policies to use for retrieving and incrementing the limits. Default: "local"; must be one of ["cluster", "local", "redis"]
+- `policy` (String) The rate-limiting policies to use for retrieving and incrementing the limits. possible known values include one of ["cluster", "local", "redis"]; Default: "local"
 - `redis` (Attributes) Redis configuration (see [below for nested schema](#nestedatt--config--redis))
 
 <a id="nestedatt--config--limits"></a>
@@ -171,7 +173,7 @@ Optional:
 
 Optional:
 
-- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]
 - `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 - `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
 - `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
@@ -256,7 +258,7 @@ import {
   to = konnect_gateway_plugin_response_ratelimiting.my_konnect_gateway_plugin_response_ratelimiting
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

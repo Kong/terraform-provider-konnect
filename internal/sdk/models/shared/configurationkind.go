@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // ConfigurationKind - **Pre-release Feature**
 // This feature is currently in beta and is subject to change.
 //
@@ -22,18 +17,14 @@ const (
 func (e ConfigurationKind) ToPointer() *ConfigurationKind {
 	return &e
 }
-func (e *ConfigurationKind) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ConfigurationKind) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "dedicated.v0", "serverless.v1":
+			return true
+		}
 	}
-	switch v {
-	case "dedicated.v0":
-		fallthrough
-	case "serverless.v1":
-		*e = ConfigurationKind(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ConfigurationKind: %v", v)
-	}
+	return false
 }

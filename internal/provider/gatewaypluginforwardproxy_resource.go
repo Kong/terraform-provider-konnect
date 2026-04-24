@@ -43,6 +43,7 @@ type GatewayPluginForwardProxyResource struct {
 
 // GatewayPluginForwardProxyResourceModel describes the resource data model.
 type GatewayPluginForwardProxyResourceModel struct {
+	Condition      types.String                      `tfsdk:"condition"`
 	Config         *tfTypes.ForwardProxyPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                      `tfsdk:"consumer"`
 	ControlPlaneID types.String                      `tfsdk:"control_plane_id"`
@@ -67,6 +68,13 @@ func (r *GatewayPluginForwardProxyResource) Schema(ctx context.Context, req reso
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginForwardProxy Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
@@ -133,14 +141,7 @@ func (r *GatewayPluginForwardProxyResource) Schema(ctx context.Context, req reso
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`append`),
-						Description: `Determines how to handle headers when forwarding the request. Default: "append"; must be one of ["append", "delete", "transparent"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"append",
-								"delete",
-								"transparent",
-							),
-						},
+						Description: `Determines how to handle headers when forwarding the request. possible known values include one of ["append", "delete", "transparent"]; Default: "append"`,
 					},
 				},
 			},

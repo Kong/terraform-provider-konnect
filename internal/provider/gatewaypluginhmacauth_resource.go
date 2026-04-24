@@ -43,6 +43,7 @@ type GatewayPluginHmacAuthResource struct {
 
 // GatewayPluginHmacAuthResourceModel describes the resource data model.
 type GatewayPluginHmacAuthResourceModel struct {
+	Condition      types.String                  `tfsdk:"condition"`
 	Config         *tfTypes.HmacAuthPluginConfig `tfsdk:"config"`
 	ControlPlaneID types.String                  `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                   `tfsdk:"created_at"`
@@ -66,6 +67,13 @@ func (r *GatewayPluginHmacAuthResource) Schema(ctx context.Context, req resource
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginHmacAuth Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
@@ -87,13 +95,13 @@ func (r *GatewayPluginHmacAuthResource) Schema(ctx context.Context, req resource
 						Computed: true,
 						Optional: true,
 						Default: listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{
-							types.StringValue("hmac-sha1"),
+							types.StringValue("hmac-sha224"),
 							types.StringValue("hmac-sha256"),
 							types.StringValue("hmac-sha384"),
 							types.StringValue("hmac-sha512"),
 						})),
 						ElementType: types.StringType,
-						Description: `A list of HMAC digest algorithms that the user wants to support. Allowed values are ` + "`" + `hmac-sha1` + "`" + `, ` + "`" + `hmac-sha256` + "`" + `, ` + "`" + `hmac-sha384` + "`" + `, and ` + "`" + `hmac-sha512` + "`" + `. Default: ["hmac-sha1","hmac-sha256","hmac-sha384","hmac-sha512"]`,
+						Description: `A list of HMAC digest algorithms that the user wants to support. Allowed values are ` + "`" + `hmac-sha224` + "`" + `, ` + "`" + `hmac-sha256` + "`" + `, ` + "`" + `hmac-sha384` + "`" + `, ` + "`" + `hmac-sha512` + "`" + `, and ` + "`" + `hmac-sha1` + "`" + ` (disabled by default, and not available in FIPS mode). Default: ["hmac-sha224","hmac-sha256","hmac-sha384","hmac-sha512"]`,
 					},
 					"anonymous": schema.StringAttribute{
 						Optional:    true,

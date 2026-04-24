@@ -38,7 +38,7 @@ resource "konnect_gateway_jwt" "my_gatewayjwt" {
 
 ### Optional
 
-- `algorithm` (String) Default: "HS256"; must be one of ["ES256", "ES256K", "ES384", "ES512", "ESB256", "ESB320", "ESB384", "ESB512", "ESP256", "ESP384", "ESP512", "Ed25519", "Ed448", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512"]; Requires replacement if changed.
+- `algorithm` (String) possible known values include one of ["ES256", "ES256K", "ES384", "ES512", "ESB256", "ESB320", "ESB384", "ESB512", "ESP256", "ESP384", "ESP512", "Ed25519", "Ed448", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512"]; Default: "HS256"; Requires replacement if changed.
 - `created_at` (Number) Unix epoch when the resource was created. Requires replacement if changed.
 - `id` (String) A string representing a UUID (universally unique identifier). Requires replacement if changed.
 - `key` (String) Requires replacement if changed.
@@ -56,9 +56,9 @@ In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.
 import {
   to = konnect_gateway_jwt.my_konnect_gateway_jwt
   id = jsonencode({
-    consumer_id = ""
+    consumer_id      = ""
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "4a7f5faa-8c96-46d6-8214-c87573ef2ac4"
+    id               = "4a7f5faa-8c96-46d6-8214-c87573ef2ac4"
   })
 }
 ```

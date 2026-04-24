@@ -21,7 +21,9 @@ func TestGatewayCustomPlugin(t *testing.T) {
 					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_gateway_custom_plugin.custom_basic_auth", "instance_name", "custom-plugin-test"),
+						resource.TestCheckResourceAttr("konnect_gateway_custom_plugin.custom_basic_auth", "config", "{\"anonymous\":\"capybara\"}"),
 						resource.TestCheckResourceAttr("konnect_gateway_custom_plugin.custom_basic_auth_nested", "instance_name", "custom-nested-plugin-test"),
+						resource.TestCheckResourceAttr("konnect_gateway_custom_plugin.custom_basic_auth_nested", "config.anonymous", "capybara"),
 						resource.TestCheckNoResourceAttr("konnect_gateway_custom_plugin.custom_no_instance_name", "instance_name"),
 						resource.TestCheckResourceAttr("konnect_gateway_custom_plugin.custom_basic_auth_with_ordering", "ordering.before.access.0", "acl"),
 						resource.TestCheckResourceAttr("konnect_gateway_custom_plugin.custom_basic_auth_with_ordering", "ordering.after.access.0", "request-transformer"),

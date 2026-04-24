@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -89,16 +88,7 @@ func (r *GatewayRouteExpressionResource) Schema(ctx context.Context, req resourc
 				Computed:    true,
 				Optional:    true,
 				Default:     int64default.StaticInt64(426),
-				Description: `The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the ` + "`" + `https` + "`" + ` protocol. Default: 426; must be one of [301, 302, 307, 308, 426]`,
-				Validators: []validator.Int64{
-					int64validator.OneOf(
-						301,
-						302,
-						307,
-						308,
-						426,
-					),
-				},
+				Description: `The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the ` + "`" + `https` + "`" + ` protocol. possible known values include one of [301, 302, 307, 308, 426]; Default: 426`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -113,10 +103,7 @@ func (r *GatewayRouteExpressionResource) Schema(ctx context.Context, req resourc
 				Computed:    true,
 				Optional:    true,
 				Default:     stringdefault.StaticString(`v0`),
-				Description: `Controls how the Service path, Route path and requested path are combined when sending a request to the upstream. See above for a detailed description of each behavior. Default: "v0"; must be one of ["v0", "v1"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf("v0", "v1"),
-				},
+				Description: `Controls how the Service path, Route path and requested path are combined when sending a request to the upstream. See above for a detailed description of each behavior. possible known values include one of ["v0", "v1"]; Default: "v0"`,
 			},
 			"preserve_host": schema.BoolAttribute{
 				Computed:    true,

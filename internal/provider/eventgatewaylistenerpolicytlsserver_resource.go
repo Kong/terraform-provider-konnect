@@ -104,18 +104,14 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Schema(ctx context.Context
 								Required: true,
 								MarkdownDescription: `* required - Reject TLS connections without a valid client certificate.` + "\n" +
 									`* requested - Request a client certificate during the TLS handshake, but allow connections without one (falls back to other configured authentication methods). If a certificate is presented but cannot be verified, the connection is closed.` + "\n" +
-									`must be one of ["required", "requested"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"required",
-										"requested",
-									),
-								},
+									`possible known values include one of ["required", "requested"]`,
 							},
 							"principal_mapping": schema.StringAttribute{
 								Optional: true,
 								MarkdownDescription: `An expression that extracts a principal identifier from a verified client certificate.` + "\n" +
-									`This expression must evaluate to a string.`,
+									`This expression must evaluate to a string.` + "\n" +
+									`` + "\n" +
+									`**Requires a minimum runtime version of ` + "`" + `1.1` + "`" + `**.`,
 							},
 							"tls_trust_bundles": schema.ListNestedAttribute{
 								Required: true,
@@ -139,7 +135,9 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Schema(ctx context.Context
 							},
 						},
 						MarkdownDescription: `Configures mutual TLS (mTLS) client certificate verification. When set, the gateway` + "\n" +
-							`requests or requires clients to present a certificate during the TLS handshake.`,
+							`requests or requires clients to present a certificate during the TLS handshake.` + "\n" +
+							`` + "\n" +
+							`**Requires a minimum runtime version of ` + "`" + `1.1` + "`" + `**.`,
 					},
 					"versions": schema.SingleNestedAttribute{
 						Optional: true,
@@ -148,25 +146,13 @@ func (r *EventGatewayListenerPolicyTLSServerResource) Schema(ctx context.Context
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(`TLSv1.3`),
-								Description: `Maximum TLS version to use. Default: "TLSv1.3"; must be one of ["TLSv1.2", "TLSv1.3"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"TLSv1.2",
-										"TLSv1.3",
-									),
-								},
+								Description: `Maximum TLS version to use. possible known values include one of ["TLSv1.2", "TLSv1.3"]; Default: "TLSv1.3"`,
 							},
 							"min": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
 								Default:     stringdefault.StaticString(`TLSv1.2`),
-								Description: `Minimum TLS version to use. Default: "TLSv1.2"; must be one of ["TLSv1.2", "TLSv1.3"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"TLSv1.2",
-										"TLSv1.3",
-									),
-								},
+								Description: `Minimum TLS version to use. possible known values include one of ["TLSv1.2", "TLSv1.3"]; Default: "TLSv1.2"`,
 							},
 						},
 						Description: `A range of TLS versions.`,

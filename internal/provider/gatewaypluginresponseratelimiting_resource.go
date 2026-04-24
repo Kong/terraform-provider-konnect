@@ -44,6 +44,7 @@ type GatewayPluginResponseRatelimitingResource struct {
 
 // GatewayPluginResponseRatelimitingResourceModel describes the resource data model.
 type GatewayPluginResponseRatelimitingResourceModel struct {
+	Condition      types.String                              `tfsdk:"condition"`
 	Config         *tfTypes.ResponseRatelimitingPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.Set                              `tfsdk:"consumer"`
 	ControlPlaneID types.String                              `tfsdk:"control_plane_id"`
@@ -68,6 +69,13 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "GatewayPluginResponseRatelimiting Resource",
 		Attributes: map[string]schema.Attribute{
+			"condition": schema.StringAttribute{
+				Optional:    true,
+				Description: `An expression used for conditional control over plugin execution. If the expression evaluates to ` + "`" + `true` + "`" + ` during the request flow, the plugin is executed; otherwise, it is skipped.`,
+				Validators: []validator.String{
+					stringvalidator.UTF8LengthAtMost(1024),
+				},
+			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
@@ -149,14 +157,7 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`consumer`),
-						Description: `The entity that will be used when aggregating the limits: ` + "`" + `consumer` + "`" + `, ` + "`" + `credential` + "`" + `, ` + "`" + `ip` + "`" + `. If the ` + "`" + `consumer` + "`" + ` or the ` + "`" + `credential` + "`" + ` cannot be determined, the system will always fallback to ` + "`" + `ip` + "`" + `. Default: "consumer"; must be one of ["consumer", "credential", "ip"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"consumer",
-								"credential",
-								"ip",
-							),
-						},
+						Description: `The entity that will be used when aggregating the limits: ` + "`" + `consumer` + "`" + `, ` + "`" + `credential` + "`" + `, ` + "`" + `ip` + "`" + `. If the ` + "`" + `consumer` + "`" + ` or the ` + "`" + `credential` + "`" + ` cannot be determined, the system will always fallback to ` + "`" + `ip` + "`" + `. possible known values include one of ["consumer", "credential", "ip"]; Default: "consumer"`,
 					},
 					"limits": schema.MapNestedAttribute{
 						Optional: true,
@@ -191,14 +192,7 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`local`),
-						Description: `The rate-limiting policies to use for retrieving and incrementing the limits. Default: "local"; must be one of ["cluster", "local", "redis"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"cluster",
-								"local",
-								"redis",
-							),
-						},
+						Description: `The rate-limiting policies to use for retrieving and incrementing the limits. possible known values include one of ["cluster", "local", "redis"]; Default: "local"`,
 					},
 					"redis": schema.SingleNestedAttribute{
 						Computed: true,
@@ -252,14 +246,7 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 									"auth_provider": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"aws",
-												"azure",
-												"gcp",
-											),
-										},
+										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
 									},
 									"aws_access_key_id": schema.StringAttribute{
 										Optional:    true,

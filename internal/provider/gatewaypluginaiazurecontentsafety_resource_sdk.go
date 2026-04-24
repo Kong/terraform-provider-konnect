@@ -15,6 +15,7 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) RefreshFromSharedAiAzur
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.AiAzureContentSafetyPluginConfig{}
 		r.Config.AzureAPIVersion = types.StringPointerValue(resp.Config.AzureAPIVersion)
 		r.Config.AzureClientID = types.StringPointerValue(resp.Config.AzureClientID)
@@ -51,6 +52,7 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) RefreshFromSharedAiAzur
 			r.Config.GuardingMode = types.StringNull()
 		}
 		r.Config.HaltOnBlocklistHit = types.BoolPointerValue(resp.Config.HaltOnBlocklistHit)
+		r.Config.LogBlockedContent = types.BoolPointerValue(resp.Config.LogBlockedContent)
 		if resp.Config.OutputType != nil {
 			r.Config.OutputType = types.StringValue(string(*resp.Config.OutputType))
 		} else {
@@ -220,6 +222,12 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsUpdateAiazu
 func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentSafetyPlugin(ctx context.Context) (*shared.AiAzureContentSafetyPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -387,6 +395,12 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentS
 	} else {
 		haltOnBlocklistHit = nil
 	}
+	logBlockedContent := new(bool)
+	if !r.Config.LogBlockedContent.IsUnknown() && !r.Config.LogBlockedContent.IsNull() {
+		*logBlockedContent = r.Config.LogBlockedContent.ValueBool()
+	} else {
+		logBlockedContent = nil
+	}
 	outputType := new(shared.OutputType)
 	if !r.Config.OutputType.IsUnknown() && !r.Config.OutputType.IsNull() {
 		*outputType = shared.OutputType(r.Config.OutputType.ValueString())
@@ -435,6 +449,7 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentS
 		ContentSafetyURL:        contentSafetyURL,
 		GuardingMode:            guardingMode,
 		HaltOnBlocklistHit:      haltOnBlocklistHit,
+		LogBlockedContent:       logBlockedContent,
 		OutputType:              outputType,
 		ResponseBufferSize:      responseBufferSize,
 		RevealFailureReason:     revealFailureReason,
@@ -471,6 +486,7 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentS
 		}
 	}
 	out := shared.AiAzureContentSafetyPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

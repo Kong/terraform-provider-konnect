@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -138,30 +136,16 @@ const (
 func (e Identifier) ToPointer() *Identifier {
 	return &e
 }
-func (e *Identifier) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Identifier) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "consumer", "consumer-group", "credential", "header", "ip", "path", "service":
+			return true
+		}
 	}
-	switch v {
-	case "consumer":
-		fallthrough
-	case "consumer-group":
-		fallthrough
-	case "credential":
-		fallthrough
-	case "header":
-		fallthrough
-	case "ip":
-		fallthrough
-	case "path":
-		fallthrough
-	case "service":
-		*e = Identifier(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Identifier: %v", v)
-	}
+	return false
 }
 
 // AiRateLimitingAdvancedPluginLlmFormat - LLM input and output format and schema to use
@@ -179,28 +163,16 @@ const (
 func (e AiRateLimitingAdvancedPluginLlmFormat) ToPointer() *AiRateLimitingAdvancedPluginLlmFormat {
 	return &e
 }
-func (e *AiRateLimitingAdvancedPluginLlmFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRateLimitingAdvancedPluginLlmFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai":
+			return true
+		}
 	}
-	switch v {
-	case "anthropic":
-		fallthrough
-	case "bedrock":
-		fallthrough
-	case "cohere":
-		fallthrough
-	case "gemini":
-		fallthrough
-	case "huggingface":
-		fallthrough
-	case "openai":
-		*e = AiRateLimitingAdvancedPluginLlmFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRateLimitingAdvancedPluginLlmFormat: %v", v)
-	}
+	return false
 }
 
 // AiRateLimitingAdvancedPluginName - The LLM provider to which the rate limit applies.
@@ -223,38 +195,16 @@ const (
 func (e AiRateLimitingAdvancedPluginName) ToPointer() *AiRateLimitingAdvancedPluginName {
 	return &e
 }
-func (e *AiRateLimitingAdvancedPluginName) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRateLimitingAdvancedPluginName) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "anthropic", "azure", "bedrock", "cohere", "customCost", "gemini", "huggingface", "llama2", "mistral", "openai", "requestPrompt":
+			return true
+		}
 	}
-	switch v {
-	case "anthropic":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "bedrock":
-		fallthrough
-	case "cohere":
-		fallthrough
-	case "customCost":
-		fallthrough
-	case "gemini":
-		fallthrough
-	case "huggingface":
-		fallthrough
-	case "llama2":
-		fallthrough
-	case "mistral":
-		fallthrough
-	case "openai":
-		fallthrough
-	case "requestPrompt":
-		*e = AiRateLimitingAdvancedPluginName(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRateLimitingAdvancedPluginName: %v", v)
-	}
+	return false
 }
 
 type LlmProviders struct {
@@ -298,6 +248,223 @@ func (l *LlmProviders) GetWindowSize() []float64 {
 	return l.WindowSize
 }
 
+// AiRateLimitingAdvancedPluginTokensCountStrategy - What to count for this limit. Supported strategies: total_tokens, prompt_tokens, completion_tokens, cost.
+type AiRateLimitingAdvancedPluginTokensCountStrategy string
+
+const (
+	AiRateLimitingAdvancedPluginTokensCountStrategyCompletionTokens AiRateLimitingAdvancedPluginTokensCountStrategy = "completion_tokens"
+	AiRateLimitingAdvancedPluginTokensCountStrategyCost             AiRateLimitingAdvancedPluginTokensCountStrategy = "cost"
+	AiRateLimitingAdvancedPluginTokensCountStrategyPromptTokens     AiRateLimitingAdvancedPluginTokensCountStrategy = "prompt_tokens"
+	AiRateLimitingAdvancedPluginTokensCountStrategyTotalTokens      AiRateLimitingAdvancedPluginTokensCountStrategy = "total_tokens"
+)
+
+func (e AiRateLimitingAdvancedPluginTokensCountStrategy) ToPointer() *AiRateLimitingAdvancedPluginTokensCountStrategy {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRateLimitingAdvancedPluginTokensCountStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "completion_tokens", "cost", "prompt_tokens", "total_tokens":
+			return true
+		}
+	}
+	return false
+}
+
+type AiRateLimitingAdvancedPluginLimits struct {
+	// The rate limit threshold for this window.
+	Limit float64 `json:"limit"`
+	// What to count for this limit. Supported strategies: total_tokens, prompt_tokens, completion_tokens, cost.
+	TokensCountStrategy *AiRateLimitingAdvancedPluginTokensCountStrategy `default:"total_tokens" json:"tokens_count_strategy"`
+	// The window size in seconds.
+	WindowSize int64 `json:"window_size"`
+}
+
+func (a AiRateLimitingAdvancedPluginLimits) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiRateLimitingAdvancedPluginLimits) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"limit", "window_size"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiRateLimitingAdvancedPluginLimits) GetLimit() float64 {
+	if a == nil {
+		return 0.0
+	}
+	return a.Limit
+}
+
+func (a *AiRateLimitingAdvancedPluginLimits) GetTokensCountStrategy() *AiRateLimitingAdvancedPluginTokensCountStrategy {
+	if a == nil {
+		return nil
+	}
+	return a.TokensCountStrategy
+}
+
+func (a *AiRateLimitingAdvancedPluginLimits) GetWindowSize() int64 {
+	if a == nil {
+		return 0
+	}
+	return a.WindowSize
+}
+
+// AiRateLimitingAdvancedPluginType - The attribute to match against.
+type AiRateLimitingAdvancedPluginType string
+
+const (
+	AiRateLimitingAdvancedPluginTypeConsumer      AiRateLimitingAdvancedPluginType = "consumer"
+	AiRateLimitingAdvancedPluginTypeConsumerGroup AiRateLimitingAdvancedPluginType = "consumer_group"
+	AiRateLimitingAdvancedPluginTypeHeader        AiRateLimitingAdvancedPluginType = "header"
+	AiRateLimitingAdvancedPluginTypeIP            AiRateLimitingAdvancedPluginType = "ip"
+	AiRateLimitingAdvancedPluginTypeModel         AiRateLimitingAdvancedPluginType = "model"
+	AiRateLimitingAdvancedPluginTypePath          AiRateLimitingAdvancedPluginType = "path"
+	AiRateLimitingAdvancedPluginTypeProvider      AiRateLimitingAdvancedPluginType = "provider"
+)
+
+func (e AiRateLimitingAdvancedPluginType) ToPointer() *AiRateLimitingAdvancedPluginType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRateLimitingAdvancedPluginType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "consumer", "consumer_group", "header", "ip", "model", "path", "provider":
+			return true
+		}
+	}
+	return false
+}
+
+type Match struct {
+	// Sub-key for consumer (id|username|custom_id), consumer_group (id|name), or header (header name).
+	Key *string `default:"null" json:"key"`
+	// If true, the matched value contributes to the composite rate limit counter key.
+	PartitionBy *bool `default:"false" json:"partition_by"`
+	// The attribute to match against.
+	Type AiRateLimitingAdvancedPluginType `json:"type"`
+	// Values to match. If omitted, matches any value of this type.
+	Values []string `json:"values"`
+}
+
+func (m Match) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *Match) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"type"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *Match) GetKey() *string {
+	if m == nil {
+		return nil
+	}
+	return m.Key
+}
+
+func (m *Match) GetPartitionBy() *bool {
+	if m == nil {
+		return nil
+	}
+	return m.PartitionBy
+}
+
+func (m *Match) GetType() AiRateLimitingAdvancedPluginType {
+	if m == nil {
+		return AiRateLimitingAdvancedPluginType("")
+	}
+	return m.Type
+}
+
+func (m *Match) GetValues() []string {
+	if m == nil {
+		return nil
+	}
+	return m.Values
+}
+
+// AiRateLimitingAdvancedPluginWindowType - The time window type for this policy.
+type AiRateLimitingAdvancedPluginWindowType string
+
+const (
+	AiRateLimitingAdvancedPluginWindowTypeFixed   AiRateLimitingAdvancedPluginWindowType = "fixed"
+	AiRateLimitingAdvancedPluginWindowTypeSliding AiRateLimitingAdvancedPluginWindowType = "sliding"
+)
+
+func (e AiRateLimitingAdvancedPluginWindowType) ToPointer() *AiRateLimitingAdvancedPluginWindowType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRateLimitingAdvancedPluginWindowType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "fixed", "sliding":
+			return true
+		}
+	}
+	return false
+}
+
+type Policies struct {
+	// UUID reference to a reusable ai_rate_limiting_policies DAO entity. Mutually exclusive with inline limits.
+	ID *string `json:"id,omitempty"`
+	// Rate limits to enforce when this policy matches.
+	Limits []AiRateLimitingAdvancedPluginLimits `json:"limits"`
+	// Array of match conditions (AND logic). If omitted, this policy acts as a fallback for unmatched requests.
+	Match []Match `json:"match"`
+	// The time window type for this policy.
+	WindowType *AiRateLimitingAdvancedPluginWindowType `default:"sliding" json:"window_type"`
+}
+
+func (p Policies) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *Policies) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *Policies) GetID() *string {
+	if p == nil {
+		return nil
+	}
+	return p.ID
+}
+
+func (p *Policies) GetLimits() []AiRateLimitingAdvancedPluginLimits {
+	if p == nil {
+		return nil
+	}
+	return p.Limits
+}
+
+func (p *Policies) GetMatch() []Match {
+	if p == nil {
+		return nil
+	}
+	return p.Match
+}
+
+func (p *Policies) GetWindowType() *AiRateLimitingAdvancedPluginWindowType {
+	if p == nil {
+		return nil
+	}
+	return p.WindowType
+}
+
 // AuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
 type AuthProvider string
 
@@ -310,22 +477,16 @@ const (
 func (e AuthProvider) ToPointer() *AuthProvider {
 	return &e
 }
-func (e *AuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = AuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AuthProvider: %v", v)
-	}
+	return false
 }
 
 // AiRateLimitingAdvancedPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -527,22 +688,16 @@ const (
 func (e SentinelRole) ToPointer() *SentinelRole {
 	return &e
 }
-func (e *SentinelRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "master":
-		fallthrough
-	case "slave":
-		*e = SentinelRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SentinelRole: %v", v)
-	}
+	return false
 }
 
 type Redis struct {
@@ -769,22 +924,16 @@ const (
 func (e Strategy) ToPointer() *Strategy {
 	return &e
 }
-func (e *Strategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Strategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "cluster", "local", "redis":
+			return true
+		}
 	}
-	switch v {
-	case "cluster":
-		fallthrough
-	case "local":
-		fallthrough
-	case "redis":
-		*e = Strategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Strategy: %v", v)
-	}
+	return false
 }
 
 // TokensCountStrategy - What tokens to use for cost calculation. Available values are: `total_tokens` `prompt_tokens`, `completion_tokens` or `cost`.
@@ -800,24 +949,16 @@ const (
 func (e TokensCountStrategy) ToPointer() *TokensCountStrategy {
 	return &e
 }
-func (e *TokensCountStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TokensCountStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "completion_tokens", "cost", "prompt_tokens", "total_tokens":
+			return true
+		}
 	}
-	switch v {
-	case "completion_tokens":
-		fallthrough
-	case "cost":
-		fallthrough
-	case "prompt_tokens":
-		fallthrough
-	case "total_tokens":
-		*e = TokensCountStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TokensCountStrategy: %v", v)
-	}
+	return false
 }
 
 // WindowType - Sets the time window type to either `sliding` (default) or `fixed`. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters.
@@ -831,20 +972,16 @@ const (
 func (e WindowType) ToPointer() *WindowType {
 	return &e
 }
-func (e *WindowType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *WindowType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "fixed", "sliding":
+			return true
+		}
 	}
-	switch v {
-	case "fixed":
-		fallthrough
-	case "sliding":
-		*e = WindowType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for WindowType: %v", v)
-	}
+	return false
 }
 
 type AiRateLimitingAdvancedPluginConfig struct {
@@ -852,7 +989,7 @@ type AiRateLimitingAdvancedPluginConfig struct {
 	CustomCostCountFunction *string `default:"null" json:"custom_cost_count_function"`
 	// By default, Kong decreates the AI rate limiting counters by whole number in Redis. This setting allows to decrease the counters by float number.
 	DecreaseByFractionsInRedis *bool `default:"false" json:"decrease_by_fractions_in_redis"`
-	// The shared dictionary where counters are stored. When the plugin is configured to synchronize counter data externally (that is `config.strategy` is `cluster` or `redis` and `config.sync_rate` isn't `-1`), this dictionary serves as a buffer to populate counters in the data store on each synchronization cycle.
+	// The shared dictionary where counters are stored. When the plugin is configured to synchronize counter data externally (that is `config.strategy` is `cluster` or `redis` and `config.sync_rate` isn't `-1`), this dictionary serves as a buffer to populate counters in the data store on each synchronization cycle. The dictionary must be defined in the nginx configuration using `lua_shared_dict` directive (e.g., `lua_shared_dict kong_rate_limiting_counters 12m`).
 	DictionaryName *string `default:"kong_rate_limiting_counters" json:"dictionary_name"`
 	// If set to `true`, this doesn't count denied requests (status = `429`). If set to `false`, all requests, including denied ones, are counted. This parameter only affects the `sliding` window_type and the request prompt provider.
 	DisablePenalty *bool `default:"false" json:"disable_penalty"`
@@ -869,14 +1006,16 @@ type AiRateLimitingAdvancedPluginConfig struct {
 	// The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`. Note if `identifier` is `consumer-group`, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate.
 	Identifier *Identifier `default:"consumer" json:"identifier"`
 	// LLM input and output format and schema to use
-	LlmFormat *AiRateLimitingAdvancedPluginLlmFormat `default:"openai" json:"llm_format"`
-	// The provider config. Takes an array of `name`, `limit` and `window size` values.
+	LlmFormat *AiRateLimitingAdvancedPluginLlmFormat `json:"llm_format,omitempty"`
+	// The provider config. Takes an array of `name`, `limit` and `window size` values. Mutually exclusive with `policies`.
 	LlmProviders []LlmProviders `json:"llm_providers"`
 	// The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `dictionary_name`, need to be the same.
 	Namespace *string `default:"null" json:"namespace"`
 	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
-	Path  *string `default:"null" json:"path"`
-	Redis *Redis  `json:"redis"`
+	Path *string `default:"null" json:"path"`
+	// Policy-based rate limiting. Each policy defines match conditions and limits. Mutually exclusive with `llm_providers`.
+	Policies []Policies `json:"policies"`
+	Redis    *Redis     `json:"redis"`
 	// If defined, it use custom function to count requests for the request prompt provider
 	RequestPromptCountFunction *string `default:"null" json:"request_prompt_count_function"`
 	// The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header.
@@ -896,7 +1035,7 @@ func (a AiRateLimitingAdvancedPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiRateLimitingAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"llm_providers"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -981,7 +1120,7 @@ func (a *AiRateLimitingAdvancedPluginConfig) GetLlmFormat() *AiRateLimitingAdvan
 
 func (a *AiRateLimitingAdvancedPluginConfig) GetLlmProviders() []LlmProviders {
 	if a == nil {
-		return []LlmProviders{}
+		return nil
 	}
 	return a.LlmProviders
 }
@@ -998,6 +1137,13 @@ func (a *AiRateLimitingAdvancedPluginConfig) GetPath() *string {
 		return nil
 	}
 	return a.Path
+}
+
+func (a *AiRateLimitingAdvancedPluginConfig) GetPolicies() []Policies {
+	if a == nil {
+		return nil
+	}
+	return a.Policies
 }
 
 func (a *AiRateLimitingAdvancedPluginConfig) GetRedis() *Redis {
@@ -1107,24 +1253,16 @@ const (
 func (e AiRateLimitingAdvancedPluginProtocols) ToPointer() *AiRateLimitingAdvancedPluginProtocols {
 	return &e
 }
-func (e *AiRateLimitingAdvancedPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRateLimitingAdvancedPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = AiRateLimitingAdvancedPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRateLimitingAdvancedPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AiRateLimitingAdvancedPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -1175,6 +1313,8 @@ func (a *AiRateLimitingAdvancedPluginService) GetID() *string {
 
 // AiRateLimitingAdvancedPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type AiRateLimitingAdvancedPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -1191,8 +1331,8 @@ type AiRateLimitingAdvancedPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                             `json:"updated_at,omitempty"`
-	Config    AiRateLimitingAdvancedPluginConfig `json:"config"`
+	UpdatedAt *int64                              `json:"updated_at,omitempty"`
+	Config    *AiRateLimitingAdvancedPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *AiRateLimitingAdvancedPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
@@ -1210,10 +1350,17 @@ func (a AiRateLimitingAdvancedPlugin) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiRateLimitingAdvancedPlugin) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name", "config"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"name"}); err != nil {
 		return err
 	}
 	return nil
+}
+
+func (a *AiRateLimitingAdvancedPlugin) GetCondition() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Condition
 }
 
 func (a *AiRateLimitingAdvancedPlugin) GetCreatedAt() *int64 {
@@ -1276,9 +1423,9 @@ func (a *AiRateLimitingAdvancedPlugin) GetUpdatedAt() *int64 {
 	return a.UpdatedAt
 }
 
-func (a *AiRateLimitingAdvancedPlugin) GetConfig() AiRateLimitingAdvancedPluginConfig {
+func (a *AiRateLimitingAdvancedPlugin) GetConfig() *AiRateLimitingAdvancedPluginConfig {
 	if a == nil {
-		return AiRateLimitingAdvancedPluginConfig{}
+		return nil
 	}
 	return a.Config
 }

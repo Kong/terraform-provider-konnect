@@ -15,11 +15,12 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.AiProxyPluginConfig{}
 		if resp.Config.Auth == nil {
 			r.Config.Auth = nil
 		} else {
-			r.Config.Auth = &tfTypes.AiLlmAsJudgePluginAuth{}
+			r.Config.Auth = &tfTypes.PartialEmbeddingsAuth{}
 			r.Config.Auth.AllowOverride = types.BoolPointerValue(resp.Config.Auth.AllowOverride)
 			r.Config.Auth.AwsAccessKeyID = types.StringPointerValue(resp.Config.Auth.AwsAccessKeyID)
 			r.Config.Auth.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Auth.AwsSecretAccessKey)
@@ -27,6 +28,8 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 			r.Config.Auth.AzureClientSecret = types.StringPointerValue(resp.Config.Auth.AzureClientSecret)
 			r.Config.Auth.AzureTenantID = types.StringPointerValue(resp.Config.Auth.AzureTenantID)
 			r.Config.Auth.AzureUseManagedIdentity = types.BoolPointerValue(resp.Config.Auth.AzureUseManagedIdentity)
+			r.Config.Auth.GcpMetadataURL = types.StringPointerValue(resp.Config.Auth.GcpMetadataURL)
+			r.Config.Auth.GcpOauthTokenURL = types.StringPointerValue(resp.Config.Auth.GcpOauthTokenURL)
 			r.Config.Auth.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.Auth.GcpServiceAccountJSON)
 			r.Config.Auth.GcpUseServiceAccount = types.BoolPointerValue(resp.Config.Auth.GcpUseServiceAccount)
 			r.Config.Auth.HeaderName = types.StringPointerValue(resp.Config.Auth.HeaderName)
@@ -52,17 +55,18 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 		if resp.Config.Logging == nil {
 			r.Config.Logging = nil
 		} else {
-			r.Config.Logging = &tfTypes.AiLlmAsJudgePluginLogging{}
+			r.Config.Logging = &tfTypes.PartialModelLogging{}
 			r.Config.Logging.LogPayloads = types.BoolPointerValue(resp.Config.Logging.LogPayloads)
 			r.Config.Logging.LogStatistics = types.BoolPointerValue(resp.Config.Logging.LogStatistics)
 		}
 		r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
-		r.Config.Model = &tfTypes.AiLlmAsJudgePluginModel{}
+		r.Config.Model = &tfTypes.PartialModelModel{}
+		r.Config.Model.ModelAlias = types.StringPointerValue(resp.Config.Model.ModelAlias)
 		r.Config.Model.Name = types.StringPointerValue(resp.Config.Model.Name)
 		if resp.Config.Model.Options == nil {
 			r.Config.Model.Options = nil
 		} else {
-			r.Config.Model.Options = &tfTypes.AiLlmAsJudgePluginOptions{}
+			r.Config.Model.Options = &tfTypes.PartialModelOptions{}
 			r.Config.Model.Options.AnthropicVersion = types.StringPointerValue(resp.Config.Model.Options.AnthropicVersion)
 			r.Config.Model.Options.AzureAPIVersion = types.StringPointerValue(resp.Config.Model.Options.AzureAPIVersion)
 			r.Config.Model.Options.AzureDeploymentID = types.StringPointerValue(resp.Config.Model.Options.AzureDeploymentID)
@@ -70,11 +74,13 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 			if resp.Config.Model.Options.Bedrock == nil {
 				r.Config.Model.Options.Bedrock = nil
 			} else {
-				r.Config.Model.Options.Bedrock = &tfTypes.AiLlmAsJudgePluginBedrock{}
+				r.Config.Model.Options.Bedrock = &tfTypes.PartialEmbeddingsBedrock{}
 				r.Config.Model.Options.Bedrock.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsAssumeRoleArn)
 				r.Config.Model.Options.Bedrock.AwsRegion = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsRegion)
 				r.Config.Model.Options.Bedrock.AwsRoleSessionName = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsRoleSessionName)
 				r.Config.Model.Options.Bedrock.AwsStsEndpointURL = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsStsEndpointURL)
+				r.Config.Model.Options.Bedrock.BatchBucketPrefix = types.StringPointerValue(resp.Config.Model.Options.Bedrock.BatchBucketPrefix)
+				r.Config.Model.Options.Bedrock.BatchRoleArn = types.StringPointerValue(resp.Config.Model.Options.Bedrock.BatchRoleArn)
 				r.Config.Model.Options.Bedrock.EmbeddingsNormalize = types.BoolPointerValue(resp.Config.Model.Options.Bedrock.EmbeddingsNormalize)
 				r.Config.Model.Options.Bedrock.PerformanceConfigLatency = types.StringPointerValue(resp.Config.Model.Options.Bedrock.PerformanceConfigLatency)
 				r.Config.Model.Options.Bedrock.VideoOutputS3URI = types.StringPointerValue(resp.Config.Model.Options.Bedrock.VideoOutputS3URI)
@@ -82,7 +88,7 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 			if resp.Config.Model.Options.Cohere == nil {
 				r.Config.Model.Options.Cohere = nil
 			} else {
-				r.Config.Model.Options.Cohere = &tfTypes.AiLlmAsJudgePluginCohere{}
+				r.Config.Model.Options.Cohere = &tfTypes.PartialModelCohere{}
 				if resp.Config.Model.Options.Cohere.EmbeddingInputType != nil {
 					r.Config.Model.Options.Cohere.EmbeddingInputType = types.StringValue(string(*resp.Config.Model.Options.Cohere.EmbeddingInputType))
 				} else {
@@ -93,14 +99,20 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 			if resp.Config.Model.Options.Dashscope == nil {
 				r.Config.Model.Options.Dashscope = nil
 			} else {
-				r.Config.Model.Options.Dashscope = &tfTypes.AiLlmAsJudgePluginDashscope{}
+				r.Config.Model.Options.Dashscope = &tfTypes.PartialModelDashscope{}
 				r.Config.Model.Options.Dashscope.International = types.BoolPointerValue(resp.Config.Model.Options.Dashscope.International)
+			}
+			if resp.Config.Model.Options.Databricks == nil {
+				r.Config.Model.Options.Databricks = nil
+			} else {
+				r.Config.Model.Options.Databricks = &tfTypes.PartialModelDatabricks{}
+				r.Config.Model.Options.Databricks.WorkspaceInstanceID = types.StringPointerValue(resp.Config.Model.Options.Databricks.WorkspaceInstanceID)
 			}
 			r.Config.Model.Options.EmbeddingsDimensions = types.Int64PointerValue(resp.Config.Model.Options.EmbeddingsDimensions)
 			if resp.Config.Model.Options.Gemini == nil {
 				r.Config.Model.Options.Gemini = nil
 			} else {
-				r.Config.Model.Options.Gemini = &tfTypes.AiLlmAsJudgePluginGemini{}
+				r.Config.Model.Options.Gemini = &tfTypes.PartialModelGemini{}
 				r.Config.Model.Options.Gemini.APIEndpoint = types.StringPointerValue(resp.Config.Model.Options.Gemini.APIEndpoint)
 				r.Config.Model.Options.Gemini.EndpointID = types.StringPointerValue(resp.Config.Model.Options.Gemini.EndpointID)
 				r.Config.Model.Options.Gemini.LocationID = types.StringPointerValue(resp.Config.Model.Options.Gemini.LocationID)
@@ -109,7 +121,7 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 			if resp.Config.Model.Options.Huggingface == nil {
 				r.Config.Model.Options.Huggingface = nil
 			} else {
-				r.Config.Model.Options.Huggingface = &tfTypes.AiLlmAsJudgePluginHuggingface{}
+				r.Config.Model.Options.Huggingface = &tfTypes.PartialEmbeddingsHuggingface{}
 				r.Config.Model.Options.Huggingface.UseCache = types.BoolPointerValue(resp.Config.Model.Options.Huggingface.UseCache)
 				r.Config.Model.Options.Huggingface.WaitForModel = types.BoolPointerValue(resp.Config.Model.Options.Huggingface.WaitForModel)
 			}
@@ -307,6 +319,12 @@ func (r *GatewayPluginAiProxyResourceModel) ToOperationsUpdateAiproxyPluginReque
 func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Context) (*shared.AiProxyPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -444,6 +462,18 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 		} else {
 			azureUseManagedIdentity = nil
 		}
+		gcpMetadataURL := new(string)
+		if !r.Config.Auth.GcpMetadataURL.IsUnknown() && !r.Config.Auth.GcpMetadataURL.IsNull() {
+			*gcpMetadataURL = r.Config.Auth.GcpMetadataURL.ValueString()
+		} else {
+			gcpMetadataURL = nil
+		}
+		gcpOauthTokenURL := new(string)
+		if !r.Config.Auth.GcpOauthTokenURL.IsUnknown() && !r.Config.Auth.GcpOauthTokenURL.IsNull() {
+			*gcpOauthTokenURL = r.Config.Auth.GcpOauthTokenURL.ValueString()
+		} else {
+			gcpOauthTokenURL = nil
+		}
 		gcpServiceAccountJSON := new(string)
 		if !r.Config.Auth.GcpServiceAccountJSON.IsUnknown() && !r.Config.Auth.GcpServiceAccountJSON.IsNull() {
 			*gcpServiceAccountJSON = r.Config.Auth.GcpServiceAccountJSON.ValueString()
@@ -494,6 +524,8 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 			AzureClientSecret:       azureClientSecret,
 			AzureTenantID:           azureTenantID,
 			AzureUseManagedIdentity: azureUseManagedIdentity,
+			GcpMetadataURL:          gcpMetadataURL,
+			GcpOauthTokenURL:        gcpOauthTokenURL,
 			GcpServiceAccountJSON:   gcpServiceAccountJSON,
 			GcpUseServiceAccount:    gcpUseServiceAccount,
 			HeaderName:              headerName,
@@ -539,6 +571,12 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 		*maxRequestBodySize = r.Config.MaxRequestBodySize.ValueInt64()
 	} else {
 		maxRequestBodySize = nil
+	}
+	modelAlias := new(string)
+	if !r.Config.Model.ModelAlias.IsUnknown() && !r.Config.Model.ModelAlias.IsNull() {
+		*modelAlias = r.Config.Model.ModelAlias.ValueString()
+	} else {
+		modelAlias = nil
 	}
 	name1 := new(string)
 	if !r.Config.Model.Name.IsUnknown() && !r.Config.Model.Name.IsNull() {
@@ -598,6 +636,18 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 			} else {
 				awsStsEndpointURL = nil
 			}
+			batchBucketPrefix := new(string)
+			if !r.Config.Model.Options.Bedrock.BatchBucketPrefix.IsUnknown() && !r.Config.Model.Options.Bedrock.BatchBucketPrefix.IsNull() {
+				*batchBucketPrefix = r.Config.Model.Options.Bedrock.BatchBucketPrefix.ValueString()
+			} else {
+				batchBucketPrefix = nil
+			}
+			batchRoleArn := new(string)
+			if !r.Config.Model.Options.Bedrock.BatchRoleArn.IsUnknown() && !r.Config.Model.Options.Bedrock.BatchRoleArn.IsNull() {
+				*batchRoleArn = r.Config.Model.Options.Bedrock.BatchRoleArn.ValueString()
+			} else {
+				batchRoleArn = nil
+			}
 			embeddingsNormalize := new(bool)
 			if !r.Config.Model.Options.Bedrock.EmbeddingsNormalize.IsUnknown() && !r.Config.Model.Options.Bedrock.EmbeddingsNormalize.IsNull() {
 				*embeddingsNormalize = r.Config.Model.Options.Bedrock.EmbeddingsNormalize.ValueBool()
@@ -621,6 +671,8 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 				AwsRegion:                awsRegion,
 				AwsRoleSessionName:       awsRoleSessionName,
 				AwsStsEndpointURL:        awsStsEndpointURL,
+				BatchBucketPrefix:        batchBucketPrefix,
+				BatchRoleArn:             batchRoleArn,
 				EmbeddingsNormalize:      embeddingsNormalize,
 				PerformanceConfigLatency: performanceConfigLatency,
 				VideoOutputS3URI:         videoOutputS3URI,
@@ -655,6 +707,18 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 			}
 			dashscope = &shared.Dashscope{
 				International: international,
+			}
+		}
+		var databricks *shared.Databricks
+		if r.Config.Model.Options.Databricks != nil {
+			workspaceInstanceID := new(string)
+			if !r.Config.Model.Options.Databricks.WorkspaceInstanceID.IsUnknown() && !r.Config.Model.Options.Databricks.WorkspaceInstanceID.IsNull() {
+				*workspaceInstanceID = r.Config.Model.Options.Databricks.WorkspaceInstanceID.ValueString()
+			} else {
+				workspaceInstanceID = nil
+			}
+			databricks = &shared.Databricks{
+				WorkspaceInstanceID: workspaceInstanceID,
 			}
 		}
 		embeddingsDimensions := new(int64)
@@ -783,6 +847,7 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 			Bedrock:              bedrock,
 			Cohere:               cohere,
 			Dashscope:            dashscope,
+			Databricks:           databricks,
 			EmbeddingsDimensions: embeddingsDimensions,
 			Gemini:               gemini,
 			Huggingface:          huggingface,
@@ -800,9 +865,10 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 	}
 	provider := shared.Provider(r.Config.Model.Provider.ValueString())
 	model := shared.Model{
-		Name:     name1,
-		Options:  optionsVar,
-		Provider: provider,
+		ModelAlias: modelAlias,
+		Name:       name1,
+		Options:    optionsVar,
+		Provider:   provider,
 	}
 	modelNameHeader := new(bool)
 	if !r.Config.ModelNameHeader.IsUnknown() && !r.Config.ModelNameHeader.IsNull() {
@@ -881,6 +947,7 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin(ctx context.Co
 		}
 	}
 	out := shared.AiProxyPlugin{
+		Condition:     condition,
 		CreatedAt:     createdAt,
 		Enabled:       enabled,
 		ID:            id,

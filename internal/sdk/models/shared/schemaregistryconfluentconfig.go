@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -19,20 +17,16 @@ const (
 func (e SchemaType) ToPointer() *SchemaType {
 	return &e
 }
-func (e *SchemaType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SchemaType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "avro", "json":
+			return true
+		}
 	}
-	switch v {
-	case "avro":
-		fallthrough
-	case "json":
-		*e = SchemaType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SchemaType: %v", v)
-	}
+	return false
 }
 
 // SchemaRegistryConfluentConfig - The configuration of [Confluent Schema Registry](https://github.com/confluentinc/schema-registry)

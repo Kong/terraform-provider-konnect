@@ -144,13 +144,9 @@ func (r *MeshControlPlaneResource) Schema(ctx context.Context, req resource.Sche
 								stringplanmodifier.RequiresReplaceIfConfigured(),
 								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 							},
-							Description: `Not Null; must be one of ["MeshCreation", "HostnameGeneratorCreation"]; Requires replacement if changed.`,
+							Description: `possible known values include one of ["MeshCreation", "HostnameGeneratorCreation"]; Not Null; Requires replacement if changed.`,
 							Validators: []validator.String{
 								speakeasy_stringvalidators.NotNull(),
-								stringvalidator.OneOf(
-									"MeshCreation",
-									"HostnameGeneratorCreation",
-								),
 							},
 						},
 					},

@@ -15,6 +15,7 @@ func (r *GatewayPluginSolaceConsumeResourceModel) RefreshFromSharedSolaceConsume
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.SolaceConsumePluginConfig{}
 		r.Config.Flow = &tfTypes.Flow{}
 		if resp.Config.Flow.AckMode != nil {
@@ -261,6 +262,12 @@ func (r *GatewayPluginSolaceConsumeResourceModel) ToOperationsUpdateSolaceconsum
 func (r *GatewayPluginSolaceConsumeResourceModel) ToSharedSolaceConsumePlugin(ctx context.Context) (*shared.SolaceConsumePlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -642,6 +649,7 @@ func (r *GatewayPluginSolaceConsumeResourceModel) ToSharedSolaceConsumePlugin(ct
 		}
 	}
 	out := shared.SolaceConsumePlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

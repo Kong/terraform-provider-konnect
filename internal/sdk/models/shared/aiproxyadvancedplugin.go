@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -122,6 +120,227 @@ func (a *AiProxyAdvancedPluginPartials) GetPath() *string {
 	return a.Path
 }
 
+// AiProxyAdvancedPluginType - The attribute to match against.
+type AiProxyAdvancedPluginType string
+
+const (
+	AiProxyAdvancedPluginTypeConsumer      AiProxyAdvancedPluginType = "consumer"
+	AiProxyAdvancedPluginTypeConsumerGroup AiProxyAdvancedPluginType = "consumer_group"
+	AiProxyAdvancedPluginTypeHeader        AiProxyAdvancedPluginType = "header"
+	AiProxyAdvancedPluginTypeIP            AiProxyAdvancedPluginType = "ip"
+	AiProxyAdvancedPluginTypeModel         AiProxyAdvancedPluginType = "model"
+	AiProxyAdvancedPluginTypePath          AiProxyAdvancedPluginType = "path"
+	AiProxyAdvancedPluginTypeProvider      AiProxyAdvancedPluginType = "provider"
+)
+
+func (e AiProxyAdvancedPluginType) ToPointer() *AiProxyAdvancedPluginType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiProxyAdvancedPluginType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "consumer", "consumer_group", "header", "ip", "model", "path", "provider":
+			return true
+		}
+	}
+	return false
+}
+
+// AiProxyAdvancedPluginConfigMatch - Single match condition (e.g. user or model value).
+type AiProxyAdvancedPluginConfigMatch struct {
+	// Helper key used by some types: consumer (id|username), consumer_group (id|name), header (header name).
+	Key *string `default:"null" json:"key"`
+	// The attribute to match against.
+	Type AiProxyAdvancedPluginType `json:"type"`
+	// Allowed values for the selected type.
+	Values []string `json:"values"`
+}
+
+func (a AiProxyAdvancedPluginConfigMatch) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginConfigMatch) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"type", "values"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiProxyAdvancedPluginConfigMatch) GetKey() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Key
+}
+
+func (a *AiProxyAdvancedPluginConfigMatch) GetType() AiProxyAdvancedPluginType {
+	if a == nil {
+		return AiProxyAdvancedPluginType("")
+	}
+	return a.Type
+}
+
+func (a *AiProxyAdvancedPluginConfigMatch) GetValues() []string {
+	if a == nil {
+		return []string{}
+	}
+	return a.Values
+}
+
+// AiProxyAdvancedPluginAllow - ACL rule composed of one or more match conditions.
+type AiProxyAdvancedPluginAllow struct {
+	// All conditions must match for the rule to apply (logical AND).
+	Match []AiProxyAdvancedPluginConfigMatch `json:"match"`
+}
+
+func (a AiProxyAdvancedPluginAllow) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginAllow) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"match"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiProxyAdvancedPluginAllow) GetMatch() []AiProxyAdvancedPluginConfigMatch {
+	if a == nil {
+		return []AiProxyAdvancedPluginConfigMatch{}
+	}
+	return a.Match
+}
+
+// AiProxyAdvancedPluginConfigType - The attribute to match against.
+type AiProxyAdvancedPluginConfigType string
+
+const (
+	AiProxyAdvancedPluginConfigTypeConsumer      AiProxyAdvancedPluginConfigType = "consumer"
+	AiProxyAdvancedPluginConfigTypeConsumerGroup AiProxyAdvancedPluginConfigType = "consumer_group"
+	AiProxyAdvancedPluginConfigTypeHeader        AiProxyAdvancedPluginConfigType = "header"
+	AiProxyAdvancedPluginConfigTypeIP            AiProxyAdvancedPluginConfigType = "ip"
+	AiProxyAdvancedPluginConfigTypeModel         AiProxyAdvancedPluginConfigType = "model"
+	AiProxyAdvancedPluginConfigTypePath          AiProxyAdvancedPluginConfigType = "path"
+	AiProxyAdvancedPluginConfigTypeProvider      AiProxyAdvancedPluginConfigType = "provider"
+)
+
+func (e AiProxyAdvancedPluginConfigType) ToPointer() *AiProxyAdvancedPluginConfigType {
+	return &e
+}
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiProxyAdvancedPluginConfigType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "consumer", "consumer_group", "header", "ip", "model", "path", "provider":
+			return true
+		}
+	}
+	return false
+}
+
+// AiProxyAdvancedPluginMatch - Single match condition (e.g. user or model value).
+type AiProxyAdvancedPluginMatch struct {
+	// Helper key used by some types: consumer (id|username), consumer_group (id|name), header (header name).
+	Key *string `default:"null" json:"key"`
+	// The attribute to match against.
+	Type AiProxyAdvancedPluginConfigType `json:"type"`
+	// Allowed values for the selected type.
+	Values []string `json:"values"`
+}
+
+func (a AiProxyAdvancedPluginMatch) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginMatch) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"type", "values"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiProxyAdvancedPluginMatch) GetKey() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Key
+}
+
+func (a *AiProxyAdvancedPluginMatch) GetType() AiProxyAdvancedPluginConfigType {
+	if a == nil {
+		return AiProxyAdvancedPluginConfigType("")
+	}
+	return a.Type
+}
+
+func (a *AiProxyAdvancedPluginMatch) GetValues() []string {
+	if a == nil {
+		return []string{}
+	}
+	return a.Values
+}
+
+// Deny - ACL rule composed of one or more match conditions.
+type Deny struct {
+	// All conditions must match for the rule to apply (logical AND).
+	Match []AiProxyAdvancedPluginMatch `json:"match"`
+}
+
+func (d Deny) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *Deny) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"match"}); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *Deny) GetMatch() []AiProxyAdvancedPluginMatch {
+	if d == nil {
+		return []AiProxyAdvancedPluginMatch{}
+	}
+	return d.Match
+}
+
+// Acls - Optional ACL rules. Deny rules take precedence over allow rules.
+type Acls struct {
+	// Requests matching any allow rule are permitted unless also matched by a deny rule.
+	Allow []AiProxyAdvancedPluginAllow `json:"allow"`
+	// Requests matching any deny rule are blocked. Deny rules take precedence over allow rules.
+	Deny []Deny `json:"deny"`
+}
+
+func (a Acls) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *Acls) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *Acls) GetAllow() []AiProxyAdvancedPluginAllow {
+	if a == nil {
+		return nil
+	}
+	return a.Allow
+}
+
+func (a *Acls) GetDeny() []Deny {
+	if a == nil {
+		return nil
+	}
+	return a.Deny
+}
+
 // AiProxyAdvancedPluginAlgorithm - Which load balancing algorithm to use.
 type AiProxyAdvancedPluginAlgorithm string
 
@@ -138,30 +357,16 @@ const (
 func (e AiProxyAdvancedPluginAlgorithm) ToPointer() *AiProxyAdvancedPluginAlgorithm {
 	return &e
 }
-func (e *AiProxyAdvancedPluginAlgorithm) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiProxyAdvancedPluginAlgorithm) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "consistent-hashing", "least-connections", "lowest-latency", "lowest-usage", "priority", "round-robin", "semantic":
+			return true
+		}
 	}
-	switch v {
-	case "consistent-hashing":
-		fallthrough
-	case "least-connections":
-		fallthrough
-	case "lowest-latency":
-		fallthrough
-	case "lowest-usage":
-		fallthrough
-	case "priority":
-		fallthrough
-	case "round-robin":
-		fallthrough
-	case "semantic":
-		*e = AiProxyAdvancedPluginAlgorithm(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiProxyAdvancedPluginAlgorithm: %v", v)
-	}
+	return false
 }
 
 type FailoverCriteria string
@@ -183,38 +388,16 @@ const (
 func (e FailoverCriteria) ToPointer() *FailoverCriteria {
 	return &e
 }
-func (e *FailoverCriteria) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *FailoverCriteria) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "error", "http_403", "http_404", "http_429", "http_500", "http_502", "http_503", "http_504", "invalid_header", "non_idempotent", "timeout":
+			return true
+		}
 	}
-	switch v {
-	case "error":
-		fallthrough
-	case "http_403":
-		fallthrough
-	case "http_404":
-		fallthrough
-	case "http_429":
-		fallthrough
-	case "http_500":
-		fallthrough
-	case "http_502":
-		fallthrough
-	case "http_503":
-		fallthrough
-	case "http_504":
-		fallthrough
-	case "invalid_header":
-		fallthrough
-	case "non_idempotent":
-		fallthrough
-	case "timeout":
-		*e = FailoverCriteria(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for FailoverCriteria: %v", v)
-	}
+	return false
 }
 
 // LatencyStrategy - What metrics to use for latency. Available values are: `tpot` (time-per-output-token) and `e2e`.
@@ -228,20 +411,16 @@ const (
 func (e LatencyStrategy) ToPointer() *LatencyStrategy {
 	return &e
 }
-func (e *LatencyStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *LatencyStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "e2e", "tpot":
+			return true
+		}
 	}
-	switch v {
-	case "e2e":
-		fallthrough
-	case "tpot":
-		*e = LatencyStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for LatencyStrategy: %v", v)
-	}
+	return false
 }
 
 // AiProxyAdvancedPluginTokensCountStrategy - What tokens to use for usage calculation. Available values are: `total_tokens` `prompt_tokens`, `completion_tokens` and `cost`.
@@ -258,26 +437,16 @@ const (
 func (e AiProxyAdvancedPluginTokensCountStrategy) ToPointer() *AiProxyAdvancedPluginTokensCountStrategy {
 	return &e
 }
-func (e *AiProxyAdvancedPluginTokensCountStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiProxyAdvancedPluginTokensCountStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "completion-tokens", "cost", "llm-accuracy", "prompt-tokens", "total-tokens":
+			return true
+		}
 	}
-	switch v {
-	case "completion-tokens":
-		fallthrough
-	case "cost":
-		fallthrough
-	case "llm-accuracy":
-		fallthrough
-	case "prompt-tokens":
-		fallthrough
-	case "total-tokens":
-		*e = AiProxyAdvancedPluginTokensCountStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiProxyAdvancedPluginTokensCountStrategy: %v", v)
-	}
+	return false
 }
 
 type Balancer struct {
@@ -410,20 +579,16 @@ const (
 func (e AiProxyAdvancedPluginParamLocation) ToPointer() *AiProxyAdvancedPluginParamLocation {
 	return &e
 }
-func (e *AiProxyAdvancedPluginParamLocation) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiProxyAdvancedPluginParamLocation) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "body", "query":
+			return true
+		}
 	}
-	switch v {
-	case "body":
-		fallthrough
-	case "query":
-		*e = AiProxyAdvancedPluginParamLocation(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiProxyAdvancedPluginParamLocation: %v", v)
-	}
+	return false
 }
 
 type AiProxyAdvancedPluginAuth struct {
@@ -441,6 +606,10 @@ type AiProxyAdvancedPluginAuth struct {
 	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
 	AzureUseManagedIdentity *bool `default:"false" json:"azure_use_managed_identity"`
+	// Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.
+	GcpMetadataURL *string `default:"null" json:"gcp_metadata_url"`
+	// Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.
+	GcpOauthTokenURL *string `default:"null" json:"gcp_oauth_token_url"`
 	// Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
 	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
 	// Use service account auth for GCP-based providers and models.
@@ -515,6 +684,20 @@ func (a *AiProxyAdvancedPluginAuth) GetAzureUseManagedIdentity() *bool {
 		return nil
 	}
 	return a.AzureUseManagedIdentity
+}
+
+func (a *AiProxyAdvancedPluginAuth) GetGcpMetadataURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.GcpMetadataURL
+}
+
+func (a *AiProxyAdvancedPluginAuth) GetGcpOauthTokenURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.GcpOauthTokenURL
 }
 
 func (a *AiProxyAdvancedPluginAuth) GetGcpServiceAccountJSON() *string {
@@ -616,6 +799,10 @@ type AiProxyAdvancedPluginBedrock struct {
 	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
 	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 	AwsStsEndpointURL *string `default:"null" json:"aws_sts_endpoint_url"`
+	// S3 URI prefix (s3://bucket/prefix/) where Bedrock will get input files from and store results to for native batch API.
+	BatchBucketPrefix *string `default:"null" json:"batch_bucket_prefix"`
+	// AWS role arn used for calling batch API. Try to get the value from request if ommited.
+	BatchRoleArn *string `default:"null" json:"batch_role_arn"`
 	// If using AWS providers (Bedrock), set to true to normalize the embeddings.
 	EmbeddingsNormalize *bool `default:"false" json:"embeddings_normalize"`
 	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
@@ -661,6 +848,20 @@ func (a *AiProxyAdvancedPluginBedrock) GetAwsStsEndpointURL() *string {
 		return nil
 	}
 	return a.AwsStsEndpointURL
+}
+
+func (a *AiProxyAdvancedPluginBedrock) GetBatchBucketPrefix() *string {
+	if a == nil {
+		return nil
+	}
+	return a.BatchBucketPrefix
+}
+
+func (a *AiProxyAdvancedPluginBedrock) GetBatchRoleArn() *string {
+	if a == nil {
+		return nil
+	}
+	return a.BatchRoleArn
 }
 
 func (a *AiProxyAdvancedPluginBedrock) GetEmbeddingsNormalize() *bool {
@@ -822,34 +1023,23 @@ const (
 	AiProxyAdvancedPluginProviderGemini      AiProxyAdvancedPluginProvider = "gemini"
 	AiProxyAdvancedPluginProviderHuggingface AiProxyAdvancedPluginProvider = "huggingface"
 	AiProxyAdvancedPluginProviderMistral     AiProxyAdvancedPluginProvider = "mistral"
+	AiProxyAdvancedPluginProviderOllama      AiProxyAdvancedPluginProvider = "ollama"
 	AiProxyAdvancedPluginProviderOpenai      AiProxyAdvancedPluginProvider = "openai"
 )
 
 func (e AiProxyAdvancedPluginProvider) ToPointer() *AiProxyAdvancedPluginProvider {
 	return &e
 }
-func (e *AiProxyAdvancedPluginProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiProxyAdvancedPluginProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai":
+			return true
+		}
 	}
-	switch v {
-	case "azure":
-		fallthrough
-	case "bedrock":
-		fallthrough
-	case "gemini":
-		fallthrough
-	case "huggingface":
-		fallthrough
-	case "mistral":
-		fallthrough
-	case "openai":
-		*e = AiProxyAdvancedPluginProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiProxyAdvancedPluginProvider: %v", v)
-	}
+	return false
 }
 
 type AiProxyAdvancedPluginModel struct {
@@ -939,30 +1129,16 @@ const (
 func (e AiProxyAdvancedPluginGenaiCategory) ToPointer() *AiProxyAdvancedPluginGenaiCategory {
 	return &e
 }
-func (e *AiProxyAdvancedPluginGenaiCategory) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiProxyAdvancedPluginGenaiCategory) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation":
+			return true
+		}
 	}
-	switch v {
-	case "audio/speech":
-		fallthrough
-	case "audio/transcription":
-		fallthrough
-	case "image/generation":
-		fallthrough
-	case "realtime/generation":
-		fallthrough
-	case "text/embeddings":
-		fallthrough
-	case "text/generation":
-		fallthrough
-	case "video/generation":
-		*e = AiProxyAdvancedPluginGenaiCategory(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiProxyAdvancedPluginGenaiCategory: %v", v)
-	}
+	return false
 }
 
 // AiProxyAdvancedPluginLlmFormat - LLM input and output format and schema to use
@@ -980,28 +1156,16 @@ const (
 func (e AiProxyAdvancedPluginLlmFormat) ToPointer() *AiProxyAdvancedPluginLlmFormat {
 	return &e
 }
-func (e *AiProxyAdvancedPluginLlmFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiProxyAdvancedPluginLlmFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai":
+			return true
+		}
 	}
-	switch v {
-	case "anthropic":
-		fallthrough
-	case "bedrock":
-		fallthrough
-	case "cohere":
-		fallthrough
-	case "gemini":
-		fallthrough
-	case "huggingface":
-		fallthrough
-	case "openai":
-		*e = AiProxyAdvancedPluginLlmFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiProxyAdvancedPluginLlmFormat: %v", v)
-	}
+	return false
 }
 
 // AiProxyAdvancedPluginResponseStreaming - Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events.
@@ -1016,22 +1180,16 @@ const (
 func (e AiProxyAdvancedPluginResponseStreaming) ToPointer() *AiProxyAdvancedPluginResponseStreaming {
 	return &e
 }
-func (e *AiProxyAdvancedPluginResponseStreaming) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiProxyAdvancedPluginResponseStreaming) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "allow", "always", "deny":
+			return true
+		}
 	}
-	switch v {
-	case "allow":
-		fallthrough
-	case "always":
-		fallthrough
-	case "deny":
-		*e = AiProxyAdvancedPluginResponseStreaming(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiProxyAdvancedPluginResponseStreaming: %v", v)
-	}
+	return false
 }
 
 // AiProxyAdvancedPluginConfigParamLocation - Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
@@ -1045,20 +1203,16 @@ const (
 func (e AiProxyAdvancedPluginConfigParamLocation) ToPointer() *AiProxyAdvancedPluginConfigParamLocation {
 	return &e
 }
-func (e *AiProxyAdvancedPluginConfigParamLocation) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiProxyAdvancedPluginConfigParamLocation) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "body", "query":
+			return true
+		}
 	}
-	switch v {
-	case "body":
-		fallthrough
-	case "query":
-		*e = AiProxyAdvancedPluginConfigParamLocation(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiProxyAdvancedPluginConfigParamLocation: %v", v)
-	}
+	return false
 }
 
 type AiProxyAdvancedPluginConfigAuth struct {
@@ -1076,6 +1230,10 @@ type AiProxyAdvancedPluginConfigAuth struct {
 	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
 	// Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
 	AzureUseManagedIdentity *bool `default:"false" json:"azure_use_managed_identity"`
+	// Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.
+	GcpMetadataURL *string `default:"null" json:"gcp_metadata_url"`
+	// Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.
+	GcpOauthTokenURL *string `default:"null" json:"gcp_oauth_token_url"`
 	// Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
 	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
 	// Use service account auth for GCP-based providers and models.
@@ -1150,6 +1308,20 @@ func (a *AiProxyAdvancedPluginConfigAuth) GetAzureUseManagedIdentity() *bool {
 		return nil
 	}
 	return a.AzureUseManagedIdentity
+}
+
+func (a *AiProxyAdvancedPluginConfigAuth) GetGcpMetadataURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.GcpMetadataURL
+}
+
+func (a *AiProxyAdvancedPluginConfigAuth) GetGcpOauthTokenURL() *string {
+	if a == nil {
+		return nil
+	}
+	return a.GcpOauthTokenURL
 }
 
 func (a *AiProxyAdvancedPluginConfigAuth) GetGcpServiceAccountJSON() *string {
@@ -1242,6 +1414,10 @@ type AiProxyAdvancedPluginConfigBedrock struct {
 	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
 	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 	AwsStsEndpointURL *string `default:"null" json:"aws_sts_endpoint_url"`
+	// S3 URI prefix (s3://bucket/prefix/) where Bedrock will get input files from and store results to for native batch API.
+	BatchBucketPrefix *string `default:"null" json:"batch_bucket_prefix"`
+	// AWS role arn used for calling batch API. Try to get the value from request if ommited.
+	BatchRoleArn *string `default:"null" json:"batch_role_arn"`
 	// If using AWS providers (Bedrock), set to true to normalize the embeddings.
 	EmbeddingsNormalize *bool `default:"false" json:"embeddings_normalize"`
 	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
@@ -1289,6 +1465,20 @@ func (a *AiProxyAdvancedPluginConfigBedrock) GetAwsStsEndpointURL() *string {
 	return a.AwsStsEndpointURL
 }
 
+func (a *AiProxyAdvancedPluginConfigBedrock) GetBatchBucketPrefix() *string {
+	if a == nil {
+		return nil
+	}
+	return a.BatchBucketPrefix
+}
+
+func (a *AiProxyAdvancedPluginConfigBedrock) GetBatchRoleArn() *string {
+	if a == nil {
+		return nil
+	}
+	return a.BatchRoleArn
+}
+
 func (a *AiProxyAdvancedPluginConfigBedrock) GetEmbeddingsNormalize() *bool {
 	if a == nil {
 		return nil
@@ -1324,26 +1514,16 @@ const (
 func (e AiProxyAdvancedPluginEmbeddingInputType) ToPointer() *AiProxyAdvancedPluginEmbeddingInputType {
 	return &e
 }
-func (e *AiProxyAdvancedPluginEmbeddingInputType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiProxyAdvancedPluginEmbeddingInputType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "classification", "clustering", "image", "search_document", "search_query":
+			return true
+		}
 	}
-	switch v {
-	case "classification":
-		fallthrough
-	case "clustering":
-		fallthrough
-	case "image":
-		fallthrough
-	case "search_document":
-		fallthrough
-	case "search_query":
-		*e = AiProxyAdvancedPluginEmbeddingInputType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiProxyAdvancedPluginEmbeddingInputType: %v", v)
-	}
+	return false
 }
 
 type AiProxyAdvancedPluginCohere struct {
@@ -1401,6 +1581,29 @@ func (a *AiProxyAdvancedPluginDashscope) GetInternational() *bool {
 		return nil
 	}
 	return a.International
+}
+
+type AiProxyAdvancedPluginDatabricks struct {
+	// Workspace Instance ID ('dbc-xxx-yyy') for Databricks model serving.
+	WorkspaceInstanceID *string `default:"null" json:"workspace_instance_id"`
+}
+
+func (a AiProxyAdvancedPluginDatabricks) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiProxyAdvancedPluginDatabricks) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (a *AiProxyAdvancedPluginDatabricks) GetWorkspaceInstanceID() *string {
+	if a == nil {
+		return nil
+	}
+	return a.WorkspaceInstanceID
 }
 
 type AiProxyAdvancedPluginConfigGemini struct {
@@ -1497,22 +1700,16 @@ const (
 func (e AiProxyAdvancedPluginLlama2Format) ToPointer() *AiProxyAdvancedPluginLlama2Format {
 	return &e
 }
-func (e *AiProxyAdvancedPluginLlama2Format) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiProxyAdvancedPluginLlama2Format) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ollama", "openai", "raw":
+			return true
+		}
 	}
-	switch v {
-	case "ollama":
-		fallthrough
-	case "openai":
-		fallthrough
-	case "raw":
-		*e = AiProxyAdvancedPluginLlama2Format(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiProxyAdvancedPluginLlama2Format: %v", v)
-	}
+	return false
 }
 
 // AiProxyAdvancedPluginMistralFormat - If using mistral provider, select the upstream message format.
@@ -1526,20 +1723,16 @@ const (
 func (e AiProxyAdvancedPluginMistralFormat) ToPointer() *AiProxyAdvancedPluginMistralFormat {
 	return &e
 }
-func (e *AiProxyAdvancedPluginMistralFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiProxyAdvancedPluginMistralFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ollama", "openai":
+			return true
+		}
 	}
-	switch v {
-	case "ollama":
-		fallthrough
-	case "openai":
-		*e = AiProxyAdvancedPluginMistralFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiProxyAdvancedPluginMistralFormat: %v", v)
-	}
+	return false
 }
 
 // AiProxyAdvancedPluginConfigOptions - Key/value settings for the model
@@ -1555,6 +1748,7 @@ type AiProxyAdvancedPluginConfigOptions struct {
 	Bedrock       *AiProxyAdvancedPluginConfigBedrock `json:"bedrock"`
 	Cohere        *AiProxyAdvancedPluginCohere        `json:"cohere"`
 	Dashscope     *AiProxyAdvancedPluginDashscope     `json:"dashscope"`
+	Databricks    *AiProxyAdvancedPluginDatabricks    `json:"databricks"`
 	// If using embeddings models, set the number of dimensions to generate.
 	EmbeddingsDimensions *int64                                  `default:"null" json:"embeddings_dimensions"`
 	Gemini               *AiProxyAdvancedPluginConfigGemini      `json:"gemini"`
@@ -1639,6 +1833,13 @@ func (a *AiProxyAdvancedPluginConfigOptions) GetDashscope() *AiProxyAdvancedPlug
 		return nil
 	}
 	return a.Dashscope
+}
+
+func (a *AiProxyAdvancedPluginConfigOptions) GetDatabricks() *AiProxyAdvancedPluginDatabricks {
+	if a == nil {
+		return nil
+	}
+	return a.Databricks
 }
 
 func (a *AiProxyAdvancedPluginConfigOptions) GetEmbeddingsDimensions() *int64 {
@@ -1742,54 +1943,36 @@ const (
 	AiProxyAdvancedPluginConfigProviderCerebras    AiProxyAdvancedPluginConfigProvider = "cerebras"
 	AiProxyAdvancedPluginConfigProviderCohere      AiProxyAdvancedPluginConfigProvider = "cohere"
 	AiProxyAdvancedPluginConfigProviderDashscope   AiProxyAdvancedPluginConfigProvider = "dashscope"
+	AiProxyAdvancedPluginConfigProviderDatabricks  AiProxyAdvancedPluginConfigProvider = "databricks"
+	AiProxyAdvancedPluginConfigProviderDeepseek    AiProxyAdvancedPluginConfigProvider = "deepseek"
 	AiProxyAdvancedPluginConfigProviderGemini      AiProxyAdvancedPluginConfigProvider = "gemini"
 	AiProxyAdvancedPluginConfigProviderHuggingface AiProxyAdvancedPluginConfigProvider = "huggingface"
 	AiProxyAdvancedPluginConfigProviderLlama2      AiProxyAdvancedPluginConfigProvider = "llama2"
 	AiProxyAdvancedPluginConfigProviderMistral     AiProxyAdvancedPluginConfigProvider = "mistral"
+	AiProxyAdvancedPluginConfigProviderOllama      AiProxyAdvancedPluginConfigProvider = "ollama"
 	AiProxyAdvancedPluginConfigProviderOpenai      AiProxyAdvancedPluginConfigProvider = "openai"
+	AiProxyAdvancedPluginConfigProviderVllm        AiProxyAdvancedPluginConfigProvider = "vllm"
 	AiProxyAdvancedPluginConfigProviderXai         AiProxyAdvancedPluginConfigProvider = "xai"
 )
 
 func (e AiProxyAdvancedPluginConfigProvider) ToPointer() *AiProxyAdvancedPluginConfigProvider {
 	return &e
 }
-func (e *AiProxyAdvancedPluginConfigProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiProxyAdvancedPluginConfigProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "databricks", "deepseek", "gemini", "huggingface", "llama2", "mistral", "ollama", "openai", "vllm", "xai":
+			return true
+		}
 	}
-	switch v {
-	case "anthropic":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "bedrock":
-		fallthrough
-	case "cerebras":
-		fallthrough
-	case "cohere":
-		fallthrough
-	case "dashscope":
-		fallthrough
-	case "gemini":
-		fallthrough
-	case "huggingface":
-		fallthrough
-	case "llama2":
-		fallthrough
-	case "mistral":
-		fallthrough
-	case "openai":
-		fallthrough
-	case "xai":
-		*e = AiProxyAdvancedPluginConfigProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiProxyAdvancedPluginConfigProvider: %v", v)
-	}
+	return false
 }
 
 type AiProxyAdvancedPluginConfigModel struct {
+	// The model name parameter from the request that this model should map to.
+	ModelAlias *string `default:"null" json:"model_alias"`
 	// Model name to execute.
 	Name *string `default:"null" json:"name"`
 	// Key/value settings for the model
@@ -1807,6 +1990,13 @@ func (a *AiProxyAdvancedPluginConfigModel) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AiProxyAdvancedPluginConfigModel) GetModelAlias() *string {
+	if a == nil {
+		return nil
+	}
+	return a.ModelAlias
 }
 
 func (a *AiProxyAdvancedPluginConfigModel) GetName() *string {
@@ -1854,46 +2044,16 @@ const (
 func (e AiProxyAdvancedPluginRouteType) ToPointer() *AiProxyAdvancedPluginRouteType {
 	return &e
 }
-func (e *AiProxyAdvancedPluginRouteType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiProxyAdvancedPluginRouteType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime", "video/v1/videos/generations":
+			return true
+		}
 	}
-	switch v {
-	case "audio/v1/audio/speech":
-		fallthrough
-	case "audio/v1/audio/transcriptions":
-		fallthrough
-	case "audio/v1/audio/translations":
-		fallthrough
-	case "image/v1/images/edits":
-		fallthrough
-	case "image/v1/images/generations":
-		fallthrough
-	case "llm/v1/assistants":
-		fallthrough
-	case "llm/v1/batches":
-		fallthrough
-	case "llm/v1/chat":
-		fallthrough
-	case "llm/v1/completions":
-		fallthrough
-	case "llm/v1/embeddings":
-		fallthrough
-	case "llm/v1/files":
-		fallthrough
-	case "llm/v1/responses":
-		fallthrough
-	case "preserve":
-		fallthrough
-	case "realtime/v1/realtime":
-		fallthrough
-	case "video/v1/videos/generations":
-		*e = AiProxyAdvancedPluginRouteType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiProxyAdvancedPluginRouteType: %v", v)
-	}
+	return false
 }
 
 type Targets struct {
@@ -1981,20 +2141,16 @@ const (
 func (e DistanceMetric) ToPointer() *DistanceMetric {
 	return &e
 }
-func (e *DistanceMetric) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DistanceMetric) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "cosine", "euclidean":
+			return true
+		}
 	}
-	switch v {
-	case "cosine":
-		fallthrough
-	case "euclidean":
-		*e = DistanceMetric(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for DistanceMetric: %v", v)
-	}
+	return false
 }
 
 // SslVersion - the ssl version to use for the pgvector database
@@ -2009,22 +2165,16 @@ const (
 func (e SslVersion) ToPointer() *SslVersion {
 	return &e
 }
-func (e *SslVersion) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SslVersion) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "tlsv1_2", "tlsv1_3":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "tlsv1_2":
-		fallthrough
-	case "tlsv1_3":
-		*e = SslVersion(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SslVersion: %v", v)
-	}
+	return false
 }
 
 type Pgvector struct {
@@ -2161,22 +2311,16 @@ const (
 func (e AiProxyAdvancedPluginAuthProvider) ToPointer() *AiProxyAdvancedPluginAuthProvider {
 	return &e
 }
-func (e *AiProxyAdvancedPluginAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiProxyAdvancedPluginAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = AiProxyAdvancedPluginAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiProxyAdvancedPluginAuthProvider: %v", v)
-	}
+	return false
 }
 
 // AiProxyAdvancedPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -2378,22 +2522,16 @@ const (
 func (e AiProxyAdvancedPluginSentinelRole) ToPointer() *AiProxyAdvancedPluginSentinelRole {
 	return &e
 }
-func (e *AiProxyAdvancedPluginSentinelRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiProxyAdvancedPluginSentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "master":
-		fallthrough
-	case "slave":
-		*e = AiProxyAdvancedPluginSentinelRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiProxyAdvancedPluginSentinelRole: %v", v)
-	}
+	return false
 }
 
 type AiProxyAdvancedPluginRedis struct {
@@ -2619,20 +2757,16 @@ const (
 func (e AiProxyAdvancedPluginStrategy) ToPointer() *AiProxyAdvancedPluginStrategy {
 	return &e
 }
-func (e *AiProxyAdvancedPluginStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiProxyAdvancedPluginStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "pgvector", "redis":
+			return true
+		}
 	}
-	switch v {
-	case "pgvector":
-		fallthrough
-	case "redis":
-		*e = AiProxyAdvancedPluginStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiProxyAdvancedPluginStrategy: %v", v)
-	}
+	return false
 }
 
 type Vectordb struct {
@@ -2644,7 +2778,7 @@ type Vectordb struct {
 	Redis          *AiProxyAdvancedPluginRedis `json:"redis"`
 	// which vector database driver to use
 	Strategy AiProxyAdvancedPluginStrategy `json:"strategy"`
-	// the default similarity threshold for accepting semantic search results (float)
+	// the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.
 	Threshold *float64 `default:"null" json:"threshold"`
 }
 
@@ -2702,6 +2836,8 @@ func (v *Vectordb) GetThreshold() *float64 {
 }
 
 type AiProxyAdvancedPluginConfig struct {
+	// Optional ACL rules. Deny rules take precedence over allow rules.
+	Acls       *Acls       `json:"acls"`
 	Balancer   *Balancer   `json:"balancer"`
 	Embeddings *Embeddings `json:"embeddings"`
 	// Generative AI category of the request
@@ -2727,6 +2863,13 @@ func (a *AiProxyAdvancedPluginConfig) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AiProxyAdvancedPluginConfig) GetAcls() *Acls {
+	if a == nil {
+		return nil
+	}
+	return a.Acls
 }
 
 func (a *AiProxyAdvancedPluginConfig) GetBalancer() *Balancer {
@@ -2852,28 +2995,16 @@ const (
 func (e AiProxyAdvancedPluginProtocols) ToPointer() *AiProxyAdvancedPluginProtocols {
 	return &e
 }
-func (e *AiProxyAdvancedPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiProxyAdvancedPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = AiProxyAdvancedPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiProxyAdvancedPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AiProxyAdvancedPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -2924,6 +3055,8 @@ func (a *AiProxyAdvancedPluginService) GetID() *string {
 
 // AiProxyAdvancedPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type AiProxyAdvancedPlugin struct {
+	// An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
+	Condition *string `default:"null" json:"condition"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -2963,6 +3096,13 @@ func (a *AiProxyAdvancedPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
+}
+
+func (a *AiProxyAdvancedPlugin) GetCondition() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Condition
 }
 
 func (a *AiProxyAdvancedPlugin) GetCreatedAt() *int64 {

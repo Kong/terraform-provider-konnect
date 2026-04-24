@@ -15,6 +15,7 @@ func (r *GatewayPluginKeyAuthResourceModel) RefreshFromSharedKeyAuthPlugin(ctx c
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
@@ -201,6 +202,12 @@ func (r *GatewayPluginKeyAuthResourceModel) ToOperationsUpdateKeyauthPluginReque
 func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPlugin(ctx context.Context) (*shared.KeyAuthPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -322,9 +329,9 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPlugin(ctx context.Co
 			} else {
 				region = nil
 			}
-			scope := new(shared.Scope)
+			scope := new(shared.KeyAuthPluginScope)
 			if !r.Config.IdentityRealms[identityRealmsIndex].Scope.IsUnknown() && !r.Config.IdentityRealms[identityRealmsIndex].Scope.IsNull() {
-				*scope = shared.Scope(r.Config.IdentityRealms[identityRealmsIndex].Scope.ValueString())
+				*scope = shared.KeyAuthPluginScope(r.Config.IdentityRealms[identityRealmsIndex].Scope.ValueString())
 			} else {
 				scope = nil
 			}
@@ -409,6 +416,7 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPlugin(ctx context.Co
 		}
 	}
 	out := shared.KeyAuthPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,

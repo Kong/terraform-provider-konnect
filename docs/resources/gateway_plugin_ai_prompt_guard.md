@@ -14,6 +14,7 @@ GatewayPluginAiPromptGuard Resource
 
 ```terraform
 resource "konnect_gateway_plugin_ai_prompt_guard" "my_gatewaypluginaipromptguard" {
+  condition = "...my_condition..."
   config = {
     allow_all_conversation_history = false
     allow_patterns = [
@@ -82,6 +83,7 @@ resource "konnect_gateway_plugin_ai_prompt_guard" "my_gatewaypluginaipromptguard
 
 ### Optional
 
+- `condition` (String) An expression used for conditional control over plugin execution. If the expression evaluates to `true` during the request flow, the plugin is executed; otherwise, it is skipped.
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
@@ -105,8 +107,8 @@ Optional:
 - `allow_all_conversation_history` (Boolean) If true, will ignore all previous chat prompts from the conversation history. Default: false
 - `allow_patterns` (List of String) Array of valid regex patterns, or valid questions from the 'user' role in chat.
 - `deny_patterns` (List of String) Array of invalid regex patterns, or invalid questions from the 'user' role in chat.
-- `genai_category` (String) Generative AI category of the request. Default: "text/generation"; must be one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation"]
-- `llm_format` (String) LLM input and output format and schema to use. Default: "openai"; must be one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]
+- `genai_category` (String) Generative AI category of the request. possible known values include one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation"]; Default: "text/generation"
+- `llm_format` (String) LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]; Default: "openai"
 - `match_all_roles` (Boolean) If true, will match all roles in addition to 'user' role in conversation history. Default: false
 - `max_request_body_size` (Number) max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 1048576
 
@@ -188,7 +190,7 @@ import {
   to = konnect_gateway_plugin_ai_prompt_guard.my_konnect_gateway_plugin_ai_prompt_guard
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

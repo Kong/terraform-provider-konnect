@@ -15,6 +15,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) RefreshFromShare
 	var diags diag.Diagnostics
 
 	if resp != nil {
+		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.GraphqlRateLimitingAdvancedPluginConfig{}
 		if resp.Config.CostStrategy != nil {
 			r.Config.CostStrategy = types.StringValue(string(*resp.Config.CostStrategy))
@@ -38,7 +39,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) RefreshFromShare
 		if resp.Config.Redis == nil {
 			r.Config.Redis = nil
 		} else {
-			r.Config.Redis = &tfTypes.AcePluginRedis{}
+			r.Config.Redis = &tfTypes.PartialVectordbRedis{}
 			if resp.Config.Redis.CloudAuthentication == nil {
 				r.Config.Redis.CloudAuthentication = nil
 			} else {
@@ -289,6 +290,12 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToOperationsUpda
 func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToSharedGraphqlRateLimitingAdvancedPlugin(ctx context.Context) (*shared.GraphqlRateLimitingAdvancedPlugin, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
+	condition := new(string)
+	if !r.Condition.IsUnknown() && !r.Condition.IsNull() {
+		*condition = r.Condition.ValueString()
+	} else {
+		condition = nil
+	}
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -784,6 +791,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToSharedGraphqlR
 		}
 	}
 	out := shared.GraphqlRateLimitingAdvancedPlugin{
+		Condition:    condition,
 		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
