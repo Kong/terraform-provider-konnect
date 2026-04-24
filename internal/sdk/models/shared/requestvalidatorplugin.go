@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -134,22 +132,16 @@ const (
 func (e In) ToPointer() *In {
 	return &e
 }
-func (e *In) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *In) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "header", "path", "query":
+			return true
+		}
 	}
-	switch v {
-	case "header":
-		fallthrough
-	case "path":
-		fallthrough
-	case "query":
-		*e = In(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for In: %v", v)
-	}
+	return false
 }
 
 // Style - Required when `schema` and `explode` are set. Describes how the parameter value will be deserialized depending on the type of the parameter value.
@@ -168,30 +160,16 @@ const (
 func (e Style) ToPointer() *Style {
 	return &e
 }
-func (e *Style) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Style) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "deepObject", "form", "label", "matrix", "pipeDelimited", "simple", "spaceDelimited":
+			return true
+		}
 	}
-	switch v {
-	case "deepObject":
-		fallthrough
-	case "form":
-		fallthrough
-	case "label":
-		fallthrough
-	case "matrix":
-		fallthrough
-	case "pipeDelimited":
-		fallthrough
-	case "simple":
-		fallthrough
-	case "spaceDelimited":
-		*e = Style(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Style: %v", v)
-	}
+	return false
 }
 
 type ParameterSchema struct {
@@ -277,28 +255,16 @@ const (
 func (e Version) ToPointer() *Version {
 	return &e
 }
-func (e *Version) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Version) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "draft201909", "draft202012", "draft4", "draft6", "draft7", "kong":
+			return true
+		}
 	}
-	switch v {
-	case "draft201909":
-		fallthrough
-	case "draft202012":
-		fallthrough
-	case "draft4":
-		fallthrough
-	case "draft6":
-		fallthrough
-	case "draft7":
-		fallthrough
-	case "kong":
-		*e = Version(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Version: %v", v)
-	}
+	return false
 }
 
 type RequestValidatorPluginConfig struct {
@@ -404,24 +370,16 @@ const (
 func (e RequestValidatorPluginProtocols) ToPointer() *RequestValidatorPluginProtocols {
 	return &e
 }
-func (e *RequestValidatorPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RequestValidatorPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = RequestValidatorPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RequestValidatorPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // RequestValidatorPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

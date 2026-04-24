@@ -121,13 +121,7 @@ func (r *GatewayPluginAiPromptCompressorResource) Schema(ctx context.Context, re
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`rate`),
-						Description: `What compression type to use to compress with. Default: "rate"; must be one of ["rate", "target_token"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"rate",
-								"target_token",
-							),
-						},
+						Description: `What compression type to use to compress with. possible known values include one of ["rate", "target_token"]; Default: "rate"`,
 					},
 					"compressor_url": schema.StringAttribute{
 						Computed:    true,

@@ -107,14 +107,7 @@ func (r *GatewayPluginAiGcpModelArmorResource) Schema(ctx context.Context, req r
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`INPUT`),
-						Description: `The guardrail mode to use for the request. Default: "INPUT"; must be one of ["BOTH", "INPUT", "OUTPUT"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"BOTH",
-								"INPUT",
-								"OUTPUT",
-							),
-						},
+						Description: `The guardrail mode to use for the request. possible known values include one of ["BOTH", "INPUT", "OUTPUT"]; Default: "INPUT"`,
 					},
 					"location_id": schema.StringAttribute{
 						Required:    true,
@@ -172,14 +165,7 @@ func (r *GatewayPluginAiGcpModelArmorResource) Schema(ctx context.Context, req r
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`last_message`),
-						Description: `Select where to pick the 'text' for the GCP Model Armor Services request. Default: "last_message"; must be one of ["concatenate_all_content", "concatenate_user_content", "last_message"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"concatenate_all_content",
-								"concatenate_user_content",
-								"last_message",
-							),
-						},
+						Description: `Select where to pick the 'text' for the GCP Model Armor Services request. possible known values include one of ["concatenate_all_content", "concatenate_user_content", "last_message"]; Default: "last_message"`,
 					},
 					"timeout": schema.Float64Attribute{
 						Computed:    true,

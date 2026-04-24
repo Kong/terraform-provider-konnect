@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -144,28 +142,16 @@ const (
 func (e Hash) ToPointer() *Hash {
 	return &e
 }
-func (e *Hash) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Hash) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "allow", "consumer", "deny", "header", "ip", "none":
+			return true
+		}
 	}
-	switch v {
-	case "allow":
-		fallthrough
-	case "consumer":
-		fallthrough
-	case "deny":
-		fallthrough
-	case "header":
-		fallthrough
-	case "ip":
-		fallthrough
-	case "none":
-		*e = Hash(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Hash: %v", v)
-	}
+	return false
 }
 
 type CanaryPluginConfig struct {
@@ -309,24 +295,16 @@ const (
 func (e CanaryPluginProtocols) ToPointer() *CanaryPluginProtocols {
 	return &e
 }
-func (e *CanaryPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CanaryPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = CanaryPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CanaryPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // CanaryPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

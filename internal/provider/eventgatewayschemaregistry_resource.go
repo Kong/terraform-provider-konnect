@@ -106,13 +106,7 @@ func (r *EventGatewaySchemaRegistryResource) Schema(ctx context.Context, req res
 							},
 							"schema_type": schema.StringAttribute{
 								Required:    true,
-								Description: `The format of the message. must be one of ["avro", "json"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"avro",
-										"json",
-									),
-								},
+								Description: `The format of the message. possible known values include one of ["avro", "json"]`,
 							},
 							"timeout_seconds": schema.Int64Attribute{
 								Computed:    true,

@@ -149,7 +149,7 @@ Optional:
 - `cache_ttl` (Number) TTL in seconds of cache entities. Must be a value greater than 0. Default: 300
 - `memory` (Attributes) (see [below for nested schema](#nestedatt--config--memory))
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--redis))
-- `strategy` (String) The backing data store in which to hold cached entities. Accepted value is `memory`. Default: "memory"; must be one of ["memory", "redis"]
+- `strategy` (String) The backing data store in which to hold cached entities. Accepted value is `memory`. possible known values include one of ["memory", "redis"]; Default: "memory"
 - `vary_headers` (List of String) Relevant headers considered for the cache key. If undefined, none of the headers are taken into consideration.
 
 <a id="nestedatt--config--memory"></a>
@@ -181,7 +181,7 @@ Optional:
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--redis--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
+- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
@@ -193,7 +193,7 @@ Optional:
 
 Optional:
 
-- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]
+- `auth_provider` (String) Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]
 - `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 - `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
 - `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
@@ -296,7 +296,7 @@ import {
   to = konnect_gateway_plugin_graphql_proxy_cache_advanced.my_konnect_gateway_plugin_graphql_proxy_cache_advanced
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

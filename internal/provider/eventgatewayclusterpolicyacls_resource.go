@@ -79,13 +79,7 @@ func (r *EventGatewayClusterPolicyAclsResource) Schema(ctx context.Context, req 
 							Attributes: map[string]schema.Attribute{
 								"action": schema.StringAttribute{
 									Required:    true,
-									Description: `How to handle the request if the rule matches. must be one of ["allow", "deny"]`,
-									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"allow",
-											"deny",
-										),
-									},
+									Description: `How to handle the request if the rule matches. possible known values include one of ["allow", "deny"]`,
 								},
 								"operations": schema.ListNestedAttribute{
 									Required: true,
@@ -93,21 +87,7 @@ func (r *EventGatewayClusterPolicyAclsResource) Schema(ctx context.Context, req 
 										Attributes: map[string]schema.Attribute{
 											"name": schema.StringAttribute{
 												Required:    true,
-												Description: `must be one of ["all", "alter", "alter_configs", "create", "delete", "describe", "describe_configs", "idempotent_write", "read", "write"]`,
-												Validators: []validator.String{
-													stringvalidator.OneOf(
-														"all",
-														"alter",
-														"alter_configs",
-														"create",
-														"delete",
-														"describe",
-														"describe_configs",
-														"idempotent_write",
-														"read",
-														"write",
-													),
-												},
+												Description: `possible known values include one of ["all", "alter", "alter_configs", "create", "delete", "describe", "describe_configs", "idempotent_write", "read", "write"]`,
 											},
 										},
 									},
@@ -128,15 +108,7 @@ func (r *EventGatewayClusterPolicyAclsResource) Schema(ctx context.Context, req 
 								},
 								"resource_type": schema.StringAttribute{
 									Required:    true,
-									Description: `This rule applies to access only for type of resource. must be one of ["topic", "group", "transactional_id", "cluster"]`,
-									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"topic",
-											"group",
-											"transactional_id",
-											"cluster",
-										),
-									},
+									Description: `This rule applies to access only for type of resource. possible known values include one of ["topic", "group", "transactional_id", "cluster"]`,
 								},
 							},
 						},

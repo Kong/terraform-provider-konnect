@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -210,24 +208,16 @@ const (
 func (e RouteByHeaderPluginProtocols) ToPointer() *RouteByHeaderPluginProtocols {
 	return &e
 }
-func (e *RouteByHeaderPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RouteByHeaderPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = RouteByHeaderPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RouteByHeaderPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // RouteByHeaderPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

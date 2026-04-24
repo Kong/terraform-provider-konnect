@@ -150,14 +150,9 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 												PlanModifiers: []planmodifier.String{
 													stringplanmodifier.RequiresReplaceIfConfigured(),
 												},
-												Description: `Not Null; must be one of ["days", "weeks", "years"]; Requires replacement if changed.`,
+												Description: `possible known values include one of ["days", "weeks", "years"]; Not Null; Requires replacement if changed.`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.OneOf(
-														"days",
-														"weeks",
-														"years",
-													),
 												},
 											},
 											"value": schema.Int64Attribute{

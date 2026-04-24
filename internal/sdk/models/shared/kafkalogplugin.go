@@ -134,22 +134,16 @@ const (
 func (e KafkaLogPluginMechanism) ToPointer() *KafkaLogPluginMechanism {
 	return &e
 }
-func (e *KafkaLogPluginMechanism) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaLogPluginMechanism) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "PLAIN", "SCRAM-SHA-256", "SCRAM-SHA-512":
+			return true
+		}
 	}
-	switch v {
-	case "PLAIN":
-		fallthrough
-	case "SCRAM-SHA-256":
-		fallthrough
-	case "SCRAM-SHA-512":
-		*e = KafkaLogPluginMechanism(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaLogPluginMechanism: %v", v)
-	}
+	return false
 }
 
 // KafkaLogPluginStrategy - The authentication strategy for the plugin, the only option for the value is `sasl`.
@@ -279,22 +273,16 @@ const (
 func (e KafkaLogPluginProducerRequestAcks) ToPointer() *KafkaLogPluginProducerRequestAcks {
 	return &e
 }
-func (e *KafkaLogPluginProducerRequestAcks) UnmarshalJSON(data []byte) error {
-	var v int64
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaLogPluginProducerRequestAcks) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case -1, 0, 1:
+			return true
+		}
 	}
-	switch v {
-	case -1:
-		fallthrough
-	case 0:
-		fallthrough
-	case 1:
-		*e = KafkaLogPluginProducerRequestAcks(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaLogPluginProducerRequestAcks: %v", v)
-	}
+	return false
 }
 
 type KafkaLogPluginBasic struct {
@@ -339,22 +327,16 @@ const (
 func (e KafkaLogPluginMode) ToPointer() *KafkaLogPluginMode {
 	return &e
 }
-func (e *KafkaLogPluginMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaLogPluginMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "basic", "none", "oauth2":
+			return true
+		}
 	}
-	switch v {
-	case "basic":
-		fallthrough
-	case "none":
-		fallthrough
-	case "oauth2":
-		*e = KafkaLogPluginMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaLogPluginMode: %v", v)
-	}
+	return false
 }
 
 // KafkaLogPluginGrantType - The OAuth grant type to be used.
@@ -368,20 +350,16 @@ const (
 func (e KafkaLogPluginGrantType) ToPointer() *KafkaLogPluginGrantType {
 	return &e
 }
-func (e *KafkaLogPluginGrantType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaLogPluginGrantType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_credentials", "password":
+			return true
+		}
 	}
-	switch v {
-	case "client_credentials":
-		fallthrough
-	case "password":
-		*e = KafkaLogPluginGrantType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaLogPluginGrantType: %v", v)
-	}
+	return false
 }
 
 type KafkaLogPluginOauth2 struct {
@@ -504,24 +482,16 @@ const (
 func (e KafkaLogPluginAuthMethod) ToPointer() *KafkaLogPluginAuthMethod {
 	return &e
 }
-func (e *KafkaLogPluginAuthMethod) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaLogPluginAuthMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none":
+			return true
+		}
 	}
-	switch v {
-	case "client_secret_basic":
-		fallthrough
-	case "client_secret_jwt":
-		fallthrough
-	case "client_secret_post":
-		fallthrough
-	case "none":
-		*e = KafkaLogPluginAuthMethod(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaLogPluginAuthMethod: %v", v)
-	}
+	return false
 }
 
 // KafkaLogPluginClientSecretJwtAlg - The algorithm to use with JWT when using `client_secret_jwt` authentication.
@@ -535,20 +505,16 @@ const (
 func (e KafkaLogPluginClientSecretJwtAlg) ToPointer() *KafkaLogPluginClientSecretJwtAlg {
 	return &e
 }
-func (e *KafkaLogPluginClientSecretJwtAlg) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaLogPluginClientSecretJwtAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "HS256", "HS512":
+			return true
+		}
 	}
-	switch v {
-	case "HS256":
-		fallthrough
-	case "HS512":
-		*e = KafkaLogPluginClientSecretJwtAlg(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaLogPluginClientSecretJwtAlg: %v", v)
-	}
+	return false
 }
 
 type KafkaLogPluginOauth2Client struct {
@@ -1134,28 +1100,16 @@ const (
 func (e KafkaLogPluginProtocols) ToPointer() *KafkaLogPluginProtocols {
 	return &e
 }
-func (e *KafkaLogPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *KafkaLogPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = KafkaLogPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for KafkaLogPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // KafkaLogPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

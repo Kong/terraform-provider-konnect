@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -134,22 +132,16 @@ const (
 func (e GuardingMode) ToPointer() *GuardingMode {
 	return &e
 }
-func (e *GuardingMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GuardingMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "BOTH", "INPUT", "OUTPUT":
+			return true
+		}
 	}
-	switch v {
-	case "BOTH":
-		fallthrough
-	case "INPUT":
-		fallthrough
-	case "OUTPUT":
-		*e = GuardingMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GuardingMode: %v", v)
-	}
+	return false
 }
 
 // TextSource - Select where to pick the 'text' for the Content Guard Services request.
@@ -163,20 +155,16 @@ const (
 func (e TextSource) ToPointer() *TextSource {
 	return &e
 }
-func (e *TextSource) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TextSource) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "concatenate_all_content", "concatenate_user_content":
+			return true
+		}
 	}
-	switch v {
-	case "concatenate_all_content":
-		fallthrough
-	case "concatenate_user_content":
-		*e = TextSource(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TextSource: %v", v)
-	}
+	return false
 }
 
 type AiAwsGuardrailsPluginConfig struct {
@@ -395,24 +383,16 @@ const (
 func (e AiAwsGuardrailsPluginProtocols) ToPointer() *AiAwsGuardrailsPluginProtocols {
 	return &e
 }
-func (e *AiAwsGuardrailsPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiAwsGuardrailsPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = AiAwsGuardrailsPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiAwsGuardrailsPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AiAwsGuardrailsPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

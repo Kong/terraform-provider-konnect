@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // UpdateAlgorithm - Algorithm used in the key signing process
 type UpdateAlgorithm string
 
@@ -22,26 +17,14 @@ const (
 func (e UpdateAlgorithm) ToPointer() *UpdateAlgorithm {
 	return &e
 }
-func (e *UpdateAlgorithm) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *UpdateAlgorithm) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "RS256", "RS384", "RS512", "PS256", "PS384", "PS512":
+			return true
+		}
 	}
-	switch v {
-	case "RS256":
-		fallthrough
-	case "RS384":
-		fallthrough
-	case "RS512":
-		fallthrough
-	case "PS256":
-		fallthrough
-	case "PS384":
-		fallthrough
-	case "PS512":
-		*e = UpdateAlgorithm(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for UpdateAlgorithm: %v", v)
-	}
+	return false
 }

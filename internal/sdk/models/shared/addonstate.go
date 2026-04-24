@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // AddOnState - The current state of the add-on. Possible values:
 // - `initializing` - The add-on is in the process of being initialized/updated.
 // - `ready` - The add-on is fully operational.
@@ -22,20 +17,14 @@ const (
 func (e AddOnState) ToPointer() *AddOnState {
 	return &e
 }
-func (e *AddOnState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AddOnState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "initializing", "ready", "terminating":
+			return true
+		}
 	}
-	switch v {
-	case "initializing":
-		fallthrough
-	case "ready":
-		fallthrough
-	case "terminating":
-		*e = AddOnState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AddOnState: %v", v)
-	}
+	return false
 }

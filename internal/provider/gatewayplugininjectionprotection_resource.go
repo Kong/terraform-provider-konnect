@@ -131,13 +131,7 @@ func (r *GatewayPluginInjectionProtectionResource) Schema(ctx context.Context, r
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`block`),
-						Description: `Enforcement mode of the security policy. Default: "block"; must be one of ["block", "log_only"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"block",
-								"log_only",
-							),
-						},
+						Description: `Enforcement mode of the security policy. possible known values include one of ["block", "log_only"]; Default: "block"`,
 					},
 					"error_message": schema.StringAttribute{
 						Computed:    true,

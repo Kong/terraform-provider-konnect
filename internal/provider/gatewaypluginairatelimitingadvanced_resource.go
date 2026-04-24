@@ -258,33 +258,12 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`consumer`),
-						Description: `The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be ` + "`" + `ip` + "`" + `, ` + "`" + `credential` + "`" + `, ` + "`" + `consumer` + "`" + `, ` + "`" + `service` + "`" + `, ` + "`" + `header` + "`" + `, ` + "`" + `path` + "`" + ` or ` + "`" + `consumer-group` + "`" + `. Note if ` + "`" + `identifier` + "`" + ` is ` + "`" + `consumer-group` + "`" + `, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate. Default: "consumer"; must be one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "service"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"consumer",
-								"consumer-group",
-								"credential",
-								"header",
-								"ip",
-								"path",
-								"service",
-							),
-						},
+						Description: `The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be ` + "`" + `ip` + "`" + `, ` + "`" + `credential` + "`" + `, ` + "`" + `consumer` + "`" + `, ` + "`" + `service` + "`" + `, ` + "`" + `header` + "`" + `, ` + "`" + `path` + "`" + ` or ` + "`" + `consumer-group` + "`" + `. Note if ` + "`" + `identifier` + "`" + ` is ` + "`" + `consumer-group` + "`" + `, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate. possible known values include one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "service"]; Default: "consumer"`,
 					},
 					"llm_format": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `LLM input and output format and schema to use. must be one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"anthropic",
-								"bedrock",
-								"cohere",
-								"gemini",
-								"huggingface",
-								"openai",
-							),
-						},
+						Description: `LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]`,
 					},
 					"llm_providers": schema.ListNestedAttribute{
 						Optional: true,
@@ -305,22 +284,9 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 								"name": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The LLM provider to which the rate limit applies. Not Null; must be one of ["anthropic", "azure", "bedrock", "cohere", "customCost", "gemini", "huggingface", "llama2", "mistral", "openai", "requestPrompt"]`,
+									Description: `The LLM provider to which the rate limit applies. possible known values include one of ["anthropic", "azure", "bedrock", "cohere", "customCost", "gemini", "huggingface", "llama2", "mistral", "openai", "requestPrompt"]; Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
-										stringvalidator.OneOf(
-											"anthropic",
-											"azure",
-											"bedrock",
-											"cohere",
-											"customCost",
-											"gemini",
-											"huggingface",
-											"llama2",
-											"mistral",
-											"openai",
-											"requestPrompt",
-										),
 									},
 								},
 								"window_size": schema.ListAttribute{
@@ -375,15 +341,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 												Computed:    true,
 												Optional:    true,
 												Default:     stringdefault.StaticString(`total_tokens`),
-												Description: `What to count for this limit. Supported strategies: total_tokens, prompt_tokens, completion_tokens, cost. Default: "total_tokens"; must be one of ["completion_tokens", "cost", "prompt_tokens", "total_tokens"]`,
-												Validators: []validator.String{
-													stringvalidator.OneOf(
-														"completion_tokens",
-														"cost",
-														"prompt_tokens",
-														"total_tokens",
-													),
-												},
+												Description: `What to count for this limit. Supported strategies: total_tokens, prompt_tokens, completion_tokens, cost. possible known values include one of ["completion_tokens", "cost", "prompt_tokens", "total_tokens"]; Default: "total_tokens"`,
 											},
 											"window_size": schema.Int64Attribute{
 												Computed:    true,
@@ -417,18 +375,9 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 											"type": schema.StringAttribute{
 												Computed:    true,
 												Optional:    true,
-												Description: `The attribute to match against. Not Null; must be one of ["consumer", "consumer_group", "header", "ip", "model", "path", "provider"]`,
+												Description: `The attribute to match against. possible known values include one of ["consumer", "consumer_group", "header", "ip", "model", "path", "provider"]; Not Null`,
 												Validators: []validator.String{
 													speakeasy_stringvalidators.NotNull(),
-													stringvalidator.OneOf(
-														"consumer",
-														"consumer_group",
-														"header",
-														"ip",
-														"model",
-														"path",
-														"provider",
-													),
 												},
 											},
 											"values": schema.ListAttribute{
@@ -444,13 +393,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 									Computed:    true,
 									Optional:    true,
 									Default:     stringdefault.StaticString(`sliding`),
-									Description: `The time window type for this policy. Default: "sliding"; must be one of ["fixed", "sliding"]`,
-									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"fixed",
-											"sliding",
-										),
-									},
+									Description: `The time window type for this policy. possible known values include one of ["fixed", "sliding"]; Default: "sliding"`,
 								},
 							},
 						},
@@ -534,14 +477,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 									"auth_provider": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"aws",
-												"azure",
-												"gcp",
-											),
-										},
+										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
 									},
 									"aws_access_key_id": schema.StringAttribute{
 										Optional:    true,
@@ -735,14 +671,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 							"sentinel_role": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"any",
-										"master",
-										"slave",
-									),
-								},
+								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
 							},
 							"sentinel_username": schema.StringAttribute{
 								Optional:    true,
@@ -784,14 +713,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`local`),
-						Description: `The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: ` + "`" + `local` + "`" + `, ` + "`" + `redis` + "`" + ` and ` + "`" + `cluster` + "`" + `. Default: "local"; must be one of ["cluster", "local", "redis"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"cluster",
-								"local",
-								"redis",
-							),
-						},
+						Description: `The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: ` + "`" + `local` + "`" + `, ` + "`" + `redis` + "`" + ` and ` + "`" + `cluster` + "`" + `. possible known values include one of ["cluster", "local", "redis"]; Default: "local"`,
 					},
 					"sync_rate": schema.Float64Attribute{
 						Optional:    true,
@@ -801,27 +723,13 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`total_tokens`),
-						Description: `What tokens to use for cost calculation. Available values are: ` + "`" + `total_tokens` + "`" + ` ` + "`" + `prompt_tokens` + "`" + `, ` + "`" + `completion_tokens` + "`" + ` or ` + "`" + `cost` + "`" + `. Default: "total_tokens"; must be one of ["completion_tokens", "cost", "prompt_tokens", "total_tokens"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"completion_tokens",
-								"cost",
-								"prompt_tokens",
-								"total_tokens",
-							),
-						},
+						Description: `What tokens to use for cost calculation. Available values are: ` + "`" + `total_tokens` + "`" + ` ` + "`" + `prompt_tokens` + "`" + `, ` + "`" + `completion_tokens` + "`" + ` or ` + "`" + `cost` + "`" + `. possible known values include one of ["completion_tokens", "cost", "prompt_tokens", "total_tokens"]; Default: "total_tokens"`,
 					},
 					"window_type": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`sliding`),
-						Description: `Sets the time window type to either ` + "`" + `sliding` + "`" + ` (default) or ` + "`" + `fixed` + "`" + `. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters. Default: "sliding"; must be one of ["fixed", "sliding"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"fixed",
-								"sliding",
-							),
-						},
+						Description: `Sets the time window type to either ` + "`" + `sliding` + "`" + ` (default) or ` + "`" + `fixed` + "`" + `. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters. possible known values include one of ["fixed", "sliding"]; Default: "sliding"`,
 					},
 				},
 			},

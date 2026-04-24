@@ -142,7 +142,7 @@ Required:
 
 Optional:
 
-- `mode` (String) The mode of operation for the plugin. The `AUTO` determines the mode automatically from the client request. Default: "POLLING"; must be one of ["AUTO", "POLLING", "SERVER-SENT-EVENTS", "WEBSOCKET"]
+- `mode` (String) The mode of operation for the plugin. The `AUTO` determines the mode automatically from the client request. possible known values include one of ["AUTO", "POLLING", "SERVER-SENT-EVENTS", "WEBSOCKET"]; Default: "POLLING"
 - `polling` (Attributes) The `POLLING` mode related configuration settings. (see [below for nested schema](#nestedatt--config--polling))
 - `websocket` (Attributes) The `WEBSOCKET` mode related configuration settings. (see [below for nested schema](#nestedatt--config--websocket))
 
@@ -155,7 +155,7 @@ Required:
 
 Optional:
 
-- `ack_mode` (String) Controls how acknowledgments are generated for received Guaranteed messages. When set to `AUTO`, the messages are positively acknowledged upon receiving them. When set to 'CLIENT', the messages are positively or negatively acknowledged by Kong regarding to client delivery status. Default: "CLIENT"; must be one of ["AUTO", "CLIENT"]
+- `ack_mode` (String) Controls how acknowledgments are generated for received Guaranteed messages. When set to `AUTO`, the messages are positively acknowledged upon receiving them. When set to 'CLIENT', the messages are positively or negatively acknowledged by Kong regarding to client delivery status. possible known values include one of ["AUTO", "CLIENT"]; Default: "CLIENT"
 - `functions` (List of String) The Lua functions that manipulates the message being received from Solace. The `message` variable can be used to access the current message content, and the function can return a new content.
 - `max_unacked_messages` (Number) This property controls the maximum number of messages that may be unacknowledged on the Flow. Default: -1
 - `properties` (Map of String) Additional Solace flow properties (each setting needs to have `FLOW_` prefix).
@@ -204,7 +204,7 @@ Optional:
 - `id_token` (String) The OpenID Connect ID token used with `OAUTH2` authentication scheme when connecting to an event broker.
 - `id_token_header` (String) Specifies the header that contains id token for the `OAUTH2` authentication scheme when connecting to an event broker. This header takes precedence over the `id_token` field.
 - `password` (String) The password used with `BASIC` authentication scheme when connecting to an event broker.
-- `scheme` (String) The client authentication scheme used when connection to an event broker. Default: "BASIC"; must be one of ["BASIC", "NONE", "OAUTH2"]
+- `scheme` (String) The client authentication scheme used when connection to an event broker. possible known values include one of ["BASIC", "NONE", "OAUTH2"]; Default: "BASIC"
 - `username` (String) The username used with `BASIC` authentication scheme when connecting to an event broker.
 
 
@@ -289,7 +289,7 @@ import {
   to = konnect_gateway_plugin_solace_consume.my_konnect_gateway_plugin_solace_consume
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

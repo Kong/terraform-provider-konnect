@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -19,20 +17,16 @@ const (
 func (e DefaultAPIVisibility) ToPointer() *DefaultAPIVisibility {
 	return &e
 }
-func (e *DefaultAPIVisibility) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DefaultAPIVisibility) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "public", "private":
+			return true
+		}
 	}
-	switch v {
-	case "public":
-		fallthrough
-	case "private":
-		*e = DefaultAPIVisibility(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for DefaultAPIVisibility: %v", v)
-	}
+	return false
 }
 
 // DefaultPageVisibility - The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.
@@ -46,20 +40,16 @@ const (
 func (e DefaultPageVisibility) ToPointer() *DefaultPageVisibility {
 	return &e
 }
-func (e *DefaultPageVisibility) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DefaultPageVisibility) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "public", "private":
+			return true
+		}
 	}
-	switch v {
-	case "public":
-		fallthrough
-	case "private":
-		*e = DefaultPageVisibility(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for DefaultPageVisibility: %v", v)
-	}
+	return false
 }
 
 // CreatePortal - Create a portal.

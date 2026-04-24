@@ -167,13 +167,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 									"param_location": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. must be one of ["body", "query"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"body",
-												"query",
-											),
-										},
+										Description: `Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
 									},
 									"param_name": schema.StringAttribute{
 										Optional:    true,
@@ -362,18 +356,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 									},
 									"provider": schema.StringAttribute{
 										Required:    true,
-										Description: `AI provider format to use for embeddings API. must be one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"azure",
-												"bedrock",
-												"gemini",
-												"huggingface",
-												"mistral",
-												"ollama",
-												"openai",
-											),
-										},
+										Description: `AI provider format to use for embeddings API. possible known values include one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai"]`,
 									},
 								},
 							},
@@ -383,34 +366,13 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`text/generation`),
-						Description: `Generative AI category of the request. Default: "text/generation"; must be one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"audio/speech",
-								"audio/transcription",
-								"image/generation",
-								"realtime/generation",
-								"text/embeddings",
-								"text/generation",
-								"video/generation",
-							),
-						},
+						Description: `Generative AI category of the request. possible known values include one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation"]; Default: "text/generation"`,
 					},
 					"llm_format": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`openai`),
-						Description: `LLM input and output format and schema to use. Default: "openai"; must be one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"anthropic",
-								"bedrock",
-								"cohere",
-								"gemini",
-								"huggingface",
-								"openai",
-							),
-						},
+						Description: `LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]; Default: "openai"`,
 					},
 					"max_request_body_size": schema.Int64Attribute{
 						Computed:    true,
@@ -484,13 +446,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 							},
 							"distance_metric": schema.StringAttribute{
 								Required:    true,
-								Description: `the distance metric to use for vector searches. must be one of ["cosine", "euclidean"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"cosine",
-										"euclidean",
-									),
-								},
+								Description: `the distance metric to use for vector searches. possible known values include one of ["cosine", "euclidean"]`,
 							},
 							"pgvector": schema.SingleNestedAttribute{
 								Computed: true,
@@ -562,14 +518,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 										Computed:    true,
 										Optional:    true,
 										Default:     stringdefault.StaticString(`tlsv1_2`),
-										Description: `the ssl version to use for the pgvector database. Default: "tlsv1_2"; must be one of ["any", "tlsv1_2", "tlsv1_3"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"any",
-												"tlsv1_2",
-												"tlsv1_3",
-											),
-										},
+										Description: `the ssl version to use for the pgvector database. possible known values include one of ["any", "tlsv1_2", "tlsv1_3"]; Default: "tlsv1_2"`,
 									},
 									"timeout": schema.Float64Attribute{
 										Computed:    true,
@@ -663,14 +612,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 											"auth_provider": schema.StringAttribute{
 												Computed:    true,
 												Optional:    true,
-												Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
-												Validators: []validator.String{
-													stringvalidator.OneOf(
-														"aws",
-														"azure",
-														"gcp",
-													),
-												},
+												Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
 											},
 											"aws_access_key_id": schema.StringAttribute{
 												Optional:    true,
@@ -864,14 +806,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 									"sentinel_role": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"any",
-												"master",
-												"slave",
-											),
-										},
+										Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
 									},
 									"sentinel_username": schema.StringAttribute{
 										Optional:    true,
@@ -901,13 +836,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Schema(ctx context.Context,
 							},
 							"strategy": schema.StringAttribute{
 								Required:    true,
-								Description: `which vector database driver to use. must be one of ["pgvector", "redis"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"pgvector",
-										"redis",
-									),
-								},
+								Description: `which vector database driver to use. possible known values include one of ["pgvector", "redis"]`,
 							},
 							"threshold": schema.Float64Attribute{
 								Optional:    true,

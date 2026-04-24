@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -24,30 +22,16 @@ const (
 func (e AssignedRoleEntityRegion) ToPointer() *AssignedRoleEntityRegion {
 	return &e
 }
-func (e *AssignedRoleEntityRegion) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AssignedRoleEntityRegion) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "us", "eu", "au", "me", "in", "sg", "*":
+			return true
+		}
 	}
-	switch v {
-	case "us":
-		fallthrough
-	case "eu":
-		fallthrough
-	case "au":
-		fallthrough
-	case "me":
-		fallthrough
-	case "in":
-		fallthrough
-	case "sg":
-		fallthrough
-	case "*":
-		*e = AssignedRoleEntityRegion(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AssignedRoleEntityRegion: %v", v)
-	}
+	return false
 }
 
 // AssignedRole - An assigned role is a role that has been assigned to a user or team.

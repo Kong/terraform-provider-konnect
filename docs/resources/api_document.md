@@ -39,7 +39,7 @@ Specify the `id` of another API Document as the `parent_document_id` to add some
 - `slug` (String) The `slug` is used in generated URLs to provide human readable paths.
 
 Defaults to `slugify(title)`
-- `status` (String) If `status=published` the document will be visible in your live portal. Default: "unpublished"; must be one of ["published", "unpublished"]
+- `status` (String) If `status=published` the document will be visible in your live portal. possible known values include one of ["published", "unpublished"]; Default: "unpublished"
 - `title` (String) The title of the document. Used to populate the `<title>` tag for the page
 
 ### Read-Only
@@ -59,7 +59,7 @@ import {
   to = konnect_api_document.my_konnect_api_document
   id = jsonencode({
     api_id = "9f5061ce-78f6-4452-9108-ad7c02821fd5"
-    id = "de5c9818-be5c-42e6-b514-e3d4bc30ddeb"
+    id     = "de5c9818-be5c-42e6-b514-e3d4bc30ddeb"
   })
 }
 ```

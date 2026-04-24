@@ -17,7 +17,7 @@ resource "konnect_event_gateway_backend_cluster" "my_eventgatewaybackendcluster"
   authentication = {
     sasl_scram = {
       algorithm = "sha256"
-      password  = "$${vault.env['MY_ENV_VAR']}"
+      password  = "$$${vault.env['MY_ENV_VAR']}"
       username  = "...my_username..."
     }
   }
@@ -36,7 +36,7 @@ resource "konnect_event_gateway_backend_cluster" "my_eventgatewaybackendcluster"
     ca_bundle = "...my_ca_bundle..."
     client_identity = {
       certificate = "...my_certificate..."
-      key         = "$${vault.env['MY_ENV_VAR']}"
+      key         = "$$${vault.env['MY_ENV_VAR']}"
     }
     enabled              = false
     insecure_skip_verify = false
@@ -107,7 +107,7 @@ Not Null
 
 Optional:
 
-- `algorithm` (String) The algorithm used for SASL/SCRAM authentication. Not Null; must be one of ["sha256", "sha512"]
+- `algorithm` (String) The algorithm used for SASL/SCRAM authentication. possible known values include one of ["sha256", "sha512"]; Not Null
 - `password` (String) A sensitive value containing the secret or a reference to a secret as a template string expression.
 If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
 If provided as an expression, the expression itself is stored and returned by the API.
@@ -157,7 +157,7 @@ import {
   to = konnect_event_gateway_backend_cluster.my_konnect_event_gateway_backend_cluster
   id = jsonencode({
     gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "..."
+    id         = "..."
   })
 }
 ```

@@ -138,10 +138,10 @@ Optional:
 
 Optional:
 
-- `consumer_identifier` (String) Authenticated user detail. must be one of ["consumer_id", "custom_id", "username"]
-- `name` (String) Datadog metric’s name. Not Null; must be one of ["kong_latency", "latency", "request_count", "request_size", "response_size", "upstream_latency"]
+- `consumer_identifier` (String) Authenticated user detail. possible known values include one of ["consumer_id", "custom_id", "username"]
+- `name` (String) Datadog metric’s name. possible known values include one of ["kong_latency", "latency", "request_count", "request_size", "response_size", "upstream_latency"]; Not Null
 - `sample_rate` (Number) Sampling rate
-- `stat_type` (String) Determines what sort of event the metric represents. Not Null; must be one of ["counter", "distribution", "gauge", "histogram", "meter", "set", "timer"]
+- `stat_type` (String) Determines what sort of event the metric represents. possible known values include one of ["counter", "distribution", "gauge", "histogram", "meter", "set", "timer"]; Not Null
 - `tags` (List of String) List of tags
 
 
@@ -150,7 +150,7 @@ Optional:
 
 Optional:
 
-- `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of [-1, 1]
+- `concurrency_limit` (Number) The number of of queue delivery timers. -1 indicates unlimited. possible known values include one of [-1, 1]; Default: 1
 - `initial_retry_delay` (Number) Time in seconds before the initial retry is made for a failing batch.
 - `max_batch_size` (Number) Maximum number of entries that can be processed at a time. Default: 1
 - `max_bytes` (Number) Maximum number of bytes that can be waiting on a queue, requires string content.
@@ -230,7 +230,7 @@ import {
   to = konnect_gateway_plugin_datadog.my_konnect_gateway_plugin_datadog
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

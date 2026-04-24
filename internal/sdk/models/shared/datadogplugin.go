@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -134,22 +132,16 @@ const (
 func (e DatadogPluginConsumerIdentifier) ToPointer() *DatadogPluginConsumerIdentifier {
 	return &e
 }
-func (e *DatadogPluginConsumerIdentifier) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DatadogPluginConsumerIdentifier) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "consumer_id", "custom_id", "username":
+			return true
+		}
 	}
-	switch v {
-	case "consumer_id":
-		fallthrough
-	case "custom_id":
-		fallthrough
-	case "username":
-		*e = DatadogPluginConsumerIdentifier(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for DatadogPluginConsumerIdentifier: %v", v)
-	}
+	return false
 }
 
 // DatadogPluginName - Datadog metric’s name
@@ -167,28 +159,16 @@ const (
 func (e DatadogPluginName) ToPointer() *DatadogPluginName {
 	return &e
 }
-func (e *DatadogPluginName) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DatadogPluginName) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "kong_latency", "latency", "request_count", "request_size", "response_size", "upstream_latency":
+			return true
+		}
 	}
-	switch v {
-	case "kong_latency":
-		fallthrough
-	case "latency":
-		fallthrough
-	case "request_count":
-		fallthrough
-	case "request_size":
-		fallthrough
-	case "response_size":
-		fallthrough
-	case "upstream_latency":
-		*e = DatadogPluginName(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for DatadogPluginName: %v", v)
-	}
+	return false
 }
 
 // StatType - Determines what sort of event the metric represents
@@ -207,30 +187,16 @@ const (
 func (e StatType) ToPointer() *StatType {
 	return &e
 }
-func (e *StatType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *StatType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "counter", "distribution", "gauge", "histogram", "meter", "set", "timer":
+			return true
+		}
 	}
-	switch v {
-	case "counter":
-		fallthrough
-	case "distribution":
-		fallthrough
-	case "gauge":
-		fallthrough
-	case "histogram":
-		fallthrough
-	case "meter":
-		fallthrough
-	case "set":
-		fallthrough
-	case "timer":
-		*e = StatType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for StatType: %v", v)
-	}
+	return false
 }
 
 type DatadogPluginMetrics struct {
@@ -303,20 +269,16 @@ const (
 func (e ConcurrencyLimit) ToPointer() *ConcurrencyLimit {
 	return &e
 }
-func (e *ConcurrencyLimit) UnmarshalJSON(data []byte) error {
-	var v int64
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ConcurrencyLimit) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case -1, 1:
+			return true
+		}
 	}
-	switch v {
-	case -1:
-		fallthrough
-	case 1:
-		*e = ConcurrencyLimit(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ConcurrencyLimit: %v", v)
-	}
+	return false
 }
 
 type Queue struct {
@@ -568,36 +530,16 @@ const (
 func (e DatadogPluginProtocols) ToPointer() *DatadogPluginProtocols {
 	return &e
 }
-func (e *DatadogPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *DatadogPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = DatadogPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for DatadogPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // DatadogPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

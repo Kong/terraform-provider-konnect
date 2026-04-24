@@ -37,7 +37,7 @@ resource "konnect_portal_product_version" "my_portalproductversion" {
 - `deprecated` (Boolean) Whether the api product version on the portal is deprecated
 - `portal_id` (String) The Portal identifier
 - `product_version_id` (String) API product version identifier
-- `publish_status` (String) Publication status of the API product version on the portal. must be one of ["published", "unpublished"]
+- `publish_status` (String) Publication status of the API product version on the portal. possible known values include one of ["published", "unpublished"]
 
 ### Optional
 
@@ -99,7 +99,7 @@ In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.
 import {
   to = konnect_portal_product_version.my_konnect_portal_product_version
   id = jsonencode({
-    portal_id = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+    portal_id          = "f32d905a-ed33-46a3-a093-d8f536af9a8a"
     product_version_id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
   })
 }

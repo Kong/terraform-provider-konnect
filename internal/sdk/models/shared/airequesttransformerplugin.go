@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -133,20 +131,16 @@ const (
 func (e AiRequestTransformerPluginParamLocation) ToPointer() *AiRequestTransformerPluginParamLocation {
 	return &e
 }
-func (e *AiRequestTransformerPluginParamLocation) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRequestTransformerPluginParamLocation) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "body", "query":
+			return true
+		}
 	}
-	switch v {
-	case "body":
-		fallthrough
-	case "query":
-		*e = AiRequestTransformerPluginParamLocation(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRequestTransformerPluginParamLocation: %v", v)
-	}
+	return false
 }
 
 type AiRequestTransformerPluginAuth struct {
@@ -448,26 +442,16 @@ const (
 func (e AiRequestTransformerPluginEmbeddingInputType) ToPointer() *AiRequestTransformerPluginEmbeddingInputType {
 	return &e
 }
-func (e *AiRequestTransformerPluginEmbeddingInputType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRequestTransformerPluginEmbeddingInputType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "classification", "clustering", "image", "search_document", "search_query":
+			return true
+		}
 	}
-	switch v {
-	case "classification":
-		fallthrough
-	case "clustering":
-		fallthrough
-	case "image":
-		fallthrough
-	case "search_document":
-		fallthrough
-	case "search_query":
-		*e = AiRequestTransformerPluginEmbeddingInputType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRequestTransformerPluginEmbeddingInputType: %v", v)
-	}
+	return false
 }
 
 type AiRequestTransformerPluginCohere struct {
@@ -644,22 +628,16 @@ const (
 func (e AiRequestTransformerPluginLlama2Format) ToPointer() *AiRequestTransformerPluginLlama2Format {
 	return &e
 }
-func (e *AiRequestTransformerPluginLlama2Format) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRequestTransformerPluginLlama2Format) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ollama", "openai", "raw":
+			return true
+		}
 	}
-	switch v {
-	case "ollama":
-		fallthrough
-	case "openai":
-		fallthrough
-	case "raw":
-		*e = AiRequestTransformerPluginLlama2Format(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRequestTransformerPluginLlama2Format: %v", v)
-	}
+	return false
 }
 
 // AiRequestTransformerPluginMistralFormat - If using mistral provider, select the upstream message format.
@@ -673,20 +651,16 @@ const (
 func (e AiRequestTransformerPluginMistralFormat) ToPointer() *AiRequestTransformerPluginMistralFormat {
 	return &e
 }
-func (e *AiRequestTransformerPluginMistralFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRequestTransformerPluginMistralFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ollama", "openai":
+			return true
+		}
 	}
-	switch v {
-	case "ollama":
-		fallthrough
-	case "openai":
-		*e = AiRequestTransformerPluginMistralFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRequestTransformerPluginMistralFormat: %v", v)
-	}
+	return false
 }
 
 // AiRequestTransformerPluginOptions - Key/value settings for the model
@@ -912,48 +886,16 @@ const (
 func (e AiRequestTransformerPluginProvider) ToPointer() *AiRequestTransformerPluginProvider {
 	return &e
 }
-func (e *AiRequestTransformerPluginProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRequestTransformerPluginProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "databricks", "deepseek", "gemini", "huggingface", "llama2", "mistral", "ollama", "openai", "vllm", "xai":
+			return true
+		}
 	}
-	switch v {
-	case "anthropic":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "bedrock":
-		fallthrough
-	case "cerebras":
-		fallthrough
-	case "cohere":
-		fallthrough
-	case "dashscope":
-		fallthrough
-	case "databricks":
-		fallthrough
-	case "deepseek":
-		fallthrough
-	case "gemini":
-		fallthrough
-	case "huggingface":
-		fallthrough
-	case "llama2":
-		fallthrough
-	case "mistral":
-		fallthrough
-	case "ollama":
-		fallthrough
-	case "openai":
-		fallthrough
-	case "vllm":
-		fallthrough
-	case "xai":
-		*e = AiRequestTransformerPluginProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRequestTransformerPluginProvider: %v", v)
-	}
+	return false
 }
 
 type AiRequestTransformerPluginModel struct {
@@ -1030,46 +972,16 @@ const (
 func (e AiRequestTransformerPluginRouteType) ToPointer() *AiRequestTransformerPluginRouteType {
 	return &e
 }
-func (e *AiRequestTransformerPluginRouteType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRequestTransformerPluginRouteType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime", "video/v1/videos/generations":
+			return true
+		}
 	}
-	switch v {
-	case "audio/v1/audio/speech":
-		fallthrough
-	case "audio/v1/audio/transcriptions":
-		fallthrough
-	case "audio/v1/audio/translations":
-		fallthrough
-	case "image/v1/images/edits":
-		fallthrough
-	case "image/v1/images/generations":
-		fallthrough
-	case "llm/v1/assistants":
-		fallthrough
-	case "llm/v1/batches":
-		fallthrough
-	case "llm/v1/chat":
-		fallthrough
-	case "llm/v1/completions":
-		fallthrough
-	case "llm/v1/embeddings":
-		fallthrough
-	case "llm/v1/files":
-		fallthrough
-	case "llm/v1/responses":
-		fallthrough
-	case "preserve":
-		fallthrough
-	case "realtime/v1/realtime":
-		fallthrough
-	case "video/v1/videos/generations":
-		*e = AiRequestTransformerPluginRouteType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRequestTransformerPluginRouteType: %v", v)
-	}
+	return false
 }
 
 type AiRequestTransformerPluginLlm struct {
@@ -1284,24 +1196,16 @@ const (
 func (e AiRequestTransformerPluginProtocols) ToPointer() *AiRequestTransformerPluginProtocols {
 	return &e
 }
-func (e *AiRequestTransformerPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiRequestTransformerPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = AiRequestTransformerPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiRequestTransformerPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AiRequestTransformerPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

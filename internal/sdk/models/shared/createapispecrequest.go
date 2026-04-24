@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -20,22 +18,16 @@ const (
 func (e CreateAPISpecRequestAPISpecType) ToPointer() *CreateAPISpecRequestAPISpecType {
 	return &e
 }
-func (e *CreateAPISpecRequestAPISpecType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CreateAPISpecRequestAPISpecType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "oas2", "oas3", "asyncapi":
+			return true
+		}
 	}
-	switch v {
-	case "oas2":
-		fallthrough
-	case "oas3":
-		fallthrough
-	case "asyncapi":
-		*e = CreateAPISpecRequestAPISpecType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CreateAPISpecRequestAPISpecType: %v", v)
-	}
+	return false
 }
 
 type CreateAPISpecRequest struct {

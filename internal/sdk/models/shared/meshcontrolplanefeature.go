@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -18,20 +16,16 @@ const (
 func (e Type) ToPointer() *Type {
 	return &e
 }
-func (e *Type) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Type) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "MeshCreation", "HostnameGeneratorCreation":
+			return true
+		}
 	}
-	switch v {
-	case "MeshCreation":
-		fallthrough
-	case "HostnameGeneratorCreation":
-		*e = Type(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Type: %v", v)
-	}
+	return false
 }
 
 // MeshControlPlaneFeature - Features to be enabled in the control plane. Currently only defaults are supported.

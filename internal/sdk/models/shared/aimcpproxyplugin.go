@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -133,20 +131,16 @@ const (
 func (e ACLAttributeType) ToPointer() *ACLAttributeType {
 	return &e
 }
-func (e *ACLAttributeType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ACLAttributeType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "consumer", "oauth_access_token":
+			return true
+		}
 	}
-	switch v {
-	case "consumer":
-		fallthrough
-	case "oauth_access_token":
-		*e = ACLAttributeType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ACLAttributeType: %v", v)
-	}
+	return false
 }
 
 // ConsumerIdentifier - Which subject type entries in ACL lists refer to for per-consumer matching. Should only be configured on listener modes, not conversion-only.
@@ -161,22 +155,16 @@ const (
 func (e ConsumerIdentifier) ToPointer() *ConsumerIdentifier {
 	return &e
 }
-func (e *ConsumerIdentifier) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ConsumerIdentifier) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "consumer_id", "custom_id", "username":
+			return true
+		}
 	}
-	switch v {
-	case "consumer_id":
-		fallthrough
-	case "custom_id":
-		fallthrough
-	case "username":
-		*e = ConsumerIdentifier(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ConsumerIdentifier: %v", v)
-	}
+	return false
 }
 
 // DefaultACL - Default ACL entry for the given scope. `deny` has higher precedence than `allow`.
@@ -275,24 +263,16 @@ const (
 func (e AiMcpProxyPluginMode) ToPointer() *AiMcpProxyPluginMode {
 	return &e
 }
-func (e *AiMcpProxyPluginMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiMcpProxyPluginMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "conversion-listener", "conversion-only", "listener", "passthrough-listener":
+			return true
+		}
 	}
-	switch v {
-	case "conversion-listener":
-		fallthrough
-	case "conversion-only":
-		fallthrough
-	case "listener":
-		fallthrough
-	case "passthrough-listener":
-		*e = AiMcpProxyPluginMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiMcpProxyPluginMode: %v", v)
-	}
+	return false
 }
 
 // AiMcpProxyPluginClient - The configuration for client-side session storage.
@@ -331,22 +311,16 @@ const (
 func (e AiMcpProxyPluginAuthProvider) ToPointer() *AiMcpProxyPluginAuthProvider {
 	return &e
 }
-func (e *AiMcpProxyPluginAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiMcpProxyPluginAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = AiMcpProxyPluginAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiMcpProxyPluginAuthProvider: %v", v)
-	}
+	return false
 }
 
 // AiMcpProxyPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -548,22 +522,16 @@ const (
 func (e AiMcpProxyPluginSentinelRole) ToPointer() *AiMcpProxyPluginSentinelRole {
 	return &e
 }
-func (e *AiMcpProxyPluginSentinelRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiMcpProxyPluginSentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "master":
-		fallthrough
-	case "slave":
-		*e = AiMcpProxyPluginSentinelRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiMcpProxyPluginSentinelRole: %v", v)
-	}
+	return false
 }
 
 type AiMcpProxyPluginRedis struct {
@@ -789,20 +757,16 @@ const (
 func (e AiMcpProxyPluginStrategy) ToPointer() *AiMcpProxyPluginStrategy {
 	return &e
 }
-func (e *AiMcpProxyPluginStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiMcpProxyPluginStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client", "redis":
+			return true
+		}
 	}
-	switch v {
-	case "client":
-		fallthrough
-	case "redis":
-		*e = AiMcpProxyPluginStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiMcpProxyPluginStrategy: %v", v)
-	}
+	return false
 }
 
 // AiMcpProxyPluginSession - Enable managed session when Kong responds as MCP server in listener or conversion-listener modes. This doesn't affect the passthrough-listener mode as the state in that mode is maintained by the upstream MCP servers.
@@ -1020,26 +984,16 @@ const (
 func (e AiMcpProxyPluginMethod) ToPointer() *AiMcpProxyPluginMethod {
 	return &e
 }
-func (e *AiMcpProxyPluginMethod) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiMcpProxyPluginMethod) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "DELETE", "GET", "PATCH", "POST", "PUT":
+			return true
+		}
 	}
-	switch v {
-	case "DELETE":
-		fallthrough
-	case "GET":
-		fallthrough
-	case "PATCH":
-		fallthrough
-	case "POST":
-		fallthrough
-	case "PUT":
-		*e = AiMcpProxyPluginMethod(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiMcpProxyPluginMethod: %v", v)
-	}
+	return false
 }
 
 type Schema struct {
@@ -1129,20 +1083,16 @@ const (
 func (e Scheme) ToPointer() *Scheme {
 	return &e
 }
-func (e *Scheme) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Scheme) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "http":
-		fallthrough
-	case "https":
-		*e = Scheme(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Scheme: %v", v)
-	}
+	return false
 }
 
 type Tools struct {
@@ -1388,24 +1338,16 @@ const (
 func (e AiMcpProxyPluginProtocols) ToPointer() *AiMcpProxyPluginProtocols {
 	return &e
 }
-func (e *AiMcpProxyPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiMcpProxyPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = AiMcpProxyPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiMcpProxyPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AiMcpProxyPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

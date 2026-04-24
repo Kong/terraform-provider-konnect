@@ -73,7 +73,7 @@ Required:
 - `failure_mode` (String) Describes how to handle failing encryption or decryption.
 Use `error` if the record should be rejected if encryption or decryption fails.
 Use `passthrough` to ignore encryption or decryption failure and continue proxying the record.
-must be one of ["error", "passthrough"]
+possible known values include one of ["error", "passthrough"]
 - `key_sources` (Attributes List) Describes how to find a symmetric key for decryption. (see [below for nested schema](#nestedatt--config--key_sources))
 - `part_of_record` (List of String) Describes the parts of a record to decrypt.
 
@@ -105,8 +105,8 @@ In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.
 import {
   to = konnect_event_gateway_consume_policy_decrypt.my_konnect_event_gateway_consume_policy_decrypt
   id = jsonencode({
-    gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    gateway_id         = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id                 = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     virtual_cluster_id = "..."
   })
 }

@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -157,22 +155,16 @@ const (
 func (e GraphqlProxyCacheAdvancedPluginAuthProvider) ToPointer() *GraphqlProxyCacheAdvancedPluginAuthProvider {
 	return &e
 }
-func (e *GraphqlProxyCacheAdvancedPluginAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GraphqlProxyCacheAdvancedPluginAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = GraphqlProxyCacheAdvancedPluginAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GraphqlProxyCacheAdvancedPluginAuthProvider: %v", v)
-	}
+	return false
 }
 
 // GraphqlProxyCacheAdvancedPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -374,22 +366,16 @@ const (
 func (e GraphqlProxyCacheAdvancedPluginSentinelRole) ToPointer() *GraphqlProxyCacheAdvancedPluginSentinelRole {
 	return &e
 }
-func (e *GraphqlProxyCacheAdvancedPluginSentinelRole) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GraphqlProxyCacheAdvancedPluginSentinelRole) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "any", "master", "slave":
+			return true
+		}
 	}
-	switch v {
-	case "any":
-		fallthrough
-	case "master":
-		fallthrough
-	case "slave":
-		*e = GraphqlProxyCacheAdvancedPluginSentinelRole(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GraphqlProxyCacheAdvancedPluginSentinelRole: %v", v)
-	}
+	return false
 }
 
 type GraphqlProxyCacheAdvancedPluginRedis struct {
@@ -615,20 +601,16 @@ const (
 func (e GraphqlProxyCacheAdvancedPluginStrategy) ToPointer() *GraphqlProxyCacheAdvancedPluginStrategy {
 	return &e
 }
-func (e *GraphqlProxyCacheAdvancedPluginStrategy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GraphqlProxyCacheAdvancedPluginStrategy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "memory", "redis":
+			return true
+		}
 	}
-	switch v {
-	case "memory":
-		fallthrough
-	case "redis":
-		*e = GraphqlProxyCacheAdvancedPluginStrategy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GraphqlProxyCacheAdvancedPluginStrategy: %v", v)
-	}
+	return false
 }
 
 type GraphqlProxyCacheAdvancedPluginConfig struct {
@@ -732,24 +714,16 @@ const (
 func (e GraphqlProxyCacheAdvancedPluginProtocols) ToPointer() *GraphqlProxyCacheAdvancedPluginProtocols {
 	return &e
 }
-func (e *GraphqlProxyCacheAdvancedPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GraphqlProxyCacheAdvancedPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = GraphqlProxyCacheAdvancedPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GraphqlProxyCacheAdvancedPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // GraphqlProxyCacheAdvancedPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

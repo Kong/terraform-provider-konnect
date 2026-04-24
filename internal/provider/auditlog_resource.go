@@ -5,13 +5,11 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
-	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
@@ -68,14 +66,7 @@ func (r *AuditLogResource) Schema(ctx context.Context, req resource.SchemaReques
 				Computed:    true,
 				Optional:    true,
 				Default:     stringdefault.StaticString(`cef`),
-				Description: `The output format of each log messages. Default: "cef"; must be one of ["cef", "json", "cps"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"cef",
-						"json",
-						"cps",
-					),
-				},
+				Description: `The output format of each log messages. possible known values include one of ["cef", "json", "cps"]; Default: "cef"`,
 			},
 			"skip_ssl_verification": schema.BoolAttribute{
 				Computed: true,

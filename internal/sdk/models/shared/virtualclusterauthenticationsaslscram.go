@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -19,20 +17,16 @@ const (
 func (e VirtualClusterAuthenticationSaslScramAlgorithm) ToPointer() *VirtualClusterAuthenticationSaslScramAlgorithm {
 	return &e
 }
-func (e *VirtualClusterAuthenticationSaslScramAlgorithm) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *VirtualClusterAuthenticationSaslScramAlgorithm) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "sha256", "sha512":
+			return true
+		}
 	}
-	switch v {
-	case "sha256":
-		fallthrough
-	case "sha512":
-		*e = VirtualClusterAuthenticationSaslScramAlgorithm(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for VirtualClusterAuthenticationSaslScramAlgorithm: %v", v)
-	}
+	return false
 }
 
 // VirtualClusterAuthenticationSaslScram - SASL/SCRAM authentication scheme for the virtual cluster.

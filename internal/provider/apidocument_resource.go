@@ -98,13 +98,7 @@ func (r *APIDocumentResource) Schema(ctx context.Context, req resource.SchemaReq
 				Computed:    true,
 				Optional:    true,
 				Default:     stringdefault.StaticString(`unpublished`),
-				Description: `If ` + "`" + `status=published` + "`" + ` the document will be visible in your live portal. Default: "unpublished"; must be one of ["published", "unpublished"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"published",
-						"unpublished",
-					),
-				},
+				Description: `If ` + "`" + `status=published` + "`" + ` the document will be visible in your live portal. possible known values include one of ["published", "unpublished"]; Default: "unpublished"`,
 			},
 			"title": schema.StringAttribute{
 				Computed:    true,

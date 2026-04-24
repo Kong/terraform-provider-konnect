@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -133,20 +131,16 @@ const (
 func (e SolaceUpstreamPluginDeliveryMode) ToPointer() *SolaceUpstreamPluginDeliveryMode {
 	return &e
 }
-func (e *SolaceUpstreamPluginDeliveryMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SolaceUpstreamPluginDeliveryMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "DIRECT", "PERSISTENT":
+			return true
+		}
 	}
-	switch v {
-	case "DIRECT":
-		fallthrough
-	case "PERSISTENT":
-		*e = SolaceUpstreamPluginDeliveryMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SolaceUpstreamPluginDeliveryMode: %v", v)
-	}
+	return false
 }
 
 // SolaceUpstreamPluginType - The type of the destination.
@@ -160,20 +154,16 @@ const (
 func (e SolaceUpstreamPluginType) ToPointer() *SolaceUpstreamPluginType {
 	return &e
 }
-func (e *SolaceUpstreamPluginType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SolaceUpstreamPluginType) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "QUEUE", "TOPIC":
+			return true
+		}
 	}
-	switch v {
-	case "QUEUE":
-		fallthrough
-	case "TOPIC":
-		*e = SolaceUpstreamPluginType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SolaceUpstreamPluginType: %v", v)
-	}
+	return false
 }
 
 type SolaceUpstreamPluginDestinations struct {
@@ -481,22 +471,16 @@ const (
 func (e SolaceUpstreamPluginScheme) ToPointer() *SolaceUpstreamPluginScheme {
 	return &e
 }
-func (e *SolaceUpstreamPluginScheme) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SolaceUpstreamPluginScheme) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "BASIC", "NONE", "OAUTH2":
+			return true
+		}
 	}
-	switch v {
-	case "BASIC":
-		fallthrough
-	case "NONE":
-		fallthrough
-	case "OAUTH2":
-		*e = SolaceUpstreamPluginScheme(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SolaceUpstreamPluginScheme: %v", v)
-	}
+	return false
 }
 
 // SolaceUpstreamPluginAuthentication - Session authentication related configuration.
@@ -744,24 +728,16 @@ const (
 func (e SolaceUpstreamPluginProtocols) ToPointer() *SolaceUpstreamPluginProtocols {
 	return &e
 }
-func (e *SolaceUpstreamPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SolaceUpstreamPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = SolaceUpstreamPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SolaceUpstreamPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // SolaceUpstreamPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

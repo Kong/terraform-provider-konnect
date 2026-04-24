@@ -136,7 +136,7 @@ resource "konnect_portal_appearance" "my_portalappearance" {
 - `custom_theme` (Attributes) Groups of variables for configuring visual details of the portal user interface. Set theme_name to 'custom' to use custom values for theme variables. (see [below for nested schema](#nestedatt--custom_theme))
 - `images` (Attributes) A collection of binary image data to customize images in the portal (see [below for nested schema](#nestedatt--images))
 - `text` (Attributes) Values to display for customizable text in the portal user interface (see [below for nested schema](#nestedatt--text))
-- `theme_name` (String) Select a pre-existing default theme or specify 'custom' to use custom_theme variables. must be one of ["mint_rocket", "dark_mode", "custom"]
+- `theme_name` (String) Select a pre-existing default theme or specify 'custom' to use custom_theme variables. possible known values include one of ["mint_rocket", "dark_mode", "custom"]
 - `use_custom_fonts` (Boolean) If true, fonts in custom_fonts will be used over the theme's default fonts
 
 <a id="nestedatt--custom_fonts"></a>
@@ -144,9 +144,9 @@ resource "konnect_portal_appearance" "my_portalappearance" {
 
 Required:
 
-- `base` (String) The name of the font to render in the browser. must be one of ["Roboto", "Inter", "Open Sans", "Lato", "Slabo 27px", "Slabo 13px", "Oswald", "Source Sans Pro", "Montserrat", "Raleway", "PT Sans", "Lora", "Roboto Mono", "Inconsolata", "Source Code Pro", "PT Mono", "Ubuntu Mono", "IBM Plex Mono"]
-- `code` (String) The name of the font to render in the browser. must be one of ["Roboto", "Inter", "Open Sans", "Lato", "Slabo 27px", "Slabo 13px", "Oswald", "Source Sans Pro", "Montserrat", "Raleway", "PT Sans", "Lora", "Roboto Mono", "Inconsolata", "Source Code Pro", "PT Mono", "Ubuntu Mono", "IBM Plex Mono"]
-- `headings` (String) The name of the font to render in the browser. must be one of ["Roboto", "Inter", "Open Sans", "Lato", "Slabo 27px", "Slabo 13px", "Oswald", "Source Sans Pro", "Montserrat", "Raleway", "PT Sans", "Lora", "Roboto Mono", "Inconsolata", "Source Code Pro", "PT Mono", "Ubuntu Mono", "IBM Plex Mono"]
+- `base` (String) The name of the font to render in the browser. possible known values include one of ["Roboto", "Inter", "Open Sans", "Lato", "Slabo 27px", "Slabo 13px", "Oswald", "Source Sans Pro", "Montserrat", "Raleway", "PT Sans", "Lora", "Roboto Mono", "Inconsolata", "Source Code Pro", "PT Mono", "Ubuntu Mono", "IBM Plex Mono"]
+- `code` (String) The name of the font to render in the browser. possible known values include one of ["Roboto", "Inter", "Open Sans", "Lato", "Slabo 27px", "Slabo 13px", "Oswald", "Source Sans Pro", "Montserrat", "Raleway", "PT Sans", "Lora", "Roboto Mono", "Inconsolata", "Source Code Pro", "PT Mono", "Ubuntu Mono", "IBM Plex Mono"]
+- `headings` (String) The name of the font to render in the browser. possible known values include one of ["Roboto", "Inter", "Open Sans", "Lato", "Slabo 27px", "Slabo 13px", "Oswald", "Source Sans Pro", "Montserrat", "Raleway", "PT Sans", "Lora", "Roboto Mono", "Inconsolata", "Source Code Pro", "PT Mono", "Ubuntu Mono", "IBM Plex Mono"]
 
 
 <a id="nestedatt--custom_theme"></a>

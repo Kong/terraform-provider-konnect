@@ -164,13 +164,7 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 							"param_location": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. must be one of ["body", "query"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"body",
-										"query",
-									),
-								},
+								Description: `Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
 							},
 							"param_name": schema.StringAttribute{
 								Optional:    true,
@@ -186,33 +180,13 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`text/generation`),
-						Description: `Generative AI category of the request. Default: "text/generation"; must be one of ["audio/speech", "audio/transcription", "image/generation", "text/embeddings", "text/generation", "video/generation"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"audio/speech",
-								"audio/transcription",
-								"image/generation",
-								"text/embeddings",
-								"text/generation",
-								"video/generation",
-							),
-						},
+						Description: `Generative AI category of the request. possible known values include one of ["audio/speech", "audio/transcription", "image/generation", "text/embeddings", "text/generation", "video/generation"]; Default: "text/generation"`,
 					},
 					"llm_format": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`openai`),
-						Description: `LLM input and output format and schema to use. Default: "openai"; must be one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"anthropic",
-								"bedrock",
-								"cohere",
-								"gemini",
-								"huggingface",
-								"openai",
-							),
-						},
+						Description: `LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]; Default: "openai"`,
 					},
 					"logging": schema.SingleNestedAttribute{
 						Computed: true,
@@ -402,16 +376,7 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 												Computed:    true,
 												Optional:    true,
 												Default:     stringdefault.StaticString(`classification`),
-												Description: `The purpose of the input text to calculate embedding vectors. Default: "classification"; must be one of ["classification", "clustering", "image", "search_document", "search_query"]`,
-												Validators: []validator.String{
-													stringvalidator.OneOf(
-														"classification",
-														"clustering",
-														"image",
-														"search_document",
-														"search_query",
-													),
-												},
+												Description: `The purpose of the input text to calculate embedding vectors. possible known values include one of ["classification", "clustering", "image", "search_document", "search_query"]; Default: "classification"`,
 											},
 											"wait_for_model": schema.BoolAttribute{
 												Optional:    true,
@@ -506,14 +471,7 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 									"llama2_format": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `If using llama2 provider, select the upstream message format. must be one of ["ollama", "openai", "raw"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"ollama",
-												"openai",
-												"raw",
-											),
-										},
+										Description: `If using llama2 provider, select the upstream message format. possible known values include one of ["ollama", "openai", "raw"]`,
 									},
 									"max_tokens": schema.Int64Attribute{
 										Optional:    true,
@@ -522,13 +480,7 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 									"mistral_format": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `If using mistral provider, select the upstream message format. must be one of ["ollama", "openai"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"ollama",
-												"openai",
-											),
-										},
+										Description: `If using mistral provider, select the upstream message format. possible known values include one of ["ollama", "openai"]`,
 									},
 									"output_cost": schema.Float64Attribute{
 										Optional:    true,
@@ -568,27 +520,7 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 							},
 							"provider": schema.StringAttribute{
 								Required:    true,
-								Description: `AI provider request format - Kong translates requests to and from the specified backend compatible formats. must be one of ["anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "databricks", "deepseek", "gemini", "huggingface", "llama2", "mistral", "ollama", "openai", "vllm", "xai"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"anthropic",
-										"azure",
-										"bedrock",
-										"cerebras",
-										"cohere",
-										"dashscope",
-										"databricks",
-										"deepseek",
-										"gemini",
-										"huggingface",
-										"llama2",
-										"mistral",
-										"ollama",
-										"openai",
-										"vllm",
-										"xai",
-									),
-								},
+								Description: `AI provider request format - Kong translates requests to and from the specified backend compatible formats. possible known values include one of ["anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "databricks", "deepseek", "gemini", "huggingface", "llama2", "mistral", "ollama", "openai", "vllm", "xai"]`,
 							},
 						},
 					},
@@ -602,37 +534,11 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`allow`),
-						Description: `Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events. Default: "allow"; must be one of ["allow", "always", "deny"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"allow",
-								"always",
-								"deny",
-							),
-						},
+						Description: `Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events. possible known values include one of ["allow", "always", "deny"]; Default: "allow"`,
 					},
 					"route_type": schema.StringAttribute{
 						Required:    true,
-						Description: `The model's operation implementation, for this provider. must be one of ["audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime", "video/v1/videos/generations"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"audio/v1/audio/speech",
-								"audio/v1/audio/transcriptions",
-								"audio/v1/audio/translations",
-								"image/v1/images/edits",
-								"image/v1/images/generations",
-								"llm/v1/assistants",
-								"llm/v1/batches",
-								"llm/v1/chat",
-								"llm/v1/completions",
-								"llm/v1/embeddings",
-								"llm/v1/files",
-								"llm/v1/responses",
-								"preserve",
-								"realtime/v1/realtime",
-								"video/v1/videos/generations",
-							),
-						},
+						Description: `The model's operation implementation, for this provider. possible known values include one of ["audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime", "video/v1/videos/generations"]`,
 					},
 				},
 			},

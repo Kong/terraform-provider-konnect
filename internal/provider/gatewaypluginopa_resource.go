@@ -137,13 +137,7 @@ func (r *GatewayPluginOpaResource) Schema(ctx context.Context, req resource.Sche
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`http`),
-						Description: `The protocol to use when talking to Open Policy Agent (OPA) server. Allowed protocols are ` + "`" + `http` + "`" + ` and ` + "`" + `https` + "`" + `. Default: "http"; must be one of ["http", "https"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"http",
-								"https",
-							),
-						},
+						Description: `The protocol to use when talking to Open Policy Agent (OPA) server. Allowed protocols are ` + "`" + `http` + "`" + ` and ` + "`" + `https` + "`" + `. possible known values include one of ["http", "https"]; Default: "http"`,
 					},
 					"ssl_verify": schema.BoolAttribute{
 						Computed:    true,

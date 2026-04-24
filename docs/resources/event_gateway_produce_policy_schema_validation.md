@@ -78,13 +78,13 @@ Optional:
 * reject - rejects a batch for topic partition. Only available for produce.
 * mark - marks a record with kong/server header and client ID value
   to help to identify the clients violating schema.
-must be one of ["reject", "mark"]
+possible known values include one of ["reject", "mark"]
 - `schema_registry` (Attributes) (see [below for nested schema](#nestedatt--config--confluent_schema_registry--schema_registry))
 - `value_validation_action` (String) Defines a behavior when record value is not valid.
 * reject - rejects a batch for topic partition. Only available for produce.
 * mark - marks a record with kong/server header and client ID value
   to help to identify the clients violating schema.
-must be one of ["reject", "mark"]
+possible known values include one of ["reject", "mark"]
 
 <a id="nestedatt--config--confluent_schema_registry--schema_registry"></a>
 ### Nested Schema for `config.confluent_schema_registry.schema_registry`
@@ -104,13 +104,13 @@ Optional:
 * reject - rejects a batch for topic partition. Only available for produce.
 * mark - marks a record with kong/server header and client ID value
   to help to identify the clients violating schema.
-must be one of ["reject", "mark"]
+possible known values include one of ["reject", "mark"]
 - `schema_registry` (Attributes) (see [below for nested schema](#nestedatt--config--json--schema_registry))
 - `value_validation_action` (String) Defines a behavior when record value is not valid.
 * reject - rejects a batch for topic partition. Only available for produce.
 * mark - marks a record with kong/server header and client ID value
   to help to identify the clients violating schema.
-must be one of ["reject", "mark"]
+possible known values include one of ["reject", "mark"]
 
 <a id="nestedatt--config--json--schema_registry"></a>
 ### Nested Schema for `config.json.schema_registry`
@@ -129,8 +129,8 @@ In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.
 import {
   to = konnect_event_gateway_produce_policy_schema_validation.my_konnect_event_gateway_produce_policy_schema_validation
   id = jsonencode({
-    gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    gateway_id         = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+    id                 = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
     virtual_cluster_id = "..."
   })
 }

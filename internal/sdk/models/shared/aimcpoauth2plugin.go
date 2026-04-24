@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -188,42 +186,16 @@ const (
 func (e ClientAlg) ToPointer() *ClientAlg {
 	return &e
 }
-func (e *ClientAlg) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ClientAlg) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS384", "RS512":
+			return true
+		}
 	}
-	switch v {
-	case "ES256":
-		fallthrough
-	case "ES384":
-		fallthrough
-	case "ES512":
-		fallthrough
-	case "EdDSA":
-		fallthrough
-	case "HS256":
-		fallthrough
-	case "HS384":
-		fallthrough
-	case "HS512":
-		fallthrough
-	case "PS256":
-		fallthrough
-	case "PS384":
-		fallthrough
-	case "PS512":
-		fallthrough
-	case "RS256":
-		fallthrough
-	case "RS384":
-		fallthrough
-	case "RS512":
-		*e = ClientAlg(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ClientAlg: %v", v)
-	}
+	return false
 }
 
 // ClientAuth - The client authentication method.
@@ -242,30 +214,16 @@ const (
 func (e ClientAuth) ToPointer() *ClientAuth {
 	return &e
 }
-func (e *ClientAuth) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ClientAuth) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth":
+			return true
+		}
 	}
-	switch v {
-	case "client_secret_basic":
-		fallthrough
-	case "client_secret_jwt":
-		fallthrough
-	case "client_secret_post":
-		fallthrough
-	case "none":
-		fallthrough
-	case "private_key_jwt":
-		fallthrough
-	case "self_signed_tls_client_auth":
-		fallthrough
-	case "tls_client_auth":
-		*e = ClientAuth(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ClientAuth: %v", v)
-	}
+	return false
 }
 
 type ConsumerBy string
@@ -279,22 +237,16 @@ const (
 func (e ConsumerBy) ToPointer() *ConsumerBy {
 	return &e
 }
-func (e *ConsumerBy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ConsumerBy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "custom_id", "id", "username":
+			return true
+		}
 	}
-	switch v {
-	case "custom_id":
-		fallthrough
-	case "id":
-		fallthrough
-	case "username":
-		*e = ConsumerBy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ConsumerBy: %v", v)
-	}
+	return false
 }
 
 // IntrospectionFormat - Controls introspection response format.
@@ -309,22 +261,16 @@ const (
 func (e IntrospectionFormat) ToPointer() *IntrospectionFormat {
 	return &e
 }
-func (e *IntrospectionFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *IntrospectionFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "base64", "base64url", "string":
+			return true
+		}
 	}
-	switch v {
-	case "base64":
-		fallthrough
-	case "base64url":
-		fallthrough
-	case "string":
-		*e = IntrospectionFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for IntrospectionFormat: %v", v)
-	}
+	return false
 }
 
 type AiMcpOauth2PluginCache struct {
@@ -375,24 +321,16 @@ const (
 func (e AiMcpOauth2PluginClientAuth) ToPointer() *AiMcpOauth2PluginClientAuth {
 	return &e
 }
-func (e *AiMcpOauth2PluginClientAuth) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiMcpOauth2PluginClientAuth) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "client_secret_basic", "client_secret_post", "inherit", "none":
+			return true
+		}
 	}
-	switch v {
-	case "client_secret_basic":
-		fallthrough
-	case "client_secret_post":
-		fallthrough
-	case "inherit":
-		fallthrough
-	case "none":
-		*e = AiMcpOauth2PluginClientAuth(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiMcpOauth2PluginClientAuth: %v", v)
-	}
+	return false
 }
 
 // ActorTokenSource - Where to obtain actor token.
@@ -407,22 +345,16 @@ const (
 func (e ActorTokenSource) ToPointer() *ActorTokenSource {
 	return &e
 }
-func (e *ActorTokenSource) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ActorTokenSource) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "config", "header", "none":
+			return true
+		}
 	}
-	switch v {
-	case "config":
-		fallthrough
-	case "header":
-		fallthrough
-	case "none":
-		*e = ActorTokenSource(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ActorTokenSource: %v", v)
-	}
+	return false
 }
 
 type AiMcpOauth2PluginRequest struct {
@@ -1064,24 +996,16 @@ const (
 func (e AiMcpOauth2PluginProtocols) ToPointer() *AiMcpOauth2PluginProtocols {
 	return &e
 }
-func (e *AiMcpOauth2PluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiMcpOauth2PluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = AiMcpOauth2PluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiMcpOauth2PluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AiMcpOauth2PluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // SnippetVisibilityStatus - Whether a snippet is publicly accessible to non-authenticated users.
 // If not provided, the default_page_visibility value of the portal will be used.
 type SnippetVisibilityStatus string
@@ -19,18 +14,14 @@ const (
 func (e SnippetVisibilityStatus) ToPointer() *SnippetVisibilityStatus {
 	return &e
 }
-func (e *SnippetVisibilityStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *SnippetVisibilityStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "public", "private":
+			return true
+		}
 	}
-	switch v {
-	case "public":
-		fallthrough
-	case "private":
-		*e = SnippetVisibilityStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for SnippetVisibilityStatus: %v", v)
-	}
+	return false
 }

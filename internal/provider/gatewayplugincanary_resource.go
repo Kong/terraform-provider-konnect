@@ -123,17 +123,7 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 							`* ` + "`" + `allow` + "`" + `: Allows the specified groups to access the canary release.` + "\n" +
 							`* ` + "`" + `deny` + "`" + `: Denies the specified groups from accessing the canary release.` + "\n" +
 							`* ` + "`" + `header` + "`" + `: The hash will be based on the specified header value.` + "\n" +
-							`Default: "consumer"; must be one of ["allow", "consumer", "deny", "header", "ip", "none"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"allow",
-								"consumer",
-								"deny",
-								"header",
-								"ip",
-								"none",
-							),
-						},
+							`possible known values include one of ["allow", "consumer", "deny", "header", "ip", "none"]; Default: "consumer"`,
 					},
 					"hash_header": schema.StringAttribute{
 						Optional:    true,

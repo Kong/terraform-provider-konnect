@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -133,20 +131,16 @@ const (
 func (e AuthenticatedGroupBy) ToPointer() *AuthenticatedGroupBy {
 	return &e
 }
-func (e *AuthenticatedGroupBy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AuthenticatedGroupBy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "CN", "DN":
+			return true
+		}
 	}
-	switch v {
-	case "CN":
-		fallthrough
-	case "DN":
-		*e = AuthenticatedGroupBy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AuthenticatedGroupBy: %v", v)
-	}
+	return false
 }
 
 // CertificateHeaderFormat - Format of the certificate header. Supported formats: `base64_encoded`, `url_encoded`.
@@ -160,20 +154,16 @@ const (
 func (e CertificateHeaderFormat) ToPointer() *CertificateHeaderFormat {
 	return &e
 }
-func (e *CertificateHeaderFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *CertificateHeaderFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "base64_encoded", "url_encoded":
+			return true
+		}
 	}
-	switch v {
-	case "base64_encoded":
-		fallthrough
-	case "url_encoded":
-		*e = CertificateHeaderFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for CertificateHeaderFormat: %v", v)
-	}
+	return false
 }
 
 type HeaderCertAuthPluginConsumerBy string
@@ -186,20 +176,16 @@ const (
 func (e HeaderCertAuthPluginConsumerBy) ToPointer() *HeaderCertAuthPluginConsumerBy {
 	return &e
 }
-func (e *HeaderCertAuthPluginConsumerBy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *HeaderCertAuthPluginConsumerBy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "custom_id", "username":
+			return true
+		}
 	}
-	switch v {
-	case "custom_id":
-		fallthrough
-	case "username":
-		*e = HeaderCertAuthPluginConsumerBy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for HeaderCertAuthPluginConsumerBy: %v", v)
-	}
+	return false
 }
 
 // RevocationCheckMode - Controls client certificate revocation check behavior. If set to `SKIP`, no revocation check is performed. If set to `IGNORE_CA_ERROR`, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to `STRICT`, the plugin only treats the certificate as valid when it's able to verify the revocation status.
@@ -214,22 +200,16 @@ const (
 func (e RevocationCheckMode) ToPointer() *RevocationCheckMode {
 	return &e
 }
-func (e *RevocationCheckMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RevocationCheckMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "IGNORE_CA_ERROR", "SKIP", "STRICT":
+			return true
+		}
 	}
-	switch v {
-	case "IGNORE_CA_ERROR":
-		fallthrough
-	case "SKIP":
-		fallthrough
-	case "STRICT":
-		*e = RevocationCheckMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RevocationCheckMode: %v", v)
-	}
+	return false
 }
 
 type HeaderCertAuthPluginConfig struct {
@@ -429,24 +409,16 @@ const (
 func (e HeaderCertAuthPluginProtocols) ToPointer() *HeaderCertAuthPluginProtocols {
 	return &e
 }
-func (e *HeaderCertAuthPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *HeaderCertAuthPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = HeaderCertAuthPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for HeaderCertAuthPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // HeaderCertAuthPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

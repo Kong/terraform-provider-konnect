@@ -147,29 +147,14 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 								"consumer_identifier": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Authenticated user detail. must be one of ["consumer_id", "custom_id", "username"]`,
-									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"consumer_id",
-											"custom_id",
-											"username",
-										),
-									},
+									Description: `Authenticated user detail. possible known values include one of ["consumer_id", "custom_id", "username"]`,
 								},
 								"name": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Datadog metric’s name. Not Null; must be one of ["kong_latency", "latency", "request_count", "request_size", "response_size", "upstream_latency"]`,
+									Description: `Datadog metric’s name. possible known values include one of ["kong_latency", "latency", "request_count", "request_size", "response_size", "upstream_latency"]; Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
-										stringvalidator.OneOf(
-											"kong_latency",
-											"latency",
-											"request_count",
-											"request_size",
-											"response_size",
-											"upstream_latency",
-										),
 									},
 								},
 								"sample_rate": schema.Float64Attribute{
@@ -183,18 +168,9 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 								"stat_type": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Determines what sort of event the metric represents. Not Null; must be one of ["counter", "distribution", "gauge", "histogram", "meter", "set", "timer"]`,
+									Description: `Determines what sort of event the metric represents. possible known values include one of ["counter", "distribution", "gauge", "histogram", "meter", "set", "timer"]; Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
-										stringvalidator.OneOf(
-											"counter",
-											"distribution",
-											"gauge",
-											"histogram",
-											"meter",
-											"set",
-											"timer",
-										),
 									},
 								},
 								"tags": schema.ListAttribute{
@@ -230,10 +206,7 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 								Computed:    true,
 								Optional:    true,
 								Default:     int64default.StaticInt64(1),
-								Description: `The number of of queue delivery timers. -1 indicates unlimited. Default: 1; must be one of [-1, 1]`,
-								Validators: []validator.Int64{
-									int64validator.OneOf(-1, 1),
-								},
+								Description: `The number of of queue delivery timers. -1 indicates unlimited. possible known values include one of [-1, 1]; Default: 1`,
 							},
 							"initial_retry_delay": schema.Float64Attribute{
 								Computed:    true,

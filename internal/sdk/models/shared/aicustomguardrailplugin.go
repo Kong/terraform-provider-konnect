@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -134,22 +132,16 @@ const (
 func (e AiCustomGuardrailPluginGuardingMode) ToPointer() *AiCustomGuardrailPluginGuardingMode {
 	return &e
 }
-func (e *AiCustomGuardrailPluginGuardingMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiCustomGuardrailPluginGuardingMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "BOTH", "INPUT", "OUTPUT":
+			return true
+		}
 	}
-	switch v {
-	case "BOTH":
-		fallthrough
-	case "INPUT":
-		fallthrough
-	case "OUTPUT":
-		*e = AiCustomGuardrailPluginGuardingMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiCustomGuardrailPluginGuardingMode: %v", v)
-	}
+	return false
 }
 
 type Metrics struct {
@@ -205,22 +197,16 @@ const (
 func (e Location) ToPointer() *Location {
 	return &e
 }
-func (e *Location) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Location) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "body", "header", "query":
+			return true
+		}
 	}
-	switch v {
-	case "body":
-		fallthrough
-	case "header":
-		fallthrough
-	case "query":
-		*e = Location(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Location: %v", v)
-	}
+	return false
 }
 
 // AiCustomGuardrailPluginAuth - Authentication configuration for HTTP request.
@@ -370,22 +356,16 @@ const (
 func (e AiCustomGuardrailPluginTextSource) ToPointer() *AiCustomGuardrailPluginTextSource {
 	return &e
 }
-func (e *AiCustomGuardrailPluginTextSource) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiCustomGuardrailPluginTextSource) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "concatenate_all_content", "concatenate_user_content", "last_message":
+			return true
+		}
 	}
-	switch v {
-	case "concatenate_all_content":
-		fallthrough
-	case "concatenate_user_content":
-		fallthrough
-	case "last_message":
-		*e = AiCustomGuardrailPluginTextSource(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiCustomGuardrailPluginTextSource: %v", v)
-	}
+	return false
 }
 
 type AiCustomGuardrailPluginConfig struct {
@@ -576,24 +556,16 @@ const (
 func (e AiCustomGuardrailPluginProtocols) ToPointer() *AiCustomGuardrailPluginProtocols {
 	return &e
 }
-func (e *AiCustomGuardrailPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiCustomGuardrailPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = AiCustomGuardrailPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiCustomGuardrailPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AiCustomGuardrailPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

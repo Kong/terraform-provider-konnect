@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // TransitGatewayState - The current state of the Transit Gateway. Possible values:
 // - `created` - The attachment has been created but is not attached to transit gateway.
 // - `initializing` - The attachment is in the process of being initialized and is setting up necessary resources.
@@ -32,30 +27,14 @@ const (
 func (e TransitGatewayState) ToPointer() *TransitGatewayState {
 	return &e
 }
-func (e *TransitGatewayState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *TransitGatewayState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "created", "initializing", "pending-acceptance", "pending-user-action", "ready", "terminating", "terminated", "error":
+			return true
+		}
 	}
-	switch v {
-	case "created":
-		fallthrough
-	case "initializing":
-		fallthrough
-	case "pending-acceptance":
-		fallthrough
-	case "pending-user-action":
-		fallthrough
-	case "ready":
-		fallthrough
-	case "terminating":
-		fallthrough
-	case "terminated":
-		fallthrough
-	case "error":
-		*e = TransitGatewayState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for TransitGatewayState: %v", v)
-	}
+	return false
 }

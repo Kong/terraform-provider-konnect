@@ -110,7 +110,7 @@ Optional:
 * `allow`: Allows the specified groups to access the canary release.
 * `deny`: Denies the specified groups from accessing the canary release.
 * `header`: The hash will be based on the specified header value.
-Default: "consumer"; must be one of ["allow", "consumer", "deny", "header", "ip", "none"]
+possible known values include one of ["allow", "consumer", "deny", "header", "ip", "none"]; Default: "consumer"
 - `hash_header` (String) A string representing an HTTP header name.
 - `percentage` (Number) The percentage of traffic to be routed to the canary release.
 - `start` (Number) Future time in seconds since epoch, when the canary release will start. Ignored when `percentage` is set, or when using `allow` or `deny` in `hash`.
@@ -182,7 +182,7 @@ import {
   to = konnect_gateway_plugin_canary.my_konnect_gateway_plugin_canary
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

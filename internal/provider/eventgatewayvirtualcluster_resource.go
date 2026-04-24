@@ -71,13 +71,7 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 					`  and does not forward ACL-related commands to the backend cluster.` + "\n" +
 					`  Note that if there are no ACL policies configured, all access is denied.` + "\n" +
 					`- ` + "`" + `passthrough` + "`" + ` tells the gateway to forward all ACL-related commands.` + "\n" +
-					`must be one of ["enforce_on_gateway", "passthrough"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"enforce_on_gateway",
-						"passthrough",
-					),
-				},
+					`possible known values include one of ["enforce_on_gateway", "passthrough"]`,
 			},
 			"authentication": schema.ListNestedAttribute{
 				Required: true,
@@ -174,14 +168,9 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 										`* terminate - terminate authentication at the proxy level and originate authentication to the backend cluster` + "\n" +
 										`  using the configuration defined at BackendCluster's authentication.` + "\n" +
 										`  SASL auth is not originated if authentication on the backend_cluster is not configured.` + "\n" +
-										`Not Null; must be one of ["passthrough", "validate_forward", "terminate"]`,
+										`possible known values include one of ["passthrough", "validate_forward", "terminate"]; Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
-										stringvalidator.OneOf(
-											"passthrough",
-											"validate_forward",
-											"terminate",
-										),
 									},
 								},
 								"validate": schema.SingleNestedAttribute{
@@ -238,13 +227,9 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 								"mediation": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The mediation type for SASL/PLAIN authentication. Not Null; must be one of ["passthrough", "terminate"]`,
+									Description: `The mediation type for SASL/PLAIN authentication. possible known values include one of ["passthrough", "terminate"]; Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
-										stringvalidator.OneOf(
-											"passthrough",
-											"terminate",
-										),
 									},
 								},
 								"principals": schema.ListNestedAttribute{
@@ -301,13 +286,9 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 								"algorithm": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The algorithm used for SASL/SCRAM authentication. Not Null; must be one of ["sha256", "sha512"]`,
+									Description: `The algorithm used for SASL/SCRAM authentication. possible known values include one of ["sha256", "sha512"]; Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
-										stringvalidator.OneOf(
-											"sha256",
-											"sha512",
-										),
 									},
 								},
 							},
@@ -488,13 +469,7 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 													MarkdownDescription: `How to inform the user about conflicts where multiple backend topics would map to the same virtual topic name.` + "\n" +
 														`* warn - log in the Event Gateway logs. Additionally, it sets knep_namespace_topic_conflict to 1.` + "\n" +
 														`* ignore - do not do anything. It does not cause knep_namespace_topic_conflict metric to be set to 1.` + "\n" +
-														`Default: "warn"; must be one of ["warn", "ignore"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"warn",
-															"ignore",
-														),
-													},
+														`possible known values include one of ["warn", "ignore"]; Default: "warn"`,
 												},
 												"exact_list": schema.ListNestedAttribute{
 													Optional: true,
@@ -536,13 +511,7 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 													MarkdownDescription: `How to inform the user about conflicts where multiple backend topics would map to the same virtual topic name.` + "\n" +
 														`* warn - log in the Event Gateway logs. Additionally, it sets knep_namespace_topic_conflict to 1.` + "\n" +
 														`* ignore - do not do anything. It does not cause knep_namespace_topic_conflict metric to be set to 1.` + "\n" +
-														`Default: "warn"; must be one of ["warn", "ignore"]`,
-													Validators: []validator.String{
-														stringvalidator.OneOf(
-															"warn",
-															"ignore",
-														),
-													},
+														`possible known values include one of ["warn", "ignore"]; Default: "warn"`,
 												},
 												"glob": schema.StringAttribute{
 													Computed:    true,
@@ -575,13 +544,7 @@ func (r *EventGatewayVirtualClusterResource) Schema(ctx context.Context, req res
 							`  Created resources are written with the prefix on the backend cluster.` + "\n" +
 							`* enforce_prefix - the configured prefix remains visible to clients.` + "\n" +
 							`  Created resources must include the prefix or the request will fail.` + "\n" +
-							`must be one of ["hide_prefix", "enforce_prefix"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"hide_prefix",
-								"enforce_prefix",
-							),
-						},
+							`possible known values include one of ["hide_prefix", "enforce_prefix"]`,
 					},
 					"prefix": schema.StringAttribute{
 						Required: true,

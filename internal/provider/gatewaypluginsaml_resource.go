@@ -103,15 +103,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`EmailAddress`),
-						Description: `The requested ` + "`" + `NameId` + "`" + ` format. Options available are: - ` + "`" + `Unspecified` + "`" + ` - ` + "`" + `EmailAddress` + "`" + ` - ` + "`" + `Persistent` + "`" + ` - ` + "`" + `Transient` + "`" + `. Default: "EmailAddress"; must be one of ["EmailAddress", "Persistent", "Transient", "Unspecified"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"EmailAddress",
-								"Persistent",
-								"Transient",
-								"Unspecified",
-							),
-						},
+						Description: `The requested ` + "`" + `NameId` + "`" + ` format. Options available are: - ` + "`" + `Unspecified` + "`" + ` - ` + "`" + `EmailAddress` + "`" + ` - ` + "`" + `Persistent` + "`" + ` - ` + "`" + `Transient` + "`" + `. possible known values include one of ["EmailAddress", "Persistent", "Transient", "Unspecified"]; Default: "EmailAddress"`,
 					},
 					"redis": schema.SingleNestedAttribute{
 						Computed: true,
@@ -193,14 +185,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 									"auth_provider": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. must be one of ["aws", "azure", "gcp"]`,
-										Validators: []validator.String{
-											stringvalidator.OneOf(
-												"aws",
-												"azure",
-												"gcp",
-											),
-										},
+										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
 									},
 									"aws_access_key_id": schema.StringAttribute{
 										Optional:    true,
@@ -398,14 +383,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 							"sentinel_role": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]`,
-								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"any",
-										"master",
-										"slave",
-									),
-								},
+								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
 							},
 							"sentinel_username": schema.StringAttribute{
 								Optional:    true,
@@ -441,26 +419,13 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`SHA256`),
-						Description: `The digest algorithm for Authn requests: - ` + "`" + `SHA256` + "`" + ` - ` + "`" + `SHA1` + "`" + `. Default: "SHA256"; must be one of ["SHA1", "SHA256"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"SHA1",
-								"SHA256",
-							),
-						},
+						Description: `The digest algorithm for Authn requests: - ` + "`" + `SHA256` + "`" + ` - ` + "`" + `SHA1` + "`" + `. possible known values include one of ["SHA1", "SHA256"]; Default: "SHA256"`,
 					},
 					"request_signature_algorithm": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`SHA256`),
-						Description: `The signature algorithm for signing Authn requests. Options available are: - ` + "`" + `SHA256` + "`" + ` - ` + "`" + `SHA384` + "`" + ` - ` + "`" + `SHA512` + "`" + `. Default: "SHA256"; must be one of ["SHA256", "SHA384", "SHA512"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"SHA256",
-								"SHA384",
-								"SHA512",
-							),
-						},
+						Description: `The signature algorithm for signing Authn requests. Options available are: - ` + "`" + `SHA256` + "`" + ` - ` + "`" + `SHA384` + "`" + ` - ` + "`" + `SHA512` + "`" + `. possible known values include one of ["SHA256", "SHA384", "SHA512"]; Default: "SHA256"`,
 					},
 					"request_signing_certificate": schema.StringAttribute{
 						Optional:    true,
@@ -474,13 +439,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`SHA256`),
-						Description: `The algorithm for verifying digest in SAML responses: - ` + "`" + `SHA256` + "`" + ` - ` + "`" + `SHA1` + "`" + `. Default: "SHA256"; must be one of ["SHA1", "SHA256"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"SHA1",
-								"SHA256",
-							),
-						},
+						Description: `The algorithm for verifying digest in SAML responses: - ` + "`" + `SHA256` + "`" + ` - ` + "`" + `SHA1` + "`" + `. possible known values include one of ["SHA1", "SHA256"]; Default: "SHA256"`,
 					},
 					"response_encryption_key": schema.StringAttribute{
 						Optional:    true,
@@ -490,14 +449,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`SHA256`),
-						Description: `The algorithm for validating signatures in SAML responses. Options available are: - ` + "`" + `SHA256` + "`" + ` - ` + "`" + `SHA384` + "`" + ` - ` + "`" + `SHA512` + "`" + `. Default: "SHA256"; must be one of ["SHA256", "SHA384", "SHA512"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"SHA256",
-								"SHA384",
-								"SHA512",
-							),
-						},
+						Description: `The algorithm for validating signatures in SAML responses. Options available are: - ` + "`" + `SHA256` + "`" + ` - ` + "`" + `SHA384` + "`" + ` - ` + "`" + `SHA512` + "`" + `. possible known values include one of ["SHA256", "SHA384", "SHA512"]; Default: "SHA256"`,
 					},
 					"session_absolute_timeout": schema.Float64Attribute{
 						Computed:    true,
@@ -537,15 +489,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`Lax`),
-						Description: `Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. Default: "Lax"; must be one of ["Default", "Lax", "None", "Strict"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"Default",
-								"Lax",
-								"None",
-								"Strict",
-							),
-						},
+						Description: `Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. possible known values include one of ["Default", "Lax", "None", "Strict"]; Default: "Lax"`,
 					},
 					"session_cookie_secure": schema.BoolAttribute{
 						Optional:    true,
@@ -647,15 +591,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`cookie`),
-						Description: `The session storage for session data: - ` + "`" + `cookie` + "`" + `: stores session data with the session cookie. The session cannot be invalidated or revoked without changing the session secret, but is stateless, and doesn't require a database. - ` + "`" + `memcached` + "`" + `: stores session data in memcached - ` + "`" + `redis` + "`" + `: stores session data in Redis. Default: "cookie"; must be one of ["cookie", "memcache", "memcached", "redis"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"cookie",
-								"memcache",
-								"memcached",
-								"redis",
-							),
-						},
+						Description: `The session storage for session data: - ` + "`" + `cookie` + "`" + `: stores session data with the session cookie. The session cannot be invalidated or revoked without changing the session secret, but is stateless, and doesn't require a database. - ` + "`" + `memcached` + "`" + `: stores session data in memcached - ` + "`" + `redis` + "`" + `: stores session data in Redis. possible known values include one of ["cookie", "memcache", "memcached", "redis"]; Default: "cookie"`,
 					},
 					"session_store_metadata": schema.BoolAttribute{
 						Computed:    true,

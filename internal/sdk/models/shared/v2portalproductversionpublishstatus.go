@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // V2PortalProductVersionPublishStatus - Publication status of the API product version on the portal
 type V2PortalProductVersionPublishStatus string
 
@@ -18,18 +13,14 @@ const (
 func (e V2PortalProductVersionPublishStatus) ToPointer() *V2PortalProductVersionPublishStatus {
 	return &e
 }
-func (e *V2PortalProductVersionPublishStatus) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *V2PortalProductVersionPublishStatus) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "published", "unpublished":
+			return true
+		}
 	}
-	switch v {
-	case "published":
-		fallthrough
-	case "unpublished":
-		*e = V2PortalProductVersionPublishStatus(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for V2PortalProductVersionPublishStatus: %v", v)
-	}
+	return false
 }

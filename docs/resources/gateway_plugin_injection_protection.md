@@ -101,7 +101,7 @@ resource "konnect_gateway_plugin_injection_protection" "my_gatewayplugininjectio
 Optional:
 
 - `custom_injections` (Attributes List) Custom regexes to check for. (see [below for nested schema](#nestedatt--config--custom_injections))
-- `enforcement_mode` (String) Enforcement mode of the security policy. Default: "block"; must be one of ["block", "log_only"]
+- `enforcement_mode` (String) Enforcement mode of the security policy. possible known values include one of ["block", "log_only"]; Default: "block"
 - `error_message` (String) The response message when validation fails. Default: "Bad Request"
 - `error_status_code` (Number) The response status code when validation fails. Default: 400
 - `injection_types` (List of String) The type of injections to check for. Default: ["sql"]
@@ -178,7 +178,7 @@ import {
   to = konnect_gateway_plugin_injection_protection.my_konnect_gateway_plugin_injection_protection
   id = jsonencode({
     control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+    id               = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
   })
 }
 ```

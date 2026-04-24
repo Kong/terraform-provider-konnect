@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -133,22 +131,16 @@ const (
 func (e ResponseTransformerAdvancedPluginJSONTypes) ToPointer() *ResponseTransformerAdvancedPluginJSONTypes {
 	return &e
 }
-func (e *ResponseTransformerAdvancedPluginJSONTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ResponseTransformerAdvancedPluginJSONTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "boolean", "number", "string":
+			return true
+		}
 	}
-	switch v {
-	case "boolean":
-		fallthrough
-	case "number":
-		fallthrough
-	case "string":
-		*e = ResponseTransformerAdvancedPluginJSONTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ResponseTransformerAdvancedPluginJSONTypes: %v", v)
-	}
+	return false
 }
 
 type ResponseTransformerAdvancedPluginAdd struct {
@@ -230,22 +222,16 @@ const (
 func (e ResponseTransformerAdvancedPluginConfigJSONTypes) ToPointer() *ResponseTransformerAdvancedPluginConfigJSONTypes {
 	return &e
 }
-func (e *ResponseTransformerAdvancedPluginConfigJSONTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ResponseTransformerAdvancedPluginConfigJSONTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "boolean", "number", "string":
+			return true
+		}
 	}
-	switch v {
-	case "boolean":
-		fallthrough
-	case "number":
-		fallthrough
-	case "string":
-		*e = ResponseTransformerAdvancedPluginConfigJSONTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ResponseTransformerAdvancedPluginConfigJSONTypes: %v", v)
-	}
+	return false
 }
 
 type ResponseTransformerAdvancedPluginAppend struct {
@@ -373,22 +359,16 @@ const (
 func (e ResponseTransformerAdvancedPluginConfigReplaceJSONTypes) ToPointer() *ResponseTransformerAdvancedPluginConfigReplaceJSONTypes {
 	return &e
 }
-func (e *ResponseTransformerAdvancedPluginConfigReplaceJSONTypes) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ResponseTransformerAdvancedPluginConfigReplaceJSONTypes) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "boolean", "number", "string":
+			return true
+		}
 	}
-	switch v {
-	case "boolean":
-		fallthrough
-	case "number":
-		fallthrough
-	case "string":
-		*e = ResponseTransformerAdvancedPluginConfigReplaceJSONTypes(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ResponseTransformerAdvancedPluginConfigReplaceJSONTypes: %v", v)
-	}
+	return false
 }
 
 type ResponseTransformerAdvancedPluginReplace struct {
@@ -621,24 +601,16 @@ const (
 func (e ResponseTransformerAdvancedPluginProtocols) ToPointer() *ResponseTransformerAdvancedPluginProtocols {
 	return &e
 }
-func (e *ResponseTransformerAdvancedPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *ResponseTransformerAdvancedPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = ResponseTransformerAdvancedPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for ResponseTransformerAdvancedPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // ResponseTransformerAdvancedPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

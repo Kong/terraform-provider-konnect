@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // APIAccess - Type of API access data-plane groups will support for a configuration.
 type APIAccess string
 
@@ -19,20 +14,14 @@ const (
 func (e APIAccess) ToPointer() *APIAccess {
 	return &e
 }
-func (e *APIAccess) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *APIAccess) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "private", "public", "private+public":
+			return true
+		}
 	}
-	switch v {
-	case "private":
-		fallthrough
-	case "public":
-		fallthrough
-	case "private+public":
-		*e = APIAccess(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for APIAccess: %v", v)
-	}
+	return false
 }

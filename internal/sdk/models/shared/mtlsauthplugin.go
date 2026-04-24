@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -133,20 +131,16 @@ const (
 func (e MtlsAuthPluginAuthenticatedGroupBy) ToPointer() *MtlsAuthPluginAuthenticatedGroupBy {
 	return &e
 }
-func (e *MtlsAuthPluginAuthenticatedGroupBy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MtlsAuthPluginAuthenticatedGroupBy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "CN", "DN":
+			return true
+		}
 	}
-	switch v {
-	case "CN":
-		fallthrough
-	case "DN":
-		*e = MtlsAuthPluginAuthenticatedGroupBy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MtlsAuthPluginAuthenticatedGroupBy: %v", v)
-	}
+	return false
 }
 
 type MtlsAuthPluginConsumerBy string
@@ -159,20 +153,16 @@ const (
 func (e MtlsAuthPluginConsumerBy) ToPointer() *MtlsAuthPluginConsumerBy {
 	return &e
 }
-func (e *MtlsAuthPluginConsumerBy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MtlsAuthPluginConsumerBy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "custom_id", "username":
+			return true
+		}
 	}
-	switch v {
-	case "custom_id":
-		fallthrough
-	case "username":
-		*e = MtlsAuthPluginConsumerBy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MtlsAuthPluginConsumerBy: %v", v)
-	}
+	return false
 }
 
 // MtlsAuthPluginRevocationCheckMode - Controls client certificate revocation check behavior. If set to `SKIP`, no revocation check is performed. If set to `IGNORE_CA_ERROR`, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to `STRICT`, the plugin only treats the certificate as valid when it's able to verify the revocation status.
@@ -187,22 +177,16 @@ const (
 func (e MtlsAuthPluginRevocationCheckMode) ToPointer() *MtlsAuthPluginRevocationCheckMode {
 	return &e
 }
-func (e *MtlsAuthPluginRevocationCheckMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MtlsAuthPluginRevocationCheckMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "IGNORE_CA_ERROR", "SKIP", "STRICT":
+			return true
+		}
 	}
-	switch v {
-	case "IGNORE_CA_ERROR":
-		fallthrough
-	case "SKIP":
-		fallthrough
-	case "STRICT":
-		*e = MtlsAuthPluginRevocationCheckMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MtlsAuthPluginRevocationCheckMode: %v", v)
-	}
+	return false
 }
 
 type MtlsAuthPluginConfig struct {
@@ -395,28 +379,16 @@ const (
 func (e MtlsAuthPluginProtocols) ToPointer() *MtlsAuthPluginProtocols {
 	return &e
 }
-func (e *MtlsAuthPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *MtlsAuthPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https", "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = MtlsAuthPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for MtlsAuthPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // MtlsAuthPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

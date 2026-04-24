@@ -93,14 +93,7 @@ func (r *GatewayPluginCorrelationIDResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						Default:     stringdefault.StaticString(`uuid#counter`),
-						Description: `The generator to use for the correlation ID. Accepted values are ` + "`" + `uuid` + "`" + `, ` + "`" + `uuid#counter` + "`" + `, and ` + "`" + `tracker` + "`" + `. See [Generators](#generators). Default: "uuid#counter"; must be one of ["tracker", "uuid", "uuid#counter"]`,
-						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"tracker",
-								"uuid",
-								"uuid#counter",
-							),
-						},
+						Description: `The generator to use for the correlation ID. Accepted values are ` + "`" + `uuid` + "`" + `, ` + "`" + `uuid#counter` + "`" + `, and ` + "`" + `tracker` + "`" + `. See [Generators](#generators). possible known values include one of ["tracker", "uuid", "uuid#counter"]; Default: "uuid#counter"`,
 					},
 					"header_name": schema.StringAttribute{
 						Computed:    true,

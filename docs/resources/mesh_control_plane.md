@@ -59,7 +59,7 @@ Optional:
 
 - `hostname_generator_creation` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--features--hostname_generator_creation))
 - `mesh_creation` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--features--mesh_creation))
-- `type` (String) Not Null; must be one of ["MeshCreation", "HostnameGeneratorCreation"]; Requires replacement if changed.
+- `type` (String) possible known values include one of ["MeshCreation", "HostnameGeneratorCreation"]; Not Null; Requires replacement if changed.
 
 <a id="nestedatt--features--hostname_generator_creation"></a>
 ### Nested Schema for `features.hostname_generator_creation`

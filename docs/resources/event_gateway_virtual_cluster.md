@@ -21,7 +21,7 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
         mediation = "passthrough"
         principals = [
           {
-            password = "$${vault.env['MY_ENV_VAR']}"
+            password = "$$${vault.env['MY_ENV_VAR']}"
             username = "...my_username..."
           }
         ]
@@ -76,7 +76,7 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
   and does not forward ACL-related commands to the backend cluster.
   Note that if there are no ACL policies configured, all access is denied.
 - `passthrough` tells the gateway to forward all ACL-related commands.
-must be one of ["enforce_on_gateway", "passthrough"]
+possible known values include one of ["enforce_on_gateway", "passthrough"]
 - `authentication` (Attributes List) How to handle authentication from clients.
 
 It tries to authenticate with every rule sequentially one by one.
@@ -141,7 +141,7 @@ Optional:
 * terminate - terminate authentication at the proxy level and originate authentication to the backend cluster
   using the configuration defined at BackendCluster's authentication.
   SASL auth is not originated if authentication on the backend_cluster is not configured.
-Not Null; must be one of ["passthrough", "validate_forward", "terminate"]
+possible known values include one of ["passthrough", "validate_forward", "terminate"]; Not Null
 - `validate` (Attributes) Validation rules. (see [below for nested schema](#nestedatt--authentication--oauth_bearer--validate))
 
 <a id="nestedatt--authentication--oauth_bearer--claims_mapping"></a>
@@ -186,7 +186,7 @@ Optional:
 
 Optional:
 
-- `mediation` (String) The mediation type for SASL/PLAIN authentication. Not Null; must be one of ["passthrough", "terminate"]
+- `mediation` (String) The mediation type for SASL/PLAIN authentication. possible known values include one of ["passthrough", "terminate"]; Not Null
 - `principals` (Attributes List) List of principals to be able to authenticate with, used with `terminate` mediation. (see [below for nested schema](#nestedatt--authentication--sasl_plain--principals))
 
 <a id="nestedatt--authentication--sasl_plain--principals"></a>
@@ -209,7 +209,7 @@ Not Null
 
 Optional:
 
-- `algorithm` (String) The algorithm used for SASL/SCRAM authentication. Not Null; must be one of ["sha256", "sha512"]
+- `algorithm` (String) The algorithm used for SASL/SCRAM authentication. possible known values include one of ["sha256", "sha512"]; Not Null
 
 
 
@@ -234,7 +234,7 @@ Required:
   Created resources are written with the prefix on the backend cluster.
 * enforce_prefix - the configured prefix remains visible to clients.
   Created resources must include the prefix or the request will fail.
-must be one of ["hide_prefix", "enforce_prefix"]
+possible known values include one of ["hide_prefix", "enforce_prefix"]
 - `prefix` (String) The namespace is differentiated by this chosen prefix.
 For example, if the prefix is set to "analytics_" the topic named "analytics_user_clicks" is available to the clients
 of the virtual cluster. Topics without the prefix will be ignored unless added via `additional.topics`.
@@ -302,7 +302,7 @@ Optional:
 - `conflict` (String) How to inform the user about conflicts where multiple backend topics would map to the same virtual topic name.
 * warn - log in the Event Gateway logs. Additionally, it sets knep_namespace_topic_conflict to 1.
 * ignore - do not do anything. It does not cause knep_namespace_topic_conflict metric to be set to 1.
-Default: "warn"; must be one of ["warn", "ignore"]
+possible known values include one of ["warn", "ignore"]; Default: "warn"
 - `exact_list` (Attributes List) Explicit allow-list of backend topic names. (see [below for nested schema](#nestedatt--namespace--additional--topics--exact_list--exact_list))
 
 <a id="nestedatt--namespace--additional--topics--exact_list--exact_list"></a>
@@ -322,7 +322,7 @@ Optional:
 - `conflict` (String) How to inform the user about conflicts where multiple backend topics would map to the same virtual topic name.
 * warn - log in the Event Gateway logs. Additionally, it sets knep_namespace_topic_conflict to 1.
 * ignore - do not do anything. It does not cause knep_namespace_topic_conflict metric to be set to 1.
-Default: "warn"; must be one of ["warn", "ignore"]
+possible known values include one of ["warn", "ignore"]; Default: "warn"
 - `glob` (String) Expose any backend topic that matches this glob pattern (e.g., `operations_data_*`). Not Null
 
 ## Import
@@ -336,7 +336,7 @@ import {
   to = konnect_event_gateway_virtual_cluster.my_konnect_event_gateway_virtual_cluster
   id = jsonencode({
     gateway_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-    id = "..."
+    id         = "..."
   })
 }
 ```

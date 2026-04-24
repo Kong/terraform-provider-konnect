@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -138,30 +136,16 @@ const (
 func (e GenaiCategory) ToPointer() *GenaiCategory {
 	return &e
 }
-func (e *GenaiCategory) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *GenaiCategory) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation":
+			return true
+		}
 	}
-	switch v {
-	case "audio/speech":
-		fallthrough
-	case "audio/transcription":
-		fallthrough
-	case "image/generation":
-		fallthrough
-	case "realtime/generation":
-		fallthrough
-	case "text/embeddings":
-		fallthrough
-	case "text/generation":
-		fallthrough
-	case "video/generation":
-		*e = GenaiCategory(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for GenaiCategory: %v", v)
-	}
+	return false
 }
 
 // AiPromptGuardPluginLlmFormat - LLM input and output format and schema to use
@@ -179,28 +163,16 @@ const (
 func (e AiPromptGuardPluginLlmFormat) ToPointer() *AiPromptGuardPluginLlmFormat {
 	return &e
 }
-func (e *AiPromptGuardPluginLlmFormat) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiPromptGuardPluginLlmFormat) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai":
+			return true
+		}
 	}
-	switch v {
-	case "anthropic":
-		fallthrough
-	case "bedrock":
-		fallthrough
-	case "cohere":
-		fallthrough
-	case "gemini":
-		fallthrough
-	case "huggingface":
-		fallthrough
-	case "openai":
-		*e = AiPromptGuardPluginLlmFormat(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiPromptGuardPluginLlmFormat: %v", v)
-	}
+	return false
 }
 
 type AiPromptGuardPluginConfig struct {
@@ -338,24 +310,16 @@ const (
 func (e AiPromptGuardPluginProtocols) ToPointer() *AiPromptGuardPluginProtocols {
 	return &e
 }
-func (e *AiPromptGuardPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *AiPromptGuardPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = AiPromptGuardPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for AiPromptGuardPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // AiPromptGuardPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

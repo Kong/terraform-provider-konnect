@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -138,30 +136,16 @@ const (
 func (e LimitBy) ToPointer() *LimitBy {
 	return &e
 }
-func (e *LimitBy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *LimitBy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "consumer", "consumer-group", "credential", "header", "ip", "path", "service":
+			return true
+		}
 	}
-	switch v {
-	case "consumer":
-		fallthrough
-	case "consumer-group":
-		fallthrough
-	case "credential":
-		fallthrough
-	case "header":
-		fallthrough
-	case "ip":
-		fallthrough
-	case "path":
-		fallthrough
-	case "service":
-		*e = LimitBy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for LimitBy: %v", v)
-	}
+	return false
 }
 
 // Policy - The rate-limiting policies to use for retrieving and incrementing the limits.
@@ -176,22 +160,16 @@ const (
 func (e Policy) ToPointer() *Policy {
 	return &e
 }
-func (e *Policy) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *Policy) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "cluster", "local", "redis":
+			return true
+		}
 	}
-	switch v {
-	case "cluster":
-		fallthrough
-	case "local":
-		fallthrough
-	case "redis":
-		*e = Policy(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for Policy: %v", v)
-	}
+	return false
 }
 
 // RateLimitingPluginAuthProvider - Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
@@ -206,22 +184,16 @@ const (
 func (e RateLimitingPluginAuthProvider) ToPointer() *RateLimitingPluginAuthProvider {
 	return &e
 }
-func (e *RateLimitingPluginAuthProvider) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RateLimitingPluginAuthProvider) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "aws", "azure", "gcp":
+			return true
+		}
 	}
-	switch v {
-	case "aws":
-		fallthrough
-	case "azure":
-		fallthrough
-	case "gcp":
-		*e = RateLimitingPluginAuthProvider(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RateLimitingPluginAuthProvider: %v", v)
-	}
+	return false
 }
 
 // RateLimitingPluginCloudAuthentication - Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
@@ -668,24 +640,16 @@ const (
 func (e RateLimitingPluginProtocols) ToPointer() *RateLimitingPluginProtocols {
 	return &e
 }
-func (e *RateLimitingPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *RateLimitingPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "grpc", "grpcs", "http", "https":
+			return true
+		}
 	}
-	switch v {
-	case "grpc":
-		fallthrough
-	case "grpcs":
-		fallthrough
-	case "http":
-		fallthrough
-	case "https":
-		*e = RateLimitingPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for RateLimitingPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // RateLimitingPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.

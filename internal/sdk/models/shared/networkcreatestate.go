@@ -2,11 +2,6 @@
 
 package shared
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // NetworkCreateState - Initial state for creating a network.
 type NetworkCreateState string
 
@@ -18,18 +13,14 @@ const (
 func (e NetworkCreateState) ToPointer() *NetworkCreateState {
 	return &e
 }
-func (e *NetworkCreateState) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *NetworkCreateState) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "initializing", "offline":
+			return true
+		}
 	}
-	switch v {
-	case "initializing":
-		fallthrough
-	case "offline":
-		*e = NetworkCreateState(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for NetworkCreateState: %v", v)
-	}
+	return false
 }

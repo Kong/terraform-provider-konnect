@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -20,20 +18,16 @@ const (
 func (e EventGatewayTLSListenerPolicyConfigSensitiveDataAwareMode) ToPointer() *EventGatewayTLSListenerPolicyConfigSensitiveDataAwareMode {
 	return &e
 }
-func (e *EventGatewayTLSListenerPolicyConfigSensitiveDataAwareMode) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *EventGatewayTLSListenerPolicyConfigSensitiveDataAwareMode) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "required", "requested":
+			return true
+		}
 	}
-	switch v {
-	case "required":
-		fallthrough
-	case "requested":
-		*e = EventGatewayTLSListenerPolicyConfigSensitiveDataAwareMode(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for EventGatewayTLSListenerPolicyConfigSensitiveDataAwareMode: %v", v)
-	}
+	return false
 }
 
 // ClientAuthentication - Configures mutual TLS (mTLS) client certificate verification. When set, the gateway

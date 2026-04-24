@@ -3,8 +3,6 @@
 package shared
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
@@ -185,20 +183,16 @@ const (
 func (e WebsocketSizeLimitPluginProtocols) ToPointer() *WebsocketSizeLimitPluginProtocols {
 	return &e
 }
-func (e *WebsocketSizeLimitPluginProtocols) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
+
+// IsExact returns true if the value matches a known enum value, false otherwise.
+func (e *WebsocketSizeLimitPluginProtocols) IsExact() bool {
+	if e != nil {
+		switch *e {
+		case "ws", "wss":
+			return true
+		}
 	}
-	switch v {
-	case "ws":
-		fallthrough
-	case "wss":
-		*e = WebsocketSizeLimitPluginProtocols(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for WebsocketSizeLimitPluginProtocols: %v", v)
-	}
+	return false
 }
 
 // WebsocketSizeLimitPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
