@@ -4744,6 +4744,95 @@ paths:
           $ref: '#/components/responses/ServiceUnavailable'
       tags:
         - Control Planes
+  '/v2/control-planes/{controlPlaneId}':
+    parameters:
+      - name: controlPlaneId
+        in: path
+        description: The control plane ID
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        x-speakeasy-match: id
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: GatewayControlPlane#read
+        terraform-datasource: null
+      operationId: get-control-plane
+      summary: Get a Control Plane
+      description: Returns information about an individual control plane.
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrieveControlPlaneResponse'
+        '400':
+          $ref: '#/components/responses/ControlPlanesBadRequest'
+        '401':
+          $ref: '#/components/responses/ControlPlaneUnauthenticated'
+        '403':
+          $ref: '#/components/responses/ControlPlanePermissionDenied'
+        '404':
+          $ref: '#/components/responses/ControlPlaneNotFound'
+        '500':
+          $ref: '#/components/responses/Internal'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      tags:
+        - Control Planes
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: GatewayControlPlane#update
+        terraform-datasource: null
+      operationId: update-control-plane
+      summary: Update Control Plane
+      description: Update an individual control plane.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateControlPlaneRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateControlPlaneResponse'
+        '400':
+          $ref: '#/components/responses/ControlPlanesBadRequest'
+        '401':
+          $ref: '#/components/responses/ControlPlaneUnauthenticated'
+        '403':
+          $ref: '#/components/responses/ControlPlanePermissionDenied'
+        '404':
+          $ref: '#/components/responses/ControlPlaneNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      tags:
+        - Control Planes
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: GatewayControlPlane#delete
+        terraform-datasource: null
+      operationId: delete-control-plane
+      summary: Delete Control Plane
+      description: Delete an individual control plane.
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/ControlPlanesBadRequest'
+        '401':
+          $ref: '#/components/responses/ControlPlaneUnauthenticated'
+        '403':
+          $ref: '#/components/responses/ControlPlanePermissionDenied'
+        '404':
+          $ref: '#/components/responses/ControlPlaneNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      tags:
+        - Control Planes
   '/v2/control-planes/{controlPlaneId}/config-stores':
     post:
       x-speakeasy-entity-operation:
@@ -16947,102 +17036,15 @@ paths:
           $ref: '#/components/responses/KonnectCPLegacyNotFound'
       tags:
         - DP Certificates
-  '/v2/control-planes/{id}':
+  '/v2/control-planes/{controlPlaneId}/group-memberships/add':
     parameters:
-      - name: id
-        in: path
-        description: The control plane ID
-        required: true
-        schema:
-          type: string
-          format: uuid
-          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
-    get:
-      x-speakeasy-entity-operation:
-        terraform-resource: GatewayControlPlane#read
-        terraform-datasource: null
-      operationId: get-control-plane
-      summary: Get a Control Plane
-      description: Returns information about an individual control plane.
-      responses:
-        '200':
-          $ref: '#/components/responses/RetrieveControlPlaneResponse'
-        '400':
-          $ref: '#/components/responses/ControlPlanesBadRequest'
-        '401':
-          $ref: '#/components/responses/ControlPlaneUnauthenticated'
-        '403':
-          $ref: '#/components/responses/ControlPlanePermissionDenied'
-        '404':
-          $ref: '#/components/responses/ControlPlaneNotFound'
-        '500':
-          $ref: '#/components/responses/Internal'
-        '503':
-          $ref: '#/components/responses/ServiceUnavailable'
-      tags:
-        - Control Planes
-    patch:
-      x-speakeasy-entity-operation:
-        terraform-resource: GatewayControlPlane#update
-        terraform-datasource: null
-      operationId: update-control-plane
-      summary: Update Control Plane
-      description: Update an individual control plane.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateControlPlaneRequest'
-      responses:
-        '200':
-          $ref: '#/components/responses/UpdateControlPlaneResponse'
-        '400':
-          $ref: '#/components/responses/ControlPlanesBadRequest'
-        '401':
-          $ref: '#/components/responses/ControlPlaneUnauthenticated'
-        '403':
-          $ref: '#/components/responses/ControlPlanePermissionDenied'
-        '404':
-          $ref: '#/components/responses/ControlPlaneNotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '503':
-          $ref: '#/components/responses/ServiceUnavailable'
-      tags:
-        - Control Planes
-    delete:
-      x-speakeasy-entity-operation:
-        terraform-resource: GatewayControlPlane#delete
-        terraform-datasource: null
-      operationId: delete-control-plane
-      summary: Delete Control Plane
-      description: Delete an individual control plane.
-      responses:
-        '204':
-          description: No Content
-        '400':
-          $ref: '#/components/responses/ControlPlanesBadRequest'
-        '401':
-          $ref: '#/components/responses/ControlPlaneUnauthenticated'
-        '403':
-          $ref: '#/components/responses/ControlPlanePermissionDenied'
-        '404':
-          $ref: '#/components/responses/ControlPlaneNotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '503':
-          $ref: '#/components/responses/ServiceUnavailable'
-      tags:
-        - Control Planes
-  '/v2/control-planes/{id}/group-memberships/add':
-    parameters:
-      - name: id
+      - name: controlPlaneId
         in: path
         description: ID of a control plane group
         required: true
         schema:
           type: string
+        x-speakeasy-name-override: id
     post:
       x-speakeasy-entity-operation:
         terraform-resource: GatewayControlPlaneMembership#create
@@ -17069,14 +17071,15 @@ paths:
           $ref: '#/components/responses/ServiceUnavailable'
       tags:
         - Control Plane Groups
-  '/v2/control-planes/{id}/group-memberships/remove':
+  '/v2/control-planes/{controlPlaneId}/group-memberships/remove':
     parameters:
-      - name: id
+      - name: controlPlaneId
         in: path
         description: ID of a control plane group
         required: true
         schema:
           type: string
+        x-speakeasy-name-override: id
     post:
       x-speakeasy-entity-operation:
         terraform-resource: GatewayControlPlaneMembership#delete
@@ -18352,11 +18355,7 @@ paths:
         terraform-datasource: null
       operationId: get-portal-authentication-settings
       summary: Get Auth Settings
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Returns the developer authentication configuration for a portal, which determines how developers can log in and how they are assigned to teams.
+      description: 'Returns the developer authentication configuration for a portal, which determines how developers can log in and how they are assigned to teams.'
       responses:
         '200':
           $ref: '#/components/responses/PortalAuthenticationSettings'
@@ -18370,11 +18369,7 @@ paths:
         terraform-datasource: null
       operationId: update-portal-authentication-settings
       summary: Update Auth Settings
-      description: |-
-        **Pre-release Endpoint**
-        This endpoint is currently in beta and is subject to change.
-
-        Updates the developer authentication configuration for a portal. Developers can be allowed to login using basic auth (email & password) or use Single-Sign-On through an Identity Provider. Developers can be automatically assigned to teams by mapping claims from their IdP account.
+      description: Updates the developer authentication configuration for a portal. Developers can be allowed to login using basic auth (email & password) or use Single-Sign-On through an Identity Provider. Developers can be automatically assigned to teams by mapping claims from their IdP account.
       requestBody:
         $ref: '#/components/requestBodies/UpdatePortalAuthenticationSettings'
       responses:
@@ -18555,6 +18550,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Pages
+      x-speakeasy-group: Portal Pages
   '/v3/portals/{portalId}/pages/{pageId}':
     get:
       x-speakeasy-entity-operation:
@@ -18575,6 +18571,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Pages
+      x-speakeasy-group: Portal Pages
     patch:
       x-speakeasy-entity-operation:
         terraform-resource: PortalPage#update
@@ -18604,6 +18601,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Pages
+      x-speakeasy-group: Portal Pages
     delete:
       x-speakeasy-entity-operation:
         terraform-resource: PortalPage#delete
@@ -18625,6 +18623,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Pages
+      x-speakeasy-group: Portal Pages
   '/v3/portals/{portalId}/snippets':
     post:
       x-speakeasy-entity-operation:
@@ -23594,6 +23593,10 @@ components:
             - xlarge: ~12 GiB capacity
             - 2xlarge: ~25 GiB capacity
             - 4xlarge: ~52 GiB capacity
+            - 8xlarge: ~100 GiB capacity
+            - 12xlarge: ~150 GiB capacity
+            - 16xlarge: ~200 GiB capacity
+            - 24xlarge: ~300 GiB capacity
           type: string
           enum:
             - micro
@@ -23603,6 +23606,10 @@ components:
             - xlarge
             - 2xlarge
             - 4xlarge
+            - 8xlarge
+            - 12xlarge
+            - 16xlarge
+            - 24xlarge
           x-speakeasy-unknown-values: allow
       example:
         kind: tiered
@@ -28636,11 +28643,6 @@ components:
         updated_at: '2022-08-31T17:00:00.52Z'
         can_own_applications: false
       title: PortalTeamResponse
-    SourceIPEnabled:
-      description: Whether ip allow list is enabled for the organization.
-      type: boolean
-      example: true
-      default: false
     ApiResponseSchema:
       type: object
       properties:
@@ -30495,7 +30497,7 @@ components:
 
                 **Requires a minimum runtime version of `1.1`**.
               type: string
-              example: '$${context.certificate.subject[''CN''] ? context.certificate.subject[''CN''] : context.certificate.sans.uri[0]}'
+              example: '${context.certificate.subject[''CN''] ? context.certificate.subject[''CN''] : context.certificate.sans.uri[0]}'
               x-expression:
                 type: string
                 fields:
@@ -30590,7 +30592,7 @@ components:
 
                 **Requires a minimum runtime version of `1.1`**.
               type: string
-              example: '$${context.certificate.subject[''CN''] ? context.certificate.subject[''CN''] : context.certificate.sans.uri[0]}'
+              example: '${context.certificate.subject[''CN''] ? context.certificate.subject[''CN''] : context.certificate.sans.uri[0]}'
               x-expression:
                 type: string
                 fields:
@@ -32200,7 +32202,7 @@ components:
         If the value is provided as plain text, it is encrypted at rest and omitted from API responses.
         If provided as an expression, the expression itself is stored and returned by the API.
       type: string
-      example: '$${vault.env[''MY_ENV_VAR'']}'
+      example: '${vault.env[''MY_ENV_VAR'']}'
       minLength: 1
       x-expression:
         type: string
@@ -70180,6 +70182,8 @@ components:
                   - Viewer
                   - Registration Approver
                   - Content Editor
+                  - Add On Admin
+                  - Add On Viewer
                 x-speakeasy-unknown-values: allow
               entity_id:
                 description: The ID of the entity.
@@ -70194,6 +70198,7 @@ components:
                 type: string
                 example: Control Planes
                 enum:
+                  - Add Ons
                   - APIs
                   - API Products
                   - Application Auth Strategies
@@ -70647,7 +70652,10 @@ components:
                 type: boolean
                 default: false
               sipr_enabled:
-                $ref: '#/components/schemas/SourceIPEnabled'
+                description: Whether ip allow list is enabled for the portal.
+                type: boolean
+                example: true
+                default: false
               default_api_visibility:
                 description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
                 type: string
@@ -70741,7 +70749,10 @@ components:
                 type: boolean
                 default: false
               sipr_enabled:
-                $ref: '#/components/schemas/SourceIPEnabled'
+                description: Whether ip allow list is enabled for the portal.
+                type: boolean
+                example: true
+                default: false
               default_api_visibility:
                 description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
                 type: string
@@ -72735,7 +72746,10 @@ components:
                       type: boolean
                       default: false
                     sipr_enabled:
-                      $ref: '#/components/schemas/SourceIPEnabled'
+                      description: Whether ip allow list is enabled for the portal.
+                      type: boolean
+                      example: true
+                      default: false
                     default_api_visibility:
                       description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
                       type: string
@@ -72844,7 +72858,10 @@ components:
                 type: boolean
                 default: false
               sipr_enabled:
-                $ref: '#/components/schemas/SourceIPEnabled'
+                description: Whether ip allow list is enabled for the portal.
+                type: boolean
+                example: true
+                default: false
               default_api_visibility:
                 description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
                 type: string
