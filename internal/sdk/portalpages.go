@@ -16,15 +16,14 @@ import (
 	"net/http"
 )
 
-// Pages - APIs related to Konnect Developer Portal Custom Pages.
-type Pages struct {
+type PortalPages struct {
 	rootSDK          *Konnect
 	sdkConfiguration config.SDKConfiguration
 	hooks            *hooks.Hooks
 }
 
-func newPages(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hooks.Hooks) *Pages {
-	return &Pages{
+func newPortalPages(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hooks.Hooks) *PortalPages {
+	return &PortalPages{
 		rootSDK:          rootSDK,
 		sdkConfiguration: sdkConfig,
 		hooks:            hooks,
@@ -33,7 +32,7 @@ func newPages(rootSDK *Konnect, sdkConfig config.SDKConfiguration, hooks *hooks.
 
 // CreatePortalPage - Create Page
 // Creates a new custom page for this portal. Custom pages can be used to display static content, documentation, or other information to developers. Title and Description properties may be provided in the frontmatter section of `content`. If you set values in both the `POST` request _and_ in the frontmatter, the values in frontmatter will take precedence.
-func (s *Pages) CreatePortalPage(ctx context.Context, request operations.CreatePortalPageRequest, opts ...operations.Option) (*operations.CreatePortalPageResponse, error) {
+func (s *PortalPages) CreatePortalPage(ctx context.Context, request operations.CreatePortalPageRequest, opts ...operations.Option) (*operations.CreatePortalPageResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -329,7 +328,7 @@ func (s *Pages) CreatePortalPage(ctx context.Context, request operations.CreateP
 
 // GetPortalPage - Get a Page
 // Returns the configuration of a single custom page for this portal. Custom pages can be used to display static content, documentation, or other information to developers.
-func (s *Pages) GetPortalPage(ctx context.Context, request operations.GetPortalPageRequest, opts ...operations.Option) (*operations.GetPortalPageResponse, error) {
+func (s *PortalPages) GetPortalPage(ctx context.Context, request operations.GetPortalPageRequest, opts ...operations.Option) (*operations.GetPortalPageResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -576,7 +575,7 @@ func (s *Pages) GetPortalPage(ctx context.Context, request operations.GetPortalP
 
 // UpdatePortalPage - Update Page
 // Updates the configuration of a single custom page for this portal.
-func (s *Pages) UpdatePortalPage(ctx context.Context, request operations.UpdatePortalPageRequest, opts ...operations.Option) (*operations.UpdatePortalPageResponse, error) {
+func (s *PortalPages) UpdatePortalPage(ctx context.Context, request operations.UpdatePortalPageRequest, opts ...operations.Option) (*operations.UpdatePortalPageResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -872,7 +871,7 @@ func (s *Pages) UpdatePortalPage(ctx context.Context, request operations.UpdateP
 
 // DeletePortalPage - Delete Page
 // Deletes a single custom page for this portal.
-func (s *Pages) DeletePortalPage(ctx context.Context, request operations.DeletePortalPageRequest, opts ...operations.Option) (*operations.DeletePortalPageResponse, error) {
+func (s *PortalPages) DeletePortalPage(ctx context.Context, request operations.DeletePortalPageRequest, opts ...operations.Option) (*operations.DeletePortalPageResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,

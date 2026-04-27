@@ -316,8 +316,7 @@ type Konnect struct {
 	PortalCustomDomains *PortalCustomDomains
 	// APIs related to customization of Konnect Developer Portals.
 	PortalCustomization *PortalCustomization
-	// APIs related to Konnect Developer Portal Custom Pages.
-	Pages *Pages
+	PortalPages         *PortalPages
 	// APIs related to Konnect Developer Portal Custom Snippets.
 	Snippets *Snippets
 	// APIs related to configuration of Konnect Developer Portal developer teams.
@@ -503,7 +502,7 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.PortalAuthSettings = newPortalAuthSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalCustomDomains = newPortalCustomDomains(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalCustomization = newPortalCustomization(sdk, sdk.sdkConfiguration, sdk.hooks)
-	sdk.Pages = newPages(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalPages = newPortalPages(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Snippets = newSnippets(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalTeams = newPortalTeams(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.SystemAccounts = newSystemAccounts(sdk, sdk.sdkConfiguration, sdk.hooks)

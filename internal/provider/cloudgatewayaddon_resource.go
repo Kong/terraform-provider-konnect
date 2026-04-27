@@ -98,7 +98,11 @@ func (r *CloudGatewayAddonResource) Schema(ctx context.Context, req resource.Sch
 													`- xlarge: ~12 GiB capacity` + "\n" +
 													`- 2xlarge: ~25 GiB capacity` + "\n" +
 													`- 4xlarge: ~52 GiB capacity` + "\n" +
-													`possible known values include one of ["micro", "small", "medium", "large", "xlarge", "2xlarge", "4xlarge"]; Requires replacement if changed.`,
+													`- 8xlarge: ~100 GiB capacity` + "\n" +
+													`- 12xlarge: ~150 GiB capacity` + "\n" +
+													`- 16xlarge: ~200 GiB capacity` + "\n" +
+													`- 24xlarge: ~300 GiB capacity` + "\n" +
+													`possible known values include one of ["micro", "small", "medium", "large", "xlarge", "2xlarge", "4xlarge", "8xlarge", "12xlarge", "16xlarge", "24xlarge"]; Requires replacement if changed.`,
 											},
 										},
 										Description: `Capacity tiers with pre-configured size and performance characteristics. Requires replacement if changed.`,
@@ -132,7 +136,11 @@ func (r *CloudGatewayAddonResource) Schema(ctx context.Context, req resource.Sch
 													`- large: ~6 GiB capacity` + "\n" +
 													`- xlarge: ~12 GiB capacity` + "\n" +
 													`- 2xlarge: ~25 GiB capacity` + "\n" +
-													`- 4xlarge: ~52 GiB capacity`,
+													`- 4xlarge: ~52 GiB capacity` + "\n" +
+													`- 8xlarge: ~100 GiB capacity` + "\n" +
+													`- 12xlarge: ~150 GiB capacity` + "\n" +
+													`- 16xlarge: ~200 GiB capacity` + "\n" +
+													`- 24xlarge: ~300 GiB capacity`,
 											},
 										},
 										Description: `Capacity tiers with pre-configured size and performance characteristics.`,

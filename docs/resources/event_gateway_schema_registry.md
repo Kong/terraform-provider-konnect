@@ -18,7 +18,7 @@ resource "konnect_event_gateway_schema_registry" "my_eventgatewayschemaregistry"
     config = {
       authentication = {
         basic = {
-          password = "$$${vault.env['MY_ENV_VAR']}"
+          password = "$${vault.env['MY_ENV_VAR']}"
           username = "...my_username..."
         }
       }

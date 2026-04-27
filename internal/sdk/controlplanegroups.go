@@ -51,7 +51,7 @@ func (s *ControlPlaneGroups) PostControlPlanesIDGroupMembershipsAdd(ctx context.
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{id}/group-memberships/add", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/group-memberships/add", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -364,7 +364,7 @@ func (s *ControlPlaneGroups) PostControlPlanesIDGroupMembershipsRemove(ctx conte
 	} else {
 		baseURL = *o.ServerURL
 	}
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{id}/group-memberships/remove", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/group-memberships/remove", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}

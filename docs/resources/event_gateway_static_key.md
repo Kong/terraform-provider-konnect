@@ -20,7 +20,7 @@ resource "konnect_event_gateway_static_key" "my_eventgatewaystatickey" {
     key = "value"
   }
   name  = "...my_name..."
-  value = "$$${vault.env['MY_ENV_VAR']}"
+  value = "$${vault.env['MY_ENV_VAR']}"
 }
 ```
 

@@ -10,7 +10,7 @@ import (
 
 type UpdateControlPlaneRequest struct {
 	// The control plane ID
-	ID                        string                           `pathParam:"style=simple,explode=false,name=id"`
+	ControlPlaneID            string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	UpdateControlPlaneRequest shared.UpdateControlPlaneRequest `request:"mediaType=application/json"`
 }
 
@@ -19,17 +19,17 @@ func (u UpdateControlPlaneRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpdateControlPlaneRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"id", "UpdateControlPlaneRequest"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"controlPlaneId", "UpdateControlPlaneRequest"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (u *UpdateControlPlaneRequest) GetID() string {
+func (u *UpdateControlPlaneRequest) GetControlPlaneID() string {
 	if u == nil {
 		return ""
 	}
-	return u.ID
+	return u.ControlPlaneID
 }
 
 func (u *UpdateControlPlaneRequest) GetUpdateControlPlaneRequest() shared.UpdateControlPlaneRequest {
