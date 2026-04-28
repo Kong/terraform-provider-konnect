@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 8d5359cda2505af208951fdda6768291
+  docChecksum: 382905b74adf8ff0426258519441ffae
   docVersion: 2.0.0
   speakeasyVersion: 1.761.9
   generationVersion: 2.881.4
   releaseVersion: 3.14.0
   configChecksum: cbab51ace52a07267c4c8577272e3c32
 persistentEdits:
-  generation_id: 7787728a-593d-4a28-b831-cdd4cd2c3d3a
-  pristine_commit_hash: 3615d2ee2943b8c0558a33b87788eec2936152c6
-  pristine_tree_hash: 63d8044414df3780d2b0469ff98a5421f6c69201
+  generation_id: 68e36d26-6c6f-46a8-989d-db451b66e70c
+  pristine_commit_hash: 4de6757c3569501656e7a8ca1ffafd3d1341ef43
+  pristine_tree_hash: 84b20925675b9e7412d36438848132a60b80769a
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -2367,6 +2367,18 @@ trackedFiles:
     id: d595d8926c28
     last_write_checksum: sha1:50d5bebad227b532038a394d3bde6f98c22169d5
     pristine_git_object: 2cbb721410e171b4a634350641df157bbe204096
+  examples/resources/konnect_portal_audit_log_webhook/import-by-string-id.tf:
+    id: bcd3cf2f5fb0
+    last_write_checksum: sha1:ee115e5e9d636fc3ac3a037fd847b5d29ad03f00
+    pristine_git_object: c3d1f878f8f4e186000624f7da89ecce99c00ca3
+  examples/resources/konnect_portal_audit_log_webhook/import.sh:
+    id: 15af09506cd1
+    last_write_checksum: sha1:ecf0ac0c5c16648ef8efa3b04b4c3cae5fd26e72
+    pristine_git_object: 35e37cd7188f0971efdc87cd1958ae90b5c55f2b
+  examples/resources/konnect_portal_audit_log_webhook/resource.tf:
+    id: fbabbe17210a
+    last_write_checksum: sha1:1e438b816d101c3af58b7edf88c5f132a94425be
+    pristine_git_object: 7fb06b3118181f1407fc51f9dc5b25f07726a677
   examples/resources/konnect_portal_auth/import-by-string-id.tf:
     id: 72471bcaf9d8
     last_write_checksum: sha1:c323d6428a99309fef996b119d2a24c70527449b
@@ -4309,12 +4321,20 @@ trackedFiles:
     pristine_git_object: ec3a21735031d184d2609cfd6cc1bcda556a1d01
   internal/provider/portalappearance_resource.go:
     id: b2b030386ed0
-    last_write_checksum: sha1:816043b5f04a00c180c111704304f466716f3a0f
-    pristine_git_object: c31d12e6a06930735ae5ffa5e5e0072911c905bc
+    last_write_checksum: sha1:4c9274def612b8064cdd45f688b9722603951ea5
+    pristine_git_object: 04c758557b71b91de157055d632e8b38091eeadc
   internal/provider/portalappearance_resource_sdk.go:
     id: "299650101730"
     last_write_checksum: sha1:2253b10f408892c7bc342e69a7c9520184d3d39d
     pristine_git_object: 39acdb249efec4490cceaf38f719b6efb417e0a0
+  internal/provider/portalauditlogwebhook_resource.go:
+    id: 85780041b3ea
+    last_write_checksum: sha1:c59852cc398d93b9bed1a23bfaf6775c6ab92358
+    pristine_git_object: d7a3cfbd86836b76121d90af69ef2025d42c680d
+  internal/provider/portalauditlogwebhook_resource_sdk.go:
+    id: fa2f47afda0e
+    last_write_checksum: sha1:ba2d0b52b0a832fdcad088e3a419ba7ef548f915
+    pristine_git_object: 88e03e42cb9dcbb39daef219b96a97b79f2a7eef
   internal/provider/portalauth_resource.go:
     id: 3fa75910b5b8
     last_write_checksum: sha1:6bedf64a50acc37a02669fd494db8847c754dad5
@@ -4405,8 +4425,8 @@ trackedFiles:
     pristine_git_object: 4d96a0bfdc21e90f6daf60bacd8327a609b249f7
   internal/provider/provider.go:
     id: 1e7e86841cf3
-    last_write_checksum: sha1:496f9ac7feb840022e485a97fde5c7c336603105
-    pristine_git_object: 558a045b10b1205a282ddea4e72b51771605f25a
+    last_write_checksum: sha1:cf497d64e556b502e1ee320312903dd86f61ee85
+    pristine_git_object: 5f226dfb7120b8ccd3dfe0640dab5a5e75c234d0
   internal/provider/realm_resource.go:
     id: 288745fe66d4
     last_write_checksum: sha1:84cfafee418c410926378f7ecbd147dd45e933e8
@@ -6849,8 +6869,8 @@ trackedFiles:
     pristine_git_object: de6e80ba00b21ebe196bef40b3442ceab1158baf
   internal/sdk/konnect.go:
     id: defee4f1aaf8
-    last_write_checksum: sha1:79bded43d7bd51a4972da5e6a0807fa84d800e91
-    pristine_git_object: c49559adc2be1186fa89fa6c4b2d00f41ed122fc
+    last_write_checksum: sha1:240c2e504b0a99faa239724678ea0219af5fef83
+    pristine_git_object: b613c13b9d7ccae3514f1181bc37366362630a68
   internal/sdk/mesh.go:
     id: c3f36614baba
     last_write_checksum: sha1:efd743a519129a43ecc2856b3edc75a855d87c0a
@@ -8191,6 +8211,10 @@ trackedFiles:
     id: 53a9afa45806
     last_write_checksum: sha1:7a547836c15b0ab7c2bcddf2c7e055ba51c94381
     pristine_git_object: 25c5f5f11983372ce7762cfe4e3f3994d3421a41
+  internal/sdk/models/operations/deleteportalauditlogwebhook.go:
+    id: 1eac67475d7d
+    last_write_checksum: sha1:32d06d1057a49ccfd7e8e6351aa3e43d820266c2
+    pristine_git_object: 7adb95514a2ee7a069ffa430ffacc900077b940a
   internal/sdk/models/operations/deleteportalclassic.go:
     id: 34d617c42652
     last_write_checksum: sha1:7a6fba379faf9e5a04d9ee29ac5407c91f54ac96
@@ -9027,6 +9051,10 @@ trackedFiles:
     id: 1ff562666360
     last_write_checksum: sha1:46545d09af40efd2b819d6d8788d495f795a677a
     pristine_git_object: 4b089eaf7b7c72d2b2fe08ca11bc280bcd57691a
+  internal/sdk/models/operations/getportalauditlogwebhook.go:
+    id: f28dc4fce0f5
+    last_write_checksum: sha1:2f0286a470bb8686ae96e57bc1967e67cfc2338d
+    pristine_git_object: 0e324f68a084c5f99ad2319056111aa677c29c92
   internal/sdk/models/operations/getportalauthenticationsettings.go:
     id: 34051b740223
     last_write_checksum: sha1:953037e8e5e8e129e83f6a204ddbc2b959a1d34e
@@ -9867,6 +9895,10 @@ trackedFiles:
     id: 767be8dddff6
     last_write_checksum: sha1:e88437ca629b7982cedf78e508ed587f459f7bbb
     pristine_git_object: 2d49216be63a93b443ccaafbf845ca43cc9dfe10
+  internal/sdk/models/operations/updateportalauditlogwebhook.go:
+    id: efe0a00c0c7d
+    last_write_checksum: sha1:03658172b1de1ad65fd1c9feaa1af85d006f497b
+    pristine_git_object: ddaa3aefc8c2f090c46d1f4847e36724f99b978b
   internal/sdk/models/operations/updateportalauthenticationsettings.go:
     id: 9c1961ada26d
     last_write_checksum: sha1:a549b6def6de53ed89cefde70adc9f654de78ca1
@@ -11719,6 +11751,10 @@ trackedFiles:
     id: 3a1c9ef501f8
     last_write_checksum: sha1:d645c2bc97011b173807367090c16f398e1f23c2
     pristine_git_object: 805263b71816cff12762762c486981142f3f99f6
+  internal/sdk/models/shared/portalauditlogwebhook.go:
+    id: 856bbdc735dc
+    last_write_checksum: sha1:3bec3b245d4e25cbe25430abbe1b040804195edf
+    pristine_git_object: cb166615c375428dde8fa6172ec303bc81ba6593
   internal/sdk/models/shared/portalauthenticationsettingsresponse.go:
     id: 483858d9c90c
     last_write_checksum: sha1:c02a50899e74dfbdef70d8f6ded56417870aeaae
@@ -12283,6 +12319,10 @@ trackedFiles:
     id: bee6d3f054a4
     last_write_checksum: sha1:12f0479f9f6c5f7b435e613cb39f78fcf36d2642
     pristine_git_object: 76c43d5d4d9e8b9e7fb23ec46ca23850b2b4502e
+  internal/sdk/models/shared/updateportalauditlogwebhook.go:
+    id: c08b2fe64c7c
+    last_write_checksum: sha1:2d60f56f33a6cb68dd5303953d8406cc9a52d31a
+    pristine_git_object: 9b646fa4bd035654f68d9000e5f25f5033a5f1cf
   internal/sdk/models/shared/updateportalcustomdomainrequest.go:
     id: 40032d690662
     last_write_checksum: sha1:6ea503f81ecfcabf2bb636ff748532662aaef9be
@@ -12575,6 +12615,10 @@ trackedFiles:
     id: 0781fc630902
     last_write_checksum: sha1:2c2fd8feb14f22982aa04183d9fc235415f1b816
     pristine_git_object: fc19ba35a0f34678040492443445a4399a5f505c
+  internal/sdk/portalauditlogs.go:
+    id: 691bdfe05677
+    last_write_checksum: sha1:2d724f4cda0bd03492d3e619d26c9851ca59cd55
+    pristine_git_object: d802c59a6cf79d6a1999e1373025277bea707a6d
   internal/sdk/portalauthsettings.go:
     id: 6e1aedfde83b
     last_write_checksum: sha1:7afe0f6cc65e0c77c23a7d7e9f4cd49852577976
@@ -27085,6 +27129,52 @@ examples:
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-portal-audit-log-webhook:
+    speakeasy-default-update-portal-audit-log-webhook:
+      parameters:
+        path:
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+      requestBody:
+        application/json: {"enabled": true, "audit_log_destination_id": null}
+      responses:
+        "200":
+          application/json: {"enabled": true, "audit_log_destination_id": null}
+        "400":
+          application/problem+json: {"status": 597418, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  get-portal-audit-log-webhook:
+    speakeasy-default-get-portal-audit-log-webhook:
+      parameters:
+        path:
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "200":
+          application/json: {"enabled": true, "audit_log_destination_id": null}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  delete-portal-audit-log-webhook:
+    speakeasy-default-delete-portal-audit-log-webhook:
+      parameters:
+        path:
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
 examplesVersion: 1.0.2
 generatedTests: {}
 generatedFiles:

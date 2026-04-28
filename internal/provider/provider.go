@@ -352,6 +352,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewMeshControlPlaneResource,
 		NewPortalResource,
 		NewPortalAppearanceResource,
+		NewPortalAuditLogWebhookResource,
 		NewPortalAuthResource,
 		NewPortalClassicResource,
 		NewPortalCustomDomainResource,
