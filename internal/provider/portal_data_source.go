@@ -340,7 +340,7 @@ func (r *PortalDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 			},
 			"sipr_enabled": schema.BoolAttribute{
 				Computed:    true,
-				Description: `Whether ip allow list is enabled for the organization.`,
+				Description: `Whether ip allow list is enabled for the portal.`,
 			},
 			"sort": schema.StringAttribute{
 				Optional: true,

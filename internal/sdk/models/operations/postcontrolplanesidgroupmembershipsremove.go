@@ -10,7 +10,7 @@ import (
 
 type PostControlPlanesIDGroupMembershipsRemoveRequest struct {
 	// ID of a control plane group
-	ID string `pathParam:"style=simple,explode=false,name=id"`
+	ID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Request body for removing a list of child control planes from a control plane group membership.
 	GroupMembership *shared.GroupMembership `request:"mediaType=application/json"`
 }
@@ -20,7 +20,7 @@ func (p PostControlPlanesIDGroupMembershipsRemoveRequest) MarshalJSON() ([]byte,
 }
 
 func (p *PostControlPlanesIDGroupMembershipsRemoveRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"id"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"controlPlaneId"}); err != nil {
 		return err
 	}
 	return nil

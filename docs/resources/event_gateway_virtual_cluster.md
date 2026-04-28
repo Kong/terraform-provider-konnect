@@ -21,7 +21,7 @@ resource "konnect_event_gateway_virtual_cluster" "my_eventgatewayvirtualcluster"
         mediation = "passthrough"
         principals = [
           {
-            password = "$$${vault.env['MY_ENV_VAR']}"
+            password = "$${vault.env['MY_ENV_VAR']}"
             username = "...my_username..."
           }
         ]

@@ -53,7 +53,7 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 ### Read-Only
 
 - `config` (Attributes) CP configuration object for related access endpoints. (see [below for nested schema](#nestedatt--config))
-- `id` (String) The control plane ID
+- `id` (String) The control plane ID.
 
 <a id="nestedatt--proxy_urls"></a>
 ### Nested Schema for `proxy_urls`
@@ -95,12 +95,12 @@ In Terraform v1.5.0 and later, the [`import` block](https://developer.hashicorp.
 ```terraform
 import {
   to = konnect_gateway_control_plane.my_konnect_gateway_control_plane
-  id = "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+  id = "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
 }
 ```
 
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import konnect_gateway_control_plane.my_konnect_gateway_control_plane "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+terraform import konnect_gateway_control_plane.my_konnect_gateway_control_plane "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
 ```

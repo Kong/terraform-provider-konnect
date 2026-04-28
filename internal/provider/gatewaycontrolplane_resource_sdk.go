@@ -49,11 +49,11 @@ func (r *GatewayControlPlaneResourceModel) RefreshFromSharedControlPlane1(ctx co
 func (r *GatewayControlPlaneResourceModel) ToOperationsDeleteControlPlaneRequest(ctx context.Context) (*operations.DeleteControlPlaneRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var id string
-	id = r.ID.ValueString()
+	var controlPlaneID string
+	controlPlaneID = r.ID.ValueString()
 
 	out := operations.DeleteControlPlaneRequest{
-		ID: id,
+		ControlPlaneID: controlPlaneID,
 	}
 
 	return &out, diags
@@ -62,11 +62,11 @@ func (r *GatewayControlPlaneResourceModel) ToOperationsDeleteControlPlaneRequest
 func (r *GatewayControlPlaneResourceModel) ToOperationsGetControlPlaneRequest(ctx context.Context) (*operations.GetControlPlaneRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var id string
-	id = r.ID.ValueString()
+	var controlPlaneID string
+	controlPlaneID = r.ID.ValueString()
 
 	out := operations.GetControlPlaneRequest{
-		ID: id,
+		ControlPlaneID: controlPlaneID,
 	}
 
 	return &out, diags
@@ -75,8 +75,8 @@ func (r *GatewayControlPlaneResourceModel) ToOperationsGetControlPlaneRequest(ct
 func (r *GatewayControlPlaneResourceModel) ToOperationsUpdateControlPlaneRequest(ctx context.Context) (*operations.UpdateControlPlaneRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	var id string
-	id = r.ID.ValueString()
+	var controlPlaneID string
+	controlPlaneID = r.ID.ValueString()
 
 	updateControlPlaneRequest, updateControlPlaneRequestDiags := r.ToSharedUpdateControlPlaneRequest(ctx)
 	diags.Append(updateControlPlaneRequestDiags...)
@@ -86,7 +86,7 @@ func (r *GatewayControlPlaneResourceModel) ToOperationsUpdateControlPlaneRequest
 	}
 
 	out := operations.UpdateControlPlaneRequest{
-		ID:                        id,
+		ControlPlaneID:            controlPlaneID,
 		UpdateControlPlaneRequest: *updateControlPlaneRequest,
 	}
 

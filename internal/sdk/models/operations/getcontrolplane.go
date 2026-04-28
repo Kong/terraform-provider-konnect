@@ -10,7 +10,7 @@ import (
 
 type GetControlPlaneRequest struct {
 	// The control plane ID
-	ID string `pathParam:"style=simple,explode=false,name=id"`
+	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
 func (g GetControlPlaneRequest) MarshalJSON() ([]byte, error) {
@@ -18,17 +18,17 @@ func (g GetControlPlaneRequest) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GetControlPlaneRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"id"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"controlPlaneId"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (g *GetControlPlaneRequest) GetID() string {
+func (g *GetControlPlaneRequest) GetControlPlaneID() string {
 	if g == nil {
 		return ""
 	}
-	return g.ID
+	return g.ControlPlaneID
 }
 
 type GetControlPlaneResponse struct {
