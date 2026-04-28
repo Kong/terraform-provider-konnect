@@ -18346,6 +18346,69 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Assets
+  '/v3/portals/{portalId}/audit-log-webhook':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: 'PortalAuditLogWebhook#create,update'
+        terraform-datasource: null
+      operationId: update-portal-audit-log-webhook
+      summary: Update Portal Audit Log Webhook
+      description: Updates the configuration for a webhook to receive audit logs.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortalAuditLogWebhook'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAuditLogWebhook'
+        '400':
+          $ref: '#/components/responses/PortalWebhookBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Audit Logs
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalAuditLogWebhook#read
+        terraform-datasource: null
+      operationId: get-portal-audit-log-webhook
+      summary: Get Portal Audit Log Webhook
+      description: Returns configuration for the audit log webhook.
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAuditLogWebhook'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Audit Logs
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalAuditLogWebhook#delete
+        terraform-datasource: null
+      operationId: delete-portal-audit-log-webhook
+      summary: Delete Portal Audit Log Webhook
+      description: 'Removes configuration for the audit log webhook. The destination ID is set to empty, and the webhook enabled field is set to false'
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Portal Audit Logs
   '/v3/portals/{portalId}/authentication-settings':
     parameters:
       - $ref: '#/components/parameters/PortalId'
@@ -27670,6 +27733,22 @@ components:
       oneOf:
         - $ref: '#/components/schemas/AuthStrategyKeyAuth'
         - $ref: '#/components/schemas/AuthStrategyClientCredentials'
+    ImagePNGDataUri:
+      description: 'must be a data URL with base64 PNG image data, e.g., data:image/png;base64,<BASE64_IMAGE_DATA>'
+      type: string
+      format: uri
+      example: 'data:image/png,YW5faW1hZ2VfZmlsZQ=='
+      pattern: '^data:image/png(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
+      title: ImagePNGDataUri
+      x-validation-message: 'must be a data URL with base64 PNG image data, e.g., data:image/png;base64,<BASE64_IMAGE_DATA>'
+    ImageJPGDataUri:
+      description: 'must be a data URL with base64 JPEG image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
+      type: string
+      format: uri
+      example: 'data:image/jpeg,YW5faW1hZ2VfZmlsZQ=='
+      pattern: '^data:image/jpeg(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
+      title: ImageJPGDataUri
+      x-validation-message: 'must be a data URL with base64 JPEG image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
     PortalMenuItem:
       type: object
       properties:
@@ -28643,6 +28722,26 @@ components:
         updated_at: '2022-08-31T17:00:00.52Z'
         can_own_applications: false
       title: PortalTeamResponse
+    ImageSVGDataUri:
+      description: 'must be a data URL with base64 SVG image data, e.g., data:image/svg\+xml;base64,<BASE64_IMAGE_DATA>'
+      type: string
+      format: uri
+      example: 'data:image/svg+xml,YW5faW1hZ2VfZmlsZQ=='
+      pattern: '^data:image/svg\+xml(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
+      title: ImageSVGDataUri
+      x-validation-message: 'must be a data URL with base64 SVG image data, e.g., data:image/svg\+xml;base64,<BASE64_IMAGE_DATA>'
+    ImageDataUri:
+      description: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
+      type: string
+      format: uri
+      example: 'data:image/png,YW5faW1hZ2VfZmlsZQ=='
+      oneOf:
+        - $ref: '#/components/schemas/ImagePNGDataUri'
+        - $ref: '#/components/schemas/ImageJPGDataUri'
+        - $ref: '#/components/schemas/ImageSVGDataUri'
+      pattern: '^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
+      title: ImageDataUri
+      x-validation-message: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
     ApiResponseSchema:
       type: object
       properties:
@@ -69889,14 +69988,6 @@ components:
           type: boolean
           nullable: false
       additionalProperties: false
-    ImageDataUri:
-      description: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
-      type: string
-      format: uri
-      example: 'data:image/png,YW5faW1hZ2VfZmlsZQ=='
-      pattern: '^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
-      title: ImageDataUri
-      x-validation-message: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
     CreateApiKeyPayload:
       type: object
       properties:
@@ -70839,6 +70930,25 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpdatePortalSnippetRequest'
+    UpdatePortalAuditLogWebhook:
+      description: The request schema to modify an portal audit log webhook.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              enabled:
+                description: Indicates if the data should be sent to the configured destination.
+                type: boolean
+                example: true
+                default: false
+              audit_log_destination_id:
+                description: ID of the audit log destination.
+                type: string
+                format: uuid
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
     PortalUpdateTeam:
       description: Update a team in a portal.
       content:
@@ -72955,6 +73065,31 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalSnippetResponse'
+    PortalAuditLogWebhook:
+      description: Portal audit log webhook response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              enabled:
+                description: Indicates if the data should be sent to the configured audit log destination.
+                type: boolean
+                example: true
+                default: false
+              audit_log_destination_id:
+                description: ID of the audit log destination.
+                type: string
+                format: uuid
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
+    PortalWebhookBadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
     ApiSlugConflict:
       description: Conflict - `slug` property must be unique
       content:
