@@ -1,6 +1,13 @@
 # Changelog
 
-## 3.14.0
+## 3.15.0
+> Released 2026/04/??
+
+# Features
+* Add support for `Add On Admin` and `Add On Viewer` roles in `konnect_team_role` and `konnect_system_account_role` resources
+* Add support for larger capacity tiers (up to ~300 GiB capacity) for `managed_cache` in `konnect_cloud_gateway_addon` resource
+
+## 3.15.0
 > Released 2026/04/24
 
 # Features

@@ -85,7 +85,11 @@ Required:
 - xlarge: ~12 GiB capacity
 - 2xlarge: ~25 GiB capacity
 - 4xlarge: ~52 GiB capacity
-possible known values include one of ["micro", "small", "medium", "large", "xlarge", "2xlarge", "4xlarge"]; Requires replacement if changed.
+- 8xlarge: ~100 GiB capacity
+- 12xlarge: ~150 GiB capacity
+- 16xlarge: ~200 GiB capacity
+- 24xlarge: ~300 GiB capacity
+possible known values include one of ["micro", "small", "medium", "large", "xlarge", "2xlarge", "4xlarge", "8xlarge", "12xlarge", "16xlarge", "24xlarge"]; Requires replacement if changed.
 
 
 
@@ -119,6 +123,10 @@ Read-Only:
 - xlarge: ~12 GiB capacity
 - 2xlarge: ~25 GiB capacity
 - 4xlarge: ~52 GiB capacity
+- 8xlarge: ~100 GiB capacity
+- 12xlarge: ~150 GiB capacity
+- 16xlarge: ~200 GiB capacity
+- 24xlarge: ~300 GiB capacity
 
 
 

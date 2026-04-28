@@ -10,7 +10,7 @@ import (
 
 type PostControlPlanesIDGroupMembershipsAddRequest struct {
 	// ID of a control plane group
-	ID string `pathParam:"style=simple,explode=false,name=id"`
+	ID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Request body for adding a list of child control planes to a control plane group membership.
 	GroupMembership *shared.GroupMembership `request:"mediaType=application/json"`
 }
@@ -20,7 +20,7 @@ func (p PostControlPlanesIDGroupMembershipsAddRequest) MarshalJSON() ([]byte, er
 }
 
 func (p *PostControlPlanesIDGroupMembershipsAddRequest) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"id"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"controlPlaneId"}); err != nil {
 		return err
 	}
 	return nil

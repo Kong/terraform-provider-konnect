@@ -17,7 +17,7 @@ resource "konnect_event_gateway_backend_cluster" "my_eventgatewaybackendcluster"
   authentication = {
     sasl_scram = {
       algorithm = "sha256"
-      password  = "$$${vault.env['MY_ENV_VAR']}"
+      password  = "$${vault.env['MY_ENV_VAR']}"
       username  = "...my_username..."
     }
   }
@@ -36,7 +36,7 @@ resource "konnect_event_gateway_backend_cluster" "my_eventgatewaybackendcluster"
     ca_bundle = "...my_ca_bundle..."
     client_identity = {
       certificate = "...my_certificate..."
-      key         = "$$${vault.env['MY_ENV_VAR']}"
+      key         = "$${vault.env['MY_ENV_VAR']}"
     }
     enabled              = false
     insecure_skip_verify = false
