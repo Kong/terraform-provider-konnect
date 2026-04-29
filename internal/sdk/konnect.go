@@ -309,7 +309,8 @@ type Konnect struct {
 	APIVersion        *APIVersion
 	AuthSettings      *AuthSettings
 	// APIs for managing static assets for Konnect Developer Portals.
-	Assets *Assets
+	Assets          *Assets
+	PortalAuditLogs *PortalAuditLogs
 	// APIs related to configuration of Konnect Developer Portal auth settings.
 	PortalAuthSettings *PortalAuthSettings
 	// APIs related to configuration of Konnect Developer Portals custom domains.
@@ -499,6 +500,7 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.APIVersion = newAPIVersion(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.AuthSettings = newAuthSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.Assets = newAssets(sdk, sdk.sdkConfiguration, sdk.hooks)
+	sdk.PortalAuditLogs = newPortalAuditLogs(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalAuthSettings = newPortalAuthSettings(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalCustomDomains = newPortalCustomDomains(sdk, sdk.sdkConfiguration, sdk.hooks)
 	sdk.PortalCustomization = newPortalCustomization(sdk, sdk.sdkConfiguration, sdk.hooks)
