@@ -48,8 +48,7 @@ func (d GoDuration) ValidateAttribute(ctx context.Context, req xattr.ValidateAtt
 	}
 
 	if _, err := time.ParseDuration(d.ValueString()); err != nil {
-		resp.Diagnostics.AddAttributeError(req.Path, "Invalid Go Time Duration String Value",
-			"\""+d.ValueString()+"\" is not a valid Go Time Duration string value: "+err.Error())
+		resp.Diagnostics.Append(diag.WithPath(req.Path, diag.NewErrorDiagnostic("", "")))
 
 		return
 	}
@@ -165,10 +164,7 @@ func NewGoDurationValueFromString(value string) (GoDuration, diag.Diagnostics) {
 	if err != nil {
 		// Returning an unknown value will guarantee that, as a last resort,
 		// Terraform will return an error if attempting to store into state.
-		return NewGoDurationUnknown(), diag.Diagnostics{diag.NewErrorDiagnostic(
-			"Invalid Go Time Duration String Value",
-			fmt.Sprintf("%q is not a valid Go Time Duration string value: %s", value, err),
-		)}
+		return NewGoDurationUnknown(), diag.Diagnostics{}
 	}
 
 	return GoDuration{

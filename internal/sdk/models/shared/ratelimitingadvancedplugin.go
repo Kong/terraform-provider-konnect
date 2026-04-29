@@ -504,7 +504,7 @@ type RateLimitingAdvancedPluginRedis struct {
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port any `json:"port,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// If the `connection_is_proxied` is enabled, this field indicates the proxy type and version you are using. For example, you can enable this optioin when you want authentication between Kong and Envoy proxy.
@@ -612,7 +612,7 @@ func (r *RateLimitingAdvancedPluginRedis) GetPassword() *string {
 	return r.Password
 }
 
-func (r *RateLimitingAdvancedPluginRedis) GetPort() *int64 {
+func (r *RateLimitingAdvancedPluginRedis) GetPort() any {
 	if r == nil {
 		return nil
 	}

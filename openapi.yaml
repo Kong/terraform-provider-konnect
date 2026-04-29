@@ -61023,10 +61023,11 @@ components:
                   x-speakeasy-param-computed: false
                 port:
                   description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                  type: integer
-                  default: 6379
-                  maximum: 65535
-                  minimum: 0
+                  x-speakeasy-terraform-custom-type:
+                    imports:
+                      - github.com/Kong/shared-speakeasy/customtypes/timetypes
+                    schemaType: 'timetypes.RFC3339PreciseToSecondType{}'
+                    valueType: timetypes.RFC3339PreciseToSecond
                   x-referenceable: true
                 read_timeout:
                   description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
