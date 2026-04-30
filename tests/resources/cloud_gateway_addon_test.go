@@ -47,6 +47,11 @@ func TestCloudGatewayAddOn(t *testing.T) {
 			Upsert(addon).
 			Build()
 
+		updatedConfig := builder.
+			Upsert(cp).
+			Upsert(addon.AddAttribute("config.managed_cache.capacity_config.tiered.tier", "medium")).
+			Build()
+
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
@@ -62,6 +67,32 @@ func TestCloudGatewayAddOn(t *testing.T) {
 					},
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_cloud_gateway_addon.my_addon", "name", "tf-test-add-on"),
+					),
+				},
+				{
+					Config: fullConfig,
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectEmptyPlan(),
+						},
+					},
+				},
+				// Update step
+				{
+					Config: updatedConfig,
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectResourceAction(
+								"konnect_cloud_gateway_addon.my_addon",
+								plancheck.ResourceActionUpdate,
+							),
+						},
+					},
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr(
+							"konnect_cloud_gateway_addon.my_addon",
+							"config.managed_cache.capacity_config.tiered.tier",
+							"medium"),
 					),
 				},
 				{
