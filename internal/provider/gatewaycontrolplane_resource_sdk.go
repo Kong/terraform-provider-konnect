@@ -32,7 +32,7 @@ func (r *GatewayControlPlaneResourceModel) RefreshFromSharedControlPlane1(ctx co
 			r.Config.ProxyUrls = append(r.Config.ProxyUrls, proxyUrls)
 		}
 		r.Config.TelemetryEndpoint = types.StringValue(resp.Config.TelemetryEndpoint)
-		r.Description = types.StringPointerValue(resp.Description)
+		r.Description = types.StringValue(resp.Description)
 		r.ID = types.StringValue(resp.ID)
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
