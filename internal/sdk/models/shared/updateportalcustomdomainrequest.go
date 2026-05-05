@@ -8,7 +8,8 @@ import (
 
 // UpdatePortalCustomDomainRequest - Create a portal custom domain.
 type UpdatePortalCustomDomainRequest struct {
-	Enabled *bool `default:"null" json:"enabled"`
+	Enabled *bool                        `default:"null" json:"enabled"`
+	Ssl     *UpdatePortalCustomDomainSSL `json:"ssl,omitempty"`
 }
 
 func (u UpdatePortalCustomDomainRequest) MarshalJSON() ([]byte, error) {
@@ -27,4 +28,11 @@ func (u *UpdatePortalCustomDomainRequest) GetEnabled() *bool {
 		return nil
 	}
 	return u.Enabled
+}
+
+func (u *UpdatePortalCustomDomainRequest) GetSsl() *UpdatePortalCustomDomainSSL {
+	if u == nil {
+		return nil
+	}
+	return u.Ssl
 }

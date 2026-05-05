@@ -41,7 +41,7 @@ func (r *GatewayControlPlaneListDataSourceModel) RefreshFromSharedListControlPla
 				data.Config.ProxyUrls = append(data.Config.ProxyUrls, proxyUrls)
 			}
 			data.Config.TelemetryEndpoint = types.StringValue(dataItem.Config.TelemetryEndpoint)
-			data.Description = types.StringPointerValue(dataItem.Description)
+			data.Description = types.StringValue(dataItem.Description)
 			data.ID = types.StringValue(dataItem.ID)
 			if len(dataItem.Labels) > 0 {
 				data.Labels = make(map[string]types.String, len(dataItem.Labels))

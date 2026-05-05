@@ -8,15 +8,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/boolplanmodifier"
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/listplanmodifier"
-	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
@@ -85,24 +82,14 @@ func (r *PortalCustomDomainResource) Schema(ctx context.Context, req resource.Sc
 			},
 			"ssl": schema.SingleNestedAttribute{
 				Required: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-				},
 				Attributes: map[string]schema.Attribute{
 					"custom_certificate": schema.StringAttribute{
-						Optional: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `Custom certificate to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate". Requires replacement if changed.`,
+						Optional:    true,
+						Description: `Custom certificate to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate"`,
 					},
 					"custom_private_key": schema.StringAttribute{
-						Optional: true,
-						PlanModifiers: []planmodifier.String{
-							stringplanmodifier.RequiresReplaceIfConfigured(),
-						},
-						Description: `Custom certificate private key to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate". Requires replacement if changed.`,
+						Optional:    true,
+						Description: `Custom certificate private key to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate"`,
 					},
 					"domain_verification_method": schema.StringAttribute{
 						Computed: true,
@@ -124,10 +111,9 @@ func (r *PortalCustomDomainResource) Schema(ctx context.Context, req resource.Sc
 						Computed: true,
 						Optional: true,
 						PlanModifiers: []planmodifier.Bool{
-							boolplanmodifier.RequiresReplaceIfConfigured(),
 							speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 						},
-						Description: `Advanced option. If true, the custom certificate is served exactly as provided, without attempting to bundle against a public trust store. Required for certificates issued by an internal/private CA. Requires replacement if changed.`,
+						Description: `Advanced option. If true, the custom certificate is served exactly as provided, without attempting to bundle against a public trust store. Required for certificates issued by an internal/private CA.`,
 					},
 					"uploaded_at": schema.StringAttribute{
 						Computed: true,
@@ -150,7 +136,6 @@ func (r *PortalCustomDomainResource) Schema(ctx context.Context, req resource.Sc
 						},
 					},
 				},
-				Description: `Requires replacement if changed.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
