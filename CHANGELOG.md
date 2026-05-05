@@ -1,7 +1,7 @@
 # Changelog
 
 ## 3.15.0
-> Released 2026/04/??
+> Released 2026/05/05
 
 # Features
 * Add support for `Add On Admin` and `Add On Viewer` roles in `konnect_team_role` and `konnect_system_account_role` resources
