@@ -32,7 +32,7 @@ resource "konnect_cloud_gateway_addon" "my_cloudgatewayaddon" {
 
 ### Required
 
-- `config` (Attributes) Configuration for creating different types of add-ons. Requires replacement if changed. (see [below for nested schema](#nestedatt--config))
+- `config` (Attributes) Configuration for creating different types of add-ons. (see [below for nested schema](#nestedatt--config))
 - `name` (String) Unique human-readable name of the add-on. Requires replacement if changed.
 - `owner` (Attributes) Owner for the add-on. Requires replacement if changed. (see [below for nested schema](#nestedatt--owner))
 
@@ -52,7 +52,7 @@ resource "konnect_cloud_gateway_addon" "my_cloudgatewayaddon" {
 
 Optional:
 
-- `managed_cache` (Attributes) Configuration for creating a managed cache add-on. Requires replacement if changed. (see [below for nested schema](#nestedatt--config--managed_cache))
+- `managed_cache` (Attributes) Configuration for creating a managed cache add-on. (see [below for nested schema](#nestedatt--config--managed_cache))
 
 Read-Only:
 
@@ -63,14 +63,14 @@ Read-Only:
 
 Required:
 
-- `capacity_config` (Attributes) Configuration for managed cache capacity and performance characteristics. Requires replacement if changed. (see [below for nested schema](#nestedatt--config--managed_cache--capacity_config))
+- `capacity_config` (Attributes) Configuration for managed cache capacity and performance characteristics. (see [below for nested schema](#nestedatt--config--managed_cache--capacity_config))
 
 <a id="nestedatt--config--managed_cache--capacity_config"></a>
 ### Nested Schema for `config.managed_cache.capacity_config`
 
 Optional:
 
-- `tiered` (Attributes) Capacity tiers with pre-configured size and performance characteristics. Requires replacement if changed. (see [below for nested schema](#nestedatt--config--managed_cache--capacity_config--tiered))
+- `tiered` (Attributes) Capacity tiers with pre-configured size and performance characteristics. (see [below for nested schema](#nestedatt--config--managed_cache--capacity_config--tiered))
 
 <a id="nestedatt--config--managed_cache--capacity_config--tiered"></a>
 ### Nested Schema for `config.managed_cache.capacity_config.tiered`
@@ -89,7 +89,7 @@ Required:
 - 12xlarge: ~150 GiB capacity
 - 16xlarge: ~200 GiB capacity
 - 24xlarge: ~300 GiB capacity
-possible known values include one of ["micro", "small", "medium", "large", "xlarge", "2xlarge", "4xlarge", "8xlarge", "12xlarge", "16xlarge", "24xlarge"]; Requires replacement if changed.
+possible known values include one of ["micro", "small", "medium", "large", "xlarge", "2xlarge", "4xlarge", "8xlarge", "12xlarge", "16xlarge", "24xlarge"]
 
 
 

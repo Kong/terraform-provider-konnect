@@ -70,7 +70,7 @@ type ControlPlaneConfig struct {
 	// Whether the Control Plane can be used for cloud-gateways.
 	CloudGateway bool `json:"cloud_gateway"`
 	// Array of proxy URLs associated with reaching the data-planes connected to a control-plane.
-	ProxyUrls []ProxyURL `json:"proxy_urls,omitempty"`
+	ProxyUrls []ProxyURL `json:"proxy_urls"`
 }
 
 func (c ControlPlaneConfig) MarshalJSON() ([]byte, error) {
@@ -78,7 +78,7 @@ func (c ControlPlaneConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ControlPlaneConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"control_plane_endpoint", "telemetry_endpoint", "cluster_type", "auth_type", "cloud_gateway"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"control_plane_endpoint", "telemetry_endpoint", "cluster_type", "auth_type", "cloud_gateway", "proxy_urls"}); err != nil {
 		return err
 	}
 	return nil
@@ -121,7 +121,7 @@ func (c *ControlPlaneConfig) GetCloudGateway() bool {
 
 func (c *ControlPlaneConfig) GetProxyUrls() []ProxyURL {
 	if c == nil {
-		return nil
+		return []ProxyURL{}
 	}
 	return c.ProxyUrls
 }
@@ -133,12 +133,12 @@ type ControlPlane1 struct {
 	// The name of the control plane.
 	Name string `json:"name"`
 	// The description of the control plane in Konnect.
-	Description *string `json:"description,omitempty"`
+	Description string `json:"description"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]*string `json:"labels,omitempty"`
+	Labels map[string]*string `json:"labels"`
 	// CP configuration object for related access endpoints.
 	Config ControlPlaneConfig `json:"config"`
 	// An ISO-8604 timestamp representation of control plane creation date.
@@ -152,7 +152,7 @@ func (c ControlPlane1) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ControlPlane1) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "name", "config", "created_at", "updated_at"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "name", "description", "labels", "config", "created_at", "updated_at"}); err != nil {
 		return err
 	}
 	return nil
@@ -172,16 +172,16 @@ func (c *ControlPlane1) GetName() string {
 	return c.Name
 }
 
-func (c *ControlPlane1) GetDescription() *string {
+func (c *ControlPlane1) GetDescription() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.Description
 }
 
 func (c *ControlPlane1) GetLabels() map[string]*string {
 	if c == nil {
-		return nil
+		return map[string]*string{}
 	}
 	return c.Labels
 }

@@ -4047,6 +4047,53 @@ paths:
       tags:
         - Add-Ons
       x-speakeasy-group: CloudGateways
+    patch:
+      x-speakeasy-entity-operation:
+        terraform-resource: CloudGatewayAddon#update
+        terraform-datasource: null
+      operationId: update-add-on
+      summary: Update Add-On
+      description: Updates the configuration of an existing add-on.
+      parameters:
+        - $ref: '#/components/parameters/AddOnId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAddOnRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateAddOnResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Add-Ons
+      x-speakeasy-group: CloudGateways
   /v2/cloud-gateways/configurations:
     put:
       x-speakeasy-entity-operation:
@@ -20536,6 +20583,7 @@ components:
             - cluster_type
             - auth_type
             - cloud_gateway
+            - proxy_urls
         created_at:
           description: An ISO-8604 timestamp representation of control plane creation date.
           type: string
@@ -20559,6 +20607,8 @@ components:
         - config
         - created_at
         - updated_at
+        - description
+        - labels
     Labels:
       description: |
         Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
@@ -23631,6 +23681,38 @@ components:
         - kind
         - capacity_config
       title: CreateManagedCacheAddOnConfig
+      x-speakeasy-name-override: managed_cache
+    UpdateAddOnRequest:
+      description: Request body for updating an add-on.
+      type: object
+      properties:
+        config:
+          $ref: '#/components/schemas/UpdateAddOnConfig'
+      additionalProperties: false
+      required:
+        - config
+      title: UpdateAddOnRequest
+    UpdateAddOnConfig:
+      description: Configuration for updating different types of add-ons.
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/UpdateManagedCacheAddOnConfig'
+      title: UpdateAddOnConfig
+    UpdateManagedCacheAddOnConfig:
+      description: Configuration for updating a managed cache add-on.
+      type: object
+      properties:
+        kind:
+          description: Type of add-on configuration.
+          type: string
+          const: managed-cache.v0
+        capacity_config:
+          $ref: '#/components/schemas/ManagedCacheCapacityConfig'
+      additionalProperties: false
+      required:
+        - kind
+        - capacity_config
+      title: UpdateManagedCacheAddOnConfig
       x-speakeasy-name-override: managed_cache
     ManagedCacheCapacityConfig:
       description: Configuration for managed cache capacity and performance characteristics.
@@ -29434,6 +29516,18 @@ components:
           $ref: '#/components/schemas/VirtualClusterAuthenticationSensitiveDataAwareSchemes'
         namespace:
           $ref: '#/components/schemas/VirtualClusterNamespace'
+        topic_aliases:
+          description: |-
+            Topic aliases allow exposing backend topics under additional names.
+            An alias creates a new entry point to the same physical data.
+            The alias `topic` field references namespace-visible names (if namespace is configured).
+            Aliases are independent of namespace and can be used without it.
+
+            **Requires a minimum runtime version of `1.2`**.
+          type: array
+          x-min-runtime-version: '1.2'
+          x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
         name:
           $ref: '#/components/schemas/VirtualClusterName'
         dns_label:
@@ -71406,6 +71500,18 @@ components:
                 $ref: '#/components/schemas/VirtualClusterAuthenticationSchemes'
               namespace:
                 $ref: '#/components/schemas/VirtualClusterNamespace'
+              topic_aliases:
+                description: |-
+                  Topic aliases allow exposing backend topics under additional names.
+                  An alias creates a new entry point to the same physical data.
+                  The alias `topic` field references namespace-visible names (if namespace is configured).
+                  Aliases are independent of namespace and can be used without it.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                type: array
+                x-min-runtime-version: '1.2'
+                x-speakeasy-param-computed: false
+                x-speakeasy-terraform-ignore: true
               acl_mode:
                 $ref: '#/components/schemas/VirtualClusterACLMode'
               dns_label:
@@ -71439,6 +71545,18 @@ components:
                 $ref: '#/components/schemas/VirtualClusterAuthenticationSensitiveDataAwareSchemes'
               namespace:
                 $ref: '#/components/schemas/VirtualClusterNamespace'
+              topic_aliases:
+                description: |-
+                  Topic aliases allow exposing backend topics under additional names.
+                  An alias creates a new entry point to the same physical data.
+                  The alias `topic` field references namespace-visible names (if namespace is configured).
+                  Aliases are independent of namespace and can be used without it.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                type: array
+                x-min-runtime-version: '1.2'
+                x-speakeasy-param-computed: false
+                x-speakeasy-terraform-ignore: true
               acl_mode:
                 $ref: '#/components/schemas/VirtualClusterACLMode'
               dns_label:
@@ -72227,6 +72345,12 @@ components:
             $ref: '#/components/schemas/AddOnResponse'
     RetrieveAddOnResponse:
       description: Response format for retrieving an add-on by ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddOnResponse'
+    UpdateAddOnResponse:
+      description: Response format for updating an add-on.
       content:
         application/json:
           schema:
