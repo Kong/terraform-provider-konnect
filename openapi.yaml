@@ -18160,6 +18160,110 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Auth Settings
+  '/v3/identity-providers/{idpId}/team-group-mappings':
+    parameters:
+      - name: idpId
+        in: path
+        description: ID of the identity provider.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        x-speakeasy-name-override: identityProviderId
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityProviderTeamGroupMapping#create
+        terraform-datasource: null
+      operationId: create-idp-team-group-mapping
+      summary: Create Team Group Mapping
+      description: |
+        Creates a new team group mapping for the specified identity provider.
+        A mapping associates an identity provider group with a Konnect team.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateIdpTeamGroupMappingRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/IdpTeamGroupMapping'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/IdentityPermissionDenied'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Auth Settings
+  '/v3/identity-providers/{idpId}/team-group-mappings/{id}':
+    parameters:
+      - name: idpId
+        in: path
+        description: ID of the identity provider.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        x-speakeasy-name-override: identityProviderId
+      - name: id
+        in: path
+        description: ID of the team group mapping.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityProviderTeamGroupMapping#read
+        terraform-datasource: null
+      operationId: get-idp-team-group-mapping
+      summary: Get Team Group Mapping
+      description: Returns the team group mapping for the specified ID.
+      responses:
+        '200':
+          $ref: '#/components/responses/IdpTeamGroupMapping'
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/IdentityPermissionDenied'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Auth Settings
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: IdentityProviderTeamGroupMapping#delete
+        terraform-datasource: null
+      operationId: delete-idp-team-group-mapping
+      summary: Delete Team Group Mapping
+      description: |
+        Deletes a team group mapping by ID.
+        Returns 204 if the mapping was deleted, or 404 if the mapping was not found.
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/IdentityBadRequest'
+        '401':
+          $ref: '#/components/responses/IdentityUnauthenticated'
+        '403':
+          $ref: '#/components/responses/IdentityPermissionDenied'
+        '404':
+          $ref: '#/components/responses/IdentityNotFound'
+      servers:
+        - url: 'https://global.api.konghq.com/'
+      tags:
+        - Auth Settings
   /v3/portals:
     get:
       x-speakeasy-entity-operation:
@@ -25525,6 +25629,32 @@ components:
         created_at: '1992-02-07T17:46:57.52Z'
         updated_at: '2022-08-31T17:00:00.52Z'
       title: Team
+    IdpTeamGroupMapping:
+      description: A mapping between a Konnect team and an identity provider group.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        team_id:
+          description: The Konnect team ID.
+          type: string
+          format: uuid
+          example: 6801e673-cc10-498a-94cd-4271de07a0d3
+        group:
+          description: The identity provider group name. Group names are case sensitive.
+          type: string
+          example: Tech Leads
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - team_id
+        - group
+        - created_at
+        - updated_at
+      title: IdpTeamGroupMapping
     AssignedRole:
       description: An assigned role is a role that has been assigned to a user or team.
       type: object
@@ -28322,6 +28452,28 @@ components:
         - domain_verification_method
         - verification_status
       title: PortalCustomDomainSSL
+    UpdatePortalCustomDomainSSL:
+      type: object
+      properties:
+        custom_certificate:
+          description: Custom certificate to be used for the SSL termination.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        custom_private_key:
+          description: Custom certificate private key to be used for the SSL termination.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        skip_ca_check:
+          description: |
+            Advanced option. If true, the custom certificate is served exactly as provided, without attempting to bundle against a public trust store. Required for certificates issued by an internal/private CA.
+          type: boolean
+          default: false
+      additionalProperties: false
+      title: UpdatePortalCustomDomainSSL
     PortalCustomDomainVerificationMethod:
       type: string
       enum:
@@ -28378,6 +28530,8 @@ components:
           default: null
           nullable: true
           x-speakeasy-param-computed: false
+        ssl:
+          $ref: '#/components/schemas/UpdatePortalCustomDomainSSL'
       additionalProperties: false
       title: UpdatePortalCustomDomainRequest
     PortalClaimMappings:
@@ -70289,6 +70443,26 @@ components:
                 x-speakeasy-name-override: user_id
             required:
               - id
+    CreateIdpTeamGroupMappingRequest:
+      description: Request to create an IDP team group mapping.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              team_id:
+                description: The Konnect team ID to associate with the identity provider group.
+                type: string
+                format: uuid
+                example: 6801e673-cc10-498a-94cd-4271de07a0d3
+              group:
+                description: The identity provider group name. Group names are case sensitive.
+                type: string
+                example: Tech Leads
+            required:
+              - team_id
+              - group
     AssignRole:
       content:
         application/json:
@@ -72552,6 +72726,12 @@ components:
                 nullable: true
                 x-speakeasy-param-computed: false
             title: Team Collection Response
+    IdpTeamGroupMapping:
+      description: A single team group mapping.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IdpTeamGroupMapping'
     AssignedRoleSingle:
       description: A get action response of a single assigned role.
       content:
