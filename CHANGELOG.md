@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.16.0
+> Released 2026/05/??
+
+# Features
+* Add support for `IDP Team Group Mapping` for konnect.
+
 ## 3.15.0
 > Released 2026/05/05
 
