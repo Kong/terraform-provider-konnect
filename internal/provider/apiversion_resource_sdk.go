@@ -107,23 +107,23 @@ func (r *APIVersionResourceModel) ToOperationsUpdateAPIVersionRequest(ctx contex
 	var versionID string
 	versionID = r.ID.ValueString()
 
-	apiVersion, apiVersionDiags := r.ToSharedAPIVersion(ctx)
-	diags.Append(apiVersionDiags...)
+	apiVersionRequest, apiVersionRequestDiags := r.ToSharedAPIVersionRequest(ctx)
+	diags.Append(apiVersionRequestDiags...)
 
 	if diags.HasError() {
 		return nil, diags
 	}
 
 	out := operations.UpdateAPIVersionRequest{
-		APIID:      apiID,
-		VersionID:  versionID,
-		APIVersion: *apiVersion,
+		APIID:             apiID,
+		VersionID:         versionID,
+		APIVersionRequest: *apiVersionRequest,
 	}
 
 	return &out, diags
 }
 
-func (r *APIVersionResourceModel) ToSharedAPIVersion(ctx context.Context) (*shared.APIVersion, diag.Diagnostics) {
+func (r *APIVersionResourceModel) ToSharedAPIVersionRequest(ctx context.Context) (*shared.APIVersionRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	version := new(string)
@@ -132,17 +132,17 @@ func (r *APIVersionResourceModel) ToSharedAPIVersion(ctx context.Context) (*shar
 	} else {
 		version = nil
 	}
-	var spec *shared.APIVersionSpec
+	var spec *shared.APIVersionRequestSpec
 	content := new(string)
 	if !r.Spec.Content.IsUnknown() && !r.Spec.Content.IsNull() {
 		*content = r.Spec.Content.ValueString()
 	} else {
 		content = nil
 	}
-	spec = &shared.APIVersionSpec{
+	spec = &shared.APIVersionRequestSpec{
 		Content: content,
 	}
-	out := shared.APIVersion{
+	out := shared.APIVersionRequest{
 		Version: version,
 		Spec:    spec,
 	}

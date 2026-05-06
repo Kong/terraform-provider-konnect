@@ -11,51 +11,45 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/listplanmodifier"
-	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
-	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &APIVersionResource{}
-var _ resource.ResourceWithImportState = &APIVersionResource{}
+var _ resource.Resource = &IdentityProviderTeamGroupMappingResource{}
+var _ resource.ResourceWithImportState = &IdentityProviderTeamGroupMappingResource{}
 
-func NewAPIVersionResource() resource.Resource {
-	return &APIVersionResource{}
+func NewIdentityProviderTeamGroupMappingResource() resource.Resource {
+	return &IdentityProviderTeamGroupMappingResource{}
 }
 
-// APIVersionResource defines the resource implementation.
-type APIVersionResource struct {
+// IdentityProviderTeamGroupMappingResource defines the resource implementation.
+type IdentityProviderTeamGroupMappingResource struct {
 	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 
-// APIVersionResourceModel describes the resource data model.
-type APIVersionResourceModel struct {
-	APIID     types.String                         `tfsdk:"api_id"`
-	CreatedAt types.String                         `tfsdk:"created_at"`
-	ID        types.String                         `tfsdk:"id"`
-	Spec      *tfTypes.CreateAPIVersionRequestSpec `tfsdk:"spec"`
-	UpdatedAt types.String                         `tfsdk:"updated_at"`
-	Version   types.String                         `tfsdk:"version"`
+// IdentityProviderTeamGroupMappingResourceModel describes the resource data model.
+type IdentityProviderTeamGroupMappingResourceModel struct {
+	CreatedAt          types.String `tfsdk:"created_at"`
+	Group              types.String `tfsdk:"group"`
+	ID                 types.String `tfsdk:"id"`
+	IdentityProviderID types.String `tfsdk:"identity_provider_id"`
+	TeamID             types.String `tfsdk:"team_id"`
+	UpdatedAt          types.String `tfsdk:"updated_at"`
 }
 
-func (r *APIVersionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_api_version"
+func (r *IdentityProviderTeamGroupMappingResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_identity_provider_team_group_mapping"
 }
 
-func (r *APIVersionResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *IdentityProviderTeamGroupMappingResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "APIVersion Resource",
+		MarkdownDescription: "IdentityProviderTeamGroupMapping Resource",
 		Attributes: map[string]schema.Attribute{
-			"api_id": schema.StringAttribute{
-				Required:    true,
-				Description: `The UUID API identifier`,
-			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
@@ -63,48 +57,35 @@ func (r *APIVersionResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
+			"group": schema.StringAttribute{
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				Description: `The identity provider group name. Group names are case sensitive. Requires replacement if changed.`,
+			},
 			"id": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `The API version identifier.`,
+				Description: `ID of the team group mapping.`,
 			},
-			"spec": schema.SingleNestedAttribute{
+			"identity_provider_id": schema.StringAttribute{
 				Required: true,
-				Attributes: map[string]schema.Attribute{
-					"content": schema.StringAttribute{
-						Optional:    true,
-						Description: `The raw content of API specification, in json or yaml format (OpenAPI or AsyncAPI).`,
-					},
-					"type": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `The type of specification being stored. This allows us to render the specification correctly.`,
-					},
-					"validation_messages": schema.ListNestedAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.List{
-							speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
-						},
-						NestedObject: schema.NestedAttributeObject{
-							PlanModifiers: []planmodifier.Object{
-								speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-							},
-							Attributes: map[string]schema.Attribute{
-								"message": schema.StringAttribute{
-									Computed: true,
-									PlanModifiers: []planmodifier.String{
-										speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-									},
-								},
-							},
-						},
-						Description: `The errors that occurred while parsing the API version spec.`,
-					},
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
+				Description: `ID of the identity provider. Requires replacement if changed.`,
+			},
+			"team_id": schema.StringAttribute{
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				Description: `The Konnect team ID to associate with the identity provider group. Requires replacement if changed.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
@@ -113,15 +94,11 @@ func (r *APIVersionResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
 			},
-			"version": schema.StringAttribute{
-				Optional:    true,
-				Description: `The version of the api.`,
-			},
 		},
 	}
 }
 
-func (r *APIVersionResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *IdentityProviderTeamGroupMappingResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -141,8 +118,8 @@ func (r *APIVersionResource) Configure(ctx context.Context, req resource.Configu
 	r.client = client
 }
 
-func (r *APIVersionResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *APIVersionResourceModel
+func (r *IdentityProviderTeamGroupMappingResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *IdentityProviderTeamGroupMappingResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -159,13 +136,13 @@ func (r *APIVersionResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsCreateAPIVersionRequest(ctx)
+	request, requestDiags := data.ToOperationsCreateIdpTeamGroupMappingRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.APIVersion.CreateAPIVersion(ctx, *request)
+	res, err := r.client.AuthSettings.CreateIdpTeamGroupMapping(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -188,11 +165,11 @@ func (r *APIVersionResource) Create(ctx context.Context, req resource.CreateRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.APIVersionResponse != nil) {
+	if !(res.IdpTeamGroupMapping != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAPIVersionResponse(ctx, res.APIVersionResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedIdpTeamGroupMapping(ctx, res.IdpTeamGroupMapping)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -208,8 +185,8 @@ func (r *APIVersionResource) Create(ctx context.Context, req resource.CreateRequ
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *APIVersionResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *APIVersionResourceModel
+func (r *IdentityProviderTeamGroupMappingResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *IdentityProviderTeamGroupMappingResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -226,13 +203,13 @@ func (r *APIVersionResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	request, requestDiags := data.ToOperationsFetchAPIVersionRequest(ctx)
+	request, requestDiags := data.ToOperationsGetIdpTeamGroupMappingRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.APIVersion.FetchAPIVersion(ctx, *request)
+	res, err := r.client.AuthSettings.GetIdpTeamGroupMapping(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -252,11 +229,11 @@ func (r *APIVersionResource) Read(ctx context.Context, req resource.ReadRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.APIVersionResponse != nil) {
+	if !(res.IdpTeamGroupMapping != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAPIVersionResponse(ctx, res.APIVersionResponse)...)
+	resp.Diagnostics.Append(data.RefreshFromSharedIdpTeamGroupMapping(ctx, res.IdpTeamGroupMapping)...)
 
 	if resp.Diagnostics.HasError() {
 		return
@@ -266,8 +243,8 @@ func (r *APIVersionResource) Read(ctx context.Context, req resource.ReadRequest,
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *APIVersionResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *APIVersionResourceModel
+func (r *IdentityProviderTeamGroupMappingResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *IdentityProviderTeamGroupMappingResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -280,50 +257,14 @@ func (r *APIVersionResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateAPIVersionRequest(ctx)
-	resp.Diagnostics.Append(requestDiags...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-	res, err := r.client.APIVersion.UpdateAPIVersion(ctx, *request)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res != nil && res.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
-		}
-		return
-	}
-	if res == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
-		return
-	}
-	if !(res.APIVersionResponse != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
-		return
-	}
-	resp.Diagnostics.Append(data.RefreshFromSharedAPIVersionResponse(ctx, res.APIVersionResponse)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
-
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	// Not Implemented; all attributes marked as RequiresReplace
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *APIVersionResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *APIVersionResourceModel
+func (r *IdentityProviderTeamGroupMappingResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *IdentityProviderTeamGroupMappingResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -340,13 +281,13 @@ func (r *APIVersionResource) Delete(ctx context.Context, req resource.DeleteRequ
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteAPIVersionRequest(ctx)
+	request, requestDiags := data.ToOperationsDeleteIdpTeamGroupMappingRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.APIVersion.DeleteAPIVersion(ctx, *request)
+	res, err := r.client.AuthSettings.DeleteIdpTeamGroupMapping(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -368,27 +309,27 @@ func (r *APIVersionResource) Delete(ctx context.Context, req resource.DeleteRequ
 
 }
 
-func (r *APIVersionResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *IdentityProviderTeamGroupMappingResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		APIID string `json:"api_id"`
-		ID    string `json:"id"`
+		ID                 string `json:"id"`
+		IdentityProviderID string `json:"identity_provider_id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"api_id": "9f5061ce-78f6-4452-9108-ad7c02821fd5", "id": "d32d905a-ed33-46a3-a093-d8f536af9a8a"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "identity_provider_id": "d32d905a-ed33-46a3-a093-d8f536af9a8a"}': `+err.Error())
 		return
 	}
 
-	if len(data.APIID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field api_id is required but was not found in the json encoded ID. It's expected to be a value alike '"9f5061ce-78f6-4452-9108-ad7c02821fd5"'`)
-		return
-	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("api_id"), data.APIID)...)
 	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"d32d905a-ed33-46a3-a093-d8f536af9a8a"'`)
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"7f9fd312-a987-4628-b4c5-bb4f4fddd5f7"'`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
+	if len(data.IdentityProviderID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field identity_provider_id is required but was not found in the json encoded ID. It's expected to be a value alike '"d32d905a-ed33-46a3-a093-d8f536af9a8a"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("identity_provider_id"), data.IdentityProviderID)...)
 }
