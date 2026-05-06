@@ -180,7 +180,7 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Computed:    true,
 				Optional:    true,
 				Default:     booldefault.StaticBool(false),
-				Description: `Whether ip allow list is enabled for the organization. Default: false`,
+				Description: `Whether ip allow list is enabled for the portal. Default: false`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

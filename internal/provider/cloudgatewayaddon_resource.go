@@ -62,34 +62,18 @@ func (r *CloudGatewayAddonResource) Schema(ctx context.Context, req resource.Sch
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
 				Required: true,
-				PlanModifiers: []planmodifier.Object{
-					objectplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-				},
 				Attributes: map[string]schema.Attribute{
 					"managed_cache": schema.SingleNestedAttribute{
 						Optional: true,
-						PlanModifiers: []planmodifier.Object{
-							objectplanmodifier.RequiresReplaceIfConfigured(),
-						},
 						Attributes: map[string]schema.Attribute{
 							"capacity_config": schema.SingleNestedAttribute{
 								Required: true,
-								PlanModifiers: []planmodifier.Object{
-									objectplanmodifier.RequiresReplaceIfConfigured(),
-								},
 								Attributes: map[string]schema.Attribute{
 									"tiered": schema.SingleNestedAttribute{
 										Optional: true,
-										PlanModifiers: []planmodifier.Object{
-											objectplanmodifier.RequiresReplaceIfConfigured(),
-										},
 										Attributes: map[string]schema.Attribute{
 											"tier": schema.StringAttribute{
 												Required: true,
-												PlanModifiers: []planmodifier.String{
-													stringplanmodifier.RequiresReplaceIfConfigured(),
-												},
 												MarkdownDescription: `Capacity tier that determines both cache size and performance characteristics:` + "\n" +
 													`- micro: ~0.5 GiB capacity` + "\n" +
 													`- small: ~1 GiB capacity` + "\n" +
@@ -98,16 +82,20 @@ func (r *CloudGatewayAddonResource) Schema(ctx context.Context, req resource.Sch
 													`- xlarge: ~12 GiB capacity` + "\n" +
 													`- 2xlarge: ~25 GiB capacity` + "\n" +
 													`- 4xlarge: ~52 GiB capacity` + "\n" +
-													`possible known values include one of ["micro", "small", "medium", "large", "xlarge", "2xlarge", "4xlarge"]; Requires replacement if changed.`,
+													`- 8xlarge: ~100 GiB capacity` + "\n" +
+													`- 12xlarge: ~150 GiB capacity` + "\n" +
+													`- 16xlarge: ~200 GiB capacity` + "\n" +
+													`- 24xlarge: ~300 GiB capacity` + "\n" +
+													`possible known values include one of ["micro", "small", "medium", "large", "xlarge", "2xlarge", "4xlarge", "8xlarge", "12xlarge", "16xlarge", "24xlarge"]`,
 											},
 										},
-										Description: `Capacity tiers with pre-configured size and performance characteristics. Requires replacement if changed.`,
+										Description: `Capacity tiers with pre-configured size and performance characteristics.`,
 									},
 								},
-								Description: `Configuration for managed cache capacity and performance characteristics. Requires replacement if changed.`,
+								Description: `Configuration for managed cache capacity and performance characteristics.`,
 							},
 						},
-						Description: `Configuration for creating a managed cache add-on. Requires replacement if changed.`,
+						Description: `Configuration for creating a managed cache add-on.`,
 						Validators: []validator.Object{
 							objectvalidator.ConflictsWith(path.Expressions{
 								path.MatchRelative().AtParent().AtName("managed_cache_add_on_config_response"),
@@ -132,7 +120,11 @@ func (r *CloudGatewayAddonResource) Schema(ctx context.Context, req resource.Sch
 													`- large: ~6 GiB capacity` + "\n" +
 													`- xlarge: ~12 GiB capacity` + "\n" +
 													`- 2xlarge: ~25 GiB capacity` + "\n" +
-													`- 4xlarge: ~52 GiB capacity`,
+													`- 4xlarge: ~52 GiB capacity` + "\n" +
+													`- 8xlarge: ~100 GiB capacity` + "\n" +
+													`- 12xlarge: ~150 GiB capacity` + "\n" +
+													`- 16xlarge: ~200 GiB capacity` + "\n" +
+													`- 24xlarge: ~300 GiB capacity`,
 											},
 										},
 										Description: `Capacity tiers with pre-configured size and performance characteristics.`,
@@ -248,7 +240,7 @@ func (r *CloudGatewayAddonResource) Schema(ctx context.Context, req resource.Sch
 						Description: `Configuration for managed cache add-on.`,
 					},
 				},
-				Description: `Configuration for creating different types of add-ons. Requires replacement if changed.`,
+				Description: `Configuration for creating different types of add-ons.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -543,7 +535,43 @@ func (r *CloudGatewayAddonResource) Update(ctx context.Context, req resource.Upd
 		return
 	}
 
-	// Not Implemented; all attributes marked as RequiresReplace
+	request, requestDiags := data.ToOperationsUpdateAddOnRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res, err := r.client.CloudGateways.UpdateAddOn(ctx, *request)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
+		return
+	}
+	if res == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		return
+	}
+	if !(res.AddOnResponse != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromSharedAddOnResponse(ctx, res.AddOnResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

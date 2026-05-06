@@ -110,6 +110,27 @@ func (r *CloudGatewayAddonResourceModel) ToOperationsGetAddOnRequest(ctx context
 	return &out, diags
 }
 
+func (r *CloudGatewayAddonResourceModel) ToOperationsUpdateAddOnRequest(ctx context.Context) (*operations.UpdateAddOnRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var addOnID string
+	addOnID = r.ID.ValueString()
+
+	updateAddOnRequest, updateAddOnRequestDiags := r.ToSharedUpdateAddOnRequest(ctx)
+	diags.Append(updateAddOnRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAddOnRequest{
+		AddOnID:            addOnID,
+		UpdateAddOnRequest: *updateAddOnRequest,
+	}
+
+	return &out, diags
+}
+
 func (r *CloudGatewayAddonResourceModel) ToSharedCreateAddOnRequest(ctx context.Context) (*shared.CreateAddOnRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
@@ -177,6 +198,41 @@ func (r *CloudGatewayAddonResourceModel) ToSharedCreateAddOnRequest(ctx context.
 	out := shared.CreateAddOnRequest{
 		Name:   name,
 		Owner:  owner,
+		Config: config,
+	}
+
+	return &out, diags
+}
+
+func (r *CloudGatewayAddonResourceModel) ToSharedUpdateAddOnRequest(ctx context.Context) (*shared.UpdateAddOnRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var config shared.UpdateAddOnConfig
+	var managedCache *shared.ManagedCache
+	if r.Config.ManagedCache != nil {
+		var capacityConfig shared.ManagedCacheCapacityConfig
+		var tiered *shared.Tiered
+		if r.Config.ManagedCache.CapacityConfig.Tiered != nil {
+			tier := shared.Tier(r.Config.ManagedCache.CapacityConfig.Tiered.Tier.ValueString())
+			tiered = &shared.Tiered{
+				Tier: tier,
+			}
+		}
+		if tiered != nil {
+			capacityConfig = shared.ManagedCacheCapacityConfig{
+				Tiered: tiered,
+			}
+		}
+		managedCache = &shared.ManagedCache{
+			CapacityConfig: capacityConfig,
+		}
+	}
+	if managedCache != nil {
+		config = shared.UpdateAddOnConfig{
+			ManagedCache: managedCache,
+		}
+	}
+	out := shared.UpdateAddOnRequest{
 		Config: config,
 	}
 

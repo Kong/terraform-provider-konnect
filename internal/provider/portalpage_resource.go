@@ -179,7 +179,7 @@ func (r *PortalPageResource) Create(ctx context.Context, req resource.CreateRequ
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Pages.CreatePortalPage(ctx, *request)
+	res, err := r.client.PortalPages.CreatePortalPage(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -239,7 +239,7 @@ func (r *PortalPageResource) Read(ctx context.Context, req resource.ReadRequest,
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Pages.GetPortalPage(ctx, *request)
+	res, err := r.client.PortalPages.GetPortalPage(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -293,7 +293,7 @@ func (r *PortalPageResource) Update(ctx context.Context, req resource.UpdateRequ
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Pages.UpdatePortalPage(ctx, *request)
+	res, err := r.client.PortalPages.UpdatePortalPage(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -353,7 +353,7 @@ func (r *PortalPageResource) Delete(ctx context.Context, req resource.DeleteRequ
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.Pages.DeletePortalPage(ctx, *request)
+	res, err := r.client.PortalPages.DeletePortalPage(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
