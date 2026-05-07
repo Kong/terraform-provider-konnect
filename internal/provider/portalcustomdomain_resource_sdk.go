@@ -166,8 +166,33 @@ func (r *PortalCustomDomainResourceModel) ToSharedUpdatePortalCustomDomainReques
 	} else {
 		enabled = nil
 	}
+	var ssl *shared.UpdatePortalCustomDomainSSL
+	customCertificate := new(string)
+	if !r.Ssl.CustomCertificate.IsUnknown() && !r.Ssl.CustomCertificate.IsNull() {
+		*customCertificate = r.Ssl.CustomCertificate.ValueString()
+	} else {
+		customCertificate = nil
+	}
+	customPrivateKey := new(string)
+	if !r.Ssl.CustomPrivateKey.IsUnknown() && !r.Ssl.CustomPrivateKey.IsNull() {
+		*customPrivateKey = r.Ssl.CustomPrivateKey.ValueString()
+	} else {
+		customPrivateKey = nil
+	}
+	skipCaCheck := new(bool)
+	if !r.Ssl.SkipCaCheck.IsUnknown() && !r.Ssl.SkipCaCheck.IsNull() {
+		*skipCaCheck = r.Ssl.SkipCaCheck.ValueBool()
+	} else {
+		skipCaCheck = nil
+	}
+	ssl = &shared.UpdatePortalCustomDomainSSL{
+		CustomCertificate: customCertificate,
+		CustomPrivateKey:  customPrivateKey,
+		SkipCaCheck:       skipCaCheck,
+	}
 	out := shared.UpdatePortalCustomDomainRequest{
 		Enabled: enabled,
+		Ssl:     ssl,
 	}
 
 	return &out, diags
