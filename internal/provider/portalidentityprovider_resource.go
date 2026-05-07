@@ -3,7 +3,9 @@
 package provider
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -24,37 +26,38 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &IdentityProviderResource{}
-var _ resource.ResourceWithImportState = &IdentityProviderResource{}
+var _ resource.Resource = &PortalIdentityProviderResource{}
+var _ resource.ResourceWithImportState = &PortalIdentityProviderResource{}
 
-func NewIdentityProviderResource() resource.Resource {
-	return &IdentityProviderResource{}
+func NewPortalIdentityProviderResource() resource.Resource {
+	return &PortalIdentityProviderResource{}
 }
 
-// IdentityProviderResource defines the resource implementation.
-type IdentityProviderResource struct {
+// PortalIdentityProviderResource defines the resource implementation.
+type PortalIdentityProviderResource struct {
 	// Provider configured SDK client.
 	client *sdk.Konnect
 }
 
-// IdentityProviderResourceModel describes the resource data model.
-type IdentityProviderResourceModel struct {
+// PortalIdentityProviderResourceModel describes the resource data model.
+type PortalIdentityProviderResourceModel struct {
 	Config    *tfTypes.CreateIdentityProviderConfig `tfsdk:"config"`
 	CreatedAt types.String                          `tfsdk:"created_at"`
 	Enabled   types.Bool                            `tfsdk:"enabled"`
 	ID        types.String                          `tfsdk:"id"`
 	LoginPath types.String                          `tfsdk:"login_path"`
+	PortalID  types.String                          `tfsdk:"portal_id"`
 	Type      types.String                          `tfsdk:"type"`
 	UpdatedAt types.String                          `tfsdk:"updated_at"`
 }
 
-func (r *IdentityProviderResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_identity_provider"
+func (r *PortalIdentityProviderResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_portal_identity_provider"
 }
 
-func (r *IdentityProviderResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *PortalIdentityProviderResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "IdentityProvider Resource",
+		MarkdownDescription: "PortalIdentityProvider Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
@@ -207,6 +210,10 @@ func (r *IdentityProviderResource) Schema(ctx context.Context, req resource.Sche
 				Optional:    true,
 				Description: `The path used for initiating login requests with the identity provider.`,
 			},
+			"portal_id": schema.StringAttribute{
+				Required:    true,
+				Description: `The Portal identifier`,
+			},
 			"type": schema.StringAttribute{
 				Computed: true,
 				Optional: true,
@@ -227,7 +234,7 @@ func (r *IdentityProviderResource) Schema(ctx context.Context, req resource.Sche
 	}
 }
 
-func (r *IdentityProviderResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *PortalIdentityProviderResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -247,8 +254,8 @@ func (r *IdentityProviderResource) Configure(ctx context.Context, req resource.C
 	r.client = client
 }
 
-func (r *IdentityProviderResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *IdentityProviderResourceModel
+func (r *PortalIdentityProviderResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *PortalIdentityProviderResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -265,13 +272,13 @@ func (r *IdentityProviderResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 
-	request, requestDiags := data.ToSharedCreateIdentityProvider(ctx)
+	request, requestDiags := data.ToOperationsCreatePortalIdentityProviderRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.AuthSettings.CreateIdentityProvider(ctx, *request)
+	res, err := r.client.PortalAuthSettings.CreatePortalIdentityProvider(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -314,8 +321,8 @@ func (r *IdentityProviderResource) Create(ctx context.Context, req resource.Crea
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *IdentityProviderResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *IdentityProviderResourceModel
+func (r *PortalIdentityProviderResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *PortalIdentityProviderResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -332,13 +339,13 @@ func (r *IdentityProviderResource) Read(ctx context.Context, req resource.ReadRe
 		return
 	}
 
-	request, requestDiags := data.ToOperationsGetIdentityProviderRequest(ctx)
+	request, requestDiags := data.ToOperationsGetPortalIdentityProviderRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.AuthSettings.GetIdentityProvider(ctx, *request)
+	res, err := r.client.PortalAuthSettings.GetPortalIdentityProvider(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -372,8 +379,8 @@ func (r *IdentityProviderResource) Read(ctx context.Context, req resource.ReadRe
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *IdentityProviderResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *IdentityProviderResourceModel
+func (r *PortalIdentityProviderResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *PortalIdentityProviderResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -386,13 +393,13 @@ func (r *IdentityProviderResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	request, requestDiags := data.ToOperationsUpdateIdentityProviderRequest(ctx)
+	request, requestDiags := data.ToOperationsUpdatePortalIdentityProviderRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.AuthSettings.UpdateIdentityProvider(ctx, *request)
+	res, err := r.client.PortalAuthSettings.UpdatePortalIdentityProvider(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -428,8 +435,8 @@ func (r *IdentityProviderResource) Update(ctx context.Context, req resource.Upda
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *IdentityProviderResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *IdentityProviderResourceModel
+func (r *PortalIdentityProviderResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *PortalIdentityProviderResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -446,13 +453,13 @@ func (r *IdentityProviderResource) Delete(ctx context.Context, req resource.Dele
 		return
 	}
 
-	request, requestDiags := data.ToOperationsDeleteIdentityProviderRequest(ctx)
+	request, requestDiags := data.ToOperationsDeletePortalIdentityProviderRequest(ctx)
 	resp.Diagnostics.Append(requestDiags...)
 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	res, err := r.client.AuthSettings.DeleteIdentityProvider(ctx, *request)
+	res, err := r.client.PortalAuthSettings.DeletePortalIdentityProvider(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -474,6 +481,27 @@ func (r *IdentityProviderResource) Delete(ctx context.Context, req resource.Dele
 
 }
 
-func (r *IdentityProviderResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), req.ID)...)
+func (r *PortalIdentityProviderResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
+	dec.DisallowUnknownFields()
+	var data struct {
+		ID       string `json:"id"`
+		PortalID string `json:"portal_id"`
+	}
+
+	if err := dec.Decode(&data); err != nil {
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{"id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "portal_id": "f32d905a-ed33-46a3-a093-d8f536af9a8a"}': `+err.Error())
+		return
+	}
+
+	if len(data.ID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"d32d905a-ed33-46a3-a093-d8f536af9a8a"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
+	if len(data.PortalID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field portal_id is required but was not found in the json encoded ID. It's expected to be a value alike '"f32d905a-ed33-46a3-a093-d8f536af9a8a"'`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("portal_id"), data.PortalID)...)
 }
