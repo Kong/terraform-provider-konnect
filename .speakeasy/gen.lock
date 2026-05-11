@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 847eba20dc1029fffaaf386dda080131
+  docChecksum: 9f3cb4228a1aee91d933267e0665c0b4
   docVersion: 2.0.0
   speakeasyVersion: 1.761.9
   generationVersion: 2.881.4
   releaseVersion: 3.15.0
   configChecksum: aebe672036ae91fbdd72d752b7b731d2
 persistentEdits:
-  generation_id: 505a5e0c-7ac0-4c99-a1f4-35f36ed53d11
-  pristine_commit_hash: e18602d609f0874c7e34290a6aa547c6209ab4d8
-  pristine_tree_hash: bda614de50f12b5d94b7336a452840578bcd8777
+  generation_id: b05035a3-7a94-4ac8-9ab6-547aecca9b69
+  pristine_commit_hash: f9a90539991405fe81d2e59f71dbe607570b510e
+  pristine_tree_hash: 9ab61a5211e6ed296a8242f9edbae47d7a653c20
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -4285,8 +4285,8 @@ trackedFiles:
     pristine_git_object: 9576d4e21b541696cba9fd129f2a3691d806c551
   internal/provider/identityprovider_resource.go:
     id: 58c5a9b0f23d
-    last_write_checksum: sha1:ea8a5b9d51f2e926e96a5ce363a436a35c2b0b58
-    pristine_git_object: 686b00f2ca105b15102398d10f05499c606f99ed
+    last_write_checksum: sha1:8470459a721fb45195e1d55698637a4715b9fb9b
+    pristine_git_object: 18015a02ee35bb6a710f932181b559b6fca3d7a8
   internal/provider/identityprovider_resource_sdk.go:
     id: 2716363f6d1b
     last_write_checksum: sha1:90f6c7e897345259073808df6cc299f6b33fdd34
@@ -4429,8 +4429,8 @@ trackedFiles:
     pristine_git_object: e3d2aafa5846fbb5e9ccf800d7effc3eb44bf7fd
   internal/provider/portalidentityprovider_resource.go:
     id: d6376fc27e43
-    last_write_checksum: sha1:9d24f924f5121daf4babdf060b9d9a915c594ae7
-    pristine_git_object: 7e157b890a5bdc0a113f879d0fc18e82ec26349d
+    last_write_checksum: sha1:c73e00442303f5d8df001979ca5d6a9a99b46c60
+    pristine_git_object: f51745acd966b8ea1ba66ff1382706b830b471d9
   internal/provider/portalidentityprovider_resource_sdk.go:
     id: 34312ab691d8
     last_write_checksum: sha1:b184854cc07376f2db66957eec81327c3169161d
@@ -26522,7 +26522,7 @@ examples:
   create-identity-provider:
     speakeasy-default-create-identity-provider:
       requestBody:
-        application/json: {"type": "oidc", "enabled": true, "login_path": "myapp", "config": {"idp_metadata_url": "https://mocksaml.com/api/saml/metadata", "idp_metadata_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<EntityDescriptor xmlns=\"urn:oasis:names:tc:SAML:2.0:metadata\">\n  <!-- SAML metadata content here -->\n</EntityDescriptor>\n"}}
+        application/json: {"type": "oidc", "enabled": true, "login_path": "myapp", "config": {"idp_metadata_url": "https://mocksaml.com/api/saml/metadata"}}
       responses:
         "201":
           application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "type": "oidc", "enabled": true, "login_path": "myapp", "config": {"issuer_url": "https://konghq.okta.com/oauth2/default", "client_id": "YOUR_CLIENT_ID", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "groups"}}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -26541,7 +26541,7 @@ examples:
           id: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "type": "oidc", "enabled": true, "login_path": "myapp", "config": {"idp_metadata_url": "https://mocksaml.com/api/saml/metadata", "idp_metadata_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<EntityDescriptor xmlns=\"urn:oasis:names:tc:SAML:2.0:metadata\">\n  <!-- SAML metadata content here -->\n</EntityDescriptor>\n", "sp_metadata_url": "/api/v2/developer/authenticate/saml/metadata", "sp_entity_id": "https://cloud.konghq.com/sp/00000000-0000-0000-0000-000000000000", "login_url": "https://cloud.konghq.com/login/the-saml-konnect-org", "callback_url": "/api/v2/developer/authenticate/saml/acs"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "type": "oidc", "enabled": true, "login_path": "myapp", "config": {"idp_metadata_url": "https://mocksaml.com/api/saml/metadata", "sp_metadata_url": "/api/v2/developer/authenticate/saml/metadata", "sp_entity_id": "https://cloud.konghq.com/sp/00000000-0000-0000-0000-000000000000", "login_url": "https://cloud.konghq.com/login/the-saml-konnect-org", "callback_url": "/api/v2/developer/authenticate/saml/acs"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 381490, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -27383,7 +27383,7 @@ examples:
         path:
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
-        application/json: {"type": "oidc", "enabled": true, "login_path": "myapp", "config": {"idp_metadata_url": "https://mocksaml.com/api/saml/metadata", "idp_metadata_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<EntityDescriptor xmlns=\"urn:oasis:names:tc:SAML:2.0:metadata\">\n  <!-- SAML metadata content here -->\n</EntityDescriptor>\n"}}
+        application/json: {"type": "oidc", "enabled": true, "login_path": "myapp", "config": {"idp_metadata_url": "https://mocksaml.com/api/saml/metadata"}}
       responses:
         "201":
           application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "type": "oidc", "enabled": true, "login_path": "myapp", "config": {"issuer_url": "https://konghq.okta.com/oauth2/default", "client_id": "YOUR_CLIENT_ID", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "groups"}}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -27419,7 +27419,7 @@ examples:
           portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
           id: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
       requestBody:
-        application/json: {"enabled": true, "login_path": "myapp", "config": {"idp_metadata_url": "https://mocksaml.com/api/saml/metadata", "idp_metadata_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<EntityDescriptor xmlns=\"urn:oasis:names:tc:SAML:2.0:metadata\">\n  <!-- SAML metadata content here -->\n</EntityDescriptor>\n"}}
+        application/json: {"enabled": true, "login_path": "myapp", "config": {"idp_metadata_url": "https://mocksaml.com/api/saml/metadata"}}
       responses:
         "200":
           application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "type": "oidc", "enabled": true, "login_path": "myapp", "config": {"issuer_url": "https://konghq.okta.com/oauth2/default", "client_id": "YOUR_CLIENT_ID", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "groups"}}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
