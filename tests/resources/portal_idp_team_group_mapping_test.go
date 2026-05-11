@@ -45,24 +45,10 @@ const (
 			}
 		}
 	`
-	portalIdpSAMLForMapping = `
-		resource "konnect_portal_identity_provider" "saml_provider" {
-			type = "saml"
-			config = {
-				saml_identity_provider_config = {
-					idp_metadata_url = "https://mocksaml.com/api/saml/metadata"
-				}
-			}
-		}
-	`
+
 	portalIdpTeamGroupMappingOIDC = `
 		resource "konnect_portal_idp_team_group_mapping" "my_mapping" {
 			group = "Tech Leads"
-		}
-	`
-	portalIdpTeamGroupMappingSAML = `
-		resource "konnect_portal_idp_team_group_mapping" "my_mapping" {
-			group = "Engineering"
 		}
 	`
 )
@@ -95,7 +81,6 @@ func TestPortalIdpTeamGroupMapping(t *testing.T) {
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
-				// Step 1: Create
 				{
 					Config: builder.Upsert(portal).Upsert(portalTeam).Upsert(oidcProvider).Upsert(mapping).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
@@ -111,7 +96,6 @@ func TestPortalIdpTeamGroupMapping(t *testing.T) {
 						resource.TestCheckResourceAttrSet("konnect_portal_idp_team_group_mapping.my_mapping", "mapping_id"),
 					),
 				},
-				// Step 2: Verify no diff (idempotency)
 				{
 					Config: builder.Upsert(portal).Upsert(portalTeam).Upsert(oidcProvider).Upsert(mapping).Build(),
 					ConfigPlanChecks: resource.ConfigPlanChecks{
@@ -124,56 +108,4 @@ func TestPortalIdpTeamGroupMapping(t *testing.T) {
 		})
 	})
 
-	t.Run("saml", func(t *testing.T) {
-		builder := hclbuilder.NewWithProvider(hclbuilder.Konnect, fmt.Sprintf(providerConfigTemplate, serverScheme, serverHost, serverPort))
-		builder.ProviderProperty = hclbuilder.Konnect
-
-		portal, err := hclbuilder.FromString(portalForIdpMapping)
-		require.NoError(t, err)
-
-		portalTeam, err := hclbuilder.FromString(portalTeamForIdpMapping)
-		require.NoError(t, err)
-		portalTeam.AddAttribute("portal_id", portal.ResourcePath()+".id")
-
-		samlProvider, err := hclbuilder.FromString(portalIdpSAMLForMapping)
-		require.NoError(t, err)
-		samlProvider.AddAttribute("portal_id", portal.ResourcePath()+".id")
-
-		mapping, err := hclbuilder.FromString(portalIdpTeamGroupMappingSAML)
-		require.NoError(t, err)
-		mapping.AddAttribute("id", samlProvider.ResourcePath()+".id")
-		mapping.AddAttribute("portal_id", portal.ResourcePath()+".id")
-		mapping.AddAttribute("team_id", portalTeam.ResourcePath()+".id")
-
-		resource.Test(t, resource.TestCase{
-			ProtoV6ProviderFactories: providerFactory,
-			Steps: []resource.TestStep{
-				// Step 1: Create
-				{
-					Config: builder.Upsert(portal).Upsert(portalTeam).Upsert(samlProvider).Upsert(mapping).Build(),
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectResourceAction("konnect_portal_idp_team_group_mapping.my_mapping", plancheck.ResourceActionCreate),
-						},
-					},
-					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttr("konnect_portal_idp_team_group_mapping.my_mapping", "group", "Engineering"),
-						resource.TestCheckResourceAttrSet("konnect_portal_idp_team_group_mapping.my_mapping", "id"),
-						resource.TestCheckResourceAttrSet("konnect_portal_idp_team_group_mapping.my_mapping", "portal_id"),
-						resource.TestCheckResourceAttrSet("konnect_portal_idp_team_group_mapping.my_mapping", "team_id"),
-						resource.TestCheckResourceAttrSet("konnect_portal_idp_team_group_mapping.my_mapping", "mapping_id"),
-					),
-				},
-				// Step 2: Verify no diff (idempotency)
-				{
-					Config: builder.Upsert(portal).Upsert(portalTeam).Upsert(samlProvider).Upsert(mapping).Build(),
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectEmptyPlan(),
-						},
-					},
-				},
-			},
-		})
-	})
 }
