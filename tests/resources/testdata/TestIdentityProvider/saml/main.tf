@@ -8,4 +8,10 @@ resource "konnect_identity_provider" "saml_provider" {
       idp_metadata_url = "https://mocksaml.com/api/saml/metadata"
     }
   }
+
+  lifecycle {
+    ignore_changes = [config.saml_identity_provider_config.idp_metadata_xml]
+  }
+
 }
+
