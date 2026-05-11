@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: fc590aa88300c3a719dbced8a0c21e15
+  docChecksum: 9f3cb4228a1aee91d933267e0665c0b4
   docVersion: 2.0.0
   speakeasyVersion: 1.761.9
   generationVersion: 2.881.4
   releaseVersion: 3.15.0
   configChecksum: aebe672036ae91fbdd72d752b7b731d2
 persistentEdits:
-  generation_id: 1815bf84-2964-4547-bde6-bcfb5822f4aa
-  pristine_commit_hash: 1b2135f36605c9c6b3b835e4c91eeece472d4d4e
-  pristine_tree_hash: 4c66958ef82a07d83802c13983c1e878c226aa2c
+  generation_id: b05035a3-7a94-4ac8-9ab6-547aecca9b69
+  pristine_commit_hash: f9a90539991405fe81d2e59f71dbe607570b510e
+  pristine_tree_hash: 9ab61a5211e6ed296a8242f9edbae47d7a653c20
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -2451,6 +2451,30 @@ trackedFiles:
     id: 2e77ce4aa466
     last_write_checksum: sha1:cd09e01bb631cc5a673060b24d33e2c50a9c82f3
     pristine_git_object: b3da938269640dcdb01151b5d8619ff369a3f5fb
+  examples/resources/konnect_portal_identity_provider/import-by-string-id.tf:
+    id: c4b37addcbf9
+    last_write_checksum: sha1:50487955e4a57601b257600ee56317fee3fd0922
+    pristine_git_object: 772f20d0cece819e740e0e7b0461e0332a1dd209
+  examples/resources/konnect_portal_identity_provider/import.sh:
+    id: bfa444c1d833
+    last_write_checksum: sha1:08e4cdea667f81cf02288dce11451aad2b0f5308
+    pristine_git_object: 34fa95db9b079c57be8325fe2555e7f6233b6ef5
+  examples/resources/konnect_portal_identity_provider/resource.tf:
+    id: b7d8a4fa1d58
+    last_write_checksum: sha1:69f0321711bd64bb2800ae114b4c8ddfd77dff7a
+    pristine_git_object: 217fea3f33dd831e872eaa8ca6688684dbda7056
+  examples/resources/konnect_portal_idp_team_group_mapping/import-by-string-id.tf:
+    id: 43774b30b9f1
+    last_write_checksum: sha1:71404f446154fa2c2c849ce4ecf1dcbfbfb69680
+    pristine_git_object: e81d43a56b452437910388bdc2edbcc42988a37c
+  examples/resources/konnect_portal_idp_team_group_mapping/import.sh:
+    id: 09731af69d6a
+    last_write_checksum: sha1:bc1d2b2a091909a542382fc368daaf9ec25d46d3
+    pristine_git_object: 2e12e79296129ed07adf04fbf49ea556ee549298
+  examples/resources/konnect_portal_idp_team_group_mapping/resource.tf:
+    id: acb8049ade6e
+    last_write_checksum: sha1:e47d46fb0089d9b91b5e52b414d51b0bd400b2ce
+    pristine_git_object: 9bcacb14667f3a0b119672914d24c8e5c0e97fb8
   examples/resources/konnect_portal_logo/import-by-string-id.tf:
     id: fa265b53246a
     last_write_checksum: sha1:f2400ed0b2f604c6b5e3eacf3f1f29f42ef84ce5
@@ -4261,8 +4285,8 @@ trackedFiles:
     pristine_git_object: 9576d4e21b541696cba9fd129f2a3691d806c551
   internal/provider/identityprovider_resource.go:
     id: 58c5a9b0f23d
-    last_write_checksum: sha1:58b0aa277bb28f3f52f1fffb4dcfc554e75813ad
-    pristine_git_object: 681fbe883c581221b208ca6d01fd0ca767e43aa0
+    last_write_checksum: sha1:8470459a721fb45195e1d55698637a4715b9fb9b
+    pristine_git_object: 18015a02ee35bb6a710f932181b559b6fca3d7a8
   internal/provider/identityprovider_resource_sdk.go:
     id: 2716363f6d1b
     last_write_checksum: sha1:90f6c7e897345259073808df6cc299f6b33fdd34
@@ -4403,6 +4427,22 @@ trackedFiles:
     id: b0ffe8dc9512
     last_write_checksum: sha1:5e1e24db17fbdb04a74a86af001a26c259804da1
     pristine_git_object: e3d2aafa5846fbb5e9ccf800d7effc3eb44bf7fd
+  internal/provider/portalidentityprovider_resource.go:
+    id: d6376fc27e43
+    last_write_checksum: sha1:c73e00442303f5d8df001979ca5d6a9a99b46c60
+    pristine_git_object: f51745acd966b8ea1ba66ff1382706b830b471d9
+  internal/provider/portalidentityprovider_resource_sdk.go:
+    id: 34312ab691d8
+    last_write_checksum: sha1:b184854cc07376f2db66957eec81327c3169161d
+    pristine_git_object: ee78e9b7becb52f0521f13163afbc7a2002c9009
+  internal/provider/portalidpteamgroupmapping_resource.go:
+    id: b044081481c1
+    last_write_checksum: sha1:127c460ad8c9fccb2c60324068b27b2736e84e56
+    pristine_git_object: e5dfea4c503be582ff3ae0918eb63d0ea195f5fb
+  internal/provider/portalidpteamgroupmapping_resource_sdk.go:
+    id: cc93aae6dae7
+    last_write_checksum: sha1:3d9715ce5ca95dd168d41c9f1f0b7ee04c03e7d7
+    pristine_git_object: 5c789a246fab0180197ba084a64565c9eb0f7077
   internal/provider/portallogo_resource.go:
     id: f571068b22ce
     last_write_checksum: sha1:d5d94f4665af4150a08ec0e4c61f3070345a53a6
@@ -4445,8 +4485,8 @@ trackedFiles:
     pristine_git_object: 4d96a0bfdc21e90f6daf60bacd8327a609b249f7
   internal/provider/provider.go:
     id: 1e7e86841cf3
-    last_write_checksum: sha1:eead27696f3363092d1272a25e666ecc8dff6834
-    pristine_git_object: 1f4c03aea414a089616bb7e98fe1d8d987dd20f2
+    last_write_checksum: sha1:a84176f63c639a076f6e7dae0cb8b94ea47163de
+    pristine_git_object: 342e7b86402886aeab387591179e9db820310cc7
   internal/provider/realm_resource.go:
     id: 288745fe66d4
     last_write_checksum: sha1:84cfafee418c410926378f7ecbd147dd45e933e8
@@ -7463,6 +7503,14 @@ trackedFiles:
     id: 120cc1f4654b
     last_write_checksum: sha1:6de430cd5657015c4bed5bc2de980fea9016ef5e
     pristine_git_object: 41389fea0ac6ac155bd3b2315dc8b296d1ee6c5f
+  internal/sdk/models/operations/createportalidentityprovider.go:
+    id: 2274b2f040c1
+    last_write_checksum: sha1:ce832ad2fe61107c011ad0fd4e3e974f28ca1428
+    pristine_git_object: e709a77d91995a9b7571f215f5a8892c3eb774fd
+  internal/sdk/models/operations/createportalidpteamgroupmapping.go:
+    id: 4e193100ede0
+    last_write_checksum: sha1:e5a5204b545d13bf10419393f5d0c79087a7534e
+    pristine_git_object: 12f9a25109c667c7b2520761b78b83e77a0cc402
   internal/sdk/models/operations/createportalpage.go:
     id: 59a087178c47
     last_write_checksum: sha1:dde3318321eb440022db42b7487e664c330f6cd8
@@ -8251,6 +8299,14 @@ trackedFiles:
     id: a5ccf806aa06
     last_write_checksum: sha1:77b364ad03e73943bcfc61b23548ce2553549043
     pristine_git_object: 65b3fbf583bb3d25dfafacb8dc0e4bb0ac6727d3
+  internal/sdk/models/operations/deleteportalidentityprovider.go:
+    id: 9561d7d8544d
+    last_write_checksum: sha1:2a989eeaf195e2a18496f1f9a3ae72da1091901e
+    pristine_git_object: 12eae3cd3bd6763b16641d71f07da00252800a89
+  internal/sdk/models/operations/deleteportalidpteamgroupmapping.go:
+    id: f0a772d361f5
+    last_write_checksum: sha1:12ceeb8e1d5038c8585db2501a0a2e3b86a7abfe
+    pristine_git_object: a30b55a82f52a0ddbf48b717e32f587dc4424185
   internal/sdk/models/operations/deleteportalpage.go:
     id: edab1c51be7c
     last_write_checksum: sha1:daeac71774a24eabec517ceadb1a10b243b80a7f
@@ -9103,6 +9159,14 @@ trackedFiles:
     id: 049610ca05a9
     last_write_checksum: sha1:c3ef96e5167b04e5d39b2f89bbef076c7800c221
     pristine_git_object: 5d7c0eeb56f5d251d30b77008ec080483b66f126
+  internal/sdk/models/operations/getportalidentityprovider.go:
+    id: b81780fe3e43
+    last_write_checksum: sha1:31dc23af3e4c0173dd1c170cdf73b8a369bd7ed6
+    pristine_git_object: 01bb40a59a8a792b49075c87565fd7e5322b09fe
+  internal/sdk/models/operations/getportalidpteamgroupmapping.go:
+    id: f71082b7c294
+    last_write_checksum: sha1:479028c7de619c50d29082144181dd7783223401
+    pristine_git_object: a268ad3d363e2477feccfa2bb3df7a1cfa6f10de
   internal/sdk/models/operations/getportalpage.go:
     id: 1e10ddae63e2
     last_write_checksum: sha1:2754784c8099970f64295ee303d69b6d2823b587
@@ -9947,6 +10011,10 @@ trackedFiles:
     id: 75e7da0ad980
     last_write_checksum: sha1:bab592e694ffe2c63a1024d9db7df333780bab9d
     pristine_git_object: 279c80d1e1baf1374e553b3a47663a5f5110b36d
+  internal/sdk/models/operations/updateportalidentityprovider.go:
+    id: 2305b4d936ce
+    last_write_checksum: sha1:3c67b548c86baf37e7abbbcbe3785e76e74ce9f5
+    pristine_git_object: c27a2b859ad11a33e6e8f440041cac176e85f767
   internal/sdk/models/operations/updateportalpage.go:
     id: c48ffc1b6c52
     last_write_checksum: sha1:64e69610243f2cdeee1d6bf1e561c502e21cd730
@@ -11001,8 +11069,8 @@ trackedFiles:
     pristine_git_object: f6ce4293415e033bfd158bdb5c4143c3e95ad586
   internal/sdk/models/shared/createidentityprovider.go:
     id: bac69f4debfd
-    last_write_checksum: sha1:8ddcd268d9e51ea4b469a87f176d24f66a6ac0eb
-    pristine_git_object: d46c2abb96fa68262724c0fb921de41d893f411a
+    last_write_checksum: sha1:ff4d9d8286a33a9d26b6b77c613480848bd842ea
+    pristine_git_object: b086ce2e8124e45d874c9742c51054e9d6cdbc93
   internal/sdk/models/shared/createidpteamgroupmappingrequest.go:
     id: 185c9883c47c
     last_write_checksum: sha1:c6dcb4c53d5e9f14cf48ab61739ab1086b6a3589
@@ -11039,6 +11107,10 @@ trackedFiles:
     id: 1915442a3792
     last_write_checksum: sha1:d056c5d85177531e438de201a552d650aca2c949
     pristine_git_object: 82bde2b82806dcb53a0ce372adf7b7ed1c26c79c
+  internal/sdk/models/shared/createportalidpteamgroupmappingrequest.go:
+    id: 47826b68c7df
+    last_write_checksum: sha1:badf540c8c71e6c1174f1b931411e995d412ea01
+    pristine_git_object: 40fbcdcbcf4c50b31a0ed492169b5d5cbddeb23b
   internal/sdk/models/shared/createportalpagerequest.go:
     id: 43efca3f1baf
     last_write_checksum: sha1:f2d95f8df2dc834cd89a76f5f049b8ad896b3eb7
@@ -11405,8 +11477,8 @@ trackedFiles:
     pristine_git_object: f6380a32cef174be0162a6fc9bbd4b3592913cc2
   internal/sdk/models/shared/identityprovider.go:
     id: b86163ce33df
-    last_write_checksum: sha1:e1d047861b0f4aca30a7c245663f76dd5c662c6b
-    pristine_git_object: 81600af9a24d5c85b3b6afc2aba81c5ab04b2703
+    last_write_checksum: sha1:b650da6def754228b6acd7a469ef7a716ef1f76c
+    pristine_git_object: 795e1578adbf481fd02cca2e6c330632f7d6e447
   internal/sdk/models/shared/identityprovidertype.go:
     id: 77dd7fdb3fd2
     last_write_checksum: sha1:20fdc4df8f6023b135d75c02f5ba21cbf079d0bd
@@ -11847,6 +11919,10 @@ trackedFiles:
     id: 019038dc508c
     last_write_checksum: sha1:a8ff40b1ef6af5b14371908644ac25e644101eb3
     pristine_git_object: 216596d87b74da918605d93d7121d633563b64a7
+  internal/sdk/models/shared/portalidpteamgroupmapping.go:
+    id: 3bd5ff4af472
+    last_write_checksum: sha1:9091072dc0221c7f1e7cdcc33149eac332f19e01
+    pristine_git_object: cec6fa6fbfdc67c28c58bb04b7070615db087f30
   internal/sdk/models/shared/portalmenuitem.go:
     id: 14ad09980ac1
     last_write_checksum: sha1:6c371e317014e03551358b620cf4c557cdd875fd
@@ -12361,8 +12437,8 @@ trackedFiles:
     pristine_git_object: 228bf923bae1e0df886d94446d2afcf70812b3d2
   internal/sdk/models/shared/updateidentityprovider.go:
     id: 686c32985871
-    last_write_checksum: sha1:56b89a4b36b4d69ed5f1d44234edef6302f4d597
-    pristine_git_object: 1a7c11b199c0ed421a175a967bb533fde78af248
+    last_write_checksum: sha1:a74f0ef73533bc4f37bc99d31ad5b11b569c6236
+    pristine_git_object: 40a91c6c60c5288c8f6d6b5106147b288cb44c0f
   internal/sdk/models/shared/updateintegrationinstance.go:
     id: 570ec49ca624
     last_write_checksum: sha1:91cc2125fc289a11fdb5f62c6164bc639f34f105
@@ -12677,8 +12753,8 @@ trackedFiles:
     pristine_git_object: d802c59a6cf79d6a1999e1373025277bea707a6d
   internal/sdk/portalauthsettings.go:
     id: 6e1aedfde83b
-    last_write_checksum: sha1:7afe0f6cc65e0c77c23a7d7e9f4cd49852577976
-    pristine_git_object: 2339d75725d43c32e463a1e5ab781cad1a477be9
+    last_write_checksum: sha1:69270dd19afdb75a53cd82297b65b829e699f053
+    pristine_git_object: 4222c9efbceb7b49c4e616a8b33b99e767db33c0
   internal/sdk/portalcustomdomains.go:
     id: 26a212d47a54
     last_write_checksum: sha1:6a4b4f1d36da962689c443945cc05f3566c4b2ff
@@ -26446,7 +26522,7 @@ examples:
   create-identity-provider:
     speakeasy-default-create-identity-provider:
       requestBody:
-        application/json: {"type": "oidc", "enabled": true, "login_path": "myapp", "config": {"idp_metadata_url": "https://mocksaml.com/api/saml/metadata", "idp_metadata_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<EntityDescriptor xmlns=\"urn:oasis:names:tc:SAML:2.0:metadata\">\n  <!-- SAML metadata content here -->\n</EntityDescriptor>\n"}}
+        application/json: {"type": "oidc", "enabled": true, "login_path": "myapp", "config": {"idp_metadata_url": "https://mocksaml.com/api/saml/metadata"}}
       responses:
         "201":
           application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "type": "oidc", "enabled": true, "login_path": "myapp", "config": {"issuer_url": "https://konghq.okta.com/oauth2/default", "client_id": "YOUR_CLIENT_ID", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "groups"}}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
@@ -26465,7 +26541,7 @@ examples:
           id: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "type": "oidc", "enabled": true, "login_path": "myapp", "config": {"idp_metadata_url": "https://mocksaml.com/api/saml/metadata", "idp_metadata_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<EntityDescriptor xmlns=\"urn:oasis:names:tc:SAML:2.0:metadata\">\n  <!-- SAML metadata content here -->\n</EntityDescriptor>\n", "sp_metadata_url": "/api/v2/developer/authenticate/saml/metadata", "sp_entity_id": "https://cloud.konghq.com/sp/00000000-0000-0000-0000-000000000000", "login_url": "https://cloud.konghq.com/login/the-saml-konnect-org", "callback_url": "/api/v2/developer/authenticate/saml/acs"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "type": "oidc", "enabled": true, "login_path": "myapp", "config": {"idp_metadata_url": "https://mocksaml.com/api/saml/metadata", "sp_metadata_url": "/api/v2/developer/authenticate/saml/metadata", "sp_entity_id": "https://cloud.konghq.com/sp/00000000-0000-0000-0000-000000000000", "login_url": "https://cloud.konghq.com/login/the-saml-konnect-org", "callback_url": "/api/v2/developer/authenticate/saml/acs"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 381490, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -27295,6 +27371,77 @@ examples:
       responses:
         "400":
           application/problem+json: {"status": 357241, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>", "<value 3>"], "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-portal-identity-provider:
+    speakeasy-default-create-portal-identity-provider:
+      parameters:
+        path:
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+      requestBody:
+        application/json: {"type": "oidc", "enabled": true, "login_path": "myapp", "config": {"idp_metadata_url": "https://mocksaml.com/api/saml/metadata"}}
+      responses:
+        "201":
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "type": "oidc", "enabled": true, "login_path": "myapp", "config": {"issuer_url": "https://konghq.okta.com/oauth2/default", "client_id": "YOUR_CLIENT_ID", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "groups"}}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 907632, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value 1>", "<value 2>"], "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  get-portal-identity-provider:
+    speakeasy-default-get-portal-identity-provider:
+      parameters:
+        path:
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+          id: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "200":
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "type": "oidc", "enabled": true, "login_path": "myapp", "config": {"issuer_url": "https://konghq.okta.com/oauth2/default", "client_id": "YOUR_CLIENT_ID", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "groups"}}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 696218, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-portal-identity-provider:
+    speakeasy-default-update-portal-identity-provider:
+      parameters:
+        path:
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+          id: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      requestBody:
+        application/json: {"enabled": true, "login_path": "myapp", "config": {"idp_metadata_url": "https://mocksaml.com/api/saml/metadata"}}
+      responses:
+        "200":
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "type": "oidc", "enabled": true, "login_path": "myapp", "config": {"issuer_url": "https://konghq.okta.com/oauth2/default", "client_id": "YOUR_CLIENT_ID", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "groups"}}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 574566, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  delete-portal-identity-provider:
+    speakeasy-default-delete-portal-identity-provider:
+      parameters:
+        path:
+          portalId: "f32d905a-ed33-46a3-a093-d8f536af9a8a"
+          id: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "400":
+          application/problem+json: {"status": 234999, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
