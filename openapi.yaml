@@ -25642,6 +25642,7 @@ components:
       format: uri
       example: 'https://mocksaml.com/api/saml/metadata'
       title: SAML Identity Provider Metadata URL
+      x-speakeasy-param-computed: false
     SAMLIdentityProviderMetadata:
       description: |
         The identity provider's SAML metadata. If the identity provider supports a metadata URL, you can use the `idp_metadata_url` field instead.
@@ -25652,6 +25653,7 @@ components:
           <!-- SAML metadata content here -->
         </EntityDescriptor>
       title: SAML Identity Provider Metadata
+      x-speakeasy-param-computed: false
     CreateIdentityProvider:
       x-speakeasy-entity: IdentityProvider
       description: The identity provider that contains configuration data for creating an authentication integration.
