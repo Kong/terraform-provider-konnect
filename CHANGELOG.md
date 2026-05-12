@@ -1,10 +1,11 @@
 # Changelog
 
 ## 3.16.0
-> Released 2026/05/??
+> Released 2026/05/12
 
 # Features
-* Add support for `IDP Team Group Mapping` for konnect.
+* Add support for mapping Identity Provider groups with Konnect teams using `konnect_identity_provider_team_group_mapping` resource
+* Add support for updating `konnect_portal_custom_domain.ssl` field
 
 ## 3.15.0
 > Released 2026/05/05
