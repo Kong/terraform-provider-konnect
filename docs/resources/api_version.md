@@ -45,7 +45,7 @@ resource "konnect_api_version" "my_apiversion" {
 
 Optional:
 
-- `content` (String) The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).
+- `content` (String) The raw content of API specification, in json or yaml format (OpenAPI or AsyncAPI).
 
 Read-Only:
 

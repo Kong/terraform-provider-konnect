@@ -6,55 +6,54 @@ import (
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/internal/utils"
 )
 
-type APIVersionSpec struct {
-	// The raw content of your API spec, in json or yaml format (OpenAPI or AsyncAPI).
-	//
+type APIVersionRequestSpec struct {
+	// The raw content of API specification, in json or yaml format (OpenAPI or AsyncAPI).
 	Content *string `default:"null" json:"content"`
 }
 
-func (a APIVersionSpec) MarshalJSON() ([]byte, error) {
+func (a APIVersionRequestSpec) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(a, "", false)
 }
 
-func (a *APIVersionSpec) UnmarshalJSON(data []byte) error {
+func (a *APIVersionRequestSpec) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *APIVersionSpec) GetContent() *string {
+func (a *APIVersionRequestSpec) GetContent() *string {
 	if a == nil {
 		return nil
 	}
 	return a.Content
 }
 
-type APIVersion struct {
+type APIVersionRequest struct {
 	// The version of the api.
-	Version *string         `default:"null" json:"version"`
-	Spec    *APIVersionSpec `json:"spec"`
+	Version *string                `default:"null" json:"version"`
+	Spec    *APIVersionRequestSpec `json:"spec"`
 }
 
-func (a APIVersion) MarshalJSON() ([]byte, error) {
+func (a APIVersionRequest) MarshalJSON() ([]byte, error) {
 	return utils.MarshalJSON(a, "", false)
 }
 
-func (a *APIVersion) UnmarshalJSON(data []byte) error {
+func (a *APIVersionRequest) UnmarshalJSON(data []byte) error {
 	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *APIVersion) GetVersion() *string {
+func (a *APIVersionRequest) GetVersion() *string {
 	if a == nil {
 		return nil
 	}
 	return a.Version
 }
 
-func (a *APIVersion) GetSpec() *APIVersionSpec {
+func (a *APIVersionRequest) GetSpec() *APIVersionRequestSpec {
 	if a == nil {
 		return nil
 	}

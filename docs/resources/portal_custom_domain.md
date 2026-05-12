@@ -34,7 +34,7 @@ resource "konnect_portal_custom_domain" "my_portalcustomdomain" {
 - `enabled` (Boolean)
 - `hostname` (String) Requires replacement if changed.
 - `portal_id` (String) The Portal identifier
-- `ssl` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--ssl))
+- `ssl` (Attributes) (see [below for nested schema](#nestedatt--ssl))
 
 ### Read-Only
 
@@ -47,10 +47,10 @@ resource "konnect_portal_custom_domain" "my_portalcustomdomain" {
 
 Optional:
 
-- `custom_certificate` (String) Custom certificate to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate". Requires replacement if changed.
-- `custom_private_key` (String) Custom certificate private key to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate". Requires replacement if changed.
+- `custom_certificate` (String) Custom certificate to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate"
+- `custom_private_key` (String) Custom certificate private key to be used for the SSL termination. Only used when domain_verification_method == "custom_certificate"
 - `domain_verification_method` (String) possible known values include one of ["custom_certificate", "http"]; Requires replacement if changed.
-- `skip_ca_check` (Boolean) Advanced option. If true, the custom certificate is served exactly as provided, without attempting to bundle against a public trust store. Required for certificates issued by an internal/private CA. Requires replacement if changed.
+- `skip_ca_check` (Boolean) Advanced option. If true, the custom certificate is served exactly as provided, without attempting to bundle against a public trust store. Required for certificates issued by an internal/private CA.
 
 Read-Only:
 
