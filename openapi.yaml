@@ -5328,6 +5328,8 @@ paths:
       operationId: get-consumer_group
       summary: Get a Consumer Group
       description: Get a Consumer Group using ID.
+      parameters:
+        - $ref: '#/components/parameters/ListConsumers'
       responses:
         '200':
           description: Successfully fetched Consumer Group
@@ -20234,6 +20236,13 @@ components:
       schema:
         type: string
       x-speakeasy-match: id
+    ListConsumers:
+      description: Expand the consumer group to include a list of its consumers.
+      example: false
+      in: query
+      name: list_consumers
+      schema:
+        type: boolean
     MTLSAuthId:
       description: ID of the MTLS-auth credential to lookup
       example: ''
@@ -32849,6 +32858,12 @@ components:
           type: integer
         cert:
           description: JSON escaped string of the certificate.
+          type: string
+          default: null
+          nullable: true
+          x-speakeasy-param-computed: false
+        title:
+          description: Title of the certificate.
           type: string
           default: null
           nullable: true
@@ -67690,13 +67705,12 @@ components:
         upstream:
           description: The unique identifier or the name of the upstream for which to update the target.
           type: object
-          default: null
           nullable: true
           properties:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-param-computed: false
+          x-speakeasy-param-computed: true
         weight:
           description: 'The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record.'
           type: integer
@@ -72062,6 +72076,12 @@ components:
               cert:
                 description: JSON escaped string of the certificate.
                 type: string
+              title:
+                description: Title for the certificate.
+                type: string
+                default: null
+                nullable: true
+                x-speakeasy-param-computed: false
             required:
               - cert
       description: Request body for creating a dp-client-certificate.
