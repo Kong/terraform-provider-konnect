@@ -16,6 +16,7 @@ GatewayDataPlaneClientCertificate Resource
 resource "konnect_gateway_data_plane_client_certificate" "my_gatewaydataplaneclientcertificate" {
   cert             = "...my_cert..."
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  title            = "...my_title..."
 }
 ```
 
@@ -26,6 +27,10 @@ resource "konnect_gateway_data_plane_client_certificate" "my_gatewaydataplanecli
 
 - `cert` (String) JSON escaped string of the certificate. Requires replacement if changed.
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
+
+### Optional
+
+- `title` (String) Title for the certificate. Requires replacement if changed.
 
 ### Read-Only
 

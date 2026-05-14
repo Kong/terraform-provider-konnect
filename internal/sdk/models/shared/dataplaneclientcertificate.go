@@ -15,6 +15,8 @@ type DataPlaneClientCertificate struct {
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
 	// JSON escaped string of the certificate.
 	Cert *string `default:"null" json:"cert"`
+	// Title of the certificate.
+	Title *string `default:"null" json:"title"`
 }
 
 func (d DataPlaneClientCertificate) MarshalJSON() ([]byte, error) {
@@ -54,4 +56,11 @@ func (d *DataPlaneClientCertificate) GetCert() *string {
 		return nil
 	}
 	return d.Cert
+}
+
+func (d *DataPlaneClientCertificate) GetTitle() *string {
+	if d == nil {
+		return nil
+	}
+	return d.Title
 }
