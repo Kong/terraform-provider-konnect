@@ -13,6 +13,8 @@ type GetConsumerGroupRequest struct {
 	ConsumerGroupID string `pathParam:"style=simple,explode=false,name=ConsumerGroupId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// Expand the consumer group to include a list of its consumers.
+	ListConsumers *bool `queryParam:"style=form,explode=true,name=list_consumers"`
 }
 
 func (g GetConsumerGroupRequest) MarshalJSON() ([]byte, error) {
@@ -38,6 +40,13 @@ func (g *GetConsumerGroupRequest) GetControlPlaneID() string {
 		return ""
 	}
 	return g.ControlPlaneID
+}
+
+func (g *GetConsumerGroupRequest) GetListConsumers() *bool {
+	if g == nil {
+		return nil
+	}
+	return g.ListConsumers
 }
 
 type GetConsumerGroupResponse struct {

@@ -37,6 +37,7 @@ type GatewayDataPlaneClientCertificateResourceModel struct {
 	ControlPlaneID types.String `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64  `tfsdk:"created_at"`
 	ID             types.String `tfsdk:"id"`
+	Title          types.String `tfsdk:"title"`
 	UpdatedAt      types.Int64  `tfsdk:"updated_at"`
 }
 
@@ -69,6 +70,13 @@ func (r *GatewayDataPlaneClientCertificateResource) Schema(ctx context.Context, 
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `Unique ID of the certificate entity.`,
+			},
+			"title": schema.StringAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `Title for the certificate. Requires replacement if changed.`,
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,

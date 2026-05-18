@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.17.0
+> Released 2026/05/??
+
+# Bug Fixes
+* Fix drift in `konnect_gateway_target` resource
+
 ## 3.16.0
 > Released 2026/05/12
 
