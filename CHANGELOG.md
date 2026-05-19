@@ -3,8 +3,13 @@
 ## 3.17.0
 > Released 2026/05/??
 
+# Features
+* Add support for assigning roles on entity type name `Auth Servers` in `konnect_system_account_role` and `konnect_team_role` resources
+* Add support for `title` field in `konnect_gateway_data_plane_client_certificate` resource
+
 # Bug Fixes
 * Fix drift in `konnect_gateway_target` resource
+* Fix drift in `konnect_cloud_gateway_addon` resource
 
 ## 3.16.0
 > Released 2026/05/12
