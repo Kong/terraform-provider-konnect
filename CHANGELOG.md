@@ -1,7 +1,7 @@
 # Changelog
 
 ## 3.17.0
-> Released 2026/05/??
+> Released 2026/05/19
 
 # Features
 * Add support for assigning roles on entity type name `Auth Servers` in `konnect_system_account_role` and `konnect_team_role` resources
