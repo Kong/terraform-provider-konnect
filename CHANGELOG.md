@@ -5,7 +5,7 @@
 
 # Features
 * Add support for assigning roles on entity type name `Auth Servers` in `konnect_system_account_role` and `konnect_team_role` resources
-* Add support for `title` field in `konnect_gateway_data_plane_client_certificate` resource
+* Add support for `title` field, as well as update operation in `konnect_gateway_data_plane_client_certificate` resource
 
 # Bug Fixes
 * Fix drift in `konnect_gateway_target` resource
