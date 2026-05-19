@@ -21686,18 +21686,12 @@ components:
           description: Reported status of the network from backing infrastructure.
           type: string
           example: INVALID
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
         reason:
           description: |
             Reason why the network may be in an erroneous state, reported from backing infrastructure.
           type: string
           example: |
             Network could not be deployed due to insufficient cloud provider compute instances.
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
       additionalProperties: false
       readOnly: true
       title: Network State Metadata
@@ -21709,18 +21703,12 @@ components:
       properties:
         vpc_id:
           type: string
-          default: null
-          nullable: true
           title: VPC ID
-          x-speakeasy-param-computed: false
         subnet_ids:
           type: array
           items:
             type: string
-          default: null
-          nullable: true
           title: Subnet IDs
-          x-speakeasy-param-computed: false
       additionalProperties: false
       readOnly: true
       title: Network Provider Metadata
@@ -22751,18 +22739,12 @@ components:
               description: Reported status of the transit gateway from backing infrastructure.
               type: string
               example: ERROR
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
             reason:
               description: |
                 Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.
               type: string
               example: |
                 Transit Gateway Attachment configuration could not find a resource with the provided ram share arn.
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
           readOnly: true
           title: TransitGatewayStateMetadata
           x-speakeasy-param-suppress-computed-diff: true
@@ -22824,18 +22806,12 @@ components:
               description: Reported status of the transit gateway from backing infrastructure.
               type: string
               example: ERROR
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
             reason:
               description: |
                 Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.
               type: string
               example: |
                 Transit Gateway Attachment configuration could not find a resource with the provided ram share arn.
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
           readOnly: true
           title: TransitGatewayStateMetadata
           x-speakeasy-param-suppress-computed-diff: true
@@ -22895,18 +22871,12 @@ components:
               description: Reported status of the transit gateway from backing infrastructure.
               type: string
               example: ERROR
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
             reason:
               description: |
                 Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.
               type: string
               example: |
                 Transit Gateway Attachment configuration could not find a resource with the provided ram share arn.
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
           readOnly: true
           title: TransitGatewayStateMetadata
           x-speakeasy-param-suppress-computed-diff: true
@@ -22965,18 +22935,12 @@ components:
               description: Reported status of the transit gateway from backing infrastructure.
               type: string
               example: ERROR
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
             reason:
               description: |
                 Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.
               type: string
               example: |
                 Transit Gateway Attachment configuration could not find a resource with the provided ram share arn.
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
           readOnly: true
           title: TransitGatewayStateMetadata
           x-speakeasy-param-suppress-computed-diff: true
@@ -23035,18 +22999,12 @@ components:
               description: Reported status of the transit gateway from backing infrastructure.
               type: string
               example: ERROR
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
             reason:
               description: |
                 Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.
               type: string
               example: |
                 Transit Gateway Attachment configuration could not find a resource with the provided ram share arn.
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
           readOnly: true
           title: TransitGatewayStateMetadata
           x-speakeasy-param-suppress-computed-diff: true
@@ -23106,18 +23064,12 @@ components:
               description: Reported status of the transit gateway from backing infrastructure.
               type: string
               example: ERROR
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
             reason:
               description: |
                 Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.
               type: string
               example: |
                 Transit Gateway Attachment configuration could not find a resource with the provided ram share arn.
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
           readOnly: true
           title: TransitGatewayStateMetadata
           x-speakeasy-param-suppress-computed-diff: true
@@ -23364,18 +23316,12 @@ components:
               description: Reported status of the custom domain from backing infrastructure.
               type: string
               example: INVALID
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
             reason:
               description: |
                 Reason why the custom domain may be in an erroneous state, reported from backing infrastructure.
               type: string
               example: |
                 CNAME points to '_acme-challenge.<prefix>.gateways.konghq.tech.' instead of '_acme-challenge.<prefix>.acme.gateways.konghq.tech.'
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
           readOnly: true
           title: CustomDomainStateMetadata
           x-speakeasy-param-suppress-computed-diff: true
@@ -23486,6 +23432,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ManagedCacheAddOnDataPlaneGroup'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         state_metadata:
           description: |
             Metadata describing the state of the managed cache add-on.
@@ -23497,81 +23445,52 @@ components:
               type: string
               format: uuid
               example: edaf40f9-9fb0-4ffe-bb74-4e763a6bd471
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
             cache_server_name:
               description: Env vault path to cache server name.
               type: string
               example: '{vault://env/ADDON_MANAGED_CACHE_SERVER_NAME}'
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
             cache_host:
               description: Env vault path to cache hostname.
               type: string
               example: '{vault://env/ADDON_MANAGED_CACHE_HOST}'
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
             cache_port:
               description: Env vault path to cache port.
               type: string
               example: '{vault://env/ADDON_MANAGED_CACHE_PORT}'
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
             cache_username:
               description: Env vault path to cache username.
               type: string
               example: '{vault://env/ADDON_MANAGED_CACHE_USERNAME}'
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
             cloud_authentication:
               description: |
                 Metadata describing the cloud authentication details for managed cache add-on.
               type: object
-              default: null
               additionalProperties: false
-              nullable: true
               properties:
                 auth_provider:
                   description: Env vault path to cache auth provider.
                   type: string
                   example: '{vault://env/ADDON_MANAGED_CACHE_AUTH_PROVIDER}'
-                  default: null
-                  nullable: true
-                  x-speakeasy-param-computed: false
                 aws_cache_name:
                   description: Env vault path to aws cache name.
                   type: string
                   example: '{vault://env/ADDON_MANAGED_CACHE_AWS_CACHE_NAME}'
-                  default: null
-                  nullable: true
-                  x-speakeasy-param-computed: false
                 aws_region:
                   description: Env vault path to aws region.
                   type: string
                   example: '{vault://env/ADDON_MANAGED_CACHE_AWS_REGION}'
-                  default: null
-                  nullable: true
-                  x-speakeasy-param-computed: false
                 aws_assume_role_arn:
                   description: Env vault path to aws assume role arn.
                   type: string
                   example: '{vault://env/ADDON_MANAGED_CACHE_AWS_ASSUME_ROLE_ARN}'
-                  default: null
-                  nullable: true
-                  x-speakeasy-param-computed: false
                 azure_tenant_id:
                   description: Env vault path to azure tenant id.
                   type: string
                   example: '{vault://env/ADDON_MANAGED_CACHE_AZURE_TENANT_ID}'
-                  default: null
-                  nullable: true
-                  x-speakeasy-param-computed: false
-              x-speakeasy-param-computed: false
+              readOnly: true
+              x-speakeasy-param-suppress-computed-diff: true
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
       additionalProperties: false
       required:
         - kind
@@ -23627,9 +23546,8 @@ components:
               type: string
               example: |
                 Failed to create managed cache add-on due to invalid configuration.
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
       additionalProperties: false
       required:
         - id
@@ -29181,18 +29099,12 @@ components:
         version:
           description: The version of this api spec.
           type: string
-          default: null
-          nullable: true
-          x-speakeasy-param-computed: false
         spec:
           type: object
-          default: null
           additionalProperties: false
-          nullable: true
           properties:
             type:
               $ref: '#/components/schemas/ApiSpecType'
-          x-speakeasy-param-computed: false
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -70513,12 +70425,12 @@ components:
                   - Control Planes
                   - Dashboards
                   - DCR Providers
-                  - Identity
                   - Mesh Control Planes
                   - Networks
                   - Portals
                   - Reports
                   - Service Hub
+                  - Auth Servers
                 x-speakeasy-unknown-values: allow
               entity_region:
                 description: Region of the team.
