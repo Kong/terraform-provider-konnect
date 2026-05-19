@@ -141,6 +141,9 @@ func (r *CloudGatewayNetworkResource) Schema(ctx context.Context, req resource.S
 					},
 					"vpc_id": schema.StringAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 					},
 				},
 				Description: `Metadata describing attributes returned by cloud-provider for the network.`,

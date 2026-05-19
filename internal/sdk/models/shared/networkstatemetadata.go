@@ -9,10 +9,10 @@ import (
 // NetworkStateMetadata - Metadata describing the backing state of the network and why it may be in an erroneous state.
 type NetworkStateMetadata struct {
 	// Reported status of the network from backing infrastructure.
-	ReportedStatus *string `default:"null" json:"reported_status"`
+	ReportedStatus *string `json:"reported_status,omitempty"`
 	// Reason why the network may be in an erroneous state, reported from backing infrastructure.
 	//
-	Reason *string `default:"null" json:"reason"`
+	Reason *string `json:"reason,omitempty"`
 }
 
 func (n NetworkStateMetadata) MarshalJSON() ([]byte, error) {
