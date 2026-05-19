@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: e80d5d9574e15b6bf29beb350e70d484
+  docChecksum: ec45b69acfed8143d1e38bef433e2c31
   docVersion: 2.0.0
-  speakeasyVersion: 1.761.9
-  generationVersion: 2.881.4
+  speakeasyVersion: 1.763.1
+  generationVersion: 2.884.4
   releaseVersion: 3.16.0
   configChecksum: 7cf2aff41a6637bdacb5e2c8216471e3
 persistentEdits:
-  generation_id: 56ae0f55-573f-4664-a553-10ce313ff691
-  pristine_commit_hash: c82da6b5642f48dbd40bcd753e53cff4c75df883
-  pristine_tree_hash: cbd95982b87a1d60a295c43c51a98c4ea846b01f
+  generation_id: 43f0e050-1090-4e65-9a7b-abfeeca399ec
+  pristine_commit_hash: 8754b03bb3311f91610097f4b68ca3f1de2a2930
+  pristine_tree_hash: d826ae0e1a70b0059de7cb269ae466ea6a2e50ff
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -2885,8 +2885,8 @@ trackedFiles:
     pristine_git_object: 89551dbf4027a9160c37a7b94339b89813a7ed32
   internal/provider/cloudgatewayaddon_resource.go:
     id: 35eb5cdbfe40
-    last_write_checksum: sha1:f955de4d3aaa858fcab0f5cb3b95367d18eb7179
-    pristine_git_object: e14a865764f7d53c520ea2d3d9dd64810c80d81f
+    last_write_checksum: sha1:35eab23a4a25f547be9009b077e320ec3a53b450
+    pristine_git_object: a337c61840d7e7c7f7b88b3815c4961cba71e46e
   internal/provider/cloudgatewayaddon_resource_sdk.go:
     id: a4f9b8f4cb77
     last_write_checksum: sha1:8b84a80c0abe26a50e893ed1dfb1f5a852e3f571
@@ -2901,8 +2901,8 @@ trackedFiles:
     pristine_git_object: d783550ea7830fa456a285e383bdca6039bbe1ef
   internal/provider/cloudgatewaycustomdomain_resource.go:
     id: ef9f8767c584
-    last_write_checksum: sha1:271964f7c396bf579ba55271ddadfb0309436b68
-    pristine_git_object: bd232e20c0e8c76c6225de016620190e88112f32
+    last_write_checksum: sha1:caa7fc47de4fb1832d7b0d74e690904c897f44f8
+    pristine_git_object: 289c40df27dcc82a286d4c84d8c7030b423a4ad9
   internal/provider/cloudgatewaycustomdomain_resource_sdk.go:
     id: d0a41084f9d5
     last_write_checksum: sha1:cf82921095c5399c057c9109577dee660ca12d8d
@@ -2913,24 +2913,24 @@ trackedFiles:
     pristine_git_object: 39ea97bc2372412787624529cff4f6b1b28381cd
   internal/provider/cloudgatewaynetwork_data_source_sdk.go:
     id: 35e3622ef2c5
-    last_write_checksum: sha1:448969fa31779bb11624b16170757eb5784bb0b9
-    pristine_git_object: 57a77eb2abe5874da0ca39648424071e0ea0aa3b
+    last_write_checksum: sha1:e99ac6457a470facd00c76ebdcbaef69cfe376da
+    pristine_git_object: 2f3d4a06d030cf92b02a8e2734ff3587b3360f4b
   internal/provider/cloudgatewaynetwork_resource.go:
     id: df549a989dd2
-    last_write_checksum: sha1:cf17deef7a2d50267607b6fe7958fce222864ae4
-    pristine_git_object: 84ff825cfc1a75e4ebcc2a2a3d6dc7618c5135c5
+    last_write_checksum: sha1:0d07c56a90210576c50327755826419a0e0aa3d1
+    pristine_git_object: 47d91d1e1a15a665d23ba2472951c55a814f8002
   internal/provider/cloudgatewaynetwork_resource_sdk.go:
     id: aaedb7c7e9af
-    last_write_checksum: sha1:6412b5ffbb17123c690390ab25cc5afb8a1b613d
-    pristine_git_object: 7b2a663157630a60cbc946b44fccd64764a795fd
+    last_write_checksum: sha1:67ded0cd8d95f5ce0c31417e71b8e1560c068eb2
+    pristine_git_object: 7ace88e1dd931945d7f3d1e21b1990ca7d2cc878
   internal/provider/cloudgatewayprivatedns_resource.go:
     id: 97db0f2fd5c0
     last_write_checksum: sha1:df71193dca09c457b04270d28be872a52a6be3e2
     pristine_git_object: 3b7b0a35e6c5b7b8ca2bf521922f0c95f58ef4c3
   internal/provider/cloudgatewayprivatedns_resource_sdk.go:
     id: 3d67f881d291
-    last_write_checksum: sha1:2a363c5e1347c51d4ce805644da03f1a973006c1
-    pristine_git_object: 671e48e0e7b86ac52ba963360ed913b9bb6bd351
+    last_write_checksum: sha1:4d0c77e9d2c7915f7b336f9acead250cc0c8fbe1
+    pristine_git_object: d8dbde86e8de396645d18e78b35e100b4dac6d3f
   internal/provider/cloudgatewayprovideraccountlist_data_source.go:
     id: 7dc866fdfc1d
     last_write_checksum: sha1:b00d2be22d89c83c0f739e9e21b54a6ea4ea3950
@@ -2941,8 +2941,8 @@ trackedFiles:
     pristine_git_object: 9eb8c024c48b92bd3f3b142c87ffb073947d50a2
   internal/provider/cloudgatewaytransitgateway_resource.go:
     id: 402e7fc592aa
-    last_write_checksum: sha1:f71d263bc9b7906594256f9cc447d57af0bccb8b
-    pristine_git_object: 817b4a8459342f7d58c2f53b2d01273a4a5e6c77
+    last_write_checksum: sha1:3a2f5e20f20ee95feee407011596f40274c3c94a
+    pristine_git_object: 1e3fc068dbeb5bbe04174c2eff09acf86d535cb0
   internal/provider/cloudgatewaytransitgateway_resource_sdk.go:
     id: 03546078aaa1
     last_write_checksum: sha1:c3fec4896bee146b4f08ddf0ad6eb251e64700c3
@@ -3221,12 +3221,12 @@ trackedFiles:
     pristine_git_object: 67aa34ea9a40b1901c075e85f751a640e7804e12
   internal/provider/gatewaydataplaneclientcertificate_resource.go:
     id: 7bf5a8e90023
-    last_write_checksum: sha1:3cebc327cc2e8b90e5dd4ed528a173f8b567a0bf
-    pristine_git_object: 440e32aa652bb8771205cbb3a5ccb9926372284e
+    last_write_checksum: sha1:7a13b186e49de1c99f260309b373f5cafef5695a
+    pristine_git_object: 46acfd880d577729fe0fda4791393860209a2d36
   internal/provider/gatewaydataplaneclientcertificate_resource_sdk.go:
     id: b8126d6ef586
-    last_write_checksum: sha1:f95c852d5456be4f95face785ff2046d8c6337ed
-    pristine_git_object: cc99fc567362ef904a8e4eb7173f355a50c64785
+    last_write_checksum: sha1:0268bcc0096df24ccbb6b8838167d07220904e4c
+    pristine_git_object: 4b31128b11a3d22352c7204fb1b48830e26d8663
   internal/provider/gatewayhmacauth_resource.go:
     id: de9ad9ffb649
     last_write_checksum: sha1:16d2c6e3042b86dee6d0361f981f66e81182becd
@@ -4553,8 +4553,8 @@ trackedFiles:
     pristine_git_object: 76bb4e977c9d9be7297f4b53cd26ebb07dd59a62
   internal/provider/systemaccountrole_resource.go:
     id: 83f90249aba9
-    last_write_checksum: sha1:c3405c9b97d4cbaedfb755e79031cbf95ec8e52c
-    pristine_git_object: 66a183788f869236da01f928a51cc0b0da1c7da9
+    last_write_checksum: sha1:c3b2f5fdcdd61eb07469554ff08422ab9d523dfa
+    pristine_git_object: 39ab2287770a6706f27e29b76c35312313d86cdf
   internal/provider/systemaccountrole_resource_sdk.go:
     id: 6be20d676175
     last_write_checksum: sha1:c1d052b284c79e7cf46354e518133f5f6948c94f
@@ -4593,8 +4593,8 @@ trackedFiles:
     pristine_git_object: fd69ba2dc1397552a4a5fc6ac0a35954b50bf564
   internal/provider/teamrole_resource.go:
     id: d74f466c05c1
-    last_write_checksum: sha1:2ad6e32a3303a4f3b541a88157dcbcd444c9f61c
-    pristine_git_object: c18d4e17236f863790d4a9939d7377ca76fc4dfc
+    last_write_checksum: sha1:c0106aa5824bc5d6df9a0baf85b892243e66ae8b
+    pristine_git_object: 0dea9092eb2e99823f7dd708e266e67ef46c1149
   internal/provider/teamrole_resource_sdk.go:
     id: ecb2e1dc06b3
     last_write_checksum: sha1:feccc607c16b92412d2308d6dcc4b901b529d257
@@ -4901,16 +4901,20 @@ trackedFiles:
     pristine_git_object: b7c714cc5610cfcb0a23fbc45d447f5858ba8c78
   internal/provider/types/aws_private_dns_resolver_response.go:
     id: 731a9ccc2c0c
-    last_write_checksum: sha1:db5ac7d87b6092ea0f3c4b545916cf0a123e3b32
-    pristine_git_object: 42e84538f6d56f154ef5a25d7d9f43e1d6372607
+    last_write_checksum: sha1:2ad684bec48a10cd2865e4082b5e49cb89053053
+    pristine_git_object: 969546df96dd3a5dc1bdf7b57bc888cef1d30445
+  internal/provider/types/aws_private_dns_resolver_response_private_dns_state_metadata.go:
+    id: 23f2b89d7527
+    last_write_checksum: sha1:2d891789970bce83f3fadc483ad37c4b3b52ca19
+    pristine_git_object: aedb09a5f4116ba35bc409ec5f9c6518893bfd84
   internal/provider/types/aws_private_hosted_zone_attachment_config.go:
     id: fa447236bc94
     last_write_checksum: sha1:20e725c2e2aba7b17f60888dddbf38b9e132800e
     pristine_git_object: 27ee8f112fe22dcc425c4d563d2d6bee201f804c
   internal/provider/types/aws_private_hosted_zone_response.go:
     id: beca1af592b4
-    last_write_checksum: sha1:7c806b7a1bf2e2101e05dbbe0a760e429f3e96e6
-    pristine_git_object: 54d548125cfd466ba7d4e1bafe93ac2dece247e8
+    last_write_checksum: sha1:fb81db44f3dee80a356b4dfa03ce9346eaf845d1
+    pristine_git_object: bf1430760c4328bb8293b3d6c765ef8a466c95fb
   internal/provider/types/aws_resource_endpoint_attachment_config.go:
     id: 84e0d5bab39a
     last_write_checksum: sha1:10e3d95f7ea7508c76cb0295a3e3acd7fddf7013
@@ -4977,8 +4981,8 @@ trackedFiles:
     pristine_git_object: cc00b40f18e58ab2a21f9e4b4266115573bf0725
   internal/provider/types/azure_private_hosted_zone_response.go:
     id: 42bf07a93529
-    last_write_checksum: sha1:5f2d43cd3fb1e3a44b649c00735bb754d27a0ba3
-    pristine_git_object: efb273260ca4920fc80bc66d351b87479bfd32fc
+    last_write_checksum: sha1:4ba4a59001a0277c5cb7fdf1da6b0b0e791bd468
+    pristine_git_object: d03225657e61784dcbf9707ffc038c00c65309d6
   internal/provider/types/azure_transit_gateway.go:
     id: 283985a53bad
     last_write_checksum: sha1:e5a3afab8bb63af7b86b904eeef8f1820899a8d3
@@ -5457,8 +5461,8 @@ trackedFiles:
     pristine_git_object: 6b369263d4d86653cc4c904153cb4465b71b5e4b
   internal/provider/types/gcp_private_hosted_zone_response.go:
     id: e478e7942401
-    last_write_checksum: sha1:a7da5a864c59ec8e99a6a2350fb798cf1d623288
-    pristine_git_object: 985a8ca246f8cfdf173d6627f61dc58095c446de
+    last_write_checksum: sha1:3d12d3954f991a8c1fca90ebce3018d535b79b8d
+    pristine_git_object: 82c93bed8622f31babbf3d6a509b7a39840808b3
   internal/provider/types/gcp_vpc_peering_transit_gateway.go:
     id: df7be2a65a6c
     last_write_checksum: sha1:a29e92cf79be598d01e4887771949a40d8c74ab8
@@ -6741,8 +6745,8 @@ trackedFiles:
     pristine_git_object: 3261dbe5d014a86e2db7a224f16a0f8d97389448
   internal/sdk/dpcertificates.go:
     id: 72b7d56b1215
-    last_write_checksum: sha1:53b7a73c802e356969c1541d4b26fc9875cb0c6c
-    pristine_git_object: 9bb6216155001856b4398849464ff3256f9ffe87
+    last_write_checksum: sha1:5da3125b53b297abd7a4f45663eea3d4ae907255
+    pristine_git_object: f8794a4a1b9f28e35a76c2f06f0704e6848cf118
   internal/sdk/eventgatewaybackendclusters.go:
     id: 2b8301735e8d
     last_write_checksum: sha1:44be1cd8b2a84070298a2756d210a93ceabca0dc
@@ -6865,12 +6869,12 @@ trackedFiles:
     pristine_git_object: a2332ee8de013a2121880e4b7be332d3385c6f41
   internal/sdk/internal/utils/union.go:
     id: 183142835cfe
-    last_write_checksum: sha1:1f5d30f305c5b734926babea8a05c77cc38e767c
-    pristine_git_object: 88a8297db1db4e67a727cc1446ea0a01a0f02808
+    last_write_checksum: sha1:7332671bd6b01804f1e1fe11428cb708469bb3ec
+    pristine_git_object: 31ab4e4a49e0579d32d6b8be28c45edf1c3231c8
   internal/sdk/internal/utils/union_test.go:
     id: 4c885192f6f0
-    last_write_checksum: sha1:83ac73c1901de4c6db90f65cf5879163f3d47a00
-    pristine_git_object: f66814c73ace94d8e71d785fd6161fb405745754
+    last_write_checksum: sha1:bd5c7506e1d6238117c1ac4e340314a5a41401b5
+    pristine_git_object: 138f7e2a066b10dffd0a9957ecfcab9e00dd26fe
   internal/sdk/internal/utils/utils.go:
     id: feefcdf75dbd
     last_write_checksum: sha1:c03378176a107205b8938606faef3fd8fb8f91a0
@@ -6889,8 +6893,8 @@ trackedFiles:
     pristine_git_object: de6e80ba00b21ebe196bef40b3442ceab1158baf
   internal/sdk/konnect.go:
     id: defee4f1aaf8
-    last_write_checksum: sha1:fdb52ecc1b01945b7df866cd1745ab3762c80066
-    pristine_git_object: 8431d6947046bcd1c23b16109eeaecd251c3f4e4
+    last_write_checksum: sha1:cf7b159833cfca2370652707ecc7f49947a5094b
+    pristine_git_object: a6c24ce49d532584a63a8a26dc2d311e0c0dfcc1
   internal/sdk/mesh.go:
     id: c3f36614baba
     last_write_checksum: sha1:efd743a519129a43ecc2856b3edc75a855d87c0a
@@ -9707,6 +9711,10 @@ trackedFiles:
     id: f1711e89bc12
     last_write_checksum: sha1:d8543aa8cf27c802c9256965e60bcf323253a64f
     pristine_git_object: 6e382b32ee06e74a02fd5c838a974b543329d6b9
+  internal/sdk/models/operations/updatedataplanecertificate.go:
+    id: 6811d61d8463
+    last_write_checksum: sha1:c8d5b52307d876b7800b14c613f2551464d409f9
+    pristine_git_object: c4e61fa9ac90656ac86ee89fed8f790322113180
   internal/sdk/models/operations/updatedegraphqlplugin.go:
     id: 6981b967fc07
     last_write_checksum: sha1:5e89c1d6ab2071e8a0903661b57a5a84a78b1783
@@ -10449,8 +10457,8 @@ trackedFiles:
     pristine_git_object: 21335b2a231552705ca2dd2b8b16abc5b204e7cc
   internal/sdk/models/shared/apiversionsummary.go:
     id: adf83b34097c
-    last_write_checksum: sha1:b7a8d943d7bb18d5a60e05cbe71aee0f27e0a718
-    pristine_git_object: 737327c81ffd0dacc62490e198f1ce7237c80c5d
+    last_write_checksum: sha1:ff4139b523f8a9d6c5a6f1ca8eac0c1e2df42130
+    pristine_git_object: c4650a501f4c75987da2dda2002841d1c1fc28c6
   internal/sdk/models/shared/appauthstrategyconfigkeyauth.go:
     id: 2eef14ada6d7
     last_write_checksum: sha1:0228acda80d1d9b0fdcea1c27c2f1f38a7f71491
@@ -10469,8 +10477,8 @@ trackedFiles:
     pristine_git_object: 83b8246d12cc051334ddd9722d217dd327ad403e
   internal/sdk/models/shared/assignrole.go:
     id: ce1109b2a5a7
-    last_write_checksum: sha1:f5df2ac782777c85f4bad82a17994bfc97b4be4f
-    pristine_git_object: 5b2db1f2dcce919e468733f647198078300552a6
+    last_write_checksum: sha1:19fc540a4ae0bc6450831f43dd07f8a2030d62a9
+    pristine_git_object: 181ada364bcf9104c66e6a4c76165a5af8254d4c
   internal/sdk/models/shared/auditlogdestination.go:
     id: 78a8bc265b66
     last_write_checksum: sha1:71575adfd5215713bc3d4232b5621bf9c97ef73b
@@ -10549,8 +10557,8 @@ trackedFiles:
     pristine_git_object: 25a894d6eeba29ae5278f87b03891a57b58d6dc4
   internal/sdk/models/shared/awsresourceendpointgatewayresponse.go:
     id: 2045d9b365f0
-    last_write_checksum: sha1:26928833b48d146e460c60df40d560b244e06c52
-    pristine_git_object: 42756f16dc3a03e79ebfd4ef41160b1e89a6dddb
+    last_write_checksum: sha1:4412a61cb3c29d94f4e8bdbdb76bf5abf627aa70
+    pristine_git_object: 4851c7c11afdd8486eecf2ae0fc4a6b781910e32
   internal/sdk/models/shared/awstransitgateway.go:
     id: fd8b9631849a
     last_write_checksum: sha1:ceb284621c28bbf7ed1b271dad8daa599c18b52d
@@ -10565,8 +10573,8 @@ trackedFiles:
     pristine_git_object: 9b2f66a90f2c1ab90fd3ccd1e88f8628d4bd3494
   internal/sdk/models/shared/awstransitgatewayresponse.go:
     id: e4acfb62bd0d
-    last_write_checksum: sha1:cab6e7c85700020a45185246145553685d3be022
-    pristine_git_object: f12c45c76798cb960fa6b53eb3dd10c83fbf6717
+    last_write_checksum: sha1:00b73d63b5fec018daca6bd03b8c82c55222a409
+    pristine_git_object: 085b443ec855eec32c3b850df3f48ba62f8d10d8
   internal/sdk/models/shared/awsvpcpeeringgateway.go:
     id: ebf32375a83d
     last_write_checksum: sha1:234e9861715799dd3e65be3e8913fb4a2107c691
@@ -10581,8 +10589,8 @@ trackedFiles:
     pristine_git_object: 4e615bf531020ce83d8459d1b4d623d7a4adc539
   internal/sdk/models/shared/awsvpcpeeringgatewayresponse.go:
     id: 15904253173f
-    last_write_checksum: sha1:d70ff085d36517296d205dc8d9ae9406248f7dde
-    pristine_git_object: 1831f05e919330853a49f4ab2668d4deb3a92320
+    last_write_checksum: sha1:1bfd652b2a0e98e918181485fbb06eb3d3f050fe
+    pristine_git_object: d5f90da618e3b200114d4989cd28d5971ea12ffa
   internal/sdk/models/shared/azurefunctionsplugin.go:
     id: 881d16976a40
     last_write_checksum: sha1:a1526422459de91aba46309a626c3ff1903ec543
@@ -10609,8 +10617,8 @@ trackedFiles:
     pristine_git_object: 82ad820084de9b6238c2b18d03f1a7577ff09c43
   internal/sdk/models/shared/azuretransitgatewayresponse.go:
     id: 2e7f0842c61a
-    last_write_checksum: sha1:abdb1cb4138e8f9762e980caec282d4174dc5e1f
-    pristine_git_object: b185c5971942ab6a04c22c184d726e0b1c014131
+    last_write_checksum: sha1:bcb35bc50f93b11848603abe471be039b58fedb0
+    pristine_git_object: 6720f28b6d69b42ce3d6843f58c4f4a8a02de205
   internal/sdk/models/shared/azurevhubpeeringattachmentconfig.go:
     id: a3f34a8d717b
     last_write_checksum: sha1:38c2ea9f64ecc9b6b294d765f72e797cdaf91754
@@ -10621,8 +10629,8 @@ trackedFiles:
     pristine_git_object: 8f809e861ccda8fe458419830df0d4f6ebc29da2
   internal/sdk/models/shared/azurevhubpeeringgatewayresponse.go:
     id: 0311e9519f47
-    last_write_checksum: sha1:3e2f2657eccdc15e961a745ee2b3bfd488e1d134
-    pristine_git_object: c457556793f892a656daa7f511f8be1b4f7d884f
+    last_write_checksum: sha1:7c33519e8ad4f44ef1e8cc229ed830c709fffc1e
+    pristine_git_object: a8f492a65e72f55983b0e3593c643e0e5c683ff4
   internal/sdk/models/shared/azurevnetpeeringattachmentconfig.go:
     id: 7688d2f69f80
     last_write_checksum: sha1:3411fd8912a244a293d1010d282a4c37048e65d6
@@ -11085,8 +11093,8 @@ trackedFiles:
     pristine_git_object: 8d3c407d5f36b40ac04341f2b6d1309a64918956
   internal/sdk/models/shared/customdomain.go:
     id: 830db79a1dd0
-    last_write_checksum: sha1:1ea503c9cce1154f294076765f0b8cbe44d62b4c
-    pristine_git_object: e8f54f2cfdb81dcba5d1d1ceed0709c2d53d6d5c
+    last_write_checksum: sha1:ec98f640c632d670c5088e7ee30875d80bc27d3e
+    pristine_git_object: 37a51ef593d9193477c88e5fd0800e7a54ea1c41
   internal/sdk/models/shared/customdomainkind.go:
     id: aac012594841
     last_write_checksum: sha1:04927af0be7ca3ad0ea9b7ea4fd8ff00605e44b5
@@ -11345,8 +11353,8 @@ trackedFiles:
     pristine_git_object: fae2d3c4d1b6e9750d6c82ac1a7fcf52fc9e413d
   internal/sdk/models/shared/gcpvpcpeeringgatewayresponse.go:
     id: 2e241ac28217
-    last_write_checksum: sha1:bca0fd27ddba5b3723ed913ca169025e5d7c9685
-    pristine_git_object: dd77aa03c2c9db5ca6e6506824f5a7f9a28ee030
+    last_write_checksum: sha1:111a87c792011f52c45ecfc10f874ee34655e038
+    pristine_git_object: a0c8fab4d8c6835f9b618082977380cb123eb9e1
   internal/sdk/models/shared/gcpvpcpeeringtransitgateway.go:
     id: 22eac13dc35b
     last_write_checksum: sha1:9c7b2332c9267ee53dfcca9b40aaa492294b266f
@@ -11613,12 +11621,12 @@ trackedFiles:
     pristine_git_object: 7a9a4837dfe8ee34ea6accfcfa4ae25573940ee2
   internal/sdk/models/shared/managedcacheaddonconfigresponse.go:
     id: 3f0809dc920e
-    last_write_checksum: sha1:4bb5062884d5027e27154554cd494506f036442e
-    pristine_git_object: 24047bceb3800f3ac772feabe8259b698d6fdfb8
+    last_write_checksum: sha1:75d3afdeb7bf02141fb97d40fb1ba97a400e4e67
+    pristine_git_object: 670847930e89d2655150773823b266997c7ff8a2
   internal/sdk/models/shared/managedcacheaddondataplanegroup.go:
     id: 09d36b2de0e0
-    last_write_checksum: sha1:4e884dc1335aa07e49b67212fd3017323a91e2c9
-    pristine_git_object: 53f10a827445ab1438b8d5a4899f3b2895975835
+    last_write_checksum: sha1:f46827c007eae1d7de10d79682073b0a5994ca8e
+    pristine_git_object: 28e8423e1785f1d7aa90182849e113c1dde516fe
   internal/sdk/models/shared/managedcachecapacityconfig.go:
     id: cb979a4fee29
     last_write_checksum: sha1:68f3e370f84386beec904cc21079b1587208e043
@@ -11685,8 +11693,8 @@ trackedFiles:
     pristine_git_object: 21e82b6c118f619bf3b26ae2ec92ad5459808854
   internal/sdk/models/shared/networkprovidermetadata.go:
     id: dec1471a4f1e
-    last_write_checksum: sha1:dcbf01ae674d6c81361b196e3ae15530ef213a46
-    pristine_git_object: 16200cef8e7b571f9f755fb2ef33d73a37ec5ce2
+    last_write_checksum: sha1:c2f3639afa0c4c870c8c8090dc96b7079fc2bbd2
+    pristine_git_object: 10f6bfe2c5f225f613e3f55a7037ccc80fa26bca
   internal/sdk/models/shared/networksfilterparameters.go:
     id: 78982eb1355d
     last_write_checksum: sha1:170a692dad6ed7071cef6946d01d1a987f3efbbc
@@ -11701,8 +11709,8 @@ trackedFiles:
     pristine_git_object: 760672f86a87a439c5674f3db68df41d39178086
   internal/sdk/models/shared/networkstatemetadata.go:
     id: 3f0a02051031
-    last_write_checksum: sha1:0ef5bf47142b07b023812615f7c822cdd1c0560f
-    pristine_git_object: 1beb7a86b505642f628f0c64468923582ebcd427
+    last_write_checksum: sha1:43ee8948fc424dca1669c24819e85a0ded20bfb0
+    pristine_git_object: 3d5cfb95c9c2fcc0a76549ec8db264b935fc9d97
   internal/sdk/models/shared/notfounderror.go:
     id: b4bd1e13a3b3
     last_write_checksum: sha1:ddc47137a104be488c5bc6b856b91f80d96f76eb
@@ -13542,7 +13550,7 @@ examples:
         application/json: {"name": "us-east-2 network", "cloud_gateway_provider_account_id": "929b2449-c69f-44c4-b6ad-9ecec6f811ae", "region": "us-east-2", "availability_zones": ["use2-az1", "use2-az2", "use2-az3"], "cidr_block": "10.0.0.0/8", "state": "initializing"}
       responses:
         "201":
-          application/json: {"id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "name": "us-east-2 network", "default": false, "cloud_gateway_provider_account_id": "929b2449-c69f-44c4-b6ad-9ecec6f811ae", "region": "us-east-2", "availability_zones": ["use2-az1", "use2-az2", "use2-az3"], "cidr_block": "10.0.0.0/8", "state": "offline", "state_metadata": {"reported_status": "INVALID", "reason": "Network could not be deployed due to insufficient cloud provider compute instances.\n"}, "provider_metadata": {"vpc_id": null, "subnet_ids": null}, "transit_gateway_count": 0, "configuration_reference_count": 0, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "name": "us-east-2 network", "default": false, "cloud_gateway_provider_account_id": "929b2449-c69f-44c4-b6ad-9ecec6f811ae", "region": "us-east-2", "availability_zones": ["use2-az1", "use2-az2", "use2-az3"], "cidr_block": "10.0.0.0/8", "state": "offline", "state_metadata": {"reported_status": "INVALID", "reason": "Network could not be deployed due to insufficient cloud provider compute instances.\n"}, "provider_metadata": {}, "transit_gateway_count": 0, "configuration_reference_count": 0, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 867880, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value 1>", "<value 2>", "<value 3>"], "source": "body"}]}
         "401":
@@ -13558,7 +13566,7 @@ examples:
           networkId: "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
       responses:
         "200":
-          application/json: {"id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "name": "us-east-2 network", "default": false, "cloud_gateway_provider_account_id": "929b2449-c69f-44c4-b6ad-9ecec6f811ae", "region": "us-east-2", "availability_zones": ["use2-az1", "use2-az2", "use2-az3"], "cidr_block": "10.0.0.0/8", "state": "terminating", "state_metadata": {"reported_status": "INVALID", "reason": "Network could not be deployed due to insufficient cloud provider compute instances.\n"}, "provider_metadata": {"vpc_id": null, "subnet_ids": null}, "transit_gateway_count": 0, "configuration_reference_count": 0, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "name": "us-east-2 network", "default": false, "cloud_gateway_provider_account_id": "929b2449-c69f-44c4-b6ad-9ecec6f811ae", "region": "us-east-2", "availability_zones": ["use2-az1", "use2-az2", "use2-az3"], "cidr_block": "10.0.0.0/8", "state": "terminating", "state_metadata": {"reported_status": "INVALID", "reason": "Network could not be deployed due to insufficient cloud provider compute instances.\n"}, "provider_metadata": {}, "transit_gateway_count": 0, "configuration_reference_count": 0, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -13574,7 +13582,7 @@ examples:
         application/json: {"name": "us-east-2 network"}
       responses:
         "200":
-          application/json: {"id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "name": "us-east-2 network", "default": false, "cloud_gateway_provider_account_id": "929b2449-c69f-44c4-b6ad-9ecec6f811ae", "region": "us-east-2", "availability_zones": ["use2-az1", "use2-az2", "use2-az3"], "cidr_block": "10.0.0.0/8", "state": "terminating", "state_metadata": {"reported_status": "INVALID", "reason": "Network could not be deployed due to insufficient cloud provider compute instances.\n"}, "provider_metadata": {"vpc_id": null, "subnet_ids": null}, "transit_gateway_count": 0, "configuration_reference_count": 0, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "name": "us-east-2 network", "default": false, "cloud_gateway_provider_account_id": "929b2449-c69f-44c4-b6ad-9ecec6f811ae", "region": "us-east-2", "availability_zones": ["use2-az1", "use2-az2", "use2-az3"], "cidr_block": "10.0.0.0/8", "state": "terminating", "state_metadata": {"reported_status": "INVALID", "reason": "Network could not be deployed due to insufficient cloud provider compute instances.\n"}, "provider_metadata": {}, "transit_gateway_count": 0, "configuration_reference_count": 0, "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 996797, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max_items", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}, {"field": "name", "rule": "max_items", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}, {"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -26628,7 +26636,7 @@ examples:
         application/json: {"name": "my-add-on", "owner": {"kind": "control-plane-group", "control_plane_group_id": "123e4567-e89b-12d3-a456-426614174000", "control_plane_group_geo": "sg"}, "config": {"kind": "managed-cache.v0", "capacity_config": {"kind": "tiered", "tier": "small"}}}
       responses:
         "201":
-          application/json: {"id": "550e8400-e29b-41d4-a716-446655440000", "name": "my-add-on", "owner": {"kind": "control-plane", "control_plane_id": "123e4567-e89b-12d3-a456-426614174000", "control_plane_geo": "me"}, "config": {"kind": "managed-cache.v0", "capacity_config": {"kind": "tiered", "tier": "small"}, "data_plane_groups": [], "state_metadata": {"cache_config_id": "edaf40f9-9fb0-4ffe-bb74-4e763a6bd471", "cache_server_name": "{vault://env/ADDON_MANAGED_CACHE_SERVER_NAME}", "cache_host": "{vault://env/ADDON_MANAGED_CACHE_HOST}", "cache_port": "{vault://env/ADDON_MANAGED_CACHE_PORT}", "cache_username": "{vault://env/ADDON_MANAGED_CACHE_USERNAME}", "cloud_authentication": null}}, "entity_version": 1, "state": "ready", "created_at": "2025-08-26T06:56:41Z", "updated_at": "2025-08-26T06:56:41Z"}
+          application/json: {"id": "550e8400-e29b-41d4-a716-446655440000", "name": "my-add-on", "owner": {"kind": "control-plane", "control_plane_id": "123e4567-e89b-12d3-a456-426614174000", "control_plane_geo": "me"}, "config": {"kind": "managed-cache.v0", "capacity_config": {"kind": "tiered", "tier": "small"}, "data_plane_groups": [], "state_metadata": {"cache_config_id": "edaf40f9-9fb0-4ffe-bb74-4e763a6bd471", "cache_server_name": "{vault://env/ADDON_MANAGED_CACHE_SERVER_NAME}", "cache_host": "{vault://env/ADDON_MANAGED_CACHE_HOST}", "cache_port": "{vault://env/ADDON_MANAGED_CACHE_PORT}", "cache_username": "{vault://env/ADDON_MANAGED_CACHE_USERNAME}", "cloud_authentication": {"auth_provider": "{vault://env/ADDON_MANAGED_CACHE_AUTH_PROVIDER}", "aws_cache_name": "{vault://env/ADDON_MANAGED_CACHE_AWS_CACHE_NAME}", "aws_region": "{vault://env/ADDON_MANAGED_CACHE_AWS_REGION}", "aws_assume_role_arn": "{vault://env/ADDON_MANAGED_CACHE_AWS_ASSUME_ROLE_ARN}", "azure_tenant_id": "{vault://env/ADDON_MANAGED_CACHE_AZURE_TENANT_ID}"}}}, "entity_version": 1, "state": "ready", "created_at": "2025-08-26T06:56:41Z", "updated_at": "2025-08-26T06:56:41Z"}
         "400":
           application/problem+json: {"status": 529641, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_lowercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -26646,7 +26654,7 @@ examples:
           addOnId: "550e8400-e29b-41d4-a716-446655440000"
       responses:
         "200":
-          application/json: {"id": "550e8400-e29b-41d4-a716-446655440000", "name": "my-add-on", "owner": {"kind": "control-plane", "control_plane_id": "123e4567-e89b-12d3-a456-426614174000", "control_plane_geo": "eu"}, "config": {"kind": "managed-cache.v0", "capacity_config": {"kind": "tiered", "tier": "4xlarge"}, "data_plane_groups": [{"id": "1150820b-c69f-4a2a-b9be-bbcdbc5cd618", "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "provider": "aws", "region": "us-east-1", "state": "terminating", "state_metadata": {"error_reason": "Failed to create managed cache add-on due to invalid configuration.\n"}}], "state_metadata": {"cache_config_id": "edaf40f9-9fb0-4ffe-bb74-4e763a6bd471", "cache_server_name": "{vault://env/ADDON_MANAGED_CACHE_SERVER_NAME}", "cache_host": "{vault://env/ADDON_MANAGED_CACHE_HOST}", "cache_port": "{vault://env/ADDON_MANAGED_CACHE_PORT}", "cache_username": "{vault://env/ADDON_MANAGED_CACHE_USERNAME}", "cloud_authentication": null}}, "entity_version": 1, "state": "terminating", "created_at": "2025-08-26T06:56:41Z", "updated_at": "2025-08-26T06:56:41Z"}
+          application/json: {"id": "550e8400-e29b-41d4-a716-446655440000", "name": "my-add-on", "owner": {"kind": "control-plane", "control_plane_id": "123e4567-e89b-12d3-a456-426614174000", "control_plane_geo": "eu"}, "config": {"kind": "managed-cache.v0", "capacity_config": {"kind": "tiered", "tier": "small"}, "data_plane_groups": [{"id": "1150820b-c69f-4a2a-b9be-bbcdbc5cd618", "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "provider": "aws", "region": "us-east-1", "state": "terminating", "state_metadata": {"error_reason": "Failed to create managed cache add-on due to invalid configuration.\n"}}], "state_metadata": {"cache_config_id": "edaf40f9-9fb0-4ffe-bb74-4e763a6bd471", "cache_server_name": "{vault://env/ADDON_MANAGED_CACHE_SERVER_NAME}", "cache_host": "{vault://env/ADDON_MANAGED_CACHE_HOST}", "cache_port": "{vault://env/ADDON_MANAGED_CACHE_PORT}", "cache_username": "{vault://env/ADDON_MANAGED_CACHE_USERNAME}", "cloud_authentication": {"auth_provider": "{vault://env/ADDON_MANAGED_CACHE_AUTH_PROVIDER}", "aws_cache_name": "{vault://env/ADDON_MANAGED_CACHE_AWS_CACHE_NAME}", "aws_region": "{vault://env/ADDON_MANAGED_CACHE_AWS_REGION}", "aws_assume_role_arn": "{vault://env/ADDON_MANAGED_CACHE_AWS_ASSUME_ROLE_ARN}", "azure_tenant_id": "{vault://env/ADDON_MANAGED_CACHE_AZURE_TENANT_ID}"}}}, "entity_version": 1, "state": "terminating", "created_at": "2025-08-26T06:56:41Z", "updated_at": "2025-08-26T06:56:41Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -27242,7 +27250,7 @@ examples:
         application/json: {"config": {"kind": "managed-cache.v0", "capacity_config": {"kind": "tiered", "tier": "small"}}}
       responses:
         "200":
-          application/json: {"id": "550e8400-e29b-41d4-a716-446655440000", "name": "my-add-on", "owner": {"kind": "control-plane", "control_plane_id": "123e4567-e89b-12d3-a456-426614174000", "control_plane_geo": "eu"}, "config": {"kind": "managed-cache.v0", "capacity_config": {"kind": "tiered", "tier": "small"}, "data_plane_groups": [{"id": "1150820b-c69f-4a2a-b9be-bbcdbc5cd618", "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "provider": "aws", "region": "us-east-1", "state": "initializing", "state_metadata": {"error_reason": "Failed to create managed cache add-on due to invalid configuration.\n"}}], "state_metadata": {"cache_config_id": "edaf40f9-9fb0-4ffe-bb74-4e763a6bd471", "cache_server_name": "{vault://env/ADDON_MANAGED_CACHE_SERVER_NAME}", "cache_host": "{vault://env/ADDON_MANAGED_CACHE_HOST}", "cache_port": "{vault://env/ADDON_MANAGED_CACHE_PORT}", "cache_username": "{vault://env/ADDON_MANAGED_CACHE_USERNAME}", "cloud_authentication": null}}, "entity_version": 1, "state": "terminating", "created_at": "2025-08-26T06:56:41Z", "updated_at": "2025-08-26T06:56:41Z"}
+          application/json: {"id": "550e8400-e29b-41d4-a716-446655440000", "name": "my-add-on", "owner": {"kind": "control-plane", "control_plane_id": "123e4567-e89b-12d3-a456-426614174000", "control_plane_geo": "eu"}, "config": {"kind": "managed-cache.v0", "capacity_config": {"kind": "tiered", "tier": "small"}, "data_plane_groups": [{"id": "1150820b-c69f-4a2a-b9be-bbcdbc5cd618", "cloud_gateway_network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695", "provider": "aws", "region": "us-east-1", "state": "initializing", "state_metadata": {"error_reason": "Failed to create managed cache add-on due to invalid configuration.\n"}}], "state_metadata": {"cache_config_id": "edaf40f9-9fb0-4ffe-bb74-4e763a6bd471", "cache_server_name": "{vault://env/ADDON_MANAGED_CACHE_SERVER_NAME}", "cache_host": "{vault://env/ADDON_MANAGED_CACHE_HOST}", "cache_port": "{vault://env/ADDON_MANAGED_CACHE_PORT}", "cache_username": "{vault://env/ADDON_MANAGED_CACHE_USERNAME}", "cloud_authentication": {"auth_provider": "{vault://env/ADDON_MANAGED_CACHE_AUTH_PROVIDER}", "aws_cache_name": "{vault://env/ADDON_MANAGED_CACHE_AWS_CACHE_NAME}", "aws_region": "{vault://env/ADDON_MANAGED_CACHE_AWS_REGION}", "aws_assume_role_arn": "{vault://env/ADDON_MANAGED_CACHE_AWS_ASSUME_ROLE_ARN}", "azure_tenant_id": "{vault://env/ADDON_MANAGED_CACHE_AZURE_TENANT_ID}"}}}, "entity_version": 1, "state": "terminating", "created_at": "2025-08-26T06:56:41Z", "updated_at": "2025-08-26T06:56:41Z"}
         "400":
           application/problem+json: {"status": 205812, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -27303,6 +27311,23 @@ examples:
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-dataplane-certificate:
+    speakeasy-default-update-dataplane-certificate:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          certificateId: "<id>"
+      responses:
+        "200":
+          application/json: {}
+        "400":
+          application/json: {"message": "Bad Request"}
+        "401":
+          application/json: {"message": "Unauthorized"}
+        "403":
+          application/json: {"message": "Forbidden"}
+        "404":
+          application/json: {"message": "Not Found"}
 examplesVersion: 1.0.2
 generatedTests: {}
 generatedFiles:

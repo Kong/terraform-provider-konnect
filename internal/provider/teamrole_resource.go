@@ -71,7 +71,7 @@ func (r *TeamRoleResource) Schema(ctx context.Context, req resource.SchemaReques
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Description: `The type of entity. possible known values include one of ["Add Ons", "APIs", "API Products", "Application Auth Strategies", "Audit Logs", "Control Planes", "Dashboards", "DCR Providers", "Identity", "Mesh Control Planes", "Networks", "Portals", "Reports", "Service Hub"]; Requires replacement if changed.`,
+				Description: `The type of entity. possible known values include one of ["Add Ons", "APIs", "API Products", "Application Auth Strategies", "Audit Logs", "Control Planes", "Dashboards", "DCR Providers", "Mesh Control Planes", "Networks", "Portals", "Reports", "Service Hub", "Auth Servers"]; Requires replacement if changed.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,

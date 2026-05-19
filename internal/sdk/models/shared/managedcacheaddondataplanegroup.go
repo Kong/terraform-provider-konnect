@@ -39,7 +39,7 @@ func (e *State) IsExact() bool {
 type StateMetadata struct {
 	// Reason why the managed cache add-on may be in an error state, reported from backing infrastructure.
 	//
-	ErrorReason *string `default:"null" json:"error_reason"`
+	ErrorReason *string `json:"error_reason,omitempty"`
 }
 
 func (s StateMetadata) MarshalJSON() ([]byte, error) {

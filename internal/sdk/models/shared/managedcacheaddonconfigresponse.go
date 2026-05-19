@@ -9,15 +9,15 @@ import (
 // CloudAuthentication - Metadata describing the cloud authentication details for managed cache add-on.
 type CloudAuthentication struct {
 	// Env vault path to cache auth provider.
-	AuthProvider *string `default:"null" json:"auth_provider"`
+	AuthProvider *string `json:"auth_provider,omitempty"`
 	// Env vault path to aws cache name.
-	AwsCacheName *string `default:"null" json:"aws_cache_name"`
+	AwsCacheName *string `json:"aws_cache_name,omitempty"`
 	// Env vault path to aws region.
-	AwsRegion *string `default:"null" json:"aws_region"`
+	AwsRegion *string `json:"aws_region,omitempty"`
 	// Env vault path to aws assume role arn.
-	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
+	AwsAssumeRoleArn *string `json:"aws_assume_role_arn,omitempty"`
 	// Env vault path to azure tenant id.
-	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
+	AzureTenantID *string `json:"azure_tenant_id,omitempty"`
 }
 
 func (c CloudAuthentication) MarshalJSON() ([]byte, error) {
@@ -69,18 +69,18 @@ func (c *CloudAuthentication) GetAzureTenantID() *string {
 // ManagedCacheAddOnConfigResponseStateMetadata - Metadata describing the state of the managed cache add-on.
 type ManagedCacheAddOnConfigResponseStateMetadata struct {
 	// Reference to cache configuration for this add-on.
-	CacheConfigID *string `default:"null" json:"cache_config_id"`
+	CacheConfigID *string `json:"cache_config_id,omitempty"`
 	// Env vault path to cache server name.
-	CacheServerName *string `default:"null" json:"cache_server_name"`
+	CacheServerName *string `json:"cache_server_name,omitempty"`
 	// Env vault path to cache hostname.
-	CacheHost *string `default:"null" json:"cache_host"`
+	CacheHost *string `json:"cache_host,omitempty"`
 	// Env vault path to cache port.
-	CachePort *string `default:"null" json:"cache_port"`
+	CachePort *string `json:"cache_port,omitempty"`
 	// Env vault path to cache username.
-	CacheUsername *string `default:"null" json:"cache_username"`
+	CacheUsername *string `json:"cache_username,omitempty"`
 	// Metadata describing the cloud authentication details for managed cache add-on.
 	//
-	CloudAuthentication *CloudAuthentication `json:"cloud_authentication"`
+	CloudAuthentication *CloudAuthentication `json:"cloud_authentication,omitempty"`
 }
 
 func (m ManagedCacheAddOnConfigResponseStateMetadata) MarshalJSON() ([]byte, error) {
