@@ -17067,6 +17067,28 @@ paths:
           $ref: '#/components/responses/KonnectCPLegacyNotFound'
       tags:
         - DP Certificates
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: GatewayDataPlaneClientCertificate#update
+        terraform-datasource: null
+      operationId: update-dataplane-certificate
+      summary: Update DP Client Certificate
+      description: Update a DP Client Certificate for this control plane. A dataplane certificate allows dataplanes configured with the certificate and corresponding private key to establish connection with this control plane.
+      requestBody:
+        $ref: '#/components/requestBodies/DataPlaneClientCertificateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/DataPlaneClientCertificateResponse'
+        '400':
+          $ref: '#/components/responses/KonnectCPLegacyBadRequest'
+        '401':
+          $ref: '#/components/responses/KonnectCPLegacyUnauthorized'
+        '403':
+          $ref: '#/components/responses/KonnectCPLegacyForbidden'
+        '404':
+          $ref: '#/components/responses/KonnectCPLegacyNotFound'
+      tags:
+        - DP Certificates
     delete:
       x-speakeasy-entity-operation:
         terraform-resource: GatewayDataPlaneClientCertificate#delete
