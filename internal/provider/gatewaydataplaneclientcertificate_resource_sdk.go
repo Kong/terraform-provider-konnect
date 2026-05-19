@@ -94,6 +94,31 @@ func (r *GatewayDataPlaneClientCertificateResourceModel) ToOperationsGetDataplan
 	return &out, diags
 }
 
+func (r *GatewayDataPlaneClientCertificateResourceModel) ToOperationsUpdateDataplaneCertificateRequest(ctx context.Context) (*operations.UpdateDataplaneCertificateRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var certificateID string
+	certificateID = r.ID.ValueString()
+
+	dataPlaneClientCertificateRequest, dataPlaneClientCertificateRequestDiags := r.ToSharedDataPlaneClientCertificateRequest(ctx)
+	diags.Append(dataPlaneClientCertificateRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateDataplaneCertificateRequest{
+		ControlPlaneID:                    controlPlaneID,
+		CertificateID:                     certificateID,
+		DataPlaneClientCertificateRequest: dataPlaneClientCertificateRequest,
+	}
+
+	return &out, diags
+}
+
 func (r *GatewayDataPlaneClientCertificateResourceModel) ToSharedDataPlaneClientCertificateRequest(ctx context.Context) (*shared.DataPlaneClientCertificateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
