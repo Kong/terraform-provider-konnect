@@ -3,14 +3,14 @@ id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
   docChecksum: ec45b69acfed8143d1e38bef433e2c31
   docVersion: 2.0.0
-  speakeasyVersion: 1.761.9
-  generationVersion: 2.881.4
+  speakeasyVersion: 1.763.1
+  generationVersion: 2.884.4
   releaseVersion: 3.16.0
   configChecksum: 7cf2aff41a6637bdacb5e2c8216471e3
 persistentEdits:
-  generation_id: 9e5c850d-e034-44cb-a3af-8b7592e29020
-  pristine_commit_hash: d049670aad66487fa3780f1e248038c67ecbea37
-  pristine_tree_hash: c79007da571322ac371b34bcc6fa43648d3553e5
+  generation_id: 43f0e050-1090-4e65-9a7b-abfeeca399ec
+  pristine_commit_hash: 8754b03bb3311f91610097f4b68ca3f1de2a2930
+  pristine_tree_hash: d826ae0e1a70b0059de7cb269ae466ea6a2e50ff
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -6869,12 +6869,12 @@ trackedFiles:
     pristine_git_object: a2332ee8de013a2121880e4b7be332d3385c6f41
   internal/sdk/internal/utils/union.go:
     id: 183142835cfe
-    last_write_checksum: sha1:1f5d30f305c5b734926babea8a05c77cc38e767c
-    pristine_git_object: 88a8297db1db4e67a727cc1446ea0a01a0f02808
+    last_write_checksum: sha1:7332671bd6b01804f1e1fe11428cb708469bb3ec
+    pristine_git_object: 31ab4e4a49e0579d32d6b8be28c45edf1c3231c8
   internal/sdk/internal/utils/union_test.go:
     id: 4c885192f6f0
-    last_write_checksum: sha1:83ac73c1901de4c6db90f65cf5879163f3d47a00
-    pristine_git_object: f66814c73ace94d8e71d785fd6161fb405745754
+    last_write_checksum: sha1:bd5c7506e1d6238117c1ac4e340314a5a41401b5
+    pristine_git_object: 138f7e2a066b10dffd0a9957ecfcab9e00dd26fe
   internal/sdk/internal/utils/utils.go:
     id: feefcdf75dbd
     last_write_checksum: sha1:c03378176a107205b8938606faef3fd8fb8f91a0
@@ -6893,8 +6893,8 @@ trackedFiles:
     pristine_git_object: de6e80ba00b21ebe196bef40b3442ceab1158baf
   internal/sdk/konnect.go:
     id: defee4f1aaf8
-    last_write_checksum: sha1:fdb52ecc1b01945b7df866cd1745ab3762c80066
-    pristine_git_object: 8431d6947046bcd1c23b16109eeaecd251c3f4e4
+    last_write_checksum: sha1:cf7b159833cfca2370652707ecc7f49947a5094b
+    pristine_git_object: a6c24ce49d532584a63a8a26dc2d311e0c0dfcc1
   internal/sdk/mesh.go:
     id: c3f36614baba
     last_write_checksum: sha1:efd743a519129a43ecc2856b3edc75a855d87c0a
