@@ -17,6 +17,7 @@ func (r *GatewayDataPlaneClientCertificateResourceModel) RefreshFromSharedDataPl
 		r.Cert = types.StringPointerValue(resp.Cert)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
+		r.Title = types.StringPointerValue(resp.Title)
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
 
@@ -93,14 +94,46 @@ func (r *GatewayDataPlaneClientCertificateResourceModel) ToOperationsGetDataplan
 	return &out, diags
 }
 
+func (r *GatewayDataPlaneClientCertificateResourceModel) ToOperationsUpdateDataplaneCertificateRequest(ctx context.Context) (*operations.UpdateDataplaneCertificateRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var certificateID string
+	certificateID = r.ID.ValueString()
+
+	dataPlaneClientCertificateRequest, dataPlaneClientCertificateRequestDiags := r.ToSharedDataPlaneClientCertificateRequest(ctx)
+	diags.Append(dataPlaneClientCertificateRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateDataplaneCertificateRequest{
+		ControlPlaneID:                    controlPlaneID,
+		CertificateID:                     certificateID,
+		DataPlaneClientCertificateRequest: dataPlaneClientCertificateRequest,
+	}
+
+	return &out, diags
+}
+
 func (r *GatewayDataPlaneClientCertificateResourceModel) ToSharedDataPlaneClientCertificateRequest(ctx context.Context) (*shared.DataPlaneClientCertificateRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
 	var cert string
 	cert = r.Cert.ValueString()
 
+	title := new(string)
+	if !r.Title.IsUnknown() && !r.Title.IsNull() {
+		*title = r.Title.ValueString()
+	} else {
+		title = nil
+	}
 	out := shared.DataPlaneClientCertificateRequest{
-		Cert: cert,
+		Cert:  cert,
+		Title: title,
 	}
 
 	return &out, diags

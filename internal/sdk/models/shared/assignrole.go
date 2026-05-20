@@ -79,12 +79,12 @@ const (
 	EntityTypeNameControlPlanes             EntityTypeName = "Control Planes"
 	EntityTypeNameDashboards                EntityTypeName = "Dashboards"
 	EntityTypeNameDcrProviders              EntityTypeName = "DCR Providers"
-	EntityTypeNameIdentity                  EntityTypeName = "Identity"
 	EntityTypeNameMeshControlPlanes         EntityTypeName = "Mesh Control Planes"
 	EntityTypeNameNetworks                  EntityTypeName = "Networks"
 	EntityTypeNamePortals                   EntityTypeName = "Portals"
 	EntityTypeNameReports                   EntityTypeName = "Reports"
 	EntityTypeNameServiceHub                EntityTypeName = "Service Hub"
+	EntityTypeNameAuthServers               EntityTypeName = "Auth Servers"
 )
 
 func (e EntityTypeName) ToPointer() *EntityTypeName {
@@ -95,7 +95,7 @@ func (e EntityTypeName) ToPointer() *EntityTypeName {
 func (e *EntityTypeName) IsExact() bool {
 	if e != nil {
 		switch *e {
-		case "Add Ons", "APIs", "API Products", "Application Auth Strategies", "Audit Logs", "Control Planes", "Dashboards", "DCR Providers", "Identity", "Mesh Control Planes", "Networks", "Portals", "Reports", "Service Hub":
+		case "Add Ons", "APIs", "API Products", "Application Auth Strategies", "Audit Logs", "Control Planes", "Dashboards", "DCR Providers", "Mesh Control Planes", "Networks", "Portals", "Reports", "Service Hub", "Auth Servers":
 			return true
 		}
 	}

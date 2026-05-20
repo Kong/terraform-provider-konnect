@@ -10,10 +10,10 @@ import (
 // CustomDomainStateMetadata - Metadata describing the backing state of the custom domain and why it may be in an erroneous state.
 type CustomDomainStateMetadata struct {
 	// Reported status of the custom domain from backing infrastructure.
-	ReportedStatus *string `default:"null" json:"reported_status"`
+	ReportedStatus *string `json:"reported_status,omitempty"`
 	// Reason why the custom domain may be in an erroneous state, reported from backing infrastructure.
 	//
-	Reason *string `default:"null" json:"reason"`
+	Reason *string `json:"reason,omitempty"`
 }
 
 func (c CustomDomainStateMetadata) MarshalJSON() ([]byte, error) {

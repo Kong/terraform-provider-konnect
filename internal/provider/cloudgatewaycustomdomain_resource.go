@@ -141,11 +141,17 @@ func (r *CloudGatewayCustomDomainResource) Schema(ctx context.Context, req resou
 				},
 				Attributes: map[string]schema.Attribute{
 					"reason": schema.StringAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						Description: `Reason why the custom domain may be in an erroneous state, reported from backing infrastructure.`,
 					},
 					"reported_status": schema.StringAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 						Description: `Reported status of the custom domain from backing infrastructure.`,
 					},
 				},

@@ -37,6 +37,7 @@ type GatewayDataPlaneClientCertificateResourceModel struct {
 	ControlPlaneID types.String `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64  `tfsdk:"created_at"`
 	ID             types.String `tfsdk:"id"`
+	Title          types.String `tfsdk:"title"`
 	UpdatedAt      types.Int64  `tfsdk:"updated_at"`
 }
 
@@ -49,11 +50,8 @@ func (r *GatewayDataPlaneClientCertificateResource) Schema(ctx context.Context, 
 		MarkdownDescription: "GatewayDataPlaneClientCertificate Resource",
 		Attributes: map[string]schema.Attribute{
 			"cert": schema.StringAttribute{
-				Required: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				Description: `JSON escaped string of the certificate. Requires replacement if changed.`,
+				Required:    true,
+				Description: `JSON escaped string of the certificate.`,
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required: true,
@@ -69,6 +67,10 @@ func (r *GatewayDataPlaneClientCertificateResource) Schema(ctx context.Context, 
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `Unique ID of the certificate entity.`,
+			},
+			"title": schema.StringAttribute{
+				Optional:    true,
+				Description: `Title for the certificate.`,
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
@@ -230,7 +232,43 @@ func (r *GatewayDataPlaneClientCertificateResource) Update(ctx context.Context, 
 		return
 	}
 
-	// Not Implemented; all attributes marked as RequiresReplace
+	request, requestDiags := data.ToOperationsUpdateDataplaneCertificateRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res, err := r.client.DPCertificates.UpdateDataplaneCertificate(ctx, *request)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
+		return
+	}
+	if res == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		return
+	}
+	if !(res.DataPlaneClientCertificateResponse != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
+		return
+	}
+	resp.Diagnostics.Append(data.RefreshFromSharedDataPlaneClientCertificateResponse(ctx, res.DataPlaneClientCertificateResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

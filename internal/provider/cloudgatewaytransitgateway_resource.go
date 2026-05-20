@@ -241,11 +241,17 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 						},
 						Attributes: map[string]schema.Attribute{
 							"reason": schema.StringAttribute{
-								Computed:    true,
+								Computed: true,
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+								},
 								Description: `Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.`,
 							},
 							"reported_status": schema.StringAttribute{
-								Computed:    true,
+								Computed: true,
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+								},
 								Description: `Reported status of the transit gateway from backing infrastructure.`,
 							},
 						},
@@ -479,11 +485,17 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 						},
 						Attributes: map[string]schema.Attribute{
 							"reason": schema.StringAttribute{
-								Computed:    true,
+								Computed: true,
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+								},
 								Description: `Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.`,
 							},
 							"reported_status": schema.StringAttribute{
-								Computed:    true,
+								Computed: true,
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+								},
 								Description: `Reported status of the transit gateway from backing infrastructure.`,
 							},
 						},
@@ -711,11 +723,17 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 						},
 						Attributes: map[string]schema.Attribute{
 							"reason": schema.StringAttribute{
-								Computed:    true,
+								Computed: true,
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+								},
 								Description: `Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.`,
 							},
 							"reported_status": schema.StringAttribute{
-								Computed:    true,
+								Computed: true,
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+								},
 								Description: `Reported status of the transit gateway from backing infrastructure.`,
 							},
 						},
@@ -934,11 +952,17 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 						},
 						Attributes: map[string]schema.Attribute{
 							"reason": schema.StringAttribute{
-								Computed:    true,
+								Computed: true,
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+								},
 								Description: `Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.`,
 							},
 							"reported_status": schema.StringAttribute{
-								Computed:    true,
+								Computed: true,
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+								},
 								Description: `Reported status of the transit gateway from backing infrastructure.`,
 							},
 						},
@@ -1161,11 +1185,17 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 						},
 						Attributes: map[string]schema.Attribute{
 							"reason": schema.StringAttribute{
-								Computed:    true,
+								Computed: true,
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+								},
 								Description: `Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.`,
 							},
 							"reported_status": schema.StringAttribute{
-								Computed:    true,
+								Computed: true,
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+								},
 								Description: `Reported status of the transit gateway from backing infrastructure.`,
 							},
 						},
@@ -1389,11 +1419,17 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 						},
 						Attributes: map[string]schema.Attribute{
 							"reason": schema.StringAttribute{
-								Computed:    true,
+								Computed: true,
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+								},
 								Description: `Reason why the transit gateway may be in an erroneous state, reported from backing infrastructure.`,
 							},
 							"reported_status": schema.StringAttribute{
-								Computed:    true,
+								Computed: true,
+								PlanModifiers: []planmodifier.String{
+									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+								},
 								Description: `Reported status of the transit gateway from backing infrastructure.`,
 							},
 						},

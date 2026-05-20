@@ -7,11 +7,9 @@ import (
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -19,6 +17,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/int64planmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/listplanmodifier"
 	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v3/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
@@ -134,22 +133,40 @@ func (r *CloudGatewayAddonResource) Schema(ctx context.Context, req resource.Sch
 							},
 							"data_plane_groups": schema.ListNestedAttribute{
 								Computed: true,
+								PlanModifiers: []planmodifier.List{
+									speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+								},
 								NestedObject: schema.NestedAttributeObject{
+									PlanModifiers: []planmodifier.Object{
+										speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+									},
 									Attributes: map[string]schema.Attribute{
 										"cloud_gateway_network_id": schema.StringAttribute{
-											Computed:    true,
+											Computed: true,
+											PlanModifiers: []planmodifier.String{
+												speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+											},
 											Description: `Network ID this data-plane group is attached to.`,
 										},
 										"id": schema.StringAttribute{
-											Computed:    true,
+											Computed: true,
+											PlanModifiers: []planmodifier.String{
+												speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+											},
 											Description: `ID of the data-plane group.`,
 										},
 										"provider": schema.StringAttribute{
-											Computed:    true,
+											Computed: true,
+											PlanModifiers: []planmodifier.String{
+												speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+											},
 											Description: `Name of cloud provider.`,
 										},
 										"region": schema.StringAttribute{
-											Computed:    true,
+											Computed: true,
+											PlanModifiers: []planmodifier.String{
+												speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+											},
 											Description: `Region of cloud provider the data-plane group is deployed to.`,
 										},
 										"state": schema.StringAttribute{
@@ -165,9 +182,15 @@ func (r *CloudGatewayAddonResource) Schema(ctx context.Context, req resource.Sch
 										},
 										"state_metadata": schema.SingleNestedAttribute{
 											Computed: true,
+											PlanModifiers: []planmodifier.Object{
+												speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+											},
 											Attributes: map[string]schema.Attribute{
 												"error_reason": schema.StringAttribute{
-													Computed:    true,
+													Computed: true,
+													PlanModifiers: []planmodifier.String{
+														speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+													},
 													Description: `Reason why the managed cache add-on may be in an error state, reported from backing infrastructure.`,
 												},
 											},
@@ -179,55 +202,84 @@ func (r *CloudGatewayAddonResource) Schema(ctx context.Context, req resource.Sch
 							},
 							"state_metadata": schema.SingleNestedAttribute{
 								Computed: true,
+								PlanModifiers: []planmodifier.Object{
+									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+								},
 								Attributes: map[string]schema.Attribute{
 									"cache_config_id": schema.StringAttribute{
-										Computed:    true,
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
 										Description: `Reference to cache configuration for this add-on.`,
 									},
 									"cache_host": schema.StringAttribute{
-										Computed:    true,
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
 										Description: `Env vault path to cache hostname.`,
 									},
 									"cache_port": schema.StringAttribute{
-										Computed:    true,
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
 										Description: `Env vault path to cache port.`,
 									},
 									"cache_server_name": schema.StringAttribute{
-										Computed:    true,
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
 										Description: `Env vault path to cache server name.`,
 									},
 									"cache_username": schema.StringAttribute{
-										Computed:    true,
+										Computed: true,
+										PlanModifiers: []planmodifier.String{
+											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+										},
 										Description: `Env vault path to cache username.`,
 									},
 									"cloud_authentication": schema.SingleNestedAttribute{
 										Computed: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"auth_provider":       types.StringType,
-											"aws_assume_role_arn": types.StringType,
-											"aws_cache_name":      types.StringType,
-											"aws_region":          types.StringType,
-											"azure_tenant_id":     types.StringType,
-										})),
+										PlanModifiers: []planmodifier.Object{
+											speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+										},
 										Attributes: map[string]schema.Attribute{
 											"auth_provider": schema.StringAttribute{
-												Computed:    true,
+												Computed: true,
+												PlanModifiers: []planmodifier.String{
+													speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+												},
 												Description: `Env vault path to cache auth provider.`,
 											},
 											"aws_assume_role_arn": schema.StringAttribute{
-												Computed:    true,
+												Computed: true,
+												PlanModifiers: []planmodifier.String{
+													speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+												},
 												Description: `Env vault path to aws assume role arn.`,
 											},
 											"aws_cache_name": schema.StringAttribute{
-												Computed:    true,
+												Computed: true,
+												PlanModifiers: []planmodifier.String{
+													speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+												},
 												Description: `Env vault path to aws cache name.`,
 											},
 											"aws_region": schema.StringAttribute{
-												Computed:    true,
+												Computed: true,
+												PlanModifiers: []planmodifier.String{
+													speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+												},
 												Description: `Env vault path to aws region.`,
 											},
 											"azure_tenant_id": schema.StringAttribute{
-												Computed:    true,
+												Computed: true,
+												PlanModifiers: []planmodifier.String{
+													speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+												},
 												Description: `Env vault path to azure tenant id.`,
 											},
 										},
