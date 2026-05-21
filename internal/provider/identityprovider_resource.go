@@ -141,7 +141,7 @@ func (r *IdentityProviderResource) Schema(ctx context.Context, req resource.Sche
 								PlanModifiers: []planmodifier.String{
 									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
-								Description: `The path URL where the SAML identity provider sends authentication responses after successful login attempts.`,
+								Description: `The URL where the SAML identity provider sends authentication responses after successful login attempts.`,
 							},
 							"idp_metadata_url": schema.StringAttribute{
 								Computed:    true,

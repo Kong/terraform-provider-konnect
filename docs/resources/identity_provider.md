@@ -85,7 +85,7 @@ Optional:
 
 Read-Only:
 
-- `callback_url` (String) The path URL where the SAML identity provider sends authentication responses after successful login attempts.
+- `callback_url` (String) The URL where the SAML identity provider sends authentication responses after successful login attempts.
 - `login_url` (String) The URL to redirect users to for initiating login with the identity provider.
 - `sp_entity_id` (String) The entity ID of the service provider (SP).
 - `sp_metadata_url` (String)
