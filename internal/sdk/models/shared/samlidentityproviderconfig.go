@@ -18,7 +18,7 @@ type SAMLIdentityProviderConfig struct {
 	SpEntityID *string `json:"sp_entity_id,omitempty"`
 	// The URL to redirect users to for initiating login with the identity provider.
 	LoginURL *string `json:"login_url,omitempty"`
-	// The path URL where the SAML identity provider sends authentication responses after successful login attempts.
+	// The URL where the SAML identity provider sends authentication responses after successful login attempts.
 	CallbackURL *string `json:"callback_url,omitempty"`
 }
 
