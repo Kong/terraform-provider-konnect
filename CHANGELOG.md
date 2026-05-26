@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.18.0
+> Released 2026/05/??
+
+# Features
+* Add support for IP restriction on Portals using `konnect_portal_ip_allow_list` resource
+
+# Bug Fixes
+* Fix a bug which prevented use of partials with plugins
+
+
 ## 3.17.0
 > Released 2026/05/19
 
