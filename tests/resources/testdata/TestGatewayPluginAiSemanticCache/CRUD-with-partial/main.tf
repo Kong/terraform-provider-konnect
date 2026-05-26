@@ -38,11 +38,8 @@ resource "konnect_gateway_plugin_ai_semantic_cache" "my_ai_semantic_cache" {
         provider = "openai"
       }
     }
-    vectordb = {
-      dimensions      = 1536
-      distance_metric = "cosine"
-      strategy        = "pgvector"
-    }
+
+    vectordb = null
   }
 
   control_plane_id = konnect_gateway_control_plane.plugin_ai_semantic_cache_cp.id

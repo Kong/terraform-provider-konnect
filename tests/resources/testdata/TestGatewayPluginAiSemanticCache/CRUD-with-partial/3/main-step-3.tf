@@ -38,11 +38,7 @@ resource "konnect_gateway_plugin_ai_semantic_cache" "my_ai_semantic_cache" {
         provider = "openai"
       }
     }
-    vectordb = {
-      dimensions      = 1536
-      distance_metric = "cosine"
-      strategy        = "pgvector"
-    }
+    vectordb = null
   }
 
   tags = ["updated"]

@@ -9,6 +9,36 @@ import (
 )
 
 func TestGatewayPluginAiSemanticCache(t *testing.T) {
+	t.Run("without-partial", func(t *testing.T) {
+		resource.Test(t, resource.TestCase{
+			ProtoV6ProviderFactories: providerFactory,
+			Steps: []resource.TestStep{
+				{
+					// Create: plugin with inline vectordb + embeddings config (no partial)
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestNameDirectory(),
+					Check: resource.ComposeAggregateTestCheckFunc(
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_ai_semantic_cache.my_ai_semantic_cache", "enabled", "true"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_ai_semantic_cache.my_ai_semantic_cache", "config.embeddings.model.name", "text-embedding-3-small"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_ai_semantic_cache.my_ai_semantic_cache", "config.embeddings.model.provider", "openai"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_ai_semantic_cache.my_ai_semantic_cache", "config.vectordb.strategy", "pgvector"),
+						resource.TestCheckResourceAttr("konnect_gateway_plugin_ai_semantic_cache.my_ai_semantic_cache", "config.vectordb.dimensions", "1536"),
+					),
+				},
+				{
+					// Verify no plan diff after create
+					Config:          providerConfigUs,
+					ConfigDirectory: config.TestNameDirectory(),
+					ConfigPlanChecks: resource.ConfigPlanChecks{
+						PreApply: []plancheck.PlanCheck{
+							plancheck.ExpectEmptyPlan(),
+						},
+					},
+				},
+			},
+		})
+	})
+
 	t.Run("CRUD-with-partial", func(t *testing.T) {
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
