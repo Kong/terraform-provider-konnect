@@ -7,14 +7,14 @@ import (
 )
 
 type AiProxyAdvancedPluginConfig struct {
-	Acls               *Acls                    `tfsdk:"acls"`
-	Balancer           *Balancer                `tfsdk:"balancer"`
-	Embeddings         *PartialEmbeddingsConfig `tfsdk:"embeddings"`
-	GenaiCategory      types.String             `tfsdk:"genai_category"`
-	LlmFormat          types.String             `tfsdk:"llm_format"`
-	MaxRequestBodySize types.Int64              `tfsdk:"max_request_body_size"`
-	ModelNameHeader    types.Bool               `tfsdk:"model_name_header"`
-	ResponseStreaming  types.String             `tfsdk:"response_streaming"`
-	Targets            []Llm                    `tfsdk:"targets"`
-	Vectordb           *PartialVectordbConfig   `tfsdk:"vectordb"`
+	Acls               *Acls        `tfsdk:"acls"`
+	Balancer           *Balancer    `tfsdk:"balancer"`
+	Embeddings         *Embeddings  `tfsdk:"embeddings"`
+	GenaiCategory      types.String `tfsdk:"genai_category"`
+	LlmFormat          types.String `tfsdk:"llm_format"`
+	MaxRequestBodySize types.Int64  `tfsdk:"max_request_body_size"`
+	ModelNameHeader    types.Bool   `tfsdk:"model_name_header"`
+	ResponseStreaming  types.String `tfsdk:"response_streaming"`
+	Targets            []Targets    `tfsdk:"targets"`
+	Vectordb           *Vectordb    `tfsdk:"vectordb"`
 }

@@ -145,37 +145,37 @@ func (e *AiLlmAsJudgePluginParamLocation) IsExact() bool {
 
 type AiLlmAsJudgePluginAuth struct {
 	// If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
-	AllowOverride *bool `default:"false" json:"allow_override"`
+	AllowOverride *bool `json:"allow_override,omitempty"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
-	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
+	AwsAccessKeyID *string `json:"aws_access_key_id,omitempty"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
-	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
+	AwsSecretAccessKey *string `json:"aws_secret_access_key,omitempty"`
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
-	AzureClientID *string `default:"null" json:"azure_client_id"`
+	AzureClientID *string `json:"azure_client_id,omitempty"`
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
-	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
+	AzureClientSecret *string `json:"azure_client_secret,omitempty"`
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
-	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
+	AzureTenantID *string `json:"azure_tenant_id,omitempty"`
 	// Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
-	AzureUseManagedIdentity *bool `default:"false" json:"azure_use_managed_identity"`
+	AzureUseManagedIdentity *bool `json:"azure_use_managed_identity,omitempty"`
 	// Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.
-	GcpMetadataURL *string `default:"null" json:"gcp_metadata_url"`
+	GcpMetadataURL *string `json:"gcp_metadata_url,omitempty"`
 	// Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.
-	GcpOauthTokenURL *string `default:"null" json:"gcp_oauth_token_url"`
+	GcpOauthTokenURL *string `json:"gcp_oauth_token_url,omitempty"`
 	// Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
-	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+	GcpServiceAccountJSON *string `json:"gcp_service_account_json,omitempty"`
 	// Use service account auth for GCP-based providers and models.
-	GcpUseServiceAccount *bool `default:"false" json:"gcp_use_service_account"`
+	GcpUseServiceAccount *bool `json:"gcp_use_service_account,omitempty"`
 	// If AI model requires authentication via Authorization or API key header, specify its name here.
-	HeaderName *string `default:"null" json:"header_name"`
+	HeaderName *string `json:"header_name,omitempty"`
 	// Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
-	HeaderValue *string `default:"null" json:"header_value"`
+	HeaderValue *string `json:"header_value,omitempty"`
 	// Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
 	ParamLocation *AiLlmAsJudgePluginParamLocation `json:"param_location,omitempty"`
 	// If AI model requires authentication via query parameter, specify its name here.
-	ParamName *string `default:"null" json:"param_name"`
+	ParamName *string `json:"param_name,omitempty"`
 	// Specify the full parameter value for 'param_name'.
-	ParamValue *string `default:"null" json:"param_value"`
+	ParamValue *string `json:"param_value,omitempty"`
 }
 
 func (a AiLlmAsJudgePluginAuth) MarshalJSON() ([]byte, error) {
@@ -303,9 +303,9 @@ func (a *AiLlmAsJudgePluginAuth) GetParamValue() *string {
 
 type AiLlmAsJudgePluginLogging struct {
 	// If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well.
-	LogPayloads *bool `default:"false" json:"log_payloads"`
+	LogPayloads *bool `json:"log_payloads,omitempty"`
 	// If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.
-	LogStatistics *bool `default:"false" json:"log_statistics"`
+	LogStatistics *bool `json:"log_statistics,omitempty"`
 }
 
 func (a AiLlmAsJudgePluginLogging) MarshalJSON() ([]byte, error) {
@@ -335,23 +335,23 @@ func (a *AiLlmAsJudgePluginLogging) GetLogStatistics() *bool {
 
 type AiLlmAsJudgePluginBedrock struct {
 	// If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.
-	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
+	AwsAssumeRoleArn *string `json:"aws_assume_role_arn,omitempty"`
 	// If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
-	AwsRegion *string `default:"null" json:"aws_region"`
+	AwsRegion *string `json:"aws_region,omitempty"`
 	// If using AWS providers (Bedrock), set the identifier of the assumed role session.
-	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
+	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
 	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
-	AwsStsEndpointURL *string `default:"null" json:"aws_sts_endpoint_url"`
+	AwsStsEndpointURL *string `json:"aws_sts_endpoint_url,omitempty"`
 	// S3 URI prefix (s3://bucket/prefix/) where Bedrock will get input files from and store results to for native batch API.
-	BatchBucketPrefix *string `default:"null" json:"batch_bucket_prefix"`
+	BatchBucketPrefix *string `json:"batch_bucket_prefix,omitempty"`
 	// AWS role arn used for calling batch API. Try to get the value from request if ommited.
-	BatchRoleArn *string `default:"null" json:"batch_role_arn"`
+	BatchRoleArn *string `json:"batch_role_arn,omitempty"`
 	// If using AWS providers (Bedrock), set to true to normalize the embeddings.
-	EmbeddingsNormalize *bool `default:"false" json:"embeddings_normalize"`
+	EmbeddingsNormalize *bool `json:"embeddings_normalize,omitempty"`
 	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
-	PerformanceConfigLatency *string `default:"null" json:"performance_config_latency"`
+	PerformanceConfigLatency *string `json:"performance_config_latency,omitempty"`
 	// S3 URI (s3://bucket/prefix) where Bedrock will store generated video files. Required for video generation.
-	VideoOutputS3URI *string `default:"null" json:"video_output_s3_uri"`
+	VideoOutputS3URI *string `json:"video_output_s3_uri,omitempty"`
 }
 
 func (a AiLlmAsJudgePluginBedrock) MarshalJSON() ([]byte, error) {
@@ -456,9 +456,9 @@ func (e *AiLlmAsJudgePluginEmbeddingInputType) IsExact() bool {
 
 type AiLlmAsJudgePluginCohere struct {
 	// The purpose of the input text to calculate embedding vectors.
-	EmbeddingInputType *AiLlmAsJudgePluginEmbeddingInputType `default:"classification" json:"embedding_input_type"`
+	EmbeddingInputType *AiLlmAsJudgePluginEmbeddingInputType `json:"embedding_input_type,omitempty"`
 	// Wait for the model if it is not ready
-	WaitForModel *bool `default:"null" json:"wait_for_model"`
+	WaitForModel *bool `json:"wait_for_model,omitempty"`
 }
 
 func (a AiLlmAsJudgePluginCohere) MarshalJSON() ([]byte, error) {
@@ -490,7 +490,7 @@ type AiLlmAsJudgePluginDashscope struct {
 	// Two Dashscope endpoints are available, and the international endpoint will be used when this is set to `true`.
 	// It is recommended to set this to `true` when using international version of dashscope.
 	//
-	International *bool `default:"true" json:"international"`
+	International *bool `json:"international,omitempty"`
 }
 
 func (a AiLlmAsJudgePluginDashscope) MarshalJSON() ([]byte, error) {
@@ -513,7 +513,7 @@ func (a *AiLlmAsJudgePluginDashscope) GetInternational() *bool {
 
 type AiLlmAsJudgePluginDatabricks struct {
 	// Workspace Instance ID ('dbc-xxx-yyy') for Databricks model serving.
-	WorkspaceInstanceID *string `default:"null" json:"workspace_instance_id"`
+	WorkspaceInstanceID *string `json:"workspace_instance_id,omitempty"`
 }
 
 func (a AiLlmAsJudgePluginDatabricks) MarshalJSON() ([]byte, error) {
@@ -536,13 +536,13 @@ func (a *AiLlmAsJudgePluginDatabricks) GetWorkspaceInstanceID() *string {
 
 type AiLlmAsJudgePluginGemini struct {
 	// If running Gemini on Vertex, specify the regional API endpoint (hostname only).
-	APIEndpoint *string `default:"null" json:"api_endpoint"`
+	APIEndpoint *string `json:"api_endpoint,omitempty"`
 	// If running Gemini on Vertex Model Garden, specify the endpoint ID.
-	EndpointID *string `default:"null" json:"endpoint_id"`
+	EndpointID *string `json:"endpoint_id,omitempty"`
 	// If running Gemini on Vertex, specify the location ID.
-	LocationID *string `default:"null" json:"location_id"`
+	LocationID *string `json:"location_id,omitempty"`
 	// If running Gemini on Vertex, specify the project ID.
-	ProjectID *string `default:"null" json:"project_id"`
+	ProjectID *string `json:"project_id,omitempty"`
 }
 
 func (a AiLlmAsJudgePluginGemini) MarshalJSON() ([]byte, error) {
@@ -586,9 +586,9 @@ func (a *AiLlmAsJudgePluginGemini) GetProjectID() *string {
 
 type AiLlmAsJudgePluginHuggingface struct {
 	// Use the cache layer on the inference API
-	UseCache *bool `default:"null" json:"use_cache"`
+	UseCache *bool `json:"use_cache,omitempty"`
 	// Wait for the model if it is not ready
-	WaitForModel *bool `default:"null" json:"wait_for_model"`
+	WaitForModel *bool `json:"wait_for_model,omitempty"`
 }
 
 func (a AiLlmAsJudgePluginHuggingface) MarshalJSON() ([]byte, error) {
@@ -666,41 +666,41 @@ func (e *AiLlmAsJudgePluginMistralFormat) IsExact() bool {
 // AiLlmAsJudgePluginOptions - Key/value settings for the model
 type AiLlmAsJudgePluginOptions struct {
 	// Defines the schema/API version, if using Anthropic provider.
-	AnthropicVersion *string `default:"null" json:"anthropic_version"`
+	AnthropicVersion *string `json:"anthropic_version,omitempty"`
 	// 'api-version' for Azure OpenAI instances.
-	AzureAPIVersion *string `default:"2023-05-15" json:"azure_api_version"`
+	AzureAPIVersion *string `json:"azure_api_version,omitempty"`
 	// Deployment ID for Azure OpenAI instances.
-	AzureDeploymentID *string `default:"null" json:"azure_deployment_id"`
+	AzureDeploymentID *string `json:"azure_deployment_id,omitempty"`
 	// Instance name for Azure OpenAI hosted models.
-	AzureInstance *string                       `default:"null" json:"azure_instance"`
-	Bedrock       *AiLlmAsJudgePluginBedrock    `json:"bedrock"`
-	Cohere        *AiLlmAsJudgePluginCohere     `json:"cohere"`
-	Dashscope     *AiLlmAsJudgePluginDashscope  `json:"dashscope"`
-	Databricks    *AiLlmAsJudgePluginDatabricks `json:"databricks"`
+	AzureInstance *string                       `json:"azure_instance,omitempty"`
+	Bedrock       *AiLlmAsJudgePluginBedrock    `json:"bedrock,omitempty"`
+	Cohere        *AiLlmAsJudgePluginCohere     `json:"cohere,omitempty"`
+	Dashscope     *AiLlmAsJudgePluginDashscope  `json:"dashscope,omitempty"`
+	Databricks    *AiLlmAsJudgePluginDatabricks `json:"databricks,omitempty"`
 	// If using embeddings models, set the number of dimensions to generate.
-	EmbeddingsDimensions *int64                         `default:"null" json:"embeddings_dimensions"`
-	Gemini               *AiLlmAsJudgePluginGemini      `json:"gemini"`
-	Huggingface          *AiLlmAsJudgePluginHuggingface `json:"huggingface"`
+	EmbeddingsDimensions *int64                         `json:"embeddings_dimensions,omitempty"`
+	Gemini               *AiLlmAsJudgePluginGemini      `json:"gemini,omitempty"`
+	Huggingface          *AiLlmAsJudgePluginHuggingface `json:"huggingface,omitempty"`
 	// Defines the cost per 1M tokens in your prompt.
-	InputCost *float64 `default:"null" json:"input_cost"`
+	InputCost *float64 `json:"input_cost,omitempty"`
 	// If using llama2 provider, select the upstream message format.
 	Llama2Format *AiLlmAsJudgePluginLlama2Format `json:"llama2_format,omitempty"`
 	// Defines the max_tokens, if using chat or completion models.
-	MaxTokens *int64 `default:"null" json:"max_tokens"`
+	MaxTokens *int64 `json:"max_tokens,omitempty"`
 	// If using mistral provider, select the upstream message format.
 	MistralFormat *AiLlmAsJudgePluginMistralFormat `json:"mistral_format,omitempty"`
 	// Defines the cost per 1M tokens in the output of the AI.
-	OutputCost *float64 `default:"null" json:"output_cost"`
+	OutputCost *float64 `json:"output_cost,omitempty"`
 	// Defines the matching temperature, if using chat or completion models.
-	Temperature *float64 `default:"null" json:"temperature"`
+	Temperature *float64 `json:"temperature,omitempty"`
 	// Defines the top-k most likely tokens, if supported.
-	TopK *int64 `default:"null" json:"top_k"`
+	TopK *int64 `json:"top_k,omitempty"`
 	// Defines the top-p probability mass, if supported.
-	TopP *float64 `default:"null" json:"top_p"`
+	TopP *float64 `json:"top_p,omitempty"`
 	// Manually specify or override the AI operation path, used when e.g. using the 'preserve' route_type.
-	UpstreamPath *string `default:"null" json:"upstream_path"`
+	UpstreamPath *string `json:"upstream_path,omitempty"`
 	// Manually specify or override the full URL to the AI operation endpoints, when calling (self-)hosted models, or for running via a private endpoint.
-	UpstreamURL *string `default:"null" json:"upstream_url"`
+	UpstreamURL *string `json:"upstream_url,omitempty"`
 }
 
 func (a AiLlmAsJudgePluginOptions) MarshalJSON() ([]byte, error) {
@@ -900,11 +900,11 @@ func (e *AiLlmAsJudgePluginProvider) IsExact() bool {
 
 type AiLlmAsJudgePluginModel struct {
 	// The model name parameter from the request that this model should map to.
-	ModelAlias *string `default:"null" json:"model_alias"`
+	ModelAlias *string `json:"model_alias,omitempty"`
 	// Model name to execute.
-	Name *string `default:"null" json:"name"`
+	Name *string `json:"name,omitempty"`
 	// Key/value settings for the model
-	Options *AiLlmAsJudgePluginOptions `json:"options"`
+	Options *AiLlmAsJudgePluginOptions `json:"options,omitempty"`
 	// AI provider request format - Kong translates requests to and from the specified backend compatible formats.
 	Provider AiLlmAsJudgePluginProvider `json:"provider"`
 }
@@ -985,17 +985,17 @@ func (e *AiLlmAsJudgePluginRouteType) IsExact() bool {
 }
 
 type Llm struct {
-	Auth *AiLlmAsJudgePluginAuth `json:"auth"`
+	Auth *AiLlmAsJudgePluginAuth `json:"auth,omitempty"`
 	// The semantic description of the target, required if using semantic load balancing. Specially, setting this to 'CATCHALL' will indicate such target to be used when no other targets match the semantic threshold. Only used by ai-proxy-advanced.
-	Description *string                    `default:"null" json:"description"`
-	Logging     *AiLlmAsJudgePluginLogging `json:"logging"`
+	Description *string                    `json:"description,omitempty"`
+	Logging     *AiLlmAsJudgePluginLogging `json:"logging,omitempty"`
 	// For internal use only.
 	Metadata any                     `json:"metadata,omitempty"`
 	Model    AiLlmAsJudgePluginModel `json:"model"`
 	// The model's operation implementation, for this provider.
 	RouteType AiLlmAsJudgePluginRouteType `json:"route_type"`
 	// The weight this target gets within the upstream loadbalancer (1-65535). Only used by ai-proxy-advanced.
-	Weight *int64 `default:"100" json:"weight"`
+	Weight *int64 `json:"weight,omitempty"`
 }
 
 func (l Llm) MarshalJSON() ([]byte, error) {

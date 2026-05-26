@@ -199,7 +199,7 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 									"name": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Description: `Name of the environment variable field to set for the data-plane group. Must be prefixed by KONG_. Not Null`,
+										Description: `Name of the environment variable field to set for the data-plane group. Must be prefixed by KONG_ or OTEL_. Not Null`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
 											stringvalidator.UTF8LengthBetween(6, 120),

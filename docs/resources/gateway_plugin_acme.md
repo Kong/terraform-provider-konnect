@@ -53,7 +53,7 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
           aws_access_key_id        = "...my_aws_access_key_id..."
           aws_assume_role_arn      = "...my_aws_assume_role_arn..."
           aws_cache_name           = "...my_aws_cache_name..."
-          aws_is_serverless        = true
+          aws_is_serverless        = false
           aws_region               = "...my_aws_region..."
           aws_role_session_name    = "...my_aws_role_session_name..."
           aws_secret_access_key    = "...my_aws_secret_access_key..."
@@ -62,18 +62,18 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
           azure_tenant_id          = "...my_azure_tenant_id..."
           gcp_service_account_json = "...my_gcp_service_account_json..."
         }
-        database = 0
+        database = 6
         extra_options = {
-          namespace  = ""
-          scan_count = 10
+          namespace  = "...my_namespace..."
+          scan_count = 4.65
         }
         host        = "...my_host..."
         password    = "...my_password..."
-        port        = 6379
+        port        = 60103
         server_name = "...my_server_name..."
-        ssl         = false
+        ssl         = true
         ssl_verify  = false
-        timeout     = 2000
+        timeout     = 1734626631
         username    = "...my_username..."
       }
       shm = {
@@ -220,15 +220,15 @@ Optional:
 Optional:
 
 - `cloud_authentication` (Attributes) Cloud auth related configs for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--config--storage_config--redis--cloud_authentication))
-- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy
 - `extra_options` (Attributes) Custom ACME Redis options (see [below for nested schema](#nestedatt--config--storage_config--redis--extra_options))
 - `host` (String) A string representing a host name, such as example.com.
 - `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
-- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
-- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: false
-- `timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis.
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
+- `timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 - `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 
 <a id="nestedatt--config--storage_config--redis--cloud_authentication"></a>
@@ -240,7 +240,7 @@ Optional:
 - `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 - `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
 - `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
-- `aws_is_serverless` (Boolean) This flag specifies whether the cluster is serverless when auth_provider is set to `aws`. Default: true
+- `aws_is_serverless` (Boolean) This flag specifies whether the cluster is serverless when auth_provider is set to `aws`.
 - `aws_region` (String) The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
 - `aws_role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
 - `aws_secret_access_key` (String) AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
@@ -255,8 +255,8 @@ Optional:
 
 Optional:
 
-- `namespace` (String) A namespace to prepend to all keys stored in Redis. Default: ""
-- `scan_count` (Number) The number of keys to return in Redis SCAN calls. Default: 10
+- `namespace` (String) A namespace to prepend to all keys stored in Redis.
+- `scan_count` (Number) The number of keys to return in Redis SCAN calls.
 
 
 

@@ -19,7 +19,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -120,80 +119,69 @@ func (r *GatewayPluginAiRequestTransformerResource) Schema(ctx context.Context, 
 							"auth": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"allow_override":             types.BoolType,
-									"aws_access_key_id":          types.StringType,
-									"aws_secret_access_key":      types.StringType,
-									"azure_client_id":            types.StringType,
-									"azure_client_secret":        types.StringType,
-									"azure_tenant_id":            types.StringType,
-									"azure_use_managed_identity": types.BoolType,
-									"gcp_metadata_url":           types.StringType,
-									"gcp_oauth_token_url":        types.StringType,
-									"gcp_service_account_json":   types.StringType,
-									"gcp_use_service_account":    types.BoolType,
-									"header_name":                types.StringType,
-									"header_value":               types.StringType,
-									"param_location":             types.StringType,
-									"param_name":                 types.StringType,
-									"param_value":                types.StringType,
-								})),
 								Attributes: map[string]schema.Attribute{
 									"allow_override": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Default:     booldefault.StaticBool(false),
-										Description: `If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin. Default: false`,
+										Description: `If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.`,
 									},
 									"aws_access_key_id": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.`,
 									},
 									"aws_secret_access_key": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.`,
 									},
 									"azure_client_id": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.`,
 									},
 									"azure_client_secret": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.`,
 									},
 									"azure_tenant_id": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.`,
 									},
 									"azure_use_managed_identity": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Default:     booldefault.StaticBool(false),
-										Description: `Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models. Default: false`,
+										Description: `Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.`,
 									},
 									"gcp_metadata_url": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.`,
 									},
 									"gcp_oauth_token_url": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.`,
 									},
 									"gcp_service_account_json": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable ` + "`" + `GCP_SERVICE_ACCOUNT` + "`" + `.`,
 									},
 									"gcp_use_service_account": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Default:     booldefault.StaticBool(false),
-										Description: `Use service account auth for GCP-based providers and models. Default: false`,
+										Description: `Use service account auth for GCP-based providers and models.`,
 									},
 									"header_name": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `If AI model requires authentication via Authorization or API key header, specify its name here.`,
 									},
 									"header_value": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.`,
 									},
@@ -203,38 +191,35 @@ func (r *GatewayPluginAiRequestTransformerResource) Schema(ctx context.Context, 
 										Description: `Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]`,
 									},
 									"param_name": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `If AI model requires authentication via query parameter, specify its name here.`,
 									},
 									"param_value": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `Specify the full parameter value for 'param_name'.`,
 									},
 								},
 							},
 							"description": schema.StringAttribute{
+								Computed:    true,
 								Optional:    true,
 								Description: `The semantic description of the target, required if using semantic load balancing. Specially, setting this to 'CATCHALL' will indicate such target to be used when no other targets match the semantic threshold. Only used by ai-proxy-advanced.`,
 							},
 							"logging": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"log_payloads":   types.BoolType,
-									"log_statistics": types.BoolType,
-								})),
 								Attributes: map[string]schema.Attribute{
 									"log_payloads": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Default:     booldefault.StaticBool(false),
-										Description: `If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well. Default: false`,
+										Description: `If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well.`,
 									},
 									"log_statistics": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Default:     booldefault.StaticBool(false),
-										Description: `If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output. Default: false`,
+										Description: `If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.`,
 									},
 								},
 							},
@@ -242,145 +227,85 @@ func (r *GatewayPluginAiRequestTransformerResource) Schema(ctx context.Context, 
 								Required: true,
 								Attributes: map[string]schema.Attribute{
 									"model_alias": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `The model name parameter from the request that this model should map to.`,
 									},
 									"name": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `Model name to execute.`,
 									},
 									"options": schema.SingleNestedAttribute{
 										Computed: true,
 										Optional: true,
-										Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-											"anthropic_version":   types.StringType,
-											"azure_api_version":   types.StringType,
-											"azure_deployment_id": types.StringType,
-											"azure_instance":      types.StringType,
-											"bedrock": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`aws_assume_role_arn`:        types.StringType,
-													`aws_region`:                 types.StringType,
-													`aws_role_session_name`:      types.StringType,
-													`aws_sts_endpoint_url`:       types.StringType,
-													`batch_bucket_prefix`:        types.StringType,
-													`batch_role_arn`:             types.StringType,
-													`embeddings_normalize`:       types.BoolType,
-													`performance_config_latency`: types.StringType,
-													`video_output_s3_uri`:        types.StringType,
-												},
-											},
-											"cohere": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`embedding_input_type`: types.StringType,
-													`wait_for_model`:       types.BoolType,
-												},
-											},
-											"dashscope": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`international`: types.BoolType,
-												},
-											},
-											"databricks": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`workspace_instance_id`: types.StringType,
-												},
-											},
-											"embeddings_dimensions": types.Int64Type,
-											"gemini": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`api_endpoint`: types.StringType,
-													`endpoint_id`:  types.StringType,
-													`location_id`:  types.StringType,
-													`project_id`:   types.StringType,
-												},
-											},
-											"huggingface": types.ObjectType{
-												AttrTypes: map[string]attr.Type{
-													`use_cache`:      types.BoolType,
-													`wait_for_model`: types.BoolType,
-												},
-											},
-											"input_cost":     types.Float64Type,
-											"llama2_format":  types.StringType,
-											"max_tokens":     types.Int64Type,
-											"mistral_format": types.StringType,
-											"output_cost":    types.Float64Type,
-											"temperature":    types.Float64Type,
-											"top_k":          types.Int64Type,
-											"top_p":          types.Float64Type,
-											"upstream_path":  types.StringType,
-											"upstream_url":   types.StringType,
-										})),
 										Attributes: map[string]schema.Attribute{
 											"anthropic_version": schema.StringAttribute{
+												Computed:    true,
 												Optional:    true,
 												Description: `Defines the schema/API version, if using Anthropic provider.`,
 											},
 											"azure_api_version": schema.StringAttribute{
 												Computed:    true,
 												Optional:    true,
-												Default:     stringdefault.StaticString(`2023-05-15`),
-												Description: `'api-version' for Azure OpenAI instances. Default: "2023-05-15"`,
+												Description: `'api-version' for Azure OpenAI instances.`,
 											},
 											"azure_deployment_id": schema.StringAttribute{
+												Computed:    true,
 												Optional:    true,
 												Description: `Deployment ID for Azure OpenAI instances.`,
 											},
 											"azure_instance": schema.StringAttribute{
+												Computed:    true,
 												Optional:    true,
 												Description: `Instance name for Azure OpenAI hosted models.`,
 											},
 											"bedrock": schema.SingleNestedAttribute{
 												Computed: true,
 												Optional: true,
-												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-													"aws_assume_role_arn":        types.StringType,
-													"aws_region":                 types.StringType,
-													"aws_role_session_name":      types.StringType,
-													"aws_sts_endpoint_url":       types.StringType,
-													"batch_bucket_prefix":        types.StringType,
-													"batch_role_arn":             types.StringType,
-													"embeddings_normalize":       types.BoolType,
-													"performance_config_latency": types.StringType,
-													"video_output_s3_uri":        types.StringType,
-												})),
 												Attributes: map[string]schema.Attribute{
 													"aws_assume_role_arn": schema.StringAttribute{
+														Computed:    true,
 														Optional:    true,
 														Description: `If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.`,
 													},
 													"aws_region": schema.StringAttribute{
+														Computed:    true,
 														Optional:    true,
 														Description: `If using AWS providers (Bedrock) you can override the ` + "`" + `AWS_REGION` + "`" + ` environment variable by setting this option.`,
 													},
 													"aws_role_session_name": schema.StringAttribute{
+														Computed:    true,
 														Optional:    true,
 														Description: `If using AWS providers (Bedrock), set the identifier of the assumed role session.`,
 													},
 													"aws_sts_endpoint_url": schema.StringAttribute{
+														Computed:    true,
 														Optional:    true,
 														Description: `If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.`,
 													},
 													"batch_bucket_prefix": schema.StringAttribute{
+														Computed:    true,
 														Optional:    true,
 														Description: `S3 URI prefix (s3://bucket/prefix/) where Bedrock will get input files from and store results to for native batch API.`,
 													},
 													"batch_role_arn": schema.StringAttribute{
+														Computed:    true,
 														Optional:    true,
 														Description: `AWS role arn used for calling batch API. Try to get the value from request if ommited.`,
 													},
 													"embeddings_normalize": schema.BoolAttribute{
 														Computed:    true,
 														Optional:    true,
-														Default:     booldefault.StaticBool(false),
-														Description: `If using AWS providers (Bedrock), set to true to normalize the embeddings. Default: false`,
+														Description: `If using AWS providers (Bedrock), set to true to normalize the embeddings.`,
 													},
 													"performance_config_latency": schema.StringAttribute{
+														Computed:    true,
 														Optional:    true,
 														Description: `Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.`,
 													},
 													"video_output_s3_uri": schema.StringAttribute{
+														Computed:    true,
 														Optional:    true,
 														Description: `S3 URI (s3://bucket/prefix) where Bedrock will store generated video files. Required for video generation.`,
 													},
@@ -389,18 +314,14 @@ func (r *GatewayPluginAiRequestTransformerResource) Schema(ctx context.Context, 
 											"cohere": schema.SingleNestedAttribute{
 												Computed: true,
 												Optional: true,
-												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-													"embedding_input_type": types.StringType,
-													"wait_for_model":       types.BoolType,
-												})),
 												Attributes: map[string]schema.Attribute{
 													"embedding_input_type": schema.StringAttribute{
 														Computed:    true,
 														Optional:    true,
-														Default:     stringdefault.StaticString(`classification`),
-														Description: `The purpose of the input text to calculate embedding vectors. possible known values include one of ["classification", "clustering", "image", "search_document", "search_query"]; Default: "classification"`,
+														Description: `The purpose of the input text to calculate embedding vectors. possible known values include one of ["classification", "clustering", "image", "search_document", "search_query"]`,
 													},
 													"wait_for_model": schema.BoolAttribute{
+														Computed:    true,
 														Optional:    true,
 														Description: `Wait for the model if it is not ready`,
 													},
@@ -409,60 +330,52 @@ func (r *GatewayPluginAiRequestTransformerResource) Schema(ctx context.Context, 
 											"dashscope": schema.SingleNestedAttribute{
 												Computed: true,
 												Optional: true,
-												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-													"international": types.BoolType,
-												})),
 												Attributes: map[string]schema.Attribute{
 													"international": schema.BoolAttribute{
 														Computed: true,
 														Optional: true,
-														Default:  booldefault.StaticBool(true),
 														MarkdownDescription: `Two Dashscope endpoints are available, and the international endpoint will be used when this is set to ` + "`" + `true` + "`" + `.` + "\n" +
-															`It is recommended to set this to ` + "`" + `true` + "`" + ` when using international version of dashscope.` + "\n" +
-															`Default: true`,
+															`It is recommended to set this to ` + "`" + `true` + "`" + ` when using international version of dashscope.`,
 													},
 												},
 											},
 											"databricks": schema.SingleNestedAttribute{
 												Computed: true,
 												Optional: true,
-												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-													"workspace_instance_id": types.StringType,
-												})),
 												Attributes: map[string]schema.Attribute{
 													"workspace_instance_id": schema.StringAttribute{
+														Computed:    true,
 														Optional:    true,
 														Description: `Workspace Instance ID ('dbc-xxx-yyy') for Databricks model serving.`,
 													},
 												},
 											},
 											"embeddings_dimensions": schema.Int64Attribute{
+												Computed:    true,
 												Optional:    true,
 												Description: `If using embeddings models, set the number of dimensions to generate.`,
 											},
 											"gemini": schema.SingleNestedAttribute{
 												Computed: true,
 												Optional: true,
-												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-													"api_endpoint": types.StringType,
-													"endpoint_id":  types.StringType,
-													"location_id":  types.StringType,
-													"project_id":   types.StringType,
-												})),
 												Attributes: map[string]schema.Attribute{
 													"api_endpoint": schema.StringAttribute{
+														Computed:    true,
 														Optional:    true,
 														Description: `If running Gemini on Vertex, specify the regional API endpoint (hostname only).`,
 													},
 													"endpoint_id": schema.StringAttribute{
+														Computed:    true,
 														Optional:    true,
 														Description: `If running Gemini on Vertex Model Garden, specify the endpoint ID.`,
 													},
 													"location_id": schema.StringAttribute{
+														Computed:    true,
 														Optional:    true,
 														Description: `If running Gemini on Vertex, specify the location ID.`,
 													},
 													"project_id": schema.StringAttribute{
+														Computed:    true,
 														Optional:    true,
 														Description: `If running Gemini on Vertex, specify the project ID.`,
 													},
@@ -471,22 +384,21 @@ func (r *GatewayPluginAiRequestTransformerResource) Schema(ctx context.Context, 
 											"huggingface": schema.SingleNestedAttribute{
 												Computed: true,
 												Optional: true,
-												Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-													"use_cache":      types.BoolType,
-													"wait_for_model": types.BoolType,
-												})),
 												Attributes: map[string]schema.Attribute{
 													"use_cache": schema.BoolAttribute{
+														Computed:    true,
 														Optional:    true,
 														Description: `Use the cache layer on the inference API`,
 													},
 													"wait_for_model": schema.BoolAttribute{
+														Computed:    true,
 														Optional:    true,
 														Description: `Wait for the model if it is not ready`,
 													},
 												},
 											},
 											"input_cost": schema.Float64Attribute{
+												Computed:    true,
 												Optional:    true,
 												Description: `Defines the cost per 1M tokens in your prompt.`,
 											},
@@ -496,6 +408,7 @@ func (r *GatewayPluginAiRequestTransformerResource) Schema(ctx context.Context, 
 												Description: `If using llama2 provider, select the upstream message format. possible known values include one of ["ollama", "openai", "raw"]`,
 											},
 											"max_tokens": schema.Int64Attribute{
+												Computed:    true,
 												Optional:    true,
 												Description: `Defines the max_tokens, if using chat or completion models.`,
 											},
@@ -505,10 +418,12 @@ func (r *GatewayPluginAiRequestTransformerResource) Schema(ctx context.Context, 
 												Description: `If using mistral provider, select the upstream message format. possible known values include one of ["ollama", "openai"]`,
 											},
 											"output_cost": schema.Float64Attribute{
+												Computed:    true,
 												Optional:    true,
 												Description: `Defines the cost per 1M tokens in the output of the AI.`,
 											},
 											"temperature": schema.Float64Attribute{
+												Computed:    true,
 												Optional:    true,
 												Description: `Defines the matching temperature, if using chat or completion models.`,
 												Validators: []validator.Float64{
@@ -516,6 +431,7 @@ func (r *GatewayPluginAiRequestTransformerResource) Schema(ctx context.Context, 
 												},
 											},
 											"top_k": schema.Int64Attribute{
+												Computed:    true,
 												Optional:    true,
 												Description: `Defines the top-k most likely tokens, if supported.`,
 												Validators: []validator.Int64{
@@ -523,6 +439,7 @@ func (r *GatewayPluginAiRequestTransformerResource) Schema(ctx context.Context, 
 												},
 											},
 											"top_p": schema.Float64Attribute{
+												Computed:    true,
 												Optional:    true,
 												Description: `Defines the top-p probability mass, if supported.`,
 												Validators: []validator.Float64{
@@ -530,10 +447,12 @@ func (r *GatewayPluginAiRequestTransformerResource) Schema(ctx context.Context, 
 												},
 											},
 											"upstream_path": schema.StringAttribute{
+												Computed:    true,
 												Optional:    true,
 												Description: `Manually specify or override the AI operation path, used when e.g. using the 'preserve' route_type.`,
 											},
 											"upstream_url": schema.StringAttribute{
+												Computed:    true,
 												Optional:    true,
 												Description: `Manually specify or override the full URL to the AI operation endpoints, when calling (self-)hosted models, or for running via a private endpoint.`,
 											},
@@ -553,8 +472,7 @@ func (r *GatewayPluginAiRequestTransformerResource) Schema(ctx context.Context, 
 							"weight": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     int64default.StaticInt64(100),
-								Description: `The weight this target gets within the upstream loadbalancer (1-65535). Only used by ai-proxy-advanced. Default: 100`,
+								Description: `The weight this target gets within the upstream loadbalancer (1-65535). Only used by ai-proxy-advanced.`,
 								Validators: []validator.Int64{
 									int64validator.Between(1, 65535),
 								},

@@ -185,8 +185,7 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 					"llm_format": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString(`openai`),
-						Description: `LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]; Default: "openai"`,
+						Description: `LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]`,
 					},
 					"logging": schema.SingleNestedAttribute{
 						Computed: true,

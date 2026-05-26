@@ -118,8 +118,7 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 					"llm_format": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString(`openai`),
-						Description: `LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]; Default: "openai"`,
+						Description: `LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]`,
 					},
 					"match_all_roles": schema.BoolAttribute{
 						Computed:    true,

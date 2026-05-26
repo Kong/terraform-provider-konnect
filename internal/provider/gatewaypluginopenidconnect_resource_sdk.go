@@ -201,7 +201,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		if resp.Config.ClusterCacheRedis == nil {
 			r.Config.ClusterCacheRedis = nil
 		} else {
-			r.Config.ClusterCacheRedis = &tfTypes.PartialVectordbRedis{}
+			r.Config.ClusterCacheRedis = &tfTypes.AiMcpProxyPluginRedis{}
 			if resp.Config.ClusterCacheRedis.CloudAuthentication == nil {
 				r.Config.ClusterCacheRedis.CloudAuthentication = nil
 			} else {
@@ -616,7 +616,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			if resp.Config.Redis.CloudAuthentication == nil {
 				r.Config.Redis.CloudAuthentication = nil
 			} else {
-				r.Config.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+				r.Config.Redis.CloudAuthentication = &tfTypes.PartialVectordbCloudAuthentication{}
 				if resp.Config.Redis.CloudAuthentication.AuthProvider != nil {
 					r.Config.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Redis.CloudAuthentication.AuthProvider))
 				} else {
@@ -635,19 +635,15 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 				r.Config.Redis.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.GcpServiceAccountJSON)
 			}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
-			if resp.Config.Redis.ClusterNodes != nil {
-				r.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+			r.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
 
-				for _, clusterNodesItem1 := range resp.Config.Redis.ClusterNodes {
-					var clusterNodes1 tfTypes.PartialRedisEeClusterNodes
+			for _, clusterNodesItem1 := range resp.Config.Redis.ClusterNodes {
+				var clusterNodes1 tfTypes.PartialRedisEeClusterNodes
 
-					clusterNodes1.IP = types.StringPointerValue(clusterNodesItem1.IP)
-					clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem1.Port)
+				clusterNodes1.IP = types.StringPointerValue(clusterNodesItem1.IP)
+				clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem1.Port)
 
-					r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes1)
-				}
-			} else {
-				r.Config.Redis.ClusterNodes = nil
+				r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes1)
 			}
 			r.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Redis.ConnectTimeout)
 			r.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Redis.ConnectionIsProxied)
@@ -661,19 +657,15 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
 			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
 			r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
-			if resp.Config.Redis.SentinelNodes != nil {
-				r.Config.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+			r.Config.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
 
-				for _, sentinelNodesItem1 := range resp.Config.Redis.SentinelNodes {
-					var sentinelNodes1 tfTypes.PartialRedisEeSentinelNodes
+			for _, sentinelNodesItem1 := range resp.Config.Redis.SentinelNodes {
+				var sentinelNodes1 tfTypes.PartialRedisEeSentinelNodes
 
-					sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem1.Host)
-					sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem1.Port)
+				sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem1.Host)
+				sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem1.Port)
 
-					r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes1)
-				}
-			} else {
-				r.Config.Redis.SentinelNodes = nil
+				r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes1)
 			}
 			r.Config.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Redis.SentinelPassword)
 			if resp.Config.Redis.SentinelRole != nil {
@@ -2689,27 +2681,24 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		} else {
 			clusterMaxRedirections1 = nil
 		}
-		var clusterNodes1 []shared.OpenidConnectPluginConfigClusterNodes
-		if r.Config.Redis.ClusterNodes != nil {
-			clusterNodes1 = make([]shared.OpenidConnectPluginConfigClusterNodes, 0, len(r.Config.Redis.ClusterNodes))
-			for clusterNodesIndex1 := range r.Config.Redis.ClusterNodes {
-				ip1 := new(string)
-				if !r.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.IsUnknown() && !r.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.IsNull() {
-					*ip1 = r.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.ValueString()
-				} else {
-					ip1 = nil
-				}
-				port3 := new(int64)
-				if !r.Config.Redis.ClusterNodes[clusterNodesIndex1].Port.IsUnknown() && !r.Config.Redis.ClusterNodes[clusterNodesIndex1].Port.IsNull() {
-					*port3 = r.Config.Redis.ClusterNodes[clusterNodesIndex1].Port.ValueInt64()
-				} else {
-					port3 = nil
-				}
-				clusterNodes1 = append(clusterNodes1, shared.OpenidConnectPluginConfigClusterNodes{
-					IP:   ip1,
-					Port: port3,
-				})
+		clusterNodes1 := make([]shared.OpenidConnectPluginConfigClusterNodes, 0, len(r.Config.Redis.ClusterNodes))
+		for clusterNodesIndex1 := range r.Config.Redis.ClusterNodes {
+			ip1 := new(string)
+			if !r.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.IsUnknown() && !r.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.IsNull() {
+				*ip1 = r.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.ValueString()
+			} else {
+				ip1 = nil
 			}
+			port3 := new(int64)
+			if !r.Config.Redis.ClusterNodes[clusterNodesIndex1].Port.IsUnknown() && !r.Config.Redis.ClusterNodes[clusterNodesIndex1].Port.IsNull() {
+				*port3 = r.Config.Redis.ClusterNodes[clusterNodesIndex1].Port.ValueInt64()
+			} else {
+				port3 = nil
+			}
+			clusterNodes1 = append(clusterNodes1, shared.OpenidConnectPluginConfigClusterNodes{
+				IP:   ip1,
+				Port: port3,
+			})
 		}
 		connectTimeout1 := new(int64)
 		if !r.Config.Redis.ConnectTimeout.IsUnknown() && !r.Config.Redis.ConnectTimeout.IsNull() {
@@ -2783,27 +2772,24 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 		} else {
 			sentinelMaster1 = nil
 		}
-		var sentinelNodes1 []shared.OpenidConnectPluginConfigSentinelNodes
-		if r.Config.Redis.SentinelNodes != nil {
-			sentinelNodes1 = make([]shared.OpenidConnectPluginConfigSentinelNodes, 0, len(r.Config.Redis.SentinelNodes))
-			for sentinelNodesIndex1 := range r.Config.Redis.SentinelNodes {
-				host3 := new(string)
-				if !r.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.IsUnknown() && !r.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.IsNull() {
-					*host3 = r.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.ValueString()
-				} else {
-					host3 = nil
-				}
-				port5 := new(int64)
-				if !r.Config.Redis.SentinelNodes[sentinelNodesIndex1].Port.IsUnknown() && !r.Config.Redis.SentinelNodes[sentinelNodesIndex1].Port.IsNull() {
-					*port5 = r.Config.Redis.SentinelNodes[sentinelNodesIndex1].Port.ValueInt64()
-				} else {
-					port5 = nil
-				}
-				sentinelNodes1 = append(sentinelNodes1, shared.OpenidConnectPluginConfigSentinelNodes{
-					Host: host3,
-					Port: port5,
-				})
+		sentinelNodes1 := make([]shared.OpenidConnectPluginConfigSentinelNodes, 0, len(r.Config.Redis.SentinelNodes))
+		for sentinelNodesIndex1 := range r.Config.Redis.SentinelNodes {
+			host3 := new(string)
+			if !r.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.IsUnknown() && !r.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.IsNull() {
+				*host3 = r.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.ValueString()
+			} else {
+				host3 = nil
 			}
+			port5 := new(int64)
+			if !r.Config.Redis.SentinelNodes[sentinelNodesIndex1].Port.IsUnknown() && !r.Config.Redis.SentinelNodes[sentinelNodesIndex1].Port.IsNull() {
+				*port5 = r.Config.Redis.SentinelNodes[sentinelNodesIndex1].Port.ValueInt64()
+			} else {
+				port5 = nil
+			}
+			sentinelNodes1 = append(sentinelNodes1, shared.OpenidConnectPluginConfigSentinelNodes{
+				Host: host3,
+				Port: port5,
+			})
 		}
 		sentinelPassword1 := new(string)
 		if !r.Config.Redis.SentinelPassword.IsUnknown() && !r.Config.Redis.SentinelPassword.IsNull() {

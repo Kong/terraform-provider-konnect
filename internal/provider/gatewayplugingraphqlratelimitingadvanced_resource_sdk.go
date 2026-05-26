@@ -43,7 +43,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) RefreshFromShare
 			if resp.Config.Redis.CloudAuthentication == nil {
 				r.Config.Redis.CloudAuthentication = nil
 			} else {
-				r.Config.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+				r.Config.Redis.CloudAuthentication = &tfTypes.PartialVectordbCloudAuthentication{}
 				if resp.Config.Redis.CloudAuthentication.AuthProvider != nil {
 					r.Config.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Redis.CloudAuthentication.AuthProvider))
 				} else {
@@ -62,19 +62,15 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) RefreshFromShare
 				r.Config.Redis.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.Redis.CloudAuthentication.GcpServiceAccountJSON)
 			}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
-			if resp.Config.Redis.ClusterNodes != nil {
-				r.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+			r.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
 
-				for _, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
-					var clusterNodes tfTypes.PartialRedisEeClusterNodes
+			for _, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
+				var clusterNodes tfTypes.PartialRedisEeClusterNodes
 
-					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
-					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
+				clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
+				clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
 
-					r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes)
-				}
-			} else {
-				r.Config.Redis.ClusterNodes = nil
+				r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes)
 			}
 			r.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Redis.ConnectTimeout)
 			r.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Redis.ConnectionIsProxied)
@@ -87,19 +83,15 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) RefreshFromShare
 			r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
 			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
 			r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
-			if resp.Config.Redis.SentinelNodes != nil {
-				r.Config.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+			r.Config.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
 
-				for _, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
-					var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+			for _, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
+				var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
 
-					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
-					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+				sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
+				sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
 
-					r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes)
-				}
-			} else {
-				r.Config.Redis.SentinelNodes = nil
+				r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes)
 			}
 			r.Config.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Redis.SentinelPassword)
 			if resp.Config.Redis.SentinelRole != nil {
@@ -532,27 +524,24 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToSharedGraphqlR
 		} else {
 			clusterMaxRedirections = nil
 		}
-		var clusterNodes []shared.GraphqlRateLimitingAdvancedPluginClusterNodes
-		if r.Config.Redis.ClusterNodes != nil {
-			clusterNodes = make([]shared.GraphqlRateLimitingAdvancedPluginClusterNodes, 0, len(r.Config.Redis.ClusterNodes))
-			for clusterNodesIndex := range r.Config.Redis.ClusterNodes {
-				ip := new(string)
-				if !r.Config.Redis.ClusterNodes[clusterNodesIndex].IP.IsUnknown() && !r.Config.Redis.ClusterNodes[clusterNodesIndex].IP.IsNull() {
-					*ip = r.Config.Redis.ClusterNodes[clusterNodesIndex].IP.ValueString()
-				} else {
-					ip = nil
-				}
-				port := new(int64)
-				if !r.Config.Redis.ClusterNodes[clusterNodesIndex].Port.IsUnknown() && !r.Config.Redis.ClusterNodes[clusterNodesIndex].Port.IsNull() {
-					*port = r.Config.Redis.ClusterNodes[clusterNodesIndex].Port.ValueInt64()
-				} else {
-					port = nil
-				}
-				clusterNodes = append(clusterNodes, shared.GraphqlRateLimitingAdvancedPluginClusterNodes{
-					IP:   ip,
-					Port: port,
-				})
+		clusterNodes := make([]shared.GraphqlRateLimitingAdvancedPluginClusterNodes, 0, len(r.Config.Redis.ClusterNodes))
+		for clusterNodesIndex := range r.Config.Redis.ClusterNodes {
+			ip := new(string)
+			if !r.Config.Redis.ClusterNodes[clusterNodesIndex].IP.IsUnknown() && !r.Config.Redis.ClusterNodes[clusterNodesIndex].IP.IsNull() {
+				*ip = r.Config.Redis.ClusterNodes[clusterNodesIndex].IP.ValueString()
+			} else {
+				ip = nil
 			}
+			port := new(int64)
+			if !r.Config.Redis.ClusterNodes[clusterNodesIndex].Port.IsUnknown() && !r.Config.Redis.ClusterNodes[clusterNodesIndex].Port.IsNull() {
+				*port = r.Config.Redis.ClusterNodes[clusterNodesIndex].Port.ValueInt64()
+			} else {
+				port = nil
+			}
+			clusterNodes = append(clusterNodes, shared.GraphqlRateLimitingAdvancedPluginClusterNodes{
+				IP:   ip,
+				Port: port,
+			})
 		}
 		connectTimeout := new(int64)
 		if !r.Config.Redis.ConnectTimeout.IsUnknown() && !r.Config.Redis.ConnectTimeout.IsNull() {
@@ -620,27 +609,24 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToSharedGraphqlR
 		} else {
 			sentinelMaster = nil
 		}
-		var sentinelNodes []shared.GraphqlRateLimitingAdvancedPluginSentinelNodes
-		if r.Config.Redis.SentinelNodes != nil {
-			sentinelNodes = make([]shared.GraphqlRateLimitingAdvancedPluginSentinelNodes, 0, len(r.Config.Redis.SentinelNodes))
-			for sentinelNodesIndex := range r.Config.Redis.SentinelNodes {
-				host1 := new(string)
-				if !r.Config.Redis.SentinelNodes[sentinelNodesIndex].Host.IsUnknown() && !r.Config.Redis.SentinelNodes[sentinelNodesIndex].Host.IsNull() {
-					*host1 = r.Config.Redis.SentinelNodes[sentinelNodesIndex].Host.ValueString()
-				} else {
-					host1 = nil
-				}
-				port2 := new(int64)
-				if !r.Config.Redis.SentinelNodes[sentinelNodesIndex].Port.IsUnknown() && !r.Config.Redis.SentinelNodes[sentinelNodesIndex].Port.IsNull() {
-					*port2 = r.Config.Redis.SentinelNodes[sentinelNodesIndex].Port.ValueInt64()
-				} else {
-					port2 = nil
-				}
-				sentinelNodes = append(sentinelNodes, shared.GraphqlRateLimitingAdvancedPluginSentinelNodes{
-					Host: host1,
-					Port: port2,
-				})
+		sentinelNodes := make([]shared.GraphqlRateLimitingAdvancedPluginSentinelNodes, 0, len(r.Config.Redis.SentinelNodes))
+		for sentinelNodesIndex := range r.Config.Redis.SentinelNodes {
+			host1 := new(string)
+			if !r.Config.Redis.SentinelNodes[sentinelNodesIndex].Host.IsUnknown() && !r.Config.Redis.SentinelNodes[sentinelNodesIndex].Host.IsNull() {
+				*host1 = r.Config.Redis.SentinelNodes[sentinelNodesIndex].Host.ValueString()
+			} else {
+				host1 = nil
 			}
+			port2 := new(int64)
+			if !r.Config.Redis.SentinelNodes[sentinelNodesIndex].Port.IsUnknown() && !r.Config.Redis.SentinelNodes[sentinelNodesIndex].Port.IsNull() {
+				*port2 = r.Config.Redis.SentinelNodes[sentinelNodesIndex].Port.ValueInt64()
+			} else {
+				port2 = nil
+			}
+			sentinelNodes = append(sentinelNodes, shared.GraphqlRateLimitingAdvancedPluginSentinelNodes{
+				Host: host1,
+				Port: port2,
+			})
 		}
 		sentinelPassword := new(string)
 		if !r.Config.Redis.SentinelPassword.IsUnknown() && !r.Config.Redis.SentinelPassword.IsNull() {

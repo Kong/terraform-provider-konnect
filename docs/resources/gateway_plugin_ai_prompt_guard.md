@@ -24,7 +24,7 @@ resource "konnect_gateway_plugin_ai_prompt_guard" "my_gatewaypluginaipromptguard
       "..."
     ]
     genai_category        = "text/generation"
-    llm_format            = "openai"
+    llm_format            = "gemini"
     match_all_roles       = false
     max_request_body_size = 1048576
   }
@@ -108,7 +108,7 @@ Optional:
 - `allow_patterns` (List of String) Array of valid regex patterns, or valid questions from the 'user' role in chat.
 - `deny_patterns` (List of String) Array of invalid regex patterns, or invalid questions from the 'user' role in chat.
 - `genai_category` (String) Generative AI category of the request. possible known values include one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation"]; Default: "text/generation"
-- `llm_format` (String) LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]; Default: "openai"
+- `llm_format` (String) LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]
 - `match_all_roles` (Boolean) If true, will match all roles in addition to 'user' role in conversation history. Default: false
 - `max_request_body_size` (Number) max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 1048576
 

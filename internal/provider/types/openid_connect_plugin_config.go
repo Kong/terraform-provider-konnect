@@ -45,7 +45,7 @@ type OpenidConnectPluginConfig struct {
 	ClientID                                     []types.String                    `tfsdk:"client_id"`
 	ClientJwk                                    []ClientJwk                       `tfsdk:"client_jwk"`
 	ClientSecret                                 []types.String                    `tfsdk:"client_secret"`
-	ClusterCacheRedis                            *PartialVectordbRedis             `tfsdk:"cluster_cache_redis"`
+	ClusterCacheRedis                            *AiMcpProxyPluginRedis            `tfsdk:"cluster_cache_redis"`
 	ClusterCacheStrategy                         types.String                      `tfsdk:"cluster_cache_strategy"`
 	ConsumerBy                                   []types.String                    `tfsdk:"consumer_by"`
 	ConsumerClaim                                []types.String                    `tfsdk:"consumer_claim"`

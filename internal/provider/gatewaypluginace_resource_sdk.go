@@ -37,7 +37,7 @@ func (r *GatewayPluginAceResourceModel) RefreshFromSharedAcePlugin(ctx context.C
 					if resp.Config.RateLimiting.Redis.CloudAuthentication == nil {
 						r.Config.RateLimiting.Redis.CloudAuthentication = nil
 					} else {
-						r.Config.RateLimiting.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+						r.Config.RateLimiting.Redis.CloudAuthentication = &tfTypes.PartialVectordbCloudAuthentication{}
 						if resp.Config.RateLimiting.Redis.CloudAuthentication.AuthProvider != nil {
 							r.Config.RateLimiting.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.RateLimiting.Redis.CloudAuthentication.AuthProvider))
 						} else {
@@ -56,19 +56,15 @@ func (r *GatewayPluginAceResourceModel) RefreshFromSharedAcePlugin(ctx context.C
 						r.Config.RateLimiting.Redis.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.RateLimiting.Redis.CloudAuthentication.GcpServiceAccountJSON)
 					}
 					r.Config.RateLimiting.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.RateLimiting.Redis.ClusterMaxRedirections)
-					if resp.Config.RateLimiting.Redis.ClusterNodes != nil {
-						r.Config.RateLimiting.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+					r.Config.RateLimiting.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
 
-						for _, clusterNodesItem := range resp.Config.RateLimiting.Redis.ClusterNodes {
-							var clusterNodes tfTypes.PartialRedisEeClusterNodes
+					for _, clusterNodesItem := range resp.Config.RateLimiting.Redis.ClusterNodes {
+						var clusterNodes tfTypes.PartialRedisEeClusterNodes
 
-							clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
-							clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
+						clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
+						clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
 
-							r.Config.RateLimiting.Redis.ClusterNodes = append(r.Config.RateLimiting.Redis.ClusterNodes, clusterNodes)
-						}
-					} else {
-						r.Config.RateLimiting.Redis.ClusterNodes = nil
+						r.Config.RateLimiting.Redis.ClusterNodes = append(r.Config.RateLimiting.Redis.ClusterNodes, clusterNodes)
 					}
 					r.Config.RateLimiting.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.RateLimiting.Redis.ConnectTimeout)
 					r.Config.RateLimiting.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.RateLimiting.Redis.ConnectionIsProxied)
@@ -81,19 +77,15 @@ func (r *GatewayPluginAceResourceModel) RefreshFromSharedAcePlugin(ctx context.C
 					r.Config.RateLimiting.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.RateLimiting.Redis.ReadTimeout)
 					r.Config.RateLimiting.Redis.SendTimeout = types.Int64PointerValue(resp.Config.RateLimiting.Redis.SendTimeout)
 					r.Config.RateLimiting.Redis.SentinelMaster = types.StringPointerValue(resp.Config.RateLimiting.Redis.SentinelMaster)
-					if resp.Config.RateLimiting.Redis.SentinelNodes != nil {
-						r.Config.RateLimiting.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+					r.Config.RateLimiting.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
 
-						for _, sentinelNodesItem := range resp.Config.RateLimiting.Redis.SentinelNodes {
-							var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+					for _, sentinelNodesItem := range resp.Config.RateLimiting.Redis.SentinelNodes {
+						var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
 
-							sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
-							sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+						sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
+						sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
 
-							r.Config.RateLimiting.Redis.SentinelNodes = append(r.Config.RateLimiting.Redis.SentinelNodes, sentinelNodes)
-						}
-					} else {
-						r.Config.RateLimiting.Redis.SentinelNodes = nil
+						r.Config.RateLimiting.Redis.SentinelNodes = append(r.Config.RateLimiting.Redis.SentinelNodes, sentinelNodes)
 					}
 					r.Config.RateLimiting.Redis.SentinelPassword = types.StringPointerValue(resp.Config.RateLimiting.Redis.SentinelPassword)
 					if resp.Config.RateLimiting.Redis.SentinelRole != nil {
@@ -477,27 +469,24 @@ func (r *GatewayPluginAceResourceModel) ToSharedAcePlugin(ctx context.Context) (
 				} else {
 					clusterMaxRedirections = nil
 				}
-				var clusterNodes []shared.AcePluginClusterNodes
-				if r.Config.RateLimiting.Redis.ClusterNodes != nil {
-					clusterNodes = make([]shared.AcePluginClusterNodes, 0, len(r.Config.RateLimiting.Redis.ClusterNodes))
-					for clusterNodesIndex := range r.Config.RateLimiting.Redis.ClusterNodes {
-						ip := new(string)
-						if !r.Config.RateLimiting.Redis.ClusterNodes[clusterNodesIndex].IP.IsUnknown() && !r.Config.RateLimiting.Redis.ClusterNodes[clusterNodesIndex].IP.IsNull() {
-							*ip = r.Config.RateLimiting.Redis.ClusterNodes[clusterNodesIndex].IP.ValueString()
-						} else {
-							ip = nil
-						}
-						port := new(int64)
-						if !r.Config.RateLimiting.Redis.ClusterNodes[clusterNodesIndex].Port.IsUnknown() && !r.Config.RateLimiting.Redis.ClusterNodes[clusterNodesIndex].Port.IsNull() {
-							*port = r.Config.RateLimiting.Redis.ClusterNodes[clusterNodesIndex].Port.ValueInt64()
-						} else {
-							port = nil
-						}
-						clusterNodes = append(clusterNodes, shared.AcePluginClusterNodes{
-							IP:   ip,
-							Port: port,
-						})
+				clusterNodes := make([]shared.AcePluginClusterNodes, 0, len(r.Config.RateLimiting.Redis.ClusterNodes))
+				for clusterNodesIndex := range r.Config.RateLimiting.Redis.ClusterNodes {
+					ip := new(string)
+					if !r.Config.RateLimiting.Redis.ClusterNodes[clusterNodesIndex].IP.IsUnknown() && !r.Config.RateLimiting.Redis.ClusterNodes[clusterNodesIndex].IP.IsNull() {
+						*ip = r.Config.RateLimiting.Redis.ClusterNodes[clusterNodesIndex].IP.ValueString()
+					} else {
+						ip = nil
 					}
+					port := new(int64)
+					if !r.Config.RateLimiting.Redis.ClusterNodes[clusterNodesIndex].Port.IsUnknown() && !r.Config.RateLimiting.Redis.ClusterNodes[clusterNodesIndex].Port.IsNull() {
+						*port = r.Config.RateLimiting.Redis.ClusterNodes[clusterNodesIndex].Port.ValueInt64()
+					} else {
+						port = nil
+					}
+					clusterNodes = append(clusterNodes, shared.AcePluginClusterNodes{
+						IP:   ip,
+						Port: port,
+					})
 				}
 				connectTimeout := new(int64)
 				if !r.Config.RateLimiting.Redis.ConnectTimeout.IsUnknown() && !r.Config.RateLimiting.Redis.ConnectTimeout.IsNull() {
@@ -565,27 +554,24 @@ func (r *GatewayPluginAceResourceModel) ToSharedAcePlugin(ctx context.Context) (
 				} else {
 					sentinelMaster = nil
 				}
-				var sentinelNodes []shared.AcePluginSentinelNodes
-				if r.Config.RateLimiting.Redis.SentinelNodes != nil {
-					sentinelNodes = make([]shared.AcePluginSentinelNodes, 0, len(r.Config.RateLimiting.Redis.SentinelNodes))
-					for sentinelNodesIndex := range r.Config.RateLimiting.Redis.SentinelNodes {
-						host1 := new(string)
-						if !r.Config.RateLimiting.Redis.SentinelNodes[sentinelNodesIndex].Host.IsUnknown() && !r.Config.RateLimiting.Redis.SentinelNodes[sentinelNodesIndex].Host.IsNull() {
-							*host1 = r.Config.RateLimiting.Redis.SentinelNodes[sentinelNodesIndex].Host.ValueString()
-						} else {
-							host1 = nil
-						}
-						port2 := new(int64)
-						if !r.Config.RateLimiting.Redis.SentinelNodes[sentinelNodesIndex].Port.IsUnknown() && !r.Config.RateLimiting.Redis.SentinelNodes[sentinelNodesIndex].Port.IsNull() {
-							*port2 = r.Config.RateLimiting.Redis.SentinelNodes[sentinelNodesIndex].Port.ValueInt64()
-						} else {
-							port2 = nil
-						}
-						sentinelNodes = append(sentinelNodes, shared.AcePluginSentinelNodes{
-							Host: host1,
-							Port: port2,
-						})
+				sentinelNodes := make([]shared.AcePluginSentinelNodes, 0, len(r.Config.RateLimiting.Redis.SentinelNodes))
+				for sentinelNodesIndex := range r.Config.RateLimiting.Redis.SentinelNodes {
+					host1 := new(string)
+					if !r.Config.RateLimiting.Redis.SentinelNodes[sentinelNodesIndex].Host.IsUnknown() && !r.Config.RateLimiting.Redis.SentinelNodes[sentinelNodesIndex].Host.IsNull() {
+						*host1 = r.Config.RateLimiting.Redis.SentinelNodes[sentinelNodesIndex].Host.ValueString()
+					} else {
+						host1 = nil
 					}
+					port2 := new(int64)
+					if !r.Config.RateLimiting.Redis.SentinelNodes[sentinelNodesIndex].Port.IsUnknown() && !r.Config.RateLimiting.Redis.SentinelNodes[sentinelNodesIndex].Port.IsNull() {
+						*port2 = r.Config.RateLimiting.Redis.SentinelNodes[sentinelNodesIndex].Port.ValueInt64()
+					} else {
+						port2 = nil
+					}
+					sentinelNodes = append(sentinelNodes, shared.AcePluginSentinelNodes{
+						Host: host1,
+						Port: port2,
+					})
 				}
 				sentinelPassword := new(string)
 				if !r.Config.RateLimiting.Redis.SentinelPassword.IsUnknown() && !r.Config.RateLimiting.Redis.SentinelPassword.IsNull() {

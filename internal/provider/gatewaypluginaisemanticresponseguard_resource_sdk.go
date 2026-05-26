@@ -17,11 +17,11 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) RefreshFromSharedAiS
 	if resp != nil {
 		r.Condition = types.StringPointerValue(resp.Condition)
 		r.Config = &tfTypes.AiSemanticResponseGuardPluginConfig{}
-		r.Config.Embeddings = &tfTypes.PartialEmbeddingsConfig{}
+		r.Config.Embeddings = &tfTypes.Embeddings{}
 		if resp.Config.Embeddings.Auth == nil {
 			r.Config.Embeddings.Auth = nil
 		} else {
-			r.Config.Embeddings.Auth = &tfTypes.PartialEmbeddingsAuth{}
+			r.Config.Embeddings.Auth = &tfTypes.AiLlmAsJudgePluginAuth{}
 			r.Config.Embeddings.Auth.AllowOverride = types.BoolPointerValue(resp.Config.Embeddings.Auth.AllowOverride)
 			r.Config.Embeddings.Auth.AwsAccessKeyID = types.StringPointerValue(resp.Config.Embeddings.Auth.AwsAccessKeyID)
 			r.Config.Embeddings.Auth.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Embeddings.Auth.AwsSecretAccessKey)
@@ -43,16 +43,16 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) RefreshFromSharedAiS
 			r.Config.Embeddings.Auth.ParamName = types.StringPointerValue(resp.Config.Embeddings.Auth.ParamName)
 			r.Config.Embeddings.Auth.ParamValue = types.StringPointerValue(resp.Config.Embeddings.Auth.ParamValue)
 		}
-		r.Config.Embeddings.Model = &tfTypes.PartialEmbeddingsModel{}
+		r.Config.Embeddings.Model = &tfTypes.AiProxyAdvancedPluginModel{}
 		r.Config.Embeddings.Model.Name = types.StringValue(resp.Config.Embeddings.Model.Name)
 		if resp.Config.Embeddings.Model.Options == nil {
 			r.Config.Embeddings.Model.Options = nil
 		} else {
-			r.Config.Embeddings.Model.Options = &tfTypes.PartialEmbeddingsOptions{}
+			r.Config.Embeddings.Model.Options = &tfTypes.AiProxyAdvancedPluginOptions{}
 			if resp.Config.Embeddings.Model.Options.Azure == nil {
 				r.Config.Embeddings.Model.Options.Azure = nil
 			} else {
-				r.Config.Embeddings.Model.Options.Azure = &tfTypes.PartialEmbeddingsAzure{}
+				r.Config.Embeddings.Model.Options.Azure = &tfTypes.Azure{}
 				r.Config.Embeddings.Model.Options.Azure.APIVersion = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.APIVersion)
 				r.Config.Embeddings.Model.Options.Azure.DeploymentID = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.DeploymentID)
 				r.Config.Embeddings.Model.Options.Azure.Instance = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.Instance)
@@ -60,7 +60,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) RefreshFromSharedAiS
 			if resp.Config.Embeddings.Model.Options.Bedrock == nil {
 				r.Config.Embeddings.Model.Options.Bedrock = nil
 			} else {
-				r.Config.Embeddings.Model.Options.Bedrock = &tfTypes.PartialEmbeddingsBedrock{}
+				r.Config.Embeddings.Model.Options.Bedrock = &tfTypes.AiLlmAsJudgePluginBedrock{}
 				r.Config.Embeddings.Model.Options.Bedrock.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsAssumeRoleArn)
 				r.Config.Embeddings.Model.Options.Bedrock.AwsRegion = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsRegion)
 				r.Config.Embeddings.Model.Options.Bedrock.AwsRoleSessionName = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsRoleSessionName)
@@ -74,7 +74,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) RefreshFromSharedAiS
 			if resp.Config.Embeddings.Model.Options.Gemini == nil {
 				r.Config.Embeddings.Model.Options.Gemini = nil
 			} else {
-				r.Config.Embeddings.Model.Options.Gemini = &tfTypes.PartialEmbeddingsGemini{}
+				r.Config.Embeddings.Model.Options.Gemini = &tfTypes.AiProxyAdvancedPluginGemini{}
 				r.Config.Embeddings.Model.Options.Gemini.APIEndpoint = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Gemini.APIEndpoint)
 				r.Config.Embeddings.Model.Options.Gemini.LocationID = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Gemini.LocationID)
 				r.Config.Embeddings.Model.Options.Gemini.ProjectID = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Gemini.ProjectID)
@@ -82,7 +82,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) RefreshFromSharedAiS
 			if resp.Config.Embeddings.Model.Options.Huggingface == nil {
 				r.Config.Embeddings.Model.Options.Huggingface = nil
 			} else {
-				r.Config.Embeddings.Model.Options.Huggingface = &tfTypes.PartialEmbeddingsHuggingface{}
+				r.Config.Embeddings.Model.Options.Huggingface = &tfTypes.AiLlmAsJudgePluginHuggingface{}
 				r.Config.Embeddings.Model.Options.Huggingface.UseCache = types.BoolPointerValue(resp.Config.Embeddings.Model.Options.Huggingface.UseCache)
 				r.Config.Embeddings.Model.Options.Huggingface.WaitForModel = types.BoolPointerValue(resp.Config.Embeddings.Model.Options.Huggingface.WaitForModel)
 			}
@@ -127,13 +127,13 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) RefreshFromSharedAiS
 			r.Config.Search = &tfTypes.Search{}
 			r.Config.Search.Threshold = types.Float64PointerValue(resp.Config.Search.Threshold)
 		}
-		r.Config.Vectordb = &tfTypes.AiSemanticResponseGuardPluginVectordb{}
+		r.Config.Vectordb = &tfTypes.Vectordb{}
 		r.Config.Vectordb.Dimensions = types.Int64Value(resp.Config.Vectordb.Dimensions)
 		r.Config.Vectordb.DistanceMetric = types.StringValue(string(resp.Config.Vectordb.DistanceMetric))
 		if resp.Config.Vectordb.Pgvector == nil {
 			r.Config.Vectordb.Pgvector = nil
 		} else {
-			r.Config.Vectordb.Pgvector = &tfTypes.PartialVectordbPgvector{}
+			r.Config.Vectordb.Pgvector = &tfTypes.Pgvector{}
 			r.Config.Vectordb.Pgvector.Database = types.StringPointerValue(resp.Config.Vectordb.Pgvector.Database)
 			r.Config.Vectordb.Pgvector.Host = types.StringPointerValue(resp.Config.Vectordb.Pgvector.Host)
 			r.Config.Vectordb.Pgvector.Password = types.StringPointerValue(resp.Config.Vectordb.Pgvector.Password)
@@ -158,7 +158,7 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) RefreshFromSharedAiS
 			if resp.Config.Vectordb.Redis.CloudAuthentication == nil {
 				r.Config.Vectordb.Redis.CloudAuthentication = nil
 			} else {
-				r.Config.Vectordb.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+				r.Config.Vectordb.Redis.CloudAuthentication = &tfTypes.PartialVectordbCloudAuthentication{}
 				if resp.Config.Vectordb.Redis.CloudAuthentication.AuthProvider != nil {
 					r.Config.Vectordb.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Vectordb.Redis.CloudAuthentication.AuthProvider))
 				} else {
@@ -177,19 +177,15 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) RefreshFromSharedAiS
 				r.Config.Vectordb.Redis.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.Vectordb.Redis.CloudAuthentication.GcpServiceAccountJSON)
 			}
 			r.Config.Vectordb.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Vectordb.Redis.ClusterMaxRedirections)
-			if resp.Config.Vectordb.Redis.ClusterNodes != nil {
-				r.Config.Vectordb.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+			r.Config.Vectordb.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
 
-				for _, clusterNodesItem := range resp.Config.Vectordb.Redis.ClusterNodes {
-					var clusterNodes tfTypes.PartialRedisEeClusterNodes
+			for _, clusterNodesItem := range resp.Config.Vectordb.Redis.ClusterNodes {
+				var clusterNodes tfTypes.PartialRedisEeClusterNodes
 
-					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
-					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
+				clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
+				clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
 
-					r.Config.Vectordb.Redis.ClusterNodes = append(r.Config.Vectordb.Redis.ClusterNodes, clusterNodes)
-				}
-			} else {
-				r.Config.Vectordb.Redis.ClusterNodes = nil
+				r.Config.Vectordb.Redis.ClusterNodes = append(r.Config.Vectordb.Redis.ClusterNodes, clusterNodes)
 			}
 			r.Config.Vectordb.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.ConnectTimeout)
 			r.Config.Vectordb.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Vectordb.Redis.ConnectionIsProxied)
@@ -202,19 +198,15 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) RefreshFromSharedAiS
 			r.Config.Vectordb.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.ReadTimeout)
 			r.Config.Vectordb.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.SendTimeout)
 			r.Config.Vectordb.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Vectordb.Redis.SentinelMaster)
-			if resp.Config.Vectordb.Redis.SentinelNodes != nil {
-				r.Config.Vectordb.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+			r.Config.Vectordb.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
 
-				for _, sentinelNodesItem := range resp.Config.Vectordb.Redis.SentinelNodes {
-					var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+			for _, sentinelNodesItem := range resp.Config.Vectordb.Redis.SentinelNodes {
+				var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
 
-					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
-					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+				sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
+				sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
 
-					r.Config.Vectordb.Redis.SentinelNodes = append(r.Config.Vectordb.Redis.SentinelNodes, sentinelNodes)
-				}
-			} else {
-				r.Config.Vectordb.Redis.SentinelNodes = nil
+				r.Config.Vectordb.Redis.SentinelNodes = append(r.Config.Vectordb.Redis.SentinelNodes, sentinelNodes)
 			}
 			r.Config.Vectordb.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Vectordb.Redis.SentinelPassword)
 			if resp.Config.Vectordb.Redis.SentinelRole != nil {
@@ -1023,27 +1015,24 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToSharedAiSemanticRe
 		} else {
 			clusterMaxRedirections = nil
 		}
-		var clusterNodes []shared.AiSemanticResponseGuardPluginClusterNodes
-		if r.Config.Vectordb.Redis.ClusterNodes != nil {
-			clusterNodes = make([]shared.AiSemanticResponseGuardPluginClusterNodes, 0, len(r.Config.Vectordb.Redis.ClusterNodes))
-			for clusterNodesIndex := range r.Config.Vectordb.Redis.ClusterNodes {
-				ip := new(string)
-				if !r.Config.Vectordb.Redis.ClusterNodes[clusterNodesIndex].IP.IsUnknown() && !r.Config.Vectordb.Redis.ClusterNodes[clusterNodesIndex].IP.IsNull() {
-					*ip = r.Config.Vectordb.Redis.ClusterNodes[clusterNodesIndex].IP.ValueString()
-				} else {
-					ip = nil
-				}
-				port1 := new(int64)
-				if !r.Config.Vectordb.Redis.ClusterNodes[clusterNodesIndex].Port.IsUnknown() && !r.Config.Vectordb.Redis.ClusterNodes[clusterNodesIndex].Port.IsNull() {
-					*port1 = r.Config.Vectordb.Redis.ClusterNodes[clusterNodesIndex].Port.ValueInt64()
-				} else {
-					port1 = nil
-				}
-				clusterNodes = append(clusterNodes, shared.AiSemanticResponseGuardPluginClusterNodes{
-					IP:   ip,
-					Port: port1,
-				})
+		clusterNodes := make([]shared.AiSemanticResponseGuardPluginClusterNodes, 0, len(r.Config.Vectordb.Redis.ClusterNodes))
+		for clusterNodesIndex := range r.Config.Vectordb.Redis.ClusterNodes {
+			ip := new(string)
+			if !r.Config.Vectordb.Redis.ClusterNodes[clusterNodesIndex].IP.IsUnknown() && !r.Config.Vectordb.Redis.ClusterNodes[clusterNodesIndex].IP.IsNull() {
+				*ip = r.Config.Vectordb.Redis.ClusterNodes[clusterNodesIndex].IP.ValueString()
+			} else {
+				ip = nil
 			}
+			port1 := new(int64)
+			if !r.Config.Vectordb.Redis.ClusterNodes[clusterNodesIndex].Port.IsUnknown() && !r.Config.Vectordb.Redis.ClusterNodes[clusterNodesIndex].Port.IsNull() {
+				*port1 = r.Config.Vectordb.Redis.ClusterNodes[clusterNodesIndex].Port.ValueInt64()
+			} else {
+				port1 = nil
+			}
+			clusterNodes = append(clusterNodes, shared.AiSemanticResponseGuardPluginClusterNodes{
+				IP:   ip,
+				Port: port1,
+			})
 		}
 		connectTimeout := new(int64)
 		if !r.Config.Vectordb.Redis.ConnectTimeout.IsUnknown() && !r.Config.Vectordb.Redis.ConnectTimeout.IsNull() {
@@ -1111,27 +1100,24 @@ func (r *GatewayPluginAiSemanticResponseGuardResourceModel) ToSharedAiSemanticRe
 		} else {
 			sentinelMaster = nil
 		}
-		var sentinelNodes []shared.AiSemanticResponseGuardPluginSentinelNodes
-		if r.Config.Vectordb.Redis.SentinelNodes != nil {
-			sentinelNodes = make([]shared.AiSemanticResponseGuardPluginSentinelNodes, 0, len(r.Config.Vectordb.Redis.SentinelNodes))
-			for sentinelNodesIndex := range r.Config.Vectordb.Redis.SentinelNodes {
-				host2 := new(string)
-				if !r.Config.Vectordb.Redis.SentinelNodes[sentinelNodesIndex].Host.IsUnknown() && !r.Config.Vectordb.Redis.SentinelNodes[sentinelNodesIndex].Host.IsNull() {
-					*host2 = r.Config.Vectordb.Redis.SentinelNodes[sentinelNodesIndex].Host.ValueString()
-				} else {
-					host2 = nil
-				}
-				port3 := new(int64)
-				if !r.Config.Vectordb.Redis.SentinelNodes[sentinelNodesIndex].Port.IsUnknown() && !r.Config.Vectordb.Redis.SentinelNodes[sentinelNodesIndex].Port.IsNull() {
-					*port3 = r.Config.Vectordb.Redis.SentinelNodes[sentinelNodesIndex].Port.ValueInt64()
-				} else {
-					port3 = nil
-				}
-				sentinelNodes = append(sentinelNodes, shared.AiSemanticResponseGuardPluginSentinelNodes{
-					Host: host2,
-					Port: port3,
-				})
+		sentinelNodes := make([]shared.AiSemanticResponseGuardPluginSentinelNodes, 0, len(r.Config.Vectordb.Redis.SentinelNodes))
+		for sentinelNodesIndex := range r.Config.Vectordb.Redis.SentinelNodes {
+			host2 := new(string)
+			if !r.Config.Vectordb.Redis.SentinelNodes[sentinelNodesIndex].Host.IsUnknown() && !r.Config.Vectordb.Redis.SentinelNodes[sentinelNodesIndex].Host.IsNull() {
+				*host2 = r.Config.Vectordb.Redis.SentinelNodes[sentinelNodesIndex].Host.ValueString()
+			} else {
+				host2 = nil
 			}
+			port3 := new(int64)
+			if !r.Config.Vectordb.Redis.SentinelNodes[sentinelNodesIndex].Port.IsUnknown() && !r.Config.Vectordb.Redis.SentinelNodes[sentinelNodesIndex].Port.IsNull() {
+				*port3 = r.Config.Vectordb.Redis.SentinelNodes[sentinelNodesIndex].Port.ValueInt64()
+			} else {
+				port3 = nil
+			}
+			sentinelNodes = append(sentinelNodes, shared.AiSemanticResponseGuardPluginSentinelNodes{
+				Host: host2,
+				Port: port3,
+			})
 		}
 		sentinelPassword := new(string)
 		if !r.Config.Vectordb.Redis.SentinelPassword.IsUnknown() && !r.Config.Vectordb.Redis.SentinelPassword.IsNull() {

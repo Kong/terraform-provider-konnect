@@ -287,7 +287,7 @@ func (p *Prompts) GetPrepend() []Prepend {
 
 type AiPromptDecoratorPluginConfig struct {
 	// LLM input and output format and schema to use
-	LlmFormat *LlmFormat `default:"openai" json:"llm_format"`
+	LlmFormat *LlmFormat `json:"llm_format,omitempty"`
 	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
 	MaxRequestBodySize *int64   `default:"1048576" json:"max_request_body_size"`
 	Prompts            *Prompts `json:"prompts"`

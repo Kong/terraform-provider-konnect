@@ -33,7 +33,7 @@ resource "konnect_gateway_plugin_ai_llm_as_judge" "my_gatewaypluginaillmasjudge"
         azure_client_id            = "...my_azure_client_id..."
         azure_client_secret        = "...my_azure_client_secret..."
         azure_tenant_id            = "...my_azure_tenant_id..."
-        azure_use_managed_identity = false
+        azure_use_managed_identity = true
         gcp_metadata_url           = "...my_gcp_metadata_url..."
         gcp_oauth_token_url        = "...my_gcp_oauth_token_url..."
         gcp_service_account_json   = "...my_gcp_service_account_json..."
@@ -54,7 +54,7 @@ resource "konnect_gateway_plugin_ai_llm_as_judge" "my_gatewaypluginaillmasjudge"
         name        = "...my_name..."
         options = {
           anthropic_version   = "...my_anthropic_version..."
-          azure_api_version   = "2023-05-15"
+          azure_api_version   = "...my_azure_api_version..."
           azure_deployment_id = "...my_azure_deployment_id..."
           azure_instance      = "...my_azure_instance..."
           bedrock = {
@@ -69,7 +69,7 @@ resource "konnect_gateway_plugin_ai_llm_as_judge" "my_gatewaypluginaillmasjudge"
             video_output_s3_uri        = "...my_video_output_s3_uri..."
           }
           cohere = {
-            embedding_input_type = "classification"
+            embedding_input_type = "search_document"
             wait_for_model       = false
           }
           dashscope = {
@@ -103,7 +103,7 @@ resource "konnect_gateway_plugin_ai_llm_as_judge" "my_gatewaypluginaillmasjudge"
         provider = "deepseek"
       }
       route_type = "llm/v1/embeddings"
-      weight     = 100
+      weight     = 28655
     }
     message_countback = 1
     prompt            = "You are a strict evaluator. You will be given a prompt and a response. Your task is to judge whether the response is correct or incorrect. You must assign a score between 1 and 100, where: 100 represents a completely correct and ideal response, 1 represents a completely incorrect or irrelevant response. Your score must be a single number only — no text, labels, or explanations. Use the full range of values (e.g., 13, 47, 86), not just round numbers like 10, 50, or 100. Be accurate and consistent, as this score will be used by another model for learning and evaluation."
@@ -215,7 +215,7 @@ Optional:
 - `auth` (Attributes) (see [below for nested schema](#nestedatt--config--llm--auth))
 - `description` (String) The semantic description of the target, required if using semantic load balancing. Specially, setting this to 'CATCHALL' will indicate such target to be used when no other targets match the semantic threshold. Only used by ai-proxy-advanced.
 - `logging` (Attributes) (see [below for nested schema](#nestedatt--config--llm--logging))
-- `weight` (Number) The weight this target gets within the upstream loadbalancer (1-65535). Only used by ai-proxy-advanced. Default: 100
+- `weight` (Number) The weight this target gets within the upstream loadbalancer (1-65535). Only used by ai-proxy-advanced.
 
 <a id="nestedatt--config--llm--model"></a>
 ### Nested Schema for `config.llm.model`
@@ -236,7 +236,7 @@ Optional:
 Optional:
 
 - `anthropic_version` (String) Defines the schema/API version, if using Anthropic provider.
-- `azure_api_version` (String) 'api-version' for Azure OpenAI instances. Default: "2023-05-15"
+- `azure_api_version` (String) 'api-version' for Azure OpenAI instances.
 - `azure_deployment_id` (String) Deployment ID for Azure OpenAI instances.
 - `azure_instance` (String) Instance name for Azure OpenAI hosted models.
 - `bedrock` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model--options--bedrock))
@@ -268,7 +268,7 @@ Optional:
 - `aws_sts_endpoint_url` (String) If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 - `batch_bucket_prefix` (String) S3 URI prefix (s3://bucket/prefix/) where Bedrock will get input files from and store results to for native batch API.
 - `batch_role_arn` (String) AWS role arn used for calling batch API. Try to get the value from request if ommited.
-- `embeddings_normalize` (Boolean) If using AWS providers (Bedrock), set to true to normalize the embeddings. Default: false
+- `embeddings_normalize` (Boolean) If using AWS providers (Bedrock), set to true to normalize the embeddings.
 - `performance_config_latency` (String) Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
 - `video_output_s3_uri` (String) S3 URI (s3://bucket/prefix) where Bedrock will store generated video files. Required for video generation.
 
@@ -278,7 +278,7 @@ Optional:
 
 Optional:
 
-- `embedding_input_type` (String) The purpose of the input text to calculate embedding vectors. possible known values include one of ["classification", "clustering", "image", "search_document", "search_query"]; Default: "classification"
+- `embedding_input_type` (String) The purpose of the input text to calculate embedding vectors. possible known values include one of ["classification", "clustering", "image", "search_document", "search_query"]
 - `wait_for_model` (Boolean) Wait for the model if it is not ready
 
 
@@ -289,7 +289,6 @@ Optional:
 
 - `international` (Boolean) Two Dashscope endpoints are available, and the international endpoint will be used when this is set to `true`.
 It is recommended to set this to `true` when using international version of dashscope.
-Default: true
 
 
 <a id="nestedatt--config--llm--model--options--databricks"></a>
@@ -327,17 +326,17 @@ Optional:
 
 Optional:
 
-- `allow_override` (Boolean) If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin. Default: false
+- `allow_override` (Boolean) If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
 - `aws_access_key_id` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
 - `aws_secret_access_key` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
 - `azure_client_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
 - `azure_client_secret` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
 - `azure_tenant_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
-- `azure_use_managed_identity` (Boolean) Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models. Default: false
+- `azure_use_managed_identity` (Boolean) Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
 - `gcp_metadata_url` (String) Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.
 - `gcp_oauth_token_url` (String) Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.
 - `gcp_service_account_json` (String) Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
-- `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models. Default: false
+- `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models.
 - `header_name` (String) If AI model requires authentication via Authorization or API key header, specify its name here.
 - `header_value` (String) Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
 - `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
@@ -350,8 +349,8 @@ Optional:
 
 Optional:
 
-- `log_payloads` (Boolean) If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well. Default: false
-- `log_statistics` (Boolean) If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output. Default: false
+- `log_payloads` (Boolean) If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well.
+- `log_statistics` (Boolean) If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.
 
 
 

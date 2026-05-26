@@ -27,7 +27,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 		if resp.Config.Llm.Auth == nil {
 			r.Config.Llm.Auth = nil
 		} else {
-			r.Config.Llm.Auth = &tfTypes.PartialEmbeddingsAuth{}
+			r.Config.Llm.Auth = &tfTypes.AiLlmAsJudgePluginAuth{}
 			r.Config.Llm.Auth.AllowOverride = types.BoolPointerValue(resp.Config.Llm.Auth.AllowOverride)
 			r.Config.Llm.Auth.AwsAccessKeyID = types.StringPointerValue(resp.Config.Llm.Auth.AwsAccessKeyID)
 			r.Config.Llm.Auth.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Llm.Auth.AwsSecretAccessKey)
@@ -57,13 +57,13 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 			r.Config.Llm.Logging.LogPayloads = types.BoolPointerValue(resp.Config.Llm.Logging.LogPayloads)
 			r.Config.Llm.Logging.LogStatistics = types.BoolPointerValue(resp.Config.Llm.Logging.LogStatistics)
 		}
-		r.Config.Llm.Model = &tfTypes.PartialModelModel{}
+		r.Config.Llm.Model = &tfTypes.AiLlmAsJudgePluginModel{}
 		r.Config.Llm.Model.ModelAlias = types.StringPointerValue(resp.Config.Llm.Model.ModelAlias)
 		r.Config.Llm.Model.Name = types.StringPointerValue(resp.Config.Llm.Model.Name)
 		if resp.Config.Llm.Model.Options == nil {
 			r.Config.Llm.Model.Options = nil
 		} else {
-			r.Config.Llm.Model.Options = &tfTypes.PartialModelOptions{}
+			r.Config.Llm.Model.Options = &tfTypes.AiLlmAsJudgePluginOptions{}
 			r.Config.Llm.Model.Options.AnthropicVersion = types.StringPointerValue(resp.Config.Llm.Model.Options.AnthropicVersion)
 			r.Config.Llm.Model.Options.AzureAPIVersion = types.StringPointerValue(resp.Config.Llm.Model.Options.AzureAPIVersion)
 			r.Config.Llm.Model.Options.AzureDeploymentID = types.StringPointerValue(resp.Config.Llm.Model.Options.AzureDeploymentID)
@@ -71,7 +71,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 			if resp.Config.Llm.Model.Options.Bedrock == nil {
 				r.Config.Llm.Model.Options.Bedrock = nil
 			} else {
-				r.Config.Llm.Model.Options.Bedrock = &tfTypes.PartialEmbeddingsBedrock{}
+				r.Config.Llm.Model.Options.Bedrock = &tfTypes.AiLlmAsJudgePluginBedrock{}
 				r.Config.Llm.Model.Options.Bedrock.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.AwsAssumeRoleArn)
 				r.Config.Llm.Model.Options.Bedrock.AwsRegion = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.AwsRegion)
 				r.Config.Llm.Model.Options.Bedrock.AwsRoleSessionName = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.AwsRoleSessionName)
@@ -85,7 +85,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 			if resp.Config.Llm.Model.Options.Cohere == nil {
 				r.Config.Llm.Model.Options.Cohere = nil
 			} else {
-				r.Config.Llm.Model.Options.Cohere = &tfTypes.PartialModelCohere{}
+				r.Config.Llm.Model.Options.Cohere = &tfTypes.AiLlmAsJudgePluginCohere{}
 				if resp.Config.Llm.Model.Options.Cohere.EmbeddingInputType != nil {
 					r.Config.Llm.Model.Options.Cohere.EmbeddingInputType = types.StringValue(string(*resp.Config.Llm.Model.Options.Cohere.EmbeddingInputType))
 				} else {
@@ -102,14 +102,14 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 			if resp.Config.Llm.Model.Options.Databricks == nil {
 				r.Config.Llm.Model.Options.Databricks = nil
 			} else {
-				r.Config.Llm.Model.Options.Databricks = &tfTypes.PartialModelDatabricks{}
+				r.Config.Llm.Model.Options.Databricks = &tfTypes.AiLlmAsJudgePluginDatabricks{}
 				r.Config.Llm.Model.Options.Databricks.WorkspaceInstanceID = types.StringPointerValue(resp.Config.Llm.Model.Options.Databricks.WorkspaceInstanceID)
 			}
 			r.Config.Llm.Model.Options.EmbeddingsDimensions = types.Int64PointerValue(resp.Config.Llm.Model.Options.EmbeddingsDimensions)
 			if resp.Config.Llm.Model.Options.Gemini == nil {
 				r.Config.Llm.Model.Options.Gemini = nil
 			} else {
-				r.Config.Llm.Model.Options.Gemini = &tfTypes.PartialModelGemini{}
+				r.Config.Llm.Model.Options.Gemini = &tfTypes.AiLlmAsJudgePluginGemini{}
 				r.Config.Llm.Model.Options.Gemini.APIEndpoint = types.StringPointerValue(resp.Config.Llm.Model.Options.Gemini.APIEndpoint)
 				r.Config.Llm.Model.Options.Gemini.EndpointID = types.StringPointerValue(resp.Config.Llm.Model.Options.Gemini.EndpointID)
 				r.Config.Llm.Model.Options.Gemini.LocationID = types.StringPointerValue(resp.Config.Llm.Model.Options.Gemini.LocationID)
@@ -118,7 +118,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 			if resp.Config.Llm.Model.Options.Huggingface == nil {
 				r.Config.Llm.Model.Options.Huggingface = nil
 			} else {
-				r.Config.Llm.Model.Options.Huggingface = &tfTypes.PartialEmbeddingsHuggingface{}
+				r.Config.Llm.Model.Options.Huggingface = &tfTypes.AiLlmAsJudgePluginHuggingface{}
 				r.Config.Llm.Model.Options.Huggingface.UseCache = types.BoolPointerValue(resp.Config.Llm.Model.Options.Huggingface.UseCache)
 				r.Config.Llm.Model.Options.Huggingface.WaitForModel = types.BoolPointerValue(resp.Config.Llm.Model.Options.Huggingface.WaitForModel)
 			}

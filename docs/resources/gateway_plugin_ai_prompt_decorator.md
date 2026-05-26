@@ -16,7 +16,7 @@ GatewayPluginAiPromptDecorator Resource
 resource "konnect_gateway_plugin_ai_prompt_decorator" "my_gatewaypluginaipromptdecorator" {
   condition = "...my_condition..."
   config = {
-    llm_format            = "openai"
+    llm_format            = "anthropic"
     max_request_body_size = 1048576
     prompts = {
       append = [
@@ -109,7 +109,7 @@ resource "konnect_gateway_plugin_ai_prompt_decorator" "my_gatewaypluginaipromptd
 
 Optional:
 
-- `llm_format` (String) LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]; Default: "openai"
+- `llm_format` (String) LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]
 - `max_request_body_size` (Number) max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 1048576
 - `prompts` (Attributes) (see [below for nested schema](#nestedatt--config--prompts))
 

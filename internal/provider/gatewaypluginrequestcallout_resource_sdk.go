@@ -35,7 +35,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				if resp.Config.Cache.Redis.CloudAuthentication == nil {
 					r.Config.Cache.Redis.CloudAuthentication = nil
 				} else {
-					r.Config.Cache.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+					r.Config.Cache.Redis.CloudAuthentication = &tfTypes.PartialVectordbCloudAuthentication{}
 					if resp.Config.Cache.Redis.CloudAuthentication.AuthProvider != nil {
 						r.Config.Cache.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.Cache.Redis.CloudAuthentication.AuthProvider))
 					} else {
@@ -54,19 +54,15 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 					r.Config.Cache.Redis.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.Config.Cache.Redis.CloudAuthentication.GcpServiceAccountJSON)
 				}
 				r.Config.Cache.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Cache.Redis.ClusterMaxRedirections)
-				if resp.Config.Cache.Redis.ClusterNodes != nil {
-					r.Config.Cache.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+				r.Config.Cache.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
 
-					for _, clusterNodesItem := range resp.Config.Cache.Redis.ClusterNodes {
-						var clusterNodes tfTypes.PartialRedisEeClusterNodes
+				for _, clusterNodesItem := range resp.Config.Cache.Redis.ClusterNodes {
+					var clusterNodes tfTypes.PartialRedisEeClusterNodes
 
-						clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
-						clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
+					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
+					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
 
-						r.Config.Cache.Redis.ClusterNodes = append(r.Config.Cache.Redis.ClusterNodes, clusterNodes)
-					}
-				} else {
-					r.Config.Cache.Redis.ClusterNodes = nil
+					r.Config.Cache.Redis.ClusterNodes = append(r.Config.Cache.Redis.ClusterNodes, clusterNodes)
 				}
 				r.Config.Cache.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.ConnectTimeout)
 				r.Config.Cache.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Cache.Redis.ConnectionIsProxied)
@@ -79,19 +75,15 @@ func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCallo
 				r.Config.Cache.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.ReadTimeout)
 				r.Config.Cache.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Cache.Redis.SendTimeout)
 				r.Config.Cache.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Cache.Redis.SentinelMaster)
-				if resp.Config.Cache.Redis.SentinelNodes != nil {
-					r.Config.Cache.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+				r.Config.Cache.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
 
-					for _, sentinelNodesItem := range resp.Config.Cache.Redis.SentinelNodes {
-						var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
+				for _, sentinelNodesItem := range resp.Config.Cache.Redis.SentinelNodes {
+					var sentinelNodes tfTypes.PartialRedisEeSentinelNodes
 
-						sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
-						sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
+					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
 
-						r.Config.Cache.Redis.SentinelNodes = append(r.Config.Cache.Redis.SentinelNodes, sentinelNodes)
-					}
-				} else {
-					r.Config.Cache.Redis.SentinelNodes = nil
+					r.Config.Cache.Redis.SentinelNodes = append(r.Config.Cache.Redis.SentinelNodes, sentinelNodes)
 				}
 				r.Config.Cache.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Cache.Redis.SentinelPassword)
 				if resp.Config.Cache.Redis.SentinelRole != nil {
@@ -661,27 +653,24 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 			} else {
 				clusterMaxRedirections = nil
 			}
-			var clusterNodes []shared.RequestCalloutPluginClusterNodes
-			if r.Config.Cache.Redis.ClusterNodes != nil {
-				clusterNodes = make([]shared.RequestCalloutPluginClusterNodes, 0, len(r.Config.Cache.Redis.ClusterNodes))
-				for clusterNodesIndex := range r.Config.Cache.Redis.ClusterNodes {
-					ip := new(string)
-					if !r.Config.Cache.Redis.ClusterNodes[clusterNodesIndex].IP.IsUnknown() && !r.Config.Cache.Redis.ClusterNodes[clusterNodesIndex].IP.IsNull() {
-						*ip = r.Config.Cache.Redis.ClusterNodes[clusterNodesIndex].IP.ValueString()
-					} else {
-						ip = nil
-					}
-					port := new(int64)
-					if !r.Config.Cache.Redis.ClusterNodes[clusterNodesIndex].Port.IsUnknown() && !r.Config.Cache.Redis.ClusterNodes[clusterNodesIndex].Port.IsNull() {
-						*port = r.Config.Cache.Redis.ClusterNodes[clusterNodesIndex].Port.ValueInt64()
-					} else {
-						port = nil
-					}
-					clusterNodes = append(clusterNodes, shared.RequestCalloutPluginClusterNodes{
-						IP:   ip,
-						Port: port,
-					})
+			clusterNodes := make([]shared.RequestCalloutPluginClusterNodes, 0, len(r.Config.Cache.Redis.ClusterNodes))
+			for clusterNodesIndex := range r.Config.Cache.Redis.ClusterNodes {
+				ip := new(string)
+				if !r.Config.Cache.Redis.ClusterNodes[clusterNodesIndex].IP.IsUnknown() && !r.Config.Cache.Redis.ClusterNodes[clusterNodesIndex].IP.IsNull() {
+					*ip = r.Config.Cache.Redis.ClusterNodes[clusterNodesIndex].IP.ValueString()
+				} else {
+					ip = nil
 				}
+				port := new(int64)
+				if !r.Config.Cache.Redis.ClusterNodes[clusterNodesIndex].Port.IsUnknown() && !r.Config.Cache.Redis.ClusterNodes[clusterNodesIndex].Port.IsNull() {
+					*port = r.Config.Cache.Redis.ClusterNodes[clusterNodesIndex].Port.ValueInt64()
+				} else {
+					port = nil
+				}
+				clusterNodes = append(clusterNodes, shared.RequestCalloutPluginClusterNodes{
+					IP:   ip,
+					Port: port,
+				})
 			}
 			connectTimeout := new(int64)
 			if !r.Config.Cache.Redis.ConnectTimeout.IsUnknown() && !r.Config.Cache.Redis.ConnectTimeout.IsNull() {
@@ -749,27 +738,24 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 			} else {
 				sentinelMaster = nil
 			}
-			var sentinelNodes []shared.RequestCalloutPluginSentinelNodes
-			if r.Config.Cache.Redis.SentinelNodes != nil {
-				sentinelNodes = make([]shared.RequestCalloutPluginSentinelNodes, 0, len(r.Config.Cache.Redis.SentinelNodes))
-				for sentinelNodesIndex := range r.Config.Cache.Redis.SentinelNodes {
-					host1 := new(string)
-					if !r.Config.Cache.Redis.SentinelNodes[sentinelNodesIndex].Host.IsUnknown() && !r.Config.Cache.Redis.SentinelNodes[sentinelNodesIndex].Host.IsNull() {
-						*host1 = r.Config.Cache.Redis.SentinelNodes[sentinelNodesIndex].Host.ValueString()
-					} else {
-						host1 = nil
-					}
-					port2 := new(int64)
-					if !r.Config.Cache.Redis.SentinelNodes[sentinelNodesIndex].Port.IsUnknown() && !r.Config.Cache.Redis.SentinelNodes[sentinelNodesIndex].Port.IsNull() {
-						*port2 = r.Config.Cache.Redis.SentinelNodes[sentinelNodesIndex].Port.ValueInt64()
-					} else {
-						port2 = nil
-					}
-					sentinelNodes = append(sentinelNodes, shared.RequestCalloutPluginSentinelNodes{
-						Host: host1,
-						Port: port2,
-					})
+			sentinelNodes := make([]shared.RequestCalloutPluginSentinelNodes, 0, len(r.Config.Cache.Redis.SentinelNodes))
+			for sentinelNodesIndex := range r.Config.Cache.Redis.SentinelNodes {
+				host1 := new(string)
+				if !r.Config.Cache.Redis.SentinelNodes[sentinelNodesIndex].Host.IsUnknown() && !r.Config.Cache.Redis.SentinelNodes[sentinelNodesIndex].Host.IsNull() {
+					*host1 = r.Config.Cache.Redis.SentinelNodes[sentinelNodesIndex].Host.ValueString()
+				} else {
+					host1 = nil
 				}
+				port2 := new(int64)
+				if !r.Config.Cache.Redis.SentinelNodes[sentinelNodesIndex].Port.IsUnknown() && !r.Config.Cache.Redis.SentinelNodes[sentinelNodesIndex].Port.IsNull() {
+					*port2 = r.Config.Cache.Redis.SentinelNodes[sentinelNodesIndex].Port.ValueInt64()
+				} else {
+					port2 = nil
+				}
+				sentinelNodes = append(sentinelNodes, shared.RequestCalloutPluginSentinelNodes{
+					Host: host1,
+					Port: port2,
+				})
 			}
 			sentinelPassword := new(string)
 			if !r.Config.Cache.Redis.SentinelPassword.IsUnknown() && !r.Config.Cache.Redis.SentinelPassword.IsNull() {

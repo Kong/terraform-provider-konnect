@@ -108,8 +108,7 @@ func (r *GatewayPluginAiPromptDecoratorResource) Schema(ctx context.Context, req
 					"llm_format": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Default:     stringdefault.StaticString(`openai`),
-						Description: `LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]; Default: "openai"`,
+						Description: `LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]`,
 					},
 					"max_request_body_size": schema.Int64Attribute{
 						Computed:    true,

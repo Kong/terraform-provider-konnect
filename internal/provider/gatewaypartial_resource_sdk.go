@@ -429,7 +429,7 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 				if resp.PartialVectordb.Config.Redis.CloudAuthentication == nil {
 					r.Vectordb.Config.Redis.CloudAuthentication = nil
 				} else {
-					r.Vectordb.Config.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+					r.Vectordb.Config.Redis.CloudAuthentication = &tfTypes.PartialVectordbCloudAuthentication{}
 					if resp.PartialVectordb.Config.Redis.CloudAuthentication.AuthProvider != nil {
 						r.Vectordb.Config.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.PartialVectordb.Config.Redis.CloudAuthentication.AuthProvider))
 					} else {
@@ -448,19 +448,15 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 					r.Vectordb.Config.Redis.CloudAuthentication.GcpServiceAccountJSON = types.StringPointerValue(resp.PartialVectordb.Config.Redis.CloudAuthentication.GcpServiceAccountJSON)
 				}
 				r.Vectordb.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.PartialVectordb.Config.Redis.ClusterMaxRedirections)
-				if resp.PartialVectordb.Config.Redis.ClusterNodes != nil {
-					r.Vectordb.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
+				r.Vectordb.Config.Redis.ClusterNodes = []tfTypes.PartialRedisEeClusterNodes{}
 
-					for _, clusterNodesItem1 := range resp.PartialVectordb.Config.Redis.ClusterNodes {
-						var clusterNodes1 tfTypes.PartialRedisEeClusterNodes
+				for _, clusterNodesItem1 := range resp.PartialVectordb.Config.Redis.ClusterNodes {
+					var clusterNodes1 tfTypes.PartialRedisEeClusterNodes
 
-						clusterNodes1.IP = types.StringPointerValue(clusterNodesItem1.IP)
-						clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem1.Port)
+					clusterNodes1.IP = types.StringPointerValue(clusterNodesItem1.IP)
+					clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem1.Port)
 
-						r.Vectordb.Config.Redis.ClusterNodes = append(r.Vectordb.Config.Redis.ClusterNodes, clusterNodes1)
-					}
-				} else {
-					r.Vectordb.Config.Redis.ClusterNodes = nil
+					r.Vectordb.Config.Redis.ClusterNodes = append(r.Vectordb.Config.Redis.ClusterNodes, clusterNodes1)
 				}
 				r.Vectordb.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.PartialVectordb.Config.Redis.ConnectTimeout)
 				r.Vectordb.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.PartialVectordb.Config.Redis.ConnectionIsProxied)
@@ -473,19 +469,15 @@ func (r *GatewayPartialResourceModel) RefreshFromSharedPartial(ctx context.Conte
 				r.Vectordb.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.PartialVectordb.Config.Redis.ReadTimeout)
 				r.Vectordb.Config.Redis.SendTimeout = types.Int64PointerValue(resp.PartialVectordb.Config.Redis.SendTimeout)
 				r.Vectordb.Config.Redis.SentinelMaster = types.StringPointerValue(resp.PartialVectordb.Config.Redis.SentinelMaster)
-				if resp.PartialVectordb.Config.Redis.SentinelNodes != nil {
-					r.Vectordb.Config.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
+				r.Vectordb.Config.Redis.SentinelNodes = []tfTypes.PartialRedisEeSentinelNodes{}
 
-					for _, sentinelNodesItem1 := range resp.PartialVectordb.Config.Redis.SentinelNodes {
-						var sentinelNodes1 tfTypes.PartialRedisEeSentinelNodes
+				for _, sentinelNodesItem1 := range resp.PartialVectordb.Config.Redis.SentinelNodes {
+					var sentinelNodes1 tfTypes.PartialRedisEeSentinelNodes
 
-						sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem1.Host)
-						sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem1.Port)
+					sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem1.Host)
+					sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem1.Port)
 
-						r.Vectordb.Config.Redis.SentinelNodes = append(r.Vectordb.Config.Redis.SentinelNodes, sentinelNodes1)
-					}
-				} else {
-					r.Vectordb.Config.Redis.SentinelNodes = nil
+					r.Vectordb.Config.Redis.SentinelNodes = append(r.Vectordb.Config.Redis.SentinelNodes, sentinelNodes1)
 				}
 				r.Vectordb.Config.Redis.SentinelPassword = types.StringPointerValue(resp.PartialVectordb.Config.Redis.SentinelPassword)
 				if resp.PartialVectordb.Config.Redis.SentinelRole != nil {
@@ -1319,27 +1311,24 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 			} else {
 				clusterMaxRedirections1 = nil
 			}
-			var clusterNodes1 []shared.PartialVectordbClusterNodes
-			if r.Vectordb.Config.Redis.ClusterNodes != nil {
-				clusterNodes1 = make([]shared.PartialVectordbClusterNodes, 0, len(r.Vectordb.Config.Redis.ClusterNodes))
-				for clusterNodesIndex1 := range r.Vectordb.Config.Redis.ClusterNodes {
-					ip1 := new(string)
-					if !r.Vectordb.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.IsUnknown() && !r.Vectordb.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.IsNull() {
-						*ip1 = r.Vectordb.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.ValueString()
-					} else {
-						ip1 = nil
-					}
-					port5 := new(int64)
-					if !r.Vectordb.Config.Redis.ClusterNodes[clusterNodesIndex1].Port.IsUnknown() && !r.Vectordb.Config.Redis.ClusterNodes[clusterNodesIndex1].Port.IsNull() {
-						*port5 = r.Vectordb.Config.Redis.ClusterNodes[clusterNodesIndex1].Port.ValueInt64()
-					} else {
-						port5 = nil
-					}
-					clusterNodes1 = append(clusterNodes1, shared.PartialVectordbClusterNodes{
-						IP:   ip1,
-						Port: port5,
-					})
+			clusterNodes1 := make([]shared.PartialVectordbClusterNodes, 0, len(r.Vectordb.Config.Redis.ClusterNodes))
+			for clusterNodesIndex1 := range r.Vectordb.Config.Redis.ClusterNodes {
+				ip1 := new(string)
+				if !r.Vectordb.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.IsUnknown() && !r.Vectordb.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.IsNull() {
+					*ip1 = r.Vectordb.Config.Redis.ClusterNodes[clusterNodesIndex1].IP.ValueString()
+				} else {
+					ip1 = nil
 				}
+				port5 := new(int64)
+				if !r.Vectordb.Config.Redis.ClusterNodes[clusterNodesIndex1].Port.IsUnknown() && !r.Vectordb.Config.Redis.ClusterNodes[clusterNodesIndex1].Port.IsNull() {
+					*port5 = r.Vectordb.Config.Redis.ClusterNodes[clusterNodesIndex1].Port.ValueInt64()
+				} else {
+					port5 = nil
+				}
+				clusterNodes1 = append(clusterNodes1, shared.PartialVectordbClusterNodes{
+					IP:   ip1,
+					Port: port5,
+				})
 			}
 			connectTimeout1 := new(int64)
 			if !r.Vectordb.Config.Redis.ConnectTimeout.IsUnknown() && !r.Vectordb.Config.Redis.ConnectTimeout.IsNull() {
@@ -1407,27 +1396,24 @@ func (r *GatewayPartialResourceModel) ToSharedPartial(ctx context.Context) (*sha
 			} else {
 				sentinelMaster1 = nil
 			}
-			var sentinelNodes1 []shared.PartialVectordbSentinelNodes
-			if r.Vectordb.Config.Redis.SentinelNodes != nil {
-				sentinelNodes1 = make([]shared.PartialVectordbSentinelNodes, 0, len(r.Vectordb.Config.Redis.SentinelNodes))
-				for sentinelNodesIndex1 := range r.Vectordb.Config.Redis.SentinelNodes {
-					host5 := new(string)
-					if !r.Vectordb.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.IsUnknown() && !r.Vectordb.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.IsNull() {
-						*host5 = r.Vectordb.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.ValueString()
-					} else {
-						host5 = nil
-					}
-					port7 := new(int64)
-					if !r.Vectordb.Config.Redis.SentinelNodes[sentinelNodesIndex1].Port.IsUnknown() && !r.Vectordb.Config.Redis.SentinelNodes[sentinelNodesIndex1].Port.IsNull() {
-						*port7 = r.Vectordb.Config.Redis.SentinelNodes[sentinelNodesIndex1].Port.ValueInt64()
-					} else {
-						port7 = nil
-					}
-					sentinelNodes1 = append(sentinelNodes1, shared.PartialVectordbSentinelNodes{
-						Host: host5,
-						Port: port7,
-					})
+			sentinelNodes1 := make([]shared.PartialVectordbSentinelNodes, 0, len(r.Vectordb.Config.Redis.SentinelNodes))
+			for sentinelNodesIndex1 := range r.Vectordb.Config.Redis.SentinelNodes {
+				host5 := new(string)
+				if !r.Vectordb.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.IsUnknown() && !r.Vectordb.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.IsNull() {
+					*host5 = r.Vectordb.Config.Redis.SentinelNodes[sentinelNodesIndex1].Host.ValueString()
+				} else {
+					host5 = nil
 				}
+				port7 := new(int64)
+				if !r.Vectordb.Config.Redis.SentinelNodes[sentinelNodesIndex1].Port.IsUnknown() && !r.Vectordb.Config.Redis.SentinelNodes[sentinelNodesIndex1].Port.IsNull() {
+					*port7 = r.Vectordb.Config.Redis.SentinelNodes[sentinelNodesIndex1].Port.ValueInt64()
+				} else {
+					port7 = nil
+				}
+				sentinelNodes1 = append(sentinelNodes1, shared.PartialVectordbSentinelNodes{
+					Host: host5,
+					Port: port7,
+				})
 			}
 			sentinelPassword1 := new(string)
 			if !r.Vectordb.Config.Redis.SentinelPassword.IsUnknown() && !r.Vectordb.Config.Redis.SentinelPassword.IsNull() {

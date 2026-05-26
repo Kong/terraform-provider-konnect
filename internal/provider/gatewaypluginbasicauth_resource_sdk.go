@@ -32,7 +32,7 @@ func (r *GatewayPluginBasicAuthResourceModel) RefreshFromSharedBasicAuthPlugin(c
 					if resp.Config.BruteForceProtection.Redis.CloudAuthentication == nil {
 						r.Config.BruteForceProtection.Redis.CloudAuthentication = nil
 					} else {
-						r.Config.BruteForceProtection.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+						r.Config.BruteForceProtection.Redis.CloudAuthentication = &tfTypes.PartialVectordbCloudAuthentication{}
 						if resp.Config.BruteForceProtection.Redis.CloudAuthentication.AuthProvider != nil {
 							r.Config.BruteForceProtection.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.BruteForceProtection.Redis.CloudAuthentication.AuthProvider))
 						} else {

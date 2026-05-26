@@ -24,11 +24,11 @@ resource "konnect_gateway_plugin_ai_semantic_prompt_guard" "my_gatewaypluginaise
         azure_client_id            = "...my_azure_client_id..."
         azure_client_secret        = "...my_azure_client_secret..."
         azure_tenant_id            = "...my_azure_tenant_id..."
-        azure_use_managed_identity = false
+        azure_use_managed_identity = true
         gcp_metadata_url           = "...my_gcp_metadata_url..."
         gcp_oauth_token_url        = "...my_gcp_oauth_token_url..."
         gcp_service_account_json   = "...my_gcp_service_account_json..."
-        gcp_use_service_account    = false
+        gcp_use_service_account    = true
         header_name                = "...my_header_name..."
         header_value               = "...my_header_value..."
         param_location             = "query"
@@ -39,7 +39,7 @@ resource "konnect_gateway_plugin_ai_semantic_prompt_guard" "my_gatewaypluginaise
         name = "...my_name..."
         options = {
           azure = {
-            api_version   = "2023-05-15"
+            api_version   = "...my_api_version..."
             deployment_id = "...my_deployment_id..."
             instance      = "...my_instance..."
           }
@@ -50,7 +50,7 @@ resource "konnect_gateway_plugin_ai_semantic_prompt_guard" "my_gatewaypluginaise
             aws_sts_endpoint_url       = "...my_aws_sts_endpoint_url..."
             batch_bucket_prefix        = "...my_batch_bucket_prefix..."
             batch_role_arn             = "...my_batch_role_arn..."
-            embeddings_normalize       = false
+            embeddings_normalize       = true
             performance_config_latency = "...my_performance_config_latency..."
             video_output_s3_uri        = "...my_video_output_s3_uri..."
           }
@@ -69,7 +69,7 @@ resource "konnect_gateway_plugin_ai_semantic_prompt_guard" "my_gatewaypluginaise
       }
     }
     genai_category        = "text/generation"
-    llm_format            = "openai"
+    llm_format            = "cohere"
     max_request_body_size = 1048576
     rules = {
       allow_prompts = [
@@ -89,18 +89,18 @@ resource "konnect_gateway_plugin_ai_semantic_prompt_guard" "my_gatewaypluginaise
       dimensions      = 4
       distance_metric = "euclidean"
       pgvector = {
-        database     = "kong-pgvector"
-        host         = "127.0.0.1"
+        database     = "...my_database..."
+        host         = "...my_host..."
         password     = "...my_password..."
-        port         = 5432
+        port         = 4
         ssl          = false
         ssl_cert     = "...my_ssl_cert..."
         ssl_cert_key = "...my_ssl_cert_key..."
         ssl_required = false
         ssl_verify   = false
-        ssl_version  = "tlsv1_2"
-        timeout      = 5000
-        user         = "postgres"
+        ssl_version  = "tlsv1_3"
+        timeout      = 7.16
+        user         = "...my_user..."
       }
       redis = {
         cloud_authentication = {
@@ -117,28 +117,28 @@ resource "konnect_gateway_plugin_ai_semantic_prompt_guard" "my_gatewaypluginaise
           azure_tenant_id          = "...my_azure_tenant_id..."
           gcp_service_account_json = "...my_gcp_service_account_json..."
         }
-        cluster_max_redirections = 5
+        cluster_max_redirections = 10
         cluster_nodes = [
           {
-            ip   = "127.0.0.1"
-            port = 6379
+            ip   = "...my_ip..."
+            port = 4694
           }
         ]
-        connect_timeout       = 2000
+        connect_timeout       = 927722545
         connection_is_proxied = false
-        database              = 0
-        host                  = "127.0.0.1"
+        database              = 7
+        host                  = "...my_host..."
         keepalive_backlog     = 1501125607
-        keepalive_pool_size   = 256
+        keepalive_pool_size   = 114222283
         password              = "...my_password..."
-        port                  = 6379
-        read_timeout          = 2000
-        send_timeout          = 2000
+        port                  = 24350
+        read_timeout          = 888592257
+        send_timeout          = 228434190
         sentinel_master       = "...my_sentinel_master..."
         sentinel_nodes = [
           {
-            host = "127.0.0.1"
-            port = 6379
+            host = "...my_host..."
+            port = 18183
           }
         ]
         sentinel_password = "...my_sentinel_password..."
@@ -146,7 +146,7 @@ resource "konnect_gateway_plugin_ai_semantic_prompt_guard" "my_gatewaypluginaise
         sentinel_username = "...my_sentinel_username..."
         server_name       = "...my_server_name..."
         ssl               = false
-        ssl_verify        = false
+        ssl_verify        = true
         username          = "...my_username..."
       }
       strategy  = "redis"
@@ -235,7 +235,7 @@ Required:
 Optional:
 
 - `genai_category` (String) Generative AI category of the request. possible known values include one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation"]; Default: "text/generation"
-- `llm_format` (String) LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]; Default: "openai"
+- `llm_format` (String) LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]
 - `max_request_body_size` (Number) max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 1048576
 - `rules` (Attributes) (see [below for nested schema](#nestedatt--config--rules))
 - `search` (Attributes) (see [below for nested schema](#nestedatt--config--search))
@@ -279,7 +279,7 @@ Optional:
 
 Optional:
 
-- `api_version` (String) 'api-version' for Azure OpenAI instances. Default: "2023-05-15"
+- `api_version` (String) 'api-version' for Azure OpenAI instances.
 - `deployment_id` (String) Deployment ID for Azure OpenAI instances.
 - `instance` (String) Instance name for Azure OpenAI hosted models.
 
@@ -295,7 +295,7 @@ Optional:
 - `aws_sts_endpoint_url` (String) If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 - `batch_bucket_prefix` (String) S3 URI prefix (s3://bucket/prefix/) where Bedrock will get input files from and store results to for native batch API.
 - `batch_role_arn` (String) AWS role arn used for calling batch API. Try to get the value from request if ommited.
-- `embeddings_normalize` (Boolean) If using AWS providers (Bedrock), set to true to normalize the embeddings. Default: false
+- `embeddings_normalize` (Boolean) If using AWS providers (Bedrock), set to true to normalize the embeddings.
 - `performance_config_latency` (String) Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
 - `video_output_s3_uri` (String) S3 URI (s3://bucket/prefix) where Bedrock will store generated video files. Required for video generation.
 
@@ -326,17 +326,17 @@ Optional:
 
 Optional:
 
-- `allow_override` (Boolean) If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin. Default: false
+- `allow_override` (Boolean) If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
 - `aws_access_key_id` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
 - `aws_secret_access_key` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
 - `azure_client_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
 - `azure_client_secret` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
 - `azure_tenant_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
-- `azure_use_managed_identity` (Boolean) Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models. Default: false
+- `azure_use_managed_identity` (Boolean) Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
 - `gcp_metadata_url` (String) Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.
 - `gcp_oauth_token_url` (String) Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.
 - `gcp_service_account_json` (String) Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
-- `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models. Default: false
+- `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models.
 - `header_name` (String) If AI model requires authentication via Authorization or API key header, specify its name here.
 - `header_value` (String) Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
 - `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
@@ -365,18 +365,18 @@ Optional:
 
 Optional:
 
-- `database` (String) the database of the pgvector database. Default: "kong-pgvector"
-- `host` (String) the host of the pgvector database. Default: "127.0.0.1"
+- `database` (String) the database of the pgvector database
+- `host` (String) the host of the pgvector database
 - `password` (String) the password of the pgvector database
-- `port` (Number) the port of the pgvector database. Default: 5432
-- `ssl` (Boolean) whether to use ssl for the pgvector database. Default: false
+- `port` (Number) the port of the pgvector database
+- `ssl` (Boolean) whether to use ssl for the pgvector database
 - `ssl_cert` (String) the path of ssl cert to use for the pgvector database
 - `ssl_cert_key` (String) the path of ssl cert key to use for the pgvector database
-- `ssl_required` (Boolean) whether ssl is required for the pgvector database. Default: false
-- `ssl_verify` (Boolean) whether to verify ssl for the pgvector database. Default: false
-- `ssl_version` (String) the ssl version to use for the pgvector database. possible known values include one of ["any", "tlsv1_2", "tlsv1_3"]; Default: "tlsv1_2"
-- `timeout` (Number) the timeout of the pgvector database. Default: 5000
-- `user` (String) the user of the pgvector database. Default: "postgres"
+- `ssl_required` (Boolean) whether ssl is required for the pgvector database
+- `ssl_verify` (Boolean) whether to verify ssl for the pgvector database
+- `ssl_version` (String) the ssl version to use for the pgvector database. possible known values include one of ["any", "tlsv1_2", "tlsv1_3"]
+- `timeout` (Number) the timeout of the pgvector database
+- `user` (String) the user of the pgvector database
 
 
 <a id="nestedatt--config--vectordb--redis"></a>
@@ -385,26 +385,26 @@ Optional:
 Optional:
 
 - `cloud_authentication` (Attributes) Cloud auth related configs for connecting to a Cloud Provider's Redis instance. (see [below for nested schema](#nestedatt--config--vectordb--redis--cloud_authentication))
-- `cluster_max_redirections` (Number) Maximum retry attempts for redirection. Default: 5
+- `cluster_max_redirections` (Number) Maximum retry attempts for redirection.
 - `cluster_nodes` (Attributes List) Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--vectordb--redis--cluster_nodes))
-- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
-- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address. Default: false
-- `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
-- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
+- `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+- `connection_is_proxied` (Boolean) If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
+- `database` (Number) Database to use for the Redis connection when using the `redis` strategy
+- `host` (String) A string representing a host name, such as example.com.
 - `keepalive_backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
-- `keepalive_pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
+- `keepalive_pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
 - `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
-- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
-- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
+- `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+- `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--vectordb--redis--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
 - `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
-- `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
-- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: false
+- `ssl` (Boolean) If set to true, uses SSL to connect to Redis.
+- `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
 - `username` (String) Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
 
 <a id="nestedatt--config--vectordb--redis--cloud_authentication"></a>
@@ -416,7 +416,7 @@ Optional:
 - `aws_access_key_id` (String) AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
 - `aws_assume_role_arn` (String) The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
 - `aws_cache_name` (String) The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
-- `aws_is_serverless` (Boolean) This flag specifies whether the cluster is serverless when auth_provider is set to `aws`. Default: true
+- `aws_is_serverless` (Boolean) This flag specifies whether the cluster is serverless when auth_provider is set to `aws`.
 - `aws_region` (String) The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
 - `aws_role_session_name` (String) The session name for the temporary credentials when assuming the IAM role.
 - `aws_secret_access_key` (String) AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
@@ -431,8 +431,8 @@ Optional:
 
 Optional:
 
-- `ip` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+- `ip` (String) A string representing a host name, such as example.com.
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 
 
 <a id="nestedatt--config--vectordb--redis--sentinel_nodes"></a>
@@ -440,8 +440,8 @@ Optional:
 
 Optional:
 
-- `host` (String) A string representing a host name, such as example.com. Default: "127.0.0.1"
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+- `host` (String) A string representing a host name, such as example.com.
+- `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 
 
 

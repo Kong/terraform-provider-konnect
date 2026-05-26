@@ -1067,7 +1067,7 @@ type AiProxyPluginConfig struct {
 	// Generative AI category of the request
 	GenaiCategory *AiProxyPluginGenaiCategory `default:"text/generation" json:"genai_category"`
 	// LLM input and output format and schema to use
-	LlmFormat *AiProxyPluginLlmFormat `default:"openai" json:"llm_format"`
+	LlmFormat *AiProxyPluginLlmFormat `json:"llm_format,omitempty"`
 	Logging   *AiProxyPluginLogging   `json:"logging"`
 	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
 	MaxRequestBodySize *int64 `default:"1048576" json:"max_request_body_size"`

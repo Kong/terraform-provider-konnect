@@ -185,7 +185,7 @@ type AiPromptGuardPluginConfig struct {
 	// Generative AI category of the request
 	GenaiCategory *GenaiCategory `default:"text/generation" json:"genai_category"`
 	// LLM input and output format and schema to use
-	LlmFormat *AiPromptGuardPluginLlmFormat `default:"openai" json:"llm_format"`
+	LlmFormat *AiPromptGuardPluginLlmFormat `json:"llm_format,omitempty"`
 	// If true, will match all roles in addition to 'user' role in conversation history.
 	MatchAllRoles *bool `default:"false" json:"match_all_roles"`
 	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.

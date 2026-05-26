@@ -16,7 +16,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64default"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/setdefault"
@@ -164,20 +163,6 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 							"cloud_authentication": schema.SingleNestedAttribute{
 								Computed: true,
 								Optional: true,
-								Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-									"auth_provider":            types.StringType,
-									"aws_access_key_id":        types.StringType,
-									"aws_assume_role_arn":      types.StringType,
-									"aws_cache_name":           types.StringType,
-									"aws_is_serverless":        types.BoolType,
-									"aws_region":               types.StringType,
-									"aws_role_session_name":    types.StringType,
-									"aws_secret_access_key":    types.StringType,
-									"azure_client_id":          types.StringType,
-									"azure_client_secret":      types.StringType,
-									"azure_tenant_id":          types.StringType,
-									"gcp_service_account_json": types.StringType,
-								})),
 								Attributes: map[string]schema.Attribute{
 									"auth_provider": schema.StringAttribute{
 										Computed:    true,
@@ -185,48 +170,57 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 										Description: `Auth providers to be used to authenticate to a Cloud Provider's Redis instance. possible known values include one of ["aws", "azure", "gcp"]`,
 									},
 									"aws_access_key_id": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `AWS Access Key ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
 									},
 									"aws_assume_role_arn": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.`,
 									},
 									"aws_cache_name": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `The name of the AWS Elasticache cluster when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
 									},
 									"aws_is_serverless": schema.BoolAttribute{
 										Computed:    true,
 										Optional:    true,
-										Default:     booldefault.StaticBool(true),
-										Description: `This flag specifies whether the cluster is serverless when auth_provider is set to ` + "`" + `aws` + "`" + `. Default: true`,
+										Description: `This flag specifies whether the cluster is serverless when auth_provider is set to ` + "`" + `aws` + "`" + `.`,
 									},
 									"aws_region": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `The region of the AWS ElastiCache cluster when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
 									},
 									"aws_role_session_name": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `The session name for the temporary credentials when assuming the IAM role.`,
 									},
 									"aws_secret_access_key": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `AWS Secret Access Key to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `aws` + "`" + `.`,
 									},
 									"azure_client_id": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `Azure Client ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
 									},
 									"azure_client_secret": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `Azure Client Secret to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
 									},
 									"azure_tenant_id": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `Azure Tenant ID to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `azure` + "`" + `.`,
 									},
 									"gcp_service_account_json": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
 										Description: `GCP Service Account JSON to be used for authentication when ` + "`" + `auth_provider` + "`" + ` is set to ` + "`" + `gcp` + "`" + `.`,
 									},
@@ -236,10 +230,10 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 							"cluster_max_redirections": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     int64default.StaticInt64(5),
-								Description: `Maximum retry attempts for redirection. Default: 5`,
+								Description: `Maximum retry attempts for redirection.`,
 							},
 							"cluster_nodes": schema.ListNestedAttribute{
+								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
@@ -249,14 +243,12 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 										"ip": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Default:     stringdefault.StaticString(`127.0.0.1`),
-											Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+											Description: `A string representing a host name, such as example.com.`,
 										},
 										"port": schema.Int64Attribute{
 											Computed:    true,
 											Optional:    true,
-											Default:     int64default.StaticInt64(6379),
-											Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+											Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 											Validators: []validator.Int64{
 												int64validator.Between(0, 65535),
 											},
@@ -268,8 +260,7 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 							"connect_timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     int64default.StaticInt64(2000),
-								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
 								Validators: []validator.Int64{
 									int64validator.Between(0, 2147483646),
 								},
@@ -277,22 +268,20 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 							"connection_is_proxied": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     booldefault.StaticBool(false),
-								Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address. Default: false`,
+								Description: `If the connection to Redis is proxied (e.g. Envoy), set it ` + "`" + `true` + "`" + `. Set the ` + "`" + `host` + "`" + ` and ` + "`" + `port` + "`" + ` to point to the proxy address.`,
 							},
 							"database": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     int64default.StaticInt64(0),
-								Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy. Default: 0`,
+								Description: `Database to use for the Redis connection when using the ` + "`" + `redis` + "`" + ` strategy`,
 							},
 							"host": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     stringdefault.StaticString(`127.0.0.1`),
-								Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+								Description: `A string representing a host name, such as example.com.`,
 							},
 							"keepalive_backlog": schema.Int64Attribute{
+								Computed:    true,
 								Optional:    true,
 								Description: `Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return ` + "`" + `nil` + "`" + `. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than ` + "`" + `keepalive_pool_size` + "`" + `. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than ` + "`" + `keepalive_pool_size` + "`" + `.`,
 								Validators: []validator.Int64{
@@ -302,21 +291,20 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 							"keepalive_pool_size": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     int64default.StaticInt64(256),
-								Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `keepalive_pool_size` + "`" + ` nor ` + "`" + `keepalive_backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `keepalive_pool_size` + "`" + ` isn't specified but ` + "`" + `keepalive_backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256`,
+								Description: `The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither ` + "`" + `keepalive_pool_size` + "`" + ` nor ` + "`" + `keepalive_backlog` + "`" + ` is specified, no pool is created. If ` + "`" + `keepalive_pool_size` + "`" + ` isn't specified but ` + "`" + `keepalive_backlog` + "`" + ` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.`,
 								Validators: []validator.Int64{
 									int64validator.Between(1, 2147483646),
 								},
 							},
 							"password": schema.StringAttribute{
+								Computed:    true,
 								Optional:    true,
 								Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
 							},
 							"port": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     int64default.StaticInt64(6379),
-								Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+								Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 								Validators: []validator.Int64{
 									int64validator.Between(0, 65535),
 								},
@@ -324,8 +312,7 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 							"read_timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     int64default.StaticInt64(2000),
-								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
 								Validators: []validator.Int64{
 									int64validator.Between(0, 2147483646),
 								},
@@ -343,17 +330,18 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 							"send_timeout": schema.Int64Attribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     int64default.StaticInt64(2000),
-								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000`,
+								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
 								Validators: []validator.Int64{
 									int64validator.Between(0, 2147483646),
 								},
 							},
 							"sentinel_master": schema.StringAttribute{
+								Computed:    true,
 								Optional:    true,
 								Description: `Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.`,
 							},
 							"sentinel_nodes": schema.ListNestedAttribute{
+								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
@@ -363,14 +351,12 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 										"host": schema.StringAttribute{
 											Computed:    true,
 											Optional:    true,
-											Default:     stringdefault.StaticString(`127.0.0.1`),
-											Description: `A string representing a host name, such as example.com. Default: "127.0.0.1"`,
+											Description: `A string representing a host name, such as example.com.`,
 										},
 										"port": schema.Int64Attribute{
 											Computed:    true,
 											Optional:    true,
-											Default:     int64default.StaticInt64(6379),
-											Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
+											Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 											Validators: []validator.Int64{
 												int64validator.Between(0, 65535),
 											},
@@ -380,6 +366,7 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 								Description: `Sentinel node addresses to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.`,
 							},
 							"sentinel_password": schema.StringAttribute{
+								Computed:    true,
 								Optional:    true,
 								Description: `Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.`,
 							},
@@ -389,26 +376,27 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. possible known values include one of ["any", "master", "slave"]`,
 							},
 							"sentinel_username": schema.StringAttribute{
+								Computed:    true,
 								Optional:    true,
 								Description: `Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.`,
 							},
 							"server_name": schema.StringAttribute{
+								Computed:    true,
 								Optional:    true,
 								Description: `A string representing an SNI (server name indication) value for TLS.`,
 							},
 							"ssl": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     booldefault.StaticBool(false),
-								Description: `If set to true, uses SSL to connect to Redis. Default: false`,
+								Description: `If set to true, uses SSL to connect to Redis.`,
 							},
 							"ssl_verify": schema.BoolAttribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     booldefault.StaticBool(false),
-								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly. Default: false`,
+								Description: `If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure ` + "`" + `lua_ssl_trusted_certificate` + "`" + ` in ` + "`" + `kong.conf` + "`" + ` to specify the CA (or server) certificate used by your Redis server. You may also need to configure ` + "`" + `lua_ssl_verify_depth` + "`" + ` accordingly.`,
 							},
 							"username": schema.StringAttribute{
+								Computed:    true,
 								Optional:    true,
 								Description: `Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to ` + "`" + `default` + "`" + `.`,
 							},

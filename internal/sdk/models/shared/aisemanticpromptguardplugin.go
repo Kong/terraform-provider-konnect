@@ -145,37 +145,37 @@ func (e *AiSemanticPromptGuardPluginParamLocation) IsExact() bool {
 
 type AiSemanticPromptGuardPluginAuth struct {
 	// If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
-	AllowOverride *bool `default:"false" json:"allow_override"`
+	AllowOverride *bool `json:"allow_override,omitempty"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
-	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
+	AwsAccessKeyID *string `json:"aws_access_key_id,omitempty"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
-	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
+	AwsSecretAccessKey *string `json:"aws_secret_access_key,omitempty"`
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
-	AzureClientID *string `default:"null" json:"azure_client_id"`
+	AzureClientID *string `json:"azure_client_id,omitempty"`
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
-	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
+	AzureClientSecret *string `json:"azure_client_secret,omitempty"`
 	// If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
-	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
+	AzureTenantID *string `json:"azure_tenant_id,omitempty"`
 	// Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
-	AzureUseManagedIdentity *bool `default:"false" json:"azure_use_managed_identity"`
+	AzureUseManagedIdentity *bool `json:"azure_use_managed_identity,omitempty"`
 	// Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.
-	GcpMetadataURL *string `default:"null" json:"gcp_metadata_url"`
+	GcpMetadataURL *string `json:"gcp_metadata_url,omitempty"`
 	// Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.
-	GcpOauthTokenURL *string `default:"null" json:"gcp_oauth_token_url"`
+	GcpOauthTokenURL *string `json:"gcp_oauth_token_url,omitempty"`
 	// Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
-	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+	GcpServiceAccountJSON *string `json:"gcp_service_account_json,omitempty"`
 	// Use service account auth for GCP-based providers and models.
-	GcpUseServiceAccount *bool `default:"false" json:"gcp_use_service_account"`
+	GcpUseServiceAccount *bool `json:"gcp_use_service_account,omitempty"`
 	// If AI model requires authentication via Authorization or API key header, specify its name here.
-	HeaderName *string `default:"null" json:"header_name"`
+	HeaderName *string `json:"header_name,omitempty"`
 	// Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
-	HeaderValue *string `default:"null" json:"header_value"`
+	HeaderValue *string `json:"header_value,omitempty"`
 	// Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
 	ParamLocation *AiSemanticPromptGuardPluginParamLocation `json:"param_location,omitempty"`
 	// If AI model requires authentication via query parameter, specify its name here.
-	ParamName *string `default:"null" json:"param_name"`
+	ParamName *string `json:"param_name,omitempty"`
 	// Specify the full parameter value for 'param_name'.
-	ParamValue *string `default:"null" json:"param_value"`
+	ParamValue *string `json:"param_value,omitempty"`
 }
 
 func (a AiSemanticPromptGuardPluginAuth) MarshalJSON() ([]byte, error) {
@@ -303,11 +303,11 @@ func (a *AiSemanticPromptGuardPluginAuth) GetParamValue() *string {
 
 type AiSemanticPromptGuardPluginAzure struct {
 	// 'api-version' for Azure OpenAI instances.
-	APIVersion *string `default:"2023-05-15" json:"api_version"`
+	APIVersion *string `json:"api_version,omitempty"`
 	// Deployment ID for Azure OpenAI instances.
-	DeploymentID *string `default:"null" json:"deployment_id"`
+	DeploymentID *string `json:"deployment_id,omitempty"`
 	// Instance name for Azure OpenAI hosted models.
-	Instance *string `default:"null" json:"instance"`
+	Instance *string `json:"instance,omitempty"`
 }
 
 func (a AiSemanticPromptGuardPluginAzure) MarshalJSON() ([]byte, error) {
@@ -344,23 +344,23 @@ func (a *AiSemanticPromptGuardPluginAzure) GetInstance() *string {
 
 type AiSemanticPromptGuardPluginBedrock struct {
 	// If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.
-	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
+	AwsAssumeRoleArn *string `json:"aws_assume_role_arn,omitempty"`
 	// If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
-	AwsRegion *string `default:"null" json:"aws_region"`
+	AwsRegion *string `json:"aws_region,omitempty"`
 	// If using AWS providers (Bedrock), set the identifier of the assumed role session.
-	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
+	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
 	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
-	AwsStsEndpointURL *string `default:"null" json:"aws_sts_endpoint_url"`
+	AwsStsEndpointURL *string `json:"aws_sts_endpoint_url,omitempty"`
 	// S3 URI prefix (s3://bucket/prefix/) where Bedrock will get input files from and store results to for native batch API.
-	BatchBucketPrefix *string `default:"null" json:"batch_bucket_prefix"`
+	BatchBucketPrefix *string `json:"batch_bucket_prefix,omitempty"`
 	// AWS role arn used for calling batch API. Try to get the value from request if ommited.
-	BatchRoleArn *string `default:"null" json:"batch_role_arn"`
+	BatchRoleArn *string `json:"batch_role_arn,omitempty"`
 	// If using AWS providers (Bedrock), set to true to normalize the embeddings.
-	EmbeddingsNormalize *bool `default:"false" json:"embeddings_normalize"`
+	EmbeddingsNormalize *bool `json:"embeddings_normalize,omitempty"`
 	// Force the client's performance configuration 'latency' for all requests. Leave empty to let the consumer select the performance configuration.
-	PerformanceConfigLatency *string `default:"null" json:"performance_config_latency"`
+	PerformanceConfigLatency *string `json:"performance_config_latency,omitempty"`
 	// S3 URI (s3://bucket/prefix) where Bedrock will store generated video files. Required for video generation.
-	VideoOutputS3URI *string `default:"null" json:"video_output_s3_uri"`
+	VideoOutputS3URI *string `json:"video_output_s3_uri,omitempty"`
 }
 
 func (a AiSemanticPromptGuardPluginBedrock) MarshalJSON() ([]byte, error) {
@@ -439,11 +439,11 @@ func (a *AiSemanticPromptGuardPluginBedrock) GetVideoOutputS3URI() *string {
 
 type AiSemanticPromptGuardPluginGemini struct {
 	// If running Gemini on Vertex, specify the regional API endpoint (hostname only).
-	APIEndpoint *string `default:"null" json:"api_endpoint"`
+	APIEndpoint *string `json:"api_endpoint,omitempty"`
 	// If running Gemini on Vertex, specify the location ID.
-	LocationID *string `default:"null" json:"location_id"`
+	LocationID *string `json:"location_id,omitempty"`
 	// If running Gemini on Vertex, specify the project ID.
-	ProjectID *string `default:"null" json:"project_id"`
+	ProjectID *string `json:"project_id,omitempty"`
 }
 
 func (a AiSemanticPromptGuardPluginGemini) MarshalJSON() ([]byte, error) {
@@ -480,9 +480,9 @@ func (a *AiSemanticPromptGuardPluginGemini) GetProjectID() *string {
 
 type AiSemanticPromptGuardPluginHuggingface struct {
 	// Use the cache layer on the inference API
-	UseCache *bool `default:"null" json:"use_cache"`
+	UseCache *bool `json:"use_cache,omitempty"`
 	// Wait for the model if it is not ready
-	WaitForModel *bool `default:"null" json:"wait_for_model"`
+	WaitForModel *bool `json:"wait_for_model,omitempty"`
 }
 
 func (a AiSemanticPromptGuardPluginHuggingface) MarshalJSON() ([]byte, error) {
@@ -512,12 +512,12 @@ func (a *AiSemanticPromptGuardPluginHuggingface) GetWaitForModel() *bool {
 
 // AiSemanticPromptGuardPluginOptions - Key/value settings for the model
 type AiSemanticPromptGuardPluginOptions struct {
-	Azure       *AiSemanticPromptGuardPluginAzure       `json:"azure"`
-	Bedrock     *AiSemanticPromptGuardPluginBedrock     `json:"bedrock"`
-	Gemini      *AiSemanticPromptGuardPluginGemini      `json:"gemini"`
-	Huggingface *AiSemanticPromptGuardPluginHuggingface `json:"huggingface"`
+	Azure       *AiSemanticPromptGuardPluginAzure       `json:"azure,omitempty"`
+	Bedrock     *AiSemanticPromptGuardPluginBedrock     `json:"bedrock,omitempty"`
+	Gemini      *AiSemanticPromptGuardPluginGemini      `json:"gemini,omitempty"`
+	Huggingface *AiSemanticPromptGuardPluginHuggingface `json:"huggingface,omitempty"`
 	// upstream url for the embeddings
-	UpstreamURL *string `default:"null" json:"upstream_url"`
+	UpstreamURL *string `json:"upstream_url,omitempty"`
 }
 
 func (a AiSemanticPromptGuardPluginOptions) MarshalJSON() ([]byte, error) {
@@ -598,7 +598,7 @@ type AiSemanticPromptGuardPluginModel struct {
 	// Model name to execute.
 	Name string `json:"name"`
 	// Key/value settings for the model
-	Options *AiSemanticPromptGuardPluginOptions `json:"options"`
+	Options *AiSemanticPromptGuardPluginOptions `json:"options,omitempty"`
 	// AI provider format to use for embeddings API
 	Provider AiSemanticPromptGuardPluginProvider `json:"provider"`
 }
@@ -636,7 +636,7 @@ func (a *AiSemanticPromptGuardPluginModel) GetProvider() AiSemanticPromptGuardPl
 }
 
 type AiSemanticPromptGuardPluginEmbeddings struct {
-	Auth  *AiSemanticPromptGuardPluginAuth `json:"auth"`
+	Auth  *AiSemanticPromptGuardPluginAuth `json:"auth,omitempty"`
 	Model AiSemanticPromptGuardPluginModel `json:"model"`
 }
 
@@ -851,29 +851,29 @@ func (e *AiSemanticPromptGuardPluginSslVersion) IsExact() bool {
 
 type AiSemanticPromptGuardPluginPgvector struct {
 	// the database of the pgvector database
-	Database *string `default:"kong-pgvector" json:"database"`
+	Database *string `json:"database,omitempty"`
 	// the host of the pgvector database
-	Host *string `default:"127.0.0.1" json:"host"`
+	Host *string `json:"host,omitempty"`
 	// the password of the pgvector database
-	Password *string `default:"null" json:"password"`
+	Password *string `json:"password,omitempty"`
 	// the port of the pgvector database
-	Port *int64 `default:"5432" json:"port"`
+	Port *int64 `json:"port,omitempty"`
 	// whether to use ssl for the pgvector database
-	Ssl *bool `default:"false" json:"ssl"`
+	Ssl *bool `json:"ssl,omitempty"`
 	// the path of ssl cert to use for the pgvector database
-	SslCert *string `default:"null" json:"ssl_cert"`
+	SslCert *string `json:"ssl_cert,omitempty"`
 	// the path of ssl cert key to use for the pgvector database
-	SslCertKey *string `default:"null" json:"ssl_cert_key"`
+	SslCertKey *string `json:"ssl_cert_key,omitempty"`
 	// whether ssl is required for the pgvector database
-	SslRequired *bool `default:"false" json:"ssl_required"`
+	SslRequired *bool `json:"ssl_required,omitempty"`
 	// whether to verify ssl for the pgvector database
-	SslVerify *bool `default:"false" json:"ssl_verify"`
+	SslVerify *bool `json:"ssl_verify,omitempty"`
 	// the ssl version to use for the pgvector database
-	SslVersion *AiSemanticPromptGuardPluginSslVersion `default:"tlsv1_2" json:"ssl_version"`
+	SslVersion *AiSemanticPromptGuardPluginSslVersion `json:"ssl_version,omitempty"`
 	// the timeout of the pgvector database
-	Timeout *float64 `default:"5000" json:"timeout"`
+	Timeout *float64 `json:"timeout,omitempty"`
 	// the user of the pgvector database
-	User *string `default:"postgres" json:"user"`
+	User *string `json:"user,omitempty"`
 }
 
 func (a AiSemanticPromptGuardPluginPgvector) MarshalJSON() ([]byte, error) {
@@ -1000,27 +1000,27 @@ type AiSemanticPromptGuardPluginCloudAuthentication struct {
 	// Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
 	AuthProvider *AiSemanticPromptGuardPluginAuthProvider `json:"auth_provider,omitempty"`
 	// AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
-	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
+	AwsAccessKeyID *string `json:"aws_access_key_id,omitempty"`
 	// The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
-	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
+	AwsAssumeRoleArn *string `json:"aws_assume_role_arn,omitempty"`
 	// The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
-	AwsCacheName *string `default:"null" json:"aws_cache_name"`
+	AwsCacheName *string `json:"aws_cache_name,omitempty"`
 	// This flag specifies whether the cluster is serverless when auth_provider is set to `aws`.
-	AwsIsServerless *bool `default:"true" json:"aws_is_serverless"`
+	AwsIsServerless *bool `json:"aws_is_serverless,omitempty"`
 	// The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
-	AwsRegion *string `default:"null" json:"aws_region"`
+	AwsRegion *string `json:"aws_region,omitempty"`
 	// The session name for the temporary credentials when assuming the IAM role.
-	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
+	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
 	// AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
-	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
+	AwsSecretAccessKey *string `json:"aws_secret_access_key,omitempty"`
 	// Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
-	AzureClientID *string `default:"null" json:"azure_client_id"`
+	AzureClientID *string `json:"azure_client_id,omitempty"`
 	// Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
-	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
+	AzureClientSecret *string `json:"azure_client_secret,omitempty"`
 	// Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
-	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
+	AzureTenantID *string `json:"azure_tenant_id,omitempty"`
 	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
-	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+	GcpServiceAccountJSON *string `json:"gcp_service_account_json,omitempty"`
 }
 
 func (a AiSemanticPromptGuardPluginCloudAuthentication) MarshalJSON() ([]byte, error) {
@@ -1120,9 +1120,9 @@ func (a *AiSemanticPromptGuardPluginCloudAuthentication) GetGcpServiceAccountJSO
 
 type AiSemanticPromptGuardPluginClusterNodes struct {
 	// A string representing a host name, such as example.com.
-	IP *string `default:"127.0.0.1" json:"ip"`
+	IP *string `json:"ip,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *int64 `json:"port,omitempty"`
 }
 
 func (a AiSemanticPromptGuardPluginClusterNodes) MarshalJSON() ([]byte, error) {
@@ -1152,9 +1152,9 @@ func (a *AiSemanticPromptGuardPluginClusterNodes) GetPort() *int64 {
 
 type AiSemanticPromptGuardPluginSentinelNodes struct {
 	// A string representing a host name, such as example.com.
-	Host *string `default:"127.0.0.1" json:"host"`
+	Host *string `json:"host,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *int64 `json:"port,omitempty"`
 }
 
 func (a AiSemanticPromptGuardPluginSentinelNodes) MarshalJSON() ([]byte, error) {
@@ -1208,49 +1208,49 @@ func (e *AiSemanticPromptGuardPluginSentinelRole) IsExact() bool {
 
 type AiSemanticPromptGuardPluginRedis struct {
 	// Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
-	CloudAuthentication *AiSemanticPromptGuardPluginCloudAuthentication `json:"cloud_authentication"`
+	CloudAuthentication *AiSemanticPromptGuardPluginCloudAuthentication `json:"cloud_authentication,omitempty"`
 	// Maximum retry attempts for redirection.
-	ClusterMaxRedirections *int64 `default:"5" json:"cluster_max_redirections"`
+	ClusterMaxRedirections *int64 `json:"cluster_max_redirections,omitempty"`
 	// Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
-	ClusterNodes []AiSemanticPromptGuardPluginClusterNodes `json:"cluster_nodes"`
+	ClusterNodes []AiSemanticPromptGuardPluginClusterNodes `json:"cluster_nodes,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ConnectTimeout *int64 `default:"2000" json:"connect_timeout"`
+	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
 	// If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.
-	ConnectionIsProxied *bool `default:"false" json:"connection_is_proxied"`
+	ConnectionIsProxied *bool `json:"connection_is_proxied,omitempty"`
 	// Database to use for the Redis connection when using the `redis` strategy
-	Database *int64 `default:"0" json:"database"`
+	Database *int64 `json:"database,omitempty"`
 	// A string representing a host name, such as example.com.
-	Host *string `default:"127.0.0.1" json:"host"`
+	Host *string `json:"host,omitempty"`
 	// Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
-	KeepaliveBacklog *int64 `default:"null" json:"keepalive_backlog"`
+	KeepaliveBacklog *int64 `json:"keepalive_backlog,omitempty"`
 	// The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.
-	KeepalivePoolSize *int64 `default:"256" json:"keepalive_pool_size"`
+	KeepalivePoolSize *int64 `json:"keepalive_pool_size,omitempty"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-	Password *string `default:"null" json:"password"`
+	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *int64 `json:"port,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
+	ReadTimeout *int64 `json:"read_timeout,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	SendTimeout *int64 `default:"2000" json:"send_timeout"`
+	SendTimeout *int64 `json:"send_timeout,omitempty"`
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
-	SentinelMaster *string `default:"null" json:"sentinel_master"`
+	SentinelMaster *string `json:"sentinel_master,omitempty"`
 	// Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
-	SentinelNodes []AiSemanticPromptGuardPluginSentinelNodes `json:"sentinel_nodes"`
+	SentinelNodes []AiSemanticPromptGuardPluginSentinelNodes `json:"sentinel_nodes,omitempty"`
 	// Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-	SentinelPassword *string `default:"null" json:"sentinel_password"`
+	SentinelPassword *string `json:"sentinel_password,omitempty"`
 	// Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
 	SentinelRole *AiSemanticPromptGuardPluginSentinelRole `json:"sentinel_role,omitempty"`
 	// Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
-	SentinelUsername *string `default:"null" json:"sentinel_username"`
+	SentinelUsername *string `json:"sentinel_username,omitempty"`
 	// A string representing an SNI (server name indication) value for TLS.
-	ServerName *string `default:"null" json:"server_name"`
+	ServerName *string `json:"server_name,omitempty"`
 	// If set to true, uses SSL to connect to Redis.
-	Ssl *bool `default:"false" json:"ssl"`
+	Ssl *bool `json:"ssl,omitempty"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
-	SslVerify *bool `default:"false" json:"ssl_verify"`
+	SslVerify *bool `json:"ssl_verify,omitempty"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
-	Username *string `default:"null" json:"username"`
+	Username *string `json:"username,omitempty"`
 }
 
 func (a AiSemanticPromptGuardPluginRedis) MarshalJSON() ([]byte, error) {
@@ -1446,12 +1446,12 @@ type AiSemanticPromptGuardPluginVectordb struct {
 	Dimensions int64 `json:"dimensions"`
 	// the distance metric to use for vector searches
 	DistanceMetric AiSemanticPromptGuardPluginDistanceMetric `json:"distance_metric"`
-	Pgvector       *AiSemanticPromptGuardPluginPgvector      `json:"pgvector"`
-	Redis          *AiSemanticPromptGuardPluginRedis         `json:"redis"`
+	Pgvector       *AiSemanticPromptGuardPluginPgvector      `json:"pgvector,omitempty"`
+	Redis          *AiSemanticPromptGuardPluginRedis         `json:"redis,omitempty"`
 	// which vector database driver to use
 	Strategy AiSemanticPromptGuardPluginStrategy `json:"strategy"`
 	// the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.
-	Threshold *float64 `default:"null" json:"threshold"`
+	Threshold *float64 `json:"threshold,omitempty"`
 }
 
 func (a AiSemanticPromptGuardPluginVectordb) MarshalJSON() ([]byte, error) {
@@ -1512,7 +1512,7 @@ type AiSemanticPromptGuardPluginConfig struct {
 	// Generative AI category of the request
 	GenaiCategory *AiSemanticPromptGuardPluginGenaiCategory `default:"text/generation" json:"genai_category"`
 	// LLM input and output format and schema to use
-	LlmFormat *AiSemanticPromptGuardPluginLlmFormat `default:"openai" json:"llm_format"`
+	LlmFormat *AiSemanticPromptGuardPluginLlmFormat `json:"llm_format,omitempty"`
 	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
 	MaxRequestBodySize *int64                              `default:"1048576" json:"max_request_body_size"`
 	Rules              *Rules                              `json:"rules"`

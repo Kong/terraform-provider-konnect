@@ -201,27 +201,27 @@ type RateLimitingPluginCloudAuthentication struct {
 	// Auth providers to be used to authenticate to a Cloud Provider's Redis instance.
 	AuthProvider *RateLimitingPluginAuthProvider `json:"auth_provider,omitempty"`
 	// AWS Access Key ID to be used for authentication when `auth_provider` is set to `aws`.
-	AwsAccessKeyID *string `default:"null" json:"aws_access_key_id"`
+	AwsAccessKeyID *string `json:"aws_access_key_id,omitempty"`
 	// The ARN of the IAM role to assume for generating ElastiCache IAM authentication tokens.
-	AwsAssumeRoleArn *string `default:"null" json:"aws_assume_role_arn"`
+	AwsAssumeRoleArn *string `json:"aws_assume_role_arn,omitempty"`
 	// The name of the AWS Elasticache cluster when `auth_provider` is set to `aws`.
-	AwsCacheName *string `default:"null" json:"aws_cache_name"`
+	AwsCacheName *string `json:"aws_cache_name,omitempty"`
 	// This flag specifies whether the cluster is serverless when auth_provider is set to `aws`.
-	AwsIsServerless *bool `default:"true" json:"aws_is_serverless"`
+	AwsIsServerless *bool `json:"aws_is_serverless,omitempty"`
 	// The region of the AWS ElastiCache cluster when `auth_provider` is set to `aws`.
-	AwsRegion *string `default:"null" json:"aws_region"`
+	AwsRegion *string `json:"aws_region,omitempty"`
 	// The session name for the temporary credentials when assuming the IAM role.
-	AwsRoleSessionName *string `default:"null" json:"aws_role_session_name"`
+	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
 	// AWS Secret Access Key to be used for authentication when `auth_provider` is set to `aws`.
-	AwsSecretAccessKey *string `default:"null" json:"aws_secret_access_key"`
+	AwsSecretAccessKey *string `json:"aws_secret_access_key,omitempty"`
 	// Azure Client ID to be used for authentication when `auth_provider` is set to `azure`.
-	AzureClientID *string `default:"null" json:"azure_client_id"`
+	AzureClientID *string `json:"azure_client_id,omitempty"`
 	// Azure Client Secret to be used for authentication when `auth_provider` is set to `azure`.
-	AzureClientSecret *string `default:"null" json:"azure_client_secret"`
+	AzureClientSecret *string `json:"azure_client_secret,omitempty"`
 	// Azure Tenant ID to be used for authentication when `auth_provider` is set to `azure`.
-	AzureTenantID *string `default:"null" json:"azure_tenant_id"`
+	AzureTenantID *string `json:"azure_tenant_id,omitempty"`
 	// GCP Service Account JSON to be used for authentication when `auth_provider` is set to `gcp`.
-	GcpServiceAccountJSON *string `default:"null" json:"gcp_service_account_json"`
+	GcpServiceAccountJSON *string `json:"gcp_service_account_json,omitempty"`
 }
 
 func (r RateLimitingPluginCloudAuthentication) MarshalJSON() ([]byte, error) {
@@ -322,25 +322,25 @@ func (r *RateLimitingPluginCloudAuthentication) GetGcpServiceAccountJSON() *stri
 // RateLimitingPluginRedis - Redis configuration
 type RateLimitingPluginRedis struct {
 	// Cloud auth related configs for connecting to a Cloud Provider's Redis instance.
-	CloudAuthentication *RateLimitingPluginCloudAuthentication `json:"cloud_authentication"`
+	CloudAuthentication *RateLimitingPluginCloudAuthentication `json:"cloud_authentication,omitempty"`
 	// Database to use for the Redis connection when using the `redis` strategy
-	Database *int64 `default:"0" json:"database"`
+	Database *int64 `json:"database,omitempty"`
 	// A string representing a host name, such as example.com.
-	Host *string `default:"null" json:"host"`
+	Host *string `json:"host,omitempty"`
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-	Password *string `default:"null" json:"password"`
+	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *int64 `json:"port,omitempty"`
 	// A string representing an SNI (server name indication) value for TLS.
-	ServerName *string `default:"null" json:"server_name"`
+	ServerName *string `json:"server_name,omitempty"`
 	// If set to true, uses SSL to connect to Redis.
-	Ssl *bool `default:"false" json:"ssl"`
+	Ssl *bool `json:"ssl,omitempty"`
 	// If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.
-	SslVerify *bool `default:"false" json:"ssl_verify"`
+	SslVerify *bool `json:"ssl_verify,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-	Timeout *int64 `default:"2000" json:"timeout"`
+	Timeout *int64 `json:"timeout,omitempty"`
 	// Username to use for Redis connections. If undefined, ACL authentication won't be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.
-	Username *string `default:"null" json:"username"`
+	Username *string `json:"username,omitempty"`
 }
 
 func (r RateLimitingPluginRedis) MarshalJSON() ([]byte, error) {

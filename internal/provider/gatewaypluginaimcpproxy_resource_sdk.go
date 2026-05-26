@@ -96,7 +96,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 				if resp.Config.Server.Session.Redis == nil {
 					r.Config.Server.Session.Redis = nil
 				} else {
-					r.Config.Server.Session.Redis = &tfTypes.PartialVectordbRedis{}
+					r.Config.Server.Session.Redis = &tfTypes.AiMcpProxyPluginRedis{}
 					if resp.Config.Server.Session.Redis.CloudAuthentication == nil {
 						r.Config.Server.Session.Redis.CloudAuthentication = nil
 					} else {

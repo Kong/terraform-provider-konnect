@@ -87,7 +87,7 @@ func (r *GatewayPluginAcmeResourceModel) RefreshFromSharedAcmePlugin(ctx context
 				if resp.Config.StorageConfig.Redis.CloudAuthentication == nil {
 					r.Config.StorageConfig.Redis.CloudAuthentication = nil
 				} else {
-					r.Config.StorageConfig.Redis.CloudAuthentication = &tfTypes.PartialRedisCeCloudAuthentication{}
+					r.Config.StorageConfig.Redis.CloudAuthentication = &tfTypes.PartialVectordbCloudAuthentication{}
 					if resp.Config.StorageConfig.Redis.CloudAuthentication.AuthProvider != nil {
 						r.Config.StorageConfig.Redis.CloudAuthentication.AuthProvider = types.StringValue(string(*resp.Config.StorageConfig.Redis.CloudAuthentication.AuthProvider))
 					} else {
