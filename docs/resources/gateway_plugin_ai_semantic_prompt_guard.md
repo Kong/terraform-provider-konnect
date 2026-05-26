@@ -227,41 +227,55 @@ resource "konnect_gateway_plugin_ai_semantic_prompt_guard" "my_gatewaypluginaise
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
-Required:
-
-- `embeddings` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings))
-- `vectordb` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb))
-
 Optional:
 
+- `embeddings` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings))
 - `genai_category` (String) Generative AI category of the request. possible known values include one of ["audio/speech", "audio/transcription", "image/generation", "realtime/generation", "text/embeddings", "text/generation", "video/generation"]; Default: "text/generation"
 - `llm_format` (String) LLM input and output format and schema to use. possible known values include one of ["anthropic", "bedrock", "cohere", "gemini", "huggingface", "openai"]
 - `max_request_body_size` (Number) max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size. Default: 1048576
 - `rules` (Attributes) (see [below for nested schema](#nestedatt--config--rules))
 - `search` (Attributes) (see [below for nested schema](#nestedatt--config--search))
+- `vectordb` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb))
 
 <a id="nestedatt--config--embeddings"></a>
 ### Nested Schema for `config.embeddings`
 
-Required:
-
-- `model` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--model))
-
 Optional:
 
 - `auth` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--auth))
+- `model` (Attributes) Not Null (see [below for nested schema](#nestedatt--config--embeddings--model))
+
+<a id="nestedatt--config--embeddings--auth"></a>
+### Nested Schema for `config.embeddings.auth`
+
+Optional:
+
+- `allow_override` (Boolean) If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
+- `aws_access_key_id` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
+- `aws_secret_access_key` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
+- `azure_client_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
+- `azure_client_secret` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
+- `azure_tenant_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
+- `azure_use_managed_identity` (Boolean) Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
+- `gcp_metadata_url` (String) Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.
+- `gcp_oauth_token_url` (String) Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.
+- `gcp_service_account_json` (String) Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
+- `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models.
+- `header_name` (String) If AI model requires authentication via Authorization or API key header, specify its name here.
+- `header_value` (String) Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
+- `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
+- `param_name` (String) If AI model requires authentication via query parameter, specify its name here.
+- `param_value` (String) Specify the full parameter value for 'param_name'.
+
 
 <a id="nestedatt--config--embeddings--model"></a>
 ### Nested Schema for `config.embeddings.model`
 
-Required:
-
-- `name` (String) Model name to execute.
-- `provider` (String) AI provider format to use for embeddings API. possible known values include one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai"]
-
 Optional:
 
+- `name` (String) Model name to execute. Not Null
 - `options` (Attributes) Key/value settings for the model (see [below for nested schema](#nestedatt--config--embeddings--model--options))
+- `provider` (String) AI provider format to use for embeddings API. possible known values include one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai"]; Not Null
 
 <a id="nestedatt--config--embeddings--model--options"></a>
 ### Nested Schema for `config.embeddings.model.options`
@@ -321,43 +335,37 @@ Optional:
 
 
 
-<a id="nestedatt--config--embeddings--auth"></a>
-### Nested Schema for `config.embeddings.auth`
+
+<a id="nestedatt--config--rules"></a>
+### Nested Schema for `config.rules`
 
 Optional:
 
-- `allow_override` (Boolean) If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
-- `aws_access_key_id` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
-- `aws_secret_access_key` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
-- `azure_client_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
-- `azure_client_secret` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
-- `azure_tenant_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
-- `azure_use_managed_identity` (Boolean) Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
-- `gcp_metadata_url` (String) Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.
-- `gcp_oauth_token_url` (String) Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.
-- `gcp_service_account_json` (String) Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
-- `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models.
-- `header_name` (String) If AI model requires authentication via Authorization or API key header, specify its name here.
-- `header_value` (String) Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
-- `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
-- `param_name` (String) If AI model requires authentication via query parameter, specify its name here.
-- `param_value` (String) Specify the full parameter value for 'param_name'.
+- `allow_prompts` (List of String) List of prompts to allow.
+- `deny_prompts` (List of String) List of prompts to deny.
+- `match_all_conversation_history` (Boolean) If false, will ignore all previous chat prompts from the conversation history. Default: false
+- `match_all_roles` (Boolean) If true, will match all roles in addition to 'user' role in conversation history. Default: false
+- `max_request_body_size` (Number) max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
 
+
+<a id="nestedatt--config--search"></a>
+### Nested Schema for `config.search`
+
+Optional:
+
+- `threshold` (Number) Threshold for the similarity score to be considered a match.
 
 
 <a id="nestedatt--config--vectordb"></a>
 ### Nested Schema for `config.vectordb`
 
-Required:
-
-- `dimensions` (Number) the desired dimensionality for the vectors
-- `distance_metric` (String) the distance metric to use for vector searches. possible known values include one of ["cosine", "euclidean"]
-- `strategy` (String) which vector database driver to use. possible known values include one of ["pgvector", "redis"]
-
 Optional:
 
+- `dimensions` (Number) the desired dimensionality for the vectors. Not Null
+- `distance_metric` (String) the distance metric to use for vector searches. possible known values include one of ["cosine", "euclidean"]; Not Null
 - `pgvector` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb--pgvector))
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb--redis))
+- `strategy` (String) which vector database driver to use. possible known values include one of ["pgvector", "redis"]; Not Null
 - `threshold` (Number) the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.
 
 <a id="nestedatt--config--vectordb--pgvector"></a>
@@ -444,26 +452,6 @@ Optional:
 - `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 
 
-
-
-<a id="nestedatt--config--rules"></a>
-### Nested Schema for `config.rules`
-
-Optional:
-
-- `allow_prompts` (List of String) List of prompts to allow.
-- `deny_prompts` (List of String) List of prompts to deny.
-- `match_all_conversation_history` (Boolean) If false, will ignore all previous chat prompts from the conversation history. Default: false
-- `match_all_roles` (Boolean) If true, will match all roles in addition to 'user' role in conversation history. Default: false
-- `max_request_body_size` (Number) max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
-
-
-<a id="nestedatt--config--search"></a>
-### Nested Schema for `config.search`
-
-Optional:
-
-- `threshold` (Number) Threshold for the similarity score to be considered a match.
 
 
 

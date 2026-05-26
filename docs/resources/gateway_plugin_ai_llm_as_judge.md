@@ -183,10 +183,6 @@ resource "konnect_gateway_plugin_ai_llm_as_judge" "my_gatewaypluginaillmasjudge"
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
-Required:
-
-- `llm` (Attributes) (see [below for nested schema](#nestedatt--config--llm))
-
 Optional:
 
 - `http_proxy_host` (String) A string representing a host name, such as example.com.
@@ -198,6 +194,7 @@ Optional:
 - `ignore_assistant_prompts` (Boolean) Ignore and discard any assistant prompts when evaluating the request. Default: true
 - `ignore_system_prompts` (Boolean) Ignore and discard any system prompts when evaluating the request. Default: true
 - `ignore_tool_prompts` (Boolean) Ignore and discard any tool prompts when evaluating the request. Default: true
+- `llm` (Attributes) (see [below for nested schema](#nestedatt--config--llm))
 - `message_countback` (Number) Number of messages in the chat history to use for evaluating the request. Default: 1
 - `prompt` (String) Use this prompt to tune the LLM system/assistant message for the llm as a judge prompt. Default: "You are a strict evaluator. You will be given a prompt and a response. Your task is to judge whether the response is correct or incorrect. You must assign a score between 1 and 100, where: 100 represents a completely correct and ideal response, 1 represents a completely incorrect or irrelevant response. Your score must be a single number only — no text, labels, or explanations. Use the full range of values (e.g., 13, 47, 86), not just round numbers like 10, 50, or 100. Be accurate and consistent, as this score will be used by another model for learning and evaluation."
 - `sampling_rate` (Number) Judging request sampling rate for configuring the probability-based sampler. Default: 1
@@ -205,30 +202,56 @@ Optional:
 <a id="nestedatt--config--llm"></a>
 ### Nested Schema for `config.llm`
 
-Required:
-
-- `model` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model))
-- `route_type` (String) The model's operation implementation, for this provider. possible known values include one of ["audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime", "video/v1/videos/generations"]
-
 Optional:
 
 - `auth` (Attributes) (see [below for nested schema](#nestedatt--config--llm--auth))
 - `description` (String) The semantic description of the target, required if using semantic load balancing. Specially, setting this to 'CATCHALL' will indicate such target to be used when no other targets match the semantic threshold. Only used by ai-proxy-advanced.
 - `logging` (Attributes) (see [below for nested schema](#nestedatt--config--llm--logging))
+- `model` (Attributes) Not Null (see [below for nested schema](#nestedatt--config--llm--model))
+- `route_type` (String) The model's operation implementation, for this provider. possible known values include one of ["audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime", "video/v1/videos/generations"]; Not Null
 - `weight` (Number) The weight this target gets within the upstream loadbalancer (1-65535). Only used by ai-proxy-advanced.
+
+<a id="nestedatt--config--llm--auth"></a>
+### Nested Schema for `config.llm.auth`
+
+Optional:
+
+- `allow_override` (Boolean) If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
+- `aws_access_key_id` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
+- `aws_secret_access_key` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
+- `azure_client_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
+- `azure_client_secret` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
+- `azure_tenant_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
+- `azure_use_managed_identity` (Boolean) Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
+- `gcp_metadata_url` (String) Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.
+- `gcp_oauth_token_url` (String) Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.
+- `gcp_service_account_json` (String) Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
+- `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models.
+- `header_name` (String) If AI model requires authentication via Authorization or API key header, specify its name here.
+- `header_value` (String) Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
+- `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
+- `param_name` (String) If AI model requires authentication via query parameter, specify its name here.
+- `param_value` (String) Specify the full parameter value for 'param_name'.
+
+
+<a id="nestedatt--config--llm--logging"></a>
+### Nested Schema for `config.llm.logging`
+
+Optional:
+
+- `log_payloads` (Boolean) If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well.
+- `log_statistics` (Boolean) If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.
+
 
 <a id="nestedatt--config--llm--model"></a>
 ### Nested Schema for `config.llm.model`
-
-Required:
-
-- `provider` (String) AI provider request format - Kong translates requests to and from the specified backend compatible formats. possible known values include one of ["anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "databricks", "deepseek", "gemini", "huggingface", "llama2", "mistral", "ollama", "openai", "vllm", "xai"]
 
 Optional:
 
 - `model_alias` (String) The model name parameter from the request that this model should map to.
 - `name` (String) Model name to execute.
 - `options` (Attributes) Key/value settings for the model (see [below for nested schema](#nestedatt--config--llm--model--options))
+- `provider` (String) AI provider request format - Kong translates requests to and from the specified backend compatible formats. possible known values include one of ["anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "databricks", "deepseek", "gemini", "huggingface", "llama2", "mistral", "ollama", "openai", "vllm", "xai"]; Not Null
 
 <a id="nestedatt--config--llm--model--options"></a>
 ### Nested Schema for `config.llm.model.options`
@@ -319,38 +342,6 @@ Optional:
 - `wait_for_model` (Boolean) Wait for the model if it is not ready
 
 
-
-
-<a id="nestedatt--config--llm--auth"></a>
-### Nested Schema for `config.llm.auth`
-
-Optional:
-
-- `allow_override` (Boolean) If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
-- `aws_access_key_id` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
-- `aws_secret_access_key` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
-- `azure_client_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
-- `azure_client_secret` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
-- `azure_tenant_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
-- `azure_use_managed_identity` (Boolean) Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
-- `gcp_metadata_url` (String) Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.
-- `gcp_oauth_token_url` (String) Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.
-- `gcp_service_account_json` (String) Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
-- `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models.
-- `header_name` (String) If AI model requires authentication via Authorization or API key header, specify its name here.
-- `header_value` (String) Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
-- `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
-- `param_name` (String) If AI model requires authentication via query parameter, specify its name here.
-- `param_value` (String) Specify the full parameter value for 'param_name'.
-
-
-<a id="nestedatt--config--llm--logging"></a>
-### Nested Schema for `config.llm.logging`
-
-Optional:
-
-- `log_payloads` (Boolean) If enabled, will log the request and response body into the Kong log plugin(s) output.Furthermore if Opentelemetry instrumentation is enabled the traces will contain this data as well.
-- `log_statistics` (Boolean) If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.
 
 
 

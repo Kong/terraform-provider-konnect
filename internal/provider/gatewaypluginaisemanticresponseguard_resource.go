@@ -25,7 +25,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	speakeasy_int64validators "github.com/kong/terraform-provider-konnect/v3/internal/validators/int64validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -81,7 +83,8 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Schema(ctx context.Contex
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"embeddings": schema.SingleNestedAttribute{
-						Required: true,
+						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"auth": schema.SingleNestedAttribute{
 								Computed: true,
@@ -170,11 +173,16 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Schema(ctx context.Contex
 								},
 							},
 							"model": schema.SingleNestedAttribute{
-								Required: true,
+								Computed: true,
+								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"name": schema.StringAttribute{
-										Required:    true,
-										Description: `Model name to execute.`,
+										Computed:    true,
+										Optional:    true,
+										Description: `Model name to execute. Not Null`,
+										Validators: []validator.String{
+											speakeasy_stringvalidators.NotNull(),
+										},
 									},
 									"options": schema.SingleNestedAttribute{
 										Computed: true,
@@ -298,9 +306,17 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Schema(ctx context.Contex
 										Description: `Key/value settings for the model`,
 									},
 									"provider": schema.StringAttribute{
-										Required:    true,
-										Description: `AI provider format to use for embeddings API. possible known values include one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai"]`,
+										Computed:    true,
+										Optional:    true,
+										Description: `AI provider format to use for embeddings API. possible known values include one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai"]; Not Null`,
+										Validators: []validator.String{
+											speakeasy_stringvalidators.NotNull(),
+										},
 									},
+								},
+								Description: `Not Null`,
+								Validators: []validator.Object{
+									speakeasy_objectvalidators.NotNull(),
 								},
 							},
 						},
@@ -362,15 +378,24 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Schema(ctx context.Contex
 						},
 					},
 					"vectordb": schema.SingleNestedAttribute{
-						Required: true,
+						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"dimensions": schema.Int64Attribute{
-								Required:    true,
-								Description: `the desired dimensionality for the vectors`,
+								Computed:    true,
+								Optional:    true,
+								Description: `the desired dimensionality for the vectors. Not Null`,
+								Validators: []validator.Int64{
+									speakeasy_int64validators.NotNull(),
+								},
 							},
 							"distance_metric": schema.StringAttribute{
-								Required:    true,
-								Description: `the distance metric to use for vector searches. possible known values include one of ["cosine", "euclidean"]`,
+								Computed:    true,
+								Optional:    true,
+								Description: `the distance metric to use for vector searches. possible known values include one of ["cosine", "euclidean"]; Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
 							},
 							"pgvector": schema.SingleNestedAttribute{
 								Computed: true,
@@ -675,8 +700,12 @@ func (r *GatewayPluginAiSemanticResponseGuardResource) Schema(ctx context.Contex
 								},
 							},
 							"strategy": schema.StringAttribute{
-								Required:    true,
-								Description: `which vector database driver to use. possible known values include one of ["pgvector", "redis"]`,
+								Computed:    true,
+								Optional:    true,
+								Description: `which vector database driver to use. possible known values include one of ["pgvector", "redis"]; Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
 							},
 							"threshold": schema.Float64Attribute{
 								Computed:    true,

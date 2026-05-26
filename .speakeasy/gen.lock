@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: b50ecb9db758fa086cdf2fa2715313b6
+  docChecksum: d8c0b44499f10e1d7f5dc7d1f337160f
   docVersion: 2.0.0
   speakeasyVersion: 1.763.1
   generationVersion: 2.884.4
   releaseVersion: 3.17.0
   configChecksum: c2547c7030275fa6dde8fb4370d2e509
 persistentEdits:
-  generation_id: d9008c16-f294-437a-b7b3-56c20a736f48
-  pristine_commit_hash: 5b8f97ab81e4d6aabaadf8dd0b2208739569b4d5
-  pristine_tree_hash: 9fbb9e2db693eb287fd143ca39c5063e0bdd1c68
+  generation_id: 8d4e7325-7c0f-4095-916f-9987a237ba2a
+  pristine_commit_hash: d1fd42e972e816d55b0f1bc18e431ab7f1d33157
+  pristine_tree_hash: a275be222d040ab742acb5c9be5705762cf63f8d
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -3369,12 +3369,12 @@ trackedFiles:
     pristine_git_object: 3180a8882e8c51ce384daed67dc25f4a8ddaee0d
   internal/provider/gatewaypluginaillmasjudge_resource.go:
     id: 1975f2c04d10
-    last_write_checksum: sha1:1da98a30c69de24ae79211f602fb83a76eb1244e
-    pristine_git_object: 0de05f1111f2b7c8e2d2507bd0b0c47fe8398960
+    last_write_checksum: sha1:3ab5e217c6231307f31f1d15e2a4b3a45c66c7ad
+    pristine_git_object: dc431434177eb28c907f0dceff8a654d645a5f13
   internal/provider/gatewaypluginaillmasjudge_resource_sdk.go:
     id: 454be652ce3a
-    last_write_checksum: sha1:caf1774e018984bc508d488121f6290ab57a3e0c
-    pristine_git_object: f28e10234086d0b2d9f1237c87c1f811d471aad7
+    last_write_checksum: sha1:08adcb5c9a6e23926eb6ae225cda2942ae9213d3
+    pristine_git_object: 6708b2de148a92268b5e624ebd746ce4c04641bc
   internal/provider/gatewaypluginaimcpoauth2_resource.go:
     id: e1f6ff1a01a0
     last_write_checksum: sha1:3311c8353f8d32d90a48c2ba88fc7b96e8a1fb23
@@ -3441,12 +3441,12 @@ trackedFiles:
     pristine_git_object: f9d82c51053579c2df3c5016d678a140e86ef708
   internal/provider/gatewaypluginairaginjector_resource.go:
     id: 1c254049d8e4
-    last_write_checksum: sha1:14c3da34ec675feb8b3d476cfe656fbfc5c16be1
-    pristine_git_object: c2f2eb79432f8ccd055fb3f6fac88489ff1e9853
+    last_write_checksum: sha1:bc256102bf9bcceea6954b8b108935b74d3226b0
+    pristine_git_object: cf98dadf557096b1b8dd7f1f6e6963fabd436bc9
   internal/provider/gatewaypluginairaginjector_resource_sdk.go:
     id: 7cc6b4242362
-    last_write_checksum: sha1:37353d61c65bc15e68630fca12f192790b955952
-    pristine_git_object: 0a7d2cf5c87ee96533b986bffd3decf54f6cd69f
+    last_write_checksum: sha1:72b701b8edd69d891418c36d911f31d63b1c3ae6
+    pristine_git_object: 40156b0409f188a85449f7bf707655130132f3dc
   internal/provider/gatewaypluginairatelimitingadvanced_resource.go:
     id: fb24028751c3
     last_write_checksum: sha1:350dc53f0d37673609a072dcae9d31ff52299755
@@ -3457,20 +3457,20 @@ trackedFiles:
     pristine_git_object: 91d552e0bb46cc536d0d191e71ae11cce1ecdb80
   internal/provider/gatewaypluginairequesttransformer_resource.go:
     id: 72cbbe48dc9a
-    last_write_checksum: sha1:20bfec9f483076340cb01346d2b98ba5826da7a6
-    pristine_git_object: 14406e8a265816c8d1a9d4a08ad7caf2ccb2beef
+    last_write_checksum: sha1:60a7326cd52415a8fac9be824ea09ee0ac435ea7
+    pristine_git_object: 469fc702e36d788be0267ce64e9f2a3b4d204a3e
   internal/provider/gatewaypluginairequesttransformer_resource_sdk.go:
     id: 86ceb4b99803
-    last_write_checksum: sha1:bf482ddc48221b5e8a32ee24027c566d4d500829
-    pristine_git_object: bd11d78fe3d1e2b1bf246f9b5e42173f817bc208
+    last_write_checksum: sha1:1f540e37eb3753c4d4e789940931066c53c63036
+    pristine_git_object: 6a05558dbaa419c66a178787c5a7826ee6c48ab3
   internal/provider/gatewaypluginairesponsetransformer_resource.go:
     id: 2c5b75625f1c
-    last_write_checksum: sha1:7d5154b309394933a6ac8730a169a84b965e005d
-    pristine_git_object: af274cf8639cc753f6f5d475311986a5ab0e9d80
+    last_write_checksum: sha1:4b6fbe7bc4f8231c88e7af9006d647d82e7af93b
+    pristine_git_object: 4be8914e075eb2db025739e071d651c8cb846bca
   internal/provider/gatewaypluginairesponsetransformer_resource_sdk.go:
     id: fa8c2b5ed656
-    last_write_checksum: sha1:7595026523ee5432e288062305b4e0443969a072
-    pristine_git_object: b8e8ab2138907b1a275144cd77a209717a40abe3
+    last_write_checksum: sha1:d4c6d969312b5bf0bd5b380311fd71a120fcbb65
+    pristine_git_object: a9b7dbf007dd479be61f5932ed495ef6b4ddb4a7
   internal/provider/gatewaypluginaisanitizer_resource.go:
     id: 6bbcc5671131
     last_write_checksum: sha1:e96999436562b7ed6f2ad969b95a2f168d503c5c
@@ -3481,28 +3481,28 @@ trackedFiles:
     pristine_git_object: a633f44e2e2a94af9649a0cc79dadf65a255fda2
   internal/provider/gatewaypluginaisemanticcache_resource.go:
     id: 7fe9fa925e20
-    last_write_checksum: sha1:bcd3d34f28cfc1ba8e96a87f1d7e6059c8ea5108
-    pristine_git_object: 6e0c463515cbe15a19e38d63f1284ce797b9fa54
+    last_write_checksum: sha1:7c165af9c7ea77a7a31430271382919c9ebc28b3
+    pristine_git_object: d254a4ae8f5f01161241a616036ab352d3c58a89
   internal/provider/gatewaypluginaisemanticcache_resource_sdk.go:
     id: "398686402e55"
-    last_write_checksum: sha1:6d66fe3977bb52c3c52a98a9055255a13c186f8a
-    pristine_git_object: 8b845a78bf90c5d749233dd1802466cd4d356163
+    last_write_checksum: sha1:122a6415347326da24d26132c41e8e4b43f092ef
+    pristine_git_object: a908161a839ab8ee9f2515afd6c31239e84f298a
   internal/provider/gatewaypluginaisemanticpromptguard_resource.go:
     id: b35a02be1e74
-    last_write_checksum: sha1:4536de7ec998522d1f47174b9ce8977365a4c3f0
-    pristine_git_object: 3a45446eed106727f4ad8359f2eaebc13a2004cb
+    last_write_checksum: sha1:3d93f9798ea3b85947d5d7308a8c88d76a3df1e5
+    pristine_git_object: d247550410adb59c7833f71b6099adac4cbd6ba3
   internal/provider/gatewaypluginaisemanticpromptguard_resource_sdk.go:
     id: bccf9650adf6
-    last_write_checksum: sha1:2a7def82dba3e94d9da6eba0e38e700e7b3fdcec
-    pristine_git_object: bdb093563859be3c6abd28a35a16c76a484c5c94
+    last_write_checksum: sha1:01128284bb0a69936afb94234e1690bc2c49c638
+    pristine_git_object: 0b1c9498f379f6c21addb327875a5218746629e9
   internal/provider/gatewaypluginaisemanticresponseguard_resource.go:
     id: e68b7d6b1144
-    last_write_checksum: sha1:0570253b9d32a5fe2b177b3d4bbde484a522bde1
-    pristine_git_object: 07524d9ccc1675e39ad0e7aa9cd35e1d3a410276
+    last_write_checksum: sha1:a4602904ad92481d059ccc6bdcd1311423474c88
+    pristine_git_object: 4489df9dd31d036ec8eef0310dc73549ab873271
   internal/provider/gatewaypluginaisemanticresponseguard_resource_sdk.go:
     id: c1be52ce440c
-    last_write_checksum: sha1:325abf0ce21d87748690b75bef9266cabcf5f67f
-    pristine_git_object: 63d3e06b702ecc1b3cbf6512927c5af3fd44ae8e
+    last_write_checksum: sha1:4a47fa264dea975006cf3b7a0939303449a04519
+    pristine_git_object: 2efec5da453c161409197ae5681635d750afd1d7
   internal/provider/gatewaypluginappdynamics_resource.go:
     id: e98acf3f0955
     last_write_checksum: sha1:46ce8fa20695c51addef8a8e8eeabd1eed8a060b
@@ -10377,8 +10377,8 @@ trackedFiles:
     pristine_git_object: be5cbca366f7d500a3754a09daada71de031a9a9
   internal/sdk/models/shared/aillmasjudgeplugin.go:
     id: e198d2863c59
-    last_write_checksum: sha1:e96ecab931ddb4cc7278548af8505611b90745fc
-    pristine_git_object: f4fc46a6039880ea9d278e5b0f4af7c801daae9d
+    last_write_checksum: sha1:e3aa6be9d48fa4b1bb9d312557cd7a107d222a49
+    pristine_git_object: e5a0ed386527b47f4a11c029019c6a66344eb5e2
   internal/sdk/models/shared/aimcpoauth2plugin.go:
     id: 3d888b1417ab
     last_write_checksum: sha1:3e9671d5787f7cdcca14dcfeacfcc87a31462941
@@ -10413,36 +10413,36 @@ trackedFiles:
     pristine_git_object: f17b24522a73a4182e308db73b227077bf51f92d
   internal/sdk/models/shared/airaginjectorplugin.go:
     id: 7505174fec4e
-    last_write_checksum: sha1:6fda8794c121ef0a4a2ad8d1d7c7dafd2599ac49
-    pristine_git_object: 671c1e310bda0edaa20513882ef9f743bb25696a
+    last_write_checksum: sha1:3b14838c3b00f4e71629f7fa2cde0c2a909f9f47
+    pristine_git_object: 8e23bd7c012c65d6ceae8583e52eb2d63295046f
   internal/sdk/models/shared/airatelimitingadvancedplugin.go:
     id: 3fb6dffd9e60
     last_write_checksum: sha1:1604a94f8b734c37acd1aca1fa5ca8a26aca6a3f
     pristine_git_object: c2a252e96d1bd08581daa0beecdcb75e41ae0c0c
   internal/sdk/models/shared/airequesttransformerplugin.go:
     id: cfe1079f8425
-    last_write_checksum: sha1:72fc61a2fc44d33cb32fd8f79843318550ad294c
-    pristine_git_object: 6fc947447701314bf6dac77f2f5073f3d8e7a4b5
+    last_write_checksum: sha1:656ea6509fe4b29c6f42dab14299a48395715236
+    pristine_git_object: 380995c882e4cd439ef8176230ed0ec2bcdb286b
   internal/sdk/models/shared/airesponsetransformerplugin.go:
     id: 065f0877ea34
-    last_write_checksum: sha1:a081ff880cb9216cbaf7d0ee660013885a113dde
-    pristine_git_object: 7f88db5d11afb4684e3b4e4c6fa5aac18c774e7f
+    last_write_checksum: sha1:546b16a564cb1a3007cd0318af23caec7986629e
+    pristine_git_object: ca91eb50d6eadad751d07372cd082c77ec92892f
   internal/sdk/models/shared/aisanitizerplugin.go:
     id: 86c0bec918d7
     last_write_checksum: sha1:cbce622829b1322f55ef638960f866ae05ffae80
     pristine_git_object: af71a48453699ad4db6f3d87c9a90ae1e88dccc7
   internal/sdk/models/shared/aisemanticcacheplugin.go:
     id: 6980875d6cd4
-    last_write_checksum: sha1:9f0b96d32e1c8d6af17bec2e23b503fea2120a6b
-    pristine_git_object: db67129b3776837a24beac31c4c10b46859301be
+    last_write_checksum: sha1:93c31c8833c6406708015e09b85f967fdda29885
+    pristine_git_object: 8f4fb3c1ce637256e73c9ab04b4450e6c55187d6
   internal/sdk/models/shared/aisemanticpromptguardplugin.go:
     id: fed11d543b0f
-    last_write_checksum: sha1:51a7a4027413efdf4a134e593517d586133a024d
-    pristine_git_object: 5e234481d9cfe93a8abdcc72d767f348b9bd9ce8
+    last_write_checksum: sha1:21d66667bf6db027f50abc949019ec7d3ef11dcc
+    pristine_git_object: 9359c05c82069b1087a3a988c1e7e371ac52756e
   internal/sdk/models/shared/aisemanticresponseguardplugin.go:
     id: ac705f459a85
-    last_write_checksum: sha1:9c2886bc8bb0a92fcc4706e63391c9c8a720ad67
-    pristine_git_object: 2a8d46e2278c6350f40fb09ad38bcc16e1a0e17a
+    last_write_checksum: sha1:fcd180daaa78905b5c25dd8fea42090461b34e61
+    pristine_git_object: 657ce61b586e59824ad23d3a8e492d131c523339
   internal/sdk/models/shared/algorithm.go:
     id: 298195d3f065
     last_write_checksum: sha1:26ea30d6469b264807ab63949ab0cc638b4d4f3c
@@ -15588,7 +15588,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-rag-injector", "ordering": null, "partials": null, "tags": null, "config": {"consumer_identifier": "consumer_group", "embeddings": {"model": {"name": "<value>", "provider": "mistral"}}, "fetch_chunks_count": 5, "filter_mode": "compatible", "global_acl_config": null, "inject_as_role": "user", "inject_template": "<CONTEXT>\n<PROMPT>", "max_filter_clauses": 100, "stop_on_failure": false, "stop_on_filter_error": false, "vectordb": {"dimensions": 879831, "distance_metric": "cosine", "strategy": "redis"}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-rag-injector", "ordering": null, "partials": null, "tags": null, "config": {"consumer_identifier": "consumer_group", "fetch_chunks_count": 5, "filter_mode": "compatible", "global_acl_config": null, "inject_as_role": "user", "inject_template": "<CONTEXT>\n<PROMPT>", "max_filter_clauses": 100, "stop_on_failure": false, "stop_on_filter_error": false}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 691685}
   update-airaginjector-plugin:
@@ -15610,10 +15610,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-rag-injector", "ordering": null, "partials": null, "tags": null, "config": {"consumer_identifier": "consumer_group", "embeddings": {"model": {"name": "<value>", "provider": "huggingface"}}, "fetch_chunks_count": 5, "filter_mode": "compatible", "global_acl_config": null, "inject_as_role": "user", "inject_template": "<CONTEXT>\n<PROMPT>", "max_filter_clauses": 100, "stop_on_failure": false, "stop_on_filter_error": false, "vectordb": {"dimensions": 216480, "distance_metric": "cosine", "strategy": "pgvector"}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-rag-injector", "ordering": null, "partials": null, "tags": null, "config": {"consumer_identifier": "consumer_group", "fetch_chunks_count": 5, "filter_mode": "compatible", "global_acl_config": null, "inject_as_role": "user", "inject_template": "<CONTEXT>\n<PROMPT>", "max_filter_clauses": 100, "stop_on_failure": false, "stop_on_filter_error": false}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-rag-injector", "ordering": null, "partials": null, "tags": null, "config": {"consumer_identifier": "consumer_group", "embeddings": {"model": {"name": "<value>", "provider": "huggingface"}}, "fetch_chunks_count": 5, "filter_mode": "compatible", "global_acl_config": null, "inject_as_role": "user", "inject_template": "<CONTEXT>\n<PROMPT>", "max_filter_clauses": 100, "stop_on_failure": false, "stop_on_filter_error": false, "vectordb": {"dimensions": 216480, "distance_metric": "cosine", "strategy": "pgvector"}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-rag-injector", "ordering": null, "partials": null, "tags": null, "config": {"consumer_identifier": "consumer_group", "fetch_chunks_count": 5, "filter_mode": "compatible", "global_acl_config": null, "inject_as_role": "user", "inject_template": "<CONTEXT>\n<PROMPT>", "max_filter_clauses": 100, "stop_on_failure": false, "stop_on_filter_error": false}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 644774}
   delete-airatelimitingadvanced-plugin:
@@ -15714,7 +15714,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-request-transformer", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "llm": {"model": {"provider": "mistral"}, "route_type": "llm/v1/embeddings"}, "max_request_body_size": 1048576, "prompt": "<value>", "transformation_extract_pattern": null}, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-request-transformer", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "max_request_body_size": 1048576, "prompt": "<value>", "transformation_extract_pattern": null}, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 805235}
   update-airequesttransformer-plugin:
@@ -15736,10 +15736,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-request-transformer", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "llm": {"model": {"provider": "azure"}, "route_type": "llm/v1/responses"}, "max_request_body_size": 1048576, "prompt": "<value>", "transformation_extract_pattern": null}, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-request-transformer", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "max_request_body_size": 1048576, "prompt": "<value>", "transformation_extract_pattern": null}, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-request-transformer", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "llm": {"model": {"provider": "azure"}, "route_type": "llm/v1/responses"}, "max_request_body_size": 1048576, "prompt": "<value>", "transformation_extract_pattern": null}, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-request-transformer", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "max_request_body_size": 1048576, "prompt": "<value>", "transformation_extract_pattern": null}, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 210992}
   delete-airesponsetransformer-plugin:
@@ -15777,7 +15777,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-response-transformer", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "llm": {"model": {"provider": "gemini"}, "route_type": "realtime/v1/realtime"}, "max_request_body_size": 1048576, "parse_llm_response_json_instructions": false, "prompt": "<value>", "transformation_extract_pattern": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-response-transformer", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "max_request_body_size": 1048576, "parse_llm_response_json_instructions": false, "prompt": "<value>", "transformation_extract_pattern": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 514972}
   update-airesponsetransformer-plugin:
@@ -15799,10 +15799,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-response-transformer", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "llm": {"model": {"provider": "gemini"}, "route_type": "image/v1/images/edits"}, "max_request_body_size": 1048576, "parse_llm_response_json_instructions": false, "prompt": "<value>", "transformation_extract_pattern": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-response-transformer", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "max_request_body_size": 1048576, "parse_llm_response_json_instructions": false, "prompt": "<value>", "transformation_extract_pattern": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-response-transformer", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "llm": {"model": {"provider": "gemini"}, "route_type": "image/v1/images/edits"}, "max_request_body_size": 1048576, "parse_llm_response_json_instructions": false, "prompt": "<value>", "transformation_extract_pattern": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-response-transformer", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "max_request_body_size": 1048576, "parse_llm_response_json_instructions": false, "prompt": "<value>", "transformation_extract_pattern": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 539318}
   delete-aisanitizer-plugin:
@@ -15903,7 +15903,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-cache", "ordering": null, "partials": null, "tags": null, "config": {"cache_control": false, "cache_ttl": 300, "embeddings": {"model": {"name": "<value>", "provider": "openai"}}, "exact_caching": false, "ignore_assistant_prompts": false, "ignore_system_prompts": false, "ignore_tool_prompts": false, "message_countback": 1, "stop_on_failure": false, "vectordb": {"dimensions": 111661, "distance_metric": "cosine", "strategy": "redis"}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-cache", "ordering": null, "partials": null, "tags": null, "config": {"cache_control": false, "cache_ttl": 300, "exact_caching": false, "ignore_assistant_prompts": false, "ignore_system_prompts": false, "ignore_tool_prompts": false, "message_countback": 1, "stop_on_failure": false}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 865733}
   update-aisemanticcache-plugin:
@@ -15925,10 +15925,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-cache", "ordering": null, "partials": null, "tags": null, "config": {"cache_control": false, "cache_ttl": 300, "embeddings": {"model": {"name": "<value>", "provider": "mistral"}}, "exact_caching": false, "ignore_assistant_prompts": false, "ignore_system_prompts": false, "ignore_tool_prompts": false, "message_countback": 1, "stop_on_failure": false, "vectordb": {"dimensions": 804916, "distance_metric": "cosine", "strategy": "pgvector"}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-cache", "ordering": null, "partials": null, "tags": null, "config": {"cache_control": false, "cache_ttl": 300, "exact_caching": false, "ignore_assistant_prompts": false, "ignore_system_prompts": false, "ignore_tool_prompts": false, "message_countback": 1, "stop_on_failure": false}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-cache", "ordering": null, "partials": null, "tags": null, "config": {"cache_control": false, "cache_ttl": 300, "embeddings": {"model": {"name": "<value>", "provider": "mistral"}}, "exact_caching": false, "ignore_assistant_prompts": false, "ignore_system_prompts": false, "ignore_tool_prompts": false, "message_countback": 1, "stop_on_failure": false, "vectordb": {"dimensions": 804916, "distance_metric": "cosine", "strategy": "pgvector"}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-cache", "ordering": null, "partials": null, "tags": null, "config": {"cache_control": false, "cache_ttl": 300, "exact_caching": false, "ignore_assistant_prompts": false, "ignore_system_prompts": false, "ignore_tool_prompts": false, "message_countback": 1, "stop_on_failure": false}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 675935}
   delete-aisemanticpromptguard-plugin:
@@ -15966,7 +15966,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-prompt-guard", "ordering": null, "partials": null, "tags": null, "config": {"embeddings": {"model": {"name": "<value>", "provider": "openai"}}, "genai_category": "text/generation", "max_request_body_size": 1048576, "rules": null, "search": null, "vectordb": {"dimensions": 741667, "distance_metric": "cosine", "strategy": "redis"}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-prompt-guard", "ordering": null, "partials": null, "tags": null, "config": {"genai_category": "text/generation", "max_request_body_size": 1048576, "rules": null, "search": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 918296}
   update-aisemanticpromptguard-plugin:
@@ -15988,10 +15988,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-prompt-guard", "ordering": null, "partials": null, "tags": null, "config": {"embeddings": {"model": {"name": "<value>", "provider": "mistral"}}, "genai_category": "text/generation", "max_request_body_size": 1048576, "rules": null, "search": null, "vectordb": {"dimensions": 758684, "distance_metric": "euclidean", "strategy": "pgvector"}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-prompt-guard", "ordering": null, "partials": null, "tags": null, "config": {"genai_category": "text/generation", "max_request_body_size": 1048576, "rules": null, "search": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-prompt-guard", "ordering": null, "partials": null, "tags": null, "config": {"embeddings": {"model": {"name": "<value>", "provider": "mistral"}}, "genai_category": "text/generation", "max_request_body_size": 1048576, "rules": null, "search": null, "vectordb": {"dimensions": 758684, "distance_metric": "euclidean", "strategy": "pgvector"}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-prompt-guard", "ordering": null, "partials": null, "tags": null, "config": {"genai_category": "text/generation", "max_request_body_size": 1048576, "rules": null, "search": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 722931}
   delete-awslambda-plugin:
@@ -21262,10 +21262,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-rag-injector", "ordering": null, "partials": null, "tags": null, "config": {"consumer_identifier": "consumer_group", "embeddings": {"model": {"name": "<value>", "provider": "azure"}}, "fetch_chunks_count": 5, "filter_mode": "compatible", "global_acl_config": null, "inject_as_role": "user", "inject_template": "<CONTEXT>\n<PROMPT>", "max_filter_clauses": 100, "stop_on_failure": false, "stop_on_filter_error": false, "vectordb": {"dimensions": 349425, "distance_metric": "euclidean", "strategy": "redis"}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-rag-injector", "ordering": null, "partials": null, "tags": null, "config": {"consumer_identifier": "consumer_group", "fetch_chunks_count": 5, "filter_mode": "compatible", "global_acl_config": null, "inject_as_role": "user", "inject_template": "<CONTEXT>\n<PROMPT>", "max_filter_clauses": 100, "stop_on_failure": false, "stop_on_filter_error": false}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-rag-injector", "ordering": null, "partials": null, "tags": null, "config": {"consumer_identifier": "consumer_group", "embeddings": {"model": {"name": "<value>", "provider": "azure"}}, "fetch_chunks_count": 5, "filter_mode": "compatible", "global_acl_config": null, "inject_as_role": "user", "inject_template": "<CONTEXT>\n<PROMPT>", "max_filter_clauses": 100, "stop_on_failure": false, "stop_on_filter_error": false, "vectordb": {"dimensions": 349425, "distance_metric": "euclidean", "strategy": "redis"}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-rag-injector", "ordering": null, "partials": null, "tags": null, "config": {"consumer_identifier": "consumer_group", "fetch_chunks_count": 5, "filter_mode": "compatible", "global_acl_config": null, "inject_as_role": "user", "inject_template": "<CONTEXT>\n<PROMPT>", "max_filter_clauses": 100, "stop_on_failure": false, "stop_on_filter_error": false}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 77511}
   create-airatelimitingadvanced-plugin:
@@ -21286,10 +21286,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-request-transformer", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "llm": {"model": {"provider": "gemini"}, "route_type": "preserve"}, "max_request_body_size": 1048576, "prompt": "<value>", "transformation_extract_pattern": null}, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-request-transformer", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "max_request_body_size": 1048576, "prompt": "<value>", "transformation_extract_pattern": null}, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-request-transformer", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "llm": {"model": {"provider": "gemini"}, "route_type": "preserve"}, "max_request_body_size": 1048576, "prompt": "<value>", "transformation_extract_pattern": null}, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-request-transformer", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "max_request_body_size": 1048576, "prompt": "<value>", "transformation_extract_pattern": null}, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 550459}
   create-airesponsetransformer-plugin:
@@ -21298,10 +21298,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-response-transformer", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "llm": {"model": {"provider": "azure"}, "route_type": "llm/v1/assistants"}, "max_request_body_size": 1048576, "parse_llm_response_json_instructions": false, "prompt": "<value>", "transformation_extract_pattern": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-response-transformer", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "max_request_body_size": 1048576, "parse_llm_response_json_instructions": false, "prompt": "<value>", "transformation_extract_pattern": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-response-transformer", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "llm": {"model": {"provider": "azure"}, "route_type": "llm/v1/assistants"}, "max_request_body_size": 1048576, "parse_llm_response_json_instructions": false, "prompt": "<value>", "transformation_extract_pattern": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-response-transformer", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "max_request_body_size": 1048576, "parse_llm_response_json_instructions": false, "prompt": "<value>", "transformation_extract_pattern": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 187184}
   create-aisanitizer-plugin:
@@ -21322,10 +21322,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-cache", "ordering": null, "partials": null, "tags": null, "config": {"cache_control": false, "cache_ttl": 300, "embeddings": {"model": {"name": "<value>", "provider": "azure"}}, "exact_caching": false, "ignore_assistant_prompts": false, "ignore_system_prompts": false, "ignore_tool_prompts": false, "message_countback": 1, "stop_on_failure": false, "vectordb": {"dimensions": 123719, "distance_metric": "cosine", "strategy": "redis"}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-cache", "ordering": null, "partials": null, "tags": null, "config": {"cache_control": false, "cache_ttl": 300, "exact_caching": false, "ignore_assistant_prompts": false, "ignore_system_prompts": false, "ignore_tool_prompts": false, "message_countback": 1, "stop_on_failure": false}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-cache", "ordering": null, "partials": null, "tags": null, "config": {"cache_control": false, "cache_ttl": 300, "embeddings": {"model": {"name": "<value>", "provider": "azure"}}, "exact_caching": false, "ignore_assistant_prompts": false, "ignore_system_prompts": false, "ignore_tool_prompts": false, "message_countback": 1, "stop_on_failure": false, "vectordb": {"dimensions": 123719, "distance_metric": "cosine", "strategy": "redis"}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-cache", "ordering": null, "partials": null, "tags": null, "config": {"cache_control": false, "cache_ttl": 300, "exact_caching": false, "ignore_assistant_prompts": false, "ignore_system_prompts": false, "ignore_tool_prompts": false, "message_countback": 1, "stop_on_failure": false}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 122100}
   create-aisemanticpromptguard-plugin:
@@ -21334,10 +21334,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-prompt-guard", "ordering": null, "partials": null, "tags": null, "config": {"embeddings": {"model": {"name": "<value>", "provider": "mistral"}}, "genai_category": "text/generation", "max_request_body_size": 1048576, "rules": null, "search": null, "vectordb": {"dimensions": 381490, "distance_metric": "euclidean", "strategy": "pgvector"}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-prompt-guard", "ordering": null, "partials": null, "tags": null, "config": {"genai_category": "text/generation", "max_request_body_size": 1048576, "rules": null, "search": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-prompt-guard", "ordering": null, "partials": null, "tags": null, "config": {"embeddings": {"model": {"name": "<value>", "provider": "mistral"}}, "genai_category": "text/generation", "max_request_body_size": 1048576, "rules": null, "search": null, "vectordb": {"dimensions": 381490, "distance_metric": "euclidean", "strategy": "pgvector"}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-prompt-guard", "ordering": null, "partials": null, "tags": null, "config": {"genai_category": "text/generation", "max_request_body_size": 1048576, "rules": null, "search": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 717457}
   create-awslambda-plugin:
@@ -25122,7 +25122,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-llm-as-judge", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "ignore_assistant_prompts": true, "ignore_system_prompts": true, "ignore_tool_prompts": true, "llm": {"model": {"provider": "llama2"}, "route_type": "llm/v1/responses"}, "message_countback": 1, "prompt": "You are a strict evaluator. You will be given a prompt and a response. Your task is to judge whether the response is correct or incorrect. You must assign a score between 1 and 100, where: 100 represents a completely correct and ideal response, 1 represents a completely incorrect or irrelevant response. Your score must be a single number only — no text, labels, or explanations. Use the full range of values (e.g., 13, 47, 86), not just round numbers like 10, 50, or 100. Be accurate and consistent, as this score will be used by another model for learning and evaluation.", "sampling_rate": 1}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-llm-as-judge", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "ignore_assistant_prompts": true, "ignore_system_prompts": true, "ignore_tool_prompts": true, "message_countback": 1, "prompt": "You are a strict evaluator. You will be given a prompt and a response. Your task is to judge whether the response is correct or incorrect. You must assign a score between 1 and 100, where: 100 represents a completely correct and ideal response, 1 represents a completely incorrect or irrelevant response. Your score must be a single number only — no text, labels, or explanations. Use the full range of values (e.g., 13, 47, 86), not just round numbers like 10, 50, or 100. Be accurate and consistent, as this score will be used by another model for learning and evaluation.", "sampling_rate": 1}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 713715}
   update-aillmasjudge-plugin:
@@ -25132,10 +25132,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-llm-as-judge", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "ignore_assistant_prompts": true, "ignore_system_prompts": true, "ignore_tool_prompts": true, "llm": {"model": {"provider": "bedrock"}, "route_type": "llm/v1/assistants"}, "message_countback": 1, "prompt": "You are a strict evaluator. You will be given a prompt and a response. Your task is to judge whether the response is correct or incorrect. You must assign a score between 1 and 100, where: 100 represents a completely correct and ideal response, 1 represents a completely incorrect or irrelevant response. Your score must be a single number only — no text, labels, or explanations. Use the full range of values (e.g., 13, 47, 86), not just round numbers like 10, 50, or 100. Be accurate and consistent, as this score will be used by another model for learning and evaluation.", "sampling_rate": 1}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-llm-as-judge", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "ignore_assistant_prompts": true, "ignore_system_prompts": true, "ignore_tool_prompts": true, "message_countback": 1, "prompt": "You are a strict evaluator. You will be given a prompt and a response. Your task is to judge whether the response is correct or incorrect. You must assign a score between 1 and 100, where: 100 represents a completely correct and ideal response, 1 represents a completely incorrect or irrelevant response. Your score must be a single number only — no text, labels, or explanations. Use the full range of values (e.g., 13, 47, 86), not just round numbers like 10, 50, or 100. Be accurate and consistent, as this score will be used by another model for learning and evaluation.", "sampling_rate": 1}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-llm-as-judge", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "ignore_assistant_prompts": true, "ignore_system_prompts": true, "ignore_tool_prompts": true, "llm": {"model": {"provider": "bedrock"}, "route_type": "llm/v1/assistants"}, "message_countback": 1, "prompt": "You are a strict evaluator. You will be given a prompt and a response. Your task is to judge whether the response is correct or incorrect. You must assign a score between 1 and 100, where: 100 represents a completely correct and ideal response, 1 represents a completely incorrect or irrelevant response. Your score must be a single number only — no text, labels, or explanations. Use the full range of values (e.g., 13, 47, 86), not just round numbers like 10, 50, or 100. Be accurate and consistent, as this score will be used by another model for learning and evaluation.", "sampling_rate": 1}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-llm-as-judge", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "ignore_assistant_prompts": true, "ignore_system_prompts": true, "ignore_tool_prompts": true, "message_countback": 1, "prompt": "You are a strict evaluator. You will be given a prompt and a response. Your task is to judge whether the response is correct or incorrect. You must assign a score between 1 and 100, where: 100 represents a completely correct and ideal response, 1 represents a completely incorrect or irrelevant response. Your score must be a single number only — no text, labels, or explanations. Use the full range of values (e.g., 13, 47, 86), not just round numbers like 10, 50, or 100. Be accurate and consistent, as this score will be used by another model for learning and evaluation.", "sampling_rate": 1}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 26358}
   delete-aimcpoauth2-plugin:
@@ -25221,7 +25221,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-response-guard", "ordering": null, "partials": null, "tags": null, "config": {"embeddings": {"model": {"name": "<value>", "provider": "huggingface"}}, "genai_category": "text/generation", "rules": null, "search": null, "vectordb": {"dimensions": 654506, "distance_metric": "cosine", "strategy": "pgvector"}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-response-guard", "ordering": null, "partials": null, "tags": null, "config": {"genai_category": "text/generation", "rules": null, "search": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 321239}
   update-aisemanticresponseguard-plugin:
@@ -25231,10 +25231,10 @@ examples:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-response-guard", "ordering": null, "partials": null, "tags": null, "config": {"embeddings": {"model": {"name": "<value>", "provider": "gemini"}}, "genai_category": "text/generation", "rules": null, "search": null, "vectordb": {"dimensions": 593133, "distance_metric": "euclidean", "strategy": "pgvector"}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-response-guard", "ordering": null, "partials": null, "tags": null, "config": {"genai_category": "text/generation", "rules": null, "search": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "200":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-response-guard", "ordering": null, "partials": null, "tags": null, "config": {"embeddings": {"model": {"name": "<value>", "provider": "gemini"}}, "genai_category": "text/generation", "rules": null, "search": null, "vectordb": {"dimensions": 593133, "distance_metric": "euclidean", "strategy": "pgvector"}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-response-guard", "ordering": null, "partials": null, "tags": null, "config": {"genai_category": "text/generation", "rules": null, "search": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 29488}
   delete-solaceconsume-plugin:
@@ -25333,10 +25333,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-llm-as-judge", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "ignore_assistant_prompts": true, "ignore_system_prompts": true, "ignore_tool_prompts": true, "llm": {"model": {"provider": "huggingface"}, "route_type": "audio/v1/audio/translations"}, "message_countback": 1, "prompt": "You are a strict evaluator. You will be given a prompt and a response. Your task is to judge whether the response is correct or incorrect. You must assign a score between 1 and 100, where: 100 represents a completely correct and ideal response, 1 represents a completely incorrect or irrelevant response. Your score must be a single number only — no text, labels, or explanations. Use the full range of values (e.g., 13, 47, 86), not just round numbers like 10, 50, or 100. Be accurate and consistent, as this score will be used by another model for learning and evaluation.", "sampling_rate": 1}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-llm-as-judge", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "ignore_assistant_prompts": true, "ignore_system_prompts": true, "ignore_tool_prompts": true, "message_countback": 1, "prompt": "You are a strict evaluator. You will be given a prompt and a response. Your task is to judge whether the response is correct or incorrect. You must assign a score between 1 and 100, where: 100 represents a completely correct and ideal response, 1 represents a completely incorrect or irrelevant response. Your score must be a single number only — no text, labels, or explanations. Use the full range of values (e.g., 13, 47, 86), not just round numbers like 10, 50, or 100. Be accurate and consistent, as this score will be used by another model for learning and evaluation.", "sampling_rate": 1}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-llm-as-judge", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "ignore_assistant_prompts": true, "ignore_system_prompts": true, "ignore_tool_prompts": true, "llm": {"model": {"provider": "huggingface"}, "route_type": "audio/v1/audio/translations"}, "message_countback": 1, "prompt": "You are a strict evaluator. You will be given a prompt and a response. Your task is to judge whether the response is correct or incorrect. You must assign a score between 1 and 100, where: 100 represents a completely correct and ideal response, 1 represents a completely incorrect or irrelevant response. Your score must be a single number only — no text, labels, or explanations. Use the full range of values (e.g., 13, 47, 86), not just round numbers like 10, 50, or 100. Be accurate and consistent, as this score will be used by another model for learning and evaluation.", "sampling_rate": 1}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-llm-as-judge", "ordering": null, "partials": null, "tags": null, "config": {"http_proxy_host": null, "http_proxy_port": null, "http_timeout": 60000, "https_proxy_host": null, "https_proxy_port": null, "https_verify": true, "ignore_assistant_prompts": true, "ignore_system_prompts": true, "ignore_tool_prompts": true, "message_countback": 1, "prompt": "You are a strict evaluator. You will be given a prompt and a response. Your task is to judge whether the response is correct or incorrect. You must assign a score between 1 and 100, where: 100 represents a completely correct and ideal response, 1 represents a completely incorrect or irrelevant response. Your score must be a single number only — no text, labels, or explanations. Use the full range of values (e.g., 13, 47, 86), not just round numbers like 10, 50, or 100. Be accurate and consistent, as this score will be used by another model for learning and evaluation.", "sampling_rate": 1}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 871661}
   create-aimcpoauth2-plugin:
@@ -25369,10 +25369,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-response-guard", "ordering": null, "partials": null, "tags": null, "config": {"embeddings": {"model": {"name": "<value>", "provider": "azure"}}, "genai_category": "text/generation", "rules": null, "search": null, "vectordb": {"dimensions": 767565, "distance_metric": "cosine", "strategy": "pgvector"}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-response-guard", "ordering": null, "partials": null, "tags": null, "config": {"genai_category": "text/generation", "rules": null, "search": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
       responses:
         "201":
-          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-response-guard", "ordering": null, "partials": null, "tags": null, "config": {"embeddings": {"model": {"name": "<value>", "provider": "azure"}}, "genai_category": "text/generation", "rules": null, "search": null, "vectordb": {"dimensions": 767565, "distance_metric": "cosine", "strategy": "pgvector"}}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+          application/json: {"condition": null, "enabled": true, "instance_name": null, "name": "ai-semantic-response-guard", "ordering": null, "partials": null, "tags": null, "config": {"genai_category": "text/generation", "rules": null, "search": null}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 657511}
   create-solaceconsume-plugin:

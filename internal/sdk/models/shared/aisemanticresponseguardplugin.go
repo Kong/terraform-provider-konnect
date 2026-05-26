@@ -1490,14 +1490,14 @@ func (a *AiSemanticResponseGuardPluginVectordb) GetThreshold() *float64 {
 }
 
 type AiSemanticResponseGuardPluginConfig struct {
-	Embeddings AiSemanticResponseGuardPluginEmbeddings `json:"embeddings"`
+	Embeddings *AiSemanticResponseGuardPluginEmbeddings `json:"embeddings,omitempty"`
 	// Generative AI category of the request
 	GenaiCategory *AiSemanticResponseGuardPluginGenaiCategory `default:"text/generation" json:"genai_category"`
 	// LLM input and output format and schema to use
 	LlmFormat *AiSemanticResponseGuardPluginLlmFormat `json:"llm_format,omitempty"`
 	Rules     *AiSemanticResponseGuardPluginRules     `json:"rules"`
 	Search    *AiSemanticResponseGuardPluginSearch    `json:"search"`
-	Vectordb  AiSemanticResponseGuardPluginVectordb   `json:"vectordb"`
+	Vectordb  *AiSemanticResponseGuardPluginVectordb  `json:"vectordb,omitempty"`
 }
 
 func (a AiSemanticResponseGuardPluginConfig) MarshalJSON() ([]byte, error) {
@@ -1505,15 +1505,15 @@ func (a AiSemanticResponseGuardPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticResponseGuardPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"embeddings", "vectordb"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AiSemanticResponseGuardPluginConfig) GetEmbeddings() AiSemanticResponseGuardPluginEmbeddings {
+func (a *AiSemanticResponseGuardPluginConfig) GetEmbeddings() *AiSemanticResponseGuardPluginEmbeddings {
 	if a == nil {
-		return AiSemanticResponseGuardPluginEmbeddings{}
+		return nil
 	}
 	return a.Embeddings
 }
@@ -1546,9 +1546,9 @@ func (a *AiSemanticResponseGuardPluginConfig) GetSearch() *AiSemanticResponseGua
 	return a.Search
 }
 
-func (a *AiSemanticResponseGuardPluginConfig) GetVectordb() AiSemanticResponseGuardPluginVectordb {
+func (a *AiSemanticResponseGuardPluginConfig) GetVectordb() *AiSemanticResponseGuardPluginVectordb {
 	if a == nil {
-		return AiSemanticResponseGuardPluginVectordb{}
+		return nil
 	}
 	return a.Vectordb
 }

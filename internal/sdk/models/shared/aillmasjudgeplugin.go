@@ -1077,7 +1077,7 @@ type AiLlmAsJudgePluginConfig struct {
 	IgnoreSystemPrompts *bool `default:"true" json:"ignore_system_prompts"`
 	// Ignore and discard any tool prompts when evaluating the request
 	IgnoreToolPrompts *bool `default:"true" json:"ignore_tool_prompts"`
-	Llm               Llm   `json:"llm"`
+	Llm               *Llm  `json:"llm,omitempty"`
 	// Number of messages in the chat history to use for evaluating the request
 	MessageCountback *float64 `default:"1" json:"message_countback"`
 	// Use this prompt to tune the LLM system/assistant message for the llm as a judge prompt.
@@ -1091,7 +1091,7 @@ func (a AiLlmAsJudgePluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiLlmAsJudgePluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"llm"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1160,9 +1160,9 @@ func (a *AiLlmAsJudgePluginConfig) GetIgnoreToolPrompts() *bool {
 	return a.IgnoreToolPrompts
 }
 
-func (a *AiLlmAsJudgePluginConfig) GetLlm() Llm {
+func (a *AiLlmAsJudgePluginConfig) GetLlm() *Llm {
 	if a == nil {
-		return Llm{}
+		return nil
 	}
 	return a.Llm
 }

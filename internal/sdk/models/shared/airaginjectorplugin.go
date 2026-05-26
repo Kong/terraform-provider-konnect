@@ -1511,7 +1511,7 @@ type AiRagInjectorPluginConfig struct {
 	CollectionACLConfig map[string]CollectionACLConfig `json:"collection_acl_config,omitempty"`
 	// The type of consumer identifier used for ACL checks
 	ConsumerIdentifier *AiRagInjectorPluginConsumerIdentifier `default:"consumer_group" json:"consumer_identifier"`
-	Embeddings         AiRagInjectorPluginEmbeddings          `json:"embeddings"`
+	Embeddings         *AiRagInjectorPluginEmbeddings         `json:"embeddings,omitempty"`
 	// The maximum number of chunks to fetch from vectordb
 	FetchChunksCount *float64 `default:"5" json:"fetch_chunks_count"`
 	// Defines how the plugin behaves when a filter is invalid. Set to `compatible` to ignore invalid filters, or `strict` to raise an error. This can be overridden per request.
@@ -1525,8 +1525,8 @@ type AiRagInjectorPluginConfig struct {
 	// Halt the LLM request process in case of a vectordb or embeddings service failure
 	StopOnFailure *bool `default:"false" json:"stop_on_failure"`
 	// Default behavior when filter parsing fails (can be overridden per-request)
-	StopOnFilterError *bool                       `default:"false" json:"stop_on_filter_error"`
-	Vectordb          AiRagInjectorPluginVectordb `json:"vectordb"`
+	StopOnFilterError *bool                        `default:"false" json:"stop_on_filter_error"`
+	Vectordb          *AiRagInjectorPluginVectordb `json:"vectordb,omitempty"`
 	// The namespace of the vectordb to use for embeddings lookup
 	VectordbNamespace *string `json:"vectordb_namespace,omitempty"`
 }
@@ -1536,7 +1536,7 @@ func (a AiRagInjectorPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiRagInjectorPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"embeddings", "vectordb"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1556,9 +1556,9 @@ func (a *AiRagInjectorPluginConfig) GetConsumerIdentifier() *AiRagInjectorPlugin
 	return a.ConsumerIdentifier
 }
 
-func (a *AiRagInjectorPluginConfig) GetEmbeddings() AiRagInjectorPluginEmbeddings {
+func (a *AiRagInjectorPluginConfig) GetEmbeddings() *AiRagInjectorPluginEmbeddings {
 	if a == nil {
-		return AiRagInjectorPluginEmbeddings{}
+		return nil
 	}
 	return a.Embeddings
 }
@@ -1619,9 +1619,9 @@ func (a *AiRagInjectorPluginConfig) GetStopOnFilterError() *bool {
 	return a.StopOnFilterError
 }
 
-func (a *AiRagInjectorPluginConfig) GetVectordb() AiRagInjectorPluginVectordb {
+func (a *AiRagInjectorPluginConfig) GetVectordb() *AiRagInjectorPluginVectordb {
 	if a == nil {
-		return AiRagInjectorPluginVectordb{}
+		return nil
 	}
 	return a.Vectordb
 }

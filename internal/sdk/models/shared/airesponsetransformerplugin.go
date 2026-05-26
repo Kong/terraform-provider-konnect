@@ -1070,8 +1070,8 @@ type AiResponseTransformerPluginConfig struct {
 	// An integer representing a port number between 0 and 65535, inclusive.
 	HTTPSProxyPort *int64 `default:"null" json:"https_proxy_port"`
 	// Verify the TLS certificate of the AI upstream service.
-	HTTPSVerify *bool                          `default:"true" json:"https_verify"`
-	Llm         AiResponseTransformerPluginLlm `json:"llm"`
+	HTTPSVerify *bool                           `default:"true" json:"https_verify"`
+	Llm         *AiResponseTransformerPluginLlm `json:"llm,omitempty"`
 	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
 	MaxRequestBodySize *int64 `default:"1048576" json:"max_request_body_size"`
 	// Set true to read specific response format from the LLM, and accordingly set the status code / body / headers that proxy back to the client. You need to engineer your LLM prompt to return the correct format, see plugin docs 'Overview' page for usage instructions.
@@ -1087,7 +1087,7 @@ func (a AiResponseTransformerPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiResponseTransformerPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"llm", "prompt"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"prompt"}); err != nil {
 		return err
 	}
 	return nil
@@ -1135,9 +1135,9 @@ func (a *AiResponseTransformerPluginConfig) GetHTTPSVerify() *bool {
 	return a.HTTPSVerify
 }
 
-func (a *AiResponseTransformerPluginConfig) GetLlm() AiResponseTransformerPluginLlm {
+func (a *AiResponseTransformerPluginConfig) GetLlm() *AiResponseTransformerPluginLlm {
 	if a == nil {
-		return AiResponseTransformerPluginLlm{}
+		return nil
 	}
 	return a.Llm
 }

@@ -1508,16 +1508,16 @@ func (a *AiSemanticPromptGuardPluginVectordb) GetThreshold() *float64 {
 }
 
 type AiSemanticPromptGuardPluginConfig struct {
-	Embeddings AiSemanticPromptGuardPluginEmbeddings `json:"embeddings"`
+	Embeddings *AiSemanticPromptGuardPluginEmbeddings `json:"embeddings,omitempty"`
 	// Generative AI category of the request
 	GenaiCategory *AiSemanticPromptGuardPluginGenaiCategory `default:"text/generation" json:"genai_category"`
 	// LLM input and output format and schema to use
 	LlmFormat *AiSemanticPromptGuardPluginLlmFormat `json:"llm_format,omitempty"`
 	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
-	MaxRequestBodySize *int64                              `default:"1048576" json:"max_request_body_size"`
-	Rules              *Rules                              `json:"rules"`
-	Search             *Search                             `json:"search"`
-	Vectordb           AiSemanticPromptGuardPluginVectordb `json:"vectordb"`
+	MaxRequestBodySize *int64                               `default:"1048576" json:"max_request_body_size"`
+	Rules              *Rules                               `json:"rules"`
+	Search             *Search                              `json:"search"`
+	Vectordb           *AiSemanticPromptGuardPluginVectordb `json:"vectordb,omitempty"`
 }
 
 func (a AiSemanticPromptGuardPluginConfig) MarshalJSON() ([]byte, error) {
@@ -1525,15 +1525,15 @@ func (a AiSemanticPromptGuardPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticPromptGuardPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"embeddings", "vectordb"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AiSemanticPromptGuardPluginConfig) GetEmbeddings() AiSemanticPromptGuardPluginEmbeddings {
+func (a *AiSemanticPromptGuardPluginConfig) GetEmbeddings() *AiSemanticPromptGuardPluginEmbeddings {
 	if a == nil {
-		return AiSemanticPromptGuardPluginEmbeddings{}
+		return nil
 	}
 	return a.Embeddings
 }
@@ -1573,9 +1573,9 @@ func (a *AiSemanticPromptGuardPluginConfig) GetSearch() *Search {
 	return a.Search
 }
 
-func (a *AiSemanticPromptGuardPluginConfig) GetVectordb() AiSemanticPromptGuardPluginVectordb {
+func (a *AiSemanticPromptGuardPluginConfig) GetVectordb() *AiSemanticPromptGuardPluginVectordb {
 	if a == nil {
-		return AiSemanticPromptGuardPluginVectordb{}
+		return nil
 	}
 	return a.Vectordb
 }
