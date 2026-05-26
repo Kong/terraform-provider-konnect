@@ -33561,10 +33561,6 @@ components:
                   x-speakeasy-param-computed: false
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
-          x-supported-partials:
-            - name: redis-ee
-              paths:
-                - config.rate_limiting.redis
         name:
           const: ace
         protocols:
@@ -33604,6 +33600,10 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      x-supported-partials:
+        - name: redis-ee
+          paths:
+            - config.rate_limiting.redis
     AcmePlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -33985,10 +33985,6 @@ components:
               default: false
           required:
             - account_email
-          x-supported-partials:
-            - name: redis-ce
-              paths:
-                - config.storage_config.redis
         name:
           const: acme
         protocols:
@@ -34010,6 +34006,10 @@ components:
             - https
       required:
         - config
+      x-supported-partials:
+        - name: redis-ce
+          paths:
+            - config.storage_config.redis
     AiA2aProxyPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -35331,12 +35331,6 @@ components:
               default: 1
               maximum: 1
               minimum: 0
-          required:
-            - llm
-          x-supported-partials:
-            - name: model
-              paths:
-                - config.llm
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -35398,6 +35392,10 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: model
+          paths:
+            - config.llm
     AiMcpOauth2Plugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -38151,16 +38149,6 @@ components:
                 - strategy
           required:
             - targets
-          x-supported-partials:
-            - name: embeddings
-              paths:
-                - config.embeddings
-            - name: model
-              paths:
-                - 'config.targets[]'
-            - name: vectordb
-              paths:
-                - config.vectordb
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -38226,6 +38214,16 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: embeddings
+          paths:
+            - config.embeddings
+        - name: model
+          paths:
+            - 'config.targets[]'
+        - name: vectordb
+          paths:
+            - config.vectordb
     AiProxyPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -39313,16 +39311,6 @@ components:
             vectordb_namespace:
               description: The namespace of the vectordb to use for embeddings lookup
               type: string
-          required:
-            - embeddings
-            - vectordb
-          x-supported-partials:
-            - name: embeddings
-              paths:
-                - config.embeddings
-            - name: vectordb
-              paths:
-                - config.vectordb
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -39384,6 +39372,13 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: embeddings
+          paths:
+            - config.embeddings
+        - name: vectordb
+          paths:
+            - config.vectordb
     AiRateLimitingAdvancedPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -39822,10 +39817,6 @@ components:
                 - sliding
               x-speakeasy-unknown-values: allow
           x-speakeasy-param-computed: false
-          x-supported-partials:
-            - name: redis-ee
-              paths:
-                - config.redis
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -39885,6 +39876,10 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      x-supported-partials:
+        - name: redis-ee
+          paths:
+            - config.redis
     AiRequestTransformerPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -40248,12 +40243,7 @@ components:
               nullable: true
               x-speakeasy-param-computed: false
           required:
-            - llm
             - prompt
-          x-supported-partials:
-            - name: model
-              paths:
-                - config.llm
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
@@ -40305,6 +40295,10 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: model
+          paths:
+            - config.llm
     AiResponseTransformerPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -40672,12 +40666,7 @@ components:
               nullable: true
               x-speakeasy-param-computed: false
           required:
-            - llm
             - prompt
-          x-supported-partials:
-            - name: model
-              paths:
-                - config.llm
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -40739,6 +40728,10 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: model
+          paths:
+            - config.llm
     AiSanitizerPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -41397,16 +41390,6 @@ components:
                 - dimensions
                 - distance_metric
                 - strategy
-          required:
-            - embeddings
-            - vectordb
-          x-supported-partials:
-            - name: embeddings
-              paths:
-                - config.embeddings
-            - name: vectordb
-              paths:
-                - config.vectordb
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -41468,6 +41451,13 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: embeddings
+          paths:
+            - config.embeddings
+        - name: vectordb
+          paths:
+            - config.vectordb
     AiSemanticPromptGuardPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -41981,16 +41971,6 @@ components:
                 - dimensions
                 - distance_metric
                 - strategy
-          required:
-            - embeddings
-            - vectordb
-          x-supported-partials:
-            - name: embeddings
-              paths:
-                - config.embeddings
-            - name: vectordb
-              paths:
-                - config.vectordb
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -42052,6 +42032,13 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: embeddings
+          paths:
+            - config.embeddings
+        - name: vectordb
+          paths:
+            - config.vectordb
     AiSemanticResponseGuardPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -42552,16 +42539,6 @@ components:
                 - dimensions
                 - distance_metric
                 - strategy
-          required:
-            - embeddings
-            - vectordb
-          x-supported-partials:
-            - name: embeddings
-              paths:
-                - config.embeddings
-            - name: vectordb
-              paths:
-                - config.vectordb
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -42623,6 +42600,13 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: embeddings
+          paths:
+            - config.embeddings
+        - name: vectordb
+          paths:
+            - config.vectordb
     AppDynamicsPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -43223,10 +43207,6 @@ components:
               type: string
               default: service
           x-speakeasy-param-computed: false
-          x-supported-partials:
-            - name: redis-ce
-              paths:
-                - config.brute_force_protection.redis
         name:
           const: basic-auth
         protocols:
@@ -43270,6 +43250,10 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      x-supported-partials:
+        - name: redis-ce
+          paths:
+            - config.brute_force_protection.redis
     BasicAuthWithoutParents:
       x-speakeasy-entity: GatewayBasicAuth
       type: object
@@ -46572,10 +46556,6 @@ components:
               x-speakeasy-param-computed: false
           required:
             - nodes
-          x-supported-partials:
-            - name: redis-ee
-              paths:
-                - config.resources.cache.redis
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -46637,6 +46617,10 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: redis-ee
+          paths:
+            - config.resources.cache.redis
     DegraphqlPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -47262,10 +47246,6 @@ components:
               nullable: true
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
-          x-supported-partials:
-            - name: redis-ee
-              paths:
-                - config.redis
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -47315,6 +47295,10 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      x-supported-partials:
+        - name: redis-ee
+          paths:
+            - config.redis
     GraphqlRateLimitingAdvancedPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -47581,10 +47565,6 @@ components:
             - limit
             - sync_rate
             - window_size
-          x-supported-partials:
-            - name: redis-ee
-              paths:
-                - config.redis
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -47636,6 +47616,10 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: redis-ee
+          paths:
+            - config.redis
     GrpcGatewayPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -55836,10 +55820,6 @@ components:
               x-speakeasy-param-computed: false
           required:
             - issuer
-          x-supported-partials:
-            - name: redis-ee
-              paths:
-                - config.redis
         name:
           const: openid-connect
         protocols:
@@ -55883,6 +55863,10 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: redis-ee
+          paths:
+            - config.redis
     OpentelemetryPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -58796,10 +58780,6 @@ components:
               x-speakeasy-param-computed: false
           required:
             - strategy
-          x-supported-partials:
-            - name: redis-ee
-              paths:
-                - config.redis
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -58861,6 +58841,10 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: redis-ee
+          paths:
+            - config.redis
     ProxyCachePlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -59386,10 +59370,6 @@ components:
           required:
             - limit
             - window_size
-          x-supported-partials:
-            - name: redis-ee
-              paths:
-                - config.redis
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -59451,6 +59431,10 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: redis-ee
+          paths:
+            - config.redis
     RateLimitingPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -59660,10 +59644,6 @@ components:
               nullable: true
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
-          x-supported-partials:
-            - name: redis-ce
-              paths:
-                - config.redis
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -59723,6 +59703,10 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      x-supported-partials:
+        - name: redis-ce
+          paths:
+            - config.redis
     RedirectPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -61371,10 +61355,6 @@ components:
                   type: string
                   x-referenceable: true
           x-speakeasy-param-computed: false
-          x-supported-partials:
-            - name: redis-ce
-              paths:
-                - config.redis
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -61424,6 +61404,10 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      x-supported-partials:
+        - name: redis-ce
+          paths:
+            - config.redis
     ResponseTransformerAdvancedPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -62826,10 +62810,6 @@ components:
             - idp_sso_url
             - issuer
             - session_secret
-          x-supported-partials:
-            - name: redis-ee
-              paths:
-                - config.redis
         name:
           const: saml
         protocols:
@@ -62871,6 +62851,10 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: redis-ee
+          paths:
+            - config.redis
     Service:
       x-speakeasy-entity: GatewayService
       description: 'Service entities, as the name implies, are abstractions of each of your own upstream services. Examples of Services would be a data transformation microservice, a billing API, etc. The main attribute of a Service is its URL (where Kong should proxy traffic to), which can be set as a single string or by specifying its `protocol`, `host`, `port` and `path` individually. Services are associated to Routes (a Service can have many Routes associated with it). Routes are entry-points in Kong and define rules to match client requests. Once a Route is matched, Kong proxies the request to its associated Service. See the [Proxy Reference][proxy-reference] for a detailed explanation of how Kong proxies traffic.'
@@ -63305,10 +63289,6 @@ components:
           required:
             - limit
             - window_size
-          x-supported-partials:
-            - name: redis-ee
-              paths:
-                - config.redis
         name:
           const: service-protection
         protocols:
@@ -63340,6 +63320,10 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: redis-ee
+          paths:
+            - config.redis
     SessionPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -66643,10 +66627,6 @@ components:
               x-speakeasy-param-computed: true
           required:
             - oauth
-          x-supported-partials:
-            - name: redis-ee
-              paths:
-                - config.cache.redis
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -66708,6 +66688,10 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: redis-ee
+          paths:
+            - config.cache.redis
     UpstreamTimeoutPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
