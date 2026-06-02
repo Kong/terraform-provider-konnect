@@ -15,7 +15,7 @@ var UpdateIdentityProviderServerList = []string{
 type UpdateIdentityProviderRequest struct {
 	// ID of the identity provider.
 	ID string `pathParam:"style=simple,explode=false,name=id"`
-	// An object representing the configuration for updating an identity provider. This configuration may pertain  to either an OIDC or a SAML identity provider.
+	// An object representing the configuration for updating an identity provider. This configuration may pertain to either an OIDC or a SAML identity provider.
 	//
 	UpdateIdentityProvider shared.UpdateIdentityProvider `request:"mediaType=application/json"`
 }

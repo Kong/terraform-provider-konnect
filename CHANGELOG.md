@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.18.0
+> Released 2026/06/02
+
+# Features
+* Add support for `konnect_portal_ip_allow_list` resource
+
 ## 3.17.0
 > Released 2026/05/19
 

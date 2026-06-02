@@ -18759,6 +18759,101 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Customization
+  '/v3/portals/{portalId}/ip-allow-list':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+    post:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalIPAllowList#create
+        terraform-datasource: null
+      operationId: create-portal-ip-allow-list
+      summary: Create an IP allow list for a portal
+      description: |
+        Create an IP allow list for a portal.
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePortalSourceIPRestriction'
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalSourceIPRestriction'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Portals IP Allow List
+  '/v3/portals/{portalId}/ip-allow-list/{id}':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+      - name: id
+        in: path
+        description: ID of the allow list.
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalIPAllowList#read
+        terraform-datasource: null
+      operationId: get-portal-ip-allow-list
+      summary: Get an IP allow list for a portal
+      description: |
+        Get an IP allow list for a portal.
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalSourceIPRestriction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portals IP Allow List
+    put:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalIPAllowList#update
+        terraform-datasource: null
+      operationId: put-portal-ip-allow-list
+      summary: Replace an IP allow list for a portal
+      description: |
+        Replace an IP allow list for a portal.
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePortalSourceIPRestriction'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalSourceIPRestriction'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portals IP Allow List
+    delete:
+      x-speakeasy-entity-operation:
+        terraform-resource: PortalIPAllowList#delete
+        terraform-datasource: null
+      operationId: delete-portal-ip-allow-list
+      summary: Delete an IP allow list from a portal
+      description: |
+        Delete the IP allow list for a portal.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portals IP Allow List
   '/v3/portals/{portalId}/pages':
     post:
       x-speakeasy-entity-operation:
@@ -23509,8 +23604,6 @@ components:
                   description: Env vault path to azure tenant id.
                   type: string
                   example: '{vault://env/ADDON_MANAGED_CACHE_AZURE_TENANT_ID}'
-              readOnly: true
-              x-speakeasy-param-suppress-computed-diff: true
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
       additionalProperties: false
@@ -23553,8 +23646,6 @@ components:
             - ready
             - error
             - terminating
-          readOnly: true
-          x-speakeasy-param-suppress-computed-diff: true
           x-speakeasy-unknown-values: allow
         state_metadata:
           description: |
@@ -23568,9 +23659,8 @@ components:
               type: string
               example: |
                 Failed to create managed cache add-on due to invalid configuration.
-          readOnly: true
-          x-speakeasy-param-suppress-computed-diff: true
       additionalProperties: false
+      readOnly: true
       required:
         - id
         - cloud_gateway_network_id
@@ -23579,6 +23669,7 @@ components:
         - state
         - state_metadata
       title: ManagedCacheAddOnDataPlaneGroup
+      x-speakeasy-param-suppress-computed-diff: true
     AddOnState:
       description: |
         The current state of the add-on. Possible values:
@@ -25423,7 +25514,7 @@ components:
           oneOf:
             - $ref: '#/components/schemas/OIDCIdentityProviderConfig'
             - $ref: '#/components/schemas/SAMLIdentityProviderConfig'
-      title: Identity Provider
+      title: Create Identity Provider
     UpdateIdentityProvider:
       x-speakeasy-entity: IdentityProvider
       description: The identity provider that contains configuration data for updating an authentication integration.
@@ -25438,7 +25529,7 @@ components:
           oneOf:
             - $ref: '#/components/schemas/OIDCIdentityProviderConfig'
             - $ref: '#/components/schemas/SAMLIdentityProviderConfig'
-      title: Identity Provider
+      title: Update Identity Provider
     IdentityProvider:
       x-speakeasy-entity: IdentityProvider
       description: The identity provider that contains configuration data for authentication integration.
@@ -25491,8 +25582,8 @@ components:
           $ref: '#/components/schemas/SAMLIdentityProviderMetadata'
         sp_metadata_url:
           type: string
-          format: path
-          example: /api/v2/developer/authenticate/saml/metadata
+          format: uri
+          example: 'https://cloud.konghq.com/v2/authenticate/the-saml-konnect-org/saml/metadata'
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
         sp_entity_id:
@@ -25508,10 +25599,10 @@ components:
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
         callback_url:
-          description: The path URL where the SAML identity provider sends authentication responses after successful login attempts.
+          description: The URL where the SAML identity provider sends authentication responses after successful login attempts.
           type: string
-          format: path
-          example: /api/v2/developer/authenticate/saml/acs
+          format: uri
+          example: 'https://cloud.konghq.com/v2/authenticate/the-saml-konnect-org/saml/acs'
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
       additionalProperties: false
@@ -28891,6 +28982,33 @@ components:
         updated_at: '2022-08-31T17:00:00.52Z'
         can_own_applications: false
       title: PortalTeamResponse
+    PortalAllowedIPs:
+      description: The list of allowed ips for the portal.
+      type: array
+      items:
+        type: string
+      example:
+        - 192.168.1.1
+        - 192.168.1.0/22
+      maxItems: 25
+      minItems: 1
+      uniqueItems: true
+    IPEntry:
+      description: An entry representing a collection of allowed IP addresses or CIDR blocks.
+      type: object
+      properties:
+        id:
+          description: Contains a unique identifier used for this resource.
+          type: string
+          format: uuid
+          example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          readOnly: false
+        allowed_ips:
+          $ref: '#/components/schemas/PortalAllowedIPs'
+      additionalProperties: false
+      required:
+        - id
+        - allowed_ips
     ApiResponseSchema:
       type: object
       properties:
@@ -31103,6 +31221,24 @@ components:
               - name: context.auth.principal.name
                 type: string
                 description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.principal.id
+                type: string
+                description: |-
+                  Kong Identity principal ID. Only populated when Kong Identity principal fetching is configured and succeeds.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
+              - name: context.auth.principal.metadata
+                type: object
+                description: |-
+                  Kong Identity principal metadata. Only populated when Kong Identity principal fetching is configured and succeeds. Values can be strings, numbers, booleans, arrays or nested JSON objects.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
               - name: context.auth.type
                 type: string
                 description: |
@@ -31178,6 +31314,24 @@ components:
               - name: context.auth.principal.name
                 type: string
                 description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.principal.id
+                type: string
+                description: |-
+                  Kong Identity principal ID. Only populated when Kong Identity principal fetching is configured and succeeds.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
+              - name: context.auth.principal.metadata
+                type: object
+                description: |-
+                  Kong Identity principal metadata. Only populated when Kong Identity principal fetching is configured and succeeds. Values can be strings, numbers, booleans, arrays or nested JSON objects.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
               - name: context.auth.type
                 type: string
                 description: |
@@ -31270,6 +31424,24 @@ components:
               - name: context.auth.principal.name
                 type: string
                 description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.principal.id
+                type: string
+                description: |-
+                  Kong Identity principal ID. Only populated when Kong Identity principal fetching is configured and succeeds.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
+              - name: context.auth.principal.metadata
+                type: object
+                description: |-
+                  Kong Identity principal metadata. Only populated when Kong Identity principal fetching is configured and succeeds. Values can be strings, numbers, booleans, arrays or nested JSON objects.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
               - name: context.auth.type
                 type: string
                 description: |
@@ -31346,6 +31518,24 @@ components:
               - name: context.auth.principal.name
                 type: string
                 description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.principal.id
+                type: string
+                description: |-
+                  Kong Identity principal ID. Only populated when Kong Identity principal fetching is configured and succeeds.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
+              - name: context.auth.principal.metadata
+                type: object
+                description: |-
+                  Kong Identity principal metadata. Only populated when Kong Identity principal fetching is configured and succeeds. Values can be strings, numbers, booleans, arrays or nested JSON objects.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
               - name: context.auth.type
                 type: string
                 description: |
@@ -31414,6 +31604,24 @@ components:
               - name: context.auth.principal.name
                 type: string
                 description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.principal.id
+                type: string
+                description: |-
+                  Kong Identity principal ID. Only populated when Kong Identity principal fetching is configured and succeeds.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
+              - name: context.auth.principal.metadata
+                type: object
+                description: |-
+                  Kong Identity principal metadata. Only populated when Kong Identity principal fetching is configured and succeeds. Values can be strings, numbers, booleans, arrays or nested JSON objects.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
               - name: context.auth.type
                 type: string
                 description: |
@@ -31475,6 +31683,24 @@ components:
               - name: context.auth.principal.name
                 type: string
                 description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.principal.id
+                type: string
+                description: |-
+                  Kong Identity principal ID. Only populated when Kong Identity principal fetching is configured and succeeds.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
+              - name: context.auth.principal.metadata
+                type: object
+                description: |-
+                  Kong Identity principal metadata. Only populated when Kong Identity principal fetching is configured and succeeds. Values can be strings, numbers, booleans, arrays or nested JSON objects.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
               - name: context.auth.type
                 type: string
                 description: |
@@ -31592,6 +31818,24 @@ components:
               - name: context.auth.principal.name
                 type: string
                 description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.principal.id
+                type: string
+                description: |-
+                  Kong Identity principal ID. Only populated when Kong Identity principal fetching is configured and succeeds.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
+              - name: context.auth.principal.metadata
+                type: object
+                description: |-
+                  Kong Identity principal metadata. Only populated when Kong Identity principal fetching is configured and succeeds. Values can be strings, numbers, booleans, arrays or nested JSON objects.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
               - name: context.auth.type
                 type: string
                 description: |
@@ -31649,6 +31893,24 @@ components:
               - name: context.auth.principal.name
                 type: string
                 description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.principal.id
+                type: string
+                description: |-
+                  Kong Identity principal ID. Only populated when Kong Identity principal fetching is configured and succeeds.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
+              - name: context.auth.principal.metadata
+                type: object
+                description: |-
+                  Kong Identity principal metadata. Only populated when Kong Identity principal fetching is configured and succeeds. Values can be strings, numbers, booleans, arrays or nested JSON objects.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
               - name: context.auth.type
                 type: string
                 description: |
@@ -31746,6 +32008,24 @@ components:
               - name: context.auth.principal.name
                 type: string
                 description: 'Name of authenticated principal. Username in case of PLAIN/SCRAM, `sub` claim in case of OAUTHBEARER.'
+              - name: context.auth.principal.id
+                type: string
+                description: |-
+                  Kong Identity principal ID. Only populated when Kong Identity principal fetching is configured and succeeds.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
+              - name: context.auth.principal.metadata
+                type: object
+                description: |-
+                  Kong Identity principal metadata. Only populated when Kong Identity principal fetching is configured and succeeds. Values can be strings, numbers, booleans, arrays or nested JSON objects.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-min-runtime-version: '1.2'
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
               - name: context.auth.type
                 type: string
                 description: |
@@ -70601,7 +70881,7 @@ components:
                 x-speakeasy-param-computed: false
     CreateIdentityProviderRequest:
       description: |
-        An object representing the configuration for creating a new identity provider. This configuration may pertain  to either an OIDC or a SAML identity provider.
+        An object representing the configuration for creating a new identity provider. This configuration may pertain to either an OIDC or a SAML identity provider.
       required: true
       content:
         application/json:
@@ -70609,7 +70889,7 @@ components:
             $ref: '#/components/schemas/CreateIdentityProvider'
     UpdateIdentityProviderRequest:
       description: |
-        An object representing the configuration for updating an identity provider. This configuration may pertain  to either an OIDC or a SAML identity provider.
+        An object representing the configuration for updating an identity provider. This configuration may pertain to either an OIDC or a SAML identity provider.
       required: true
       content:
         application/json:
@@ -71117,6 +71397,17 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalAuthenticationSettingsUpdateRequest'
+    CreatePortalSourceIPRestriction:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              allowed_ips:
+                $ref: '#/components/schemas/PortalAllowedIPs'
+            additionalProperties: false
+            required:
+              - allowed_ips
     CreateApiRequest:
       required: true
       content:
@@ -73244,6 +73535,12 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/BadRequestError'
+    PortalSourceIPRestriction:
+      description: The portal's IP allow list configuration.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/IPEntry'
     ApiSlugConflict:
       description: Conflict - `slug` property must be unique
       content:
@@ -73835,6 +74132,8 @@ tags:
     description: APIs related to Konnect Developer Portal Custom Pages.
   - name: Snippets
     description: APIs related to Konnect Developer Portal Custom Snippets.
+  - name: Portals IP Allow List
+    description: APIs related to Konnect Portal IP Allow List.
   - name: API
   - name: API Documentation
   - name: API Specification
