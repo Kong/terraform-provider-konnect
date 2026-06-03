@@ -61526,12 +61526,14 @@ components:
                   x-referenceable: true
                   x-speakeasy-param-computed: false
                 port:
+                  type: string
                   description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                  type: integer
-                  default: 6379
-                  maximum: 65535
-                  minimum: 0
                   x-referenceable: true
+                  x-speakeasy-terraform-custom-type:
+                    imports:
+                      - github.com/kong/terraform-provider-konnect/v3/internal/customtypes
+                    schemaType: 'customtypes.Base64InputType{}'
+                    valueType: customtypes.Base64Input
                 read_timeout:
                   description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
                   type: integer
@@ -61953,12 +61955,14 @@ components:
                   x-referenceable: true
                   x-speakeasy-param-computed: false
                 port:
+                  type: string
                   description: 'An integer representing a port number between 0 and 65535, inclusive.'
-                  type: integer
-                  default: 6379
-                  maximum: 65535
-                  minimum: 0
                   x-referenceable: true
+                  x-speakeasy-terraform-custom-type:
+                    imports:
+                      - github.com/kong/terraform-provider-konnect/v3/internal/customtypes
+                    schemaType: 'customtypes.Base64InputType{}'
+                    valueType: customtypes.Base64Input
                 server_name:
                   description: A string representing an SNI (server name indication) value for TLS.
                   type: string

@@ -330,7 +330,7 @@ type RateLimitingPluginRedis struct {
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *string `json:"port,omitempty"`
 	// A string representing an SNI (server name indication) value for TLS.
 	ServerName *string `default:"null" json:"server_name"`
 	// If set to true, uses SSL to connect to Redis.
@@ -382,7 +382,7 @@ func (r *RateLimitingPluginRedis) GetPassword() *string {
 	return r.Password
 }
 
-func (r *RateLimitingPluginRedis) GetPort() *int64 {
+func (r *RateLimitingPluginRedis) GetPort() *string {
 	if r == nil {
 		return nil
 	}

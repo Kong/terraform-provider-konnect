@@ -6,6 +6,7 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/customtypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
@@ -99,7 +100,9 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 			r.Config.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Redis.KeepaliveBacklog)
 			r.Config.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Redis.KeepalivePoolSize)
 			r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
-			r.Config.Redis.Port = types.Int64PointerValue(resp.Config.Redis.Port)
+			portValuable, portDiags := customtypes.Base64InputType{}.ValueFromString(ctx, types.StringPointerValue(resp.Config.Redis.Port))
+			diags.Append(portDiags...)
+			r.Config.Redis.Port = portValuable.(customtypes.Base64Input)
 			r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
 			if resp.Config.Redis.RedisProxyType != nil {
 				r.Config.Redis.RedisProxyType = types.StringValue(string(*resp.Config.Redis.RedisProxyType))
@@ -670,9 +673,9 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdv
 		} else {
 			password = nil
 		}
-		port1 := new(int64)
+		port1 := new(string)
 		if !r.Config.Redis.Port.IsUnknown() && !r.Config.Redis.Port.IsNull() {
-			*port1 = r.Config.Redis.Port.ValueInt64()
+			*port1 = r.Config.Redis.Port.ValueString()
 		} else {
 			port1 = nil
 		}

@@ -6,6 +6,7 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v3/internal/customtypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
@@ -43,7 +44,7 @@ func (r *GatewayPluginRateLimitingResourceModel) RefreshFromSharedRateLimitingPl
 			if resp.Config.Redis == nil {
 				r.Config.Redis = nil
 			} else {
-				r.Config.Redis = &tfTypes.BasicAuthPluginRedis{}
+				r.Config.Redis = &tfTypes.RateLimitingPluginRedis{}
 				if resp.Config.Redis.CloudAuthentication == nil {
 					r.Config.Redis.CloudAuthentication = nil
 				} else {
@@ -68,7 +69,9 @@ func (r *GatewayPluginRateLimitingResourceModel) RefreshFromSharedRateLimitingPl
 				r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
 				r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
 				r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
-				r.Config.Redis.Port = types.Int64PointerValue(resp.Config.Redis.Port)
+				portValuable, portDiags := customtypes.Base64InputType{}.ValueFromString(ctx, types.StringPointerValue(resp.Config.Redis.Port))
+				diags.Append(portDiags...)
+				r.Config.Redis.Port = portValuable.(customtypes.Base64Input)
 				r.Config.Redis.ServerName = types.StringPointerValue(resp.Config.Redis.ServerName)
 				r.Config.Redis.Ssl = types.BoolPointerValue(resp.Config.Redis.Ssl)
 				r.Config.Redis.SslVerify = types.BoolPointerValue(resp.Config.Redis.SslVerify)
@@ -528,9 +531,9 @@ func (r *GatewayPluginRateLimitingResourceModel) ToSharedRateLimitingPlugin(ctx 
 			} else {
 				password = nil
 			}
-			port := new(int64)
+			port := new(string)
 			if !r.Config.Redis.Port.IsUnknown() && !r.Config.Redis.Port.IsNull() {
-				*port = r.Config.Redis.Port.ValueInt64()
+				*port = r.Config.Redis.Port.ValueString()
 			} else {
 				port = nil
 			}

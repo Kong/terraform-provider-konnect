@@ -25,6 +25,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/kong/terraform-provider-konnect/v3/internal/customtypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
@@ -312,14 +313,11 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 								Optional:    true,
 								Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
 							},
-							"port": schema.Int64Attribute{
+							"port": schema.StringAttribute{
+								CustomType:  customtypes.Base64InputType{},
 								Computed:    true,
 								Optional:    true,
-								Default:     int64default.StaticInt64(6379),
-								Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
-								Validators: []validator.Int64{
-									int64validator.Between(0, 65535),
-								},
+								Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 							},
 							"read_timeout": schema.Int64Attribute{
 								Computed:    true,
