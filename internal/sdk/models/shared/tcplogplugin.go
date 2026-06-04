@@ -82,10 +82,10 @@ func (t *TCPLogPluginOrdering) GetBefore() *TCPLogPluginBefore {
 
 type TCPLogPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (t TCPLogPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (t TCPLogPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TCPLogPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (t *TCPLogPluginPartials) GetID() *string {
+func (t *TCPLogPluginPartials) GetID() string {
 	if t == nil {
-		return nil
+		return ""
 	}
 	return t.ID
 }
@@ -113,9 +113,9 @@ func (t *TCPLogPluginPartials) GetName() *string {
 	return t.Name
 }
 
-func (t *TCPLogPluginPartials) GetPath() *string {
+func (t *TCPLogPluginPartials) GetPath() string {
 	if t == nil {
-		return nil
+		return ""
 	}
 	return t.Path
 }

@@ -237,15 +237,11 @@ resource "konnect_gateway_plugin_ai_rag_injector" "my_gatewaypluginairaginjector
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
 
-Required:
-
-- `embeddings` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings))
-- `vectordb` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb))
-
 Optional:
 
 - `collection_acl_config` (Attributes Map) Per-collection ACL overrides (see [below for nested schema](#nestedatt--config--collection_acl_config))
 - `consumer_identifier` (String) The type of consumer identifier used for ACL checks. possible known values include one of ["consumer_group", "consumer_id", "custom_id", "username"]; Default: "consumer_group"
+- `embeddings` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings))
 - `fetch_chunks_count` (Number) The maximum number of chunks to fetch from vectordb. Default: 5
 - `filter_mode` (String) Defines how the plugin behaves when a filter is invalid. Set to `compatible` to ignore invalid filters, or `strict` to raise an error. This can be overridden per request. possible known values include one of ["compatible", "strict"]; Default: "compatible"
 - `global_acl_config` (Attributes) Global ACL configuration for all RAG operations (see [below for nested schema](#nestedatt--config--global_acl_config))
@@ -254,30 +250,57 @@ Optional:
 - `max_filter_clauses` (Number) Maximum number of filter clauses allowed. Default: 100
 - `stop_on_failure` (Boolean) Halt the LLM request process in case of a vectordb or embeddings service failure. Default: false
 - `stop_on_filter_error` (Boolean) Default behavior when filter parsing fails (can be overridden per-request). Default: false
+- `vectordb` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb))
 - `vectordb_namespace` (String) The namespace of the vectordb to use for embeddings lookup. Default: "kong_rag_injector"
+
+<a id="nestedatt--config--collection_acl_config"></a>
+### Nested Schema for `config.collection_acl_config`
+
+Optional:
+
+- `allow` (List of String) Consumer identifiers allowed access to this collection. Default: []
+- `deny` (List of String) Consumer identifiers denied access to this collection. Default: []
+
 
 <a id="nestedatt--config--embeddings"></a>
 ### Nested Schema for `config.embeddings`
 
-Required:
-
-- `model` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--model))
-
 Optional:
 
 - `auth` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--auth))
+- `model` (Attributes) Not Null (see [below for nested schema](#nestedatt--config--embeddings--model))
+
+<a id="nestedatt--config--embeddings--auth"></a>
+### Nested Schema for `config.embeddings.auth`
+
+Optional:
+
+- `allow_override` (Boolean) If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin. Default: false
+- `aws_access_key_id` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
+- `aws_secret_access_key` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
+- `azure_client_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
+- `azure_client_secret` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
+- `azure_tenant_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
+- `azure_use_managed_identity` (Boolean) Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models. Default: false
+- `gcp_metadata_url` (String) Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.
+- `gcp_oauth_token_url` (String) Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.
+- `gcp_service_account_json` (String) Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
+- `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models. Default: false
+- `header_name` (String) If AI model requires authentication via Authorization or API key header, specify its name here.
+- `header_value` (String) Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
+- `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
+- `param_name` (String) If AI model requires authentication via query parameter, specify its name here.
+- `param_value` (String) Specify the full parameter value for 'param_name'.
+
 
 <a id="nestedatt--config--embeddings--model"></a>
 ### Nested Schema for `config.embeddings.model`
 
-Required:
-
-- `name` (String) Model name to execute.
-- `provider` (String) AI provider format to use for embeddings API. possible known values include one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai"]
-
 Optional:
 
+- `name` (String) Model name to execute. Not Null
 - `options` (Attributes) Key/value settings for the model (see [below for nested schema](#nestedatt--config--embeddings--model--options))
+- `provider` (String) AI provider format to use for embeddings API. possible known values include one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai"]; Not Null
 
 <a id="nestedatt--config--embeddings--model--options"></a>
 ### Nested Schema for `config.embeddings.model.options`
@@ -337,43 +360,26 @@ Optional:
 
 
 
-<a id="nestedatt--config--embeddings--auth"></a>
-### Nested Schema for `config.embeddings.auth`
+
+<a id="nestedatt--config--global_acl_config"></a>
+### Nested Schema for `config.global_acl_config`
 
 Optional:
 
-- `allow_override` (Boolean) If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin. Default: false
-- `aws_access_key_id` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
-- `aws_secret_access_key` (String) Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
-- `azure_client_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.
-- `azure_client_secret` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.
-- `azure_tenant_id` (String) If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.
-- `azure_use_managed_identity` (Boolean) Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models. Default: false
-- `gcp_metadata_url` (String) Custom metadata URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google metadata endpoint.
-- `gcp_oauth_token_url` (String) Custom OAuth token URL for GCP authentication. Useful for restricted network environments or custom GCP endpoints. If null, Kong will use the default Google OAuth token endpoint.
-- `gcp_service_account_json` (String) Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.
-- `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models. Default: false
-- `header_name` (String) If AI model requires authentication via Authorization or API key header, specify its name here.
-- `header_value` (String) Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
-- `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. possible known values include one of ["body", "query"]
-- `param_name` (String) If AI model requires authentication via query parameter, specify its name here.
-- `param_value` (String) Specify the full parameter value for 'param_name'.
-
+- `allow` (List of String) Consumer identifiers allowed access (groups, IDs, usernames, or custom IDs based on consumer_identifier setting). Default: []
+- `deny` (List of String) Consumer identifiers denied access (groups, IDs, usernames, or custom IDs based on consumer_identifier setting). Default: []
 
 
 <a id="nestedatt--config--vectordb"></a>
 ### Nested Schema for `config.vectordb`
 
-Required:
-
-- `dimensions` (Number) the desired dimensionality for the vectors
-- `distance_metric` (String) the distance metric to use for vector searches. possible known values include one of ["cosine", "euclidean"]
-- `strategy` (String) which vector database driver to use. possible known values include one of ["pgvector", "redis"]
-
 Optional:
 
+- `dimensions` (Number) the desired dimensionality for the vectors. Not Null
+- `distance_metric` (String) the distance metric to use for vector searches. possible known values include one of ["cosine", "euclidean"]; Not Null
 - `pgvector` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb--pgvector))
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb--redis))
+- `strategy` (String) which vector database driver to use. possible known values include one of ["pgvector", "redis"]; Not Null
 - `threshold` (Number) the default similarity threshold for accepting semantic search results (float). Higher threshold means more results are considered similar.
 
 <a id="nestedatt--config--vectordb--pgvector"></a>
@@ -462,24 +468,6 @@ Optional:
 
 
 
-<a id="nestedatt--config--collection_acl_config"></a>
-### Nested Schema for `config.collection_acl_config`
-
-Optional:
-
-- `allow` (List of String) Consumer identifiers allowed access to this collection. Default: []
-- `deny` (List of String) Consumer identifiers denied access to this collection. Default: []
-
-
-<a id="nestedatt--config--global_acl_config"></a>
-### Nested Schema for `config.global_acl_config`
-
-Optional:
-
-- `allow` (List of String) Consumer identifiers allowed access (groups, IDs, usernames, or custom IDs based on consumer_identifier setting). Default: []
-- `deny` (List of String) Consumer identifiers denied access (groups, IDs, usernames, or custom IDs based on consumer_identifier setting). Default: []
-
-
 
 <a id="nestedatt--consumer"></a>
 ### Nested Schema for `consumer`
@@ -527,9 +515,9 @@ Optional:
 
 Optional:
 
-- `id` (String) A string representing a UUID (universally unique identifier).
+- `id` (String) A string representing a UUID (universally unique identifier). Not Null
 - `name` (String) A unique string representing a UTF-8 encoded name.
-- `path` (String)
+- `path` (String) Not Null
 
 
 <a id="nestedatt--route"></a>

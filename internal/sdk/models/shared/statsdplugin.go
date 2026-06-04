@@ -82,10 +82,10 @@ func (s *StatsdPluginOrdering) GetBefore() *StatsdPluginBefore {
 
 type StatsdPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (s StatsdPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (s StatsdPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (s *StatsdPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *StatsdPluginPartials) GetID() *string {
+func (s *StatsdPluginPartials) GetID() string {
 	if s == nil {
-		return nil
+		return ""
 	}
 	return s.ID
 }
@@ -113,9 +113,9 @@ func (s *StatsdPluginPartials) GetName() *string {
 	return s.Name
 }
 
-func (s *StatsdPluginPartials) GetPath() *string {
+func (s *StatsdPluginPartials) GetPath() string {
 	if s == nil {
-		return nil
+		return ""
 	}
 	return s.Path
 }

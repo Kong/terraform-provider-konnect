@@ -82,10 +82,10 @@ func (o *OpaPluginOrdering) GetBefore() *OpaPluginBefore {
 
 type OpaPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (o OpaPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (o OpaPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OpaPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *OpaPluginPartials) GetID() *string {
+func (o *OpaPluginPartials) GetID() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.ID
 }
@@ -113,9 +113,9 @@ func (o *OpaPluginPartials) GetName() *string {
 	return o.Name
 }
 
-func (o *OpaPluginPartials) GetPath() *string {
+func (o *OpaPluginPartials) GetPath() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Path
 }

@@ -82,10 +82,10 @@ func (r *RateLimitingPluginOrdering) GetBefore() *RateLimitingPluginBefore {
 
 type RateLimitingPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (r RateLimitingPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (r RateLimitingPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RateLimitingPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *RateLimitingPluginPartials) GetID() *string {
+func (r *RateLimitingPluginPartials) GetID() string {
 	if r == nil {
-		return nil
+		return ""
 	}
 	return r.ID
 }
@@ -113,9 +113,9 @@ func (r *RateLimitingPluginPartials) GetName() *string {
 	return r.Name
 }
 
-func (r *RateLimitingPluginPartials) GetPath() *string {
+func (r *RateLimitingPluginPartials) GetPath() string {
 	if r == nil {
-		return nil
+		return ""
 	}
 	return r.Path
 }

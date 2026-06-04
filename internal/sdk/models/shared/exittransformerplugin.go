@@ -82,10 +82,10 @@ func (e *ExitTransformerPluginOrdering) GetBefore() *ExitTransformerPluginBefore
 
 type ExitTransformerPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (e ExitTransformerPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (e ExitTransformerPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (e *ExitTransformerPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (e *ExitTransformerPluginPartials) GetID() *string {
+func (e *ExitTransformerPluginPartials) GetID() string {
 	if e == nil {
-		return nil
+		return ""
 	}
 	return e.ID
 }
@@ -113,9 +113,9 @@ func (e *ExitTransformerPluginPartials) GetName() *string {
 	return e.Name
 }
 
-func (e *ExitTransformerPluginPartials) GetPath() *string {
+func (e *ExitTransformerPluginPartials) GetPath() string {
 	if e == nil {
-		return nil
+		return ""
 	}
 	return e.Path
 }

@@ -82,10 +82,10 @@ func (l *LdapAuthAdvancedPluginOrdering) GetBefore() *LdapAuthAdvancedPluginBefo
 
 type LdapAuthAdvancedPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (l LdapAuthAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (l LdapAuthAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (l *LdapAuthAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (l *LdapAuthAdvancedPluginPartials) GetID() *string {
+func (l *LdapAuthAdvancedPluginPartials) GetID() string {
 	if l == nil {
-		return nil
+		return ""
 	}
 	return l.ID
 }
@@ -113,9 +113,9 @@ func (l *LdapAuthAdvancedPluginPartials) GetName() *string {
 	return l.Name
 }
 
-func (l *LdapAuthAdvancedPluginPartials) GetPath() *string {
+func (l *LdapAuthAdvancedPluginPartials) GetPath() string {
 	if l == nil {
-		return nil
+		return ""
 	}
 	return l.Path
 }

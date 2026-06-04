@@ -82,10 +82,10 @@ func (r *RequestSizeLimitingPluginOrdering) GetBefore() *RequestSizeLimitingPlug
 
 type RequestSizeLimitingPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (r RequestSizeLimitingPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (r RequestSizeLimitingPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestSizeLimitingPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *RequestSizeLimitingPluginPartials) GetID() *string {
+func (r *RequestSizeLimitingPluginPartials) GetID() string {
 	if r == nil {
-		return nil
+		return ""
 	}
 	return r.ID
 }
@@ -113,9 +113,9 @@ func (r *RequestSizeLimitingPluginPartials) GetName() *string {
 	return r.Name
 }
 
-func (r *RequestSizeLimitingPluginPartials) GetPath() *string {
+func (r *RequestSizeLimitingPluginPartials) GetPath() string {
 	if r == nil {
-		return nil
+		return ""
 	}
 	return r.Path
 }

@@ -82,10 +82,10 @@ func (u *UpstreamOauthPluginOrdering) GetBefore() *UpstreamOauthPluginBefore {
 
 type UpstreamOauthPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (u UpstreamOauthPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (u UpstreamOauthPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpstreamOauthPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (u *UpstreamOauthPluginPartials) GetID() *string {
+func (u *UpstreamOauthPluginPartials) GetID() string {
 	if u == nil {
-		return nil
+		return ""
 	}
 	return u.ID
 }
@@ -113,9 +113,9 @@ func (u *UpstreamOauthPluginPartials) GetName() *string {
 	return u.Name
 }
 
-func (u *UpstreamOauthPluginPartials) GetPath() *string {
+func (u *UpstreamOauthPluginPartials) GetPath() string {
 	if u == nil {
-		return nil
+		return ""
 	}
 	return u.Path
 }
