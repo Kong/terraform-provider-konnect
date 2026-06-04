@@ -21496,9 +21496,9 @@ components:
       properties:
         name:
           description: |
-            Name of the environment variable field to set for the data-plane group. Must be prefixed by KONG_.
+            Name of the environment variable field to set for the data-plane group. Must be prefixed by KONG_ or OTEL_.
           type: string
-          format: '^KONG_[a-zA-Z_]+[a-zA-Z0-9_]*'
+          format: '^(KONG|OTEL)_[a-zA-Z_]+[a-zA-Z0-9_]*'
           example: KONG_LOG_LEVEL
           maxLength: 120
           minLength: 6
@@ -21506,7 +21506,7 @@ components:
           description: Value assigned to the environment variable field for the data-plane group.
           type: string
           example: info
-          maxLength: 120
+          maxLength: 2048
           minLength: 1
       required:
         - name
@@ -31458,6 +31458,29 @@ components:
               - name: record.value.content
                 type: object
                 description: The content of the record value.
+              - name: record.value.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Registry-supplied schema metadata for the record value. Populated when the value
+                  was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
+                  when returned by the registry), `format` ("avro"|"json"), and either
+                  `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
+                  applicable; use `has()` to test presence.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
+              - name: record.key.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Same shape as `record.value.schema`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
       required:
         - type
         - config
@@ -31552,6 +31575,29 @@ components:
               - name: record.value.content
                 type: object
                 description: The content of the record value.
+              - name: record.value.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Registry-supplied schema metadata for the record value. Populated when the value
+                  was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
+                  when returned by the registry), `format` ("avro"|"json"), and either
+                  `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
+                  applicable; use `has()` to test presence.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
+              - name: record.key.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Same shape as `record.value.schema`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
         parent_policy_id:
           description: 'The unique identifier of the parent schema validation policy, if any.'
           type: string
@@ -31638,6 +31684,29 @@ components:
               - name: record.value.content
                 type: object
                 description: The content of the record value.
+              - name: record.value.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Registry-supplied schema metadata for the record value. Populated when the value
+                  was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
+                  when returned by the registry), `format` ("avro"|"json"), and either
+                  `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
+                  applicable; use `has()` to test presence.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
+              - name: record.key.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Same shape as `record.value.schema`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
       required:
         - type
     EventGatewaySkipRecordPolicyCreate:
@@ -31717,6 +31786,29 @@ components:
               - name: record.value.content
                 type: object
                 description: The content of the record value.
+              - name: record.value.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Registry-supplied schema metadata for the record value. Populated when the value
+                  was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
+                  when returned by the registry), `format` ("avro"|"json"), and either
+                  `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
+                  applicable; use `has()` to test presence.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
+              - name: record.key.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Same shape as `record.value.schema`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
         parent_policy_id:
           description: 'The unique identifier of the parent schema validation policy, if any.'
           type: string
@@ -33679,6 +33771,10 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      x-supported-partials:
+        - name: redis-ee
+          paths:
+            - config.rate_limiting.redis
     AcmePlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -34140,6 +34236,10 @@ components:
             - https
       required:
         - config
+      x-supported-partials:
+        - name: redis-ce
+          paths:
+            - config.storage_config.redis
     AiA2aProxyPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -35627,8 +35727,6 @@ components:
               default: 1
               maximum: 1
               minimum: 0
-          required:
-            - llm
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -35690,6 +35788,10 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: model
+          paths:
+            - config.llm
     AiMcpOauth2Plugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -38727,6 +38829,16 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: embeddings
+          paths:
+            - config.embeddings
+        - name: model
+          paths:
+            - 'config.targets[]'
+        - name: vectordb
+          paths:
+            - config.vectordb
     AiProxyPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -40026,9 +40138,6 @@ components:
               description: The namespace of the vectordb to use for embeddings lookup
               type: string
               default: kong_rag_injector
-          required:
-            - embeddings
-            - vectordb
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -40090,6 +40199,13 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: embeddings
+          paths:
+            - config.embeddings
+        - name: vectordb
+          paths:
+            - config.vectordb
     AiRateLimitingAdvancedPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -40669,6 +40785,10 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      x-supported-partials:
+        - name: redis-ee
+          paths:
+            - config.redis
     AiRequestTransformerPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -41198,7 +41318,6 @@ components:
               nullable: true
               x-speakeasy-param-computed: false
           required:
-            - llm
             - prompt
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
@@ -41251,6 +41370,10 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: model
+          paths:
+            - config.llm
     AiResponseTransformerPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -41784,7 +41907,6 @@ components:
               nullable: true
               x-speakeasy-param-computed: false
           required:
-            - llm
             - prompt
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
@@ -41847,6 +41969,10 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: model
+          paths:
+            - config.llm
     AiSanitizerPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -42716,9 +42842,6 @@ components:
                 - dimensions
                 - distance_metric
                 - strategy
-          required:
-            - embeddings
-            - vectordb
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -42780,6 +42903,13 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: embeddings
+          paths:
+            - config.embeddings
+        - name: vectordb
+          paths:
+            - config.vectordb
     AiSemanticPromptGuardPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -43504,9 +43634,6 @@ components:
                 - dimensions
                 - distance_metric
                 - strategy
-          required:
-            - embeddings
-            - vectordb
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -43568,6 +43695,13 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: embeddings
+          paths:
+            - config.embeddings
+        - name: vectordb
+          paths:
+            - config.vectordb
     AiSemanticResponseGuardPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -44276,9 +44410,6 @@ components:
                 - dimensions
                 - distance_metric
                 - strategy
-          required:
-            - embeddings
-            - vectordb
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -44340,6 +44471,13 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: embeddings
+          paths:
+            - config.embeddings
+        - name: vectordb
+          paths:
+            - config.vectordb
     AppDynamicsPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -45034,6 +45172,10 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      x-supported-partials:
+        - name: redis-ce
+          paths:
+            - config.brute_force_protection.redis
     BasicAuthWithoutParents:
       x-speakeasy-entity: GatewayBasicAuth
       type: object
@@ -48476,6 +48618,10 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: redis-ee
+          paths:
+            - config.resources.cache.redis
     DegraphqlPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -49229,6 +49375,10 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      x-supported-partials:
+        - name: redis-ee
+          paths:
+            - config.redis
     GraphqlRateLimitingAdvancedPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -49625,6 +49775,10 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: redis-ee
+          paths:
+            - config.redis
     GrpcGatewayPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -57951,6 +58105,10 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: redis-ee
+          paths:
+            - config.redis
     OpentelemetryPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -60310,6 +60468,9 @@ components:
                 type: string
                 x-speakeasy-param-computed: true
             type: object
+            required:
+              - id
+              - path
           default: null
           nullable: true
           x-speakeasy-param-computed: false
@@ -61083,6 +61244,10 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: redis-ee
+          paths:
+            - config.redis
     ProxyCachePlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -61745,6 +61910,10 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: redis-ee
+          paths:
+            - config.redis
     RateLimitingPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -62064,6 +62233,10 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      x-supported-partials:
+        - name: redis-ce
+          paths:
+            - config.redis
     RedirectPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -63891,6 +64064,10 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+      x-supported-partials:
+        - name: redis-ce
+          paths:
+            - config.redis
     ResponseTransformerAdvancedPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -65419,6 +65596,10 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: redis-ee
+          paths:
+            - config.redis
     Service:
       x-speakeasy-entity: GatewayService
       description: 'Service entities, as the name implies, are abstractions of each of your own upstream services. Examples of Services would be a data transformation microservice, a billing API, etc. The main attribute of a Service is its URL (where Kong should proxy traffic to), which can be set as a single string or by specifying its `protocol`, `host`, `port` and `path` individually. Services are associated to Routes (a Service can have many Routes associated with it). Routes are entry-points in Kong and define rules to match client requests. Once a Route is matched, Kong proxies the request to its associated Service. See the [Proxy Reference][proxy-reference] for a detailed explanation of how Kong proxies traffic.'
@@ -65963,6 +66144,10 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: redis-ee
+          paths:
+            - config.redis
     SessionPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
@@ -69403,6 +69588,10 @@ components:
           x-speakeasy-param-computed: false
       required:
         - config
+      x-supported-partials:
+        - name: redis-ee
+          paths:
+            - config.cache.redis
     UpstreamTimeoutPlugin:
       allOf:
         - $ref: '#/components/schemas/PluginBase'
