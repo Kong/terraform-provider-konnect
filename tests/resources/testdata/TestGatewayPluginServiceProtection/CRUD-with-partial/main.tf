@@ -36,6 +36,7 @@ resource "konnect_gateway_plugin_service_protection" "my_service_protection" {
     strategy            = "redis"
     sync_rate           = 0
     window_size         = [60]
+    redis = {}
   }
 
   control_plane_id = konnect_gateway_control_plane.plugin_svc_protection_cp.id

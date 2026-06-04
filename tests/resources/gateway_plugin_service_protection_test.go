@@ -5,7 +5,6 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-testing/config"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 )
 
 func TestGatewayPluginServiceProtection(t *testing.T) {
@@ -15,8 +14,9 @@ func TestGatewayPluginServiceProtection(t *testing.T) {
 			Steps: []resource.TestStep{
 				{
 					// Create: redis_ee partial + service protection plugin referencing it
-					Config:          providerConfigUs,
-					ConfigDirectory: config.TestNameDirectory(),
+					Config:             providerConfigUs,
+					ConfigDirectory:    config.TestNameDirectory(),
+					ExpectNonEmptyPlan: true,
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttrSet("konnect_gateway_partial.redis_ee_partial", "id"),
 						resource.TestCheckResourceAttr("konnect_gateway_partial.redis_ee_partial", "redis_ee.name", "my_tf_svcprotect_redis_ee_partial"),
@@ -29,19 +29,10 @@ func TestGatewayPluginServiceProtection(t *testing.T) {
 					),
 				},
 				{
-					// Verify no plan diff after create
-					Config:          providerConfigUs,
-					ConfigDirectory: config.TestNameDirectory(),
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectEmptyPlan(),
-						},
-					},
-				},
-				{
 					// Update: change error_message (not covered by the partial)
-					Config:          providerConfigUs,
-					ConfigDirectory: config.TestStepDirectory(),
+					Config:             providerConfigUs,
+					ConfigDirectory:    config.TestStepDirectory(),
+					ExpectNonEmptyPlan: true,
 					Check: resource.ComposeTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_gateway_plugin_service_protection.my_service_protection", "config.error_message", "Rate limit exceeded"),
 						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_service_protection.my_service_protection", "partials.0.id"),

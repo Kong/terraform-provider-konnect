@@ -17,6 +17,7 @@ resource "konnect_gateway_partial" "pgvector_partial" {
         database = "kong-pgvector"
         user     = "postgres"
       }
+      redis = {}
     }
   }
 
@@ -38,7 +39,18 @@ resource "konnect_gateway_plugin_ai_semantic_cache" "my_ai_semantic_cache" {
         provider = "openai"
       }
     }
-    vectordb = null
+    vectordb = {
+      strategy        = "pgvector"
+      distance_metric = "cosine"
+      dimensions      = 1536
+      pgvector = {
+        host     = "pgvector.example.com"
+        port     = 5432
+        database = "kong-pgvector"
+        user     = "postgres"
+      }
+      redis = {}
+    }
   }
 
   tags = ["updated"]

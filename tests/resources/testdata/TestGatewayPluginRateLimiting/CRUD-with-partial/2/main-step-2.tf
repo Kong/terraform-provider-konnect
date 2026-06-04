@@ -27,10 +27,11 @@ resource "konnect_gateway_plugin_rate_limiting" "my_rate_limiting" {
   config = {
     policy = "redis"
     hour   = 1000
-    redis  = null
+    redis  = {
+      host = "redis.example.com"
+      port = 6379
+    }
   }
-
-  tags = ["updated"]
 
   control_plane_id = konnect_gateway_control_plane.plugin_ratelimiting_partial_cp.id
 }

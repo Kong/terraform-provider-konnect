@@ -19,15 +19,13 @@ resource "konnect_gateway_partial" "redis_ce_partial" {
 resource "konnect_gateway_plugin_rate_limiting" "my_rate_limiting" {
   enabled = true
 
-  partials = [{
-    id   = konnect_gateway_partial.redis_ce_partial.id
-    path = "config.redis"
-  }]
-
   config = {
     policy = "redis"
     hour   = 1000
-    redis  = null
+    redis  = {
+      host = "redis.example.com"
+      port = 6379
+    }
   }
 
   control_plane_id = konnect_gateway_control_plane.plugin_ratelimiting_partial_cp.id

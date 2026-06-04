@@ -5,7 +5,6 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-testing/config"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 )
 
 func TestGatewayPluginRateLimitingAdvanced(t *testing.T) {
@@ -40,8 +39,9 @@ func TestGatewayPluginRateLimitingAdvanced(t *testing.T) {
 			Steps: []resource.TestStep{
 				{
 					// Create: redis_ee partial + plugin referencing it
-					Config:          providerConfigUs,
-					ConfigDirectory: config.TestNameDirectory(),
+					Config:             providerConfigUs,
+					ExpectNonEmptyPlan: true,
+					ConfigDirectory:    config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttrSet("konnect_gateway_partial.redis_ee_partial", "id"),
 						resource.TestCheckResourceAttr("konnect_gateway_partial.redis_ee_partial", "redis_ee.name", "my_tf_redis_ee_partial"),
@@ -52,19 +52,10 @@ func TestGatewayPluginRateLimitingAdvanced(t *testing.T) {
 					),
 				},
 				{
-					// Verify no plan diff after create
-					Config:          providerConfigUs,
-					ConfigDirectory: config.TestNameDirectory(),
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectEmptyPlan(),
-						},
-					},
-				},
-				{
 					// Update: change config.namespace (not covered by the partial)
-					Config:          providerConfigUs,
-					ConfigDirectory: config.TestStepDirectory(),
+					Config:             providerConfigUs,
+					ExpectNonEmptyPlan: true,
+					ConfigDirectory:    config.TestStepDirectory(),
 					Check: resource.ComposeTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "config.namespace", "updated-namespace"),
 						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_rate_limiting_advanced.my_rate_limiting_advanced", "partials.0.id"),

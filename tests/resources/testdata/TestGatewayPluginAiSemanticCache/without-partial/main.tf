@@ -29,6 +29,7 @@ resource "konnect_gateway_plugin_ai_semantic_cache" "my_ai_semantic_cache" {
         database = "kong-pgvector"
         user     = "postgres"
       }
+      redis = {}
     }
   }
 

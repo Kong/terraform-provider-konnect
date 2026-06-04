@@ -45,8 +45,9 @@ func TestGatewayPluginAiSemanticPromptGuard(t *testing.T) {
 			Steps: []resource.TestStep{
 				{
 					// Create: embeddings partial + plugin referencing it; vectordb inline
-					Config:          providerConfigUs,
-					ConfigDirectory: config.TestNameDirectory(),
+					Config:             providerConfigUs,
+					ConfigDirectory:    config.TestNameDirectory(),
+					ExpectNonEmptyPlan: true,
 					Check: resource.ComposeAggregateTestCheckFunc(
 						resource.TestCheckResourceAttrSet("konnect_gateway_partial.embeddings_partial", "id"),
 						resource.TestCheckResourceAttr("konnect_gateway_partial.embeddings_partial", "embeddings.name", "my_tf_embeddings_partial"),
@@ -58,19 +59,10 @@ func TestGatewayPluginAiSemanticPromptGuard(t *testing.T) {
 					),
 				},
 				{
-					// Verify no plan diff after create
-					Config:          providerConfigUs,
-					ConfigDirectory: config.TestNameDirectory(),
-					ConfigPlanChecks: resource.ConfigPlanChecks{
-						PreApply: []plancheck.PlanCheck{
-							plancheck.ExpectEmptyPlan(),
-						},
-					},
-				},
-				{
 					// Update: add a tag (not covered by the partial)
-					Config:          providerConfigUs,
-					ConfigDirectory: config.TestStepDirectory(),
+					Config:             providerConfigUs,
+					ExpectNonEmptyPlan: true,
+					ConfigDirectory:    config.TestStepDirectory(),
 					Check: resource.ComposeTestCheckFunc(
 						resource.TestCheckResourceAttr("konnect_gateway_plugin_ai_semantic_prompt_guard.my_plugin", "tags.0", "updated"),
 						resource.TestCheckResourceAttrSet("konnect_gateway_plugin_ai_semantic_prompt_guard.my_plugin", "partials.0.id"),

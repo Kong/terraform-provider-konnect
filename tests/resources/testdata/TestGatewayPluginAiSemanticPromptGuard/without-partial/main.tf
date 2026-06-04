@@ -29,6 +29,7 @@ resource "konnect_gateway_plugin_ai_semantic_prompt_guard" "my_plugin" {
         database = "kong-pgvector"
         user     = "postgres"
       }
+      redis = {}
     }
 
     rules = {

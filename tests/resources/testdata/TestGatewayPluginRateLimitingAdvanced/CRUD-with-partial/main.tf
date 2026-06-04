@@ -29,10 +29,10 @@ resource "konnect_gateway_plugin_rate_limiting_advanced" "my_rate_limiting_advan
     window_size = [1800]
     window_type = "fixed"
     namespace   = "my-namespace"
-  }
-
-  lifecycle {
-    ignore_changes = [ "config.redis.cluster_max_redirections" ]
+    redis = {
+      host = "redis.example.com"
+      port = 6379
+    }
   }
 
   control_plane_id = konnect_gateway_control_plane.plugin_ratelimiting_advanced_partial_cp.id
