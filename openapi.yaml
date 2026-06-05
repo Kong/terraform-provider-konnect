@@ -61532,8 +61532,8 @@ components:
                   x-speakeasy-terraform-custom-type:
                     imports:
                       - github.com/kong/terraform-provider-konnect/v3/internal/customtypes
-                    schemaType: 'customtypes.Base64InputType{}'
-                    valueType: customtypes.Base64Input
+                    schemaType: 'customtypes.ReferenceableIntegerType{}'
+                    valueType: customtypes.ReferenceableInteger
                 read_timeout:
                   description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
                   type: integer
@@ -61961,8 +61961,8 @@ components:
                   x-speakeasy-terraform-custom-type:
                     imports:
                       - github.com/kong/terraform-provider-konnect/v3/internal/customtypes
-                    schemaType: 'customtypes.Base64InputType{}'
-                    valueType: customtypes.Base64Input
+                    schemaType: 'customtypes.ReferenceableIntegerType{}'
+                    valueType: customtypes.ReferenceableInteger
                 server_name:
                   description: A string representing an SNI (server name indication) value for TLS.
                   type: string

@@ -314,7 +314,7 @@ func (r *GatewayPluginRateLimitingAdvancedResource) Schema(ctx context.Context, 
 								Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
 							},
 							"port": schema.StringAttribute{
-								CustomType:  customtypes.Base64InputType{},
+								CustomType:  customtypes.ReferenceableIntegerType{},
 								Computed:    true,
 								Optional:    true,
 								Description: `An integer representing a port number between 0 and 65535, inclusive.`,

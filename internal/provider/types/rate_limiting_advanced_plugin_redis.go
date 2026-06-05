@@ -18,7 +18,7 @@ type RateLimitingAdvancedPluginRedis struct {
 	KeepaliveBacklog       types.Int64                        `tfsdk:"keepalive_backlog"`
 	KeepalivePoolSize      types.Int64                        `tfsdk:"keepalive_pool_size"`
 	Password               types.String                       `tfsdk:"password"`
-	Port                   customtypes.Base64Input            `tfsdk:"port"`
+	Port                   customtypes.ReferenceableInteger   `tfsdk:"port"`
 	ReadTimeout            types.Int64                        `tfsdk:"read_timeout"`
 	RedisProxyType         types.String                       `tfsdk:"redis_proxy_type"`
 	SendTimeout            types.Int64                        `tfsdk:"send_timeout"`

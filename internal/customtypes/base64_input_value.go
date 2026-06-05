@@ -2,7 +2,6 @@ package customtypes
 
 import (
 	"context"
-	"encoding/base64"
 	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -10,22 +9,22 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
-var _ basetypes.StringValuableWithSemanticEquals = (*Base64Input)(nil)
+var _ basetypes.StringValuableWithSemanticEquals = (*ReferenceableInteger)(nil)
 
-// Base64Input represents a valid base64 encoded string. Custom semantic equality
-// logic is defined for Base64Input, where the encoded value is decoded, and then compared to the value received in response from Read / Create / Update.
-type Base64Input struct {
+// ReferenceableInteger represents a string value with custom semantic equality
+// logic.
+type ReferenceableInteger struct {
 	basetypes.StringValue
 }
 
-// Type returns an Base64InputType.
-func (v Base64Input) Type(_ context.Context) attr.Type {
-	return Base64InputType{}
+// Type returns a ReferenceableIntegerType.
+func (v ReferenceableInteger) Type(_ context.Context) attr.Type {
+	return ReferenceableIntegerType{}
 }
 
 // Equal returns true if the given value is equivalent.
-func (v Base64Input) Equal(o attr.Value) bool {
-	other, ok := o.(Base64Input)
+func (v ReferenceableInteger) Equal(o attr.Value) bool {
+	other, ok := o.(ReferenceableInteger)
 
 	if !ok {
 		return false
@@ -34,41 +33,40 @@ func (v Base64Input) Equal(o attr.Value) bool {
 	return v.StringValue.Equal(other.StringValue)
 }
 
-// NewBase64InputNull creates an Base64Input with a null value. Determine whether the value is null via IsNull method.
-func NewBase64InputNull() Base64Input {
-	return Base64Input{
+// NewReferenceableIntegerNull creates a ReferenceableInteger with a null value.
+func NewReferenceableIntegerNull() ReferenceableInteger {
+	return ReferenceableInteger{
 		StringValue: basetypes.NewStringNull(),
 	}
 }
 
-// NewBase64InputUnknown creates an Base64Input with an unknown value. Determine whether the value is unknown via IsUnknown method.
-func NewBase64InputUnknown() Base64Input {
-	return Base64Input{
+// NewReferenceableIntegerUnknown creates a ReferenceableInteger with an unknown value.
+func NewReferenceableIntegerUnknown() ReferenceableInteger {
+	return ReferenceableInteger{
 		StringValue: basetypes.NewStringUnknown(),
 	}
 }
 
-// NewBase64InputValue creates an Base64Input with a known value. Access the value via ValueString method.
-func NewBase64InputValue(value string) Base64Input {
-	return Base64Input{
+// NewReferenceableIntegerValue creates a ReferenceableInteger with a known value.
+func NewReferenceableIntegerValue(value string) ReferenceableInteger {
+	return ReferenceableInteger{
 		StringValue: basetypes.NewStringValue(value),
 	}
 }
 
-// NewBase64InputPointerValue creates an Base64Input with a null value if nil or a known value. Access the value via ValueStringPointer method.
-func NewBase64InputPointerValue(value *string) Base64Input {
-	return Base64Input{
+// NewReferenceableIntegerPointerValue creates a ReferenceableInteger with a null value if nil or a known value.
+func NewReferenceableIntegerPointerValue(value *string) ReferenceableInteger {
+	return ReferenceableInteger{
 		StringValue: basetypes.NewStringPointerValue(value),
 	}
 }
 
-// StringSemanticEquals decodes givenValuable, compares it with the receiver string value and returns whether they are inconsequentially equal.
-// Semantic equality is checked during planning phase, and after receiving response in apply phase. In planning phase, givenValuable comes from the state, and v
-// is the current value - from Read method response. In the apply phase, givenValuable is from the plan, and v is from response of Create / Update.
-func (v Base64Input) StringSemanticEquals(ctx context.Context, givenValuable basetypes.StringValuable) (bool, diag.Diagnostics) {
+// StringSemanticEquals compares givenValuable with the receiver by raw string
+// value and returns whether they are inconsequentially equal.
+func (v ReferenceableInteger) StringSemanticEquals(ctx context.Context, givenValuable basetypes.StringValuable) (bool, diag.Diagnostics) {
 	var diags diag.Diagnostics
 	// The framework should always pass the correct value type, but always check
-	_, ok := givenValuable.(Base64Input)
+	_, ok := givenValuable.(ReferenceableInteger)
 
 	if !ok {
 		diags.AddError(
@@ -92,15 +90,5 @@ func (v Base64Input) StringSemanticEquals(ctx context.Context, givenValuable bas
 		return false, diags
 	}
 
-	decodedGivenStringBytes, errors := base64.StdEncoding.DecodeString(givenStringValue.ValueString())
-	if errors != nil {
-		// Not base64 encoded, return false so value from response is used in plan to compare with config.
-		diags.AddError(
-			"Custom String Decode Error",
-			"An unexpected error was encountered trying to decode a custom string. This is always an error in the provider. Please report the following to the provider developer:\n\n",
-		)
-		return false, diags
-	}
-
-	return string(decodedGivenStringBytes) == v.ValueString(), diags
+	return givenStringValue.ValueString() == v.ValueString(), diags
 }
