@@ -1,16 +1,16 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: e101ba81515a035c34574c28ea79f59b
+  docChecksum: 34c2c4116bf41e7afb6efef54b3b52a6
   docVersion: 2.0.0
   speakeasyVersion: 1.763.1
   generationVersion: 2.884.4
   releaseVersion: 3.18.0
   configChecksum: 2bbde14328d18c723ef109de8453d67a
 persistentEdits:
-  generation_id: 5a650ee4-23cd-4edf-adc7-d2762350877a
-  pristine_commit_hash: 3743fc1de50b0947b3d2d4c394f83a2682093b86
-  pristine_tree_hash: ebb579dbd27192db5a0e99595998390c0b935464
+  generation_id: 486e09e8-f5e7-4a30-a226-0d361be7149a
+  pristine_commit_hash: 1c83d79fddbec48139446658f223c895e117240b
+  pristine_tree_hash: e7c7ed5e478681e4dc4b35ecb24811d2bff5b694
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -2905,8 +2905,8 @@ trackedFiles:
     pristine_git_object: 3527d40fae8f82f63c9acec53a6745e8d1504485
   internal/provider/cloudgatewayconfiguration_resource.go:
     id: "516621245951"
-    last_write_checksum: sha1:eae101aec7cc6bfb5d3d9660fc6e7d63ddaf80f5
-    pristine_git_object: bc4872d938f4afba52eb3a29d213a2a53d897812
+    last_write_checksum: sha1:f23a3272c9d52205d74f59e3caf6d51ce48e7df2
+    pristine_git_object: 741f23c8da2b1754bb927a904e6a62af23021548
   internal/provider/cloudgatewayconfiguration_resource_sdk.go:
     id: aa10bef81602
     last_write_checksum: sha1:bb8b4008cbc72247fb00e3761dec7712c5eac055
@@ -10825,8 +10825,8 @@ trackedFiles:
     pristine_git_object: d54343fcc5f219e0746c1ea2fd32944e43dfcf06
   internal/sdk/models/shared/configurationdataplanegroupenvironmentfield.go:
     id: 971a0516d606
-    last_write_checksum: sha1:795580d5df06cab482d22148014729e7fd99c53b
-    pristine_git_object: 9168434d083f0717d844c743511e49b65169a8ed
+    last_write_checksum: sha1:a383289ef55b4f43d608428794f36778ef1ca1df
+    pristine_git_object: 33d6ed66336860b5a520e9f96eafdcf90d7aadf5
   internal/sdk/models/shared/configurationkind.go:
     id: 6db1769e9503
     last_write_checksum: sha1:417688771f5a85921661bb713764a8986ad4b6fa

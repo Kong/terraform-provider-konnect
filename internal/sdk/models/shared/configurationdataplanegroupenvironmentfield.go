@@ -8,7 +8,7 @@ import (
 
 // ConfigurationDataPlaneGroupEnvironmentField - Environment variable name and value to set for a data-plane group.
 type ConfigurationDataPlaneGroupEnvironmentField struct {
-	// Name of the environment variable field to set for the data-plane group. Must be prefixed by KONG_.
+	// Name of the environment variable field to set for the data-plane group. Must be prefixed by KONG_ or OTEL_.
 	//
 	Name string `json:"name"`
 	// Value assigned to the environment variable field for the data-plane group.

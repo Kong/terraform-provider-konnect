@@ -126,7 +126,7 @@ Optional:
 
 Optional:
 
-- `name` (String) Name of the environment variable field to set for the data-plane group. Must be prefixed by KONG_. Not Null
+- `name` (String) Name of the environment variable field to set for the data-plane group. Must be prefixed by KONG_ or OTEL_. Not Null
 - `value` (String) Value assigned to the environment variable field for the data-plane group. Not Null
 
 ## Import
