@@ -21496,9 +21496,9 @@ components:
       properties:
         name:
           description: |
-            Name of the environment variable field to set for the data-plane group. Must be prefixed by KONG_.
+            Name of the environment variable field to set for the data-plane group. Must be prefixed by KONG_ or OTEL_.
           type: string
-          format: '^KONG_[a-zA-Z_]+[a-zA-Z0-9_]*'
+          format: '^(KONG|OTEL)_[a-zA-Z_]+[a-zA-Z0-9_]*'
           example: KONG_LOG_LEVEL
           maxLength: 120
           minLength: 6
@@ -31458,6 +31458,29 @@ components:
               - name: record.value.content
                 type: object
                 description: The content of the record value.
+              - name: record.value.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Registry-supplied schema metadata for the record value. Populated when the value
+                  was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
+                  when returned by the registry), `format` ("avro"|"json"), and either
+                  `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
+                  applicable; use `has()` to test presence.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
+              - name: record.key.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Same shape as `record.value.schema`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
       required:
         - type
         - config
@@ -31552,6 +31575,29 @@ components:
               - name: record.value.content
                 type: object
                 description: The content of the record value.
+              - name: record.value.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Registry-supplied schema metadata for the record value. Populated when the value
+                  was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
+                  when returned by the registry), `format` ("avro"|"json"), and either
+                  `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
+                  applicable; use `has()` to test presence.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
+              - name: record.key.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Same shape as `record.value.schema`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
         parent_policy_id:
           description: 'The unique identifier of the parent schema validation policy, if any.'
           type: string
@@ -31638,6 +31684,29 @@ components:
               - name: record.value.content
                 type: object
                 description: The content of the record value.
+              - name: record.value.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Registry-supplied schema metadata for the record value. Populated when the value
+                  was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
+                  when returned by the registry), `format` ("avro"|"json"), and either
+                  `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
+                  applicable; use `has()` to test presence.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
+              - name: record.key.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Same shape as `record.value.schema`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
       required:
         - type
     EventGatewaySkipRecordPolicyCreate:
@@ -31717,6 +31786,29 @@ components:
               - name: record.value.content
                 type: object
                 description: The content of the record value.
+              - name: record.value.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Registry-supplied schema metadata for the record value. Populated when the value
+                  was validated by a Confluent schema registry. Fields: `id` (uint), `version` (uint,
+                  when returned by the registry), `format` ("avro"|"json"), and either
+                  `avro.{name, namespace}` or `json.{title, id}`. Sub-fields are absent when not
+                  applicable; use `has()` to test presence.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
+              - name: record.key.schema
+                type: object
+                x-min-runtime-version: '1.2'
+                description: |-
+                  Same shape as `record.value.schema`, populated when the record key has
+                  schema_validation configured.
+
+                  **Requires a minimum runtime version of `1.2`**.
+                x-speakeasy-terraform-ignore: true
+                x-speakeasy-param-computed: false
         parent_policy_id:
           description: 'The unique identifier of the parent schema validation policy, if any.'
           type: string
@@ -69498,6 +69590,9 @@ components:
           description: The configuration properties for the Vault which can be found on the vaults' documentation page.
           type: object
           additionalProperties: true
+          base64_decode:
+            type: boolean
+            default: false
           nullable: true
           x-speakeasy-param-computed: true
           x-speakeasy-type-override: any
