@@ -82,10 +82,10 @@ func (m *MockingPluginOrdering) GetBefore() *MockingPluginBefore {
 
 type MockingPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (m MockingPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (m MockingPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MockingPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (m *MockingPluginPartials) GetID() *string {
+func (m *MockingPluginPartials) GetID() string {
 	if m == nil {
-		return nil
+		return ""
 	}
 	return m.ID
 }
@@ -113,9 +113,9 @@ func (m *MockingPluginPartials) GetName() *string {
 	return m.Name
 }
 
-func (m *MockingPluginPartials) GetPath() *string {
+func (m *MockingPluginPartials) GetPath() string {
 	if m == nil {
-		return nil
+		return ""
 	}
 	return m.Path
 }

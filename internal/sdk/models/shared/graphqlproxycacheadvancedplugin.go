@@ -82,10 +82,10 @@ func (g *GraphqlProxyCacheAdvancedPluginOrdering) GetBefore() *GraphqlProxyCache
 
 type GraphqlProxyCacheAdvancedPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (g GraphqlProxyCacheAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (g GraphqlProxyCacheAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GraphqlProxyCacheAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (g *GraphqlProxyCacheAdvancedPluginPartials) GetID() *string {
+func (g *GraphqlProxyCacheAdvancedPluginPartials) GetID() string {
 	if g == nil {
-		return nil
+		return ""
 	}
 	return g.ID
 }
@@ -113,9 +113,9 @@ func (g *GraphqlProxyCacheAdvancedPluginPartials) GetName() *string {
 	return g.Name
 }
 
-func (g *GraphqlProxyCacheAdvancedPluginPartials) GetPath() *string {
+func (g *GraphqlProxyCacheAdvancedPluginPartials) GetPath() string {
 	if g == nil {
-		return nil
+		return ""
 	}
 	return g.Path
 }
@@ -400,7 +400,7 @@ type GraphqlProxyCacheAdvancedPluginRedis struct {
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *string `json:"port,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
@@ -426,10 +426,23 @@ type GraphqlProxyCacheAdvancedPluginRedis struct {
 }
 
 func (g GraphqlProxyCacheAdvancedPluginRedis) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(g, "", false)
+	jsonBytes, err := utils.MarshalJSON(g, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (g *GraphqlProxyCacheAdvancedPluginRedis) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ".port |= if type == \"number\" then tostring else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
 		return err
 	}
@@ -506,7 +519,7 @@ func (g *GraphqlProxyCacheAdvancedPluginRedis) GetPassword() *string {
 	return g.Password
 }
 
-func (g *GraphqlProxyCacheAdvancedPluginRedis) GetPort() *int64 {
+func (g *GraphqlProxyCacheAdvancedPluginRedis) GetPort() *string {
 	if g == nil {
 		return nil
 	}

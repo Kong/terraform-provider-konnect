@@ -82,10 +82,10 @@ func (a *AiPromptTemplatePluginOrdering) GetBefore() *AiPromptTemplatePluginBefo
 
 type AiPromptTemplatePluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (a AiPromptTemplatePluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (a AiPromptTemplatePluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiPromptTemplatePluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AiPromptTemplatePluginPartials) GetID() *string {
+func (a *AiPromptTemplatePluginPartials) GetID() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.ID
 }
@@ -113,9 +113,9 @@ func (a *AiPromptTemplatePluginPartials) GetName() *string {
 	return a.Name
 }
 
-func (a *AiPromptTemplatePluginPartials) GetPath() *string {
+func (a *AiPromptTemplatePluginPartials) GetPath() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.Path
 }

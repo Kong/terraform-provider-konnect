@@ -82,10 +82,10 @@ func (d *DatadogPluginOrdering) GetBefore() *DatadogPluginBefore {
 
 type DatadogPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (d DatadogPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (d DatadogPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DatadogPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (d *DatadogPluginPartials) GetID() *string {
+func (d *DatadogPluginPartials) GetID() string {
 	if d == nil {
-		return nil
+		return ""
 	}
 	return d.ID
 }
@@ -113,9 +113,9 @@ func (d *DatadogPluginPartials) GetName() *string {
 	return d.Name
 }
 
-func (d *DatadogPluginPartials) GetPath() *string {
+func (d *DatadogPluginPartials) GetPath() string {
 	if d == nil {
-		return nil
+		return ""
 	}
 	return d.Path
 }

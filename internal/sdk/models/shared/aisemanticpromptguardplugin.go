@@ -82,10 +82,10 @@ func (a *AiSemanticPromptGuardPluginOrdering) GetBefore() *AiSemanticPromptGuard
 
 type AiSemanticPromptGuardPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (a AiSemanticPromptGuardPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (a AiSemanticPromptGuardPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticPromptGuardPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AiSemanticPromptGuardPluginPartials) GetID() *string {
+func (a *AiSemanticPromptGuardPluginPartials) GetID() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.ID
 }
@@ -113,9 +113,9 @@ func (a *AiSemanticPromptGuardPluginPartials) GetName() *string {
 	return a.Name
 }
 
-func (a *AiSemanticPromptGuardPluginPartials) GetPath() *string {
+func (a *AiSemanticPromptGuardPluginPartials) GetPath() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.Path
 }
@@ -1228,7 +1228,7 @@ type AiSemanticPromptGuardPluginRedis struct {
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *string `json:"port,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
@@ -1254,10 +1254,23 @@ type AiSemanticPromptGuardPluginRedis struct {
 }
 
 func (a AiSemanticPromptGuardPluginRedis) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
+	jsonBytes, err := utils.MarshalJSON(a, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (a *AiSemanticPromptGuardPluginRedis) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ".port |= if type == \"number\" then tostring else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
@@ -1334,7 +1347,7 @@ func (a *AiSemanticPromptGuardPluginRedis) GetPassword() *string {
 	return a.Password
 }
 
-func (a *AiSemanticPromptGuardPluginRedis) GetPort() *int64 {
+func (a *AiSemanticPromptGuardPluginRedis) GetPort() *string {
 	if a == nil {
 		return nil
 	}
@@ -1508,16 +1521,16 @@ func (a *AiSemanticPromptGuardPluginVectordb) GetThreshold() *float64 {
 }
 
 type AiSemanticPromptGuardPluginConfig struct {
-	Embeddings AiSemanticPromptGuardPluginEmbeddings `json:"embeddings"`
+	Embeddings *AiSemanticPromptGuardPluginEmbeddings `json:"embeddings,omitempty"`
 	// Generative AI category of the request
 	GenaiCategory *AiSemanticPromptGuardPluginGenaiCategory `default:"text/generation" json:"genai_category"`
 	// LLM input and output format and schema to use
 	LlmFormat *AiSemanticPromptGuardPluginLlmFormat `default:"openai" json:"llm_format"`
 	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
-	MaxRequestBodySize *int64                              `default:"1048576" json:"max_request_body_size"`
-	Rules              *Rules                              `json:"rules"`
-	Search             *Search                             `json:"search"`
-	Vectordb           AiSemanticPromptGuardPluginVectordb `json:"vectordb"`
+	MaxRequestBodySize *int64                               `default:"1048576" json:"max_request_body_size"`
+	Rules              *Rules                               `json:"rules"`
+	Search             *Search                              `json:"search"`
+	Vectordb           *AiSemanticPromptGuardPluginVectordb `json:"vectordb,omitempty"`
 }
 
 func (a AiSemanticPromptGuardPluginConfig) MarshalJSON() ([]byte, error) {
@@ -1525,15 +1538,15 @@ func (a AiSemanticPromptGuardPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticPromptGuardPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"embeddings", "vectordb"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AiSemanticPromptGuardPluginConfig) GetEmbeddings() AiSemanticPromptGuardPluginEmbeddings {
+func (a *AiSemanticPromptGuardPluginConfig) GetEmbeddings() *AiSemanticPromptGuardPluginEmbeddings {
 	if a == nil {
-		return AiSemanticPromptGuardPluginEmbeddings{}
+		return nil
 	}
 	return a.Embeddings
 }
@@ -1573,9 +1586,9 @@ func (a *AiSemanticPromptGuardPluginConfig) GetSearch() *Search {
 	return a.Search
 }
 
-func (a *AiSemanticPromptGuardPluginConfig) GetVectordb() AiSemanticPromptGuardPluginVectordb {
+func (a *AiSemanticPromptGuardPluginConfig) GetVectordb() *AiSemanticPromptGuardPluginVectordb {
 	if a == nil {
-		return AiSemanticPromptGuardPluginVectordb{}
+		return nil
 	}
 	return a.Vectordb
 }

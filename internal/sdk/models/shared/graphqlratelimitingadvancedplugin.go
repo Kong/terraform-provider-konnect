@@ -82,10 +82,10 @@ func (g *GraphqlRateLimitingAdvancedPluginOrdering) GetBefore() *GraphqlRateLimi
 
 type GraphqlRateLimitingAdvancedPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (g GraphqlRateLimitingAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (g GraphqlRateLimitingAdvancedPluginPartials) MarshalJSON() ([]byte, error)
 }
 
 func (g *GraphqlRateLimitingAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (g *GraphqlRateLimitingAdvancedPluginPartials) GetID() *string {
+func (g *GraphqlRateLimitingAdvancedPluginPartials) GetID() string {
 	if g == nil {
-		return nil
+		return ""
 	}
 	return g.ID
 }
@@ -113,9 +113,9 @@ func (g *GraphqlRateLimitingAdvancedPluginPartials) GetName() *string {
 	return g.Name
 }
 
-func (g *GraphqlRateLimitingAdvancedPluginPartials) GetPath() *string {
+func (g *GraphqlRateLimitingAdvancedPluginPartials) GetPath() string {
 	if g == nil {
-		return nil
+		return ""
 	}
 	return g.Path
 }
@@ -424,7 +424,7 @@ type GraphqlRateLimitingAdvancedPluginRedis struct {
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *string `json:"port,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
@@ -450,10 +450,23 @@ type GraphqlRateLimitingAdvancedPluginRedis struct {
 }
 
 func (g GraphqlRateLimitingAdvancedPluginRedis) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(g, "", false)
+	jsonBytes, err := utils.MarshalJSON(g, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (g *GraphqlRateLimitingAdvancedPluginRedis) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ".port |= if type == \"number\" then tostring else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
 		return err
 	}
@@ -530,7 +543,7 @@ func (g *GraphqlRateLimitingAdvancedPluginRedis) GetPassword() *string {
 	return g.Password
 }
 
-func (g *GraphqlRateLimitingAdvancedPluginRedis) GetPort() *int64 {
+func (g *GraphqlRateLimitingAdvancedPluginRedis) GetPort() *string {
 	if g == nil {
 		return nil
 	}

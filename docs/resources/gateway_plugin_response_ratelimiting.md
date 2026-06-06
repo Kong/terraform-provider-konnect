@@ -50,7 +50,7 @@ resource "konnect_gateway_plugin_response_ratelimiting" "my_gatewaypluginrespons
       database    = 0
       host        = "...my_host..."
       password    = "...my_password..."
-      port        = 6379
+      port        = "...my_port..."
       server_name = "...my_server_name..."
       ssl         = false
       ssl_verify  = false
@@ -161,7 +161,7 @@ Optional:
 - `database` (Number) Database to use for the Redis connection when using the `redis` strategy. Default: 0
 - `host` (String) A string representing a host name, such as example.com.
 - `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis. Default: false
 - `ssl_verify` (Boolean) If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly. Default: false
@@ -227,9 +227,9 @@ Optional:
 
 Optional:
 
-- `id` (String) A string representing a UUID (universally unique identifier).
+- `id` (String) A string representing a UUID (universally unique identifier). Not Null
 - `name` (String) A unique string representing a UTF-8 encoded name.
-- `path` (String)
+- `path` (String) Not Null
 
 
 <a id="nestedatt--route"></a>

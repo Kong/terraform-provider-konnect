@@ -82,10 +82,10 @@ func (b *BasicAuthPluginOrdering) GetBefore() *BasicAuthPluginBefore {
 
 type BasicAuthPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (b BasicAuthPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (b BasicAuthPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BasicAuthPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (b *BasicAuthPluginPartials) GetID() *string {
+func (b *BasicAuthPluginPartials) GetID() string {
 	if b == nil {
-		return nil
+		return ""
 	}
 	return b.ID
 }
@@ -113,9 +113,9 @@ func (b *BasicAuthPluginPartials) GetName() *string {
 	return b.Name
 }
 
-func (b *BasicAuthPluginPartials) GetPath() *string {
+func (b *BasicAuthPluginPartials) GetPath() string {
 	if b == nil {
-		return nil
+		return ""
 	}
 	return b.Path
 }
@@ -278,7 +278,7 @@ type BasicAuthPluginRedis struct {
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *string `json:"port,omitempty"`
 	// A string representing an SNI (server name indication) value for TLS.
 	ServerName *string `default:"null" json:"server_name"`
 	// If set to true, uses SSL to connect to Redis.
@@ -292,10 +292,23 @@ type BasicAuthPluginRedis struct {
 }
 
 func (b BasicAuthPluginRedis) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(b, "", false)
+	jsonBytes, err := utils.MarshalJSON(b, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (b *BasicAuthPluginRedis) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ".port |= if type == \"number\" then tostring else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
 		return err
 	}
@@ -330,7 +343,7 @@ func (b *BasicAuthPluginRedis) GetPassword() *string {
 	return b.Password
 }
 
-func (b *BasicAuthPluginRedis) GetPort() *int64 {
+func (b *BasicAuthPluginRedis) GetPort() *string {
 	if b == nil {
 		return nil
 	}

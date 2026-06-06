@@ -68,7 +68,7 @@ func (r *GatewayPluginRateLimitingResourceModel) RefreshFromSharedRateLimitingPl
 				r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
 				r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
 				r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
-				r.Config.Redis.Port = types.Int64PointerValue(resp.Config.Redis.Port)
+				r.Config.Redis.Port = types.StringPointerValue(resp.Config.Redis.Port)
 				r.Config.Redis.ServerName = types.StringPointerValue(resp.Config.Redis.ServerName)
 				r.Config.Redis.Ssl = types.BoolPointerValue(resp.Config.Redis.Ssl)
 				r.Config.Redis.SslVerify = types.BoolPointerValue(resp.Config.Redis.SslVerify)
@@ -124,9 +124,9 @@ func (r *GatewayPluginRateLimitingResourceModel) RefreshFromSharedRateLimitingPl
 			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.ACLPluginPartials
 
-				partials.ID = types.StringPointerValue(partialsItem.ID)
+				partials.ID = types.StringValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
-				partials.Path = types.StringPointerValue(partialsItem.Path)
+				partials.Path = types.StringValue(partialsItem.Path)
 
 				r.Partials = append(r.Partials, partials)
 			}
@@ -307,24 +307,18 @@ func (r *GatewayPluginRateLimitingResourceModel) ToSharedRateLimitingPlugin(ctx 
 	if r.Partials != nil {
 		partials = make([]shared.RateLimitingPluginPartials, 0, len(r.Partials))
 		for partialsIndex := range r.Partials {
-			id1 := new(string)
-			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
-				*id1 = r.Partials[partialsIndex].ID.ValueString()
-			} else {
-				id1 = nil
-			}
+			var id1 string
+			id1 = r.Partials[partialsIndex].ID.ValueString()
+
 			name := new(string)
 			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
 				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
-			path := new(string)
-			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
-				*path = r.Partials[partialsIndex].Path.ValueString()
-			} else {
-				path = nil
-			}
+			var path string
+			path = r.Partials[partialsIndex].Path.ValueString()
+
 			partials = append(partials, shared.RateLimitingPluginPartials{
 				ID:   id1,
 				Name: name,
@@ -528,9 +522,9 @@ func (r *GatewayPluginRateLimitingResourceModel) ToSharedRateLimitingPlugin(ctx 
 			} else {
 				password = nil
 			}
-			port := new(int64)
+			port := new(string)
 			if !r.Config.Redis.Port.IsUnknown() && !r.Config.Redis.Port.IsNull() {
-				*port = r.Config.Redis.Port.ValueInt64()
+				*port = r.Config.Redis.Port.ValueString()
 			} else {
 				port = nil
 			}

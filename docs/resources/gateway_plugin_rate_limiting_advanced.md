@@ -65,7 +65,7 @@ resource "konnect_gateway_plugin_rate_limiting_advanced" "my_gatewaypluginrateli
       keepalive_backlog     = 788639936
       keepalive_pool_size   = 256
       password              = "...my_password..."
-      port                  = 6379
+      port                  = "...my_port..."
       read_timeout          = 2000
       redis_proxy_type      = "envoy_v1.31"
       send_timeout          = 2000
@@ -214,7 +214,7 @@ Optional:
 - `keepalive_backlog` (Number) Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.
 - `keepalive_pool_size` (Number) The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn't specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low. Default: 256
 - `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
-- `port` (Number) An integer representing a port number between 0 and 65535, inclusive. Default: 6379
+- `port` (String) An integer representing a port number between 0 and 65535, inclusive.
 - `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
 - `redis_proxy_type` (String) If the `connection_is_proxied` is enabled, this field indicates the proxy type and version you are using. For example, you can enable this optioin when you want authentication between Kong and Envoy proxy. must be "envoy_v1.31"
 - `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2. Default: 2000
@@ -324,9 +324,9 @@ Optional:
 
 Optional:
 
-- `id` (String) A string representing a UUID (universally unique identifier).
+- `id` (String) A string representing a UUID (universally unique identifier). Not Null
 - `name` (String) A unique string representing a UTF-8 encoded name.
-- `path` (String)
+- `path` (String) Not Null
 
 
 <a id="nestedatt--route"></a>

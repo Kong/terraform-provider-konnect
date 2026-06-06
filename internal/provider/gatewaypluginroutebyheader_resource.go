@@ -214,8 +214,9 @@ func (r *GatewayPluginRouteByHeaderResource) Schema(ctx context.Context, req res
 						"id": schema.StringAttribute{
 							Computed:    true,
 							Optional:    true,
-							Description: `A string representing a UUID (universally unique identifier).`,
+							Description: `A string representing a UUID (universally unique identifier). Not Null`,
 							Validators: []validator.String{
+								speakeasy_stringvalidators.NotNull(),
 								stringvalidator.UTF8LengthAtLeast(1),
 							},
 						},
@@ -225,8 +226,12 @@ func (r *GatewayPluginRouteByHeaderResource) Schema(ctx context.Context, req res
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
+							Computed:    true,
+							Optional:    true,
+							Description: `Not Null`,
+							Validators: []validator.String{
+								speakeasy_stringvalidators.NotNull(),
+							},
 						},
 					},
 				},

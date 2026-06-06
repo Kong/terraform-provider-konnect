@@ -82,10 +82,10 @@ func (o *OpenidConnectPluginOrdering) GetBefore() *OpenidConnectPluginBefore {
 
 type OpenidConnectPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (o OpenidConnectPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (o OpenidConnectPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OpenidConnectPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *OpenidConnectPluginPartials) GetID() *string {
+func (o *OpenidConnectPluginPartials) GetID() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.ID
 }
@@ -113,9 +113,9 @@ func (o *OpenidConnectPluginPartials) GetName() *string {
 	return o.Name
 }
 
-func (o *OpenidConnectPluginPartials) GetPath() *string {
+func (o *OpenidConnectPluginPartials) GetPath() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Path
 }
@@ -752,7 +752,7 @@ type ClusterCacheRedis struct {
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *string `json:"port,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
@@ -778,10 +778,23 @@ type ClusterCacheRedis struct {
 }
 
 func (c ClusterCacheRedis) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(c, "", false)
+	jsonBytes, err := utils.MarshalJSON(c, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *ClusterCacheRedis) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ".port |= if type == \"number\" then tostring else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
 		return err
 	}
@@ -858,7 +871,7 @@ func (c *ClusterCacheRedis) GetPassword() *string {
 	return c.Password
 }
 
-func (c *ClusterCacheRedis) GetPort() *int64 {
+func (c *ClusterCacheRedis) GetPort() *string {
 	if c == nil {
 		return nil
 	}
@@ -1631,7 +1644,7 @@ type OpenidConnectPluginRedis struct {
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *string `json:"port,omitempty"`
 	// The Redis session key prefix.
 	Prefix *string `default:"null" json:"prefix"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
@@ -1661,10 +1674,23 @@ type OpenidConnectPluginRedis struct {
 }
 
 func (o OpenidConnectPluginRedis) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(o, "", false)
+	jsonBytes, err := utils.MarshalJSON(o, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (o *OpenidConnectPluginRedis) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ".port |= if type == \"number\" then tostring else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
 		return err
 	}
@@ -1741,7 +1767,7 @@ func (o *OpenidConnectPluginRedis) GetPassword() *string {
 	return o.Password
 }
 
-func (o *OpenidConnectPluginRedis) GetPort() *int64 {
+func (o *OpenidConnectPluginRedis) GetPort() *string {
 	if o == nil {
 		return nil
 	}

@@ -82,10 +82,10 @@ func (s *ServiceProtectionPluginOrdering) GetBefore() *ServiceProtectionPluginBe
 
 type ServiceProtectionPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (s ServiceProtectionPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (s ServiceProtectionPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (s *ServiceProtectionPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *ServiceProtectionPluginPartials) GetID() *string {
+func (s *ServiceProtectionPluginPartials) GetID() string {
 	if s == nil {
-		return nil
+		return ""
 	}
 	return s.ID
 }
@@ -113,9 +113,9 @@ func (s *ServiceProtectionPluginPartials) GetName() *string {
 	return s.Name
 }
 
-func (s *ServiceProtectionPluginPartials) GetPath() *string {
+func (s *ServiceProtectionPluginPartials) GetPath() string {
 	if s == nil {
-		return nil
+		return ""
 	}
 	return s.Path
 }
@@ -377,7 +377,7 @@ type ServiceProtectionPluginRedis struct {
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *string `json:"port,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
@@ -403,10 +403,23 @@ type ServiceProtectionPluginRedis struct {
 }
 
 func (s ServiceProtectionPluginRedis) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(s, "", false)
+	jsonBytes, err := utils.MarshalJSON(s, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (s *ServiceProtectionPluginRedis) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ".port |= if type == \"number\" then tostring else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
 		return err
 	}
@@ -483,7 +496,7 @@ func (s *ServiceProtectionPluginRedis) GetPassword() *string {
 	return s.Password
 }
 
-func (s *ServiceProtectionPluginRedis) GetPort() *int64 {
+func (s *ServiceProtectionPluginRedis) GetPort() *string {
 	if s == nil {
 		return nil
 	}

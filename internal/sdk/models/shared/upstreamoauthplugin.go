@@ -82,10 +82,10 @@ func (u *UpstreamOauthPluginOrdering) GetBefore() *UpstreamOauthPluginBefore {
 
 type UpstreamOauthPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (u UpstreamOauthPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (u UpstreamOauthPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpstreamOauthPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (u *UpstreamOauthPluginPartials) GetID() *string {
+func (u *UpstreamOauthPluginPartials) GetID() string {
 	if u == nil {
-		return nil
+		return ""
 	}
 	return u.ID
 }
@@ -113,9 +113,9 @@ func (u *UpstreamOauthPluginPartials) GetName() *string {
 	return u.Name
 }
 
-func (u *UpstreamOauthPluginPartials) GetPath() *string {
+func (u *UpstreamOauthPluginPartials) GetPath() string {
 	if u == nil {
-		return nil
+		return ""
 	}
 	return u.Path
 }
@@ -468,7 +468,7 @@ type UpstreamOauthPluginRedis struct {
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *string `json:"port,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
@@ -494,10 +494,23 @@ type UpstreamOauthPluginRedis struct {
 }
 
 func (u UpstreamOauthPluginRedis) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(u, "", false)
+	jsonBytes, err := utils.MarshalJSON(u, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (u *UpstreamOauthPluginRedis) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ".port |= if type == \"number\" then tostring else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
 		return err
 	}
@@ -574,7 +587,7 @@ func (u *UpstreamOauthPluginRedis) GetPassword() *string {
 	return u.Password
 }
 
-func (u *UpstreamOauthPluginRedis) GetPort() *int64 {
+func (u *UpstreamOauthPluginRedis) GetPort() *string {
 	if u == nil {
 		return nil
 	}

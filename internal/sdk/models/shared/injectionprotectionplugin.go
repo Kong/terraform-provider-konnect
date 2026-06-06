@@ -82,10 +82,10 @@ func (i *InjectionProtectionPluginOrdering) GetBefore() *InjectionProtectionPlug
 
 type InjectionProtectionPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (i InjectionProtectionPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (i InjectionProtectionPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (i *InjectionProtectionPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &i, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (i *InjectionProtectionPluginPartials) GetID() *string {
+func (i *InjectionProtectionPluginPartials) GetID() string {
 	if i == nil {
-		return nil
+		return ""
 	}
 	return i.ID
 }
@@ -113,9 +113,9 @@ func (i *InjectionProtectionPluginPartials) GetName() *string {
 	return i.Name
 }
 
-func (i *InjectionProtectionPluginPartials) GetPath() *string {
+func (i *InjectionProtectionPluginPartials) GetPath() string {
 	if i == nil {
-		return nil
+		return ""
 	}
 	return i.Path
 }

@@ -84,10 +84,10 @@ func (r *RateLimitingAdvancedPluginOrdering) GetBefore() *RateLimitingAdvancedPl
 
 type RateLimitingAdvancedPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (r RateLimitingAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
@@ -95,15 +95,15 @@ func (r RateLimitingAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RateLimitingAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *RateLimitingAdvancedPluginPartials) GetID() *string {
+func (r *RateLimitingAdvancedPluginPartials) GetID() string {
 	if r == nil {
-		return nil
+		return ""
 	}
 	return r.ID
 }
@@ -115,9 +115,9 @@ func (r *RateLimitingAdvancedPluginPartials) GetName() *string {
 	return r.Name
 }
 
-func (r *RateLimitingAdvancedPluginPartials) GetPath() *string {
+func (r *RateLimitingAdvancedPluginPartials) GetPath() string {
 	if r == nil {
-		return nil
+		return ""
 	}
 	return r.Path
 }
@@ -460,7 +460,7 @@ type RateLimitingAdvancedPluginRedis struct {
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *string `json:"port,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// If the `connection_is_proxied` is enabled, this field indicates the proxy type and version you are using. For example, you can enable this optioin when you want authentication between Kong and Envoy proxy.
@@ -488,10 +488,23 @@ type RateLimitingAdvancedPluginRedis struct {
 }
 
 func (r RateLimitingAdvancedPluginRedis) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(r, "", false)
+	jsonBytes, err := utils.MarshalJSON(r, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (r *RateLimitingAdvancedPluginRedis) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ".port |= if type == \"number\" then tostring else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
@@ -568,7 +581,7 @@ func (r *RateLimitingAdvancedPluginRedis) GetPassword() *string {
 	return r.Password
 }
 
-func (r *RateLimitingAdvancedPluginRedis) GetPort() *int64 {
+func (r *RateLimitingAdvancedPluginRedis) GetPort() *string {
 	if r == nil {
 		return nil
 	}

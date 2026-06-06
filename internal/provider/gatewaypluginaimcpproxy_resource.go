@@ -216,7 +216,7 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 											`keepalive_backlog`:     types.Int64Type,
 											`keepalive_pool_size`:   types.Int64Type,
 											`password`:              types.StringType,
-											`port`:                  types.Int64Type,
+											`port`:                  types.StringType,
 											`read_timeout`:          types.Int64Type,
 											`send_timeout`:          types.Int64Type,
 											`sentinel_master`:       types.StringType,
@@ -297,7 +297,7 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 											`keepalive_backlog`:     types.Int64Type,
 											`keepalive_pool_size`:   types.Int64Type,
 											`password`:              types.StringType,
-											`port`:                  types.Int64Type,
+											`port`:                  types.StringType,
 											`read_timeout`:          types.Int64Type,
 											`send_timeout`:          types.Int64Type,
 											`sentinel_master`:       types.StringType,
@@ -381,7 +381,7 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 											"keepalive_backlog":     types.Int64Type,
 											"keepalive_pool_size":   types.Int64Type,
 											"password":              types.StringType,
-											"port":                  types.Int64Type,
+											"port":                  types.StringType,
 											"read_timeout":          types.Int64Type,
 											"send_timeout":          types.Int64Type,
 											"sentinel_master":       types.StringType,
@@ -553,14 +553,10 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 												Optional:    true,
 												Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
 											},
-											"port": schema.Int64Attribute{
+											"port": schema.StringAttribute{
 												Computed:    true,
 												Optional:    true,
-												Default:     int64default.StaticInt64(6379),
-												Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
-												Validators: []validator.Int64{
-													int64validator.Between(0, 65535),
-												},
+												Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 											},
 											"read_timeout": schema.Int64Attribute{
 												Computed:    true,
@@ -917,8 +913,9 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 						"id": schema.StringAttribute{
 							Computed:    true,
 							Optional:    true,
-							Description: `A string representing a UUID (universally unique identifier).`,
+							Description: `A string representing a UUID (universally unique identifier). Not Null`,
 							Validators: []validator.String{
+								speakeasy_stringvalidators.NotNull(),
 								stringvalidator.UTF8LengthAtLeast(1),
 							},
 						},
@@ -928,8 +925,12 @@ func (r *GatewayPluginAiMcpProxyResource) Schema(ctx context.Context, req resour
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
+							Computed:    true,
+							Optional:    true,
+							Description: `Not Null`,
+							Validators: []validator.String{
+								speakeasy_stringvalidators.NotNull(),
+							},
 						},
 					},
 				},

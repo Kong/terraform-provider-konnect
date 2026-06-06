@@ -82,10 +82,10 @@ func (j *JwtSignerPluginOrdering) GetBefore() *JwtSignerPluginBefore {
 
 type JwtSignerPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (j JwtSignerPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (j JwtSignerPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (j *JwtSignerPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &j, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (j *JwtSignerPluginPartials) GetID() *string {
+func (j *JwtSignerPluginPartials) GetID() string {
 	if j == nil {
-		return nil
+		return ""
 	}
 	return j.ID
 }
@@ -113,9 +113,9 @@ func (j *JwtSignerPluginPartials) GetName() *string {
 	return j.Name
 }
 
-func (j *JwtSignerPluginPartials) GetPath() *string {
+func (j *JwtSignerPluginPartials) GetPath() string {
 	if j == nil {
-		return nil
+		return ""
 	}
 	return j.Path
 }

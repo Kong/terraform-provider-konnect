@@ -82,10 +82,10 @@ func (c *CorsPluginOrdering) GetBefore() *CorsPluginBefore {
 
 type CorsPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (c CorsPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (c CorsPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CorsPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CorsPluginPartials) GetID() *string {
+func (c *CorsPluginPartials) GetID() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.ID
 }
@@ -113,9 +113,9 @@ func (c *CorsPluginPartials) GetName() *string {
 	return c.Name
 }
 
-func (c *CorsPluginPartials) GetPath() *string {
+func (c *CorsPluginPartials) GetPath() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.Path
 }

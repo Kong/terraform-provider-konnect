@@ -82,10 +82,10 @@ func (t *TLSMetadataHeadersPluginOrdering) GetBefore() *TLSMetadataHeadersPlugin
 
 type TLSMetadataHeadersPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (t TLSMetadataHeadersPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (t TLSMetadataHeadersPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TLSMetadataHeadersPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (t *TLSMetadataHeadersPluginPartials) GetID() *string {
+func (t *TLSMetadataHeadersPluginPartials) GetID() string {
 	if t == nil {
-		return nil
+		return ""
 	}
 	return t.ID
 }
@@ -113,9 +113,9 @@ func (t *TLSMetadataHeadersPluginPartials) GetName() *string {
 	return t.Name
 }
 
-func (t *TLSMetadataHeadersPluginPartials) GetPath() *string {
+func (t *TLSMetadataHeadersPluginPartials) GetPath() string {
 	if t == nil {
-		return nil
+		return ""
 	}
 	return t.Path
 }

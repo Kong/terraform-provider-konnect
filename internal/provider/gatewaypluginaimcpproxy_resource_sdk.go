@@ -140,7 +140,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 					r.Config.Server.Session.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Server.Session.Redis.KeepaliveBacklog)
 					r.Config.Server.Session.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Server.Session.Redis.KeepalivePoolSize)
 					r.Config.Server.Session.Redis.Password = types.StringPointerValue(resp.Config.Server.Session.Redis.Password)
-					r.Config.Server.Session.Redis.Port = types.Int64PointerValue(resp.Config.Server.Session.Redis.Port)
+					r.Config.Server.Session.Redis.Port = types.StringPointerValue(resp.Config.Server.Session.Redis.Port)
 					r.Config.Server.Session.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Server.Session.Redis.ReadTimeout)
 					r.Config.Server.Session.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Server.Session.Redis.SendTimeout)
 					r.Config.Server.Session.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Server.Session.Redis.SentinelMaster)
@@ -328,9 +328,9 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.ACLPluginPartials
 
-				partials.ID = types.StringPointerValue(partialsItem.ID)
+				partials.ID = types.StringValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
-				partials.Path = types.StringPointerValue(partialsItem.Path)
+				partials.Path = types.StringValue(partialsItem.Path)
 
 				r.Partials = append(r.Partials, partials)
 			}
@@ -511,24 +511,18 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 	if r.Partials != nil {
 		partials = make([]shared.AiMcpProxyPluginPartials, 0, len(r.Partials))
 		for partialsIndex := range r.Partials {
-			id1 := new(string)
-			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
-				*id1 = r.Partials[partialsIndex].ID.ValueString()
-			} else {
-				id1 = nil
-			}
+			var id1 string
+			id1 = r.Partials[partialsIndex].ID.ValueString()
+
 			name := new(string)
 			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
 				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
-			path := new(string)
-			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
-				*path = r.Partials[partialsIndex].Path.ValueString()
-			} else {
-				path = nil
-			}
+			var path string
+			path = r.Partials[partialsIndex].Path.ValueString()
+
 			partials = append(partials, shared.AiMcpProxyPluginPartials{
 				ID:   id1,
 				Name: name,
@@ -827,9 +821,9 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 				} else {
 					password = nil
 				}
-				port1 := new(int64)
+				port1 := new(string)
 				if !r.Config.Server.Session.Redis.Port.IsUnknown() && !r.Config.Server.Session.Redis.Port.IsNull() {
-					*port1 = r.Config.Server.Session.Redis.Port.ValueInt64()
+					*port1 = r.Config.Server.Session.Redis.Port.ValueString()
 				} else {
 					port1 = nil
 				}

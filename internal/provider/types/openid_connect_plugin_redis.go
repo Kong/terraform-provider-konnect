@@ -17,7 +17,7 @@ type OpenidConnectPluginRedis struct {
 	KeepaliveBacklog       types.Int64                        `tfsdk:"keepalive_backlog"`
 	KeepalivePoolSize      types.Int64                        `tfsdk:"keepalive_pool_size"`
 	Password               types.String                       `tfsdk:"password"`
-	Port                   types.Int64                        `tfsdk:"port"`
+	Port                   types.String                       `tfsdk:"port"`
 	Prefix                 types.String                       `tfsdk:"prefix"`
 	ReadTimeout            types.Int64                        `tfsdk:"read_timeout"`
 	SendTimeout            types.Int64                        `tfsdk:"send_timeout"`
