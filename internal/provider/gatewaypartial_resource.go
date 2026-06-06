@@ -1036,14 +1036,10 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 								Optional:    true,
 								Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
 							},
-							"port": schema.Int64Attribute{
+							"port": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     int64default.StaticInt64(6379),
-								Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
-								Validators: []validator.Int64{
-									int64validator.Between(0, 65535),
-								},
+								Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 							},
 							"server_name": schema.StringAttribute{
 								Computed:    true,
@@ -1276,14 +1272,10 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 								Optional:    true,
 								Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
 							},
-							"port": schema.Int64Attribute{
+							"port": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Default:     int64default.StaticInt64(6379),
-								Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
-								Validators: []validator.Int64{
-									int64validator.Between(0, 65535),
-								},
+								Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 							},
 							"read_timeout": schema.Int64Attribute{
 								Computed:    true,
@@ -1562,7 +1554,7 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 									"keepalive_backlog":     types.Int64Type,
 									"keepalive_pool_size":   types.Int64Type,
 									"password":              types.StringType,
-									"port":                  types.Int64Type,
+									"port":                  types.StringType,
 									"read_timeout":          types.Int64Type,
 									"send_timeout":          types.Int64Type,
 									"sentinel_master":       types.StringType,
@@ -1734,14 +1726,10 @@ func (r *GatewayPartialResource) Schema(ctx context.Context, req resource.Schema
 										Optional:    true,
 										Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
 									},
-									"port": schema.Int64Attribute{
+									"port": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Default:     int64default.StaticInt64(6379),
-										Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
-										Validators: []validator.Int64{
-											int64validator.Between(0, 65535),
-										},
+										Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 									},
 									"read_timeout": schema.Int64Attribute{
 										Computed:    true,

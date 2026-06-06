@@ -82,10 +82,10 @@ func (a *AiRagInjectorPluginOrdering) GetBefore() *AiRagInjectorPluginBefore {
 
 type AiRagInjectorPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (a AiRagInjectorPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (a AiRagInjectorPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiRagInjectorPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AiRagInjectorPluginPartials) GetID() *string {
+func (a *AiRagInjectorPluginPartials) GetID() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.ID
 }
@@ -113,9 +113,9 @@ func (a *AiRagInjectorPluginPartials) GetName() *string {
 	return a.Name
 }
 
-func (a *AiRagInjectorPluginPartials) GetPath() *string {
+func (a *AiRagInjectorPluginPartials) GetPath() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.Path
 }
@@ -1227,7 +1227,7 @@ type AiRagInjectorPluginRedis struct {
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *string `json:"port,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
@@ -1253,10 +1253,23 @@ type AiRagInjectorPluginRedis struct {
 }
 
 func (a AiRagInjectorPluginRedis) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
+	jsonBytes, err := utils.MarshalJSON(a, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (a *AiRagInjectorPluginRedis) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ".port |= if type == \"number\" then tostring else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
@@ -1333,7 +1346,7 @@ func (a *AiRagInjectorPluginRedis) GetPassword() *string {
 	return a.Password
 }
 
-func (a *AiRagInjectorPluginRedis) GetPort() *int64 {
+func (a *AiRagInjectorPluginRedis) GetPort() *string {
 	if a == nil {
 		return nil
 	}
@@ -1511,7 +1524,7 @@ type AiRagInjectorPluginConfig struct {
 	CollectionACLConfig map[string]CollectionACLConfig `json:"collection_acl_config,omitempty"`
 	// The type of consumer identifier used for ACL checks
 	ConsumerIdentifier *AiRagInjectorPluginConsumerIdentifier `default:"consumer_group" json:"consumer_identifier"`
-	Embeddings         AiRagInjectorPluginEmbeddings          `json:"embeddings"`
+	Embeddings         *AiRagInjectorPluginEmbeddings         `json:"embeddings,omitempty"`
 	// The maximum number of chunks to fetch from vectordb
 	FetchChunksCount *float64 `default:"5" json:"fetch_chunks_count"`
 	// Defines how the plugin behaves when a filter is invalid. Set to `compatible` to ignore invalid filters, or `strict` to raise an error. This can be overridden per request.
@@ -1525,8 +1538,8 @@ type AiRagInjectorPluginConfig struct {
 	// Halt the LLM request process in case of a vectordb or embeddings service failure
 	StopOnFailure *bool `default:"false" json:"stop_on_failure"`
 	// Default behavior when filter parsing fails (can be overridden per-request)
-	StopOnFilterError *bool                       `default:"false" json:"stop_on_filter_error"`
-	Vectordb          AiRagInjectorPluginVectordb `json:"vectordb"`
+	StopOnFilterError *bool                        `default:"false" json:"stop_on_filter_error"`
+	Vectordb          *AiRagInjectorPluginVectordb `json:"vectordb,omitempty"`
 	// The namespace of the vectordb to use for embeddings lookup
 	VectordbNamespace *string `default:"kong_rag_injector" json:"vectordb_namespace"`
 }
@@ -1536,7 +1549,7 @@ func (a AiRagInjectorPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiRagInjectorPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"embeddings", "vectordb"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1556,9 +1569,9 @@ func (a *AiRagInjectorPluginConfig) GetConsumerIdentifier() *AiRagInjectorPlugin
 	return a.ConsumerIdentifier
 }
 
-func (a *AiRagInjectorPluginConfig) GetEmbeddings() AiRagInjectorPluginEmbeddings {
+func (a *AiRagInjectorPluginConfig) GetEmbeddings() *AiRagInjectorPluginEmbeddings {
 	if a == nil {
-		return AiRagInjectorPluginEmbeddings{}
+		return nil
 	}
 	return a.Embeddings
 }
@@ -1619,9 +1632,9 @@ func (a *AiRagInjectorPluginConfig) GetStopOnFilterError() *bool {
 	return a.StopOnFilterError
 }
 
-func (a *AiRagInjectorPluginConfig) GetVectordb() AiRagInjectorPluginVectordb {
+func (a *AiRagInjectorPluginConfig) GetVectordb() *AiRagInjectorPluginVectordb {
 	if a == nil {
-		return AiRagInjectorPluginVectordb{}
+		return nil
 	}
 	return a.Vectordb
 }

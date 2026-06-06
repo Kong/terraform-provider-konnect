@@ -82,10 +82,10 @@ func (b *BotDetectionPluginOrdering) GetBefore() *BotDetectionPluginBefore {
 
 type BotDetectionPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (b BotDetectionPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (b BotDetectionPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BotDetectionPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (b *BotDetectionPluginPartials) GetID() *string {
+func (b *BotDetectionPluginPartials) GetID() string {
 	if b == nil {
-		return nil
+		return ""
 	}
 	return b.ID
 }
@@ -113,9 +113,9 @@ func (b *BotDetectionPluginPartials) GetName() *string {
 	return b.Name
 }
 
-func (b *BotDetectionPluginPartials) GetPath() *string {
+func (b *BotDetectionPluginPartials) GetPath() string {
 	if b == nil {
-		return nil
+		return ""
 	}
 	return b.Path
 }

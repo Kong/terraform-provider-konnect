@@ -4,7 +4,6 @@ package types
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/v3/internal/customtypes"
 )
 
 type RateLimitingAdvancedPluginRedis struct {
@@ -18,7 +17,7 @@ type RateLimitingAdvancedPluginRedis struct {
 	KeepaliveBacklog       types.Int64                        `tfsdk:"keepalive_backlog"`
 	KeepalivePoolSize      types.Int64                        `tfsdk:"keepalive_pool_size"`
 	Password               types.String                       `tfsdk:"password"`
-	Port                   customtypes.ReferenceableInteger   `tfsdk:"port"`
+	Port                   types.String                       `tfsdk:"port"`
 	ReadTimeout            types.Int64                        `tfsdk:"read_timeout"`
 	RedisProxyType         types.String                       `tfsdk:"redis_proxy_type"`
 	SendTimeout            types.Int64                        `tfsdk:"send_timeout"`

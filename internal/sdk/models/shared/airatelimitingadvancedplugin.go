@@ -82,10 +82,10 @@ func (a *AiRateLimitingAdvancedPluginOrdering) GetBefore() *AiRateLimitingAdvanc
 
 type AiRateLimitingAdvancedPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (a AiRateLimitingAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (a AiRateLimitingAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiRateLimitingAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AiRateLimitingAdvancedPluginPartials) GetID() *string {
+func (a *AiRateLimitingAdvancedPluginPartials) GetID() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.ID
 }
@@ -113,9 +113,9 @@ func (a *AiRateLimitingAdvancedPluginPartials) GetName() *string {
 	return a.Name
 }
 
-func (a *AiRateLimitingAdvancedPluginPartials) GetPath() *string {
+func (a *AiRateLimitingAdvancedPluginPartials) GetPath() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.Path
 }
@@ -722,7 +722,7 @@ type Redis struct {
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *string `json:"port,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
@@ -748,10 +748,23 @@ type Redis struct {
 }
 
 func (r Redis) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(r, "", false)
+	jsonBytes, err := utils.MarshalJSON(r, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (r *Redis) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ".port |= if type == \"number\" then tostring else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
 		return err
 	}
@@ -828,7 +841,7 @@ func (r *Redis) GetPassword() *string {
 	return r.Password
 }
 
-func (r *Redis) GetPort() *int64 {
+func (r *Redis) GetPort() *string {
 	if r == nil {
 		return nil
 	}

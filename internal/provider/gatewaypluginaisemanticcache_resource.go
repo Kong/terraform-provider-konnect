@@ -27,7 +27,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
+	speakeasy_int64validators "github.com/kong/terraform-provider-konnect/v3/internal/validators/int64validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -95,7 +97,8 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 						Description: `TTL in seconds of cache entities. Must be a value greater than 0. Default: 300`,
 					},
 					"embeddings": schema.SingleNestedAttribute{
-						Required: true,
+						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"auth": schema.SingleNestedAttribute{
 								Computed: true,
@@ -193,11 +196,16 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 								},
 							},
 							"model": schema.SingleNestedAttribute{
-								Required: true,
+								Computed: true,
+								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"name": schema.StringAttribute{
-										Required:    true,
-										Description: `Model name to execute.`,
+										Computed:    true,
+										Optional:    true,
+										Description: `Model name to execute. Not Null`,
+										Validators: []validator.String{
+											speakeasy_stringvalidators.NotNull(),
+										},
 									},
 									"options": schema.SingleNestedAttribute{
 										Computed: true,
@@ -368,9 +376,17 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 										Description: `Key/value settings for the model`,
 									},
 									"provider": schema.StringAttribute{
-										Required:    true,
-										Description: `AI provider format to use for embeddings API. possible known values include one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai"]`,
+										Computed:    true,
+										Optional:    true,
+										Description: `AI provider format to use for embeddings API. possible known values include one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "ollama", "openai"]; Not Null`,
+										Validators: []validator.String{
+											speakeasy_stringvalidators.NotNull(),
+										},
 									},
+								},
+								Description: `Not Null`,
+								Validators: []validator.Object{
+									speakeasy_objectvalidators.NotNull(),
 								},
 							},
 						},
@@ -421,15 +437,24 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 						Description: `Halt the LLM request process in case of a caching system failure. Default: false`,
 					},
 					"vectordb": schema.SingleNestedAttribute{
-						Required: true,
+						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"dimensions": schema.Int64Attribute{
-								Required:    true,
-								Description: `the desired dimensionality for the vectors`,
+								Computed:    true,
+								Optional:    true,
+								Description: `the desired dimensionality for the vectors. Not Null`,
+								Validators: []validator.Int64{
+									speakeasy_int64validators.NotNull(),
+								},
 							},
 							"distance_metric": schema.StringAttribute{
-								Required:    true,
-								Description: `the distance metric to use for vector searches. possible known values include one of ["cosine", "euclidean"]`,
+								Computed:    true,
+								Optional:    true,
+								Description: `the distance metric to use for vector searches. possible known values include one of ["cosine", "euclidean"]; Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
 							},
 							"pgvector": schema.SingleNestedAttribute{
 								Computed: true,
@@ -553,7 +578,7 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 									"keepalive_backlog":     types.Int64Type,
 									"keepalive_pool_size":   types.Int64Type,
 									"password":              types.StringType,
-									"port":                  types.Int64Type,
+									"port":                  types.StringType,
 									"read_timeout":          types.Int64Type,
 									"send_timeout":          types.Int64Type,
 									"sentinel_master":       types.StringType,
@@ -725,14 +750,10 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 										Optional:    true,
 										Description: `Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.`,
 									},
-									"port": schema.Int64Attribute{
+									"port": schema.StringAttribute{
 										Computed:    true,
 										Optional:    true,
-										Default:     int64default.StaticInt64(6379),
-										Description: `An integer representing a port number between 0 and 65535, inclusive. Default: 6379`,
-										Validators: []validator.Int64{
-											int64validator.Between(0, 65535),
-										},
+										Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 									},
 									"read_timeout": schema.Int64Attribute{
 										Computed:    true,
@@ -818,8 +839,12 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 								},
 							},
 							"strategy": schema.StringAttribute{
-								Required:    true,
-								Description: `which vector database driver to use. possible known values include one of ["pgvector", "redis"]`,
+								Computed:    true,
+								Optional:    true,
+								Description: `which vector database driver to use. possible known values include one of ["pgvector", "redis"]; Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
 							},
 							"threshold": schema.Float64Attribute{
 								Optional:    true,
@@ -941,8 +966,9 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 						"id": schema.StringAttribute{
 							Computed:    true,
 							Optional:    true,
-							Description: `A string representing a UUID (universally unique identifier).`,
+							Description: `A string representing a UUID (universally unique identifier). Not Null`,
 							Validators: []validator.String{
+								speakeasy_stringvalidators.NotNull(),
 								stringvalidator.UTF8LengthAtLeast(1),
 							},
 						},
@@ -952,8 +978,12 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
+							Computed:    true,
+							Optional:    true,
+							Description: `Not Null`,
+							Validators: []validator.String{
+								speakeasy_stringvalidators.NotNull(),
+							},
 						},
 					},
 				},

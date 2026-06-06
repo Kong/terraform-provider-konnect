@@ -82,10 +82,10 @@ func (z *ZipkinPluginOrdering) GetBefore() *ZipkinPluginBefore {
 
 type ZipkinPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (z ZipkinPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (z ZipkinPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (z *ZipkinPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &z, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &z, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (z *ZipkinPluginPartials) GetID() *string {
+func (z *ZipkinPluginPartials) GetID() string {
 	if z == nil {
-		return nil
+		return ""
 	}
 	return z.ID
 }
@@ -113,9 +113,9 @@ func (z *ZipkinPluginPartials) GetName() *string {
 	return z.Name
 }
 
-func (z *ZipkinPluginPartials) GetPath() *string {
+func (z *ZipkinPluginPartials) GetPath() string {
 	if z == nil {
-		return nil
+		return ""
 	}
 	return z.Path
 }

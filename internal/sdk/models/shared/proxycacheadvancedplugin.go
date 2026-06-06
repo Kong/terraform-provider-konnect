@@ -82,10 +82,10 @@ func (p *ProxyCacheAdvancedPluginOrdering) GetBefore() *ProxyCacheAdvancedPlugin
 
 type ProxyCacheAdvancedPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (p ProxyCacheAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (p ProxyCacheAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (p *ProxyCacheAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *ProxyCacheAdvancedPluginPartials) GetID() *string {
+func (p *ProxyCacheAdvancedPluginPartials) GetID() string {
 	if p == nil {
-		return nil
+		return ""
 	}
 	return p.ID
 }
@@ -113,9 +113,9 @@ func (p *ProxyCacheAdvancedPluginPartials) GetName() *string {
 	return p.Name
 }
 
-func (p *ProxyCacheAdvancedPluginPartials) GetPath() *string {
+func (p *ProxyCacheAdvancedPluginPartials) GetPath() string {
 	if p == nil {
-		return nil
+		return ""
 	}
 	return p.Path
 }
@@ -400,7 +400,7 @@ type ProxyCacheAdvancedPluginRedis struct {
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *string `json:"port,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
@@ -426,10 +426,23 @@ type ProxyCacheAdvancedPluginRedis struct {
 }
 
 func (p ProxyCacheAdvancedPluginRedis) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(p, "", false)
+	jsonBytes, err := utils.MarshalJSON(p, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (p *ProxyCacheAdvancedPluginRedis) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ".port |= if type == \"number\" then tostring else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
@@ -506,7 +519,7 @@ func (p *ProxyCacheAdvancedPluginRedis) GetPassword() *string {
 	return p.Password
 }
 
-func (p *ProxyCacheAdvancedPluginRedis) GetPort() *int64 {
+func (p *ProxyCacheAdvancedPluginRedis) GetPort() *string {
 	if p == nil {
 		return nil
 	}

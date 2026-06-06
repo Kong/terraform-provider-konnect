@@ -6,7 +6,6 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/v3/internal/customtypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk/models/shared"
@@ -44,7 +43,7 @@ func (r *GatewayPluginRateLimitingResourceModel) RefreshFromSharedRateLimitingPl
 			if resp.Config.Redis == nil {
 				r.Config.Redis = nil
 			} else {
-				r.Config.Redis = &tfTypes.RateLimitingPluginRedis{}
+				r.Config.Redis = &tfTypes.BasicAuthPluginRedis{}
 				if resp.Config.Redis.CloudAuthentication == nil {
 					r.Config.Redis.CloudAuthentication = nil
 				} else {
@@ -69,9 +68,7 @@ func (r *GatewayPluginRateLimitingResourceModel) RefreshFromSharedRateLimitingPl
 				r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
 				r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
 				r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
-				portValuable, portDiags := customtypes.ReferenceableIntegerType{}.ValueFromString(ctx, types.StringPointerValue(resp.Config.Redis.Port))
-				diags.Append(portDiags...)
-				r.Config.Redis.Port = portValuable.(customtypes.ReferenceableInteger)
+				r.Config.Redis.Port = types.StringPointerValue(resp.Config.Redis.Port)
 				r.Config.Redis.ServerName = types.StringPointerValue(resp.Config.Redis.ServerName)
 				r.Config.Redis.Ssl = types.BoolPointerValue(resp.Config.Redis.Ssl)
 				r.Config.Redis.SslVerify = types.BoolPointerValue(resp.Config.Redis.SslVerify)
@@ -127,9 +124,9 @@ func (r *GatewayPluginRateLimitingResourceModel) RefreshFromSharedRateLimitingPl
 			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.ACLPluginPartials
 
-				partials.ID = types.StringPointerValue(partialsItem.ID)
+				partials.ID = types.StringValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
-				partials.Path = types.StringPointerValue(partialsItem.Path)
+				partials.Path = types.StringValue(partialsItem.Path)
 
 				r.Partials = append(r.Partials, partials)
 			}
@@ -310,24 +307,18 @@ func (r *GatewayPluginRateLimitingResourceModel) ToSharedRateLimitingPlugin(ctx 
 	if r.Partials != nil {
 		partials = make([]shared.RateLimitingPluginPartials, 0, len(r.Partials))
 		for partialsIndex := range r.Partials {
-			id1 := new(string)
-			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
-				*id1 = r.Partials[partialsIndex].ID.ValueString()
-			} else {
-				id1 = nil
-			}
+			var id1 string
+			id1 = r.Partials[partialsIndex].ID.ValueString()
+
 			name := new(string)
 			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
 				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
-			path := new(string)
-			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
-				*path = r.Partials[partialsIndex].Path.ValueString()
-			} else {
-				path = nil
-			}
+			var path string
+			path = r.Partials[partialsIndex].Path.ValueString()
+
 			partials = append(partials, shared.RateLimitingPluginPartials{
 				ID:   id1,
 				Name: name,

@@ -2064,7 +2064,7 @@ type PartialVectordbRedis struct {
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *string `json:"port,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
@@ -2090,10 +2090,23 @@ type PartialVectordbRedis struct {
 }
 
 func (p PartialVectordbRedis) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(p, "", false)
+	jsonBytes, err := utils.MarshalJSON(p, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (p *PartialVectordbRedis) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ".port |= if type == \"number\" then tostring else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
@@ -2170,7 +2183,7 @@ func (p *PartialVectordbRedis) GetPassword() *string {
 	return p.Password
 }
 
-func (p *PartialVectordbRedis) GetPort() *int64 {
+func (p *PartialVectordbRedis) GetPort() *string {
 	if p == nil {
 		return nil
 	}
@@ -2673,7 +2686,7 @@ type PartialRedisEeConfig struct {
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *string `json:"port,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
@@ -2699,10 +2712,23 @@ type PartialRedisEeConfig struct {
 }
 
 func (p PartialRedisEeConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(p, "", false)
+	jsonBytes, err := utils.MarshalJSON(p, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (p *PartialRedisEeConfig) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ".port |= if type == \"number\" then tostring else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
@@ -2779,7 +2805,7 @@ func (p *PartialRedisEeConfig) GetPassword() *string {
 	return p.Password
 }
 
-func (p *PartialRedisEeConfig) GetPort() *int64 {
+func (p *PartialRedisEeConfig) GetPort() *string {
 	if p == nil {
 		return nil
 	}
@@ -3093,7 +3119,7 @@ type PartialRedisCeConfig struct {
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `json:"password,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *string `json:"port,omitempty"`
 	// A string representing an SNI (server name indication) value for TLS.
 	ServerName *string `json:"server_name,omitempty"`
 	// If set to true, uses SSL to connect to Redis.
@@ -3107,10 +3133,23 @@ type PartialRedisCeConfig struct {
 }
 
 func (p PartialRedisCeConfig) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(p, "", false)
+	jsonBytes, err := utils.MarshalJSON(p, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (p *PartialRedisCeConfig) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ".port |= if type == \"number\" then tostring else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
 		return err
 	}
@@ -3145,7 +3184,7 @@ func (p *PartialRedisCeConfig) GetPassword() *string {
 	return p.Password
 }
 
-func (p *PartialRedisCeConfig) GetPort() *int64 {
+func (p *PartialRedisCeConfig) GetPort() *string {
 	if p == nil {
 		return nil
 	}

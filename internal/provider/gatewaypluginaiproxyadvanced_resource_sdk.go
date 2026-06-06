@@ -401,7 +401,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 				r.Config.Vectordb.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Vectordb.Redis.KeepaliveBacklog)
 				r.Config.Vectordb.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Vectordb.Redis.KeepalivePoolSize)
 				r.Config.Vectordb.Redis.Password = types.StringPointerValue(resp.Config.Vectordb.Redis.Password)
-				r.Config.Vectordb.Redis.Port = types.Int64PointerValue(resp.Config.Vectordb.Redis.Port)
+				r.Config.Vectordb.Redis.Port = types.StringPointerValue(resp.Config.Vectordb.Redis.Port)
 				r.Config.Vectordb.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.ReadTimeout)
 				r.Config.Vectordb.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Vectordb.Redis.SendTimeout)
 				r.Config.Vectordb.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Vectordb.Redis.SentinelMaster)
@@ -479,9 +479,9 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdva
 			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.ACLPluginPartials
 
-				partials.ID = types.StringPointerValue(partialsItem.ID)
+				partials.ID = types.StringValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
-				partials.Path = types.StringPointerValue(partialsItem.Path)
+				partials.Path = types.StringValue(partialsItem.Path)
 
 				r.Partials = append(r.Partials, partials)
 			}
@@ -662,24 +662,18 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 	if r.Partials != nil {
 		partials = make([]shared.AiProxyAdvancedPluginPartials, 0, len(r.Partials))
 		for partialsIndex := range r.Partials {
-			id1 := new(string)
-			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
-				*id1 = r.Partials[partialsIndex].ID.ValueString()
-			} else {
-				id1 = nil
-			}
+			var id1 string
+			id1 = r.Partials[partialsIndex].ID.ValueString()
+
 			name := new(string)
 			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
 				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
-			path := new(string)
-			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
-				*path = r.Partials[partialsIndex].Path.ValueString()
-			} else {
-				path = nil
-			}
+			var path string
+			path = r.Partials[partialsIndex].Path.ValueString()
+
 			partials = append(partials, shared.AiProxyAdvancedPluginPartials{
 				ID:   id1,
 				Name: name,
@@ -1885,9 +1879,9 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 			} else {
 				password1 = nil
 			}
-			port2 := new(int64)
+			port2 := new(string)
 			if !r.Config.Vectordb.Redis.Port.IsUnknown() && !r.Config.Vectordb.Redis.Port.IsNull() {
-				*port2 = r.Config.Vectordb.Redis.Port.ValueInt64()
+				*port2 = r.Config.Vectordb.Redis.Port.ValueString()
 			} else {
 				port2 = nil
 			}

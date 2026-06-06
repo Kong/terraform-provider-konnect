@@ -82,10 +82,10 @@ func (c *ConfluentPluginOrdering) GetBefore() *ConfluentPluginBefore {
 
 type ConfluentPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (c ConfluentPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (c ConfluentPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfluentPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *ConfluentPluginPartials) GetID() *string {
+func (c *ConfluentPluginPartials) GetID() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.ID
 }
@@ -113,9 +113,9 @@ func (c *ConfluentPluginPartials) GetName() *string {
 	return c.Name
 }
 
-func (c *ConfluentPluginPartials) GetPath() *string {
+func (c *ConfluentPluginPartials) GetPath() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.Path
 }

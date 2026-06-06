@@ -82,10 +82,10 @@ func (i *IPRestrictionPluginOrdering) GetBefore() *IPRestrictionPluginBefore {
 
 type IPRestrictionPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (i IPRestrictionPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (i IPRestrictionPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (i *IPRestrictionPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &i, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &i, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (i *IPRestrictionPluginPartials) GetID() *string {
+func (i *IPRestrictionPluginPartials) GetID() string {
 	if i == nil {
-		return nil
+		return ""
 	}
 	return i.ID
 }
@@ -113,9 +113,9 @@ func (i *IPRestrictionPluginPartials) GetName() *string {
 	return i.Name
 }
 
-func (i *IPRestrictionPluginPartials) GetPath() *string {
+func (i *IPRestrictionPluginPartials) GetPath() string {
 	if i == nil {
-		return nil
+		return ""
 	}
 	return i.Path
 }

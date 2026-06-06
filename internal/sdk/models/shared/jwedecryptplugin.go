@@ -82,10 +82,10 @@ func (j *JweDecryptPluginOrdering) GetBefore() *JweDecryptPluginBefore {
 
 type JweDecryptPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (j JweDecryptPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (j JweDecryptPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (j *JweDecryptPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &j, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (j *JweDecryptPluginPartials) GetID() *string {
+func (j *JweDecryptPluginPartials) GetID() string {
 	if j == nil {
-		return nil
+		return ""
 	}
 	return j.ID
 }
@@ -113,9 +113,9 @@ func (j *JweDecryptPluginPartials) GetName() *string {
 	return j.Name
 }
 
-func (j *JweDecryptPluginPartials) GetPath() *string {
+func (j *JweDecryptPluginPartials) GetPath() string {
 	if j == nil {
-		return nil
+		return ""
 	}
 	return j.Path
 }

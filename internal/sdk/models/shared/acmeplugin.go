@@ -82,10 +82,10 @@ func (a *AcmePluginOrdering) GetBefore() *AcmePluginBefore {
 
 type AcmePluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (a AcmePluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (a AcmePluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AcmePluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AcmePluginPartials) GetID() *string {
+func (a *AcmePluginPartials) GetID() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.ID
 }
@@ -113,9 +113,9 @@ func (a *AcmePluginPartials) GetName() *string {
 	return a.Name
 }
 
-func (a *AcmePluginPartials) GetPath() *string {
+func (a *AcmePluginPartials) GetPath() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.Path
 }
@@ -486,7 +486,7 @@ type AcmePluginRedis struct {
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *string `json:"port,omitempty"`
 	// A string representing an SNI (server name indication) value for TLS.
 	ServerName *string `default:"null" json:"server_name"`
 	// If set to true, uses SSL to connect to Redis.
@@ -500,10 +500,23 @@ type AcmePluginRedis struct {
 }
 
 func (a AcmePluginRedis) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
+	jsonBytes, err := utils.MarshalJSON(a, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (a *AcmePluginRedis) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ".port |= if type == \"number\" then tostring else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
@@ -545,7 +558,7 @@ func (a *AcmePluginRedis) GetPassword() *string {
 	return a.Password
 }
 
-func (a *AcmePluginRedis) GetPort() *int64 {
+func (a *AcmePluginRedis) GetPort() *string {
 	if a == nil {
 		return nil
 	}

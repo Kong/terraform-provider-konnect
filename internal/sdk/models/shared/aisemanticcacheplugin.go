@@ -82,10 +82,10 @@ func (a *AiSemanticCachePluginOrdering) GetBefore() *AiSemanticCachePluginBefore
 
 type AiSemanticCachePluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (a AiSemanticCachePluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (a AiSemanticCachePluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticCachePluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AiSemanticCachePluginPartials) GetID() *string {
+func (a *AiSemanticCachePluginPartials) GetID() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.ID
 }
@@ -113,9 +113,9 @@ func (a *AiSemanticCachePluginPartials) GetName() *string {
 	return a.Name
 }
 
-func (a *AiSemanticCachePluginPartials) GetPath() *string {
+func (a *AiSemanticCachePluginPartials) GetPath() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.Path
 }
@@ -1118,7 +1118,7 @@ type AiSemanticCachePluginRedis struct {
 	// Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 	Password *string `default:"null" json:"password"`
 	// An integer representing a port number between 0 and 65535, inclusive.
-	Port *int64 `default:"6379" json:"port"`
+	Port *string `json:"port,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout *int64 `default:"2000" json:"read_timeout"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
@@ -1144,10 +1144,23 @@ type AiSemanticCachePluginRedis struct {
 }
 
 func (a AiSemanticCachePluginRedis) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(a, "", false)
+	jsonBytes, err := utils.MarshalJSON(a, "", false)
+	if err != nil {
+		return nil, err
+	}
+	out, err := utils.RunJQBytes(jsonBytes, "if (.port | type) == \"string\" and (.port | test(\"^[0-9]+$\")) then .port |= tonumber else . end")
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (a *AiSemanticCachePluginRedis) UnmarshalJSON(data []byte) error {
+	if out, err := utils.RunJQBytes(data, ".port |= if type == \"number\" then tostring else . end"); err != nil {
+		return err
+	} else {
+		data = out
+	}
 	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
@@ -1224,7 +1237,7 @@ func (a *AiSemanticCachePluginRedis) GetPassword() *string {
 	return a.Password
 }
 
-func (a *AiSemanticCachePluginRedis) GetPort() *int64 {
+func (a *AiSemanticCachePluginRedis) GetPort() *string {
 	if a == nil {
 		return nil
 	}
@@ -1401,8 +1414,8 @@ type AiSemanticCachePluginConfig struct {
 	// When enabled, respect the Cache-Control behaviors defined in RFC7234.
 	CacheControl *bool `default:"false" json:"cache_control"`
 	// TTL in seconds of cache entities. Must be a value greater than 0.
-	CacheTTL   *int64                          `default:"300" json:"cache_ttl"`
-	Embeddings AiSemanticCachePluginEmbeddings `json:"embeddings"`
+	CacheTTL   *int64                           `default:"300" json:"cache_ttl"`
+	Embeddings *AiSemanticCachePluginEmbeddings `json:"embeddings,omitempty"`
 	// When enabled, a first check for exact query will be done. It will impact DB size
 	ExactCaching *bool `default:"false" json:"exact_caching"`
 	// Ignore and discard any assistant prompts when Vectorizing the request
@@ -1416,8 +1429,8 @@ type AiSemanticCachePluginConfig struct {
 	// Number of messages in the chat history to Vectorize/Cache
 	MessageCountback *float64 `default:"1" json:"message_countback"`
 	// Halt the LLM request process in case of a caching system failure
-	StopOnFailure *bool                         `default:"false" json:"stop_on_failure"`
-	Vectordb      AiSemanticCachePluginVectordb `json:"vectordb"`
+	StopOnFailure *bool                          `default:"false" json:"stop_on_failure"`
+	Vectordb      *AiSemanticCachePluginVectordb `json:"vectordb,omitempty"`
 }
 
 func (a AiSemanticCachePluginConfig) MarshalJSON() ([]byte, error) {
@@ -1425,7 +1438,7 @@ func (a AiSemanticCachePluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiSemanticCachePluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"embeddings", "vectordb"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
 		return err
 	}
 	return nil
@@ -1445,9 +1458,9 @@ func (a *AiSemanticCachePluginConfig) GetCacheTTL() *int64 {
 	return a.CacheTTL
 }
 
-func (a *AiSemanticCachePluginConfig) GetEmbeddings() AiSemanticCachePluginEmbeddings {
+func (a *AiSemanticCachePluginConfig) GetEmbeddings() *AiSemanticCachePluginEmbeddings {
 	if a == nil {
-		return AiSemanticCachePluginEmbeddings{}
+		return nil
 	}
 	return a.Embeddings
 }
@@ -1501,9 +1514,9 @@ func (a *AiSemanticCachePluginConfig) GetStopOnFailure() *bool {
 	return a.StopOnFailure
 }
 
-func (a *AiSemanticCachePluginConfig) GetVectordb() AiSemanticCachePluginVectordb {
+func (a *AiSemanticCachePluginConfig) GetVectordb() *AiSemanticCachePluginVectordb {
 	if a == nil {
-		return AiSemanticCachePluginVectordb{}
+		return nil
 	}
 	return a.Vectordb
 }

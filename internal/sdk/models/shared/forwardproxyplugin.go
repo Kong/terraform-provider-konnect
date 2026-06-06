@@ -84,10 +84,10 @@ func (f *ForwardProxyPluginOrdering) GetBefore() *ForwardProxyPluginBefore {
 
 type ForwardProxyPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (f ForwardProxyPluginPartials) MarshalJSON() ([]byte, error) {
@@ -95,15 +95,15 @@ func (f ForwardProxyPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (f *ForwardProxyPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (f *ForwardProxyPluginPartials) GetID() *string {
+func (f *ForwardProxyPluginPartials) GetID() string {
 	if f == nil {
-		return nil
+		return ""
 	}
 	return f.ID
 }
@@ -115,9 +115,9 @@ func (f *ForwardProxyPluginPartials) GetName() *string {
 	return f.Name
 }
 
-func (f *ForwardProxyPluginPartials) GetPath() *string {
+func (f *ForwardProxyPluginPartials) GetPath() string {
 	if f == nil {
-		return nil
+		return ""
 	}
 	return f.Path
 }

@@ -53,7 +53,7 @@ func (r *GatewayPluginBasicAuthResourceModel) RefreshFromSharedBasicAuthPlugin(c
 					r.Config.BruteForceProtection.Redis.Database = types.Int64PointerValue(resp.Config.BruteForceProtection.Redis.Database)
 					r.Config.BruteForceProtection.Redis.Host = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.Host)
 					r.Config.BruteForceProtection.Redis.Password = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.Password)
-					r.Config.BruteForceProtection.Redis.Port = types.Int64PointerValue(resp.Config.BruteForceProtection.Redis.Port)
+					r.Config.BruteForceProtection.Redis.Port = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.Port)
 					r.Config.BruteForceProtection.Redis.ServerName = types.StringPointerValue(resp.Config.BruteForceProtection.Redis.ServerName)
 					r.Config.BruteForceProtection.Redis.Ssl = types.BoolPointerValue(resp.Config.BruteForceProtection.Redis.Ssl)
 					r.Config.BruteForceProtection.Redis.SslVerify = types.BoolPointerValue(resp.Config.BruteForceProtection.Redis.SslVerify)
@@ -102,9 +102,9 @@ func (r *GatewayPluginBasicAuthResourceModel) RefreshFromSharedBasicAuthPlugin(c
 			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.ACLPluginPartials
 
-				partials.ID = types.StringPointerValue(partialsItem.ID)
+				partials.ID = types.StringValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
-				partials.Path = types.StringPointerValue(partialsItem.Path)
+				partials.Path = types.StringValue(partialsItem.Path)
 
 				r.Partials = append(r.Partials, partials)
 			}
@@ -285,24 +285,18 @@ func (r *GatewayPluginBasicAuthResourceModel) ToSharedBasicAuthPlugin(ctx contex
 	if r.Partials != nil {
 		partials = make([]shared.BasicAuthPluginPartials, 0, len(r.Partials))
 		for partialsIndex := range r.Partials {
-			id1 := new(string)
-			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
-				*id1 = r.Partials[partialsIndex].ID.ValueString()
-			} else {
-				id1 = nil
-			}
+			var id1 string
+			id1 = r.Partials[partialsIndex].ID.ValueString()
+
 			name := new(string)
 			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
 				*name = r.Partials[partialsIndex].Name.ValueString()
 			} else {
 				name = nil
 			}
-			path := new(string)
-			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
-				*path = r.Partials[partialsIndex].Path.ValueString()
-			} else {
-				path = nil
-			}
+			var path string
+			path = r.Partials[partialsIndex].Path.ValueString()
+
 			partials = append(partials, shared.BasicAuthPluginPartials{
 				ID:   id1,
 				Name: name,
@@ -442,9 +436,9 @@ func (r *GatewayPluginBasicAuthResourceModel) ToSharedBasicAuthPlugin(ctx contex
 				} else {
 					password = nil
 				}
-				port := new(int64)
+				port := new(string)
 				if !r.Config.BruteForceProtection.Redis.Port.IsUnknown() && !r.Config.BruteForceProtection.Redis.Port.IsNull() {
-					*port = r.Config.BruteForceProtection.Redis.Port.ValueInt64()
+					*port = r.Config.BruteForceProtection.Redis.Port.ValueString()
 				} else {
 					port = nil
 				}

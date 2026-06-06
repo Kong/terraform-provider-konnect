@@ -12,7 +12,7 @@ type AcmePluginRedis struct {
 	ExtraOptions        *ExtraOptions                      `tfsdk:"extra_options"`
 	Host                types.String                       `tfsdk:"host"`
 	Password            types.String                       `tfsdk:"password"`
-	Port                types.Int64                        `tfsdk:"port"`
+	Port                types.String                       `tfsdk:"port"`
 	ServerName          types.String                       `tfsdk:"server_name"`
 	Ssl                 types.Bool                         `tfsdk:"ssl"`
 	SslVerify           types.Bool                         `tfsdk:"ssl_verify"`
