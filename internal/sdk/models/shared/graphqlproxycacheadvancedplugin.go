@@ -82,10 +82,10 @@ func (g *GraphqlProxyCacheAdvancedPluginOrdering) GetBefore() *GraphqlProxyCache
 
 type GraphqlProxyCacheAdvancedPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (g GraphqlProxyCacheAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (g GraphqlProxyCacheAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GraphqlProxyCacheAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (g *GraphqlProxyCacheAdvancedPluginPartials) GetID() *string {
+func (g *GraphqlProxyCacheAdvancedPluginPartials) GetID() string {
 	if g == nil {
-		return nil
+		return ""
 	}
 	return g.ID
 }
@@ -113,9 +113,9 @@ func (g *GraphqlProxyCacheAdvancedPluginPartials) GetName() *string {
 	return g.Name
 }
 
-func (g *GraphqlProxyCacheAdvancedPluginPartials) GetPath() *string {
+func (g *GraphqlProxyCacheAdvancedPluginPartials) GetPath() string {
 	if g == nil {
-		return nil
+		return ""
 	}
 	return g.Path
 }

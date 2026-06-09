@@ -84,10 +84,10 @@ func (k *KafkaConsumePluginOrdering) GetBefore() *KafkaConsumePluginBefore {
 
 type KafkaConsumePluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (k KafkaConsumePluginPartials) MarshalJSON() ([]byte, error) {
@@ -95,15 +95,15 @@ func (k KafkaConsumePluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaConsumePluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (k *KafkaConsumePluginPartials) GetID() *string {
+func (k *KafkaConsumePluginPartials) GetID() string {
 	if k == nil {
-		return nil
+		return ""
 	}
 	return k.ID
 }
@@ -115,9 +115,9 @@ func (k *KafkaConsumePluginPartials) GetName() *string {
 	return k.Name
 }
 
-func (k *KafkaConsumePluginPartials) GetPath() *string {
+func (k *KafkaConsumePluginPartials) GetPath() string {
 	if k == nil {
-		return nil
+		return ""
 	}
 	return k.Path
 }

@@ -28,6 +28,7 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -135,7 +136,8 @@ func (r *GatewayPluginAiLlmAsJudgeResource) Schema(ctx context.Context, req reso
 						Description: `Ignore and discard any tool prompts when evaluating the request. Default: true`,
 					},
 					"llm": schema.SingleNestedAttribute{
-						Required: true,
+						Computed: true,
+						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"auth": schema.SingleNestedAttribute{
 								Computed: true,
@@ -259,7 +261,8 @@ func (r *GatewayPluginAiLlmAsJudgeResource) Schema(ctx context.Context, req reso
 								},
 							},
 							"model": schema.SingleNestedAttribute{
-								Required: true,
+								Computed: true,
+								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"model_alias": schema.StringAttribute{
 										Optional:    true,
@@ -561,14 +564,26 @@ func (r *GatewayPluginAiLlmAsJudgeResource) Schema(ctx context.Context, req reso
 										Description: `Key/value settings for the model`,
 									},
 									"provider": schema.StringAttribute{
-										Required:    true,
-										Description: `AI provider request format - Kong translates requests to and from the specified backend compatible formats. possible known values include one of ["anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "databricks", "deepseek", "gemini", "huggingface", "llama2", "mistral", "ollama", "openai", "vllm", "xai"]`,
+										Computed:    true,
+										Optional:    true,
+										Description: `AI provider request format - Kong translates requests to and from the specified backend compatible formats. possible known values include one of ["anthropic", "azure", "bedrock", "cerebras", "cohere", "dashscope", "databricks", "deepseek", "gemini", "huggingface", "llama2", "mistral", "ollama", "openai", "vllm", "xai"]; Not Null`,
+										Validators: []validator.String{
+											speakeasy_stringvalidators.NotNull(),
+										},
 									},
+								},
+								Description: `Not Null`,
+								Validators: []validator.Object{
+									speakeasy_objectvalidators.NotNull(),
 								},
 							},
 							"route_type": schema.StringAttribute{
-								Required:    true,
-								Description: `The model's operation implementation, for this provider. possible known values include one of ["audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime", "video/v1/videos/generations"]`,
+								Computed:    true,
+								Optional:    true,
+								Description: `The model's operation implementation, for this provider. possible known values include one of ["audio/v1/audio/speech", "audio/v1/audio/transcriptions", "audio/v1/audio/translations", "image/v1/images/edits", "image/v1/images/generations", "llm/v1/assistants", "llm/v1/batches", "llm/v1/chat", "llm/v1/completions", "llm/v1/embeddings", "llm/v1/files", "llm/v1/responses", "preserve", "realtime/v1/realtime", "video/v1/videos/generations"]; Not Null`,
+								Validators: []validator.String{
+									speakeasy_stringvalidators.NotNull(),
+								},
 							},
 							"weight": schema.Int64Attribute{
 								Computed:    true,
@@ -719,8 +734,9 @@ func (r *GatewayPluginAiLlmAsJudgeResource) Schema(ctx context.Context, req reso
 						"id": schema.StringAttribute{
 							Computed:    true,
 							Optional:    true,
-							Description: `A string representing a UUID (universally unique identifier).`,
+							Description: `A string representing a UUID (universally unique identifier). Not Null`,
 							Validators: []validator.String{
+								speakeasy_stringvalidators.NotNull(),
 								stringvalidator.UTF8LengthAtLeast(1),
 							},
 						},
@@ -730,8 +746,12 @@ func (r *GatewayPluginAiLlmAsJudgeResource) Schema(ctx context.Context, req reso
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
+							Computed:    true,
+							Optional:    true,
+							Description: `Not Null`,
+							Validators: []validator.String{
+								speakeasy_stringvalidators.NotNull(),
+							},
 						},
 					},
 				},

@@ -84,10 +84,10 @@ func (t *TLSHandshakeModifierPluginOrdering) GetBefore() *TLSHandshakeModifierPl
 
 type TLSHandshakeModifierPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (t TLSHandshakeModifierPluginPartials) MarshalJSON() ([]byte, error) {
@@ -95,15 +95,15 @@ func (t TLSHandshakeModifierPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TLSHandshakeModifierPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (t *TLSHandshakeModifierPluginPartials) GetID() *string {
+func (t *TLSHandshakeModifierPluginPartials) GetID() string {
 	if t == nil {
-		return nil
+		return ""
 	}
 	return t.ID
 }
@@ -115,9 +115,9 @@ func (t *TLSHandshakeModifierPluginPartials) GetName() *string {
 	return t.Name
 }
 
-func (t *TLSHandshakeModifierPluginPartials) GetPath() *string {
+func (t *TLSHandshakeModifierPluginPartials) GetPath() string {
 	if t == nil {
-		return nil
+		return ""
 	}
 	return t.Path
 }

@@ -82,10 +82,10 @@ func (a *AcePluginOrdering) GetBefore() *AcePluginBefore {
 
 type Partials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (p Partials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (p Partials) MarshalJSON() ([]byte, error) {
 }
 
 func (p *Partials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *Partials) GetID() *string {
+func (p *Partials) GetID() string {
 	if p == nil {
-		return nil
+		return ""
 	}
 	return p.ID
 }
@@ -113,9 +113,9 @@ func (p *Partials) GetName() *string {
 	return p.Name
 }
 
-func (p *Partials) GetPath() *string {
+func (p *Partials) GetPath() string {
 	if p == nil {
-		return nil
+		return ""
 	}
 	return p.Path
 }

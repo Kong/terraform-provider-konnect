@@ -85,10 +85,10 @@ func (d *DatakitPluginOrdering) GetBefore() *DatakitPluginBefore {
 
 type DatakitPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (d DatakitPluginPartials) MarshalJSON() ([]byte, error) {
@@ -96,15 +96,15 @@ func (d DatakitPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DatakitPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (d *DatakitPluginPartials) GetID() *string {
+func (d *DatakitPluginPartials) GetID() string {
 	if d == nil {
-		return nil
+		return ""
 	}
 	return d.ID
 }
@@ -116,9 +116,9 @@ func (d *DatakitPluginPartials) GetName() *string {
 	return d.Name
 }
 
-func (d *DatakitPluginPartials) GetPath() *string {
+func (d *DatakitPluginPartials) GetPath() string {
 	if d == nil {
-		return nil
+		return ""
 	}
 	return d.Path
 }

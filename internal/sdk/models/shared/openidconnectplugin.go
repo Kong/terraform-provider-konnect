@@ -82,10 +82,10 @@ func (o *OpenidConnectPluginOrdering) GetBefore() *OpenidConnectPluginBefore {
 
 type OpenidConnectPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (o OpenidConnectPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (o OpenidConnectPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (o *OpenidConnectPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *OpenidConnectPluginPartials) GetID() *string {
+func (o *OpenidConnectPluginPartials) GetID() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.ID
 }
@@ -113,9 +113,9 @@ func (o *OpenidConnectPluginPartials) GetName() *string {
 	return o.Name
 }
 
-func (o *OpenidConnectPluginPartials) GetPath() *string {
+func (o *OpenidConnectPluginPartials) GetPath() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Path
 }

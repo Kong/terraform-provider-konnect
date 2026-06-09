@@ -23,6 +23,7 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect/v3/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v3/internal/sdk"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v3/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -220,8 +221,9 @@ func (r *GatewayPluginIPRestrictionResource) Schema(ctx context.Context, req res
 						"id": schema.StringAttribute{
 							Computed:    true,
 							Optional:    true,
-							Description: `A string representing a UUID (universally unique identifier).`,
+							Description: `A string representing a UUID (universally unique identifier). Not Null`,
 							Validators: []validator.String{
+								speakeasy_stringvalidators.NotNull(),
 								stringvalidator.UTF8LengthAtLeast(1),
 							},
 						},
@@ -231,8 +233,12 @@ func (r *GatewayPluginIPRestrictionResource) Schema(ctx context.Context, req res
 							Description: `A unique string representing a UTF-8 encoded name.`,
 						},
 						"path": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
+							Computed:    true,
+							Optional:    true,
+							Description: `Not Null`,
+							Validators: []validator.String{
+								speakeasy_stringvalidators.NotNull(),
+							},
 						},
 					},
 				},

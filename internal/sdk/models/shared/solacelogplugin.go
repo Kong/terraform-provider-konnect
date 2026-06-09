@@ -82,10 +82,10 @@ func (s *SolaceLogPluginOrdering) GetBefore() *SolaceLogPluginBefore {
 
 type SolaceLogPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (s SolaceLogPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (s SolaceLogPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SolaceLogPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *SolaceLogPluginPartials) GetID() *string {
+func (s *SolaceLogPluginPartials) GetID() string {
 	if s == nil {
-		return nil
+		return ""
 	}
 	return s.ID
 }
@@ -113,9 +113,9 @@ func (s *SolaceLogPluginPartials) GetName() *string {
 	return s.Name
 }
 
-func (s *SolaceLogPluginPartials) GetPath() *string {
+func (s *SolaceLogPluginPartials) GetPath() string {
 	if s == nil {
-		return nil
+		return ""
 	}
 	return s.Path
 }

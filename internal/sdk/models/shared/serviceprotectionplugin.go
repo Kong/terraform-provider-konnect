@@ -82,10 +82,10 @@ func (s *ServiceProtectionPluginOrdering) GetBefore() *ServiceProtectionPluginBe
 
 type ServiceProtectionPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (s ServiceProtectionPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (s ServiceProtectionPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (s *ServiceProtectionPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *ServiceProtectionPluginPartials) GetID() *string {
+func (s *ServiceProtectionPluginPartials) GetID() string {
 	if s == nil {
-		return nil
+		return ""
 	}
 	return s.ID
 }
@@ -113,9 +113,9 @@ func (s *ServiceProtectionPluginPartials) GetName() *string {
 	return s.Name
 }
 
-func (s *ServiceProtectionPluginPartials) GetPath() *string {
+func (s *ServiceProtectionPluginPartials) GetPath() string {
 	if s == nil {
-		return nil
+		return ""
 	}
 	return s.Path
 }

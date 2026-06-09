@@ -82,10 +82,10 @@ func (b *BasicAuthPluginOrdering) GetBefore() *BasicAuthPluginBefore {
 
 type BasicAuthPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (b BasicAuthPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,15 +93,15 @@ func (b BasicAuthPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (b *BasicAuthPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &b, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &b, "", false, []string{"id", "path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (b *BasicAuthPluginPartials) GetID() *string {
+func (b *BasicAuthPluginPartials) GetID() string {
 	if b == nil {
-		return nil
+		return ""
 	}
 	return b.ID
 }
@@ -113,9 +113,9 @@ func (b *BasicAuthPluginPartials) GetName() *string {
 	return b.Name
 }
 
-func (b *BasicAuthPluginPartials) GetPath() *string {
+func (b *BasicAuthPluginPartials) GetPath() string {
 	if b == nil {
-		return nil
+		return ""
 	}
 	return b.Path
 }
