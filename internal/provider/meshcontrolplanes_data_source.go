@@ -178,7 +178,10 @@ func (r *MeshControlPlanesDataSource) Read(ctx context.Context, req datasource.R
 		res, err = res.Next()
 
 		if err != nil {
-			resp.Diagnostics.AddError(fmt.Sprintf("failed to retrieve next page of results: %v", err), debugResponse(res.RawResponse))
+			resp.Diagnostics.AddError("failed to retrieve next page of results", err.Error())
+			if res != nil && res.RawResponse != nil {
+				resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+			}
 			return
 		}
 

@@ -1,6 +1,6 @@
 module github.com/kong/terraform-provider-konnect/v3
 
-go 1.25.8
+go 1.25.10
 
 require (
 	github.com/Kong/shared-speakeasy/customtypes v0.3.0
