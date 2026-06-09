@@ -284,13 +284,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		for _, v := range resp.Config.ConsumerBy {
 			r.Config.ConsumerBy = append(r.Config.ConsumerBy, types.StringValue(string(v)))
 		}
-		if resp.Config.ConsumerClaim != nil {
-			r.Config.ConsumerClaim = make([]types.String, 0, len(resp.Config.ConsumerClaim))
-			for _, v := range resp.Config.ConsumerClaim {
-				r.Config.ConsumerClaim = append(r.Config.ConsumerClaim, types.StringValue(v))
-			}
-		} else {
-			r.Config.ConsumerClaim = nil
+		r.Config.ConsumerClaim = make([]types.String, 0, len(resp.Config.ConsumerClaim))
+		for _, v := range resp.Config.ConsumerClaim {
+			r.Config.ConsumerClaim = append(r.Config.ConsumerClaim, types.StringValue(v))
 		}
 		if resp.Config.ConsumerClaims != nil {
 			r.Config.ConsumerClaims = nil
@@ -3592,12 +3588,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		verifySignature = nil
 	}
-	var consumerClaim []string
-	if r.Config.ConsumerClaim != nil {
-		consumerClaim = make([]string, 0, len(r.Config.ConsumerClaim))
-		for consumerClaimIndex := range r.Config.ConsumerClaim {
-			consumerClaim = append(consumerClaim, r.Config.ConsumerClaim[consumerClaimIndex].ValueString())
-		}
+	consumerClaim := make([]string, 0, len(r.Config.ConsumerClaim))
+	for consumerClaimIndex := range r.Config.ConsumerClaim {
+		consumerClaim = append(consumerClaim, r.Config.ConsumerClaim[consumerClaimIndex].ValueString())
 	}
 	config := shared.OpenidConnectPluginConfig{
 		Anonymous:                              anonymous,

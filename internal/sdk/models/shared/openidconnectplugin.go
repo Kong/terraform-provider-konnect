@@ -2819,7 +2819,7 @@ type OpenidConnectPluginConfig struct {
 	// Verify signature of tokens.
 	VerifySignature *bool `default:"true" json:"verify_signature"`
 	// The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.
-	ConsumerClaim []string `json:"consumer_claim"`
+	ConsumerClaim []string `json:"consumer_claim,omitempty"`
 }
 
 func (o OpenidConnectPluginConfig) MarshalJSON() ([]byte, error) {

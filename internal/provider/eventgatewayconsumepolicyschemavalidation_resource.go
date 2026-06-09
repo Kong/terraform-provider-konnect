@@ -73,8 +73,11 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"key_validation_action": schema.StringAttribute{
-						Optional: true,
-						MarkdownDescription: `Defines a behavior when record key is not valid.` + "\n" +
+						Optional:           true,
+						DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+						MarkdownDescription: `Deprecated. Use ` + "`" + `failure_mode` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Defines a behavior when record key is not valid.` + "\n" +
 							`* mark - marks a record with kong/server header and client ID value` + "\n" +
 							`  to help to identify the clients violating schema.` + "\n" +
 							`* skip - skips delivering a record.` + "\n" +
@@ -100,8 +103,11 @@ func (r *EventGatewayConsumePolicySchemaValidationResource) Schema(ctx context.C
 							`possible known values include one of ["confluent_schema_registry", "json"]`,
 					},
 					"value_validation_action": schema.StringAttribute{
-						Optional: true,
-						MarkdownDescription: `Defines a behavior when record value is not valid.` + "\n" +
+						Optional:           true,
+						DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+						MarkdownDescription: `Deprecated. Use ` + "`" + `failure_mode` + "`" + `.` + "\n" +
+							`` + "\n" +
+							`Defines a behavior when record value is not valid.` + "\n" +
 							`* mark - marks a record with kong/server header and client ID value` + "\n" +
 							`  to help to identify the clients violating schema.` + "\n" +
 							`* skip - skips delivering a record.` + "\n" +

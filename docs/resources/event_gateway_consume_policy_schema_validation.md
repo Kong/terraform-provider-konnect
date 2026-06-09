@@ -72,13 +72,17 @@ possible known values include one of ["confluent_schema_registry", "json"]
 
 Optional:
 
-- `key_validation_action` (String) Defines a behavior when record key is not valid.
+- `key_validation_action` (String, Deprecated) Deprecated. Use `failure_mode`.
+
+Defines a behavior when record key is not valid.
 * mark - marks a record with kong/server header and client ID value
   to help to identify the clients violating schema.
 * skip - skips delivering a record.
 possible known values include one of ["mark", "skip"]
 - `schema_registry` (Attributes) (see [below for nested schema](#nestedatt--config--schema_registry))
-- `value_validation_action` (String) Defines a behavior when record value is not valid.
+- `value_validation_action` (String, Deprecated) Deprecated. Use `failure_mode`.
+
+Defines a behavior when record value is not valid.
 * mark - marks a record with kong/server header and client ID value
   to help to identify the clients violating schema.
 * skip - skips delivering a record.
