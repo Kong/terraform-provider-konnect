@@ -2,10 +2,14 @@
 
 package shared
 
-// ConsumeValueValidationAction - Defines a behavior when record value is not valid.
+// ConsumeValueValidationAction - Deprecated. Use `failure_mode`.
+//
+// Defines a behavior when record value is not valid.
 //   - mark - marks a record with kong/server header and client ID value
 //     to help to identify the clients violating schema.
 //   - skip - skips delivering a record.
+//
+// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 type ConsumeValueValidationAction string
 
 const (

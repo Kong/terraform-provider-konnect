@@ -9,6 +9,14 @@ import (
 // EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig - The configuration of the produce schema validation policy when using a schema registry.
 type EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig struct {
 	SchemaRegistry *SchemaRegistryReference `json:"schema_registry,omitempty"`
+	// If true, validate the record key.
+	//
+	// **Requires a minimum runtime version of `1.2`**.
+	ValidateKey *bool `json:"validate_key,omitempty"`
+	// If true, validate the record value.
+	//
+	// **Requires a minimum runtime version of `1.2`**.
+	ValidateValue *bool `json:"validate_value,omitempty"`
 	// Defines a behavior when record key is not valid.
 	// * reject - rejects a batch for topic partition. Only available for produce.
 	// * mark - marks a record with kong/server header and client ID value
@@ -41,6 +49,20 @@ func (e *EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig) GetSchem
 		return nil
 	}
 	return e.SchemaRegistry
+}
+
+func (e *EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig) GetValidateKey() *bool {
+	if e == nil {
+		return nil
+	}
+	return e.ValidateKey
+}
+
+func (e *EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig) GetValidateValue() *bool {
+	if e == nil {
+		return nil
+	}
+	return e.ValidateValue
 }
 
 func (e *EventGatewayProduceSchemaValidationPolicySchemaRegistryConfig) GetKeyValidationAction() *ProduceKeyValidationAction {

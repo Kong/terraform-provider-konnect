@@ -31892,6 +31892,24 @@ components:
               $ref: '#/components/schemas/SchemaValidationType'
             schema_registry:
               $ref: '#/components/schemas/SchemaRegistryReference'
+            validate_key:
+              description: |-
+                If true, validate the record key.
+
+                **Requires a minimum runtime version of `1.2`**.
+              type: boolean
+              x-min-runtime-version: '1.2'
+              x-speakeasy-param-computed: false
+              x-speakeasy-terraform-ignore: true
+            validate_value:
+              description: |-
+                If true, validate the record value.
+
+                **Requires a minimum runtime version of `1.2`**.
+              type: boolean
+              x-min-runtime-version: '1.2'
+              x-speakeasy-param-computed: false
+              x-speakeasy-terraform-ignore: true
             key_validation_action:
               $ref: '#/components/schemas/ConsumeKeyValidationAction'
             value_validation_action:
@@ -32033,6 +32051,24 @@ components:
       properties:
         schema_registry:
           $ref: '#/components/schemas/SchemaRegistryReference'
+        validate_key:
+          description: |-
+            If true, validate the record key.
+
+            **Requires a minimum runtime version of `1.2`**.
+          type: boolean
+          x-min-runtime-version: '1.2'
+          x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
+        validate_value:
+          description: |-
+            If true, validate the record value.
+
+            **Requires a minimum runtime version of `1.2`**.
+          type: boolean
+          x-min-runtime-version: '1.2'
+          x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
         key_validation_action:
           $ref: '#/components/schemas/ProduceKeyValidationAction'
         value_validation_action:
@@ -32048,6 +32084,24 @@ components:
       properties:
         schema_registry:
           $ref: '#/components/schemas/SchemaRegistryReference'
+        validate_key:
+          description: |-
+            If true, validate the record key.
+
+            **Requires a minimum runtime version of `1.2`**.
+          type: boolean
+          x-min-runtime-version: '1.2'
+          x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
+        validate_value:
+          description: |-
+            If true, validate the record value.
+
+            **Requires a minimum runtime version of `1.2`**.
+          type: boolean
+          x-min-runtime-version: '1.2'
+          x-speakeasy-param-computed: false
+          x-speakeasy-terraform-ignore: true
         key_validation_action:
           $ref: '#/components/schemas/ProduceKeyValidationAction'
         value_validation_action:
@@ -32332,22 +32386,28 @@ components:
         - id
     ConsumeKeyValidationAction:
       description: |
+        Deprecated. Use `failure_mode`.
+
         Defines a behavior when record key is not valid.
         * mark - marks a record with kong/server header and client ID value
           to help to identify the clients violating schema.
         * skip - skips delivering a record.
       type: string
+      deprecated: true
       enum:
         - mark
         - skip
       x-speakeasy-unknown-values: allow
     ConsumeValueValidationAction:
       description: |
+        Deprecated. Use `failure_mode`.
+
         Defines a behavior when record value is not valid.
         * mark - marks a record with kong/server header and client ID value
           to help to identify the clients violating schema.
         * skip - skips delivering a record.
       type: string
+      deprecated: true
       enum:
         - mark
         - skip
@@ -58057,9 +58117,7 @@ components:
               type: array
               items:
                 type: string
-              default: null
-              nullable: true
-              x-speakeasy-param-computed: false
+              x-speakeasy-param-computed: true
           required:
             - issuer
         name:

@@ -7,6 +7,7 @@
 
 # Bug Fixes
 * Fix using partials with plugins
+* Fix drift in `konnect_gateway_plugin_openid_connect` resource
 
 ## 3.18.0
 > Released 2026/06/02
