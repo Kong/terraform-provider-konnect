@@ -143,6 +143,19 @@ func TestPluginWithPartialHook_BeforeRequest(t *testing.T) {
 		assert.Equal(t, "", readBody(t, result))
 	})
 
+	t.Run("skips body read for POST to non-matching path", func(t *testing.T) {
+		body := `{"config":{"redis":{"host":"localhost"}},"partials":[{"id":"x","path":"config.redis"}]}`
+		req := &http.Request{
+			Method: http.MethodPost,
+			URL:    &url.URL{Path: "/v1/control-planes/cp-1/core-entities/plugins"},
+			Body:   io.NopCloser(bytes.NewBufferString(body)),
+		}
+		result, err := hook.BeforeRequest(ctx, req)
+		require.NoError(t, err)
+		// Body must be untouched — config.redis should still be present.
+		assert.JSONEq(t, body, readBody(t, result))
+	})
+
 	t.Run("content length is updated after body modification", func(t *testing.T) {
 		req := makeReq(http.MethodPost, `{
 			"config": {"redis": {"host": "localhost"}, "limit": [10]},

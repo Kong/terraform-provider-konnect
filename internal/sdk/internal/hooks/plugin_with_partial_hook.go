@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"regexp"
 	"strings"
 )
 
@@ -14,14 +15,27 @@ import (
 // those fields are not overwritten — they are owned by the referenced partial.
 type PluginWithPartialHook struct{}
 
+var konnectMatchPlugin = func(req *http.Request) bool {
+	if req == nil || req.URL == nil {
+		return false
+	}
+
+	match, err := regexp.MatchString(`^/v2/control-planes/[^/]+/core-entities/plugins`, req.URL.Path)
+	if err != nil {
+		return false
+	}
+
+	return match && (req.Method == http.MethodPost || req.Method == http.MethodPut)
+}
+
 // BeforeRequest removes any fields from the request body that are covered by
 // a partial's path.
 func (h PluginWithPartialHook) BeforeRequest(hookCtx BeforeRequestContext, req *http.Request) (*http.Request, error) {
-	if req.Body == nil {
+	if !konnectMatchPlugin(req) {
 		return req, nil
 	}
 
-	if req.Method != http.MethodPost && req.Method != http.MethodPut {
+	if req.Body == nil {
 		return req, nil
 	}
 
