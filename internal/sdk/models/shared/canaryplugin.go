@@ -82,7 +82,7 @@ func (c *CanaryPluginOrdering) GetBefore() *CanaryPluginBefore {
 
 type CanaryPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID string `json:"id"`
+	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path string  `json:"path"`
@@ -93,15 +93,15 @@ func (c CanaryPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CanaryPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "path"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CanaryPluginPartials) GetID() string {
+func (c *CanaryPluginPartials) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

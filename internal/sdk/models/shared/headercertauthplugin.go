@@ -82,7 +82,7 @@ func (h *HeaderCertAuthPluginOrdering) GetBefore() *HeaderCertAuthPluginBefore {
 
 type HeaderCertAuthPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID string `json:"id"`
+	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path string  `json:"path"`
@@ -93,15 +93,15 @@ func (h HeaderCertAuthPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (h *HeaderCertAuthPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &h, "", false, []string{"id", "path"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &h, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (h *HeaderCertAuthPluginPartials) GetID() string {
+func (h *HeaderCertAuthPluginPartials) GetID() *string {
 	if h == nil {
-		return ""
+		return nil
 	}
 	return h.ID
 }

@@ -82,7 +82,7 @@ func (s *SolaceUpstreamPluginOrdering) GetBefore() *SolaceUpstreamPluginBefore {
 
 type SolaceUpstreamPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID string `json:"id"`
+	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path string  `json:"path"`
@@ -93,15 +93,15 @@ func (s SolaceUpstreamPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SolaceUpstreamPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"id", "path"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *SolaceUpstreamPluginPartials) GetID() string {
+func (s *SolaceUpstreamPluginPartials) GetID() *string {
 	if s == nil {
-		return ""
+		return nil
 	}
 	return s.ID
 }

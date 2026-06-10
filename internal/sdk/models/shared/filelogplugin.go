@@ -82,7 +82,7 @@ func (f *FileLogPluginOrdering) GetBefore() *FileLogPluginBefore {
 
 type FileLogPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID string `json:"id"`
+	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path string  `json:"path"`
@@ -93,15 +93,15 @@ func (f FileLogPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (f *FileLogPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"id", "path"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (f *FileLogPluginPartials) GetID() string {
+func (f *FileLogPluginPartials) GetID() *string {
 	if f == nil {
-		return ""
+		return nil
 	}
 	return f.ID
 }

@@ -82,7 +82,7 @@ func (p *PrometheusPluginOrdering) GetBefore() *PrometheusPluginBefore {
 
 type PrometheusPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID string `json:"id"`
+	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path string  `json:"path"`
@@ -93,15 +93,15 @@ func (p PrometheusPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (p *PrometheusPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"id", "path"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *PrometheusPluginPartials) GetID() string {
+func (p *PrometheusPluginPartials) GetID() *string {
 	if p == nil {
-		return ""
+		return nil
 	}
 	return p.ID
 }

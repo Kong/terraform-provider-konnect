@@ -84,7 +84,7 @@ func (k *KafkaLogPluginOrdering) GetBefore() *KafkaLogPluginBefore {
 
 type KafkaLogPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID string `json:"id"`
+	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path string  `json:"path"`
@@ -95,15 +95,15 @@ func (k KafkaLogPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaLogPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"id", "path"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (k *KafkaLogPluginPartials) GetID() string {
+func (k *KafkaLogPluginPartials) GetID() *string {
 	if k == nil {
-		return ""
+		return nil
 	}
 	return k.ID
 }

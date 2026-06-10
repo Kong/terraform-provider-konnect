@@ -82,7 +82,7 @@ func (r *ResponseTransformerPluginOrdering) GetBefore() *ResponseTransformerPlug
 
 type ResponseTransformerPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID string `json:"id"`
+	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path string  `json:"path"`
@@ -93,15 +93,15 @@ func (r ResponseTransformerPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (r *ResponseTransformerPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"id", "path"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *ResponseTransformerPluginPartials) GetID() string {
+func (r *ResponseTransformerPluginPartials) GetID() *string {
 	if r == nil {
-		return ""
+		return nil
 	}
 	return r.ID
 }

@@ -82,7 +82,7 @@ func (l *LdapAuthPluginOrdering) GetBefore() *LdapAuthPluginBefore {
 
 type LdapAuthPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID string `json:"id"`
+	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path string  `json:"path"`
@@ -93,15 +93,15 @@ func (l LdapAuthPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (l *LdapAuthPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"id", "path"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (l *LdapAuthPluginPartials) GetID() string {
+func (l *LdapAuthPluginPartials) GetID() *string {
 	if l == nil {
-		return ""
+		return nil
 	}
 	return l.ID
 }

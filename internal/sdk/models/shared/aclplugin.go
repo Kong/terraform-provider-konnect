@@ -82,7 +82,7 @@ func (a *ACLPluginOrdering) GetBefore() *ACLPluginBefore {
 
 type ACLPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID string `json:"id"`
+	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path string  `json:"path"`
@@ -93,15 +93,15 @@ func (a ACLPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (a *ACLPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "path"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *ACLPluginPartials) GetID() string {
+func (a *ACLPluginPartials) GetID() *string {
 	if a == nil {
-		return ""
+		return nil
 	}
 	return a.ID
 }

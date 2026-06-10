@@ -82,7 +82,7 @@ func (g *GrpcWebPluginOrdering) GetBefore() *GrpcWebPluginBefore {
 
 type GrpcWebPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID string `json:"id"`
+	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path string  `json:"path"`
@@ -93,15 +93,15 @@ func (g GrpcWebPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GrpcWebPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"id", "path"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (g *GrpcWebPluginPartials) GetID() string {
+func (g *GrpcWebPluginPartials) GetID() *string {
 	if g == nil {
-		return ""
+		return nil
 	}
 	return g.ID
 }

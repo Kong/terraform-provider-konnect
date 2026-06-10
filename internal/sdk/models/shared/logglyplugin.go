@@ -82,7 +82,7 @@ func (l *LogglyPluginOrdering) GetBefore() *LogglyPluginBefore {
 
 type LogglyPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID string `json:"id"`
+	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path string  `json:"path"`
@@ -93,15 +93,15 @@ func (l LogglyPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (l *LogglyPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"id", "path"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (l *LogglyPluginPartials) GetID() string {
+func (l *LogglyPluginPartials) GetID() *string {
 	if l == nil {
-		return ""
+		return nil
 	}
 	return l.ID
 }
