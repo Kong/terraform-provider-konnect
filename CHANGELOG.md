@@ -1,9 +1,7 @@
 # Changelog
 
-## 3.19.0
-> Released 2026/06/??
-
-# Features
+## 3.18.1
+> Released 2026/06/10
 
 # Bug Fixes
 * Fix using partials with plugins
