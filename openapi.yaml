@@ -60527,7 +60527,6 @@ components:
                 x-speakeasy-param-computed: true
             type: object
             required:
-              - id
               - path
           default: null
           nullable: true
