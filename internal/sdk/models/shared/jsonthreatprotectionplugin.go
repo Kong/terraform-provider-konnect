@@ -82,7 +82,7 @@ func (j *JSONThreatProtectionPluginOrdering) GetBefore() *JSONThreatProtectionPl
 
 type JSONThreatProtectionPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID string `json:"id"`
+	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path string  `json:"path"`
@@ -93,15 +93,15 @@ func (j JSONThreatProtectionPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (j *JSONThreatProtectionPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &j, "", false, []string{"id", "path"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &j, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (j *JSONThreatProtectionPluginPartials) GetID() string {
+func (j *JSONThreatProtectionPluginPartials) GetID() *string {
 	if j == nil {
-		return ""
+		return nil
 	}
 	return j.ID
 }

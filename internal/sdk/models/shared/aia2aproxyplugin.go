@@ -91,7 +91,7 @@ func (a *AiA2aProxyPluginOrdering) GetBefore() *AiA2aProxyPluginBefore {
 
 type AiA2aProxyPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID string `json:"id"`
+	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path string  `json:"path"`
@@ -102,15 +102,15 @@ func (a AiA2aProxyPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiA2aProxyPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "path"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AiA2aProxyPluginPartials) GetID() string {
+func (a *AiA2aProxyPluginPartials) GetID() *string {
 	if a == nil {
-		return ""
+		return nil
 	}
 	return a.ID
 }

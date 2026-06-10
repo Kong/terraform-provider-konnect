@@ -82,7 +82,7 @@ func (m *MeteringAndBillingPluginOrdering) GetBefore() *MeteringAndBillingPlugin
 
 type MeteringAndBillingPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID string `json:"id"`
+	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path string  `json:"path"`
@@ -93,15 +93,15 @@ func (m MeteringAndBillingPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MeteringAndBillingPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"id", "path"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (m *MeteringAndBillingPluginPartials) GetID() string {
+func (m *MeteringAndBillingPluginPartials) GetID() *string {
 	if m == nil {
-		return ""
+		return nil
 	}
 	return m.ID
 }

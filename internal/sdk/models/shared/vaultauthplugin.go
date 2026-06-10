@@ -82,7 +82,7 @@ func (v *VaultAuthPluginOrdering) GetBefore() *VaultAuthPluginBefore {
 
 type VaultAuthPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID string `json:"id"`
+	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path string  `json:"path"`
@@ -93,15 +93,15 @@ func (v VaultAuthPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (v *VaultAuthPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"id", "path"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &v, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (v *VaultAuthPluginPartials) GetID() string {
+func (v *VaultAuthPluginPartials) GetID() *string {
 	if v == nil {
-		return ""
+		return nil
 	}
 	return v.ID
 }

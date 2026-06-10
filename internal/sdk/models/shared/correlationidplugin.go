@@ -82,7 +82,7 @@ func (c *CorrelationIDPluginOrdering) GetBefore() *CorrelationIDPluginBefore {
 
 type CorrelationIDPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID string `json:"id"`
+	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path string  `json:"path"`
@@ -93,15 +93,15 @@ func (c CorrelationIDPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CorrelationIDPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"id", "path"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *CorrelationIDPluginPartials) GetID() string {
+func (c *CorrelationIDPluginPartials) GetID() *string {
 	if c == nil {
-		return ""
+		return nil
 	}
 	return c.ID
 }

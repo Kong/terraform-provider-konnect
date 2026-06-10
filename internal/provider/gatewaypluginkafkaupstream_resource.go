@@ -757,9 +757,8 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 						"id": schema.StringAttribute{
 							Computed:    true,
 							Optional:    true,
-							Description: `A string representing a UUID (universally unique identifier). Not Null`,
+							Description: `A string representing a UUID (universally unique identifier).`,
 							Validators: []validator.String{
-								speakeasy_stringvalidators.NotNull(),
 								stringvalidator.UTF8LengthAtLeast(1),
 							},
 						},

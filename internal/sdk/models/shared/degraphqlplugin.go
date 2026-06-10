@@ -82,7 +82,7 @@ func (d *DegraphqlPluginOrdering) GetBefore() *DegraphqlPluginBefore {
 
 type DegraphqlPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID string `json:"id"`
+	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path string  `json:"path"`
@@ -93,15 +93,15 @@ func (d DegraphqlPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DegraphqlPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"id", "path"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (d *DegraphqlPluginPartials) GetID() string {
+func (d *DegraphqlPluginPartials) GetID() *string {
 	if d == nil {
-		return ""
+		return nil
 	}
 	return d.ID
 }

@@ -91,7 +91,7 @@ func (a *AiMcpOauth2PluginOrdering) GetBefore() *AiMcpOauth2PluginBefore {
 
 type AiMcpOauth2PluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID string `json:"id"`
+	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path string  `json:"path"`
@@ -102,15 +102,15 @@ func (a AiMcpOauth2PluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiMcpOauth2PluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"id", "path"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (a *AiMcpOauth2PluginPartials) GetID() string {
+func (a *AiMcpOauth2PluginPartials) GetID() *string {
 	if a == nil {
-		return ""
+		return nil
 	}
 	return a.ID
 }

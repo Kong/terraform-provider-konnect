@@ -82,7 +82,7 @@ func (s *StandardWebhooksPluginOrdering) GetBefore() *StandardWebhooksPluginBefo
 
 type StandardWebhooksPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID string `json:"id"`
+	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path string  `json:"path"`
@@ -93,15 +93,15 @@ func (s StandardWebhooksPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (s *StandardWebhooksPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"id", "path"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *StandardWebhooksPluginPartials) GetID() string {
+func (s *StandardWebhooksPluginPartials) GetID() *string {
 	if s == nil {
-		return ""
+		return nil
 	}
 	return s.ID
 }

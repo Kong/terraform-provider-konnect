@@ -328,7 +328,7 @@ func (r *GatewayPluginAiMcpProxyResourceModel) RefreshFromSharedAiMcpProxyPlugin
 			for _, partialsItem := range resp.Partials {
 				var partials tfTypes.ACLPluginPartials
 
-				partials.ID = types.StringValue(partialsItem.ID)
+				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
 				partials.Path = types.StringValue(partialsItem.Path)
 
@@ -511,9 +511,12 @@ func (r *GatewayPluginAiMcpProxyResourceModel) ToSharedAiMcpProxyPlugin(ctx cont
 	if r.Partials != nil {
 		partials = make([]shared.AiMcpProxyPluginPartials, 0, len(r.Partials))
 		for partialsIndex := range r.Partials {
-			var id1 string
-			id1 = r.Partials[partialsIndex].ID.ValueString()
-
+			id1 := new(string)
+			if !r.Partials[partialsIndex].ID.IsUnknown() && !r.Partials[partialsIndex].ID.IsNull() {
+				*id1 = r.Partials[partialsIndex].ID.ValueString()
+			} else {
+				id1 = nil
+			}
 			name := new(string)
 			if !r.Partials[partialsIndex].Name.IsUnknown() && !r.Partials[partialsIndex].Name.IsNull() {
 				*name = r.Partials[partialsIndex].Name.ValueString()

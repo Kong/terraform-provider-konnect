@@ -82,7 +82,7 @@ func (w *WebsocketSizeLimitPluginOrdering) GetBefore() *WebsocketSizeLimitPlugin
 
 type WebsocketSizeLimitPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID string `json:"id"`
+	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path string  `json:"path"`
@@ -93,15 +93,15 @@ func (w WebsocketSizeLimitPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (w *WebsocketSizeLimitPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &w, "", false, []string{"id", "path"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &w, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (w *WebsocketSizeLimitPluginPartials) GetID() string {
+func (w *WebsocketSizeLimitPluginPartials) GetID() *string {
 	if w == nil {
-		return ""
+		return nil
 	}
 	return w.ID
 }

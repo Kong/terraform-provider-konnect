@@ -82,7 +82,7 @@ func (h *HmacAuthPluginOrdering) GetBefore() *HmacAuthPluginBefore {
 
 type HmacAuthPluginPartials struct {
 	// A string representing a UUID (universally unique identifier).
-	ID string `json:"id"`
+	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
 	Path string  `json:"path"`
@@ -93,15 +93,15 @@ func (h HmacAuthPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (h *HmacAuthPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &h, "", false, []string{"id", "path"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &h, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (h *HmacAuthPluginPartials) GetID() string {
+func (h *HmacAuthPluginPartials) GetID() *string {
 	if h == nil {
-		return ""
+		return nil
 	}
 	return h.ID
 }
