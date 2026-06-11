@@ -85,7 +85,7 @@ type AppDynamicsPluginPartials struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (a AppDynamicsPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,7 +93,7 @@ func (a AppDynamicsPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AppDynamicsPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
@@ -113,9 +113,9 @@ func (a *AppDynamicsPluginPartials) GetName() *string {
 	return a.Name
 }
 
-func (a *AppDynamicsPluginPartials) GetPath() *string {
+func (a *AppDynamicsPluginPartials) GetPath() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.Path
 }

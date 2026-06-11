@@ -85,7 +85,7 @@ type LogglyPluginPartials struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (l LogglyPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,7 +93,7 @@ func (l LogglyPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (l *LogglyPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &l, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &l, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
@@ -113,9 +113,9 @@ func (l *LogglyPluginPartials) GetName() *string {
 	return l.Name
 }
 
-func (l *LogglyPluginPartials) GetPath() *string {
+func (l *LogglyPluginPartials) GetPath() string {
 	if l == nil {
-		return nil
+		return ""
 	}
 	return l.Path
 }

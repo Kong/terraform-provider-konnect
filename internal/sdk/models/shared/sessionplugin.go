@@ -85,7 +85,7 @@ type SessionPluginPartials struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (s SessionPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,7 +93,7 @@ func (s SessionPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (s *SessionPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
@@ -113,9 +113,9 @@ func (s *SessionPluginPartials) GetName() *string {
 	return s.Name
 }
 
-func (s *SessionPluginPartials) GetPath() *string {
+func (s *SessionPluginPartials) GetPath() string {
 	if s == nil {
-		return nil
+		return ""
 	}
 	return s.Path
 }

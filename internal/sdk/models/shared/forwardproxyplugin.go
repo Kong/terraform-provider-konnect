@@ -87,7 +87,7 @@ type ForwardProxyPluginPartials struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (f ForwardProxyPluginPartials) MarshalJSON() ([]byte, error) {
@@ -95,7 +95,7 @@ func (f ForwardProxyPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (f *ForwardProxyPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &f, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &f, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
@@ -115,9 +115,9 @@ func (f *ForwardProxyPluginPartials) GetName() *string {
 	return f.Name
 }
 
-func (f *ForwardProxyPluginPartials) GetPath() *string {
+func (f *ForwardProxyPluginPartials) GetPath() string {
 	if f == nil {
-		return nil
+		return ""
 	}
 	return f.Path
 }

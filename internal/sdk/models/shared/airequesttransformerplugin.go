@@ -85,7 +85,7 @@ type AiRequestTransformerPluginPartials struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (a AiRequestTransformerPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,7 +93,7 @@ func (a AiRequestTransformerPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiRequestTransformerPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
@@ -113,9 +113,9 @@ func (a *AiRequestTransformerPluginPartials) GetName() *string {
 	return a.Name
 }
 
-func (a *AiRequestTransformerPluginPartials) GetPath() *string {
+func (a *AiRequestTransformerPluginPartials) GetPath() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.Path
 }
@@ -1070,8 +1070,8 @@ type AiRequestTransformerPluginConfig struct {
 	// An integer representing a port number between 0 and 65535, inclusive.
 	HTTPSProxyPort *int64 `default:"null" json:"https_proxy_port"`
 	// Verify the TLS certificate of the AI upstream service.
-	HTTPSVerify *bool                         `default:"true" json:"https_verify"`
-	Llm         AiRequestTransformerPluginLlm `json:"llm"`
+	HTTPSVerify *bool                          `default:"true" json:"https_verify"`
+	Llm         *AiRequestTransformerPluginLlm `json:"llm,omitempty"`
 	// max allowed body size allowed to be introspected. 0 means unlimited, but the size of this body will still be limited by Nginx's client_max_body_size.
 	MaxRequestBodySize *int64 `default:"1048576" json:"max_request_body_size"`
 	// Use this prompt to tune the LLM system/assistant message for the incoming proxy request (from the client), and what you are expecting in return.
@@ -1085,7 +1085,7 @@ func (a AiRequestTransformerPluginConfig) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiRequestTransformerPluginConfig) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"llm", "prompt"}); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"prompt"}); err != nil {
 		return err
 	}
 	return nil
@@ -1133,9 +1133,9 @@ func (a *AiRequestTransformerPluginConfig) GetHTTPSVerify() *bool {
 	return a.HTTPSVerify
 }
 
-func (a *AiRequestTransformerPluginConfig) GetLlm() AiRequestTransformerPluginLlm {
+func (a *AiRequestTransformerPluginConfig) GetLlm() *AiRequestTransformerPluginLlm {
 	if a == nil {
-		return AiRequestTransformerPluginLlm{}
+		return nil
 	}
 	return a.Llm
 }

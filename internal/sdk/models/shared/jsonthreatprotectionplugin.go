@@ -85,7 +85,7 @@ type JSONThreatProtectionPluginPartials struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (j JSONThreatProtectionPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,7 +93,7 @@ func (j JSONThreatProtectionPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (j *JSONThreatProtectionPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &j, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &j, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
@@ -113,9 +113,9 @@ func (j *JSONThreatProtectionPluginPartials) GetName() *string {
 	return j.Name
 }
 
-func (j *JSONThreatProtectionPluginPartials) GetPath() *string {
+func (j *JSONThreatProtectionPluginPartials) GetPath() string {
 	if j == nil {
-		return nil
+		return ""
 	}
 	return j.Path
 }

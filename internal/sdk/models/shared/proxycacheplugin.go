@@ -87,7 +87,7 @@ type ProxyCachePluginPartials struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (p ProxyCachePluginPartials) MarshalJSON() ([]byte, error) {
@@ -95,7 +95,7 @@ func (p ProxyCachePluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (p *ProxyCachePluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &p, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &p, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
@@ -115,9 +115,9 @@ func (p *ProxyCachePluginPartials) GetName() *string {
 	return p.Name
 }
 
-func (p *ProxyCachePluginPartials) GetPath() *string {
+func (p *ProxyCachePluginPartials) GetPath() string {
 	if p == nil {
-		return nil
+		return ""
 	}
 	return p.Path
 }

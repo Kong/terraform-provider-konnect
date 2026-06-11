@@ -85,7 +85,7 @@ type UpstreamTimeoutPluginPartials struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (u UpstreamTimeoutPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,7 +93,7 @@ func (u UpstreamTimeoutPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UpstreamTimeoutPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
@@ -113,9 +113,9 @@ func (u *UpstreamTimeoutPluginPartials) GetName() *string {
 	return u.Name
 }
 
-func (u *UpstreamTimeoutPluginPartials) GetPath() *string {
+func (u *UpstreamTimeoutPluginPartials) GetPath() string {
 	if u == nil {
-		return nil
+		return ""
 	}
 	return u.Path
 }

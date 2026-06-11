@@ -206,7 +206,7 @@ Optional:
 
 - `id` (String) A string representing a UUID (universally unique identifier).
 - `name` (String) A unique string representing a UTF-8 encoded name.
-- `path` (String)
+- `path` (String) Not Null
 
 
 <a id="nestedatt--route"></a>

@@ -85,7 +85,7 @@ type GrpcWebPluginPartials struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (g GrpcWebPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,7 +93,7 @@ func (g GrpcWebPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (g *GrpcWebPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &g, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
@@ -113,9 +113,9 @@ func (g *GrpcWebPluginPartials) GetName() *string {
 	return g.Name
 }
 
-func (g *GrpcWebPluginPartials) GetPath() *string {
+func (g *GrpcWebPluginPartials) GetPath() string {
 	if g == nil {
-		return nil
+		return ""
 	}
 	return g.Path
 }

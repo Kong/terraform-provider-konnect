@@ -88,7 +88,7 @@ type DatakitPluginPartials struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (d DatakitPluginPartials) MarshalJSON() ([]byte, error) {
@@ -96,7 +96,7 @@ func (d DatakitPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DatakitPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
@@ -116,9 +116,9 @@ func (d *DatakitPluginPartials) GetName() *string {
 	return d.Name
 }
 
-func (d *DatakitPluginPartials) GetPath() *string {
+func (d *DatakitPluginPartials) GetPath() string {
 	if d == nil {
-		return nil
+		return ""
 	}
 	return d.Path
 }

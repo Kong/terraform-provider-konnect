@@ -85,7 +85,7 @@ type AiPromptDecoratorPluginPartials struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (a AiPromptDecoratorPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,7 +93,7 @@ func (a AiPromptDecoratorPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiPromptDecoratorPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
@@ -113,9 +113,9 @@ func (a *AiPromptDecoratorPluginPartials) GetName() *string {
 	return a.Name
 }
 
-func (a *AiPromptDecoratorPluginPartials) GetPath() *string {
+func (a *AiPromptDecoratorPluginPartials) GetPath() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.Path
 }

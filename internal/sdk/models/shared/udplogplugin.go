@@ -85,7 +85,7 @@ type UDPLogPluginPartials struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (u UDPLogPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,7 +93,7 @@ func (u UDPLogPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (u *UDPLogPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &u, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &u, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
@@ -113,9 +113,9 @@ func (u *UDPLogPluginPartials) GetName() *string {
 	return u.Name
 }
 
-func (u *UDPLogPluginPartials) GetPath() *string {
+func (u *UDPLogPluginPartials) GetPath() string {
 	if u == nil {
-		return nil
+		return ""
 	}
 	return u.Path
 }

@@ -85,7 +85,7 @@ type ExitTransformerPluginPartials struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (e ExitTransformerPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,7 +93,7 @@ func (e ExitTransformerPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (e *ExitTransformerPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &e, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &e, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
@@ -113,9 +113,9 @@ func (e *ExitTransformerPluginPartials) GetName() *string {
 	return e.Name
 }
 
-func (e *ExitTransformerPluginPartials) GetPath() *string {
+func (e *ExitTransformerPluginPartials) GetPath() string {
 	if e == nil {
-		return nil
+		return ""
 	}
 	return e.Path
 }

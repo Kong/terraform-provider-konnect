@@ -85,7 +85,7 @@ type MtlsAuthPluginPartials struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (m MtlsAuthPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,7 +93,7 @@ func (m MtlsAuthPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (m *MtlsAuthPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &m, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &m, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
@@ -113,9 +113,9 @@ func (m *MtlsAuthPluginPartials) GetName() *string {
 	return m.Name
 }
 
-func (m *MtlsAuthPluginPartials) GetPath() *string {
+func (m *MtlsAuthPluginPartials) GetPath() string {
 	if m == nil {
-		return nil
+		return ""
 	}
 	return m.Path
 }

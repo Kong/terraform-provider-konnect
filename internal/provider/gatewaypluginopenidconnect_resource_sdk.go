@@ -284,13 +284,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		for _, v := range resp.Config.ConsumerBy {
 			r.Config.ConsumerBy = append(r.Config.ConsumerBy, types.StringValue(string(v)))
 		}
-		if resp.Config.ConsumerClaim != nil {
-			r.Config.ConsumerClaim = make([]types.String, 0, len(resp.Config.ConsumerClaim))
-			for _, v := range resp.Config.ConsumerClaim {
-				r.Config.ConsumerClaim = append(r.Config.ConsumerClaim, types.StringValue(v))
-			}
-		} else {
-			r.Config.ConsumerClaim = nil
+		r.Config.ConsumerClaim = make([]types.String, 0, len(resp.Config.ConsumerClaim))
+		for _, v := range resp.Config.ConsumerClaim {
+			r.Config.ConsumerClaim = append(r.Config.ConsumerClaim, types.StringValue(v))
 		}
 		if resp.Config.ConsumerClaims != nil {
 			r.Config.ConsumerClaims = nil
@@ -1121,7 +1117,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 
 				partials.ID = types.StringPointerValue(partialsItem.ID)
 				partials.Name = types.StringPointerValue(partialsItem.Name)
-				partials.Path = types.StringPointerValue(partialsItem.Path)
+				partials.Path = types.StringValue(partialsItem.Path)
 
 				r.Partials = append(r.Partials, partials)
 			}
@@ -1314,12 +1310,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 			} else {
 				name = nil
 			}
-			path := new(string)
-			if !r.Partials[partialsIndex].Path.IsUnknown() && !r.Partials[partialsIndex].Path.IsNull() {
-				*path = r.Partials[partialsIndex].Path.ValueString()
-			} else {
-				path = nil
-			}
+			var path string
+			path = r.Partials[partialsIndex].Path.ValueString()
+
 			partials = append(partials, shared.OpenidConnectPluginPartials{
 				ID:   id1,
 				Name: name,
@@ -3598,12 +3591,9 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPlugin(ct
 	} else {
 		verifySignature = nil
 	}
-	var consumerClaim []string
-	if r.Config.ConsumerClaim != nil {
-		consumerClaim = make([]string, 0, len(r.Config.ConsumerClaim))
-		for consumerClaimIndex := range r.Config.ConsumerClaim {
-			consumerClaim = append(consumerClaim, r.Config.ConsumerClaim[consumerClaimIndex].ValueString())
-		}
+	consumerClaim := make([]string, 0, len(r.Config.ConsumerClaim))
+	for consumerClaimIndex := range r.Config.ConsumerClaim {
+		consumerClaim = append(consumerClaim, r.Config.ConsumerClaim[consumerClaimIndex].ValueString())
 	}
 	config := shared.OpenidConnectPluginConfig{
 		Anonymous:                              anonymous,

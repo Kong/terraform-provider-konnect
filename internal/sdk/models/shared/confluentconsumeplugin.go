@@ -85,7 +85,7 @@ type ConfluentConsumePluginPartials struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (c ConfluentConsumePluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,7 +93,7 @@ func (c ConfluentConsumePluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (c *ConfluentConsumePluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &c, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &c, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
@@ -113,9 +113,9 @@ func (c *ConfluentConsumePluginPartials) GetName() *string {
 	return c.Name
 }
 
-func (c *ConfluentConsumePluginPartials) GetPath() *string {
+func (c *ConfluentConsumePluginPartials) GetPath() string {
 	if c == nil {
-		return nil
+		return ""
 	}
 	return c.Path
 }

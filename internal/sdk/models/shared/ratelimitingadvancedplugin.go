@@ -87,7 +87,7 @@ type RateLimitingAdvancedPluginPartials struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (r RateLimitingAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
@@ -95,7 +95,7 @@ func (r RateLimitingAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RateLimitingAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
@@ -115,9 +115,9 @@ func (r *RateLimitingAdvancedPluginPartials) GetName() *string {
 	return r.Name
 }
 
-func (r *RateLimitingAdvancedPluginPartials) GetPath() *string {
+func (r *RateLimitingAdvancedPluginPartials) GetPath() string {
 	if r == nil {
-		return nil
+		return ""
 	}
 	return r.Path
 }

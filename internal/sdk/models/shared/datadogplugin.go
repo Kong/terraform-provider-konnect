@@ -85,7 +85,7 @@ type DatadogPluginPartials struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (d DatadogPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,7 +93,7 @@ func (d DatadogPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DatadogPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
@@ -113,9 +113,9 @@ func (d *DatadogPluginPartials) GetName() *string {
 	return d.Name
 }
 
-func (d *DatadogPluginPartials) GetPath() *string {
+func (d *DatadogPluginPartials) GetPath() string {
 	if d == nil {
-		return nil
+		return ""
 	}
 	return d.Path
 }

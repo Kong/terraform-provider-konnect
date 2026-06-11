@@ -85,7 +85,7 @@ type StatsdAdvancedPluginPartials struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (s StatsdAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,7 +93,7 @@ func (s StatsdAdvancedPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (s *StatsdAdvancedPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &s, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
@@ -113,9 +113,9 @@ func (s *StatsdAdvancedPluginPartials) GetName() *string {
 	return s.Name
 }
 
-func (s *StatsdAdvancedPluginPartials) GetPath() *string {
+func (s *StatsdAdvancedPluginPartials) GetPath() string {
 	if s == nil {
-		return nil
+		return ""
 	}
 	return s.Path
 }

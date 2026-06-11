@@ -85,7 +85,7 @@ type TCPLogPluginPartials struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (t TCPLogPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,7 +93,7 @@ func (t TCPLogPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TCPLogPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &t, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &t, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
@@ -113,9 +113,9 @@ func (t *TCPLogPluginPartials) GetName() *string {
 	return t.Name
 }
 
-func (t *TCPLogPluginPartials) GetPath() *string {
+func (t *TCPLogPluginPartials) GetPath() string {
 	if t == nil {
-		return nil
+		return ""
 	}
 	return t.Path
 }

@@ -87,7 +87,7 @@ type KafkaUpstreamPluginPartials struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (k KafkaUpstreamPluginPartials) MarshalJSON() ([]byte, error) {
@@ -95,7 +95,7 @@ func (k KafkaUpstreamPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (k *KafkaUpstreamPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &k, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &k, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
@@ -115,9 +115,9 @@ func (k *KafkaUpstreamPluginPartials) GetName() *string {
 	return k.Name
 }
 
-func (k *KafkaUpstreamPluginPartials) GetPath() *string {
+func (k *KafkaUpstreamPluginPartials) GetPath() string {
 	if k == nil {
-		return nil
+		return ""
 	}
 	return k.Path
 }

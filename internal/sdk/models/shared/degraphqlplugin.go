@@ -85,7 +85,7 @@ type DegraphqlPluginPartials struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (d DegraphqlPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,7 +93,7 @@ func (d DegraphqlPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DegraphqlPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &d, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
@@ -113,9 +113,9 @@ func (d *DegraphqlPluginPartials) GetName() *string {
 	return d.Name
 }
 
-func (d *DegraphqlPluginPartials) GetPath() *string {
+func (d *DegraphqlPluginPartials) GetPath() string {
 	if d == nil {
-		return nil
+		return ""
 	}
 	return d.Path
 }

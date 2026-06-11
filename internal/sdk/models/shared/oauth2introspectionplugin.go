@@ -94,7 +94,7 @@ type Oauth2IntrospectionPluginPartials struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (o Oauth2IntrospectionPluginPartials) MarshalJSON() ([]byte, error) {
@@ -102,7 +102,7 @@ func (o Oauth2IntrospectionPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (o *Oauth2IntrospectionPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &o, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
@@ -122,9 +122,9 @@ func (o *Oauth2IntrospectionPluginPartials) GetName() *string {
 	return o.Name
 }
 
-func (o *Oauth2IntrospectionPluginPartials) GetPath() *string {
+func (o *Oauth2IntrospectionPluginPartials) GetPath() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Path
 }

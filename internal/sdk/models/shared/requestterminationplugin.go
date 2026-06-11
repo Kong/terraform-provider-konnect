@@ -85,7 +85,7 @@ type RequestTerminationPluginPartials struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (r RequestTerminationPluginPartials) MarshalJSON() ([]byte, error) {
@@ -93,7 +93,7 @@ func (r RequestTerminationPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (r *RequestTerminationPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &r, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
@@ -113,9 +113,9 @@ func (r *RequestTerminationPluginPartials) GetName() *string {
 	return r.Name
 }
 
-func (r *RequestTerminationPluginPartials) GetPath() *string {
+func (r *RequestTerminationPluginPartials) GetPath() string {
 	if r == nil {
-		return nil
+		return ""
 	}
 	return r.Path
 }

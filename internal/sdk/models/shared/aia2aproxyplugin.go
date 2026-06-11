@@ -94,7 +94,7 @@ type AiA2aProxyPluginPartials struct {
 	ID *string `json:"id,omitempty"`
 	// A unique string representing a UTF-8 encoded name.
 	Name *string `json:"name,omitempty"`
-	Path *string `json:"path,omitempty"`
+	Path string  `json:"path"`
 }
 
 func (a AiA2aProxyPluginPartials) MarshalJSON() ([]byte, error) {
@@ -102,7 +102,7 @@ func (a AiA2aProxyPluginPartials) MarshalJSON() ([]byte, error) {
 }
 
 func (a *AiA2aProxyPluginPartials) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &a, "", false, nil); err != nil {
+	if err := utils.UnmarshalJSON(data, &a, "", false, []string{"path"}); err != nil {
 		return err
 	}
 	return nil
@@ -122,9 +122,9 @@ func (a *AiA2aProxyPluginPartials) GetName() *string {
 	return a.Name
 }
 
-func (a *AiA2aProxyPluginPartials) GetPath() *string {
+func (a *AiA2aProxyPluginPartials) GetPath() string {
 	if a == nil {
-		return nil
+		return ""
 	}
 	return a.Path
 }
